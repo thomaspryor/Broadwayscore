@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T18:57:03.175Z",
+  "generatedAt": "2026-11-11T20:26:37.960Z",
   "windowDays": 45,
   "showsScanned": 238,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 59.85143277777778,
+      "fileAgeHours": 61.407783055555555,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 37.36635416666667,
+      "nonTerminalAgeHours": 38.85935,
       "needsManualRecovery": false
     },
     {
@@ -33,18 +33,14 @@
       "type": "empty-body",
       "recoverable": true,
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  forum thread fetch failed: All scraping methods failed"
-      },
+      "recovery": null,
       "recoveryCount": 0,
-      "forumLinkRecoveryCount": 3,
+      "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 29.146662777777777,
+      "fileAgeHours": 30.63966138888889,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 28.001909166666668,
+      "nonTerminalAgeHours": 29.494905,
       "needsManualRecovery": false
     },
     {
@@ -62,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 45.70679611111111,
+      "fileAgeHours": 47.19979194444444,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 45.293907222222224,
+      "nonTerminalAgeHours": 46.786903055555555,
       "needsManualRecovery": false
     },
     {
@@ -82,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 42.506436111111114,
+      "fileAgeHours": 43.999431944444446,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 41.43218,
+      "nonTerminalAgeHours": 42.925175833333334,
       "needsManualRecovery": false
     }
   ],

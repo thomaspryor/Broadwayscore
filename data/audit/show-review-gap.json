@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-11T18:52:21.755Z",
+  "generatedAt": "2026-11-11T20:26:15.746Z",
   "windowDays": 1095,
-  "targets": 314,
-  "auditedThisRun": 26,
-  "carriedForward": 2564,
+  "targets": 304,
+  "auditedThisRun": 25,
+  "carriedForward": 2568,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 640,
-    "missingCurrentRun": 1240,
+    "missingCurrentRun": 1241,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 891,
     "totalRecoverable": 54,
-    "totalRecovered": 112,
+    "totalRecovered": 113,
     "humanExcluded": 23,
     "automatedExcluded": 986,
     "automatedExcludedListed": 698,
-    "priorProductionCitations": 8149
+    "priorProductionCitations": 8192
   },
   "results": [
     {
@@ -8707,12 +8707,10 @@
         "https://www.usatoday.com/story/entertainment/movies/2026/10/29/a-few-good-men-broadway-tom-blyth-review/92444731007/",
         "https://variety.com/2026/legit/reviews/a-few-good-men-review-broadway-revival-aaron-sorkin-bradley-whitford-1236935521/",
         "https://www.vulture.com/article/review-few-good-men-broadway-revival-sorkin-whitford.html",
-        "https://variety.com/2026/legit/news/a-few-good-men-aaron-sorkin-bradley-whitford-broadway-1236878406/",
         "https://exeuntnyc.com/reviews/review-a-few-good-men-at-the-vivian-beaumont-theater/",
         "https://www.timeout.com/newyork/theater/a-few-good-men",
-        "https://www.avclub.com/aaron-sorkin-polish-a-few-good-men-broadway",
+        "https://ew.com/exclusive-first-look-a-few-good-men-return-to-broadway-stage-12163494",
         "https://www.yahoo.com/entertainment/tv/articles/few-good-men-broadway-review-030000805.html",
-        "https://www.yahoo.com/entertainment/articles/few-good-men-review-broadway-201839498.html",
         "https://www.jkstheatrescene.com/2026/10/review-few-good-men.html",
         "https://www.jkstheatrescene.com/2026/10/review-few-good-men",
         "https://www.theatermania.com/news/bradley-whitford-and-aaron-sorkin-to-team-up-for-broadway-revival-of-a-few-good-men_1842777/",
@@ -8726,18 +8724,6 @@
       "missing": [
         {
           "url": "https://www.yahoo.com/entertainment/tv/articles/few-good-men-broadway-review-030000805.html",
-          "host": "yahoo.com",
-          "knownOutletId": "yahoo",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.yahoo.com/entertainment/articles/few-good-men-review-broadway-201839498.html",
           "host": "yahoo.com",
           "knownOutletId": "yahoo",
           "serpCensus": true,
@@ -8821,9 +8807,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://variety.com/2026/legit/news/a-few-good-men-aaron-sorkin-bradley-whitford-broadway-1236878406/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
+          "url": "https://ew.com/exclusive-first-look-a-few-good-men-return-to-broadway-stage-12163494",
+          "host": "ew.com",
+          "knownOutletId": "ew",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -8831,42 +8817,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "variety--daniel-daddario.json",
+              "file": "ew--dalton-ross.json",
               "flag": "clean",
-              "urlInDir": "https://variety.com/2026/legit/news/a-few-good-men-aaron-sorkin-bradley-whitford-broadway-1236878406/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.avclub.com/aaron-sorkin-polish-a-few-good-men-broadway",
-          "host": "avclub.com",
-          "knownOutletId": "av-club",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "av-club--drew-gillis.json",
-              "flag": "clean",
-              "urlInDir": "https://www.avclub.com/aaron-sorkin-polish-a-few-good-men-broadway"
+              "urlInDir": "https://ew.com/exclusive-first-look-a-few-good-men-return-to-broadway-stage-12163494"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -8930,7 +8883,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -8939,8 +8892,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 6,
             "error": null
           },
           {
@@ -8950,7 +8903,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -8959,8 +8912,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -8969,8 +8922,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 7,
+            "accepted": 1,
             "error": null
           },
           {
@@ -8986,27 +8939,26 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 15,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
         "count": 417,
         "byReason": {
-          "non-review-host": 57,
-          "no-review-evidence": 1,
           "aggregator-internal-nav": 251,
-          "news-roundup-site": 1,
-          "census-junk-host": 1,
           "venue-production-page": 1,
+          "non-review-host": 56,
+          "show-listing-page": 1,
+          "no-review-evidence": 1,
+          "ticketing-reseller": 3,
           "non-stage-review": 2,
-          "ticketing-reseller": 4,
-          "roundup-page": 3,
           "not-http-url": 74,
           "aggregator-section-root": 10,
           "podcast-episode": 1,
-          "production-database-listing": 9,
-          "tag-index-page": 1,
-          "awards-news-not-review": 1
+          "production-database-listing": 10,
+          "roundup-page": 3,
+          "write-path-blocked": 2,
+          "show-hub": 2
         }
       },
       "dedupedVariants": [],
@@ -9031,21 +8983,6 @@
       "ingestResults": [
         {
           "url": "https://www.yahoo.com/entertainment/tv/articles/few-good-men-broadway-review-030000805.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-        },
-        {
-          "url": "https://www.yahoo.com/entertainment/articles/few-good-men-review-broadway-201839498.html",
           "host": "yahoo.com",
           "outletId": "yahoo",
           "provisional": false,
@@ -9303,25 +9240,15 @@
             "reason": "syndication-portal"
           },
           {
-            "url": "https://www.yahoo.com/entertainment/articles/few-good-men-review-broadway-201839498.html",
-            "host": "yahoo.com",
-            "reason": "syndication-portal"
-          },
-          {
-            "url": "https://variety.com/2026/legit/news/a-few-good-men-aaron-sorkin-bradley-whitford-broadway-1236878406/",
-            "host": "variety.com",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://www.avclub.com/aaron-sorkin-polish-a-few-good-men-broadway",
-            "host": "avclub.com",
+            "url": "https://ew.com/exclusive-first-look-a-few-good-men-return-to-broadway-stage-12163494",
+            "host": "ew.com",
             "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 23,
         "candidateCount": 27
       },
-      "computedAt": "2026-11-11T06:23:47.154Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "a-fine-idea-off-west-end-2026",
@@ -19632,8 +19559,29 @@
       "status": "open",
       "category": "off-west-end",
       "previewsStartDate": "2026-11-09",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528",
+        "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Starring-Sean-Hayes-Opens-in-LA-20160211"
+      ],
       "aggregatorListedUrls": [
+        "http://www.nytimes.com/2015/05/29/theater/review-an-act-of-god-with-jim-parsons-as-an-almighty-comedian.html",
+        "http://www.hollywoodreporter.com/review/jim-parsons-an-act-god-798347",
+        "http://variety.com/2015/legit/reviews/broadway-review-jim-parsons-in-an-act-of-god-1201506483/",
+        "http://www.timeout.com/newyork/theater/an-act-of-god",
+        "http://www.newsday.com/entertainment/theater/an-act-of-god-with-jim-parsons-review-irreverent-yet-sweet-1.10480001",
+        "http://www.usatoday.com/story/life/theater/2015/05/28/an-act-of-god-broadway-review/28016899/",
+        "http://www.nbcnewyork.com/entertainment/the-scene/Review-Act-of-God-Jim-Parsons-305335191.html",
+        "http://www.amny.com/entertainment/an-act-of-god-theater-review-2-stars-1.10484615",
+        "http://deadline.com/2015/05/jim-parsons-an-act-of-god-broadway-review-1201433967/",
+        "http://www.nydailynews.com/entertainment/theater-arts/jim-parsons-divine-act-god-article-1.2239119",
+        "http://nypost.com/2015/05/28/parsons-is-a-mildly-irreverent-supreme-being-in-act-of-god/",
+        "http://www.vulture.com/2015/05/theater-review-an-act-of-god.html",
+        "http://www.nj.com/entertainment/index.ssf/2015/05/jim_parsons_stars_as_the_almighty_in_an_act_of_god.html",
+        "http://www.thestar.com/entertainment/stage/2015/05/28/jim-parsons-divine-in-an-act-of-god-on-broadway.html",
+        "http://www.ew.com/article/2015/05/28/jim-parsons-an-act-of-god-broadway-ew-review",
+        "https://www.theguardian.com/stage/2015/may/29/an-act-of-god-review-jim-parson-plays-the-deity",
+        "http://variety.com/2016/legit/reviews/an-act-of-god-review-sean-hayes-1201703755/",
+        "http://www.thewrap.com/an-act-of-god-la-theater-review-sean-hayes-makes-an-almighty-scene/",
         "https://ingoodtastedenver.com/an-act-of-god/",
         "https://www.theatermania.com/news/an-act-of-god_82780/",
         "https://www.thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
@@ -19642,17 +19590,286 @@
         "https://www.timeout.com/london/theatre/act-of-god",
         "https://www.londonboxoffice.co.uk/news/post/act-of-god-riverside-studios-review"
       ],
-      "dirFiles": 9,
+      "dirFiles": 10,
       "dirClean": 5,
-      "inReviewsJson": 3,
-      "missing": [],
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "http://www.nytimes.com/2015/05/29/theater/review-an-act-of-god-with-jim-parsons-as-an-almighty-comedian.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/jim-parsons-an-act-god-798347",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2015/legit/reviews/broadway-review-jim-parsons-in-an-act-of-god-1201506483/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/an-act-of-god",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/an-act-of-god-with-jim-parsons-review-irreverent-yet-sweet-1.10480001",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2015/05/28/an-act-of-god-broadway-review/28016899/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Act-of-God-Jim-Parsons-305335191.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/an-act-of-god-theater-review-2-stars-1.10484615",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2015/05/jim-parsons-an-act-of-god-broadway-review-1201433967/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/jim-parsons-divine-act-god-article-1.2239119",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nypost.com/2015/05/28/parsons-is-a-mildly-irreverent-supreme-being-in-act-of-god/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2015/05/theater-review-an-act-of-god.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2015/05/jim_parsons_stars_as_the_almighty_in_an_act_of_god.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thestar.com/entertainment/stage/2015/05/28/jim-parsons-divine-in-an-act-of-god-on-broadway.html",
+          "host": "thestar.com",
+          "knownOutletId": "toronto-star",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.ew.com/article/2015/05/28/jim-parsons-an-act-of-god-broadway-ew-review",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2015/may/29/an-act-of-god-review-jim-parson-plays-the-deity",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/an-act-of-god-review-sean-hayes-1201703755/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Starring-Sean-Hayes-Opens-in-LA-20160211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/an-act-of-god-la-theater-review-sean-hayes-makes-an-almighty-scene/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Starring-Sean-Hayes-Opens-in-LA-20160211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
         {
           "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://broadwaybaby.com/shows/act-of-god/839216",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-baby--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaybaby.com/shows/act-of-god/839216"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 1,
@@ -19708,10 +19925,26 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 527,
+        "byReason": {
+          "aggregator-internal-nav": 410,
+          "non-review-host": 30,
+          "not-http-url": 75,
+          "aggregator-section-root": 10,
+          "podcast-episode": 2
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Opens-on-Broadway-Updating-LIVE-20150528",
+          "publishDate": "2015-05-28"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Starring-Sean-Hayes-Opens-in-LA-20160211",
+          "publishDate": "2016-02-11"
+        }
+      ],
       "nonReviewCandidates": [
         {
           "url": "https://www.timeout.com/london/theatre/act-of-god",
@@ -19737,8 +19970,138 @@
           "nonReviewDetail": "2017-10-17"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.nytimes.com/2015/05/29/theater/review-an-act-of-god-with-jim-parsons-as-an-almighty-comedian.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/jim-parsons-an-act-god-798347",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2015/legit/reviews/broadway-review-jim-parsons-in-an-act-of-god-1201506483/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/an-act-of-god",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/an-act-of-god-with-jim-parsons-review-irreverent-yet-sweet-1.10480001",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2015/05/28/an-act-of-god-broadway-review/28016899/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Act-of-God-Jim-Parsons-305335191.html",
+          "host": "nbcnewyork.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.amny.com/entertainment/an-act-of-god-theater-review-2-stars-1.10484615",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2015/05/jim-parsons-an-act-of-god-broadway-review-1201433967/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/jim-parsons-divine-act-god-article-1.2239119",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nypost.com/2015/05/28/parsons-is-a-mildly-irreverent-supreme-being-in-act-of-god/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2015/05/theater-review-an-act-of-god.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2015/05/jim_parsons_stars_as_the_almighty_in_an_act_of_god.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thestar.com/entertainment/stage/2015/05/28/jim-parsons-divine-in-an-act-of-god-on-broadway.html",
+          "host": "thestar.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.ew.com/article/2015/05/28/jim-parsons-an-act-of-god-broadway-ew-review",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2015/may/29/an-act-of-god-review-jim-parson-plays-the-deity",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/an-act-of-god-review-sean-hayes-1201703755/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/an-act-of-god-la-theater-review-sean-hayes-makes-an-almighty-scene/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "recoveryResults": [
         {
           "url": "https://www.thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
@@ -19749,13 +20112,21 @@
           "provisional": false,
           "starFallback": false,
           "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/act-of-god/839216"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -19777,12 +20148,6 @@
             "firstSeenAt": "2026-11-11T14:18:27.904Z"
           },
           {
-            "url": "https://broadwaybaby.com/shows/act-of-god/839216",
-            "outletId": "broadwaybaby.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T01:30:35.625Z"
-          },
-          {
             "url": "https://thespyinthestalls.com/2026/11/act-of-god/",
             "outletId": "thespyinthestalls.com",
             "state": "live",
@@ -19799,6 +20164,13 @@
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-11T14:18:27.904Z"
+          },
+          {
+            "url": "https://broadwaybaby.com/shows/act-of-god/839216",
+            "outletId": "broadway-baby",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-10T01:30:35.625Z"
           }
         ],
         "censusSchema": 4,
@@ -19819,10 +20191,10 @@
             "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 7,
+        "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "act-your-age-regional-2026",
@@ -19874,22 +20246,10 @@
         "https://twi-ny.com/2026/11/09/adaku-part-2-she-shivers-with-it-sweat-variant-bam/",
         "https://www.villagevoice.com/review-adaku-part-1-the-road-opens-brings-africa-to-the-stage-at-bams-next-wave-festival/"
       ],
-      "dirFiles": 0,
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://twi-ny.com/2026/11/09/adaku-part-2-she-shivers-with-it-sweat-variant-bam/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://www.villagevoice.com/review-adaku-part-1-the-road-opens-brings-africa-to-the-stage-at-bams-next-wave-festival/",
           "host": "villagevoice.com",
@@ -19904,102 +20264,55 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://twi-ny.com/2026/11/09/adaku-part-2-she-shivers-with-it-sweat-variant-bam/",
+          "host": "twi-ny.com",
+          "knownOutletId": "this-week-in-new-york",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "this-week-in-new-york--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://twi-ny.com/2026/11/09/adaku-part-2-she-shivers-with-it-sweat-variant-bam/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"adaku, part 2\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"adaku, part 2\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"adaku, part 2\" review fisher",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "adaku, part 2 BAM Fisher (Fishman Space) review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "adaku, part 2 BAM Fisher (Fishman Space) review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "adaku, part 2 BAM Fisher (Fishman Space) review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 24,
-        "byReason": {
-          "non-review-host": 15,
-          "non-review-path": 1,
-          "write-path-blocked": 1,
-          "no-review-evidence": 3,
-          "tag-index-page": 1,
-          "aggregator-internal-nav": 1,
-          "event-listing": 1,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://twi-ny.com/2026/11/09/adaku-part-2-she-shivers-with-it-sweat-variant-bam/",
-          "host": "twi-ny.com",
-          "outletId": "this-week-in-new-york",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.villagevoice.com/review-adaku-part-1-the-road-opens-brings-africa-to-the-stage-at-bams-next-wave-festival/",
           "host": "villagevoice.com",
@@ -20021,13 +20334,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "this-week-in-new-york",
-            "outlet": "this-week-in-new-york",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://twi-ny.com/2026/11/09/adaku-part-2-she-shivers-with-it-sweat-variant-bam/"
-          },
-          {
             "outletId": "village-voice",
             "outlet": "village-voice",
             "critic": "Unknown",
@@ -20038,13 +20344,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://twi-ny.com/2026/11/09/adaku-part-2-she-shivers-with-it-sweat-variant-bam/",
-            "outletId": "this-week-in-new-york",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-11T15:20:46.283Z"
-          },
-          {
             "url": "https://www.villagevoice.com/review-adaku-part-1-the-road-opens-brings-africa-to-the-stage-at-bams-next-wave-festival/",
             "outletId": "village-voice",
             "state": "IN_FLIGHT",
@@ -20053,16 +20352,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://twi-ny.com/2026/11/09/adaku-part-2-she-shivers-with-it-sweat-variant-bam/",
+            "host": "twi-ny.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 1
       },
-      "computedAt": "2026-11-11T15:20:46.283Z",
-      "quarantine": {
-        "nextState": "incomplete:0:1",
-        "since": "2026-11-11T17:15:18.198Z",
-        "lastAt": "2026-11-11T17:15:18.198Z"
-      }
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "adirondack-chair-circle-regional-2026",
@@ -44214,6 +44514,7 @@
         "https://www.broadwayworld.com/washington-dc/article/Review-ARE-YOU-NOW-OR-HAVE-YOU-EVER-BEEN-at-Arena-Stage-20261023",
         "https://www.theatermania.com/news/are-you-now-or-have-you-ever-been-at-arena-stage-finds-cast_1855462/",
         "https://www.talkinbroadway.com/page/regional/dc/dc1405.html",
+        "https://www.hillrag.com/2026/10/16/are-you-now-or-have-you-ever-been-an-american-docudrama/",
         "https://washingtoncitypaper.com/article/794373/are-you-now-or-have-you-ever-been-revisits-the-red-scare-of-the-mccarthy-era/",
         "https://www.theatermania.com/news/huac-drama-are-you-now-or-have-you-ever-been-to-be-revived-off-broadway_1836554/"
       ],
@@ -44248,7 +44549,41 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.hillrag.com/2026/10/16/are-you-now-or-have-you-ever-been-an-american-docudrama/",
+          "host": "hillrag.com",
+          "knownOutletId": "hillrag",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hillrag--kathleen-donner.json",
+              "flag": "clean",
+              "urlInDir": "https://www.hillrag.com/2026/10/16/are-you-now-or-have-you-ever-been-an-american-docudrama/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -44272,8 +44607,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -44282,7 +44617,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -44303,22 +44638,25 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 34,
         "byReason": {
-          "non-review-host": 25,
-          "aggregator-internal-nav": 4,
-          "census-junk-host": 3,
-          "stored-date-before-production": 1
+          "aggregator-internal-nav": 2,
+          "venue-production-page": 1,
+          "non-review-host": 26,
+          "stored-date-before-production": 2,
+          "show-listing-page": 1,
+          "show-hub": 1,
+          "news-roundup-site": 1
         }
       },
       "dedupedVariants": [],
@@ -44361,8 +44699,8 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
       "ingestSkippedByCap": [],
@@ -44417,12 +44755,17 @@
             "url": "https://www.theatermania.com/news/huac-drama-are-you-now-or-have-you-ever-been-to-be-revived-off-broadway_1836554/",
             "host": "theatermania.com",
             "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.hillrag.com/2026/10/16/are-you-now-or-have-you-ever-been-an-american-docudrama/",
+            "host": "hillrag.com",
+            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-11T07:31:41.017Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "are-you-watching-west-end-2026",
@@ -70627,8 +70970,8 @@
       "aggregatorListedUrls": [
         "https://thefrontrowcenter.com/2026/11/broom-play/",
         "https://thefrontrowcenter.com/2026/11/broom-play",
-        "https://captimes.com/entertainment/arts_and_theatre/reviews/set-thy-sights-on-broom-streets-absurd-witty-lamentable-tragedie/article_d0678b38-28d6-5583-9c9f-38354216d151.html",
-        "https://emmareed.net/review-room-broom/"
+        "https://emmareed.net/review-room-broom/",
+        "https://captimes.com/entertainment/arts_and_theatre/reviews/set-thy-sights-on-broom-streets-absurd-witty-lamentable-tragedie/article_d0678b38-28d6-5583-9c9f-38354216d151.html"
       ],
       "dirFiles": 3,
       "dirClean": 1,
@@ -70682,12 +71025,79 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Broom Play\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Broom Play\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Broom Play\" review players",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Broom Play The Players Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Broom Play The Players Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Broom Play The Players Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 32,
+        "byReason": {
+          "aggregator-internal-nav": 5,
+          "venue-production-page": 1,
+          "non-review-host": 15,
+          "ticketing-reseller": 1,
+          "review-hub-page": 1,
+          "non-stage-review": 1,
+          "news-roundup-site": 3,
+          "bare-host": 3,
+          "ticketing-listing": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -70755,7 +71165,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2026",
@@ -87531,26 +87941,23 @@
         "https://www.thestage.co.uk/reviews/cloud-9-review-lyttelton-national-theatre-london",
         "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-org*sms-and-orgies-in-the-foliage-fchw23k6r",
         "https://www.telegraph.co.uk/theatre/what-to-see/cloud-9-revival-review-modern-classic/",
-        "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
+        "https://www.theguardian.com/stage/2026/nov/11/cloud-9-review-national-theatre-london-caryl-churchill",
         "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
+        "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
+        "https://www.timeout.com/london/news/cloud-9-review-national-theatre-caryl-churchill-2026-111126",
+        "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
+        "https://www.london-unattached.com/cloud-9-national-theatre/",
         "https://www.broadwayworld.com/westend/article/Review-CLOUD-9-National-Theatre-20261111",
-        "https://www.timeout.com/london/news/cloud-9-review-national-theatre-caryl-churchill-2026-111126"
+        "https://www.timeout.com/london/theatre/cloud-9",
+        "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/"
       ],
-      "dirFiles": 20,
+      "dirFiles": 23,
       "dirClean": 17,
-      "inReviewsJson": 13,
+      "inReviewsJson": 17,
       "missing": [],
       "dirOnly": [
         {
-          "host": "allthatdazzles.co.uk",
-          "count": 2
-        },
-        {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "london-unattached.com",
+          "host": "ft.com",
           "count": 1
         },
         {
@@ -87568,37 +87975,37 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-org*sms-and-orgies-in-the-foliage-fchw23k6r",
-          "host": "thetimes.com",
-          "knownOutletId": "sunday-times",
+          "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
           "recoverable": true,
-          "recoverableFile": "times-uk--clive-davis.json",
-          "recoverableOutletId": "times-uk",
-          "recoverableCritic": "Clive Davis",
+          "recoverableFile": "theatre-weekly--unknown.json",
+          "recoverableOutletId": "theatre-weekly",
+          "recoverableCritic": "Staff Writer",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "times-uk--clive-davis.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-orgasms-and-orgies-in-the-foliage-fchw23k6r"
-            },
-            {
-              "file": "times-uk--susannah-butter.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-interview-cloud-9-ghosts-0xbvk5cd9"
+              "file": "theatre-weekly--unknown.json",
+              "flag": "nonReview",
+              "urlInDir": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "noTextOrScoreSignal"
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
           ],
           "sources": [
             {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/westend/article/Review-Roundup-Caryl-Churchills-CLOUD-9-At-The-National-Theatre-20261111"
+              "source": "serp-census",
+              "sourceUrl": null
             }
           ],
-          "reverify": true
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -87656,33 +88063,126 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Cloud 9\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Cloud 9\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Cloud 9\" review lyttelton",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Cloud 9\" Cooke review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Cloud 9 Lyttelton Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Cloud 9 Lyttelton Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Cloud 9 Lyttelton Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 292,
+        "count": 316,
         "byReason": {
-          "not-http-url": 51,
-          "non-review-host": 15,
           "aggregator-internal-nav": 220,
+          "venue-production-page": 2,
+          "non-review-host": 25,
+          "no-review-evidence": 1,
+          "non-stage-review": 1,
+          "not-http-url": 51,
           "aggregator-section-root": 5,
-          "podcast-episode": 1
+          "podcast-episode": 1,
+          "production-database-listing": 1,
+          "roundup-page": 3,
+          "write-path-blocked": 2,
+          "bare-host": 1,
+          "ticketing-listing": 2,
+          "guide-article": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
+          "host": "theatreweekly.com",
+          "file": "theatre-weekly--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        },
+        {
+          "url": "https://www.cityam.com/cloud-9-national-theatre-review/",
+          "host": "cityam.com",
+          "file": "city-am--olivia-jordan.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "sunday-times",
-            "outlet": "sunday-times",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-org*sms-and-orgies-in-the-foliage-fchw23k6r"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -87722,10 +88222,10 @@
             "firstSeenAt": "2026-11-11T17:15:17.876Z"
           },
           {
-            "url": "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.theguardian.com/stage/2026/nov/11/cloud-9-review-national-theatre-london-caryl-churchill",
+            "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-11-11T12:38:16.693Z"
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
@@ -87734,8 +88234,8 @@
             "firstSeenAt": "2026-11-11T01:41:06.899Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-CLOUD-9-National-Theatre-20261111",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-11-11T12:38:16.693Z"
           },
@@ -87744,14 +88244,44 @@
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-11-11T17:15:17.876Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
+          },
+          {
+            "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
+            "outletId": "london-unattached.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-CLOUD-9-National-Theatre-20261111",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T12:38:16.693Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/cloud-9",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 10,
-        "candidateCount": 10
+        "excluded": [
+          {
+            "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
+            "host": "theatreweekly.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 13,
+        "candidateCount": 13
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "cloud-nine-off-broadway-2015",
@@ -113534,8 +114064,10 @@
       "previewsStartDate": "2026-11-10",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://westendwilma.com/shows-desire-under-the-elms-almeida-theatre/",
         "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
         "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
+        "https://ticketing.almeida.co.uk/8748/8778",
         "https://www.ayoungertheatre.com/review-desire-under-the-elms/",
         "https://www.mylondon.news/whats-on/theatre/review-desire-under-elms--5972821",
         "https://www.reviewsgate.co.uk/reviews-archive-part-2/desire-under-the-elms-till-9-october",
@@ -113549,6 +114081,18 @@
           "url": "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
           "host": "theartsdesk.com",
           "knownOutletId": "artsdesk",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://ticketing.almeida.co.uk/8748/8778",
+          "host": "almeida.co.uk",
+          "knownOutletId": "almeidacouk",
           "serpCensus": true,
           "sources": [
             {
@@ -113572,6 +114116,39 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://westendwilma.com/shows-desire-under-the-elms-almeida-theatre/",
+          "host": "westendwilma.com",
+          "knownOutletId": "west-end-wilma",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "west-end-wilma--westendwilma.json",
+              "flag": "clean",
+              "urlInDir": "https://westendwilma.com/shows-desire-under-the-elms-almeida-theatre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
           "host": "timeout.com",
@@ -113652,12 +114229,78 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Desire Under the Elms\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Desire Under the Elms\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Desire Under the Elms\" review almeida",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Desire Under the Elms Almeida Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Desire Under the Elms Almeida Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Desire Under the Elms Almeida Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "aggregator-internal-nav": 3,
+          "non-review-host": 18,
+          "no-review-evidence": 2,
+          "census-junk-host": 3,
+          "non-stage-review": 4,
+          "write-path-blocked": 1,
+          "show-hub": 1,
+          "static-asset": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -113699,6 +114342,21 @@
       ],
       "ingestResults": [
         {
+          "url": "https://ticketing.almeida.co.uk/8748/8778",
+          "host": "almeida.co.uk",
+          "outletId": "almeidacouk",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "desire-under-the-elms-off-west-end-2026: https://ticketing.almeida.co.uk/8748/8778 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
           "url": "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
           "host": "theartsdesk.com",
           "outletId": "artsdesk",
@@ -113724,6 +114382,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith"
+          },
+          {
+            "outletId": "almeidacouk",
+            "outlet": "almeidacouk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ticketing.almeida.co.uk/8748/8778"
           },
           {
             "outletId": "mwp.com",
@@ -113761,6 +114426,13 @@
             "firstSeenAt": "2026-11-11T14:18:27.904Z"
           },
           {
+            "url": "https://ticketing.almeida.co.uk/8748/8778",
+            "outletId": "almeidacouk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
+          },
+          {
             "url": "https://test.mwp.com/paper/ugKFsC6AD212/Desire-Under-The-Elms-By_Eugene_O_Neill",
             "outletId": "mwp.com",
             "state": "IN_FLIGHT",
@@ -113786,15 +114458,20 @@
             "reason": "page-date-before-run"
           },
           {
+            "url": "https://westendwilma.com/shows-desire-under-the-elms-almeida-theatre/",
+            "host": "westendwilma.com",
+            "reason": "confirmed-non-review"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
             "host": "timeout.com",
             "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 3,
-        "candidateCount": 5
+        "candidateCount": 6
       },
-      "computedAt": "2026-11-11T18:52:21.755Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "detroit-67-regional-2026",
@@ -174246,7 +174923,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "hamlet-off-broadway-2024",
@@ -185317,70 +185994,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Heart of a Dog\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Heart of a Dog\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Heart of a Dog Theater 86 review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Heart of a Dog Theater 86 review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Heart of a Dog Theater 86 review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 35,
-        "byReason": {
-          "non-review-host": 18,
-          "aggregator-internal-nav": 3,
-          "census-junk-host": 2,
-          "news-roundup-site": 1,
-          "bare-host": 3,
-          "no-review-evidence": 2,
-          "venue-production-page": 1,
-          "non-review-path": 3,
-          "other-place": 1,
-          "event-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -185394,7 +186013,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -255057,6 +255676,44 @@
       "computedAt": "2026-10-27T23:59:53.509Z"
     },
     {
+      "showId": "maggie-and-me-tron-regional-2024",
+      "title": "Maggie and Me",
+      "openingDate": "2024-05-10",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-11T20:26:15.746Z"
+    },
+    {
       "showId": "maggots-off-west-end-2026",
       "title": "Maggots",
       "openingDate": "2026-01-27",
@@ -268712,13 +269369,14 @@
       "aggregatorListedUrls": [
         "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
         "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
-        "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
         "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
-        "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-        "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
-        "https://www.timeout.com/newyork/theater/medea-4",
         "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+        "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
+        "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+        "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026",
+        "https://www.timeout.com/newyork/theater/medea-4",
         "https://www.broadwayworld.com/bwwopera/article/Review-Spectacular-Yoncheva-Shows-What-MEDEA-Is-All-About-at-the-Met-20261101",
+        "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
         "https://bachtrack.com/de_DE/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://parterre.com/works/medea/",
         "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
@@ -268746,9 +269404,9 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
-          "host": "seattletimes.com",
-          "knownOutletId": "seattle-times",
+          "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
           "serpCensus": true,
           "sources": [
             {
@@ -268770,9 +269428,9 @@
           ]
         },
         {
-          "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
+          "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
+          "host": "seattletimes.com",
+          "knownOutletId": "seattle-times",
           "serpCensus": true,
           "sources": [
             {
@@ -268952,7 +269610,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -268961,8 +269619,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -268972,7 +269630,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -268982,7 +269640,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -268991,31 +269649,30 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 7,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 35,
         "byReason": {
-          "non-review-host": 18,
-          "no-review-evidence": 1,
           "aggregator-internal-nav": 1,
-          "census-junk-host": 1,
           "venue-production-page": 1,
-          "non-stage-review": 1,
-          "stored-date-before-production": 5,
-          "show-listing-page": 2,
+          "non-review-host": 15,
+          "stored-date-before-production": 8,
+          "show-listing-page": 3,
+          "no-review-evidence": 1,
+          "census-junk-host": 1,
           "event-listing": 1,
-          "ticketing-reseller": 1,
+          "ticketing-reseller": 2,
           "review-hub-page": 1,
-          "roundup-page": 1
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
@@ -269041,9 +269698,24 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+          "host": "the-tls.com",
+          "outletId": "the-tls",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -269053,57 +269725,27 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with theatermania--zachary-stewart.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.theatermania.com/new-york-city-theater/reviews/review-medea-metropolitan-opera-radvanovsky_94358.html\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2022-09-28\",\n  \"incomingUrl\": \"https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/\",\n  \"incomingPublishDate\": \"2022-09-28\"\n}\n\nMan"
+          "reason": "Article extraction returned 109 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
-          "url": "https://www.hpherald.com/arts_and_entertainment/medea-power-and-passion-and-a-formidable-soprano-at-lyric-opera/article_2ff2eba3-3cd2-493b-9508-6d893a390191.html",
-          "host": "hpherald.com",
-          "outletId": "hyde-park-herald",
+          "url": "https://bachtrack.com/de_DE/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://www.hpherald.com/arts_and_entertainment/medea-power-and-passion-and-a-formidable-soprano-at-lyric-opera/article_2ff2eba3-3cd2-493b-9508-6d893a390191.html has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "Article extraction returned 109 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
-          "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
-          "host": "aroundthetownchicago.com",
-          "outletId": "around-the-town-chicago",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
-          "host": "seattletimes.com",
-          "outletId": "seattle-times",
+          "url": "https://parterre.com/works/medea/",
+          "host": "parterre.com",
+          "outletId": "parterre-box",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -269113,45 +269755,60 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-          "host": "the-tls.com",
-          "outletId": "the-tls"
-        },
-        {
-          "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack"
-        },
-        {
-          "url": "https://bachtrack.com/de_DE/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack"
-        },
-        {
-          "url": "https://parterre.com/works/medea/",
-          "host": "parterre.com",
-          "outletId": "parterre-box"
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         },
         {
           "url": "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
           "host": "bachtrack.com",
-          "outletId": "bachtrack"
+          "outletId": "bachtrack",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Article extraction returned 109 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
+          "host": "seattletimes.com",
+          "outletId": "seattle-times"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://www.hpherald.com/arts_and_entertainment/medea-power-and-passion-and-a-formidable-soprano-at-lyric-opera/article_2ff2eba3-3cd2-493b-9508-6d893a390191.html",
+          "host": "hpherald.com",
+          "outletId": "hyde-park-herald"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review"
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "seattle-times",
-            "outlet": "seattle-times",
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/"
+            "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022"
           },
           {
             "outletId": "the-tls",
@@ -269161,11 +269818,11 @@
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff"
           },
           {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
+            "outletId": "seattle-times",
+            "outlet": "seattle-times",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022"
+            "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/"
           },
           {
             "outletId": "bachtrack",
@@ -269239,6 +269896,12 @@
             "firstSeenAt": "2026-11-03T07:10:54.955Z"
           },
           {
+            "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026",
+            "outletId": "bachtrack.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
+          },
+          {
             "url": "https://www.timeout.com/newyork/theater/medea-4",
             "outletId": "timeout.com",
             "state": "live",
@@ -269251,11 +269914,11 @@
             "firstSeenAt": "2026-11-03T17:21:06.692Z"
           },
           {
-            "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
-            "outletId": "seattle-times",
+            "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+            "outletId": "bachtrack",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-11-11T06:23:47.154Z"
+            "firstSeenAt": "2026-11-01T16:44:25.468Z"
           },
           {
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
@@ -269265,11 +269928,11 @@
             "firstSeenAt": "2026-10-30T00:11:50.524Z"
           },
           {
-            "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-            "outletId": "bachtrack",
+            "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
+            "outletId": "seattle-times",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T16:44:25.468Z"
+            "firstSeenAt": "2026-11-11T06:23:47.154Z"
           },
           {
             "url": "https://bachtrack.com/de_DE/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
@@ -269336,10 +269999,10 @@
             "reason": "timeout-listing-blurb"
           }
         ],
-        "liveCount": 4,
-        "candidateCount": 13
+        "liveCount": 5,
+        "candidateCount": 14
       },
-      "computedAt": "2026-11-11T06:23:47.154Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -296501,7 +297164,6 @@
       "previewsStartDate": "2026-11-11",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://stagezine.com/now-you-see-me-live-broadway/",
         "https://www.timeout.com/newyork/theater/now-you-see-me-live",
         "https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/",
         "https://cityhub.com.au/now-you-see-me-live-review/",
@@ -296562,131 +297224,16 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://stagezine.com/now-you-see-me-live-broadway/",
-          "host": "stagezine.com",
-          "knownOutletId": "stagezine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "stagezine--scott-harrah.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://stagezine.com/now-you-see-me-live-broadway/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Now You See Me Live\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Now You See Me Live\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Now You See Me Live\" review hirschfeld",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Now You See Me Live\" Duffy review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Now You See Me Live Al Hirschfeld Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Now You See Me Live Al Hirschfeld Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Now You See Me Live Al Hirschfeld Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 41,
-        "byReason": {
-          "non-review-host": 18,
-          "aggregator-internal-nav": 3,
-          "census-junk-host": 1,
-          "news-roundup-site": 1,
-          "bare-host": 1,
-          "ticketing-reseller": 6,
-          "no-review-evidence": 3,
-          "venue-production-page": 1,
-          "non-review-path": 1,
-          "other-place": 2,
-          "write-path-blocked": 1,
-          "production-database-listing": 1,
-          "stored-date-before-production": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -296816,17 +297363,12 @@
             "url": "https://www.timeout.com/newyork/theater/now-you-see-me-live",
             "host": "timeout.com",
             "reason": "timeout-listing-blurb"
-          },
-          {
-            "url": "https://stagezine.com/now-you-see-me-live-broadway/",
-            "host": "stagezine.com",
-            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "now-you-see-me-live-off-west-end-2026",
@@ -309962,7 +310504,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "orphans-off-west-end-2026",
@@ -312717,7 +313259,6 @@
         "https://www.theatrereviews.com/off-broadway-review-bedlams-othello-at-the-west-end-theatre-through-sunday-may-31-2026/",
         "https://culturesauce.com/bedlam-othello-off-broadway-review/",
         "https://www.offoffonline.com/offoffonline/2026/5/2/othello",
-        "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
         "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/"
       ],
       "dirFiles": 4,
@@ -312764,20 +313305,6 @@
           ]
         },
         {
-          "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2026-05-06",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
           "host": "theatermania.com",
           "knownOutletId": "theatermania",
@@ -312795,80 +313322,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Othello (Bedlam)\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Othello (Bedlam)\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Othello (Bedlam)\" Tucker review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 6,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Othello (Bedlam) West End Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Othello (Bedlam) West End Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Othello (Bedlam) West End Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 38,
-        "byReason": {
-          "non-review-host": 28,
-          "aggregator-internal-nav": 1,
-          "roundup-page": 1,
-          "tag-index-page": 1,
-          "show-listing-page": 1,
-          "no-review-evidence": 2,
-          "venue-production-page": 1,
-          "write-path-blocked": 1,
-          "production-database-listing": 1,
-          "show-hub": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -312880,31 +313339,9 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
         }
       ],
       "ingestResults": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR",
-          "host": "lightingandsoundamerica.com",
-          "outletId": "lighting-and-sound-america",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "othello-bedlam-off-broadway-2026: http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
         {
           "url": "https://www.theatrereviews.com/off-broadway-review-bedlams-othello-at-the-west-end-theatre-through-sunday-may-31-2026/",
           "host": "theatrereviews.com",
@@ -312952,20 +313389,6 @@
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.jackstage.co.uk/post/othello-review-high-tech-shakespeare-relocated-to-the-falklands-war",
-          "host": "jackstage.co.uk",
-          "file": "jackstage--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -312982,13 +313405,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://culturesauce.com/bedlam-othello-off-broadway-review/"
-          },
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR"
           },
           {
             "outletId": "theatermania",
@@ -313021,13 +313437,6 @@
             "firstSeenAt": "2026-11-04T01:35:14.329Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR",
-            "outletId": "lighting-and-sound-america",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-11T16:40:20.039Z"
-          },
-          {
             "url": "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
             "outletId": "theatermania",
             "state": "IN_FLIGHT",
@@ -313038,9 +313447,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 1,
-        "candidateCount": 5
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "othello-off-broadway-2016",
@@ -342081,7 +342490,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "relics-off-west-end-2026",
@@ -372437,83 +372846,13 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-11",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://westendwilma.com/squid-a-victim-impact-statement-arcola-theatre/",
-        "https://list.co.uk/event/2026-squid-a-victim-impact-statement-659804"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://westendwilma.com/squid-a-victim-impact-statement-arcola-theatre/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-wilma--westendwilma.json",
-              "flag": "clean",
-              "urlInDir": "https://westendwilma.com/squid-a-victim-impact-statement-arcola-theatre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://list.co.uk/event/2026-squid-a-victim-impact-statement-659804",
-          "host": "list.co.uk",
-          "knownOutletId": "the-list",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-list--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://list.co.uk/event/2026-squid-a-victim-impact-statement-659804"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -372554,10 +372893,7 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
         "ran": false,
@@ -372568,7 +372904,6 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -372576,22 +372911,11 @@
         "suppressedMissing": [],
         "candidates": [],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://westendwilma.com/squid-a-victim-impact-statement-arcola-theatre/",
-            "host": "westendwilma.com",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://list.co.uk/event/2026-squid-a-victim-impact-statement-659804",
-            "host": "list.co.uk",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T18:52:21.755Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "staff-meal-off-broadway-2024",
@@ -373606,7 +373930,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -373647,13 +373971,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 31,
         "byReason": {
-          "non-review-host": 23,
-          "write-path-blocked": 1,
-          "aggregator-internal-nav": 3,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 22,
+          "no-review-evidence": 1,
+          "census-junk-host": 2,
           "production-database-listing": 1,
-          "no-review-evidence": 2,
+          "write-path-blocked": 1,
           "tag-index-page": 1,
           "merch-store": 1
         }
@@ -373670,7 +373995,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-10T19:56:38.112Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "starter-for-ten-birmingham-rep-regional-2025",
@@ -395699,6 +396024,44 @@
         "candidateCount": 0
       },
       "computedAt": "2026-11-01T21:11:34.362Z"
+    },
+    {
+      "showId": "the-accountants-aviva-studios-regional-2024",
+      "title": "The Accountants",
+      "openingDate": "2024-05-08",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "the-addams-family-regional-2026",
@@ -419389,7 +419752,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "the-goodbye-girl-off-broadway-2023",
@@ -431853,7 +432216,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "the-knight-of-the-burning-pestle-off-broadway-2023",
@@ -461415,39 +461778,64 @@
       "previewsStartDate": "2026-10-26",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://theatresoutheast.com/revlon-girl-park-90-review/revlon-girl/",
+        "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
+        "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+        "https://readaboutstuff.com/2026/10/29/review-the-revlon-girl-park-theatre-london/",
+        "https://www.londonpubtheatres.com/review-the-revlon-girl-at-park-theatre-10-14-november-2026",
+        "https://loureviews.blog/2026/10/29/play-review-the-revlon-girl-at-park-theatre/",
+        "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
+        "https://theatresoutheast.com/revlon-girl-park-90-review/",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/the-revlon-girl-theatre-review-a7960131.html",
+        "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
+        "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
+        "https://www.thestage.co.uk/reviews/the-revlon-girl-review-at-assembly-roxy-edinburgh--emotional-clarity",
+        "https://northwestend.com/the-revlon-girl-park-theatre/",
+        "https://www.timeout.com/london/theatre/the-revlon-girl",
+        "https://fairypoweredproductions.com/revlon-girl-review/",
         "https://www.buzzmag.co.uk/revlon-girl-stage-review-riverfront-newport-aberfan-disaster/",
         "https://theatreandtonic.co.uk/blog/the-revlon-girl-park-theatre-review",
         "https://www.harrytheatrelife.co.uk/post/review-the-revlon-girl-park-theatre-london",
         "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
-        "https://loureviews.blog/2026/10/29/play-review-the-revlon-girl-at-park-theatre/",
-        "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
         "https://thespyinthestalls.com/2026/10/the-revlon-girl/",
-        "https://theatresoutheast.com/revlon-girl-park-90-review/",
         "https://www.allthatdazzles.co.uk/post/review-the-revlon-girl-park-theatre",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/the-revlon-girl-theatre-review-a7960131.html",
         "https://www.theupcoming.co.uk/2026/10/29/the-revlon-girl-at-park-theatre-theatre-review-2/",
-        "https://onin.london/25210/",
-        "https://www.thestage.co.uk/reviews/the-revlon-girl-review-at-assembly-roxy-edinburgh--emotional-clarity",
-        "https://www.britishtheatreguide.info/listings/8006",
         "https://theatreweekly.com/park-theatre-unveils-park90-autumn-season-featuring-the-return-of-the-revlon-girl-and-three-major-premieres/",
-        "https://northwestend.com/the-revlon-girl-park-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-the-revlon-girl-park-theatre",
-        "https://fairypoweredproductions.com/revlon-girl-review/",
-        "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
-        "https://www.timeout.com/london/theatre/the-revlon-girl",
-        "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
-        "https://readaboutstuff.com/2026/10/29/review-the-revlon-girl-park-theatre-london/",
-        "https://www.britishtheatreguide.info/reviews/the-revlon-girl-assembly-roxy-14815",
         "https://www.thestage.co.uk/reviews/the-revlon-girl-review-park-theatre-london",
-        "https://theatresoutheast.com/revlon-girl-park-90-review/revlon-girl/",
         "https://www.london-unattached.com/the-revlon-girl-park-theatre/",
-        "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
         "https://ayoungishperspective.co.uk/2026/10/30/review-revlon-girls/"
       ],
-      "dirFiles": 20,
-      "dirClean": 17,
-      "inReviewsJson": 17,
+      "dirFiles": 22,
+      "dirClean": 18,
+      "inReviewsJson": 18,
       "missing": [
+        {
+          "url": "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
+          "host": "oazis.app",
+          "knownOutletId": "oazis",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+          "host": "westminsterextra.co.uk",
+          "knownOutletId": "westminsterextra",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-09-29",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.thestage.co.uk/reviews/the-revlon-girl-review-at-assembly-roxy-edinburgh--emotional-clarity",
           "host": "thestage.co.uk",
@@ -461463,49 +461851,9 @@
           ]
         },
         {
-          "url": "https://www.britishtheatreguide.info/listings/8006",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2024-11-07",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-assembly-roxy-14815",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2017-08-19",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
-          "host": "oazis.app",
-          "knownOutletId": "oazis",
+          "url": "https://theatreweekly.com/park-theatre-unveils-park90-autumn-season-featuring-the-return-of-the-revlon-girl-and-three-major-premieres/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
           "serpCensus": true,
           "sources": [
             {
@@ -461582,8 +461930,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 8,
+            "results": 5,
+            "accepted": 2,
             "error": null
           },
           {
@@ -461593,7 +461941,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -461603,7 +461951,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 7,
             "error": null
           },
           {
@@ -461619,15 +461967,18 @@
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 20,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 9,
+        "count": 15,
         "byReason": {
-          "non-review-host": 7,
+          "non-review-host": 10,
+          "no-review-evidence": 1,
           "roundup-page": 1,
-          "census-junk-host": 1
+          "ticketing-listing": 1,
+          "static-asset": 1,
+          "tag-index-page": 1
         }
       },
       "dedupedVariants": [],
@@ -461648,20 +461999,12 @@
           "nonReviewDetail": "2017-09-26"
         },
         {
-          "url": "https://onin.london/25210/",
-          "host": "onin.london",
-          "knownOutletId": "onin",
+          "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2017-09-21"
-        },
-        {
-          "url": "https://theatreweekly.com/park-theatre-unveils-park90-autumn-season-featuring-the-return-of-the-revlon-girl-and-three-major-premieres/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-07-02"
+          "nonReviewDetail": "2024-11-07"
         },
         {
           "url": "https://fairypoweredproductions.com/revlon-girl-review/",
@@ -461676,22 +462019,15 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+          "host": "westminsterextra.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://www.thestage.co.uk/reviews/the-revlon-girl-review-at-assembly-roxy-edinburgh--emotional-clarity",
           "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
-          "host": "theatreandtonic.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-assembly-roxy-14815",
-          "host": "britishtheatreguide.info",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -461699,9 +462035,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.britishtheatreguide.info/listings/8006",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
+          "url": "https://theatreweekly.com/park-theatre-unveils-park90-autumn-season-featuring-the-return-of-the-revlon-girl-and-three-major-premieres/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -461730,40 +462066,98 @@
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.londonpubtheatres.com/review-the-revlon-girl-at-park-theatre-10-14-november-2026",
-          "host": "londonpubtheatres.com",
-          "file": "londonpubtheatres--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/listings/8006"
-          },
           {
             "outletId": "oazis",
             "outlet": "oazis",
             "critic": "Unknown",
             "stars": null,
             "url": "https://oazis.app/en/event/the-revlon-girl-2026-10-26"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/park-theatre-unveils-park90-autumn-season-featuring-the-return-of-the-revlon-girl-and-three-major-premieres/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://theatresoutheast.com/revlon-girl-park-90-review/revlon-girl/",
+            "outletId": "theatresoutheast.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T14:12:38.091Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/10/29/review-the-revlon-girl-park-theatre-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
+            "url": "https://www.londonpubtheatres.com/review-the-revlon-girl-at-park-theatre-10-14-november-2026",
+            "outletId": "londonpubtheatres.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/10/29/play-review-the-revlon-girl-at-park-theatre/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T10:20:07.676Z"
+          },
+          {
+            "url": "https://theatresoutheast.com/revlon-girl-park-90-review/",
+            "outletId": "theatresoutheast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T06:43:10.293Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/the-revlon-girl-theatre-review-a7960131.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T17:26:08.437Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
+            "url": "https://northwestend.com/the-revlon-girl-park-theatre/",
+            "outletId": "northwestend.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-10T19:56:38.112Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-revlon-girl",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T09:17:12.111Z"
+          },
+          {
+            "url": "https://fairypoweredproductions.com/revlon-girl-review/",
+            "outletId": "fairypoweredproductions.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T22:38:02.538Z"
+          },
           {
             "url": "https://www.buzzmag.co.uk/revlon-girl-stage-review-riverfront-newport-aberfan-disaster/",
             "outletId": "buzzmag.co.uk",
@@ -461789,28 +462183,10 @@
             "firstSeenAt": "2026-10-29T01:32:30.606Z"
           },
           {
-            "url": "https://loureviews.blog/2026/10/29/play-review-the-revlon-girl-at-park-theatre/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T19:29:04.194Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:20:07.676Z"
-          },
-          {
             "url": "https://thespyinthestalls.com/2026/10/the-revlon-girl/",
             "outletId": "thespyinthestalls.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T10:20:07.676Z"
-          },
-          {
-            "url": "https://theatresoutheast.com/revlon-girl-park-90-review/",
-            "outletId": "theatresoutheast.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-revlon-girl-park-theatre",
@@ -461819,34 +462195,10 @@
             "firstSeenAt": "2026-10-31T02:57:17.839Z"
           },
           {
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/the-revlon-girl-theatre-review-a7960131.html",
-            "outletId": "independent.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T17:26:08.437Z"
-          },
-          {
             "url": "https://www.theupcoming.co.uk/2026/10/29/the-revlon-girl-at-park-theatre-theatre-review-2/",
             "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-31T10:20:07.676Z"
-          },
-          {
-            "url": "https://onin.london/25210/",
-            "outletId": "onin.london",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T19:56:38.112Z"
-          },
-          {
-            "url": "https://theatreweekly.com/park-theatre-unveils-park90-autumn-season-featuring-the-return-of-the-revlon-girl-and-three-major-premieres/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T19:56:38.112Z"
-          },
-          {
-            "url": "https://northwestend.com/the-revlon-girl-park-theatre/",
-            "outletId": "northwestend.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T19:56:38.112Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-the-revlon-girl-park-theatre",
@@ -461855,40 +462207,10 @@
             "firstSeenAt": "2026-10-29T19:29:04.194Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/revlon-girl-review/",
-            "outletId": "fairypoweredproductions.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T22:38:02.538Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-revlon-girl",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T09:17:12.111Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T19:29:04.194Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/10/29/review-the-revlon-girl-park-theatre-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T19:29:04.194Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/the-revlon-girl-review-park-theatre-london",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-29T19:29:04.194Z"
-          },
-          {
-            "url": "https://theatresoutheast.com/revlon-girl-park-90-review/revlon-girl/",
-            "outletId": "theatresoutheast.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T14:12:38.091Z"
           },
           {
             "url": "https://www.london-unattached.com/the-revlon-girl-park-theatre/",
@@ -461903,18 +462225,18 @@
             "firstSeenAt": "2026-10-31T10:20:07.676Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/listings/8006",
-            "outletId": "british-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-10T19:56:38.112Z"
-          },
-          {
             "url": "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
             "outletId": "oazis",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-31T10:20:07.676Z"
+          },
+          {
+            "url": "https://theatreweekly.com/park-theatre-unveils-park90-autumn-season-featuring-the-return-of-the-revlon-girl-and-three-major-premieres/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-10T19:56:38.112Z"
           }
         ],
         "censusSchema": 4,
@@ -461930,13 +462252,8 @@
             "reason": "page-date-before-run"
           },
           {
-            "url": "https://onin.london/25210/",
-            "host": "onin.london",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://theatreweekly.com/park-theatre-unveils-park90-autumn-season-featuring-the-return-of-the-revlon-girl-and-three-major-premieres/",
-            "host": "theatreweekly.com",
+            "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
+            "host": "theatreandtonic.co.uk",
             "reason": "page-date-before-run"
           },
           {
@@ -461945,10 +462262,10 @@
             "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 22,
-        "candidateCount": 24
+        "liveCount": 21,
+        "candidateCount": 23
       },
-      "computedAt": "2026-11-10T19:56:38.112Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
@@ -467773,32 +468090,57 @@
       "aggregatorListedUrls": [
         "https://thirdcoastreview.com/stages/2026/11/07/review-the-impostors-theatre-the-snow-queen",
         "https://www.buzznews.net/theatre/theatre-reviews/item/6822-finding-light-in-winter-the-snow-queen-at-the-den-theatre.html",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/snow-queen-impostors-theatre-company/",
+        "https://theatrelife.co.uk/the-snow-queen-ballet-theatre-uk-theatre-royal-windsor/",
         "https://splashmags.com/2026/11/impostors-theatres-the-snow-queen-is-a-heartwarming-tale-for-the-winter/",
-        "https://aroundthetownchicago.com/theatre-reviews/the-snow-queen-2/",
+        "https://broadwaybaby.com/shows/the-snow-queen-of-spitsbergen/839362",
+        "https://wernerstheatrereviews.wordpress.com/2026/11/08/impostors-theatres-the-snow-queen-is-a-heartwarming-tale-for-the-winter/",
         "https://aroundthetownchicago.com/theatre-reviews/the-snow-queen/",
-        "https://www.yahoo.com/entertainment/review-snow-queen-house-theatre-175200066.html",
         "https://buzznews.net/theatre/theatre-reviews/item/23-the-snow-queen.html",
         "https://www.timeout.com/chicago/theater/the-snow-queen",
+        "https://aroundthetownchicago.com/theatre-reviews/the-snow-queen-2/",
+        "https://www.yahoo.com/entertainment/review-snow-queen-house-theatre-175200066.html",
         "https://chicagocritic.com/snow-queen/",
         "https://aroundthetownchicago.com/theatre-reviews/the-snow-queen-3/",
         "https://exeuntnyc.com/reviews/the-snow-queen-2/",
         "https://www.theatermania.com/news/the-snow-queen_71026/",
-        "https://theatresoutheast.com/the-snow-queen-theatre-royal-windsor-review/",
         "https://chicagoreader.com/arts-culture/the-snow-queen/",
-        "https://theatrelife.co.uk/the-snow-queen-ballet-theatre-uk-theatre-royal-windsor/",
         "https://www.marriotttheatre.com/review/the-snow-queen",
         "https://www.marriotttheatre.com/review/the-snow-queen-whips-up-frosty-family-fun-at-the-marriott",
-        "https://fairypoweredproductions.com/the-snow-queen-review/",
-        "https://broadwaybaby.com/shows/the-snow-queen-of-spitsbergen/839362"
+        "https://fairypoweredproductions.com/the-snow-queen-review/"
       ],
       "dirFiles": 8,
       "dirClean": 5,
       "inReviewsJson": 5,
       "missing": [
         {
+          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/snow-queen-impostors-theatre-company/",
+          "host": "chicagoreader.com",
+          "knownOutletId": "chicago-reader",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
           "url": "https://theatrelife.co.uk/the-snow-queen-ballet-theatre-uk-theatre-royal-windsor/",
           "host": "theatrelife.co.uk",
           "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://chicagoreader.com/arts-culture/the-snow-queen/",
+          "host": "chicagoreader.com",
+          "knownOutletId": "chicago-reader",
           "serpCensus": true,
           "sources": [
             {
@@ -467852,39 +468194,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://theatresoutheast.com/the-snow-queen-theatre-royal-windsor-review/",
-          "host": "theatresoutheast.com",
-          "knownOutletId": "theatre-south-east",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-south-east--mike-linane.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatresoutheast.com/the-snow-queen-theatre-royal-windsor-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "ensemble-3-agree"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
           "url": "https://broadwaybaby.com/shows/the-snow-queen-of-spitsbergen/839362",
           "host": "broadwaybaby.com",
           "knownOutletId": "broadway-baby",
@@ -467912,17 +468221,117 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://wernerstheatrereviews.wordpress.com/2026/11/08/impostors-theatres-the-snow-queen-is-a-heartwarming-tale-for-the-winter/",
+          "host": "wernerstheatrereviews.wordpress.com",
+          "knownOutletId": "wernerstheatrereviews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wernerstheatrereviews--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://wernerstheatrereviews.wordpress.com/2026/11/08/impostors-theatres-the-snow-queen-is-a-heartwarming-tale-for-the-winter/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "crossOutletDuplicate"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "cross-outlet-duplicate-of-held"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Snow Queen\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Snow Queen\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Snow Queen\" review chicago",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Snow Queen The Den Theatre, Chicago, IL review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Snow Queen The Den Theatre, Chicago, IL review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Snow Queen The Den Theatre, Chicago, IL review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 10,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 30,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "venue-production-page": 2,
+          "non-review-host": 15,
+          "no-review-evidence": 3,
+          "census-junk-host": 3,
+          "event-listing": 1,
+          "ticketing-reseller": 2,
+          "non-stage-review": 1,
+          "non-review-path": 2
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -467964,14 +468373,6 @@
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2014-12-17"
-        },
-        {
-          "url": "https://chicagoreader.com/arts-culture/the-snow-queen/",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2006-12-14"
         }
       ],
       "automatedExcludedListed": 1,
@@ -468001,6 +468402,36 @@
       ],
       "ingestResults": [
         {
+          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/snow-queen-impostors-theatre-company/",
+          "host": "chicagoreader.com",
+          "outletId": "chicago-reader",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://chicagoreader.com/arts-culture/the-snow-queen/",
+          "host": "chicagoreader.com",
+          "outletId": "chicago-reader",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing old-production review: https://chicagoreader.com/arts-culture/the-snow-queen/ (dated 2006-12-14, over a year before the-snow-queen-regional-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+        },
+        {
           "url": "https://fairypoweredproductions.com/the-snow-queen-review/",
           "host": "fairypoweredproductions.com",
           "outletId": "fairypoweredproductions",
@@ -468021,11 +468452,25 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "chicago-reader",
+            "outlet": "chicago-reader",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://chicagoreader.com/performing-arts/theater/theater-review/snow-queen-impostors-theatre-company/"
+          },
+          {
             "outletId": "theatrelife.co.uk",
             "outlet": "theatrelife.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatrelife.co.uk/the-snow-queen-ballet-theatre-uk-theatre-royal-windsor/"
+          },
+          {
+            "outletId": "chicago-reader",
+            "outlet": "chicago-reader",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://chicagoreader.com/arts-culture/the-snow-queen/"
           },
           {
             "outletId": "marriotttheatre.com",
@@ -468077,22 +468522,10 @@
             "firstSeenAt": "2026-11-10T00:11:09.172Z"
           },
           {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/the-snow-queen-2/",
-            "outletId": "aroundthetownchicago.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T13:26:44.749Z"
-          },
-          {
             "url": "https://aroundthetownchicago.com/theatre-reviews/the-snow-queen/",
             "outletId": "aroundthetownchicago.com",
             "state": "live",
             "firstSeenAt": "2026-11-10T00:11:09.172Z"
-          },
-          {
-            "url": "https://www.yahoo.com/entertainment/review-snow-queen-house-theatre-175200066.html",
-            "outletId": "yahoo.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-11T05:23:15.881Z"
           },
           {
             "url": "https://buzznews.net/theatre/theatre-reviews/item/23-the-snow-queen.html",
@@ -468105,6 +468538,18 @@
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-11-10T00:11:09.172Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-snow-queen-2/",
+            "outletId": "aroundthetownchicago.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-10T13:26:44.749Z"
+          },
+          {
+            "url": "https://www.yahoo.com/entertainment/review-snow-queen-house-theatre-175200066.html",
+            "outletId": "yahoo.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T05:23:15.881Z"
           },
           {
             "url": "https://chicagocritic.com/snow-queen/",
@@ -468131,10 +468576,11 @@
             "firstSeenAt": "2026-11-10T06:28:29.441Z"
           },
           {
-            "url": "https://chicagoreader.com/arts-culture/the-snow-queen/",
-            "outletId": "chicagoreader.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T06:28:29.441Z"
+            "url": "https://chicagoreader.com/performing-arts/theater/theater-review/snow-queen-impostors-theatre-company/",
+            "outletId": "chicago-reader",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
           },
           {
             "url": "https://theatrelife.co.uk/the-snow-queen-ballet-theatre-uk-theatre-royal-windsor/",
@@ -468142,6 +468588,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-10T00:11:09.172Z"
+          },
+          {
+            "url": "https://chicagoreader.com/arts-culture/the-snow-queen/",
+            "outletId": "chicago-reader",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-10T06:28:29.441Z"
           },
           {
             "url": "https://www.marriotttheatre.com/review/the-snow-queen",
@@ -468200,20 +468653,15 @@
             "reason": "page-date-before-run"
           },
           {
-            "url": "https://chicagoreader.com/arts-culture/the-snow-queen/",
-            "host": "chicagoreader.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://theatresoutheast.com/the-snow-queen-theatre-royal-windsor-review/",
-            "host": "theatresoutheast.com",
+            "url": "https://wernerstheatrereviews.wordpress.com/2026/11/08/impostors-theatres-the-snow-queen-is-a-heartwarming-tale-for-the-winter/",
+            "host": "wernerstheatrereviews.wordpress.com",
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 10,
+        "liveCount": 9,
         "candidateCount": 14
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "the-snowflake-birmingham-rep-regional-2024",
@@ -473450,6 +473898,769 @@
       "computedAt": "2026-11-01T15:05:11.876Z"
     },
     {
+      "showId": "the-thanksgiving-play-regional-2024",
+      "title": "The Thanksgiving Play",
+      "openingDate": "2024-05-06",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play",
+        "https://playbill.com/article/read-reviews-for-the-thanksgiving-play-at-playwrights-horizons",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420",
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Playwrights-Horizons-THE-THANKSGIVING-PLAY-20181106"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.amny.com/entertainment/theater/thanksgiving-play-satirizes-attempt-at-cultural-sensitivity/",
+        "https://broadwaynews.com/2023/04/20/review-the-thanksgiving-play-is-more-predictable-appetizer-than-satiric-meal/",
+        "https://cititour.com/NYC_Broadway/The-Thanksgiving-Play/1142",
+        "https://www.thedailybeast.com/review-the-thanksgiving-play-is-anti-woke-satireto-what-end",
+        "https://deadline.com/2023/04/thanksgiving-play-broadway-review-deadline-scott-foley-1235332356/",
+        "https://nystagereview.com/2023/04/20/a-thanksgiving-play-much-to-give-thanks-for/",
+        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-thanksgiving-play-review-20230421-6onhukdppzewtfledqgnk24h7e-story.html",
+        "https://www.vulture.com/2023/04/theater-review-the-thanksgiving-play-on-broadway.html",
+        "https://nystagereview.com/2023/04/20/the-thanksgiving-play-the-satire-of-political-correctness-we-need-right-now/",
+        "https://www.nytimes.com/2023/04/20/theater/thanksgiving-play-review-larissa-fasthorse.html",
+        "https://newyorktheater.me/2023/04/20/the-thanksgiving-play-broadway-review/",
+        "https://www.theatermania.com/news/review-the-thanksgiving-play-is-checkmate-for-the-well-meaning-woke_1698978/",
+        "https://www.queerty.com/the-thanksgiving-play-serves-a-satirical-feast-that-broadway-audiences-can-devour-20230420",
+        "https://www.theatrely.com/post/the-thanksgiving-play-undercooks-its-satire-review",
+        "https://www.timeout.com/newyork/theater/the-thanksgiving-play-broadway-review",
+        "https://variety.com/2023/legit/reviews/the-thanksgiving-play-review-broadway-darcy-carden-scott-foley-1235589845/",
+        "https://www.wsj.com/articles/the-thanksgiving-play-review-rehearsing-a-holiday-history-44ce71be",
+        "https://www.thewrap.com/the-thanksgiving-play-broadway-review-darcy-carden/",
+        "http://www.hollywoodreporter.com/review/thanksgiving-play-theater-review-1158046",
+        "http://www.vulture.com/2018/11/theater-the-thanksgiving-play-is-all-stuffing-no-heart.html",
+        "http://nystagereview.com/2018/11/05/the-thanksgiving-play-maybe-it-wasnt-all-fun-and-maize/",
+        "http://nystagereview.com/2018/11/05/the-thanksgiving-play-knocking-the-stuffing-out-of-white-liberal-correctness/",
+        "http://www.nytimes.com/2018/11/05/theater/review-thanksgiving-play.html",
+        "https://ew.com/theater/theater-reviews/the-thanksgiving-play-review-darcy-carden/",
+        "https://www.newyorktheatreguide.com/reviews/the-thanksgiving-play-broadway-review",
+        "https://www.nytimes.com/2018/11/05/theater/review-thanksgiving-play.html",
+        "https://www.hollywoodreporter.com/review/thanksgiving-play-theater-review-1158046"
+      ],
+      "dirFiles": 14,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [
+        {
+          "url": "https://www.amny.com/entertainment/theater/thanksgiving-play-satirizes-attempt-at-cultural-sensitivity/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://broadwaynews.com/2023/04/20/review-the-thanksgiving-play-is-more-predictable-appetizer-than-satiric-meal/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            }
+          ]
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Thanksgiving-Play/1142",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-the-thanksgiving-play-is-anti-woke-satireto-what-end",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://deadline.com/2023/04/thanksgiving-play-broadway-review-deadline-scott-foley-1235332356/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/20/a-thanksgiving-play-much-to-give-thanks-for/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-thanksgiving-play-review-20230421-6onhukdppzewtfledqgnk24h7e-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2023/04/theater-review-the-thanksgiving-play-on-broadway.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/20/the-thanksgiving-play-the-satire-of-political-correctness-we-need-right-now/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/04/20/theater/thanksgiving-play-review-larissa-fasthorse.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2023/04/20/the-thanksgiving-play-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-the-thanksgiving-play-is-checkmate-for-the-well-meaning-woke_1698978/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.queerty.com/the-thanksgiving-play-serves-a-satirical-feast-that-broadway-audiences-can-devour-20230420",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-thanksgiving-play-undercooks-its-satire-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-thanksgiving-play-broadway-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/the-thanksgiving-play-review-broadway-darcy-carden-scott-foley-1235589845/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/the-thanksgiving-play-review-rehearsing-a-holiday-history-44ce71be",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/the-thanksgiving-play-broadway-review-darcy-carden/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/thanksgiving-play-theater-review-1158046",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-thanksgiving-play-at-playwrights-horizons"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2018/11/theater-the-thanksgiving-play-is-all-stuffing-no-heart.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-thanksgiving-play-at-playwrights-horizons"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Playwrights-Horizons-THE-THANKSGIVING-PLAY-20181106"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2018/11/05/the-thanksgiving-play-maybe-it-wasnt-all-fun-and-maize/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-thanksgiving-play-at-playwrights-horizons"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Playwrights-Horizons-THE-THANKSGIVING-PLAY-20181106"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2018/11/05/the-thanksgiving-play-knocking-the-stuffing-out-of-white-liberal-correctness/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-thanksgiving-play-at-playwrights-horizons"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Playwrights-Horizons-THE-THANKSGIVING-PLAY-20181106"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2018/11/05/theater/review-thanksgiving-play.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-thanksgiving-play-at-playwrights-horizons"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/theater/theater-reviews/the-thanksgiving-play-review-darcy-carden/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-thanksgiving-play-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2018/11/05/theater/review-thanksgiving-play.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Playwrights-Horizons-THE-THANKSGIVING-PLAY-20181106"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/thanksgiving-play-theater-review-1158046",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Playwrights-Horizons-THE-THANKSGIVING-PLAY-20181106"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "buzznews.net",
+          "count": 1
+        },
+        {
+          "host": "suntimes.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "chicagocultureauthority.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoonstage.com",
+          "count": 1
+        },
+        {
+          "host": "chicagostageandscreen.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "dailyherald.com",
+          "count": 1
+        },
+        {
+          "host": "newcitystage.com",
+          "count": 1
+        },
+        {
+          "host": "splashmags.com",
+          "count": 1
+        },
+        {
+          "host": "thirdcoastreview.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 812,
+        "byReason": {
+          "aggregator-internal-nav": 548,
+          "non-review-host": 71,
+          "non-stage-review": 3,
+          "not-http-url": 125,
+          "aggregator-section-root": 18,
+          "podcast-episode": 2,
+          "production-database-listing": 39,
+          "roundup-page": 6
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-the-thanksgiving-play",
+          "publishDate": "2023-04-20"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-the-thanksgiving-play-at-playwrights-horizons",
+          "publishDate": "2018-11-06"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-THANKSGIVING-PLAY-Opens-On-Broadway-Starring-DArcy-Carden-and-Katie-Finneran-20230420",
+          "publishDate": "2023-04-20"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-Playwrights-Horizons-THE-THANKSGIVING-PLAY-20181106",
+          "publishDate": "2018-11-06"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.amny.com/entertainment/theater/thanksgiving-play-satirizes-attempt-at-cultural-sensitivity/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://broadwaynews.com/2023/04/20/review-the-thanksgiving-play-is-more-predictable-appetizer-than-satiric-meal/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Thanksgiving-Play/1142",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-the-thanksgiving-play-is-anti-woke-satireto-what-end",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2023/04/thanksgiving-play-broadway-review-deadline-scott-foley-1235332356/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/20/a-thanksgiving-play-much-to-give-thanks-for/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-thanksgiving-play-review-20230421-6onhukdppzewtfledqgnk24h7e-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2023/04/theater-review-the-thanksgiving-play-on-broadway.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/20/the-thanksgiving-play-the-satire-of-political-correctness-we-need-right-now/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2023/04/20/theater/thanksgiving-play-review-larissa-fasthorse.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2023/04/20/the-thanksgiving-play-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-the-thanksgiving-play-is-checkmate-for-the-well-meaning-woke_1698978/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.queerty.com/the-thanksgiving-play-serves-a-satirical-feast-that-broadway-audiences-can-devour-20230420",
+          "host": "queerty.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-thanksgiving-play-undercooks-its-satire-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-thanksgiving-play-broadway-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/the-thanksgiving-play-review-broadway-darcy-carden-scott-foley-1235589845/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/the-thanksgiving-play-review-rehearsing-a-holiday-history-44ce71be",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/the-thanksgiving-play-broadway-review-darcy-carden/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/thanksgiving-play-theater-review-1158046",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2018/11/theater-the-thanksgiving-play-is-all-stuffing-no-heart.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2018/11/05/the-thanksgiving-play-maybe-it-wasnt-all-fun-and-maize/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2018/11/05/the-thanksgiving-play-knocking-the-stuffing-out-of-white-liberal-correctness/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2018/11/05/theater/review-thanksgiving-play.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/theater/theater-reviews/the-thanksgiving-play-review-darcy-carden/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-thanksgiving-play-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2018/11/05/theater/review-thanksgiving-play.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/thanksgiving-play-theater-review-1158046",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://chicagoreader.com/arts-culture/theater/theater-review/thanksgiving-play-steppenwolf-theatre/",
+          "host": "chicagoreader.com",
+          "file": "chicago-reader--kerry-reid.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-11T20:26:15.746Z"
+    },
+    {
       "showId": "the-three-musketeers-regional-2026",
       "title": "The Three Musketeers",
       "openingDate": "2026-03-31",
@@ -475485,8 +476696,6 @@
         "https://exeuntnyc.com/reviews/review-the-verge-at-the-public-theater/",
         "https://www.theaterscene.net/plays/offbway-plays/the-verge/samuel-l-leiter/",
         "https://pagesonstages.com/2026/11/05/the-verge/",
-        "https://www.talkinbroadway.com/page/ob/11_05_26b.html",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TO367V",
         "https://www.timeout.com/newyork/theater/the-verge",
         "https://www.vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html"
       ],
@@ -475500,7 +476709,15 @@
           "count": 1
         },
         {
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
           "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
           "count": 1
         }
       ],
@@ -475508,93 +476725,17 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Verge\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Verge\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Verge\" review public",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"The Verge\" Glaspell review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Verge The Public Theater/LuEsther Hall review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Verge The Public Theater/LuEsther Hall review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Verge The Public Theater/LuEsther Hall review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 6,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 336,
+        "count": 296,
         "byReason": {
-          "not-http-url": 65,
-          "non-review-host": 37,
-          "aggregator-internal-nav": 213,
+          "aggregator-internal-nav": 212,
+          "non-review-host": 15,
+          "not-http-url": 63,
           "aggregator-section-root": 5,
-          "roundup-page": 2,
-          "podcast-episode": 1,
-          "census-junk-host": 3,
-          "tag-index-page": 1,
-          "show-listing-page": 3,
-          "news-roundup-site": 1,
-          "bare-host": 1,
-          "ticketing-reseller": 2,
-          "no-review-evidence": 1,
-          "venue-production-page": 1
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
@@ -475663,18 +476804,6 @@
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
           {
-            "url": "https://www.talkinbroadway.com/page/ob/11_05_26b.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-11T17:15:17.876Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TO367V",
-            "outletId": "lightingandsoundamerica.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-11T17:15:17.876Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/the-verge",
             "outletId": "timeout.com",
             "state": "live",
@@ -475695,10 +476824,10 @@
             "reason": "timeout-listing-blurb"
           }
         ],
-        "liveCount": 12,
-        "candidateCount": 12
+        "liveCount": 10,
+        "candidateCount": 10
       },
-      "computedAt": "2026-11-11T17:15:17.876Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -484877,7 +486006,7 @@
       "aggregatorListedUrls": [
         "https://en.musenytravel.com/one-times-square.html",
         "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
-        "https://www.voyage-pulse.fr/billets-one-times-square-observatoire/",
+        "https://jerseykids.net/2026/10/25/one-times-square-with-kids/",
         "https://stardrift.ai/saved/alpine-inlet/times-square-skywalk-at-one-times-square"
       ],
       "dirFiles": 0,
@@ -484909,8 +486038,8 @@
           ]
         },
         {
-          "url": "https://www.voyage-pulse.fr/billets-one-times-square-observatoire/",
-          "host": "voyage-pulse.fr",
+          "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids/",
+          "host": "jerseykids.net",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -484948,8 +486077,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -484958,7 +486087,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -484978,7 +486107,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -484988,8 +486117,8 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -484999,12 +486128,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 43,
         "byReason": {
-          "non-review-host": 26,
+          "aggregator-internal-nav": 1,
+          "non-review-host": 35,
+          "no-review-evidence": 5,
           "news-roundup-site": 1,
-          "aggregator-internal-nav": 2,
-          "no-review-evidence": 6,
           "bare-host": 1
         }
       },
@@ -485027,8 +486156,8 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.voyage-pulse.fr/billets-one-times-square-observatoire/",
-          "host": "voyage-pulse.fr",
+          "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids/",
+          "host": "jerseykids.net",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -485061,11 +486190,11 @@
             "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792"
           },
           {
-            "outletId": "voyage-pulse.fr",
-            "outlet": "voyage-pulse.fr",
+            "outletId": "jerseykids.net",
+            "outlet": "jerseykids.net",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.voyage-pulse.fr/billets-one-times-square-observatoire/"
+            "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids/"
           },
           {
             "outletId": "stardrift.ai",
@@ -485092,11 +486221,11 @@
             "firstSeenAt": "2026-11-10T18:54:19.357Z"
           },
           {
-            "url": "https://www.voyage-pulse.fr/billets-one-times-square-observatoire/",
-            "outletId": "voyage-pulse.fr",
+            "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids/",
+            "outletId": "jerseykids.net",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-11-11T07:31:41.017Z"
+            "firstSeenAt": "2026-11-11T20:26:15.746Z"
           },
           {
             "url": "https://stardrift.ai/saved/alpine-inlet/times-square-skywalk-at-one-times-square",
@@ -485111,7 +486240,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-11T07:31:41.017Z"
+      "computedAt": "2026-11-11T20:26:15.746Z"
     },
     {
       "showId": "tina-2019",
@@ -522380,30 +523509,29 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-11T18:52:21.755Z",
+    "at": "2026-11-11T20:26:15.745Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "lanny-bristol-old-vic-regional-2026",
-      "king-hedley-ii-regional-2026",
-      "ghost-notes-off-broadway-2026",
-      "1972-regional-2026"
+      "medea-off-broadway-2026",
+      "a-few-good-men-2026",
+      "times-square-skywalk-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "poor-people-the-parody-musical-regional-2024",
-      "an-educated-guess-regional-2024",
-      "the-house-party-chichester-festival-regional-2024"
+      "maggie-and-me-tron-regional-2024",
+      "the-accountants-aviva-studios-regional-2024",
+      "the-thanksgiving-play-regional-2024"
     ],
-    "neverAuditedDueAtStart": 117,
+    "neverAuditedDueAtStart": 114,
     "oldestDueRowAtStart": {
       "showId": "million-dollar-quartet-regional-2024",
       "computedAt": "2026-11-01T00:08:34.874Z",
-      "ageHours": 258.4
+      "ageHours": 260
     },
     "oldestDueRowAfterRun": {
       "showId": "million-dollar-quartet-regional-2024",
       "computedAt": "2026-11-01T00:08:34.874Z",
-      "ageHours": 258.7
+      "ageHours": 260.3
     }
   }
 }

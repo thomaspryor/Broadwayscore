@@ -369,13 +369,12 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-11T18:57:21.297Z",
-      "lastNotifiedAt": "2026-11-10T20:26:01.390Z",
+      "lastSeen": "2026-11-11T20:27:00.423Z",
+      "lastNotifiedAt": "2026-11-11T20:27:00.423Z",
       "lastSurfacedAt": "2026-11-09T20:23:30.357Z",
-      "notifyCount": 79,
+      "notifyCount": 80,
       "cardId": null,
-      "linearIdentifier": "BRO-5532",
-      "silentRefires": 11
+      "linearIdentifier": "BRO-5532"
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -19493,7 +19492,7 @@
       "title": "Roundup gaps: 6 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-11T18:52:22.679Z",
+      "lastSeen": "2026-11-11T20:26:16.463Z",
       "lastNotifiedAt": "2026-11-11T08:41:12.245Z",
       "lastSurfacedAt": null,
       "notifyCount": 47,
@@ -19562,7 +19561,7 @@
         "garry-starr-classic-penguins-off-west-end-2026",
         "cloud-9-west-end-2026"
       ],
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -24275,13 +24274,13 @@
       "title": "Review gap — \"Garry Starr Classic Penguins\" missing 1 cited review(s)",
       "firstSeen": "2026-10-22T14:24:48.490Z",
       "incidentOpenedAt": "2026-10-22T14:24:48.490Z",
-      "lastSeen": "2026-11-11T18:52:22.457Z",
+      "lastSeen": "2026-11-11T20:26:16.377Z",
       "lastNotifiedAt": "2026-11-11T04:03:41.050Z",
       "lastSurfacedAt": "2026-11-11T04:03:41.050Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-6950",
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "review-gap:opening-window:girls-off-west-end-2026": {
       "status": "resolved",
@@ -30025,7 +30024,7 @@
       "silentRefires": 3
     },
     "review-gap:opening-window:the-bridge-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"The Bridge\" missing 1 cited review(s)",
       "firstSeen": "2026-10-29T07:30:39.563Z",
@@ -30036,7 +30035,9 @@
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-11T20:26:16.337Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "express-retry-still-thin:the-unbelievers-off-broadway-2026": {
       "status": "resolved",
@@ -38573,13 +38574,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-11T18:52:22.478Z",
+      "lastSeen": "2026-11-11T20:26:16.398Z",
       "lastNotifiedAt": "2026-11-11T04:03:41.256Z",
       "lastSurfacedAt": "2026-11-11T04:03:41.256Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",

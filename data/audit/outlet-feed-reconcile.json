@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T18:57:21.538Z",
+  "generatedAt": "2026-11-11T20:27:00.966Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,8 +127,8 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-scene",
-      "error": "HTTP 503 for https://www.theaterscene.net/feed/"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
@@ -137,10 +137,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "readaboutstuff",
-      "error": "HTTP 403 for https://readaboutstuff.com/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -153,15 +149,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 828,
-  "matchedGaps": 5,
-  "possibleGaps": 1,
+  "itemsScanned": 851,
+  "matchedGaps": 4,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -182,21 +174,12 @@
       "publishDate": "2026-11-11"
     },
     {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
+      "showId": "act-of-god-off-west-end-2026",
+      "title": "Act of God",
       "level": "matched",
-      "outletId": "city-am",
-      "url": "https://www.cityam.com/cloud-9-national-theatre-review/",
-      "headline": "Cloud 9 at the National Theatre review: Caryl Churchill’s 1979 shocker has lost its punch",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/act-of-god-riverside-studios-london/",
+      "headline": "Act of God – Riverside Studios, London",
       "publishDate": "2026-11-11"
     },
     {
@@ -216,6 +199,15 @@
       "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
       "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
       "publishDate": "2026-11-04"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "possible",
+      "outletId": "partially-obstructed-view",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
+      "headline": "Theatre review: Nero",
+      "publishDate": "2026-11-10"
     }
   ]
 }
