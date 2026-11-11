@@ -502,3 +502,100 @@ test('BRO-7334: an expected-repeat class answers --check-class as quiet, not as 
   assert.ok(!(key in snap.lastSeenByKey), 'expected class has no last-seen date');
   assert.ok(snap.knownKeys.includes(key), 'but the slug stays known, so a typo is still refused');
 });
+
+// ---------- BRO-7375: first-pass misses ----------
+const og = require('./opening-grade.js');
+const pm = require('./press-night-manual-actions.js');
+
+const grade = (showId, daysAgo, signals, category = 'off-broadway') => ({
+  showId, title: showId, category, embargoAt: iso(daysAgo), signals,
+});
+const sig = (outletId, extra = {}) => ({ kind: 'ingest-dispatch', at: iso(1), outletId, cause: 'discovery-gap', source: `abcd1234 ingest-urls: 1 review(s) for x`, ...extra });
+
+test('BRO-7375: the same market+outlet missed on 3 shows makes one recurring class; on 2 it does not', () => {
+  const three = og.firstPassMisses([grade('a', 5, [sig('nytimes')]), grade('b', 6, [sig('nytimes')]), grade('c', 7, [sig('nytimes'), sig('nytimes', { at: iso(2) })])]);
+  const cls = rc.missClasses(three, [], { now: NOW });
+  assert.equal(cls.size, 1);
+  const c = cls.get('missed-at-first-pass:off-broadway:nytimes');
+  assert.equal(c.recurring, true);
+  assert.equal(c.inWindow, 3);
+  assert.deepEqual(c.instances.map((i) => i.identifier), ['c', 'b', 'a']);
+  const two = og.firstPassMisses([grade('a', 5, [sig('wsj')]), grade('b', 6, [sig('wsj')])]);
+  assert.equal(rc.missClasses(two, [], { now: NOW }).get('missed-at-first-pass:off-broadway:wsj').recurring, false);
+  // Same outlet in another market is another class.
+  const mixed = og.firstPassMisses([grade('a', 5, [sig('nytimes')]), grade('b', 6, [sig('nytimes')]), grade('c', 7, [sig('nytimes')], 'broadway')]);
+  assert.equal([...rc.missClasses(mixed, [], { now: NOW }).values()].filter((x) => x.recurring).length, 0);
+});
+
+test('BRO-7375: a commit that only modified the file is a text miss, one that created it is a discovery miss', () => {
+  assert.equal(og.causeOfSignal({ kind: 'ingest-dispatch', source: 'x ingest-urls: 1', fileChange: 'modified' }), 'text-gap');
+  assert.equal(og.causeOfSignal({ kind: 'hand-commit', source: 'x feat: gap-recovery driver final - 4 accepted', fileChange: 'added' }), 'discovery-gap');
+  // No file status (older grade files): the subject decides, and a text
+  // recovery is not a review discovery missed (the NYT off-Broadway trio).
+  assert.equal(og.causeOfSignal({ kind: 'hand-commit', source: 'd6b21599 feat: NYT browser recovery - 16 reviews recovered (task #831)' }), 'text-gap');
+  assert.equal(og.causeOfSignal({ kind: 'hand-commit', source: '11f18855 feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)' }), 'text-gap');
+  assert.equal(og.causeOfSignal({ kind: 'ingest-dispatch', source: 'x ingest-urls: 1 review(s) for y' }), 'discovery-gap');
+  assert.equal(og.causeOfSignal({ kind: 'hand-commit', source: 'x fix byline for critic', fileChange: 'modified' }), 'attribution');
+  // An old grade file stamped the recovery commits discovery-gap; re-caused here.
+  const rows = og.firstPassMisses([grade('a', 5, [sig('nytimes', { kind: 'hand-commit', source: '11f18855 feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)' })])]);
+  assert.equal(rows[0].cause, 'text-gap');
+  assert.doesNotMatch(rows[0].via, /BRO-\d/); // a root card quoting it would list another card
+  assert.equal(rc.missKey(rows[0]), 'text-missed-at-first-pass:off-broadway:nytimes');
+  // No outlet: nothing to repeat on.
+  assert.equal(og.firstPassMisses([grade('a', 5, [sig(null)])]).length, 0);
+});
+
+test('BRO-7375: --name-status logs carry added files; each (commit, outlet) is its own signal', () => {
+  const raw = `\x1eaaaaaaaa11|2026-11-08T05:00:00Z|Tom|t@x.com|feat: recovery batch\nA\tshow-x/nytimes--a.json\nM\tshow-x/wsj--b.json\nM\tother/vulture--c.json\n`;
+  const [c] = pm.parseGitLog(raw);
+  assert.deepEqual(c.files, ['show-x/nytimes--a.json', 'show-x/wsj--b.json', 'other/vulture--c.json']);
+  assert.deepEqual(c.added, ['show-x/nytimes--a.json']);
+  assert.equal(pm.parseGitLog(`\x1eaaaaaaaa11|2026-11-08T05:00:00Z|Tom|t@x.com|s\nshow-x/nytimes--a.json\n`)[0].added, undefined);
+  const show = { id: 'show-x', title: 'X', category: 'off-broadway', openingDate: '2026-11-07' };
+  const g = og.gradeOpening({ show, commits: [{ ...c, sha: 'aaaaaaaa11', at: '2026-11-08T05:00:00Z' }], nowMs: Date.parse('2026-11-09T00:00:00Z') });
+  const bySig = Object.fromEntries(g.signals.filter((s) => s.kind === 'hand-commit').map((s) => [s.outletId, s.cause]));
+  assert.deepEqual(bySig, { nytimes: 'discovery-gap', wsj: 'text-gap' });
+});
+
+test('BRO-7375: misses are dated by opening night, so one late batch over old shows makes no class', () => {
+  const old = og.firstPassMisses([grade('a', 40, [sig('nytimes')]), grade('b', 41, [sig('nytimes')]), grade('c', 45, [sig('nytimes')])]);
+  assert.equal(rc.missClasses(old, [], { now: NOW }).get('missed-at-first-pass:off-broadway:nytimes').recurring, false);
+});
+
+test('BRO-7375: miss history keeps older shows, lets the current grades replace a show, and prunes old openings', () => {
+  const prev = [
+    { showId: 'gone', outletId: 'o', category: 'off-broadway', cause: 'discovery-gap', embargoAt: iso(20) },
+    { showId: 'regraded', outletId: 'o', category: 'off-broadway', cause: 'discovery-gap', embargoAt: iso(5) },
+    { showId: 'ancient', outletId: 'o', category: 'off-broadway', cause: 'discovery-gap', embargoAt: iso(60) },
+  ];
+  const cur = [{ showId: 'regraded', outletId: 'o', category: 'off-broadway', cause: 'text-gap', embargoAt: iso(5) }];
+  const out = og.mergeMissHistory(prev, cur, { nowMs: NOW, gradedShows: ['regraded'] });
+  assert.deepEqual(out.map((r) => `${r.showId}:${r.cause}`), ['gone:discovery-gap', 'regraded:text-gap']);
+});
+
+test('BRO-7375: a miss root card is found by its marker, never captures a card class, and is filed before card classes', () => {
+  const misses = og.firstPassMisses(['a', 'b', 'c'].map((id, i) => grade(id, 3 + i, [sig('nytimes', { kind: 'hand-commit', source: 'x NYT browser recovery (BRO-7171)' })])));
+  const snap0 = det.buildSnapshot({ cards: [card('Thing broke', 2), card('Thing broke', 3), card('Thing broke', 4)], ledger: {}, now: NOW, complete: true, misses });
+  assert.equal(snap0.classes[0].kind, 'first-pass-miss');
+  const cls = snap0.classes[0];
+  assert.equal(cls.key, 'text-missed-at-first-pass:off-broadway:nytimes');
+  assert.equal(cls.rootCause, null);
+  assert.equal(snap0.instances.a, undefined); // show ids never enter the card-keyed map
+  assert.ok(snap0.lastSeenByKey[cls.key]);
+  assert.ok(snap0.knownKeys.includes(cls.key));
+  const desc = det.rootCardDescription(cls);
+  assert.equal(rc.listedIds(desc).size, 0);
+  assert.deepEqual(rc.rootCauseMarker(desc), { version: 'v1', key: cls.key });
+  assert.match(desc, /VERIFY: node scripts\/recurrence-detector\.js --check-class text-missed-at-first-pass-off-broadway-nytimes --quiet/);
+  assert.ok(isSafeCheckCommand(desc.match(/VERIFY: (.+)/)[1]));
+  assert.match(det.rootCardTitle(cls), /first pass keeps getting no full text from nytimes \(Off-Broadway, 3 shows/);
+  // Next run: the filed card owns the class; card classes ignore it.
+  const root = card('Root cause: x', 0, { description: `${desc}\nBRO-1 BRO-2`, state: { type: 'unstarted' } });
+  const snap1 = det.buildSnapshot({ cards: [root, card('Thing broke', 2), card('Thing broke', 3), card('Thing broke', 4)], ledger: {}, now: NOW, complete: true, misses });
+  assert.equal(snap1.classes.find((c) => c.kind === 'first-pass-miss').rootCause, root.identifier);
+  assert.equal(snap1.classes.find((c) => !c.kind).rootCause, null);
+  // Status comments list show ids; the next run reads them back.
+  const body = det.statusComment(['d-show', 'e-show'], false, 'first-pass-miss');
+  assert.deepEqual([...det.alreadyNoted([{ body }])].sort(), ['d-show', 'e-show']);
+  assert.ok(det.alreadyNoted([{ body: det.statusComment(['BRO-5'], false) }]).has('BRO-5'));
+});

@@ -324,7 +324,7 @@ function detectClasses(cards, ledger, opts = {}) {
     const ids = new Set(cls.instances.map((c) => c.identifier));
     const keys = new Set([cls.key, ...(cls.mergedFrom || [])]);
     const exact = rootCards.filter((r) => keys.has(r.marker.key));
-    const overlap = rootCards.filter((r) => !keys.has(r.marker.key) && r.listed.size
+    const overlap = rootCards.filter((r) => !keys.has(r.marker.key) && !isMissKey(r.marker.key) && r.listed.size
       && [...r.listed].filter((id) => ids.has(id)).length * 2 >= Math.min(r.listed.size, ids.size));
     const marked = [...exact, ...overlap].map((r) => r.card).sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
     const live = marked.filter((c) => c.state && c.state.type !== 'canceled' && c.state.type !== 'duplicate');
@@ -526,7 +526,72 @@ function improvementLine(snap) {
   return parts.join(' ');
 }
 
+// ---------- first-pass misses (BRO-7375) ----------
+
+// Reviews the first pass (opening-night poller, gather-reviews,
+// collect-outlet-reviews, outlet-listing-poller) did not get, from
+// opening-grades.json firstPassMisses (opening-grade.js firstPassMisses).
+// They are fixed by the nightly sweep or a person and never become a card,
+// so the card classes above cannot see them repeat.
+const MISS_KEY_PREFIX = { 'discovery-gap': 'missed-at-first-pass', 'text-gap': 'text-missed-at-first-pass' };
+const MISS_KEY_RE = /^(?:text-)?missed-at-first-pass:/;
+const isMissKey = (key) => MISS_KEY_RE.test(String(key || ''));
+const missKey = (m) => `${MISS_KEY_PREFIX[m.cause]}:${m.category}:${m.outletId}`;
+
+/**
+ * PURE. Miss classes: one per (cause, category, outlet). An instance is a
+ * SHOW (identifier = showId) dated by its embargo, so one recovery batch
+ * fixing old shows neither makes a class nor resets the quiet clock.
+ * Recurring at minShows+ distinct shows opened in the window. Root card by
+ * exact marker only (miss cards list shows, not cards). suspectReason does
+ * not apply: each show is its own opening night.
+ */
+function missClasses(misses, cards = [], opts = {}) {
+  const now = opts.now != null ? opts.now : Date.now();
+  const windowDays = opts.windowDays || 30;
+  const minShows = opts.minShows || 3;
+  const since = now - windowDays * DAY;
+  const byKey = new Map();
+  for (const m of misses || []) {
+    if (!m || !m.showId || !m.outletId || !m.category || !MISS_KEY_PREFIX[m.cause]) continue;
+    const at = ms(m.embargoAt);
+    if (!Number.isFinite(at) || at > now) continue;
+    const key = missKey(m);
+    if (!byKey.has(key)) byKey.set(key, { key, kind: 'first-pass-miss', cause: m.cause, category: m.category, outletId: m.outletId, shows: new Map() });
+    const cls = byKey.get(key);
+    const prev = cls.shows.get(m.showId);
+    if (!prev || String(m.at || '') < String(prev.at || '')) cls.shows.set(m.showId, m);
+  }
+  const rootCards = (cards || []).map((c) => ({ card: c, marker: c && rootCauseMarker(c.description) })).filter((r) => r.marker && isMissKey(r.marker.key));
+  const out = new Map();
+  for (const cls of byKey.values()) {
+    const instances = [...cls.shows.values()]
+      .map((m) => ({ identifier: m.showId, title: m.title, createdAt: new Date(ms(m.embargoAt)).toISOString(), foundAt: m.at || null, via: m.via || null }))
+      .sort((a, b) => (a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : (a.identifier < b.identifier ? -1 : 1)));
+    const inWindow = instances.filter((i) => ms(i.createdAt) >= since).length;
+    const marked = rootCards.filter((r) => r.marker.key === cls.key).map((r) => r.card).sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
+    const live = marked.filter((c) => c.state && c.state.type !== 'canceled' && c.state.type !== 'duplicate');
+    const pick = live[0] || marked[0];
+    const reasons = inWindow >= minShows ? [`${inWindow} shows in ${windowDays} days`] : [];
+    out.set(cls.key, {
+      key: cls.key, kind: cls.kind, cause: cls.cause, category: cls.category, outletId: cls.outletId,
+      instances, inWindow,
+      firstSeen: instances.length ? instances[0].createdAt : null,
+      lastSeen: instances.length ? instances[instances.length - 1].createdAt : null,
+      reopens: [], subtypes: {}, expected: null, suspect: null,
+      reasons, recurring: reasons.length > 0,
+      rootCause: pick ? pick.identifier : null,
+      extraRootCauses: marked.map((c) => c.identifier).filter((id) => pick && id !== pick.identifier),
+    });
+  }
+  return out;
+}
+
 module.exports = {
+  MISS_KEY_RE,
+  isMissKey,
+  missKey,
+  missClasses,
   filesByCardFromLog,
   mergeByFiles,
   improvementLine,
