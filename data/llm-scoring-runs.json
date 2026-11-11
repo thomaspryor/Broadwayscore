@@ -1,30 +1,5 @@
 [
   {
-    "startedAt": "2026-11-09T15:13:57.313Z",
-    "completedAt": "2026-11-09T15:14:01.814Z",
-    "totalReviews": 26,
-    "processed": 1,
-    "skipped": 9,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 5215,
-      "output": 289,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 13900
-    },
-    "costUsd": 0.0201012,
-    "runId": "42641173760",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-        "outletId": "cherylmarkosky",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-11-09T15:18:59.902Z",
     "completedAt": "2026-11-09T15:18:59.923Z",
     "totalReviews": 0,
@@ -360448,6 +360423,60 @@
     },
     "costUsd": 0,
     "runId": "42940765858",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-11T02:10:04.930Z",
+    "completedAt": "2026-11-11T02:14:03.177Z",
+    "totalReviews": 81622,
+    "processed": 11,
+    "skipped": 81604,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 92535,
+      "output": 3936,
+      "cacheRead": 53298,
+      "cacheWrite": 3807,
+      "total": 229269
+    },
+    "costUsd": 0.175769025,
+    "runId": "42943257040",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-11T02:14:21.220Z",
+    "completedAt": "2026-11-11T02:14:30.849Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42943257040",
     "source": "comparative-rescore",
     "errorDetails": []
   }
