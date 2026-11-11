@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-11T22:07:21.377Z",
+  "generatedAt": "2026-11-11T23:22:21.485Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 321,
-  "clean": 320,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "are-you-now-or-have-you-ever-been-regional-2026",
-      "title": "Are You Now or Have You Ever Been?",
-      "openingDate": "2026-10-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.56 vs local 75.98 (Δ0.58)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-11T22:07:15.537Z"
-    }
-  ],
+  "clean": 321,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -19492,7 +19492,7 @@
       "title": "Roundup gaps: 11 listed review(s) not captured across 4 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-11T22:02:12.378Z",
+      "lastSeen": "2026-11-11T23:21:40.291Z",
       "lastNotifiedAt": "2026-11-11T22:02:12.378Z",
       "lastSurfacedAt": null,
       "notifyCount": 48,
@@ -19561,7 +19561,8 @@
         "garry-starr-classic-penguins-off-west-end-2026",
         "cloud-9-west-end-2026",
         "cloud-9-national-west-end-2026"
-      ]
+      ],
+      "silentRefires": 1
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -23025,7 +23026,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired"
     },
     "review-gap:opening-window:seussical-theatre-young-audiences-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"Seussical ™ – Theatre Young Audiences\" missing 3 cited review(s)",
       "firstSeen": "2026-10-21T05:36:12.166Z",
@@ -23036,7 +23037,9 @@
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 7,
+      "resolvedAt": "2026-11-11T23:21:40.136Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "review-gap:opening-window:the-master-builder-off-west-end-2026": {
       "status": "resolved",
@@ -24274,13 +24277,13 @@
       "title": "Review gap — \"Garry Starr Classic Penguins\" missing 1 cited review(s)",
       "firstSeen": "2026-10-22T14:24:48.490Z",
       "incidentOpenedAt": "2026-10-22T14:24:48.490Z",
-      "lastSeen": "2026-11-11T22:02:12.308Z",
+      "lastSeen": "2026-11-11T23:21:40.197Z",
       "lastNotifiedAt": "2026-11-11T04:03:41.050Z",
       "lastSurfacedAt": "2026-11-11T04:03:41.050Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-6950",
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "review-gap:opening-window:girls-off-west-end-2026": {
       "status": "resolved",
@@ -38578,13 +38581,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-11T22:02:12.324Z",
+      "lastSeen": "2026-11-11T23:21:40.220Z",
       "lastNotifiedAt": "2026-11-11T04:03:41.256Z",
       "lastSurfacedAt": "2026-11-11T04:03:41.256Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -42215,12 +42218,13 @@
       "title": "Review gap — \"Cloud 9 National\" missing 5 cited review(s)",
       "firstSeen": "2026-11-11T22:02:12.294Z",
       "incidentOpenedAt": "2026-11-11T22:02:12.294Z",
-      "lastSeen": "2026-11-11T22:02:12.294Z",
+      "lastSeen": "2026-11-11T23:21:40.178Z",
       "lastNotifiedAt": "2026-11-11T22:02:12.294Z",
       "lastSurfacedAt": "2026-11-11T22:02:12.294Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-cloud-9-national-west-end-2026": {
       "status": "open",
