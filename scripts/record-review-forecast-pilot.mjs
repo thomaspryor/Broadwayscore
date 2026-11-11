@@ -27,6 +27,7 @@ const require = createRequire(import.meta.url);
 const RF = require('./lib/review-forecast.js');
 const P = require('./lib/review-forecast-pilot.js');
 const V2S = require('./lib/review-forecast-v2-shadow.js');
+const V3 = require('./lib/review-forecast-v3-blend.js'); // BRO-7382
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.split('=').slice(1).join('=') : d; };
@@ -67,7 +68,7 @@ const readGrades = () => (fs.existsSync(GRADES_DIR) ? fs.readdirSync(GRADES_DIR)
 if (flag('scoreboard')) {
   const g = readGrades();
   console.log(JSON.stringify(P.scoreboard(g), null, 2));
-  for (const r of g) console.log(`${r.showId}: critics ${r.criticScore}, forecast ${r.forecast} (miss ${r.missForecast}), category mean ${r.categoryMean} (miss ${r.missCategoryMean}), v2 ${r.forecastV2} (miss ${r.missForecastV2}), preview audience ${r.previewAudience} (miss ${r.missPreviewAudience})`);
+  for (const r of g) console.log(`${r.showId}: critics ${r.criticScore}, forecast ${r.forecast} (miss ${r.missForecast}), category mean ${r.categoryMean} (miss ${r.missCategoryMean}), v2 ${r.forecastV2} (miss ${r.missForecastV2}), v3 ${r.forecastV3 ?? 'n/a'} (miss ${r.missForecastV3 ?? 'n/a'}, ${r.v3Origin ?? 'no earlier-run score'}), preview audience ${r.previewAudience} (miss ${r.missPreviewAudience})`);
   process.exit(0);
 }
 
@@ -94,6 +95,13 @@ for (const s of shows) {
   if (rc >= 3) pool.push(rec);
 }
 const ctx = { pool, weeks, origins };
+// BRO-7382: v3 inputs. Own-record earlier-run reviews (same builder as the backtest) and the web-collected compact file; weight rows are historical walk-forward predictions.
+const jsonOr = (f, d) => { try { return J(f); } catch { return d; } };
+const allReviews = jsonOr('data/reviews.json', { reviews: [] }).reviews;
+const reviewsByShow = V3.buildReviewsByShow(allReviews, byId);
+if (!reviewsByShow.size) console.error('WARN: data/reviews.json missing or empty, v3 has no own-record earlier-run scores tonight');
+const ctx3 = { pool, reviewsByShow, earlierRun: jsonOr('data/audit/review-forecast-v2-earlier-run-compact.json', { reviews: {} }).reviews, origins };
+const v3WeightRows = jsonOr('data/audit/review-forecast-v3-weight-rows.json', { rows: [] }).rows;
 const targetOf = (s) => ({ id: s.id, title: s.title, openingDate: s.openingDate, category: s.category, type: s.type, isRevival: !!s.isRevival, venue: s.venue || null, people: RF.peopleOf(s.creativeTeam) });
 
 // Training rows: opened Broadway shows with a settled score, same rules as the backtest.
@@ -169,6 +177,11 @@ for (const s of shows) {
   const v1Part = { forecast: Math.round(p.forecast), forecastRaw: Math.round(p.forecast * 10) / 10, lo80: Math.round(p.lo80), hi80: Math.round(p.hi80) };
   // BRO-7357: v2 shadow beside v1, new field only. Uses the Show Score score+count already in audience-buzz; never fetched here.
   const v2 = V2S.buildV2Shadow({ features: f, v1: v1Part, showScore: V2S.showScoreInput(buzzOf(s.id)), openingDate: s.openingDate, recordedAt: TODAY, pageUrl: ssUrls[s.id] || null });
+  // BRO-7382: v3 shadow, new field only. Earlier-run score dated by min(day before first preview, opening minus 3 days); no score means v3 = v2.
+  const t3 = { id: s.id, title: s.title, openingDate: s.openingDate, previewsStartDate: s.previewsStartDate || null };
+  const earlier = V3.earlierRunScore(t3, ctx3, f.mu);
+  if (earlier) V3.assertNoLeakageV3(t3, earlier);
+  const v3 = V3.buildV3Shadow({ v2, earlier, weightRows: v3WeightRows, openingDate: s.openingDate, recordedAt: TODAY });
   candidates.push({
     showId: s.id, recordedAt: TODAY, openingDate: s.openingDate, previewsStartDate: s.previewsStartDate || null, status: s.status,
     ...v1Part, categoryMean: Math.round(f.mu * 10) / 10,
@@ -176,6 +189,7 @@ for (const s of shows) {
     audience: P.audienceSnapshot(buzzOf(s.id)),
     reddit,
     v2,
+    v3,
   });
 }
 const { append, skipped } = P.selectAppendable(existing, candidates);
@@ -187,7 +201,7 @@ if (!DRY && append.length) {
   const prior = fs.existsSync(f) ? readJsonl(f) : [];
   fs.writeFileSync(f, prior.concat(append).map((r) => JSON.stringify(r)).join('\n') + '\n');
 }
-for (const r of append) out(`${r.showId} opens ${r.openingDate}: forecast ${r.forecast} [${r.lo80}-${r.hi80}] v2 ${r.v2.forecast} [${r.v2.lo80}-${r.v2.hi80}] (${r.v2.inputsPresent.join('+')}) mean ${r.categoryMean} audience ${r.audience.combined} reddit ${r.reddit.available ? `${r.reddit.leadup.postCount}+${r.reddit.previews.postCount} posts` : r.reddit.reason}`);
+for (const r of append) out(`${r.showId} opens ${r.openingDate}: forecast ${r.forecast} [${r.lo80}-${r.hi80}] v2 ${r.v2.forecast} [${r.v2.lo80}-${r.v2.hi80}] (${r.v2.inputsPresent.join('+')}) v3 ${r.v3.v3Forecast} ${r.v3.v3Applied ? `(${r.v3.v3Origin}, ${r.v3.v3EarlierN} reviews, w ${r.v3.v3Weight})` : '(no earlier-run score)'} mean ${r.categoryMean} audience ${r.audience.combined} reddit ${r.reddit.available ? `${r.reddit.leadup.postCount}+${r.reddit.previews.postCount} posts` : r.reddit.reason}`);
 
 // ---- grade ------------------------------------------------------------------------------
 const ledgerAll = existing.concat(DRY ? [] : append);
@@ -200,7 +214,7 @@ for (const s of shows) {
   // Same settle floor as the backtest: wait until the critic score rests on >= FLOOR reviews.
   const rcAtGrade = slimRc(s.id);
   if (rcAtGrade < FLOOR) continue;
-  const g = P.buildGradeRow({ showId: s.id, openingDate: s.openingDate, today: TODAY, frozen, criticScore: getCriticScore(s.id), frozenV2: V2S.frozenV2Row(ledgerAll, s.id, s.openingDate) });
+  const g = P.buildGradeRow({ showId: s.id, openingDate: s.openingDate, today: TODAY, frozen, criticScore: getCriticScore(s.id), frozenV2: V2S.frozenV2Row(ledgerAll, s.id, s.openingDate), frozenV3: V3.frozenV3Row(ledgerAll, s.id, s.openingDate) });
   if (g) g.rcAtGrade = rcAtGrade;
   if (g) newGrades.push(g);
 }

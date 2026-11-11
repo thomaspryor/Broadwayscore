@@ -90,13 +90,8 @@ const awards = J('data/awards.json').shows;
 const byCritic = new Map();
 const allReviews = J('data/reviews.json').reviews;
 // BRO-7369: every dated, scored, in-production review per show with its effective tier weight and T1 flag (wrongProduction / wrongShow / roundup reviews excluded, as in the composite)
-const reviewsByShow = new Map();
-for (const r of allReviews) {
-  if (r.assignedScore == null || !r.publishDate || !r.outletId || r.wrongProduction || r.wrongShow || r.isRoundupArticle) continue;
-  const s = poolById[r.showId]; const day = RF.toDay(r.publishDate); if (!s || day == null) continue;
-  if (!reviewsByShow.has(r.showId)) reviewsByShow.set(r.showId, []);
-  reviewsByShow.get(r.showId).push({ day, score: r.assignedScore, w: OT.getEffectiveWeight(r.outletId, { showCategory: s.category }), t1: OT.getTier(r.outletId, { showCategory: s.category }) === 1 });
-}
+const V3 = require('./lib/review-forecast-v3-blend.js'); // BRO-7382: one reviewsByShow builder shared with the nightly recorder
+const reviewsByShow = V3.buildReviewsByShow(allReviews, poolById, (r, s) => ({ w: OT.getEffectiveWeight(r.outletId, { showCategory: s.category }), t1: OT.getTier(r.outletId, { showCategory: s.category }) === 1 }));
 for (const r of allReviews) {
   if (!r.criticName || r.assignedScore == null || !r.publishDate || !r.outletId) continue;
   const s = poolById[r.showId]; const day = RF.toDay(r.publishDate);
@@ -267,6 +262,21 @@ const G = V2.V2_GROUPS;
 const baseV1 = walk(V1);
 const base = baseV1;
 const baseV2 = walk([...V1, ...G.audience]); // the landed v2 shadow model: v1 features + Show Score mean + review count
+// BRO-7382: walk-forward rows for the v3 earlier-run blend weight (historical, opened shows only): one v1 and one v2 prediction per show that carries an earlier-run score.
+const EXPORT_V3 = arg('export-v3-rows', null);
+if (EXPORT_V3) {
+  const byId = new Map(rows.map((r) => [r.t.id, r]));
+  const out = [];
+  baseV1.forEach((q, i) => {
+    if (baseV2[i].id !== q.id) throw new Error('v3 export: v1 and v2 walks misaligned');
+    const r = byId.get(q.id);
+    const e = V3.earlierRunScore(r.t, ctx, r.mu); if (!e) return;
+    V3.assertNoLeakageV3(r.t, e);
+    out.push({ id: q.id, season: q.season, y: q.y, baseV1: Math.round(q.pred * 100) / 100, baseV2: Math.round(baseV2[i].pred * 100) / 100, ec: Math.round(e.score * 100) / 100, n: e.n, source: e.source, origin: e.origin });
+  });
+  fs.writeFileSync(EXPORT_V3, JSON.stringify({ note: 'BRO-7382: walk-forward predictions of already-opened shows that carry an earlier-run score dated by the cutoff. Input to the nightly v3 blend weight. Historical only.', k: V3.SHRINK_K, rows: out }, null, 1) + '\n');
+  console.error(`v3 weight rows: ${out.length} written to ${EXPORT_V3}`);
+}
 // 6th argument: an array of walked rows (BRO-7373: pair against the landed v2) or an options object (BRO-7369):
 // ext.baseNames compares against another feature set (default v1), ext.family marks a subset row that is still one of the declared correction-family tests
 const baseWalks = new Map();
