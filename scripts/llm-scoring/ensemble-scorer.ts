@@ -23,7 +23,7 @@ import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 
 export interface EnsembleScoringOptions {
   claudeModel: 'claude-sonnet-4-6' | 'claude-3-5-haiku-20241022';
-  openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
   geminiModel: 'gemini-2.5-flash' | 'gemini-2.5-flash' | 'gemini-1.5-flash';
   kimiModel: string;
   maxDelta: number;  // Maximum acceptable difference between models
@@ -44,7 +44,7 @@ export interface EnsembleScoringOptions {
    * as EnsembleResult.shadow. Claude/Gemini outputs are shared, so the shadow
    * differs from the control ONLY in the OpenAI leg. Unset in production.
    */
-  shadowOpenaiModel?: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  shadowOpenaiModel?: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
 }
 
 /**

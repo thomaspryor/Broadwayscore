@@ -89,7 +89,7 @@ export const BATCH_DISCOUNT_MULTIPLIER = 0.5;
 function openaiPricing(modelName?: string) {
   const m = modelName || '';
   if (m.includes('gpt-5.6-sol')) return COST_PER_MILLION_TOKENS['openai-gpt56-sol'];
-  if (m.includes('gpt-5.6-luna')) return COST_PER_MILLION_TOKENS['openai-gpt56-luna'];
+  if (m.includes('luna')) return COST_PER_MILLION_TOKENS['openai-gpt56-luna'];
   return m.includes('gpt-5.4-mini')
     ? COST_PER_MILLION_TOKENS['openai-gpt54-mini']
     : COST_PER_MILLION_TOKENS.openai;
