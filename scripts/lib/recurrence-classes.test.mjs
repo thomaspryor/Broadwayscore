@@ -62,6 +62,7 @@ test('every EXPECTED_REPEATS entry matches a real title shape', () => {
   ];
   for (const e of rc.EXPECTED_REPEATS) assert.ok(titles.some((t) => e.re.test(t)), `no title for ${e.re}`);
   assert.equal(rc.expectedRepeatReason('Morning digest did not arrive'), null);
+  assert.equal(rc.expectedRepeatReason('Tech Scorecard weekly port did not run'), null);
 });
 
 test('Tech Scorecard weekly port cards (BRO-6295/6810/7200) are never a recurring class', () => {
