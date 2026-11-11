@@ -100,8 +100,8 @@ const jsonOr = (f, d) => { try { return J(f); } catch (e) { console.error(`WARN:
 const allReviews = jsonOr('data/reviews.json', { reviews: [] }).reviews;
 const reviewsByShow = V3.buildReviewsByShow(allReviews, byId);
 if (!reviewsByShow.size) console.error('WARN: data/reviews.json missing or empty, v3 has no own-record earlier-run scores tonight');
-const ctx3 = { pool, reviewsByShow, earlierRun: jsonOr('data/audit/review-forecast-v2-earlier-run-compact.json', { reviews: {} }).reviews, origins };
-const v3WeightRows = jsonOr('data/audit/review-forecast-v3-weight-rows.json', { rows: [] }).rows;
+const ctx3 = { pool, reviewsByShow, earlierRun: jsonOr(V3.EARLIER_RUN_FILE, { reviews: {} }).reviews, origins };
+const v3WeightRows = jsonOr(V3.WEIGHT_ROWS_FILE, { rows: [] }).rows;
 if (!v3WeightRows.length) console.error('WARN: v3 weight rows empty, v3 is passthrough tonight');
 const targetOf = (s) => ({ id: s.id, title: s.title, openingDate: s.openingDate, category: s.category, type: s.type, isRevival: !!s.isRevival, venue: s.venue || null, people: RF.peopleOf(s.creativeTeam) });
 

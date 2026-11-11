@@ -22,6 +22,9 @@ const { toDay } = RF;
 const MODEL_VERSION = 'rf-v3-earlier-blend-2026-11-11';
 const SHRINK_K = EC.EC_K;
 const MIN_WEIGHT_ROWS = 10;
+/** Inputs the nightly recorder READS (the recorder only writes the private ledger, so these paths live here, not in it). */
+const EARLIER_RUN_FILE = 'data/audit/review-forecast-v2-earlier-run-compact.json';
+const WEIGHT_ROWS_FILE = 'data/audit/review-forecast-v3-weight-rows.json';
 const GRID = Array.from({ length: 11 }, (_, i) => i / 10);
 const clamp = (v) => Math.max(0, Math.min(100, v));
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -148,4 +151,4 @@ function frozenV3Row(rows, showId, openingDate) {
   return best;
 }
 
-module.exports = { MODEL_VERSION, SHRINK_K, MIN_WEIGHT_ROWS, GRID, V3_KEYS, V3_GRADE_KEYS, buildReviewsByShow, originLabel, earlierRunScore, assertNoLeakageV3, chooseWeight, buildV3Shadow, frozenV3Row };
+module.exports = { MODEL_VERSION, SHRINK_K, MIN_WEIGHT_ROWS, GRID, EARLIER_RUN_FILE, WEIGHT_ROWS_FILE, V3_KEYS, V3_GRADE_KEYS, buildReviewsByShow, originLabel, earlierRunScore, assertNoLeakageV3, chooseWeight, buildV3Shadow, frozenV3Row };
