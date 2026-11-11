@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T22:23:08.030Z",
+  "timestamp": "2026-11-11T23:37:33.592Z",
   "stats": {
-    "totalReviews": 81547,
-    "alreadyFlagged": 22261,
+    "totalReviews": 81550,
+    "alreadyFlagged": 22266,
     "dateGuardCatches": 218,
-    "directorMismatch": 3629,
+    "directorMismatch": 3631,
     "tvFilmSignals": 2297,
-    "londonSignals": 3696,
+    "londonSignals": 3699,
     "offBroadwaySignals": 751,
-    "yearMismatch": 369,
-    "noPublishDate": 8482
+    "yearMismatch": 371,
+    "noPublishDate": 8472
   },
   "findings": [
     {
@@ -9416,6 +9416,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "around-the-town-chicago--unknown.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/the-book-of-mormon-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -40490,6 +40508,19 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
+      "file": "entertainingchicago--alli-doubek.json",
+      "publishDate": "2026-11-09",
+      "url": "https://entertainingchicago.com/porchlights-little-shop-of-horrors-is-a-darkly-delightful-musical-treat/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2019 (0x). 2026 matches production: little-shop-of-horrors-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "latimes--charles-mcnulty.json",
       "publishDate": "2019-09-27",
       "url": "https://www.latimes.com/entertainment-arts/story/2019-09-27/little-shop-horrors-pasadena-review",
@@ -48781,6 +48812,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "thereviewshub--lauren-humphreys.json",
+      "publishDate": "2026-11-11",
+      "url": "https://www.thereviewshub.com/operation-mincemeat-theatre-royal-glasgow/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2023 (0x). 2026 matches production: operation-mincemeat-tour-2026"
         }
       ]
     },
@@ -71864,7 +71908,7 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "file": "the-jewish-chronicle--unknown.json",
+      "file": "the-jewish-chronicle--john-nathan.json",
       "score": 77,
       "publishDate": "2026-11-10",
       "url": "https://www.thejc.com/life/theatre/the-lives-of-others-review-keira-knightley-leads-cast-in-taut-cold-war-thriller-gbmpz4kr",
@@ -95382,7 +95426,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "city-am--olivia-jordan.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "2026-11-11",
       "url": "https://www.cityam.com/cloud-9-national-theatre-review/",
       "findings": [
@@ -95451,7 +95495,7 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
-      "file": "london-unattached--unknown.json",
+      "file": "london-unattached--mike-stone.json",
       "score": 78,
       "publishDate": "2026-11-11",
       "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
@@ -101994,7 +102038,7 @@
     },
     {
       "showId": "girls-off-west-end-2026",
-      "file": "theartsdispatch--unknown.json",
+      "file": "theartsdispatch--jim-keaveney.json",
       "score": 66,
       "publishDate": "2026-11-08",
       "url": "https://www.theartsdispatch.com/p/girls-review-young-vic-london",
@@ -117172,6 +117216,19 @@
     },
     {
       "showId": "oedipus-west-end-2024",
+      "file": "observer--unknown.json",
+      "publishDate": "2024-10-20",
+      "url": "https://www.theguardian.com/stage/2024/oct/20/the-week-in-theatre-oedipus-robert-icke-wyndhams-mark-strong-lesley-manville-review-the-fear-of-13-donmar-warehouse-lindsey-ferrentino-adrien-brody-justin-martin-the-duchess-of-malfi-zinnie-harris-john-webster-jodie-whittaker",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
       "file": "standard--nick-curtis.json",
       "score": 82,
       "publishDate": "October 17th, 2024",
@@ -124251,6 +124308,19 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2026-11-10",
+      "url": "https://viewfromthegods.co.uk/2026/11/10/some-woman-national-theatre-dorfman/?utm_source=rss&utm_medium=rss&utm_campaign=some-woman-national-theatre-dorfman",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "west-end-best-friend--oli-burgin.json",
       "score": 53,
       "publishDate": "2026-10-16",
@@ -127169,6 +127239,19 @@
       "score": 75,
       "publishDate": "March 8, 2015",
       "url": "https://www.amny.com/the-audience-theater-review-3-stars-1.10033050",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-audience-2015",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2015-03-08",
+      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/ct-the-audience-broadway-review-20150308-column.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

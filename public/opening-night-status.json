@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T22:23:25.336Z",
+  "generatedAt": "2026-11-11T23:37:50.212Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -388,9 +388,9 @@
       "status": "open",
       "slug": "act-of-god-off-west-end",
       "thumbnail": "/images/shows/act-of-god-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 73.06,
+      "siteScore": 72.84,
       "liveScore": 73,
-      "scoreDrift": -0.060000000000002274,
+      "scoreDrift": 0.1599999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -405,10 +405,9 @@
         "ready": false,
         "reasons": [
           "7/8 total",
-          "T1:1/3",
-          "hi-conf:5/6"
+          "T1:1/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -569,6 +568,18 @@
           "t": "2026-11-11T22:23:25.336Z",
           "rc": 7,
           "s": 73.06,
+          "t1": 1,
+          "t2": 2,
+          "t3": 4,
+          "p": 5,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-11T23:37:50.212Z",
+          "rc": 7,
+          "s": 72.84,
           "t1": 1,
           "t2": 2,
           "t3": 4,
@@ -741,9 +752,9 @@
       "status": "open",
       "slug": "cloud-9-west-end",
       "thumbnail": "/images/shows/cloud-9-west-end-2026/thumbnail.webp",
-      "siteScore": 77.29,
+      "siteScore": 77.35,
       "liveScore": 77,
-      "scoreDrift": -0.29000000000000625,
+      "scoreDrift": -0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1010,6 +1021,18 @@
           "t": "2026-11-11T21:33:56.157Z",
           "rc": 18,
           "s": 77.29,
+          "t1": 8,
+          "t2": 5,
+          "t3": 5,
+          "p": 15,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-11T23:37:50.212Z",
+          "rc": 18,
+          "s": 77.35,
           "t1": 8,
           "t2": 5,
           "t3": 5,
