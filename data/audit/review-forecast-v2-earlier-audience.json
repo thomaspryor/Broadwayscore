@@ -2,7 +2,7 @@
  "card": "BRO-7369",
  "note": "Earlier-production Show Score member ratings dated before the Broadway first preview. Aggregates only: no names, no text. Free direct fetches, 1 worker, at most 1 request per second.",
  "paidFetches": 0,
- "directRequestsTotal": 121,
+ "directRequestsTotal": 234,
  "shows": {
   "cirque-du-soleil-paramour-2016": {
    "opening": "2016-05-25",
@@ -443,6 +443,340 @@
     }
    ],
    "pooled": null,
+   "confirmedPooled": null
+  },
+  "the-humans-2016": {
+   "opening": "2016-02-18",
+   "previewsStart": "2016-01-24",
+   "cutoff": "2016-01-23",
+   "sources": [
+    {
+     "kind": "shared-page",
+     "url": "https://www.show-score.com/broadway-shows/the-humans",
+     "verified": true,
+     "n": 87,
+     "mean": 79.6,
+     "newest": "2016-01-05",
+     "shareLe60": null
+    },
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/the-humans",
+     "kind": "guess",
+     "ref": null,
+     "verified": true,
+     "listed": 1424,
+     "lastPage": 178,
+     "pagesRead": 13,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 99,
+     "mean": 80.1,
+     "shareLe60": 0.1,
+     "newest": "2016-01-23",
+     "oldest": "2015-10-03"
+    },
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/humans",
+     "kind": "guess",
+     "ref": null,
+     "reason": "page not found"
+    }
+   ],
+   "pooled": {
+    "n": 186,
+    "mean": 79.86612903225806,
+    "shareLe60": 0.05322580645161291,
+    "newest": "2016-01-23"
+   },
+   "confirmedPooled": {
+    "n": 87,
+    "mean": 79.6,
+    "shareLe60": 0,
+    "newest": "2016-01-05"
+   }
+  },
+  "our-mothers-brief-affair-2016": {
+   "opening": "2016-01-20",
+   "previewsStart": "2015-12-28",
+   "cutoff": "2015-12-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/our-mothers-brief-affair",
+     "kind": "guess",
+     "ref": null,
+     "reason": "page not found"
+    }
+   ],
+   "pooled": null,
+   "confirmedPooled": null
+  },
+  "noises-off-2016": {
+   "opening": "2016-01-14",
+   "previewsStart": "2015-12-17",
+   "cutoff": "2015-12-16",
+   "sources": [
+    {
+     "kind": "shared-page",
+     "url": "https://www.show-score.com/broadway-shows/noises-off",
+     "verified": true,
+     "n": 26,
+     "mean": 88.3,
+     "newest": "2015-11-29",
+     "shareLe60": null
+    },
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/noises-off",
+     "kind": "guess",
+     "ref": null,
+     "verified": true,
+     "listed": 542,
+     "lastPage": 68,
+     "pagesRead": 5,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 29,
+     "mean": 87.6,
+     "shareLe60": 0.1,
+     "newest": "2015-12-11",
+     "oldest": "2015-09-16"
+    }
+   ],
+   "pooled": {
+    "n": 55,
+    "mean": 87.93090909090907,
+    "shareLe60": 0.052727272727272734,
+    "newest": "2015-12-11"
+   },
+   "confirmedPooled": {
+    "n": 26,
+    "mean": 88.29999999999998,
+    "shareLe60": 0,
+    "newest": "2015-11-29"
+   }
+  },
+  "fiddler-on-the-roof-2015": {
+   "opening": "2015-12-20",
+   "previewsStart": "2015-11-20",
+   "cutoff": "2015-11-19",
+   "sources": [
+    {
+     "kind": "shared-page",
+     "url": "https://www.show-score.com/broadway-shows/fiddler-on-the-roof",
+     "verified": true,
+     "n": 63,
+     "mean": 88.1,
+     "newest": "2015-11-05",
+     "shareLe60": null
+    },
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/fiddler-on-the-roof",
+     "kind": "guess",
+     "ref": null,
+     "verified": true,
+     "listed": 3123,
+     "lastPage": 391,
+     "pagesRead": 12,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 85,
+     "mean": 88,
+     "shareLe60": 0,
+     "newest": "2015-11-18",
+     "oldest": "2015-09-21"
+    }
+   ],
+   "pooled": {
+    "n": 148,
+    "mean": 88.04256756756756,
+    "shareLe60": 0,
+    "newest": "2015-11-18"
+   },
+   "confirmedPooled": {
+    "n": 63,
+    "mean": 88.1,
+    "shareLe60": 0,
+    "newest": "2015-11-05"
+   }
+  },
+  "the-color-purple-2015": {
+   "opening": "2015-12-10",
+   "previewsStart": "2015-11-10",
+   "cutoff": "2015-11-09",
+   "sources": [
+    {
+     "kind": "shared-page",
+     "url": "https://www.show-score.com/broadway-shows/the-color-purple",
+     "verified": true,
+     "n": 8,
+     "mean": 83.3,
+     "newest": "2015-10-19",
+     "shareLe60": null
+    },
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/the-color-purple",
+     "kind": "guess",
+     "ref": null,
+     "verified": true,
+     "listed": 3072,
+     "lastPage": 384,
+     "pagesRead": 3,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 19,
+     "mean": 87.4,
+     "shareLe60": 0,
+     "newest": "2015-11-09",
+     "oldest": "2015-09-21"
+    },
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/color-purple",
+     "kind": "guess",
+     "ref": null,
+     "reason": "page not found"
+    }
+   ],
+   "pooled": {
+    "n": 27,
+    "mean": 86.18518518518519,
+    "shareLe60": 0,
+    "newest": "2015-11-09"
+   },
+   "confirmedPooled": {
+    "n": 8,
+    "mean": 83.3,
+    "shareLe60": 0,
+    "newest": "2015-10-19"
+   }
+  },
+  "school-of-rock-the-musical-2015": {
+   "opening": "2015-12-06",
+   "previewsStart": "2015-11-09",
+   "cutoff": "2015-11-08",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/school-of-rock-the-musical",
+     "kind": "guess",
+     "ref": null,
+     "reason": "page not found"
+    }
+   ],
+   "pooled": null,
+   "confirmedPooled": null
+  },
+  "china-doll-2015": {
+   "opening": "2015-12-04",
+   "previewsStart": "2015-10-21",
+   "cutoff": "2015-10-20",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/china-doll",
+     "kind": "guess",
+     "ref": null,
+     "verified": true,
+     "listed": 142,
+     "lastPage": 18,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null,
+   "confirmedPooled": null
+  },
+  "misery-2015": {
+   "opening": "2015-11-15",
+   "previewsStart": "2015-10-22",
+   "cutoff": "2015-10-21",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/misery",
+     "kind": "guess",
+     "ref": null,
+     "verified": true,
+     "listed": 331,
+     "lastPage": 42,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null,
+   "confirmedPooled": null
+  },
+  "a-view-from-the-bridge-2015": {
+   "opening": "2015-11-12",
+   "previewsStart": "2015-10-21",
+   "cutoff": "2015-10-20",
+   "sources": [
+    {
+     "kind": "shared-page",
+     "url": "https://www.show-score.com/broadway-shows/a-view-from-the-bridge",
+     "verified": true,
+     "n": 21,
+     "mean": 90,
+     "newest": "2015-10-04",
+     "shareLe60": null
+    },
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/a-view-from-the-bridge",
+     "kind": "guess",
+     "ref": null,
+     "verified": true,
+     "listed": 620,
+     "lastPage": 78,
+     "pagesRead": 5,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 32,
+     "mean": 89.7,
+     "shareLe60": 0,
+     "newest": "2015-10-19",
+     "oldest": "2015-07-08"
+    }
+   ],
+   "pooled": {
+    "n": 53,
+    "mean": 89.81886792452829,
+    "shareLe60": 0,
+    "newest": "2015-10-19"
+   },
+   "confirmedPooled": {
+    "n": 21,
+    "mean": 90,
+    "shareLe60": 0,
+    "newest": "2015-10-04"
+   }
+  },
+  "allegiance-2015": {
+   "opening": "2015-11-08",
+   "previewsStart": "2015-10-06",
+   "cutoff": "2015-10-05",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/off-broadway-shows/allegiance",
+     "kind": "guess",
+     "ref": null,
+     "verified": true,
+     "listed": 1091,
+     "lastPage": 137,
+     "pagesRead": 2,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 7,
+     "mean": 95.9,
+     "shareLe60": 0,
+     "newest": "2015-10-04",
+     "oldest": "2015-09-27"
+    }
+   ],
+   "pooled": {
+    "n": 7,
+    "mean": 95.9,
+    "shareLe60": 0,
+    "newest": "2015-10-04"
+   },
    "confirmedPooled": null
   }
  }

@@ -26,6 +26,7 @@ const EX = require('./lib/review-forecast-v2-extra.js');
 const ER = require('./lib/review-forecast-v2-earlier-run.js');
 const OT = require('./lib/outlet-tiers.js');
 const EA = require('./lib/review-forecast-v2-earlier-audience.js'); // BRO-7369
+const EC = require('./lib/review-forecast-v2-earlier-critics.js'); // BRO-7369 A, B, C-gap
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.split('=').slice(1).join('=') : d; };
@@ -76,7 +77,16 @@ if (fs.existsSync(AUD_FILE)) {
 // per-critic review index (critic = outlet + name; reviews without a name cannot be tracked) and honours
 const awards = J('data/awards.json').shows;
 const byCritic = new Map();
-for (const r of J('data/reviews.json').reviews) {
+const allReviews = J('data/reviews.json').reviews;
+// BRO-7369: every dated, scored, in-production review per show with its effective tier weight and T1 flag (wrongProduction / wrongShow / roundup reviews excluded, as in the composite)
+const reviewsByShow = new Map();
+for (const r of allReviews) {
+  if (r.assignedScore == null || !r.publishDate || !r.outletId || r.wrongProduction || r.wrongShow || r.isRoundupArticle) continue;
+  const s = poolById[r.showId]; const day = RF.toDay(r.publishDate); if (!s || day == null) continue;
+  if (!reviewsByShow.has(r.showId)) reviewsByShow.set(r.showId, []);
+  reviewsByShow.get(r.showId).push({ day, score: r.assignedScore, w: OT.getEffectiveWeight(r.outletId, { showCategory: s.category }), t1: OT.getTier(r.outletId, { showCategory: s.category }) === 1 });
+}
+for (const r of allReviews) {
   if (!r.criticName || r.assignedScore == null || !r.publishDate || !r.outletId) continue;
   const s = poolById[r.showId]; const day = RF.toDay(r.publishDate);
   if (!s || day == null) continue;
@@ -111,7 +121,7 @@ if (EA_ON && fs.existsSync(EA_FILE)) {
     }
   }
 }
-const ctx = { pool, weeks, origins, poolById, castIndex, audience, awards, panel: { byCritic }, earlierRun: erRaw.reviews, troubleSet: new Set(erRaw.trouble || []), earlierAudience };
+const ctx = { pool, weeks, origins, poolById, castIndex, audience, awards, panel: { byCritic }, earlierRun: erRaw.reviews, troubleSet: new Set(erRaw.trouble || []), earlierAudience, reviewsByShow };
 // transfer = an earlier production of the same title outside Broadway in our data, or earlier-run reviews on file; chosen independently of the new input
 const nonBwayOpenings = new Map();
 for (const s of shows) { if (s.category === 'broadway' || !s.openingDate) continue; const k = RF.titleKey(s.title); if (!nonBwayOpenings.has(k)) nonBwayOpenings.set(k, []); nonBwayOpenings.get(k).push(s.openingDate); }
@@ -135,7 +145,9 @@ for (const t of targets) {
   const ea = EA.buildEarlierAudienceFeatures(t, ctx);
   EA.assertNoLeakageEarlierAudience(t, ea.provenance);
   const eaC = EA.buildEarlierAudienceFeatures(t, { ...ctx, earlierAudience: earlierAudienceConfirmed });
-  rows.push({ t, season: RF.seasonStartYear(t.openingDate), x: { ...f.x, ...v.x, ...e.x, ...er.x, ...ea.x }, x72: er72.x, x78: er78.x, xEAC: eaC.x, has: { ...v.has, ...e.has, ...er.has, ...ea.has, ownPrior: f.priorScore != null, transfer: isTransfer(t) }, mu: f.mu, y: t.score });
+  const ec = EC.buildEarlierCriticsFeatures(t, ctx, f.mu);
+  EC.assertNoLeakageEarlierCritics(t, ec.provenance);
+  rows.push({ t, season: RF.seasonStartYear(t.openingDate), x: { ...f.x, ...v.x, ...e.x, ...er.x, ...ea.x, ...ec.x }, x72: er72.x, x78: er78.x, xEAC: eaC.x, has: { ...v.has, ...e.has, ...er.has, ...ea.has, ...ec.has, ownPrior: f.priorScore != null, transfer: isTransfer(t) }, mu: f.mu, y: t.score });
 }
 console.error(`evaluated rows ${rows.length}; v2 leakage-checked ${prov.checked}; awards ${rows.filter((r) => r.has.awards).length}, panel ${rows.filter((r) => r.has.panel).length}, cast ${rows.filter((r) => r.has.cast).length}, preview ${rows.filter((r) => r.has.preview).length}, audience ${rows.filter((r) => r.has.audience).length}`);
 
@@ -160,6 +172,12 @@ for (const r of rows.filter((_, i) => i % 8 === 0)) {
   const cpEr = { ...ctx.earlierRun, [r.t.id]: [...(ctx.earlierRun[r.t.id] || []), [1, dayStr(D - RF.LAG_DAYS + 1), 0], [99, dayStr(D + 40), 0], [1, r.t.openingDate.slice(0, 4), 0]] };
   const er2 = ER.buildEarlierRunFeatures(r.t, { ...ctx, earlierRun: cpEr }, r.mu);
   if (ER.ER_FEATURE_NAMES.some((k) => er2.x[k] !== r.x[k])) moved++;
+  // earlier-critics (BRO-7369): flip every review dated after the earlier-production cutoff and every show that opened after it, rebuild
+  const ecCut = RF.toDay(EA.earlierCutoff(r.t));
+  const cpRv = new Map([...reviewsByShow].map(([k, l]) => [k, l.map((q) => (q.day > ecCut ? { ...q, score: 100 - q.score, w: 9, t1: true } : q))]));
+  const cpEc = pool.map((q) => (RF.toDay(q.openingDate) > ecCut ? { ...q, score: 100 - q.score, rc: 99 } : q));
+  const ec2 = EC.buildEarlierCriticsFeatures(r.t, { ...ctx, pool: cpEc, reviewsByShow: cpRv }, r.mu);
+  if (EC.EC_FEATURE_NAMES.some((k) => ec2.x[k] !== r.x[k])) moved++;
 }
 console.error(`perturbation self-check: ${sampled} shows, ${moved} v2 features moved`);
 if (moved) { console.error('FAIL: v2 features depend on post-opening data'); process.exit(2); }
@@ -215,7 +233,7 @@ function diffCI(a, b, B = 2000, alpha = 0.05) { // a, b: aligned prediction arra
 // + earlier-run linear and step (2) + forked step cuts 72 and 78 (2) + flop and rave tails for earlier-run linear and step (4)
 // + combined panel+earlier-run step and linear (2) + Show Score: full-pull primary, restricted variant, three secondary specs, primary flop and hit tails (7) + combined with Show Score (1) = 26.
 const NIGHTLY_COMBINED = process.argv.includes('--nightly-combined'); // BRO-7357: adds one test (Show Score + panel, no web-collected earlier-run), so the family is 27
-const EA_NEW_TESTS = 5; // BRO-7369: input alone vs v1 (all, transfers), increment over v2 (all, transfers), increment over v2 on confirmed pages only
+const EA_NEW_TESTS = 23; // BRO-7369: input alone vs v1 (all, transfers), increment over v2 (all, transfers), increment over v2 on confirmed pages only
 const N_PRIMARY_TESTS = (NIGHTLY_COMBINED ? 27 : 26) + (EA_ON ? EA_NEW_TESTS : 0);
 const r2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 const maeOf = (p) => RF.mean(p.map((q) => Math.abs(q.y - q.pred)));
@@ -305,7 +323,7 @@ for (const f of [...G.cast, ...G.preview, ...EX.EXTRA_FEATURE_NAMES]) results.pu
 // full population, in the v1 ridge/residual frame; the increment is measured against the LANDED v2 spec (v1 + audScore + audCount). Five tests join the correction family.
 // "Transfers" = an earlier non-Broadway production of the same title in shows.json or earlier-run reviews on file, picked without looking at the new input.
 // Decision rule: the input is added to the nightly pilot only if the increment over v2 (all shows) has a Bonferroni-corrected interval entirely below zero.
-const V2SPEC = [...V1, ...G.audience]; const hasEA = (p) => p.has.earlierAudience; const isTr = (p) => p.has.transfer;
+let transferModel = null; const V2SPEC = [...V1, ...G.audience]; const hasEA = (p) => p.has.earlierAudience; const isTr = (p) => p.has.transfer;
 if (EA_ON) {
   results.push(compare('Earlier-production audience vs v1: shrunk member mean, all shows', [...V1, 'eaScore'], null, 'primary'));
   results.push(compare('Earlier-production audience vs v1: transfers only', [...V1, 'eaScore'], isTr, 'primary-subset', undefined, { family: true }));
@@ -317,6 +335,32 @@ if (EA_ON) {
   results.push(compare('Earlier-production audience increment over v2, only shows that carry it', [...V2SPEC, 'eaScore'], hasEA, 'exploratory-subset', undefined, { baseNames: V2SPEC }));
   results.push(compare('Earlier-production audience increment over v2, flag plus score', [...V2SPEC, ...EA.EA_GROUPS.flag], null, 'exploratory', undefined, { baseNames: V2SPEC }));
   results.push(compare('Earlier-production audience increment over v2, transfers that carry it', [...V2SPEC, 'eaScore'], (p) => isTr(p) && hasEA(p), 'exploratory-subset', undefined, { baseNames: V2SPEC }));
+  // ---- BRO-7369 A, B, C-gap: the site's own earlier-production critic scores. Each input: vs v1 (all, transfers), increment over v2 (all, transfers) = 4 family tests. Declared before grading. ----
+  const hasEC = (p) => p.has.earlierCritics; const hasT1 = (p) => p.has.earlierT1; const hasGap = (p) => p.has.earlierCritics && p.has.earlierAudience;
+  const SPECS = [
+    ['A: own earlier-production critic score (count-shrunk gap, opened before first preview)', EC.EC_GROUPS.a, hasEC],
+    ['B: tier-weighted earlier-production score from reviews dated by the cutoff', EC.EC_GROUPS.bW, hasEC],
+    ['B: Tier-1-only earlier-production score', EC.EC_GROUPS.bT1, hasT1],
+    ['C-gap: earlier-production audience minus earlier-production critics', EC.EC_GROUPS.cGap, hasGap],
+  ];
+  for (const [lab, g, carry] of SPECS) {
+    results.push(compare(`${lab} vs v1: all shows`, [...V1, ...g], null, 'primary'));
+    results.push(compare(`${lab} vs v1: transfers only`, [...V1, ...g], isTr, 'primary-subset', undefined, { family: true }));
+    results.push(compare(`${lab} INCREMENT over landed v2: all shows`, [...V2SPEC, ...g], null, 'primary', undefined, { baseNames: V2SPEC }));
+    results.push(compare(`${lab} INCREMENT over landed v2: transfers only`, [...V2SPEC, ...g], isTr, 'primary-subset', undefined, { baseNames: V2SPEC, family: true }));
+    results.push(compare(`${lab} INCREMENT over landed v2: only shows that carry it`, [...V2SPEC, ...g], carry, 'exploratory-subset', undefined, { baseNames: V2SPEC }));
+  }
+  // ---- D: one combined transfer model = v2 + best of A / B + earlier-production audience (eaScore). The A-vs-B pick is made on the walk-forward predictions of seasons up to the MEDIAN walk season only (selection set), before any interval is computed; the later seasons are the clean test. ----
+  const walkSeasons = [...new Set(base.map((q) => q.season))].sort((a, b) => a - b); const SEL = walkSeasons[Math.floor(walkSeasons.length / 2) - 1];
+  const selMae = (g) => { const w = walk([...V2SPEC, ...g]).filter((q) => q.season <= SEL); return maeOf(w); };
+  const cands = [['A', EC.EC_GROUPS.a], ['B-weighted', EC.EC_GROUPS.bW], ['B-T1', EC.EC_GROUPS.bT1]].map(([k, g]) => ({ k, g, mae: selMae(g) })).sort((a, b) => a.mae - b.mae);
+  const pick = cands[0]; transferModel = { selectionSeasonsThrough: SEL, picked: pick.k, selectionMae: cands.map((c) => ({ input: c.k, mae: r2(c.mae) })), features: [...V2SPEC, ...pick.g, 'eaScore'] };
+  const D = transferModel.features;
+  results.push(compare(`D: TRANSFER MODEL (v2 + ${pick.k} + earlier audience) INCREMENT over landed v2: all shows`, D, null, 'primary', undefined, { baseNames: V2SPEC }));
+  results.push(compare(`D: TRANSFER MODEL INCREMENT over landed v2: transfers only`, D, isTr, 'primary-subset', undefined, { baseNames: V2SPEC, family: true }));
+  results.push(compare(`D: TRANSFER MODEL vs v1: all shows`, D, null, 'exploratory'));
+  results.push(compare(`D: TRANSFER MODEL INCREMENT over v2, seasons after the selection set (clean test): all shows`, D, (p) => p.season > SEL, 'exploratory-subset', undefined, { baseNames: V2SPEC }));
+  results.push(compare(`D: TRANSFER MODEL INCREMENT over v2, seasons after the selection set: transfers only`, D, (p) => p.season > SEL && isTr(p), 'exploratory-subset', undefined, { baseNames: V2SPEC }));
 }
 
 // ---- BRO-7357: freeze the nightly v2 shadow model (v1 features + audScore + audCount, fit on the full evaluated set) ----
@@ -395,6 +439,14 @@ const out = {
     const inc = results.find((r) => /INCREMENT over landed v2 \(v1 \+ Show Score mean and n\): all shows/.test(r.input));
     cov.decision = { rule: 'add to the nightly pilot only if the increment over v2 (all shows) has a Bonferroni-corrected 95% interval entirely below zero', correctionFamilyTests: N_PRIMARY_TESTS,
       incrementOverV2: inc ? { maeV2: inc.maeWithout, maeV2PlusEarlierAudience: inc.maeWith, diff: inc.diff, diffCI95: inc.diffCI95, diffCI95Bonferroni: inc.diffCI95Bonferroni } : null, addToPilot: !!(inc && inc.diffCI95Bonferroni && inc.diffCI95Bonferroni[1] < 0) };
+    // BRO-7369 A, B, C-gap, D coverage and the extended decision: every INCREMENT-over-v2 row on all shows that sits in the correction family
+    cov.earlierCritics = { withEarlierProduction: rows.filter((r) => r.has.earlierCritics).length, withTier1Reviews: rows.filter((r) => r.has.earlierT1).length,
+      withEarlierAudienceAndCritics: rows.filter((r) => r.has.earlierCritics && r.has.earlierAudience).length, transfersWithEarlierProduction: rows.filter((r) => r.has.transfer && r.has.earlierCritics).length,
+      byMarket: Object.fromEntries([...EC.EARLIER_CATEGORIES].map((c) => [c, rows.filter((r) => r.has.earlierCritics && (EC.findEarlier(r.t, ctx, EA.earlierCutoff(r.t)) || {}).category === c).length])),
+      note: 'v1 already carries the latest earlier production score as priorRun; these tests measure what that does not use (count shrinkage, before-first-preview filter, tier weighting, T1-only, audience-minus-critics gap)' };
+    cov.transferModel = transferModel;
+    cov.decision.candidates = results.filter((r) => r.inCorrectionFamily && /INCREMENT over (landed )?v2: all shows|INCREMENT over landed v2 \(v1.*all shows|confirmed pages only/.test(r.input)).map((r) => ({ input: r.input, diff: r.diff, diffCI95Bonferroni: r.diffCI95Bonferroni, addToPilot: !!(r.diffCI95Bonferroni && r.diffCI95Bonferroni[1] < 0) }));
+    cov.decision.addToPilotAny = cov.decision.candidates.some((c) => c.addToPilot);
     return cov;
   })() } : {}),
 };
