@@ -392,7 +392,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
 | `NEW_YORKER_PASSWORD` | 4 cross-repo writers (of 4 workflows using it) |
-| `NEXT_PUBLIC_SUPABASE_URL` | 1 cross-repo writers (of 15 workflows using it): `update-mezzanine.yml` |
+| `NEXT_PUBLIC_SUPABASE_URL` | 2 cross-repo writers (of 16 workflows using it): `data-health-check.yml`, `update-mezzanine.yml` |
 | `NORTHJERSEY_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NORTHJERSEY_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NYDAILYNEWS_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
@@ -414,7 +414,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `REVIEW_TEXTS_TOKEN` | 143 cross-repo writers (of 261 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 82 cross-repo writers (of 111 workflows using it) |
 | `SCRAPINGDOG_API_KEY` | 85 cross-repo writers (of 113 workflows using it) |
-| `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 14 workflows using it): `update-mezzanine.yml` |
+| `SUPABASE_SERVICE_ROLE_KEY` | 2 cross-repo writers (of 15 workflows using it): `data-health-check.yml`, `update-mezzanine.yml` |
 | `THEATR_REFRESH_TOKEN` | 1 cross-repo writers (of 1 workflows using it): `update-theatr.yml` |
 | `TR_EMAIL` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |
 | `TR_PASSWORD` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |

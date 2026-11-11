@@ -81,7 +81,7 @@ BEGIN
   END IF;
   UPDATE public.score_call_shows SET opening_date = p_opening, closes_at = closes,
     forecast = COALESCE(p_forecast, forecast), lo80 = COALESCE(p_lo, lo80), hi80 = COALESCE(p_hi, hi80),
-    reviews_live = (reviews_live OR p_reviews_live), calls_enabled = p_enabled, synced_at = now()
+    reviews_live = (reviews_live OR p_reviews_live), calls_enabled = (calls_enabled AND p_enabled), synced_at = now()
   WHERE show_id = p_show_id;
   RETURN 'updated';
 END $$;

@@ -2126,7 +2126,7 @@ jobs:
       # Score" can reveal it to a reader only after they save a prediction (the forecast is never in a public
       # file). A step here, not its own job: it reads tonight's local ledger rows and the core data already
       # checked out. Idempotent upserts. Counts only in the log (public): never print a row.
-      # Calls close at the opening-night time server-side, so a reviews_live flip is only an early close.
+      # Calls close at 00:00 Eastern on opening day, enforced server-side, so a reviews_live flip is only an early close.
       - name: Sync forecasts to Predict the Score (advisory)
         if: vars.SCORE_CALL_SYNC_DISABLED != 'true'
         # lint-allow-swallow: advisory (CLAUDE.md §19); a failed night leaves yesterday's forecast rows in place.
