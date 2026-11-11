@@ -168,7 +168,10 @@ async function runShard() {
   const openShows = openShowsRaw ? Number(openShowsRaw) : 0;
   if (openShowsRaw && !(Number.isInteger(openShows) && openShows > 0)) throw new Error(`--open-shows must be a positive integer, got "${openShowsRaw}"`);
   const sample = openShows > 0 ? openShowsSample(pop, openShows, seed) : stratifiedSample(pop, sampleN, seed);
-  const mine = sample.filter((_, i) => i % shards === shard).filter((c) => !done.has(c.id)).slice(0, limit);
+  // --shuffle: seeded shuffle before --limit, so a bounded run is a random slice, not the alphabetically first shows (BRO-7341).
+  const ordered = !args.includes('--shuffle') ? sample
+    : (() => { const r = rng(seed ^ 0x9e3779b9); return sample.map((c) => ({ c, k: r() })).sort((x, y) => x.k - y.k).map((x) => x.c); })();
+  const mine = ordered.filter((_, i) => i % shards === shard).filter((c) => !done.has(c.id)).slice(0, limit);
   console.log(`population ${pop.length}, sample ${sample.length}, shard ${shard}/${shards}: ${mine.length} to score (${done.size} already done), control ${SCORING_OPENAI} vs shadow ${shadowModel}`);
 
   const scorer = new EnsembleReviewScorer(

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T00:22:06.423Z",
+  "timestamp": "2026-11-11T02:35:26.299Z",
   "stats": {
-    "totalReviews": 81320,
-    "alreadyFlagged": 22224,
+    "totalReviews": 81369,
+    "alreadyFlagged": 22231,
     "dateGuardCatches": 218,
-    "directorMismatch": 3607,
-    "tvFilmSignals": 2287,
-    "londonSignals": 3668,
+    "directorMismatch": 3619,
+    "tvFilmSignals": 2291,
+    "londonSignals": 3670,
     "offBroadwaySignals": 752,
-    "yearMismatch": 365,
-    "noPublishDate": 8455
+    "yearMismatch": 368,
+    "noPublishDate": 8454
   },
   "findings": [
     {
@@ -3284,6 +3284,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "adirondack-chair-circle-regional-2026",
+      "file": "spotlightonlake--unknown.json",
+      "publishDate": null,
+      "url": "https://www.spotlightonlake.com/posts/steppenwolf-theatre-presents-world-premiere-adirondack-chair-circle-1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -8348,6 +8361,19 @@
     },
     {
       "showId": "beetlejuice-tour-2022",
+      "file": "broadwayworld--drew-eberhard.json",
+      "publishDate": "2023-10-25",
+      "url": "https://www.broadwayworld.com/tampa/article/Review-A-Rocky-Start-Helps-to-Usher-in-Halloween-With-BEETLEJUICE-THE-MUSICAL-at-Straz-Center-for-The-Performing-Arts-20231025",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (3x) more than 2022 (2x). 2019 matches production: beetlejuice-2019"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
       "file": "broadwayworld--kelsey-lawler.json",
       "score": 87,
       "publishDate": null,
@@ -8406,6 +8432,19 @@
       "score": 86,
       "publishDate": "2025-07-30",
       "url": "https://magnetmagazine.com/2025/07/30/live-review-beetlejuice-the-musical-the-musical-the-musical-philadelphia-pa-july-29-2025/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 2022 (0x). 2025 matches production: beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "rachelweinbergreviews--rachelrweinberg.json",
+      "publishDate": "2023-11-09",
+      "url": "https://rachelweinbergreviews.com/2023/11/09/review-beetlejuice-the-musical/",
       "findings": [
         {
           "type": "YEAR_MISMATCH",
@@ -35451,6 +35490,58 @@
       ]
     },
     {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "cbc--unknown.json",
+      "publishDate": "2023-10-26",
+      "url": "https://www.cbc.ca/music/alanis-jagged-little-pill-musical-1.7008708",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "next-magazine--william-molls.json",
+      "publishDate": "2023-10-28",
+      "url": "https://nextmag.ca/review-jagged-little-pill-at-mirvish-is-bloated-but-occasionally-thrilling/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "the-globe-and-mail--glenn-sumi.json",
+      "publishDate": "2023-10-27",
+      "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-jagged-little-pill-is-full-of-beauty-pain-and-raw-emotion-like-the/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "toronto-star--karen-fricker.json",
+      "publishDate": "2023-10-27",
+      "url": "https://www.thestar.com/entertainment/stage/jagged-little-pill-is-an-intelligent-update-on-the-jukebox-musical-if-only-it-wasn/article_883a31f6-d7b5-5475-8ba1-cafcc1f5b657.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
       "showId": "jajas-african-hair-braiding-2023",
       "file": "frontmezzjunkies--unknown.json",
       "score": 78,
@@ -38800,6 +38891,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "andrew-j-stillman--andrew-j-stillman.json",
+      "publishDate": "2023-10-05",
+      "url": "https://www.andrewjstillman.com/reviews/les-miserables",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
         }
       ]
     },
@@ -43835,6 +43939,19 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
+      "file": "onstagepittsburgh--ghoover.json",
+      "publishDate": "2023-09-28",
+      "url": "https://onstagepittsburgh.com/2023/09/28/moulin-rouge-the-musical-at-the-benedum-can-can-can-deliver-beyond-expectations-and-imagination/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
       "file": "playbill--andrew-gans.json",
       "publishDate": "2025-12-03",
       "url": "https://playbill.com/article/moulin-rouge-the-musical-tour-to-welcome-gabriela-carrillo-ryan-vasquez-adea-michelle-sessoms",
@@ -44048,6 +44165,50 @@
     },
     {
       "showId": "mrs-doubtfire-tour-2023",
+      "file": "aislinmagazine--kimolee-eryn.json",
+      "publishDate": "2023-10-20",
+      "url": "https://www.aislinmagazine.com/post/helloooo-a-mrs-doubtfire-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "berkshire-edge--j-peter-bergman.json",
+      "publishDate": "2023-10-26",
+      "url": "https://theberkshireedge.com/theater-review-proctors-production-of-mrs-doubtfire-plays-through-the-end-of-this-week/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "broadwayworld--mary-lincer.json",
+      "publishDate": "2023-10-11",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-MRS-DOUBTFIRE-at-Broadway-at-the-National-in-DC-20231011",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
       "file": "broadwayworld--roy-berko.json",
       "score": 81,
       "publishDate": "2024-01-11",
@@ -44071,6 +44232,19 @@
       "score": 87,
       "publishDate": "2024-05-17",
       "url": "https://www.broadwayworld.com/new-orleans/article/Review-MRS-DOUBTFIRE-at-Saenger-Theatre-20240517",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "buffalorising--gail-golden.json",
+      "publishDate": "2023-09-27",
+      "url": "https://www.buffalorising.com/2023/09/mrs-doubtfire-is-a-crowd-pleaser/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44109,6 +44283,37 @@
     },
     {
       "showId": "mrs-doubtfire-tour-2023",
+      "file": "guide4moms--mandipie4u.json",
+      "publishDate": "2023-12-27",
+      "url": "https://www.guide4moms.com/2023/12/mrs-doubtfire-the-new-musical-comedy-parents-guide-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "hartford-courant--christopher-arnott.json",
+      "publishDate": "2023-10-01",
+      "url": "https://www.courant.com/2023/10/01/famed-director-jerry-zaks-and-star-rob-mcclure-stick-with-mrs-doubtfire-as-the-refreshed-musical-tour-hits-the-bushnell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
       "file": "maryland-theatre-guide--unknown.json",
       "score": 91,
       "publishDate": "2024-02-02",
@@ -44118,6 +44323,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "samicone--sami.json",
+      "publishDate": "2023-11-08",
+      "url": "https://www.samicone.com/honest-mrs-doubtfire-musical-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -44146,6 +44364,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "whats-up-newp--frank-odonnell.json",
+      "publishDate": "2023-10-19",
+      "url": "https://whatsupnewp.com/2023/10/review-mrs-doubtfire-at-ppac-is-worth-your-time/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -48067,7 +48298,7 @@
     {
       "showId": "operation-mincemeat-2025",
       "file": "ew--shania-russell.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2025-03-20",
       "url": "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
       "findings": [
@@ -73635,6 +73866,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "san-diego-union-tribune--michael-james-rocha.json",
+      "score": 86,
       "publishDate": "2026-11-05",
       "url": "https://www.sandiegouniontribune.com/2026/11/05/review-a-gritty-stunning-homecoming-for-the-outsiders/",
       "findings": [
@@ -78030,6 +78262,7 @@
     {
       "showId": "the-whos-tommy-tour-2026",
       "file": "theatermania--pete-hempstead.json",
+      "score": 39,
       "publishDate": "2026-11-10",
       "url": "https://www.theatermania.com/news/review-national-tour-of-the-whos-tommy-loses-its-pinball-magic-at-the-hollywood-pantages_1859212/",
       "findings": [
@@ -84953,6 +85186,19 @@
       "score": 91,
       "publishDate": "2023-04-17",
       "url": "https://www.riverfronttimes.com/arts/review-wicked-now-at-the-fox-is-a-wickedly-good-time-39879011",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "file": "theatermania--tricia-baron.json",
+      "publishDate": "2023-10-31",
+      "url": "https://www.theatermania.com/news/a-celebration-the-glinda-way-former-witches-of-oz-return-as-wicked-turns-20_1719707/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -94863,6 +95109,20 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 97,
+      "publishDate": "2026-11-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "theatre-weekly--unknown.json",
       "publishDate": "2026-11-09",
       "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
@@ -97380,6 +97640,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "file": "theatreandtonic--eleanor-bywater.json",
+      "score": 85,
+      "publishDate": "2026-11-10",
+      "url": "https://theatreandtonic.co.uk/blog/dogstar-at-hampstead-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -103904,20 +104178,6 @@
       "score": 97,
       "publishDate": "2022-01-25",
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-harry-potter-and-the-cursed-child-on-broadway",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "sfgate--lily-janiak.json",
-      "score": null,
-      "publishDate": "2018-06-28",
-      "url": "https://www.sfgate.com/performance/article/Harry-Potter-play-coming-to-San-Francisco-s-13035122.php",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -123539,6 +123799,7 @@
     {
       "showId": "speculations-off-west-end-2026",
       "file": "uktheatrenetwork--clare-brotherwood.json",
+      "score": 81,
       "publishDate": "2026-11-05",
       "url": "https://uktheatrenetwork.com/2026/11/05/speculations-at-the-marylebone-theatre-london/",
       "findings": [

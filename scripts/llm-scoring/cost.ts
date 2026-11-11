@@ -52,6 +52,12 @@ export const COST_PER_MILLION_TOKENS = {
   // Kept priced here so --openai-model= re-tests don't silently mis-cost.
   // Cached input billed separately at $0.075/M, not modeled here.
   'openai-gpt54-mini': { input: 0.75, output: 4.50 },
+  // OpenAI — gpt-5.6-luna (BRO-7341 candidate). $0.20 in / $1.20 out after the
+  // 2026-07-30 price cut (secondary sources; confirm on developers.openai.com).
+  'openai-gpt56-luna': { input: 0.20, output: 1.20 },
+  // gpt-5.6-sol: list price not verified. Deliberately HIGH (upper-bound) so cost
+  // guards over-estimate rather than under-estimate an A/B run.
+  'openai-gpt56-sol': { input: 5.00, output: 30.00 },
   // Gemini — 2.5-flash: $0.30 in / $2.50 out (verified against Google's
   // published pricing 2026-07-26; the previous 1.25/5.00 were 2.5-PRO
   // prices and overstated the gemini leg ~4x in estimates).
@@ -81,7 +87,10 @@ export const BATCH_DISCOUNT_MULTIPLIER = 0.5;
  * their current (correct) cost until they thread the model name through.
  */
 function openaiPricing(modelName?: string) {
-  return (modelName || '').includes('gpt-5.4-mini')
+  const m = modelName || '';
+  if (m.includes('gpt-5.6-sol')) return COST_PER_MILLION_TOKENS['openai-gpt56-sol'];
+  if (m.includes('luna')) return COST_PER_MILLION_TOKENS['openai-gpt56-luna'];
+  return m.includes('gpt-5.4-mini')
     ? COST_PER_MILLION_TOKENS['openai-gpt54-mini']
     : COST_PER_MILLION_TOKENS.openai;
 }

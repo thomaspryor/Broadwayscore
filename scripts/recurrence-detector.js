@@ -160,6 +160,9 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
   for (const cls of classes.values()) {
     // A class absorbed by files touched keeps answering --check-class under
     // its own key, or its root card's VERIFY would read a false "quiet".
+    // An expected repeat (BRO-7334) is filed on purpose, so it never counts as a case coming back:
+    // leaving it out makes --check-class answer "known, no case" instead of failing forever.
+    if (cls.expected) continue;
     if (Date.parse(cls.lastSeen) >= now - WINDOW_DAYS * DAY) for (const k of [cls.key, ...(cls.mergedFrom || [])]) lastSeenByKey[k] = cls.lastSeen;
   }
   const out = [];
@@ -215,7 +218,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
     lastSeenByKey,
     // Every class that was ever recurring, so --check-class can tell a quiet
     // class from a mistyped slug after the class drops out of the window.
-    knownKeys: [...new Set([...((prevKnown) || []), ...out.flatMap((c) => [c.key, ...(c.mergedFrom || [])])])].sort(),
+    knownKeys: [...new Set([...((prevKnown) || []), ...expected.map((e) => e.key), ...out.flatMap((c) => [c.key, ...(c.mergedFrom || [])])])].sort(),
   };
 }
 

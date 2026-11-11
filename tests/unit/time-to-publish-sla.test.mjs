@@ -21,6 +21,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
+const yaml = require('js-yaml');
+const { pollIntervalMin } = require('../../scripts/lib/press-night-poll-plan.js');
 const {
   parsePrecisePublishTime,
   indexPipelineEvents,
@@ -49,6 +51,32 @@ const showRebuild = (showId, mins) => ({ showId, reviewKey: null, stage: 'rebuil
 /** The run-level line rebuild-all-reviews emits once per run (no showId). */
 const runLevelRebuild = mins => ({ showId: null, reviewKey: null, stage: 'rebuilt', at: at(mins), metadata: { scope: 'all-shows' } });
 const deploy = mins => ({ showId: null, reviewKey: null, stage: 'deployed-live', at: at(mins), metadata: { runId: '1' } });
+
+test('discovery default matches the orchestrator input, loop fallback and poll plan (BRO-7309)', () => {
+  const workflow = yaml.load(fs.readFileSync(path.join(REPO_ROOT, '.github/workflows/opening-night-orchestrator.yml'), 'utf8'));
+  const inputDefault = workflow.on.workflow_dispatch.inputs.poll_interval_minutes.default;
+  const pollStep = Object.values(workflow.jobs).flatMap(job => job.steps || [])
+    .find(step => step.env?.POLL_INTERVAL_OR_DEFAULT);
+  assert.ok(pollStep, 'the orchestrator must expose its loop fallback');
+  const fallback = pollStep.env.POLL_INTERVAL_OR_DEFAULT.match(/^\$\{\{\s*inputs\.poll_interval_minutes\s*\|\|\s*(\d+)\s*\}\}$/);
+  assert.ok(fallback, 'read the real workflow fallback, not a duplicated test value');
+  assert.equal(DEFAULT_DISCOVERY_WINDOW_MIN, inputDefault, 'SLA and dispatch defaults must agree');
+  assert.equal(DEFAULT_DISCOVERY_WINDOW_MIN, Number(fallback[1]), 'SLA and loop fallback must agree');
+  assert.equal(DEFAULT_DISCOVERY_WINDOW_MIN, pollIntervalMin({ nowMs: T0 }).intervalMin, 'SLA and poll plan defaults must agree');
+});
+
+test('discovery default stays conservative during the Broadway fast window (BRO-7309)', () => {
+  const { intervalMin } = pollIntervalMin({
+    shows: [{ id: 's', category: 'broadway', embargoMs: T0 }], nowMs: T0 + 30 * MS_MIN,
+  });
+  const entries = [...reviewEntries('s', 'o:c:u', { seen: 0 }), showRebuild('s', 3), deploy(4)];
+  const [conservative] = computeReviewLatencies(entries);
+  const [fast] = computeReviewLatencies(entries, { discoveryWindowMinutes: intervalMin });
+  assert.equal(intervalMin, 5);
+  assert.equal(conservative.publishedToLiveMs, (4 + DEFAULT_DISCOVERY_WINDOW_MIN) * MS_MIN);
+  assert.equal(fast.publishedToLiveMs, 9 * MS_MIN);
+  assert.ok(conservative.publishedToLiveMs >= fast.publishedToLiveMs);
+});
 
 // ---------------------------------------------------------------------------
 // parsePrecisePublishTime — never invent precision we do not have

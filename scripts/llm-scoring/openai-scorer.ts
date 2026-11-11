@@ -17,7 +17,7 @@ const { openaiChatBody } = require('../lib/llm-batch.js');
 // ========================================
 
 interface OpenAIScoringOptions {
-  model: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
+  model: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
   maxRetries: number;
   verbose: boolean;
 }

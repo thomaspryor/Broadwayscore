@@ -72,6 +72,11 @@ const OPENAI_EXTRA_RATES = {
   'gpt-4o-mini': { input: 0.15, cached: 0.075, output: 0.60 },
   'gpt-4.1': { input: 2.00, cached: 0.50, output: 8.00 },
   'gpt-4.1-mini': { input: 0.40, cached: 0.10, output: 1.60 },
+  // BRO-7341 candidates. luna = post-2026-07-30 list price (secondary sources);
+  // sol is an unverified upper bound so spend over-reports rather than hides.
+  'gpt-6-luna': { input: 0.20, cached: 0.02, output: 1.20 },
+  'gpt-5.6-luna': { input: 0.20, cached: 0.02, output: 1.20 },
+  'gpt-5.6-sol': { input: 5.00, cached: 0.50, output: 30.00 },
   'text-embedding-3-small': { input: 0.02, cached: 0.02, output: 0 },
   'text-embedding-3-large': { input: 0.13, cached: 0.13, output: 0 },
 };

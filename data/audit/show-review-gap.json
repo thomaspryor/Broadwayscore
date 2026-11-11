@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-11T01:13:30.289Z",
+  "generatedAt": "2026-11-11T01:41:06.899Z",
   "windowDays": 1095,
-  "targets": 377,
-  "auditedThisRun": 23,
-  "carriedForward": 2486,
+  "targets": 383,
+  "auditedThisRun": 19,
+  "carriedForward": 2490,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 637,
-    "missingCurrentRun": 1197,
+    "withGap": 638,
+    "missingCurrentRun": 1208,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 890,
+    "totalFlaggedMisses": 889,
     "totalRecoverable": 53,
     "totalRecovered": 108,
     "humanExcluded": 24,
-    "automatedExcluded": 977,
-    "automatedExcludedListed": 698,
-    "priorProductionCitations": 7841
+    "automatedExcluded": 975,
+    "automatedExcludedListed": 697,
+    "priorProductionCitations": 7810
   },
   "results": [
     {
@@ -1171,7 +1171,12 @@
         "liveCount": 10,
         "candidateCount": 14
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-10T21:24:39.946Z",
+      "quarantine": {
+        "nextState": "incomplete:10:14",
+        "since": "2026-11-11T01:41:07.072Z",
+        "lastAt": "2026-11-11T01:41:07.072Z"
+      }
     },
     {
       "showId": "3-summers-of-lincoln-regional-2025",
@@ -18502,7 +18507,12 @@
         "liveCount": 10,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-10T12:04:40.258Z",
+      "quarantine": {
+        "nextState": "incomplete:10:11",
+        "since": "2026-11-11T01:41:07.072Z",
+        "lastAt": "2026-11-11T01:41:07.072Z"
+      }
     },
     {
       "showId": "admissions-regional-2026",
@@ -65521,7 +65531,7 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2026",
@@ -81633,7 +81643,7 @@
             "url": "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
           }
         ],
         "censusSchema": 4,
@@ -81647,7 +81657,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "cloud-nine-off-broadway-2015",
@@ -82062,7 +82072,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "clue-tour-2025",
@@ -89137,7 +89147,12 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-09T22:56:43.163Z",
+      "quarantine": {
+        "nextState": "incomplete:0:3",
+        "since": "2026-11-11T01:41:07.072Z",
+        "lastAt": "2026-11-11T01:41:07.072Z"
+      }
     },
     {
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
@@ -107711,7 +107726,12 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-11T00:03:41.608Z"
+      "computedAt": "2026-11-11T00:03:41.608Z",
+      "quarantine": {
+        "nextState": "complete:3:3",
+        "since": "2026-11-11T01:41:07.072Z",
+        "lastAt": "2026-11-11T01:41:07.072Z"
+      }
     },
     {
       "showId": "detroit-67-regional-2026",
@@ -109806,7 +109826,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "do-something-pretty-regional-2026",
@@ -134932,74 +134952,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"First and Last\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"First and Last\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"First and Last\" review artxnyc",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "First and Last artXnyc review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "First and Last artXnyc review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "First and Last artXnyc review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 30,
-        "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 26,
-          "census-junk-host": 1,
-          "venue-production-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -135013,7 +134971,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T00:03:41.608Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "first-date-regional-2024",
@@ -143577,7 +143535,12 @@
         "liveCount": 21,
         "candidateCount": 30
       },
-      "computedAt": "2026-11-10T13:26:44.749Z"
+      "computedAt": "2026-11-10T13:26:44.749Z",
+      "quarantine": {
+        "nextState": "incomplete:18:31",
+        "since": "2026-11-11T01:41:07.072Z",
+        "lastAt": "2026-11-11T01:41:07.072Z"
+      }
     },
     {
       "showId": "garsides-career-off-broadway-2025",
@@ -166166,7 +166129,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "hamlet-off-broadway-2024",
@@ -177221,7 +177184,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -177262,16 +177225,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 30,
         "byReason": {
           "non-review-host": 19,
-          "census-junk-host": 1,
-          "no-review-evidence": 3,
           "aggregator-internal-nav": 2,
-          "news-roundup-site": 1,
           "bare-host": 3,
-          "non-review-path": 3,
-          "venue-production-page": 1,
+          "venue-production-page": 3,
+          "non-review-path": 1,
+          "other-place": 1,
           "event-listing": 1
         }
       },
@@ -177287,7 +177248,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -201557,7 +201518,7 @@
         "liveCount": 4,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "iphigenie-en-tauride-west-end-2026",
@@ -286326,18 +286287,18 @@
       "previewsStartDate": "2026-11-11",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/newyork/theater/now-you-see-me-live",
-        "https://stagezine.com/now-you-see-me-live-broadway/",
-        "https://www.theatermania.com/news/now-you-see-me-live-sets-eight-week-broadway-run-for-the-holidays_1853183/"
+        "https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/",
+        "https://www.broadwaynews.com/now-you-see-me-live-will-play-the-al-hirschfeld-theatre-this-fall/",
+        "https://avenueone.sg/going-out/now-you-see-me-live-review/"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
+      "dirFiles": 2,
+      "dirClean": 2,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://stagezine.com/now-you-see-me-live-broadway/",
-          "host": "stagezine.com",
-          "knownOutletId": "stagezine",
+          "url": "https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "serpCensus": true,
           "sources": [
             {
@@ -286347,9 +286308,21 @@
           ]
         },
         {
-          "url": "https://www.theatermania.com/news/now-you-see-me-live-sets-eight-week-broadway-run-for-the-holidays_1853183/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "https://www.broadwaynews.com/now-you-see-me-live-will-play-the-al-hirschfeld-theatre-this-fall/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://avenueone.sg/going-out/now-you-see-me-live-review/",
+          "host": "avenueone.sg",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -286359,7 +286332,16 @@
           ]
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "stagezine.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -286374,7 +286356,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -286384,7 +286366,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -286394,7 +286376,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -286415,7 +286397,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -286424,8 +286406,8 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -286435,51 +286417,54 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 39,
         "byReason": {
-          "non-review-host": 15,
+          "non-review-host": 14,
+          "census-junk-host": 1,
+          "aggregator-internal-nav": 5,
+          "production-database-listing": 1,
+          "stored-date-before-production": 2,
+          "news-roundup-site": 1,
+          "bare-host": 2,
+          "ticketing-reseller": 7,
           "no-review-evidence": 2,
-          "aggregator-internal-nav": 8,
-          "show-listing-page": 1,
-          "bare-host": 1,
-          "ticketing-reseller": 5,
-          "non-review-path": 2,
-          "venue-production-page": 1,
-          "write-path-blocked": 2
+          "tag-index-page": 1,
+          "non-review-path": 1,
+          "other-place": 2
         }
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.timeout.com/newyork/theater/now-you-see-me-live",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "nonReviewVerdict": "timeout-listing-blurb",
-          "nonReviewDetail": "unauthored-and-pre-opening"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://avenueone.sg/going-out/now-you-see-me-live-review/",
+          "host": "avenueone.sg",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
-          "url": "https://stagezine.com/now-you-see-me-live-broadway/",
-          "host": "stagezine.com",
-          "outletId": "stagezine",
+          "url": "https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/",
+          "host": "variety.com",
+          "outletId": "variety",
           "provisional": false,
-          "ok": true,
-          "noop": false,
+          "ok": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "pre-opening-non-review",
           "unclassified": false,
           "zeroChar": false,
-          "reason": null
+          "reason": "now-you-see-me-live-2026: https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/ is dated before this show's opening on a review outlet and its URL has no review/critic word, so it was read as a pre-opening news, feature or interview page (BRO-6588, non-review-url-patterns.js preOpeningNonReviewReason). Expected rejection; if it IS an early-published review, ingest it with --allow-non-review-url."
         },
         {
-          "url": "https://www.theatermania.com/news/now-you-see-me-live-sets-eight-week-broadway-run-for-the-holidays_1853183/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://www.broadwaynews.com/now-you-see-me-live-will-play-the-al-hirschfeld-theatre-this-fall/",
+          "host": "broadwaynews.com",
+          "outletId": "broadwaynews",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -286497,55 +286482,57 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "stagezine",
-            "outlet": "stagezine",
+            "outletId": "variety",
+            "outlet": "variety",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://stagezine.com/now-you-see-me-live-broadway/"
+            "url": "https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/"
           },
           {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
+            "outletId": "broadwaynews",
+            "outlet": "broadwaynews",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatermania.com/news/now-you-see-me-live-sets-eight-week-broadway-run-for-the-holidays_1853183/"
+            "url": "https://www.broadwaynews.com/now-you-see-me-live-will-play-the-al-hirschfeld-theatre-this-fall/"
+          },
+          {
+            "outletId": "avenueone.sg",
+            "outlet": "avenueone.sg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://avenueone.sg/going-out/now-you-see-me-live-review/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.timeout.com/newyork/theater/now-you-see-me-live",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
-          },
-          {
-            "url": "https://stagezine.com/now-you-see-me-live-broadway/",
-            "outletId": "stagezine",
+            "url": "https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/",
+            "outletId": "variety",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
           },
           {
-            "url": "https://www.theatermania.com/news/now-you-see-me-live-sets-eight-week-broadway-run-for-the-holidays_1853183/",
-            "outletId": "theatermania",
+            "url": "https://www.broadwaynews.com/now-you-see-me-live-will-play-the-al-hirschfeld-theatre-this-fall/",
+            "outletId": "broadwaynews",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
+          },
+          {
+            "url": "https://avenueone.sg/going-out/now-you-see-me-live-review/",
+            "outletId": "avenueone.sg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.timeout.com/newyork/theater/now-you-see-me-live",
-            "host": "timeout.com",
-            "reason": "timeout-listing-blurb"
-          }
-        ],
-        "liveCount": 1,
+        "excluded": [],
+        "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "now-you-see-me-live-off-west-end-2026",
@@ -299442,7 +299429,6 @@
       "previewsStartDate": "2026-11-10",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.britishtheatreguide.info/listings/7922",
         "https://www.timeout.com/london/theatre/orlando-a-pornobiography",
         "https://oazis.app/evenements/orlando-a-pornobiography"
       ],
@@ -299476,41 +299462,7 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.britishtheatreguide.info/listings/7922",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "british-theatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.britishtheatreguide.info/listings/7922"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -299557,78 +299509,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Orlando: A Pornobiography\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Orlando: A Pornobiography\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Orlando: A Pornobiography\" review diorama",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Orlando: A Pornobiography New Diorama Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Orlando: A Pornobiography New Diorama Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Orlando: A Pornobiography New Diorama Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 28,
-        "byReason": {
-          "non-review-host": 5,
-          "non-stage-review": 2,
-          "no-review-evidence": 12,
-          "write-path-blocked": 1,
-          "roundup-page": 1,
-          "event-listing": 5,
-          "event-listings-page": 1,
-          "news-article": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -299702,17 +299588,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.britishtheatreguide.info/listings/7922",
-            "host": "britishtheatreguide.info",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-11T00:03:41.608Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "orphans-off-west-end-2026",
@@ -302468,6 +302348,7 @@
         "https://culturesauce.com/bedlam-othello-off-broadway-review/",
         "https://www.offoffonline.com/offoffonline/2026/5/2/othello",
         "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR",
         "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/"
       ],
       "dirFiles": 3,
@@ -302528,6 +302409,18 @@
           ]
         },
         {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
           "url": "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
           "host": "theatermania.com",
           "knownOutletId": "theatermania",
@@ -302556,7 +302449,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -302566,7 +302459,7 @@
             "geo": "us",
             "ok": true,
             "results": 8,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -302576,7 +302469,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -302602,20 +302495,22 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 32,
         "byReason": {
-          "non-review-host": 25,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 2,
+          "non-review-host": 16,
+          "census-junk-host": 1,
+          "aggregator-internal-nav": 5,
           "production-database-listing": 1,
-          "roundup-page": 2,
-          "bare-host": 1,
+          "non-stage-review": 1,
+          "roundup-page": 4,
+          "ticketing-reseller": 1,
+          "no-review-evidence": 1,
           "venue-production-page": 1,
-          "show-hub": 1
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -302638,6 +302533,21 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "othello-bedlam-off-broadway-2026: http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
         {
           "url": "https://www.theatrereviews.com/off-broadway-review-bedlams-othello-at-the-west-end-theatre-through-sunday-may-31-2026/",
           "host": "theatrereviews.com",
@@ -302703,6 +302613,13 @@
             "url": "https://culturesauce.com/bedlam-othello-off-broadway-review/"
           },
           {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR"
+          },
+          {
             "outletId": "theatermania",
             "outlet": "theatermania",
             "critic": "Unknown",
@@ -302733,6 +302650,13 @@
             "firstSeenAt": "2026-11-04T01:35:14.329Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WANKR",
+            "outletId": "lighting-and-sound-america",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
             "outletId": "theatermania",
             "state": "IN_FLIGHT",
@@ -302743,9 +302667,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 1,
-        "candidateCount": 4
+        "candidateCount": 5
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "othello-off-broadway-2016",
@@ -316491,6 +316415,45 @@
         "candidateCount": 0
       },
       "computedAt": "2026-11-11T01:13:30.289Z"
+    },
+    {
+      "showId": "peter-pan-off-west-end-2026",
+      "title": "Peter Pan",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-11-14",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "peter-panto-and-the-incredible-stinkerbell-tron-regional-2024",
@@ -339384,9 +339347,11 @@
         "https://www.theaterscene.net/plays/offbway-plays/rope/victor-gluck/",
         "https://theaterlife.com/rope/",
         "https://theaterscene.com/reviews/rope/",
-        "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
+        "https://acsntn.substack.com/theatre-rope-theatre-at-st-clements",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=I3DMOT",
+        "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
         "https://www.timeout.com/newyork/theater/rope",
-        "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements"
+        "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/"
       ],
       "dirFiles": 19,
       "dirClean": 15,
@@ -339395,10 +339360,6 @@
       "dirOnly": [
         {
           "host": "gaycitynews.com",
-          "count": 1
-        },
-        {
-          "host": "lightingandsoundamerica.com",
           "count": 1
         },
         {
@@ -339461,7 +339422,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -339471,8 +339432,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -339481,8 +339442,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -339492,7 +339453,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -339508,27 +339469,26 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 426,
+        "count": 427,
         "byReason": {
-          "non-review-host": 54,
+          "non-review-host": 57,
           "census-junk-host": 1,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 251,
+          "aggregator-internal-nav": 250,
           "not-http-url": 83,
           "production-database-listing": 9,
           "aggregator-section-root": 10,
-          "non-stage-review": 1,
+          "non-stage-review": 2,
+          "roundup-page": 4,
           "podcast-episode": 1,
-          "show-listing-page": 1,
-          "roundup-page": 5,
           "news-roundup-site": 5,
+          "show-listing-page": 1,
           "ticketing-reseller": 1,
+          "no-review-evidence": 1,
           "ticketing-listing": 1,
-          "merch-store": 1,
           "review-hub-page": 1
         }
       },
@@ -339609,19 +339569,31 @@
             "url": "https://www.theaterscene.net/plays/offbway-plays/rope/victor-gluck/",
             "outletId": "theaterscene.net",
             "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
           },
           {
             "url": "https://theaterscene.com/reviews/rope/",
             "outletId": "theaterscene.com",
             "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
-            "outletId": "theatermania.com",
+            "url": "https://acsntn.substack.com/theatre-rope-theatre-at-st-clements",
+            "outletId": "acsntn.substack.com",
             "state": "live",
-            "firstSeenAt": "2026-11-05T02:10:04.143Z"
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=I3DMOT",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
+          },
+          {
+            "url": "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
+            "outletId": "acsntn.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T00:25:22.653Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/rope",
@@ -339630,10 +339602,10 @@
             "firstSeenAt": "2026-11-05T02:10:04.143Z"
           },
           {
-            "url": "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
-            "outletId": "acsntn.substack.com",
+            "url": "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
+            "outletId": "theatermania.com",
             "state": "live",
-            "firstSeenAt": "2026-11-03T00:25:22.653Z"
+            "firstSeenAt": "2026-11-05T02:10:04.143Z"
           },
           {
             "url": "https://theaterlife.com/rope/",
@@ -339651,10 +339623,10 @@
             "reason": "timeout-listing-blurb"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 14
+        "liveCount": 14,
+        "candidateCount": 15
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "rorschach-regional-2026",
@@ -407264,7 +407236,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "the-goodbye-girl-off-broadway-2023",
@@ -419410,7 +419382,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "the-knight-of-the-burning-pestle-off-broadway-2023",
@@ -454178,7 +454150,7 @@
         "liveCount": 8,
         "candidateCount": 15
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "the-snowflake-birmingham-rep-regional-2024",
@@ -461498,7 +461470,6 @@
         "https://exeuntnyc.com/reviews/review-the-verge-at-the-public-theater/",
         "https://www.theaterscene.net/plays/offbway-plays/the-verge/samuel-l-leiter/",
         "https://pagesonstages.com/2026/11/05/the-verge/",
-        "https://www.talkinbroadway.com/page/ob/11_05_26b.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TO367V",
         "https://www.timeout.com/newyork/theater/the-verge",
         "https://www.vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html"
@@ -461514,6 +461485,10 @@
         },
         {
           "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
           "count": 1
         }
       ],
@@ -461532,7 +461507,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -461541,8 +461516,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -461551,7 +461526,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -461572,7 +461547,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -461581,35 +461556,34 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 336,
+        "count": 337,
         "byReason": {
-          "non-review-host": 34,
+          "non-review-host": 38,
           "census-junk-host": 3,
-          "tag-index-page": 1,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 214,
+          "aggregator-internal-nav": 213,
           "not-http-url": 63,
-          "production-database-listing": 2,
+          "production-database-listing": 1,
           "aggregator-section-root": 5,
-          "non-stage-review": 1,
+          "roundup-page": 2,
           "podcast-episode": 1,
-          "show-listing-page": 2,
-          "roundup-page": 1,
           "news-roundup-site": 2,
-          "ugc-platform": 3,
+          "show-listing-page": 2,
           "bare-host": 1,
-          "ticketing-reseller": 2
+          "ticketing-reseller": 3,
+          "no-review-evidence": 1,
+          "tag-index-page": 1,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -461678,16 +461652,10 @@
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
           {
-            "url": "https://www.talkinbroadway.com/page/ob/11_05_26b.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
-          },
-          {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TO367V",
             "outletId": "lightingandsoundamerica.com",
             "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/the-verge",
@@ -461710,10 +461678,10 @@
             "reason": "timeout-listing-blurb"
           }
         ],
-        "liveCount": 12,
-        "candidateCount": 12
+        "liveCount": 11,
+        "candidateCount": 11
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -475924,46 +475892,36 @@
       "aggregatorListedUrls": [
         "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
         "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+        "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
         "https://www.scenemag.co.uk/review-tosca-eno/",
-        "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
-        "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
-        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
-        "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-21382",
+        "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
+        "https://theoperacritic.com/English_National_Opera/eno",
+        "https://bachtrack.com/review-eno-tosca",
         "https://www.london-unattached.com/tosca-english-national-opera-review/",
         "https://www.classicalsource.com/concert/english-national-opera-tosca/",
         "https://theatreweekly.com/review-tosca-at-london-coliseum/",
-        "https://theoperacritic.com/English_National_Opera/eno",
         "https://www.thestage.co.uk/reviews/tosca-review-london-coliseum-puccini-annilese-miskimmon",
         "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
-        "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
+        "https://www.classicalsource.com/concert/english-national-opera-catherine-malfitanos-production-of-puccinis-tosca-keri-alkema-gwyn-hughes-jones-craig-colclough-conducted-by-oleg-caetani/",
+        "https://www.bestoftheatre.co.uk/blog/post/first-look-axelle-fanyo-eno-tosca-london-coliseum",
+        "https://www.thestage.co.uk/reviews/tosca-review-at-london-coliseum-starring-sinead-campbell-wallace-and-adam-smith-directed-by-christof-loy-and-georg-zlabinger",
+        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+        "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
         "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-26187",
-        "https://www.ft.com/content/f7a200a2-8075-4ed1-af87-b8281d3b0bdc",
-        "https://bachtrack.com/review-eno-tosca",
+        "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
+        "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
         "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t",
         "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3",
         "https://bachtrack.com/review-tosca-eno-malfitano",
         "https://www.broadwayworld.com/translate/ru/Review-TOSCA-London-Coliseum-20261031",
         "https://www.classicalsource.com/concert/english-national-opera-tosca-claire-rutter-as-tosca-directed-by-catherine-malfitano/",
-        "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
         "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
-        "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/"
+        "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3"
       ],
       "dirFiles": 29,
       "dirClean": 21,
       "inReviewsJson": 21,
       "missing": [
-        {
-          "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
-          "host": "lovable.app",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://www.scenemag.co.uk/review-tosca-eno/",
           "host": "scenemag.co.uk",
@@ -476001,6 +475959,30 @@
           ]
         },
         {
+          "url": "https://www.classicalsource.com/concert/english-national-opera-catherine-malfitanos-production-of-puccinis-tosca-keri-alkema-gwyn-hughes-jones-craig-colclough-conducted-by-oleg-caetani/",
+          "host": "classicalsource.com",
+          "knownOutletId": "classical-source",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/tosca-review-at-london-coliseum-starring-sinead-campbell-wallace-and-adam-smith-directed-by-christof-loy-and-georg-zlabinger",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
           "url": "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3",
           "host": "musicomh.com",
           "knownOutletId": "musicomh",
@@ -476028,6 +476010,18 @@
           "url": "https://www.classicalsource.com/concert/english-national-opera-tosca-claire-rutter-as-tosca-directed-by-catherine-malfitano/",
           "host": "classicalsource.com",
           "knownOutletId": "classical-source",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
+          "host": "lovable.app",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -476108,6 +476102,39 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/first-look-axelle-fanyo-eno-tosca-london-coliseum",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--milo-garth.json",
+              "flag": "clean",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/first-look-axelle-fanyo-eno-tosca-london-coliseum"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -476186,8 +476213,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 7,
+            "accepted": 2,
             "error": null
           },
           {
@@ -476197,7 +476224,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -476207,7 +476234,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 5,
             "error": null
           },
           {
@@ -476216,7 +476243,7 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 3,
             "error": null
           }
@@ -476227,29 +476254,28 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 38,
+        "count": 35,
         "byReason": {
-          "non-review-host": 17,
-          "census-junk-host": 3,
-          "tag-index-page": 1,
-          "no-review-evidence": 2,
+          "non-review-host": 15,
+          "census-junk-host": 1,
           "roundup-page": 1,
-          "non-review-path": 8,
-          "event-listing": 1,
-          "ticketing-listing": 2,
+          "no-review-evidence": 6,
+          "tag-index-page": 2,
+          "event-listing": 3,
+          "ticketing-listing": 3,
           "show-hub": 2,
-          "write-path-blocked": 1
+          "write-path-blocked": 2
         }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
         {
-          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
-          "host": "classicalsource.com",
-          "knownOutletId": "classical-source",
+          "url": "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2010-05-17"
+          "nonReviewDetail": "2026-09-28"
         },
         {
           "url": "https://bachtrack.com/review-eno-tosca",
@@ -476258,6 +476284,14 @@
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2010-05-21"
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
+          "host": "classicalsource.com",
+          "knownOutletId": "classical-source",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2010-05-17"
         }
       ],
       "automatedExcludedListed": 1,
@@ -476278,8 +476312,8 @@
       ],
       "weIngestBlocked": [
         {
-          "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
-          "host": "lovable.app",
+          "url": "https://www.scenemag.co.uk/review-tosca-eno/",
+          "host": "scenemag.co.uk",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -476292,8 +476326,8 @@
           "censusGateOn": true
         },
         {
-          "url": "https://theoperacritic.com/English_National_Opera/eno",
-          "host": "theoperacritic.com",
+          "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
+          "host": "opera-now.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -476307,6 +476341,36 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.classicalsource.com/concert/english-national-opera-catherine-malfitanos-production-of-puccinis-tosca-keri-alkema-gwyn-hughes-jones-craig-colclough-conducted-by-oleg-caetani/",
+          "host": "classicalsource.com",
+          "outletId": "classical-source",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing old-production review: https://www.classicalsource.com/concert/english-national-opera-catherine-malfitanos-production-of-puccinis-tosca-keri-alkema-gwyn-hughes-jones-craig-colclough-conducted-by-oleg-caetani/ (dated 2016-10-25, over a year before tosca-english-national-opera-west-end-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/tosca-review-at-london-coliseum-starring-sinead-campbell-wallace-and-adam-smith-directed-by-christof-loy-and-georg-zlabinger",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Score-only fallback refused: show title \"Tosca - English National Opera\" not found in page HTML — cannot verify this is the right show without body text."
+        },
         {
           "url": "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3",
           "host": "musicomh.com",
@@ -476358,13 +476422,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "lovable.app",
-            "outlet": "lovable.app",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3"
-          },
-          {
             "outletId": "scenemag.co.uk",
             "outlet": "scenemag.co.uk",
             "critic": "Unknown",
@@ -476384,6 +476441,41 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review"
+          },
+          {
+            "outletId": "classical-source",
+            "outlet": "classical-source",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.classicalsource.com/concert/english-national-opera-catherine-malfitanos-production-of-puccinis-tosca-keri-alkema-gwyn-hughes-jones-craig-colclough-conducted-by-oleg-caetani/"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/tosca-review-at-london-coliseum-starring-sinead-campbell-wallace-and-adam-smith-directed-by-christof-loy-and-georg-zlabinger"
+          },
+          {
+            "outletId": "musicomh",
+            "outlet": "musicomh",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/review-tosca-eno-malfitano"
+          },
+          {
+            "outletId": "classical-source",
+            "outlet": "classical-source",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.classicalsource.com/concert/english-national-opera-tosca-claire-rutter-as-tosca-directed-by-catherine-malfitano/"
           },
           {
             "outletId": "musicomh",
@@ -476423,28 +476515,16 @@
             "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
           {
-            "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
-            "outletId": "thereviewshub.com",
+            "url": "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
+            "outletId": "theatreweekly.com",
             "state": "live",
-            "firstSeenAt": "2026-11-09T22:56:43.163Z"
+            "firstSeenAt": "2026-11-05T10:41:26.899Z"
           },
           {
-            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
-            "outletId": "musicomh.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T12:45:30.098Z"
-          },
-          {
-            "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+            "url": "https://bachtrack.com/review-eno-tosca",
             "outletId": "bachtrack.com",
             "state": "live",
-            "firstSeenAt": "2026-11-02T22:50:23.850Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-21382",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-10T12:04:40.258Z"
           },
           {
             "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
@@ -476471,10 +476551,16 @@
             "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
-            "outletId": "broadwayworld.com",
+            "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+            "outletId": "bachtrack.com",
             "state": "live",
-            "firstSeenAt": "2026-11-04T07:52:26.614Z"
+            "firstSeenAt": "2026-11-02T22:50:23.850Z"
+          },
+          {
+            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+            "outletId": "musicomh.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T12:45:30.098Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-26187",
@@ -476483,16 +476569,16 @@
             "firstSeenAt": "2026-11-09T09:27:30.273Z"
           },
           {
-            "url": "https://www.ft.com/content/f7a200a2-8075-4ed1-af87-b8281d3b0bdc",
-            "outletId": "ft.com",
+            "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
+            "outletId": "thereviewshub.com",
             "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-09T22:56:43.163Z"
           },
           {
-            "url": "https://bachtrack.com/review-eno-tosca",
-            "outletId": "bachtrack.com",
+            "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
+            "outletId": "broadwayworld.com",
             "state": "live",
-            "firstSeenAt": "2026-11-10T12:04:40.258Z"
+            "firstSeenAt": "2026-11-04T07:52:26.614Z"
           },
           {
             "url": "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t",
@@ -476505,19 +476591,6 @@
             "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T17:07:25.311Z"
-          },
-          {
-            "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
-            "outletId": "bachtrack.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T06:34:49.647Z"
-          },
-          {
-            "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
-            "outletId": "lovable.app",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-04T16:42:04.576Z"
           },
           {
             "url": "https://www.scenemag.co.uk/review-tosca-eno/",
@@ -476534,11 +476607,39 @@
             "firstSeenAt": "2026-11-10T12:04:40.258Z"
           },
           {
+            "url": "https://www.scenemag.co.uk/review-tosca-eno/",
+            "outletId": "scenemag.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T10:04:26.682Z"
+          },
+          {
+            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3",
+            "outletId": "musicomh",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-03T15:34:54.267Z"
+          },
+          {
             "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
             "outletId": "opera-now.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-05T10:41:26.899Z"
+          },
+          {
+            "url": "https://www.classicalsource.com/concert/english-national-opera-catherine-malfitanos-production-of-puccinis-tosca-keri-alkema-gwyn-hughes-jones-craig-colclough-conducted-by-oleg-caetani/",
+            "outletId": "classical-source",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/tosca-review-at-london-coliseum-starring-sinead-campbell-wallace-and-adam-smith-directed-by-christof-loy-and-georg-zlabinger",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
           },
           {
             "url": "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3",
@@ -476562,6 +476663,13 @@
             "firstSeenAt": "2026-11-09T09:27:30.273Z"
           },
           {
+            "url": "https://www.classicalsource.com/concert/english-national-opera-tosca-claire-rutter-as-tosca-directed-by-catherine-malfitano/",
+            "outletId": "classical-source",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-09T09:27:30.273Z"
+          },
+          {
             "url": "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
             "outletId": "cherylmarkosky",
             "state": "GAP",
@@ -476572,20 +476680,30 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
-            "host": "classicalsource.com",
+            "url": "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
+            "host": "theatreweekly.com",
             "reason": "page-date-before-run"
           },
           {
             "url": "https://bachtrack.com/review-eno-tosca",
             "host": "bachtrack.com",
             "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
+            "host": "classicalsource.com",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/first-look-axelle-fanyo-eno-tosca-london-coliseum",
+            "host": "bestoftheatre.co.uk",
+            "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 12,
+        "liveCount": 11,
         "candidateCount": 20
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -496547,7 +496665,8 @@
         "https://culturesauce.com/well-see-richard-nelson-apple-off-broadway-review/",
         "https://www.theatermania.com/news/review-richard-nelsons-apple-family-confront-the-end-of-history-in-well-see_1858880/",
         "https://theaterpizzazz.com/in-well-see-much-to-talk-about-little-to-dramatize/",
-        "https://therecs.co.uk/well-see-the-public-theater/"
+        "https://therecs.co.uk/well-see-the-public-theater/",
+        "https://www.theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections"
       ],
       "dirFiles": 19,
       "dirClean": 14,
@@ -496575,7 +496694,41 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--juan-a-ramirez.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -496600,7 +496753,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -496610,7 +496763,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -496639,33 +496792,32 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 439,
+        "count": 580,
         "byReason": {
-          "non-review-host": 65,
-          "census-junk-host": 2,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 253,
-          "not-http-url": 82,
-          "production-database-listing": 11,
-          "aggregator-section-root": 10,
-          "non-stage-review": 2,
+          "non-review-host": 86,
+          "census-junk-host": 5,
+          "aggregator-internal-nav": 297,
+          "not-http-url": 88,
+          "production-database-listing": 21,
+          "aggregator-section-root": 14,
+          "non-stage-review": 4,
+          "roundup-page": 54,
           "podcast-episode": 1,
-          "show-listing-page": 1,
-          "roundup-page": 7,
+          "news-roundup-site": 3,
           "bare-host": 1,
-          "ticketing-reseller": 2,
-          "ticketing-listing": 1
+          "ticketing-reseller": 3,
+          "write-path-blocked": 3
         }
       },
       "dedupedVariants": [],
@@ -496728,15 +496880,21 @@
             "url": "https://therecs.co.uk/well-see-the-public-theater/",
             "outletId": "therecs.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-11T01:13:30.289Z"
+            "firstSeenAt": "2026-11-11T01:41:06.899Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections",
+            "host": "theguardian.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-11T01:13:30.289Z"
+      "computedAt": "2026-11-11T01:41:06.899Z"
     },
     {
       "showId": "wesley-off-broadway-2025",
@@ -507904,12 +508062,12 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-11T01:13:30.289Z",
+    "at": "2026-11-11T01:41:06.898Z",
     "reserveEvery": 4,
     "reservedAttempted": [
       "adirondack-chair-circle-regional-2026",
       "tosca-english-national-opera-west-end-2026",
-      "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023"
+      "garry-starr-classic-penguins-off-west-end-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
@@ -507921,12 +508079,12 @@
     "oldestDueRowAtStart": {
       "showId": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023",
       "computedAt": "2026-10-27T23:59:53.509Z",
-      "ageHours": 336.9
+      "ageHours": 337.4
     },
     "oldestDueRowAfterRun": {
-      "showId": "gimme-a-sign-off-broadway-2026",
-      "computedAt": "2026-10-31T17:07:08.919Z",
-      "ageHours": 248.1
+      "showId": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023",
+      "computedAt": "2026-10-27T23:59:53.509Z",
+      "ageHours": 337.7
     }
   }
 }
