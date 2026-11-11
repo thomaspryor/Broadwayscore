@@ -246,7 +246,8 @@ test('every linear-orphaned-* kind bsc-reconcile reports is digest-actionable', 
   const kinds = [...src.matchAll(/kind: '(linear-orphaned-[a-z-]+)'/g)].map((m) => m[1]);
   assert.ok(kinds.includes('linear-orphaned-owner-alert'), 'owner alert kind must exist');
   // Informational only: would crowd the digest's visible slots, so deliberately not actionable.
-  const INFORMATIONAL = new Set(['linear-orphaned-redispatched']);
+  // linear-orphaned-issue-missing (BRO-7276): a deleted issue is resolved, never stuck.
+  const INFORMATIONAL = new Set(['linear-orphaned-redispatched', 'linear-orphaned-issue-missing']);
   for (const k of new Set(kinds)) {
     if (INFORMATIONAL.has(k)) { assert.ok(!ACTIONABLE_RECONCILE_KINDS.has(k)); continue; }
     assert.ok(ACTIONABLE_RECONCILE_KINDS.has(k), `${k} missing from ACTIONABLE_RECONCILE_KINDS`);
@@ -294,5 +295,75 @@ test('gatherDigest keeps a regression when reviews.json is missing or older than
     assert.equal(gatherDigest({ repo, skipFetch: true }).stuck.reviewRegressions.length, 1);
   } finally {
     fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+// ── BRO-7276: the stranded-worktree signal must be able to clear ───────────
+// Real 2026-11-11 shapes: land.yml rebases, so landed work stays "ahead";
+// job-* worktrees are owned by bsc-reconcile's sweeps; months-old abandoned
+// worktrees re-alarmed every day. Each kept "Stuck pipeline items" warn.
+{
+  const { isStrandedWorktree, landedEvidence, countUnlanded } = require('./overnight-digest.js');
+
+  test('BRO-7276 job-* worktrees are never a stranded-worktree signal (owned by reconcile sweeps)', () => {
+    assert.equal(isStrandedWorktree({ name: 'job-linear-BRO-7204-mwb9rsqs', ahead: 2, unlanded: 2, lastCommitDays: 3 }), false);
+  });
+
+  test('BRO-7276 a branch whose commits all landed under new SHAs is not stranded', () => {
+    const evidence = landedEvidence(['fix(BRO-7171): a wall or lost session is never "too short" evidence', 'chore: other']);
+    const unlanded = countUnlanded({ branch: 'worktree-agent-a03434', branchSubjects: ['fix(BRO-7171): a wall or lost session is never "too short" evidence'], evidence });
+    assert.equal(unlanded, 0);
+    assert.equal(isStrandedWorktree({ name: 'agent-a03434', ahead: 1, unlanded, lastCommitDays: 1 }), false);
+  });
+
+  test('BRO-7276 a branch whose card id was named on main counts as landed (squash with new subject)', () => {
+    const evidence = landedEvidence(['feat(poller): read each outlet census listing (BRO-7076)']);
+    assert.equal(countUnlanded({ branch: 'job/linear-BRO-7076-x', branchSubjects: ['BRO-7076: use toDateMs'], evidence }), 0);
+    assert.equal(countUnlanded({ branch: 'feature-x', branchSubjects: ['wip: unrelated'], evidence }), 1);
+  });
+
+  test('BRO-7276 only idle 1..14 days surfaces: in-flight and long-abandoned do not hold the row', () => {
+    const e = (d) => ({ name: 'feature-x', ahead: 3, unlanded: 3, lastCommitDays: d });
+    assert.equal(isStrandedWorktree(e(0)), false);
+    assert.equal(isStrandedWorktree(e(1)), true);
+    assert.equal(isStrandedWorktree(e(14)), true);
+    assert.equal(isStrandedWorktree(e(15)), false);
+    assert.equal(isStrandedWorktree(e(101)), false);
+    assert.equal(isStrandedWorktree({ name: 'feature-x', ahead: 3, unlanded: 3, lastCommitDays: null }), true);
+  });
+
+  test('BRO-7276 gatherDigest on a real repo: landed agent worktree is not flagged', () => {
+    const fs = require('node:fs'); const os = require('node:os'); const path = require('node:path');
+    const { execFileSync } = require('node:child_process');
+    const g = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7276-'));
+    const origin = path.join(root, 'origin.git'); const repo = path.join(root, 'repo');
+    g(root, 'init', '-q', '--bare', '-b', 'main', origin);
+    g(root, 'clone', '-q', origin, repo);
+    g(repo, 'config', 'user.email', 't@t'); g(repo, 'config', 'user.name', 't');
+    g(repo, 'commit', '-q', '--allow-empty', '-m', 'base');
+    g(repo, 'push', '-q', 'origin', 'HEAD:main');
+    // Branch commit, then "land" it on main as a rebased copy (new SHA, same subject).
+    const old = new Date(Date.now() - 3 * 86400000).toISOString();
+    const env = { ...process.env, GIT_AUTHOR_DATE: old, GIT_COMMITTER_DATE: old };
+    g(repo, 'worktree', 'add', '-q', '-b', 'worktree-agent-x', path.join(repo, '.claude', 'worktrees', 'agent-x'));
+    g(repo, 'worktree', 'add', '-q', '-b', 'stranded-y', path.join(repo, '.claude', 'worktrees', 'stranded-y'));
+    execFileSync('git', ['commit', '-q', '--allow-empty', '-m', 'fix: landed thing'], { cwd: path.join(repo, '.claude', 'worktrees', 'agent-x'), env });
+    execFileSync('git', ['commit', '-q', '--allow-empty', '-m', 'fix: never landed'], { cwd: path.join(repo, '.claude', 'worktrees', 'stranded-y'), env });
+    g(repo, 'commit', '-q', '--allow-empty', '-m', 'unrelated main commit');
+    g(repo, 'commit', '-q', '--allow-empty', '-m', 'fix: landed thing');
+    g(repo, 'push', '-q', 'origin', 'HEAD:main');
+    g(repo, 'fetch', '-q', 'origin');
+    const d = gatherDigest({ repo, skipFetch: true });
+    const lines = d.stuck.worktrees || [];
+    assert.equal(lines.some((l) => l.startsWith('agent-x')), false, lines.join('|'));
+    assert.equal(lines.some((l) => l.startsWith('stranded-y: 1 unmerged commit')), true, lines.join('|'));
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+}
+
+test('BRO-7276 issue-missing kinds (deleted Linear issue) never count as stuck', () => {
+  for (const k of ['linear-zombie-issue-missing', 'linear-orphaned-issue-missing']) {
+    assert.equal(ACTIONABLE_RECONCILE_KINDS.has(k), false, k);
   }
 });

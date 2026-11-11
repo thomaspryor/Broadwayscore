@@ -161,10 +161,59 @@ function parseWorkspaces(rawText) {
 
 // ── Pure: worktree state → stranded-work lines ──────────────────────────────
 
+// BRO-7276 (recurring "Stuck pipeline items", 7 cards in 37 days): this
+// signal used to be `rev-list --count origin/main..branch > 0`, which never
+// empties on the Mac. land.yml rebases/squashes, so a landed branch keeps its
+// own SHAs "ahead" forever (2026-11-11: 59 worktrees flagged, the job ones
+// almost all for Done cards), and long-abandoned worktrees re-alarm daily.
+// The card's acceptance check reads the CI snapshot, which cannot see
+// worktrees, so every card "cleared itself" and the next digest refiled it.
+// Now a worktree is stranded only when ALL hold:
+//   - not job-*: headless job worktrees are owned by bsc-reconcile's
+//     zombie/orphan sweeps, whose kinds already feed this same row;
+//   - it has commits that did not land (gatherDigest sets `unlanded`: commit
+//     subject not on main AND the branch's BRO id never named on main);
+//   - idle STRANDED_MIN_IDLE_DAYS..STRANDED_MAX_IDLE_DAYS: younger is still
+//     in flight, older was already surfaced for two weeks and is left to
+//     gc-merged-worktrees.sh's own stale digest, so the row can clear.
+const STRANDED_MIN_IDLE_DAYS = 1;
+const STRANDED_MAX_IDLE_DAYS = 14;
+
+function isStrandedWorktree(e) {
+  if (!e || /^job-/.test(String(e.name || ''))) return false;
+  const n = Number.isFinite(e.unlanded) ? e.unlanded : e.ahead;
+  if (!(n > 0)) return false;
+  if (e.lastCommitDays == null) return true; // unknown age: fail toward surfacing
+  return e.lastCommitDays >= STRANDED_MIN_IDLE_DAYS && e.lastCommitDays <= STRANDED_MAX_IDLE_DAYS;
+}
+
 function summarizeWorktrees(entries) {
   return entries
-    .filter(e => e.ahead > 0)
-    .map(e => `${e.name}: ${e.ahead} unmerged commit${e.ahead > 1 ? 's' : ''}${e.lastCommitDays != null ? ` (last touched ${e.lastCommitDays}d ago)` : ''}`);
+    .filter(isStrandedWorktree)
+    .map((e) => {
+      const n = Number.isFinite(e.unlanded) ? e.unlanded : e.ahead;
+      return `${e.name}: ${n} unmerged commit${n > 1 ? 's' : ''}${e.lastCommitDays != null ? ` (last touched ${e.lastCommitDays}d ago)` : ''}`;
+    });
+}
+
+// Commit subjects on origin/main plus every BRO-N they name: the "did this
+// land?" evidence that survives land.yml's rebase/squash (SHAs do not).
+function landedEvidence(mainSubjects) {
+  const subjects = new Set();
+  const ids = new Set();
+  for (const s of mainSubjects) {
+    if (!s) continue;
+    subjects.add(s);
+    for (const m of s.matchAll(/\bBRO-(\d+)\b/gi)) ids.add(`BRO-${m[1]}`);
+  }
+  return { subjects, ids };
+}
+
+// Commits on a branch that have no landed counterpart on main.
+function countUnlanded({ branch, branchSubjects, evidence }) {
+  const id = String(branch || '').match(/\bBRO-(\d+)\b/i);
+  if (id && evidence.ids.has(`BRO-${id[1]}`)) return 0;
+  return branchSubjects.filter((s) => s && !evidence.subjects.has(s)).length;
 }
 
 // ── Impure gatherer — every source fails soft ───────────────────────────────
@@ -181,6 +230,7 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
     cwd: cwd || repo,
     encoding: 'utf8',
     timeout: timeoutMs,
+    maxBuffer: 64 * 1024 * 1024, // the 180-day main subject log is ~5MB (BRO-7276); default 1MB throws ENOBUFS
     stdio: ['ignore', 'pipe', 'pipe'],
   });
 
@@ -228,18 +278,26 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
   try {
     const wtRoot = path.join(repo, '.claude', 'worktrees');
     const entries = [];
-    for (const name of fs.existsSync(wtRoot) ? fs.readdirSync(wtRoot) : []) {
+    const names = fs.existsSync(wtRoot) ? fs.readdirSync(wtRoot).filter((n) => !/^job-/.test(n)) : [];
+    // One bounded log read for the landed evidence (BRO-7276), only when there is something to check.
+    const evidence = names.length
+      ? landedEvidence(run('git', ['log', 'origin/main', '--since=180 days ago', '--no-merges', '--format=%s'], null, 60000).split('\n'))
+      : null;
+    for (const name of names) {
       const wt = path.join(wtRoot, name);
       try {
         const branch = run('git', ['branch', '--show-current'], wt, 5000).trim();
         if (!branch || branch === 'main') continue;
-        const ahead = Number(run('git', ['rev-list', '--count', `origin/main..${branch}`], wt, 5000).trim());
+        const branchSubjects = run('git', ['log', '--no-merges', '--format=%s', `origin/main..${branch}`], wt, 5000).split('\n').filter(Boolean);
+        const ahead = branchSubjects.length;
+        if (!ahead) continue;
+        const unlanded = countUnlanded({ branch, branchSubjects, evidence });
         let lastCommitDays = null;
         try {
           const ts = Number(run('git', ['log', '-1', '--format=%ct'], wt, 5000).trim()) * 1000;
           lastCommitDays = Math.floor((Date.now() - ts) / 86400000);
         } catch { /* cosmetic only */ }
-        entries.push({ name, ahead, lastCommitDays });
+        entries.push({ name, ahead, unlanded, lastCommitDays });
       } catch { /* not a live worktree — skip */ }
     }
     digest.stuck.worktrees = summarizeWorktrees(entries);
@@ -434,4 +492,4 @@ function renderDigestBlock(digest) {
   return parts.join('\n');
 }
 
-module.exports = { summarizeCommits, parseWorkspaces, summarizeWorktrees, gatherDigest, renderDigestBlock, stuckSignals, countStuckSignals, ACTIONABLE_RECONCILE_KINDS, CORRELATABLE_RECONCILE_KINDS, RESOLVING_RECONCILE_KINDS };
+module.exports = { summarizeCommits, parseWorkspaces, summarizeWorktrees, isStrandedWorktree, landedEvidence, countUnlanded, STRANDED_MIN_IDLE_DAYS, STRANDED_MAX_IDLE_DAYS, gatherDigest, renderDigestBlock, stuckSignals, countStuckSignals, ACTIONABLE_RECONCILE_KINDS, CORRELATABLE_RECONCILE_KINDS, RESOLVING_RECONCILE_KINDS };

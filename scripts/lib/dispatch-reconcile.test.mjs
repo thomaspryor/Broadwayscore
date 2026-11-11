@@ -683,3 +683,47 @@ test('BRO-2989: sweepOrphanedLinearInFlight moves dead cards, never live ones, p
   assert.equal(reports.filter((x) => x.kind === 'linear-orphaned-owner-alert').length, 0);
   assert.equal(r2.redispatched.length, 1);
 });
+
+// BRO-7276: a deleted / never-existing issue (a leaked test fixture id,
+// BRO-25690) re-raised a fetch error every tick for 7 weeks and kept the
+// digest's "Stuck pipeline items" row permanently warn.
+test('BRO-7276: orphaned sweep marks a missing issue handled and never re-fetches it', async () => {
+  const fs2 = await import('node:fs');
+  const os2 = await import('node:os');
+  const { sweepOrphanedLinearInFlight } = require('../bsc-reconcile.js');
+  const statePath = path.join(fs2.mkdtempSync(path.join(os2.tmpdir(), 'orph-')), 'state.json');
+  const ledger = [spawned('BRO-25690', 'z', 5 * H), orphanedRow('BRO-25690', 'z', 4 * H)];
+  const reports = []; let fetches = 0;
+  const deps = {
+    readLedgerEntriesFn: () => ledger,
+    getIssueFn: async () => { fetches++; throw new Error('Linear GraphQL error: Entity not found: Issue'); },
+    applyFn: () => ({ ok: true }), reportFn: (r) => reports.push(r), hasLiveLeaseFn: () => false, nowFn: () => NOW, statePath,
+  };
+  await sweepOrphanedLinearInFlight({ deps });
+  assert.deepEqual(reports.map((r) => r.kind), ['linear-orphaned-issue-missing']);
+  await sweepOrphanedLinearInFlight({ deps: { ...deps, nowFn: () => NOW + 2 * H } });
+  assert.equal(fetches, 1);
+});
+
+test('BRO-7276: zombie sweep reports a missing issue as issue-missing, not fetch-error', async () => {
+  const fs2 = await import('node:fs');
+  const os2 = await import('node:os');
+  const { sweepLinearStartedZombies } = require('../bsc-reconcile.js');
+  const dir = fs2.mkdtempSync(path.join(os2.tmpdir(), 'zomb-'));
+  const reports = [];
+  const deps = {
+    readLedgerEntriesFn: () => [
+      { event: 'job-spawned', taskId: 'linear:BRO-25690', jobId: 'j', cwd: '/wt/x', ts: '2026-09-16T15:36:41.295Z' },
+      { event: 'job-done', taskId: 'linear:BRO-25690', jobId: 'j', ts: '2026-09-16T15:42:22.007Z' },
+    ],
+    getIssueFn: async () => { throw Object.assign(new Error('Linear GraphQL error: Entity not found: Issue'), { linearErrors: [{ message: 'Entity not found: Issue' }] }); },
+    reportFn: (r) => reports.push(r),
+    statePath: path.join(dir, 'state.json'), ledgerPath: path.join(dir, 'ledger.jsonl'),
+  };
+  await sweepLinearStartedZombies({ dryRun: false, deps });
+  assert.deepEqual(reports.map((r) => r.kind), ['linear-zombie-issue-missing']);
+  // A transient error is still a fetch error.
+  reports.length = 0;
+  await sweepLinearStartedZombies({ dryRun: true, deps: { ...deps, getIssueFn: async () => { throw new Error('fetch failed'); } } });
+  assert.deepEqual(reports.map((r) => r.kind), ['linear-zombie-fetch-error']);
+});

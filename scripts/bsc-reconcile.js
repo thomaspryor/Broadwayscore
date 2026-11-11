@@ -889,6 +889,11 @@ function readLinearZombieDayCounts(statePath, today) {
 
 const ZOMBIE_BUDGET_EXHAUSTED = Symbol('zombie-verify-budget-exhausted');
 
+// Lazy like every other linear-client use in this file (BRO-7276).
+function isIssueMissingOnRead(err) {
+  return require('./lib/linear-client.js').isIssueMissingOnRead(err);
+}
+
 async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
   const verifyLib = require('./lib/linear-started-zombie-sweep-verify.js');
   const {
@@ -969,6 +974,11 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
       if (!dryRun && cycleDone.has(cand.identifier)) continue;
       let issue;
       try { issue = await getIssueFn(cand.identifier); } catch (e) {
+        if (isIssueMissingOnRead(e)) { // BRO-7276: deleted/never-existed issue is resolved, not an error
+          cycleDone.add(cand.identifier);
+          reportFn({ kind: 'linear-zombie-issue-missing', identifier: cand.identifier, detail: e.message });
+          continue;
+        }
         reportFn({ kind: 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
         continue;
       }
@@ -1038,7 +1048,7 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
         // is written.
         let freshIssue;
         try { freshIssue = await getIssueFn(cand.identifier); } catch (e) {
-          reportFn({ kind: 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
+          reportFn({ kind: isIssueMissingOnRead(e) ? 'linear-zombie-issue-missing' : 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
           continue;
         }
         const fresh = decide(freshIssue);
@@ -1137,6 +1147,11 @@ async function sweepOrphanedLinearInFlight({ dryRun = false, deps = {} } = {}) {
   const issues = [];
   for (const c of candidates) {
     try { const iss = await getIssueFn(c.identifier); if (iss) issues.push(iss); } catch (e) {
+      if (isIssueMissingOnRead(e)) { // BRO-7276: never re-fetch a deleted issue every tick
+        handled.add(orphaned.handledKey(c.taskId, c.dead.ts));
+        reportFn({ kind: 'linear-orphaned-issue-missing', identifier: c.identifier, detail: `${c.identifier}: ${e.message}` });
+        continue;
+      }
       reportFn({ kind: 'linear-orphaned-fetch-error', identifier: c.identifier, detail: `${c.identifier}: ${e.message}` });
     }
   }
