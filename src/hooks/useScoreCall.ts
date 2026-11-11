@@ -26,15 +26,15 @@ async function load(userId: string) {
   if (store.userId === userId && (store.loaded || store.inflight)) return store.inflight ?? undefined;
   // A response only lands if it is still the current request: a sign-out or a different user signing
   // in meanwhile replaces store.inflight, so a late answer for the old user is dropped.
-  let p: Promise<void>;
-  p = (async () => {
+  const ref: { p?: Promise<void> } = {};
+  const p: Promise<void> = (ref.p = (async () => {
     const { data } = await supabaseRestRpc<ScoreCall[]>('get_my_score_calls');
-    if (store.inflight !== p) return;
+    if (store.inflight !== ref.p) return;
     const calls: Record<string, ScoreCall> = {};
     for (const c of data || []) calls[c.show_id] = c;
     store = { userId, calls, loaded: true, inflight: null };
     emit();
-  })();
+  })());
   store = { userId, calls: {}, loaded: false, inflight: p };
   return p;
 }
