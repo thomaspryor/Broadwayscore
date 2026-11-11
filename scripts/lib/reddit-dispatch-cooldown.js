@@ -106,9 +106,11 @@ function redditStaleVerdict({ lastWriteMs, attemptsInWindow, nowMs = Date.now() 
  * @returns {{outage:boolean, attempts:number}}
  */
 const REDDIT_OUTAGE_MIN_ATTEMPTS = 10;
+// Only the sentiment scraper's calls count: monitor-brand-mentions.js also hits reddit.com daily.
+const REDDIT_SENTIMENT_SCRIPT = 'scrape-reddit-sentiment.js';
 function redditOutageVerdict({ lastWriteMs, rows, nowMs = Date.now(), minAttempts = REDDIT_OUTAGE_MIN_ATTEMPTS, windowHours = 24 }) {
   const since = Math.max(lastWriteMs == null ? 0 : lastWriteMs, nowMs - windowHours * HOUR_MS);
-  const attempts = (rows || []).filter((r) => r && r.host === 'reddit.com' && Date.parse(r.ts) > since).length;
+  const attempts = (rows || []).filter((r) => r && r.host === 'reddit.com' && r.script === REDDIT_SENTIMENT_SCRIPT && Date.parse(r.ts) > since).length;
   return { outage: attempts >= minAttempts, attempts };
 }
 
@@ -124,7 +126,7 @@ function readRedditLedgerRows(file = defaultLedgerPath()) {
   const rows = [];
   for (const l of text.split('\n')) {
     if (!l.includes('"host":"reddit.com"')) continue;
-    try { rows.push(JSON.parse(l)); } catch (_) { /* torn line */ }
+    try { const r = JSON.parse(l); if (r.script === REDDIT_SENTIMENT_SCRIPT) rows.push(r); } catch (_) { /* torn line */ }
   }
   return rows;
 }
@@ -172,5 +174,5 @@ function readLedgerTail(file = defaultLedgerPath(), { sinceMs = Date.now() - RED
 
 module.exports = {
   SB_COOLDOWN_WINDOW, SB_PROBE_AFTER_HOURS, SB_RUN_FAILURE_LIMIT, REDDIT_STALE_HOURS,
-  sbHostVerdict, normalizeSbHost, sbRedditVerdict, sbRunBreakerOpen, redditStaleVerdict, redditOutageVerdict, REDDIT_OUTAGE_MIN_ATTEMPTS, readLedgerTail, readRedditLedgerRows,
+  sbHostVerdict, normalizeSbHost, sbRedditVerdict, sbRunBreakerOpen, redditStaleVerdict, redditOutageVerdict, REDDIT_OUTAGE_MIN_ATTEMPTS, REDDIT_SENTIMENT_SCRIPT, readLedgerTail, readRedditLedgerRows,
 };

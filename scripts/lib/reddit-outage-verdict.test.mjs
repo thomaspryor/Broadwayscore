@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const { redditOutageVerdict } = createRequire(import.meta.url)('./reddit-dispatch-cooldown.js');
 const now = Date.parse('2026-11-11T06:00:00Z');
-const row = (iso, host = 'reddit.com') => ({ ts: iso, host });
+const row = (iso, host = 'reddit.com') => ({ ts: iso, host, script: 'scrape-reddit-sentiment.js' });
 const many = (n, iso) => Array.from({ length: n }, () => row(iso));
 test('calls after the last write with no new write = outage', () => {
   const v = redditOutageVerdict({ lastWriteMs: Date.parse('2026-11-09T03:40:00Z'), rows: many(12, '2026-11-10T20:00:00Z'), nowMs: now });
@@ -25,9 +25,16 @@ import path from 'node:path';
 test('readRedditLedgerRows finds Reddit rows even when the file tail is out of time order', () => {
   const { readRedditLedgerRows } = createRequire(import.meta.url)('./reddit-dispatch-cooldown.js');
   const f = path.join(os.tmpdir(), `rd-ledger-${process.pid}.jsonl`);
-  const lines = [JSON.stringify({ ts: '2026-11-10T20:00:00Z', host: 'reddit.com' })];
+  const lines = [JSON.stringify({ ts: '2026-11-10T20:00:00Z', host: 'reddit.com', script: 'scrape-reddit-sentiment.js' })];
   for (let i = 0; i < 5000; i++) lines.push(JSON.stringify({ ts: i === 0 ? '2026-11-01T00:00:00Z' : '2026-11-11T00:00:00Z', host: 'x.com' }));
   fs.writeFileSync(f, lines.join('\n') + '\n');
   assert.equal(readRedditLedgerRows(f).length, 1);
   fs.unlinkSync(f);
+});
+
+test('calls from other scripts (brand monitor) are not counted', () => {
+  const { redditOutageVerdict } = createRequire(import.meta.url)('./reddit-dispatch-cooldown.js');
+  const now = Date.now();
+  const rows = Array.from({ length: 12 }, () => ({ ts: new Date(now - 1000).toISOString(), host: 'reddit.com', script: 'monitor-brand-mentions.js' }));
+  assert.equal(redditOutageVerdict({ lastWriteMs: null, rows, nowMs: now }).outage, false);
 });

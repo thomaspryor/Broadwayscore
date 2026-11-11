@@ -66,7 +66,9 @@ async function main() {
     });
     return;
   }
-  if (!v.stale) {
+  // Resolve only when no Reddit call has happened since the last write: a broken run with
+  // few calls must not close an open outage alert (it would flap).
+  if (!v.stale && o.attempts === 0) {
     resolveCondition(CONDITION_KEY, { reason: 'reddit-freshness: fresh Reddit data written' });
     return;
   }
