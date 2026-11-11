@@ -11,6 +11,8 @@
  * Output (checkpointed per show, resumable): data/audit/review-forecast-v2-showscore-members.json
  */
 'use strict';
+const { hasHelpFlag } = require('./lib/cli-help.js');
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/review-forecast-v2-showscore-members-sweep.js --ids-from=<json> [--limit=N] (BRO-7347 research sweep; writes data/audit/review-forecast-v2-showscore-members.json)'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
