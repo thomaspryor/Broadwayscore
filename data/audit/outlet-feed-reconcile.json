@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T17:15:50.551Z",
+  "generatedAt": "2026-11-11T18:57:21.538Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,8 +127,8 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
+      "outletId": "theater-scene",
+      "error": "HTTP 503 for https://www.theaterscene.net/feed/"
     },
     {
       "outletId": "front-row-center",
@@ -137,6 +137,10 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "readaboutstuff",
+      "error": "HTTP 403 for https://readaboutstuff.com/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -149,10 +153,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 849,
-  "matchedGaps": 3,
+  "itemsScanned": 828,
+  "matchedGaps": 5,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -171,6 +179,24 @@
       "outletId": "the-interested-bystander",
       "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
       "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "city-am",
+      "url": "https://www.cityam.com/cloud-9-national-theatre-review/",
+      "headline": "Cloud 9 at the National Theatre review: Caryl Churchill’s 1979 shocker has lost its punch",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+      "headline": "We’ll See ****, Ms. Blakk for President ****",
       "publishDate": "2026-11-11"
     },
     {

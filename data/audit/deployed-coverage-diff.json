@@ -1,96 +1,13 @@
 {
-  "generatedAt": "2026-11-11T17:15:50.178Z",
+  "generatedAt": "2026-11-11T18:57:21.141Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 319,
-  "clean": 314,
-  "defective": 5,
-  "byType": {
-    "score-drift": 5
-  },
-  "shows": [
-    {
-      "showId": "act-of-god-off-west-end-2026",
-      "title": "Act of God",
-      "openingDate": "2026-11-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 66.54 vs local 58.69 (Δ7.85)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-11T17:15:46.031Z"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "openingDate": "2026-11-10",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.79 vs local 80.69 (Δ2.9)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-11-11T17:15:46.031Z"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "openingDate": "2026-11-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 64.04 vs local 62.54 (Δ1.5)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-11-11T17:15:46.031Z"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.27 vs local 77.65 (Δ0.38)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-11-11T17:15:46.031Z"
-    },
-    {
-      "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "title": "Showstopper! The Improvised Musical",
-      "openingDate": "2015-09-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.82 vs local 85.43 (Δ0.39)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-11-11T17:15:46.031Z"
-    }
-  ],
+  "clean": 319,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
