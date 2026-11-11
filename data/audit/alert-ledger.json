@@ -23961,20 +23961,17 @@
       "silentRefires": 22
     },
     "reddit-sentiment:stale": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
-      "title": "Reddit audience data has had no successful write for 206h",
+      "title": "Reddit fetching is failing: 35 Reddit calls and no successful write since 2026-11-10T16:42:14.658Z",
       "firstSeen": "2026-10-22T07:06:39.460Z",
-      "incidentOpenedAt": "2026-10-22T07:06:39.460Z",
-      "lastSeen": "2026-10-22T14:44:24.754Z",
-      "lastNotifiedAt": "2026-10-22T07:06:39.460Z",
+      "incidentOpenedAt": "2026-11-11T02:17:43.277Z",
+      "lastSeen": "2026-11-11T02:17:43.277Z",
+      "lastNotifiedAt": "2026-11-11T02:17:43.277Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-5921",
-      "silentRefires": 12,
-      "resolvedAt": "2026-10-22T23:11:25.926Z",
-      "resolveReason": "reddit-freshness: fresh Reddit data written"
+      "linearIdentifier": "BRO-7343"
     },
     "coverage-holes:lincoln-in-the-bardo-off-broadway-2026": {
       "status": "resolved",
