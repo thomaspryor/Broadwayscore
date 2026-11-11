@@ -823,7 +823,7 @@ function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE, logic = confirmLo
  * @param {{fetcher?: (url: string) => Promise<string>, activeShows?: Array,
  *   publishDate?: string|null, unconfirmedCache?: object}} [opts]
  */
-async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], publishDate = null, unconfirmedCache = null, maxFetches = PAGE_CONFIRM_MAX_FETCHES, titleOnly = null } = {}) {
+async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], rivalShows = activeShows, publishDate = null, unconfirmedCache = null, maxFetches = PAGE_CONFIRM_MAX_FETCHES, titleOnly = null } = {}) {
   if (stats.fetched >= maxFetches) { stats.overBudget += candidates.length; return []; }
   stats.fetched++;
   const markUnreadable = () => { stats.failed++; if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, FAILED_SHOW_ID)] = new Date().toISOString(); return []; };
@@ -846,7 +846,7 @@ async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtm
   out.pageDate = pageDate;
   for (const { show, needsPageDate } of candidates) {
     const dated = !needsPageDate || (pageDate && publishedInRunWindow(show, pageDate));
-    if (dated && (pageConfirmsShow(text, show, { nowMs, otherShows: activeShows }) || (titleOnly && pageNamesTitle(text, show) && titleOnly(show)))) { out.push(show); stats.confirmed++; }
+    if (dated && (pageConfirmsShow(text, show, { nowMs, otherShows: rivalShows }) || (titleOnly && pageNamesTitle(text, show) && titleOnly(show)))) { out.push(show); stats.confirmed++; }
     else {
       stats.unconfirmed++;
       if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, show.id)] = new Date().toISOString();
@@ -891,6 +891,8 @@ async function main() {
 
   // Active shows only (open or previews), optionally filtered by market
   let activeShows = allShows.filter(s => s.status === 'open' || s.status === 'previews');
+  // Every running show, whatever window or market narrows the match pool: they all share houses (BRO-7372).
+  const liveShows = activeShows;
   if (win) {
     // Match only against shows 0-3 days past opening; nothing in the window means no fetches at all.
     activeShows = ow.selectWindowShows(allShows);
@@ -1160,7 +1162,7 @@ async function main() {
       let stubDate = publishDate;
       if (candidates.length > 0) {
         const confirmed = await confirmOnPage(url, candidates, viaCensus ? censusPageStats : pageConfirmStats, {
-          activeShows: showPool, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
+          activeShows: showPool, rivalShows: liveShows, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
           titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool, { siblingOk: (o) => censusListing.censusMarketOk(outletId, o, outletMarkets) }) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
           // A dry run never spends paid scraper fetches: plain fetch only.
           fetcher: itemDry ? (u => fetchSimple(u, 20000)) : viaCensus ? censusFetch.fetcher : fetchArticleHtml,
