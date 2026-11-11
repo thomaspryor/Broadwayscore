@@ -58,9 +58,16 @@ test('every EXPECTED_REPEATS entry matches a real title shape', () => {
     'Land dependabot PR #412',
     'Commercial scorecard corrections part 3',
     'Commercial data: pending review (4 rows)',
+    'Tech Scorecard weekly port 2026-11-09',
   ];
   for (const e of rc.EXPECTED_REPEATS) assert.ok(titles.some((t) => e.re.test(t)), `no title for ${e.re}`);
   assert.equal(rc.expectedRepeatReason('Morning digest did not arrive'), null);
+});
+
+test('Tech Scorecard weekly port cards (BRO-6295/6810/7200) are never a recurring class', () => {
+  const cls = only(classesOf(['2026-10-26', '2026-11-02', '2026-11-09'].map((d, i) => done(`Tech Scorecard weekly port ${d}`, 14 - i * 7, 13 - i * 7))));
+  assert.ok(cls.expected && /weekly porting/.test(cls.expected));
+  assert.equal(cls.recurring, false);
 });
 
 test('main-red classes reuse BRO-3425, including filer-prefixed titles', () => {

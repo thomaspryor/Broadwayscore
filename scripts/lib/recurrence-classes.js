@@ -57,6 +57,7 @@ const EXPECTED_REPEATS = [
   { re: /^\s*land dependabot pr\b/i, reason: 'dependabot landing, one per bump' },
   { re: /^\s*commercial scorecard corrections part\b/i, reason: 'numbered work batches of one project' },
   { re: /^\s*commercial data: pending review\b/i, reason: 'owner review queue, one card per batch' },
+  { re: /^\s*tech scorecard weekly port\b/i, reason: 'weekly porting routine (tech-scorecard docs/PORTING.md) files one dated card per week on purpose (BRO-7334)' },
 ];
 
 // Classes whose per-day card is a work queue item produced by a scanner,
