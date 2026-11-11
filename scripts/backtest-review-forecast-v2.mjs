@@ -223,6 +223,17 @@ results.push(compare('Show Score secondary (b): floor rule, only moves down when
 results.push(compare('Show Score secondary (c): mean plus review count', [...V1, ...G.audience], null, 'secondary'));
 const X = EX.EXTRA_GROUPS;
 if (NIGHTLY_COMBINED) results.push(compare('Nightly-safe combined: panel + Show Score mean plus n (no earlier-run)', [...V1, ...X.panel, ...G.audience], null, 'combined'));
+// BRO-7357 (2): panel increment over Show Score ALONE, paired on the same rows and the same walk-forward. Report-only, not a test in the family above.
+let panelIncrement = null;
+if (NIGHTLY_COMBINED) {
+  const wSS = walk([...V1, ...G.audience]); const wCB = walk([...V1, ...X.panel, ...G.audience]);
+  if (wSS.length !== wCB.length || wSS.some((q, i) => q.id !== wCB[i].id)) throw new Error('panel increment: walk-forward rows misaligned');
+  const inc = (idx, label) => { const A = idx.map((i) => wCB[i]); const B = idx.map((i) => wSS[i]); const ci = diffCI(A, B); const ciAdj = diffCI(A, B, 2000, 0.05 / N_PRIMARY_TESTS);
+    return { subset: label, shows: A.length, maeShowScoreOnly: r2(maeOf(B)), maeShowScorePlusPanel: r2(maeOf(A)), diff: r2(maeOf(A) - maeOf(B)), diffCI95: ci.map(r2), diffCI95Bonferroni: ciAdj.map(r2), excludesZero: r2(ci[1]) < 0 || r2(ci[0]) > 0, direction: r2(ci[1]) < 0 ? 'panel helps' : r2(ci[0]) > 0 ? 'panel hurts' : 'no detectable increment' }; };
+  const all = wSS.map((_, i) => i);
+  panelIncrement = { note: 'diff = MAE(Show Score + panel) minus MAE(Show Score alone), same rows, same walk-forward, season-clustered bootstrap seed 7314 B=2000; negative is better', all: inc(all, 'all evaluated shows'), withMemberReviews: inc(all.filter((i) => base[i].has.audience), 'shows with dated member reviews') };
+  console.log('PANEL INCREMENT', JSON.stringify(panelIncrement));
+}
 const EG = ER.ER_GROUPS; const hasEr = (p) => p.has.earlierRun;
 results.push(compare('Earlier-run web reviews, linear (shrunk mean gap, has flag)', [...V1, ...EG.linear], null, 'primary'));
 results.push(compare('Earlier-run web reviews, step at 75 (below / at or above)', [...V1, ...EG.step], null, 'primary'));
@@ -307,6 +318,7 @@ const out = {
   reliability,
   earlierRunOverlap: overlap,
   earlierRun: { source: 'research agents scored web reviews of the earlier run (regional, Off-Broadway, West End) found dated before first preview; the model uses only those dated on or before opening minus 3 days (the lag every input uses). Scores are agent-assigned after the Broadway verdict was known: noisy, hindsight risk the date filter cannot remove', showsInFile: Object.keys(erRaw.reviews).length, reviewsInFile: Object.values(erRaw.reviews).reduce((s, l) => s + l.length, 0), partialDatesReadAsLastDayOfPeriod: true, cutDeclared: ER.ER_CUT, forkedCuts: [72, 78], troubleListUndated: true },
+  panelIncrement,
   inputs: results,
   notTestable: [
     { input: 'Show Score audience score (Wayback capture before opening)', verdict: 'cannot be dated at usable coverage', why: 'archive.org availability lookups found no pre-opening capture for 30 shows (one season). Unproven coverage, not proof of absence. Replaced by the dated member-review route, which is tested above on the full 341-show pull (coverage: none of the 2025 and 2026 shows has dated member reviews).' },
