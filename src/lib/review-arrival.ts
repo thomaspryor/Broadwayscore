@@ -10,12 +10,13 @@
  * clock could disagree with the server HTML).
  *
  * Where the numbers come from (never invented):
- *  - "expect about N": a CONSERVATIVE morning-after count. For each of the
+ *  - "expect LOW to HIGH": a range for the morning-after count. For each of the
  *    previous HISTORY_SIZE Broadway openings, how many reviews were in by 9am ET
- *    the morning after (see morningCount); N is the 25th percentile of those,
- *    rounded down to 5. Low on purpose: the status must never promise more
- *    than shows up (owner, BRO-7376 round 3). scripts/review-arrival-accuracy.ts
- *    reports how often the real count fell short.
+ *    the morning after (see morningCount); LOW is the 25th percentile of those
+ *    rounded down to 5, HIGH the 75th rounded up to 5 (owner, BRO-7376 round 3).
+ *    The line ends when the count reaches LOW, so it never promises more than
+ *    usually shows up. scripts/review-arrival-accuracy.ts reports how often past
+ *    openings landed inside, below and above it.
  *  - "regular outlets in / still to come": data/outlet-registry.json
  *    standingCoverage, the set of outlets that review nearly every Broadway
  *    opening (scripts/lib/standing-outlets.js). Hit rate is measured there.
@@ -56,8 +57,10 @@ export interface HistoryShow {
 }
 
 export interface ExpectedCount {
-  /** conservative: 25th percentile of the morning-after counts, rounded DOWN to 5 ("expect about 15") */
+  /** low end of the range: 25th percentile of the morning-after counts, rounded DOWN to 5. The line ends at this count. */
   expected: number;
+  /** high end: 75th percentile, rounded UP to 5 */
+  expectedHigh: number;
   /** unrounded median */
   median: number;
   low: number;
@@ -114,6 +117,7 @@ export function expectedFromCounts(counts: number[]): ExpectedCount | null {
   const mid = c.length % 2 ? c[(c.length - 1) / 2] : (c[c.length / 2 - 1] + c[c.length / 2]) / 2;
   return {
     expected: Math.max(5, Math.floor(quantile(c, 0.25) / 5) * 5),
+    expectedHigh: Math.max(5, Math.ceil(quantile(c, 0.75) / 5) * 5),
     median: mid,
     low: quantile(c, 0.25),
     high: quantile(c, 0.75),
@@ -188,8 +192,9 @@ export function splitRegularOutlets(
 export interface ReviewArrival {
   phase: ArrivalPhase;
   reviewCount: number;
-  /** rounded "about" number */
+  /** low end of the expected range (the line ends when the count reaches it) */
   expected: number;
+  expectedHigh: number;
   /** quartile range of the history it came from */
   range: [number, number];
   historyN: number;
@@ -220,6 +225,7 @@ export function buildReviewArrival(
     phase,
     reviewCount: i.reviewCount,
     expected: i.expected.expected,
+    expectedHigh: i.expected.expectedHigh,
     range: [i.expected.low, i.expected.high],
     historyN: i.expected.n,
     updatedAt: i.updatedAt ?? null,
@@ -231,8 +237,9 @@ export function buildReviewArrival(
 }
 
 /** The one status line shown with the Critic Score (owner wording, BRO-7376 round 3). */
-export function arrivalText(a: Pick<ReviewArrival, 'phase' | 'reviewCount' | 'expected'>): string {
+export function arrivalText(a: Pick<ReviewArrival, 'phase' | 'reviewCount' | 'expected' | 'expectedHigh'>): string {
   const n = a.reviewCount;
-  if (a.phase === 'waiting') return `Reviews tonight, expect about ${a.expected}`;
-  return `${n} ${n === 1 ? 'review' : 'reviews'} so far, expect about ${a.expected}`;
+  const range = a.expectedHigh > a.expected ? `${a.expected} to ${a.expectedHigh}` : `about ${a.expected}`;
+  if (a.phase === 'waiting') return `Reviews tonight, expect ${range}`;
+  return `${n} ${n === 1 ? 'review' : 'reviews'} so far, expect ${range}`;
 }

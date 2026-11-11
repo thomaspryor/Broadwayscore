@@ -7,7 +7,7 @@ import {
 } from '../../src/lib/review-arrival';
 
 const OPEN = '2026-11-15';
-const exp = (expected: number): ExpectedCount => ({ expected, median: expected, low: expected - 3, high: expected + 3, n: 10 });
+const exp = (expected: number): ExpectedCount => ({ expected, expectedHigh: expected + 10, median: expected, low: expected - 3, high: expected + 3, n: 10 });
 const at = (iso: string) => new Date(iso);
 const base = { openingDate: OPEN, category: 'broadway', expected: exp(30) };
 
@@ -29,6 +29,8 @@ test('expectedFromCounts: conservative, 25th percentile rounded DOWN to 5, min 5
   const e = expectedFromCounts([18, 19, 22, 22, 24, 24, 26, 17, 5, 18])!;
   assert.equal(e.low, 18);
   assert.equal(e.expected, 15);
+  assert.equal(e.high, 24);
+  assert.equal(e.expectedHigh, 25);
   assert.equal(expectedFromCounts([3, 4, 6])!.expected, 5);
   assert.ok(expectedFromCounts([30, 31, 32, 33])!.expected <= 30);
 });
@@ -88,9 +90,11 @@ test('buildReviewArrival returns null when hidden and a full payload when shown'
   assert.ok(a.hoursLeft > 0 && a.hoursLeft < 12);
 });
 
-test('arrivalText: owner wording, no bar, no em dash', () => {
-  assert.equal(arrivalText({ phase: 'waiting', reviewCount: 0, expected: 20 }), 'Reviews tonight, expect about 20');
-  assert.equal(arrivalText({ phase: 'early', reviewCount: 8, expected: 20 }), '8 reviews so far, expect about 20');
-  assert.equal(arrivalText({ phase: 'below-minimum', reviewCount: 1, expected: 20 }), '1 review so far, expect about 20');
-  for (const t of [arrivalText({ phase: 'early', reviewCount: 8, expected: 20 })]) assert.ok(!t.includes('\u2014'));
+test('arrivalText: owner wording with a range, no bar, no em dash', () => {
+  const r = { expected: 15, expectedHigh: 25 };
+  assert.equal(arrivalText({ phase: 'waiting', reviewCount: 0, ...r }), 'Reviews tonight, expect 15 to 25');
+  assert.equal(arrivalText({ phase: 'early', reviewCount: 8, ...r }), '8 reviews so far, expect 15 to 25');
+  assert.equal(arrivalText({ phase: 'below-minimum', reviewCount: 1, ...r }), '1 review so far, expect 15 to 25');
+  assert.equal(arrivalText({ phase: 'early', reviewCount: 8, expected: 20, expectedHigh: 20 }), '8 reviews so far, expect about 20');
+  assert.ok(!arrivalText({ phase: 'early', reviewCount: 8, ...r }).includes('\u2014'));
 });

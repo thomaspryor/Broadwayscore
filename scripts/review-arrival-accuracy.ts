@@ -50,9 +50,11 @@ const rows = opened.map((s) => {
   const total72 = within3d(s.id, s.openingDate);
   const prior = history.filter((h) => h.id !== s.id && Date.parse(h.openingDate!) < Date.parse(s.openingDate) && h.reviewDates.length > 0)
     .sort((a, b) => (a.openingDate! < b.openingDate! ? 1 : -1)).slice(0, 10);
-  const conservative = expectedForShow(s, history)?.expected ?? null;
+  const ex = expectedForShow(s, history);
+  const conservative = ex?.expected ?? null;
+  const high = ex?.expectedHigh ?? null;
   const oldRule = prior.length ? Math.max(5, r5(median(prior.map((h) => within3d(h.id, h.openingDate!))))) : null;
-  return { id: s.id, opened: s.openingDate, morning: actual, total72, conservative, oldRule };
+  return { id: s.id, opened: s.openingDate, morning: actual, total72, conservative, high, oldRule };
 });
 const score = (key: 'conservative' | 'oldRule') => {
   const r = rows.filter((x) => x[key] != null);
@@ -65,7 +67,16 @@ const score = (key: 'conservative' | 'oldRule') => {
     typicalEstimate: median(r.map((x) => x[key] as number)),
   };
 };
+const ranged = rows.filter((r) => r.conservative != null && r.high != null);
+const rangeScore = {
+  n: ranged.length,
+  inside: ranged.filter((r) => r.morning >= r.conservative! && r.morning <= r.high!).length,
+  below: ranged.filter((r) => r.morning < r.conservative!).length,
+  above: ranged.filter((r) => r.morning > r.high!).length,
+  medianWidth: median(ranged.map((r) => r.high! - r.conservative!)),
+};
 const summary = {
+  range: rangeScore,
   openings: rows.length,
   medianMorningCount: median(rows.map((r) => r.morning)),
   median72hTotal: median(rows.map((r) => r.total72)),
