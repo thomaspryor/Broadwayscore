@@ -36,6 +36,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { landPushTargets } from './push-command.mjs';
 import { hookReplayWarning } from './hook-replay.mjs';
+import { ruleTrialWarning } from './rule-trial.mjs';
 import { BOT_OWNED_RE, BOT_OWNED_MAX, checkBotOwnedRewrite, STALE_WINDOW, STALE_MIN_FILES, STALE_MIN_ABSENT_ONLY, checkStaleRevert, ciStaleTreeVerdict } from './stale-tree-check.mjs';
 // BRO-5359: the review-coverage gate is optional machinery. If any of these fail to load, the
 // rebase/test-registry preflight below must keep working, so load them tolerantly (checkReviewCoverage
@@ -1046,6 +1047,9 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
       // BRO-7351: Stop-hook code changed with no recorded real-session replay (advisory, rule 19).
       const hw = (seams.hookReplayWarning || hookReplayWarning)({ root, src: t.src || 'HEAD', base });
       if (hw) v.warnings = [...(v.warnings || []), hw];
+      // BRO-7370: big written-guidance change with no recorded trial session (advisory, rule 19).
+      const rw = (seams.ruleTrialWarning || ruleTrialWarning)({ root, src: t.src || 'HEAD', base });
+      if (rw) v.warnings = [...(v.warnings || []), rw];
     }
     results.push(v);
   }
