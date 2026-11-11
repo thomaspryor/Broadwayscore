@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   windowCount, expectedFromCounts, expectedForShow, reviewArrivalPhase, splitRegularOutlets, buildReviewArrival,
-  arrivalWindowEndMs, pressNightEmbargoMs, ARRIVAL_WINDOW_HOURS, type ExpectedCount, type HistoryShow,
+  arrivalWindowEndMs, pressNightEmbargoMs, arrivalText, ARRIVAL_WINDOW_HOURS, type ExpectedCount, type HistoryShow,
 } from '../../src/lib/review-arrival';
 
 const OPEN = '2026-11-15';
@@ -79,4 +79,12 @@ test('buildReviewArrival returns null when hidden and a full payload when shown'
   assert.equal(a.regularIn.length, 1);
   assert.equal(a.regularToCome[0].name, 'Vulture');
   assert.ok(a.hoursLeft > 0 && a.hoursLeft < ARRIVAL_WINDOW_HOURS);
+});
+
+test('arrivalText: one short line in the owner wording, no em dash', () => {
+  assert.equal(arrivalText({ phase: 'waiting', reviewCount: 0, expected: 25 }), 'No reviews yet, expect ~25 total');
+  assert.equal(arrivalText({ phase: 'early', reviewCount: 8, expected: 25 }), '8 reviews so far, more coming in, expect ~25 total');
+  assert.equal(arrivalText({ phase: 'below-minimum', reviewCount: 1, expected: 25 }), '1 review so far, more coming in, expect ~25 total');
+  assert.equal(arrivalText({ phase: 'nearly-complete', reviewCount: 26, expected: 25 }), '26 reviews so far, a few more may land');
+  for (const t of [arrivalText({ phase: 'early', reviewCount: 8, expected: 25 })]) assert.ok(!t.includes('\u2014'));
 });

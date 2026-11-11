@@ -1,73 +1,48 @@
-import type { ReviewArrival } from '@/lib/review-arrival';
+import { arrivalText, type ReviewArrival } from '@/lib/review-arrival';
 
-/** Three visual options for the opening-night status (BRO-7376). Owner picks one; the rest get deleted. */
-export type ReviewArrivalVariant = 'a' | 'b' | 'c';
+/** Three progress treatments for the one-line opening-night status (BRO-7376). Owner picks one; the rest get deleted. */
+export type ReviewArrivalVariant = 'bar' | 'ring' | 'text';
 
-function headline(a: ReviewArrival): string {
-  const n = a.reviewCount;
-  switch (a.phase) {
-    case 'waiting':
-      return `Opening night. Critics file tonight, about ${a.expected} reviews usually land within 3 days.`;
-    case 'below-minimum':
-      return `${n} of about ${a.expected} reviews in. A score appears once enough are in.`;
-    case 'nearly-complete':
-      return n >= a.expected
-        ? `${n} reviews in, about the usual ${a.expected}. Late ones may still land.`
-        : `Nearly all in: ${n} of about ${a.expected} reviews. A few more may land.`;
-    default:
-      return `${n} of about ${a.expected} reviews in. The score can still move.`;
-  }
+function fraction(a: ReviewArrival): number {
+  return Math.max(0, Math.min(1, a.reviewCount / a.expected));
 }
 
-function Outlets({ a }: { a: ReviewArrival }) {
-  const total = a.regularIn.length + a.regularToCome.length;
-  if (total === 0 || a.phase === 'waiting') return null;
+function Ring({ f }: { f: number }) {
+  const r = 7;
+  const c = 2 * Math.PI * r;
   return (
-    <p className="text-xs text-fg-muted leading-snug" data-testid="review-arrival-outlets">
-      <span className="text-gray-300 font-semibold">Regular outlets {a.regularIn.length} of {total}.</span>{' '}
-      {a.regularToCome.length > 0 ? <>Still to come: {a.regularToCome.map((o) => o.name).join(', ')}.</> : 'All in.'}
-    </p>
+    <svg width="18" height="18" viewBox="0 0 18 18" className="flex-shrink-0 -rotate-90" aria-hidden="true">
+      <circle cx="9" cy="9" r={r} fill="none" strokeWidth="2.5" className="stroke-white/15" />
+      {f > 0 && (
+        <circle cx="9" cy="9" r={r} fill="none" strokeWidth="2.5" strokeLinecap="round" className="stroke-gray-300"
+          strokeDasharray={`${c * f} ${c}`} />
+      )}
+    </svg>
   );
 }
 
-function pct(a: ReviewArrival): number {
-  return Math.max(2, Math.min(100, Math.round((a.reviewCount / a.expected) * 100)));
-}
-
-export default function ReviewArrivalStatus({ arrival, variant = 'a' }: { arrival: ReviewArrival; variant?: ReviewArrivalVariant }) {
-  const text = headline(arrival);
-  const tone = arrival.phase === 'nearly-complete' ? 'bg-status-open' : 'bg-score-tepid';
-  if (variant === 'c') {
-    return (
-      <div className="flex flex-col gap-1.5" data-testid="review-arrival" data-phase={arrival.phase}>
-        <span className="inline-flex items-center gap-2 self-start rounded-full bg-surface-overlay px-3 py-1 text-xs font-semibold text-gray-300">
-          <span className={`w-2 h-2 rounded-full ${tone} animate-pulse`} aria-hidden="true" />
-          {arrival.phase === 'waiting' ? 'Reviews expected tonight' : `Still arriving · ${arrival.reviewCount} of ~${arrival.expected}`}
-        </span>
-        <p className="text-xs text-fg-muted leading-snug">{text}</p>
-        <Outlets a={arrival} />
-      </div>
-    );
-  }
-  if (variant === 'b') {
-    return (
-      <div className="card p-3 flex flex-col gap-2" data-testid="review-arrival" data-phase={arrival.phase}>
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Reviews still arriving</p>
-          <p className="text-xs text-fg-muted whitespace-nowrap">{arrival.reviewCount} / ~{arrival.expected}</p>
-        </div>
-        <div className="h-1.5 w-full rounded-full bg-surface-overlay overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={arrival.expected} aria-valuenow={Math.min(arrival.reviewCount, arrival.expected)} aria-label="Reviews in versus expected">
-          <div className={`h-full rounded-full ${tone}`} style={{ width: `${pct(arrival)}%` }} />
-        </div>
-        <p className="text-xs text-fg-muted leading-snug">{text}</p>
-        <Outlets a={arrival} />
-      </div>
-    );
-  }
+/**
+ * The status as one short line that sits with the Critic Score where the review
+ * count already reads. Rendered inside the hero's score block, never as its own section.
+ */
+export default function ReviewArrivalLine({ arrival, variant = 'bar', className = '' }: { arrival: ReviewArrival; variant?: ReviewArrivalVariant; className?: string }) {
+  const f = fraction(arrival);
+  const text = arrivalText(arrival);
   return (
-    <div className="flex flex-col gap-1 border-l-2 border-score-tepid pl-3" data-testid="review-arrival" data-phase={arrival.phase}>
-      <p className="text-xs text-gray-300 leading-snug">{text}</p>
-      <Outlets a={arrival} />
-    </div>
+    <span className={`flex flex-col gap-1.5 ${className}`} data-testid="review-arrival" data-phase={arrival.phase}>
+      <span className="flex items-start gap-1.5 leading-snug">
+        {variant === 'ring' && <span className="mt-0.5"><Ring f={f} /></span>}
+        <span>{text}</span>
+      </span>
+      {variant === 'bar' && (
+        <span
+          className="block h-1 w-28 rounded-full bg-white/15 overflow-hidden"
+          role="progressbar" aria-valuemin={0} aria-valuemax={arrival.expected}
+          aria-valuenow={Math.min(arrival.reviewCount, arrival.expected)} aria-label="Reviews in versus expected"
+        >
+          <span className="block h-full rounded-full bg-gray-300" style={{ width: `${Math.round(f * 100)}%` }} />
+        </span>
+      )}
+    </span>
   );
 }

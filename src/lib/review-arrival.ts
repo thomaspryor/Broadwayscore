@@ -219,3 +219,12 @@ export function buildReviewArrival(
     regularToCome: split.stillToCome,
   };
 }
+
+/** The one status line shown with the Critic Score (owner wording, BRO-7376). */
+export function arrivalText(a: Pick<ReviewArrival, 'phase' | 'reviewCount' | 'expected'>): string {
+  const n = a.reviewCount;
+  if (a.phase === 'waiting') return `No reviews yet, expect ~${a.expected} total`;
+  const noun = n === 1 ? 'review' : 'reviews';
+  if (n >= a.expected) return `${n} ${noun} so far, a few more may land`;
+  return `${n} ${noun} so far, more coming in, expect ~${a.expected} total`;
+}

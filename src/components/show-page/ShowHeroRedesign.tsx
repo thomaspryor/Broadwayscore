@@ -28,7 +28,7 @@
  * resumed when the user lands back on this page authenticated.
  */
 
-import ReviewArrivalStatus, { type ReviewArrivalVariant } from './ReviewArrivalStatus';
+import ReviewArrivalLine, { type ReviewArrivalVariant } from './ReviewArrivalStatus';
 import type { ReviewArrival } from '@/lib/review-arrival';
 import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -267,6 +267,9 @@ function Inner({
 
   const score = show.criticScore?.score ?? null;
   const reviewCount = show.criticScore?.reviewCount ?? 0;
+  // Opening-night status (BRO-7376): one short line with the score, in place of the review count.
+  const arrivalLine = reviewArrival ? <ReviewArrivalLine arrival={reviewArrival} variant={reviewArrivalVariant} /> : null;
+  const arrivalLineCentered = reviewArrival ? <ReviewArrivalLine arrival={reviewArrival} variant={reviewArrivalVariant} className="items-center" /> : null;
   const tier1And2Count = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const criticReviewsForBar = show.criticScore?.reviews ?? [];
   const tier = score !== null ? getScoreTier(score, show.category) : null;
@@ -651,7 +654,7 @@ function Inner({
                     </p>
                   )}
                   <p className="text-sm text-fg-muted mt-1">
-                    Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                    {arrivalLine ?? <>Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}</>}
                   </p>
                   <HeroRankLine ranks={ranks} market={show.category} />
                   {reviewAgeNote && (
@@ -680,7 +683,7 @@ function Inner({
           inline in the title column on lg+). Awaiting card replaces both when
           there aren't enough critic reviews. */}
       {!hasEnoughCriticReviews ? (
-        <AwaitingCard show={show} reviewCount={reviewCount} reviewsRemaining={reviewsRemaining} noReviewsExpected={noReviewsExpected} />
+        <AwaitingCard show={show} reviewCount={reviewCount} reviewsRemaining={reviewsRemaining} noReviewsExpected={noReviewsExpected} arrivalLine={arrivalLineCentered} />
       ) : (
         <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
           <a href="#critic-reviews" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
@@ -692,7 +695,7 @@ function Inner({
                 </p>
               )}
               <p className="text-xs text-fg-muted mt-0.5 leading-snug">
-                {reviewCount} critic {reviewCount === 1 ? 'review' : 'reviews'}
+                {arrivalLine ?? <>{reviewCount} critic {reviewCount === 1 ? 'review' : 'reviews'}</>}
               </p>
             </div>
           </a>
@@ -739,9 +742,6 @@ function Inner({
         </p>
       )}
 
-
-      {/* Opening-night status: some reviews in, more expected (BRO-7376). One block for every width and phase. */}
-      {reviewArrival && <ReviewArrivalStatus arrival={reviewArrival} variant={reviewArrivalVariant} />}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
       {hasEnoughCriticReviews && criticReviewsForBar.length > 0 && (
@@ -1048,7 +1048,7 @@ function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pic
   );
 }
 
-function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected = false }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore' | 'verdict'>>; reviewCount: number; reviewsRemaining: number; noReviewsExpected?: boolean }) {
+function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected = false, arrivalLine = null }: { arrivalLine?: React.ReactNode; show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore' | 'verdict'>>; reviewCount: number; reviewsRemaining: number; noReviewsExpected?: boolean }) {
   if (shouldShowReviewsSyncing(show)) {
     return (
       <div className="card p-4 text-center bg-surface-overlay border-white/5" data-testid="reviews-syncing">
@@ -1063,21 +1063,21 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected =
   // A long-closed one-off event with no reviews will not get a CriticScore;
   // say so instead of counting down to one (owner decision 2026-10-14).
   const title = noReviewsExpected ? 'No critic reviews expected' : isLiveTour(show) ? 'Reviews coming in' : 'Awaiting reviews';
-  const progress = noReviewsExpected ? 'We found no critic reviews for this event.' : (
+  const progress = arrivalLine ?? (noReviewsExpected ? 'We found no critic reviews for this event.' : (
     <>
       {show.status === 'announced' ? 'Reviews arrive after opening night' : show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? (isTour ? 'Tour starts soon' : 'Show opens soon') : isTour ? 'Critics in each city review the tour as it plays' : 'Not enough reviews yet'}
       {reviewCount > 0 ? ` · ${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'} collected` : null}
       {/* An announced show has not opened: no countdown to a CriticScore (BRO-5814). */}
       {reviewsRemaining > 0 && show.status !== 'announced' ? ` · ${reviewsRemaining} more for a CriticScore` : null}
     </>
-  );
+  ));
   return (
     <div className="card p-4 text-center bg-surface-overlay border-white/5">
       <p className="text-sm font-semibold text-gray-300 mb-0.5" data-testid={noReviewsExpected ? 'no-reviews-expected' : 'awaiting-reviews'}>{title}</p>
       {reviewCount > 0 ? (
         <a href="#critic-reviews" className="text-xs text-fg-muted hover:text-brand transition-colors">{progress}</a>
       ) : (
-        <p className="text-xs text-fg-muted">{progress}</p>
+        <div className="text-xs text-fg-muted">{progress}</div>
       )}
     </div>
   );
