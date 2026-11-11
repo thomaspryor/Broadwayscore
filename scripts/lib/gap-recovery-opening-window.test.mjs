@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { selectOpeningWindowShows, driverArgsFor } = require('./gap-recovery-opening-window.js');
+const { selectOpeningWindowShows, driverArgsFor, inNightlyWindow } = require('./gap-recovery-opening-window.js');
 const ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
 
 const SHOWS = [
@@ -46,4 +46,11 @@ test('a launchd job runs the opening-window script on a sub-hour interval', () =
   const m = plist.match(/<key>StartInterval<\/key>\s*<integer>(\d+)<\/integer>/);
   assert.ok(m && Number(m[1]) <= 3600, 'interval must be <= 1h');
   assert.ok(fs.existsSync(path.join(ROOT, 'scripts/gap-recovery-opening-window.js')));
+});
+
+test('ticks stay out of the nightly window and West End shows are not selected', () => {
+  assert.equal(inNightlyWindow(new Date(2026, 10, 9, 1, 30)), true);
+  assert.equal(inNightlyWindow(new Date(2026, 10, 9, 12, 0)), false);
+  const ids = selectOpeningWindowShows([{ id: 'w', category: 'west-end', openingDate: '2026-11-08', status: 'open' }], { nowMs: Date.parse('2026-11-09T03:00:00Z') });
+  assert.deepEqual(ids, []);
 });

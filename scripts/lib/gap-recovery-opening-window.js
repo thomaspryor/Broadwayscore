@@ -18,7 +18,8 @@
 const DAY_MS = 86400000;
 const WINDOW_DAYS = 4; // press night plus the stragglers; matches opening-grade's window shape
 
-const MARKETS = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
+// NYT reviews New York theatre only: West End shows never have an nytimes gap.
+const MARKETS = new Set(['broadway', 'off-broadway']);
 
 /** Shows whose opening night is within the last `days` (and not in the future by more than 1 day). */
 function selectOpeningWindowShows(shows, { nowMs = Date.now(), days = WINDOW_DAYS } = {}) {
@@ -38,4 +39,11 @@ function driverArgsFor(showId) {
   return [`--show=${showId}`, '--outlet=nytimes', '--recent-only'];
 }
 
-module.exports = { selectOpeningWindowShows, driverArgsFor, WINDOW_DAYS };
+// The 01:30 nightly takes the whole recovery lock for up to 90 min and records
+// 'busy' (no retry) if a child holds it, so ticks stay out of 01:20-03:10 local.
+function inNightlyWindow(date = new Date()) {
+  const m = date.getHours() * 60 + date.getMinutes();
+  return m >= 80 && m < 190;
+}
+
+module.exports = { selectOpeningWindowShows, driverArgsFor, inNightlyWindow, WINDOW_DAYS };
