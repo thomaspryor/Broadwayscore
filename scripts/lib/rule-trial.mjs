@@ -189,6 +189,7 @@ export function buildRecord({ cwd, base, src = 'HEAD', sessions, verdict, note, 
 
 export function recipe(d, branch) {
   return [
+    'If you are yourself a TRIAL SESSION, stop here: report that a trial is needed and do not start one.',
     `1. Push this branch (your session branch, not land/*) so a new session can check it out: ${branch || '<branch>'}.`,
     '2. Start one or two trial sessions with create_session: source_url https://github.com/thomaspryor/Broadwayscore, source_revision <that branch>, model sonnet.',
     '   Prompt: a realistic task the new guidance should change (the kind of request that made you write it), then:',
@@ -226,7 +227,11 @@ export function main(argv, { cwd = process.cwd(), out = console.log, err = conso
     const rows = d.hash ? readLedger(canonicalRoot(cwd), LEDGER).filter((r) => r.hash === d.hash) : [];
     const passed = rows.some((r) => r.verdict === 'pass');
     const needed = Boolean(d.hash) && d.words >= min && !passed;
-    if (a.json) { out(JSON.stringify({ ...d, minWords: min, trialNeeded: needed, recorded: rows })); return 0; }
+    // Only committed text is measured: say so when guidance files have uncommitted edits.
+    const dirty = (git(cwd, ['-c', 'core.quotePath=false', 'status', '--porcelain']) || '')
+      .split('\n').map((l) => l.slice(3).replace(/^.* -> /, '')).filter((f) => f && isGuidance(f));
+    if (a.json) { out(JSON.stringify({ ...d, minWords: min, trialNeeded: needed, recorded: rows, uncommitted: dirty })); return 0; }
+    if (dirty.length) out(`Uncommitted guidance edits are not counted (commit, then rerun): ${dirty.join(', ')}`);
     if (!d.hash) { out('No written guidance changed on this branch. No trial needed.'); return 0; }
     out(`Guidance changed: ${d.files.join(', ')}: ${d.words} words (a trial is needed from ${min}).`);
     if (passed) { out('A passing trial is recorded for this exact text.'); return 0; }

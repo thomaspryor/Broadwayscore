@@ -176,6 +176,12 @@ test('main record + status: writes the ledger row that clears the warning', () =
     const io = { cwd: dir, out: (s) => outs.push(s), err: (s) => errs.push(s) };
     assert.equal(main(['status', '--base', 'main'], io), 0);
     assert.match(outs.join('\n'), /Trial needed[\s\S]*create_session[\s\S]*TRIAL SESSION/);
+    assert.match(outs.join('\n'), /yourself a TRIAL SESSION, stop here/);
+    fs.appendFileSync(path.join(dir, 'CLAUDE.md'), 'an uncommitted line\n');
+    outs.length = 0;
+    assert.equal(main(['status', '--base', 'main'], io), 0);
+    assert.match(outs.join('\n'), /Uncommitted guidance edits are not counted[^\n]*CLAUDE\.md/);
+    git(dir, 'checkout', '--', 'CLAUDE.md');
     const f = path.join(dir, 'gs.json');
     fs.writeFileSync(f, JSON.stringify(sessionJson('session_t1', 'refs/heads/work')));
     assert.equal(main(['record', '--base', 'main', '--from-json', f, '--verdict', 'pass', '--note', 'followed the new rule in a real trial'], io), 0, errs.join('\n'));
