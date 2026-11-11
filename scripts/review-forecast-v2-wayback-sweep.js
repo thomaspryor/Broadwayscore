@@ -15,6 +15,8 @@
  * Output (checkpointed after every show, resumable): data/audit/review-forecast-v2-wayback-audience.json
  */
 'use strict';
+const { hasHelpFlag } = require('./lib/cli-help.js');
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/review-forecast-v2-wayback-sweep.js --ids-from=<json> [--limit=N] [--max-paid=N] [--lookup-only] (BRO-7347 research sweep)'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
