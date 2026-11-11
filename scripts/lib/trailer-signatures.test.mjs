@@ -121,6 +121,7 @@ test('The Telegraph: listing line + box-office promo are a trailer; a cut-off re
     ' Until Nov 7. Tickets: rsc.org.uk Book tickets via Tickets | Telegraph Media Group provided by London Theatre Direct',
     '\n\nBooking to Feb 12; www.matildathemusical.com\n\nThis review also appears in Seven magazine, free with The Sunday Telegraph',
     ' Until Oct 20. Purchase Strictly Ballroom tickets or call 0844 871 2118',
+    '\n\nBooking until Oct 18, call 020 3989 5455',
   ];
   for (const e of endings) {
     assert.equal(T.stripTelegraphFooter(BODY + e), BODY, JSON.stringify(e));

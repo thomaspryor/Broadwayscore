@@ -248,8 +248,8 @@ const TELEGRAPH_MONTH = '\\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|
 const TELEGRAPH_DATE = `(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})`;
 const TELEGRAPH_OPENER_RE = new RegExp(`^(?:Until\\s+${TELEGRAPH_DATE}|Booking\\s+(?:to|until)\\s+${TELEGRAPH_DATE}|Book(?:ing)?\\s+tickets\\b|Tickets?(?::|\\s+\\d)|At\\s+(?:the\\s+)?\\p{Lu}|(?!(?:Then|But|And|So|Yet|It|He|She|They|We|I|There|Here|Still|Even|Now)\\b)[\\p{Lu}\\d][\\w'’&.-]*(?:\\s+[\\w'’&.()-]+){0,6},\\s+(?:London\\s+(?:[A-Z]{1,2}\\d{1,2}[A-Z]?\\b|\\()|(?:to|until)\\s+${TELEGRAPH_DATE}))`, 'u');
 // later sentences of a listing ("... Tickets: 020 ...", "Purchase X tickets or call 0844 ...")
-const TELEGRAPH_HARD_EVIDENCE_RE = /\b[a-z0-9-]+\.(?:co\.uk|org\.uk|com|org|net|london|uk)\b|\b0\d{3,4}\s?\d{3}\s?\d{3,4}\b|^Then touring\b/;
-const TELEGRAPH_EVIDENCE_RE = new RegExp(`\\b(?:[Uu]ntil|to)\\s+(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})|\\b[a-z0-9-]+\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)\\b|\\b0\\d{3,4}\\s?\\d{3}\\s?\\d{3,4}\\b|\\bTickets?:`);
+const TELEGRAPH_HARD_EVIDENCE_RE = /\b[a-z0-9-]+\.(?:co\.uk|org\.uk|com|org|net|london|uk)\b|\b0\d{2,4}\s?\d{3,4}\s?\d{3,4}\b|^Then touring\b/;
+const TELEGRAPH_EVIDENCE_RE = new RegExp(`\\b(?:[Uu]ntil|to)\\s+(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})|\\b[a-z0-9-]+\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)\\b|\\b0\\d{2,4}\\s?\\d{3,4}\\s?\\d{3,4}\\b|\\bTickets?:`);
 // the listing ends on a date, a domain, a number or "book tickets", never on a dangling word
 const TELEGRAPH_END_RE = new RegExp(`(?:\\d|${TELEGRAPH_MONTH}|\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)|\\bbook tickets|\\))\\.?\\s*$`);
 
