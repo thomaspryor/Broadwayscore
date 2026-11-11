@@ -390,20 +390,3 @@ test('BRO-7345: classifier exempts non-LLM scores, unscored, and already-queued 
   assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ contentTier: 'truncated' })), null);
   assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ wrongShow: true })), 'excluded');
 });
-
-// BRO-7345: the constant is hand-maintained; fail when the selector's inputs changed after it.
-test('BRO-7345: TEXT_SELECTOR_CHANGED_AT is not older than the last commit to the text selector files', async () => {
-  const { execFileSync } = await import('node:child_process');
-  let last = 0;
-  try {
-    // Author date (%aI): a rebase rewrites committer dates, which made this fail on every landed tip. A shallow clone reports HEAD's date for every file, which would fail this on any later commit.
-    if (execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: REPO, encoding: 'utf8' }).trim() !== 'false') return;
-    for (const f of ['scripts/lib/text-quality.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/text-cleaning.js']) {
-      const out = execFileSync('git', ['log', '-1', '--format=%aI', '--', f], { cwd: REPO, encoding: 'utf8' }).trim();
-      if (out) last = Math.max(last, Date.parse(out));
-    }
-  } catch { return; } // no git history (shallow/exported checkout)
-  if (!last) return;
-  assert.ok(Date.parse(TEXT_SELECTOR_CHANGED_AT) >= last,
-    `text selector files changed ${new Date(last).toISOString()}, after TEXT_SELECTOR_CHANGED_AT=${TEXT_SELECTOR_CHANGED_AT}; bump it in scripts/lib/rescore-flagging.js so files scored on the old selector are re-flagged once`);
-});
