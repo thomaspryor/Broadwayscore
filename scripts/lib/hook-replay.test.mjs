@@ -38,7 +38,8 @@ test('libsNamedIn: a lib the hook runs counts; comment and echo mentions do not'
 test('hookScope of this repo includes the Stop-check libs verify-edits.sh runs', () => {
   const s = hookScope(REPO, 'HEAD');
   for (const f of ['scripts/lib/root-cause-stop.mjs', 'scripts/lib/review-coverage.mjs', 'scripts/lib/decision-restate.js']) assert.ok(s.libs.includes(f), `${f} missing from ${s.libs.join(', ')}`);
-  assert.equal(s.dir, '.claude/hooks/');
+  assert.equal(s.hook, '.claude/hooks/verify-edits.sh');
+  assert.ok(!s.libs.includes('scripts/lib/land-preflight.mjs'), 'a PreToolUse-only lib is not replayable, so not in scope');
 });
 
 test('stopPoints, recorded Stops: cut before the turn text, hook 1 errors are blocks, hook 2 errors are not', () => {
@@ -160,7 +161,9 @@ test('hookScopeDiff + hookReplayWarning: warn on a hook-lib change with no repla
 
     fs.writeFileSync(path.join(dir, 'README.md'), 'y\n');
     fs.writeFileSync(path.join(dir, 'scripts', 'lib', 'doc-only.js'), '2;\n');
-    git(dir, 'commit', '-qam', 'out of scope');
+    fs.writeFileSync(path.join(dir, '.claude', 'hooks', 'pre-push-other.sh'), 'node scripts/lib/doc-only.js\n');
+    git(dir, 'add', '-A');
+    git(dir, 'commit', '-qm', 'out of scope: README, a lib only a non-Stop hook runs, a new non-Stop hook');
     assert.equal(hookScopeDiff(dir, 'main', 'HEAD').hash, null);
     assert.equal(hookReplayWarning({ root: dir, src: 'HEAD', base: 'main' }), null);
 

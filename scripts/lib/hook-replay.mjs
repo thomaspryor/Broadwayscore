@@ -37,7 +37,6 @@ import { fileURLToPath } from 'node:url';
 
 export const HOOK = '.claude/hooks/verify-edits.sh';
 export const LEDGER = '.claude/hook-replays.jsonl';
-const HOOK_DIR = '.claude/hooks/';
 const SECRET_ENV = ['LINEAR_API_KEY', 'OPENAI_API_KEY', 'GEMINI_API_KEY', 'GOOGLE_API_KEY', 'ANTHROPIC_API_KEY', 'GH_TOKEN', 'GITHUB_TOKEN', 'RESEND_API_KEY'];
 
 function git(cwd, args, opts = {}) {
@@ -63,18 +62,17 @@ export function libsNamedIn(scriptText) {
   return [...found].sort();
 }
 
-/** Hook scope at `rev`: every file under .claude/hooks/ plus the scripts/lib files those hooks load. */
+/**
+ * Hook scope at `rev`: what this replay can test, i.e. the Stop hook (verify-edits.sh, the only
+ * Stop hook in .claude/settings.json) and the scripts/lib files it runs. PreToolUse hooks are
+ * not replayed, so a change to them is out of scope.
+ */
 export function hookScope(cwd, rev) {
-  const listed = gitOut(cwd, ['ls-tree', '-r', '--name-only', rev, '--', HOOK_DIR]);
-  const libs = new Set();
-  for (const f of (listed || '').split('\n').filter((x) => x.endsWith('.sh'))) {
-    const text = gitOut(cwd, ['show', `${rev}:${f}`]);
-    if (text) libsNamedIn(text).forEach((l) => libs.add(l));
-  }
-  return { dir: HOOK_DIR, libs: [...libs].sort() };
+  const text = gitOut(cwd, ['show', `${rev}:${HOOK}`]);
+  return { hook: HOOK, libs: text ? libsNamedIn(text) : [] };
 }
 
-export const inHookScope = (file, scope) => file.startsWith(scope.dir) || scope.libs.includes(file);
+export const inHookScope = (file, scope) => file === scope.hook || scope.libs.includes(file);
 
 /** -> { files, hash } for the hook-scope part of base...src; hash null when nothing in scope changed. */
 export function hookScopeDiff(cwd, base, src = 'HEAD') {
