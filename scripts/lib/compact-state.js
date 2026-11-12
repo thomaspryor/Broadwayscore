@@ -253,6 +253,7 @@ const THRASH_WINDOW_MS = 15 * 60 * 1000; // compactions inside this window count
 const THRASH_RECENT = 2;                 // the 2nd compact inside the window already warns
 const THRASH_LIFETIME = 8;               // a session this old is a poor vehicle for heavy work
 const COMPACT_LOG_KEEP = 40;
+const COMPACT_LOG_MAX_AGE_MS = 7 * 24 * 3600 * 1000; // lifetime count must outlive the 6h checkpoint TTL
 
 function compactLogPath(sessionId, transcriptPath) {
   return statePath(sessionId, transcriptPath).replace(/\.md$/, '.compactions.json');
@@ -311,7 +312,8 @@ function pruneStale(now = Date.now()) {
   try { names = fs.readdirSync(STATE_DIR); } catch { return; }
   for (const f of names) {
     const p = path.join(STATE_DIR, f);
-    try { if (now - fs.statSync(p).mtimeMs > MAX_AGE_MS) fs.unlinkSync(p); } catch { /* vanished */ }
+    const ttl = f.endsWith('.compactions.json') ? COMPACT_LOG_MAX_AGE_MS : MAX_AGE_MS;
+    try { if (now - fs.statSync(p).mtimeMs > ttl) fs.unlinkSync(p); } catch { /* vanished */ }
   }
 }
 
@@ -353,20 +355,22 @@ function restoreCheckpoint(input) {
     }
   } catch (err) { logError(err); } // a checkpoint failure must not discard the guard
   if (!md && !guard) return null;
-  if (md) {
-    // Read at restore time: a session's env stays frozen when repo settings change.
-    // Settings failures must never discard an otherwise usable checkpoint.
-    try {
-      const root = process.env.CLAUDE_PROJECT_DIR || path.resolve(__dirname, '../..');
-      const settings = JSON.parse(fs.readFileSync(path.join(root, '.claude/settings.json'), 'utf8'));
-      const warning = getStaleEnvWarning(settings && settings.env, process.env);
-      if (warning) md = `${md.slice(0, MAX_CHARS - warning.length - 2)}\n\n${warning}`;
-    } catch { /* unreadable settings: restore the checkpoint unchanged */ }
-  }
+  // Read at restore time: a session's env stays frozen when repo settings change.
+  // Settings failures must never discard an otherwise usable checkpoint.
+  let warning = '';
+  try {
+    const root = process.env.CLAUDE_PROJECT_DIR || path.resolve(__dirname, '../..');
+    const settings = JSON.parse(fs.readFileSync(path.join(root, '.claude/settings.json'), 'utf8'));
+    warning = getStaleEnvWarning(settings && settings.env, process.env);
+  } catch { /* unreadable settings: restore without the stale-env note */ }
+  // Guard and stale-env note are the high-value text: both always survive; only the checkpoint body is trimmed.
+  const fixed = [guard, warning].filter(Boolean);
+  const room = Math.max(0, MAX_CHARS - fixed.reduce((n, t) => n + t.length + 2, 0));
+  const body = md ? (md.length > room ? `${md.slice(0, Math.max(0, room - 15))}\n...(truncated)` : md) : '';
   return {
     hookSpecificOutput: {
       hookEventName: 'SessionStart',
-      additionalContext: [guard, md && guard ? md.slice(0, Math.max(0, MAX_CHARS - guard.length - 2)) : md].filter(Boolean).join('\n\n'),
+      additionalContext: [guard, body, warning].filter(Boolean).join('\n\n'),
     },
   };
 }

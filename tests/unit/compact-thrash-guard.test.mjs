@@ -134,3 +134,31 @@ test('guard plus checkpoint stays within MAX_CHARS and the guard states no stale
   assert.ok(ctx.length <= cs.MAX_CHARS + 2, `${ctx.length} > ${cs.MAX_CHARS}`);
   assert.doesNotMatch(ctx, /240K|185K|276K/);
 });
+
+test('stale-env warning survives next to the guard and a full-size checkpoint (ship-check BRO-7397)', () => {
+  const input = { session_id: 'sess-stale', transcript_path: '/x/sess-stale.jsonl' };
+  const now = Date.now();
+  cs.recordCompaction(input, now - 2 * MIN);
+  cs.recordCompaction(input, now - 1 * MIN);
+  fs.writeFileSync(cs.statePath(input.session_id, input.transcript_path), 'x'.repeat(cs.MAX_CHARS - 100));
+  const prev = process.env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE;
+  process.env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE = '50'; // differs from settings.json (92)
+  try {
+    const ctx = cs.restoreCheckpoint(input).hookSpecificOutput.additionalContext;
+    assert.match(ctx, /THRASH GUARD/);
+    assert.match(ctx, /Stale env/);
+    assert.ok(ctx.length <= cs.MAX_CHARS + 6, `${ctx.length} > ${cs.MAX_CHARS}`);
+  } finally {
+    if (prev === undefined) delete process.env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE; else process.env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE = prev;
+  }
+});
+
+test('pruneStale keeps a compaction log that is older than the checkpoint TTL', () => {
+  const input = { session_id: 'sess-prune', transcript_path: '/x/sess-prune.jsonl' };
+  cs.recordCompaction(input);
+  const log = cs.compactLogPath(input.session_id, input.transcript_path);
+  const old = new Date(Date.now() - 7 * 60 * 60 * 1000);
+  fs.utimesSync(log, old, old);
+  cs.pruneStale();
+  assert.ok(fs.existsSync(log), 'compaction log was pruned at the 6h checkpoint TTL');
+});
