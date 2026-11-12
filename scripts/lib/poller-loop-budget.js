@@ -145,13 +145,35 @@ function isFirstWave(show, files, now = new Date(), minNew = 3) {
   return tonight < Math.max(1, minNew);
 }
 
-module.exports = { rotateShows, showTimeoutSec, orderPollShows, pollTier, isHot, inHotSpan, shouldBreakEarly, isFirstWave, HOT_SPAN_HOURS };
+// BRO-7033 (The Verge, 2026-11-05): a targeted run (show_id input) skipped orderPollShows, so
+// its Find step never wrote `window=` and the per-show _pending drain after each poll (BRO-7004 /
+// BRO-7032) never ran for it. Since BRO-7117 auto runs skip a show while a targeted run owns it, so
+// a no-byline stub the targeted run found waited for the NEXT run's pre-loop drain (TheaterMania
+// on The Verge's night waited 03:42Z -> 04:34Z and missed the +2h bar).
+// Returns the ids (of `ids`) in their press-night window, by the same rule as the auto order.
+function windowShowIds(ids, shows, now = new Date()) {
+  const want = new Set((ids || []).map((s) => String(s).trim()).filter(Boolean));
+  return orderPollShows((shows || []).filter((s) => s && want.has(s.id)), now).window;
+}
+
+module.exports = { rotateShows, showTimeoutSec, orderPollShows, windowShowIds, pollTier, isHot, inHotSpan, shouldBreakEarly, isFirstWave, HOT_SPAN_HOURS };
 
 if (require.main === module) {
   const [cmd, a, b, c] = process.argv.slice(2);
   if (cmd === 'rotate') console.log(rotateShows(String(a || '').split(','), b, c).join(','));
   else if (cmd === 'timeout') console.log(showTimeoutSec(Number(a), Number(b) || 600));
-  else if (cmd === 'first-wave') {
+  else if (cmd === 'window') {
+    // window <csvIds> <showsJson> [nowIso]: prints the in-window ids (csv). Fails open to an empty
+    // line: the next run's pre-loop drain still promotes any stub, so nothing is lost.
+    let out = '';
+    try {
+      const shows = JSON.parse(require('fs').readFileSync(b, 'utf8'));
+      const now = c ? new Date(c) : new Date();
+      if (Number.isNaN(now.getTime())) throw new Error(`bad now ${c}`);
+      out = windowShowIds(String(a || '').split(','), Array.isArray(shows) ? shows : shows.shows, now).join(',');
+    } catch (e) { console.error(`::warning::press-night window check failed for ${a}: ${e.message}`); out = ''; }
+    console.log(out);
+  } else if (cmd === 'first-wave') {
     // first-wave <showId> <showsJson> <reviewTextsDir> [minNew]: prints 1 or 0. Reads
     // only TRACKED files (git ls-files), so files written in this run do not count.
     const fs = require('fs');
@@ -172,5 +194,5 @@ if (require.main === module) {
     // break <polled> <total> <front> <mainFrontEnd> <hotNewCount> <firstWaveNewCount> [minNew]
     const [, p, t, f, m, h, fwn, mn] = process.argv.slice(2);
     console.log(shouldBreakEarly({ polled: Number(p), total: Number(t), front: Number(f), mainFrontEnd: Number(m), hotNewCount: Number(h), firstWaveNewCount: Number(fwn) || 0, minNew: mn === undefined ? 3 : Number(mn) }) ? '1' : '0');
-  } else { console.error('usage: rotate <csv> <seed> | timeout <remainingSec> [capSec] | first-wave <id> <showsJson> <dir> | break ...'); process.exit(2); }
+  } else { console.error('usage: rotate <csv> <seed> | timeout <remainingSec> [capSec] | window <csv> <showsJson> [nowIso] | first-wave <id> <showsJson> <dir> | break ...'); process.exit(2); }
 }
