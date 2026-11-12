@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-12T03:35:03.040Z",
+  "generatedAt": "2026-11-12T04:08:34.468Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 93,
+    "avgScoreDiff": 5
   },
   "syndicationPairs": [
     {
@@ -162,7 +162,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Clive Davis",
+      "showId": "cloud-9-west-end-2026",
+      "primaryOutlet": "sunday-times",
+      "secondaryOutlet": "times-uk",
+      "primaryFile": "sunday-times--clive-davis.json",
+      "secondaryFile": "times-uk--clive-davis.json",
+      "similarity": 93,
+      "primaryScore": 39,
+      "secondaryScore": 44,
+      "scoreDiff": 5
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
