@@ -206,7 +206,7 @@ const FLAG_FIELDS = new Set([
   'manualContentTier', 'originalScoreCleared',
   // BRO-3963: cycle edges/evidence, inherited-flag override, and syndication.
   'duplicateTextOf', 'duplicateOfFlagInheritanceCleared', 'fullText',
-  'isSyndicatedDuplicate', 'crossOutletDuplicate', 'crossOutletPrimaryFile',
+  'isSyndicatedDuplicate', 'syndicatedPrimaryFile', 'crossOutletDuplicate', 'crossOutletPrimaryFile', // BRO-7327: the pointer decides inclusion (self-pointer)
   'criticName', 'outletId', 'outlet',
   'publishDate', // A reference's pre-window exclusion can recover its copy.
   // BRO-6233: decideInclusion's CV wrongArticle routing (cvWrongArticlePromotion)

@@ -280,8 +280,8 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
  * BRO-7327 cousin (BRO-4891 class): true when the record's syndicatedPrimaryFile names the
  * record itself. A file cannot be a syndicated copy of itself; the stale pointer is left
  * behind when the real primary was renamed or merged onto this filename, and honouring it
- * drops the outlet's only copy of the review (5 complete reviews, e.g. Isherwood on
- * a-little-night-music-2009, Cavendish on cabaret West End). Pointer forms seen in data:
+ * drops the outlet's only copy of the review (4 complete reviews recovered by this rule, e.g. Isherwood on
+ * a-little-night-music-2009, Rooney on catch-me-if-you-can-2011). Pointer forms seen in data:
  * "<file>.json" (same show) and "<showId>/<file>.json". A pointer into ANOTHER show's folder
  * is not a self-pointer (handled by heal-dangling-syndication.js).
  * @param {object} data
