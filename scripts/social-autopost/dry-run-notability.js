@@ -35,7 +35,7 @@ function rows({ days = 21, now = Date.now() } = {}) {
       && ['must-see', 'recommended', 'worth-seeing'].includes(getScoreTierId(score, subject.category))
       ? NETWORKS.filter(n => handleFor(handles, subject.id, n)) : [];
     out.push({ date: p.dueAt.slice(0, 10), type: p.type || 'score', id: p.showId || p.id, category: subject && subject.category, ok,
-      why: ok ? 'broadway or notable' : !subject ? 'show not found' : sig ? `not notable (${sig.reviewCount} reviews, ${sig.t1Count} tier-1, ${sig.curatedAudience} audience) or not a Broadway-account market` : 'no',
+      why: ok ? 'broadway or notable' : !subject ? 'show not found' : sig ? `not notable (${sig.t1Count} tier-1, ${sig.curatedAudience} audience; Off-Broadway needs 4+ tier-1 or 500+; ${sig.reviewCount} reviews) or not a Broadway-account market` : 'no',
       kept: p.type === 'weekly-roundup' ? kept : undefined, tagged });
   }
   return out;

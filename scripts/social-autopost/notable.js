@@ -1,17 +1,18 @@
 /**
  * Which shows the Broadway Scorecard accounts post about (BRO-7413, owner 2026-11-12):
- * Broadway shows, and Off-Broadway shows the homepage would call notable. Everything else
+ * Broadway shows, and Off-Broadway shows with 4+ tier-1 reviews or 500+ ticket-buyer audience
+ * (BRO-7423, owner option B; thresholds in config.js NOTABLE_ONLY). Everything else
  * (West End, Off-West End, regional, touring, opera) stays off these accounts.
  *
- * Off-Broadway uses the homepage's own rule (scripts/lib/homepage-notability.js, a ported
- * copy of src/lib/homepage-notability.ts with a parity test). Its signals come from the
+ * This is stricter than the homepage rule on purpose and does not use isHomepageNotable.
+ * homepageInclude / homepageExclude still override. Its signals come from the
  * site's public show file (public/data/shows/<id>.json), the numbers the site displays:
  * rc (review count), cs (Critic Score), rv[].t (outlet tier), au.sources[].c (audience).
  */
 
 const fs = require('fs');
 const path = require('path');
-const { isHomepageNotable } = require('../lib/homepage-notability');
+const { NOTABLE_ONLY } = require('./config');
 const { isBroadwayCategory, isOffBroadwayCategory } = require('../lib/venue-classification');
 
 const SLIM_DIR = path.join(__dirname, '..', '..', 'public', 'data', 'shows');
@@ -58,7 +59,10 @@ function socialNotable(show, slim = fileSlim) {
   // isBroadwayCategory treats a missing category as Broadway; this gate fails closed on it instead.
   if (show.category && isBroadwayCategory(show)) return true;
   if (!isOffBroadwayCategory(show)) return false;
-  return isHomepageNotable(signalsFor(show, slim[show.id]));
+  const sig = signalsFor(show, slim[show.id]);
+  if (sig.homepageExclude) return false;
+  if (sig.homepageInclude) return true;
+  return sig.t1Count >= NOTABLE_ONLY.offBroadwayMinT1 || sig.curatedAudience >= NOTABLE_ONLY.offBroadwayMinAudience;
 }
 
 module.exports = { socialNotable, signalsFor, fileSlim };

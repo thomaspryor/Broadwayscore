@@ -85,9 +85,8 @@ const HIGH_PROFILE = {
 
 // WHICH SHOWS POST AT ALL (BRO-7413, owner 2026-11-12: "post less, just with important shows like
 // Broadway shows, really, and then any high importance off-Broadway shows"). The Broadway accounts
-// carry Broadway shows and the Off-Broadway shows the homepage calls notable (notable.js, rule in
-// src/lib/homepage-notability.ts: 4+ tier-1 reviews, or 18+ reviews, or a known property with 250+
-// audience reviews, or an acclaimed revival; homepageInclude/homepageExclude override). West End,
+// carry Broadway shows and the Off-Broadway shows that clear the stricter social bar below
+// (notable.js; homepageInclude/homepageExclude still override). West End,
 // Off-West End, opera, touring and regional shows no longer post to them. It applies to every post
 // type (score, backfill, closing soon, roundup, London compare) because routing.targetSets enforces it.
 // THIS REVERSES BRO-6920 below ("never ask is this a major show"): the floors under it still decide
@@ -95,7 +94,13 @@ const HIGH_PROFILE = {
 // only when they clear the notability rule. Touring/regional code and floors stay dormant, not deleted.
 //
 // Set enabled false to go back to posting every eligible show (the pre-BRO-7413 behaviour).
-const NOTABLE_ONLY = { enabled: true };
+//
+// OFF-BROADWAY BAR (BRO-7423, owner 2026-11-12, option B: "an Off-Broadway show posts only if at least 4
+// major critics reviewed it or it has a big audience following"). Social only: the homepage keeps its own
+// looser rule (isHomepageNotable). offBroadwayMinT1 equals the homepage's tier-1 threshold on purpose, but is
+// its own number so the two rules can move apart. Audience is the ticket-buyer sum from notable.js signalsFor.
+// Owner-approved briefs (BRO-7417) bypass this gate and are not affected.
+const NOTABLE_ONLY = { enabled: true, offBroadwayMinT1: 4, offBroadwayMinAudience: 500 };
 
 // Score-post floors layered on the shared gate, which carries only the opening-night
 // email's Broadway and London floors. The floors ask only "is the score settled",

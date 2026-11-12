@@ -30,17 +30,21 @@ test('a Broadway show posts', () => {
   assert.equal(events(show(), [3, 3, 8]).length, 1);
 });
 
-test('an off-Broadway show with 18+ reviews posts; one with 10 reviews and 1 tier-1 does not', () => {
-  const ob = id => show({ id, category: 'off-broadway', venue: 'The Public Theater', openingDate: '2026-11-05' });
-  assert.equal(events(ob('big-ob-2026'), [2, 4, 12]).length, 1, '18 reviews');
-  assert.equal(events(ob('small-ob-2026'), [1, 3, 6]).length, 0, '10 reviews, 1 tier-1');
+test('an off-Broadway show posts only with 4+ tier-1 critics or 500+ audience (BRO-7423)', () => {
+  const ob = (id, over) => show({ id, category: 'off-broadway', venue: 'The Public Theater', openingDate: '2026-11-05', ...over });
+  assert.equal(events(ob('four-t1-2026'), [4, 2, 4]).length, 1, '4 tier-1');
+  assert.equal(events(ob('big-aud-2026'), [2, 4, 12], 658).length, 1, '2 tier-1, 658 audience (In the Heights)');
+  assert.equal(events(ob('edge-aud-2026'), [1, 3, 6], 500).length, 1, '500 audience is the bar');
+  assert.equal(events(ob('slam-2026'), [2, 4, 17], 369).length, 0, '23 reviews, 2 tier-1, 369 audience (Slam Frank)');
+  assert.equal(events(ob('many-reviews-2026'), [3, 4, 14], 0).length, 0, '21 reviews, 3 tier-1: review count no longer counts');
+  assert.equal(events(ob('revival-2026', { isRevival: true }), [1, 3, 6], 300).length, 0, 'known property with 300 audience no longer posts');
+  assert.equal(events(ob('acclaimed-2026', { isRevival: true }), [1, 3, 0], 0).length, 0, 'acclaimed revival no longer posts');
 });
 
-test('an off-Broadway show with 4 tier-1 reviews posts, and so does a known property with a real audience', () => {
+test('homepageInclude and homepageExclude still decide off-Broadway posting', () => {
   const ob = over => show({ id: 'ob-2026', category: 'off-broadway', ...over });
-  assert.equal(events(ob(), [4, 2, 4]).length, 1, '4 tier-1');
-  assert.equal(events(ob({ isRevival: true }), [1, 3, 6], 300).length, 1, 'known property, 300 audience reviews');
-  assert.equal(events(ob({ homepageExclude: true }), [4, 4, 12]).length, 0, 'editorial veto wins');
+  assert.equal(socialNotable(ob({ homepageInclude: true }), { 'ob-2026': pub(0, 1, 2) }), true, 'include forces in');
+  assert.equal(socialNotable(ob({ homepageExclude: true }), { 'ob-2026': pub(4, 4, 12, 900) }), false, 'exclude wins');
 });
 
 test('a West End show posts nothing to the Broadway accounts, even with enough reviews', () => {
@@ -59,7 +63,7 @@ test('an opera, regional or touring show posts nothing to the Broadway accounts'
 });
 
 test('a London compare posts only when its New York show qualifies', () => {
-  const slim = { 'small-ob-2026': pub(1, 3, 6), 'big-ob-2026': pub(2, 4, 12) };
+  const slim = { 'small-ob-2026': pub(2, 3, 6, 369), 'big-ob-2026': pub(4, 2, 4) };
   for (const [id, want] of [['small-ob-2026', false], ['big-ob-2026', true]]) {
     const s = show({ id, category: 'off-broadway' });
     assert.equal(sel.isEligibleShow(s, { slim }), want, id);
@@ -69,7 +73,7 @@ test('a London compare posts only when its New York show qualifies', () => {
 test('the weekly roundup lists only shows that qualify', () => {
   const shows = [show({ id: 'b1-2026', openingDate: '2026-11-04' }), show({ id: 'b2-2026', openingDate: '2026-11-04' }),
     show({ id: 'ob-small-2026', category: 'off-broadway', openingDate: '2026-11-04' }), show({ id: 'we1-2026', category: 'west-end', openingDate: '2026-11-04' })];
-  const slim = { 'b1-2026': pub(3, 3, 8), 'b2-2026': pub(3, 3, 8), 'ob-small-2026': pub(1, 3, 6), 'we1-2026': pub(6, 4, 10) };
+  const slim = { 'b1-2026': pub(3, 3, 8), 'b2-2026': pub(3, 3, 8), 'ob-small-2026': pub(2, 4, 17, 369), 'we1-2026': pub(6, 4, 10) };
   const reviewsByShow = Object.fromEntries(shows.map(s => [s.id, reviews(3, 3, 8)]));
   const got = sel.roundupCandidates('2026-11-06', 'broadway', { shows, reviewsByShow, slim, getOutletTier });
   assert.deepEqual(got.map(s => s.id).sort(), ['b1-2026', 'b2-2026']);
@@ -84,6 +88,10 @@ test('opera still routes to its own accounts once they are configured (the gate 
 test('socialNotable: Broadway always, other categories never, no public file means not notable', () => {
   assert.equal(socialNotable(show(), {}), true);
   assert.equal(socialNotable(show({ category: 'off-broadway' }), {}), false);
+  const ob = show({ category: 'off-broadway' });
+  assert.equal(socialNotable(ob, { 'x-2026': pub(4, 0, 0) }), true);
+  assert.equal(socialNotable(ob, { 'x-2026': pub(3, 9, 9, 499) }), false);
+  assert.equal(socialNotable(ob, { 'x-2026': pub(0, 0, 0, 500) }), true);
   assert.equal(socialNotable(show({ category: 'west-end' }), { 'x-2026': pub(9, 9, 9) }), false);
 });
 
