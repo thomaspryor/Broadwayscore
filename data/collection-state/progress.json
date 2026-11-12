@@ -307,7 +307,13 @@
     "six-tour-2022/fandango--unknown.json",
     "six-tour-2022/orlando-sentinel--matthew-j-palm.json",
     "mj-2022/variety--peter-marks.json",
-    "mj-2022/broadwaynews--charles-isherwood.json"
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "cloud-9-west-end-2026/sunday-times--clive-davis.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/independent--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -512,7 +518,7 @@
     ]
   },
   "startTime": "2026-11-11T19:44:43.602Z",
-  "lastProcessed": "mj-2022/broadwaynews--charles-isherwood.json",
+  "lastProcessed": "the-lives-of-others-west-end-2026/independent--unknown.json",
   "log": [
     {
       "t": "2026-11-11T19:46:26.880Z",
@@ -610,6 +616,17 @@
     },
     {
       "t": "2026-11-11T23:00:37.734Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-12T02:13:15.706Z",
+      "event": "bb-session",
+      "session": "e316856e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-12T02:13:16.395Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
