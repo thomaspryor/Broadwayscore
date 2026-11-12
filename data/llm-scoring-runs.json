@@ -1,24 +1,5 @@
 [
   {
-    "startedAt": "2026-11-10T23:53:44.548Z",
-    "completedAt": "2026-11-10T23:53:44.550Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42925273146",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-11T00:00:11.899Z",
     "completedAt": "2026-11-11T00:00:11.900Z",
     "totalReviews": 0,
@@ -566394,21 +566375,56 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-12T18:39:56.233Z",
-    "completedAt": "2026-11-12T18:39:56.274Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-12T18:34:28.630Z",
+    "completedAt": "2026-11-12T18:38:13.759Z",
+    "totalReviews": 82018,
+    "processed": 43,
+    "skipped": 81959,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 274143,
+      "output": 14663,
+      "cacheRead": 201771,
+      "cacheWrite": 11327,
+      "total": 749447
+    },
+    "costUsd": 0.545995725,
+    "runId": "43280085895",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-12T18:38:32.439Z",
+    "completedAt": "2026-11-12T18:43:45.499Z",
+    "totalReviews": 141,
+    "processed": 141,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 367522,
+      "output": 31709,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 399231
     },
-    "costUsd": 0,
-    "runId": "43280649053",
+    "costUsd": 1.02337,
+    "runId": "43280085895",
     "source": "comparative-rescore",
     "errorDetails": []
   }
