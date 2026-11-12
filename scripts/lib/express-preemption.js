@@ -72,7 +72,10 @@ function planRedispatch(workflow, displayTitle) {
     // run-name carries the chain inputs for plain needs_rescore chains only;
     // every other scoring run is left to its next trigger (null).
     const m = title.match(RESCORE_CHAIN_RE);
-    if (!m) return null;
+    if (!m) {
+      if (/rescore chain/.test(title)) console.log(`::warning::Rescore chain title not understood, not re-dispatched: ${title}`);
+      return null;
+    }
     const fields = { needs_rescore: 'true', chain: 'true', remaining_batches: m[1], run_calibration: 'false', run_validation: 'false' };
     if (m[2] !== 'none') fields.limit = m[2];
     if (m[3] !== 'none') fields.max_cost = m[3];

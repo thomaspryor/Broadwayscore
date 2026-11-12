@@ -1,7 +1,7 @@
 name: LLM Ensemble Score Reviews
 # BRO-5890: show-scoped runs carry the show id so Opening Night Express can
 # leave other shows' scoring alone (scripts/lib/express-preemption.js).
-run-name: LLM Ensemble Score Reviews${{ inputs.show_id && format(' — {0}', inputs.show_id) || '' }}${{ (inputs.chain == 'true' && inputs.needs_rescore == 'true' && !inputs.show_id && !inputs.rescore_reason && !inputs.shard && inputs.outdated != 'true' && inputs.stale_scores != 'true' && inputs.upgrade_ensemble != 'true' && inputs.retry_emergency != 'true') && format(' (rescore chain, {0} left, limit {1}, max-cost {2})', inputs.remaining_batches, inputs.limit || 'none', inputs.max_cost || 'none') || '' }}
+run-name: LLM Ensemble Score Reviews${{ inputs.show_id && format(' — {0}', inputs.show_id) || '' }}${{ (inputs.chain == 'true' && inputs.needs_rescore == 'true' && !inputs.show_id && !inputs.rescore_reason && !inputs.shard && inputs.outdated != 'true' && inputs.stale_scores != 'true' && inputs.upgrade_ensemble != 'true' && inputs.retry_emergency != 'true' && inputs.dry_run != 'true' && inputs.rescore != 'true') && format(' (rescore chain, {0} left, limit {1}, max-cost {2})', inputs.remaining_batches, inputs.limit || 'none', inputs.max_cost || 'none') || '' }}
 # The "(rescore chain, …)" suffix is read back by scripts/lib/express-preemption.js planRedispatch so an
 # opening-night Express that cancels a plain needs_rescore chain batch can re-dispatch it (BRO-7419);
 # run inputs are not readable from the runs API. Format pinned by express-preemption.test.mjs.

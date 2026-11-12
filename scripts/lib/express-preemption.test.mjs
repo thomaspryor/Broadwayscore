@@ -78,7 +78,7 @@ test('contract: llm-ensemble-score.yml run-name suffix renders a title the parse
   const rendered = 'LLM Ensemble Score Reviews' + m[1].replace('{0}', '3').replace('{1}', '400').replace('{2}', '15');
   assert.match(rendered, RESCORE_CHAIN_RE);
   // Only plain chains get the suffix: inputs the parser cannot restore must exclude it.
-  for (const k of ['!inputs.rescore_reason', '!inputs.shard', "inputs.outdated != 'true'", "inputs.stale_scores != 'true'", "inputs.upgrade_ensemble != 'true'", "inputs.retry_emergency != 'true'", '!inputs.show_id']) {
+  for (const k of ['!inputs.rescore_reason', '!inputs.shard', "inputs.outdated != 'true'", "inputs.stale_scores != 'true'", "inputs.upgrade_ensemble != 'true'", "inputs.retry_emergency != 'true'", "inputs.dry_run != 'true'", "inputs.rescore != 'true'", '!inputs.show_id']) {
     assert.ok(runName.includes(k), `run-name suffix guard missing ${k}`);
   }
 });
