@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-11-11T10:14:40.556Z",
-  "scanned": 4804,
+  "updatedAt": "2026-11-12T00:18:29.258Z",
+  "scanned": 4809,
   "showsWithViolations": 167,
   "totalViolations": 223,
   "newSinceLastRun": 0,
   "handled": {
-    "temporal-override-low-confidence": 972,
+    "temporal-override-low-confidence": 970,
     "not-shipped": 57,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
-    "prior-run-or-tour-leg": 42
+    "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [],
   "violationKeys": [
@@ -2422,7 +2422,7 @@
       "showId": "operation-mincemeat-west-end-2024",
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
-      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment, but it reviews a touring production of Operation Mincemeat, not the W — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
+      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews a touring production of Operation Mincemeat, not the West End production  — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
       "violations": [
         {
           "filename": "the-recs--unknown.json",
@@ -2444,10 +2444,10 @@
           "criticName": "The Reviews Hub - Scotland",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a genuine review with critical assessment, but it reviews a touring production of Operation Mincemeat, not the W",
+          "cvReasoning": "This is a valid theater review, but it reviews a touring production of Operation Mincemeat, not the West End production ",
           "cvIssues": [
             "Review evaluates a touring production, not the West End run at Fortune Theatre",
-            "Critic attended a touring cast performance ('this touring cast'), not the Fortune Theatre production"
+            "Critic attended a touring cast performance ('this touring cast'), not the West End production"
           ]
         }
       ]
