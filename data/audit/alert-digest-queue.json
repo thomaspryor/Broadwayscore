@@ -520,5 +520,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-12T10:43:29.933Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7341",
+    "title": "Watchdog parked #linear:BRO-7341 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Move the scoring ensemble's OpenAI leg off gpt-4o / gpt-4.1 before OpenAI shuts them down 2027-01-14\" was claimed for redispatch at 2026-11-12T10:39:58.086Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7341), then re-arm with node scripts/linear-next.js --id BRO-7341 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T10:56:36.464Z"
   }
 ]
