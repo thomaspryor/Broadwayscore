@@ -7,7 +7,7 @@
  *
  * Run: npx tsx --test tests/unit/slug-redirects.test.ts
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural — reads data/reviews.json only to
+// structural — reads data/reviews.json only to
 // derive the live critic-byline set (BRO-5434); pins no review facts.
 
 import { test, describe } from 'node:test';

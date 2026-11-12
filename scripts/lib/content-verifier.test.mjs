@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: pure-function unit tests against synthetic fixtures, no live shows.json facts asserted.
+// pure-function unit tests against synthetic fixtures, no live shows.json facts asserted.
 /**
  * Unit tests for content-verifier.js's WE long-runner CV hardening (Notion
  * card 34c637c5-416f-812b / task #1615).

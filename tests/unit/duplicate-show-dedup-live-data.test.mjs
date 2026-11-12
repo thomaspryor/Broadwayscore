@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json is itself the source of truth (discovery/hand-edited); structural alias/id-clash check plus one retired-id regression pin
+// shows.json is itself the source of truth (discovery/hand-edited); structural alias/id-clash check plus one retired-id regression pin
 // BRO-5737 (BRO-3425 pattern): live-data assertion split out of tests/unit/duplicate-show-dedup.test.mjs. shows.json gains bot
 // discovery entries daily, so a live alias/id clash can redden code CI with no code change. Runs in check-corpus-drift.yml's
 // "Live-data assertions" step, excluded from the unit batches in scripts/lib/unit-test-collection.js.

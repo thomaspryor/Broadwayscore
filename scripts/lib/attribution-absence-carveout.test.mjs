@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: pure-function unit tests against synthetic fixtures, no live shows.json facts asserted.
+// pure-function unit tests against synthetic fixtures, no live shows.json facts asserted.
 // BRO-6491: content-verifier rejections that only say the byline/outlet is absent.
 // Run: node --test scripts/lib/attribution-absence-carveout.test.mjs
 import { test } from 'node:test';

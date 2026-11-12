@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: the last test reads the two committed data/audit baseline files only to assert every key carries an expiry entry (structure, not a factual pin on which keys exist)
+// the last test reads the two committed data/audit baseline files only to assert every key carries an expiry entry (structure, not a factual pin on which keys exist)
 // BRO-3364: acknowledged-finding baselines expire.
 import test from 'node:test';
 import assert from 'node:assert/strict';

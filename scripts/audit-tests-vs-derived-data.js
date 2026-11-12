@@ -19,10 +19,11 @@
  *   deriving expectations from sources, instead of hardcoding facts that
  *   silently rot when audits update the sources.
  *
- * Exemption escape hatch:
- *   Add a top-of-file comment `// TESTS-VS-DERIVED-DATA-EXEMPT: <reason>`
- *   anywhere in the first 40 lines. Use for genuinely structural tests
- *   (schema integrity, count > 0, no nulls) that don't pin specific facts.
+ * No exemption marker (BRO-7108): the old `TESTS-VS-DERIVED-DATA-EXEMPT`
+ *   comment is retired. A test that only mentions a derived path in a fixture
+ *   string is not a read and needs nothing; one that really reads the live
+ *   corpus declares `LIVE-DATA-LANE:` (below); a temp-dir fixture builds the
+ *   path in pieces (path.join(root, 'data', 'shows.json')).
  *
  * Live-data lane (BRO-7101): a test that declares `// LIVE-DATA-LANE: <why>`
  *   (or is named *-live-data.test.*) no longer runs in test.yml's blocking
@@ -51,8 +52,21 @@ const SOURCE_PATTERNS = [
   /data\/review-texts\//,
 ];
 
-const EXEMPT_MARKER = /\/\/\s*TESTS-VS-DERIVED-DATA-EXEMPT:\s*\S+/;
 const { isDeclaredLive } = require('./lib/live-data-paths.js');
+
+// BRO-7108: a derived path only counts when the test touches it through a file
+// read on that same line (readFileSync / require / import / new URL /
+// existsSync / statSync). A path that appears only in a comment or inside a
+// fixture string (workflow YAML, git commands, file-size tables) is not a read
+// of the live corpus, so such tests need no exemption.
+const READ_CALL = /\b(readFileSync|readFile|require|import|existsSync|statSync|createReadStream|loadJson|readJson)\b|new URL\(/;
+function readsDerivedFile(src) {
+  return src.split('\n').some((line) => {
+    const t = line.trim();
+    if (t.startsWith('//') || t.startsWith('*') || t.startsWith('/*')) return false;
+    return DERIVED_PATTERNS.some((re) => re.test(line)) && READ_CALL.test(line);
+  });
+}
 
 function audit() {
   if (!fs.existsSync(TESTS_DIR)) {
@@ -69,25 +83,21 @@ function audit() {
     const fp = path.join(TESTS_DIR, name);
     const src = fs.readFileSync(fp, 'utf8');
     if (isDeclaredLive(`tests/unit/${name}`, src)) continue; // BRO-7101: not in the blocking batch
-    const readsDerived = DERIVED_PATTERNS.some((re) => re.test(src));
+    const readsDerived = readsDerivedFile(src);
     if (!readsDerived) continue;
 
     const readsSource = SOURCE_PATTERNS.some((re) => re.test(src));
     if (readsSource) continue;
 
-    // Check first 40 lines for exemption marker.
-    const head = src.split('\n').slice(0, 40).join('\n');
-    if (EXEMPT_MARKER.test(head)) continue;
-
     violations.push(name);
   }
 
   if (violations.length === 0) {
-    console.log(`OK: ${files.length} test files audited; all tests reading derived data either also read source-of-truth or carry an explicit exemption.`);
+    console.log(`OK: ${files.length} test files audited; all tests reading derived data either also read source-of-truth or are declared live-data.`);
     return;
   }
 
-  console.error(`\nFound ${violations.length} test file(s) reading derived data WITHOUT also reading source-of-truth and WITHOUT an exemption:\n`);
+  console.error(`\nFound ${violations.length} test file(s) reading derived data WITHOUT also reading source-of-truth and WITHOUT a live-data declaration:\n`);
   for (const v of violations) {
     console.error(`  tests/unit/${v}`);
   }
@@ -105,11 +115,12 @@ How to fix:
     derive expectations from it. Example: tests/unit/awards-person-winner-
     pairing.test.mjs reads data/precursors/drama-desk.json and asserts
     that data/awards.json reflects what each precursor row encodes.
-  Option B (escape hatch): If your test is genuinely structural (schema
-    integrity, count > 0, no nulls — not pinning specific facts), add
-    this comment near the top of the file:
-      // TESTS-VS-DERIVED-DATA-EXEMPT: <one-line reason>
-    Reviewers should challenge any new exemption.
+  Option B: If the test really reads the live corpus but pins no specific
+    fact (schema integrity, count > 0), declare the live-data lane near the
+    top of the file:
+      // LIVE-DATA-LANE: reads data/shows.json (untracked core data). ...
+    It then runs in check-corpus-drift.yml instead of blocking main.
+    A temp-dir fixture should spell the path as path.join(root, 'data', 'x.json').
 
 Background:
   memory/feedback_data_pins_derive_from_source.md
@@ -119,4 +130,5 @@ Background:
   process.exit(1);
 }
 
-audit();
+if (require.main === module) audit();
+module.exports = { readsDerivedFile };

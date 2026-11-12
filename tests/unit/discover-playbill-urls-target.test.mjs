@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural: asserts only that the live corpus has at least one Broadway target (count > 0)
+// structural: asserts only that the live corpus has at least one Broadway target (count > 0)
 // what-else finding (BRO-2893 session): discover-playbill-urls.js filtered on
 // `!s.category`, which matches nothing now that Broadway entries carry
 // category 'broadway', so the workflow's per-show call always exited "Show not found".

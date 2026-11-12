@@ -24,7 +24,7 @@
  * that differ; this test does not assert a tour's runtime differs from or equals
  * its parent's, only that the tour page has one.
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: live coverage and source agreement, not pinned show facts; checks current tour pages against shows.json and reports closed documented gaps
+// live coverage and source agreement, not pinned show facts; checks current tour pages against shows.json and reports closed documented gaps
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

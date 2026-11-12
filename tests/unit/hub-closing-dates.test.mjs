@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural invariant on shows.json (closingDate implies closingDateSource), no pinned factual values
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7239 class guard: every launched-hub show with a closingDate must say where it came from,
 // and an open hub show may not carry a sourced closing date that has already passed.
 import test from 'node:test';

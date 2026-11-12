@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — the regex-detector under
+// purely structural — the regex-detector under
 // test never reads data/*.json; workflow YAML appears only as synthetic
 // fixtures and via the real opening-night-broadcast.yml structure check.
 /**

@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: live-registry state checks, run by
+// live-registry state checks, run by
 // check-corpus-drift.yml (data-health), not test.yml's code-CI unit batch.
 /**
  * Live outlet-registry audit (BRO-1343), moved out of

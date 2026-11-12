@@ -10,7 +10,7 @@
  * says. This runs BOTH over the same inputs, including every distinct runtime
  * string in the real dataset, and fails the moment they disagree.
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural only — it pins no fact about any
+// structural only — it pins no fact about any
 // show. data/shows.json is used purely as a corpus of real runtime STRINGS to
 // feed both parsers; the assertion is that the two implementations agree with
 // each other, whatever the data says. The one numeric check is a wide 5-95%

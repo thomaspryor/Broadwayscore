@@ -5,7 +5,7 @@
  * Live-data assertions step. Kept out of the code-only unit batch.
  * Run directly: node --test tests/unit/sound-of-music-synopsis.test.mjs
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: live-data acceptance check for BRO-4763; verifies the synopsis backfill reached both productions
+// live-data acceptance check for BRO-4763; verifies the synopsis backfill reached both productions
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

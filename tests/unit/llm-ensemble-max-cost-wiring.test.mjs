@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — reads the real
+// purely structural — reads the real
 // .github/workflows/llm-ensemble-score.yml CI config (not data/*.json derived
 // data) to regression-guard a spend circuit-breaker wiring fix.
 /**

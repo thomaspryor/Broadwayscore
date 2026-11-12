@@ -8,7 +8,7 @@
  *
  * Run: node --test tests/unit/title-containment.test.mjs
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: behaviour is pinned on fixture show lists; the two data/shows.json-backed cases skip unless the pair exists and assert only that the guard fires.
+// behaviour is pinned on fixture show lists; the two data/shows.json-backed cases skip unless the pair exists and assert only that the guard fires.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

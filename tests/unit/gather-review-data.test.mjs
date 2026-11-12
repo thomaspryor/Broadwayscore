@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — asserts on
+// purely structural — asserts on
 // .github/workflows/gather-reviews.yml's own YAML text (a push-retry env
 // override), never reads data/reviews.json or any other derived data file.
 // "reviews.json" appears only inside step names/comments being matched.

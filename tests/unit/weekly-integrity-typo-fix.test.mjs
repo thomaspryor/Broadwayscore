@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — reads the workflow YAML only.
+// purely structural — reads the workflow YAML only.
 /**
  * BRO-2480: the 'Detect and auto-fix critic typos' step of weekly-integrity.yml
  * hard-failed three Sundays (2026-08-23/30, 09-06..13) because push-with-retry.sh

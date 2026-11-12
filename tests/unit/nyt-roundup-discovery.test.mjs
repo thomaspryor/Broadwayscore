@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: ROUNDUP_ENTRIES pins external facts from a
+// ROUNDUP_ENTRIES pins external facts from a
 // paywalled NYT article with no repo-resident precursor file (independently
 // corroborated via Playbill/TheaterMania/Stage and Cinema/local-press
 // coverage) — there is no data/precursors/ source to derive this from.

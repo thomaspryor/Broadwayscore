@@ -5,7 +5,7 @@
 // 0-byte case plus the near-miss shapes (whitespace-only, marker-chrome-only)
 // that would otherwise slip through a naive `text.length > 0` check.
 //
-// TESTS-VS-DERIVED-DATA-EXEMPT: filenames like shows.json/reviews.json below
+// filenames like shows.json/reviews.json below
 // are string fixtures reproducing real Codex CLI transcripts (task #1320),
 // not reads of derived data — this is a pure regex/string classifier test.
 import { test, describe } from 'node:test';

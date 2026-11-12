@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural: asserts only that the live corpus has at least one Broadway target (count > 0)
+// structural: asserts only that the live corpus has at least one Broadway target (count > 0)
 // BRO-5729 (BRO-3425 pattern): live-data assertions split out of tests/unit/discover-playbill-urls-target.test.mjs. They assert ceilings / zero-counts over
 // bot-rewritten data (data/shows.json), so in a code-test batch they turn main red with no code change.
 // They run in check-corpus-drift.yml's "Live-data assertions" step (data-health), excluded from the unit batches in

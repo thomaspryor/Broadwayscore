@@ -9,7 +9,7 @@
  *
  * Run: npx tsx --test tests/unit/related-shows-fallback.test.ts
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural — asserts pool size, status purity and a score floor over whatever the live shows.json holds; no factual value is pinned.
+// structural — asserts pool size, status purity and a score floor over whatever the live shows.json holds; no factual value is pinned.
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';

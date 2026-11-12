@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — the detector under test
+// purely structural — the detector under test
 // never reads data/*.json; it only parses workflow YAML text.
 /**
  * Unit tests for findMissingTopLevelPermissions (rule (aa), BRO-6398): a

@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — the detector under test
+// purely structural — the detector under test
 // only parses workflow YAML text; no data/*.json is read.
 /**
  * Unit tests for findScriptWithoutDispatchToken (rule (x), BRO-2872): a step

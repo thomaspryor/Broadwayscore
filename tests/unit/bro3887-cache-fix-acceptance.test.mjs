@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: hand-listed in check-corpus-drift.yml since BRO-3425/BRO-4750; asserts on bot-rewritten data, so it never blocks main (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: this asserts a live OPERATIONAL property (scraper
+// this asserts a live OPERATIONAL property (scraper
 // spend recorded in data/audit/scraper-spend-ledger.jsonl), not a factual claim
 // about shows/reviews. It deliberately reads whatever the ledger currently says
 // rather than pinning any value, which is the point of a deferred-effect probe.

@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural reachability of the venue==title signature (count bound, every hit reachable); pins no show fact
+// structural reachability of the venue==title signature (count bound, every hit reachable); pins no show fact
 // BRO-2902: the venue/date audit (validate-show-venue.js --all-provisional)
 // only targeted entries that declared themselves provisional or carried a
 // manual/venue-page discoverySource. The two entries with the clearest bad-stub

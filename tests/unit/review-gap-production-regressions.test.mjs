@@ -1,5 +1,5 @@
+// LIVE-DATA-LANE: reads data/shows.json and data/reviews.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6896 / BRO-7086: production identity, not the listing-page URL guard.
-// TESTS-VS-DERIVED-DATA-EXEMPT: corpus assertion checks live-URL preservation, not pinned dates, scores or counts.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

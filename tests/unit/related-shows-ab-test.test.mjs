@@ -1,5 +1,5 @@
 // BRO-5989: related-shows-position A/B decisions, run against the real module.
-// TESTS-VS-DERIVED-DATA-EXEMPT: pure functions over synthetic inputs, plus a structural source check.
+// pure functions over synthetic inputs, plus a structural source check.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

@@ -1,6 +1,6 @@
 // BRO-6649 (plan v2 Step 3): the lane's deploy port. Real functions only (CLAUDE.md section 15); the dispatcher and pager are stubs,
 // so nothing here starts a Vercel deploy.
-// TESTS-VS-DERIVED-DATA-EXEMPT: synthetic show JSON and urls only; no real data is read or pinned.
+// synthetic show JSON and urls only; no real data is read or pinned.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (read by the test); data/awards.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural checks only (category-market
+// structural checks only (category-market
 // mapping is pure code; the data-integrity block asserts count>0 and
 // classifiability, never a specific show's win/nom facts) — no pinned claim
 // can rot when data/precursors/olivier.json is re-scraped.

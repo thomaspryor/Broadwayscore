@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: data/*.json paths here are sparse fixture files inside a throwaway git repo, never the real derived data
+// data/*.json paths here are sparse fixture files inside a throwaway git repo, never the real derived data
 // BRO-5335: .github/actions/check-file-sizes read only `git diff --cached`,
 // but 16 of its 18 call sites run before their commit step stages anything,
 // so it always passed. scripts/lib/check-file-sizes.sh now looks at every

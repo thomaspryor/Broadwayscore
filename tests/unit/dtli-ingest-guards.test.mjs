@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: picks a show and an absent id from shows.json at runtime, dates relative to that show; pins no show fact
+// picks a show and an absent id from shows.json at runtime, dates relative to that show; pins no show fact
 // BRO-5288: the 2026-10-13 review refresh (broadway-review-texts c94cf8756)
 // filed older-production DTLI rows under show ids shows.json does not have,
 // re-quarantined 2014 rows for a 2026 production, and replaced the page byline

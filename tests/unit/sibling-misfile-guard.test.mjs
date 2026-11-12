@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural sibling-pair checks; dates are read from shows.json itself, so no factual claim is pinned
+// structural sibling-pair checks; dates are read from shows.json itself, so no factual claim is pinned
 /**
  * BRO-2350: confirms the sibling-misfile guard in extract-show-score-reviews.js
  * (BRO-363) rejects a WHOLE show-score.json entry exactly when >=50% (min 3) of

@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: synthetic fixtures only; no hardcoded show/critic facts.
+// synthetic fixtures only; no hardcoded show/critic facts.
 /**
  * Unit tests for scripts/lib/outlet-tier-audit.js (BRO-4907 outlet tier audit).
  * Run: node --test tests/unit/outlet-tier-audit.test.mjs

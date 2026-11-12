@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/awards.json (read by the test); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural consistency check across awards.json, shows.json and tony-cutoffs.ts; asserts no specific derived values.
+// structural consistency check across awards.json, shows.json and tony-cutoffs.ts; asserts no specific derived values.
 // Guard (BRO-5667): every Tony record's season label must agree with its
 // ceremony number and opening-date window whenever two of the three agree.
 // The fantasy scorer filters award records by season, so a mislabel scores a

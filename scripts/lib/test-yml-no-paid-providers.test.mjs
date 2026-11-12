@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — reads the real workflow
+// purely structural — reads the real workflow
 // YAML under .github/workflows/ (CI config, not data/*.json derived data).
 /**
  * BRO-2984 — the Test Suite must not spend money at paid providers.

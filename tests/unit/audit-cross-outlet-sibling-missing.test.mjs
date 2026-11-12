@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: fixture-based test of the audit script; isolated tmp dir, no production data files.
+// fixture-based test of the audit script; isolated tmp dir, no production data files.
 /**
  * BRO-3872: audit-duplicate-of-url-mismatch.js must catch crossOutletDuplicate
  * flags whose crossOutletPrimaryFile was deleted outside the cascade-clear call

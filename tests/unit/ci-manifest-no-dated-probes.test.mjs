@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural check of which test files CI runs; pins no data facts
+// structural check of which test files CI runs; pins no data facts
 /**
  * A test registered in a test.yml manifest runs on every code push and blocks
  * main. A dated RECHECK probe (skips until `Date.now() < Date.parse('<date>')`
