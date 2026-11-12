@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T18:14:44.350Z",
+  "timestamp": "2026-11-12T18:29:52.367Z",
   "stats": {
-    "totalReviews": 81707,
-    "alreadyFlagged": 22298,
+    "totalReviews": 81714,
+    "alreadyFlagged": 22300,
     "dateGuardCatches": 219,
-    "directorMismatch": 3652,
-    "tvFilmSignals": 2301,
-    "londonSignals": 3710,
+    "directorMismatch": 3655,
+    "tvFilmSignals": 2302,
+    "londonSignals": 3712,
     "offBroadwaySignals": 752,
     "yearMismatch": 371,
-    "noPublishDate": 8447
+    "noPublishDate": 8446
   },
   "findings": [
     {
@@ -32454,6 +32454,19 @@
     },
     {
       "showId": "illinoise-off-broadway-2024",
+      "file": "nytimes--gia-kourlas.json",
+      "publishDate": "2024-03-13",
+      "url": "https://www.nytimes.com/2024/03/13/arts/dance/illinoise-dance-justin-peck.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-off-broadway-2024",
       "file": "theater-scene--victor-gluck.json",
       "score": 78,
       "publishDate": "2024-03-21",
@@ -46678,6 +46691,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tommy tune\" from nine-1982"
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-off-west-end-2026",
+      "file": "west-end-wilma--westendwilma.json",
+      "publishDate": "2026-11-10",
+      "url": "https://westendwilma.com/nine-night-kiln-theatre-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -84712,6 +84738,29 @@
       ]
     },
     {
+      "showId": "west-side-story-west-end-2026",
+      "file": "west-end-wilma--westendwilma.json",
+      "publishDate": "2026-11-05",
+      "url": "https://westendwilma.com/show-national-theatre-west-side-story/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
+        }
+      ]
+    },
+    {
       "showId": "wet-brain-off-broadway-2023",
       "file": "exeunt-magazine--lorin-wertheimer.json",
       "score": 59,
@@ -117034,6 +117083,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-off-west-end-2026",
+      "file": "bestoftheatre--maria-boot.json",
+      "publishDate": "2026-11-03",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/nine-night-kiln-theatre-rehearsal-photos",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
