@@ -37993,13 +37993,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-10T15:28:38.227Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-12T08:06:56.387Z",
+      "lastSeen": "2026-11-12T12:48:20.082Z",
       "lastNotifiedAt": "2026-11-11T16:55:47.875Z",
       "lastSurfacedAt": "2026-11-11T16:55:47.875Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39047,12 +39047,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-12T08:06:56.360Z",
+      "lastSeen": "2026-11-12T12:48:20.062Z",
       "lastNotifiedAt": "2026-11-12T08:06:56.360Z",
       "lastSurfacedAt": "2026-11-12T08:06:56.360Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -39180,20 +39181,18 @@
       "resolvedAt": "2026-11-08T10:15:43.140Z"
     },
     "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
       "firstSeen": "2026-11-08T11:49:18.462Z",
-      "incidentOpenedAt": "2026-11-11T12:25:00.376Z",
+      "incidentOpenedAt": "2026-11-12T12:48:20.041Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-11T12:25:00.376Z",
-      "lastNotifiedAt": "2026-11-11T12:25:00.376Z",
-      "lastSurfacedAt": "2026-11-11T12:25:00.376Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-12T12:48:20.041Z",
+      "lastNotifiedAt": "2026-11-12T12:48:20.041Z",
+      "lastSurfacedAt": "2026-11-12T12:48:20.041Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-11T15:05:44.045Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
       "status": "resolved",
@@ -42117,13 +42116,13 @@
       "firstSeen": "2026-11-11T15:05:44.026Z",
       "incidentOpenedAt": "2026-11-11T15:05:44.026Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-12T08:06:56.424Z",
+      "lastSeen": "2026-11-12T12:48:20.102Z",
       "lastNotifiedAt": "2026-11-11T15:05:44.026Z",
       "lastSurfacedAt": "2026-11-11T15:05:44.026Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-7373-cost": {
       "status": "open",
