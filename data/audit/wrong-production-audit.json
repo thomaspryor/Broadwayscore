@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T23:48:53.227Z",
+  "timestamp": "2026-11-12T00:56:07.304Z",
   "stats": {
-    "totalReviews": 81550,
-    "alreadyFlagged": 22266,
+    "totalReviews": 81560,
+    "alreadyFlagged": 22268,
     "dateGuardCatches": 218,
     "directorMismatch": 3631,
     "tvFilmSignals": 2297,
-    "londonSignals": 3699,
+    "londonSignals": 3698,
     "offBroadwaySignals": 751,
-    "yearMismatch": 371,
-    "noPublishDate": 8472
+    "yearMismatch": 370,
+    "noPublishDate": 8473
   },
   "findings": [
     {
@@ -40503,19 +40503,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "little-shop-of-horrors-off-broadway-2019",
-      "file": "entertainingchicago--alli-doubek.json",
-      "publishDate": "2026-11-09",
-      "url": "https://entertainingchicago.com/porchlights-little-shop-of-horrors-is-a-darkly-delightful-musical-treat/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (3x) more than 2019 (0x). 2026 matches production: little-shop-of-horrors-regional-2026"
         }
       ]
     },
@@ -102028,20 +102015,6 @@
       "score": 61,
       "publishDate": "2026-10-27",
       "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "file": "theartsdispatch--jim-keaveney.json",
-      "score": 66,
-      "publishDate": "2026-11-08",
-      "url": "https://www.theartsdispatch.com/p/girls-review-young-vic-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
