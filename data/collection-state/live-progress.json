@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-11-12T17:27:38.661Z",
-  "processed": 763,
-  "failed": 420,
-  "successRate": "64.5%",
+  "updatedAt": "2026-11-12T17:30:27.631Z",
+  "processed": 768,
+  "failed": 430,
+  "successRate": "64.1%",
   "tierBreakdown": {
-    "playwright": 337,
+    "playwright": 339,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 61,
+    "scrapingbee": 35,
+    "brightdata": 15,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 337
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-11-11T21:33:06.923Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-11-12T00:30:04.106Z",
-      "event": "bb-session",
-      "session": "e0a02f9e",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
-    },
     {
       "t": "2026-11-12T00:30:04.708Z",
       "event": "bb-cookie-inject",
@@ -125,6 +114,17 @@
       "t": "2026-11-12T16:46:32.628Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-11-12T17:03:21.107Z",
+      "event": "bb-session",
+      "session": "6857dc10",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-12T17:03:21.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
