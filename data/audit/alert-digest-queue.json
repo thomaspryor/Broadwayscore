@@ -118,6 +118,47 @@
     "queuedAt": "2026-11-12T02:08:00.713Z"
   },
   {
+    "conditionKey": "llm-scoring:daily-cost-breach",
+    "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
+    "description": "Still firing after 22 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $14.19 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6732",
+    "fields": [],
+    "queuedAt": "2026-11-12T02:44:25.716Z"
+  },
+  {
+    "conditionKey": "llm-scoring:cost-breach",
+    "title": "LLM scoring spend over budget — escalated after 15 notifications",
+    "description": "Filed BRO-7395 for owner triage after 15 repeats with no tracker.\n\nGitHub run 43135669789: cumulative LLM scoring cost $9.05 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). By invocation: index $9.05. This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7395",
+    "fields": [
+      {
+        "name": "GitHub run",
+        "value": "43135669789"
+      },
+      {
+        "name": "Cost",
+        "value": "$9.05"
+      },
+      {
+        "name": "Threshold",
+        "value": "$6.00"
+      }
+    ],
+    "queuedAt": "2026-11-12T02:44:27.032Z"
+  },
+  {
     "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
     "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
