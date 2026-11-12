@@ -201,6 +201,20 @@
     "queuedAt": "2026-11-12T02:09:50.704Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
+    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T03:10:05.596Z"
+  },
+  {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:act-of-god-off-west-end-2026",
     "title": "Auto-remediation gave up on act-of-god-off-west-end-2026",
     "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"act-of-god-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
