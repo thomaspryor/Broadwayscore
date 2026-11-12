@@ -1,31 +1,53 @@
 {
-  "updatedAt": "2026-11-12T19:26:37.353Z",
-  "processed": 780,
-  "failed": 189,
-  "successRate": "80.5%",
+  "updatedAt": "2026-11-12T19:35:50.048Z",
+  "processed": 104,
+  "failed": 61,
+  "successRate": "63.0%",
   "tierBreakdown": {
-    "playwright": 348,
+    "playwright": 72,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 62,
-    "scrapingbee": 36,
-    "brightdata": 16,
+    "scrapingdog": 10,
+    "scrapingbee": 2,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 339
+    "archive": 19
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-12T18:38:35.265Z",
+      "t": "2026-11-12T19:29:19.829Z",
       "event": "bb-session",
-      "session": "c829efcf",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+      "session": "a8e36506",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
     },
     {
-      "t": "2026-11-12T18:38:36.176Z",
+      "t": "2026-11-12T19:29:20.441Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-12T19:31:06.044Z",
+      "event": "bb-session",
+      "session": "04f543c4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-12T19:31:06.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-12T19:34:14.031Z",
+      "event": "bb-session",
+      "session": "26f0a673",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-12T19:34:14.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
