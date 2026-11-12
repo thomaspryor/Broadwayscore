@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-4318-b",
+  "planId": "73ebd4de-d5ba-4477-b9e0-f97bcbe65dc2",
+  "status": "pending",
+  "createdAt": "2026-11-12T03:24:19.960Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4318: resolve 23 sided-with-LLM adjudications that disputed a stored rating (correct 4 ratings, clear 13 mis-extracted ratings, clear 6 adjudications so the printed rating stands) plus 5 same-class cousins (part 2 of 2)",
+    "steps": [
+      "BRO-4318 cousin (same extractor class): correct mis-extracted rating A; the critic header prints two and a half stars out of four for Allegiance",
+      "BRO-4318 cousin (same extractor class): correct mis-extracted rating A; the critic header prints three and a half stars out of four for Heisenberg",
+      "BRO-4318 cousin (same extractor class): correct mis-extracted rating A; the critic header prints three and a half stars out of four for King Charles III",
+      "BRO-4318 cousin (same extractor class): clear mis-extracted rating 3/5 stars; the stored 3/5 was cast prose about the play three lead actors, not a printed rating"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/huffpost--michael-glitz.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": "2.5/4 stars",
+        "description": "BRO-4318 cousin (same extractor class): correct mis-extracted rating A; the critic header prints two and a half stars out of four for Allegiance"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heisenberg-2016/huffpost--michael-giltz.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": "3.5/4 stars",
+        "description": "BRO-4318 cousin (same extractor class): correct mis-extracted rating A; the critic header prints three and a half stars out of four for Heisenberg"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-charles-iii-2015/huffpost--michael-giltz.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": "3.5/4 stars",
+        "description": "BRO-4318 cousin (same extractor class): correct mis-extracted rating A; the critic header prints three and a half stars out of four for King Charles III"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-shark-is-broken-west-end-2021/thestage--paul-vale.json",
+        "field": "originalScore",
+        "oldValue": "3/5 stars",
+        "newValue": null,
+        "description": "BRO-4318 cousin (same extractor class): clear mis-extracted rating 3/5 stars; the stored 3/5 was cast prose about the play three lead actors, not a printed rating"
+      }
+    ]
+  }
+}

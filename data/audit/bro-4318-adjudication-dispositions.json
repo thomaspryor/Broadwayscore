@@ -1,29 +1,261 @@
 {
-  "_comment": "BRO-4318: every review-text file whose 'sided with LLM' auto-adjudication sat outside the band of its stored rating (scripts/lib/adjudication-star-conflict.js, snapshot of review-texts 345d1b945, 2026-11-12). Each entry says how it was resolved; scripts/verify-adjudication-corrections.test.mjs checks the files. No review text here: evidence names only the printed rating and where it was found.",
+  "_comment": "BRO-4318: every review-text file whose 'sided with LLM' auto-adjudication sat outside the band of its stored rating (scripts/lib/adjudication-star-conflict.js, snapshot of review-texts 345d1b945, 2026-11-12). Each entry says how it was resolved; scripts/verify-adjudication-corrections.test.mjs checks the files. No review text here: evidence names only the printed rating and where it was found. cousins: files the corpus dry-run of the two extractor fixes found with the same wrong rating (no adjudication involved).",
   "planId": "bro-4318",
   "entries": [
-    { "file": "airline-highway-2015/culturesauce--thom-geier.json", "disposition": "star-cleared", "from": "A", "to": null, "extractor": "llm-extracted-gemini", "evidence": "stored text prints 'Grade: B-' (not A); Culture Sauce letter grades do not parse in score-parsers, so the hallucinated A is cleared and the LLM score (in the B- range) stands", "classBug": "llm-extracted-gemini hallucinated grade" },
-    { "file": "bonnie-and-clyde-2011/timeout--adam-feldman.json", "disposition": "star-cleared", "from": "4/5", "to": null, "extractor": "timeout-svg-stars", "evidence": "review url now redirects to the Time Out homepage (its listing cards carry 3/4/5-star widgets); the adjudication note quotes a 5/5, so the stored star changed between extractions; no archived copy reachable; text verdict is mixed", "classBug": "outlet extractor read a redirected page (url no longer the review)" },
-    { "file": "chester-bailey-off-broadway-2022/lighting-and-sound-america--david-barbour.json", "disposition": "star-cleared", "from": "2/5 stars", "to": null, "extractor": "word-stars", "evidence": "Lighting & Sound America prints no star rating; the match was cast prose about the play's two lead actors", "classBug": "word-stars cast prose (performance noun + possessive); fixed in score-extractors.js CAST_STARS_POSSESSIVE" },
-    { "file": "collected-stories-2010/ew--melissa-rose-bernardo.json", "disposition": "star-corrected", "from": "A", "to": "B+", "extractor": "none", "evidence": "EW grade printed at the end of the stored text: B+", "classBug": "unknown legacy source (no originalScoreSource)" },
-    { "file": "dead-outlaw-2025/nypost--johnny-oleksinski.json", "disposition": "adjudication-cleared", "from": "2.5/4 stars", "to": "2.5/4 stars", "extractor": "css-stars", "evidence": "NY Post page star widget and the aggregator relay agree on 2.5/4; the adjudicator overrode a printed rating", "classBug": null },
-    { "file": "death-becomes-her-2024/the-interested-bystander--cary-wong.json", "disposition": "star-cleared", "from": "D", "to": null, "extractor": "letter-grade", "evidence": "the blog prints no grade; the stored text has no grade line", "classBug": "letter-grade on a no-grade outlet (current extractor no longer reproduces it)" },
-    { "file": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json", "disposition": "star-corrected", "from": "5/5 stars", "to": "2/5 stars", "extractor": "word-stars", "evidence": "already corrected to the printed 2/5 by an earlier verified fix (humanReviewScore set); the stale adjudication made against the old 5/5 is cleared here", "classBug": "word-stars (fixed earlier)", "alsoClearAdjudication": true },
-    { "file": "fiddler-on-the-roof-2015/nytg--marc-miller.json", "disposition": "star-cleared", "from": "D", "to": null, "extractor": "none", "evidence": "New York Theatre Guide prints no grade; none in the stored text", "classBug": "unknown legacy source" },
-    { "file": "fish-in-the-dark-2015/timeout--adam-feldman.json", "disposition": "star-cleared", "from": "D+", "to": null, "extractor": "none", "evidence": "Time Out rates in stars, never letter grades; no rating in the stored text", "classBug": "unknown legacy source" },
-    { "file": "funny-girl-2022/deadline--greg-evans.json", "disposition": "star-cleared", "from": "A", "to": null, "extractor": "llm-extracted-gemini", "evidence": "Deadline prints no rating; none in the stored text", "classBug": "llm-extracted-gemini hallucinated grade" },
-    { "file": "good-night-and-good-luck-2025/digital-journal--markos-papadatos.json", "disposition": "adjudication-cleared", "from": "2.5/5 stars", "to": "2.5/5 stars", "extractor": "text-pattern", "evidence": "the stored text prints the verdict line '2.5 out of 5 stars'; the adjudicator wrongly believed a 5/5", "classBug": null },
-    { "file": "jekyll-and-hyde-2013/ew--melissa-rose-bernardo.json", "disposition": "adjudication-cleared", "from": "C-", "to": "C-", "extractor": "llm-extracted-gemini", "evidence": "EW grade printed at the end of the stored text: C-", "classBug": null },
-    { "file": "les-miserables-2014/stagezine--david-nounou.json", "disposition": "star-cleared", "from": "A", "to": null, "extractor": "none", "evidence": "Stagezine prints no grade; none in the stored text", "classBug": "unknown legacy source" },
-    { "file": "lucky-guy-2013/ew--lisa-schwarzbaum.json", "disposition": "adjudication-cleared", "from": "C+", "to": "C+", "extractor": "llm-extracted-gemini", "evidence": "EW grade printed at the end of the stored text: C+", "classBug": null },
-    { "file": "misery-2015/huffpost--michael-giltz.json", "disposition": "star-corrected", "from": "A", "to": "1/4 stars", "extractor": "letter-grade", "evidence": "the critic's header prints one star out of four for this show", "classBug": "letter-grade keyword run into a title ('no ratingA Month...'); fixed in score-extractors.js (word boundary after the keyword)" },
-    { "file": "moulin-rouge-the-musical-west-end-2021/thereviewshub--richard-maguire.json", "disposition": "star-cleared", "from": "100%", "to": null, "extractor": "reviewshub-percentage", "evidence": "the url now serves a different critic's 2026 tour review scored 100%; this critic's stored review has no percentage", "classBug": "outlet extractor read a page whose url now holds another review" },
-    { "file": "oh-mary-west-end-2025/lbc--johnny-jenkins.json", "disposition": "star-cleared", "from": "1/5", "to": null, "extractor": "numeric-stars", "evidence": "the LBC page (fetched 2026-11-12) prints no rating; 1/5 matches nothing in the review", "classBug": "numeric-stars generic X/5 (page furniture); current extractor no longer reproduces it from the text" },
-    { "file": "old-times-2015/huffpost--michael-glitz.json", "disposition": "adjudication-cleared", "from": "2/4 stars", "to": "2/4 stars", "extractor": "text-footer-corrected", "evidence": "the critic's header prints two stars out of four for this show; the adjudication was made against an older wrong A", "classBug": null },
-    { "file": "patriots-2024/ew--kristen-baldwin.json", "disposition": "star-corrected", "from": "B+", "to": "C", "extractor": "none", "evidence": "EW grade printed at the end of the stored text: C", "classBug": "unknown legacy source" },
-    { "file": "public-charge-off-broadway-2026/timeout--unknown.json", "disposition": "star-cleared", "from": "5/5 stars", "to": null, "extractor": "unicode-stars-fallthrough", "evidence": "the Time Out page (live and the 2026-07 archive copy) carries no star widget for this review; the stars came from elsewhere on the page", "classBug": "unicode-stars-fallthrough read page furniture" },
-    { "file": "the-kite-runner-2022/theater-pizzazz--samuel-l-leiter.json", "disposition": "star-cleared", "from": "A", "to": null, "extractor": "none", "evidence": "Theater Pizzazz prints no grade; none in the stored text", "classBug": "unknown legacy source" },
-    { "file": "the-prom-2018/journal-inquirer--tim-leininger.json", "disposition": "star-cleared", "from": "A", "to": null, "extractor": "none", "evidence": "the Journal Inquirer prints no grade; none in the stored text", "classBug": "unknown legacy source" },
-    { "file": "wolf-hall-parts-one-and-two-2015/huffpost--michael-glitz.json", "disposition": "star-corrected", "from": "A", "to": "2.5/4 stars", "extractor": "none", "evidence": "the critic's header prints two and a half stars out of four for this show", "classBug": "letter-grade keyword run into a title ('no ratingA Month...'), same page furniture as Misery; fixed in score-extractors.js" }
+    {
+      "file": "airline-highway-2015/culturesauce--thom-geier.json",
+      "disposition": "star-cleared",
+      "from": "A",
+      "to": null,
+      "extractor": "llm-extracted-gemini",
+      "evidence": "stored text prints 'Grade: B-' (not A); Culture Sauce letter grades do not parse in score-parsers, so the hallucinated A is cleared and the LLM score (in the B- range) stands",
+      "classBug": "llm-extracted-gemini hallucinated grade"
+    },
+    {
+      "file": "bonnie-and-clyde-2011/timeout--adam-feldman.json",
+      "disposition": "star-cleared",
+      "from": "4/5",
+      "to": null,
+      "extractor": "timeout-svg-stars",
+      "evidence": "review url now redirects to the Time Out homepage (its listing cards carry 3/4/5-star widgets); the adjudication note quotes a 5/5, so the stored star changed between extractions; no archived copy reachable; text verdict is mixed",
+      "classBug": "outlet extractor read a redirected page (url no longer the review)"
+    },
+    {
+      "file": "chester-bailey-off-broadway-2022/lighting-and-sound-america--david-barbour.json",
+      "disposition": "star-cleared",
+      "from": "2/5 stars",
+      "to": null,
+      "extractor": "word-stars",
+      "evidence": "Lighting & Sound America prints no star rating; the match was cast prose about the play's two lead actors",
+      "classBug": "word-stars cast prose (performance noun + possessive); fixed in score-extractors.js CAST_STARS_POSSESSIVE"
+    },
+    {
+      "file": "collected-stories-2010/ew--melissa-rose-bernardo.json",
+      "disposition": "star-corrected",
+      "from": "A",
+      "to": "B+",
+      "extractor": "none",
+      "evidence": "EW grade printed at the end of the stored text: B+",
+      "classBug": "unknown legacy source (no originalScoreSource)"
+    },
+    {
+      "file": "dead-outlaw-2025/nypost--johnny-oleksinski.json",
+      "disposition": "adjudication-cleared",
+      "from": "2.5/4 stars",
+      "to": "2.5/4 stars",
+      "extractor": "css-stars",
+      "evidence": "NY Post page star widget and the aggregator relay agree on 2.5/4; the adjudicator overrode a printed rating",
+      "classBug": null
+    },
+    {
+      "file": "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+      "disposition": "star-cleared",
+      "from": "D",
+      "to": null,
+      "extractor": "letter-grade",
+      "evidence": "the blog prints no grade; the stored text has no grade line",
+      "classBug": "letter-grade on a no-grade outlet (current extractor no longer reproduces it)"
+    },
+    {
+      "file": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json",
+      "disposition": "star-corrected",
+      "from": "5/5 stars",
+      "to": "2/5 stars",
+      "extractor": "word-stars",
+      "evidence": "already corrected to the printed 2/5 by an earlier verified fix (humanReviewScore set); the stale adjudication made against the old 5/5 is cleared here",
+      "classBug": "word-stars (fixed earlier)",
+      "alsoClearAdjudication": true
+    },
+    {
+      "file": "fiddler-on-the-roof-2015/nytg--marc-miller.json",
+      "disposition": "star-cleared",
+      "from": "D",
+      "to": null,
+      "extractor": "none",
+      "evidence": "New York Theatre Guide prints no grade; none in the stored text",
+      "classBug": "unknown legacy source"
+    },
+    {
+      "file": "fish-in-the-dark-2015/timeout--adam-feldman.json",
+      "disposition": "star-cleared",
+      "from": "D+",
+      "to": null,
+      "extractor": "none",
+      "evidence": "Time Out rates in stars, never letter grades; no rating in the stored text",
+      "classBug": "unknown legacy source"
+    },
+    {
+      "file": "funny-girl-2022/deadline--greg-evans.json",
+      "disposition": "star-cleared",
+      "from": "A",
+      "to": null,
+      "extractor": "llm-extracted-gemini",
+      "evidence": "Deadline prints no rating; none in the stored text",
+      "classBug": "llm-extracted-gemini hallucinated grade"
+    },
+    {
+      "file": "good-night-and-good-luck-2025/digital-journal--markos-papadatos.json",
+      "disposition": "adjudication-cleared",
+      "from": "2.5/5 stars",
+      "to": "2.5/5 stars",
+      "extractor": "text-pattern",
+      "evidence": "the stored text prints the verdict line '2.5 out of 5 stars'; the adjudicator wrongly believed a 5/5",
+      "classBug": null
+    },
+    {
+      "file": "jekyll-and-hyde-2013/ew--melissa-rose-bernardo.json",
+      "disposition": "adjudication-cleared",
+      "from": "C-",
+      "to": "C-",
+      "extractor": "llm-extracted-gemini",
+      "evidence": "EW grade printed at the end of the stored text: C-",
+      "classBug": null
+    },
+    {
+      "file": "les-miserables-2014/stagezine--david-nounou.json",
+      "disposition": "star-cleared",
+      "from": "A",
+      "to": null,
+      "extractor": "none",
+      "evidence": "Stagezine prints no grade; none in the stored text",
+      "classBug": "unknown legacy source"
+    },
+    {
+      "file": "lucky-guy-2013/ew--lisa-schwarzbaum.json",
+      "disposition": "adjudication-cleared",
+      "from": "C+",
+      "to": "C+",
+      "extractor": "llm-extracted-gemini",
+      "evidence": "EW grade printed at the end of the stored text: C+",
+      "classBug": null
+    },
+    {
+      "file": "misery-2015/huffpost--michael-giltz.json",
+      "disposition": "star-corrected",
+      "from": "A",
+      "to": "1/4 stars",
+      "extractor": "letter-grade",
+      "evidence": "the critic's header prints one star out of four for this show",
+      "classBug": "letter-grade keyword run into a title ('no ratingA Month...'); fixed in score-extractors.js (word boundary after the keyword)"
+    },
+    {
+      "file": "moulin-rouge-the-musical-west-end-2021/thereviewshub--richard-maguire.json",
+      "disposition": "star-cleared",
+      "from": "100%",
+      "to": null,
+      "extractor": "reviewshub-percentage",
+      "evidence": "the url now serves a different critic's 2026 tour review scored 100%; this critic's stored review has no percentage",
+      "classBug": "outlet extractor read a page whose url now holds another review"
+    },
+    {
+      "file": "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+      "disposition": "star-cleared",
+      "from": "1/5",
+      "to": null,
+      "extractor": "numeric-stars",
+      "evidence": "the LBC page (fetched 2026-11-12) prints no rating; 1/5 matches nothing in the review",
+      "classBug": "numeric-stars generic X/5 (page furniture); current extractor no longer reproduces it from the text"
+    },
+    {
+      "file": "old-times-2015/huffpost--michael-glitz.json",
+      "disposition": "adjudication-cleared",
+      "from": "2/4 stars",
+      "to": "2/4 stars",
+      "extractor": "text-footer-corrected",
+      "evidence": "the critic's header prints two stars out of four for this show; the adjudication was made against an older wrong A",
+      "classBug": null
+    },
+    {
+      "file": "patriots-2024/ew--kristen-baldwin.json",
+      "disposition": "star-corrected",
+      "from": "B+",
+      "to": "C",
+      "extractor": "none",
+      "evidence": "EW grade printed at the end of the stored text: C",
+      "classBug": "unknown legacy source"
+    },
+    {
+      "file": "public-charge-off-broadway-2026/timeout--unknown.json",
+      "disposition": "star-cleared",
+      "from": "5/5 stars",
+      "to": null,
+      "extractor": "unicode-stars-fallthrough",
+      "evidence": "the Time Out page (live and the 2026-07 archive copy) carries no star widget for this review; the stars came from elsewhere on the page",
+      "classBug": "unicode-stars-fallthrough read page furniture"
+    },
+    {
+      "file": "the-kite-runner-2022/theater-pizzazz--samuel-l-leiter.json",
+      "disposition": "star-cleared",
+      "from": "A",
+      "to": null,
+      "extractor": "none",
+      "evidence": "Theater Pizzazz prints no grade; none in the stored text",
+      "classBug": "unknown legacy source"
+    },
+    {
+      "file": "the-prom-2018/journal-inquirer--tim-leininger.json",
+      "disposition": "star-cleared",
+      "from": "A",
+      "to": null,
+      "extractor": "none",
+      "evidence": "the Journal Inquirer prints no grade; none in the stored text",
+      "classBug": "unknown legacy source"
+    },
+    {
+      "file": "wolf-hall-parts-one-and-two-2015/huffpost--michael-glitz.json",
+      "disposition": "star-corrected",
+      "from": "A",
+      "to": "2.5/4 stars",
+      "extractor": "none",
+      "evidence": "the critic's header prints two and a half stars out of four for this show",
+      "classBug": "letter-grade keyword run into a title ('no ratingA Month...'), same page furniture as Misery; fixed in score-extractors.js"
+    }
+  ],
+  "cousins": [
+    {
+      "file": "misery-2015/huffpost--michael-glitz.json",
+      "disposition": "star-corrected",
+      "from": "A",
+      "to": "1/4 stars",
+      "extractor": "extracted-grade",
+      "evidence": "misspelled same-url twin of the Giltz file; marked its duplicate and corrected",
+      "classBug": "letter-grade keyword run into a title"
+    },
+    {
+      "file": "allegiance-2015/huffpost--michael-glitz.json",
+      "disposition": "star-corrected",
+      "from": "A",
+      "to": "2.5/4 stars",
+      "extractor": "letter-grade",
+      "evidence": "the critic header prints two and a half stars out of four for this show",
+      "classBug": "letter-grade keyword run into a title"
+    },
+    {
+      "file": "heisenberg-2016/huffpost--michael-giltz.json",
+      "disposition": "star-corrected",
+      "from": "A",
+      "to": "3.5/4 stars",
+      "extractor": "letter-grade",
+      "evidence": "the critic header prints three and a half stars out of four for this show",
+      "classBug": "letter-grade keyword run into a title"
+    },
+    {
+      "file": "king-charles-iii-2015/huffpost--michael-giltz.json",
+      "disposition": "star-corrected",
+      "from": "A",
+      "to": "3.5/4 stars",
+      "extractor": "letter-grade",
+      "evidence": "the critic header prints three and a half stars out of four for this show",
+      "classBug": "letter-grade keyword run into a title"
+    },
+    {
+      "file": "the-shark-is-broken-west-end-2021/thestage--paul-vale.json",
+      "disposition": "star-cleared",
+      "from": "3/5 stars",
+      "to": null,
+      "extractor": "word-stars",
+      "evidence": "the stored 3/5 was cast prose about the three lead actors",
+      "classBug": "word-stars cast prose (performance noun + possessive)"
+    }
   ]
 }
