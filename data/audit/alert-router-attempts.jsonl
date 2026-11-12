@@ -1,4 +1,3 @@
-{"ts":"2026-10-13T10:27:50.832Z","conditionKey":"review-gap:opening-window:alice-in-wonderland-off-broadway-2026","title":"Review gap — \"Alice in Wonderland\" missing 11 cited review(s)","ok":true,"error":null}
 {"ts":"2026-10-13T14:59:34.421Z","conditionKey":"test-yml:red:Unit Tests:c9be3b4a","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points at the rejected hero/poster fields\"","ok":true,"error":null}
 {"ts":"2026-10-13T18:11:43.426Z","conditionKey":"test-yml:red:Lint Workflows:688d32b5","title":"main test.yml red: Lint Workflows / Audit — no API route dispatches a workflow from GET (BRO-5262)","ok":true,"error":null}
 {"ts":"2026-10-14T01:40:58.279Z","conditionKey":"corpus-drift:duplicate-shows","title":"Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)","ok":true,"error":null}
@@ -487,3 +486,4 @@
 {"ts":"2026-11-12T09:59:06.012Z","conditionKey":"e2e-canary:main","title":"[E2E Canary] alert chain check 2026-11-12T09:59:04.552Z","ok":true,"error":null}
 {"ts":"2026-11-12T09:59:07.248Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-11-12T09:59:06.168Z","ok":true,"error":null}
 {"ts":"2026-11-12T10:00:09.358Z","conditionKey":"star-band-drift:published-out-of-band","title":"Star-band drift: 1 published score outside the critic's own rating","ok":true,"error":null}
+{"ts":"2026-11-12T11:02:09.008Z","conditionKey":"pending-unrecoverable:in-the-heights-off-broadway-2026","title":"1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
