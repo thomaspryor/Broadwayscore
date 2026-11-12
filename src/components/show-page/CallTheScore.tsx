@@ -31,7 +31,7 @@ const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions cl
 /** Pending-state card: pick 0-100 (signed out is fine), save it with an account, then see the forecast. Renders nothing for shows a reader cannot predict. */
 export default function CallTheScore({ show }: { show: ShowLike }) {
   const { showSignIn } = useAuth();
-  const { signedIn, loaded, call, lock } = useScoreCall(show.id);
+  const { signedIn, loaded, call, lock, loadError, retry } = useScoreCall(show.id);
   const [value, setValue] = useState(70);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -47,7 +47,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
   }, [show.id]);
   // Once signed in and nothing is saved yet, save the waiting number automatically.
   useEffect(() => {
-    if (!callable || !signedIn || !loaded || call || autoRef.current) return;
+    if (!callable || !signedIn || !loaded || loadError || call || autoRef.current) return;
     const p = getPendingCall(show.id, ls(), Date.now(), AUTOSAVE_WINDOW_MS);
     if (p == null) return;
     autoRef.current = true;
@@ -58,7 +58,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
       else autoRef.current = false;
       if (!r.ok) setMsg(lockMsg(r.reason));
     });
-  }, [callable, signedIn, loaded, call, show.id, lock]);
+  }, [callable, signedIn, loaded, loadError, call, show.id, lock]);
   useEffect(() => { if (call) clearPendingCall(show.id, ls()); }, [call, show.id]);
   if (!callable) return null;
   const tier = getScoreTier(value, show.category);
@@ -80,6 +80,17 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
   };
 
   if (signedIn && !loaded) return <Wrap><div className="h-24" aria-hidden /></Wrap>;
+
+  // A failed fetch is not "no prediction yet": never offer the slider, or a reader could pick again for a show they already called.
+  if (signedIn && loadError) {
+    return (
+      <Wrap>
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Predict the score</p>
+        <p className="text-sm text-gray-200 m-0 mb-3" role="alert">We couldn&apos;t load your prediction. Check your connection and try again.</p>
+        <button type="button" className="btn-secondary w-full min-h-[44px]" onClick={retry} data-testid="call-retry">Try again</button>
+      </Wrap>
+    );
+  }
 
   if (call) {
     const sentence = gapSentence({ called: call.called_score, forecast: call.forecast as number, lo80: call.lo80 as number, hi80: call.hi80 as number });
