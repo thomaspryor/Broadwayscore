@@ -7,6 +7,7 @@
  * test uses (findCandidateGaps), so heal and gate cannot disagree.
  */
 const { findCandidateGaps } = require('./venue-complex-audit');
+const { slugify } = require('./url-slug');
 
 // Slugs that match a complex by keyword but are a DIFFERENT venue. Add here, never unlink by hand.
 const NOT_SUB_VENUES = new Set([]);
@@ -14,7 +15,7 @@ const NOT_SUB_VENUES = new Set([]);
 // Keyword overlap alone is a heuristic (BRO-155 Loft Story, BRO-3425 black box, BRO-447,
 // BRO-7068 Skywalk were all false positives). Auto-link only when the venue string itself
 // names the complex ("The Lion Theatre at Theatre Row" -> Theatre Row); the rest stay red for a human.
-const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const norm = (t) => slugify(String(t || '')).replace(/-/g, ' ').trim(); // slugify folds diacritics (shared rule)
 function namesComplex(def, complexSlug, cand) {
   const name = norm(def.name).replace(/^the /, '');
   if (!name) return false;
