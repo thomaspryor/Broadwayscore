@@ -111,7 +111,8 @@ function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
         }
         // A pending run is only cancelled when it can be restored; other chain
         // kinds' pending successors keep their chain alive as before.
-        if (status === 'pending' && !planRedispatch(workflow, run.displayTitle)) {
+        const plan = planRedispatch(workflow, run.displayTitle);
+        if (status === 'pending' && !plan) {
           console.log(`  Leaving pending ${workflow} run ${run.databaseId} (${run.displayTitle}): cannot be restored`);
           continue;
         }
@@ -120,7 +121,6 @@ function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
           console.log(`  Cancelled ${workflow} run ${run.databaseId} (${run.displayTitle})`);
           // Scoring runs come back only when they are a needs_rescore chain batch
           // (BRO-7419); other scoring runs are picked up by their next trigger.
-          const plan = planRedispatch(workflow, run.displayTitle);
           if (plan) recorded.push({ ...plan, runId: run.databaseId, title: run.displayTitle });
         } catch (e) { console.log(`  ⚠ Could not cancel ${run.databaseId}`); }
       }
@@ -137,7 +137,9 @@ function collapseRescoreChains(items) {
   const isChain = it => it.workflow === SCORING && it.fields && it.fields.chain === 'true' && it.fields.needs_rescore === 'true';
   const best = new Map();
   for (const it of items.filter(isChain)) {
-    const k = `${it.fields.limit || ''}|${it.fields.max_cost || ''}`;
+    // The chain step fills an empty limit with 400 for the next batch
+    // (llm-ensemble-score.yml LIMIT="${LIMIT:-400}"), so empty and 400 are one chain.
+    const k = `${it.fields.limit || '400'}|${it.fields.max_cost || ''}`;
     const cur = best.get(k);
     if (!cur || Number(it.fields.remaining_batches) > Number(cur.fields.remaining_batches)) best.set(k, it);
   }

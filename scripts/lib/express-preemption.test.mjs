@@ -76,10 +76,15 @@ test('a batch and the next batch it already dispatched restore as ONE chain (the
   // A chain with a different budget cap is a different chain: both come back.
   const other = { ...planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 3 left, limit 400, max-cost 6)'), runId: 9 };
   assert.equal(collapseRescoreChains([t(7), t(8), other]).length, 2);
+  // A chain started with no limit: its next batch carries the workflow default 400. One chain.
+  const noLimit = { ...planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 7 left, limit , max-cost 15)'), runId: 7 };
+  const out2 = collapseRescoreChains([noLimit, t(6)]);
+  assert.equal(out2.length, 1);
+  assert.equal(out2[0].fields.remaining_batches, '7');
 });
 test('pending scoring runs are cancelled only when they can be restored', () => {
   const src = fs.readFileSync(new URL('./express-preemption.js', import.meta.url), 'utf8');
-  assert.match(src, /status === 'pending' && !planRedispatch\(workflow, run\.displayTitle\)/);
+  assert.match(src, /const plan = planRedispatch\(workflow, run\.displayTitle\);\s*if \(status === 'pending' && !plan\)/);
   // e.g. a pending rescore_reason chain successor has no suffix -> not restorable -> left alone
   assert.equal(planRedispatch(SCORING, 'LLM Ensemble Score Reviews'), null);
 });
