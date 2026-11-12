@@ -71,7 +71,9 @@ function validate(dir) {
     require(${JSON.stringify(path.join(dir, 'scripts/validate-data.js'))});
   `;
   const result = spawnSync(process.execPath, ['-e', entry], {
-    cwd: dir, env: { ...process.env, RUNNER_TEMP: dir, VALIDATE_DATA_SHOWS_JSON: '' },
+    // CLAUDE_CODE_REMOTE='' keeps cloud sessions from flipping validate-data to its
+    // --dry-run default, which skips the quarantine writes asserted here (BRO-7398).
+    cwd: dir, env: { ...process.env, RUNNER_TEMP: dir, VALIDATE_DATA_SHOWS_JSON: '', CLAUDE_CODE_REMOTE: '' },
     stdio: ['ignore', fd, fd], timeout: 120000,
   });
   fs.closeSync(fd);
