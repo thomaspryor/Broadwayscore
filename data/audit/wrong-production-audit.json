@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T10:33:11.608Z",
+  "timestamp": "2026-11-12T11:09:14.052Z",
   "stats": {
-    "totalReviews": 81616,
-    "alreadyFlagged": 22278,
+    "totalReviews": 81617,
+    "alreadyFlagged": 22279,
     "dateGuardCatches": 218,
     "directorMismatch": 3651,
     "tvFilmSignals": 2302,
-    "londonSignals": 3705,
+    "londonSignals": 3706,
     "offBroadwaySignals": 751,
     "yearMismatch": 372,
-    "noPublishDate": 8440
+    "noPublishDate": 8438
   },
   "findings": [
     {
@@ -98425,6 +98425,20 @@
       "score": 57,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/dogstar-hampstead-theatre-review-enjoyably-ghostly-if-frustratingly-static",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": "2026-11-11",
+      "url": "https://sierz.co.uk/reviews/dogstar-hampstead-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
