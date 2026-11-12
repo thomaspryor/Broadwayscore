@@ -28,7 +28,8 @@
     "girls-off-west-end-2026/londonlivinglarge--unknown.json",
     "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "girls-off-west-end-2026/theartsdispatch--jim-keaveney.json",
-    "memoriam-off-west-end-2026/ground--unknown.json"
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/british-theatre--unknown.json",
@@ -53,7 +54,8 @@
     "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "girls-off-west-end-2026/plays-to-see--unknown.json",
-    "girls-off-west-end-2026/radio-times--molly-moss.json"
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "memoriam-off-west-end-2026/letterboxd--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -78,7 +80,8 @@
       "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "girls-off-west-end-2026/londonlivinglarge--unknown.json",
       "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "girls-off-west-end-2026/theartsdispatch--jim-keaveney.json"
+      "girls-off-west-end-2026/theartsdispatch--jim-keaveney.json",
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -105,7 +108,7 @@
     ]
   },
   "startTime": "2026-11-12T20:06:25.494Z",
-  "lastProcessed": "memoriam-off-west-end-2026/ground--unknown.json",
+  "lastProcessed": "memoriam-off-west-end-2026/letterboxd--unknown.json",
   "log": [
     {
       "t": "2026-11-12T20:19:39.076Z",
@@ -249,6 +252,29 @@
       "t": "2026-11-12T22:32:06.758Z",
       "event": "bb-session",
       "session": "1609012e",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-12T23:28:55.393Z",
+      "event": "bb-session",
+      "session": "16be9c3d",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-12T23:28:56.158Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-12T23:34:43.028Z",
+      "event": "bb-session",
+      "session": "0f82777d",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-12T23:36:11.562Z",
+      "event": "bb-session",
+      "session": "9a2c4aa6",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ],
