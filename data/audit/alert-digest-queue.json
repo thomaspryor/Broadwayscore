@@ -478,5 +478,33 @@
       }
     ],
     "queuedAt": "2026-11-12T10:05:01.644Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:act-of-god-off-west-end-2026",
+    "title": "Content mismatch on Act of God",
+    "description": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED but fullText never mentions 'Act of God' (2777 chars): https://www.thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T10:33:24.078Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:cloud-9-national-west-end-2026",
+    "title": "Auto-remediation gave up on cloud-9-national-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"cloud-9-national-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T10:33:26.784Z"
   }
 ]
