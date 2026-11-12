@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T14:49:24.636Z",
+  "generatedAt": "2026-11-12T15:53:11.592Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,6 +7,11 @@
       "id": "wanted-2022",
       "title": "Wanted",
       "openingDate": "2026-11-08"
+    },
+    {
+      "id": "the-good-thief-off-broadway-2026",
+      "title": "The Good Thief",
+      "openingDate": "2026-11-12"
     },
     {
       "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -96,10 +101,6 @@
   ],
   "skipped": [
     {
-      "showId": "the-good-thief-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "first-and-last-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -135,8 +136,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 846,
-  "matchedGaps": 13,
+  "itemsScanned": 845,
+  "matchedGaps": 15,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -146,6 +147,15 @@
       "outletId": "west-end-wilma",
       "url": "https://westendwilma.com/cloud-9-national-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=cloud-9-national-theatre-review",
       "headline": "CLOUD 9 at the National Theatre, Review &#8211; &#8220;overly complicated brilliance&#8221; ★★★★",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/cloud-9-national-theatr-26207",
+      "headline": "Cloud 9",
       "publishDate": "2026-11-12"
     },
     {
@@ -191,6 +201,15 @@
       "outletId": "south-london",
       "url": "https://southlondon.co.uk/area/southwark/review-cloud-9-national-theatre/",
       "headline": "Review: Cloud 9 &#8211; National Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/cloud-9-national-theatr-26207",
+      "headline": "Cloud 9",
       "publishDate": "2026-11-12"
     },
     {
