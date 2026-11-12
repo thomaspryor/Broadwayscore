@@ -88,8 +88,8 @@ for (const dirent of showDirs) {
       continue;
     }
 
-    const rebuildReason = classifyRebuildExclusion(data, show);
-    const llmReason = classifyLlmExclusion(data, show);
+    const rebuildReason = classifyRebuildExclusion(data, show, filePath);
+    const llmReason = classifyLlmExclusion(data, show, filePath);
 
     // Self-check: classifier should agree with the actual predicate's verdict
     const classifierRebuildIncludes = rebuildReason === '';

@@ -104,7 +104,7 @@ for (const f of files) {
 
   // Must pass rebuild inclusion gate
   if (!isIncludableForRebuild(data, show, path.join(showDir, f))) {
-    const reason = getExclusionReason(data);
+    const reason = getExclusionReason(data, path.join(showDir, f));
     excluded.push({ file: f, reason, data });
     continue;
   }
@@ -208,7 +208,7 @@ console.log();
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function getExclusionReason(data) {
+function getExclusionReason(data, filePath) {
   if (data.wrongProduction === true) return 'wrongProduction';
   if (data.wrongShow === true) return 'wrongShow';
   if (data.wrongAttribution === true) return 'wrongAttribution';
@@ -216,7 +216,7 @@ function getExclusionReason(data) {
   if (data.isRoundupArticle === true) return 'isRoundupArticle';
   if (data.isNonReview || data.nonReviewFlag || data.nonReviewContent) return 'isNonReview';
   if (data.fabricatedEntry === true) return 'fabricatedEntry';
-  if (data.isSyndicatedDuplicate === true) return 'isSyndicatedDuplicate';
+  if (require('../lib/syndication-pairs').isSyndicatedDuplicateActive(data, filePath)) return 'isSyndicatedDuplicate'; // BRO-7327
   if (data.crossOutletDuplicate === true) return 'crossOutletDuplicate';
   if (data.suspectedMisattribution === true) return 'suspectedMisattribution';
   if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return `rejectedBy:${data.rejectedBy.join(',')}`;

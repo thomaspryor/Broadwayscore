@@ -25,7 +25,7 @@ const wpClearedFlags = (data) =>
  * Returns the first firing exclusion reason on the rebuild side, or '' if
  * the file is included. Mirrors isIncludableForRebuild's check order.
  */
-function classifyRebuildExclusion(data, show) {
+function classifyRebuildExclusion(data, show, filePath) {
   if (!data) return 'noData';
   // BRO-4806: opening-night lane reviews are exempt from the six lane-bypassed guards (trust-model laneBypasses).
   const laneOk = (guard) => laneBypasses(data, guard, { openingDate: show && show.openingDate });
@@ -44,7 +44,7 @@ function classifyRebuildExclusion(data, show) {
     return 'nonReview';
   }
   if (data.fabricatedEntry === true) return 'fabricatedEntry';
-  if (data.isSyndicatedDuplicate === true) return 'isSyndicatedDuplicate';
+  if (require('./syndication-pairs').isSyndicatedDuplicateActive(data, filePath)) return 'isSyndicatedDuplicate'; // BRO-7327
   if (data.crossOutletDuplicate === true) return 'crossOutletDuplicate';
   // 2026-04-29: rebuild now mirrors LLM's stale-override (review-guards.js:1759).
   // Classifier must defer to the same helper or it drifts.
@@ -97,8 +97,8 @@ function classifyRebuildExclusion(data, show) {
  * Post-2026-04-29 refactor: LLM delegates to rebuild and layers two extras.
  * Mirrors scripts/lib/is-scoreable.js / scripts/llm-scoring/is-scoreable.ts.
  */
-function classifyLlmExclusion(data, show /* unused criticRegistry now */) {
-  const rebuildReason = classifyRebuildExclusion(data, show);
+function classifyLlmExclusion(data, show /* unused criticRegistry now */, filePath) {
+  const rebuildReason = classifyRebuildExclusion(data, show, filePath);
   if (rebuildReason) return rebuildReason;
   const laneOk = (guard) => laneBypasses(data, guard, { openingDate: show && show.openingDate });
   if (data.incompleteReason === 'scraper_garbage' && !laneOk('scraperGarbage')) return 'scraper_garbage';

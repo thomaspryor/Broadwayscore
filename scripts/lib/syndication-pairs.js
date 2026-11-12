@@ -274,6 +274,40 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
   });
 }
 
+/**
+ * BRO-7327 cousin (BRO-4891 class): true when the record's syndicatedPrimaryFile names the
+ * record itself. A file cannot be a syndicated copy of itself; the stale pointer is left
+ * behind when the real primary was renamed or merged onto this filename, and honouring it
+ * drops the outlet's only copy of the review (5 complete reviews, e.g. Isherwood on
+ * a-little-night-music-2009, Cavendish on cabaret West End). Pointer forms seen in data:
+ * "<file>.json" (same show) and "<showId>/<file>.json". A pointer into ANOTHER show's folder
+ * is not a self-pointer (handled by heal-dangling-syndication.js).
+ * @param {object} data
+ * @param {string} filePath the record's own path (…/<showId>/<file>.json)
+ */
+function isSelfSyndicationPointer(data, filePath) {
+  const ptr = data && data.syndicatedPrimaryFile;
+  if (typeof ptr !== 'string' || !ptr || typeof filePath !== 'string' || !filePath) return false;
+  const path = require('path');
+  const own = path.basename(filePath);
+  const ownShow = path.basename(path.dirname(filePath));
+  const parts = ptr.split('/').filter(Boolean);
+  if (parts.length === 1) return parts[0] === own;
+  if (parts.length === 2) return parts[1] === own && parts[0] === ownShow;
+  return false;
+}
+
+/**
+ * Canonical "is the isSyndicatedDuplicate flag excluding this file" predicate. Every
+ * exclusion site (explainExclusion, the rebuild, scoring-delta, parity/composite mirrors)
+ * calls this instead of reading the raw flag, so a self-pointing flag is ignored everywhere
+ * at once. Without filePath the raw flag is honoured (conservative, previous behaviour).
+ */
+function isSyndicatedDuplicateActive(data, filePath) {
+  if (!data || data.isSyndicatedDuplicate !== true) return false;
+  return !isSelfSyndicationPointer(data, filePath);
+}
+
 const _fullerInFlight = new Set();
 let _showMap = null;
 /** Show record for show-dependent gates (closing-date guards); null map entry = unknown show (conservative: caller treats as excluded by explainExclusion). */
@@ -334,6 +368,7 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
 
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary,
+  isSelfSyndicationPointer, isSyndicatedDuplicateActive,
   KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };

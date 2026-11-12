@@ -1364,7 +1364,11 @@ function decideInclusion(review, show, guards, filePath) {
   if (((review.isNonReview === true && !isNonReviewDemoted) || review.nonReviewFlag === true || review.nonReviewContent === true) && !laneOk('nonReview')) {
     return { included: false, reason: 'isNonReview' };
   }
-  if (review.isSyndicatedDuplicate === true) return { included: false, reason: 'isSyndicatedDuplicate' };
+  // BRO-7327: canonical predicate (self-pointing syndicatedPrimaryFile ignored); typeof-guarded for old baselines.
+  const syndActive = typeof guards.isSyndicatedDuplicateActive === 'function'
+    ? guards.isSyndicatedDuplicateActive(review, filePath)
+    : review.isSyndicatedDuplicate === true;
+  if (syndActive) return { included: false, reason: 'isSyndicatedDuplicate' };
   // The runtime syndication rule also excludes unflagged secondary copies.
   // criticName/outletId/outlet identify the primary in this side's directory.
   if (filePath) {
