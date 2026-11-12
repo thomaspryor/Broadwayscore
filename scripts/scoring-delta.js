@@ -1399,7 +1399,10 @@ function decideInclusion(review, show, guards, filePath) {
       const dir = path.dirname(filePath);
       let names = [];
       try { names = require('fs').readdirSync(dir); } catch { /* unreadable */ }
-      if (synd.hasLiveBylinelessPortalPrimary(dir, synd.bylinelessPortalPrimaryFiles(names, normalize))) {
+      const prims = synd.bylinelessPortalPrimaryFiles(names, { criticName: review.criticName, fileName: path.basename(filePath) }, normalize);
+      if (prims.length && synd.hasLiveBylinelessPortalPrimary(dir, prims, {
+        extraCheck: (p, pPath) => typeof guards.explainExclusion !== 'function' || guards.explainExclusion(p, show?.raw || show, pPath) === null,
+      })) {
         return { included: false, reason: 'knownSyndicationSecondary' };
       }
     }

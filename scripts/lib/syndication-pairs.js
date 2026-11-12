@@ -100,43 +100,57 @@ const PUBLISHING_GROUPS = [
 ];
 
 // Outlet ids of aggregator portals (review-normalization.js SYNDICATION_PORTAL_HOSTS: yahoo.com, msn.com, aol.com).
-const SYNDICATION_PORTAL_OUTLETS = Object.freeze(['yahoo', 'msn', 'aol']);
+const SYNDICATION_PORTAL_OUTLETS = Object.freeze(['yahoo', 'msn', 'aol', 'headtopics', 'newsbreak']); // BRO-7416: + the two aggregators
 
-// BRO-7416: aggregator portals that summarize another outlet's review and carry no usable byline of their own
-// (Head Topics prints "DEADLINE" as the author; NewsBreak files null/staff). The yahoo/msn/aol rule above matches
-// files by critic slug, so it never sees these. A copy here defers to ANY other live review file of the same show.
+// BRO-7416: aggregator portals. Head Topics and NewsBreak summarize another outlet's review: Head Topics prints the
+// source as the author ("DEADLINE", file headtopics--deadline.json) and NewsBreak files null/staff bylines. A real
+// byline goes through the same-critic portal rule (SYNDICATION_PORTAL_OUTLETS). A byline that names an outlet defers
+// to that outlet's files only (bylinelessPortalPrimaryFiles): a portal copy of an outlet we hold no copy of (Cleveland
+// Scene on suffs-tour-2025) is the only copy of that review and stays.
 const BYLINELESS_PORTAL_OUTLETS = Object.freeze(['headtopics', 'newsbreak']);
+
+/** 1 for an aggregator portal (yahoo/msn/aol/headtopics/newsbreak), else 0. Used to break cross-outlet primary ties. */
+function portalRank(outletId) { return SYNDICATION_PORTAL_OUTLETS.includes(String(outletId || '').toLowerCase()) ? 1 : 0; }
 
 function isBylinelessPortalOutlet(outletId) {
   return BYLINELESS_PORTAL_OUTLETS.includes(String(outletId || '').toLowerCase());
 }
 
+const _slug = (v) => foldDiacritics(String(v || '')).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 /**
- * Files in a show directory that a byline-less portal copy defers to: every review file whose outlet prefix is not
- * a portal (yahoo/msn/aol/headtopics/newsbreak) and not an unknown/unnamed shadow. Any critic.
+ * Files a byline-less portal copy defers to: other-outlet review files whose outlet prefix IS the outlet the portal
+ * names, by its byline ("DEADLINE") or by its own filename (`headtopics--deadline.json`). Portals and
+ * unknown/unnamed shadows never count.
  * @param {string[]} fileNames show directory listing
- * @param {(o:string)=>string} [normalize]
+ * @param {{criticName?:string, fileName?:string}} portal the portal copy being judged
+ * @param {(o:string)=>string} [normalize] outlet normalizer
  */
-function bylinelessPortalPrimaryFiles(fileNames, normalize = (o) => o) {
+function bylinelessPortalPrimaryFiles(fileNames, { criticName, fileName } = {}, normalize = (o) => o) {
+  const named = new Set();
+  const add = (v) => { const sl = _slug(v); if (sl) { named.add(sl); named.add(_slug(normalize(sl))); } };
+  add(criticName);
+  const m = /^[^-].*?--(.+?)(?:-\d+)?\.json$/.exec(fileName || '');
+  if (m) add(m[1]);
   const out = [];
   for (const f of fileNames || []) {
-    const m = /^(.+?)--.+\.json$/.exec(f);
-    if (!m || /^(unknown|unnamed)$/.test(m[1])) continue;
-    const o = String(normalize(m[1]) || '').toLowerCase();
+    const mm = /^(.+?)--.+\.json$/.exec(f);
+    if (!mm || f === fileName || /^(unknown|unnamed)$/.test(mm[1])) continue;
+    const o = _slug(normalize(mm[1]));
     if (SYNDICATION_PORTAL_OUTLETS.includes(o) || isBylinelessPortalOutlet(o)) continue;
-    out.push(f);
+    if (named.has(o) || named.has(_slug(mm[1]))) out.push(f);
   }
   return out;
 }
 
 /**
- * True when a byline-less portal copy should be dropped: some other-outlet file in the show dir is live
- * (isLiveSyndicationPrimary) and passes `extraCheck(parsed, path)` (callers pass their includability test).
+ * True when one of `primaryFiles` (bylinelessPortalPrimaryFiles) is live (isLiveSyndicationPrimary) and passes
+ * `extraCheck(parsed, path)` (callers pass their includability test).
  */
-function hasLiveBylinelessPortalPrimary(showDir, fileNames, { extraCheck } = {}) {
+function hasLiveBylinelessPortalPrimary(showDir, primaryFiles, { extraCheck } = {}) {
   const fs = require('fs');
   const path = require('path');
-  return bylinelessPortalPrimaryFiles(fileNames).some((f) => {
+  return (primaryFiles || []).some((f) => {
     try {
       const pPath = path.join(showDir, f);
       const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
@@ -414,6 +428,6 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary,
   isSelfSyndicationPointer, isSyndicatedDuplicateActive,
-  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, BYLINELESS_PORTAL_OUTLETS, isBylinelessPortalOutlet, bylinelessPortalPrimaryFiles, hasLiveBylinelessPortalPrimary, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
+  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, BYLINELESS_PORTAL_OUTLETS, isBylinelessPortalOutlet, portalRank, bylinelessPortalPrimaryFiles, hasLiveBylinelessPortalPrimary, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };

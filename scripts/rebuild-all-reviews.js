@@ -4488,10 +4488,19 @@ showDirs.forEach(showId => {
         }
       }
 
-      // BRO-7416: byline-less aggregator portals (headtopics/newsbreak) defer to any other outlet's live review.
+      // BRO-7416: a headtopics/newsbreak copy whose byline names an outlet defers to that outlet's file (same shield
+      // as the per-critic rule above, so rebuild and explainExclusion agree when the primary dies at a later gate).
       if (isBylinelessPortalOutlet(normalizeOutletCanonical(data.outletId || data.outlet || ''))) {
-        const primFiles = bylinelessPortalPrimaryFiles(files, normalizeOutletCanonical);
-        if (primFiles.length && hasLiveBylinelessPortalPrimary(showDir, primFiles)) {
+        const primFiles = bylinelessPortalPrimaryFiles(files, { criticName: data.criticName, fileName: file }, normalizeOutletCanonical);
+        const shield = syndicationShieldDecision({
+          primaryFiles: primFiles,
+          processed: processedFiles,
+          emitted: emittedFiles,
+          released: releasedFiles,
+          fallback: (prims) => hasLiveBylinelessPortalPrimary(showDir, prims),
+        });
+        if (shield.basis === 'fallback') stats.syndicationShieldFallback = (stats.syndicationShieldFallback || 0) + 1;
+        if (shield.skip) {
           logExclusion("skippedSyndicated", showId, file, data);
           stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
           return;

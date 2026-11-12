@@ -56,6 +56,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 
 // Outlet tier lookup — reads from outlet-registry.json (source of truth)
 const { getTier } = require('./lib/outlet-tiers');
+const { portalRank } = require('./lib/syndication-pairs');
 const { GEMINI_FLASH } = require('./lib/models');
 const { crossOutletPointer, skipAsAlreadyFlagged, excludeFromCrossOutletCompare } = require('./lib/cross-outlet-pointer');
 const { wouldCloseCrossOutletCycle } = require('./lib/cross-outlet-cycle');
@@ -259,7 +260,8 @@ async function main() {
       stats.fingerprintMatches++;
 
       // Choose primary: higher tier, more text, then alphabetical
-      group.sort((a, b) => getTier(a.outletId) - getTier(b.outletId) || b.text.length - a.text.length);
+      // BRO-7416: an aggregator portal never outranks the publisher's own file at equal tier (it carries no real byline).
+      group.sort((a, b) => getTier(a.outletId) - getTier(b.outletId) || portalRank(a.outletId) - portalRank(b.outletId) || b.text.length - a.text.length);
       // Rows pointing at another outlet's file are reported, never a primary or
       // a flagged copy (BRO-5348); the rest still dedupe among themselves.
       for (const p of group.filter(r => r.pointerAcross)) {
@@ -334,6 +336,7 @@ async function main() {
         // Choose primary
         const primaryIdx = getTier(r1.outletId) < getTier(r2.outletId) ? 0 :
                           getTier(r1.outletId) > getTier(r2.outletId) ? 1 :
+                          portalRank(r1.outletId) !== portalRank(r2.outletId) ? (portalRank(r1.outletId) < portalRank(r2.outletId) ? 0 : 1) :
                           r1.text.length >= r2.text.length ? 0 : 1;
         // The file whose own text names the other outlet is the copy, whatever the tier.
         const copyIdx = verdict.copy === 'a' ? 0 : verdict.copy === 'b' ? 1 : (primaryIdx === 0 ? 1 : 0);

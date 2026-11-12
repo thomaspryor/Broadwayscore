@@ -6193,8 +6193,8 @@ function explainExclusion(data, show, filePath, opts) {
       }
     }
   }
-  // BRO-7416: headtopics/newsbreak summarize another outlet's review and have no usable byline, so the per-critic
-  // rule above never fires. Drop the portal copy when any other outlet's live review of the show exists.
+  // BRO-7416: headtopics/newsbreak copies whose byline names an outlet ("DEADLINE") defer to that outlet's live
+  // review. (A real byline is handled by the per-critic portal rule above; no named-outlet file = keep the copy.)
   if (filePath && !(opts && opts.ignoreKnownSyndication)) {
     const synd = require('./syndication-pairs');
     const norm = require('./review-normalization').normalizeOutlet;
@@ -6202,10 +6202,10 @@ function explainExclusion(data, show, filePath, opts) {
       const dir = require('path').dirname(filePath);
       let names = [];
       try { names = require('fs').readdirSync(dir); } catch { /* unreadable dir: no portal rule */ }
-      const live = synd.hasLiveBylinelessPortalPrimary(dir, names.filter((f) => synd.bylinelessPortalPrimaryFiles([f], norm).length), {
+      const prims = synd.bylinelessPortalPrimaryFiles(names, { criticName: data.criticName, fileName: require('path').basename(filePath) }, norm);
+      if (prims.length && synd.hasLiveBylinelessPortalPrimary(dir, prims, {
         extraCheck: (p, pPath) => explainExclusion(p, show, pPath, opts) === null,
-      });
-      if (live) return 'knownSyndicationSecondary';
+      })) return 'knownSyndicationSecondary';
     }
   }
   // CONTAMINATION SAFETY NET: tour/film signals in the fullText intro, for
