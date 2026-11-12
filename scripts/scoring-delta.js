@@ -1391,7 +1391,7 @@ function decideInclusion(review, show, guards, filePath) {
       return { included: false, reason: 'knownSyndicationSecondary' };
     }
   }
-  // BRO-7416: byline-less portals (headtopics/newsbreak) defer to any other outlet's live review (mirrors rebuild).
+  // BRO-7416: byline-less portals (headtopics/newsbreak) defer to the outlet they name when that outlet's file is live (mirrors rebuild).
   if (filePath) {
     const synd = guards.__syndicationLib || require('./lib/syndication-pairs');
     const normalize = guards.__dedupNormalizeOutlet || normalizeOutletCanonical;

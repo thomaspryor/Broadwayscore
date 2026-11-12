@@ -48,13 +48,14 @@ test('headtopics (byline names the source outlet) is dropped when that outlet ha
   }
 });
 
-test('a portal copy of an outlet we hold no copy of is the only copy and stays (suffs/Cleveland Scene, Phantom/Klein)', () => {
+test('a portal copy with no live copy of the outlet it names stays (Phantom/Klein: none; suffs: original is a flagged copy)', () => {
   const hs = rev('headtopics', 'Cleveland Scene');
   const nb = rev('newsbreak', 'Christianne Klein');
   const dir = setup({
     'headtopics--clevelandscene.json': hs, 'newsbreak--christianne-klein.json': nb,
     'cleveland-plain-dealer--joey-morona.json': rev('cleveland-plain-dealer', 'Joey Morona'),
     'variety--someone-else.json': rev('variety', 'Someone Else'),
+    'clevelandscene--gwendolyn-kochur.json': rev('clevelandscene', 'Gwendolyn Kochur', { crossOutletDuplicate: true, crossOutletPrimaryFile: 'x/headtopics--clevelandscene.json' }),
   });
   assert.notEqual(explainExclusion(hs, show, path.join(dir, 'headtopics--clevelandscene.json')), 'knownSyndicationSecondary');
   assert.notEqual(explainExclusion(nb, show, path.join(dir, 'newsbreak--christianne-klein.json')), 'knownSyndicationSecondary');
@@ -93,4 +94,9 @@ test('cross-outlet detector breaks primary ties against portals (suffs: headtopi
   assert.equal(synd.portalRank('clevescene'), 0);
   const src = fs.readFileSync(new URL('../../scripts/detect-cross-outlet-duplicates.js', import.meta.url), 'utf8');
   assert.equal((src.match(/portalRank\(/g) || []).length >= 4, true, 'both primary-selection sites use portalRank');
+});
+
+test('portal filename with a --on-<date> suffix still names its outlet', () => {
+  const files = ['headtopics--deadline--on-2026-11-08.json', 'deadline--greg-evans.json'];
+  assert.deepEqual(synd.bylinelessPortalPrimaryFiles(files, { criticName: null, fileName: files[0] }), ['deadline--greg-evans.json']);
 });

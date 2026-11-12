@@ -105,8 +105,9 @@ const SYNDICATION_PORTAL_OUTLETS = Object.freeze(['yahoo', 'msn', 'aol', 'headto
 // BRO-7416: aggregator portals. Head Topics and NewsBreak summarize another outlet's review: Head Topics prints the
 // source as the author ("DEADLINE", file headtopics--deadline.json) and NewsBreak files null/staff bylines. A real
 // byline goes through the same-critic portal rule (SYNDICATION_PORTAL_OUTLETS). A byline that names an outlet defers
-// to that outlet's files only (bylinelessPortalPrimaryFiles): a portal copy of an outlet we hold no copy of (Cleveland
-// Scene on suffs-tour-2025) is the only copy of that review and stays.
+// to that outlet's live files only (bylinelessPortalPrimaryFiles): a portal copy of an outlet we hold no live copy of
+// stays (Phantom tour / Klein: no file at all; suffs-tour-2025: the clevescene original is a verified, flagged copy of
+// the Head Topics file per BRO-6759, so the portal is the surviving copy by that decision).
 const BYLINELESS_PORTAL_OUTLETS = Object.freeze(['headtopics', 'newsbreak']);
 
 /** 1 for an aggregator portal (yahoo/msn/aol/headtopics/newsbreak), else 0. Used to break cross-outlet primary ties. */
@@ -130,7 +131,7 @@ function bylinelessPortalPrimaryFiles(fileNames, { criticName, fileName } = {}, 
   const named = new Set();
   const add = (v) => { const sl = _slug(v); if (sl) { named.add(sl); named.add(_slug(normalize(sl))); } };
   add(criticName);
-  const m = /^[^-].*?--(.+?)(?:-\d+)?\.json$/.exec(fileName || '');
+  const m = /^[^-].*?--(.+?)(?:--on-.*|-\d+)?\.json$/.exec(fileName || '');
   if (m) add(m[1]);
   const out = [];
   for (const f of fileNames || []) {
