@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+  "night": "2026-11-12",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-12T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-12T20:30:06.503Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-12T22:55:12.695Z",
+    "lastOkSampleAt": "2026-11-12T22:55:12.695Z"
+  },
+  "firstLiveAt": "2026-11-12T20:30:06.503Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-12T20:30:06.503Z",
+  "liveCount": 2,
+  "liveCountAt": {
+    "1h": 2,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-12T22:00:10.013Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [
+    {
+      "key": "theatremonkey|unknown",
+      "outlet": "TheatreMonkey",
+      "critic": null,
+      "tier": 3,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-12T20:30:06.503Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "monstagigz|unknown",
+      "outlet": "Monstagigz",
+      "critic": null,
+      "tier": 4,
+      "publishAt": "2026-11-10",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-12T20:30:06.503Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 2,
+      "fetchedAt": "2026-11-12T23:00:27.481Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-12T23:00:27.559Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-12T23:00:28.110Z",
+    "files": [
+      {
+        "file": "bestoftheatre--maria-boot.json",
+        "outletId": "bestoftheatre",
+        "outlet": "Best Of Theatre",
+        "critic": "Maria Boot",
+        "firstSeenAt": "2026-11-12T17:20:54.929Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-30",
+        "url": "bestoftheatre.co.uk/blog/post/alex-lake-photographs-final-rehearsals-hamlet-hail-to-the-thief",
+        "includable": false,
+        "reason": "wrongShow",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--shehrazade-zafar-arif.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Shehrazade Zafar-Arif",
+        "firstSeenAt": "2026-11-12T00:39:57.715Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-09",
+        "url": "londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-photos",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "londonist--matt-brown.json",
+        "outletId": "londonist",
+        "outlet": "Londonist",
+        "critic": "Matt Brown",
+        "firstSeenAt": "2026-11-12T16:59:13.213Z",
+        "scoredAt": null,
+        "publishDate": "2026-06-12",
+        "url": "londonist.com/london/music/radiohead-shakespeare-hamlet-hail-to-the-thief",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "monstagigz--unknown.json",
+        "outletId": "monstagigz",
+        "outlet": "Monstagigz",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-10T18:26:18.796Z",
+        "scoredAt": "2026-11-10T22:29:29.311Z",
+        "publishDate": "2026-11-10",
+        "url": "monstagigz.com/2026/11/10/theatre-review-hamlet-hail-to-the-thief-at-the-barbican",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "musical-theatre-review--angela-thomas.json",
+        "outletId": "musical-theatre-review",
+        "outlet": "Musical Theatre Review",
+        "critic": "Angela Thomas",
+        "firstSeenAt": "2026-11-12T00:40:12.490Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-31",
+        "url": "musicaltheatrereview.com/london-debut-for-hamlet-hail-to-the-thief",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatre-weekly--unknown.json",
+        "outletId": "theatre-weekly",
+        "outlet": "Theatre Weekly",
+        "critic": "Staff Writer",
+        "firstSeenAt": "2026-11-12T00:40:05.101Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-30",
+        "url": "theatreweekly.com/new-behind-the-scenes-photography-released-for-hamlet-hail-to-the-thief-as-barbican-previews-begin",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatremonkey--unknown.json",
+        "outletId": "theatremonkey",
+        "outlet": "TheatreMonkey",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-12T16:58:01.837Z",
+        "scoredAt": "2026-11-12T17:14:09.790Z",
+        "publishDate": "2026-11-11",
+        "url": "theatremonkey.com/2026/11/hamlet-hail-to-the-thief-barbican-theatre",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "whatsonstage--alex-wood.json",
+        "outletId": "whatsonstage",
+        "outlet": "WhatsOnStage",
+        "critic": "Alex Wood",
+        "firstSeenAt": "2026-11-12T16:58:10.740Z",
+        "scoredAt": null,
+        "publishDate": "2026-06-10",
+        "url": "whatsonstage.com/news/hamlet-hail-to-the-thief-to-have-london-premiere-at-the-barbican_1724480",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
