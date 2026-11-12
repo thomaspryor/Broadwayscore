@@ -1,23 +1,67 @@
 {
-  "updatedAt": "2026-11-12T14:21:23.130Z",
-  "processed": 699,
-  "failed": 348,
-  "successRate": "66.8%",
+  "updatedAt": "2026-11-12T14:47:01.681Z",
+  "processed": 820,
+  "failed": 414,
+  "successRate": "66.5%",
   "tierBreakdown": {
-    "playwright": 318,
-    "amp": 0,
+    "playwright": 369,
+    "amp": 2,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 61,
-    "scrapingbee": 39,
-    "brightdata": 11,
+    "scrapingdog": 63,
+    "scrapingbee": 43,
+    "brightdata": 12,
     "archiveToday": 0,
-    "archive": 315
+    "archive": 349
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-11-12T12:34:32.571Z",
+      "t": "2026-11-11T19:46:26.880Z",
+      "event": "bb-session",
+      "session": "4f7330d4",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-11T19:46:27.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-11T19:49:07.804Z",
+      "event": "bb-session",
+      "session": "a3043d14",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-11T19:49:08.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T19:51:37.362Z",
+      "event": "bb-session",
+      "session": "35dba903",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-11T19:51:37.896Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T20:18:51.171Z",
+      "event": "bb-session",
+      "session": "b102fa6f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-11T20:18:51.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T20:20:49.353Z",
       "event": "bb-session",
       "session": "435ba52a",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
@@ -46,83 +90,6 @@
     },
     {
       "t": "2026-11-12T12:37:43.053Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-12T13:36:40.596Z",
-      "event": "bb-session",
-      "session": "9f56f182",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
-    },
-    {
-      "t": "2026-11-12T13:36:41.430Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-12T13:38:48.021Z",
-      "event": "bb-session",
-      "session": "ec29d892",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-12T13:38:48.797Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-12T13:41:30.556Z",
-      "event": "bb-session",
-      "session": "97272149",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-12T13:41:31.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-12T13:44:05.014Z",
-      "event": "bb-session",
-      "session": "8ffcc710",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
-    },
-    {
-      "t": "2026-11-12T13:44:05.835Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-12T14:12:19.868Z",
-      "event": "bb-session",
-      "session": "2d43722c",
-      "url": "https://www.ft.com/content/ef9eec04-6960-4997-a0ca-f974b7eddc9e"
-    },
-    {
-      "t": "2026-11-12T14:12:20.164Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-11-12T14:12:26.405Z",
-      "event": "bb-session",
-      "session": "8f8c876d",
-      "url": "https://www.ft.com/content/ef9eec04-6960-4997-a0ca-f974b7eddc9e"
-    },
-    {
-      "t": "2026-11-12T14:12:26.797Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-11-12T14:14:12.292Z",
-      "event": "bb-session",
-      "session": "086433a2",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
-    },
-    {
-      "t": "2026-11-12T14:14:12.722Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
