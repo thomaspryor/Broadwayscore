@@ -38,7 +38,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # BRO-7337: Reddit is retired; a manual dispatch becomes a no-op instead of chaining empty shards.
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      retired: ${{ steps.sw.outputs.retired }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            config
+            scripts/lib/reddit-status.js
+      - id: sw
+        env:
+          REDDIT_FORCE_ENABLED: ${{ vars.REDDIT_FORCE_ENABLED }}
+        run: |
+          if [ "$(node scripts/lib/reddit-status.js)" = "true" ]; then
+            echo "retired=true" >> "$GITHUB_OUTPUT"; echo "Reddit is retired; skipping."
+          else
+            echo "retired=false" >> "$GITHUB_OUTPUT"
+          fi
+
   prepare:
+    needs: gate
+    if: ${{ needs.gate.outputs.retired != 'true' }}
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.matrix.outputs.shards }}

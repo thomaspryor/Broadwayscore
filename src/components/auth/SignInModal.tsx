@@ -6,7 +6,7 @@ import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { prepareAppleSignIn } from '@/lib/apple-auth';
 import EmailCodeForm, { type EmailAuthResult } from './EmailCodeForm';
 
-type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic' | 'critic';
+type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic' | 'critic' | 'prediction';
 
 interface SignInModalProps {
   isOpen: boolean;
@@ -29,6 +29,7 @@ const CONTEXT_HEADLINES: Record<SignInContext, string> = {
   generic: 'Sign in or create a free account',
   // Critics claiming their page (owner 2026-11-04): speak to them, not to theatergoers.
   critic: 'Sign in to claim your page',
+  prediction: 'Save your prediction',
 };
 
 const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
@@ -37,6 +38,7 @@ const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
   watchlist_local: "Your list is on this device for now. Sign in to see it on your phone and computer, and we'll move it over for you.",
   generic: 'Track the shows you’ve seen and the ones you want to see.',
   critic: 'A free account lets you add a photo, bio and links to your critic page.',
+  prediction: 'Create a free account or sign in. Your number is saved automatically, then we show you our forecast.',
 };
 
 export default function SignInModal({ isOpen, onClose, onSignIn, onSendEmailCode, onVerifyEmailCode, context = 'generic', loading = false, error = null }: SignInModalProps) {

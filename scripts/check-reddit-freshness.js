@@ -13,9 +13,11 @@
 'use strict';
 
 const fs = require('fs');
+const { NEVER_ASK_REDDIT_APP } = require('./lib/reddit-owner-guard');
 const path = require('path');
 const { redditStaleVerdict, redditOutageVerdict, readRedditLedgerRows, REDDIT_STALE_HOURS } = require('./lib/reddit-dispatch-cooldown');
 
+const { isRedditRetired } = require('./lib/reddit-status');
 const CONDITION_KEY = 'reddit-sentiment:stale';
 
 function newestRedditWriteMs(buzz) {
@@ -35,6 +37,14 @@ function countRedditAttempts(rows, nowMs) {
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
   const nowMs = Date.now();
+  // BRO-7337: Reddit is retired on purpose (config/retired-sources.json). Stored data is frozen and
+  // no scraper runs, so there is nothing to be stale. Close any open incident and stop; this must
+  // come before the idle check, which would otherwise leave an open alert open forever.
+  if (isRedditRetired()) {
+    console.log('[reddit-freshness] Reddit is retired; nothing to check');
+    if (!dryRun) require('./lib/owner-alert-router').resolveCondition(CONDITION_KEY, { reason: 'reddit retired (config/retired-sources.json)' });
+    return;
+  }
   const buzz = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audience-buzz.json'), 'utf8'));
   const lastWriteMs = newestRedditWriteMs(buzz);
   const ledgerRows = readRedditLedgerRows();
@@ -57,8 +67,8 @@ async function main() {
       conditionKey: CONDITION_KEY,
       title: `Reddit fetching is failing: ${o.attempts} Reddit calls and no successful write since ${last}`,
       description:
-        'Every fetch tier may be blocked (Reddit serves bot walls to proxies; direct returns 403). Check the scrape step log and ' +
-        'the REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET secrets (official OAuth route in scripts/lib/reddit-api.js). BRO-7337.',
+        'Every fetch tier may be blocked (Reddit serves bot walls to proxies; direct returns 403). Check the scrape step log. ' +
+        `${NEVER_ASK_REDDIT_APP} BRO-7337.`,
       severity: 'warning',
       disposition: 'auto',
       category: 'reddit-sentiment',
@@ -78,7 +88,7 @@ async function main() {
     description:
       `No show's sources.reddit was written since ${last}, while the scraper kept trying (${attemptsInWindow} Reddit calls in ${REDDIT_STALE_HOURS}h). ` +
       'Find a working route (Reddit direct 403, ScrapingBee timeouts, Scrapingdog breaker) and backfill shows opened since the last good write. ' +
-      'The ScrapingBee leg now cools down across runs (scripts/lib/reddit-dispatch-cooldown.js).',
+      'The ScrapingBee leg now cools down across runs (scripts/lib/reddit-dispatch-cooldown.js). ' + NEVER_ASK_REDDIT_APP,
     severity: 'warning',
     disposition: 'auto',
     category: 'reddit-sentiment',

@@ -98,15 +98,17 @@ async function auditCity(city, maxUsd) {
   const prev = readJson(`data/audit/city-hub-dual/${city}/weekly.json`, { findingKeys: [] });
   const fresh = W.newFindings(findings, flag('open') ? [] : prev.findingKeys, triage);
   const provenance = provenanceFor(new Set(L.shows.map((s) => s.id)));
+  const freshProv = W.freshProvenanceRows(provenance.rows, prev.provenanceRows, flag('open'));
   const week = W.isoWeek(TODAY);
   const byClass = Object.fromEntries([1, 2, 3, 4, 6].map((c) => [c, findings.filter((f) => f.cls === c).length]));
   const freshByClass = Object.fromEntries([1, 2, 3, 4, 6].map((c) => [c, fresh.filter((f) => f.cls === c).length]));
-  console.log(`  findings ${findings.length} ${JSON.stringify(byClass)}; new ${fresh.length} ${JSON.stringify(freshByClass)}; class 5 unprovenanced ${provenance.unprovenanced}`);
+  console.log(`  findings ${findings.length} ${JSON.stringify(byClass)}; new ${fresh.length} ${JSON.stringify(freshByClass)}; class 5 unprovenanced ${provenance.unprovenanced} (new ${freshProv.length})`);
   for (const f of fresh.slice(0, 40)) console.log(`   NEW c${f.cls} ${f.code} ${f.id} [${f.models.join('+')}] ${String(f.detail || '').slice(0, 160)}`);
-  const summary = { city, week, today: TODAY, findings: findings.length, byClass, newFindings: fresh.length, newByClass: freshByClass, provenance: provenance.unprovenanced };
+  const summary = { city, week, today: TODAY, findings: findings.length, byClass, newFindings: fresh.length, newByClass: freshByClass, provenance: provenance.unprovenanced, newProvenance: freshProv.length };
   if (DRY) return summary;
   const plan = writePlan(city, week, W.planActions(fresh));
-  const card = W.cardFor(city, week, fresh, { planId: plan && (plan.planId ? `${plan.id} (issue_number=${plan.id} plan_id=${plan.planId})` : plan.id), provenance });
+  // class 5 counts only rows not reported last week, so a standing row does not re-file a card every Tuesday
+  const card = W.cardFor(city, week, fresh, { planId: plan && (plan.planId ? `${plan.id} (issue_number=${plan.id} plan_id=${plan.planId})` : plan.id), provenance: { unprovenanced: freshProv.length, rows: freshProv } });
   summary.plan = plan;
   let cardFailed = false;
   summary.card = null;
@@ -118,7 +120,7 @@ async function auditCity(city, maxUsd) {
   fs.mkdirSync(dir, { recursive: true });
   require('./lib/city-hub-dual-audit').writeAuditJson(path.join(dir, 'scorecard.json'), sc);
   await M.writeIngestPlan(L);
-  fs.writeFileSync(path.join(dir, 'weekly.json'), `${JSON.stringify({ ...summary, findingKeys: W.seenKeys(findings, fresh, cardFailed), fresh, provenanceRows: provenance.rows }, null, 1)}\n`);
+  fs.writeFileSync(path.join(dir, 'weekly.json'), `${JSON.stringify({ ...summary, findingKeys: W.seenKeys(findings, fresh, cardFailed), fresh, provenanceRows: W.seenProvenanceRows(provenance.rows, freshProv, cardFailed) }, null, 1)}\n`);
   return summary;
 }
 

@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — the regex-detector under
+// purely structural — the regex-detector under
 // test never reads data/*.json; "data/shows.json" appears only as a string
 // literal inside synthetic YAML fixtures.
 /**

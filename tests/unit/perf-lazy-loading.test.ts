@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: names data/awards.json only in import-pattern regexes; reads source files, never data
+// names data/awards.json only in import-pattern regexes; reads source files, never data
 /**
  * Page-weight guards (BRO-5985). Each one pins a fix that took a large
  * script off every page; a test fails if it comes back.

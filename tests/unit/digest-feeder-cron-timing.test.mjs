@@ -26,16 +26,11 @@ const MAX_HOUR_UTC = 3;
 const FEEDERS = [
   'data-health-check.yml',
   'daily-digest.yml',
-  'reddit-engagement-digest.yml',
 ];
 
-// Crons that start no digest feeder, so the hour cap does not apply. Each one's
-// workflow must gate its digest-feeding job to the daily cron (checked below).
-// BRO-6634: reddit-engagement-digest.yml's hourly cron only runs the
-// opening-night post drafter; the digest job stays on '45 1 * * *'.
-const NON_FEEDER_CRONS = {
-  'reddit-engagement-digest.yml': { crons: ['41 * * * *'], feederGate: "github.event.schedule == '45 1 * * *'" },
-};
+// BRO-7337: reddit-engagement-digest.yml left this list when Reddit was retired (its daily
+// digest cron was removed; the hourly cron only runs the opening-post drafter, which feeds no digest).
+const NON_FEEDER_CRONS = {};
 
 function scheduledCrons(file) {
   const text = fs.readFileSync(path.join(REPO_ROOT, '.github', 'workflows', file), 'utf8');

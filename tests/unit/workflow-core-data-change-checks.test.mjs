@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: synthetic fixtures only; never reads real data/*.json.
+// synthetic fixtures only; never reads real data/*.json.
 /**
  * BRO-5033: workflow "did core data change?" checks.
  *

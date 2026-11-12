@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — reads the real
+// purely structural — reads the real
 // .github/workflows/test.yml CI config, not data/*.json.
 /**
  * BRO-4443 — every test.yml job's timeout-minutes must cover its measured

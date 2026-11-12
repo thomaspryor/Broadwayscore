@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json reads are stubbed; billing expectations use the checked-in Playbill HTML fixture.
+// shows.json reads are stubbed; billing expectations use the checked-in Playbill HTML fixture.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: runs scripts/validate-data.js against a copy of data/shows.json (untracked core data) and the real data/review-texts. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: tests validate-data.js exit-code + sentinel-file behavior using shows.json as fixture input; no factual pins.
+// tests validate-data.js exit-code + sentinel-file behavior using shows.json as fixture input; no factual pins.
 /**
  * Success path of the validate-data.js push-refusal sentinel contract (Notion
  * 362637c5-416f-8174). The failure paths are in validate-data-push-refusal-sentinel.test.mjs;

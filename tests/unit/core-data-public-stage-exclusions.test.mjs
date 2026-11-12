@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: fixture files named awards.json/outlet-registry.json
+// fixture files named awards.json/outlet-registry.json
 // are written under mkdtempSync() temp dirs — this never reads the real data/*.json.
 // Pins computeExclusions() from scripts/lib/core-data-public-stage-exclusions.js
 // — the fix for task #989 (outlet-registry lost-update, since resolved

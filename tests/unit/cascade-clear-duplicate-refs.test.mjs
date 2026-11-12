@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: unit test for a pure helper; uses an isolated tmp dir, no production data files.
+// unit test for a pure helper; uses an isolated tmp dir, no production data files.
 /**
  * Unit tests for scripts/lib/cascade-clear-duplicate-refs.js.
  *

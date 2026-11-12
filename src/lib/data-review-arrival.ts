@@ -31,7 +31,7 @@ function load() {
 
 /**
  * The status for one show page, or null when it should not show. `now` is the
- * server clock; REVIEW_ARRIVAL_NOW overrides it for local design captures only.
+ * server clock.
  */
 export function getReviewArrival(
   show: { id: string; category?: string | null; openingDate?: string | null },
@@ -40,8 +40,7 @@ export function getReviewArrival(
 ): ReviewArrival | null {
   if (show.category !== 'broadway' || !show.openingDate) return null;
   const { byShow, history, regular } = load();
-  const override = process.env.REVIEW_ARRIVAL_NOW;
-  const now = override ? new Date(override) : new Date();
+  const now = new Date();
   const rows = byShow.get(show.id) || [];
   return buildReviewArrival({
     now, openingDate: show.openingDate, category: show.category, reviewCount, scoreShowing,

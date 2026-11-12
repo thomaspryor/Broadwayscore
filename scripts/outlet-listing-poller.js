@@ -67,6 +67,7 @@ const {
   itemReadsAsReview,
   headlineLooksLikeNews,
   pageConfirmsShow,
+  confirmLogicFingerprint,
   pageText,
   pageNamesTitle,
   publishedInRunWindow,
@@ -157,6 +158,8 @@ const OUTLET_STRATEGY_CONFIG = {
   // Theater Life: covers shows + occasional ballet galas; findMatchingShows guards non-show content
   'theater-life':      { strategy: 'rss', url: 'https://theaterlife.com/feed' },
   // Front Row Center: covers theater + classical + cabaret; findMatchingShows guards non-theater content
+  // NOT reviewsOnly (BRO-7402 ship-check): the feed also carries classical/cabaret news, and its show-titled reviews
+  // are caught by findMatchingShows or the bare-title candidate rule (titleForms, incl. the author-possessive form).
   'front-row-center':  { strategy: 'rss', url: 'https://thefrontrowcenter.com/feed' },
   // NY Post theater-specific RSS; urlFilter keeps only slugs with "review" (drops news/awards coverage)
   nypost:              { strategy: 'rss', url: 'https://nypost.com/theater/feed/', urlFilter: /review/ },
@@ -793,9 +796,12 @@ const unconfirmedKey = (url, showId) => `${normalizeUrl(url)}|${showId}`;
 // for one day, so a dead or walled URL does not spend paid fetches every run.
 const FAILED_SHOW_ID = '*unreadable*';
 const FAILED_TTL_MS = 24 * 60 * 60 * 1000;
-function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now()) {
+function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now(), logic = confirmLogicFingerprint()) {
   let raw = {};
-  try { raw = JSON.parse(fs.readFileSync(file, 'utf-8')).entries || {}; } catch { /* first run */ }
+  // BRO-7372: a verdict reached by older confirmation rules is not a verdict under the current
+  // ones (the venue fix left Exeunt's ripple review "unconfirmed" for a week). A cache stamped
+  // with different rules, or with no stamp at all, is dropped whole.
+  try { const j = JSON.parse(fs.readFileSync(file, 'utf-8')); if (j.logic === logic) raw = j.entries || {}; } catch { /* first run */ }
   const live = {};
   for (const [k, at] of Object.entries(raw)) {
     const ttl = k.endsWith(`|${FAILED_SHOW_ID}`) ? FAILED_TTL_MS : UNCONFIRMED_TTL_MS;
@@ -804,10 +810,10 @@ function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now()) {
   return live;
 }
 function isUnconfirmedCached(cache, url, showId) { return !!(cache[unconfirmedKey(url, showId)] || cache[unconfirmedKey(url, FAILED_SHOW_ID)]); }
-function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE) {
+function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE, logic = confirmLogicFingerprint()) {
   try {
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, JSON.stringify({ note: 'BRO-6921: url|showId pages that did not confirm the show; skipped for 7 days', entries: cache }, null, 2) + '\n');
+    fs.writeFileSync(file, JSON.stringify({ note: 'BRO-6921: url|showId pages that did not confirm the show; skipped for 7 days, or until the confirmation rules change (logic, BRO-7372)', logic, entries: cache }, null, 2) + '\n');
   } catch (err) {
     console.warn(`  ⚠ could not save ${file}: ${err.message}`);
   }
@@ -819,7 +825,7 @@ function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE) {
  * @param {{fetcher?: (url: string) => Promise<string>, activeShows?: Array,
  *   publishDate?: string|null, unconfirmedCache?: object}} [opts]
  */
-async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], publishDate = null, unconfirmedCache = null, maxFetches = PAGE_CONFIRM_MAX_FETCHES, titleOnly = null } = {}) {
+async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], rivalShows = activeShows, publishDate = null, unconfirmedCache = null, maxFetches = PAGE_CONFIRM_MAX_FETCHES, titleOnly = null } = {}) {
   if (stats.fetched >= maxFetches) { stats.overBudget += candidates.length; return []; }
   stats.fetched++;
   const markUnreadable = () => { stats.failed++; if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, FAILED_SHOW_ID)] = new Date().toISOString(); return []; };
@@ -842,7 +848,7 @@ async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtm
   out.pageDate = pageDate;
   for (const { show, needsPageDate } of candidates) {
     const dated = !needsPageDate || (pageDate && publishedInRunWindow(show, pageDate));
-    if (dated && (pageConfirmsShow(text, show, { nowMs, otherShows: activeShows }) || (titleOnly && pageNamesTitle(text, show) && titleOnly(show)))) { out.push(show); stats.confirmed++; }
+    if (dated && (pageConfirmsShow(text, show, { nowMs, otherShows: rivalShows }) || (titleOnly && pageNamesTitle(text, show) && titleOnly(show)))) { out.push(show); stats.confirmed++; }
     else {
       stats.unconfirmed++;
       if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, show.id)] = new Date().toISOString();
@@ -887,6 +893,8 @@ async function main() {
 
   // Active shows only (open or previews), optionally filtered by market
   let activeShows = allShows.filter(s => s.status === 'open' || s.status === 'previews');
+  // Every running show, whatever window or market narrows the match pool: they all share houses (BRO-7372).
+  const liveShows = activeShows;
   if (win) {
     // Match only against shows 0-3 days past opening; nothing in the window means no fetches at all.
     activeShows = ow.selectWindowShows(allShows);
@@ -1156,7 +1164,7 @@ async function main() {
       let stubDate = publishDate;
       if (candidates.length > 0) {
         const confirmed = await confirmOnPage(url, candidates, viaCensus ? censusPageStats : pageConfirmStats, {
-          activeShows: showPool, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
+          activeShows: showPool, rivalShows: liveShows, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
           titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool, { siblingOk: (o) => censusListing.censusMarketOk(outletId, o, outletMarkets) }) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
           // A dry run never spends paid scraper fetches: plain fetch only.
           fetcher: itemDry ? (u => fetchSimple(u, 20000)) : viaCensus ? censusFetch.fetcher : fetchArticleHtml,

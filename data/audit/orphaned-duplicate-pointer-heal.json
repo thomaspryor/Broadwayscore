@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-11T12:46:02.513Z",
+  "generated": "2026-11-12T12:19:09.546Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 52,
+  "count": 53,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -106,6 +106,13 @@
       "loserFile": "mail-on-sunday--ryan-hooper.json",
       "targetFile": "daily-mail--ryan-hooper.json",
       "reason": "orphaned-duplicate-heal: daily-mail--ryan-hooper.json was flagged invalid after mail-on-sunday--ryan-hooper.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "loserFile": "thereviewshub--unknown.json",
+      "targetFile": "thereviewshub--jacob-bush.json",
+      "reason": "orphaned-duplicate-heal: thereviewshub--jacob-bush.json was flagged invalid after thereviewshub--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

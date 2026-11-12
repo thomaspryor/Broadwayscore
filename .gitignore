@@ -97,6 +97,7 @@ data/pending-fixes/*
 !data/pending-fixes/bro-7344.json
 !data/pending-fixes/bro-7344-b.json
 !data/pending-fixes/bro-7034.json
+!data/pending-fixes/bro-7034-2.json
 !data/pending-fixes/bro-6848.json
 !data/pending-fixes/bro-6848-b.json
 !data/pending-fixes/bro-6848-c.json
@@ -377,6 +378,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/bro-6987-reddit-cadence-investigation.md
 !/docs/bro-6743-gather-timeouts.md
 !/docs/bro-6493-opening-dates.md
+# BRO-7167: opening-night test bench plan the owner approves (posted on the card).
+!/docs/bro-7167-opening-night-test-bench.md
 # BRO-7103: the recurrence backtest the detector's acceptance criteria require on main.
 !/docs/recurrence-backtest.md
 # BRO-6622: the lane switch runbook CLOUD.md points sessions to.
@@ -613,6 +616,7 @@ tmp/
 .claude/visual-qa/
 .claude/review-verdicts.jsonl
 .claude/hook-replays.jsonl
+.claude/rule-trials.jsonl
 # BRO-4593: land-preflight hook verdict log (blocks, bypasses, skips)
 .claude/land-preflight.jsonl
 .claude/hook-liveness.jsonl

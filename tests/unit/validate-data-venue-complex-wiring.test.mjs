@@ -147,7 +147,9 @@ describe('validate-data.js — venue-complex orphan advisory is wired into the r
       fd = openSync(outPath, 'w');
       const res = spawnSync('node', [VALIDATE], {
         stdio: ['ignore', fd, fd],
-        env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: dir },
+        // CLAUDE_CODE_REMOTE='' keeps cloud sessions from flipping validate-data to its
+        // --dry-run default, which skips the sentinel write asserted below (BRO-7398).
+        env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: dir, CLAUDE_CODE_REMOTE: '' },
         // spawnSync's default maxBuffer is 1 MiB, and this child deliberately
         // runs the WHOLE validator against a ONE-SHOW fixture, so essentially
         // every corpus-wide validator reports failures and the combined

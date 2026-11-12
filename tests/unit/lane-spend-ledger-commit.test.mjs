@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural — parses workflow YAML and feeds the
+// structural — parses workflow YAML and feeds the
 // real ledger merge function synthetic rows; reads no data/*.json.
 /**
  * BRO-6616: the opening-night lane shadow commits its own scraper-spend ledger

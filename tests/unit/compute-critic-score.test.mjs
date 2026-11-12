@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/gold-lists-computed.json (read by the test); data/reviews.json (read by the test); data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: tests scoring library on reviews.json as input fixture; no hardcoded show/critic facts.
+// tests scoring library on reviews.json as input fixture; no hardcoded show/critic facts.
 /**
  * Unit tests for scripts/lib/compute-critic-score.js — the SINGLE SOURCE OF TRUTH
  * for tier-weighted composite scoring in build-time scripts.

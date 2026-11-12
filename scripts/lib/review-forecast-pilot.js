@@ -144,7 +144,7 @@ function isGradeDue(openingDate, today) {
  * One grade row, or null when not gradable yet (not due, no critic score, no frozen row).
  * `frozen` = frozenForecastRow(...). Errors are absolute misses against criticScore.
  */
-function buildGradeRow({ showId, openingDate, today, frozen, criticScore, frozenV2 = null }) {
+function buildGradeRow({ showId, openingDate, today, frozen, criticScore, frozenV2 = null, frozenV3 = null }) {
   if (!isGradeDue(openingDate, today) || criticScore == null || !frozen) return null;
   const miss = (v) => (typeof v === 'number' ? r1(Math.abs(criticScore - v)) : null);
   const audience = frozen.audience ? frozen.audience.combined : null;
@@ -161,8 +161,15 @@ function buildGradeRow({ showId, openingDate, today, frozen, criticScore, frozen
     forecastV2: v2Forecast, missForecastV2: miss(v2Forecast), forecastV1SameRow: v1Same, missForecastV1SameRow: miss(v1Same),
     inRange80V2: usedShowScore ? criticScore >= v2row.lo80 && criticScore <= v2row.hi80 : (typeof frozen.lo80 === 'number' ? criticScore >= frozen.lo80 && criticScore <= frozen.hi80 : null),
   };
+  // BRO-7382: v3 earlier-run blend, graded against the base (v2, or v1 on fallback) stored on the SAME frozen row, so both share one information date.
+  const v3row = frozenV3 && frozenV3.v3 ? frozenV3.v3 : null;
+  const v3 = v3row ? {
+    forecastV3: v3row.v3Forecast, missForecastV3: miss(v3row.v3Forecast), v3BaseSameRow: frozenV3.v2.forecast, missV3BaseSameRow: miss(frozenV3.v2.forecast), v3RecordedAt: frozenV3.recordedAt,
+    v3Applied: true, v3Origin: v3row.v3Origin, v3EarlierSource: v3row.v3EarlierSource, v3EarlierN: v3row.v3EarlierN, v3Weight: v3row.v3Weight, v3Base: v3row.v3Base, v3ModelVersion: v3row.v3ModelVersion,
+  } : { forecastV3: null, missForecastV3: null, v3BaseSameRow: null, missV3BaseSameRow: null, v3RecordedAt: null, v3Applied: false, v3Origin: null, v3EarlierSource: null, v3EarlierN: null, v3Weight: null, v3Base: null, v3ModelVersion: null };
   return {
     ...v2,
+    ...v3,
     showId, gradedAt: today, openingDate, criticScore, frozenRecordedAt: frozen.recordedAt,
     forecast: frozen.forecast, categoryMean: frozen.categoryMean, previewAudience: audience,
     missForecast: miss(frozen.forecast), missCategoryMean: miss(frozen.categoryMean), missPreviewAudience: miss(audience),
@@ -180,7 +187,11 @@ function scoreboard(grades) {
   const clean = ss.filter((g) => g.v2ShowScoreMixed === false);
   const notClean = grades.filter((g) => !clean.includes(g));
   const avgOf = (rows, k) => { const v = rows.map((g) => g[k]).filter((x) => typeof x === 'number'); return v.length ? { n: v.length, mae: r1(RF.mean(v)) } : { n: 0, mae: null }; };
+  // BRO-7382: v3 vs its own base on the same frozen row, only shows that carried an earlier-run score (grading rule on the card).
+  const c3 = grades.filter((g) => g.v3Applied === true);
+  const pair = (rows) => ({ shows: rows.length, base: avgOf(rows, 'missV3BaseSameRow'), v3: avgOf(rows, 'missForecastV3') });
   return {
+    v3EarlierBlend: { note: 'carrying rows only; base = v2 (v1 when v2 fell back) from the same frozen row', all: pair(c3), outOfTown: pair(c3.filter((g) => g.v3Origin === 'out-of-town')), bySource: { 'own-record': pair(c3.filter((g) => g.v3EarlierSource === 'own-record')), 'web-compact': pair(c3.filter((g) => g.v3EarlierSource === 'web-compact')) } },
     v2Shadow: { note: 'all = mixed information dates (v1 frozen the day before opening, v2 at opening minus 3); showScoreUsed compares both from the same row', all: { v1: avg('missForecast'), v2: avg('missForecastV2') }, showScoreUsed: { v1SameRow: avgOf(ss, 'missForecastV1SameRow'), v2: avgOf(ss, 'missForecastV2') }, cleanPage: { v1SameRow: avgOf(clean, 'missForecastV1SameRow'), v2: avgOf(clean, 'missForecastV2') }, mixedOrUnknownPage: { shows: notClean.length, v1: avgOf(notClean, 'missForecast') } },
     shows: grades.length,
     forecast: avg('missForecast'), categoryMean: avg('missCategoryMean'), previewAudience: avg('missPreviewAudience'),

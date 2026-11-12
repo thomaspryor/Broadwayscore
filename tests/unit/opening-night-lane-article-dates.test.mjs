@@ -2,7 +2,7 @@
 // date from the page (Webflow writes it as <div class="publish-date">, no structured data), and dropped it after three
 // strikes; it was found by hand 76 minutes later. A section page is only useful if the lane can date what it links to,
 // so every section-index outlet must have a dated article fixture, a feed that dates it, or a stated reason.
-// TESTS-VS-DERIVED-DATA-EXEMPT: fixtures hold the date element only (links and structure, no article text).
+// fixtures hold the date element only (links and structure, no article text).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

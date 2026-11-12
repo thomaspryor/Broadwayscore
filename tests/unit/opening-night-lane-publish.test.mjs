@@ -1,6 +1,6 @@
 // BRO-4785 (epic BRO-4210 phase 3): the lane's publish path. Real functions only (CLAUDE.md section 15); the rehearsal runs
 // against a local static server, so nothing here touches production.
-// TESTS-VS-DERIVED-DATA-EXEMPT: every reviews.json here is a throwaway file in a temp git sandbox; no real data is read or pinned.
+// every reviews.json here is a throwaway file in a temp git sandbox; no real data is read or pinned.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

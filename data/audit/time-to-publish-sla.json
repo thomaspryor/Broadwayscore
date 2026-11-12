@@ -1,84 +1,39 @@
 {
-  "generatedAt": "2026-11-11T10:18:04.904Z",
-  "scope": "2 opening window(s): now-you-see-me-live-2026 (2026-11-11), cloud-9-west-end-2026 (2026-11-10)",
+  "generatedAt": "2026-11-12T10:46:55.304Z",
+  "scope": "2 opening window(s): the-good-thief-off-broadway-2026 (2026-11-12), the-kings-critique-off-broadway-2026 (2026-11-12)",
   "degraded": null,
   "windows": [
     {
-      "showId": "now-you-see-me-live-2026",
-      "openingDate": "2026-11-11",
-      "from": "2026-11-10T00:00:00.000Z",
-      "to": "2026-11-15T23:59:59.999Z"
+      "showId": "the-good-thief-off-broadway-2026",
+      "openingDate": "2026-11-12",
+      "from": "2026-11-11T00:00:00.000Z",
+      "to": "2026-11-16T23:59:59.999Z"
     },
     {
-      "showId": "cloud-9-west-end-2026",
-      "openingDate": "2026-11-10",
-      "from": "2026-11-09T00:00:00.000Z",
-      "to": "2026-11-14T23:59:59.999Z"
+      "showId": "the-kings-critique-off-broadway-2026",
+      "openingDate": "2026-11-12",
+      "from": "2026-11-11T00:00:00.000Z",
+      "to": "2026-11-16T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 233855,
-  "logOldestEntryAt": "2026-11-08T21:18:11.911Z",
+  "logEntryCount": 191924,
+  "logOldestEntryAt": "2026-11-10T03:38:29.028Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
-    "evaluated": 1,
-    "inFlight": 1,
+    "evaluated": 0,
+    "inFlight": 0,
     "compliant": 0,
-    "compliancePct": 0,
-    "p50Ms": 29787626,
-    "p90Ms": 29787626,
+    "compliancePct": null,
+    "p50Ms": null,
+    "p90Ms": null,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [
-      {
-        "showId": "cloud-9-west-end-2026",
-        "reviewKey": "london-box-office:stuart-king:https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
-        "outletId": "london-box-office",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-11-11T00:30:29.374Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-11-11T00:42:00.277Z",
-        "liveAt": "2026-11-11T08:31:57.000Z",
-        "pipelineMs": 28887626,
-        "publishedToLiveMs": 29787626,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      }
-    ],
-    "byBasis": {
-      "poller-bounded": {
-        "evaluated": 1,
-        "compliant": 0
-      }
-    }
+    "breaches": [],
+    "byBasis": {}
   },
-  "records": [
-    {
-      "showId": "cloud-9-west-end-2026",
-      "outletId": "london-box-office",
-      "reviewKey": "london-box-office:stuart-king:https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-11-11T00:30:29.374Z",
-      "liveAt": "2026-11-11T08:31:57.000Z",
-      "pipelineMinutes": 481.5,
-      "publishedToLiveMinutes": 496.5,
-      "stuckAtStage": null
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "outletId": "thereviewshub",
-      "reviewKey": "thereviewshub:unknown:https://www.thereviewshub.com/cloud-9-national-theatre-london/",
-      "basis": null,
-      "firstSeenAt": "2026-11-11T09:18:09.556Z",
-      "liveAt": null,
-      "pipelineMinutes": null,
-      "publishedToLiveMinutes": null,
-      "stuckAtStage": "rebuilt"
-    }
-  ]
+  "records": []
 }

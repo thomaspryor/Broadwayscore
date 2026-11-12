@@ -18,7 +18,7 @@
  *
  * Run: npx tsx --test tests/unit/name-slug-redirects.test.ts
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural — replays whatever data/shows.json holds through the JS
+// structural — replays whatever data/shows.json holds through the JS
 // and TS slug rules and asserts they agree and that retired slugs resolve only via the map; no show,
 // person or venue fact is pinned (the one named case, Noël/Noel Coward, skips itself when absent).
 

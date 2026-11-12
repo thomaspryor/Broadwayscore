@@ -1,9 +1,38 @@
 {
-  "generatedAt": "2026-11-11T10:18:00.078Z",
+  "generatedAt": "2026-11-12T10:46:49.516Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 0,
-  "flagged": [],
+  "flaggedCount": 2,
+  "flagged": [
+    {
+      "id": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "venue": "Sam Wanamaker Playhouse",
+      "category": "off-west-end",
+      "status": "previews",
+      "previewsStartDate": "2026-11-06",
+      "openingDate": null,
+      "todaytixId": 47387,
+      "reasons": [
+        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-12T00:21:54.154Z"
+    },
+    {
+      "id": "the-humans-west-end-2027",
+      "title": "The Humans",
+      "venue": "Theatre Royal Haymarket",
+      "category": "west-end",
+      "status": "announced",
+      "previewsStartDate": null,
+      "openingDate": null,
+      "todaytixId": 48573,
+      "reasons": [
+        "data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-12T00:21:54.154Z"
+    }
+  ],
   "firstFlaggedHistory": {},
   "postponedCount": 0,
   "postponed": [],

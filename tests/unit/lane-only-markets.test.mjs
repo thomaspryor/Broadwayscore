@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json only supplies a real show id per market for the CLI; no factual value is pinned.
+// shows.json only supplies a real show id per market for the CLI; no factual value is pinned.
 // BRO-6620 (cutover card 6): LANE_ONLY_MARKETS stands the old path's press-night roles down for listed markets
 // while a lane holds the night, and brings them back on any doubt. Requires the real decision functions, runs the
 // real CLI in a subprocess against temp files, and pins the workflow wiring by reading the real YAML.

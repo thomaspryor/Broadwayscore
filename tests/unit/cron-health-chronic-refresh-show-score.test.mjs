@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — the extractor/checker
+// purely structural — the extractor/checker
 // under test never reads data/*.json; synthetic YAML fixtures only. The one
 // live-repo test at the bottom reads real .github/workflows/*.yml files by
 // design (regression guard), not derived data.

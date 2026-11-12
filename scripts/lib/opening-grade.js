@@ -23,7 +23,7 @@ const path = require('path');
  * kind 'ingest-dispatch' so the baseline can show both counts honestly.
  */
 
-const { manualActionsFromCommits, isBotAuthor } = require('./press-night-manual-actions');
+const { manualActionsFromCommits, isBotAuthor, fileChangeOf, outletIdFromFile } = require('./press-night-manual-actions');
 const { handSteps, GATING_FIX_FIELDS } = require('./review-provenance');
 // review-guards pulls scraper/axios/playwright in transitively. The morning digest
 // requires this module for its render helpers only and runs without npm ci
@@ -137,6 +137,7 @@ function openingWindow(show, pressNight) {
 // opening needed a person, and a repeat outlet shows up as a repeat class.
 const CAUSE_LABEL = {
   'discovery-gap': 'review missed by discovery',
+  'text-gap': 'full text recovered by hand',
   'wrong-label': 'wrong-production or wrong-show flag',
   'date-guard': 'publish-date guard',
   'duplicate-identity': 'duplicate or URL identity',
@@ -160,10 +161,39 @@ function causeOfFields(fields) {
   return 'other';
 }
 
+const FIRST_PASS_CAUSES = new Set(['discovery-gap', 'text-gap']);
+// Automated second-pass ingests (bot-authored, never hand work).
+const SWEEP_FIND_SUBJECT = /^ingest: /i;
+// A sweep find before the embargo, or in the first hours while the
+// opening-night poller is still running, raced the first pass rather than
+// caught its miss (2026-11-11 data: 68 of 194 finds were pre-embargo).
+const SWEEP_GRACE_H = 6;
+
+/**
+ * Cause of one commit signal (BRO-7375). The file status beats the subject:
+ * a commit that CREATED the outlet's file found a review the first pass
+ * missed; one that only MODIFIED it fixed text the first pass already had.
+ * Without status (older logs, older grade files) the subject decides.
+ */
+function causeOfSignal({ kind, source, fileChange } = {}) {
+  const base = kind === 'ingest-dispatch' ? 'discovery-gap' : causeOfSubject(source);
+  if (!FIRST_PASS_CAUSES.has(base)) return base;
+  if (fileChange === 'deleted') return 'other';
+  if (fileChange === 'added') return 'discovery-gap';
+  if (fileChange === 'modified') return 'text-gap';
+  return base;
+}
+
 /** Cause class of a hand commit or log line, from its subject. */
 function causeOfSubject(subject) {
   const t = String(subject || '').toLowerCase();
   if (/wrongprod|wrongshow|wrong.show/.test(t)) return 'wrong-label';
+  // BRO-7375: a text recovery ("NYT browser recovery", the gap-recovery
+  // driver's "accepted" checkpoints) fixed the text of a review the first pass
+  // already found; it is not a review discovery missed.
+  // Attribution, date and duplicate words win: "re-credited row so it
+  // refetches" is a byline fix (ship-check).
+  if (/recover|full.?text|refetch|gap-recovery driver/.test(t) && !/\bmissed\b|discover|ingest-urls|byline|criticname|re-credit|attribut|outletid|publishdate|date guard|duplic|dedupe|syndicat/.test(t)) return 'text-gap';
   if (/ingest|missed|discovery|on-monitor|opening.night monitor|\bdirect\b|recover|full.?text|pull quote|\badd(ed)?\b.*review|\bfeat: .*review/.test(t)) return 'discovery-gap';
   if (/byline|criticname|re-credit|attribut|outletid/.test(t)) return 'attribution';
   if (/publishdate|date guard/.test(t)) return 'date-guard';
@@ -210,13 +240,19 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   const bySha = new Map((commits || []).map((c) => [String(c.sha).slice(0, 8), c]));
   const fixCommits = (commits || []).filter((c) => !isSweepCommit(c));
   const seen = new Set();
+  const seenPair = new Set();
+  // One signal per (commit, outlet): a commit fixing four outlets is four
+  // fixes, and a per-outlet repeat must count each (BRO-7375).
   for (const a of manualActionsFromCommits(fixCommits, { showId: show.id, embargoAt: new Date(embargoMs).toISOString(), nightStartH: BEFORE_H, endH: AFTER_H })) {
     const sha = String(a.source || '').split(' ')[0];
-    if (seen.has(sha)) continue;
+    const pair = `${sha} ${a.outletId || ''}`;
+    if (seenPair.has(pair)) continue;
+    seenPair.add(pair);
     seen.add(sha);
     const c = bySha.get(sha);
     const kind = c && isBotAuthor(c.author, c.email) ? 'ingest-dispatch' : 'hand-commit';
-    signals.push({ kind, at: a.at, outletId: a.outletId, cause: kind === 'ingest-dispatch' ? 'discovery-gap' : causeOfSubject(a.source), source: String(a.source).slice(0, 140) });
+    const source = String(a.source).slice(0, 140);
+    signals.push({ kind, at: a.at, outletId: a.outletId, cause: causeOfSignal({ kind, source, fileChange: a.fileChange }), source, ...(a.fileChange ? { fileChange: a.fileChange } : {}) });
   }
   // ingest-urls.yml's fallback commit ("data: Ingest URLs for <show>") is a
   // hand dispatch the frozen press-night rule does not recognise.
@@ -279,6 +315,20 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   }
 
   const historyCovers = historyFromMs == null || historyFromMs <= lo;
+  // BRO-7375: reviews an automated later pass (the aggregator-gap audit's
+  // "ingest:" commits) CREATED inside the window: the first pass missed them,
+  // but no person stepped in, so they stay out of signals and the verdict.
+  const sweepFinds = [];
+  for (const c of commits || []) {
+    const at = toMs(c.at);
+    if (!inWin(at) || at < embargoMs + SWEEP_GRACE_H * HOUR || !SWEEP_FIND_SUBJECT.test(c.subject || '') || !Array.isArray(c.added)) continue;
+    const mine = (c.files || []).filter((f) => f.startsWith(`${show.id}/`));
+    const outlets = [...new Set(mine.map((f) => outletIdFromFile(f, show.id)).filter(Boolean))];
+    for (const o of outlets) {
+      if (fileChangeOf(c, mine.filter((f) => outletIdFromFile(f, show.id) === o)) !== 'added') continue;
+      sweepFinds.push({ kind: 'sweep-find', at: new Date(at).toISOString(), outletId: o, cause: 'discovery-gap', fileChange: 'added', source: `${String(c.sha).slice(0, 8)} ${String(c.subject).slice(0, 120)}` });
+    }
+  }
   const hard = signals.filter((s) => s.kind !== 'ingest-dispatch');
   let verdict;
   if (signals.length) verdict = 'needed-hands';
@@ -312,6 +362,7 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     verdict,
     onlyIngestDispatches: verdict === 'needed-hands' && hard.length === 0,
     signals,
+    ...(sweepFinds.length ? { sweepFinds } : {}),
     historyCovers,
     // BRO-7166: usual critics (standing set) with no review yet; never moves the verdict.
     expectedMissing: Array.isArray(expectedMissing) && expectedMissing.length ? expectedMissing : null,
@@ -329,6 +380,67 @@ function causeSummary(signals) {
     if (s.outletId) by.get(s.cause).add(s.outletId);
   }
   return [...by].map(([c, o]) => `${CAUSE_LABEL[c] || c}${o.size ? ` (${[...o].slice(0, 3).join(', ')}${o.size > 3 ? ', ...' : ''})` : ''}`).join('; ');
+}
+
+// ---------- first-pass misses (BRO-7375) ----------
+
+// Kept in opening-grades.json by grade-openings.js (single writer), longer
+// than the 14-day grade window so a 30-day repeat rule can see a month.
+const MISS_HISTORY_DAYS = 45;
+const COMMIT_SIGNAL_KINDS = new Set(['hand-commit', 'ingest-dispatch']);
+
+/** "sha subject" with Linear ids removed: a root card that quotes them would list other cards' cases. */
+const scrubSource = (s) => String(s || '').replace(/\bBRO-\d+\b/gi, 'card').slice(0, 140);
+
+/**
+ * PURE. Reviews the first pass did not get, one row per (show, outlet,
+ * cause): { category, outletId, showId, title, embargoAt, cause, at, via }.
+ * cause 'discovery-gap' = the review was found later by another path;
+ * 'text-gap' = found, but the full text came later by hand. Commit signals
+ * are re-caused here (causeOfSignal), so an older grade file written with
+ * the subject-only rule reads the same as a new one. Signals with no outlet
+ * are dropped: there is nothing to repeat on.
+ */
+function firstPassMisses(grades) {
+  const rows = new Map();
+  for (const g of grades || []) {
+    if (!g || !g.showId || !g.category) continue;
+    for (const s of [...(g.signals || []), ...(g.sweepFinds || [])]) {
+      if (!s || !s.outletId) continue;
+      let cause = s.cause || null;
+      if (COMMIT_SIGNAL_KINDS.has(s.kind) && s.source) cause = causeOfSignal(s);
+      else if (s.kind === 'hand-created-file') cause = 'discovery-gap';
+      if (!FIRST_PASS_CAUSES.has(cause)) continue;
+      const key = `${g.showId}|${s.outletId}|${cause}`;
+      const prev = rows.get(key);
+      if (prev && !(String(s.at || '') < String(prev.at || ''))) continue;
+      rows.set(key, {
+        category: g.category, outletId: s.outletId, showId: g.showId, title: g.title || g.showId,
+        embargoAt: g.embargoAt || null, cause, at: s.at || null,
+        via: s.source ? scrubSource(s.source) : (s.kind === 'hand-created-file' ? 'review file created by hand' : s.kind),
+        ...(s.kind === 'sweep-find' ? { by: 'sweep' } : {}),
+      });
+    }
+  }
+  // A review the first pass never found cannot also be one it found without
+  // text: the later text fix is part of the same miss (ship-check).
+  return sortMisses([...rows.values()].filter((r) => r.cause !== 'discovery-gap' ? !rows.has(`${r.showId}|${r.outletId}|discovery-gap`) : true));
+}
+
+const sortMisses = (rows) => rows.sort((a, b) => String(a.embargoAt).localeCompare(String(b.embargoAt)) || a.showId.localeCompare(b.showId) || a.outletId.localeCompare(b.outletId) || String(a.cause).localeCompare(String(b.cause)));
+
+/**
+ * PURE. Rolling miss history: the current grades replace every earlier row
+ * of a show they still grade (so a re-caused signal never lingers), older
+ * shows keep theirs until their opening is MISS_HISTORY_DAYS old.
+ */
+function mergeMissHistory(prev, current, { nowMs = Date.now(), keepDays = MISS_HISTORY_DAYS, gradedShows = null } = {}) {
+  const fresh = new Set(gradedShows || (current || []).map((r) => r.showId));
+  const cutoff = nowMs - keepDays * 864e5;
+  const keep = (r) => r && r.showId && r.outletId && !(Date.parse(r.embargoAt) < cutoff);
+  const byKey = new Map();
+  for (const r of [...(prev || []).filter((x) => keep(x) && !fresh.has(x.showId)), ...(current || []).filter(keep)]) byKey.set(`${r.showId}|${r.outletId}|${r.cause}`, r);
+  return sortMisses([...byKey.values()]);
 }
 
 /** One plain-English line for the owner's morning email. */
@@ -428,5 +540,5 @@ function renderOpeningGradesBlock(snapshot, { esc = defaultEsc, nowMs = Date.now
 
 module.exports = {
   MARKETS, MARKET_LABEL, BEFORE_H, AFTER_H, SWEEP_SHOWS, SWEEP_CEILING, STALE_AUDIT_H, isLiveFile, isSweepCommit, openingWindow,
-  estimateEmbargoMs, selectOpenings, CAUSE_LABEL, causeOfFields, causeOfSubject, outletOfFile, causeSummary, pickPressNight, showsTouched, isExcludedFile, gradeOpening, gradeLine, summarize, tallyLine, renderOpeningGradesBlock,
+  estimateEmbargoMs, selectOpenings, CAUSE_LABEL, causeOfFields, causeOfSubject, causeOfSignal, firstPassMisses, mergeMissHistory, MISS_HISTORY_DAYS, outletOfFile, causeSummary, pickPressNight, showsTouched, isExcludedFile, gradeOpening, gradeLine, summarize, tallyLine, renderOpeningGradesBlock,
 };

@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-11T10:17:31.839Z",
-  "scanned": 4804,
-  "showsWithViolations": 0,
-  "totalViolations": 0,
+  "updatedAt": "2026-11-12T10:46:12.526Z",
+  "scanned": 4810,
+  "showsWithViolations": 2,
+  "totalViolations": 2,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
   "actionableViolations": 0,
@@ -11,6 +11,34 @@
   "openActionableCount": 0,
   "actionableOpen": {},
   "actionableKeys": [],
-  "violationKeys": [],
-  "hits": []
+  "violationKeys": [
+    "cloud-9-west-end-2026",
+    "tristan-and-yseult-off-broadway-2026"
+  ],
+  "hits": [
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "openingDate": "2026-11-10",
+      "message": "cloud-9-west-end-2026 review text mentions \"revival\" 29x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {
+          "titleMatch": false,
+          "mentionCount": 29
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "openingDate": "2026-11-01",
+      "message": "tristan-and-yseult-off-broadway-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {
+          "titleMatch": false,
+          "mentionCount": 5
+        }
+      ]
+    }
+  ]
 }

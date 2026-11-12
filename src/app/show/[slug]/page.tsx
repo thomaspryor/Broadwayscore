@@ -61,6 +61,7 @@ import RelatedShowsCompactAB from '@/components/RelatedShowsCompactAB';
 import { pickCompactRelated } from '../../../../scripts/lib/related-shows-ab';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
+import CallTheScore, { CallResultStrip } from '@/components/show-page/CallTheScore';
 import { shouldShowReviewsSyncing } from '../../../../scripts/lib/show-page-provisional-state';
 import ShowTrustLines from '@/components/show-page/ShowTrustLines';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -506,7 +507,6 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const reviewsSyncing = shouldShowReviewsSyncing(show);
   // Opening-night status, decided once on the server so ISR HTML and the clock agree (BRO-7376).
   const reviewArrival = getReviewArrival(show, reviewCount, !showTBD);
-  const reviewArrivalVariant = (['text', 'bar'] as const).find((v) => v === process.env.REVIEW_ARRIVAL_VARIANT) ?? 'text';
   const reviewsRemaining = showTBD && show.status !== 'previews' && show.status !== 'upcoming'
     ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
     : 0;
@@ -571,7 +571,6 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               hasEnoughCriticReviews={!showTBD}
               reviewAgeNote={reviewAgeNote}
               reviewArrival={reviewArrival}
-              reviewArrivalVariant={reviewArrivalVariant}
               liveInHdText={hd.line}
               sortedTicketLinks={sortedTicketLinks}
               lotteryRush={lotteryRush ?? null}
@@ -982,6 +981,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               </span>
             </header>
 
+            <CallResultStrip show={{ id: show.id, category: show.category }} critic={show.criticScore.score} />
+
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
             {show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
               <RedesignOn>
@@ -1048,6 +1049,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 <>Reviews coming after {isWestEnd ? 'press night' : 'opening night'}.</>
               )}
             </p>
+            <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate }} />
           </section>
         ) : (
           <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-archived">

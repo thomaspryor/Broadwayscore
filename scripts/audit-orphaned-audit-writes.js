@@ -25,6 +25,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 // workflow for each exemption. Retained gaps and evidence are documented in
 // scripts/orphaned-audit-writes-triage.md. Do not exempt an unstaged durable write.
 const EXEMPT = {
+  "scripts/recurrence-detector.js|data/audit/opening-grades.json":
+    "read-only: first-pass miss input (BRO-7375); grade-openings.js is the single writer, staged by opening-night-checklist.yml",
   "scripts/recurrence-detector.js|data/audit/landings.jsonl":
     "read-only: ownCommitsForCard/sample read the land.yml landing ledger; the detector writes only recurrence-classes.json (staged by data-health-check.yml)",
   "scripts/recurrence-detector.js|data/audit/recurrence-backtest.json":

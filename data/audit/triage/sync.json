@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-11-11T09:30:10.889Z",
+  "lastChecked": "2026-11-12T09:58:13.223Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "81640 files, 50086 reviews (surplus: 31554)"
+      "message": "81874 files, 50431 reviews (surplus: 31443)"
     },
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "31 open shows all have reviews and grosses"
+      "message": "32 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: phantom show detection",
@@ -29,12 +29,12 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "5970 shows, 302 open, 50291 reviews (all at or above baseline)"
+      "message": "5976 shows, 305 open, 50431 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 11/8/2026 (3d ago)"
+      "message": "weekEnding 11/8/2026 (4d ago)"
     }
   ]
 }

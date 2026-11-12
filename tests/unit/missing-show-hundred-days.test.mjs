@@ -3,7 +3,7 @@
 // Added through the approved-fix plan data/pending-fixes/bro-6348.json. This test checks the
 // plan, the real venue classifier, and (when core data is present) the live shows.json row.
 // Review coverage is not pinned: reviews.json is derived and moves with every rebuild.
-// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json is this row's source of truth (a manual add); expectations come from the plan file, not hardcoded pins.
+// shows.json is this row's source of truth (a manual add); expectations come from the plan file, not hardcoded pins.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

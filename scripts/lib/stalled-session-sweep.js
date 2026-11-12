@@ -81,7 +81,8 @@ function stalledSessionAction({ entry, session, error, notFound, nowMs }) {
     return (notFound === true || NOT_FOUND_RE.test(msg)) ? { action: 'requeue', reason: `session not found (${msg.slice(0, 80)})` }
       : { action: 'skip', reason: `get_session failed, retry next firing (${msg.slice(0, 80)})` };
   }
-  const v = decide({ session, now: nowMs, idleMinutes: 60 });
+  // BRO-7377: an entry exists only because this session claimed the card, so it started; a last_init_error on it is stale.
+  const v = decide({ session, now: nowMs, idleMinutes: 60, checkInit: false });
   const archived = /archived/i.test(String(v.reason)) || session.archived === true;
   if (archived) return { action: 'requeue', reason: 'session archived with the card still In Progress' };
   if (v.action === 'rearm') return { action: 'skip', reason: `session working (${v.reason})` };

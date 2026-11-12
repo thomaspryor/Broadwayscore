@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — the detector under test
+// purely structural — the detector under test
 // never reads data/*.json; it only parses synthetic YAML strings.
 /**
  * Unit tests for findShortRebuildTimeoutSteps (rule (y), BRO-5426): a step

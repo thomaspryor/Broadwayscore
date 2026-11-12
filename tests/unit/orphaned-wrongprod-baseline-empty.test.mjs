@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/pending-fixes/bro-4937.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: BRO-4937 acceptance gate for retired provenance debt.
+// BRO-4937 acceptance gate for retired provenance debt.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';

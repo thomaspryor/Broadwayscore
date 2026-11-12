@@ -9,6 +9,13 @@
  * `root-cause-class: v1:KEY` line); later runs comment the new instances
  * on it instead of filing again. Grouping logic: scripts/lib/recurrence-classes.js.
  *
+ * First-pass misses (BRO-7375): reviews the first pass did not get (found
+ * later by a person, ingest-urls or the aggregator-gap sweep, or found
+ * without full text), from opening-grades.json firstPassMisses. The same
+ * market+outlet on 3+ shows opened in 30 days is a class
+ * (missed-at-first-pass:<market>:<outlet>, or text-missed-at-first-pass:...)
+ * with its own root card; at most 2 of the 3 new cards per run.
+ *
  * Modes:
  *   (default)                dry run: print what --apply would do (writes nothing)
  *   --apply                  file/comment root-cause cards (cap 3 new per run), write the snapshot.
@@ -24,6 +31,8 @@
  *                            from their own diffs (gpt-5.4-mini, diff only), write
  *                            data/audit/root-cause-sample.json; self-skips if <6 days old
  *   --input FILE             read cards from a JSON file instead of Linear
+ *   --grades FILE            read first-pass misses from this grade file (default
+ *                            data/audit/opening-grades.json, BRO-7375)
  *   --no-write               don't write the snapshot
  *   --no-files               group by title only (skip the git files-touched pass)
  *
@@ -40,6 +49,12 @@ const rc = require('./lib/recurrence-classes.js');
 const ROOT = path.join(__dirname, '..');
 const SNAPSHOT = path.join(ROOT, 'data/audit/recurrence-classes.json');
 const LEDGER = path.join(ROOT, 'data/audit/alert-ledger.json');
+// BRO-7375: reviews the first pass did not get (grade-openings.js keeps the history).
+// Read-only inputs (grade-openings.js writes them); joined from a dir so the
+// orphaned-audit-write lint does not take them for writes.
+const AUDIT_INPUTS = path.join(ROOT, 'data', 'audit');
+const GRADES = path.join(AUDIT_INPUTS, 'opening-grades.json');
+const GRADES_BASELINE = path.join(AUDIT_INPUTS, 'opening-grades-baseline.json');
 const SAMPLE_FILE = path.join(ROOT, 'data/audit/root-cause-sample.json');
 const SAMPLE_EVERY_DAYS = 6;
 const SAMPLE_MAX = 8;
@@ -53,6 +68,11 @@ const DAY = 864e5;
 const WINDOW_DAYS = 30;
 const QUIET_DAYS = 21;
 const NEW_ROOT_CAP = 3;
+// Miss classes file first but take at most 2 of the 3 slots, so a backlog of
+// them cannot starve the card classes (BRO-7375 ship-check).
+const MISS_ROOT_CAP = 2;
+// Grades older than this cannot vouch that a miss class went quiet.
+const GRADES_STALE_MS = 72 * 36e5;
 const STALE_MS = 48 * 36e5;
 
 function arg(name, fallback = null) {
@@ -149,10 +169,23 @@ function applyRefusal(env = process.env, argv = process.argv) {
   return '--apply runs in CI only (data-health-check serializes it); a local run can race it into a duplicate root card. Pass --force-local if CI is paused and you mean it.';
 }
 
+// ---------- first-pass misses (BRO-7375) ----------
+
+/** Miss rows from a grade file: its kept history plus its current grades (re-caused). */
+function missesFromGrades(doc, nowMs = Date.now(), keepDays = undefined) {
+  if (!doc) return [];
+  const og = require('./lib/opening-grade.js');
+  const grades = Array.isArray(doc.grades) ? doc.grades : [];
+  return og.mergeMissHistory(doc.firstPassMisses || [], og.firstPassMisses(grades), { nowMs, keepDays, gradedShows: grades.map((g) => g.showId) });
+}
+
+const MARKET_WORDS = { broadway: 'Broadway', 'off-broadway': 'Off-Broadway', 'west-end': 'West End', 'off-west-end': 'Off-West End' };
+
 // ---------- snapshot ----------
 
-function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKnown = [], filesById = null }) {
+function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKnown = [], filesById = null, misses = [], missesFresh = true }) {
   const classes = rc.detectClasses(cards, ledger, { now, windowDays: WINDOW_DAYS, filesById });
+  const missCls = rc.missClasses(misses, cards, { now, windowDays: WINDOW_DAYS });
   const byId = new Map(cards.map((c) => [c.identifier, c]));
   const recurring = [...classes.values()].filter((c) => c.recurring);
   const instances = {};
@@ -165,6 +198,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
     if (cls.expected) continue;
     if (Date.parse(cls.lastSeen) >= now - WINDOW_DAYS * DAY) for (const k of [cls.key, ...(cls.mergedFrom || [])]) lastSeenByKey[k] = cls.lastSeen;
   }
+  for (const cls of missCls.values()) if (Date.parse(cls.lastSeen) >= now - WINDOW_DAYS * DAY) lastSeenByKey[cls.key] = cls.lastSeen;
   const out = [];
   let failed = 0; let claimed = 0; let unclaimed = 0;
   for (const cls of recurring.sort((a, b) => b.inWindow - a.inWindow)) {
@@ -195,6 +229,42 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
       recurredAfterRootClosed: rc.recurredAfterRootClosed(root, cls.instances),
     });
   }
+  // Miss classes: instances are shows, so they stay out of `instances`
+  // (keyed by card id for the close gate and the picker). They go FIRST in
+  // the filing order: a card class already has a card per case someone sees,
+  // a miss has nothing else on the board.
+  const missOut = [];
+  // A class whose root card exists stays listed while it has any show in the
+  // window, so a returning miss is commented instead of read as "first sight".
+  for (const cls of [...missCls.values()].filter((c) => c.recurring || (c.rootCause && c.inWindow > 0)).sort((a, b) => b.inWindow - a.inWindow)) {
+    const root = cls.rootCause ? byId.get(cls.rootCause) : null;
+    missOut.push({
+      key: cls.key,
+      slug: slugOf(cls.key),
+      kind: cls.kind,
+      cause: cls.cause,
+      category: cls.category,
+      outletId: cls.outletId,
+      inWindow: cls.inWindow,
+      total: cls.instances.length,
+      reasons: cls.reasons,
+      firstSeen: cls.firstSeen,
+      lastSeen: cls.lastSeen,
+      rootCause: cls.rootCause,
+      rootCauseState: root && root.state ? root.state.type : null,
+      rootCauseStartedNow: root ? /^START-NOW:/m.test(root.description || '') : false,
+      rootCauseCreatedAt: root ? root.createdAt : null,
+      rootCauseStartedAt: root ? root.startedAt || null : null,
+      extraRootCauses: cls.extraRootCauses,
+      subtypes: {},
+      example: `${cls.outletId} (${cls.category})`,
+      instances: cls.instances.map((c) => c.identifier),
+      shows: cls.instances.map((c) => ({ showId: c.identifier, title: c.title, openedAt: c.createdAt, fixedAt: c.foundAt, via: c.via })),
+      failedPreventions: [],
+      recurredAfterRootClosed: rc.recurredAfterRootClosed(root, cls.instances),
+    });
+  }
+  out.unshift(...missOut);
   const expected = [...classes.values()].filter((c) => c.expected && c.inWindow >= 3)
     .map((c) => ({ key: c.key, inWindow: c.inWindow, reason: c.expected }));
   const ledgerCards = new Set(Object.values((ledger && ledger.conditions) || {}).map((c) => c.linearIdentifier).filter(Boolean));
@@ -208,6 +278,9 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
     keyVersion: rc.KEY_VERSION,
     // false when git could not be read (or --no-files): classes were grouped by title only.
     filesSignal: !!filesById,
+    // false when opening-grades.json was missing or stale: a miss class's
+    // --check-class then answers "unknown", never "quiet" (BRO-7375).
+    missesFresh,
     share: { thisWeek: week(0), lastWeek: week(1) },
     recurringCount: out.length,
     withRootCause: out.filter((c) => c.rootCause).length,
@@ -237,11 +310,55 @@ function readableName(cls) {
     .slice(0, 90).trim();
 }
 
+function missCardTitle(cls) {
+  const market = MARKET_WORDS[cls.category] || cls.category;
+  return cls.cause === 'text-gap'
+    ? `Root cause: first pass keeps getting no full text from ${cls.outletId} (${market}, ${cls.inWindow} shows in ${WINDOW_DAYS} days)`
+    : `Root cause: first pass keeps missing ${cls.outletId} reviews (${market}, ${cls.inWindow} shows in ${WINDOW_DAYS} days)`;
+}
+
+// No card ids anywhere in this text: rootCards() reads every id in a root
+// card's description as one of its cases (BRO-7375 plan review).
+function missCardDescription(cls) {
+  const market = MARKET_WORDS[cls.category] || cls.category;
+  const text = cls.cause === 'text-gap';
+  const shows = (cls.shows || []).slice(-25).map((s) => `- ${s.title} (\`${s.showId}\`, opened ${String(s.openedAt).slice(0, 10)}): fixed ${s.fixedAt ? String(s.fixedAt).slice(0, 16).replace('T', ' ') + ' UTC' : 'later'} by ${s.via || 'a later path'}`).join('\n');
+  const question = text
+    ? `The first pass found ${cls.outletId}'s review each time but did not get its full text, so the text came later by hand or by the nightly sweep. Why did the first fetch (fetchPage fallback chain, cookie auth, paywall handling, the extractor for this outlet) not get the text on opening night?`
+    : `Each time ${cls.outletId}'s review was found later by another path, not by the first pass. Why did the first pass (opening-night-poller.js, gather-reviews.js, collect-outlet-reviews.js, outlet-listing-poller.js) not find it?`;
+  return [
+    `START-NOW: recurring first-pass miss found by the recurrence detector. Any worker may take it.`,
+    '',
+    `${market}: ${cls.outletId} was ${text ? 'without full text after' : 'missed by'} the first pass on ${cls.inWindow} shows that opened in the last ${WINDOW_DAYS} days. ` +
+      'Each one was fixed afterwards and nothing was filed, so the same gap stays open for the next opening.',
+    '',
+    `Class: \`${cls.key}\`. Outlet: \`${cls.outletId}\`. Market: ${cls.category}.`,
+    '',
+    'Shows (the "by" part is the commit that fixed it, i.e. the path a later find came in by):',
+    shows,
+    '',
+    '## What to do',
+    `1. ${question}`,
+    '2. Land a change that makes the first pass get it, plus a test or check that fails on one of the shows above with the fix reverted.',
+    '3. Comment the Outcome with `ROOT-CAUSE:`, `CLASS-GUARD:` (path of the guard), `RED-THEN-GREEN:`, `COUSINS:` (other outlets with the same gap, see data/audit/opening-grades.json firstPassMisses), or `NO-ROOT-CAUSE: <reason>`, plus `EFFECT:` or `NO-EFFECT-CHECK: <reason>`.',
+    `4. Pause this card with a RECHECK-AFTER date ${QUIET_DAYS} days after the land. The check below passes once ${QUIET_DAYS} days go by with no new opening missing this outlet.`,
+    '',
+    'New shows with the same miss are commented here by the detector each day.',
+    '',
+    '## Acceptance criteria',
+    `VERIFY: node scripts/recurrence-detector.js --check-class ${cls.slug} --quiet`,
+    '',
+    rc.markerLine(cls.key),
+  ].join('\n');
+}
+
 function rootCardTitle(cls) {
+  if (cls.kind === 'first-pass-miss') return missCardTitle(cls);
   return `Root cause: "${readableName(cls)}" keeps coming back (${cls.inWindow} cards in ${WINDOW_DAYS} days)`;
 }
 
 function rootCardDescription(cls) {
+  if (cls.kind === 'first-pass-miss') return missCardDescription(cls);
   const list = cls.instances.slice(-25).map((id) => `- ${id}`).join('\n');
   const subtypes = Object.entries(cls.subtypes || {}).map(([k, n]) => `${k} (${n})`).join(', ');
   return [
@@ -274,8 +391,13 @@ function rootCardDescription(cls) {
 
 // First line lists the cases, so the next run can skip ones already named
 // even if the snapshot commit was lost (one comment per root card per run).
-function statusComment(newIds, closed) {
+function statusComment(newIds, closed, kind = null) {
   const head = `${rc.STATUS_COMMENT_MARKER} ${newIds.join(', ')}`;
+  if (kind === 'first-pass-miss') {
+    return closed
+      ? `${head}\nRecurrence detector: this card is closed, but ${newIds.length} more show(s) opened with the same first-pass miss: ${newIds.join(', ')}. The fix did not hold. Reopen this card.`
+      : `${head}\nRecurrence detector: ${newIds.length} more show(s) opened with the same first-pass miss: ${newIds.join(', ')}. The first pass still does not get it.`;
+  }
   return closed
     ? `${head}\nRecurrence detector: this card is closed, but ${newIds.length} new case(s) of its problem came in: ${newIds.join(', ')}. ` +
       'The fix did not hold. Reopen this card or link the card that now owns the cause (BRO-7103).'
@@ -290,6 +412,8 @@ function alreadyNoted(comments) {
     const first = String((c && c.body) || '').split('\n')[0];
     if (!first.startsWith(rc.STATUS_COMMENT_MARKER)) continue;
     for (const id of first.match(/\bBRO-\d+\b/g) || []) seen.add(id);
+    // Miss classes list show ids (BRO-7375): read the whole comma list too.
+    for (const id of first.slice(rc.STATUS_COMMENT_MARKER.length).split(',').map((x) => x.trim()).filter(Boolean)) seen.add(id);
   }
   return seen;
 }
@@ -311,6 +435,7 @@ async function apply(snapshot, prevSnapshot) {
     }
     if (!cls.rootCause) {
       if (filed.length >= NEW_ROOT_CAP) { pending++; continue; }
+      if (cls.kind === 'first-pass-miss' && filed.filter((f) => f.miss).length >= MISS_ROOT_CAP) { pending++; continue; }
       const { issue } = await createLinearIssue({
         title: rootCardTitle(cls),
         description: rootCardDescription(cls),
@@ -342,8 +467,8 @@ async function apply(snapshot, prevSnapshot) {
       cls.rootCauseState = 'unstarted';
       cls.rootCauseStartedNow = true;
       cls.rootCauseCreatedAt = new Date().toISOString();
-      for (const id of cls.instances) snapshot.instances[id] = { rootCause: issue.identifier, classKey: cls.key };
-      filed.push({ key: cls.key, card: issue.identifier });
+      if (cls.kind !== 'first-pass-miss') for (const id of cls.instances) snapshot.instances[id] = { rootCause: issue.identifier, classKey: cls.key };
+      filed.push({ key: cls.key, card: issue.identifier, miss: cls.kind === 'first-pass-miss' });
       continue;
     }
     const prev = prevById.get(cls.key);
@@ -351,7 +476,7 @@ async function apply(snapshot, prevSnapshot) {
     const seen = new Set(prev.instances);
     const fresh = cls.instances.filter((id) => !seen.has(id));
     if (!fresh.length) continue;
-    const g = byRoot.get(cls.rootCause) || { fresh: new Set(), closed: false };
+    const g = byRoot.get(cls.rootCause) || { fresh: new Set(), closed: false, kind: cls.kind || null };
     fresh.forEach((id) => g.fresh.add(id));
     // A closed root card whose class keeps coming back is a fix that did not
     // hold: say so on that card instead of going quiet (ship-check, BRO-7103).
@@ -366,7 +491,7 @@ async function apply(snapshot, prevSnapshot) {
     const noted = alreadyNoted(all.get(rootId) || []);
     const fresh = [...g.fresh].filter((id) => !noted.has(id));
     if (!fresh.length) continue;
-    await lc.createComment(root.id, statusComment(fresh, g.closed));
+    await lc.createComment(root.id, statusComment(fresh, g.closed, g.kind));
     commented.push({ card: rootId, fresh });
   }
   snapshot.withRootCause = snapshot.classes.filter((c) => c.rootCause).length;
@@ -480,7 +605,7 @@ async function sample(cards, now, { grade = gradeDiff, diffFor, file = SAMPLE_FI
 
 // ---------- backtest ----------
 
-function backtest(cards, ledger, days) {
+function backtest(cards, ledger, days, misses = []) {
   const end = Date.now();
   const start = end - days * DAY;
   const firstFlag = new Map(); // key -> {at, inWindow, reasons, expected}
@@ -490,6 +615,9 @@ function backtest(cards, ledger, days) {
     // past would invent history; they count on the final day only.
     const L = t + DAY > end ? ledger : null;
     const classes = rc.detectClasses(cards.filter((c) => Date.parse(c.createdAt) <= t), L, { now: t, windowDays: WINDOW_DAYS });
+    for (const cls of rc.missClasses(misses, [], { now: t, windowDays: WINDOW_DAYS }).values()) {
+      if (cls.recurring && !firstFlag.has(cls.key)) firstFlag.set(cls.key, { at: new Date(Math.min(t, end)).toISOString().slice(0, 10), inWindow: cls.inWindow, reasons: cls.reasons, miss: true });
+    }
     for (const cls of classes.values()) {
       if (!cls.reasons.length) continue;
       const target = cls.expected ? expectedFlag : firstFlag;
@@ -497,8 +625,16 @@ function backtest(cards, ledger, days) {
     }
   }
   const final = rc.detectClasses(cards, ledger, { now: end, windowDays: WINDOW_DAYS });
+  const finalMiss = rc.missClasses(misses, cards, { now: end, windowDays: WINDOW_DAYS });
   const hits = [...firstFlag.entries()].map(([key, f]) => {
-    const cls = final.get(key);
+    const cls = f.miss ? finalMiss.get(key) : final.get(key);
+    if (f.miss) {
+      return {
+        key, kind: 'first-pass-miss', firstFlagged: f.at, flaggedBecause: f.reasons, total: cls.instances.length,
+        filedAfterFlag: cls.instances.filter((c) => c.createdAt.slice(0, 10) > f.at).length, done: 0, rootCause: cls.rootCause,
+        example: missCardTitle(cls), ids: cls.instances.map((c) => c.identifier), suspect: null,
+      };
+    }
     const after = cls.instances.filter((c) => c.createdAt.slice(0, 10) > f.at);
     const done = cls.instances.filter(rc.isDone).length;
     return {
@@ -511,7 +647,9 @@ function backtest(cards, ledger, days) {
   }).sort((a, b) => b.total - a.total);
   const expected = [...expectedFlag.entries()].map(([key, f]) => ({ key, firstFlagged: f.at, reason: f.expected, total: final.get(key).instances.length }))
     .sort((a, b) => b.total - a.total);
-  return { generatedAt: new Date(end).toISOString(), days, cards: cards.length, windowDays: WINDOW_DAYS, hits, expected };
+  // Miss classes seen but under the bar, so the report shows one-offs did not fire.
+  const missBelow = [...finalMiss.values()].filter((c) => !firstFlag.has(c.key)).map((c) => ({ key: c.key, shows: c.instances.length })).sort((a, b) => b.shows - a.shows || (a.key < b.key ? -1 : 1));
+  return { generatedAt: new Date(end).toISOString(), days, cards: cards.length, misses: misses.length, windowDays: WINDOW_DAYS, hits, expected, missBelow };
 }
 
 function backtestMarkdown(bt) {
@@ -530,6 +668,12 @@ function backtestMarkdown(bt) {
     ...bt.hits.map((h) => `| ${h.key.replace(/\|/g, '/')} | ${h.firstFlagged} | ${h.total} | ${h.filedAfterFlag} | ${h.rootCause || ''} | ${h.suspect || ''} |`),
     '',
     `Cards filed after the first flag (${bt.hits.reduce((n, h) => n + h.filedAfterFlag, 0)} in all) are the ones a root-cause fix on the flag date could have prevented.`,
+    '',
+    '## First-pass misses under the bar (BRO-7375)',
+    '',
+    `${(bt.missBelow || []).length} outlet classes had a first-pass miss but on fewer than 3 shows in any 30-day window, so nothing was filed:`,
+    '',
+    ...(bt.missBelow || []).map((m) => `- ${m.key} (${m.shows} show${m.shows === 1 ? '' : 's'})`),
     '',
     '## Expected repeats (excluded)',
     '',
@@ -560,11 +704,16 @@ function checkAll() {
   return 0;
 }
 
-function checkClass(want, quiet) {
-  const { snap, why } = loadFreshSnapshot();
+function checkClass(want, quiet, given = null) {
+  const { snap, why } = given ? { snap: given, why: null } : loadFreshSnapshot();
   if (why) { console.log(`FAIL: ${why}`); return 3; }
   const keys = Object.keys(snap.lastSeenByKey || {});
   const key = keys.find((k) => k === want || slugOf(k) === slugOf(want));
+  // No fresh grades = no idea whether a miss class had a new show (BRO-7375).
+  if (snap.missesFresh === false && ((key && rc.MISS_KEY_RE.test(key)) || /missed-at-first-pass/.test(slugOf(want)))) {
+    console.log('FAIL: opening-grades.json was missing or stale at the last run; cannot tell if this miss class is quiet');
+    return 3;
+  }
   if (!key) {
     // A slug no run has ever seen is a typo in a VERIFY line, not a quiet class.
     const known = (snap.knownKeys || []).some((k) => slugOf(k) === slugOf(want));
@@ -605,7 +754,14 @@ async function main() {
   if (has('--sample')) { await sample(cards, Date.now()); return 0; }
 
   if (has('--backtest')) {
-    const bt = backtest(cards, ledger, days);
+    const nowB = Date.now();
+    const og = require('./lib/opening-grade.js');
+    // The baseline grade file adds history older than the live one keeps.
+    const keepDays = days + WINDOW_DAYS;
+    const cur = readJson(arg('--grades', GRADES));
+    const misses = og.mergeMissHistory(missesFromGrades(readJson(GRADES_BASELINE), nowB, keepDays), missesFromGrades(cur, nowB, keepDays),
+      { nowMs: nowB, keepDays, gradedShows: [...((cur && cur.grades) || []).map((g) => g.showId), ...((cur && cur.firstPassMisses) || []).map((r) => r.showId)] });
+    const bt = backtest(cards, ledger, days, misses);
     fs.writeFileSync(BACKTEST_JSON, JSON.stringify(bt, null, 2) + '\n');
     fs.writeFileSync(BACKTEST_MD, backtestMarkdown(bt));
     console.log(`backtest: ${bt.hits.length} classes flagged (${bt.hits.filter((h) => h.suspect).length} suspect), ${bt.expected.length} expected repeats excluded -> ${path.relative(ROOT, BACKTEST_MD)}`);
@@ -638,7 +794,11 @@ async function main() {
     }
   }
   const prev = readJson(SNAPSHOT);
-  const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, filesById, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
+  const gradesDoc = readJson(arg('--grades', GRADES));
+  const misses = missesFromGrades(gradesDoc, now);
+  const missesFresh = !!(gradesDoc && now - Date.parse(gradesDoc.generatedAt) <= GRADES_STALE_MS);
+  if (!missesFresh) console.warn('[recurrence] opening-grades.json missing or stale; first-pass miss classes may be incomplete');
+  const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, filesById, misses, missesFresh, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
   snap.pendingRootCards = snap.classes.filter((c) => !c.rootCause).length;
   // The weekly independent sample rides along so the digest line has it.
   const smp = readJson(SAMPLE_FILE);
@@ -668,4 +828,4 @@ if (require.main === module) {
 
 module.exports = {
   applyRefusal, fetchCards, fetchRootCards, loadFilesById, fixCardFiles, ROOT_LOOKUP_SINCE,
-  sample, alreadyNoted, statusComment, buildSnapshot, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };
+  sample, alreadyNoted, statusComment, buildSnapshot, missesFromGrades, missCardTitle, missCardDescription, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };

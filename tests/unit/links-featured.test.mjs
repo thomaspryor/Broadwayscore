@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/links-featured.json (read by the test); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: Referential integrity only; the configured showId must resolve, without pinning show facts.
+// Referential integrity only; the configured showId must resolve, without pinning show facts.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

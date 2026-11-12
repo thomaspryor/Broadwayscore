@@ -1,4 +1,3 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: synthetic JSON in an isolated temp directory only; no live data is read.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -39,13 +38,13 @@ test('backfill CLI fails closed on missing data and unmet expectations, without 
     assert.equal(main(['--show=one'], root), 2);
     fs.mkdirSync(path.join(root, 'data'));
     const shows = JSON.stringify({ shows: [{ id: 'one' }] });
-    fs.writeFileSync(path.join(root, 'data/shows.json'), shows);
-    fs.writeFileSync(path.join(root, 'data/reviews.json'), JSON.stringify({ reviews: [] }));
+    fs.writeFileSync(path.join(root, 'data', 'shows.json'), shows);
+    fs.writeFileSync(path.join(root, 'data', 'reviews.json'), JSON.stringify({ reviews: [] }));
     assert.equal(main(['--show=one'], root), 0);
     assert.equal(main(['--show=one', '--images'], root), 1);
     assert.equal(main(['--show=one', '--reviews=1'], root), 1);
     assert.equal(main(['--show=missing'], root), 1);
-    assert.equal(fs.readFileSync(path.join(root, 'data/shows.json'), 'utf8'), shows);
+    assert.equal(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8'), shows);
     assert.deepEqual(fs.readdirSync(path.join(root, 'data')).sort(), ['reviews.json', 'shows.json']);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });

@@ -160,6 +160,37 @@ function hashShowImageFiles(shows, publicDir) {
   return { files, missing };
 }
 
+/**
+ * Write-time guard (BRO-7390): which unrelated show already serves these exact
+ * bytes? The audit above only reports after the fact, so every new case reached
+ * data/shows.json and turned the live-data test red. The fetcher calls this
+ * before it persists a candidate and refuses the match.
+ * @param {string} showId  show about to receive the candidate
+ * @param {Buffer} bytes   candidate file contents
+ * @returns {string|null}  id of an unrelated show serving byte-identical art, else null
+ */
+function findContentOwner(showId, bytes, shows, publicDir, opts = {}) {
+  if (!showId || !bytes || !bytes.length) return null;
+  const related = makeRelated(shows, opts);
+  const size = bytes.length;
+  let hash = null;
+  for (const s of shows || []) {
+    if (!s || s.id === showId || !s.images || typeof s.images !== 'object') continue;
+    for (const [key, p] of Object.entries(s.images)) {
+      if (typeof p !== 'string' || key.startsWith('_') || !p.startsWith('/images/')) continue;
+      const full = path.join(publicDir, p);
+      let st;
+      try { st = fs.statSync(full); } catch { continue; }
+      if (st.size !== size) continue;
+      if (hash === null) hash = crypto.createHash('md5').update(bytes).digest('hex');
+      let other;
+      try { other = crypto.createHash('md5').update(fs.readFileSync(full)).digest('hex'); } catch { continue; }
+      if (other === hash && !related(showId, s.id)) return s.id;
+    }
+  }
+  return null;
+}
+
 /** Convenience: hash then group. */
 function auditDuplicateImages(shows, publicDir, opts = {}) {
   const { files, missing } = hashShowImageFiles(shows, publicDir);
@@ -264,6 +295,7 @@ module.exports = {
   titleKey,
   makeRelated,
   findDuplicateImageGroups,
+  findContentOwner,
   hashShowImageFiles,
   auditDuplicateImages,
 };

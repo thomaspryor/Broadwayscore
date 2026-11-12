@@ -17,11 +17,13 @@
  */
 
 const https = require('https');
+const { NEVER_ASK_REDDIT_APP } = require('./reddit-owner-guard');
 require('./cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
 const { creditsFor } = require('./provider-credits');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 const { consultBrightData } = require('./brightdata-caps');
+const { isRedditRetired, RedditRetiredError } = require('./reddit-status');
 const { sbRedditVerdict, sbRunBreakerOpen, readLedgerTail } = require('./reddit-dispatch-cooldown');
 
 const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
@@ -749,8 +751,15 @@ async function fetchRedditDirect(url) {
 /**
  * Fetch URL with direct Reddit access, fallback to ScrapingBee
  */
+let missingCredsNoted = false;
+/** The credentials-missing message (BRO-7337): says plainly not to ask the owner for an app. */
+function missingOauthCredsMessage() {
+  return `Reddit OAuth credentials are not set; using the proxy chain. ${NEVER_ASK_REDDIT_APP}`;
+}
 function hasOauthCreds() {
-  return Boolean(process.env.REDDIT_CLIENT_ID && process.env.REDDIT_CLIENT_SECRET) && !oauthDown;
+  const has = Boolean(process.env.REDDIT_CLIENT_ID && process.env.REDDIT_CLIENT_SECRET);
+  if (!has && !missingCredsNoted) { missingCredsNoted = true; console.log(`  ${missingOauthCredsMessage()}`); }
+  return has && !oauthDown;
 }
 
 /** Fetch (and cache) an app-only OAuth token via client_credentials. */
@@ -777,7 +786,7 @@ function getOauthToken() {
       res.on('end', () => {
         if (res.statusCode !== 200) {
           if (res.statusCode === 401 || res.statusCode === 403) oauthDown = true;
-          reject(new Error(`Reddit OAuth token ${res.statusCode}: ${data.slice(0, 120)} — check REDDIT_CLIENT_ID/REDDIT_CLIENT_SECRET`));
+          reject(new Error(`Reddit OAuth token ${res.statusCode}: ${data.slice(0, 120)} — ${NEVER_ASK_REDDIT_APP}`));
           return;
         }
         try {
@@ -832,6 +841,9 @@ async function fetchViaOauth(url, isRetry = false) {
 }
 
 async function fetchWithFallback(url, retryCount = 0, opts = {}) {
+  // BRO-7337: Reddit is retired. Refuse before the circuit breaker and any network call, so a
+  // refusal neither spends proxy credits nor counts as a provider failure.
+  if (isRedditRetired()) throw new RedditRetiredError();
   // Circuit breaker: if too many consecutive failures, stop wasting time
   if (circuitBroken) {
     throw new Error('Circuit breaker open: all Reddit sources failing consistently. Aborting to save time.');
@@ -1167,6 +1179,9 @@ function resetFallbackState() {
 
 module.exports = {
   fetchViaOauth,
+  missingOauthCredsMessage,
+  isRedditRetired,
+  RedditRetiredError,
   _oauthState: () => ({ oauthDown, hasCreds: hasOauthCreds() }),
   searchSubreddit,
   getPostComments,

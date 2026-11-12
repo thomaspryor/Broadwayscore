@@ -5,7 +5,7 @@
 // approved-fix plan data/pending-fixes/bro-5586.json; this test runs the real
 // add-show action and venue classifier against it and, when the core data is
 // present, checks the live shows.json row.
-// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json is this row's source of truth (a manual add); expectations come from the plan file, not hardcoded pins.
+// shows.json is this row's source of truth (a manual add); expectations come from the plan file, not hardcoded pins.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

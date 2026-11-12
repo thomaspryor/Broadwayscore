@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural: asserts the rebuild left no recoverable excerpt unused; pins no show fact
+// structural: asserts the rebuild left no recoverable excerpt unused; pins no show fact
 // BRO-5798 (BRO-3425 pattern): live-data assertion split out of tests/unit/review-pullquotes.test.mjs. It reads data/reviews.json and
 // data/review-texts, which bots rewrite many times a day, so in a code-test batch it turned main red with no code change.
 // It runs in check-corpus-drift.yml's "Live-data assertions" step (data-health), excluded from the unit batches in

@@ -217,6 +217,11 @@ jobs:
           if [ -n "$INPUT_SHOW" ]; then
             echo "Using manual show: $INPUT_SHOW"
             echo "shows=$INPUT_SHOW" >> $GITHUB_OUTPUT
+            # BRO-7033: a targeted run also needs `window` so poll_one drains its _pending/
+            # no-byline stubs right after the poll (The Verge: TheaterMania waited ~50 min).
+            WINDOW=$(node scripts/lib/poller-loop-budget.js window "$INPUT_SHOW" data/shows.json || true)
+            echo "Press-night window (in-loop _pending drain): ${WINDOW:-none}"
+            echo "window=$WINDOW" >> $GITHUB_OUTPUT
             echo "has_shows=true" >> $GITHUB_OUTPUT
           else
             # BRO-7117: an auto/market run and a targeted run sit in different

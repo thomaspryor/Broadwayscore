@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural coverage check (every hub show has an image), pins no specific facts
+// structural coverage check (every hub show has an image), pins no specific facts
 /**
  * Every show on a city hub's main page (now, soon, recently closed) needs a real
  * thumbnail (BRO-6771, owner rule 2026-11-01). Calls the real HUB_CITIES,

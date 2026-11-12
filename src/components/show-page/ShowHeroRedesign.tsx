@@ -28,8 +28,9 @@
  * resumed when the user lands back on this page authenticated.
  */
 
-import ReviewArrivalLine, { type ReviewArrivalVariant } from './ReviewArrivalStatus';
+import ReviewArrivalLine from './ReviewArrivalStatus';
 import type { ReviewArrival } from '@/lib/review-arrival';
+import { CallTheScoreHeroLink } from './CallTheScore';
 import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -139,7 +140,6 @@ interface ShowHeroRedesignProps {
   reviewAgeNote?: string | null;
   /** Opening-night "reviews still arriving" status (BRO-7376), computed server-side; null/absent = hidden */
   reviewArrival?: ReviewArrival | null;
-  reviewArrivalVariant?: ReviewArrivalVariant;
   /** Wording computed with metadata on the server, preserved for cached pages. */
   liveInHdText?: string | null;
   /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
@@ -189,7 +189,6 @@ function Inner({
   tourReviewYears,
   reviewAgeNote,
   reviewArrival,
-  reviewArrivalVariant,
   liveInHdText,
   trustLines,
 }: ShowHeroRedesignProps) {
@@ -268,8 +267,8 @@ function Inner({
   const score = show.criticScore?.score ?? null;
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   // Opening-night status (BRO-7376): one short line with the score, in place of the review count.
-  const arrivalLine = reviewArrival ? <ReviewArrivalLine arrival={reviewArrival} variant={reviewArrivalVariant} /> : null;
-  const arrivalLineCentered = reviewArrival ? <ReviewArrivalLine arrival={reviewArrival} variant={reviewArrivalVariant} className="items-center" /> : null;
+  const arrivalLine = reviewArrival ? <ReviewArrivalLine arrival={reviewArrival} /> : null;
+  const arrivalLineCentered = reviewArrival ? <ReviewArrivalLine arrival={reviewArrival} className="items-center" /> : null;
   const tier1And2Count = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const criticReviewsForBar = show.criticScore?.reviews ?? [];
   const tier = score !== null ? getScoreTier(score, show.category) : null;
@@ -1079,6 +1078,7 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected =
       ) : (
         <div className="text-xs text-fg-muted">{progress}</div>
       )}
+      {!noReviewsExpected && <CallTheScoreHeroLink show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate }} />}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: real Actions history fixture plus synthetic run outcomes; no core data.
+// real Actions history fixture plus synthetic run outcomes; no core data.
 // Execute the shipped github-script body, including its real helper, without sending alerts.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

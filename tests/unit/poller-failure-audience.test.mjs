@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: synthetic show lists only; the wiring tests read the workflow YAML.
+// synthetic show lists only; the wiring tests read the workflow YAML.
 /**
  * BRO-5479 (owner decision 2026-10-16): a poller failure emails the owner right
  * away when a Broadway show is in the poll; other markets go through the

@@ -10,6 +10,7 @@
 // reported stale and should be deleted.
 
 const MODEL_FALSE_NEGATIVE_EXPLANATIONS = Object.freeze({
+  'legally-blonde-2007': 'Post-closing income is outside the Broadway-only model. Hal Luftig reports roughly 60% returned on Broadway and profitable later tours (Freakonomics, Apr 18, 2025: https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/); that interview does not establish when the original investment recouped. The model applies a reported $650K weekly cost plus variable expenses and reserves to the Broadway run, producing -58.7% centrally. That magnitude also understates the reported Broadway return and still needs period-specific cost/distribution evidence; the diagnosis does not validate the estimated 2012 recoupment date.',
   'kimberly-akimbo-2022': 'Recoupment announced Apr 2026, two years after the Broadway close, and counts the national tour; the model sees only Broadway weeks (weekly cost is an industry estimate).',
   gutenberg: 'Borderline: central 94.5%, range 67-120% straddles 100. Recouped the week it closed on a reported $638K all-in breakeven; a musical, so the implied-cost fit does not apply.',
   'the-lehman-trilogy-2021': 'Recoupment rests on a low-confidence forum report (owner kept it, BRO-6446-b); weekly cost is a type default and capitalization is the SEC ceiling, so the implied-cost fit skips it as an inference.',

@@ -22,6 +22,10 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import { createRequire } from 'node:module';
 
+// BRO-7337: Reddit is retired by default (config/retired-sources.json); these tests exercise the
+// fetch path itself, so they opt back in. The retired behavior is pinned in reddit-retired.test.mjs.
+process.env.REDDIT_FORCE_ENABLED = '1';
+
 // Mock Scrapingdog endpoint — same shape as tests/unit/reddit-api-scrapingdog.test.mjs.
 const sdServer = http.createServer((req, res) => {
   const u = new URL(req.url, 'http://localhost');

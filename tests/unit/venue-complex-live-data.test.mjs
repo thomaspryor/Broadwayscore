@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: live-corpus venue-complex checks, run by
+// live-corpus venue-complex checks, run by
 // check-corpus-drift.yml (data-health), not test.yml's code-CI unit batch.
 /**
  * Live data/shows.json venue-complex checks, moved out of

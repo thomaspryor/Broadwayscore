@@ -1,5 +1,5 @@
 // BRO-6965: the daily outlet-listing poller reads every feed the opening-night lane reads, on the lane's rules.
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural coverage check plus rule checks on headline strings; pins no review facts.
+// structural coverage check plus rule checks on headline strings; pins no review facts.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

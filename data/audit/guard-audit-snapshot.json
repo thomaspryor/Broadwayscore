@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-11T09:59:21.948Z",
+  "generatedAt": "2026-11-12T10:21:17.345Z",
   "window": {
-    "since": "2026-11-05",
-    "until": "2026-11-11"
+    "since": "2026-11-06",
+    "until": "2026-11-12"
   },
   "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 1 cap drift(s).",
   "items": [
     {
       "title": "bd-circuit-breaker-serp_api1",
-      "detail": "OK: 2 trip day(s); spend n/a (no skip label)"
+      "detail": "OK: 1 trip day(s); spend n/a (no skip label)"
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "OK: 2 trip day(s); rerouted spend on trip days $0.03 (207 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2262"
+      "detail": "OK: 1 trip day(s); rerouted spend on trip days $0.01 (101 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2119"
     },
     {
       "title": "sb-circuit-breaker",
@@ -42,9 +42,8 @@
       "provider": "brightdata",
       "shadow": false,
       "verdict": "OK",
-      "days": 2,
+      "days": 1,
       "dayList": [
-        "2026-11-05",
         "2026-11-06"
       ],
       "lowerBound": false,
@@ -56,7 +55,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 624,
+        "median14d": 566,
         "drift": false,
         "note": null
       }
@@ -67,15 +66,14 @@
       "provider": "brightdata",
       "shadow": false,
       "verdict": "OK",
-      "days": 2,
+      "days": 1,
       "dayList": [
-        "2026-11-05",
         "2026-11-09"
       ],
       "lowerBound": false,
       "spend": {
-        "usd": 0.03,
-        "rows": 207,
+        "usd": 0.01,
+        "rows": 101,
         "unpriced": 0,
         "label": "bd-budget",
         "partialSince": null,
@@ -86,7 +84,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 2262,
+        "median14d": 2119,
         "drift": true,
         "note": null
       }
@@ -109,11 +107,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 30582,
+        "ceiling": 27482,
         "source": "plan+opening-window-reserve+median-floor",
         "from": "state",
         "currentZero": false,
-        "median14d": 20388,
+        "median14d": 18321,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -142,7 +140,7 @@
         "source": "plan+opening-window-reserve+median-floor",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 20388,
+        "median14d": 18321,
         "drift": false,
         "note": null
       }
@@ -165,27 +163,17 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 221432,
+        "ceiling": 229934,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 81991,
+        "median14d": 77587,
         "drift": false,
         "note": null
       }
     }
   ],
   "spendByDay": {
-    "2026-10-29": {
-      "partial": false,
-      "guards": {
-        "bd-circuit-breaker-web_unlocker2": {
-          "usd": 0.0402,
-          "rows": 342,
-          "unpriced": 0
-        }
-      }
-    },
     "2026-10-30": {
       "partial": false,
       "guards": {
@@ -277,29 +265,31 @@
       "guards": {}
     },
     "2026-11-11": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-11-12": {
       "partial": true,
       "guards": {}
     }
   },
   "dailyBreakerPattern": {
     "window": {
-      "sinceDay": "2026-11-05",
-      "untilDay": "2026-11-11",
+      "sinceDay": "2026-11-06",
+      "untilDay": "2026-11-12",
       "days": 7
     },
     "providers": {
       "web": {
-        "days": 2,
+        "days": 1,
         "dayList": [
-          "2026-11-05",
           "2026-11-09"
         ],
         "lowerBound": false
       },
       "serp": {
-        "days": 2,
+        "days": 1,
         "dayList": [
-          "2026-11-05",
           "2026-11-06"
         ],
         "lowerBound": false

@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: pure date arithmetic on synthetic run objects; no data/*.json read.
+// pure date arithmetic on synthetic run objects; no data/*.json read.
 /**
  * notify-failure cooldown (BRO-5302): the 2026-10-13 orchestrator double page. Two market runs were
  * created at 17:21, ran ~5h, and failed at 22:37 and 22:38. Measured on creation time the first

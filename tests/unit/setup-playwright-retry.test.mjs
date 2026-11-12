@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural — executes the real run: block of
+// structural — executes the real run: block of
 // .github/actions/setup-playwright/action.yml with stubbed npx/sudo; no data/*.json.
 /**
  * BRO-4480 — setup-playwright's install step must retry a transient failure and

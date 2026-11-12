@@ -34,6 +34,7 @@ const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { canRecoverReview } = require('./lib/approved-fix-writer-guards');
+const { recoverCandidate } = require('./lib/verify-recover-candidate');
 
 const USAGE_TEXT = `Retroactive LLM Content Verification
 
@@ -134,19 +135,12 @@ function categorizeReviews(reviewFiles) {
 
       // RECOVER mode: re-evaluate flagged reviews with recoverable text
       if (!CLI.verifyOnly && (r.wrongProduction || r.wrongShow)) {
-        if (!canRecoverReview(r)) continue;
-        // Skip wrongAttribution — those are typically correct
-        if (r.wrongAttribution) continue;
-        // url-proven (BRO-5015): no LLM read can clear it, so don't pay for one
-        if (r.wrongProductionReason === OTHER_PRODUCTION_URL_REASON) continue;
-
-        // Find best available text
-        const text = r.fullText || r.wrongFullText || r.garbageFullText;
-        if (text && text.length >= 200) {
+        const candidate = recoverCandidate(r);
+        if (candidate) {
           toRecover.push({
             showId, file, filePath,
-            text,
-            textSource: r.fullText ? 'fullText' : r.wrongFullText ? 'wrongFullText' : 'garbageFullText',
+            text: candidate.text,
+            textSource: candidate.textSource,
             currentFlags: {
               wrongProduction: !!r.wrongProduction,
               wrongShow: !!r.wrongShow,

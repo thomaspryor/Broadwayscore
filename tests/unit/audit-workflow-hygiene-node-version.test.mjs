@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — the detector under test
+// purely structural — the detector under test
 // never reads data/*.json; it only parses workflow YAML text.
 /**
  * Unit tests for findEolNodeVersions (rule (ac), BRO-6398): no runner pins a

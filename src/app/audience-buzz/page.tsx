@@ -43,7 +43,7 @@ const faqSchema = {
       name: 'How is the AudienceGrade calculated?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: `We combine ${getSourcesForMarket('broadway').length} sources (${bwSourceNames}), weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit requires a minimum of 50 classified comments to be included.`,
+        text: `We combine ${getSourcesForMarket('broadway').length} sources (${bwSourceNames}), weighted proportionally by their number of reviews. More reviews means more weight. No single source can account for more than 80% of the total. Reddit counts only for shows with Reddit data collected before November 2026 and needs a minimum of 50 classified comments.`,
       },
     },
     {
@@ -127,7 +127,7 @@ export default function AudienceBuzzPage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Audience Scorecard</h1>
           <p className="text-gray-400 mt-2">
-            What real theatergoers think. Combined AudienceGrade ratings from Show Score, Mezzanine, Theatr, Broadway.com, and Reddit.
+            What real theatergoers think. Combined AudienceGrade ratings from Show Score, Mezzanine, Theatr, Broadway.com, and Reddit. Reddit counts only for shows with comments we collected before November 2026.
           </p>
           <p className="text-sm text-fg-muted mt-1">
             {showsWithBuzz.length} shows · {totalReviews.toLocaleString()}+ audience reviews · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}

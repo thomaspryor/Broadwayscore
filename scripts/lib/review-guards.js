@@ -6153,7 +6153,8 @@ function explainExclusion(data, show, filePath, opts) {
     data.nonReviewContent === true) && !laneOk('nonReview')
   ) return 'nonReview';
   if (data.fabricatedEntry === true) return 'fabricatedEntry';
-  if (data.isSyndicatedDuplicate === true) return 'isSyndicatedDuplicate';
+  // BRO-7327: canonical predicate; a self-pointing syndicatedPrimaryFile (BRO-4891) is not a copy.
+  if (require('./syndication-pairs').isSyndicatedDuplicateActive(data, filePath)) return 'isSyndicatedDuplicate';
   // BRO-5265: a mutual 2-cycle (A names B as primary and B names A) used to drop
   // BOTH copies. With filePath, keep exactly one (cross-outlet-cycle.js tiebreak;
   // rebuild-all-reviews.js calls the same helper). ignoreCrossOutletDuplicate is
@@ -7138,7 +7139,15 @@ function isReviewContentTrustworthy(data) {
   );
 }
 
+// BRO-7327: re-exported so scoring-delta's baseline/candidate replay sees the canonical predicate.
+// Plain function + shorthand export: an inline arrow property stops cjs-module-lexer, which hides
+// every later export from ESM named imports.
+function isSyndicatedDuplicateActive(data, filePath) {
+  return require('./syndication-pairs').isSyndicatedDuplicateActive(data, filePath);
+}
+
 module.exports = {
+  isSyndicatedDuplicateActive,
   isUrlCorrectedAwaitingFreshScore,
   isRejectedByReasonExclusion,
   isRejectedAtExclusion,

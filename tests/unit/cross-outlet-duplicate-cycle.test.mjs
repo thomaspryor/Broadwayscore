@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: fixture-based; isolated tmp dirs, no production data files.
+// fixture-based; isolated tmp dirs, no production data files.
 /**
  * BRO-5265: two files that each name the other as crossOutletPrimaryFile (a
  * mutual 2-cycle) used to be BOTH excluded by explainExclusion, so the review

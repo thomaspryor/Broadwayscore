@@ -26,8 +26,9 @@ Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude
 - `worktree-enforce.sh`: hard-blocks tracked-code edits outside a worktree (CLAUDE.md §1).
 - `pre-push-visual-gate.sh`, `pre-push-review-gate.sh`, `pre-merge-review-gate.sh`, `check-skill-redaction.sh`: Bash gates on `git push`/`git merge` (visual QA, review, skill redaction; `pre-push-review-gate.sh` also refuses pushing `main`). `github-main-guard.sh` runs the visual gate on MCP writes (advisory, BRO-2394).
 - `pre-push-land-preflight.sh`: see Landing.
-- Review gates (BRO-5359): a cloud `land/*` push over 30 gated lines needs a real `/ship-check` with its reviewers (and `npm run build` for `src/`); the Stop hook refuses `SAFE TO ARCHIVE` after a hollow ship-check, did-it-work, what-else or early close-out. Rules: `scripts/lib/review-coverage.mjs`. Receipt (BRO-5411, advisory): after `/ship-check`, `node scripts/review-receipt.js stamp` before the land push; land.yml warns if missing. Changing the Stop hook (`.claude/hooks/verify-edits.sh` or a `scripts/lib` file it runs): run `node scripts/lib/hook-replay.mjs --record` before landing; it replays recent real transcripts through main's hook and yours and lists every stop whose decision changed (BRO-7351).
+- Review gates (BRO-5359): a cloud `land/*` push over 30 gated lines needs a real `/ship-check` (plus `npm run build` for `src/`); the Stop hook refuses `SAFE TO ARCHIVE` after a hollow ship-check, did-it-work, what-else or close-out. Rules: `scripts/lib/review-coverage.mjs`. Receipt (BRO-5411, advisory): `node scripts/review-receipt.js stamp` after `/ship-check`; land.yml warns if missing. Changing the Stop hook (`.claude/hooks/verify-edits.sh` or a `scripts/lib` file it runs): run `node scripts/lib/hook-replay.mjs --record` before landing; it replays recent transcripts through main's hook and yours and lists changed stops (BRO-7351). Guidance edits of 80+ words: `node scripts/lib/rule-trial.mjs status`, then `record` (BRO-7370).
 - `enterworktree-guard.sh`: worktree name collisions only.
+- `compact-state.sh` (BRO-7397): a THRASH GUARD note after repeated compacts: push, hand off, skip the close-out chain.
 - `block-prompting-remote-tools.sh` (cloud-only): `send_later`, `create_trigger`, `add_repo` prompt the owner's phone in every mode (`requiresUserInteraction`). It denies self-initiated scheduling and loop re-arms (wait in-turn with a background Bash loop or Monitor, or `subscribe_pr_activity`; ScheduleWakeup is best-effort), re-attaching Broadwayscore, and `list_sessions` (use `get_session` by id). Owner-requested reminders (`initiation: human_request`) and other repos pass. Kill switch `REMOTE_TOOL_BLOCKER_DISABLE=1`.
 
 ## Slash commands available in cloud
@@ -73,10 +74,10 @@ Before planning any watch that runs while the owner sleeps (Berlin; US opening-n
 
 ## Owner one-time setup (cloud environment → Edit → Setup script)
 
-Cached setup runs after cloning, before Claude (BRO-5221/6126):
+Cached setup runs after cloning, before Claude, under `bash -e`: every step must fail softly (BRO-5221/6126/7370):
 
 ```
-for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && CLAUDE_CODE_REMOTE=true node "$d/scripts/install-home-claude-config.js" --adopt-hookless-settings; done; true
+for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main || true; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && CLAUDE_CODE_REMOTE=true node "$d/scripts/install-home-claude-config.js" --adopt-hookless-settings || true; done; true
 ```
 
 It cannot change auto mode (BRO-5008). When it refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).

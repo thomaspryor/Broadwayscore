@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — reads the workflow YAML only.
+// purely structural — reads the workflow YAML only.
 /**
  * BRO-2479: audit-critic-coverage.yml must not swallow a lost push. A
  * `push-with-retry.sh ... || echo` made the run exit green while two weekly

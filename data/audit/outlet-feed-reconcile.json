@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T12:39:02.282Z",
+  "generatedAt": "2026-11-12T13:25:13.719Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,16 +7,6 @@
       "id": "wanted-2022",
       "title": "Wanted",
       "openingDate": "2026-11-08"
-    },
-    {
-      "id": "the-unbelievers-off-broadway-2026",
-      "title": "The Unbelievers",
-      "openingDate": "2026-11-05"
-    },
-    {
-      "id": "the-verge-off-broadway-2026",
-      "title": "The Verge",
-      "openingDate": "2026-11-05"
     },
     {
       "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -44,11 +34,6 @@
       "openingDate": "2026-11-09"
     },
     {
-      "id": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "openingDate": "2026-11-05"
-    },
-    {
       "id": "nero-off-west-end-2026",
       "title": "Nero",
       "openingDate": "2026-11-06"
@@ -64,9 +49,9 @@
       "openingDate": "2026-11-12"
     },
     {
-      "id": "speculations-off-west-end-2026",
-      "title": "Speculations",
-      "openingDate": "2026-11-05"
+      "id": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "openingDate": "2026-11-11"
     },
     {
       "id": "broom-play-off-broadway-2026",
@@ -77,6 +62,11 @@
       "id": "the-steel-man-off-broadway-2026",
       "title": "The Steel Man",
       "openingDate": "2026-11-08"
+    },
+    {
+      "id": "act-of-god-off-west-end-2026",
+      "title": "Act of God",
+      "openingDate": "2026-11-11"
     },
     {
       "id": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
@@ -94,24 +84,23 @@
       "openingDate": "2026-11-12"
     },
     {
-      "id": "kate-allie-and-the-86-mets-off-broadway-2026",
-      "title": "Kate, Allie and the '86 Mets",
-      "openingDate": "2026-11-09"
-    },
-    {
-      "id": "king-lear-off-broadway-2026",
-      "title": "King Lear",
-      "openingDate": "2026-11-05"
-    },
-    {
       "id": "the-snow-queen-regional-2026",
       "title": "The Snow Queen",
       "openingDate": "2026-11-07"
+    },
+    {
+      "id": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "openingDate": "2026-11-11"
     }
   ],
   "skipped": [
     {
       "showId": "the-good-thief-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "first-and-last-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -140,55 +129,164 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londonpubtheatres",
-      "error": "Client network socket disconnected before secure TLS connection was established"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 811,
-  "matchedGaps": 3,
-  "possibleGaps": 1,
+  "itemsScanned": 849,
+  "matchedGaps": 15,
+  "possibleGaps": 2,
   "gaps": [
     {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
       "level": "matched",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
-      "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
-      "publishDate": "2026-11-07"
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/area/southwark/review-cloud-9-national-theatre/",
+      "headline": "Review: Cloud 9 &#8211; National Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "west-end-wilma",
+      "url": "https://westendwilma.com/cloud-9-national-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=cloud-9-national-theatre-review",
+      "headline": "CLOUD 9 at the National Theatre, Review &#8211; &#8220;overly complicated brilliance&#8221; ★★★★",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "city-am",
+      "url": "https://www.cityam.com/cloud-9-national-theatre-review/",
+      "headline": "Cloud 9 at the National Theatre review: Caryl Churchill’s 1979 shocker has lost its punch",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
+      "headline": "Cloud 9 &#8211; Lyttelton National Theatre",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
+      "headline": "Cloud 9 | National Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
+      "headline": "Cloud 9 &#8211; National Theatre, London",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-cloud-9-national-theatre",
+      "headline": "Review: CLOUD 9, National Theatre",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/area/southwark/review-cloud-9-national-theatre/",
+      "headline": "Review: Cloud 9 &#8211; National Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
+      "headline": "Cloud 9 | National Theatre",
+      "publishDate": "2026-11-12"
     },
     {
       "showId": "dogstar-off-west-end-2026",
       "title": "Dogstar",
       "level": "matched",
-      "outletId": "readaboutstuff",
-      "url": "https://readaboutstuff.com/2026/11/11/review-dogstar-hampstead-theatre-london/",
-      "headline": "Review: Dogstar &#8211; Hampstead Theatre, London",
-      "publishDate": "2026-11-11"
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/11/12/dogstar-review-hampstead-theatre-daisy-hall-justin-edwards-abdul-jalloh-adam-rojko-vega/",
+      "headline": "&#8216;Dogstar&#8217; review &#8211; Scurvy and scuffles in slog of a sophomore play",
+      "publishDate": "2026-11-12"
     },
     {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
       "level": "matched",
-      "outletId": "rhombus-rota",
-      "url": "https://rhombusrota.co.uk/2026/11/11/dogstar-at-the-hampstead-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dogstar-at-the-hampstead-theatre-review",
-      "headline": "Dogstar at the Hampstead Theatre Review",
+      "outletId": "totaltheater1",
+      "url": "https://totaltheater1.wordpress.com/2026/11/11/ms-blakk-for-president/",
+      "headline": "Ms. Blakk for President",
       "publishDate": "2026-11-11"
     },
     {
-      "showId": "king-lear-off-broadway-2026",
-      "title": "King Lear",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "the-interested-bystander",
+      "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
+      "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/light-opera-of-new-jersey-to-present-amahl-and-the-night-visitors/",
+      "headline": "Light Opera of New Jersey to Present &#8216;Amahl and the Night Visitors&#8217;",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/shakespeare-opera-theatre-to-present-amahl-and-the-night-visitors/",
+      "headline": "Shakespeare Opera Theatre to Present &#8216;Amahl and the Night Visitors&#8217;",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/vashon-opera-to-present-amahl-and-the-night-visitors/",
+      "headline": "Vashon Opera to Present &#8216;Amahl and the Night Visitors&#8217;",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
       "level": "possible",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
-      "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
-      "publishDate": "2026-11-04"
+      "outletId": "partially-obstructed-view",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
+      "headline": "Theatre review: Nero",
+      "publishDate": "2026-11-10"
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "level": "possible",
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/wanted-on-broadway-extraordinary-voices-what-could-have-been-a-powerful-story-and-a-few-unfortunate-detours/",
+      "headline": "Wanted on Broadway: Extraordinary Voices, What Could Have Been a Powerful Story, and a Few Unfortunate Detours",
+      "publishDate": "2026-11-12"
     }
   ]
 }

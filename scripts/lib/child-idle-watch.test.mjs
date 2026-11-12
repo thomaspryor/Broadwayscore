@@ -285,3 +285,96 @@ test('BRO-7109: no proposed watch outlives the 30-min default background limit',
   assert.ok(recipes.length >= 3, `found ${recipes.length} background recipes`);
   for (const l of recipes) assert.match(l, /timeout:? 7200000/, `background recipe without the 2h timeout: ${l.slice(0, 120)}`);
 });
+
+// ─── BRO-7377: a child whose container never came up ────────────────────────
+// Real get_session of the BRO-7370 trial child whose setup script exited 128.
+// The API still said status_bucket=WORKING, so decide() answered "rearm" at 8
+// min and again at 26 min. Only external_metadata.last_init_error shows it.
+const INIT_FAILED = JSON.parse(fs.readFileSync(path.join(HERE, 'fixtures', 'bro-7377-init-failed', 'get-session.json'), 'utf8'));
+const withInit = (patch) => JSON.parse(JSON.stringify({ ...INIT_FAILED, ccr: { ...INIT_FAILED.ccr, ...patch } }));
+
+test('BRO-7377: a child whose setup script failed is restart, not "WORKING", at the first look and every later one', () => {
+  assert.match(INIT_FAILED.ccr.status_bucket, /WORKING/, 'the fixture must keep the lie that made this bug');
+  for (const now of ['2026-11-11T13:52:38Z', '2026-11-11T14:10:00Z', '2026-11-11T20:00:00Z']) {
+    const r = decide({ session: INIT_FAILED, now });
+    assert.equal(r.action, 'restart', `${now}: ${r.reason}`);
+    assert.match(r.reason, /never started/);
+    assert.match(r.reason, /Setup script failed/);
+    assert.match(r.reason, /init_script/);
+  }
+});
+
+test('BRO-7377: the CLI check prints restart for the real failed-init JSON', () => {
+  const r = spawnSync('node', [path.join(HERE, 'child-idle-watch.js'), 'check', '--from-json',
+    path.join(HERE, 'fixtures', 'bro-7377-init-failed', 'get-session.json'), '--now', '2026-11-11T14:10:00Z'], { encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(JSON.parse(r.stdout).action, 'restart');
+});
+
+test('BRO-7377: an init error does not hide a finished child, a report-back, or a recoverable error', () => {
+  assert.equal(decide({ session: withInit({ status_bucket: 'SESSION_STATUS_BUCKET_COMPLETED' }), now: '2026-11-11T14:10:00Z' }).action, 'done');
+  assert.equal(decide({ session: INIT_FAILED, now: '2026-11-11T14:10:00Z', reportedAt: '2026-11-11T13:50:00Z' }).action, 'done');
+  const recoverable = JSON.parse(JSON.stringify(INIT_FAILED));
+  recoverable.ccr.external_metadata.last_init_error.recoverable = 'true';
+  assert.equal(decide({ session: recoverable, now: '2026-11-11T13:52:38Z' }).action, 'rearm');
+});
+
+test('BRO-7377: a healthy working child with no init error still rearms', () => {
+  const ok = JSON.parse(JSON.stringify(INIT_FAILED));
+  delete ok.ccr.external_metadata.last_init_error;
+  assert.equal(decide({ session: ok, now: '2026-11-11T13:52:38Z' }).action, 'rearm');
+});
+
+test('BRO-7377: the runbook tells a parent to look 3 minutes after create_session, not only at 25', () => {
+  const rb = fs.readFileSync(path.join(REPO, 'docs', 'cloud-worker-session-runbook.md'), 'utf8');
+  assert.match(rb, /--minutes 3\b/);
+  assert.match(rb, /last_init_error|never started/);
+});
+
+test('BRO-7377: an init error from long before the last activity is stale, not a dead child', () => {
+  const later = JSON.parse(JSON.stringify(INIT_FAILED));
+  later.ccr.updated_at = '2026-11-11T15:30:00Z';
+  assert.equal(decide({ session: later, now: '2026-11-11T15:31:00Z' }).action, 'rearm');
+  const atEdge = JSON.parse(JSON.stringify(INIT_FAILED));
+  atEdge.ccr.updated_at = '2026-11-11T13:46:00Z'; // under 3 min after the error: still the dead child
+  assert.equal(decide({ session: atEdge, now: '2026-11-11T13:52:00Z' }).action, 'restart');
+});
+
+test('BRO-7377: the restart reason says to archive the dead session and to read its setup output', () => {
+  const r = decide({ session: INIT_FAILED, now: '2026-11-11T13:52:38Z' }).reason;
+  assert.match(r, /archive_session/);
+  assert.match(r, /env_manager_log/);
+});
+
+test('BRO-7377: the sweep ignores a stale init error: its entry names a session that claimed the card, so it started', () => {
+  const { stalledSessionAction } = require('./stalled-session-sweep.js');
+  const entry = { action: 'check', card: 'BRO-1', sessionId: INIT_FAILED.ccr.id, nudges: 0, lastNudgeAt: null };
+  const r = stalledSessionAction({ entry, session: INIT_FAILED, nowMs: Date.parse('2026-11-11T13:52:38Z') });
+  assert.equal(r.action, 'skip', r.reason); // working, as before this change
+  assert.equal(decide({ session: INIT_FAILED, now: '2026-11-11T13:52:38Z', checkInit: false }).action, 'rearm');
+});
+
+test('BRO-7377: an unparseable updated_at never restarts; "True " counts as recoverable; a brief run then idle is not restart 20h on', () => {
+  const bad = JSON.parse(JSON.stringify(INIT_FAILED)); bad.ccr.updated_at = 'garbage';
+  assert.notEqual(decide({ session: bad, now: '2026-11-11T13:52:38Z' }).action, 'restart');
+  const sp = JSON.parse(JSON.stringify(INIT_FAILED)); sp.ccr.external_metadata.last_init_error.recoverable = 'True ';
+  assert.equal(decide({ session: sp, now: '2026-11-11T13:52:38Z' }).action, 'rearm');
+  const ran = JSON.parse(JSON.stringify(INIT_FAILED)); ran.ccr.updated_at = '2026-11-11T13:50:00Z'; ran.ccr.status_bucket = 'SESSION_STATUS_BUCKET_IDLE';
+  assert.notEqual(decide({ session: ran, now: '2026-11-12T10:00:00Z' }).action, 'restart');
+});
+
+test('BRO-7377: recoverable as a boolean true is recoverable; a missing `at` falls back to created_at', () => {
+  const rec = JSON.parse(JSON.stringify(INIT_FAILED));
+  rec.ccr.external_metadata.last_init_error.recoverable = true;
+  assert.equal(decide({ session: rec, now: '2026-11-11T13:52:38Z' }).action, 'rearm');
+  const noAt = JSON.parse(JSON.stringify(INIT_FAILED));
+  delete noAt.ccr.external_metadata.last_init_error.at;
+  assert.equal(decide({ session: noAt, now: '2026-11-11T13:52:38Z' }).action, 'restart');
+  noAt.ccr.updated_at = '2026-11-11T15:30:00Z'; // an hour+ after created_at: it ran
+  assert.equal(decide({ session: noAt, now: '2026-11-11T15:31:00Z' }).action, 'rearm');
+});
+
+test('BRO-7377: the verdict carries neverStarted so the sweep does not parse the reason text', () => {
+  assert.equal(decide({ session: INIT_FAILED, now: '2026-11-11T13:52:38Z' }).neverStarted, true);
+  assert.equal(decide({ session: JSON.parse(JSON.stringify({ ccr: { ...INIT_FAILED.ccr, external_metadata: {} } })), now: '2026-11-11T13:52:38Z' }).neverStarted, undefined);
+});

@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: purely structural — reads the real
+// purely structural — reads the real
 // .github/workflows/audit-provisional-venues.yml CI config (not data/*.json
 // derived data) to regression-guard a workflow-timeout fix.
 /**

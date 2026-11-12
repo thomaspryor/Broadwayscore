@@ -1,5 +1,5 @@
 // LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural sibling-pair checks; dates are read from shows.json itself, so no factual claim is pinned
+// structural sibling-pair checks; dates are read from shows.json itself, so no factual claim is pinned
 /**
  * BRO-2121: corpus-wide sibling-misfile archive cleanup.
  *

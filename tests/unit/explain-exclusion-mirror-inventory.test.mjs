@@ -39,6 +39,8 @@ const INVENTORY = {
   isNamedNonReviewUrlRecord: 'live',
   // BRO-7210: rebuild-all-reviews.js calls it for the submit-review-form refusal.
   isRefusedSubmissionUrlRecord: 'live',
+  // BRO-7327: canonical isSyndicatedDuplicate gate (self-pointing syndicatedPrimaryFile ignored); rebuild calls it too.
+  isSyndicatedDuplicateActive: 'live',
   isNonReviewDemotedByFreshCV: 'live',
   isPrematureReviewForUnopenedShow: 'live',
   // BRO-5795: rebuild and explainExclusion both call this stale-flag check.

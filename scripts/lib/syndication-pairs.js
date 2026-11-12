@@ -236,12 +236,14 @@ function isPrimaryFileFor(fileName, primaries, criticName) {
  * Otherwise (crossOutletDuplicate, isNonReview, invalid tier, ...) BOTH copies
  * would be dropped and the critic's review vanishes from reviews.json.
  */
-function isLiveSyndicationPrimary(d) {
+function isLiveSyndicationPrimary(d, filePath) {
   if (!d) return false;
+  // BRO-7327: with a path, a self-pointing isSyndicatedDuplicate flag does not count (canonical predicate).
+  const syndActive = filePath ? isSyndicatedDuplicateActive(d, filePath) : d.isSyndicatedDuplicate;
   // BRO-5245: a wrongShow file a person cleared in the rebuild gate ships, so it can be a primary.
   const { wrongShowExplicitlyCleared } = require('./review-guards');
   const wrongShowActive = d.wrongShow && !wrongShowExplicitlyCleared(d);
-  return !(d.wrongProduction || wrongShowActive || d.crossOutletDuplicate || d.isSyndicatedDuplicate
+  return !(d.wrongProduction || wrongShowActive || d.crossOutletDuplicate || syndActive
     || d.isNonReview || d.nonReviewFlag || d.nonReviewContent || d.duplicateOf
     || d.contentTier === 'invalid');
 }
@@ -269,9 +271,43 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
       if (p.criticName && criticFileSlug(p.criticName) !== criticFileSlug(criticName)) return false;
       // BRO-7327: a stub primary does not shield the complete secondary it only teases.
       if (hasFullerSecondary(showDir, f, p)) return false;
-      return isLiveSyndicationPrimary(p) && (!extraCheck || !!extraCheck(p, pPath));
+      return isLiveSyndicationPrimary(p, pPath) && (!extraCheck || !!extraCheck(p, pPath));
     } catch { return false; }
   });
+}
+
+/**
+ * BRO-7327 cousin (BRO-4891 class): true when the record's syndicatedPrimaryFile names the
+ * record itself. A file cannot be a syndicated copy of itself; the stale pointer is left
+ * behind when the real primary was renamed or merged onto this filename, and honouring it
+ * drops the outlet's only copy of the review (4 complete reviews recovered by this rule, e.g. Isherwood on
+ * a-little-night-music-2009, Rooney on catch-me-if-you-can-2011). Pointer forms seen in data:
+ * "<file>.json" (same show) and "<showId>/<file>.json". A pointer into ANOTHER show's folder
+ * is not a self-pointer (handled by heal-dangling-syndication.js).
+ * @param {object} data
+ * @param {string} filePath the record's own path (…/<showId>/<file>.json)
+ */
+function isSelfSyndicationPointer(data, filePath) {
+  const ptr = data && data.syndicatedPrimaryFile;
+  if (typeof ptr !== 'string' || !ptr || typeof filePath !== 'string' || !filePath) return false;
+  const path = require('path');
+  const own = path.basename(filePath);
+  const ownShow = path.basename(path.dirname(filePath));
+  const parts = ptr.split('/').filter(Boolean);
+  if (parts.length === 1) return parts[0] === own;
+  if (parts.length === 2) return parts[1] === own && parts[0] === ownShow;
+  return false;
+}
+
+/**
+ * Canonical "is the isSyndicatedDuplicate flag excluding this file" predicate. Every
+ * exclusion site (explainExclusion, the rebuild, scoring-delta, parity/composite mirrors)
+ * calls this instead of reading the raw flag, so a self-pointing flag is ignored everywhere
+ * at once. Without filePath the raw flag is honoured (conservative, previous behaviour).
+ */
+function isSyndicatedDuplicateActive(data, filePath) {
+  if (!data || data.isSyndicatedDuplicate !== true) return false;
+  return !isSelfSyndicationPointer(data, filePath);
 }
 
 const _fullerInFlight = new Set();
@@ -325,7 +361,7 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
   try {
     const sec = JSON.parse(fs.readFileSync(secPath, 'utf8'));
     if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return false;
-    if (!(sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec))) return false;
+    if (!(sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec, secPath))) return false;
     const guards = require('./review-guards');
     if (!guards.hasValidScore(sec)) return false; // a publishable score, not just any number
     return guards.explainExclusion(sec, _showFor(sec.showId), secPath, { ignoreKnownSyndication: true }) === null;
@@ -334,6 +370,7 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
 
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary,
+  isSelfSyndicationPointer, isSyndicatedDuplicateActive,
   KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };

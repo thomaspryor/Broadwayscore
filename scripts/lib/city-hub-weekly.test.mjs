@@ -78,3 +78,21 @@ test('seenKeys: uncarded fresh findings stay unseen; carded ones are recorded', 
   assert.deepEqual(W.seenKeys(findings, fresh, true), ['a', 'c']);
   assert.deepEqual(W.newFindings(findings, W.seenKeys(findings, fresh, true), {}).map((f) => f.key), ['b']);
 });
+
+// BRO-7291 follow-up: a standing unprovenanced hand row filed a fresh class-5 card every Tuesday (the title carries the
+// ISO week, so the title dedupe never matched). Replay two weeks: the row is carded once, a new row is carded again.
+test('class 5: a standing unprovenanced row is carded once, not every week', () => {
+  const row = 'come-from-away-regional-2026|north-berkshire-on-stage|unknown';
+  const wk1 = W.freshProvenanceRows([row], [], false);
+  const c1 = W.cardFor('boston-ma', '2026-W46', [], { provenance: { unprovenanced: wk1.length, rows: wk1 } });
+  assert.match(c1.body, /### Class 5: unprovenanced hand-entered row \(1\)\n- `come-from-away-regional-2026\|north-berkshire-on-stage\|unknown`/);
+  const seen1 = W.seenProvenanceRows([row], wk1, false);
+  const wk2 = W.freshProvenanceRows([row], seen1, false);
+  assert.equal(W.cardFor('boston-ma', '2026-W47', [], { provenance: { unprovenanced: wk2.length } }), null);
+  const added = 'come-from-away-regional-2026|boston-globe|jane-doe';
+  assert.deepEqual(W.freshProvenanceRows([row, added], seen1, false), [added]);
+  // --open (a card's VERIFY) still counts every standing row
+  assert.deepEqual(W.freshProvenanceRows([row], seen1, true), [row]);
+  // card not filed: the row stays unseen so next week retries
+  assert.deepEqual(W.seenProvenanceRows([row], wk1, true), []);
+});

@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-11T12:54:25.305Z",
+    "lastUpdated": "2026-11-11T16:57:47.600Z",
     "version": "2.1.0",
-    "lastChange": "BRO-7291: register angeles-stage, laist, baltimore-banner (coverage-gap hosts whose links resolved; the other 14 model-named hosts had only dead or unverifiable links)"
+    "lastChange": "BRO-6122: standingCoverage[broadway] promote chicagotribune (audit-standing-coverage --market=broadway lists chicagotribune under promote (unflagged, 85% overall, every trailing sea)"
   },
   "outlets": {
     "westendtheatre": {
@@ -438,7 +438,11 @@
       "domainAliases": [
         "wgnradio.com"
       ],
-      "metro": "chicago-il"
+      "metro": "chicago-il",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "latimes": {
       "displayName": "Los Angeles Times",
@@ -1482,6 +1486,9 @@
         "rolling-stone"
       ],
       "domain": "rollingstone.com",
+      "domainAliases": [
+        "rollingstone.co.uk"
+      ],
       "accessModel": "metered"
     },
     "andygram": {
@@ -8718,9 +8725,9 @@
       ],
       "accessModel": "free",
       "displayName": "Everything Theatre",
-      "domain": "everythingtheatre.co.uk",
+      "domain": "everything-theatre.co.uk",
       "domainAliases": [
-        "everything-theatre.co.uk",
+        "everythingtheatre.co.uk",
         "everythingmusicals.com"
       ],
       "starScale": 5
@@ -15531,6 +15538,22 @@
       ],
       "domain": "metro.us",
       "accessModel": "free"
+    },
+    "aislinmagazine": {
+      "displayName": "Aislin Magazine",
+      "tier": 3,
+      "aliases": [
+        "aislinmagazine"
+      ],
+      "domain": "aislinmagazine.com"
+    },
+    "samicone": {
+      "displayName": "Sami Cone",
+      "tier": 3,
+      "aliases": [
+        "samicone"
+      ],
+      "domain": "samicone.com"
     }
   },
   "_aliasIndex": {

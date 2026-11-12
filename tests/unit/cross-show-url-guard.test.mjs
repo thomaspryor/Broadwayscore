@@ -9,7 +9,7 @@
  * 2024-02-24). The credit "Clifford Odets’" means it is the same play, and a
  * production that closed two years earlier can't own a 2026 review.
  */
-// TESTS-VS-DERIVED-DATA-EXEMPT: the guard reads the live show index (shows.json titles, the hand-kept source of truth); the urls are fixed strings, not facts read back from reviews.json
+// the guard reads the live show index (shows.json titles, the hand-kept source of truth); the urls are fixed strings, not facts read back from reviews.json
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';

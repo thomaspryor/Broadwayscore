@@ -1,17 +1,8 @@
 name: Update Reddit Sentiment
 
 on:
-  # Run twice monthly: fresh data every ~2 weeks, with retry safety
-  schedule:
-    - cron: '0 10 1 * *'   # 1st of each month at 10am UTC
-    - cron: '0 10 4 * *'   # 4th — retry if 1st failed (skips if fresh)
-    - cron: '0 10 15 * *'  # 15th — mid-month refresh
-    - cron: '0 10 18 * *'  # 18th — retry if 15th failed (skips if fresh)
-    - cron: '0 12 8 * *'   # 8th — bounded refresh-stale drain of score-eligible
-                           #       CLOSED shows (open shows are covered by the 1st/15th
-                           #       ticks; closed shows otherwise never re-scrape and keep
-                           #       pre-fix contaminated Reddit forever). Offset day+time to
-                           #       avoid racing the open-show ticks on audience-buzz.json.
+  # BRO-7337: Reddit retired (config/retired-sources.json); the monthly/twice-monthly
+  # schedule was removed. Restore it from git history to turn Reddit back on.
   # Allow manual trigger
   workflow_dispatch:
     inputs:
@@ -54,8 +45,36 @@ permissions:
   actions: write
 
 jobs:
-  scrape-reddit:
+  # BRO-7337: dispatchers (opening-night, show-status, deploy) still call this
+  # workflow. While Reddit is retired the real job is skipped, so nothing burns scraper credits.
+  gate:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      retired: ${{ steps.sw.outputs.retired }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            config
+            scripts/lib/reddit-status.js
+      - id: sw
+        env:
+          REDDIT_FORCE_ENABLED: ${{ vars.REDDIT_FORCE_ENABLED }}
+        run: |
+          # Same function the scripts use, so the gate and the library cannot disagree.
+          if [ "$(node scripts/lib/reddit-status.js)" = "true" ]; then
+            echo "retired=true" >> "$GITHUB_OUTPUT"; echo "Reddit is retired; skipping."
+          else
+            echo "retired=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  scrape-reddit:
+    needs: gate
+    if: ${{ needs.gate.outputs.retired != 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      REDDIT_FORCE_ENABLED: ${{ vars.REDDIT_FORCE_ENABLED }}  # set the repo variable to 1 for a one-off run
     timeout-minutes: 240  # 4 hour timeout - 29 shows × ~8 min each
     steps:
       - name: Checkout repository
