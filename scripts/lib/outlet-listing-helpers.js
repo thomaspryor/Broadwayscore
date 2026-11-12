@@ -411,6 +411,10 @@ function dropTitlesInsideLongerMatch(shows, combined) {
 // Barber". The separator must be followed by more title, so "Oh, Mary!" keeps
 // its full form only.
 const SUBTITLE_SEP_RE = /\s+[-‐‑‒–—]\s+|[:!?;]\s+/;
+// Up to three capitalised words ending in a possessive ("Clifford Odets’", "Neil Simon's"), then the title proper.
+// The owner must be a person on the show's own creativeTeam (a Playwright, Composer...): "Joe Turner's Come and Gone"
+// (a character) and "Long Day's Journey Into Night" (not a name) get no extra form.
+const AUTHOR_POSSESSIVE_RE = /^((?:[A-Z][\p{L}.-]*\s+){0,2}[A-Z][\p{L}.-]*)(?:['’]s|['’])\s+(.+)$/u;
 // Per show object and title: every feed item is checked against every active show.
 const titleFormsCache = new WeakMap();
 function titleForms(show) {
@@ -430,6 +434,15 @@ function computeTitleForms(show) {
   if (parts.length > 1) {
     const main = hyphenSpaced(parts[0].replace(/[_/]+/g, ' '));
     if (main && main !== full && main.replace(/\s+/g, '').length >= 3 && !COMMON_WORD_SHOW_TITLES.has(main)) forms.push(main);
+  }
+  // BRO-7402: "Clifford Odets’ Waiting for Lefty" is titled "Waiting For Lefty" by Front Row Center, so an
+  // author-possessive prefix is not part of the name outlets print. Two or more words remain, or no extra form.
+  const possessive = String((show && show.title) || '').match(AUTHOR_POSSESSIVE_RE);
+  const owner = possessive ? hyphenSpaced(possessive[1]) : '';
+  const onTeam = owner && ((show && show.creativeTeam) || []).some((p) => hyphenSpaced(p && p.name) === owner);
+  if (onTeam) {
+    const rest = hyphenSpaced(possessive[2].replace(/[_/]+/g, ' '));
+    if (rest && rest.split(/\s+/).length >= 2 && !forms.includes(rest) && !COMMON_WORD_SHOW_TITLES.has(rest)) forms.push(rest);
   }
   return forms;
 }
