@@ -17,6 +17,8 @@ const { execFileSync } = require('child_process');
 const ORCH = 'opening-night-orchestrator.yml';
 const POLLER = 'opening-night-poller.yml';
 const SCORING = 'llm-ensemble-score.yml';
+// Must match the run-name suffix in .github/workflows/llm-ensemble-score.yml (BRO-7419).
+const RESCORE_CHAIN_RE = /\(rescore chain, (\d+) left, limit (\d+|none), max-cost (\d+(?:\.\d+)?|none)\)\s*$/;
 
 // BRO-5890: Express for one show cancelled a Benjamin Button scoring run and
 // would cancel every targeted poller for every other show tonight. Runs scoped
@@ -25,8 +27,8 @@ const SCORING = 'llm-ensemble-score.yml';
 // BRO-4273 accepts between targeted and auto pollers (push-with-retry,
 // merge-reviews-json, sync-review-texts-drift), so they are left alone.
 // Orchestrators, auto pollers and unscoped scoring runs cover every show
-// (including this one) and are still cancelled; orchestrators/pollers are
-// re-dispatched when Express finishes.
+// (including this one) and are still cancelled; orchestrators/pollers, and
+// needs_rescore chain batches (BRO-7419), are re-dispatched when Express finishes.
 // Title formats: poller 'Opening Night Poller — <show|auto>', scoring
 // 'LLM Ensemble Score Reviews[ — <show>]' (run-name in each workflow).
 function scopedShowId(displayTitle) {
@@ -64,6 +66,18 @@ function planRedispatch(workflow, displayTitle) {
     const showId = m && m[1] !== 'auto' ? m[1] : '';
     return { workflow, fields: showId ? { show_id: showId } : {} };
   }
+  if (workflow === SCORING) {
+    // BRO-7419: a chained needs_rescore batch has no later trigger, so a cancel
+    // ended an owner-approved backlog chain silently. llm-ensemble-score.yml's
+    // run-name carries the chain inputs for plain needs_rescore chains only;
+    // every other scoring run is left to its next trigger (null).
+    const m = title.match(RESCORE_CHAIN_RE);
+    if (!m) return null;
+    const fields = { needs_rescore: 'true', chain: 'true', remaining_batches: m[1], run_calibration: 'false', run_validation: 'false' };
+    if (m[2] !== 'none') fields.limit = m[2];
+    if (m[3] !== 'none') fields.max_cost = m[3];
+    return { workflow, fields };
+  }
   return null;
 }
 
@@ -90,8 +104,9 @@ function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
         try {
           gh(['run', 'cancel', String(run.databaseId)]);
           console.log(`  Cancelled ${workflow} run ${run.databaseId} (${run.displayTitle})`);
-          // Scoring runs were never re-dispatched (their next trigger rescores).
-          const plan = workflow === SCORING ? null : planRedispatch(workflow, run.displayTitle);
+          // Scoring runs come back only when they are a needs_rescore chain batch
+          // (BRO-7419); other scoring runs are picked up by their next trigger.
+          const plan = planRedispatch(workflow, run.displayTitle);
           if (plan) recorded.push({ ...plan, runId: run.databaseId, title: run.displayTitle });
         } catch (e) { console.log(`  ⚠ Could not cancel ${run.databaseId}`); }
       }
@@ -119,7 +134,7 @@ function redispatch(file) {
   return done;
 }
 
-module.exports = { planRedispatch, shouldCancel, scopedShowId, ORCH, POLLER, SCORING, cancelAndRecord, redispatch };
+module.exports = { planRedispatch, shouldCancel, scopedShowId, ORCH, POLLER, SCORING, RESCORE_CHAIN_RE, cancelAndRecord, redispatch };
 
 if (require.main === module) {
   const [cmd, file, ...rest] = process.argv.slice(2);

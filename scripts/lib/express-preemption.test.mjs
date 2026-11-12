@@ -48,9 +48,37 @@ test('a slug that is a prefix of another is not treated as the same show', () =>
 });
 test('scoring workflow run-name carries the show id', () => {
   const y = fs.readFileSync(new URL('../../.github/workflows/llm-ensemble-score.yml', import.meta.url), 'utf8');
-  assert.match(y, /^run-name: LLM Ensemble Score Reviews\$\{\{ inputs\.show_id && format\(' — \{0\}', inputs\.show_id\) \|\| '' \}\}$/m);
+  assert.match(y, /^run-name: LLM Ensemble Score Reviews\$\{\{ inputs\.show_id && format\(' — \{0\}', inputs\.show_id\) \|\| '' \}\}/m);
 });
 test('express passes its show id to both cancel calls', () => {
   const y = fs.readFileSync(new URL('../../.github/workflows/opening-night-express.yml', import.meta.url), 'utf8');
   assert.equal((y.match(/express-preemption\.js cancel "\$RUNNER_TEMP\/express-preempted\.json" --show="\$EXPRESS_SHOW_ID"/g) || []).length, 2);
+});
+
+// BRO-7419: a cancelled needs_rescore chain batch must come back with its inputs.
+const { RESCORE_CHAIN_RE } = require('./express-preemption.js');
+test('rescore chain title -> needs_rescore chain redispatch with the same inputs', () => {
+  assert.deepEqual(planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 8 left, limit 400, max-cost 15)').fields,
+    { needs_rescore: 'true', chain: 'true', remaining_batches: '8', limit: '400', max_cost: '15', run_calibration: 'false', run_validation: 'false' });
+  assert.deepEqual(planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 0 left, limit none, max-cost none)').fields,
+    { needs_rescore: 'true', chain: 'true', remaining_batches: '0', run_calibration: 'false', run_validation: 'false' });
+});
+test('plain or show-scoped scoring titles are not re-dispatched', () => {
+  assert.equal(planRedispatch(SCORING, 'LLM Ensemble Score Reviews'), null);
+  assert.equal(planRedispatch(SCORING, 'LLM Ensemble Score Reviews — billy-crystal-860-2026'), null);
+});
+test('a rescore chain run still counts as unscoped, so Express cancels it', () => {
+  assert.equal(shouldCancel(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 8 left, limit 400, max-cost 15)', 'billy-crystal-860-2026'), true);
+});
+test('contract: llm-ensemble-score.yml run-name suffix renders a title the parser reads', () => {
+  const y = fs.readFileSync(new URL('../../.github/workflows/llm-ensemble-score.yml', import.meta.url), 'utf8');
+  const runName = y.split('\n').find(l => l.startsWith('run-name:'));
+  const m = runName.match(/format\('( \(rescore chain, \{0\} left, limit \{1\}, max-cost \{2\}\))'/);
+  assert.ok(m, 'run-name must carry the rescore chain suffix');
+  const rendered = 'LLM Ensemble Score Reviews' + m[1].replace('{0}', '3').replace('{1}', '400').replace('{2}', '15');
+  assert.match(rendered, RESCORE_CHAIN_RE);
+  // Only plain chains get the suffix: inputs the parser cannot restore must exclude it.
+  for (const k of ['!inputs.rescore_reason', '!inputs.shard', "inputs.outdated != 'true'", "inputs.stale_scores != 'true'", "inputs.upgrade_ensemble != 'true'", "inputs.retry_emergency != 'true'", '!inputs.show_id']) {
+    assert.ok(runName.includes(k), `run-name suffix guard missing ${k}`);
+  }
 });
