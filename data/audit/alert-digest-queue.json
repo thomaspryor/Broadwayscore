@@ -534,5 +534,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-12T10:56:36.464Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:act-of-god-off-west-end-2026",
+    "title": "Auto-remediation gave up on act-of-god-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"act-of-god-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T11:26:12.629Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:nutty-nattys-magic-puppet-show-off-broadway-2026",
+    "title": "Auto-remediation gave up on nutty-nattys-magic-puppet-show-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"nutty-nattys-magic-puppet-show-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T11:26:12.671Z"
   }
 ]
