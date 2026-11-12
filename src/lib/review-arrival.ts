@@ -208,6 +208,13 @@ export interface ReviewArrival {
   regularToCome: OutletRef[];
 }
 
+/** What the client hero needs: the text inputs and the end time, nothing else (no quartiles, no outlet split). */
+export type ArrivalView = Pick<ReviewArrival, 'phase' | 'reviewCount' | 'expected' | 'expectedHigh'> & { endsAt: number };
+
+export function toArrivalView(a: ReviewArrival, now: Date): ArrivalView {
+  return { phase: a.phase, reviewCount: a.reviewCount, expected: a.expected, expectedHigh: a.expectedHigh, endsAt: now.getTime() + a.hoursLeft * HOUR_MS };
+}
+
 /** One call for the page: decide the phase and assemble the props the hero renders. */
 export function buildReviewArrival(
   i: ArrivalInput & {

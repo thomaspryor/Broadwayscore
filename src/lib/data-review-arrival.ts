@@ -5,7 +5,7 @@ import outletRegistry from '../../data/outlet-registry.json';
 import { getAllShows } from '@/lib/data-core';
 import { standingOutletIds } from '../../scripts/lib/standing-outlets';
 import {
-  buildReviewArrival, expectedForShow, type HistoryShow, type OutletRef, type ReviewArrival,
+  buildReviewArrival, expectedForShow, type HistoryShow, type OutletRef, type ArrivalView, toArrivalView,
 } from '@/lib/review-arrival';
 
 type Row = { showId: string; outletId?: string; publishDate?: string | null; wrongProduction?: boolean; wrongShow?: boolean; isRoundupArticle?: boolean };
@@ -21,7 +21,7 @@ function load() {
     if (a) a.push(r); else byShow.set(r.showId, [r]);
   }
   const history: HistoryShow[] = getAllShows()
-    .filter((s) => s.category === 'broadway' && s.openingDate)
+    .filter((s) => s.category === 'broadway' && s.openingDate && s.type !== 'special')
     .map((s) => ({ id: s.id, category: s.category, openingDate: s.openingDate, reviewDates: (byShow.get(s.id) || []).map((r) => r.publishDate) }));
   const outlets = outletRegistry.outlets as Record<string, { displayName?: string }>;
   const regular = (standingOutletIds(outlets, 'broadway') as string[]).map((id) => ({ id, name: outlets[id]?.displayName || id }));
@@ -34,17 +34,18 @@ function load() {
  * server clock.
  */
 export function getReviewArrival(
-  show: { id: string; category?: string | null; openingDate?: string | null },
+  show: { id: string; category?: string | null; type?: string | null; openingDate?: string | null },
   reviewCount: number,
   scoreShowing: boolean,
-): ReviewArrival | null {
-  if (show.category !== 'broadway' || !show.openingDate) return null;
+): ArrivalView | null {
+  if (show.category !== 'broadway' || show.type === 'special' || !show.openingDate) return null;
   const { byShow, history, regular } = load();
   const now = new Date();
   const rows = byShow.get(show.id) || [];
-  return buildReviewArrival({
+  const full = buildReviewArrival({
     now, openingDate: show.openingDate, category: show.category, reviewCount, scoreShowing,
     expected: expectedForShow(show, history),
     regular, haveOutletIds: rows.map((r) => String(r.outletId || '')),
   });
+  return full ? toArrivalView(full, now) : null;
 }

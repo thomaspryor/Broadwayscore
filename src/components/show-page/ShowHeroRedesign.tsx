@@ -28,8 +28,8 @@
  * resumed when the user lands back on this page authenticated.
  */
 
-import ReviewArrivalLine from './ReviewArrivalStatus';
-import type { ReviewArrival } from '@/lib/review-arrival';
+import ReviewArrivalLine, { useArrivalActive } from './ReviewArrivalStatus';
+import type { ArrivalView } from '@/lib/review-arrival';
 import { CallTheScoreHeroLink } from './CallTheScore';
 import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -139,7 +139,7 @@ interface ShowHeroRedesignProps {
    *  and shared with the legacy hero so both show it for the same shows. */
   reviewAgeNote?: string | null;
   /** Opening-night "reviews still arriving" status (BRO-7376), computed server-side; null/absent = hidden */
-  reviewArrival?: ReviewArrival | null;
+  reviewArrival?: ArrivalView | null;
   /** Wording computed with metadata on the server, preserved for cached pages. */
   liveInHdText?: string | null;
   /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
@@ -267,8 +267,9 @@ function Inner({
   const score = show.criticScore?.score ?? null;
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   // Opening-night status (BRO-7376): one short line with the score, in place of the review count.
-  const arrivalLine = reviewArrival ? <ReviewArrivalLine arrival={reviewArrival} /> : null;
-  const arrivalLineCentered = reviewArrival ? <ReviewArrivalLine arrival={reviewArrival} className="items-center" /> : null;
+  const arrivalActive = useArrivalActive(reviewArrival);
+  const arrivalLine = reviewArrival && arrivalActive ? <ReviewArrivalLine arrival={reviewArrival} /> : null;
+  const arrivalLineCentered = reviewArrival && arrivalActive ? <ReviewArrivalLine arrival={reviewArrival} className="items-center" /> : null;
   const tier1And2Count = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const criticReviewsForBar = show.criticScore?.reviews ?? [];
   const tier = score !== null ? getScoreTier(score, show.category) : null;
@@ -1062,7 +1063,7 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected =
   // A long-closed one-off event with no reviews will not get a CriticScore;
   // say so instead of counting down to one (owner decision 2026-10-14).
   const title = noReviewsExpected ? 'No critic reviews expected' : isLiveTour(show) ? 'Reviews coming in' : 'Awaiting reviews';
-  const progress = arrivalLine ?? (noReviewsExpected ? 'We found no critic reviews for this event.' : (
+  const progress = (!noReviewsExpected && arrivalLine) || (noReviewsExpected ? 'We found no critic reviews for this event.' : (
     <>
       {show.status === 'announced' ? 'Reviews arrive after opening night' : show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? (isTour ? 'Tour starts soon' : 'Show opens soon') : isTour ? 'Critics in each city review the tour as it plays' : 'Not enough reviews yet'}
       {reviewCount > 0 ? ` · ${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'} collected` : null}

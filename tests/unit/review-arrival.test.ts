@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  morningCount, expectedFromCounts, expectedForShow, reviewArrivalPhase, splitRegularOutlets, buildReviewArrival,
+  morningCount, expectedFromCounts, expectedForShow, reviewArrivalPhase, splitRegularOutlets, buildReviewArrival, toArrivalView,
   arrivalWindowEndMs, pressNightEmbargoMs, arrivalText, MORNING_SHARE, type ExpectedCount, type HistoryShow,
 } from '../../src/lib/review-arrival';
 
@@ -97,4 +97,12 @@ test('arrivalText: owner wording with a range, no bar, no em dash', () => {
   assert.equal(arrivalText({ phase: 'below-minimum', reviewCount: 1, ...r }), '1 review so far, expect 15 to 25');
   assert.equal(arrivalText({ phase: 'early', reviewCount: 8, expected: 20, expectedHigh: 20 }), '8 reviews so far, expect about 20');
   assert.ok(!arrivalText({ phase: 'early', reviewCount: 8, ...r }).includes('\u2014'));
+});
+
+test('toArrivalView sends only the rendered fields plus the end time', () => {
+  const now = at('2026-11-16T06:00:00Z');
+  const a = buildReviewArrival({ ...base, now, reviewCount: 8, scoreShowing: true })!;
+  const v = toArrivalView(a, now);
+  assert.deepEqual(Object.keys(v).sort(), ['endsAt', 'expected', 'expectedHigh', 'phase', 'reviewCount']);
+  assert.equal(v.endsAt, arrivalWindowEndMs(base.openingDate));
 });
