@@ -41,6 +41,19 @@ test('an off-Broadway show posts only with 4+ tier-1 critics or 500+ audience (B
   assert.equal(events(ob('acclaimed-2026', { isRevival: true }), [1, 3, 0], 0).length, 0, 'acclaimed revival no longer posts');
 });
 
+test('the off-Broadway bar is driven by the config thresholds', () => {
+  const ob = show({ category: 'off-broadway' });
+  const slim = { 'x-2026': pub(3, 0, 0, 400) };
+  assert.equal(socialNotable(ob, slim), false);
+  const keep = { ...C.NOTABLE_ONLY };
+  try {
+    C.NOTABLE_ONLY.offBroadwayMinT1 = 3;
+    assert.equal(socialNotable(ob, slim), true, 'lowering min tier-1 lets it in');
+    C.NOTABLE_ONLY.offBroadwayMinT1 = keep.offBroadwayMinT1; C.NOTABLE_ONLY.offBroadwayMinAudience = 400;
+    assert.equal(socialNotable(ob, slim), true, 'lowering min audience lets it in');
+  } finally { Object.assign(C.NOTABLE_ONLY, keep); }
+});
+
 test('homepageInclude and homepageExclude still decide off-Broadway posting', () => {
   const ob = over => show({ id: 'ob-2026', category: 'off-broadway', ...over });
   assert.equal(socialNotable(ob({ homepageInclude: true }), { 'ob-2026': pub(0, 1, 2) }), true, 'include forces in');
