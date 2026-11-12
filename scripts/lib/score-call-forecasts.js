@@ -33,6 +33,11 @@ function countReviewsByShow(json) {
   return counts;
 }
 
+/** Shows whose reviews_live flag must be explicitly cleared: only rows the sync computed as having no live reviews. */
+function clearTargets(rows) {
+  return rows.filter((r) => r && r.p_reviews_live === false).map((r) => r.p_show_id);
+}
+
 /** Today's date (YYYY-MM-DD) in New York. Openings are NY calendar dates; UTC would flip the day at 7-8pm ET. */
 function nyToday(now = new Date()) {
   // formatToParts, not format(): the assembled order must not depend on the runtime's locale data.
@@ -43,4 +48,4 @@ function nyToday(now = new Date()) {
   return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
-module.exports = { buildSyncRows, countReviewsByShow, nyToday };
+module.exports = { buildSyncRows, countReviewsByShow, nyToday, clearTargets };
