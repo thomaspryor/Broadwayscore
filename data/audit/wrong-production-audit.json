@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T04:33:32.143Z",
+  "timestamp": "2026-11-12T04:47:04.042Z",
   "stats": {
-    "totalReviews": 81613,
+    "totalReviews": 81614,
     "alreadyFlagged": 22276,
     "dateGuardCatches": 218,
-    "directorMismatch": 3650,
+    "directorMismatch": 3651,
     "tvFilmSignals": 2302,
     "londonSignals": 3702,
     "offBroadwaySignals": 751,
     "yearMismatch": 372,
-    "noPublishDate": 8446
+    "noPublishDate": 8445
   },
   "findings": [
     {
@@ -3019,7 +3019,7 @@
     {
       "showId": "a-view-from-the-bridge-west-end-2024",
       "file": "independent--tim-bano.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2024-06-05",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-view-from-the-bridge-review-dominic-west-b2556983.html",
       "findings": [
@@ -3122,7 +3122,7 @@
     {
       "showId": "a-view-from-the-bridge-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 55,
+      "score": 56,
       "publishDate": "2024-06-05",
       "url": "https://www.whatsonstage.com/news/a-view-from-the-bridge-with-dominic-west-in-the-west-end-review_1604327/",
       "findings": [
@@ -6825,6 +6825,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2022 (3x) more than 2025 (2x). 2022 matches production: as-you-like-it-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "as-you-like-it-regional-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2026-10-19",
+      "url": "https://theatreandtonic.co.uk/blog/as-you-like-it-starring-jonathan-groff-at-the-rsc-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel evans\" from all-male-as-you-like-it-regional-2026"
         }
       ]
     },
@@ -21871,7 +21884,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 93,
+      "score": 98,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-fawlty-towers-the-play-apollo-theatre",
       "findings": [
@@ -21885,7 +21898,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "artsdesk--adam-sweeting.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "May 16th, 2024",
       "url": "https://www.theartsdesk.com/theatre/fawlty-towers-play-apollo-theatre-review-lightning-strikes-twice",
       "findings": [
@@ -21899,7 +21912,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2024-05-16",
       "url": "https://www.broadwayworld.com/westend/article/Review-FAWLTY-TOWERS-THE-PLAY-Apollo-Theatre-20240516",
       "findings": [
@@ -21927,7 +21940,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "city-am--adam-bloodworth.json",
-      "score": 68,
+      "score": 59,
       "publishDate": "2024-05-15",
       "url": "https://www.cityam.com/fawlty-towers-play-review-is-john-cleese-reboot-any-good/",
       "findings": [
@@ -22011,7 +22024,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "theupcoming--michael-higgs.json",
-      "score": 85,
+      "score": 82,
       "publishDate": "2024-05-16",
       "url": "https://www.theupcoming.co.uk/2024/05/16/fawlty-towers-at-apollo-theatre-theatre-review/",
       "findings": [
@@ -22025,7 +22038,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "timeout-london--tom-wicker.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "May 16th, 2024",
       "url": "https://www.timeout.com/london/theatre/fawlty-towers-review",
       "findings": [
@@ -40920,7 +40933,7 @@
     {
       "showId": "long-days-journey-into-night-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 36,
+      "score": 37,
       "publishDate": "2024-04-04",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13267321/Successions-Brian-Cox-stars-American-stage-epic-three-half-hours-feel-like-cheerless-misery-ultra-marathon-writes-PATRICK-MARMION.html",
       "findings": [
@@ -41341,7 +41354,7 @@
     {
       "showId": "macbeth-an-undoing-off-broadway-2024",
       "file": "vulture--sara-holdren.json",
-      "score": 60,
+      "score": 50,
       "publishDate": "2024-04-11",
       "url": "https://www.vulture.com/article/theater-review-macbeth-an-undoing.html",
       "findings": [
@@ -51456,7 +51469,7 @@
     {
       "showId": "patriots-2024",
       "file": "theatermania--zachary-stewart.json",
-      "score": 67,
+      "score": 62,
       "publishDate": "April 22, 2024",
       "url": "https://www.theatermania.com/news/review-patriots-on-broadway-unpacks-the-power-struggle-for-russia_1737910/",
       "findings": [
@@ -59939,7 +59952,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "getthechance--hannah-goslin.json",
-      "score": 90,
+      "score": 79,
       "publishDate": "2024-05-09",
       "url": "https://getthechance.wales/2024/05/09/review-spirited-away-london-coliseum-by-hannah-goslin/",
       "findings": [
@@ -60290,7 +60303,7 @@
     {
       "showId": "stalker-off-broadway-2024",
       "file": "front-row-center--tulis-mccall.json",
-      "score": 87,
+      "score": 84,
       "publishDate": "April 1st, 2024",
       "url": "https://thefrontrowcenter.com/2024/04/35138/",
       "findings": [
@@ -81502,7 +81515,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "liamodell--liam-odell.json",
-      "score": 58,
+      "score": 60,
       "publishDate": "2024-04-24",
       "url": "https://liamodell.com/2024/04/24/two-strangers-carry-a-cake-across-new-york-musical-review-criterion-theatre-piccadilly-dujonna-gift-sam-tutty-kiln-theatre/",
       "findings": [
@@ -81563,7 +81576,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 100,
+      "score": 98,
       "publishDate": "April 23rd, 2024",
       "url": "https://theatreweekly.com/review-two-strangers-carry-a-cake-across-new-york-at-the-criterion-theatre/",
       "findings": [
@@ -88726,7 +88739,7 @@
       "showId": "after-the-act-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 14,
-      "publishDate": "May 25th, 2025",
+      "publishDate": "2025-05-25",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/after-the-act-review-the-worst-show-of-the-year-so-far-vf965zrxb",
       "findings": [
         {
@@ -93132,7 +93145,7 @@
     {
       "showId": "bluets-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 63,
+      "score": 57,
       "publishDate": "May 24th, 2024",
       "url": "https://www.theguardian.com/stage/article/2024/may/24/bluets-review-maggie-nelsons-blue-riffs-become-left-field-cine-theatre",
       "findings": [
@@ -93160,7 +93173,7 @@
     {
       "showId": "bluets-west-end-2024",
       "file": "nytimes--houman-barekat.json",
-      "score": 62,
+      "score": 57,
       "publishDate": "2024-05-27",
       "url": "https://www.nytimes.com/2024/05/27/theater/bluets-royal-court-theater-ben-whishaw.html",
       "findings": [
@@ -93188,7 +93201,7 @@
     {
       "showId": "bluets-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2024-05-24",
       "url": "https://theatreweekly.com/review-bluets-at-the-royal-court-theatre/",
       "findings": [
@@ -93534,7 +93547,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 71,
+      "score": 77,
       "publishDate": "2024-05-30",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-BOYS-FROM-THE-BLACKSTUFF-National-Theatre-20240530",
       "findings": [
@@ -105798,7 +105811,7 @@
     {
       "showId": "hells-kitchen-2024",
       "file": "thewrap--robert-hofler.json",
-      "score": 63,
+      "score": 45,
       "publishDate": "April 20, 2024",
       "url": "https://www.thewrap.com/hells-kitchen-broadway-review-alicia-keys/",
       "findings": [
@@ -111976,7 +111989,7 @@
     {
       "showId": "london-tide-west-end-2024",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 78,
+      "score": 61,
       "publishDate": "2024-04-18",
       "url": "https://www.ft.com/content/936e1ce9-3d7d-4ed5-bcb6-61c1008b9155",
       "findings": [
@@ -111990,7 +112003,7 @@
     {
       "showId": "london-tide-west-end-2024",
       "file": "independent--tim-bano.json",
-      "score": 60,
+      "score": 56,
       "publishDate": "April 19th, 2024",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/london-tide-review-national-theatre-pj-harvey-b2530315.html",
       "findings": [
@@ -112004,7 +112017,7 @@
     {
       "showId": "london-tide-west-end-2024",
       "file": "musical-theatre-review--billy-nicholles.json",
-      "score": 69,
+      "score": 57,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/london-tide-national-theatre/",
       "findings": [
@@ -112032,7 +112045,7 @@
     {
       "showId": "london-tide-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 62,
+      "score": 60,
       "publishDate": "April 18th, 2024",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/london-tide-nationals-lyttelton-theatre-review/",
       "findings": [
@@ -112424,7 +112437,7 @@
     {
       "showId": "machinal-west-end-2024",
       "file": "artsdesk--david-nice.json",
-      "score": 96,
+      "score": 100,
       "publishDate": "April 19th, 2024",
       "url": "https://theartsdesk.com/theatre/machinal-old-vic-review-note-perfect-pity-and-terror",
       "findings": [
@@ -112438,7 +112451,7 @@
     {
       "showId": "machinal-west-end-2024",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 57,
+      "score": 50,
       "publishDate": "April 23rd, 2024",
       "url": "https://www.broadwayworld.com/westend/article/Review-MACHINAL-The-Old-Vic-20240419",
       "findings": [
@@ -119956,7 +119969,7 @@
     {
       "showId": "people-places-and-things-west-end-2024",
       "file": "telegraph--nick-ferris.json",
-      "score": 65,
+      "score": 57,
       "publishDate": "May 15th, 2024",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/people-places-and-things-trafalgar-theatre-review/",
       "findings": [
@@ -120533,7 +120546,7 @@
     {
       "showId": "player-kings-west-end-2024",
       "file": "city-am--adam-bloodworth.json",
-      "score": 82,
+      "score": 85,
       "publishDate": "2024-04-12",
       "url": "https://www.cityam.com/player-kings-review-ian-mckellen-is-hilarious-in-immensely-cool-show/",
       "findings": [
@@ -120561,7 +120574,7 @@
     {
       "showId": "player-kings-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2024-04-23",
       "url": "https://www.theguardian.com/stage/2024/apr/14/the-week-in-theatre-player-kings-robert-icke-ian-mckellen-noel-coward-theatre-review-red-pitch-tyrell-williams-sohoplace-underdog-the-other-other-bronte-sarah-gordon-dorfman-national-theatre",
       "findings": [
@@ -120575,7 +120588,7 @@
     {
       "showId": "player-kings-west-end-2024",
       "file": "standard--nick-curtis.json",
-      "score": 76,
+      "score": 84,
       "publishDate": "April 11th, 2024",
       "url": "https://www.standard.co.uk/culture/theatre/player-kings-noel-coward-theatre-review-ian-mckellen-toheeb-jimoh-b1150748.html",
       "findings": [
@@ -124782,7 +124795,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2024-05-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-SPIRITED-AWAY-London-Coliseum-20240509",
       "findings": [
@@ -124810,7 +124823,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 63,
+      "score": 59,
       "publishDate": "2024-05-09T05:03:15+00:00",
       "url": "https://www.timeout.com/london/theatre/spirited-away-review",
       "findings": [
@@ -128141,7 +128154,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "all-that-dazzles-uk--sam-admin.json",
-      "score": 64,
+      "score": 60,
       "publishDate": "June 19th, 2024",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-bounds-royal-court-theatre",
       "findings": [
@@ -128155,7 +128168,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 56,
+      "score": 61,
       "publishDate": "June 20th, 2024",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-BOUNDS-Royal-Court-Theatre-20240618",
       "findings": [
@@ -128183,7 +128196,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "everything-theatre--m-jacob.json",
-      "score": 72,
+      "score": 57,
       "publishDate": "2024-06-22",
       "url": "https://everything-theatre.co.uk/2024/06/review-the-bounds-royal-court-theatre/",
       "findings": [
@@ -128211,7 +128224,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "london-theatre--julia-rank.json",
-      "score": 63,
+      "score": 57,
       "publishDate": "June 18th, 2024",
       "url": "https://www.londontheatre.co.uk/reviews/the-bounds-review-royal-court",
       "findings": [
@@ -140776,7 +140789,7 @@
     {
       "showId": "underdog-the-other-other-bronte-west-end-2024",
       "file": "all-that-dazzles-uk--sam-waite.json",
-      "score": 89,
+      "score": 80,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-underdog-the-other-other-bront%C3%AB-dorfman-theatre",
       "findings": [
@@ -140790,7 +140803,7 @@
     {
       "showId": "underdog-the-other-other-bronte-west-end-2024",
       "file": "city-am--lucy-kenningham.json",
-      "score": 63,
+      "score": 57,
       "publishDate": "2024-04-05",
       "url": "https://www.cityam.com/underdog-other-other-bronte-dorfman-theatre-review/",
       "findings": [
@@ -140874,7 +140887,7 @@
     {
       "showId": "underdog-the-other-other-bronte-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 58,
+      "score": 57,
       "publishDate": "April 5th, 2024",
       "url": "https://www.whatsonstage.com/news/underdog-the-other-other-bronte-at-the-national-theatre-review_1590165/",
       "findings": [
