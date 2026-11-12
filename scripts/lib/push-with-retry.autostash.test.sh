@@ -110,6 +110,7 @@ elif ! grep -q l4-upstream "$TMP/c3-work/shared.txt" || grep -q '<<<<<<<' "$TMP/
 elif ! grep -q "::error::.*shared.txt conflicts" <<<"$out"; then echo "FAIL[3]: no ::error:: naming the path"; echo "$out"; fail=1
 elif [ "$(refs_left c3)" != "1" ]; then echo "FAIL[3]: snapshot ref should be kept"; fail=1
 elif ! grep -q '"autostash-conflict"' "$TMP/c3-fail.jsonl" 2>/dev/null; then echo "FAIL[3]: conflict not recorded in the failure ledger"; fail=1
+elif ! grep -q '"conflictPaths":"[^"]*shared.txt' "$TMP/c3-fail.jsonl" 2>/dev/null; then echo "FAIL[3]: ledger row lacks conflictPaths naming shared.txt (BRO-4688)"; fail=1
 elif ! grep -q l4-caller <<<"$(git -C "$TMP/c3-work" show "$(git -C "$TMP/c3-work" for-each-ref --format='%(objectname)' refs/worktree/push-autostash):shared.txt")"; then
   echo "FAIL[3]: kept snapshot lacks the caller's edit"; fail=1
 else echo "PASS[3]: conflict keeps upstream, errors, keeps recoverable snapshot"; fi

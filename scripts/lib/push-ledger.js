@@ -59,6 +59,7 @@ function buildFailureEntry({
   unpushedFiles,
   traceCensus,
   trace2Summary,
+  conflictPaths,
 }) {
   if (!reason) throw new Error('buildFailureEntry: reason is required');
   const entry = {
@@ -104,6 +105,9 @@ function buildFailureEntry({
   if (census) entry.traceCensus = census;
   const trace2 = oneLineDiagnostic(trace2Summary, 500);
   if (trace2) entry.trace2Summary = trace2;
+  // BRO-4688: files whose uncommitted edit lost an autostash restore.
+  const cpaths = oneLineDiagnostic(conflictPaths, 400);
+  if (cpaths) entry.conflictPaths = cpaths;
   return JSON.stringify(entry);
 }
 

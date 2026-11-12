@@ -442,6 +442,7 @@ _LAST_STALL_SERVICE="unknown"
 # non-timeout attempt clears an earlier attempt's census.
 _LAST_TRACE_CENSUS=""
 _LAST_TRACE2_SUMMARY=""
+_LAST_CONFLICT_PATHS=""
 # Collapse a multi-line diagnostic to one ledger-safe line: lines are joined
 # with "|", every remaining control character (tabs, CR, ESC…) is dropped, and
 # the result is capped at $1 BYTES (head -c counts bytes on BSD and GNU alike;
@@ -941,6 +942,12 @@ record_push_failure() {
   if [ -n "${_LAST_TRACE2_SUMMARY:-}" ]; then
     diag_fields="${diag_fields},\"trace2Summary\":\"$(printf '%s' "$_LAST_TRACE2_SUMMARY" | sed 's/\\/\\\\/g; s/"/\\"/g')\""
   fi
+  # BRO-4688: an autostash-conflict row names the file(s) whose uncommitted edit lost
+  # to upstream, so the next fix targets the real path instead of guessing from the
+  # workflow name (the ledger had 54 rows/day and no path).
+  if [ -n "${_LAST_CONFLICT_PATHS:-}" ]; then
+    diag_fields="${diag_fields},\"conflictPaths\":\"$(printf '%s' "$_LAST_CONFLICT_PATHS" | head -c 400 | tr '\000-\037\177' ' ' | sed 's/\\/\\\\/g; s/"/\\"/g')\""
+  fi
   printf '{"ts":"%s","branch":"%s","remote":"%s","reason":"%s","attempt":%s,"maxRetries":%s,"ci":%s,"workflow":"%s","stallPhase":"%s","stallService":"%s"%s}\n' \
     "$ts" "${PULL_BRANCH:-?}" "$remote" "$reason" "$attempt" "${MAX_RETRIES:-?}" \
     "$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
@@ -982,6 +989,7 @@ record_push_failure() {
       ${_UNPUSHED_LIST:+"--unpushed-files=$_UNPUSHED_LIST"} \
       "--trace-census=${_LAST_TRACE_CENSUS:-}" \
       "--trace2-summary=${_LAST_TRACE2_SUMMARY:-}" \
+      "--conflict-paths=${_LAST_CONFLICT_PATHS:-}" \
       >/dev/null 2>&1 || true
   fi
 }
@@ -1342,6 +1350,7 @@ restore_autostash() {
     else
       echo "::error::push-with-retry: autostash: your uncommitted edit to $p conflicts with a concurrent upstream change; kept the upstream version on disk. Your version: git show $AUTOSTASH_SHA:$p"
       kept=1; conflicted=1
+      _LAST_CONFLICT_PATHS="${_LAST_CONFLICT_PATHS:+$_LAST_CONFLICT_PATHS|}$p"
     fi
   done
   # Restore the executable bit git show cannot carry.

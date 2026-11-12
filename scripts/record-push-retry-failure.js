@@ -123,7 +123,7 @@ function jitterMs(attempt, base = 150, cap = 1800) {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...] [--stall-service=...] [--unpushed-count=N] [--unpushed-files=a,b] [--trace-census=...] [--trace2-summary=...]');
+    console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...] [--stall-service=...] [--unpushed-count=N] [--unpushed-files=a,b] [--trace-census=...] [--trace2-summary=...] [--conflict-paths=...]');
     process.exit(0);
   }
 
@@ -160,6 +160,7 @@ async function main() {
     // BRO-3465 — see buildFailureEntry in scripts/lib/push-ledger.js.
     traceCensus: args['trace-census'] || '',
     trace2Summary: args['trace2-summary'] || '',
+    conflictPaths: args['conflict-paths'] || '',
   });
 
   const cwd = process.cwd();
