@@ -35,7 +35,12 @@ function countReviewsByShow(json) {
 
 /** Today's date (YYYY-MM-DD) in New York. Openings are NY calendar dates; UTC would flip the day at 7-8pm ET. */
 function nyToday(now = new Date()) {
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+  // formatToParts, not format(): the assembled order must not depend on the runtime's locale data.
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' })
+      .formatToParts(now).map((p) => [p.type, p.value]),
+  );
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
 module.exports = { buildSyncRows, countReviewsByShow, nyToday };
