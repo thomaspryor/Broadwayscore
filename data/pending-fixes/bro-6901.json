@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6901",
   "planId": "ca902b43-80e9-4c43-b937-93273a5f3170",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-12T16:53:09.856Z",
   "submitter": {
     "name": null,
@@ -78,5 +78,29 @@
         "description": "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-12T18:18:36.747Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for contact-oran-mor-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for little-shop-of-horrors-hope-mill-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-play-that-goes-wrong-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dial-m-for-mayhem-dundee-rep-regional-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
