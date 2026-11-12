@@ -1,6 +1,6 @@
 // BRO-7397 class guard: a session whose compactions bunch up must be told so at
 // the SessionStart:compact restore, even when no checkpoint file survived.
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -15,6 +15,7 @@ const require = createRequire(import.meta.url);
 const cs = require('../../scripts/lib/compact-state.js');
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const MIN = 60 * 1000;
+after(() => { try { fs.rmSync(sandbox, { recursive: true, force: true }); } catch { /* best effort */ } });
 
 test('state dir lives in the sandbox', () => {
   assert.ok(cs.STATE_DIR.startsWith(sandbox), cs.STATE_DIR);
@@ -113,4 +114,23 @@ test('settings.json aligns worker compaction percent and the stale-env check wat
   const env = JSON.parse(fs.readFileSync(path.join(root, '.claude/settings.json'), 'utf8')).env;
   assert.equal(env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE, '92');
   assert.match(cs.getStaleEnvWarning(env, { ...env, CLAUDE_AUTOCOMPACT_PCT_OVERRIDE: '80' }), /CLAUDE_AUTOCOMPACT_PCT_OVERRIDE/);
+});
+
+test('a subagent compaction log never counts toward the main session', () => {
+  const now = Date.now();
+  const sub = { session_id: 'sess-sub', transcript_path: '/x/subagents/agent-abc.jsonl' };
+  cs.recordCompaction(sub, now - 2 * MIN);
+  cs.recordCompaction(sub, now - 1 * MIN);
+  assert.equal(cs.restoreCheckpoint({ session_id: 'sess-sub', transcript_path: '/x/sess-sub.jsonl' }), null);
+});
+
+test('guard plus checkpoint stays within MAX_CHARS and the guard states no stale token limits', () => {
+  const input = { session_id: 'sess-cap', transcript_path: '/x/sess-cap.jsonl' };
+  const now = Date.now();
+  cs.recordCompaction(input, now - 2 * MIN);
+  cs.recordCompaction(input, now - 1 * MIN);
+  fs.writeFileSync(cs.statePath(input.session_id, input.transcript_path), 'x'.repeat(cs.MAX_CHARS));
+  const ctx = cs.restoreCheckpoint(input).hookSpecificOutput.additionalContext;
+  assert.ok(ctx.length <= cs.MAX_CHARS + 2, `${ctx.length} > ${cs.MAX_CHARS}`);
+  assert.doesNotMatch(ctx, /240K|185K|276K/);
 });
