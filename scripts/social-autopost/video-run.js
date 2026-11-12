@@ -66,9 +66,9 @@ const COMPARE_CAPTION = /same show, two cities/i; // the compare template's open
  * video and a compare video with the same title and score, so the guard also tells the two formats apart (BRO-7418).
  */
 function duplicateMarker(title, score, fmt = 'reveal') {
-  const norm = s => String(s || '').toLowerCase().replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, ' ');
+  const norm = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); // punctuation folds too: London "Ghost – The Musical" vs NY "Ghost The Musical" is one show
   const t = norm(title), sc = String(score);
-  return text => { const x = norm(text); return x.includes(t) && new RegExp(`(^|[^0-9])${sc}([^0-9]|$)`).test(x) && COMPARE_CAPTION.test(x) === (fmt === 'compare'); };
+  return text => { const x = norm(text); return x.includes(t) && new RegExp(`(^|[^0-9])${sc}([^0-9]|$)`).test(x) && COMPARE_CAPTION.test(String(text)) === (fmt === 'compare'); };
 }
 
 function run(cmd, cmdArgs, opts = {}) {

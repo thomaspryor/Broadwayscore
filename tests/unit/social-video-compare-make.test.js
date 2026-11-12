@@ -29,3 +29,12 @@ test('the template says a tie, a one-point gap and a same-year pair without a nu
   assert.match(same.caveat, /^Same year/);
   assert.equal(same.screenHook.gap, 11);
 });
+
+test('composeCompare accepts titles that differ only in case or punctuation (real London pairs)', () => {
+  const { composeCompare } = require('../../scripts/video-proto/compare-script');
+  const side = (title, place, label, score) => ({ title, place, city: place, label, score, count: 12, year: 2025 });
+  for (const [a, b] of [['The Shark Is Broken', 'The Shark is Broken'], ['Ghost The Musical', 'Ghost – The Musical'], ['Grenfell: In the Words of Survivors', 'Grenfell: in the words of survivors']]) {
+    assert.doesNotThrow(() => composeCompare([side(a, 'London', 'London 2025', 70), side(b, 'Broadway', 'Broadway 2025', 80)]));
+  }
+  assert.throws(() => composeCompare([side('Hamilton', 'London', 'L', 70), side('Wicked', 'Broadway', 'B', 80)]), /not the same show/);
+});

@@ -187,3 +187,10 @@ test('duplicateMarker tells a compare caption from a score caption for the same 
 test('videoTitle for a compare names the show, not a score', () => {
   assert.equal(videoTitle({ fmt: 'compare' }, { title: 'Hamilton' }, 88), 'Hamilton: same show, two cities');
 });
+
+test('duplicateMarker folds punctuation so a London-spelled compare caption matches the NY title', () => {
+  const { duplicateMarker } = require('../../scripts/social-autopost/video-run');
+  const cap = 'Same show, two cities. Ghost – The Musical: Broadway 2026: 45 from 12 reviews';
+  assert.equal(duplicateMarker('Ghost The Musical', 45, 'compare')(cap), true);
+  assert.equal(duplicateMarker('Ghost The Musical', 45, 'reveal')(cap), false);
+});
