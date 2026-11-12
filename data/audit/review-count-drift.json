@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-11-11T16:56:50.033Z",
+  "generatedAt": "2026-11-12T17:25:34.794Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-11-11T16:47:09.531Z",
+    "reviewsJsonLastUpdated": "2026-11-12T17:15:00.064Z",
     "reviewsJsonAgeHours": 0.2,
     "freshnessBreach": false,
-    "showsScanned": 27,
-    "allShowsScanned": 4805,
-    "filesScanned": 81482,
+    "showsScanned": 25,
+    "allShowsScanned": 4810,
+    "filesScanned": 81672,
     "showsOverThreshold": 0,
-    "newOffenders": 0,
-    "blindShows": 25,
+    "newOffenders": 1,
+    "blindShows": 26,
     "orphanReviews": 3
   },
   "thresholds": {
@@ -18,7 +18,19 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "newOffenders": [],
+  "newOffenders": [
+    {
+      "showDir": "julius-caesar-globe-off-west-end-2026",
+      "suppressed": 1,
+      "actual": 0,
+      "files": [
+        "times-uk--kate-maltby.json"
+      ],
+      "newFiles": [
+        "times-uk--kate-maltby.json"
+      ]
+    }
+  ],
   "staleBaseline": [
     {
       "showDir": "china-doll-2015",
@@ -52,34 +64,11 @@
   ],
   "perShow": [
     {
-      "showDir": "222-a-ghost-story-off-broadway-2026",
-      "actual": 11,
-      "scanned": 20,
+      "showDir": "act-of-god-off-west-end-2026",
+      "actual": 7,
+      "scanned": 12,
       "suppressedCount": 0,
       "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "act-of-god-off-west-end-2026",
-      "actual": 3,
-      "scanned": 9,
-      "suppressedCount": 2,
-      "suppressed": [
-        {
-          "file": "broadway-baby--unknown.json",
-          "outletId": "broadway-baby",
-          "criticName": "Unknown",
-          "publishDate": "2026-11-11",
-          "url": "https://broadwaybaby.com/shows/act-of-god/839216"
-        },
-        {
-          "file": "west-end-best-friend--unknown.json",
-          "outletId": "west-end-best-friend",
-          "criticName": "Unknown",
-          "publishDate": "2026-11-11",
-          "url": "https://www.westendbestfriend.co.uk/news/review-act-of-god-riverside-studios"
-        }
-      ],
       "overThreshold": false
     },
     {
@@ -91,77 +80,56 @@
       "overThreshold": false
     },
     {
-      "showDir": "cloud-9-west-end-2026",
-      "actual": 13,
-      "scanned": 20,
-      "suppressedCount": 3,
-      "suppressed": [
-        {
-          "file": "all-that-dazzles-uk--all-that-dazzles.json",
-          "outletId": "all-that-dazzles-uk",
-          "criticName": "All That Dazzles",
-          "publishDate": "2026-11-11",
-          "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre"
-        },
-        {
-          "file": "all-that-dazzles-uk--unknown.json",
-          "outletId": "all-that-dazzles-uk",
-          "criticName": "Unknown",
-          "publishDate": "2026-11-11",
-          "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre"
-        },
-        {
-          "file": "london-unattached--unknown.json",
-          "outletId": "london-unattached",
-          "criticName": "Unknown",
-          "publishDate": "2026-11-11",
-          "url": "https://www.london-unattached.com/cloud-9-national-theatre/"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "dogstar-off-west-end-2026",
-      "actual": 12,
-      "scanned": 21,
-      "suppressedCount": 3,
-      "suppressed": [
-        {
-          "file": "readaboutstuff--dan-english.json",
-          "outletId": "readaboutstuff",
-          "criticName": "Dan English",
-          "publishDate": "2026-11-11",
-          "url": "https://readaboutstuff.com/2026/11/11/review-dogstar-hampstead-theatre-london/"
-        },
-        {
-          "file": "readaboutstuff--unknown.json",
-          "outletId": "readaboutstuff",
-          "criticName": "Unknown",
-          "publishDate": "2026-11-11",
-          "url": "https://readaboutstuff.com/2026/11/11/review-dogstar-hampstead-theatre-london/"
-        },
-        {
-          "file": "rhombus-rota--unknown.json",
-          "outletId": "rhombus-rota",
-          "criticName": "Unknown",
-          "publishDate": "2026-11-11",
-          "url": "https://rhombusrota.co.uk/2026/11/11/dogstar-at-the-hampstead-theatre-review/?utm_source=rss&utm_medium=rss&utm_campaign=dogstar-at-the-hampstead-theatre-review"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "actual": 1,
-      "scanned": 1,
+      "showDir": "cloud-9-national-west-end-2026",
+      "actual": 3,
+      "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
+      "showDir": "cloud-9-west-end-2026",
+      "actual": 21,
+      "scanned": 28,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "dogstar-off-west-end-2026",
+      "actual": 17,
+      "scanned": 24,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "actual": 1,
+      "scanned": 7,
+      "suppressedCount": 2,
+      "suppressed": [
+        {
+          "file": "london-box-office--shehrazade-zafar-arif.json",
+          "outletId": "london-box-office",
+          "criticName": "Shehrazade Zafar-Arif",
+          "publishDate": "2026-11-09",
+          "url": "https://www.londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-photos"
+        },
+        {
+          "file": "theatremonkey--unknown.json",
+          "outletId": "theatremonkey",
+          "criticName": "Unknown",
+          "publishDate": "2026-11-11",
+          "url": "https://www.theatremonkey.com/2026/11/hamlet-hail-to-the-thief-barbican-theatre/"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
       "showDir": "here-there-are-blueberries-2026",
-      "actual": 19,
-      "scanned": 35,
+      "actual": 20,
+      "scanned": 36,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -175,9 +143,25 @@
       "overThreshold": false
     },
     {
+      "showDir": "julius-caesar-globe-off-west-end-2026",
+      "actual": 0,
+      "scanned": 12,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "times-uk--kate-maltby.json",
+          "outletId": "times-uk",
+          "criticName": "Kate Maltby",
+          "publishDate": "2026-11-12",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/julius-caesar-review-harriet-walker-phyllida-lloyd-qrbstxwc0"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
       "showDir": "kate-allie-and-the-86-mets-off-broadway-2026",
       "actual": 1,
-      "scanned": 1,
+      "scanned": 2,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -199,22 +183,6 @@
       "overThreshold": false
     },
     {
-      "showDir": "speculations-off-west-end-2026",
-      "actual": 35,
-      "scanned": 47,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "tango-after-dark-off-west-end-2026",
-      "actual": 7,
-      "scanned": 10,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "the-charioteer-off-broadway-2026",
       "actual": 2,
       "scanned": 3,
@@ -224,16 +192,16 @@
     },
     {
       "showDir": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
-      "actual": 3,
-      "scanned": 8,
+      "actual": 5,
+      "scanned": 9,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-snow-queen-regional-2026",
-      "actual": 5,
-      "scanned": 8,
+      "actual": 6,
+      "scanned": 9,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -242,22 +210,6 @@
       "showDir": "the-steel-man-off-broadway-2026",
       "actual": 4,
       "scanned": 4,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-unbelievers-off-broadway-2026",
-      "actual": 14,
-      "scanned": 26,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-verge-off-broadway-2026",
-      "actual": 13,
-      "scanned": 24,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -273,7 +225,7 @@
     {
       "showDir": "wanted-2022",
       "actual": 23,
-      "scanned": 28,
+      "scanned": 30,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
