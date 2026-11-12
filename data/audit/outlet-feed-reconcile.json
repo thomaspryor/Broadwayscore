@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T06:12:18.921Z",
+  "generatedAt": "2026-11-12T08:46:51.791Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -111,7 +111,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -128,19 +128,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 797,
+  "itemsScanned": 850,
   "matchedGaps": 2,
-  "possibleGaps": 1,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "msblackforpresident-off-broadway-2026",
@@ -168,6 +160,15 @@
       "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
       "headline": "Theatre review: Nero",
       "publishDate": "2026-11-10"
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "level": "possible",
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/wanted-on-broadway-extraordinary-voices-what-could-have-been-a-powerful-story-and-a-few-unfortunate-detours/",
+      "headline": "Wanted on Broadway: Extraordinary Voices, What Could Have Been a Powerful Story, and a Few Unfortunate Detours",
+      "publishDate": "2026-11-12"
     }
   ]
 }
