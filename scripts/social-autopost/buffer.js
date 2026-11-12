@@ -7,7 +7,7 @@
 
 const endpoint = () => process.env.BUFFER_API_URL || 'https://api.buffer.com'; // override for local tests (a fake server)
 // Buffer `service` values this system posts to, mapped to our caption keys.
-const SERVICE_TO_NETWORK = { twitter: 'twitter', bluesky: 'bluesky', threads: 'threads', instagram: 'instagram', facebook: 'facebook' };
+const SERVICE_TO_NETWORK = { twitter: 'twitter', bluesky: 'bluesky', threads: 'threads', instagram: 'instagram', facebook: 'facebook', tiktok: 'tiktok', youtube: 'youtube' };
 
 // Buffer allows 250 requests a rolling day per key, shared by every session and the
 // hourly run. Each answer's headers say what is left; briefs check it before posting.
@@ -233,6 +233,58 @@ async function listChannelPosts({ channel, startIso, endIso }) {
   throw new Error(`Buffer listing for ${channel.service} has more than ${MAX_PAGES} pages; refusing to guess`);
 }
 
+/**
+ * Video metadata per network (BRO-7414). The values are the ones the BRO-6412 Shorts used live:
+ * YouTube needs a title, category and the made-for-kids answer; both videos carry the AI disclosure
+ * because the voice is synthetic. `title` is cut to YouTube's 100 characters.
+ */
+function videoMetadataFor(network, title) {
+  const t = String(title || '').replace(/\s+/g, ' ').trim().slice(0, 100);
+  if (!t) throw new Error('a video post needs a title');
+  if (network === 'youtube') return { youtube: { title: t, privacy: 'public', categoryId: '24', madeForKids: false, isAiGenerated: true, notifySubscribers: false } };
+  if (network === 'tiktok') return { tiktok: { isAiGenerated: true, title: t } };
+  throw new Error(`no video metadata for network ${network}`);
+}
+
+/** Schedule one video post (or save a draft) on a TikTok / YouTube channel. Returns {id, dueAt, status}. */
+async function createVideoPost({ channel, text, videoUrl, title, thumbnailOffsetMs = 0, dueAt, draft = false }) {
+  if (!/-(tiktok|youtube)\.mp4$/.test(videoUrl) || !videoUrl.endsWith(`-${channel.network}.mp4`)) {
+    throw new Error(`video ${videoUrl} was not rendered for ${channel.network}; each app covers a different part of the screen`);
+  }
+  const input = {
+    channelId: channel.id, text, schedulingType: 'automatic', mode: 'customScheduled', dueAt: dueAt.toISOString(),
+    assets: [{ video: { url: videoUrl, metadata: { thumbnailOffset: thumbnailOffsetMs } } }],
+    metadata: videoMetadataFor(channel.network, title),
+  };
+  if (draft) input.saveToDraft = true;
+  const data = await gql(`mutation Create($input: CreatePostInput!) {
+    createPost(input: $input) {
+      ... on PostActionSuccess { post { id dueAt status } }
+      ... on MutationError { message }
+    }
+  }`, { input });
+  const r = data.createPost;
+  if (!r || !r.post) throw new Error(`Buffer createPost (video) on ${channel.service}: ${(r && r.message) || 'no post returned'}`);
+  return r.post;
+}
+
+/** Every scheduled or sent post on one channel, all pages (duplicate guard for videos). Refuses rather than read past MAX_PAGES. */
+const ALL_PAGES = 20; // 2,000 posts; the text lane's own MAX_PAGES=1 is for a one-day window
+async function listChannelPostsAll({ channel, statuses = ['scheduled', 'sent'] }) {
+  const out = [];
+  let after = null;
+  for (let page = 0; page < ALL_PAGES; page++) {
+    const data = await gql(`query Posts($input: PostsInput!, $after: String) {
+      posts(input: $input, first: 100, after: $after) { edges { node { id text status dueAt sentAt externalLink } } pageInfo { hasNextPage endCursor } }
+    }`, { input: { organizationId: channel.organizationId, filter: { channelIds: [channel.id], status: statuses } }, after });
+    const p = data.posts || {};
+    out.push(...(p.edges || []).map(e => e.node));
+    if (!p.pageInfo || !p.pageInfo.hasNextPage) return out;
+    after = p.pageInfo.endCursor;
+  }
+  throw new Error(`Buffer listing for ${channel.service} has more than ${ALL_PAGES} pages; refusing to guess`);
+}
+
 /** Wall-clock day (YYYY-MM-DD) of an instant in a time zone. */
 function localDay(t, tz) {
   const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' })
@@ -264,4 +316,4 @@ function listingProblem(posts, expected) {
   return expected.some(id => ids.has(id)) ? null : `listing returned none of the ${expected.length} post(s) the ledger has scheduled in the window`;
 }
 
-module.exports = { gql, parseRateHeaders, rateLimit, quotaProblem, listChannelPosts, busyDays, listingProblem, localDay, listChannels, planLimitStatus, createImagePost, findExistingPost, getPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };
+module.exports = { gql, parseRateHeaders, rateLimit, quotaProblem, listChannelPosts, busyDays, listingProblem, localDay, listChannels, planLimitStatus, createImagePost, createVideoPost, videoMetadataFor, listChannelPostsAll, findExistingPost, getPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };
