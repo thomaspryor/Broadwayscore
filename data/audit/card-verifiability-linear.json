@@ -1,16 +1,70 @@
 {
-  "generatedAt": "2026-11-11T13:04:06.039Z",
-  "total": 387,
-  "armedCount": 363,
-  "refusedCount": 24,
+  "generatedAt": "2026-11-12T14:01:02.368Z",
+  "total": 378,
+  "armedCount": 352,
+  "refusedCount": 26,
   "byKind": {
-    "no-section": 1,
-    "shape": 20,
-    "path-prefix": 1,
-    "no-command": 1,
+    "shape": 23,
+    "no-section": 2,
     "basename": 1
   },
   "refused": [
+    {
+      "id": "BRO-7414",
+      "name": "Social video: automatic TikTok + YouTube Shorts (score and compare videos) for Broadway + notable Off-Broadway",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7414/social-video-automatic-tiktok-youtube-shorts-score-and-compare-videos",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test scripts/video-proto/ scripts/social-autopost/)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7408",
+      "name": "Opening-night audit 2026-11-12",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7408/opening-night-audit-2026-11-12",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7386",
+      "name": "P2: Opening night miss: Cloud 9 (2026-11-10)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7386/p2-opening-night-miss-cloud-9-2026-11-10",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/produce-press-night-digest-snapshot.js --night=2026-11-10 --check=cloud-9-west-end-2026)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7385",
+      "name": "Migrate pinned models before shutdown: claude-sonnet-4-5 (2026-11-30), gemini-2.5-flash/pro (2026-12-01), retired claude-3-5-sonnet/haiku fallbacks",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7385/migrate-pinned-models-before-shutdown-claude-sonnet-4-5-2026-11-30",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-provider-retirements.js --provider=gemini --strict)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7382",
+      "name": "Review forecast: v3 earlier-run blend as private shadow in nightly pilot (pre-registered)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7382/review-forecast-v3-earlier-run-blend-as-private-shadow-in-nightly",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-review-forecast-privacy-guard.js)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7381",
+      "name": "Off-Broadway cast backfill is unscheduled (~46 of 130 NYC preview/open shows have no cast) and the Show Score 'wrong-page' flag is a heuristic",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7381/off-broadway-cast-backfill-is-unscheduled-46-of-130-nyc-previewopen",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -q 'schedule:' .github/workflows/backfill-cast-web.yml)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7376",
+      "name": "Design: opening-night 'reviews still arriving' status on the show page (some reviews in, more expected)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7376/design-opening-night-reviews-still-arriving-status-on-the-show-page",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-opening-night-readiness.js --help)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-7361",
       "name": "Opening-night audit 2026-11-11",
@@ -28,52 +82,12 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-7350",
-      "name": "Build Call the Score: signed-in readers guess the Critic Score before opening, guess reveals our forecast",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7350/build-call-the-score-signed-in-readers-guess-the-critic-score-before",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"process.exit(require(\"fs\").readdirSync(\"supabase/migrations\").some(f=>/score_call/i.test(f))?0:1)\")",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-7346",
       "name": "Refetch clean text for 3 genuine reviews with spliced foreign text (BRO-7344 leftovers)",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7346/refetch-clean-text-for-3-genuine-reviews-with-spliced-foreign-text-bro",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-unadjudicated-cv-flags.js | grep -c 'stuck CV-promoted isNonReview\t')",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-7337",
-      "name": "Reddit fetching failing sitewide since 2026-11-10 ~18:00 UTC (all scraper tiers); pilot Reddit buzz empty; add forum title counts",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7337/reddit-fetching-failing-sitewide-since-2026-11-10-1800-utc-all-scraper",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-reddit-freshness.js)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7330",
-      "name": "Guardrail slim-down round 2: count [VE:code] Stop blocks over two weeks, cut the checks that never catch a real mistake",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7330/guardrail-slim-down-round-2-count-vecode-stop-blocks-over-two-weeks",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f data/audit/stop-block-tally-2026-11.json)",
-      "kind": "path-prefix"
-    },
-    {
-      "id": "BRO-7329",
-      "name": "Review forecast quiet pilot: record a dated forecast per upcoming Broadway opening with preview audience grades and pre-opening buzz, then grade it",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7329/review-forecast-quiet-pilot-record-a-dated-forecast-per-upcoming",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/record-review-forecast-pilot.mjs --scoreboard --dir=/tmp/core-data-checkout/review-forecast-pilot)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7328",
-      "name": "Design: signed-in users predict a show's critic score before opening (mock for owner)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7328/design-signed-in-users-predict-a-shows-critic-score-before-opening",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-7321",
@@ -205,21 +219,12 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 275,
-    "checked": 275,
+    "total": 262,
+    "checked": 262,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
-    {
-      "id": "BRO-7348",
-      "name": "Owner-only page listing every review forecast and its grade (pilot ledger), plus Reddit never-ask guard text",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7348/owner-only-page-listing-every-review-forecast-and-its-grade-pilot",
-      "cmd": "test -f src/app/admin/forecasts/page.tsx",
-      "missingPaths": [
-        "src/app/admin/forecasts/page.tsx"
-      ]
-    },
     {
       "id": "BRO-7342",
       "name": "Extend the model-retirement audit to Anthropic and Gemini pins (same drift gap OpenAI had)",
@@ -239,12 +244,21 @@
       ]
     },
     {
-      "id": "BRO-7327",
-      "name": "Grand Horizons: DC Theatre Scene (Mandell, 85) complete and unflagged but missing from live reviews",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7327/grand-horizons-dc-theatre-scene-mandell-85-complete-and-unflagged-but",
-      "cmd": "node --test scripts/lib/url-wipe-hold.test.mjs",
+      "id": "BRO-7330",
+      "name": "Guardrail slim-down round 2: count [VE:code] Stop blocks over two weeks, cut the checks that never catch a real mistake",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7330/guardrail-slim-down-round-2-count-vecode-stop-blocks-over-two-weeks",
+      "cmd": "node --test scripts/stop-block-tally-audit.test.mjs",
       "missingPaths": [
-        "scripts/lib/url-wipe-hold.test.mjs"
+        "scripts/stop-block-tally-audit.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7328",
+      "name": "Design: signed-in users predict a show's critic score before opening (mock for owner)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7328/design-signed-in-users-predict-a-shows-critic-score-before-opening",
+      "cmd": "test -f docs/designs/predict-critic-score-signed-in.md",
+      "missingPaths": [
+        "docs/designs/predict-critic-score-signed-in.md"
       ]
     },
     {
@@ -425,15 +439,6 @@
       "cmd": "node --test scripts/test-versus-duo-verdict-top5-script.test.mjs",
       "missingPaths": [
         "scripts/test-versus-duo-verdict-top5-script.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6427",
-      "name": "TR probe: listings-index page picked for end-of-longing, di-and-viv-and-rose, 1984 (WE historical)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6427/tr-probe-listings-index-page-picked-for-end-of-longing-di-and-viv-and",
-      "cmd": "node --test scripts/check-we-historical-tr-coverage.test.mjs",
-      "missingPaths": [
-        "scripts/check-we-historical-tr-coverage.test.mjs"
       ]
     },
     {
