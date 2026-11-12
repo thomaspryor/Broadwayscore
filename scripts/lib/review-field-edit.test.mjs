@@ -1073,3 +1073,41 @@ test('url edit (BRO-7326 review): scheme/case/path changes are not tracking stri
     assert.equal(applyReviewFieldEdit(r, { field: 'url', oldValue: r.url, newValue: to }, stamp).ok, false);
   }
 });
+
+// BRO-4318: an auto-adjudication that "sided with LLM" against a printed rating a human
+// then checked and found right (EW's C- on a pan published as 25). The plan clears the
+// adjudication so the star stands; the write guard must keep the clear, and the rebuild
+// must stop publishing the adjudicated score.
+test('adjudicatedScore: clear only, on a stored rating, through the write guard', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-audit-'));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-adj-'));
+  fs.mkdirSync(path.join(root, 'some-show-2013'));
+  const file = 'some-show-2013/ew--some-critic.json';
+  const rec = {
+    showId: 'some-show-2013', outletId: 'ew', outlet: 'Entertainment Weekly', criticName: 'Some Critic',
+    url: 'https://ew.com/article/some-show-review/', fullText: 'Placeholder review body. '.repeat(80), textQuality: 'full',
+    originalScore: 'C-', originalScoreNormalized: 57, originalScoreSource: 'llm-extracted-gemini',
+    llmScore: { score: 50, confidence: 'high' }, assignedScore: 25,
+    adjudicatedScore: 25, adjudicationNote: 'Auto-adjudicated (high confidence, sided with llm): a clear pan.',
+  };
+  fs.writeFileSync(path.join(root, file), JSON.stringify(rec, null, 2));
+  const before = getBestScore(rec);
+  assert.equal(before.source, 'adjudicated', 'precondition: the adjudication publishes');
+
+  // Refusals: a value, and a record with no stored rating to stand.
+  assert.equal(applyReviewFieldEdit(rec, { field: 'adjudicatedScore', oldValue: 25, newValue: 50 }, fixStamp).ok, false);
+  const noStar = { ...rec, originalScore: null };
+  assert.equal(applyReviewFieldEdit(noStar, { field: 'adjudicatedScore', oldValue: 25, newValue: null }, fixStamp).ok, false);
+
+  const res = executeReviewFieldEditIn(root, { file, field: 'adjudicatedScore', oldValue: 25, newValue: null }, fixStamp);
+  assert.equal(res.ok, true, res.reason);
+  const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  assert.equal(after.adjudicatedScore ?? null, null, 'write guard kept the clear');
+  assert.equal(after.adjudicationNote ?? null, null);
+  assert.equal(after.adjudicatedScoreInvalidated.score, 25, 'dropped score kept for audit');
+  assert.equal(after.originalScore, 'C-', 'the star stands');
+  assert.notEqual(getBestScore(after).source, 'adjudicated');
+});

@@ -150,11 +150,15 @@ function isRelayedStarRating(source, matchIndex) {
 // when the word before it is a determiner/preposition/verb that makes "stars" a
 // noun phrase, or when a nationality/"of the" noun follows ("two stars, British...").
 const CAST_STARS_PRECEDER = /(?:^|[\s>])(?:with|the|these|those|both|between)\s*(?:<[^>]*>\s*)*$/i;
+// BRO-4318: a performance noun + possessive is cast prose too ("the powerful work of its two
+// stars.", Chester Bailey LSA stored 2/5 on a rave). A bare possessive is not: "every one of
+// its five stars" is a verdict.
+const CAST_STARS_POSSESSIVE = /\b(?:work|performances?|turns?|chemistry|presence|talents?|acting|pairing|charisma)\s+(?:of|from|by|between)\s+(?:its|their|his|her)\s*(?:<[^>]*>\s*)*$/i;
 const CAST_STARS_FOLLOWER = /^\s*[,;:]?\s*(?:British|American|English|Irish|Scottish|Welsh|Australian|Canadian|Hollywood|of\s+(?:the|this|that)\b|who\b|whose\b)/i;
 function isCastStarsProse(source, matchIndex, matched) {
   if (!source || !/^\s*(?:one|two|three|four|five)\b/i.test(matched) || /out/i.test(matched)) return false;
   const before = source.slice(Math.max(0, matchIndex - 40), matchIndex);
-  if (CAST_STARS_PRECEDER.test(before)) return true;
+  if (CAST_STARS_PRECEDER.test(before) || CAST_STARS_POSSESSIVE.test(before)) return true;
   // Only a comma-ended match continues the same sentence; "Four stars. Broadway transfer
   // likely." ends in a full stop and its next sentence says nothing about this rating.
   if (!/,\s*$/.test(matched)) return false;
@@ -755,7 +759,7 @@ function extractNYPostScore(html, text) {
   // Letter grade patterns: "Grade: A" or "rating: B+"
   const gradePatterns = [
     // BRO-6779: case-sensitive letters (see GRADE_KW_RE); \b keeps "frustRATING for" out.
-    new RegExp(`\\b${GRADE_KW_RE}\\s*:?\\s*([A-F][+-]?)(?![A-Za-z+])`),
+    new RegExp(`\\b${GRADE_KW_RE}\\b\\s*:?\\s*([A-F][+-]?)(?![A-Za-z+])`),
     new RegExp(`\\b${GRADE_ONLY_KW_RE}\\s+([A-F][+-]?)(?![A-Za-z+])`),
     new RegExp(`\\b${LETTER_BEFORE_KW_RE}\\s+${GRADE_KW_RE}\\b`),
     /^([A-F][+-]?)\s*$/m
@@ -1572,8 +1576,10 @@ function extractGenericLetterGrade(html, text) {
   // NOTE: Pattern 1 uses \b before the alternation to avoid matching "rating" as a
   // substring inside words like "celebrating", "operating", "frustrating".
   // BRO-6779: letters case-sensitive (see GRADE_KW_RE) — /i read "for a grade" as A.
+  // BRO-4318: \b after the keyword. HuffPost's ratings list runs "no ratingA Month In The
+  // Country" together, and the bare keyword read the next title's "A" as grade A (Misery, Wolf Hall: stored A).
   const patterns = [
-    new RegExp(`\\b${GRADE_KW_RE}\\s*:?\\s*([A-F][+-]?)(?![A-Za-z+])`),
+    new RegExp(`\\b${GRADE_KW_RE}\\b\\s*:?\\s*([A-F][+-]?)(?![A-Za-z+])`),
     new RegExp(`\\b${GRADE_ONLY_KW_RE}\\s+([A-F][+-]?)(?![A-Za-z+])`),
     new RegExp(`\\b${LETTER_BEFORE_KW_RE}\\s+${GRADE_KW_RE}\\b`),
     // "garners an A rating" (Digital Journal's verdict line). Only "rating": the
