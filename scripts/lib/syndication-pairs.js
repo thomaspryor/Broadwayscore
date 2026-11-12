@@ -102,6 +102,49 @@ const PUBLISHING_GROUPS = [
 // Outlet ids of aggregator portals (review-normalization.js SYNDICATION_PORTAL_HOSTS: yahoo.com, msn.com, aol.com).
 const SYNDICATION_PORTAL_OUTLETS = Object.freeze(['yahoo', 'msn', 'aol']);
 
+// BRO-7416: aggregator portals that summarize another outlet's review and carry no usable byline of their own
+// (Head Topics prints "DEADLINE" as the author; NewsBreak files null/staff). The yahoo/msn/aol rule above matches
+// files by critic slug, so it never sees these. A copy here defers to ANY other live review file of the same show.
+const BYLINELESS_PORTAL_OUTLETS = Object.freeze(['headtopics', 'newsbreak']);
+
+function isBylinelessPortalOutlet(outletId) {
+  return BYLINELESS_PORTAL_OUTLETS.includes(String(outletId || '').toLowerCase());
+}
+
+/**
+ * Files in a show directory that a byline-less portal copy defers to: every review file whose outlet prefix is not
+ * a portal (yahoo/msn/aol/headtopics/newsbreak) and not an unknown/unnamed shadow. Any critic.
+ * @param {string[]} fileNames show directory listing
+ * @param {(o:string)=>string} [normalize]
+ */
+function bylinelessPortalPrimaryFiles(fileNames, normalize = (o) => o) {
+  const out = [];
+  for (const f of fileNames || []) {
+    const m = /^(.+?)--.+\.json$/.exec(f);
+    if (!m || /^(unknown|unnamed)$/.test(m[1])) continue;
+    const o = String(normalize(m[1]) || '').toLowerCase();
+    if (SYNDICATION_PORTAL_OUTLETS.includes(o) || isBylinelessPortalOutlet(o)) continue;
+    out.push(f);
+  }
+  return out;
+}
+
+/**
+ * True when a byline-less portal copy should be dropped: some other-outlet file in the show dir is live
+ * (isLiveSyndicationPrimary) and passes `extraCheck(parsed, path)` (callers pass their includability test).
+ */
+function hasLiveBylinelessPortalPrimary(showDir, fileNames, { extraCheck } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  return bylinelessPortalPrimaryFiles(fileNames).some((f) => {
+    try {
+      const pPath = path.join(showDir, f);
+      const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+      return isLiveSyndicationPrimary(p, pPath) && (!extraCheck || !!extraCheck(p, pPath));
+    } catch { return false; }
+  });
+}
+
 function _isRealByline(criticName) {
   const c = String(criticName || '').toLowerCase().trim();
   return !!c && !/^(unknown|staff|n\/a|none|anonymous)$/.test(c);
@@ -371,6 +414,6 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary,
   isSelfSyndicationPointer, isSyndicatedDuplicateActive,
-  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
+  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, BYLINELESS_PORTAL_OUTLETS, isBylinelessPortalOutlet, bylinelessPortalPrimaryFiles, hasLiveBylinelessPortalPrimary, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };

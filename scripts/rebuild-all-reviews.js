@@ -132,7 +132,7 @@ const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evalua
 const { rebuildPreWindowHold } = require('./lib/date-guard-hold');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
-const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, getSyndicationPrimariesInDir, hasLiveSyndicationPrimary, hasFullerSecondary, isSyndicatedDuplicateActive } = require('./lib/syndication-pairs');
+const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, getSyndicationPrimariesInDir, isBylinelessPortalOutlet, bylinelessPortalPrimaryFiles, hasLiveBylinelessPortalPrimary, hasLiveSyndicationPrimary, hasFullerSecondary, isSyndicatedDuplicateActive } = require('./lib/syndication-pairs');
 const { checkExcerptDuplicate } = require('./lib/excerpt-fingerprint-dedup');
 const { createClaimLedger, primaryFilesFor, unknownOutletShadowTargets, orderAfterDependencies, syndicationShieldDecision, shadowShieldDecision } = require('./lib/dedup-survivor');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -4485,6 +4485,16 @@ showDirs.forEach(showId => {
             stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
             return;
           }
+        }
+      }
+
+      // BRO-7416: byline-less aggregator portals (headtopics/newsbreak) defer to any other outlet's live review.
+      if (isBylinelessPortalOutlet(normalizeOutletCanonical(data.outletId || data.outlet || ''))) {
+        const primFiles = bylinelessPortalPrimaryFiles(files, normalizeOutletCanonical);
+        if (primFiles.length && hasLiveBylinelessPortalPrimary(showDir, primFiles)) {
+          logExclusion("skippedSyndicated", showId, file, data);
+          stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
+          return;
         }
       }
 

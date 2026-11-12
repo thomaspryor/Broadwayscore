@@ -1391,6 +1391,19 @@ function decideInclusion(review, show, guards, filePath) {
       return { included: false, reason: 'knownSyndicationSecondary' };
     }
   }
+  // BRO-7416: byline-less portals (headtopics/newsbreak) defer to any other outlet's live review (mirrors rebuild).
+  if (filePath) {
+    const synd = guards.__syndicationLib || require('./lib/syndication-pairs');
+    const normalize = guards.__dedupNormalizeOutlet || normalizeOutletCanonical;
+    if (typeof synd.isBylinelessPortalOutlet === 'function' && synd.isBylinelessPortalOutlet(normalize(review.outletId || review.outlet || ''))) {
+      const dir = path.dirname(filePath);
+      let names = [];
+      try { names = require('fs').readdirSync(dir); } catch { /* unreadable */ }
+      if (synd.hasLiveBylinelessPortalPrimary(dir, synd.bylinelessPortalPrimaryFiles(names, normalize))) {
+        return { included: false, reason: 'knownSyndicationSecondary' };
+      }
+    }
+  }
   // crossOutletPrimaryFile can close a mutual cycle. The shared tiebreak
   // probes each row's other guards and its own byline before filename order.
   if (review.crossOutletDuplicate === true) {

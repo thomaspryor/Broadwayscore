@@ -6193,6 +6193,21 @@ function explainExclusion(data, show, filePath, opts) {
       }
     }
   }
+  // BRO-7416: headtopics/newsbreak summarize another outlet's review and have no usable byline, so the per-critic
+  // rule above never fires. Drop the portal copy when any other outlet's live review of the show exists.
+  if (filePath && !(opts && opts.ignoreKnownSyndication)) {
+    const synd = require('./syndication-pairs');
+    const norm = require('./review-normalization').normalizeOutlet;
+    if (synd.isBylinelessPortalOutlet(norm(data.outletId || data.outlet || ''))) {
+      const dir = require('path').dirname(filePath);
+      let names = [];
+      try { names = require('fs').readdirSync(dir); } catch { /* unreadable dir: no portal rule */ }
+      const live = synd.hasLiveBylinelessPortalPrimary(dir, names.filter((f) => synd.bylinelessPortalPrimaryFiles([f], norm).length), {
+        extraCheck: (p, pPath) => explainExclusion(p, show, pPath, opts) === null,
+      });
+      if (live) return 'knownSyndicationSecondary';
+    }
+  }
   // CONTAMINATION SAFETY NET: tour/film signals in the fullText intro, for
   // reviews that haven't been through the LLM ensemble's Step 0 rejection
   // check. Mirrors rebuild-all-reviews.js ~lines 3737-3778 — only checks text
