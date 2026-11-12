@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T00:51:23.267Z",
+  "generatedAt": "2026-11-12T02:32:58.114Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,11 +7,6 @@
       "id": "wanted-2022",
       "title": "Wanted",
       "openingDate": "2026-11-08"
-    },
-    {
-      "id": "the-good-thief-off-broadway-2026",
-      "title": "The Good Thief",
-      "openingDate": "2026-11-12"
     },
     {
       "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -95,6 +90,10 @@
     }
   ],
   "skipped": [
+    {
+      "showId": "the-good-thief-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
     {
       "showId": "first-and-last-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
