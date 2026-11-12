@@ -263,7 +263,8 @@
     "tosca-off-broadway-2026/operawire--unknown.json",
     "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
     "wanted-2022/theatermania--seth-walters.json",
-    "wanted-2022/wsj--charles-isherwood.json"
+    "wanted-2022/wsj--charles-isherwood.json",
+    "cloud-9-west-end-2026/sunday-times--clive-davis.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/city-am--olivia-jordan.json",
@@ -441,7 +442,12 @@
     "a-thousand-natural-shocks-off-broadway-2026/zeffy--zeffy.json",
     "de-profundis-off-west-end-2026/uktw--unknown.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
-    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json"
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/independent--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -672,7 +678,8 @@
       "true-west-2019/variety--marilyn-stasio.json",
       "the-phantom-of-the-opera-tour-2025/broadwayworld--jared-fessler.json",
       "the-great-gatsby-2024/deadline--greg-evans.json",
-      "the-humanities-regional-2026/broadwayworld--unknown.json"
+      "the-humanities-regional-2026/broadwayworld--unknown.json",
+      "cloud-9-west-end-2026/sunday-times--clive-davis.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -780,7 +787,7 @@
     ]
   },
   "startTime": "2026-11-11T19:44:43.602Z",
-  "lastProcessed": "act-of-god-off-west-end-2026/thestage--holly-omahony.json",
+  "lastProcessed": "the-lives-of-others-west-end-2026/independent--unknown.json",
   "log": [
     {
       "t": "2026-11-11T19:46:26.880Z",
@@ -957,6 +964,17 @@
       "t": "2026-11-12T02:59:09.365Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-12T03:22:58.036Z",
+      "event": "bb-session",
+      "session": "473c929f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-12T03:22:58.661Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ],
   "recoveredAfterFailure": [
