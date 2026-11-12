@@ -7,7 +7,16 @@ import type { ShowLookup } from '@/types/user';
 
 /** My Shows: the score predictions this reader has locked. Renders nothing until there is at least one. */
 export default function YourPredictions({ showMap }: { showMap: Record<string, ShowLookup> }) {
-  const { loaded, calls } = useMyScoreCalls();
+  const { loaded, loadError, retry, calls } = useMyScoreCalls();
+  if (loadError) {
+    return (
+      <section className="card p-4 mb-6" data-testid="your-predictions-error" role="alert">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-2">Your predictions</h2>
+        <p className="text-sm text-gray-200 m-0 mb-3">We couldn&apos;t load your predictions. Your saved predictions are safe.</p>
+        <button type="button" className="btn-secondary min-h-[44px]" onClick={retry}>Try again</button>
+      </section>
+    );
+  }
   // Wait for the show lookup so a row never shows a bare id.
   if (!loaded || calls.length === 0 || Object.keys(showMap).length === 0) return null;
   return (

@@ -89,5 +89,6 @@ export function useMyScoreCalls() {
   useEffect(() => { if (userId) void load(userId); }, [userId]);
   const ready = !!userId && s.userId === userId && s.loaded;
   const calls = ready ? Object.values(s.calls).sort((a, b) => b.locked_at.localeCompare(a.locked_at)) : [];
-  return { signedIn: !!userId, loaded: ready, calls };
+  const retry = useCallback(() => { if (!userId) return; store = { ...store, loaded: false, loadError: false, inflight: null }; void load(userId); }, [userId]);
+  return { signedIn: !!userId, loaded: ready, loadError: !!userId && s.userId === userId && s.loadError, retry, calls };
 }
