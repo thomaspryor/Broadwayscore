@@ -116,6 +116,8 @@ on:
       - 'scripts/social-autopost/**'
       - 'scripts/video-proto/channel-captions.js' # BRO-7414: tests/unit/social-video-channel-captions.test.js
       - 'scripts/video-proto/tts.js' # BRO-7414: tests/unit/social-video-tts.test.js
+      - 'scripts/video-proto/compare-make.js' # BRO-7418: tests/unit/social-video-compare-make.test.js
+      - 'scripts/video-proto/compare-script.js' # BRO-7418: tests/unit/social-video-compare-make.test.js
       # BRO-5499: top-level tests scripts/fix-utc-shifted-publish-dates.test.mjs and scripts/purge-uk-show-score-audience.test.mjs
       - 'scripts/fix-utc-shifted-publish-dates.js'
       - 'scripts/purge-uk-show-score-audience.js'
