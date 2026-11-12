@@ -686,5 +686,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-12T14:35:35.827Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7414-video",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7414-video",
+    "description": "land.yml did not land land/bro-7414-video: the unit-tests-node gate went red at b84ac96957. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43242559838",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7414-video"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b84ac9695788df55cd5b660a137e8dc087d6c5c0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43242559838"
+      }
+    ],
+    "queuedAt": "2026-11-12T15:03:00.134Z"
   }
 ]
