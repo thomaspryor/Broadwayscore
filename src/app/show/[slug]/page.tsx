@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { foldVenueName } from '@/lib/venue-fold';
 import { noCriticReviewsExpected } from '@/lib/review-expectation';
+import { getReviewArrival } from '@/lib/data-review-arrival';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { cache, Suspense } from 'react';
@@ -504,6 +505,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // One server-side verdict for every place on the page (see review-expectation.ts).
   const noReviewsExpected = noCriticReviewsExpected(show, reviewCount);
   const reviewsSyncing = shouldShowReviewsSyncing(show);
+  // Opening-night status, decided once on the server so ISR HTML and the clock agree (BRO-7376).
+  const reviewArrival = getReviewArrival(show, reviewCount, !showTBD);
   const reviewsRemaining = showTBD && show.status !== 'previews' && show.status !== 'upcoming'
     ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
     : 0;
@@ -567,6 +570,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               hasAudience={hasAudience}
               hasEnoughCriticReviews={!showTBD}
               reviewAgeNote={reviewAgeNote}
+              reviewArrival={reviewArrival}
               liveInHdText={hd.line}
               sortedTicketLinks={sortedTicketLinks}
               lotteryRush={lotteryRush ?? null}
