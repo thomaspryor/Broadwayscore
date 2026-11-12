@@ -21942,10 +21942,10 @@
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
       "incidentOpenedAt": "2026-11-06T18:45:30.510Z",
-      "lastSeen": "2026-11-10T19:11:28.633Z",
-      "lastNotifiedAt": "2026-11-10T19:11:28.633Z",
-      "lastSurfacedAt": "2026-11-10T19:11:28.633Z",
-      "notifyCount": 8,
+      "lastSeen": "2026-11-12T19:24:58.574Z",
+      "lastNotifiedAt": "2026-11-12T19:24:58.574Z",
+      "lastSurfacedAt": "2026-11-12T19:24:58.574Z",
+      "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -42273,7 +42273,7 @@
       "silentRefires": 9
     },
     "cron-health:Commercial Pending Review": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Commercial Pending Review",
@@ -42284,7 +42284,8 @@
       "lastSurfacedAt": "2026-11-11T19:07:08.771Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-12T19:24:58.706Z"
     },
     "we-aggregator-go-live:cloud-9-national-west-end-2026": {
       "status": "open",
