@@ -1,17 +1,7 @@
 {
-  "generatedAt": "2026-11-12T00:08:58.531Z",
-  "bannerText": "134/146 Done(14d) verified on main · 1 FAILED · 0 vacuous · 15 stuck-but-done · 2 mis-armed, needs re-arming (BRO-7387, BRO-7351)",
+  "generatedAt": "2026-11-12T10:30:03.860Z",
+  "bannerText": "125/135 Done(14d) verified on main · 0 FAILED · 0 vacuous · 13 stuck-but-done · 4 mis-armed, needs re-arming (BRO-7250, BRO-7387, BRO-7351, +1 more)",
   "items": [
-    {
-      "title": "FAILED BRO-7237 — Yahoo reprints of TheWrap reviews are double-counted (Wanted: Robert Hofler twice) and Yahoo has no lane source",
-      "detail": "not ok: last 10 Broadway openings (when data/reviews.json is presen… | first failure: on-time outlets with no lane source:",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7237/yahoo-reprints-of-thewrap-reviews-are-double-counted-wanted-robert"
-    },
-    {
-      "title": "STUCK BRO-7274 — Ingest 34 verified-live DC/LA hub reviews missing from corpus (BRO-7256 coverage gaps)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7274/ingest-34-verified-live-dcla-hub-reviews-missing-from-corpus-bro-7256"
-    },
     {
       "title": "STUCK BRO-7268 — main test.yml red: E2E Tests / Run E2E tests — \"tests/e2e/visual-regression.spec.ts › Visual Regression › show hero layout\"",
       "detail": "its own evidence holds on main — looks finished",
@@ -41,7 +31,17 @@
       "title": "STUCK BRO-7144 — validate-data.js: make the duplicate-show check sub-quadratic (58 s of every 77 s run)",
       "detail": "its own evidence holds on main — looks finished",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7144/validate-datajs-make-the-duplicate-show-check-sub-quadratic-58-s-of"
+    },
+    {
+      "title": "STUCK BRO-7089 — Codex runner: put the disk breakdown in the Linear summary and stand down cleanly on a full disk before git fetch",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7089/codex-runner-put-the-disk-breakdown-in-the-linear-summary-and-stand"
+    },
+    {
+      "title": "STUCK BRO-6762 — Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6762/fix-gaps-at-the-source-reviews-regular-gathering-still-misses-and-only"
     }
   ],
-  "moreCount": 8
+  "moreCount": 5
 }
