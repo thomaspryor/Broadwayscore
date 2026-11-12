@@ -1,22 +1,40 @@
 {
-  "generatedAt": "2026-11-12T00:08:51.597Z",
+  "generatedAt": "2026-11-12T10:29:29.847Z",
   "shadow": true,
-  "checkoutSha": "1bd368b8ee3f24f0e50c9803e6f83eefa94776f0",
-  "totalCandidates": 377,
-  "eligibleCandidates": 105,
+  "checkoutSha": "1012a6fda8f57a6b76842ebaba8628459d799340",
+  "totalCandidates": 300,
+  "eligibleCandidates": 96,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
     "pass": 14,
-    "fail": 9,
-    "unverifiable": 7
+    "fail": 11,
+    "unverifiable": 5
   },
   "alreadyDone": [
     {
-      "id": "BRO-7384",
-      "name": "Forecasts page: shows opened >20 days ago with no grade drop off the board (ledger window is 20 files)",
-      "verifyCmd": "node --test scripts/lib/review-forecast-board.test.mjs",
+      "id": "BRO-7400",
+      "name": "Test red on main: validate-data-venue-complex-wiring (sandbox sentinel not written)",
+      "verifyCmd": "node --test tests/unit/validate-data-venue-complex-wiring.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7399",
+      "name": "Test red on main: push-core-data-scoped-refusal (5 subtests fail)",
+      "verifyCmd": "node --test tests/unit/push-core-data-scoped-refusal.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7397",
+      "name": "Compaction thrash guard for cloud sessions (BRO-7350 worker died after 3 compacts)",
+      "verifyCmd": "node --test tests/unit/compact-thrash-guard.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7393",
+      "name": "Stub syndication primaries still shield complete secondaries that were never LLM-scored (~11 reviews)",
+      "verifyCmd": "node --test scripts/lib/syndication-stub-primary.test.mjs",
       "detail": null
     },
     {
@@ -68,18 +86,6 @@
       "detail": null
     },
     {
-      "id": "BRO-7255",
-      "name": "Opening-date audit: 1 show need review (2026-11-09)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=other-desert-cities-2026",
-      "detail": null
-    },
-    {
-      "id": "BRO-7253",
-      "name": "Closing date audit: 3 shows need review (2026-11-09)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-rocky-horror-show-2026,just-in-time-2025,operation-mincemeat-2025",
-      "detail": null
-    },
-    {
       "id": "BRO-7175",
       "name": "Ingest the 21 expected-critics missing reviews (BRO-7166 audit)",
       "verifyCmd": "node --test tests/unit/expected-critics.test.mjs",
@@ -90,15 +96,21 @@
       "name": "Type the last 6 untyped off-broadway venue stubs before previews",
       "verifyCmd": "node scripts/validate-market-expansion.js",
       "detail": null
-    },
-    {
-      "id": "BRO-7145",
-      "name": "Audit 2 months of openings that needed hands: is each root cause fixed systematically?",
-      "verifyCmd": "node --test tests/unit/opening-grade.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
+    {
+      "id": "BRO-7391",
+      "name": "Root cause: \"Data quality: cross-outlet attribution drift\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class cross-outlet-attribution-drift --quiet",
+      "detail": "FAIL: last case 5d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7389",
+      "name": "Root cause: first pass keeps getting no full text from nytimes (Off-Broadway, 3 shows in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class text-missed-at-first-pass-off-broadway-nytimes --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
+    },
     {
       "id": "BRO-7356",
       "name": "Root cause: \"Codex runner: landing cards\" keeps coming back (3 cards in 30 days)",
@@ -115,7 +127,7 @@
       "id": "BRO-7354",
       "name": "Root cause: \"Data quality: revival-unverified lifetime sweep\" keeps coming back (4 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class revival-unverified-lifetime-sweep --quiet",
-      "detail": "FAIL: last case 0d ago, needs 21\n"
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-7333",
@@ -151,7 +163,7 @@
       "id": "BRO-7202",
       "name": "Root cause: \"Bright Data daily breaker TRIPPED: web_unlocker2\" keeps coming back (8 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class bright-data-daily-breaker-tripped-web-unlocker2 --quiet",
-      "detail": "FAIL: last case 8d ago, needs 21\n"
+      "detail": "FAIL: last case 9d ago, needs 21\n"
     }
   ],
   "unverifiable": [
@@ -184,21 +196,16 @@
       "name": "Opening night live watch: move repeat passes out of the in-session sleep loop",
       "verifyCmd": "node --test scripts/opening-night-watch.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/opening-night-watch.test.mjs"
-    },
-    {
-      "id": "BRO-7151",
-      "name": "Refresh the six annual awards scheduled tasks before March 8",
-      "verifyCmd": "node --test scripts/verify-annual-task-docs.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/verify-annual-task-docs.test.mjs"
-    },
-    {
-      "id": "BRO-7140",
-      "name": "Show published rating beside review date (web + app)",
-      "verifyCmd": "node --test tests/unit/rating-beside-date.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/rating-beside-date.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-7397",
+      "name": "Compaction thrash guard for cloud sessions (BRO-7350 worker died after 3 compacts)",
+      "branch": "land/bro-7397-thrash-guard",
+      "sha": "b877190a3bcd68a46df44e276adf022176b1bb00",
+      "landedAt": "2026-11-12T04:33:51.958Z"
+    },
     {
       "id": "BRO-7344",
       "name": "Triage ~19 unscored CV-promoted isNonReview files whose CV says review and carry no other exclusion flag",
@@ -233,13 +240,6 @@
       "branch": "land/job/linear-BRO-7156-mw8ctjy5",
       "sha": "addf2491d6eea5456018c4955cb000099d45abde",
       "landedAt": "2026-11-08T21:42:51.385Z"
-    },
-    {
-      "id": "BRO-7145",
-      "name": "Audit 2 months of openings that needed hands: is each root cause fixed systematically?",
-      "branch": "land/bro-7145-audit-v2",
-      "sha": "97ab900455cde70e26b4aa93e878908793589b1b",
-      "landedAt": "2026-11-08T21:21:04.832Z"
     }
   ]
 }
