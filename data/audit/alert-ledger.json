@@ -41386,18 +41386,17 @@
     },
     "test-yml:data-validation-red:audit-outlet-registry-gaps": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "Data audit failing: Audit outlet-registry gaps",
       "firstSeen": "2026-11-10T15:36:09.494Z",
       "incidentOpenedAt": "2026-11-10T18:32:49.285Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-12T18:30:23.797Z",
-      "lastNotifiedAt": "2026-11-11T18:56:24.481Z",
+      "lastSeen": "2026-11-12T22:07:34.715Z",
+      "lastNotifiedAt": "2026-11-12T22:07:34.715Z",
       "lastSurfacedAt": "2026-11-11T18:56:24.481Z",
-      "notifyCount": 3,
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-7383",
-      "silentRefires": 31
+      "linearIdentifier": "BRO-7383"
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",
