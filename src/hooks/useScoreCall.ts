@@ -20,6 +20,7 @@ interface Store { userId: string | null; calls: Record<string, ScoreCall>; loade
 let store: Store = { userId: null, calls: {}, loaded: false, loadError: false, inflight: null };
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach((l) => l());
+function resetAndLoad(userId: string) { store = { ...store, loaded: false, loadError: false, inflight: null }; emit(); void load(userId); }
 const subscribe = (l: () => void) => { listeners.add(l); return () => { listeners.delete(l); }; };
 const snapshot = () => store;
 
@@ -76,7 +77,7 @@ export function useScoreCall(showId: string) {
     return { ok: true, call };
   }, [showId, userId]);
 
-  const retry = useCallback(() => { if (!userId) return; store = { ...store, loaded: false, loadError: false, inflight: null }; void load(userId); }, [userId]);
+  const retry = useCallback(() => { if (!userId) return; resetAndLoad(userId); }, [userId]);
 
   return { signedIn: !!userId, loadError: !!userId && s.userId === userId && s.loadError, retry, loaded: !userId || (s.userId === userId && s.loaded), call: userId && s.userId === userId ? s.calls[showId] ?? null : null, lock };
 }
@@ -89,6 +90,6 @@ export function useMyScoreCalls() {
   useEffect(() => { if (userId) void load(userId); }, [userId]);
   const ready = !!userId && s.userId === userId && s.loaded;
   const calls = ready ? Object.values(s.calls).sort((a, b) => b.locked_at.localeCompare(a.locked_at)) : [];
-  const retry = useCallback(() => { if (!userId) return; store = { ...store, loaded: false, loadError: false, inflight: null }; void load(userId); }, [userId]);
+  const retry = useCallback(() => { if (!userId) return; resetAndLoad(userId); }, [userId]);
   return { signedIn: !!userId, loaded: ready, loadError: !!userId && s.userId === userId && s.loadError, retry, calls };
 }
