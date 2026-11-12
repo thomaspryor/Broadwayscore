@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-11-12T18:43:54.526Z",
-  "processed": 774,
-  "failed": 430,
-  "successRate": "64.3%",
+  "updatedAt": "2026-11-12T19:05:18.026Z",
+  "processed": 777,
+  "failed": 109,
+  "successRate": "87.7%",
   "tierBreakdown": {
-    "playwright": 342,
+    "playwright": 345,
     "amp": 0,
     "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 35,
+    "scrapingdog": 62,
+    "scrapingbee": 36,
     "brightdata": 16,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 339
   },
   "browserbaseSessions": 1,
   "recentActivity": [
@@ -24,6 +24,17 @@
     },
     {
       "t": "2026-11-12T18:38:36.176Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-12T18:56:44.809Z",
+      "event": "bb-session",
+      "session": "193aa4a2",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-12T18:56:45.340Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
