@@ -68,3 +68,32 @@ test('every exclusion site reads the flag through the canonical predicate (no ra
     assert.deepEqual(raw, [], `${rel} gates on the raw isSyndicatedDuplicate flag; use isSyndicatedDuplicateActive(data, filePath)`);
   }
 });
+
+test('every ESM named import of these CJS modules resolves (cjs-module-lexer visibility)', async () => {
+  // An inline arrow/function-valued property in module.exports stops the lexer and silently hides
+  // every later export from `import { x } from` (BRO-7327 land failure: getWrongProductionReasonForBww).
+  const scriptsDir = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+  const mods = ['review-guards', 'syndication-pairs', 'llm-scoring-parity', 'review-field-edit'];
+  const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => {
+    if (e.name === 'node_modules' || e.name.startsWith('.')) return [];
+    const p = path.join(d, e.name);
+    return e.isDirectory() ? walk(p) : (e.name.endsWith('.mjs') ? [p] : []);
+  });
+  const files = walk(scriptsDir);
+  let checked = 0;
+  for (const mod of mods) {
+    const visible = new Set(Object.keys(await import(`./${mod}.js`)));
+    const re = new RegExp(`import\\s*\\{([^}]*)\\}\\s*from\\s*['"][^'"]*\\/${mod}\\.js['"]`, 'g');
+    for (const f of files) {
+      for (const m of fs.readFileSync(f, 'utf8').matchAll(re)) {
+        for (const raw of m[1].split(',')) {
+          const name = raw.trim().split(/\s+as\s+/)[0].trim();
+          if (!name) continue;
+          checked++;
+          assert.ok(visible.has(name), `${path.relative(scriptsDir, f)} imports { ${name} } from ${mod}.js, but ESM cannot see it`);
+        }
+      }
+    }
+  }
+  assert.ok(checked > 0, 'scan found no ESM named imports; the regex or paths are wrong');
+});

@@ -7139,9 +7139,15 @@ function isReviewContentTrustworthy(data) {
   );
 }
 
+// BRO-7327: re-exported so scoring-delta's baseline/candidate replay sees the canonical predicate.
+// Plain function + shorthand export: an inline arrow property stops cjs-module-lexer, which hides
+// every later export from ESM named imports.
+function isSyndicatedDuplicateActive(data, filePath) {
+  return require('./syndication-pairs').isSyndicatedDuplicateActive(data, filePath);
+}
+
 module.exports = {
-  // BRO-7327: re-exported so scoring-delta's baseline/candidate replay sees the canonical predicate.
-  isSyndicatedDuplicateActive: (data, filePath) => require('./syndication-pairs').isSyndicatedDuplicateActive(data, filePath),
+  isSyndicatedDuplicateActive,
   isUrlCorrectedAwaitingFreshScore,
   isRejectedByReasonExclusion,
   isRejectedAtExclusion,
