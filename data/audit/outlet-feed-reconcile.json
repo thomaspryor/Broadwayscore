@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T10:55:40.875Z",
+  "generatedAt": "2026-11-12T11:59:42.445Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -106,6 +106,10 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -126,45 +130,18 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 857,
-  "matchedGaps": 6,
+  "itemsScanned": 853,
+  "matchedGaps": 3,
   "possibleGaps": 2,
   "gaps": [
     {
       "showId": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "level": "matched",
-      "outletId": "monstagigz",
-      "url": "https://monstagigz.com/2026/11/12/theatre-review-cloud-9-starring-sam-troughton-tom-mothersdale-charlotte-ritchie-stuart-thompson-at-the-lyttelton-national-theatre/",
-      "headline": "THEATRE REVIEW: Cloud 9 starring Sam Troughton, Tom Mothersdale, Charlotte Ritchie &#038; Stuart Thompson at the Lyttelton, National Theatre",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/area/southwark/review-cloud-9-national-theatre/",
+      "headline": "Review: Cloud 9 &#8211; National Theatre",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "the-spy-in-the-stalls",
-      "url": "https://thespyinthestalls.com/2026/11/cloud-9/",
-      "headline": "CLOUD 9★★★★★Lyttelton Theatre",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "west-end-wilma",
-      "url": "https://westendwilma.com/cloud-9-national-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=cloud-9-national-theatre-review",
-      "headline": "CLOUD 9 at the National Theatre, Review &#8211; &#8220;overly complicated brilliance&#8221; ★★★★",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
