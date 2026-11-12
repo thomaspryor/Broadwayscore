@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T16:14:56.977Z",
+  "timestamp": "2026-11-12T17:05:25.971Z",
   "stats": {
-    "totalReviews": 81648,
-    "alreadyFlagged": 22300,
+    "totalReviews": 81709,
+    "alreadyFlagged": 22302,
     "dateGuardCatches": 218,
-    "directorMismatch": 3654,
+    "directorMismatch": 3649,
     "tvFilmSignals": 2301,
     "londonSignals": 3708,
     "offBroadwaySignals": 752,
     "yearMismatch": 371,
-    "noPublishDate": 8394
+    "noPublishDate": 8454
   },
   "findings": [
     {
@@ -5911,20 +5911,6 @@
       "score": 71,
       "publishDate": "November 8, 2012",
       "url": "http://theater.nytimes.com/2012/11/09/theater/reviews/annie-starring-katie-finneran-at-the-palace-theater.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"martin charnin\" from annie-1997"
-        }
-      ]
-    },
-    {
-      "showId": "annie-2012",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 78,
-      "publishDate": "November 9, 2012",
-      "url": "https://www.hollywoodreporter.com/news/annie-theater-review-390315/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -47738,6 +47724,20 @@
       ]
     },
     {
+      "showId": "oh-mary-off-broadway-2024",
+      "file": "variety--rebecca-rubin.json",
+      "score": null,
+      "publishDate": "2024-04-24",
+      "url": "https://variety.com/2024/legit/news/cole-escola-oh-mary-broadway-sold-out-run-1235980516/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
       "showId": "oh-mary-tour-2026",
       "file": "425-magazine--blake-peterson.json",
       "score": 91,
@@ -54920,7 +54920,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
-      "score": 58,
+      "score": 61,
       "publishDate": "2025-03-07",
       "url": "https://www.londontheatre.co.uk/reviews/punch-review-james-graham-young-vic",
       "findings": [
@@ -54982,7 +54982,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "thestage--sam-marlowe.json",
-      "score": 58,
+      "score": 60,
       "publishDate": "2025-03-07",
       "url": "https://www.thestage.co.uk/reviews/punch-review-young-vic-london-james-graham-david-shields-julie-hesmondhalgh-tony-hirst-right-from-wrong-jacob-dunne",
       "findings": [
@@ -57001,7 +57001,7 @@
     {
       "showId": "shifters-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2024-08-22",
       "url": "https://inews.co.uk/culture/arts/shifters-review-glorious-tender-profound-3239467",
       "findings": [
@@ -57029,7 +57029,7 @@
     {
       "showId": "shifters-west-end-2024",
       "file": "telegraph--dzifa-benson.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2024-08-22",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/shifters-duke-of-yorks-theatre-review/",
       "findings": [
@@ -57048,7 +57048,7 @@
     {
       "showId": "shifters-west-end-2024",
       "file": "telegraph--kirsten-grant.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2024-08-22",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/shifters-bush-theatre-review-genuinely-funny/",
       "findings": [
@@ -60007,7 +60007,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "getthechance--hannah-goslin.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2024-05-09",
       "url": "https://getthechance.wales/2024/05/09/review-spirited-away-london-coliseum-by-hannah-goslin/",
       "findings": [
@@ -64549,7 +64549,7 @@
     {
       "showId": "the-39-steps-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2024-08-20",
       "url": "https://www.londontheatre.co.uk/reviews/the-39-steps-review-trafalgar-theatre",
       "findings": [
@@ -66539,7 +66539,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "artsdesk--veronica-lee.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "2025-05-15",
       "url": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
       "findings": [
@@ -66586,7 +66586,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "broadwayworld--senior-franco-milazzo.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
       "findings": [
@@ -83845,25 +83845,6 @@
     },
     {
       "showId": "west-side-story-2020",
-      "file": "amny--matt-windman.json",
-      "score": 42,
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/theater/review-west-side-story-revival-gets-lost-in-brutal-violence-and-overwhelming-video-imagery/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2020",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 67,
       "publishDate": "February 21st, 2020",
@@ -84091,25 +84072,6 @@
     },
     {
       "showId": "west-side-story-2020",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 86,
-      "publishDate": "February 20, 2020",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/west-side-story-theater-1280016/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2020",
       "file": "latimes--charles-mcnulty.json",
       "score": 91,
       "publishDate": "2020-02-20",
@@ -84206,20 +84168,6 @@
           "severity": "HIGH",
           "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
         },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2020",
-      "file": "nydailynews--chris-jones.json",
-      "score": 85,
-      "publishDate": "2020-02-20",
-      "url": "https://www.nydailynews.com/2020/02/20/west-side-story-gets-a-whole-new-look-on-broadway-from-director-ivo-van-hove/",
-      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -84406,9 +84354,8 @@
     {
       "showId": "west-side-story-2020",
       "file": "thestage--nicole-serratore.json",
-      "score": 78,
-      "publishDate": "2020-02-21",
-      "url": "https://www.thestage.co.uk/reviews/west-side-story-review-at-broadway-theatre-new-york--ivo-van-hove-refreshes-a-classic-musical",
+      "publishDate": "2020-02-20T19:47:08-05:00",
+      "url": "https://www.thestage.co.uk/reviews/2020/west-side-story-ivo-van-hove-review-at-broadway-theatre-new-york/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -120957,7 +120904,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 94,
+      "score": 95,
       "publishDate": "2026-06-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-pride-dorfman-theatre",
       "findings": [
@@ -121027,7 +120974,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2026-06-26",
       "url": "https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review",
       "findings": [
@@ -121041,7 +120988,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "londontheatre1--terry-eastham.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2026-06-26",
       "url": "https://www.londontheatre1.com/reviews/pride-national-theatre/",
       "findings": [
@@ -121055,7 +121002,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "musical-theatre-review--billy-nicholles.json",
-      "score": 94,
+      "score": 93,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/pride-dorfman-national-theatre/",
       "findings": [
@@ -122059,7 +122006,7 @@
     {
       "showId": "robin-hood-west-end-2024",
       "file": "whatsonstage--tom-millward.json",
-      "score": 83,
+      "score": 85,
       "publishDate": "December 13th, 2024",
       "url": "https://www.whatsonstage.com/news/robin-hood-pantomime-at-the-london-palladium-review_1657477/",
       "findings": [
@@ -122311,7 +122258,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2024",
       "file": "observer--susannah-clapp.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2024-05-26",
       "url": "https://www.theguardian.com/stage/article/2024/may/26/the-week-in-theatre-romeo-and-juliet-duke-of-yorks-tom-holland-francesca-amewudah-rivers-jamie-lloyd-review-richard-iii-shakespeares-globe-michelle-terry-passing-strange-young-vic-giles-tereira?CMP=Share_iOSApp_Other",
       "findings": [
@@ -124894,7 +124841,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2024-05-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-SPIRITED-AWAY-London-Coliseum-20240509",
       "findings": [
@@ -124922,7 +124869,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 59,
+      "score": 65,
       "publishDate": "2024-05-09T05:03:15+00:00",
       "url": "https://www.timeout.com/london/theatre/spirited-away-review",
       "findings": [
@@ -125104,7 +125051,7 @@
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
       "file": "whatsonstage--alex-wood.json",
-      "score": 99,
+      "score": 94,
       "publishDate": "2024-02-29",
       "url": "https://www.whatsonstage.com/news/standing-at-the-skys-edge-review-a-soaring-achievement-with-new-edges-for-the-west-end_1579894/",
       "findings": [
@@ -125411,7 +125358,7 @@
     {
       "showId": "stereophonic-west-end-2025",
       "file": "artsdesk--helen-hawkins.json",
-      "score": 96,
+      "score": 94,
       "publishDate": "June 16th, 2025",
       "url": "https://theartsdesk.com/theatre/stereophonic-duke-yorks-theatre-review-rich-slice-creative-life-delivered-1970s-rock-band",
       "findings": [
@@ -128268,7 +128215,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "all-that-dazzles-uk--sam-admin.json",
-      "score": 60,
+      "score": 61,
       "publishDate": "June 19th, 2024",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-bounds-royal-court-theatre",
       "findings": [
@@ -128310,7 +128257,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "everything-theatre--m-jacob.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2024-06-22",
       "url": "https://everything-theatre.co.uk/2024/06/review-the-bounds-royal-court-theatre/",
       "findings": [
@@ -128338,7 +128285,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "london-theatre--julia-rank.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "June 18th, 2024",
       "url": "https://www.londontheatre.co.uk/reviews/the-bounds-review-royal-court",
       "findings": [
@@ -128366,7 +128313,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "theatre-weekly--theatre-weekly.json",
-      "score": 65,
+      "score": 68,
       "publishDate": "2024-06-17",
       "url": "https://theatreweekly.com/review-the-bounds-at-the-royal-court/",
       "findings": [
@@ -128492,7 +128439,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "all-that-dazzles-uk--sam-admin.json",
-      "score": 37,
+      "score": 43,
       "publishDate": "2025-04-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-brightening-air-the-old-vic",
       "findings": [
@@ -128520,7 +128467,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 35,
+      "score": 38,
       "publishDate": "2025-04-25",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-BRIGHTENING-AIR-starring-Chris-ODowd-The-Old-Vic-20250425",
       "findings": [
@@ -128548,7 +128495,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 56,
       "publishDate": "April 25th, 2025",
       "url": "https://www.theguardian.com/stage/2025/apr/25/the-brightening-air-review-conor-mcpherson-chris-o-dowd-rosie-sheehy-old-vic-london",
       "findings": [
@@ -128604,7 +128551,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "london-theatre--anya-ryan.json",
-      "score": 59,
+      "score": 65,
       "publishDate": "2025-04-25",
       "url": "https://www.londontheatre.co.uk/reviews/the-brightening-air-review-old-vic",
       "findings": [
@@ -128618,7 +128565,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "london-theatre--unknown.json",
-      "score": 66,
+      "score": 65,
       "publishDate": "April 25th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/the-brightening-air-review-old-vic",
       "findings": [
@@ -128632,7 +128579,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2025-04-24",
       "url": "https://theatreweekly.com/review-the-brightening-air-at-the-old-vic/",
       "findings": [
@@ -129475,7 +129422,7 @@
     {
       "showId": "the-constituent-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2024-06-26",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-CONSTITUENT-The-Old-Vic-20240626",
       "findings": [
@@ -129503,7 +129450,7 @@
     {
       "showId": "the-constituent-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2024-06-26",
       "url": "https://www.londontheatre.co.uk/reviews/the-constituent-review-old-vic",
       "findings": [
@@ -129545,7 +129492,7 @@
     {
       "showId": "the-constituent-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 59,
+      "score": 62,
       "publishDate": "2024-06-25",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-constituent-old-vic-review/",
       "findings": [
@@ -129837,7 +129784,7 @@
     {
       "showId": "the-curious-case-of-benjamin-button-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 99,
+      "score": 100,
       "publishDate": "2024-11-07",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-curious-case-of-benjamin-button-ambassador-s-theatre",
       "findings": [
@@ -141237,7 +141184,7 @@
     },
     {
       "showId": "waiting-for-godot-2025",
-      "file": "this-week-in-new-york--unknown.json",
+      "file": "this-week-in-new-york--mark-rifkin.json",
       "score": 74,
       "publishDate": "2025-10-17",
       "url": "https://twi-ny.com/2025/10/17/waiting-for-godot-krapps-last-tape-endgame/",
