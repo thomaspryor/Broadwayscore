@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T02:46:44.442Z",
+  "timestamp": "2026-11-12T03:44:31.197Z",
   "stats": {
-    "totalReviews": 81567,
-    "alreadyFlagged": 22269,
+    "totalReviews": 81611,
+    "alreadyFlagged": 22272,
     "dateGuardCatches": 218,
-    "directorMismatch": 3631,
-    "tvFilmSignals": 2299,
-    "londonSignals": 3701,
+    "directorMismatch": 3649,
+    "tvFilmSignals": 2300,
+    "londonSignals": 3702,
     "offBroadwaySignals": 751,
-    "yearMismatch": 370,
-    "noPublishDate": 8472
+    "yearMismatch": 372,
+    "noPublishDate": 8473
   },
   "findings": [
     {
@@ -90,7 +90,7 @@
     {
       "showId": "1536-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 77,
       "publishDate": "2025-05-14",
       "url": "https://www.londonboxoffice.co.uk/news/post/1536-almeida-review",
       "findings": [
@@ -109,7 +109,7 @@
     {
       "showId": "1536-off-west-end-2026",
       "file": "london-theatre--julia-rank.json",
-      "score": 71,
+      "score": 77,
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/1536-review-almeida-theatre",
       "findings": [
@@ -128,7 +128,7 @@
     {
       "showId": "1536-off-west-end-2026",
       "file": "telegraph--claire-allfree.json",
-      "score": 65,
+      "score": 57,
       "publishDate": "2025-05-14",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/1536-almeida-review/",
       "findings": [
@@ -155,7 +155,7 @@
     {
       "showId": "1536-off-west-end-2026",
       "file": "thestage--sam-marlowe.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-05-18",
       "url": "https://www.thestage.co.uk/reviews/1536-review-almeida-theatre-london-ava-pickett-lyndsey-turner",
       "findings": [
@@ -188,7 +188,7 @@
     {
       "showId": "1536-off-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 89,
+      "score": 82,
       "publishDate": "2025-05-18",
       "url": "https://www.whatsonstage.com/news/1536-at-the-almeida-theatre-review_1677762/",
       "findings": [
@@ -2584,7 +2584,7 @@
     {
       "showId": "a-slow-fire-off-west-end-2026",
       "file": "timeout-london--holly-omahony.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-08-25",
       "url": "https://www.timeout.com/london/theatre/a-slow-fire-review",
       "findings": [
@@ -4183,7 +4183,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "mail-on-sunday--robert-gore-langton.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -4397,7 +4397,7 @@
     {
       "showId": "allegra-west-end-2026",
       "file": "theupcoming--jim-compton.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-07-10",
       "url": "https://www.theupcoming.co.uk/2026/07/10/allegra-at-harold-pinter-theatre-theatre-review/",
       "findings": [
@@ -4430,7 +4430,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "February 28th, 2025",
       "url": "https://www.theguardian.com/stage/2025/feb/28/alterations-review-tailoring-comedy-remade-to-measure-at-the-national-theatre",
       "findings": [
@@ -4449,7 +4449,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "london-theatre--anya-ryan.json",
-      "score": 87,
+      "score": 90,
       "publishDate": "February 28th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/alterations-review-national-theatre",
       "findings": [
@@ -4860,7 +4860,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "thestage--sam-marlowe.json",
-      "score": 65,
+      "score": 64,
       "publishDate": "2026-02-02",
       "url": "https://www.thestage.co.uk/reviews/american-psycho-review-almeida-theatre-london",
       "findings": [
@@ -8107,7 +8107,7 @@
     {
       "showId": "beaches-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 45,
+      "score": 38,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/state-of-broadway-2026-96cq9lwrh",
       "findings": [
@@ -8412,6 +8412,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (2x) more than 2022 (0x). 2019 matches production: beetlejuice-2019"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "andrew-j-stillman--andrew-j-stillman.json",
+      "publishDate": "2023-08-17",
+      "url": "https://www.andrewjstillman.com/reviews/beetlejuice-musical",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: beetlejuice-west-end-2026"
         }
       ]
     },
@@ -12214,7 +12227,7 @@
     {
       "showId": "cats-off-west-end-2026",
       "file": "london-unattached--jeanne-horak.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2026-08-08",
       "url": "https://www.london-unattached.com/cats-regents-park-open-air-theatre/",
       "findings": [
@@ -16462,7 +16475,7 @@
     {
       "showId": "dear-england-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 74,
+      "score": 77,
       "publishDate": "2025-03-21",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-14521559/PATRICK-MARMION-Dear-England-National-Theatre.html",
       "findings": [
@@ -19361,7 +19374,7 @@
     {
       "showId": "dolly-a-true-original-musical-regional-2025",
       "file": "cowboys-and-indians--joe-leydon.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2025-08-10",
       "url": "https://www.cowboysindians.com/2025/08/review-dolly-delights-in-nashville/",
       "findings": [
@@ -20984,7 +20997,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 99,
+      "score": 98,
       "publishDate": "August 7th, 2025",
       "url": "https://www.allthatdazzles.co.uk/post/review-every-brilliant-thing-sohoplace",
       "findings": [
@@ -21073,7 +21086,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "liamodell--liam-odell.json",
-      "score": 61,
+      "score": 55,
       "publishDate": "2025-08-08",
       "url": "https://liamodell.com/2025/08/08/every-brilliant-thing-review-lenny-henry-play-theatre-show-duncan-macmillan-jeremy-herrin-soho-place-theatre-london-minnie-driver-sue-perkins-jonny-donahoe-ambika-mod-list/",
       "findings": [
@@ -21087,7 +21100,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 82,
       "publishDate": "2025-08-09",
       "url": "https://www.londonboxoffice.co.uk/news/post/every-brilliant-thing-sohoplace-review",
       "findings": [
@@ -21101,7 +21114,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "london-theatre--holly-omahony.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2025-08-08",
       "url": "https://www.londontheatre.co.uk/reviews/every-brilliant-thing-review-soho-place",
       "findings": [
@@ -25645,7 +25658,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "thestage--sam-marlowe.json",
-      "score": 71,
+      "score": 79,
       "publishDate": "2026-06-19",
       "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-london-patrick-marber",
       "findings": [
@@ -30711,7 +30724,7 @@
     {
       "showId": "heathers-the-musical-off-broadway-2025",
       "file": "front-row-center--stanford-friedman.json",
-      "score": 65,
+      "score": 68,
       "publishDate": "2025-07-10T21:15:52",
       "url": "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
       "findings": [
@@ -33104,7 +33117,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-07-27",
       "url": "https://www.theartsdesk.com/theatre/inter-alia-national-theatre-review-dazzling-performance-questionable-writing",
       "findings": [
@@ -33288,7 +33301,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "nytimes--houman-barekat.json",
-      "score": 62,
+      "score": 49,
       "publishDate": "2025-07-24",
       "url": "https://www.nytimes.com/2025/07/24/theater/inter-alia-national-theatre-london-review.html?eafs_enabled=false",
       "findings": [
@@ -33644,7 +33657,7 @@
     {
       "showId": "inter-alia-west-end-2026",
       "file": "thestage--holly-omahony.json",
-      "score": 54,
+      "score": 58,
       "publishDate": "2026-04-08",
       "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
       "findings": [
@@ -34779,7 +34792,7 @@
     {
       "showId": "into-the-woods-off-west-end-2025",
       "file": "independent--louis-chilton.json",
-      "score": 83,
+      "score": 81,
       "publishDate": "2025-12-12",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
       "findings": [
@@ -35646,9 +35659,48 @@
     },
     {
       "showId": "jagged-little-pill-tour-2022",
+      "file": "broadwayworld--jon-bee.json",
+      "publishDate": "2023-08-22",
+      "url": "https://www.broadwayworld.com/denver/article/Review-JAGGED-LITTLE-PILL-Goes-Down-Easy-at-DCPA-20230822",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
       "file": "cbc--unknown.json",
       "publishDate": "2023-10-26",
       "url": "https://www.cbc.ca/music/alanis-jagged-little-pill-musical-1.7008708",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "chrisgrum--unknown.json",
+      "publishDate": "2023-09-08",
+      "url": "https://chrisgrum.wordpress.com/2023/09/08/review-jagged-little-pill/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "minneapolis-star-tribune--rohan-preston.json",
+      "publishDate": "2023-08-09",
+      "url": "https://www.startribune.com/review-jagged-little-pill-broadway-musical-minneapolis-orpheum-diablo-cody-alanis-morissette/600295934",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35696,6 +35748,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "westword--toni-tresca.json",
+      "publishDate": "2023-08-15",
+      "url": "https://www.westword.com/arts-culture/alanis-morissette-musical-jagged-little-pill-dcpa-17557067/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2022 (1x). 2019 matches production: jagged-little-pill-2019"
         }
       ]
     },
@@ -36103,7 +36168,7 @@
     {
       "showId": "john-proctor-is-the-villain-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 84,
+      "score": 89,
       "publishDate": "2025-04-14",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=SV360K",
       "findings": [
@@ -39247,6 +39312,24 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "la-dance-chronicle--joanne-divito.json",
+      "publishDate": "2023-08-08",
+      "url": "https://www.ladancechronicle.com/les-miserables-triumphant-return/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "ladue-news--mark-bretz.json",
       "score": 88,
       "publishDate": "2025-11-24",
@@ -39309,6 +39392,29 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "oc-register--christopher-smith.json",
+      "publishDate": "2023-09-21",
+      "url": "https://www.ocregister.com/2023/09/21/review-les-miserables-storms-the-barricades-in-costa-mesa/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
         }
       ]
     },
@@ -39432,6 +39538,52 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "south-pasadenan--unknown.json",
+      "publishDate": "2023-07-29",
+      "url": "https://southpasadenan.com/les-miserables-returns-to-hollywood-pantages-and-segerstrom-center-for-the-arts/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "stage-raw--socks-whitmore.json",
+      "publishDate": "2023-08-08",
+      "url": "https://stageraw.com/les-miserables/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
         }
       ]
     },
@@ -39925,7 +40077,7 @@
     {
       "showId": "liberation-off-broadway-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 72,
+      "score": 88,
       "publishDate": "February 21st, 2025",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-TT93M1",
       "findings": [
@@ -41497,7 +41649,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2025-04-14",
       "url": "https://theartsdesk.com/theatre/manhunt-royal-court-review-terrifyingly-toxic-masculinity",
       "findings": [
@@ -44038,6 +44190,19 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
+      "file": "broadwayworld--shelby-tyler.json",
+      "publishDate": "2023-08-08",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Kennedy-Center-20230808",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--theresa-bertram.json",
       "score": 94,
       "publishDate": "2026-07-10",
@@ -44552,6 +44717,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "the-daily-gazette--matthew-g-moross.json",
+      "publishDate": "2023-10-25",
+      "url": "https://www.dailygazette.com/life_and_arts/theater/mrs-doubtfire-hugely-entertaining-at-proctors-in-schenectady/article_e8e80c50-735a-11ee-b962-239869bba4f5.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
         }
       ]
     },
@@ -46810,7 +46988,7 @@
     {
       "showId": "north-by-northwest-york-royal-regional-2025",
       "file": "fairypoweredproductions--katie-brewerton.json",
-      "score": 89,
+      "score": 78,
       "publishDate": "2025-03-27",
       "url": "https://fairypoweredproductions.com/north-by-northwest-review/",
       "findings": [
@@ -47693,6 +47871,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "san-francisco-chronicle--tony-bravo.json",
+      "publishDate": "2026-10-07",
+      "url": "https://www.sfchronicle.com/entertainment/theater/article/oh-mary-san-francisco-tour-22463185.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -61222,7 +61418,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "artsfuse--debra-cash.json",
-      "score": 45,
+      "score": 44,
       "publishDate": "2026-03-19",
       "url": "https://artsfuse.org/326060/theater-review-suffs-marches-on-without-the-fire-its-story-deserves/",
       "findings": [
@@ -61329,7 +61525,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "cleveland-plain-dealer--joey-morona.json",
-      "score": 61,
+      "score": 79,
       "publishDate": "2026-02-05",
       "url": "https://www.cleveland.com/entertainment/2026/02/suffs-at-playhouse-square-review-musical-about-womens-suffrage-movement-is-relevant-inspiring.html",
       "findings": [
@@ -61376,7 +61572,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "gephardt-daily--nancy-van-valkenburg.json",
-      "score": 73,
+      "score": 79,
       "publishDate": "2025-11-13",
       "url": "https://gephardtdaily.com/local/review-suffs-offers-stirring-version-of-womens-activism-history/",
       "findings": [
@@ -61465,7 +61661,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "minneapolis-star-tribune--rohan-preston.json",
-      "score": 86,
+      "score": 80,
       "publishDate": "2026-04-09",
       "url": "https://www.startribune.com/should-women-vote-suffs-shows-a-past-and-current-fight/601664006",
       "findings": [
@@ -61548,7 +61744,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "san-francisco-chronicle--lily-janiak.json",
-      "score": 73,
+      "score": 90,
       "publishDate": "2025-10-24",
       "url": "https://www.sfchronicle.com/entertainment/article/suffs-broadwaysf-review-protests-21073924.php",
       "findings": [
@@ -61562,7 +61758,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "seattle-times--dusty-somers.json",
-      "score": 60,
+      "score": 76,
       "publishDate": "2025-09-22",
       "url": "https://www.seattletimes.com/entertainment/theater/suffs-crackles-with-energy-at-5th-avenue-theatre/",
       "findings": [
@@ -61632,7 +61828,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "the-news-herald--mark-meszoros.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2026-02-06",
       "url": "https://www.news-herald.com/2026/02/06/suffs-at-playhouse-square-review-hear-these-impressive-women-roar/",
       "findings": [
@@ -61688,7 +61884,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "trib-live--alexis-papalia.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2026-07-22",
       "url": "https://triblive.com/aande/theater-arts/review-suffs-at-the-benedum-center-is-a-powerful-historical-tale-in-an-entertaining-package/",
       "findings": [
@@ -66289,7 +66485,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "artsdesk--veronica-lee.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-05-15",
       "url": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
       "findings": [
@@ -66336,7 +66532,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "broadwayworld--senior-franco-milazzo.json",
-      "score": 85,
+      "score": 81,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
       "findings": [
@@ -67107,7 +67303,7 @@
     {
       "showId": "the-dance-of-death-regional-2026",
       "file": "chicagocultureauthority--frank-sennett.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-02-08",
       "url": "https://chicagocultureauthority.com/2026/02/08/jeff-perry-gets-his-freak-on-in-the-dance-of-death-at-steppenwolf/",
       "findings": [
@@ -67904,7 +68100,7 @@
     {
       "showId": "the-enormous-crocodile-off-west-end-2026",
       "file": "afridiziak-theatre-news--ronke-lawal.json",
-      "score": 88,
+      "score": 87,
       "publishDate": "2024-05-23",
       "url": "https://www.afridiziak.com/reviews/the-enormous-crocodile-the-musical-by-roald-dahl/",
       "findings": [
@@ -69601,7 +69797,7 @@
     {
       "showId": "the-great-gatsby-west-end-2025",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 62,
+      "score": 54,
       "publishDate": "2025-04-26",
       "url": "https://theartsdesk.com/theatre/great-gatsby-london-coliseum-review-lavish-and-lively-production-fails-capture-novels-tortured-soul",
       "findings": [
@@ -69629,7 +69825,7 @@
     {
       "showId": "the-great-gatsby-west-end-2025",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 45,
+      "score": 39,
       "publishDate": "2025-04-25",
       "url": "https://www.broadwayworld.com/article/Review-THE-GREAT-GATSBY-Starring-Jamie-Muscato-and-Corbin-Bleu-20250425",
       "findings": [
@@ -69657,7 +69853,7 @@
     {
       "showId": "the-great-gatsby-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 14,
+      "score": 15,
       "publishDate": "2025-04-24",
       "url": "https://www.theguardian.com/stage/2025/apr/24/the-great-gatsby-a-new-musical-review-coliseum-london-f-scott-fitzgerald",
       "findings": [
@@ -71092,7 +71288,7 @@
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "off-off-online--deirdre-donovan.json",
-      "score": 63,
+      "score": 81,
       "publishDate": "2025-03-16",
       "url": "https://www.offoffonline.com/offoffonline/2025/3/7/the-jonathan-larson-project",
       "findings": [
@@ -71139,7 +71335,7 @@
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "theater-scene--victor-gluck.json",
-      "score": 85,
+      "score": 87,
       "publishDate": "2025-03-19",
       "url": "https://www.theaterscene.net/musicals/offbway/the-jonathan-larson-project/victor-gluck/",
       "findings": [
@@ -71186,7 +71382,7 @@
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "timeout--raven-snook.json",
-      "score": 59,
+      "score": 60,
       "publishDate": "March 13th, 2025",
       "url": "https://www.timeout.com/newyork/theater/the-jonathan-larson-project-off-broadway-review",
       "findings": [
@@ -76380,7 +76576,7 @@
     {
       "showId": "the-score-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "March 1st, 2025",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-score-theatre-royal-haymarket",
       "findings": [
@@ -76394,7 +76590,7 @@
     {
       "showId": "the-score-west-end-2025",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 45,
+      "score": 39,
       "publishDate": "2025-02-28",
       "url": "https://theartsdesk.com/theatre/score-theatre-royal-haymarket-review-curious-beast-play-fails-engage",
       "findings": [
@@ -76464,7 +76660,7 @@
     {
       "showId": "the-score-west-end-2025",
       "file": "standard--tim-bano.json",
-      "score": 70,
+      "score": 56,
       "publishDate": "2025-02-27",
       "url": "https://www.standard.co.uk/culture/theatre/the-score-theatre-royal-haymarket-review-brian-cox-bach-b1213610.html",
       "findings": [
@@ -76483,7 +76679,7 @@
     {
       "showId": "the-score-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 83,
+      "score": 78,
       "publishDate": "February 27th, 2025",
       "url": "https://theatreweekly.com/review-the-score-at-theatre-royal-haymarket/",
       "findings": [
@@ -82054,7 +82250,7 @@
     {
       "showId": "waitress-regional-2025",
       "file": "chicagocultureauthority--frank-sennett.json",
-      "score": 89,
+      "score": 92,
       "publishDate": "2025-02-22",
       "url": "https://chicagocultureauthority.com/2025/02/22/michelle-lauto-serves-up-a-breakout-performance-in-waitress-at-the-paramount/",
       "findings": [
@@ -85403,6 +85599,19 @@
     },
     {
       "showId": "wicked-tour-2021",
+      "file": "intermissionblog--morgan-politzer.json",
+      "publishDate": "2023-09-05",
+      "url": "https://www.intermissionblog.com/reviews/review-fellow-north-carolinians-let-us-rejoycify-that-wicked-has-returned",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
       "file": "next-magazine--william-molls.json",
       "score": 67,
       "publishDate": "2024-06-08",
@@ -86313,7 +86522,7 @@
     {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "June 19th, 2025",
       "url": "https://www.theguardian.com/stage/2025/jun/19/448-psychosis-review-royal-court-theatre-london-sarah-kane-play",
       "findings": [
@@ -86327,7 +86536,7 @@
     {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "london-theatre--holly-omahony.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "June 19th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/4-48-psychosis-review-royal-court",
       "findings": [
@@ -88442,7 +88651,7 @@
     {
       "showId": "after-the-act-west-end-2025",
       "file": "everything-theatre--simon-finn.json",
-      "score": 66,
+      "score": 55,
       "publishDate": "May 24th, 2025",
       "url": "https://everything-theatre.co.uk/2025/05/review-after-the-act-royal-court-theatre/",
       "findings": [
@@ -88470,7 +88679,7 @@
     {
       "showId": "after-the-act-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 11,
+      "score": 14,
       "publishDate": "May 25th, 2025",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/after-the-act-review-the-worst-show-of-the-year-so-far-vf965zrxb",
       "findings": [
@@ -89099,7 +89308,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "March 2nd, 2025",
       "url": "https://theartsdesk.com/theatre/alterations-national-theatre-review-high-emotional-costs-ambition",
       "findings": [
@@ -89127,7 +89336,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-02-28",
       "url": null,
       "findings": [
@@ -89155,7 +89364,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "February 28th, 2025",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/alterations-national-theatre-review/",
       "findings": [
@@ -91482,7 +91691,7 @@
     {
       "showId": "ballet-shoes-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2025-11-26",
       "url": "https://www.londonboxoffice.co.uk/news/post/ballet-shoes-national-theatre-review",
       "findings": [
@@ -93086,7 +93295,7 @@
     {
       "showId": "born-with-teeth-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 70,
+      "score": 60,
       "publishDate": "September 3rd, 2025",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/born-with-teeth-ncuti-gatwa-wyndhams-review-b2819206.html",
       "findings": [
@@ -93127,7 +93336,7 @@
     {
       "showId": "born-with-teeth-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2025-09-04",
       "url": "https://www.londonboxoffice.co.uk/news/post/born-with-teeth-wyndhams-review",
       "findings": [
@@ -93851,7 +94060,7 @@
     {
       "showId": "burlesque-off-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
-      "score": 58,
+      "score": 63,
       "publishDate": "2025-07-23",
       "url": "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
       "findings": [
@@ -95254,7 +95463,7 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 66,
+      "score": 65,
       "publishDate": "2026-07-30",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cleansed-almeida-review-sarah-kane-leo-bill-b3024438.html",
       "findings": [
@@ -95282,7 +95491,7 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 58,
+      "score": 55,
       "publishDate": "2026-07-30",
       "url": "https://www.londontheatre.co.uk/reviews/cleansed-review-almeida-theatre",
       "findings": [
@@ -95310,7 +95519,7 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 55,
+      "score": 60,
       "publishDate": "2026-07-30",
       "url": "https://www.thestage.co.uk/reviews/cleansed-review-almeida-theatre-london",
       "findings": [
@@ -95560,6 +95769,20 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "sunday-times--clive-davis.json",
+      "score": 39,
+      "publishDate": "2026-11-11",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-orgasms-and-orgies-in-the-foliage-fchw23k6r",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
       "score": 82,
       "publishDate": "2026-11-11",
@@ -95658,7 +95881,7 @@
     {
       "showId": "clueless-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
-      "score": 72,
+      "score": 59,
       "publishDate": "March 14th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/clueless-review-amy-heckerling-kt-tunstall-trafalgar-theatre",
       "findings": [
@@ -96091,7 +96314,7 @@
     {
       "showId": "cow-deer-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 62,
+      "score": 55,
       "publishDate": "2025-09-11",
       "url": "https://theartsdesk.com/theatre/cow-deer-royal-court-review-paradox-rich-account-non-human-life",
       "findings": [
@@ -96105,7 +96328,7 @@
     {
       "showId": "cow-deer-west-end-2025",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 84,
+      "score": 82,
       "publishDate": "2025-09-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-COW-DEER-Royal-Court-Theatre-20250914",
       "findings": [
@@ -96119,7 +96342,7 @@
     {
       "showId": "cow-deer-west-end-2025",
       "file": "everything-theatre--annie-sutton.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2025-09-18",
       "url": "https://everything-theatre.co.uk/2025/09/review-cow-deer-royal-court-theatre/",
       "findings": [
@@ -96133,7 +96356,7 @@
     {
       "showId": "cow-deer-west-end-2025",
       "file": "firstnightmagazine--unknown.json",
-      "score": 64,
+      "score": 60,
       "publishDate": "2025-09-13",
       "url": "https://firstnightmagazine.com/2025/09/13/review-of-cow-deer-asmr-staging-puts-audiences-in-a-state-of-foley-a-deux/",
       "findings": [
@@ -96175,7 +96398,7 @@
     {
       "showId": "cow-deer-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 26,
+      "score": 34,
       "publishDate": "2025-09-10",
       "url": "https://www.thetimes.com/culture/tv-radio/article/cow-deer-review-bizarre-attempt-eco-art-greta-thunberg-bhz5flvht",
       "findings": [
@@ -99769,7 +99992,7 @@
     {
       "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2026-02-25",
       "url": "https://playsinternational.org.uk/evening-all-afternoon-donmar-warehouse/",
       "findings": [
@@ -106125,7 +106348,7 @@
     {
       "showId": "high-society-off-west-end-2026",
       "file": "thestage--neil-norman.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "June 4th, 2026",
       "url": "https://www.thestage.co.uk/reviews/high-society-review-barbican-theatre-london",
       "findings": [
@@ -107783,7 +108006,7 @@
     {
       "showId": "indian-ink-off-west-end-2025",
       "file": "telegraph--claire-allfree.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2025-12-16",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/indian-ink-review-felicity-kendal/",
       "findings": [
@@ -108760,7 +108983,7 @@
     {
       "showId": "jeezus-off-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 93,
+      "score": 96,
       "publishDate": "2025-08-06",
       "url": "https://www.thestage.co.uk/reviews/jeezus-a-queer-latinx-musical-review",
       "findings": [
@@ -109819,7 +110042,7 @@
     {
       "showId": "just-for-one-day-the-live-aid-musical-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 63,
+      "score": 58,
       "publishDate": "2025-06-12",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/just-for-one-day-review-live-aid-musical-inspires-and-frustrates-bcr0xh0sn",
       "findings": [
@@ -113154,7 +113377,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "April 9th, 2025",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/manhunt-raoul-moat-robert-icke-b2730071.html",
       "findings": [
@@ -113168,7 +113391,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 65,
+      "score": 58,
       "publishDate": "April 9th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/manhunt-royal-court-review-raoul-moat-b1221446.html",
       "findings": [
@@ -115677,7 +115900,7 @@
     {
       "showId": "my-master-builder-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
-      "score": 66,
+      "score": 60,
       "publishDate": "2025-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
       "findings": [
@@ -120841,7 +121064,7 @@
     {
       "showId": "prince-faggot-off-broadway-2025",
       "file": "culturesauce--thom-geier.json",
-      "score": 88,
+      "score": 81,
       "publishDate": "2025-06-17",
       "url": "https://culturesauce.com/2025/06/17/prince-faggot-off-broadway-review/",
       "findings": [
@@ -125043,7 +125266,7 @@
     {
       "showId": "stereophonic-west-end-2025",
       "file": "artsdesk--helen-hawkins.json",
-      "score": 93,
+      "score": 96,
       "publishDate": "June 16th, 2025",
       "url": "https://theartsdesk.com/theatre/stereophonic-duke-yorks-theatre-review-rich-slice-creative-life-delivered-1970s-rock-band",
       "findings": [
@@ -128165,7 +128388,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 66,
+      "score": 57,
       "publishDate": "April 25th, 2025",
       "url": "https://www.theguardian.com/stage/2025/apr/25/the-brightening-air-review-conor-mcpherson-chris-o-dowd-rosie-sheehy-old-vic-london",
       "findings": [
@@ -128221,7 +128444,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "london-theatre--anya-ryan.json",
-      "score": 74,
+      "score": 59,
       "publishDate": "2025-04-25",
       "url": "https://www.londontheatre.co.uk/reviews/the-brightening-air-review-old-vic",
       "findings": [
@@ -128249,7 +128472,7 @@
     {
       "showId": "the-brightening-air-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 88,
+      "score": 83,
       "publishDate": "2025-04-24",
       "url": "https://theatreweekly.com/review-the-brightening-air-at-the-old-vic/",
       "findings": [
@@ -131300,7 +131523,7 @@
     {
       "showId": "the-guilty-off-west-end-2026",
       "file": "plays-international--jeremy-malies.json",
-      "score": 89,
+      "score": 82,
       "publishDate": null,
       "url": "https://playsinternational.org.uk/the-guilty-donmar-warehouse/",
       "findings": [
@@ -132581,7 +132804,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 60,
       "publishDate": "2025-09-21",
       "url": "https://www.theguardian.com/stage/2025/sep/19/the-land-of-the-living-review-juliet-stevenson-dorfman-theatre",
       "findings": [
@@ -132721,7 +132944,7 @@
     {
       "showId": "the-last-laugh-west-end-2025",
       "file": "thestage--tom-wicker.json",
-      "score": 72,
+      "score": 57,
       "publishDate": "2025-02-27",
       "url": "https://www.thestage.co.uk/reviews/the-last-laugh-review-noel-coward-theatre-london-paul-hendy-tommy-cooper",
       "findings": [
@@ -135861,7 +136084,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 78,
+      "score": 81,
       "publishDate": "2024-12-11",
       "url": "https://www.ft.com/content/c800b4fb-d3c2-4725-8401-a6489048ab96",
       "findings": [
@@ -135902,7 +136125,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "independent--louis-chilton.json",
-      "score": 74,
+      "score": 78,
       "publishDate": "2024-12-11",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-producers-musical-menier-chocolate-factory-mel-brooks-b2661942.html",
       "findings": [
@@ -135944,7 +136167,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "sunday-times--dominic-maxwell.json",
-      "score": 89,
+      "score": 79,
       "publishDate": "2024-12-15",
       "url": "https://www.thetimes.com/article/51bc03b7-bdf2-4856-97be-6fb7aa5a7e9b",
       "findings": [
@@ -137046,7 +137269,7 @@
     {
       "showId": "the-story-west-end-2026",
       "file": "theupcoming--emilia-gould.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2026-09-04",
       "url": "https://www.theupcoming.co.uk/2026/09/04/the-story-at-the-national-theatre-theatre-review/",
       "findings": [
