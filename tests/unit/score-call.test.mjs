@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural check, compares two predicate implementations over every real show and pins no specific data fact
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
