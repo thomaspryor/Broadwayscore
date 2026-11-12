@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T13:24:47.337Z",
+  "generatedAt": "2026-11-12T13:52:10.383Z",
   "windowDays": 45,
   "showsScanned": 241,
   "gaps": [
@@ -18,13 +18,13 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=cloud-9-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-interview-cloud-9-ghosts-0xbvk5cd9 --outlet=times-uk --critic=\"Susannah Butter\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-10T01:33:22.812Z",
-      "fileAgeHours": 59.85644444444444,
+      "fileAgeHours": 60.31292888888889,
       "gapSeenAt": "2026-11-12T11:59:21.402Z",
-      "nonTerminalAgeHours": 1.4238708333333334,
+      "nonTerminalAgeHours": 1.8802725,
       "needsManualRecovery": false
     },
     {
@@ -42,9 +42,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 78.37697527777777,
+      "fileAgeHours": 78.83345083333333,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 55.82862138888889,
+      "nonTerminalAgeHours": 56.285023055555556,
       "needsManualRecovery": false
     },
     {
@@ -62,9 +62,9 @@
       "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 47.60890166666667,
+      "fileAgeHours": 48.0653325,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 46.46417638888889,
+      "nonTerminalAgeHours": 46.92057805555555,
       "needsManualRecovery": false
     },
     {
@@ -82,9 +82,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 64.16906194444445,
+      "fileAgeHours": 64.62546444444445,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 63.75617444444445,
+      "nonTerminalAgeHours": 64.2125761111111,
       "needsManualRecovery": false
     },
     {
@@ -102,9 +102,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 60.9687025,
+      "fileAgeHours": 61.42510472222222,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 59.89444722222222,
+      "nonTerminalAgeHours": 60.35084888888889,
       "needsManualRecovery": false
     }
   ],
