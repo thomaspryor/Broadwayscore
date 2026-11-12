@@ -109,6 +109,12 @@ function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
           console.log(`  Leaving ${workflow} run ${run.databaseId} (${run.displayTitle}): scoped to another show`);
           continue;
         }
+        // A pending run is only cancelled when it can be restored; other chain
+        // kinds' pending successors keep their chain alive as before.
+        if (status === 'pending' && !planRedispatch(workflow, run.displayTitle)) {
+          console.log(`  Leaving pending ${workflow} run ${run.databaseId} (${run.displayTitle}): cannot be restored`);
+          continue;
+        }
         try {
           gh(['run', 'cancel', String(run.databaseId)]);
           console.log(`  Cancelled ${workflow} run ${run.databaseId} (${run.displayTitle})`);
@@ -126,12 +132,17 @@ function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
 
 // BRO-7419: a batch and the next batch it already dispatched are one chain.
 // Restore it once, from the batch with the most batches left (the unfinished one).
+// Chains with a different limit or budget cap are different chains and both come back.
 function collapseRescoreChains(items) {
   const isChain = it => it.workflow === SCORING && it.fields && it.fields.chain === 'true' && it.fields.needs_rescore === 'true';
-  const chains = items.filter(isChain);
-  if (chains.length <= 1) return items;
-  const keep = chains.reduce((a, b) => (Number(b.fields.remaining_batches) > Number(a.fields.remaining_batches) ? b : a));
-  return items.filter(it => !isChain(it) || it === keep);
+  const best = new Map();
+  for (const it of items.filter(isChain)) {
+    const k = `${it.fields.limit || ''}|${it.fields.max_cost || ''}`;
+    const cur = best.get(k);
+    if (!cur || Number(it.fields.remaining_batches) > Number(cur.fields.remaining_batches)) best.set(k, it);
+  }
+  const keep = new Set(best.values());
+  return items.filter(it => !isChain(it) || keep.has(it));
 }
 
 // Dedup so a cancel at start + re-cancel after scoring yields one dispatch each.

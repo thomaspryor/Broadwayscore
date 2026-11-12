@@ -73,6 +73,15 @@ test('a batch and the next batch it already dispatched restore as ONE chain (the
   const out = collapseRescoreChains([t(7), orch, t(8)]);
   assert.equal(out.length, 2);
   assert.equal(out.find(i => i.workflow === SCORING).fields.remaining_batches, '8');
+  // A chain with a different budget cap is a different chain: both come back.
+  const other = { ...planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 3 left, limit 400, max-cost 6)'), runId: 9 };
+  assert.equal(collapseRescoreChains([t(7), t(8), other]).length, 2);
+});
+test('pending scoring runs are cancelled only when they can be restored', () => {
+  const src = fs.readFileSync(new URL('./express-preemption.js', import.meta.url), 'utf8');
+  assert.match(src, /status === 'pending' && !planRedispatch\(workflow, run\.displayTitle\)/);
+  // e.g. a pending rescore_reason chain successor has no suffix -> not restorable -> left alone
+  assert.equal(planRedispatch(SCORING, 'LLM Ensemble Score Reviews'), null);
 });
 test('plain or show-scoped scoring titles are not re-dispatched', () => {
   assert.equal(planRedispatch(SCORING, 'LLM Ensemble Score Reviews'), null);
