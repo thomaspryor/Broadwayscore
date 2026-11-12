@@ -12,8 +12,9 @@ import { getShowById } from './data';
  * already passed isAdmin(). There is deliberately no API route and nothing under public/.
  */
 const cjsRequire = createRequire(import.meta.url);
-const { buildBoard } = cjsRequire('../../scripts/lib/review-forecast-board') as {
+const { buildBoard, ledgerFilesForBoard } = cjsRequire('../../scripts/lib/review-forecast-board') as {
   buildBoard: (o: { ledgerRows: LedgerRow[]; grades: GradeRow[]; titleOf: (id: string) => string | null; today: string }) => Board;
+  ledgerFilesForBoard: (names: string[]) => string[];
 };
 
 export interface LedgerRow { showId: string; recordedAt: string; openingDate: string; forecast: number; [k: string]: unknown }
@@ -32,9 +33,6 @@ export interface Board {
   entries: BoardEntry[];
 }
 
-// A frozen forecast is the last row before opening and grading happens 14 days after opening, so a
-// show needs at most ~15 days of ledger files; graded shows carry their own forecast in the grade row.
-const LEDGER_FILES_TO_READ = 20;
 const CACHE_TTL_MS = 5 * 60 * 1000;
 let cache: { at: number; board: Board } | null = null;
 
@@ -48,9 +46,9 @@ async function readRemote(token: string): Promise<{ ledgerRows: LedgerRow[]; gra
     listPrivateDir('review-forecast-pilot/ledger', token),
     listPrivateDir('review-forecast-pilot/grades', token),
   ]);
-  const newest = ledgerNames.filter((n) => n.endsWith('.jsonl')).sort().slice(-LEDGER_FILES_TO_READ);
+  const ledgerFiles = ledgerFilesForBoard(ledgerNames);
   const [ledgerTexts, gradeTexts] = await Promise.all([
-    Promise.all(newest.map((n) => fetchPrivateText(`review-forecast-pilot/ledger/${n}`, token, ''))),
+    Promise.all(ledgerFiles.map((n) => fetchPrivateText(`review-forecast-pilot/ledger/${n}`, token, ''))),
     Promise.all(gradeNames.filter((n) => n.endsWith('.json')).map((n) => fetchPrivateText(`review-forecast-pilot/grades/${n}`, token, ''))),
   ]);
   return { ledgerRows: ledgerTexts.flatMap(parseJsonl), grades: gradeTexts.filter(Boolean).flatMap((t) => { try { return [JSON.parse(t) as GradeRow]; } catch { return []; } }) };
@@ -59,7 +57,7 @@ async function readRemote(token: string): Promise<{ ledgerRows: LedgerRow[]; gra
 /** Local screenshots only: a checkout of the private repo's review-forecast-pilot/ directory. Never honored in production builds. */
 function readLocal(dir: string): { ledgerRows: LedgerRow[]; grades: GradeRow[] } {
   const ls = (sub: string) => (fs.existsSync(path.join(dir, sub)) ? fs.readdirSync(path.join(dir, sub)).sort() : []);
-  const ledgerRows = ls('ledger').filter((n) => n.endsWith('.jsonl')).slice(-LEDGER_FILES_TO_READ)
+  const ledgerRows = ledgerFilesForBoard(ls('ledger'))
     .flatMap((n) => parseJsonl(fs.readFileSync(path.join(dir, 'ledger', n), 'utf8')));
   const grades = ls('grades').filter((n) => n.endsWith('.json')).map((n) => JSON.parse(fs.readFileSync(path.join(dir, 'grades', n), 'utf8')) as GradeRow);
   return { ledgerRows, grades };

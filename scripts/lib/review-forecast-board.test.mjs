@@ -1,10 +1,45 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-const { buildBoard } = createRequire(import.meta.url)('./review-forecast-board.js');
+const { buildBoard, ledgerFilesForBoard } = createRequire(import.meta.url)('./review-forecast-board.js');
 
 const row = (showId, recordedAt, openingDate, forecast, extra = {}) => ({ showId, recordedAt, openingDate, forecast, lo80: forecast - 14, hi80: forecast + 12, categoryMean: 70, audience: { combined: 80, totalCount: 100 }, ...extra });
 const today = '2026-11-20';
+
+test('BRO-7384: a show opened 30 days ago stays waiting after more than 20 daily ledger files', () => {
+  const files = new Map();
+  for (let daysAgo = 40; daysAgo >= 0; daysAgo--) {
+    const date = new Date(Date.parse(today) - daysAgo * 86400000).toISOString().slice(0, 10);
+    files.set(`${date}.jsonl`, [row('upcoming', date, '2026-12-01', 75)]);
+  }
+  files.get('2026-10-19.jsonl').push(row('overdue', '2026-10-19', '2026-10-21', 60));
+  files.get('2026-10-20.jsonl').push(row('overdue', '2026-10-20', '2026-10-21', 64));
+  files.get('2026-11-17.jsonl').push(row('recent', '2026-11-17', '2026-11-18', 72));
+  const grades = [{ showId: 'graded', openingDate: '2026-09-01', forecast: 78, criticScore: 80, missForecast: 2, missCategoryMean: 10, inRange80: true }];
+  const names = [...files.keys()].reverse().concat('README.md');
+  const b = buildBoard({ ledgerRows: ledgerFilesForBoard(names).flatMap((name) => files.get(name)), grades, today });
+  const overdue = b.entries.find((e) => e.showId === 'overdue');
+  assert.ok(overdue, 'an ungraded show must not disappear when its last forecast leaves a 20-file window');
+  assert.equal(overdue.state, 'awaiting-grade');
+  assert.equal(overdue.group, 'waiting');
+  assert.equal(overdue.forecast, 64, 'keep the last forecast strictly before opening');
+  assert.equal(overdue.forecastRecordedAt, '2026-10-20');
+  assert.equal(overdue.gradeDueOn, '2026-11-04');
+  assert.equal(b.summary.awaitingGrade, 2);
+  assert.deepEqual(b.entries.map((e) => [e.showId, e.state]), [
+    ['upcoming', 'upcoming'], ['recent', 'awaiting-grade'], ['overdue', 'awaiting-grade'], ['graded', 'graded'],
+  ]);
+  assert.equal(b.entries[0].forecastRecordedAt, today);
+  assert.equal(b.summary.gradedShows, 1);
+  assert.equal(b.summary.ourMiss, 2);
+});
+
+test('ledger selection keeps sparse history, ignores other files, and does not mutate the listing', () => {
+  const names = ['2026-11-20.jsonl', 'notes.json', '2025-01-01.jsonl', 'README.md'];
+  assert.deepEqual(ledgerFilesForBoard(names), ['2025-01-01.jsonl', '2026-11-20.jsonl']);
+  assert.equal(names[0], '2026-11-20.jsonl');
+  assert.deepEqual(ledgerFilesForBoard([]), []);
+});
 
 test('upcoming shows use the newest row and sort first by opening date; opened use the frozen row', () => {
   const ledgerRows = [

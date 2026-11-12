@@ -11,6 +11,13 @@ const P = require('./review-forecast-pilot');
 const SOON_DAYS = 45; // opening within this many days (or already open, waiting on its grade) reads as "Opening soon"
 const MIN_N_FOR_RESULT = 5; // below this many graded shows the UI labels averages as early
 
+// Grades can be delayed indefinitely by missing scores or too few reviews. Until the pilot has
+// an index of frozen forecasts, only the full ledger can identify every show still waiting.
+// Share this selection between remote and local readers so neither ages ungraded shows out.
+function ledgerFilesForBoard(names) {
+  return names.filter((name) => name.endsWith('.jsonl')).sort();
+}
+
 /**
  * Confidence in a forecast, from what it was built on (not yet measured against results; the pilot has no grades).
  * Points: prior run of the show +1, preview audience grade (100+ votes +2, any votes +1), preview grosses +1,
@@ -101,4 +108,4 @@ function buildBoard({ ledgerRows, grades, titleOf = () => null, today }) {
   };
 }
 
-module.exports = { buildBoard, confidenceOf, MIN_N_FOR_RESULT, SOON_DAYS };
+module.exports = { buildBoard, confidenceOf, ledgerFilesForBoard, MIN_N_FOR_RESULT, SOON_DAYS };
