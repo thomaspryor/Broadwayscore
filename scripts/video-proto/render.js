@@ -127,6 +127,9 @@ function loadVoice(n) {
   // at(phrase): when the voice starts saying it, searching forward from the last cue so scenes stay in script order
   const at = (phrase, { from } = {}) => { const want = phrase.split(/\s+/).map(key).filter(Boolean), start = from == null ? cur : from;
     for (let i = 0; i < tk.length; i++) if (tk[i].a >= start - 1e-6 && want.every((t, k) => tk[i + k] && tk[i + k].k === t)) { if (from == null) cur = tk[i].a; return tk[i].a; }
+    if (process.env.VO_FUZZY_CUES === '1' && want[0] && want[0].length >= 5) { // unattended lane (BRO-7414): TTS/whisper may say "audience is graded" for "audiences grade it"; time the cue on the first word's stem
+      const stem = t => t.replace(/s$/, ''), hit = tk.find(x => x.a >= start - 1e-6 && stem(x.k) === stem(want[0]));
+      if (hit) { if (from == null) cur = hit.a; return hit.a; } }
     throw new Error(`${base}: the voiceover never says "${phrase}"${start ? ' after ' + start.toFixed(1) + 's' : ''} (script and data disagree)`); };
   return { plan, words, at, last: words[words.length - 1].b, vo: path.join(VO, base + '.mp3') };
 }
@@ -360,7 +363,7 @@ async function renderChannel(browser, d, ch) {
   const d = dataFile ? JSON.parse(fs.readFileSync(dataFile, 'utf8')) : data(name);
   if (dataFile && !stills.length && !process.argv.includes('--probe-only')) throw new Error('--data is for layout previews (--stills or --probe-only), never a real video');
   if (MASK && !stills.length) throw new Error('--mask only goes on stills');
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.RENDER_CHROMIUM ? { executablePath: process.env.RENDER_CHROMIUM } : {});
   fs.mkdirSync(outDir, { recursive: true });
   let wav = null, failed = false;
   for (const ch of CHS) {

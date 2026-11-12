@@ -18,11 +18,20 @@ function splitDirections(prompt) {
   return { text, style: [BASE_STYLE, ...moods].join(' ') };
 }
 
-/** whisper-1 verbose_json -> the words.json shape render.js reads: {text, words:[{word,start,end}]}. */
+/**
+ * whisper-1 verbose_json -> the words.json shape render.js reads: {text, words:[{word,start,end}]}.
+ * whisper now and then returns a stray token (empty word, a NaN time, end before start). One bad token must not cost a whole
+ * video: such tokens are dropped, a reversed end is clamped to its start, and it only throws when too little survives.
+ */
 function wordsFromWhisper(j) {
   if (!j || !Array.isArray(j.words) || !j.words.length) throw new Error('whisper returned no word timings');
-  const words = j.words.map(w => ({ word: String(w.word).trim(), start: +w.start, end: +w.end }));
-  if (words.some(w => !w.word || !Number.isFinite(w.start) || !Number.isFinite(w.end) || w.end < w.start)) throw new Error('whisper returned malformed word timings');
+  const words = [];
+  for (const w of j.words) {
+    const word = String((w && w.word) == null ? '' : w.word).trim(), start = +w.start, end = +w.end;
+    if (!word || !Number.isFinite(start) || !Number.isFinite(end)) continue;
+    words.push({ word, start, end: Math.max(end, start) });
+  }
+  if (words.length < Math.ceil(j.words.length / 2)) throw new Error(`whisper returned malformed word timings (${words.length} of ${j.words.length} usable)`);
   return { text: String(j.text || words.map(w => w.word).join(' ')).trim(), words };
 }
 

@@ -90,7 +90,7 @@ function makeVideo(ev, targets, outDir) {
   run('node', ['tts.js', planFile, outDir, 'reveal']);
   const files = {};
   for (const n of targets) {
-    run('node', ['render.js', 'reveal-voiced', outDir, `--channel=${n}`], { env: { VO_DIR: outDir, VO_NAME: 'reveal', VO_OFF: '0.15' }, timeout: 25 * 60e3 });
+    run('node', ['render.js', 'reveal-voiced', outDir, `--channel=${n}`], { env: { VO_DIR: outDir, VO_NAME: 'reveal', VO_OFF: '0.15', VO_FUZZY_CUES: '1' }, timeout: 25 * 60e3 });
     const f = path.join(outDir, `reveal-voiced-${n}.mp4`);
     if (!fs.existsSync(f)) throw new Error(`render produced no ${f}`);
     files[n] = f;
