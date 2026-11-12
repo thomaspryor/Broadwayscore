@@ -719,7 +719,9 @@
     "my-fair-lady-1976/theatermania--unknown.json",
     "jersey-boys-2005/newsday--rafer-guzman.json",
     "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
-    "hamlet-hail-to-the-thief-off-west-end-2026/bestoftheatre--maria-boot.json"
+    "hamlet-hail-to-the-thief-off-west-end-2026/bestoftheatre--maria-boot.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "hamilton-west-end-2021/ew--unknown.json",
@@ -1083,7 +1085,13 @@
     "heartbreak-house-regional-2026/la-drama-critics-circle--ladcc-critics.json",
     "wicked-tour-2021/cbsnews--dillon-thomas.json",
     "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
-    "cloud-9-west-end-2026/times-uk--susannah-butter.json"
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/independent--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1395,7 +1403,9 @@
       "fiddler-on-the-roof-1990/theatermania--unknown.json",
       "my-fair-lady-1976/theatermania--unknown.json",
       "jersey-boys-2005/newsday--rafer-guzman.json",
-      "hamlet-hail-to-the-thief-off-west-end-2026/bestoftheatre--maria-boot.json"
+      "hamlet-hail-to-the-thief-off-west-end-2026/bestoftheatre--maria-boot.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1782,7 +1792,7 @@
     ]
   },
   "startTime": "2026-11-11T19:44:43.602Z",
-  "lastProcessed": "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+  "lastProcessed": "girls-off-west-end-2026/londontheatre1--unknown.json",
   "log": [
     {
       "t": "2026-11-11T19:46:26.880Z",
@@ -1989,15 +1999,21 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-11-12T17:59:32.157Z",
+      "t": "2026-11-12T17:53:07.874Z",
       "event": "bb-session",
-      "session": "8837e24d",
+      "session": "ac065537",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
     },
     {
-      "t": "2026-11-12T17:59:33.168Z",
+      "t": "2026-11-12T17:53:08.585Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-12T17:59:51.395Z",
+      "event": "bb-session",
+      "session": "0a205150",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ],
   "recoveredAfterFailure": [
