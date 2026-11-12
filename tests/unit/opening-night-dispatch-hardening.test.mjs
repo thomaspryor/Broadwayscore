@@ -39,14 +39,55 @@ test('a timeout accepted by GitHub is reconciled before any resend or unclaim', 
   assert.deepEqual(p.calls, ['dispatch', 'list', 'mark']);
 });
 
-test('unknown acceptance retains the slot even when the run list is empty or unavailable', () => {
-  for (const reconcile of [() => false, () => { throw new Error('offline'); }]) {
-    const p = ports({ reconcile });
+test('failed dispatches with readable empty run lists release the slot for retry', () => {
+  for (const error of ['HTTP 502', 'getaddrinfo ENOTFOUND api.github.com', 'ECONNREFUSED', 'ETIMEDOUT']) {
+    const p = ports();
+    p.dispatch = () => { p.calls.push('dispatch'); throw new Error(error); };
+    p.reconcile = () => { p.calls.push('list'); return false; };
     const result = wd.claimThenDispatch(p);
     assert.equal(result.sent, false);
-    assert.equal(result.spent, true);
-    assert.equal(result.uncertain, true);
-    assert.deepEqual(p.calls, ['dispatch', 'mark']);
+    assert.equal(result.spent, false, error);
+    assert.equal(result.uncertain, undefined);
+    assert.equal(result.unclaimed, true);
+    assert.equal(sweep.dispatchExitCode(result), 1);
+    assert.deepEqual(p.calls, ['dispatch', 'list', 'list', 'list', 'unclaim']);
+  }
+});
+
+test('one successful empty run-list read permits retry even when the other reads fail', () => {
+  for (const readableIndex of [0, 1, 2]) {
+    const p = ports();
+    let reads = 0;
+    p.reconcile = () => {
+      p.calls.push('list');
+      if (reads++ === readableIndex) return false;
+      throw new Error('offline');
+    };
+    const result = wd.claimThenDispatch(p);
+    assert.equal(result.spent, false);
+    assert.equal(result.uncertain, undefined);
+    assert.deepEqual(p.calls, ['dispatch', 'list', 'list', 'list', 'unclaim']);
+  }
+});
+
+test('unknown acceptance retains the slot only when every run-list read fails', () => {
+  const p = ports();
+  p.reconcile = () => { p.calls.push('list'); throw new Error('offline'); };
+  const result = wd.claimThenDispatch(p);
+  assert.equal(result.sent, false);
+  assert.equal(result.spent, true);
+  assert.equal(result.uncertain, true);
+  assert.deepEqual(p.calls, ['dispatch', 'list', 'list', 'list', 'mark']);
+});
+
+test('unclaimed recovery returns uncertainty only when run lists cannot be read', () => {
+  for (const unavailable of [false, true]) {
+    const result = wd.dispatchWithRecovery({
+      dispatch: () => { throw new Error('HTTP 502'); },
+      reconcile: () => { if (unavailable) throw new Error('offline'); return false; },
+    });
+    assert.equal(result.sent, false);
+    assert.equal(result.uncertain === true, unavailable);
   }
 });
 
@@ -68,7 +109,7 @@ test('contended claims retry, dispatch once on success, and remain retryable on 
   const failed = wd.claimThenDispatch(ports({ claim: () => { attempts++; return { ok: false, reason: 'cas-contended' }; } }));
   assert.equal(attempts, 3);
   assert.equal(failed.spent, false);
-  assert.equal(sweep.dispatchExitCode(failed), 1, 'clock must not mark an unsent slot fired');
+  assert.equal(sweep.dispatchExitCode(failed), 1, 'sweep returns a retryable nonzero exit after claim exhaustion');
   assert.equal(sweep.dispatchExitCode({ sent: false, spent: false, reason: 'not claimed (claim-in-flight)' }), 1);
   assert.equal(sweep.dispatchExitCode({ sent: false, spent: true }), 0);
 });

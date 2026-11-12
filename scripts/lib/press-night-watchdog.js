@@ -235,8 +235,9 @@ function reconcileDispatchRun({ gh, workflow, showId, sinceMs }) {
 
 /**
  * A transport failure is not a rejection. List runs before considering another
- * send. If acceptance remains unknown, reserve the slot instead of duplicating
- * a possibly queued run. Explicit client rejections can safely be retried.
+ * send. Reserve the slot only when no run-list read succeeds. If a readable
+ * list has no match after the bounded checks, allow a later attempt to retry.
+ * Explicit client rejections can safely be retried.
  */
 function dispatchWithRecovery({ dispatch, reconcile, wait = () => {} }) {
   try {
@@ -245,18 +246,23 @@ function dispatchWithRecovery({ dispatch, reconcile, wait = () => {} }) {
   } catch (e) {
     const message = `${e && e.message || e} ${e && e.stderr || ''}`;
     if (/HTTP (400|401|403|404|422)\b/.test(message)) return { sent: false, reason: errText(e) };
+    let readSucceeded = false;
     for (let i = 0; i < 3 && reconcile; i++) {
       if (i) wait(i * 5000);
-      try { if (reconcile()) return { sent: true }; } catch (_) { /* unknown, never proof of rejection */ }
+      try {
+        if (reconcile()) return { sent: true };
+        readSucceeded = true;
+      } catch (_) { /* keep checking; only unreadable lists leave acceptance unknown */ }
     }
+    if (readSucceeded) return { sent: false, reason: `no matching run after dispatch error (${errText(e)})` };
     return { sent: false, uncertain: true, reason: `dispatch outcome unknown (${errText(e)}); slot reserved` };
   }
 }
 
 /**
  * Claim, dispatch, then mark. Retry CAS contention before giving the slot back
- * to the clock. Retain an ambiguous dispatch's claim, since GitHub may still be
- * registering it; a later sweep slot is the backstop for a request never accepted.
+ * to the clock. Release failed dispatches when readable run lists show no match.
+ * Retain the claim only when all run-list reads fail and acceptance is unknown.
  */
 function claimThenDispatch({ claim, dispatch, mark, unclaim, reconcile, wait = () => {} }) {
   let c;
