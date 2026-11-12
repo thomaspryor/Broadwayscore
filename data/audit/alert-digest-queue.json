@@ -798,5 +798,20 @@
       }
     ],
     "queuedAt": "2026-11-12T17:42:46.783Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked West End candidate sub-venue slugs: {\n\"soho-theatre\": [\n{\n\"slug\": \"royal-court-theatre-upstairs\",\n\"rawStrings\": [\n\"Royal Court Theatre Upstairs\"\n],\n\"showCount\": 2\n}\n],\n\"royal-court\": [\n{\n\"slug\": \"royal-court-theatre-upstairs\",\n\"rawStrings\": [\n\"Royal Court Theatre Upstairs\"\n],\n\"showCount\": 2\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'royal-court': [\n+     {\n+       rawStrings: [\n+         'Royal Court Theatre Upstairs'\n+       ],\n+       showCount: 2,\n+       slug: 'royal-court-theatre-upstairs'\n+     }\n+   ],\n+   'soho-theatre': [\n+     {\n+       rawStrings: [\n+         'Royal Court Theatre Upstairs'\n+       ],\n+       showCount: 2,\n+       slug: 'royal-court-theatre-upstairs'\n+     }\n+   ]\n+ }\n- {}\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "fields": [],
+    "queuedAt": "2026-11-12T18:06:57.835Z"
   }
 ]
