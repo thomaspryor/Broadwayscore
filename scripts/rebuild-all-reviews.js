@@ -4497,7 +4497,7 @@ showDirs.forEach(showId => {
           processed: processedFiles,
           emitted: emittedFiles,
           released: releasedFiles,
-          fallback: (prims) => hasLiveBylinelessPortalPrimary(showDir, prims),
+          fallback: (prims) => hasLiveBylinelessPortalPrimary(showDir, prims, { portalDate: data.publishDate }),
         });
         if (shield.basis === 'fallback') stats.syndicationShieldFallback = (stats.syndicationShieldFallback || 0) + 1;
         if (shield.skip) {

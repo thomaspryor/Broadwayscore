@@ -6204,6 +6204,7 @@ function explainExclusion(data, show, filePath, opts) {
       try { names = require('fs').readdirSync(dir); } catch { /* unreadable dir: no portal rule */ }
       const prims = synd.bylinelessPortalPrimaryFiles(names, { criticName: data.criticName, fileName: require('path').basename(filePath) }, norm);
       if (prims.length && synd.hasLiveBylinelessPortalPrimary(dir, prims, {
+        portalDate: data.publishDate,
         extraCheck: (p, pPath) => explainExclusion(p, show, pPath, opts) === null,
       })) return 'knownSyndicationSecondary';
     }

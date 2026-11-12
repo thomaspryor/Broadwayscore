@@ -100,3 +100,28 @@ test('portal filename with a --on-<date> suffix still names its outlet', () => {
   const files = ['headtopics--deadline--on-2026-11-08.json', 'deadline--greg-evans.json'];
   assert.deepEqual(synd.bylinelessPortalPrimaryFiles(files, { criticName: null, fileName: files[0] }), ['deadline--greg-evans.json']);
 });
+
+test('null byline still orders the portal after the outlet it names (dedup-survivor)', () => {
+  const { primaryFilesFor } = require('../../scripts/lib/dedup-survivor.js');
+  const files = ['headtopics--deadline.json', 'deadline--greg-evans.json'];
+  assert.deepEqual(primaryFilesFor('headtopics--deadline.json', { criticName: null, outletKey: 'headtopics' }, files), ['deadline--greg-evans.json']);
+  assert.deepEqual(primaryFilesFor('variety--a-b.json', { criticName: null, outletKey: 'variety' }, files), []);
+});
+
+test('display-name byline is normalized to the canonical outlet id before matching', () => {
+  const { normalizeOutlet } = require('../../scripts/lib/review-normalization.js');
+  const files = ['headtopics--cleveland-scene.json', 'clevescene--gwendolyn-kochur.json'];
+  assert.deepEqual(synd.bylinelessPortalPrimaryFiles(files, { criticName: 'Cleveland Scene', fileName: files[0] }, normalizeOutlet), ['clevescene--gwendolyn-kochur.json']);
+});
+
+test('a same-outlet review published days apart is a different article and does not shield the portal copy', () => {
+  const dir = setup({
+    'headtopics--deadline.json': rev('headtopics', 'DEADLINE', { publishDate: '2026-11-08' }),
+    'deadline--other-critic.json': rev('deadline', 'Other Critic', { publishDate: '2026-09-01' }),
+  });
+  const prims = synd.bylinelessPortalPrimaryFiles(fs.readdirSync(dir), { criticName: 'DEADLINE', fileName: 'headtopics--deadline.json' });
+  assert.equal(synd.hasLiveBylinelessPortalPrimary(dir, prims, { portalDate: '2026-11-08' }), false);
+  fs.writeFileSync(path.join(dir, 'deadline--greg-evans.json'), JSON.stringify(rev('deadline', 'Greg Evans', { publishDate: '2026-11-08' })));
+  const prims2 = synd.bylinelessPortalPrimaryFiles(fs.readdirSync(dir), { criticName: 'DEADLINE', fileName: 'headtopics--deadline.json' });
+  assert.equal(synd.hasLiveBylinelessPortalPrimary(dir, prims2, { portalDate: '2026-11-08' }), true);
+});

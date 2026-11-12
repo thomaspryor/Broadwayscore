@@ -79,8 +79,9 @@ function createClaimLedger() {
  * @param {string[]} files
  */
 function primaryFilesFor(file, meta, files) {
-  if (!meta || !meta.criticName || !meta.outletKey) return [];
-  const critic = String(meta.criticName).toLowerCase().trim();
+  if (!meta || !meta.outletKey) return [];
+  const critic = String(meta.criticName || '').toLowerCase().trim();
+  if (!critic && !isBylinelessPortalOutlet(meta.outletKey)) return []; // a byline-less portal still names its outlet
   const norm = require('./review-normalization').normalizeOutlet;
   const primaries = getSyndicationPrimariesInDir(critic, meta.outletKey, files, norm);
   const byCritic = primaries.length ? files.filter(f => f !== file && isPrimaryFileFor(f, primaries, critic)) : [];

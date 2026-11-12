@@ -129,7 +129,7 @@ const _slug = (v) => foldDiacritics(String(v || '')).toLowerCase().trim().replac
  */
 function bylinelessPortalPrimaryFiles(fileNames, { criticName, fileName } = {}, normalize = (o) => o) {
   const named = new Set();
-  const add = (v) => { const sl = _slug(v); if (sl) { named.add(sl); named.add(_slug(normalize(sl))); } };
+  const add = (v) => { const sl = _slug(v); if (sl) { named.add(sl); named.add(_slug(normalize(sl))); named.add(_slug(normalize(String(v).trim()))); } }; // display name first: 'Cleveland Scene' -> clevescene
   add(criticName);
   const m = /^[^-].*?--(.+?)(?:--on-.*|-\d+)?\.json$/.exec(fileName || '');
   if (m) add(m[1]);
@@ -148,17 +148,23 @@ function bylinelessPortalPrimaryFiles(fileNames, { criticName, fileName } = {}, 
  * True when one of `primaryFiles` (bylinelessPortalPrimaryFiles) is live (isLiveSyndicationPrimary) and passes
  * `extraCheck(parsed, path)` (callers pass their includability test).
  */
-function hasLiveBylinelessPortalPrimary(showDir, primaryFiles, { extraCheck } = {}) {
+function hasLiveBylinelessPortalPrimary(showDir, primaryFiles, { extraCheck, portalDate } = {}) {
   const fs = require('fs');
   const path = require('path');
   return (primaryFiles || []).some((f) => {
     try {
       const pPath = path.join(showDir, f);
       const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+      // The portal names an outlet, not a critic: a same-outlet review published days apart is a different article.
+      if (portalDate && p.publishDate) {
+        const gap = Math.abs(Date.parse(portalDate) - Date.parse(p.publishDate)) / 864e5;
+        if (Number.isFinite(gap) && gap > BYLINELESS_PORTAL_MAX_DAY_GAP) return false;
+      }
       return isLiveSyndicationPrimary(p, pPath) && (!extraCheck || !!extraCheck(p, pPath));
     } catch { return false; }
   });
 }
+const BYLINELESS_PORTAL_MAX_DAY_GAP = 3;
 
 function _isRealByline(criticName) {
   const c = String(criticName || '').toLowerCase().trim();
