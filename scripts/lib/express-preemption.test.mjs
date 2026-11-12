@@ -60,8 +60,19 @@ const { RESCORE_CHAIN_RE } = require('./express-preemption.js');
 test('rescore chain title -> needs_rescore chain redispatch with the same inputs', () => {
   assert.deepEqual(planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 8 left, limit 400, max-cost 15)').fields,
     { needs_rescore: 'true', chain: 'true', remaining_batches: '8', limit: '400', max_cost: '15', run_calibration: 'false', run_validation: 'false' });
-  assert.deepEqual(planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 0 left, limit none, max-cost none)').fields,
+  assert.deepEqual(planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 0 left, limit , max-cost )').fields,
     { needs_rescore: 'true', chain: 'true', remaining_batches: '0', run_calibration: 'false', run_validation: 'false' });
+});
+test('a typed non-numeric max_cost never comes back uncapped', () => {
+  assert.equal(planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 8 left, limit 400, max-cost none)'), null);
+});
+test('a batch and the next batch it already dispatched restore as ONE chain (the unfinished batch)', () => {
+  const { collapseRescoreChains } = require('./express-preemption.js');
+  const t = n => ({ ...planRedispatch(SCORING, `LLM Ensemble Score Reviews (rescore chain, ${n} left, limit 400, max-cost 15)`), runId: n });
+  const orch = { ...planRedispatch(ORCH, 'Opening Night Orchestrator (west-end)'), runId: 1 };
+  const out = collapseRescoreChains([t(7), orch, t(8)]);
+  assert.equal(out.length, 2);
+  assert.equal(out.find(i => i.workflow === SCORING).fields.remaining_batches, '8');
 });
 test('plain or show-scoped scoring titles are not re-dispatched', () => {
   assert.equal(planRedispatch(SCORING, 'LLM Ensemble Score Reviews'), null);
@@ -77,6 +88,9 @@ test('contract: llm-ensemble-score.yml run-name suffix renders a title the parse
   assert.ok(m, 'run-name must carry the rescore chain suffix');
   const rendered = 'LLM Ensemble Score Reviews' + m[1].replace('{0}', '3').replace('{1}', '400').replace('{2}', '15');
   assert.match(rendered, RESCORE_CHAIN_RE);
+  // Empty inputs render as empty strings and must still parse (no cap restored).
+  assert.match('LLM Ensemble Score Reviews' + m[1].replace('{0}', '3').replace('{1}', '').replace('{2}', ''), RESCORE_CHAIN_RE);
+  assert.ok(/inputs\.remaining_batches, inputs\.limit, inputs\.max_cost\)/.test(runName), 'limit/max_cost must render raw (no word sentinel)');
   // Only plain chains get the suffix: inputs the parser cannot restore must exclude it.
   for (const k of ['!inputs.rescore_reason', '!inputs.shard', "inputs.outdated != 'true'", "inputs.stale_scores != 'true'", "inputs.upgrade_ensemble != 'true'", "inputs.retry_emergency != 'true'", "inputs.dry_run != 'true'", "inputs.rescore != 'true'", '!inputs.show_id']) {
     assert.ok(runName.includes(k), `run-name suffix guard missing ${k}`);

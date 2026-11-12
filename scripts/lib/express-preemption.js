@@ -18,7 +18,9 @@ const ORCH = 'opening-night-orchestrator.yml';
 const POLLER = 'opening-night-poller.yml';
 const SCORING = 'llm-ensemble-score.yml';
 // Must match the run-name suffix in .github/workflows/llm-ensemble-score.yml (BRO-7419).
-const RESCORE_CHAIN_RE = /\(rescore chain, (\d+) left, limit (\d+|none), max-cost (\d+(?:\.\d+)?|none)\)\s*$/;
+// Empty limit/max-cost render as nothing (not a word a user could also type), so
+// an invalid typed value fails to parse instead of coming back uncapped.
+const RESCORE_CHAIN_RE = /\(rescore chain, (\d+) left, limit (\d*), max-cost (\d+(?:\.\d+)?)?\)\s*$/;
 
 // BRO-5890: Express for one show cancelled a Benjamin Button scoring run and
 // would cancel every targeted poller for every other show tonight. Runs scoped
@@ -77,8 +79,8 @@ function planRedispatch(workflow, displayTitle) {
       return null;
     }
     const fields = { needs_rescore: 'true', chain: 'true', remaining_batches: m[1], run_calibration: 'false', run_validation: 'false' };
-    if (m[2] !== 'none') fields.limit = m[2];
-    if (m[3] !== 'none') fields.max_cost = m[3];
+    if (m[2]) fields.limit = m[2];
+    if (m[3]) fields.max_cost = m[3];
     return { workflow, fields };
   }
   return null;
@@ -98,7 +100,10 @@ function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
   const recorded = [];
   const workflows = scoring ? [ORCH, POLLER, SCORING] : [ORCH, POLLER];
   for (const workflow of workflows) {
-    for (const status of ['in_progress', 'queued']) {
+    // A chain's next batch waits as 'pending' behind the scoring concurrency
+    // group; it must be cancelled too or it starts during Express (BRO-7419).
+    const statuses = workflow === SCORING ? ['in_progress', 'queued', 'pending'] : ['in_progress', 'queued'];
+    for (const status of statuses) {
       for (const run of listRuns(workflow, status)) {
         if (!shouldCancel(workflow, run.displayTitle, ownShowId)) {
           console.log(`  Leaving ${workflow} run ${run.databaseId} (${run.displayTitle}): scoped to another show`);
@@ -119,10 +124,20 @@ function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
   return recorded;
 }
 
+// BRO-7419: a batch and the next batch it already dispatched are one chain.
+// Restore it once, from the batch with the most batches left (the unfinished one).
+function collapseRescoreChains(items) {
+  const isChain = it => it.workflow === SCORING && it.fields && it.fields.chain === 'true' && it.fields.needs_rescore === 'true';
+  const chains = items.filter(isChain);
+  if (chains.length <= 1) return items;
+  const keep = chains.reduce((a, b) => (Number(b.fields.remaining_batches) > Number(a.fields.remaining_batches) ? b : a));
+  return items.filter(it => !isChain(it) || it === keep);
+}
+
 // Dedup so a cancel at start + re-cancel after scoring yields one dispatch each.
 function redispatch(file) {
   if (!fs.existsSync(file)) return [];
-  const items = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const items = collapseRescoreChains(JSON.parse(fs.readFileSync(file, 'utf8')));
   const seen = new Set();
   const done = [];
   for (const it of items) {
@@ -137,7 +152,7 @@ function redispatch(file) {
   return done;
 }
 
-module.exports = { planRedispatch, shouldCancel, scopedShowId, ORCH, POLLER, SCORING, RESCORE_CHAIN_RE, cancelAndRecord, redispatch };
+module.exports = { planRedispatch, shouldCancel, scopedShowId, ORCH, POLLER, SCORING, RESCORE_CHAIN_RE, collapseRescoreChains, cancelAndRecord, redispatch };
 
 if (require.main === module) {
   const [cmd, file, ...rest] = process.argv.slice(2);
