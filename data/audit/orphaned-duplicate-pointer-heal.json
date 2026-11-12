@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-12T20:08:00.165Z",
+  "generated": "2026-11-12T20:21:15.097Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 56,
+  "count": 55,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -127,13 +127,6 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "here-there-are-blueberries-2026",
-      "loserFile": "nytg--unknown.json",
-      "targetFile": "nytg--kyle-turner.json",
-      "reason": "orphaned-duplicate-heal: nytg--kyle-turner.json was flagged invalid after nytg--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
