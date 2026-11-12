@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T04:31:47.715Z",
+  "generatedAt": "2026-11-12T06:12:18.921Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -111,7 +111,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "cote-notices",
@@ -128,9 +128,17 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 850,
+  "itemsScanned": 797,
   "matchedGaps": 2,
   "possibleGaps": 1,
   "gaps": [
