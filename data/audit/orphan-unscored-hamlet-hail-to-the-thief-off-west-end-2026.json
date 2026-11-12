@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
   "openingDate": "2026-11-12",
-  "detectedAt": "2026-11-12T17:16:12.897Z",
+  "detectedAt": "2026-11-12T17:30:20.214Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "theatremonkey--unknown.json",
-      "outletId": "theatremonkey",
-      "criticName": "Unknown",
-      "url": "https://www.theatremonkey.com/2026/11/hamlet-hail-to-the-thief-barbican-theatre/",
-      "fullTextLen": 3673,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-11-12T17:16:12.897Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }

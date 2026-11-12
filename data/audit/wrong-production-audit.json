@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T17:16:29.757Z",
+  "timestamp": "2026-11-12T17:30:37.296Z",
   "stats": {
     "totalReviews": 81714,
-    "alreadyFlagged": 22303,
+    "alreadyFlagged": 22305,
     "dateGuardCatches": 219,
-    "directorMismatch": 3650,
+    "directorMismatch": 3652,
     "tvFilmSignals": 2301,
     "londonSignals": 3710,
     "offBroadwaySignals": 752,
     "yearMismatch": 371,
-    "noPublishDate": 8454
+    "noPublishDate": 8451
   },
   "findings": [
     {
@@ -84096,6 +84096,24 @@
     },
     {
       "showId": "west-side-story-2020",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "2020-02-20",
+      "url": "https://www.hollywoodreporter.com/review/west-side-story-theater-1280016",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
       "file": "latimes--charles-mcnulty.json",
       "score": 91,
       "publishDate": "2020-02-20",
@@ -104445,6 +104463,7 @@
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "theatremonkey--unknown.json",
+      "score": 61,
       "publishDate": "2026-11-11",
       "url": "https://www.theatremonkey.com/2026/11/hamlet-hail-to-the-thief-barbican-theatre/",
       "findings": [
