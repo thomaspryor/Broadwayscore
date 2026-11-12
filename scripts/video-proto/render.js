@@ -46,7 +46,8 @@ function data(n, key) {
 
 // Voiced formats: timeline is driven by the voiceover's word timings (VO_DIR/<comp>.mp3 + <comp>.words.json from Whisper).
 // Every number the voice says is checked against the data, so a stale script cannot ship.
-const VO_OFF = 0.6;
+// seconds of lead-in before the voice starts; the reveal hook (BRO-7414) sets VO_OFF=0.15 so the title and verdict are spoken in the first second
+const VO_OFF = process.env.VO_OFF ? +process.env.VO_OFF : 0.6;
 function voiced(n) {
   const VO = process.env.VO_DIR; if (!VO) throw new Error('set VO_DIR to the folder with ' + n + '.mp3 and ' + n + '.words.json');
   const wj = JSON.parse(fs.readFileSync(path.join(VO, n + '.words.json'), 'utf8'));

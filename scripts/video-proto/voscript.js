@@ -79,7 +79,7 @@ const LINES = {
   audLess: ['[dryly] Audiences are cooler on it, with {a} {G}.', '[dryly] Audiences are less sold, with {a} {G}.', '[dryly] Audiences hold back more, with {a} {G}.'],
   audSame: ['And audiences agree, with {a} {G}.', 'Audiences are right there too, with {a} {G}.', 'And audiences land in the same place, with {a} {G}.'],
   signoff: ['Every review is on Broadway Scorecard.', 'Read every review on Broadway Scorecard.', 'You can read every review on Broadway Scorecard.'],
-  revealOpen: ['{N} critics weighed in on {T}.', '{N} critics have reviewed {T}.', 'What did {n} critics make of {T}?'],
+  revealOpen: ['{N} critics weighed in.', '{N} critics have reviewed it.', 'What did {n} critics make of it?'],
   revealCount: [['One score.', 'one score'], ['Here it is in one number.', 'one number'], ['Put it all together, and you get one score.', 'one score']],
   revealQuotes: [["Here's what they said.", 'what they said'], ['In their own words.', 'in their own words'], ["Here's how they put it.", 'how they put it']],
   revealVs: [['Critics give it {s}.', 'critics give it'], ['The critics land on {s}.', 'the critics land on'], ['The critics say {s}.', 'the critics say']],
@@ -163,8 +163,8 @@ async function plan(fmt, key, cache) {
     const [vs, vsLead] = line('revealVs', K, { s: W(score) }), [al, audLead] = line('revealAud', K, av);
     const gap = line({ audMore: 'gapMore', audLess: 'gapLess', audSame: 'gapSame' }[dir], K, {})[0];
     const caption = line('capReveal', K, { n: N, T: m.title, s: score, label, a: av.a, g: aud.grade }) [0] + '\n\n' + line('askReveal', K, { s: score })[0] + '\n\n' + hashtags(m);
-    const keep = { prompt: [`${W(N)} critics`, count, W(score), label, quotesIn, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), `${vsLead} ${W(score)}`, audLead, G, gap, 'every review'], caption: [`${score}`, label, aud.grade] };
-    return { fmt, key, quotes: picks, caption, keep, gapLine: gap, cue: { count, quotesIn, vs: vsLead, aud: audLead }, prompt: `[excited] ${cap(line('revealOpen', K, { N: cap(W(N)), n: W(N), T: m.title })[0])} ${cnt} ${cap(W(score))}! ${label}. ${qi} ${quotes} ${vs} ${al} ${gap} ${line('revealEnd', K, {})[0]}` };
+    const keep = { prompt: [m.title, `${W(N)} critics`, count, W(score), label, quotesIn, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), `${vsLead} ${W(score)}`, audLead, G, gap, 'every review'], caption: [`${score}`, label, aud.grade] };
+    return { fmt, key, quotes: picks, caption, keep, gapLine: gap, cue: { count, quotesIn, vs: vsLead, aud: audLead }, prompt: `[excited] ${m.title}: ${label}. ${cap(line('revealOpen', K, { N: cap(W(N)), n: W(N), T: m.title })[0])} ${cnt} ${cap(W(score))}! ${label}. ${qi} ${quotes} ${vs} ${al} ${gap} ${line('revealEnd', K, {})[0]}` };
   }
   throw new Error('unknown format ' + fmt);
 }
