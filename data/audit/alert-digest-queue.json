@@ -29,5 +29,19 @@
       }
     ],
     "queuedAt": "2026-11-11T23:58:45.239Z"
+  },
+  {
+    "conditionKey": "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml",
+    "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 24 days ago",
+    "description": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 24 days ago\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T00:19:02.491Z"
   }
 ]
