@@ -65,7 +65,7 @@ export function useScoreCall(showId: string) {
     const row = Array.isArray(data) ? data[0] : null;
     if (!row) return { ok: false, reason: 'error' };
     const call: ScoreCall = { show_id: showId, called_score: row.called_score as unknown as number, forecast: (row as unknown as { forecast: number | null }).forecast, lo80: (row as unknown as { lo80: number | null }).lo80, hi80: (row as unknown as { hi80: number | null }).hi80, locked_at: (row as unknown as { locked_at: string }).locked_at };
-    store = { ...store, userId, calls: { ...store.calls, [showId]: call }, loaded: true };
+    store = { ...store, userId, calls: { ...store.calls, [showId]: call }, loaded: true, loadError: false };
     emit();
     return { ok: true, call };
   }, [showId, userId]);

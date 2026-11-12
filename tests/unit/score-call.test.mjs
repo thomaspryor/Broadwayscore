@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const SC = require('../../src/lib/score-call.js');
 const P = require('../../scripts/lib/review-forecast-pilot.js');
-const { buildSyncRows, nyToday } = require('../../scripts/lib/score-call-forecasts.js');
+const { buildSyncRows, nyToday, clearTargets } = require('../../scripts/lib/score-call-forecasts.js');
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 
 test('parseCall accepts only integers 0-100', () => {
@@ -140,7 +140,7 @@ test('nyToday uses the New York calendar day (BRO-7392)', () => {
 });
 
 test('failed fetch is its own state, and the sync script clears reviews_live (BRO-7392)', () => {
-  const hook = fs.readFileSync(new URL('../../src/hooks/useScoreCall.ts', import.meta.url), 'utf8');
+  const hook = fs.readFileSync(path.join(ROOT, 'src/hooks/useScoreCall.ts'), 'utf8');
   assert.match(hook, /const \{ data, error \} = await supabaseRestRpc<ScoreCall\[\]>\('get_my_score_calls'\)/);
   assert.match(hook, /loadError: true/);
   assert.match(hook, /retry/);
@@ -150,4 +150,19 @@ test('failed fetch is its own state, and the sync script clears reviews_live (BR
   const mig = fs.readFileSync(new URL('../../supabase/migrations/20261112_score_call_clear_live.sql', import.meta.url), 'utf8');
   assert.match(mig, /REVOKE ALL ON FUNCTION public\.clear_score_call_reviews_live\(TEXT\) FROM PUBLIC, anon, authenticated/);
   assert.match(mig, /now\(\) >= cur\.closes_at/);
+});
+
+test('clearTargets selects only rows with no live reviews', () => {
+  const rows = [
+    { p_show_id: 'a', p_reviews_live: false },
+    { p_show_id: 'b', p_reviews_live: true },
+    { p_show_id: 'c', p_reviews_live: false },
+  ];
+  assert.deepEqual(clearTargets(rows), ['a', 'c']);
+  assert.deepEqual(clearTargets([]), []);
+});
+
+test('a successful lock resets loadError in the hook store', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'src/hooks/useScoreCall.ts'), 'utf8');
+  assert.match(src, /\[showId\]: call \}, loaded: true, loadError: false/);
 });
