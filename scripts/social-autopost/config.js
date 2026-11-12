@@ -181,6 +181,7 @@ const BACKFILL = {
   enabled: true,
   fromHour: 14, // New York local hour from which a day with no post counts as quiet
   maxPerDay: 2, // backfill posts on one quiet day (90 minutes apart, STAGGER_MINUTES)
+  formats: ['reveal'], // 'compare' joins once its voiced render has been checked end to end (video-run.js makeVideo)
   lookbackDays: 45, // opened at most this many days ago
   minDaysLeft: 2, // a show closing sooner than this is not worth a post
 };
@@ -193,8 +194,21 @@ const AI_CAPTIONS = {
   runBudgetMs: 8 * 60e3, // all drafts in one run; after this every show gets the template
 };
 
+// Video lane (BRO-7414): TikTok + YouTube Shorts, driven by video-run.js. Own channel table, never part of CHANNEL_SETS,
+// so the text lane cannot post to these accounts. Ids are pinned: the run refuses a channel whose service or id differs.
+const VIDEO = {
+  channels: { tiktok: '69ed4d52031bfa423c42d4fb', youtube: '6adebecc2f1f5ed648d28ccd' },
+  formats: ['reveal'], // 'compare' joins once its voiced render is checked end to end (video-run.js makeVideo)
+  lookbackDays: 45,   // a "how did it do" video waits for its audience grade, which can land weeks after opening
+  maxPerNetworkPerDay: 1, // owner: post less. One video per network per New York day.
+  tz: 'America/New_York',
+  maxAttemptsPerDay: 2, // per event; after that it waits for tomorrow
+  maxAttemptsTotal: 4,  // then it is abandoned and shows in the run summary
+  thumbnailOffsetMs: 5000, // the frame where the score has landed
+};
+
 module.exports = {
-  NOTABLE_ONLY, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS,
+  VIDEO, NOTABLE_ONLY, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS,
   MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, BROADWAY_FALLBACK_CATEGORIES, HIGH_PROFILE, SCORE_FLOORS, COMPLETE_COVERAGE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,

@@ -97,4 +97,28 @@ async function hostImage(buffer, key) {
   return publicUrl;
 }
 
-module.exports = { encodeForSocial, hostImage, putBriefFile, getBriefFile, BUCKET, BRIEF_BUCKET, MAX_BYTES };
+// Videos (BRO-7414): rendered Shorts/TikToks, one file per channel. Same permanent public URL rule as the cards.
+const VIDEO_BUCKET = 'social-videos';
+const VIDEO_MAX_BYTES = 50 * 1024 * 1024;
+
+/** Upload an MP4 and return the public URL. `key` like '2026/11/blueberries-reveal-tiktok.mp4'. */
+async function hostVideo(buffer, key) {
+  const env = supabaseEnv();
+  if (!env) throw new Error('NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set; cannot host the video');
+  if (!/\.mp4$/.test(key)) throw new Error(`video key must end in .mp4: ${key}`);
+  if (!buffer.length || buffer.length > VIDEO_MAX_BYTES) throw new Error(`video is ${buffer.length} bytes (limit ${VIDEO_MAX_BYTES})`);
+  await ensureBucket(env, VIDEO_BUCKET, { public: true, allowed_mime_types: ['video/mp4'], file_size_limit: VIDEO_MAX_BYTES });
+  const res = await fetch(`${env.url}/storage/v1/object/${VIDEO_BUCKET}/${key}`, {
+    method: 'POST',
+    headers: { apikey: env.key, Authorization: `Bearer ${env.key}`, 'Content-Type': 'video/mp4', 'x-upsert': 'true', 'Cache-Control': 'max-age=31536000' },
+    body: buffer,
+    signal: AbortSignal.timeout(120000),
+  });
+  if (!res.ok) throw new Error(`upload ${key}: HTTP ${res.status} ${await res.text()}`);
+  const publicUrl = `${env.url}/storage/v1/object/public/${VIDEO_BUCKET}/${key}`;
+  const check = await fetch(publicUrl, { method: 'HEAD', signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+  if (!check.ok) throw new Error(`hosted video not publicly readable: HTTP ${check.status} ${publicUrl}`);
+  return publicUrl;
+}
+
+module.exports = { encodeForSocial, hostImage, hostVideo, VIDEO_BUCKET, VIDEO_MAX_BYTES, putBriefFile, getBriefFile, BUCKET, BRIEF_BUCKET, MAX_BYTES };

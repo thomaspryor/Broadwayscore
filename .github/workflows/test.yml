@@ -114,6 +114,8 @@ on:
       # BRO-6377: scripts/lib/social-report.test.mjs requires ../social-autopost/run.js
       # (the autopost's ledger writer and selection rules).
       - 'scripts/social-autopost/**'
+      - 'scripts/video-proto/channel-captions.js' # BRO-7414: tests/unit/social-video-channel-captions.test.js
+      - 'scripts/video-proto/tts.js' # BRO-7414: tests/unit/social-video-tts.test.js
       # BRO-5499: top-level tests scripts/fix-utc-shifted-publish-dates.test.mjs and scripts/purge-uk-show-score-audience.test.mjs
       - 'scripts/fix-utc-shifted-publish-dates.js'
       - 'scripts/purge-uk-show-score-audience.js'

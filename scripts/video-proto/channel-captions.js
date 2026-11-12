@@ -14,7 +14,7 @@
 const { MARKETS } = require('../social-autopost/config');
 
 // optional trailing period: "...broadwayscorecard.com." must not leave a stray "." or end a URL with one
-const TAIL = /See every review at [a-z0-9.-]+\.com\.?/i;
+const TAIL = /(?:See )?every review (?:is )?at [a-z0-9.-]+\.com\.?/i; // "See every review at X" (hand-made plans) or "Every review is at X" (voscript.js captions, BRO-7414)
 const NETWORKS = ['facebook', 'tiktok', 'instagram', 'youtube'];
 
 /** utm-tagged link: captions.js showUrl's shape (source, medium, campaign) plus utm_content to tell videos apart. */
@@ -26,12 +26,12 @@ function taggedUrl(url, network, content, campaign = 'video') {
  * Where a video's link goes. lookup(id) -> {slug, category, openingDate}. Throws on an unknown show, so a typo
  * cannot ship a dead link.
  *   compare  the newest production, by openingDate (never by the order the ids were typed), at its page slug
- *   how      the example show named by plan.key (the show the video is about); plan.compare is only the second show
+ *   how, reveal  the show named by plan.key (the show the video is about); plan.compare is only the second show
  *   others   the market's home page, from the first show
  */
 function videoLink(plan, lookup) {
   const shows = plan.shows || (plan.compare && plan.compare.id ? [plan.compare] : []);
-  const subject = plan.fmt === 'how' ? [{ id: plan.key }] : shows;
+  const subject = (plan.fmt === 'how' || plan.fmt === 'reveal') ? [{ id: plan.key }] : shows;
   if (!subject.length) throw new Error(`plan ${plan.key}: no shows, so no link target`);
   const entries = subject.map((s) => ({ id: s.id, m: lookup(s.id) }));
   const bad = entries.find((e) => !e.m || !MARKETS[e.m.category]);
