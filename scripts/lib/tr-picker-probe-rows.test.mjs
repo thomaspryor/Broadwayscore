@@ -14,8 +14,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pickTrProduction } = require('./lib/tr-production-pick.js');
-const { isLondonVenue } = require('./lib/tr-london-venue.js');
+const { pickTrProduction } = require('./tr-production-pick.js');
+const { isLondonVenue } = require('./tr-london-venue.js');
 
 const TR = 'https://www.theatrerecord.com';
 const r = (title, venue, path) => ({ title, venue, link: `${TR}${path}` });
