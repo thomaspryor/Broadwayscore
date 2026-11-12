@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T13:36:52.676Z",
+  "timestamp": "2026-11-12T14:08:51.731Z",
   "stats": {
-    "totalReviews": 81620,
-    "alreadyFlagged": 22281,
+    "totalReviews": 81634,
+    "alreadyFlagged": 22293,
     "dateGuardCatches": 218,
-    "directorMismatch": 3651,
+    "directorMismatch": 3652,
     "tvFilmSignals": 2302,
-    "londonSignals": 3708,
+    "londonSignals": 3710,
     "offBroadwaySignals": 752,
     "yearMismatch": 373,
-    "noPublishDate": 8439
+    "noPublishDate": 8432
   },
   "findings": [
     {
@@ -7082,7 +7082,7 @@
       "showId": "baby-regional-2024",
       "file": "chicagotheaterandarts--jodie-jacobs.json",
       "score": 87,
-      "publishDate": null,
+      "publishDate": "2024-04-20",
       "url": "https://chicagotheaterandarts.com/2024/04/20/16311/",
       "findings": [
         {
@@ -8431,6 +8431,7 @@
     {
       "showId": "beetlejuice-tour-2022",
       "file": "andrew-j-stillman--andrew-j-stillman.json",
+      "score": 78,
       "publishDate": "2023-08-17",
       "url": "https://www.andrewjstillman.com/reviews/beetlejuice-musical",
       "findings": [
@@ -9448,6 +9449,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "around-the-town-chicago--unknown.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/the-book-of-mormon-2/",
       "findings": [
@@ -35673,6 +35675,7 @@
     {
       "showId": "jagged-little-pill-tour-2022",
       "file": "broadwayworld--jon-bee.json",
+      "score": 79,
       "publishDate": "2023-08-22",
       "url": "https://www.broadwayworld.com/denver/article/Review-JAGGED-LITTLE-PILL-Goes-Down-Easy-at-DCPA-20230822",
       "findings": [
@@ -35698,7 +35701,22 @@
     },
     {
       "showId": "jagged-little-pill-tour-2022",
+      "file": "chrisgrum--christopher-grum.json",
+      "score": 78,
+      "publishDate": "2023-09-08",
+      "url": "https://chrisgrum.wordpress.com/2023/09/08/review-jagged-little-pill/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
       "file": "chrisgrum--unknown.json",
+      "score": 78,
       "publishDate": "2023-09-08",
       "url": "https://chrisgrum.wordpress.com/2023/09/08/review-jagged-little-pill/",
       "findings": [
@@ -35712,6 +35730,7 @@
     {
       "showId": "jagged-little-pill-tour-2022",
       "file": "minneapolis-star-tribune--rohan-preston.json",
+      "score": 79,
       "publishDate": "2023-08-09",
       "url": "https://www.startribune.com/review-jagged-little-pill-broadway-musical-minneapolis-orpheum-diablo-cody-alanis-morissette/600295934",
       "findings": [
@@ -39326,6 +39345,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "la-dance-chronicle--joanne-divito.json",
+      "score": 91,
       "publishDate": "2023-08-08",
       "url": "https://www.ladancechronicle.com/les-miserables-triumphant-return/",
       "findings": [
@@ -39411,6 +39431,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "oc-register--christopher-smith.json",
+      "score": 87,
       "publishDate": "2023-09-21",
       "url": "https://www.ocregister.com/2023/09/21/review-les-miserables-storms-the-barricades-in-costa-mesa/",
       "findings": [
@@ -39590,6 +39611,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "stage-raw--socks-whitmore.json",
+      "score": 59,
       "publishDate": "2023-08-08",
       "url": "https://stageraw.com/les-miserables/",
       "findings": [
@@ -44204,6 +44226,7 @@
     {
       "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--shelby-tyler.json",
+      "score": 91,
       "publishDate": "2023-08-08",
       "url": "https://www.broadwayworld.com/washington-dc/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Kennedy-Center-20230808",
       "findings": [
@@ -49050,6 +49073,7 @@
     {
       "showId": "operation-mincemeat-west-end-2024",
       "file": "thereviewshub--lauren-humphreys.json",
+      "score": 97,
       "publishDate": "2026-11-11",
       "url": "https://www.thereviewshub.com/operation-mincemeat-theatre-royal-glasgow/",
       "findings": [
@@ -55811,6 +55835,24 @@
       ]
     },
     {
+      "showId": "roleplay-off-west-end-2026",
+      "file": "standard--martin-robinson.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.standard.co.uk/culture/theatre/hannah-reilly-roleplay-sex-influencer-edinburgh-fringe-london-soho-theatre-b1301964.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "rolling-thunder-off-broadway-2025",
       "file": "one-minute-critic--jude-cramer.json",
       "score": 58,
@@ -61942,20 +61984,6 @@
       "score": 79,
       "publishDate": "April 25, 2023",
       "url": "https://nypost.com/2023/04/25/summer-1976-review-laura-linney-jessica-hecht-on-broadway/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "summer-2018",
-      "file": "slantmagazine--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.slantmagazine.com/film/that-summer/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -85673,6 +85701,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "intermissionblog--morgan-politzer.json",
+      "score": 89,
       "publishDate": "2023-09-05",
       "url": "https://www.intermissionblog.com/reviews/review-fellow-north-carolinians-let-us-rejoycify-that-wicked-has-returned",
       "findings": [
@@ -95688,7 +95717,21 @@
     },
     {
       "showId": "cloud-9-national-west-end-2026",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2026-11-11",
+      "url": "https://www.ft.com/content/ef9eec04-6960-4997-a0ca-f974b7eddc9e",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
       "file": "readaboutstuff--dan-english.json",
+      "score": 65,
       "publishDate": "2026-11-12",
       "url": "https://readaboutstuff.com/2026/11/12/review-cloud-nine-national-theatre-london/",
       "findings": [
@@ -110295,6 +110338,7 @@
     {
       "showId": "kate-allie-and-the-86-mets-off-broadway-2026",
       "file": "openingnight--tulis-mccall.json",
+      "score": 63,
       "publishDate": "2026-11-10",
       "url": "https://openingnight.online/kate-allie-and-the-86-mets-at-asylumnyc/",
       "findings": [
@@ -124682,6 +124726,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "viewfromthegods--simon-jenner.json",
+      "score": 90,
       "publishDate": "2026-11-10",
       "url": "https://viewfromthegods.co.uk/2026/11/10/some-woman-national-theatre-dorfman/?utm_source=rss&utm_medium=rss&utm_campaign=some-woman-national-theatre-dorfman",
       "findings": [
@@ -126393,7 +126438,7 @@
     {
       "showId": "sunset-boulevard-2024",
       "file": "artsfuse--chris-caggiano.json",
-      "score": null,
+      "score": 18,
       "publishDate": "2024-11-09",
       "url": "https://artsfuse.org/300731/theater-review-the-broadway-revival-of-sunset-boulevard-assaults-the-senses/",
       "findings": [
@@ -127637,6 +127682,7 @@
     {
       "showId": "the-audience-2015",
       "file": "chicagotribune--chris-jones.json",
+      "score": 87,
       "publishDate": "2015-03-08",
       "url": "http://www.chicagotribune.com/entertainment/theater/broadway/ct-the-audience-broadway-review-20150308-column.html",
       "findings": [
