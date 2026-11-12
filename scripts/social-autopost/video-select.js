@@ -11,7 +11,7 @@ const { socialNotable } = require('./notable');
 const DAY_MS = 864e5;
 const NETWORKS = Object.keys(C.VIDEO.channels);
 
-/** Importance gate: BRO-7413's socialNotable (Broadway, plus Off-Broadway with 4+ tier-1 critics or 500+ audience), the one predicate both lanes share. */
+/** Importance gate: BRO-7413's socialNotable (Broadway, plus Off-Broadway clearing the NOTABLE_ONLY bar in config.js), the one predicate both lanes share. */
 function videoWorthy(show, { slim } = {}) { return socialNotable(show, slim || undefined); }
 
 const { findLondonRun } = require('../lib/transfer-detection');
