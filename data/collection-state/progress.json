@@ -883,23 +883,7 @@
     "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
     "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
     "call-me-izzy-2025/theater-life--david-sheward.json",
-    "mrs-warrens-profession-west-end-2025/plays-international--maryam-philpott.json",
-    "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json",
-    "all-the-worlds-a-stage-off-broadway-2025/theater-life--david-sheward.json",
-    "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
-    "irishtown-off-broadway-2025/theater-life--paulanne-simmons.json",
-    "the-last-five-years-2025/vulture--sara-holdren.json",
-    "the-last-five-years-2025/thewrap--robert-hofler.json",
-    "the-last-five-years-2025/ctv-canada-am--unknown.json",
-    "the-last-five-years-2025/hypable--unknown.json",
-    "glengarry-glen-ross-2025/usatoday--patrick-ryan.json",
-    "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json",
-    "a-streetcar-named-desire-crucible-regional-2025/thestage--john-murphy.json",
-    "deep-blue-sound-off-broadway-2025/theater-life--david-sheward.json",
-    "dial-m-for-mayhem-dundee-rep-regional-2025/thestage--david-pollock.json",
-    "grangeville-off-broadway-2026/broadwayworld--team-bww.json",
-    "redwood-2025/juiceph--wanggo-gallaga.json",
-    "driftwood-sheffield-regional-2025/guardian--arifa-akbar.json"
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1193,7 +1177,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1516,7 +1501,7 @@
     ]
   },
   "startTime": "2026-11-11T19:44:43.602Z",
-  "lastProcessed": "a-raisin-in-the-sun-regional-2025/splash-magazines--larita-s-smith.json",
+  "lastProcessed": "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-11T19:46:26.880Z",
@@ -1627,6 +1612,61 @@
       "t": "2026-11-12T09:49:52.126Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-12T12:29:10.582Z",
+      "event": "bb-session",
+      "session": "7ea3c1d7",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-12T12:29:11.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-12T12:31:58.251Z",
+      "event": "bb-session",
+      "session": "46ff053d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-12T12:31:58.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-12T12:34:32.571Z",
+      "event": "bb-session",
+      "session": "435ba52a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-12T12:34:33.176Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-12T12:36:35.097Z",
+      "event": "bb-session",
+      "session": "4266efbd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-12T12:36:35.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-12T12:37:42.468Z",
+      "event": "bb-session",
+      "session": "ebd95052",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+    },
+    {
+      "t": "2026-11-12T12:37:43.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
