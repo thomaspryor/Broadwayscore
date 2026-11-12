@@ -35,7 +35,7 @@ test('plan card and sheet controls are at least 44px tall', () => {
   assert.match(CARD, /function slotClass[\s\S]*?h-16/, 'showtime buttons must stay h-16');
   assert.match(CARD, /ariaLabel="Planned date"[\s\S]*?className="w-full h-12/, 'date field must stay h-12');
   assert.match(CARD, /Remove from To See/);
-  assert.match(CARD, /className="btn btn-secondary w-full h-12 text-score-skip"/);
+  assert.match(CARD, /className="h-11 px-3 text-sm font-semibold text-score-skip hover:underline/, 'Remove is a 44px red text action');
   assert.match(CARD, /className="card-interactive w-full flex items-center gap-3 p-3/, 'row is a full-width card');
 });
 
@@ -71,6 +71,11 @@ test('sheet has a primary Done button that closes it (BRO-7422)', () => {
     sheet.indexOf('watchlist-plan-done') < sheet.indexOf('<AddToCalendarButtons'),
     'Done is the primary action and sits above the secondary actions',
   );
+  // Owner 2026-11-12: "just one main CTA". Done is the only filled button;
+  // Add to calendar is the quiet text look and Remove is red text.
+  assert.equal((sheet.match(/btn-primary/g) || []).length, 1, 'exactly one primary button');
+  assert.doesNotMatch(sheet, /btn btn-secondary/, 'no second filled button in the sheet');
+  assert.match(sheet, /<AddToCalendarButtons event=\{event\} quiet \/>/, 'calendar uses the quiet look');
 });
 
 test('diary-only show page can delete a rating', () => {

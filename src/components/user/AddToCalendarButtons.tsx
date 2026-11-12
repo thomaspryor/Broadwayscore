@@ -18,6 +18,9 @@ interface AddToCalendarButtonsProps {
    *  (the ~100px grid card, the date column of a list row). Omit on wider
    *  surfaces for the one-line icon + label button. */
   compact?: boolean;
+  /** Text-link look (icon + label, no fill) for sheets where another button is
+   *  the one primary action, e.g. the To See plan sheet's Done. Still 44px tall. */
+  quiet?: boolean;
   /** Called when a calendar is chosen in the sheet (analytics). */
   onAdd?: (method: CalendarMethod) => void;
 }
@@ -36,7 +39,7 @@ interface AddToCalendarButtonsProps {
  * rule lives here, not in each caller, so no page can show a button whose
  * download 404s.
  */
-export default function AddToCalendarButtons({ event, compact, onAdd }: AddToCalendarButtonsProps) {
+export default function AddToCalendarButtons({ event, compact, quiet, onAdd }: AddToCalendarButtonsProps) {
   const [open, setOpen] = useState(false);
   if (!event) return null;
   if (!isCalendarEventOffered(event, featureFlags.calendarExport)) return null;
@@ -53,9 +56,11 @@ export default function AddToCalendarButtons({ event, compact, onAdd }: AddToCal
       <button
         type="button"
         onClick={openSheet}
-        className={compact
-          ? 'btn btn-secondary w-full min-h-[44px] px-1.5 py-1 text-xs leading-tight'
-          : 'btn btn-secondary h-11 px-3 gap-1.5 text-sm'}
+        className={quiet
+          ? 'inline-flex items-center justify-center h-11 px-3 gap-1.5 text-sm font-semibold text-white hover:underline'
+          : compact
+            ? 'btn btn-secondary w-full min-h-[44px] px-1.5 py-1 text-xs leading-tight'
+            : 'btn btn-secondary h-11 px-3 gap-1.5 text-sm'}
         aria-haspopup="dialog"
         aria-label={`Add ${event.title} on ${upcomingRowDate(event.date)} to your calendar`}
         data-testid="add-to-calendar"

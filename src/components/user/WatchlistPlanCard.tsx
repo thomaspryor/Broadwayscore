@@ -207,7 +207,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
         {/* Every control above saves the moment it changes. The sheet had no
             button that said so, so owners hunted for "Save" and closed with the
             X (owner, 2026-11-12). Done is the one primary action. */}
-        <div className="mt-5 space-y-2 [&_[data-testid=add-to-calendar]]:w-full [&_[data-testid=add-to-calendar]]:h-12">
+        <div className="mt-5 space-y-1">
           <button
             type="button"
             onClick={onClose}
@@ -217,15 +217,19 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
             {saving ? 'Saving…' : 'Done'}
           </button>
           <p className="text-xs text-fg-muted text-center" aria-live="polite">Changes save automatically.</p>
-          <AddToCalendarButtons event={event} />
-          <button
-            type="button"
-            disabled={saving}
-            onClick={async () => { await guarded(onRemove)(); onClose(); }}
-            className="btn btn-secondary w-full h-12 text-score-skip"
-          >
-            Remove from To See
-          </button>
+          {/* Done is the only filled button. Calendar and Remove are quiet
+              44px text actions (owner, 2026-11-12: "just one main CTA"). */}
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <AddToCalendarButtons event={event} quiet />
+            <button
+              type="button"
+              disabled={saving}
+              onClick={async () => { await guarded(onRemove)(); onClose(); }}
+              className="h-11 px-3 text-sm font-semibold text-score-skip hover:underline disabled:opacity-60"
+            >
+              Remove from To See
+            </button>
+          </div>
         </div>
       </div>
     </Modal>
