@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T08:54:03.729Z",
+  "timestamp": "2026-11-12T09:05:38.797Z",
   "stats": {
-    "totalReviews": 81614,
+    "totalReviews": 81616,
     "alreadyFlagged": 22278,
     "dateGuardCatches": 218,
     "directorMismatch": 3651,
     "tvFilmSignals": 2302,
-    "londonSignals": 3704,
+    "londonSignals": 3705,
     "offBroadwaySignals": 751,
     "yearMismatch": 372,
-    "noPublishDate": 8441
+    "noPublishDate": 8440
   },
   "findings": [
     {
@@ -132607,6 +132607,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-inheritance-2019",
+      "file": "variety--marilyn-stasio.json",
+      "score": 87,
+      "publishDate": "2019-11-17",
+      "url": "https://variety.com/2019/legit/reviews/the-inheritance-review-broadway-1203406810/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
