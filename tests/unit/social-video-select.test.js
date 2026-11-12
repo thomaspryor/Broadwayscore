@@ -15,6 +15,15 @@ test('videoWorthy: Broadway yes, regional and West End no', () => {
   assert.equal(V.videoWorthy({ id: 'c', category: 'regional' }, {}), false);
 });
 
+test('videoWorthy is BRO-7413 socialNotable, not a copy (same answer, incl. Off-Broadway with no data and no category)', () => {
+  const { socialNotable } = require('../../scripts/social-autopost/notable');
+  const slim = { ob: null };
+  for (const show of [{ id: 'ob', category: 'off-broadway' }, { id: 'n', category: null }, { id: 'op', category: 'broadway', type: 'opera' }, { id: 'b', category: 'broadway' }]) {
+    assert.equal(V.videoWorthy(show, { slim }), socialNotable(show, slim), show.id);
+  }
+  assert.equal(V.videoWorthy({ id: 'n', category: null }, { slim }), false);
+});
+
 test('entryDone needs a post on every network, or an abandon', () => {
   const all = Object.fromEntries(V.NETWORKS.map(n => [n, posted('2026-11-12T10:00:00Z')]));
   assert.equal(V.entryDone(row('score', 'x', all)), true);

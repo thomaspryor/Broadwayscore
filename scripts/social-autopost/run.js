@@ -37,6 +37,7 @@ const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_
 const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS } = require('./config');
 const { targetSets, tagChannels, channelKey, homeSet } = require('./routing');
 const briefs = require('./briefs');
+const { withShowTags } = require('./tags');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const LEDGER_FILE = path.join(ROOT, 'data', 'social-autopost-ledger.json');
@@ -413,7 +414,9 @@ async function renderCompareFor(built, ctx, png, { requirePoster = false } = {})
  */
 async function runLondonCompare(ev, { ctx, buffer, channels, now, outDir, summary, problems }) {
   const label = `london-compare:${ev.show.id}`;
-  const built = briefs.buildCompare({ descA: describe(ev.london, ctx), descB: describe(ev.show, ctx), hook: '', now });
+  const descNyc = describe(ev.show, ctx);
+  const built = briefs.buildCompare({ descA: describe(ev.london, ctx), descB: descNyc, hook: '', now });
+  built.captions = withShowTags(built.captions, ev.show, descNyc.score); // BRO-7413: the New York show's account only
   const png = path.join(outDir, `london-compare-${ev.show.id}.png`);
   fs.mkdirSync(outDir, { recursive: true });
   await renderCompareFor(built, ctx, png, { requirePoster: true });
@@ -496,7 +499,7 @@ async function buildClosing(ev, ctx, outDir, { requirePoster = true } = {}) {
   const captions = buildClosingCaptions(p);
   checkCaptions(captions, closingAllowedNumbers(p), `closing-soon:${ev.show.id}`);
   const card = await buildCard(desc, outDir, { requirePoster, label: `Closing ${monthDay(ev.closing)}`, name: `closing-${ev.show.id}` });
-  return { desc, captions, card };
+  return { desc, captions: withShowTags(captions, ev.show, desc.score), card }; // tags added after the number check (BRO-7413)
 }
 
 /**
@@ -902,7 +905,7 @@ async function main() {
         const desc = describe(ev.show, ctx);
         const card = await buildCard(desc, outDir, { requirePoster: live });
         console.log(`\n[autopost] ${ev.show.id}${ev.backfill ? " (quiet-day backfill)" : ""} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
-        const route = targetSets(ev.show, ctx.reviewsByShow[ev.show.id], CHANNEL_SETS, ctx.shows);
+        const route = targetSets(ev.show, ctx.reviewsByShow[ev.show.id], CHANNEL_SETS, ctx.shows, ctx.slim);
         console.log(`  routing: ${ev.show.category} -> ${route.join(' + ') || 'no'} channels${route.length > 1 ? ' (high profile, cross-posted)' : ''}`);
         if (live && !route.length) { console.log(`  [autopost] ${ev.show.id}: no channel set is configured for it, nothing posted`); continue; }
         let targets = [], imageUrl;
@@ -917,9 +920,12 @@ async function main() {
         // An approved draft is kept (ledger _meta.aiDrafts) until it posts, and reused only while its
         // fact sheet is unchanged, so a Buffer outage does not buy a new draft each hour.
         const aiOff = aiDisabledReason(process.env, { enabled: AI_CAPTIONS.enabled, dryRun: !live });
-        const { captions, meta: writer } = aiOff
+        const { captions: written, meta: writer } = aiOff
           ? { captions: buildCaptions(desc), meta: { writer: 'template', attempts: 0, fallback: aiOff } }
           : await writeScoreCaptions(desc, ctx, ev.dueAt.getTime(), { log: console.log, deadline: aiDeadline, cache: live ? (ctx.ledger._meta.aiDrafts = ctx.ledger._meta.aiDrafts || {}) : undefined });
+        // BRO-7413: the show's official account, appended after the writer and its checks, so the
+        // retry texts (entry.pending) carry it too and the writer never sees a handle.
+        const captions = withShowTags(written, ev.show, desc.score);
         if (live && writer.writer === 'ai' && !writer.reused) writeLedger(ctx.ledger);
         // The post still goes out (template wording), but a missing key or a failing API would otherwise
         // turn the AI writer off unnoticed: put it in the digest. Refused drafts are normal and stay quiet.

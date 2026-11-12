@@ -2,23 +2,17 @@
  * Which videos are due (BRO-7414). Pure: no network, no files. The video lane reuses the text lane's
  * decisions instead of keeping its own rule: select.js scoreDecision (eligibility, settled score, done keys) and
  * londonCompareDecision. Only the "done" set differs: it comes from the video ledger, so a show whose text card went out
- * still owes its video. When the owner-approved importance predicate of BRO-7413 lands in select.js, swap videoWorthy
- * for it; it is the only place this lane decides importance.
+ * still owes its video. Importance is BRO-7413's socialNotable (notable.js), the same predicate the text lane uses.
  */
 const C = require('./config');
 const S = require('./select');
-const { isHighProfile } = require('./routing');
+const { socialNotable } = require('./notable');
 
 const DAY_MS = 864e5;
 const NETWORKS = Object.keys(C.VIDEO.channels);
 
-/** Owner 2026-11-12: Broadway shows, plus Off-Broadway shows of high importance (routing.js isHighProfile). */
-function videoWorthy(show, { reviewsByShow, shows }) {
-  // Intentionally NOT isBroadwayCategory: a show with no category must never auto-post a video (that helper treats null as Broadway)
-  if (show.category === 'broadway') return true;
-  if (show.category === 'off-broadway') return isHighProfile(show, (reviewsByShow || {})[show.id], shows);
-  return false;
-}
+/** Importance gate: BRO-7413's socialNotable (Broadway, plus Off-Broadway the homepage calls notable), the one predicate both lanes share. */
+function videoWorthy(show, { slim } = {}) { return socialNotable(show, slim || undefined); }
 
 const keyOf = ev => `${ev.type}:${ev.show.id}`; // 'score:<id>' (reveal) or 'london-compare:<id>' (compare), the select.js key shapes
 
@@ -64,8 +58,8 @@ function findVideoEvents({ shows, textLedger, videoLedger, now, reviewsByShow, s
   const ctx = { done, now, reviewsByShow, slim, getOutletTier, shows };
   const events = [], skipped = [];
   for (const show of shows) {
-    if (!S.isEligibleShow(show, { allowOpera: true, allowTouring: true, shows })) continue;
-    if (!videoWorthy(show, { reviewsByShow, shows })) { skipped.push({ show, why: 'not-important' }); continue; }
+    if (!S.isEligibleShow(show, { allowOpera: true, allowTouring: true, shows, slim })) continue;
+    if (!videoWorthy(show, { slim })) { skipped.push({ show, why: 'not-important' }); continue; }
     const cmp = C.VIDEO.formats.includes('compare') ? S.londonCompareDecision(show, { shows, ledger: textLedger, now, slim, done }) : { due: false };
     if (cmp.due) { events.push({ type: 'london-compare', fmt: 'compare', show, london: cmp.london, slot: cmp.slot }); continue; }
     const d = S.scoreDecision(show, ctx, { ignoreAge: true });

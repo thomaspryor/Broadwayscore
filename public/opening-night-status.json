@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T14:09:09.778Z",
+  "generatedAt": "2026-11-12T15:04:12.409Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1915,27 +1915,27 @@
       "slug": "cloud-9-national-west-end",
       "thumbnail": "/images/shows/cloud-9-national-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 65,
+      "liveScore": 67,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 6,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 1,
+      "total": 3,
       "t1": 0,
-      "t2": 0,
-      "t3": 1,
-      "positive": 0,
-      "mixed": 1,
+      "t2": 1,
+      "t3": 2,
+      "positive": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "3/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:1/6"
+          "T2:1/2",
+          "hi-conf:3/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2043,10 +2043,6 @@
           "isDualMarket": false
         },
         {
-          "name": "LondonTheatre1",
-          "isDualMarket": false
-        },
-        {
           "name": "London Box Office",
           "isDualMarket": false
         }
@@ -2061,6 +2057,18 @@
           "t3": 1,
           "p": 0,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-12T15:04:12.409Z",
+          "rc": 3,
+          "s": 67,
+          "t1": 0,
+          "t2": 1,
+          "t3": 2,
+          "p": 1,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
@@ -3197,23 +3205,23 @@
       "status": "open",
       "slug": "here-there-are-blueberries",
       "thumbnail": "/images/shows/here-there-are-blueberries-2026/thumbnail.webp",
-      "siteScore": 81.05,
+      "siteScore": 80.64,
       "liveScore": 81,
-      "scoreDrift": -0.04999999999999716,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
-      "t1": 5,
+      "total": 19,
+      "t1": 4,
       "t2": 13,
       "t3": 2,
-      "positive": 18,
+      "positive": 17,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3602,6 +3610,18 @@
           "t2": 13,
           "t3": 2,
           "p": 18,
+          "m": 2,
+          "n": 0,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-11-12T15:04:12.409Z",
+          "rc": 19,
+          "s": 80.64,
+          "t1": 4,
+          "t2": 13,
+          "t3": 2,
+          "p": 17,
           "m": 2,
           "n": 0,
           "bc": "complete"

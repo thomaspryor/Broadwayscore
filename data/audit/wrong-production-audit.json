@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T14:08:51.731Z",
+  "timestamp": "2026-11-12T15:03:57.431Z",
   "stats": {
-    "totalReviews": 81634,
-    "alreadyFlagged": 22293,
+    "totalReviews": 81642,
+    "alreadyFlagged": 22296,
     "dateGuardCatches": 218,
-    "directorMismatch": 3652,
-    "tvFilmSignals": 2302,
+    "directorMismatch": 3654,
+    "tvFilmSignals": 2301,
     "londonSignals": 3710,
     "offBroadwaySignals": 752,
-    "yearMismatch": 373,
-    "noPublishDate": 8432
+    "yearMismatch": 372,
+    "noPublishDate": 8401
   },
   "findings": [
     {
@@ -5351,7 +5351,7 @@
     {
       "showId": "an-enemy-of-the-people-2024",
       "file": "culturesauce--thom-geier.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2024-03-18",
       "url": "https://culturesauce.com/2024/03/18/enemy-of-the-people-broadway-review-jeremy-strong-imperioli/",
       "findings": [
@@ -16204,7 +16204,7 @@
     {
       "showId": "dead-outlaw-off-broadway-2024",
       "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 39,
+      "score": 42,
       "publishDate": "2024-03-14",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-Q26VJ2",
       "findings": [
@@ -16312,7 +16312,7 @@
     {
       "showId": "dead-outlaw-off-broadway-2024",
       "file": "talkinbroadway--james-wilson.json",
-      "score": 85,
+      "score": 90,
       "publishDate": "March 10th, 2024",
       "url": "https://www.talkinbroadway.com/page/ob/03_10_24.html",
       "findings": [
@@ -21274,7 +21274,7 @@
     {
       "showId": "everybodys-talking-about-jamie-off-west-end-2024",
       "file": "london-theatre--julia-rank.json",
-      "score": 87,
+      "score": 79,
       "publishDate": "2024-02-16",
       "url": "https://www.londontheatre.co.uk/reviews/everybodys-talking-about-jamie-review-peacock-theatre",
       "findings": [
@@ -33090,7 +33090,7 @@
     {
       "showId": "instructions-for-a-teenage-armageddon-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 91,
+      "score": 97,
       "publishDate": "March 20th, 2024",
       "url": "https://www.allthatdazzles.co.uk/post/review-instructions-for-a-teenage-armageddon-garrick-theatre",
       "findings": [
@@ -43826,7 +43826,7 @@
     {
       "showId": "mj-the-musical-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 93,
+      "score": 97,
       "publishDate": "2024-03-27",
       "url": "https://theatreweekly.com/review-mj-the-musical-at-the-prince-edward-theatre-london/",
       "findings": [
@@ -44758,9 +44758,36 @@
     },
     {
       "showId": "mrs-doubtfire-tour-2023",
+      "file": "south-florida-sun-sentinel--michelle-solomon.json",
+      "score": 88,
+      "publishDate": "2024-04-16",
+      "url": "https://www.sun-sentinel.com/2024/04/16/theater-review-without-a-doubt-you-dont-want-to-miss-mrs-doubtfire/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
       "file": "the-daily-gazette--matthew-g-moross.json",
       "publishDate": "2023-10-25",
       "url": "https://www.dailygazette.com/life_and_arts/theater/mrs-doubtfire-hugely-entertaining-at-proctors-in-schenectady/article_e8e80c50-735a-11ee-b962-239869bba4f5.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "the-detroit-jewish-news--ronelle-grier.json",
+      "publishDate": "2023-11-21",
+      "url": "https://www.thejewishnews.com/culture/arts/theater/review-mrs-doubtfire-is-an-entertaining-romp-with-an-uplifting-message/article_b9f4a0e8-88ae-11ee-83dd-63491628c337.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45633,7 +45660,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 75,
+      "score": 72,
       "publishDate": "2025-02-20",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-tom-hiddleston-3mfwhtv89",
       "findings": [
@@ -47221,7 +47248,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "standard--tim-bano.json",
-      "score": 65,
+      "score": 63,
       "publishDate": "2025-02-05",
       "url": "https://www.standard.co.uk/culture/theatre/oedipus-old-vic-review-rami-malek-b1209249.html",
       "findings": [
@@ -47277,7 +47304,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 51,
+      "score": 55,
       "publishDate": "2025-02-04",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oedipus-review-other-worldly-production-let-down-by-stiff-oscar-winner-cc73c8dgt",
       "findings": [
@@ -47310,7 +47337,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 67,
+      "score": 65,
       "publishDate": "2025-02-04",
       "url": "https://www.whatsonstage.com/news/oedipus-at-the-old-vic-review-rami-malek-and-indira-varma-start-strong-finish-stifled_1663421/",
       "findings": [
@@ -47596,7 +47623,7 @@
     {
       "showId": "oh-mary-off-broadway-2024",
       "file": "nytg--amelia-merrill.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2024-02-09",
       "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
       "findings": [
@@ -56261,7 +56288,7 @@
     {
       "showId": "russian-troll-farm-a-workplace-comedy-off-broadway-2024",
       "file": "talkinbroadway--james-wilson.json",
-      "score": 73,
+      "score": 63,
       "publishDate": "February 8th, 2024",
       "url": "https://www.talkinbroadway.com/page/ob/02_08_24.html",
       "findings": [
@@ -60339,20 +60366,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "stalker-off-broadway-2024",
-      "file": "front-row-center--tulis-mccall.json",
-      "score": 84,
-      "publishDate": "April 1st, 2024",
-      "url": "https://thefrontrowcenter.com/2024/04/35138/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -67794,7 +67807,7 @@
     {
       "showId": "the-effect-off-broadway-2024",
       "file": "nytimes--naveen-kumar.json",
-      "score": 83,
+      "score": 87,
       "publishDate": "2024-03-13",
       "url": "https://www.nytimes.com/2024/03/13/theater/the-effect-review.html",
       "findings": [
@@ -70408,7 +70421,7 @@
     {
       "showId": "the-hills-of-california-west-end-2024",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 94,
+      "score": 100,
       "publishDate": "February 8th, 2024",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-hills-of-california-harold-pinter-theatre",
       "findings": [
@@ -70436,7 +70449,7 @@
     {
       "showId": "the-hills-of-california-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "February 9th, 2024",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-HILLS-OF-CALIFORNIA-Harold-Pinter-Theatre-20240209",
       "findings": [
@@ -70524,7 +70537,7 @@
     {
       "showId": "the-hills-of-california-west-end-2024",
       "file": "london-theatre--olivia-rook.json",
-      "score": 94,
+      "score": 96,
       "publishDate": "2024-02-08",
       "url": "https://www.londontheatre.co.uk/reviews/the-hills-of-california-review-harold-pinter-theatre",
       "findings": [
@@ -70669,7 +70682,7 @@
     {
       "showId": "the-hills-of-california-west-end-2024",
       "file": "times-uk--clive-davis.json",
-      "score": 65,
+      "score": 60,
       "publishDate": "2024-02-08",
       "url": "https://www.thetimes.co.uk/article/the-hills-of-california-theatre-review-jez-butterworths-new-play-falters-at-the-end-p9qhvmhxw",
       "findings": [
@@ -75609,7 +75622,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 84,
+      "score": 90,
       "publishDate": "2024-02-15",
       "url": null,
       "findings": [
@@ -75684,7 +75697,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
-      "score": 76,
+      "score": 100,
       "publishDate": "2024-02-16T04:34:27+00:00",
       "url": "https://inews.co.uk/culture/arts/picture-of-dorian-gray-review-sarah-snook-2908405",
       "findings": [
@@ -75698,7 +75711,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "independent--alice-saville.json",
-      "score": 74,
+      "score": 82,
       "publishDate": "February 16th, 2024",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-picture-of-dorian-gray-review-sarah-snook-b2497317.html",
       "findings": [
@@ -75712,7 +75725,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "london-theatre--suzy-evans.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "February 16th, 2024",
       "url": "https://www.londontheatre.co.uk/reviews/the-picture-of-dorian-gray-review-sarah-snook",
       "findings": [
@@ -75745,7 +75758,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "nytimes--houman-barekat.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2024-02-16T04:34:27+00:00",
       "url": "https://www.nytimes.com/2024/02/16/theater/sarah-snook-dorian-gray.html",
       "findings": [
@@ -75759,7 +75772,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "standard--nick-curtis.json",
-      "score": 82,
+      "score": 83,
       "publishDate": "February 15th, 2024",
       "url": "https://www.standard.co.uk/culture/theatre/the-picture-of-dorian-gray-theatre-royal-haymarket-review-sarah-snook-b1139380.html",
       "findings": [
@@ -75787,7 +75800,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 99,
+      "score": 98,
       "publishDate": "February 15th, 2024",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-picture-of-dorian-gray-theatre-royal-haymarket-review/",
       "findings": [
@@ -75848,7 +75861,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2024-02-16T04:34:27+00:00",
       "url": "https://www.timeout.com/london/theatre/the-picture-of-dorian-gray-1-review",
       "findings": [
@@ -75862,7 +75875,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "times-uk--clive-davis.json",
-      "score": 42,
+      "score": 51,
       "publishDate": "2024-02-16T04:34:27+00:00",
       "url": "https://www.thetimes.co.uk/article/the-picture-of-dorian-gray-review-sarah-snook-rs6tg950w",
       "findings": [
@@ -75890,7 +75903,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "February 15th, 2024",
       "url": "https://www.whatsonstage.com/news/the-picture-of-dorian-gray-review-sarah-snook-goes-wilde-in-the-west-end_1577119/",
       "findings": [
@@ -78572,20 +78585,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "the-whos-tommy-2024",
-      "file": "culturesauce--thom-geier.json",
-      "score": 84,
-      "publishDate": null,
-      "url": "https://culturesauce.com/whos-tommy-broadway-review/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (2x) more than 2024 (1x). 2026 matches production: the-whos-tommy-tour-2026"
         }
       ]
     },
@@ -89765,7 +89764,7 @@
     {
       "showId": "an-enemy-of-the-people-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "February 20th, 2024",
       "url": "https://www.theguardian.com/stage/2024/feb/20/an-enemy-of-the-people-review-matt-smith-ibsen-duke-of-yorks-theatre-london",
       "findings": [
@@ -97495,7 +97494,7 @@
     {
       "showId": "dear-octopus-west-end-2024",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 88,
+      "score": 87,
       "publishDate": "2024-02-15",
       "url": "https://www.ft.com/content/8cf58a40-68d1-4718-bbd5-11588e74bd0b",
       "findings": [
@@ -97522,7 +97521,7 @@
     {
       "showId": "dear-octopus-west-end-2024",
       "file": "london-theatre--julia-rank.json",
-      "score": 92,
+      "score": 97,
       "publishDate": "2024-02-15",
       "url": "https://www.londontheatre.co.uk/reviews/dear-octopus-review-national-theatre",
       "findings": [
@@ -101397,7 +101396,7 @@
     {
       "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024",
       "file": "london-theatre--olivia-rook.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "March 8th, 2024",
       "url": "https://www.londontheatre.co.uk/reviews/for-black-boys-review-ryan-calais-camerons-show-is-a-beautiful-piece-of-theatre",
       "findings": [
@@ -105062,7 +105061,7 @@
     {
       "showId": "harry-clarke-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 82,
+      "score": 84,
       "publishDate": "March 13th, 2024",
       "url": "https://www.whatsonstage.com/news/harry-clarke-review-billy-crudup-paints-a-picture-of-fragmented-personality-in-the-west-end_1584110/",
       "findings": [
@@ -107313,7 +107312,7 @@
     {
       "showId": "i-love-you-so-much-i-could-die-off-broadway-2024",
       "file": "vulture--sara-holdren.json",
-      "score": 42,
+      "score": 44,
       "publishDate": "2024-02-14",
       "url": "https://www.vulture.com/article/theater-review-i-love-you-so-much-i-could-die-and-on-set-with-theda-bara.html",
       "findings": [
@@ -110227,7 +110226,7 @@
     {
       "showId": "just-for-one-day-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 59,
+      "score": 57,
       "publishDate": "2024-02-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-JUST-FOR-ONE-DAY-The-Old-Vic-20240214",
       "findings": [
@@ -110254,7 +110253,7 @@
     {
       "showId": "just-for-one-day-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 39,
+      "score": 36,
       "publishDate": "2024-02-13T22:25:50-05:00",
       "url": "https://www.theguardian.com/stage/2024/feb/13/just-for-one-day-review-live-aid-musical-bob-geldof",
       "findings": [
@@ -110268,7 +110267,7 @@
     {
       "showId": "just-for-one-day-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2024-02-14",
       "url": "https://www.londontheatre.co.uk/reviews/just-for-one-day-review-old-vic",
       "findings": [
@@ -117438,7 +117437,7 @@
     {
       "showId": "nye-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 61,
+      "score": 59,
       "publishDate": "2024-03-09",
       "url": "https://www.allthatdazzles.co.uk/post/review-nye-olivier-theatre",
       "findings": [
@@ -117452,7 +117451,7 @@
     {
       "showId": "nye-west-end-2024",
       "file": "britishtheatrecom--paul-t-davies.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2024-03-11",
       "url": "https://www.britishtheatre.com/fr/posts/review-nye-national-theatre",
       "findings": [
@@ -117466,7 +117465,7 @@
     {
       "showId": "nye-west-end-2024",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 86,
+      "score": 82,
       "publishDate": "2024-03-07",
       "url": "https://www.broadwayworld.com/westend/article/Review-NYE-National-Theatre-20240307",
       "findings": [
@@ -117480,7 +117479,7 @@
     {
       "showId": "nye-west-end-2024",
       "file": "liamodell--liam-odell.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2024-03-10",
       "url": "https://liamodell.com/2024/03/11/nye-bevan-review-michael-sheen-nhs-national-theatre-live-olivier-wales-millennium-centre-sharon-small-tim-price/",
       "findings": [
@@ -118924,7 +118923,7 @@
     {
       "showId": "opening-night-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 82,
+      "score": 88,
       "publishDate": "March 27th, 2024",
       "url": "https://www.theguardian.com/stage/2024/mar/27/opening-night-review-gielgud-theatre-sheridan-smith-ivo-van-hove-rufus-wainwright",
       "findings": [
@@ -118938,7 +118937,7 @@
     {
       "showId": "opening-night-west-end-2024",
       "file": "new-statesman--kate-mossman.json",
-      "score": 51,
+      "score": 41,
       "publishDate": "2024-03-26",
       "url": "https://www.newstatesman.com/culture/theatre/2024/03/opening-night-review-why-was-this-confusing-unloveable-musical-made",
       "findings": [
@@ -118952,7 +118951,7 @@
     {
       "showId": "opening-night-west-end-2024",
       "file": "nytimes--houman-barekat.json",
-      "score": 12,
+      "score": 18,
       "publishDate": "2024-03-26",
       "url": "https://www.nytimes.com/2024/03/26/theater/opening-night-review-a-stylish-movie-becomes-a-sludgy-travesty.html",
       "findings": [
@@ -122843,7 +122842,7 @@
     {
       "showId": "russian-troll-farm-a-workplace-comedy-off-broadway-2024",
       "file": "theater-life--david-sheward.json",
-      "score": 85,
+      "score": 91,
       "publishDate": "2024-02-08",
       "url": "https://theaterlife.com/russian-troll-farm-a-workplace-comedy-our-class/",
       "findings": [
@@ -125132,7 +125131,7 @@
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
       "file": "whatsonstage--alex-wood.json",
-      "score": 96,
+      "score": 99,
       "publishDate": "2024-02-29",
       "url": "https://www.whatsonstage.com/news/standing-at-the-skys-edge-review-a-soaring-achievement-with-new-edges-for-the-west-end_1579894/",
       "findings": [

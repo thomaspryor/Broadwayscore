@@ -58,6 +58,8 @@ const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', r
 // Categories whose shows post to the Broadway accounts while their own set is not
 // configured. Off-West End is not one (owner, BRO-6932: fringe London shows do not
 // belong on the Broadway accounts); it waits for the West End accounts.
+// BRO-7413: unchanged, but while NOTABLE_ONLY is on the notability gate in routing.targetSets removes West End from the
+// Broadway accounts, so this fallback only matters if that gate is switched off.
 const BROADWAY_FALLBACK_CATEGORIES = ['west-end'];
 
 // "High profile" rule for cross-posting to the OTHER market's accounts (BRO-6378;
@@ -80,6 +82,20 @@ const HIGH_PROFILE = {
   },
   sameTitleYears: 3,
 };
+
+// WHICH SHOWS POST AT ALL (BRO-7413, owner 2026-11-12: "post less, just with important shows like
+// Broadway shows, really, and then any high importance off-Broadway shows"). The Broadway accounts
+// carry Broadway shows and the Off-Broadway shows the homepage calls notable (notable.js, rule in
+// src/lib/homepage-notability.ts: 4+ tier-1 reviews, or 18+ reviews, or a known property with 250+
+// audience reviews, or an acclaimed revival; homepageInclude/homepageExclude override). West End,
+// Off-West End, opera, touring and regional shows no longer post to them. It applies to every post
+// type (score, backfill, closing soon, roundup, London compare) because routing.targetSets enforces it.
+// THIS REVERSES BRO-6920 below ("never ask is this a major show"): the floors under it still decide
+// whether a score is settled, and shows it once let through (I Became We, Copperfield) now post
+// only when they clear the notability rule. Touring/regional code and floors stay dormant, not deleted.
+//
+// Set enabled false to go back to posting every eligible show (the pre-BRO-7413 behaviour).
+const NOTABLE_ONLY = { enabled: true };
 
 // Score-post floors layered on the shared gate, which carries only the opening-night
 // email's Broadway and London floors. The floors ask only "is the score settled",
@@ -192,7 +208,7 @@ const VIDEO = {
 };
 
 module.exports = {
-  VIDEO, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS,
+  VIDEO, NOTABLE_ONLY, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS,
   MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, BROADWAY_FALLBACK_CATEGORIES, HIGH_PROFILE, SCORE_FLOORS, COMPLETE_COVERAGE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,

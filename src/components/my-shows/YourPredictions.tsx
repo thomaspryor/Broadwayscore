@@ -17,7 +17,7 @@ export default function YourPredictions({ showMap }: { showMap: Record<string, S
       </section>
     );
   }
-  // Wait for the show lookup so a row never shows a bare id.
+  // Wait for the show lookup; rows fall back to the id only if a show is missing from it.
   if (!loaded || calls.length === 0 || Object.keys(showMap).length === 0) return null;
   return (
     <section className="card p-4 mb-6" data-testid="your-predictions" aria-labelledby="your-predictions-h">
