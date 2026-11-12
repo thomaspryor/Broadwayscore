@@ -14,7 +14,8 @@ const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 function composeCompare(sides) {
   if (!Array.isArray(sides) || sides.length !== 2) throw new Error('compare-script: needs exactly two productions');
   const [A, B] = sides;
-  const norm = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); // findLondonRun matches normalised titles, so 'The Shark Is Broken' / 'The Shark is Broken' are one show
+  const { foldDiacritics } = require('../lib/title-match');
+  const norm = t => foldDiacritics(String(t)).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); // findLondonRun matches normalised titles, so 'The Shark Is Broken' / 'The Shark is Broken' are one show
   if (norm(A.title) !== norm(B.title)) throw new Error(`compare-script: not the same show ("${A.title}" vs "${B.title}")`);
   sides.forEach(s => { ['place', 'city', 'label', 'score', 'count', 'year'].forEach(k => { if (s[k] == null) throw new Error(`compare-script: ${s.label || s.place} is missing ${k}`); }); });
   const gap = Math.abs(A.score - B.score), tie = gap === 0, hi = tie ? null : (A.score > B.score ? A : B);
