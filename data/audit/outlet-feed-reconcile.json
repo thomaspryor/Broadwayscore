@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T04:05:12.444Z",
+  "generatedAt": "2026-11-12T04:31:47.715Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -106,6 +106,10 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -126,19 +130,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 855,
-  "matchedGaps": 3,
+  "itemsScanned": 850,
+  "matchedGaps": 2,
   "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
-    },
     {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
