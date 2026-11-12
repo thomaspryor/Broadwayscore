@@ -157,7 +157,8 @@ function hasLiveBylinelessPortalPrimary(showDir, primaryFiles, { extraCheck, por
       const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
       // The portal names an outlet, not a critic: a same-outlet review published days apart is a different article.
       if (portalDate && p.publishDate) {
-        const gap = Math.abs(Date.parse(portalDate) - Date.parse(p.publishDate)) / 864e5;
+        const { toDateMs } = require('./date-utils');
+        const gap = Math.abs(toDateMs(portalDate) - toDateMs(p.publishDate)) / 864e5;
         if (Number.isFinite(gap) && gap > BYLINELESS_PORTAL_MAX_DAY_GAP) return false;
       }
       return isLiveSyndicationPrimary(p, pPath) && (!extraCheck || !!extraCheck(p, pPath));
