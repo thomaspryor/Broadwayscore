@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-12T05:50:36.961Z",
+  "timestamp": "2026-11-12T06:06:26.315Z",
   "stats": {
-    "totalReviews": 81613,
+    "totalReviews": 81614,
     "alreadyFlagged": 22277,
     "dateGuardCatches": 218,
     "directorMismatch": 3651,
     "tvFilmSignals": 2302,
-    "londonSignals": 3703,
+    "londonSignals": 3704,
     "offBroadwaySignals": 751,
     "yearMismatch": 372,
     "noPublishDate": 8442
@@ -133622,6 +133622,19 @@
       "score": 82,
       "publishDate": "2026-11-02",
       "url": "https://www.londontheatre.co.uk/reviews/the-lives-of-others-review-adelphi-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "londontheatredirect--julie-simpson.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
