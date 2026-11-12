@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T15:03:57.431Z",
+  "timestamp": "2026-11-12T16:14:56.977Z",
   "stats": {
-    "totalReviews": 81642,
-    "alreadyFlagged": 22296,
+    "totalReviews": 81648,
+    "alreadyFlagged": 22300,
     "dateGuardCatches": 218,
     "directorMismatch": 3654,
     "tvFilmSignals": 2301,
-    "londonSignals": 3710,
+    "londonSignals": 3708,
     "offBroadwaySignals": 752,
-    "yearMismatch": 372,
-    "noPublishDate": 8401
+    "yearMismatch": 371,
+    "noPublishDate": 8394
   },
   "findings": [
     {
@@ -1504,20 +1504,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
-        }
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-      "file": "the-news-herald--sheri-gross.json",
-      "score": 75,
-      "publishDate": "2024-10-16",
-      "url": "https://www.news-herald.com/2024/10/16/a-beautiful-noise-at-playhouse-square-review-neil-diamond-jukebox-musical-sings/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (4x) more than 2024 (2x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -95716,19 +95702,6 @@
     },
     {
       "showId": "cloud-9-national-west-end-2026",
-      "file": "financialtimes--unknown.json",
-      "publishDate": "2026-11-11",
-      "url": "https://www.ft.com/content/ef9eec04-6960-4997-a0ca-f974b7eddc9e",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
       "file": "readaboutstuff--dan-english.json",
       "score": 65,
       "publishDate": "2026-11-12",
@@ -142796,19 +142769,6 @@
       "score": 81,
       "publishDate": "July 27th, 2023",
       "url": "https://www.standard.co.uk/culture/theatre/wordplay-royal-court-theatre-upstairs-review-kosar-ali-b1097052.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "word-play-west-end-2023",
-      "file": "standard--unknown.json",
-      "publishDate": "July 27th, 2023",
-      "url": "https://www.standard.co.uk/culture/theatre/theatre-podcast-frankie-bridge-regents-park-cage-aux-folles-word-play-royal-court-b1100465.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
