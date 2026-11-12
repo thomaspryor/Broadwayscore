@@ -1455,25 +1455,13 @@ if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
         pass  # fail-open — never let this gate crash the rest of the script
 
 # ─── Mac finish-line Gates 2, 3 and 7, ported to cloud (BRO-4372) ───────────
-# The Mac finish-line-gate.sh refused three closings the cloud hook let through:
-#   DEFERQ     (Gate 2) the message ends on a permission question ("Should I
-#              delete the old branch?") instead of doing the obvious next step.
-#   FOUNDDEFER (Gate 3) it names a defect it found and left ("Found another
-#              failure but left it out of scope.") with no card, dispatch or
-#              owner decision.
-#   ABSENCE    (Gate 7) it claims something does not exist ("There are no
-#              matching reviews.") with no search, read or command run this turn
-#              to back it (global CLAUDE.md: audit claims need direct evidence).
-# All three read the final message through _closing() (code, inline code and
-# blockquotes dropped: quoting a phrase is not saying it), block once per turn
-# chain through _ve_block (BRO-4367 ledger), and fail open on any error.
-# PASSIVEOFFER and LOOSEENDS cover part of the same ground, so DEFERQ stands
-# down once PASSIVEOFFER blocked this chain and FOUNDDEFER once LOOSEENDS did:
-# one family never blocks the same text twice.
-# Escapes: NO-VERIFY: <reason> on all three; a DECISION NEEDED: block (DEFERQ,
-# FOUNDDEFER); BACKLOG-OK: / DISPATCHED: / DEFERRED: (FOUNDDEFER); CONTROL:
-# <the positive control that proves the search could find it> (ABSENCE).
-# Kill switches: DEFERQ_GATE_DISABLE=1, FOUNDDEFER_GATE_DISABLE=1, ABSENCE_GATE_DISABLE=1.
+# DEFERQ (Gate 2): ends on a permission question ("Should I delete the branch?").
+# FOUNDDEFER (Gate 3): names a defect it found and left ("left it out of scope").
+# ABSENCE (Gate 7): claims absence with no search/read/command since the owner's
+# last message. Read through _closing() (quotes/code dropped), once per chain via
+# _ve_block, fail-open. DEFERQ stands down after PASSIVEOFFER, FOUNDDEFER after
+# LOOSEENDS (no double block). Escapes: NO-VERIFY:, DECISION NEEDED:, BACKLOG-OK:/
+# DISPATCHED:/DEFERRED: (FOUNDDEFER), CONTROL: (ABSENCE). Kill: <CODE>_GATE_DISABLE=1.
 _DEFERQ_RE = re.compile(
     r"^(?:(?:so|and|also|then|ok(?:ay)?|now)\b[,\s]*)?"
     r"(?:(?:should|shall|can|may|could) (?:I|we)\b(?! have\b)"
