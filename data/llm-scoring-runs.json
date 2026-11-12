@@ -566280,97 +566280,86 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-12T13:58:56.857Z",
-    "completedAt": "2026-11-12T13:58:56.859Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
+    "startedAt": "2026-11-12T13:10:26.386Z",
+    "completedAt": "2026-11-12T13:13:47.327Z",
+    "totalReviews": 81920,
+    "processed": 65,
+    "skipped": 81828,
+    "errors": 4,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
+      "input": 553224,
+      "output": 23908,
+      "cacheRead": 319741,
+      "cacheWrite": 15088,
+      "total": 1359920
     },
-    "costUsd": 0,
-    "runId": "43231395356",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-12T13:57:38.713Z",
-    "completedAt": "2026-11-12T13:57:42.356Z",
-    "totalReviews": 29,
-    "processed": 0,
-    "skipped": 28,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5563,
-      "output": 147,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 14222
-    },
-    "costUsd": 0.019181300000000002,
-    "runId": "43231391949",
+    "costUsd": 1.0379569,
+    "runId": "43223622962",
     "source": "index",
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "mexodus-tour-2026",
+        "outletId": "chicagotribune",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
   },
   {
-    "startedAt": "2026-11-12T14:02:40.729Z",
-    "completedAt": "2026-11-12T14:02:40.743Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
+    "startedAt": "2026-11-12T13:19:42.528Z",
+    "completedAt": "2026-11-12T13:55:37.310Z",
+    "totalReviews": 81920,
+    "processed": 179,
+    "skipped": 78550,
+    "errors": 1,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
+      "input": 1109166,
+      "output": 60747,
+      "cacheRead": 639547,
+      "cacheWrite": 112902,
+      "total": 2881929
     },
-    "costUsd": 0,
-    "runId": "43231391949",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-12T13:59:06.440Z",
-    "completedAt": "2026-11-12T13:59:12.271Z",
-    "totalReviews": 2,
-    "processed": 0,
-    "skipped": 1,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 12638,
-      "output": 160,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 24603
-    },
-    "costUsd": 0.039876499999999995,
-    "runId": "43231388756",
+    "costUsd": 4.6495341,
+    "runId": "43223622962",
     "source": "index",
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "ceilidh-the-musical-off-west-end-2026",
+        "outletId": "daily-echo",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   },
   {
-    "startedAt": "2026-11-12T14:04:09.435Z",
-    "completedAt": "2026-11-12T14:04:09.437Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-12T14:00:34.175Z",
+    "completedAt": "2026-11-12T14:05:59.397Z",
+    "totalReviews": 126,
+    "processed": 126,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 330665,
+      "output": 28223,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 358888
     },
-    "costUsd": 0,
-    "runId": "43231388756",
+    "costUsd": 0.9189868,
+    "runId": "43223622962",
     "source": "comparative-rescore",
     "errorDetails": []
   }
