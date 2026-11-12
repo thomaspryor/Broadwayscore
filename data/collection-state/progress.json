@@ -1,31 +1,30 @@
 {
   "processed": [
-    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
-    "here-there-are-blueberries-2026/new-york-sun--unknown.json",
-    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    "cloud-9-west-end-2026/the-spy-in-the-stalls--unknown.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+    "cloud-9-west-end-2026/west-end-wilma--unknown.json"
   ],
   "failed": [
-    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
-    "here-there-are-blueberries-2026/talkinbroadway--unknown.json"
+    "cloud-9-west-end-2026/monstagigz--unknown.json",
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "cloud-9-west-end-2026/the-spy-in-the-stalls--unknown.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+      "cloud-9-west-end-2026/west-end-wilma--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "here-there-are-blueberries-2026/new-york-sun--unknown.json",
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-11-12T11:19:25.585Z",
-  "lastProcessed": "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+  "startTime": "2026-11-12T11:21:25.182Z",
+  "lastProcessed": "cloud-9-west-end-2026/west-end-wilma--unknown.json",
   "log": []
 }
