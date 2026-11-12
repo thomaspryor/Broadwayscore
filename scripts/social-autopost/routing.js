@@ -127,4 +127,4 @@ function tagChannels(channels, sets = C.CHANNEL_SETS) {
   });
 }
 
-module.exports = { homeSet, operaConfigured, isHighProfile, targetSets, postsToOwnSet, channelKey, tagChannels, hasCrossMarketTransfer, hasCrossMarketTwin, titleKey };
+module.exports = { homeSet, operaConfigured, isHighProfile, targetSets, targetSetsUngated, postsToOwnSet, channelKey, tagChannels, hasCrossMarketTransfer, hasCrossMarketTwin, titleKey };

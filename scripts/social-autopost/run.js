@@ -35,7 +35,7 @@ const { resolvePoster, minPosterWidth } = require('./art');
 const { writeScoreCaptions, aiDisabledReason } = require('./ai-captions');
 const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
 const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS } = require('./config');
-const { targetSets, tagChannels, channelKey, homeSet } = require('./routing');
+const { targetSets, targetSetsUngated, tagChannels, channelKey, homeSet } = require('./routing');
 const briefs = require('./briefs');
 const { withShowTags } = require('./tags');
 
@@ -181,8 +181,10 @@ function recordPlanStatus(all) {
  * The usable channels a brief posts to: the newer production's home set (routing.js;
  * Broadway until that market's accounts are configured). Never cross-posted.
  */
-function briefChannels(channels, newer) {
-  const route = targetSets(newer, null, CHANNEL_SETS);
+function briefChannels(channels, newer, { ungated = false, slim } = {}) {
+  // BRO-7417: an owner-approved brief is the owner's own call, so it skips the BRO-7413 notability gate;
+  // every automatic lane (roundup, closing-soon, london-compare) keeps it.
+  const route = ungated ? targetSetsUngated(newer, null, CHANNEL_SETS, null) : targetSets(newer, null, CHANNEL_SETS, null, slim);
   return channels.filter(c => route.includes(c.set));
 }
 
@@ -352,8 +354,8 @@ const briefQuotaNeed = (listed, targets) => listed + 3 * targets + BRIEF_QUOTA_M
  * self-tested, Buffer quota too low, no free day for either show, or every network failed.
  * `entry` holds the type-specific ledger fields (type, id, pair, approval...).
  */
-async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', maxDelayDays = null, entry: extra, markers = compareMarkers(newer, olderLabel), fields = {} }) {
-  const targets = briefChannels(channels, newer);
+async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', maxDelayDays = null, ungated = false, entry: extra, markers = compareMarkers(newer, olderLabel), fields = {} }) {
+  const targets = briefChannels(channels, newer, { ungated });
   if (!targets.length) throw new Error(`${label}: no usable channel for ${newer.category}`);
   const notValidated = unvalidated(ctx.ledger, targets);
   if (notValidated.length) throw new Error(`${label}: ${notValidated.map(c => c.key).join(', ')} never passed the Buffer self-test; run the workflow with self_test first`);
@@ -596,7 +598,7 @@ async function runBrief(hash, { ctx, buffer, channels, now, summary, problems })
 
   await postCompare({
     label: `brief ${hash}`, shows, newer, olderLabel, captions: manifest.captions, imageUrl: manifest.imageUrl,
-    ctx, buffer, channels, now, summary, problems,
+    ctx, buffer, channels, now, summary, problems, ungated: true, // BRO-7417
     markers: manifest.template === 'moved' ? movedMarkers(newer, olderLabel) : undefined,
     note: `(${manifest.template}: ${pair}); approved: "${approval.words}"`,
     entry: { type: 'brief', id: `brief:${hash}`, hash, template: manifest.template, pair, approved: String(approval.words).slice(0, 300), approvedAt: approval.at || null },

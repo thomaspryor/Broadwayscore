@@ -141,3 +141,40 @@ test('handle shape is checked per network (X: 15 chars, no dots)', async () => {
   assert.equal(handleFor(h, 's', 'instagram'), '@a.b');
   assert.equal(handleFor(h, 's', 'threads'), null);
 });
+
+// BRO-7417: an owner-approved brief skips the notability gate; automatic lanes keep it.
+test('briefChannels: a brief for a non-notable Off-Broadway show routes to broadway, the gated (automatic) route does not', () => {
+  const { briefChannels } = require('./run.js');
+  const ob = show({ id: 'tiny-ob-2026', category: 'off-broadway', venue: 'A Basement', openingDate: '2026-11-05' });
+  const slim = { [ob.id]: pub(1, 1, 2) };
+  const channels = [{ id: 'c1', service: 'instagram', set: 'broadway', key: 'instagram' }, { id: 'c2', service: 'twitter', set: 'broadway', key: 'twitter' }];
+  assert.ok(!socialNotable(ob, slim), 'fixture is not notable');
+  assert.equal(briefChannels(channels, ob, { ungated: true }).length, 2, 'brief posts');
+  assert.equal(briefChannels(channels, ob, { slim }).length, 0, 'default (london-compare, roundup, closing) stays gated');
+  assert.deepEqual(targetSets(ob, [], C.CHANNEL_SETS, null, slim), [], 'score route stays gated');
+});
+
+test('briefChannels: a notable Broadway show routes either way (a notable show, e.g. the NYC side of a london-compare, keeps its channel)', () => {
+  const { briefChannels } = require('./run.js');
+  const b = show({ id: 'big-2026' });
+  const channels = [{ id: 'c1', service: 'instagram', set: 'broadway', key: 'instagram' }];
+  assert.equal(briefChannels(channels, b, { slim: { [b.id]: pub(3, 3, 8) } }).length, 1);
+  assert.equal(briefChannels(channels, b, { ungated: true }).length, 1);
+});
+
+test('class guard: only runBrief passes ungated: true to postCompare (automatic lanes must stay gated)', () => {
+  const src = require('fs').readFileSync(require.resolve('./run.js'), 'utf8');
+  const hits = [...src.matchAll(/ungated:\s*true/g)];
+  assert.equal(hits.length, 1, 'exactly one ungated: true call site');
+  const start = src.indexOf('async function runBrief');
+  const end = src.indexOf('\nasync function ', start + 1);
+  assert.ok(start >= 0 && hits[0].index > start && (end < 0 || hits[0].index < end), 'the call site is inside runBrief');
+});
+
+test('a West End brief keeps the pre-BRO-7413 route (Broadway fallback) when ungated; gated it posts nowhere', () => {
+  const { briefChannels } = require('./run.js');
+  const we = show({ id: 'we-brief-2026', category: 'west-end', venue: 'Lyric Theatre' });
+  const channels = [{ id: 'c1', service: 'instagram', set: 'broadway', key: 'instagram' }];
+  assert.equal(briefChannels(channels, we, { ungated: true }).length, 1);
+  assert.equal(briefChannels(channels, we, { slim: {} }).length, 0);
+});
