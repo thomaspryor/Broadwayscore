@@ -151,7 +151,12 @@ test('imageless self-heal excludes marked rows before flagging/dispatching', () 
   const fs = require('node:fs');
   const path = require('node:path');
   const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'audit-imageless-scored-shows.js'), 'utf8');
-  assert.match(src, /noReliableArt:\s*hasActiveNoArtMarker\(s\)/);
+  const { normalizeImageAuditInputs } = require('./imageless-audit-input');
+  const show = endgame();
+  show.noReliableArt = buildNoReliableArtMarker(show, { reason: 'film poster' });
+  const [normalized] = normalizeImageAuditInputs({ shows: [show] }, [{ showId: show.id }]);
+  assert.equal(normalized.noReliableArt, true);
+  assert.match(src, /normalizeImageAuditInputs\(showsData, reviewsData, \{ nowMs \}\)/);
   assert.match(src, /findImagelessScoredShows\(normalized\.filter\(\(s\) => !s\.noReliableArt\)/);
 });
 

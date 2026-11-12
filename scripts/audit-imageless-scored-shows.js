@@ -24,8 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { hasRealImage } = require('./lib/show-images.js');
-const { isTourShow } = require('./lib/tour-family.js');
+const { normalizeImageAuditInputs, findRegionalImageGaps } = require('./lib/imageless-audit-input.js');
 const {
   findImagelessScoredShows,
   DEFAULT_THRESHOLD_HOURS,
@@ -44,10 +43,11 @@ const {
 } = require('./lib/image-trigger-guard.js');
 const { syncRollup, snapshotRollupMembers } = require('./lib/rollup-alert.js');
 const { dispatchImageFetch } = require('./lib/dispatch-image-fetch.js');
-const { hasActiveNoArtMarker } = require('./lib/no-reliable-art.js');
 
-const USAGE = `Usage: node scripts/audit-imageless-scored-shows.js [--dry-run]
+const USAGE = `Usage: node scripts/audit-imageless-scored-shows.js [--dry-run] [--check-regional]
   --dry-run    Compute + print findings, skip dispatch/alert/write.
+  --check-regional  Read-only acceptance check: exit 1 for any scored UK/Chicago/DC
+                    regional show without an image or active noReliableArt marker.
 `;
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -72,55 +72,26 @@ function loadJson(file, fallback) {
   }
 }
 
-// Earliest of the 3 candidate fields, not first-available (adversarial
-// review, 2026-08-14): a historical show backfilled today gets a fresh
-// discoveredAt but a years-old openingDate — picking discoveredAt would
-// reset its "since when has this been imageless" clock and suppress a
-// genuinely overdue show behind a false 24h grace period.
-function resolveSinceMs(show) {
-  const candidates = [show.discoveredAt, show.openingDate, show.previewsStartDate]
-    .map((raw) => (raw ? Date.parse(raw) : NaN))
-    .filter((ms) => !Number.isNaN(ms));
-  if (!candidates.length) return null;
-  return Math.min(...candidates);
-}
-
-
-function buildReviewCountByShow(reviewsData) {
-  const list = Array.isArray(reviewsData) ? reviewsData
-    : Array.isArray(reviewsData?.reviews) ? reviewsData.reviews
-    : Object.values(reviewsData?.reviews || {});
-  const counts = {};
-  for (const r of list) {
-    if (!r || !r.showId) continue;
-    counts[r.showId] = (counts[r.showId] || 0) + 1;
-  }
-  return counts;
-}
-
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const dryRun = process.argv.includes('--dry-run');
+  const checkRegional = process.argv.includes('--check-regional');
 
   const showsData = loadJson(path.join(DATA_DIR, 'shows.json'), { shows: [] });
   const reviewsData = loadJson(path.join(DATA_DIR, 'reviews.json'), {});
-  const reviewCountByShow = buildReviewCountByShow(reviewsData);
   const prevLedger = loadJson(OUTPUT_FILE, { flagged: [] });
   const prevById = new Map((prevLedger.flagged || []).map((f) => [f.id, f]));
 
   const nowMs = Date.now();
-  const normalized = (showsData.shows || []).map((s) => ({
-    id: s.id,
-    title: s.title,
-    hasImages: hasRealImage(s),
-    // BRO-5022: the fetcher found only wrong art and marked the row. Not a
-    // gap to self-heal: re-dispatching re-runs the search that already failed.
-    noReliableArt: hasActiveNoArtMarker(s),
-    reviewCount: reviewCountByShow[s.id] || 0,
-    sinceMs: resolveSinceMs(s),
-    // BRO-5506: fetch-all-image-formats skips tours, so dispatch the parent.
-    dispatchId: isTourShow(s) && s.tourOf ? s.tourOf : undefined,
-  }));
+  const normalized = normalizeImageAuditInputs(showsData, reviewsData, { nowMs });
+
+  if (checkRegional) {
+    const gaps = findRegionalImageGaps(normalized);
+    console.log(`Regional image coverage: ${gaps.length} unresolved scored show(s).`);
+    for (const show of gaps) console.log(`  - ${show.id} (${show.title}), reviewCount=${show.reviewCount}`);
+    process.exitCode = gaps.length ? 1 : 0;
+    return;
+  }
 
   const marked = normalized.filter((s) => s.noReliableArt && !s.hasImages);
   if (marked.length) console.log(`${marked.length} imageless show(s) are marked noReliableArt and are not re-dispatched.`);

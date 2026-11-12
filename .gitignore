@@ -91,6 +91,7 @@ data/followers.json
 # files ({issue}.json, digit-leading) are trackable again; everything else in
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
+!data/pending-fixes/bro-6901.json
 !data/pending-fixes/bro-7094.json
 !data/pending-fixes/bro-7174.json
 !data/pending-fixes/bro-6599.json
@@ -374,6 +375,7 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+!/docs/bro-6901-regional-image-coverage.md
 !/docs/bro-6098-aggregator-health.md
 !/docs/bro-6987-reddit-cadence-investigation.md
 !/docs/bro-6743-gather-timeouts.md
