@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T15:53:11.592Z",
+  "generatedAt": "2026-11-12T17:10:55.855Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -116,10 +116,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "theatre-reviews-limited",
-      "error": "Timeout fetching https://www.theatrereviews.com/feed/"
-    },
-    {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
@@ -136,8 +132,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 845,
-  "matchedGaps": 15,
+  "itemsScanned": 849,
+  "matchedGaps": 16,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -228,6 +224,15 @@
       "outletId": "liamodell",
       "url": "https://liamodell.com/2026/11/12/dogstar-review-hampstead-theatre-daisy-hall-justin-edwards-abdul-jalloh-adam-rojko-vega/",
       "headline": "&#8216;Dogstar&#8217; review &#8211; Scurvy and scuffles in slog of a sophomore play",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/dogstar-hampstead-theatre/",
+      "headline": "Dogstar- Hampstead Theatre",
       "publishDate": "2026-11-12"
     },
     {
