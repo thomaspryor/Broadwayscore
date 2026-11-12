@@ -214,31 +214,69 @@ function laneOwnership(input) {
 const SPENT_CLAIM_REASONS = new Set(['already-dispatched']);
 const errText = (e) => String((e && e.message) || e).split('\n')[0].slice(0, 100);
 
+/** A matching run after the attempt is evidence GitHub accepted a timed-out dispatch. */
+function findDispatchedRun(runs, { workflow, showId, sinceMs }) {
+  const titleMatches = (r) => {
+    if (workflow === 'opening-night-poller.yml') return r.displayTitle === `Opening Night Poller \u2014 ${showId}`;
+    if (workflow === 'llm-ensemble-score.yml') return r.displayTitle === `LLM Ensemble Score Reviews \u2014 ${showId}`;
+    if (workflow === 'opening-night-orchestrator.yml') return String(r.displayTitle || '').startsWith(`Opening Night Orchestrator targeted ${showId} (`);
+    return workflow === 'rebuild-fast.yml' || workflow === 'vercel-deploy.yml';
+  };
+  return (runs || []).find((r) => r.workflow === workflow && titleMatches(r)
+    && Date.parse(r.createdAt) >= sinceMs);
+}
+
+/** One REST request, scoped to workflow_dispatch, with no workflow-ID lookup. */
+function reconcileDispatchRun({ gh, workflow, showId, sinceMs }) {
+  const response = JSON.parse(gh(['api', `repos/thomaspryor/Broadwayscore/actions/workflows/${workflow}/runs?per_page=60&event=workflow_dispatch`]));
+  const runs = (response.workflow_runs || []).map((r) => ({ workflow, displayTitle: r.display_title, createdAt: r.created_at }));
+  return findDispatchedRun(runs, { workflow, showId, sinceMs });
+}
+
 /**
- * BRO-7160: claim -> dispatch -> mark dispatched (the lane watchdog's order, auto-fallback.js runWatchdogTick). Marking
- * before the dispatch, as this watchdog used to, left a failed `gh workflow run` recorded as sent, so no tick and no
- * other watchdog retried it. A failed dispatch hands the claim back (`unclaim`, best effort; a claim left behind is
- * this holder's own and still retakeable) and reports `spent:false` so the caller undoes its state and retries next
- * tick. A claim refused for any reason but already-dispatched (in flight elsewhere, branch unreadable, push failed)
- * is not spent either. Ports may throw. Pure apart from the ports.
- * @param {{claim:()=>{ok:boolean,reason?:string}, dispatch:()=>any, mark:()=>{ok:boolean,reason?:string},
- *          unclaim:()=>{ok:boolean,reason?:string}}} ports
- * @returns {{sent:boolean, spent:boolean, reason:string, marked?:boolean, unclaimed?:boolean}}
+ * A transport failure is not a rejection. List runs before considering another
+ * send. If acceptance remains unknown, reserve the slot instead of duplicating
+ * a possibly queued run. Explicit client rejections can safely be retried.
  */
-function claimThenDispatch({ claim, dispatch, mark, unclaim }) {
+function dispatchWithRecovery({ dispatch, reconcile, wait = () => {} }) {
+  try {
+    if (dispatch() === false) return { sent: false, reason: 'dispatch returned false' };
+    return { sent: true };
+  } catch (e) {
+    const message = `${e && e.message || e} ${e && e.stderr || ''}`;
+    if (/HTTP (400|401|403|404|422)\b/.test(message)) return { sent: false, reason: errText(e) };
+    for (let i = 0; i < 3 && reconcile; i++) {
+      if (i) wait(i * 5000);
+      try { if (reconcile()) return { sent: true }; } catch (_) { /* unknown, never proof of rejection */ }
+    }
+    return { sent: false, uncertain: true, reason: `dispatch outcome unknown (${errText(e)}); slot reserved` };
+  }
+}
+
+/**
+ * Claim, dispatch, then mark. Retry CAS contention before giving the slot back
+ * to the clock. Retain an ambiguous dispatch's claim, since GitHub may still be
+ * registering it; a later sweep slot is the backstop for a request never accepted.
+ */
+function claimThenDispatch({ claim, dispatch, mark, unclaim, reconcile, wait = () => {} }) {
   let c;
-  try { c = claim() || { ok: false, reason: 'no claim result' }; } catch (e) { c = { ok: false, reason: `claim threw: ${errText(e)}` }; }
+  for (let i = 0; i < 3; i++) {
+    if (i) wait(i * 1000);
+    try { c = claim() || { ok: false, reason: 'no claim result' }; } catch (e) { c = { ok: false, reason: `claim threw: ${errText(e)}` }; }
+    if (c.ok || c.reason !== 'cas-contended') break;
+  }
   if (!c.ok) return { sent: false, spent: SPENT_CLAIM_REASONS.has(c.reason), reason: `not claimed (${c.reason})` };
-  let failed = null;
-  try { if (dispatch() === false) failed = 'dispatch returned false'; } catch (e) { failed = errText(e); }
-  if (failed) {
+  const d = dispatchWithRecovery({ dispatch, reconcile, wait });
+  if (!d.sent && !d.uncertain) {
     let u;
     try { u = unclaim() || { ok: false }; } catch (e) { u = { ok: false, reason: errText(e) }; }
-    return { sent: false, spent: false, reason: `dispatch failed (${failed})`, unclaimed: !!u.ok };
+    return { sent: false, spent: false, reason: `dispatch failed (${d.reason})`, unclaimed: !!u.ok };
   }
   let m;
   try { m = mark() || { ok: false, reason: 'no mark result' }; } catch (e) { m = { ok: false, reason: errText(e) }; }
-  return { sent: true, spent: true, marked: !!m.ok, reason: m.ok ? 'dispatched' : `dispatched; mark failed (${m.reason})` };
+  return { sent: d.sent, spent: true, ...(d.uncertain ? { uncertain: true } : {}), marked: !!m.ok,
+    reason: d.uncertain ? `${d.reason}${m.ok ? '' : `; mark failed (${m.reason})`}`
+      : m.ok ? 'dispatched' : `dispatched; mark failed (${m.reason})` };
 }
 
 /**
@@ -257,4 +295,4 @@ function releaseClaim(state, { show, night, holder }) {
   return { ok: true, state: { ...state, leases } };
 }
 
-module.exports = { laneOwnership, claimThenDispatch, releaseClaim, SPENT_CLAIM_REASONS, evaluateTick, undoUnsent, foundReviews, runIsForShow, activeFor, STAGES, MOVERS, STALL_MIN, NIGHT_START_H, PIPELINE_WINDOW_MIN };
+module.exports = { reconcileDispatchRun, findDispatchedRun, dispatchWithRecovery, laneOwnership, claimThenDispatch, releaseClaim, SPENT_CLAIM_REASONS, evaluateTick, undoUnsent, foundReviews, runIsForShow, activeFor, STAGES, MOVERS, STALL_MIN, NIGHT_START_H, PIPELINE_WINDOW_MIN };

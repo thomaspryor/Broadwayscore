@@ -106,11 +106,14 @@ function dispatchDespiteClaim(result) {
   return !!result && !result.sent && !result.spent && BRANCH_BROKEN.test(String(result.reason || ''));
 }
 
+/** Only completed or durably reserved work may spend a clock slot. */
+function dispatchExitCode(result) { return result.sent || result.spent ? 0 : 1; }
+
 function dispatchArgs(showId) {
   return ['workflow', 'run', POLLER_WORKFLOW, '-f', `show_id=${showId}`, '-f', 'fast_path=true', '-f', 'force_serp=true', '-f', 'collect_existing=true'];
 }
 
 module.exports = {
   SWEEP_SLOTS, VERIFY_SLOT, POLLER_WORKFLOW, isSweepKind, slotAtMs, planSlots, isPollerRunFor, pollerRunsSince,
-  decideSweep, decideVerify, claimId, claimHolder, dispatchArgs, dispatchDespiteClaim,
+  dispatchExitCode, decideSweep, decideVerify, claimId, claimHolder, dispatchArgs, dispatchDespiteClaim,
 };

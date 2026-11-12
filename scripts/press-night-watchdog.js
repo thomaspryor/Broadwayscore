@@ -108,9 +108,13 @@ function claimAndDispatch(showId, night, stage, holder) {
   const id = stage === 'orchestrator' ? showId : `${showId}~pnw-${stage}`;
   const cas = (what, fn) => store.casTransition({ repoDir: ROOT, branch: af.FALLBACK_BRANCH, message: `press-night watchdog ${what} ${id}|${night} (BRO-6858)` }, fn);
   const now = () => new Date().toISOString();
+  let sinceMs;
+  const args = dispatchArgs(stage, showId, night);
   return wd.claimThenDispatch({
     claim: () => cas('claim', (s) => af.claimFallback(s, { show: id, night, holder, now: now() })),
-    dispatch: () => gh(dispatchArgs(stage, showId, night), 60000),
+    dispatch: () => { sinceMs = Math.floor(Date.now() / 1000) * 1000; return gh(args, 60000); },
+    reconcile: () => wd.reconcileDispatchRun({ gh, workflow: args[2], showId, sinceMs }),
+    wait: (ms) => execFileSync('sleep', [String(ms / 1000)]),
     mark: () => cas('dispatched', (s) => af.markFallbackDispatched(s, { show: id, night, holder, now: now() })),
     unclaim: () => cas('unclaim', (s) => wd.releaseClaim(s, { show: id, night, holder })),
   });

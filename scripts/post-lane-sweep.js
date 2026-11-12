@@ -49,12 +49,16 @@ function leaseState() {
   try { const store = require('./lib/opening-night-lane/lease-store'); return store.readRemote({ repoDir: ROOT, remote: 'origin', branch: store.DEFAULT_BRANCH }).state; } catch (_) { return null; }
 }
 
-function dispatchOnce(showId) {
-  let last;
-  for (let i = 0; i < 3; i += 1) {
-    try { gh(sweep.dispatchArgs(showId), 60000); return 'ok'; } catch (e) { last = e; if (i < 2) execFileSync('sleep', [String(5 * (i + 1))]); }
-  }
-  throw last;
+function dispatchOnce(showId) { return gh(sweep.dispatchArgs(showId), 60000); }
+
+function dispatchPorts(showId) {
+  const wd = require('./lib/press-night-watchdog');
+  let sinceMs;
+  return {
+    dispatch: () => { sinceMs = Math.floor(Date.now() / 1000) * 1000; return dispatchOnce(showId); },
+    reconcile: () => wd.reconcileDispatchRun({ gh, workflow: sweep.POLLER_WORKFLOW, showId, sinceMs }),
+    wait: (ms) => execFileSync('sleep', [String(ms / 1000)]),
+  };
 }
 
 function claimAndDispatch(showId, night, kind) {
@@ -67,7 +71,7 @@ function claimAndDispatch(showId, night, kind) {
   const now = () => new Date().toISOString();
   return wd.claimThenDispatch({
     claim: () => cas('claim', (s) => af.claimFallback(s, { show: id, night, holder, now: now() })),
-    dispatch: () => dispatchOnce(showId),
+    ...dispatchPorts(showId),
     mark: () => cas('dispatched', (s) => af.markFallbackDispatched(s, { show: id, night, holder, now: now() })),
     unclaim: () => cas('unclaim', (s) => wd.releaseClaim(s, { show: id, night, holder })),
   });
@@ -99,17 +103,20 @@ function main() {
   if (d.action !== 'dispatch' && d.action !== 'redispatch') return 0;
   if (dry) { log(`DRY RUN: would run gh ${sweep.dispatchArgs(showId).join(' ')}`); return 0; }
   const r = claimAndDispatch(showId, night, kind);
+  if (r.uncertain) { log(`::warning::${r.reason}`); return sweep.dispatchExitCode(r); }
   if (r.sent) { log(`Dispatched a targeted poller run for ${showId} (fast_path, force_serp).`); return 0; }
   if (r.spent) { log(`Slot ${kind} for ${showId} ${night} was already dispatched by another runner.`); return 0; }
   if (sweep.dispatchDespiteClaim(r)) {
     log(`::warning::claim branch unwritable (${r.reason}); dispatching unclaimed (fail toward collecting)`);
-    try { dispatchOnce(showId); log(`Dispatched a targeted poller run for ${showId} (unclaimed).`); return 0; } catch (e) {
-      log(`::warning::post-lane sweep ${kind} for ${showId} not sent (${String(e.message).split('\n')[0].slice(0, 120)})`);
-      return 1;
-    }
+    const result = require('./lib/press-night-watchdog').dispatchWithRecovery(dispatchPorts(showId));
+    if (result.sent) { log(`Dispatched a targeted poller run for ${showId} (unclaimed).`); return 0; }
+    log(`::warning::${result.reason}`);
+    // No durable claim is available to reserve an unknown attempt. Do not have
+    // the clock resend it immediately; a later sweep slot remains the backstop.
+    return result.uncertain ? 0 : 1;
   }
   log(`::warning::post-lane sweep ${kind} for ${showId} not sent (${r.reason || 'dispatch failed'})`);
-  return r.reason && /in-flight|contended/.test(r.reason) ? 0 : 1;
+  return sweep.dispatchExitCode(r);
 }
 
 if (require.main === module) require('./lib/exit-flushed').exitFlushed(main());

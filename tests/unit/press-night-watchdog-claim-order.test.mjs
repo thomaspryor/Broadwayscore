@@ -31,7 +31,7 @@ const key = `${ID}|${NIGHT}`;
 
 test('a claim followed by a failed dispatch is never marked dispatched, hands the claim back and is not spent', () => {
   const b = branch();
-  const r = wd.claimThenDispatch(ports(b, 'pnw-1', () => { throw new Error('HTTP 502 from gh workflow run'); }));
+  const r = wd.claimThenDispatch(ports(b, 'pnw-1', () => { throw new Error('HTTP 422 from gh workflow run'); }));
   assert.deepEqual(b.calls, ['claim', 'dispatch', 'unclaim'], 'no mark after a failed dispatch');
   assert.equal(r.sent, false);
   assert.equal(r.spent, false, 'the caller must undo its once-per-night slot');

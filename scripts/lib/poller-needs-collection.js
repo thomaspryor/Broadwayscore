@@ -10,7 +10,8 @@
  * (wrongProduction, wrongShow, isRoundupArticle) and no terminal verdict (uncollected-strand.js hasTerminalVerdict:
  * not a review, or a duplicate pointer to a canonical sibling), and its text is missing, truncated or an excerpt/stub
  * while nothing marks it complete. The collector still makes the final per-file call (holds, paywall rechecks); this
- * only decides whether the step runs.
+ * only decides whether the step runs. Known paywalls and records without a first-seen, creation, collection or
+ * publication timestamp within the last seven days do not trigger an opening-night sweep.
  *
  *   node scripts/lib/poller-needs-collection.js <showId> [--dir=data/review-texts]   -> prints the count
  */
@@ -18,15 +19,22 @@ const fs = require('fs');
 const path = require('path');
 const { hasTerminalVerdict } = require('./uncollected-strand');
 
+const MAX_COLLECTION_AGE_DAYS = 7;
 const FULL_TEXT_MIN = 1500; // collect-review-texts.js treats a longer stored text as already collected
 const PARTIAL_TIERS = new Set(['truncated', 'needs-rescrape', 'excerpt', 'stub']);
 
 /** One parsed review file. Pure. */
-function reviewNeedsCollection(review, siblings) {
+function reviewNeedsCollection(review, siblings, { nowMs = Date.now() } = {}) {
   if (!review || typeof review !== 'object') return false;
   if (!/^https?:\/\//i.test(String(review.url || ''))) return false;
   if (review.wrongProduction || review.wrongShow || review.isRoundupArticle) return false;
   if (hasTerminalVerdict(review, siblings)) return false;
+  // This is the opening-night trigger, not the general recovery queue. A known
+  // paywall or an old stub must not cause another sweep rebuild and deploy.
+  if (review.incompleteReason === 'paywall') return false;
+  const seenMs = [review.firstSeenAt, review.createdAt, review.collectedAt, review.publishDate]
+    .map((value) => value ? Date.parse(value) : NaN).find(Number.isFinite);
+  if (!Number.isFinite(seenMs) || seenMs > nowMs || nowMs - seenMs >= MAX_COLLECTION_AGE_DAYS * 86400000) return false;
   if (review.textQuality === 'truncated' || review.textStatus === 'truncated' || PARTIAL_TIERS.has(review.contentTier)) return true;
   if (review.contentTier === 'complete' || review.textQuality === 'full' || review.isFullReview === true) return false;
   const len = typeof review.fullText === 'string' ? review.fullText.trim().length : 0;
@@ -34,7 +42,7 @@ function reviewNeedsCollection(review, siblings) {
 }
 
 /** Every review file in one show folder that needs collection. Unreadable folder = none. */
-function showNeedsCollection(dir) {
+function showNeedsCollection(dir, options) {
   let names;
   try { names = fs.readdirSync(dir); } catch (_) { return []; }
   const siblings = new Map();
@@ -42,10 +50,10 @@ function showNeedsCollection(dir) {
     if (!n.endsWith('.json') || n.startsWith('_')) continue;
     try { siblings.set(n, JSON.parse(fs.readFileSync(path.join(dir, n), 'utf8'))); } catch (_) { /* unreadable file: the collector's problem */ }
   }
-  return [...siblings].filter(([, r]) => reviewNeedsCollection(r, siblings)).map(([n]) => n);
+  return [...siblings].filter(([, r]) => reviewNeedsCollection(r, siblings, options)).map(([n]) => n);
 }
 
-module.exports = { reviewNeedsCollection, showNeedsCollection, FULL_TEXT_MIN };
+module.exports = { reviewNeedsCollection, showNeedsCollection, FULL_TEXT_MIN, MAX_COLLECTION_AGE_DAYS };
 
 if (require.main === module) {
   const showId = process.argv[2] || '';

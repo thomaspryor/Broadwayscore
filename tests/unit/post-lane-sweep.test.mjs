@@ -81,7 +81,7 @@ test('the dispatch is a targeted fast-path SERP poller run, claimed once per sho
     mark: () => cas((s) => af.markFallbackDispatched(s, { show: id, night: NIGHT, holder, now: iso(E + 255 * M) })),
     unclaim: () => cas((s) => wd.releaseClaim(s, { show: id, night: NIGHT, holder })),
   });
-  assert.equal(wd.claimThenDispatch(ports(() => { throw new Error('HTTP 502'); })).sent, false);
+  assert.equal(wd.claimThenDispatch(ports(() => { throw new Error('HTTP 422'); })).sent, false);
   assert.equal(state.leases[`${id}|${NIGHT}`], undefined, 'a failed dispatch hands the claim back');
   assert.equal(wd.claimThenDispatch(ports(() => 'ok')).sent, true);
   const again = wd.claimThenDispatch(ports(() => assert.fail('must not dispatch twice')));

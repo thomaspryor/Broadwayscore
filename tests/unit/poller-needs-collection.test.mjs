@@ -15,23 +15,23 @@ const URL_ = 'https://www.nytimes.com/2026/11/09/theater/wanted-review.html';
 const long = 'x'.repeat(FULL_TEXT_MIN + 10);
 
 test('reviews with missing, excerpt, stub or truncated text need collection', () => {
-  assert.equal(reviewNeedsCollection({ url: URL_ }), true, 'no text at all');
-  assert.equal(reviewNeedsCollection({ url: URL_, fullText: 'A short excerpt.' }), true);
-  assert.equal(reviewNeedsCollection({ url: URL_, contentTier: 'excerpt', fullText: long }), true);
-  assert.equal(reviewNeedsCollection({ url: URL_, contentTier: 'stub' }), true);
-  assert.equal(reviewNeedsCollection({ url: URL_, textQuality: 'truncated', fullText: long }), true);
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_ }), true, 'no text at all');
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, fullText: 'A short excerpt.' }), true);
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, contentTier: 'excerpt', fullText: long }), true);
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, contentTier: 'stub' }), true);
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, textQuality: 'truncated', fullText: long }), true);
 });
 
 test('complete, excluded, non-review, duplicate and URL-less files do not', () => {
-  assert.equal(reviewNeedsCollection({ url: URL_, fullText: long }), false, 'long text');
-  assert.equal(reviewNeedsCollection({ url: URL_, contentTier: 'complete', fullText: 'short' }), false);
-  assert.equal(reviewNeedsCollection({ url: URL_, isFullReview: true }), false);
-  for (const flag of ['wrongProduction', 'wrongShow', 'isRoundupArticle']) assert.equal(reviewNeedsCollection({ url: URL_, [flag]: true }), false, flag);
-  assert.equal(reviewNeedsCollection({ url: URL_, rejectionReason: 'not_a_review' }), false);
-  assert.equal(reviewNeedsCollection({ url: '' }), false);
-  const sib = new Map([['nyt--a.json', { url: URL_, fullText: long }]]);
-  assert.equal(reviewNeedsCollection({ url: URL_, duplicateOf: 'nyt--a.json' }, sib), false, 'duplicate pointing at a canonical');
-  assert.equal(reviewNeedsCollection({ url: URL_, duplicateOf: 'missing.json' }, sib), true, 'dangling duplicate still needs text');
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, fullText: long }), false, 'long text');
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, contentTier: 'complete', fullText: 'short' }), false);
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, isFullReview: true }), false);
+  for (const flag of ['wrongProduction', 'wrongShow', 'isRoundupArticle']) assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, [flag]: true }), false, flag);
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, rejectionReason: 'not_a_review' }), false);
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: '' }), false);
+  const sib = new Map([['nyt--a.json', { firstSeenAt: new Date().toISOString(), url: URL_, fullText: long }]]);
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, duplicateOf: 'nyt--a.json' }, sib), false, 'duplicate pointing at a canonical');
+  assert.equal(reviewNeedsCollection({ firstSeenAt: new Date().toISOString(), url: URL_, duplicateOf: 'missing.json' }, sib), true, 'dangling duplicate still needs text');
 });
 
 test('a show folder: counts review files only, the CLI prints the count the workflow reads', () => {
@@ -39,9 +39,9 @@ test('a show folder: counts review files only, the CLI prints the count the work
   const dir = path.join(root, 'wanted-2022');
   fs.mkdirSync(dir);
   const w = (n, o) => fs.writeFileSync(path.join(dir, n), typeof o === 'string' ? o : JSON.stringify(o));
-  w('nytimes--jesse-green.json', { url: URL_, contentTier: 'excerpt' });
-  w('vulture--sara-holdren.json', { url: 'https://www.vulture.com/x', fullText: long });
-  w('_meta.json', { url: URL_ });
+  w('nytimes--jesse-green.json', { firstSeenAt: new Date().toISOString(), url: URL_, contentTier: 'excerpt' });
+  w('vulture--sara-holdren.json', { firstSeenAt: new Date().toISOString(), url: 'https://www.vulture.com/x', fullText: long });
+  w('_meta.json', { firstSeenAt: new Date().toISOString(), url: URL_ });
   w('broken.json', '{not json');
   w('notes.txt', 'ignore');
   assert.deepEqual(showNeedsCollection(dir), ['nytimes--jesse-green.json']);
