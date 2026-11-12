@@ -120,7 +120,8 @@ How to fix:
     top of the file:
       // LIVE-DATA-LANE: reads data/shows.json (untracked core data). ...
     It then runs in check-corpus-drift.yml instead of blocking main.
-    A temp-dir fixture should spell the path as path.join(root, 'data', 'x.json').
+    A temp-dir fixture (never the repo's data/) may spell the path as
+    path.join(root, 'data', 'x.json') so it is not mistaken for a live read.
 
 Background:
   memory/feedback_data_pins_derive_from_source.md

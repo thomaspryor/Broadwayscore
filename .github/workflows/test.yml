@@ -4349,14 +4349,15 @@ jobs:
         if: always() && steps.deps.outcome == 'success'
         # Tests that read data/awards.json, data/reviews.json, or data/shows.json
         # (derived enricher outputs) must ALSO read from data/precursors/ or
-        # data/review-texts/ (the sources that generate them), OR carry a
-        # `// TESTS-VS-DERIVED-DATA-EXEMPT: <reason>` comment near the top.
+        # data/review-texts/ (the sources that generate them), OR declare
+        # `// LIVE-DATA-LANE: <why>` near the top (runs in check-corpus-drift.yml).
+        # A derived path only counts when a file read is on the same line.
         #
         # Why: 2026-05-26 incident — three awards-person-winner-pairing.test.mjs
         # pins broke because they hard-coded facts ("Lithgow won for X") that
         # Track A's Wikipedia audit later corrected. The test was re-asserting
         # the bug it was meant to catch. This gate forces derive-from-source
-        # (or an explicit, justified exemption).
+        # (or declares the live-data lane).
         run: node scripts/audit-tests-vs-derived-data.js
 
       - name: Audit — no synthesized .click() in Playwright tests

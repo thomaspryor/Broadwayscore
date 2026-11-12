@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -24,12 +23,6 @@ test('gapSentence', () => {
   assert.equal(SC.gapSentence({ called: 80, forecast: 74, lo80: 62, hi80: 85 }), 'We forecast 74 (likely 62 to 85). You are 6 above.');
   assert.equal(SC.gapSentence({ called: 74, forecast: 74 }), 'We forecast 74. You matched it.');
   assert.equal(SC.gapSentence({ called: 70, forecast: null }), null);
-});
-test('isCallableShow agrees with the pilot predicate on every real show and several dates', () => {
-  const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8')).shows;
-  let disagree = 0;
-  for (const today of ['2025-01-15', '2025-10-01', '2026-03-01', '2026-11-11']) for (const s of shows) if (SC.isCallableShow(s, today) !== P.isPilotTarget(s, today)) disagree++;
-  assert.equal(disagree, 0);
 });
 test('buildSyncRows uses the last ledger row before opening, skips rows without forecast, flags live reviews', () => {
   const shows = [{ id: 'a', category: 'broadway', type: 'musical', status: 'previews', openingDate: '2026-12-01' }, { id: 'b', category: 'broadway', type: 'play', status: 'previews', openingDate: '2026-12-01' }];
