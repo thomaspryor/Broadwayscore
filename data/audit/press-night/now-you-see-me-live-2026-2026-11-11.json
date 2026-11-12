@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "showId": "now-you-see-me-live-2026",
+  "night": "2026-11-11",
+  "market": "broadway",
+  "embargoAt": "2026-11-12T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-12T02:30:04.503Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-12T04:55:10.637Z",
+    "lastOkSampleAt": "2026-11-12T04:55:10.637Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-12T04:00:08.587Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-12T05:00:26.840Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-12T05:00:26.921Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-12T05:01:13.796Z",
+    "files": [
+      {
+        "file": "broadwaynews--unknown.json",
+        "outletId": "broadwaynews",
+        "outlet": "Broadway News",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-11T01:34:35.695Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-10",
+        "url": "broadwaynews.com/now-you-see-me-live-will-play-the-al-hirschfeld-theatre-this-fall",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "deadline--anthony-dalessandro.json",
+        "outletId": "deadline",
+        "outlet": "Deadline",
+        "critic": "Anthony D'Alessandro",
+        "firstSeenAt": "2026-11-11T02:27:36.112Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-21",
+        "url": "deadline.com/2026/10/you-can-see-everything-clayface-box-office-1237168607",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "stagezine--scott-harrah.json",
+        "outletId": "stagezine",
+        "outlet": "StageZine",
+        "critic": "Scott Harrah",
+        "firstSeenAt": "2026-11-11T01:08:06.890Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-12",
+        "url": "stagezine.com/now-you-see-me-live-broadway",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--david-gordon.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "David Gordon",
+        "firstSeenAt": "2026-11-11T01:08:14.547Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-10",
+        "url": "theatermania.com/news/now-you-see-me-live-sets-eight-week-broadway-run-for-the-holidays_1853183",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
