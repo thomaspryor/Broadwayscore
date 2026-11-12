@@ -15,7 +15,7 @@ const {
 const registry = { outlets: {
   whatsonstage: { tier: 2, region: 'london', domain: 'whatsonstage.com' },
   thestage: { tier: 1, region: 'london', domain: 'thestage.co.uk' },
-  'everything-theatre': { tier: 3, region: 'london', domain: 'everythingtheatre.co.uk' },
+  'everything-theatre': { tier: 3, region: 'london', domain: 'everything-theatre.co.uk' },
   'the-spy-in-the-stalls': { tier: 4, region: 'london', domain: 'thespyinthestalls.com' },
   'west-end-best-friend': { tier: 3, region: 'london', domain: 'westendbestfriend.co.uk' },
   theatreandtonic: { tier: 3, region: 'london', domain: 'theatreandtonic.com' },
