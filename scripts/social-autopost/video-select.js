@@ -14,6 +14,15 @@ const NETWORKS = Object.keys(C.VIDEO.channels);
 /** Importance gate: BRO-7413's socialNotable (Broadway, plus Off-Broadway the homepage calls notable), the one predicate both lanes share. */
 function videoWorthy(show, { slim } = {}) { return socialNotable(show, slim || undefined); }
 
+const { findLondonRun } = require('../lib/transfer-detection');
+// Shows that have a London run at all (score checks aside), found once per shows list: the per-show London match is a title
+// comparison against every show, too slow to repeat for every show on every day of a look-back. londonCompareDecision still decides.
+const pairCache = new WeakMap();
+function londonCandidates(shows) {
+  if (!pairCache.has(shows)) pairCache.set(shows, new Set(shows.filter(s => findLondonRun(s, shows, { hasScore: () => true }).london).map(s => s.id)));
+  return pairCache.get(shows);
+}
+
 const keyOf = ev => `${ev.type}:${ev.show.id}`; // 'score:<id>' (reveal) or 'london-compare:<id>' (compare), the select.js key shapes
 
 /** Entry is finished when every network has a Buffer post or it was abandoned. */
@@ -50,6 +59,21 @@ function attempts(ledger, key, now) {
 }
 
 /**
+ * Videos made this month (New York time), the number the monthly spend cap counts. One make is one voice and one copy review, so a
+ * post counts once however many networks it went to (its channels share createdAt), and a failed attempt counts once per run (shared `at`).
+ * Skips (no audience grade yet) stop before the voice and cost nothing.
+ */
+function makesThisMonth(ledger, now) {
+  const month = nyDay(now).slice(0, 7), runs = new Set();
+  for (const p of (ledger && ledger.posts) || []) {
+    const stamps = Object.values(p.channels || {}).map(c => c && c.createdAt).filter(Boolean);
+    for (const t of new Set(stamps.length ? stamps : [p.createdAt])) if (t && nyDay(Date.parse(t)).slice(0, 7) === month) runs.add(`post:${p.type}:${p.showId}:${t}`);
+  }
+  for (const f of (ledger && ledger.failures) || []) if (f.kind !== 'skip' && f.at && nyDay(Date.parse(f.at)).slice(0, 7) === month) runs.add(`fail:${f.at}`);
+  return runs.size;
+}
+
+/**
  * Every due video event and why the others are not. events: [{type, fmt, show, london?, slot}], skipped: [{show, why}].
  * compare events sort first (a pair is the richer story), then newest opening first.
  */
@@ -60,8 +84,9 @@ function findVideoEvents({ shows, textLedger, videoLedger, now, reviewsByShow, s
   for (const show of shows) {
     if (!S.isEligibleShow(show, { allowOpera: true, allowTouring: true, shows, slim })) continue;
     if (!videoWorthy(show, { slim })) { skipped.push({ show, why: 'not-important' }); continue; }
-    const cmp = C.VIDEO.formats.includes('compare') ? S.londonCompareDecision(show, { shows, ledger: textLedger, now, slim, done }) : { due: false };
-    if (cmp.due) { events.push({ type: 'london-compare', fmt: 'compare', show, london: cmp.london, slot: cmp.slot }); continue; }
+    const cmp = C.VIDEO.formats.includes('compare') && londonCandidates(shows).has(show.id) ? S.londonCompareDecision(show, { shows, ledger: textLedger, now, slim, done }) : { due: false };
+    // both formats can be due for one show: the compare sorts first, and the score video takes the next free day (BRO-7418)
+    if (cmp.due) events.push({ type: 'london-compare', fmt: 'compare', show, london: cmp.london, slot: cmp.slot });
     const d = S.scoreDecision(show, ctx, { ignoreAge: true });
     if (!d.due) { if (d.why !== 'done' && d.why !== 'ineligible') skipped.push({ show, why: d.why }); continue; }
     if (now - d.slot > lookbackDays * DAY_MS) { skipped.push({ show, why: 'too-old' }); continue; }
@@ -75,7 +100,9 @@ function findVideoEvents({ shows, textLedger, videoLedger, now, reviewsByShow, s
  * The one event to make now and the networks it goes to: at most maxPerNetworkPerDay per network per New York day, and
  * events that failed maxAttemptsPerDay times today (or maxAttemptsTotal ever) wait. null when nothing may post.
  */
-function pickToday(events, videoLedger, now) {
+function pickToday(events, videoLedger, now, { maxMakes = C.VIDEO.maxMakesPerMonth } = {}) {
+  const made = makesThisMonth(videoLedger, now);
+  if (made >= maxMakes) return { pick: null, why: `monthly cap reached (${made} of ${maxMakes} videos made this month)` };
   const busy = busyNetworks(videoLedger, now), free = NETWORKS.filter(n => !busy.has(n));
   if (!free.length) return { pick: null, why: 'every network already has a video today' };
   for (const ev of events) {
@@ -89,4 +116,4 @@ function pickToday(events, videoLedger, now) {
   return { pick: null, why: events.length ? 'every due video is waiting after failed attempts' : 'nothing due' };
 }
 
-module.exports = { videoWorthy, videoDoneKeys, entryDone, busyNetworks, attempts, findVideoEvents, pickToday, keyOf, nyDay, NETWORKS };
+module.exports = { makesThisMonth, videoWorthy, videoDoneKeys, entryDone, busyNetworks, attempts, findVideoEvents, pickToday, keyOf, nyDay, NETWORKS };

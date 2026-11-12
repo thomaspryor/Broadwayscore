@@ -198,7 +198,10 @@ const AI_CAPTIONS = {
 // so the text lane cannot post to these accounts. Ids are pinned: the run refuses a channel whose service or id differs.
 const VIDEO = {
   channels: { tiktok: '69ed4d52031bfa423c42d4fb', youtube: '6adebecc2f1f5ed648d28ccd' },
-  formats: ['reveal'], // 'compare' joins once its voiced render is checked end to end (video-run.js makeVideo)
+  formats: ['reveal', 'compare'], // compare = a New York show against its London run (BRO-7418); the compare goes first when both are due
+  // Monthly OpenAI cap: every make (a post, or a failed attempt that got as far as the voice) counts as one. A video costs about 1 US cent
+  // (TTS + Whisper + copy review), so 45 makes is under 0.5 USD a month; at one video a day the cap is never reached unless retries pile up.
+  maxMakesPerMonth: 45,
   lookbackDays: 45,   // a "how did it do" video waits for its audience grade, which can land weeks after opening
   maxPerNetworkPerDay: 1, // owner: post less. One video per network per New York day.
   tz: 'America/New_York',

@@ -110,3 +110,80 @@ test('pickToday passes over a show skipped today so older shows can post', () =>
   const ledger = { posts: [], failures: [{ key: 'score:a', at: '2026-11-12T14:30:00Z', kind: 'skip' }] };
   assert.equal(V.pickToday([ev('a'), ev('b')], ledger, NOW).pick.show.id, 'b');
 });
+
+// ---- BRO-7418: compare format
+const C = require('../../scripts/social-autopost/config');
+
+test('compare is wired into the video formats', () => {
+  assert.ok(C.VIDEO.formats.includes('compare') && C.VIDEO.formats.includes('reveal'));
+  assert.ok(Number.isInteger(C.VIDEO.maxMakesPerMonth) && C.VIDEO.maxMakesPerMonth > 0);
+});
+
+test('pickToday: a due compare goes before a due score video for the same show, and the score video takes the next free day', () => {
+  const show = { id: 'x' };
+  const cmp = { type: 'london-compare', fmt: 'compare', show, slot: NOW - 1 };
+  const score = { type: 'score', fmt: 'reveal', show, slot: NOW };
+  const events = [score, cmp].sort((a, b) => (a.fmt === 'compare' ? 0 : 1) - (b.fmt === 'compare' ? 0 : 1) || b.slot - a.slot);
+  assert.equal(V.pickToday(events, { posts: [] }, NOW).pick.fmt, 'compare');
+  const afterCompare = { posts: [row('london-compare', 'x', Object.fromEntries(V.NETWORKS.map(n => [n, posted('2026-11-12T13:00:00Z')])))] };
+  assert.equal(V.pickToday([score], afterCompare, NOW).pick, null, 'same day: the networks are taken');
+  const nextDay = Date.parse('2026-11-13T15:00:00Z');
+  assert.equal(V.pickToday([score], afterCompare, nextDay).pick.fmt, 'reveal');
+});
+
+test('findVideoEvents lists both formats for one show, compare first, and keeps the score video for the next day', t => {
+  // the select.js decisions are stubbed (their own tests cover them); this checks how the video lane combines them
+  const S = require('../../scripts/social-autopost/select');
+  const real = { e: S.isEligibleShow, c: S.londonCompareDecision, s: S.scoreDecision };
+  t.after(() => { S.isEligibleShow = real.e; S.londonCompareDecision = real.c; S.scoreDecision = real.s; });
+  const ny = { id: 'twin-2026', title: 'Twin', category: 'broadway', type: 'play', openingDate: '2026-10-01' };
+  const lon = { id: 'twin-west-end-2025', title: 'Twin', category: 'west-end', type: 'play', openingDate: '2025-06-01' };
+  const other = { id: 'solo-2026', title: 'Solo', category: 'broadway', type: 'play', openingDate: '2026-11-01' };
+  S.isEligibleShow = show => show.category === 'broadway';
+  S.londonCompareDecision = show => show.id === 'twin-2026' ? { due: true, london: lon, slot: NOW - 1e6 } : { due: false, why: 'no-london-run' };
+  S.scoreDecision = show => ({ due: true, slot: show.id === 'solo-2026' ? NOW - 1e3 : NOW - 5e6 });
+  const run = () => V.findVideoEvents({ shows: [ny, lon, other], textLedger: { posts: [] }, videoLedger: { posts: [] }, now: NOW, reviewsByShow: {}, slim: {}, getOutletTier: () => 3 });
+  const { events } = run();
+  assert.deepEqual(events.map(e => `${e.fmt}:${e.show.id}`), ['compare:twin-2026', 'reveal:solo-2026', 'reveal:twin-2026']);
+  assert.equal(events[0].london.id, 'twin-west-end-2025');
+  const day = V.pickToday(events, { posts: [] }, NOW);
+  assert.equal(day.pick.fmt, 'compare');
+  // once the compare is done (video ledger), the same show's score video is still due
+  const doneLedger = { posts: [row('london-compare', 'twin-2026', Object.fromEntries(V.NETWORKS.map(n => [n, posted('2026-11-12T13:00:00Z')])))] };
+  assert.ok(V.videoDoneKeys(doneLedger).has('london-compare:twin-2026'));
+  assert.ok(events.some(e => e.type === 'score' && e.show.id === 'twin-2026'));
+  C.VIDEO.formats = ['reveal']; // eslint-disable-line no-param-reassign
+  try { assert.deepEqual(run().events.map(e => e.fmt), ['reveal', 'reveal']); } finally { C.VIDEO.formats = ['reveal', 'compare']; }
+});
+
+test('makesThisMonth: a post counts once however many networks, failures once per run, skips and other months not at all', () => {
+  const t = '2026-11-12T13:00:00Z';
+  const ledger = {
+    posts: [row('score', 'a', { tiktok: posted(t), youtube: posted(t) }), row('score', 'b', { tiktok: posted('2026-10-30T13:00:00Z') })],
+    failures: [{ key: 'score:c', at: '2026-11-11T13:00:00Z' }, { key: 'score:c', at: '2026-11-11T13:00:00Z' }, { key: 'score:d', at: '2026-11-11T14:00:00Z', kind: 'skip' }, { key: 'score:e', at: '2026-10-01T13:00:00Z' }],
+  };
+  assert.equal(V.makesThisMonth(ledger, NOW), 2);
+  assert.equal(V.makesThisMonth(null, NOW), 0);
+});
+
+test('pickToday: the monthly spend cap stops new videos and says why', () => {
+  const ev = { type: 'score', fmt: 'reveal', show: { id: 'x' }, slot: NOW };
+  const ledger = { posts: [row('score', 'a', { tiktok: posted('2026-11-03T13:00:00Z') }), row('score', 'b', { tiktok: posted('2026-11-04T13:00:00Z') })] };
+  assert.ok(V.pickToday([ev], ledger, NOW, { maxMakes: 3 }).pick, 'under the cap');
+  const r = V.pickToday([ev], ledger, NOW, { maxMakes: 2 });
+  assert.equal(r.pick, null); assert.match(r.why, /monthly cap reached \(2 of 2/);
+  assert.ok(V.pickToday([ev], ledger, Date.parse('2026-12-02T15:00:00Z'), { maxMakes: 2 }).pick, 'a new month starts at zero');
+});
+
+test('duplicateMarker tells a compare caption from a score caption for the same show and score', () => {
+  const compare = 'Same show, two cities. Broadway\'s critics scored Here There Are Blueberries 8 points higher. London 2026: Critic Score 73 from 17 critics. Broadway 2026: 81 from 20 critics.';
+  const reveal = '20 critics weighed in on Here There Are Blueberries. One score: 81, Worth Seeing.';
+  assert.equal(duplicateMarker('Here There Are Blueberries', 81, 'compare')(compare), true);
+  assert.equal(duplicateMarker('Here There Are Blueberries', 81, 'compare')(reveal), false);
+  assert.equal(duplicateMarker('Here There Are Blueberries', 81, 'reveal')(reveal), true);
+  assert.equal(duplicateMarker('Here There Are Blueberries', 81)(compare), false, 'the default is the score format');
+});
+
+test('videoTitle for a compare names the show, not a score', () => {
+  assert.equal(videoTitle({ fmt: 'compare' }, { title: 'Hamilton' }, 88), 'Hamilton: same show, two cities');
+});

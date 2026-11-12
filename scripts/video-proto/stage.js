@@ -411,7 +411,16 @@ COMPS.compare = {
     this.h2 = $('', 'margin-top:5px;font-size:16px;font-weight:700;color:#d4a574;line-height:1.2;opacity:0', esc(d.screen.l2));
     this.tt = $('', 'margin-top:5px;font-size:13px;font-weight:600;color:#d4d4d8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0', esc(d.shows[0].title));
     head.append(this.h1, this.h2, this.tt); this.g.append(head);
-    const HEAD = 84, top = L.y + HEAD, colH = L.h - HEAD, cw = (L.w - 12) / 2;
+    // a long gap line ("Off-Broadway scored it 12 points higher.") must not wrap into the title line, so the header is measured
+    // instead of assumed to be 84px tall; otherwise the title line runs into the column labels (BRO-7418)
+    [this.h1, this.h2, this.tt].forEach(e => { e.style.opacity = 1; });
+    // the gap line stays on one line. Fonts may not be loaded yet at build time, so the size comes from the character count (bold Inter
+    // runs about 0.6em a character), not from a measurement: 16px when it fits, down to 11px
+    this.h2.style.whiteSpace = 'nowrap';
+    this.h2.style.fontSize = `${Math.max(11, Math.min(16, Math.floor(L.w / (d.screen.l2.length * 0.6))))}px`;
+    const HEAD = Math.max(84, Math.ceil(head.getBoundingClientRect().height) + 8);
+    [this.h1, this.h2, this.tt].forEach(e => { e.style.opacity = 0; });
+    const top = L.y + HEAD, colH = L.h - HEAD, cw = (L.w - 12) / 2;
     // per column: label 18, poster P, the badge sitting on the poster's bottom edge (like the site's share card), count 16
     const OVER = 40, P = Math.max(90, Math.min(180, colH - 18 - 6 - (88 - OVER) - 8 - 16 - 4)), PW = Math.min(cw, Math.round(P * 2 / 3));
     this.cols = d.shows.map((s, i) => {

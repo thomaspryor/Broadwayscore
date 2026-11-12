@@ -160,12 +160,14 @@ function voicedFromPlan(n) {
     // compare template (BRO-6412, owner 2026-10-27): puzzle opener, both scores, caveat, neutral maybes, open question.
     // The words come from compare-plan.js (assertTemplate refuses a hand-edited script); tiers are per side because gold differs by market.
     require('./compare-plan').assertTemplate(V.plan);
-    const hookAt = at('Same show'), gapAt = at(`${V.plan.screen.gap}`);
+    // a tie says no gap number, so the gap cue rides the hook; the second side is cued on "Now <place>" and the caveat on its own first
+    // clause, so any pair (London vs Broadway or Off-Broadway, any year gap) finds its cues (BRO-7418)
+    const hookAt = at('Same show'), gapAt = V.plan.screen.gap ? at(`${V.plan.screen.gap}`) : hookAt;
     const sides = V.plan.shows.map((s, i) => { const x = showInfo(s.id), rv = x.p.rv.filter(r => Number.isFinite(r.s)), score = Math.round(x.score);
-      const say = at(i ? 'off Broadway' : 'also reviewed'), land = at(`${score}`), count = at(`${rv.length} reviews`);
+      const say = at(i ? 'Now' : 'also reviewed'), land = at(`${score}`), count = at(`${rv.length} reviews`);
       return { title: x.title, art: x.art, category: x.category, score, count: rv.length, label: s.label, soFar: !!s.soFar, say, land, countAt: count }; });
     const tiersBy = {}; sides.forEach(s => { tiersBy[s.category] = { gold: getGoldThreshold(s.category), id: Array.from({ length: 101 }, (_, i) => getScoreTierId(i, s.category)) }; });
-    const caveat = at('Two years apart'), possAt = at('Maybe'), end = at(cue.end || 'Why do you think');
+    const caveat = at(V.plan.caveat.split(',')[0]), possAt = at('Maybe'), end = at(cue.end || 'Why do you think');
     return { kind: 'compare', category: sides[0].category, tiersBy, shows: sides, screen: V.plan.screen, caveat: V.plan.caveat, hookAt, gapAt, caveatAt: caveat, possAt, end, ...base };
   }
   if (fmt === 'duo') {

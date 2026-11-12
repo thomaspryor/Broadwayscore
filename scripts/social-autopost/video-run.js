@@ -9,7 +9,7 @@
  *   --verify      read earlier posts back from Buffer and record sent/failed (cheap; no rendering)
  *   --check       print due=0|1 to $GITHUB_OUTPUT so the workflow can skip rendering setup
  *   --self-test   make the due video, save it as a Buffer DRAFT on each channel, delete the drafts (nothing is published or recorded)
- *   --live-limit=N (default 1)   --show=ID (dry run only)   --cancel-queued   --now=ISO   --out=DIR
+ *   --live-limit=N (default 1)   --show=ID [--fmt=compare] (dry run only)   --cancel-queued   --now=ISO   --out=DIR
  *
  * Kill switch: SOCIAL_VIDEO_DISABLED=true. Selection is video-select.js (reuses select.js decisions). The voice is
  * scripts/video-proto/tts.js, the picture is scripts/video-proto/render.js per channel, captions are channel-captions.js
@@ -59,11 +59,16 @@ function videoTitle(plan, show, score) {
   return t.length <= 100 ? t : `${t.slice(0, 97).trimEnd()}...`;
 }
 
-/** Pure: text a duplicate guard looks for in an existing post: the show title and the score, in any caption. */
-function duplicateMarker(title, score) {
+const COMPARE_CAPTION = /same show, two cities/i; // the compare template's opening line (scripts/video-proto/compare-script.js)
+
+/**
+ * Pure: text a duplicate guard looks for in an existing post: the show title and the score in any caption. A show gets a score
+ * video and a compare video with the same title and score, so the guard also tells the two formats apart (BRO-7418).
+ */
+function duplicateMarker(title, score, fmt = 'reveal') {
   const norm = s => String(s || '').toLowerCase().replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, ' ');
   const t = norm(title), sc = String(score);
-  return text => { const x = norm(text); return x.includes(t) && new RegExp(`(^|[^0-9])${sc}([^0-9]|$)`).test(x); };
+  return text => { const x = norm(text); return x.includes(t) && new RegExp(`(^|[^0-9])${sc}([^0-9]|$)`).test(x) && COMPARE_CAPTION.test(x) === (fmt === 'compare'); };
 }
 
 function run(cmd, cmdArgs, opts = {}) {
@@ -72,30 +77,42 @@ function run(cmd, cmdArgs, opts = {}) {
   return r.stdout;
 }
 
-/** Plan, voice and render one event for each target network. Returns { plan, files: {network: mp4 path} }. */
+const planName = ev => (ev.fmt === 'compare' ? 'compare' : 'reveal');
+
+/** A skip is not a failure: the event waits out the day and is tried again (no poster yet, no audience grade yet). */
+function skipError(msg) { const err = new Error(msg); err.skip = true; return err; }
+
+/** Plan, voice and render one event for each target network. Returns { plan, planFile, files: {network: mp4 path} }. */
 function makeVideo(ev, targets, outDir) {
   fs.mkdirSync(outDir, { recursive: true });
-  const id = ev.show.id;
-  if (ev.fmt !== 'reveal') throw new Error(`video format ${ev.fmt} is not wired into the live path yet`);
-  run('node', ['fetch-art.js', id]);
-  const planArgs = ['voscript.js', 'reveal', id, outDir, 'reveal'];
-  // the two-model copy review runs inside voscript; a blocked script exits non-zero and the event waits
-  try { run('node', planArgs, { env: { VO_REVIEW: '1', VO_HISTORY: HISTORY_FILE } }); } catch (e) {
-    if (/no audience grade/.test(e.message)) { const err = new Error('no audience grade yet'); err.skip = true; throw err; }
-    throw e;
+  const id = ev.show.id, name = planName(ev), planFile = path.join(outDir, `${name}.plan.json`);
+  if (ev.fmt !== 'reveal' && ev.fmt !== 'compare') throw new Error(`video format ${ev.fmt} is not wired into the live path`);
+  if (ev.fmt === 'compare') {
+    // portrait posters of both productions (the compare card's art rule); no usable poster means no video (owner rule 2026-10-26), tried again tomorrow
+    const art = run('node', ['fetch-art.js', '--poster', id, ev.london.id]);
+    const held = art.split('\n').find(l => /HELD|UNKNOWN SHOW/.test(l));
+    if (held) throw skipError(`no usable poster: ${held.slice(0, 160)}`);
+    // the fixed compare template, copy-reviewed (up to 3 tries); a blocked script exits non-zero and the event waits
+    run('node', ['compare-make.js', id, ev.london.id, outDir, name]);
+  } else {
+    run('node', ['fetch-art.js', id]);
+    // the two-model copy review runs inside voscript; a blocked script exits non-zero and the event waits
+    try { run('node', ['voscript.js', 'reveal', id, outDir, name], { env: { VO_REVIEW: '1', VO_HISTORY: HISTORY_FILE } }); } catch (e) {
+      if (/no audience grade/.test(e.message)) throw skipError('no audience grade yet');
+      throw e;
+    }
   }
-  const planFile = path.join(outDir, 'reveal.plan.json');
   const plan = readJson(planFile, null);
   if (!plan || !plan.review || !plan.review.pass) throw new Error('plan did not pass copy review');
-  run('node', ['tts.js', planFile, outDir, 'reveal']);
-  const files = {};
+  run('node', ['tts.js', planFile, outDir, name]);
+  const comp = ev.fmt === 'compare' ? 'compare' : 'reveal-voiced', files = {};
   for (const n of targets) {
-    run('node', ['render.js', 'reveal-voiced', outDir, `--channel=${n}`], { env: { VO_DIR: outDir, VO_NAME: 'reveal', VO_OFF: '0.15', VO_FUZZY_CUES: '1' }, timeout: 25 * 60e3 });
-    const f = path.join(outDir, `reveal-voiced-${n}.mp4`);
+    run('node', ['render.js', comp, outDir, `--channel=${n}`], { env: { VO_DIR: outDir, VO_NAME: name, ...(ev.fmt === 'reveal' ? { VO_OFF: '0.15' } : {}), VO_FUZZY_CUES: '1' }, timeout: 25 * 60e3 });
+    const f = path.join(outDir, `${comp}-${n}.mp4`);
     if (!fs.existsSync(f)) throw new Error(`render produced no ${f}`);
     files[n] = f;
   }
-  return { plan, files };
+  return { plan, planFile, files };
 }
 
 function captionFor(planFile, network) {
@@ -188,7 +205,13 @@ async function main() {
     if (live) throw new Error('--show is for previews; drop --live');
     const show = ctx.shows.find(s => s.id === arg('show'));
     if (!show) throw new Error(`--show=${arg('show')}: not in shows.json`);
-    found = { events: [{ type: 'score', fmt: 'reveal', show, slot: now }], skipped: [] };
+    let ev = { type: 'score', fmt: 'reveal', show, slot: now };
+    if (arg('fmt') === 'compare') {
+      const { london, reason } = require('../lib/transfer-detection').findLondonRun(show, ctx.shows, { hasScore: id => S.hasSiteScore(ctx.slim, id) });
+      if (!london) throw new Error(`--show=${show.id} --fmt=compare: no London pair (${reason})`);
+      ev = { type: 'london-compare', fmt: 'compare', show, london, slot: now };
+    }
+    found = { events: [ev], skipped: [] };
   } else {
     found = V.findVideoEvents({ shows: ctx.shows, textLedger: ctx.ledger, videoLedger: ledger, now, reviewsByShow: ctx.reviewsByShow, slim: ctx.slim, getOutletTier: ctx.getOutletTier });
   }
@@ -220,7 +243,7 @@ async function selfTestEvent(ev, outDir, now, ctx) {
   const score = Math.round(ctx.slim[ev.show.id].cs), title = videoTitle(made.plan, ev.show, score);
   for (const n of ev.targets) {
     const url = await hostVideo(fs.readFileSync(made.files[n]), `selftest/${ev.show.id}-${ev.fmt}-${n}.mp4`);
-    const text = captionFor(path.join(dir, 'reveal.plan.json'), n);
+    const text = captionFor(made.planFile, n);
     const post = await buffer.createVideoPost({ channel: channels[n], text, videoUrl: url, title, thumbnailOffsetMs: C.VIDEO.thumbnailOffsetMs, dueAt: new Date(now + 864e5), draft: true });
     log(`${n}: draft ${post.id} accepted (${post.status}); title "${title}"; caption ${text.length} chars`);
     await buffer.deletePost(post.id); log(`${n}: draft deleted`);
@@ -250,10 +273,10 @@ async function postEventInner(ev, ledger, outDir, now, ctx) {
   const channels = await videoChannels(ev.targets);
   const score = Math.round(ctx.slim[ev.show.id].cs); // the site's own number, the one the script says
   const title = videoTitle(made.plan, ev.show, score);
-  const isDup = duplicateMarker(ev.show.title, score);
+  const isDup = duplicateMarker(ev.show.title, score, ev.fmt);
   let row = ledger.posts.find(p => p.type === ev.type && p.showId === ev.show.id && !V.entryDone(p));
   if (!row) { row = { type: ev.type, fmt: ev.fmt, showId: ev.show.id, title: ev.show.title, score, createdAt: new Date(now).toISOString(), dueAt: null, channels: {} }; ledger.posts.push(row); }
-  const planFile = path.join(dir, 'reveal.plan.json');
+  const planFile = made.planFile;
   const year = new Date(now).getUTCFullYear(), month = String(new Date(now).getUTCMonth() + 1).padStart(2, '0');
   for (const n of ev.targets) {
     try {
@@ -277,6 +300,6 @@ async function postEventInner(ev, ledger, outDir, now, ctx) {
   writeLedger(ledger);
 }
 
-module.exports = { videoTitle, duplicateMarker, lookbackReport, verifySent, loadLedger, LEDGER_FILE };
+module.exports = { makeVideo, videoTitle, duplicateMarker, lookbackReport, verifySent, loadLedger, LEDGER_FILE };
 
 if (require.main === module) main().catch(e => { console.error(`[video] ${e.message}`); process.exit(1); });
