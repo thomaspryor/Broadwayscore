@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isHomepageNotable } = require('../lib/homepage-notability');
+const { isBroadwayCategory, isOffBroadwayCategory } = require('../lib/venue-classification');
 
 const SLIM_DIR = path.join(__dirname, '..', '..', 'public', 'data', 'shows');
 // Ticket-buyer platforms only (Show Score, Mezzanine, Theatr, BroadwayBox); Reddit is conversation, not attendance.
@@ -54,8 +55,9 @@ function signalsFor(show, pub) {
 function socialNotable(show, slim = fileSlim) {
   if (!show) return false;
   if (String(show.type || '').toLowerCase() === 'opera') return false;
-  if (show.category === 'broadway') return true;
-  if (show.category !== 'off-broadway') return false;
+  // isBroadwayCategory treats a missing category as Broadway; this gate fails closed on it instead.
+  if (show.category && isBroadwayCategory(show)) return true;
+  if (!isOffBroadwayCategory(show)) return false;
   return isHomepageNotable(signalsFor(show, slim[show.id]));
 }
 
