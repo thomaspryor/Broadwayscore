@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-11T11:04:42.395Z",
-    "completedAt": "2026-11-11T11:04:42.424Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "43006337769",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-11T11:13:17.907Z",
-    "completedAt": "2026-11-11T11:13:21.463Z",
-    "totalReviews": 9,
-    "processed": 0,
-    "skipped": 8,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4313,
-      "output": 140,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 12345
-    },
-    "costUsd": 0.02848945,
-    "runId": "43008713606",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-11T11:18:20.426Z",
     "completedAt": "2026-11-11T11:18:20.465Z",
     "totalReviews": 0,
@@ -515552,6 +515514,44 @@
     },
     "costUsd": 0.8544403,
     "runId": "43307516610",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-12T23:07:30.542Z",
+    "completedAt": "2026-11-12T23:45:59.195Z",
+    "totalReviews": 82056,
+    "processed": 383,
+    "skipped": 79196,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 2272045,
+      "output": 124972,
+      "cacheRead": 1388214,
+      "cacheWrite": 124133,
+      "total": 5822848
+    },
+    "costUsd": 9.146575349999999,
+    "runId": "43324694092",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-12T23:50:54.414Z",
+    "completedAt": "2026-11-12T23:56:01.518Z",
+    "totalReviews": 146,
+    "processed": 146,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 367597,
+      "output": 33173,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 400770
+    },
+    "costUsd": 1.0316204,
+    "runId": "43324694092",
     "source": "comparative-rescore",
     "errorDetails": []
   }
