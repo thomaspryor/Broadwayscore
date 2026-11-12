@@ -1,8 +1,32 @@
 {
-  "generatedAt": "2026-11-12T18:12:08.898Z",
+  "generatedAt": "2026-11-12T21:34:01.609Z",
   "windowDays": 45,
   "showsScanned": 240,
   "gaps": [
+    {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "openingDate": "2026-11-03",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655619",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  forum thread fetch failed: All scraping methods failed"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=well-see-off-broadway-2026   # follows the thread's Link to the real review page",
+      "firstSeen": "2026-11-12T18:43:02.800Z",
+      "fileAgeHours": 2.7727127777777776,
+      "gapSeenAt": "2026-11-12T21:34:01.609Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
     {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
@@ -18,9 +42,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 83.1662913888889,
+      "fileAgeHours": 86.4574086111111,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 60.61794388888889,
+      "nonTerminalAgeHours": 63.98258583333333,
       "needsManualRecovery": false
     },
     {
@@ -33,14 +57,42 @@
       "type": "empty-body",
       "recoverable": true,
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466",
-      "recovery": null,
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  forum thread fetch failed: All scraping methods failed"
+      },
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 52.39822111111111,
+      "fileAgeHours": 55.758608333333335,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 51.25349888888889,
+      "nonTerminalAgeHours": 54.618140833333335,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+      "title": "Dr. Seuss' How the Grinch Stole Christmas!",
+      "openingDate": "2026-11-06",
+      "file": "nytg--unknown.json",
+      "outletId": "nytg",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.newyorktheatreguide.com/reviews/review-of-dr-seuss-how-the-grinch-stole-christmas-the-musical-at-madison-square-gardens-hulu",
+      "recovery": {
+        "attempted": true,
+        "ok": true,
+        "reason": null
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=dr-seuss-how-the-grinch-stole-christmas-tour-2026 --url=https://www.newyorktheatreguide.com/reviews/review-of-dr-seuss-how-the-grinch-stole-christmas-the-musical-at-madison-square-gardens-hulu --outlet=nytg   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-12T18:42:05.916Z",
+      "fileAgeHours": 2.863167222222222,
+      "gapSeenAt": "2026-11-12T21:34:01.609Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +110,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 68.95838361111112,
+      "fileAgeHours": 72.32078305555555,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 68.54549694444445,
+      "nonTerminalAgeHours": 71.9101388888889,
       "needsManualRecovery": false
     },
     {
@@ -78,9 +130,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 65.75802416666667,
+      "fileAgeHours": 69.12266638888889,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 64.68376972222222,
+      "nonTerminalAgeHours": 68.04841166666667,
       "needsManualRecovery": false
     }
   ],

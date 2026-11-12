@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T18:12:32.179Z",
+  "generatedAt": "2026-11-12T21:34:29.334Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -113,6 +113,10 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -133,8 +137,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 854,
-  "matchedGaps": 16,
+  "itemsScanned": 848,
+  "matchedGaps": 11,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -204,46 +208,10 @@
       "showId": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/cloud-9-national-theatr-26207",
-      "headline": "Cloud 9",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
       "outletId": "londontheatre1",
       "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
       "headline": "Cloud 9 | National Theatre",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/dogstar-hampstead-theatre/",
-      "headline": "Dogstar- Hampstead Theatre",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "totaltheater1",
-      "url": "https://totaltheater1.wordpress.com/2026/11/11/ms-blakk-for-president/",
-      "headline": "Ms. Blakk for President",
-      "publishDate": "2026-11-11"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
@@ -270,15 +238,6 @@
       "outletId": "operawire",
       "url": "https://operawire.com/shakespeare-opera-theatre-to-present-amahl-and-the-night-visitors/",
       "headline": "Shakespeare Opera Theatre to Present &#8216;Amahl and the Night Visitors&#8217;",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/vashon-opera-to-present-amahl-and-the-night-visitors/",
-      "headline": "Vashon Opera to Present &#8216;Amahl and the Night Visitors&#8217;",
       "publishDate": "2026-11-12"
     },
     {
