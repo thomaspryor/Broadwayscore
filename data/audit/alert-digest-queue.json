@@ -317,5 +317,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-12T07:01:38.129Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7033-poller-targeted-window",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7033-poller-targeted-window",
+    "description": "land.yml did not land land/bro-7033-poller-targeted-window: the scripts-lib-tests gate went red at 07373deaf7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43176395156",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7033-poller-targeted-window"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "07373deaf758448d8307c088080d3abf380dcc0d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43176395156"
+      }
+    ],
+    "queuedAt": "2026-11-12T07:41:26.544Z"
   }
 ]
