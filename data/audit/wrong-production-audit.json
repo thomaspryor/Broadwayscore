@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-12T17:05:25.971Z",
+  "timestamp": "2026-11-12T17:16:29.757Z",
   "stats": {
-    "totalReviews": 81709,
-    "alreadyFlagged": 22302,
-    "dateGuardCatches": 218,
-    "directorMismatch": 3649,
+    "totalReviews": 81714,
+    "alreadyFlagged": 22303,
+    "dateGuardCatches": 219,
+    "directorMismatch": 3650,
     "tvFilmSignals": 2301,
-    "londonSignals": 3708,
+    "londonSignals": 3710,
     "offBroadwaySignals": 752,
     "yearMismatch": 371,
     "noPublishDate": 8454
@@ -2093,6 +2093,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 88,
+      "publishDate": "2025-11-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 351d before show (2025-11-26 vs 2026-11-12)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -104419,6 +104443,19 @@
       ]
     },
     {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": "2026-11-11",
+      "url": "https://www.theatremonkey.com/2026/11/hamlet-hail-to-the-thief-barbican-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "hamlet-off-broadway-2026",
       "file": "la-voce-di-new-york--jk-clarke.json",
       "score": 89,
@@ -107462,7 +107499,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },

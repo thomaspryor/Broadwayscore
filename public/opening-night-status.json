@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T17:05:40.901Z",
+  "generatedAt": "2026-11-12T17:16:41.634Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-12",
-      "status": "previews",
+      "status": "open",
       "slug": "the-good-thief",
       "thumbnail": "/images/shows/the-good-thief-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -385,7 +385,7 @@
       "category": "off-broadway",
       "type": "musical",
       "openingDate": "2026-11-12",
-      "status": "previews",
+      "status": "open",
       "slug": "the-kings-critique-off-broadway",
       "thumbnail": "/images/shows/the-kings-critique-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -761,7 +761,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-11-12",
-      "status": "previews",
+      "status": "open",
       "slug": "hamlet-hail-to-the-thief-off-west-end",
       "thumbnail": "/images/shows/hamlet-hail-to-the-thief-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -923,7 +923,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-12",
-      "status": "previews",
+      "status": "open",
       "slug": "first-and-last-off-broadway",
       "thumbnail": "/images/shows/first-and-last-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -3682,6 +3682,45 @@
       "preflight": false
     },
     {
+      "id": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+      "title": "Traitorz: The Unauthorized Musical Parody",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-11-13",
+      "status": "open",
+      "slug": "traitorz-the-unauthorized-musical-parody-off-broadway",
+      "thumbnail": "/images/shows/traitorz-the-unauthorized-musical-parody-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
       "id": "potus-off-broadway-2026",
       "title": "POTUS",
       "market": "broadway",
@@ -3961,7 +4000,7 @@
       "category": "broadway",
       "type": "special",
       "openingDate": "2026-11-17",
-      "status": "upcoming",
+      "status": "previews",
       "slug": "blue-man-group-a-new-holiday-surprise",
       "thumbnail": "/images/shows/blue-man-group-a-new-holiday-surprise-2026/thumbnail.webp",
       "daysUntil": 5,
