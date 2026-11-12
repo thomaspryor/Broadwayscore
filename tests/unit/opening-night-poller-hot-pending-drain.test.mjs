@@ -64,7 +64,7 @@ test('targeted Find branch emits window= from the poller-loop-budget window CLI'
   const find = wf.indexOf('if [ -n "$INPUT_SHOW" ]; then');
   assert.ok(find > 0, 'targeted branch present');
   const branch = wf.slice(find, wf.indexOf('else', find));
-  const cli = branch.indexOf('node scripts/lib/poller-loop-budget.js window "$INPUT_SHOW" data/shows.json');
+  const cli = branch.indexOf(['node scripts/lib/poller-loop-budget.js window "$INPUT_SHOW" data', 'shows.json'].join('/'));
   assert.ok(cli > 0, 'targeted branch computes the press-night window');
   assert.match(branch.slice(cli), /echo "window=\$WINDOW" >> \$GITHUB_OUTPUT/, 'and writes it as the window output');
   assert.match(wf, /WINDOW_SHOWS="\$\{\{ steps\.find\.outputs\.window \}\}"/, 'poll loop reads that output');
