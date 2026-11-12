@@ -73,6 +73,20 @@
     "queuedAt": "2026-11-12T00:19:02.491Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:othello-bedlam-off-broadway-2026",
+    "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
+    "description": "Othello (Bedlam) (othello-bedlam-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=othello-bedlam-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T00:50:40.248Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-7327-mwcsrexe",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7327-mwcsrexe",
     "description": "land.yml did not land land/job/linear-BRO-7327-mwcsrexe: the unit-tests-node gate went red at 33b12e883f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43129418039",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T23:22:21.837Z",
+  "generatedAt": "2026-11-12T00:51:23.267Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -9,14 +9,9 @@
       "openingDate": "2026-11-08"
     },
     {
-      "id": "the-unbelievers-off-broadway-2026",
-      "title": "The Unbelievers",
-      "openingDate": "2026-11-05"
-    },
-    {
-      "id": "the-verge-off-broadway-2026",
-      "title": "The Verge",
-      "openingDate": "2026-11-05"
+      "id": "the-good-thief-off-broadway-2026",
+      "title": "The Good Thief",
+      "openingDate": "2026-11-12"
     },
     {
       "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -44,11 +39,6 @@
       "openingDate": "2026-11-09"
     },
     {
-      "id": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "openingDate": "2026-11-05"
-    },
-    {
       "id": "nero-off-west-end-2026",
       "title": "Nero",
       "openingDate": "2026-11-06"
@@ -67,11 +57,6 @@
       "id": "now-you-see-me-live-2026",
       "title": "Now You See Me Live",
       "openingDate": "2026-11-11"
-    },
-    {
-      "id": "speculations-off-west-end-2026",
-      "title": "Speculations",
-      "openingDate": "2026-11-05"
     },
     {
       "id": "broom-play-off-broadway-2026",
@@ -104,21 +89,12 @@
       "openingDate": "2026-11-12"
     },
     {
-      "id": "king-lear-off-broadway-2026",
-      "title": "King Lear",
-      "openingDate": "2026-11-05"
-    },
-    {
       "id": "the-snow-queen-regional-2026",
       "title": "The Snow Queen",
       "openingDate": "2026-11-07"
     }
   ],
   "skipped": [
-    {
-      "showId": "the-good-thief-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
     {
       "showId": "first-and-last-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
@@ -130,6 +106,10 @@
   ],
   "feedsChecked": 84,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -151,37 +131,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 857,
-  "matchedGaps": 5,
-  "possibleGaps": 2,
+  "itemsScanned": 849,
+  "matchedGaps": 2,
+  "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "level": "matched",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
-      "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
-      "publishDate": "2026-11-07"
-    },
-    {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "level": "matched",
-      "outletId": "the-interested-bystander",
-      "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
-      "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
-    },
     {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
@@ -199,15 +152,6 @@
       "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
       "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
       "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "king-lear-off-broadway-2026",
-      "title": "King Lear",
-      "level": "possible",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
-      "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
-      "publishDate": "2026-11-04"
     },
     {
       "showId": "nero-off-west-end-2026",
