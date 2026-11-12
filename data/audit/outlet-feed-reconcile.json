@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T11:59:42.445Z",
+  "generatedAt": "2026-11-12T13:25:13.719Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -87,6 +87,11 @@
       "id": "the-snow-queen-regional-2026",
       "title": "The Snow Queen",
       "openingDate": "2026-11-07"
+    },
+    {
+      "id": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "openingDate": "2026-11-11"
     }
   ],
   "skipped": [
@@ -96,10 +101,6 @@
     },
     {
       "showId": "first-and-last-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -130,10 +131,73 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 853,
-  "matchedGaps": 3,
+  "itemsScanned": 849,
+  "matchedGaps": 15,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/area/southwark/review-cloud-9-national-theatre/",
+      "headline": "Review: Cloud 9 &#8211; National Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "west-end-wilma",
+      "url": "https://westendwilma.com/cloud-9-national-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=cloud-9-national-theatre-review",
+      "headline": "CLOUD 9 at the National Theatre, Review &#8211; &#8220;overly complicated brilliance&#8221; ★★★★",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "city-am",
+      "url": "https://www.cityam.com/cloud-9-national-theatre-review/",
+      "headline": "Cloud 9 at the National Theatre review: Caryl Churchill’s 1979 shocker has lost its punch",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
+      "headline": "Cloud 9 &#8211; Lyttelton National Theatre",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
+      "headline": "Cloud 9 | National Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
+      "headline": "Cloud 9 &#8211; National Theatre, London",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "matched",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-cloud-9-national-theatre",
+      "headline": "Review: CLOUD 9, National Theatre",
+      "publishDate": "2026-11-11"
+    },
     {
       "showId": "cloud-9-west-end-2026",
       "title": "Cloud 9",
@@ -141,6 +205,24 @@
       "outletId": "south-london",
       "url": "https://southlondon.co.uk/area/southwark/review-cloud-9-national-theatre/",
       "headline": "Review: Cloud 9 &#8211; National Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
+      "headline": "Cloud 9 | National Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/11/12/dogstar-review-hampstead-theatre-daisy-hall-justin-edwards-abdul-jalloh-adam-rojko-vega/",
+      "headline": "&#8216;Dogstar&#8217; review &#8211; Scurvy and scuffles in slog of a sophomore play",
       "publishDate": "2026-11-12"
     },
     {
@@ -160,6 +242,33 @@
       "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
       "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
       "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/light-opera-of-new-jersey-to-present-amahl-and-the-night-visitors/",
+      "headline": "Light Opera of New Jersey to Present &#8216;Amahl and the Night Visitors&#8217;",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/shakespeare-opera-theatre-to-present-amahl-and-the-night-visitors/",
+      "headline": "Shakespeare Opera Theatre to Present &#8216;Amahl and the Night Visitors&#8217;",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/vashon-opera-to-present-amahl-and-the-night-visitors/",
+      "headline": "Vashon Opera to Present &#8216;Amahl and the Night Visitors&#8217;",
+      "publishDate": "2026-11-12"
     },
     {
       "showId": "nero-off-west-end-2026",
