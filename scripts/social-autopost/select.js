@@ -67,12 +67,12 @@ function touringEligible(show, shows) {
 }
 
 /** allowTouring: the score lane only. Roundups, closing-soon and the quiet-day backfill never pick touring shows. */
-function isEligibleShow(show, { allowOpera = false, allowTouring = false, shows = null } = {}) {
+function isEligibleShow(show, { allowOpera = false, allowTouring = false, shows = null, slim } = {}) {
   if (!show || !show.id || !show.openingDate) return false;
   if (!C.ELIGIBLE_CATEGORIES.includes(show.category)) return false;
   if (TOURING_CATEGORIES.has(show.category) && !(allowTouring && touringEligible(show, shows))) return false;
   // No accounts to post to (Off-West End before the West End accounts exist, BRO-6932).
-  if (C.marketOf(show) !== 'opera' && !targetSets(show, []).length) return false;
+  if (C.marketOf(show) !== 'opera' && !targetSets(show, [], C.CHANNEL_SETS, null, slim).length) return false;
   const operaOk = allowOpera && C.marketOf(show) === 'opera' && operaConfigured();
   if (show.type && C.SKIP_TYPES.has(String(show.type).toLowerCase()) && !operaOk) return false;
   if (show.provisional && show.category !== 'tour') return false; // tours are created automatically from a roundup and stay provisional; the score gate decides (isTourListed)
@@ -172,7 +172,7 @@ function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows, now = D
  */
 function scoreDecision(show, ctx, { ignoreAge = false } = {}) {
   const { done, now } = ctx;
-  if (!isEligibleShow(show, { allowOpera: true, allowTouring: true, shows: ctx.shows })) return { due: false, why: 'ineligible' };
+  if (!isEligibleShow(show, { allowOpera: true, allowTouring: true, shows: ctx.shows, slim: ctx.slim })) return { due: false, why: 'ineligible' };
   if (done.has(`score:${show.id}`)) return { due: false, why: 'done' };
   const slot = morningAfter(show);
   if (now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) return { due: false, why: 'not-yet', slot };
@@ -212,7 +212,7 @@ function backfillCandidate(show, ctx, cfg = C.BACKFILL) {
 
 /** backfillCandidate without the score check: the show would post on a quiet day once its score settles. */
 function backfillWindow(show, ctx, cfg = C.BACKFILL) {
-  if (!cfg || !cfg.enabled || !isEligibleShow(show, { allowOpera: true }) || show.status !== 'open') return false;
+  if (!cfg || !cfg.enabled || !isEligibleShow(show, { allowOpera: true, slim: ctx.slim }) || show.status !== 'open') return false;
   // Filler stays on the show's own accounts: no old London show on the Broadway fallback.
   if (!postsToOwnSet(show)) return false;
   const today = localParts(new Date(ctx.now), C.MARKETS.broadway.tz).ymd;
@@ -279,7 +279,7 @@ function briefCoversPair(ledger, ids) {
  * day after the show's score post went out, so the score post always comes first.
  */
 function londonCompareDecision(show, { shows, ledger, now, slim, done }) {
-  if (!isEligibleShow(show)) return { due: false, why: 'ineligible' };
+  if (!isEligibleShow(show, { slim })) return { due: false, why: 'ineligible' };
   if (done.has(`london-compare:${show.id}`)) return { due: false, why: 'done' };
   const { london, reason } = findLondonRun(show, shows, { hasScore: id => hasSiteScore(slim, id) });
   if (!london) return { due: false, why: 'no-london-run', reason };
@@ -318,7 +318,7 @@ function londonCompareLookback({ shows, ledger, now, slim, days }) {
   const done = doneKeys(ledger);
   const out = [];
   for (const show of shows) {
-    if (!isEligibleShow(show)) continue;
+    if (!isEligibleShow(show, { slim })) continue;
     const opened = Date.parse(`${String(show.openingDate).slice(0, 10)}T00:00:00Z`);
     if (!(now - opened <= days * DAY_MS && opened <= now)) continue;
     const { london } = findLondonRun(show, shows, { hasScore: id => hasSiteScore(slim, id) });
@@ -411,7 +411,7 @@ function roundupWindow(ymd, cfg = C.WEEKLY_ROUNDUP) {
 function roundupCandidates(ymd, set, { shows, reviewsByShow, slim, getOutletTier }, cfg = C.WEEKLY_ROUNDUP) {
   const { first, last } = roundupWindow(ymd, cfg);
   const ctx = { reviewsByShow, slim, getOutletTier, shows, now: Date.parse(`${ymd}T12:00:00Z`) }; // the post day, for COMPLETE_COVERAGE_FLOORS.minDays
-  return shows.filter(s => isEligibleShow(s) && homeSet(s) === set)
+  return shows.filter(s => isEligibleShow(s, { slim }) && homeSet(s) === set)
     .filter(s => { const o = String(s.openingDate).slice(0, 10); return o >= first && o <= last; })
     .filter(s => scoreSettled(s, ctx).ok)
     .sort((a, b) => slim[b.id].cs - slim[a.id].cs || String(a.openingDate).localeCompare(String(b.openingDate)) || a.id.localeCompare(b.id));
@@ -473,7 +473,7 @@ function roundupLookback({ shows, ledger, now, reviewsByShow, slim, getOutletTie
  * Days are local days in the show's market, from today to the closing date.
  */
 function closingDecision(show, ctx, cfg = C.CLOSING_SOON) {
-  if (!isEligibleShow(show)) return { due: false, why: 'ineligible' };
+  if (!isEligibleShow(show, { slim: ctx.slim })) return { due: false, why: 'ineligible' };
   if (ctx.done.has(`closing-soon:${show.id}`)) return { due: false, why: 'done' };
   if (show.status !== 'open') return { due: false, why: 'not-open' };
   const closing = String(show.closingDate || '').slice(0, 10);
@@ -518,7 +518,7 @@ function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutle
   const done = doneKeys(ledger);
   const out = [];
   for (const show of shows) {
-    if (!isEligibleShow(show)) continue;
+    if (!isEligibleShow(show, { slim })) continue;
     const closing = String(show.closingDate || '').slice(0, 10);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(closing)) continue;
     const tz = C.MARKETS[show.category].tz;

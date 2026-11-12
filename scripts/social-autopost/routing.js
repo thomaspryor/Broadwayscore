@@ -10,6 +10,7 @@
 
 const C = require('./config');
 const { foldDiacritics } = require('../lib/title-match');
+const { socialNotable, fileSlim } = require('./notable');
 
 /** The set a show belongs to, or null for a category the system does not post. */
 function homeSet(show) {
@@ -81,7 +82,13 @@ function operaConfigured(sets = C.CHANNEL_SETS) {
  * A set counts as configured only when it has every network the Broadway set has, so
  * adding the accounts one at a time never moves shows onto fewer networks.
  */
-function targetSets(show, showReviews, sets = C.CHANNEL_SETS, shows = null) {
+function targetSets(show, showReviews, sets = C.CHANNEL_SETS, shows = null, slim = fileSlim) {
+  // BRO-7413: the Broadway accounts carry Broadway and notable Off-Broadway shows only.
+  const route = targetSetsUngated(show, showReviews, sets, shows);
+  return C.NOTABLE_ONLY.enabled && route.includes('broadway') && !socialNotable(show, slim) ? route.filter(set => set !== 'broadway') : route;
+}
+
+function targetSetsUngated(show, showReviews, sets, shows) {
   const home = homeSet(show);
   if (!home) return [];
   if (home === 'opera') return operaConfigured(sets) ? ['opera'] : []; // never cross-posted, never a fallback

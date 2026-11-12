@@ -8,6 +8,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { buildSocialReport, normalizeMetrics, attributeVisits, buildPostRows, monthlySuggestion, suggestedReply, skippedShows, upcomingPosts, postingTimeAdvice, gateWords, plainReason, showInCaption } = require('./social-report.js');
+require('../social-autopost/config.js').NOTABLE_ONLY.enabled = false; // fixtures carry no public show file; the BRO-7413 gate has its own tests
 const { scoreDecision, findScoreEvents } = require('../social-autopost/select.js');
 const { socialHtml, loadSocialSection } = require('./traffic-report-email.js');
 const { writeLedger } = require('../social-autopost/run.js');

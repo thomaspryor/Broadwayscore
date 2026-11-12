@@ -10,6 +10,10 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// These tests cover floors, backfill, routing and touring machinery with fixture shows that carry no public
+// show file, so the Broadway + notable-only gate (BRO-7413) is off here; scripts/social-autopost/notability.test.mjs
+// proves the gate itself.
+require('./social-autopost/config.js').NOTABLE_ONLY.enabled = false;
 const sel = require('./social-autopost/select.js');
 // Runs fn with the live config's West End accounts filled in (dummy ids), so Off-West End
 // shows have somewhere to post (BRO-6932: they never fall back to the Broadway accounts).
