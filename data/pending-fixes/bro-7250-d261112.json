@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7250-d261112",
   "planId": "7bd50ec2-de73-449c-a546-e7d9d6db7d63",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-12T19:00:27.570Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-12T19:04:29.721Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lumin-regional-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
