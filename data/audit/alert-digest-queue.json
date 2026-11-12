@@ -581,5 +581,19 @@
       }
     ],
     "queuedAt": "2026-11-12T11:39:56.457Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7276",
+    "title": "Watchdog parked #linear:BRO-7276 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Root cause: \"Stuck pipeline items\" keeps coming back (5 cards in 30 days)\" was claimed for redispatch at 2026-11-12T11:32:04.126Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7276), then re-arm with node scripts/linear-next.js --id BRO-7276 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T11:48:16.151Z"
   }
 ]
