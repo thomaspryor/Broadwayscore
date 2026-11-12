@@ -1,5 +1,43 @@
 [
   {
+    "startedAt": "2026-11-10T22:16:24.297Z",
+    "completedAt": "2026-11-10T22:16:24.322Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42911768398",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-10T22:29:23.973Z",
+    "completedAt": "2026-11-10T22:29:29.372Z",
+    "totalReviews": 1,
+    "processed": 1,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 5189,
+      "output": 316,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 13882
+    },
+    "costUsd": 0.020471899999999998,
+    "runId": "42913716513",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-11-10T22:34:25.959Z",
     "completedAt": "2026-11-10T22:34:25.960Z",
     "totalReviews": 0,
@@ -566280,86 +566318,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-12T13:10:26.386Z",
-    "completedAt": "2026-11-12T13:13:47.327Z",
-    "totalReviews": 81920,
-    "processed": 65,
-    "skipped": 81828,
-    "errors": 4,
-    "tokensUsed": {
-      "input": 553224,
-      "output": 23908,
-      "cacheRead": 319741,
-      "cacheWrite": 15088,
-      "total": 1359920
-    },
-    "costUsd": 1.0379569,
-    "runId": "43223622962",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "mexodus-tour-2026",
-        "outletId": "chicagotribune",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-12T13:19:42.528Z",
-    "completedAt": "2026-11-12T13:55:37.310Z",
-    "totalReviews": 81920,
-    "processed": 179,
-    "skipped": 78550,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 1109166,
-      "output": 60747,
-      "cacheRead": 639547,
-      "cacheWrite": 112902,
-      "total": 2881929
-    },
-    "costUsd": 4.6495341,
-    "runId": "43223622962",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "ceilidh-the-musical-off-west-end-2026",
-        "outletId": "daily-echo",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-12T14:00:34.175Z",
-    "completedAt": "2026-11-12T14:05:59.397Z",
-    "totalReviews": 126,
-    "processed": 126,
+    "startedAt": "2026-11-12T14:09:43.688Z",
+    "completedAt": "2026-11-12T14:09:43.702Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 330665,
-      "output": 28223,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 358888
+      "total": 0
     },
-    "costUsd": 0.9189868,
-    "runId": "43223622962",
+    "costUsd": 0,
+    "runId": "43231403481",
     "source": "comparative-rescore",
     "errorDetails": []
   }
