@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-7034-2",
+  "planId": "112dbcaf-cc48-4009-8cae-46719fa78fae",
+  "status": "pending",
+  "createdAt": "2026-11-12T03:22:12.313Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7034: quarantine mixed Letts/Treneman and Paul Taylor OCR records pending clean review recovery; refetches and text cleanup remain outstanding",
+    "steps": [
+      "exit-the-king-west-end-2018/daily-mail--quentin-letts.json: wrongAttributionReason",
+      "exit-the-king-west-end-2018/daily-mail--quentin-letts.json: wrongAttribution",
+      "the-lion-king-west-end-2021/independent--paul-taylor.json: wrongAttributionReason",
+      "the-lion-king-west-end-2021/independent--paul-taylor.json: wrongAttribution"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "exit-the-king-west-end-2018/daily-mail--quentin-letts.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-7034: the stored Theatre Record body combines Ann Treneman and Quentin Letts. It contains 91% of the Times sibling text by 8-gram containment; BRO-6774 verified that sibling against the archived Times byline. Exclude this mixed body pending a clean Letts review; preserve times-uk--ann-treneman.json as the authentic Treneman record.",
+        "description": "exit-the-king-west-end-2018/daily-mail--quentin-letts.json: wrongAttributionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "exit-the-king-west-end-2018/daily-mail--quentin-letts.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "exit-the-king-west-end-2018/daily-mail--quentin-letts.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-west-end-2021/independent--paul-taylor.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-7034: unrecoverable as a Paul Taylor review from the current mixed Theatre Record OCR. The 9373-character body is byte-identical to telegraph--charles-spencer.json, contains Robert Butler byline text and has no Paul Taylor byline. BRO-6774 identified an unbylined review followed by Butlers Independent on Sunday review. The stored URL is the unrelated bomb-threat news article identified by this card. Exclude pending a clean, attributable review; this quarantine does not repair the URL or OCR body.",
+        "description": "the-lion-king-west-end-2021/independent--paul-taylor.json: wrongAttributionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-west-end-2021/independent--paul-taylor.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-lion-king-west-end-2021/independent--paul-taylor.json: wrongAttribution"
+      }
+    ]
+  }
+}
