@@ -1,16 +1,24 @@
 {
-  "generatedAt": "2026-11-12T02:12:54.259Z",
-  "night": "2026-11-10",
+  "generatedAt": "2026-11-12T06:28:14.379Z",
+  "night": "2026-11-11",
   "counts": {
-    "total": 1,
+    "total": 3,
     "passed": 0,
-    "failed": 1,
-    "notGraded": 0
+    "failed": 0,
+    "notGraded": 3
   },
   "lines": [
     {
-      "verdict": "FAIL",
-      "line": "Cloud 9: reviews not graded, the overnight check did not run; opening-night email draft is out of date (built with score 81 from 12 reviews, the site shows score 77 from 18 reviews). Failed."
+      "verdict": "UNKNOWN",
+      "line": "Act of God: published by the regular pipeline; 8 of 8 reviews live by 6:00pm. Not graded: could not check the critics list at the 2-hour mark or which reviews came in that night."
+    },
+    {
+      "verdict": "UNKNOWN",
+      "line": "Cloud 9 National: not graded, the overnight check did not run; opening-night email draft not due until 9:00am."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "Now You See Me Live: not graded yet, still being checked; opening-night email draft not due until 9:00am."
     }
   ],
   "scoreboard": {
@@ -18,7 +26,5 @@
     "passed": 2,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {
-    "cloud-9-west-end-2026|2026-11-10|email:broadcast:stale": "2026-11-11T18:36:41.886Z"
-  }
+  "missFirstSeen": {}
 }
