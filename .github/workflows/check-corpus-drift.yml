@@ -114,6 +114,19 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      - name: Auto-link unlinked venue-complex sub-venues before the live-data check
+        # BRO-7403: tests/unit/venue-complex-live-data.test.mjs went red 4+ times
+        # (BRO-6201/6708/7008/7013) because new shows at multi-stage venues add venue
+        # strings nobody links; each time a human added the slug. Same fix, mechanical.
+        continue-on-error: true
+        run: |
+          node scripts/heal-venue-complex-gaps.js --write
+          if git status --porcelain data/venue-complexes.json data/venue-complexes-west-end.json | grep -q .; then
+            git add data/venue-complexes.json data/venue-complexes-west-end.json
+            git commit -m "chore: Auto-link venue-complex sub-venues (corpus-drift self-heal, BRO-7403) [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       - name: Auto-heal slug-shaped outlet names before the live-data check
         # BRO-5728: rebuild-all-reviews.js auto-registers outlets offline and,
         # with no review label, capitalizes the id ("Slotkinletter",
