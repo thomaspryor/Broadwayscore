@@ -2,6 +2,7 @@
 // The manual prototype used an ElevenLabs connector, which has no API key in CI. Here: OpenAI gpt-4o-mini-tts for the voice and
 // whisper-1 word timestamps for the timings. About 25 s of audio per video: roughly 0.5 US cents of TTS plus 0.3 of Whisper.
 // Bracketed voice directions in a script ("[excited]", "[dryly]") are not spoken: they become the delivery instruction.
+require('../lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs'), path = require('path');
 
 const TTS_MODEL = process.env.TTS_MODEL || 'gpt-4o-mini-tts';

@@ -1,9 +1,9 @@
 // BRO-7414: video lane decisions. Requires the real functions (CLAUDE.md §15).
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const V = require('./video-select');
-const B = require('./buffer');
-const { videoTitle, duplicateMarker } = require('./video-run');
+const V = require('../../scripts/social-autopost/video-select');
+const B = require('../../scripts/social-autopost/buffer');
+const { videoTitle, duplicateMarker } = require('../../scripts/social-autopost/video-run');
 
 const NOW = Date.parse('2026-11-12T15:00:00Z');
 const row = (type, showId, channels, extra = {}) => ({ type, showId, channels, ...extra });

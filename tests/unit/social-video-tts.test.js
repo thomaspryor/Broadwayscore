@@ -1,7 +1,7 @@
 // BRO-7414: voice step helpers. Real functions, fixture shaped like OpenAI whisper-1 verbose_json.
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const T = require('./tts');
+const T = require('../../scripts/video-proto/tts');
 
 test('splitDirections strips [tags] from the spoken text and maps them to a delivery instruction', () => {
   const r = T.splitDirections('[excited] Hamilton just opened. [dryly] Critics agree.');
