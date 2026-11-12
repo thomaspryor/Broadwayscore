@@ -127,7 +127,7 @@ async function verifySent(ledger, now) {
       const post = await buffer.getPost(c.postId);
       if (!post) { c.result = 'gone'; changed++; continue; }
       if (post.status === 'sent') { c.result = 'sent'; c.externalLink = post.externalLink || null; c.sentAt = post.sentAt || null; changed++; log(`${p.showId} on ${n} is sent: ${c.externalLink || 'no link yet'}`); }
-      else if (post.status === 'error') { c.result = 'error'; c.error = (post.error && post.error.message) || 'unknown'; changed++; log(`::warning::${p.showId} on ${n} failed in Buffer: ${c.error}`); }
+      else if (post.status === 'error') { c.result = 'error'; c.error = (post.error && post.error.message) || 'unknown'; c.failedPostId = c.postId; delete c.postId; changed++; /* frees the network so the show can be retried within the attempt limits */ ledger.failures.push({ key: `${p.type}:${p.showId}`, at: new Date(now).toISOString(), error: `${n}: Buffer rejected the post: ${c.error}`.slice(0, 400) }); log(`::warning::${p.showId} on ${n} failed in Buffer: ${c.error}`); }
     }
   }
   return changed;
@@ -215,6 +215,7 @@ async function main() {
 async function selfTestEvent(ev, outDir, now, ctx) {
   const dir = path.join(outDir, `${ev.show.id}-${ev.fmt}`);
   const made = makeVideo(ev, ev.targets, dir);
+  if (!ctx.slim[ev.show.id]) throw new Error(`no site score for ${ev.show.id}`);
   const channels = await videoChannels(ev.targets);
   const score = Math.round(ctx.slim[ev.show.id].cs), title = videoTitle(made.plan, ev.show, score);
   for (const n of ev.targets) {
@@ -226,14 +227,23 @@ async function selfTestEvent(ev, outDir, now, ctx) {
   }
 }
 
+/** Any throw outside the per-network try (channel lookup, missing slim entry) is still a recorded failure, so the retry limits hold. */
 async function postEvent(ev, ledger, outDir, now, ctx) {
+  try { await postEventInner(ev, ledger, outDir, now, ctx); } catch (e) {
+    ledger.failures.push({ key: V.keyOf(ev), at: new Date(now).toISOString(), error: String(e.message).slice(0, 400) });
+    writeLedger(ledger); log(`::error::${ev.show.title}: ${e.message}`); process.exitCode = 1;
+  }
+}
+
+async function postEventInner(ev, ledger, outDir, now, ctx) {
   const key = V.keyOf(ev);
+  if (!ctx.slim[ev.show.id]) throw new Error(`no site score for ${ev.show.id}`);
   const dir = path.join(outDir, `${ev.show.id}-${ev.fmt}`);
   let made;
   try {
     made = makeVideo(ev, ev.targets, dir);
   } catch (e) {
-    if (e.skip) { log(`skipped ${ev.show.title}: ${e.message}`); return; }
+    if (e.skip) { ledger.failures.push({ key, at: new Date(now).toISOString(), kind: 'skip', error: String(e.message).slice(0, 200) }); writeLedger(ledger); log(`skipped ${ev.show.title}: ${e.message}`); return; }
     ledger.failures.push({ key, at: new Date(now).toISOString(), error: String(e.message).slice(0, 400) });
     writeLedger(ledger); log(`::error::${ev.show.title}: ${e.message}`); process.exitCode = 1; return;
   }

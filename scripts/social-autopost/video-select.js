@@ -39,15 +39,19 @@ function nyDay(t) { return new Intl.DateTimeFormat('en-CA', { timeZone: C.VIDEO.
 function busyNetworks(ledger, now) {
   const day = nyDay(now), busy = new Set();
   for (const p of (ledger && ledger.posts) || []) for (const [n, c] of Object.entries(p.channels || {})) {
-    if (c && c.postId && nyDay(Date.parse(c.createdAt || p.createdAt)) === day) busy.add(n);
+    if (!c || !c.postId) continue;
+    // made today OR due today: a video made at 22:41 for 09:00 tomorrow already holds tomorrow's slot
+    if (nyDay(Date.parse(c.createdAt || p.createdAt)) === day || (p.dueAt && nyDay(Date.parse(p.dueAt)) === day)) busy.add(n);
   }
   return busy;
 }
 
 /** Failed attempts for an event key on this New York day / ever. */
 function attempts(ledger, key, now) {
+  // one run that fails on both networks is one attempt (failures of a run share `at`); a skip (no audience grade yet) only waits out the day
   const f = ((ledger && ledger.failures) || []).filter(x => x.key === key);
-  return { today: f.filter(x => nyDay(Date.parse(x.at)) === nyDay(now)).length, total: f.length };
+  const runs = list => new Set(list.map(x => x.at)).size;
+  return { today: runs(f.filter(x => nyDay(Date.parse(x.at)) === nyDay(now))), total: runs(f.filter(x => x.kind !== 'skip')), skippedToday: f.some(x => x.kind === 'skip' && nyDay(Date.parse(x.at)) === nyDay(now)) };
 }
 
 /**
@@ -81,7 +85,7 @@ function pickToday(events, videoLedger, now) {
   if (!free.length) return { pick: null, why: 'every network already has a video today' };
   for (const ev of events) {
     const a = attempts(videoLedger, keyOf(ev), now);
-    if (a.total >= C.VIDEO.maxAttemptsTotal || a.today >= C.VIDEO.maxAttemptsPerDay) continue;
+    if (a.total >= C.VIDEO.maxAttemptsTotal || a.today >= C.VIDEO.maxAttemptsPerDay || a.skippedToday) continue;
     // a partly posted entry (one network failed earlier) only fills the networks it lacks
     const row = ((videoLedger && videoLedger.posts) || []).find(p => p.type === ev.type && p.showId === ev.show.id && !entryDone(p));
     const targets = free.filter(n => !(row && row.channels && row.channels[n] && row.channels[n].postId));

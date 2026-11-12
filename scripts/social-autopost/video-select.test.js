@@ -37,7 +37,7 @@ test('busyNetworks counts only posts made on this New York day', () => {
 
 test('attempts splits today from total', () => {
   const ledger = { failures: [{ key: 'score:x', at: '2026-11-12T12:00:00Z' }, { key: 'score:x', at: '2026-11-09T12:00:00Z' }, { key: 'score:y', at: '2026-11-12T12:00:00Z' }] };
-  assert.deepEqual(V.attempts(ledger, 'score:x', NOW), { today: 1, total: 2 });
+  assert.deepEqual(V.attempts(ledger, 'score:x', NOW), { today: 1, total: 2, skippedToday: false });
 });
 
 test('pickToday: one video per network per day, backoff, partial entries fill only missing networks', () => {
@@ -81,4 +81,23 @@ test('videoMetadataFor: per-network shape, AI flag, 100-char title cap, no empty
 
 test('createVideoPost refuses a file rendered for the other app', async () => {
   await assert.rejects(B.createVideoPost({ channel: { id: 'c', network: 'tiktok' }, text: 't', videoUrl: 'https://h/x-youtube.mp4', title: 'T', dueAt: new Date() }), /was not rendered for tiktok/);
+});
+
+test('busyNetworks: a post made last night for a slot today still holds today (review: 22:41 NY run)', () => {
+  const made = '2026-11-12T03:41:00Z'; // 22:41 NY the day before
+  const ledger = { posts: [row('score', 'x', { tiktok: posted(made) }, { dueAt: '2026-11-12T14:00:00Z' })] };
+  assert.deepEqual([...V.busyNetworks(ledger, NOW)], ['tiktok']);
+});
+
+test('attempts: one run failing on both networks is one attempt; a skip is not a failure', () => {
+  const at = '2026-11-12T14:00:00Z';
+  const ledger = { failures: [{ key: 'score:x', at }, { key: 'score:x', at }, { key: 'score:x', at: '2026-11-12T14:30:00Z', kind: 'skip' }] };
+  const a = V.attempts(ledger, 'score:x', NOW);
+  assert.equal(a.total, 1); assert.equal(a.today, 2); assert.equal(a.skippedToday, true);
+});
+
+test('pickToday passes over a show skipped today so older shows can post', () => {
+  const ev = id => ({ type: 'score', fmt: 'reveal', show: { id }, slot: NOW });
+  const ledger = { posts: [], failures: [{ key: 'score:a', at: '2026-11-12T14:30:00Z', kind: 'skip' }] };
+  assert.equal(V.pickToday([ev('a'), ev('b')], ledger, NOW).pick.show.id, 'b');
 });
