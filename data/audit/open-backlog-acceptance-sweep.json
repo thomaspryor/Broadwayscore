@@ -1,18 +1,42 @@
 {
-  "generatedAt": "2026-11-11T10:08:31.545Z",
+  "generatedAt": "2026-11-12T00:08:51.597Z",
   "shadow": true,
-  "checkoutSha": "fd0108e9e383216e9a6ac099d3c3cc6fc4c05d78",
-  "totalCandidates": 382,
-  "eligibleCandidates": 103,
+  "checkoutSha": "1bd368b8ee3f24f0e50c9803e6f83eefa94776f0",
+  "totalCandidates": 377,
+  "eligibleCandidates": 105,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 15,
-    "fail": 10,
-    "unverifiable": 5
+    "pass": 14,
+    "fail": 9,
+    "unverifiable": 7
   },
   "alreadyDone": [
+    {
+      "id": "BRO-7384",
+      "name": "Forecasts page: shows opened >20 days ago with no grade drop off the board (ledger window is 20 files)",
+      "verifyCmd": "node --test scripts/lib/review-forecast-board.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7378",
+      "name": "Child watch guard: advise a 3-minute first watch on a freshly created child session (BRO-7377 follow-up)",
+      "verifyCmd": "node --test scripts/lib/child-session-wait-guard.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7374",
+      "name": "Opening grade overcounts live reviews vs the site (Blueberries 24 vs 19)",
+      "verifyCmd": "node --test tests/unit/opening-grade.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7344",
+      "name": "Triage ~19 unscored CV-promoted isNonReview files whose CV says review and carry no other exclusion flag",
+      "verifyCmd": "node scripts/audit-cv-flag-contradiction.js",
+      "detail": null
+    },
     {
       "id": "BRO-7334",
       "name": "Root cause: \"Tech Scorecard weekly port\" keeps coming back (3 cards in 30 days)",
@@ -26,21 +50,15 @@
       "detail": null
     },
     {
+      "id": "BRO-7324",
+      "name": "Make landing faster without removing a check: shard the gauntlet's unit-test batch, speed up the three slowest tests",
+      "verifyCmd": "node --test scripts/V1-V3-dispatch-status.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-7315",
       "name": "Guardrail slim-down: cut hooks, rules and CI gates, prove the survivors with tests",
       "verifyCmd": "node --test scripts/tests/verify-edits-cloud-session-gates.test.mjs scripts/tests/verify-edits-scoring-gate.test.mjs scripts/tests/cloud-settings-guards.test.mjs scripts/tests/global-instructions.test.mjs scripts/V1-V3-dispatch-status.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7308",
-      "name": "Live site vs data parity: no check confirms prod pages show the scores the data holds",
-      "verifyCmd": "node --test tests/unit/prod-data-parity.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7292",
-      "name": "Archive older Morning digest, Opening Digest and newsletter-draft emails in Gmail (owner chose A)",
-      "verifyCmd": "node --test scripts/lib/reddit-email-archive.test.mjs",
       "detail": null
     },
     {
@@ -50,21 +68,21 @@
       "detail": null
     },
     {
-      "id": "BRO-7283",
-      "name": "Lane star-anchored review scores drift at the next full rebuild (Blueberries headline 81 -> 80 after the owner posted it)",
-      "verifyCmd": "npx tsx --test tests/unit/lane-comparative-parity.test.mjs",
+      "id": "BRO-7255",
+      "name": "Opening-date audit: 1 show need review (2026-11-09)",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=other-desert-cities-2026",
+      "detail": null
+    },
+    {
+      "id": "BRO-7253",
+      "name": "Closing date audit: 3 shows need review (2026-11-09)",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-rocky-horror-show-2026,just-in-time-2025,operation-mincemeat-2025",
       "detail": null
     },
     {
       "id": "BRO-7175",
       "name": "Ingest the 21 expected-critics missing reviews (BRO-7166 audit)",
       "verifyCmd": "node --test tests/unit/expected-critics.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7174",
-      "name": "Approved duplicateOf/wrongShow survive the dedupe writers, and approved-fix drift reaches the digest",
-      "verifyCmd": "node --test tests/unit/approved-fix-drift.test.mjs",
       "detail": null
     },
     {
@@ -78,62 +96,50 @@
       "name": "Audit 2 months of openings that needed hands: is each root cause fixed systematically?",
       "verifyCmd": "node --test tests/unit/opening-grade.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-7144",
-      "name": "validate-data.js: make the duplicate-show check sub-quadratic (58 s of every 77 s run)",
-      "verifyCmd": "node --test tests/unit/validate-data-push-refusal-sentinel.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7129",
-      "name": "Opening grade: SERP census counts other cities' productions of classic titles (King Lear '0 of 13 known' were Manchester/London/Chicago/New Orleans/Texas)",
-      "verifyCmd": "node --test scripts/lib/census-other-place.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7116",
-      "name": "Root cause: \"Review gap — missing cited review\" keeps coming back (45 cards in 30 days)",
-      "verifyCmd": "node --test tests/unit/linear-next.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7114",
-      "name": "Arm auto-revert of breaking landings (BRO-7102 stage 2 runs in shadow mode)",
-      "verifyCmd": "node --test scripts/lib/auto-revert.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
     {
+      "id": "BRO-7356",
+      "name": "Root cause: \"Codex runner: landing cards\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class codex-runner-landing-cards --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7355",
+      "name": "Root cause: \"Data: early publish dates awaiting page-date recheck\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class early-publish-dates-awaiting-page-date-recheck --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7354",
+      "name": "Root cause: \"Data quality: revival-unverified lifetime sweep\" keeps coming back (4 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class revival-unverified-lifetime-sweep --quiet",
+      "detail": "FAIL: last case 0d ago, needs 21\n"
+    },
+    {
       "id": "BRO-7333",
       "name": "Root cause: \"Data: armed-but-vacuous backlog cards\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class armed-but-vacuous-backlog-cards --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-7332",
       "name": "Root cause: \"Cron's latest run failed: Update Lottery/Rush\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class update-lottery-rush --quiet",
-      "detail": "FAIL: last case 0d ago, needs 21\n"
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-7277",
       "name": "Root cause: \"Data quality: stale announced shows\" keeps coming back (4 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class stale-announced-shows --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7276",
-      "name": "Root cause: \"Stuck pipeline items\" keeps coming back (5 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class stuck-pipeline-items --quiet",
-      "detail": "FAIL: last case 3d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-7275",
       "name": "Root cause: \"Opening-date audit: show need review\" keeps coming back (5 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class show-need-review --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-7265",
@@ -142,28 +148,10 @@
       "detail": "FAIL washington-dc: show missing\nFAIL los-angeles-ca: show missing\n"
     },
     {
-      "id": "BRO-7234",
-      "name": "Retired outlet-suffixed critic slugs 404 (missing from critic-slug-aliases): add redirects",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": "⚠️  WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours one of them\n⚠️  WARNING: 90 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, manic-street-creature-west-end, relics-west-end...\n⚠️  WARNING: 86 Off-Broadway shows missing \"off-broadway\" in slu"
-    },
-    {
       "id": "BRO-7202",
       "name": "Root cause: \"Bright Data daily breaker TRIPPED: web_unlocker2\" keeps coming back (8 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class bright-data-daily-breaker-tripped-web-unlocker2 --quiet",
-      "detail": "FAIL: last case 7d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7118",
-      "name": "Root cause: \"National tour pages show wrong information: page problem\" keeps coming back (11 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class national-tour-pages-show-wrong-information-page-problem --quiet",
-      "detail": "FAIL: last case 10d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7113",
-      "name": "Unit Tests job: cut runtime back under 20 min (shard or speed up the no-data-dependency batch)",
-      "verifyCmd": "node scripts/ci-green-rate.js --days 7",
-      "detail": "CI green rate — thomaspryor/Broadwayscore test.yml on main, push runs, last 7d (2026-11-04T10:08Z → 2026-11-11T10:08Z)\n  completed 453 | green 301 | red 150 | cancelled 2 | other 0 | reruns collapsed 0\n  longest green streak 67 | longest red streak 34 | current streak: green x39\n  red episodes 39 | red→green latency median: 37.5 min (39 samples)\n  date        total green red  canc other\n  2026-11-"
+      "detail": "FAIL: last case 8d ago, needs 21\n"
     }
   ],
   "unverifiable": [
@@ -172,6 +160,12 @@
       "name": "Extend the model-retirement audit to Anthropic and Gemini pins (same drift gap OpenAI had)",
       "verifyCmd": "node --test tests/unit/provider-deprecations.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/provider-deprecations.test.mjs"
+    },
+    {
+      "id": "BRO-7281",
+      "name": "Opening-night dispatch hardening: same-group run replacement, watchdog/sweep double-dispatch, sweep no-op rebuilds",
+      "verifyCmd": "node --test tests/unit/opening-night-dispatch-hardening.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opening-night-dispatch-hardening.test.mjs"
     },
     {
       "id": "BRO-7254",
@@ -196,9 +190,22 @@
       "name": "Refresh the six annual awards scheduled tasks before March 8",
       "verifyCmd": "node --test scripts/verify-annual-task-docs.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/verify-annual-task-docs.test.mjs"
+    },
+    {
+      "id": "BRO-7140",
+      "name": "Show published rating beside review date (web + app)",
+      "verifyCmd": "node --test tests/unit/rating-beside-date.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/rating-beside-date.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-7344",
+      "name": "Triage ~19 unscored CV-promoted isNonReview files whose CV says review and carry no other exclusion flag",
+      "branch": "land/bro-7344-stuck-cv-promoted",
+      "sha": "ec60cf3417fff68e244ecd3eb96bf1e104c57419",
+      "landedAt": "2026-11-11T05:54:34.762Z"
+    },
     {
       "id": "BRO-7334",
       "name": "Root cause: \"Tech Scorecard weekly port\" keeps coming back (3 cards in 30 days)",
@@ -214,32 +221,11 @@
       "landedAt": "2026-11-10T22:33:59.416Z"
     },
     {
-      "id": "BRO-7308",
-      "name": "Live site vs data parity: no check confirms prod pages show the scores the data holds",
-      "branch": "land/codex-bro-7308",
-      "sha": "82e5fedf6d7ee4d205cfa1dccddb574bfa7430b6",
-      "landedAt": "2026-11-11T05:41:14.070Z"
-    },
-    {
-      "id": "BRO-7283",
-      "name": "Lane star-anchored review scores drift at the next full rebuild (Blueberries headline 81 -> 80 after the owner posted it)",
-      "branch": "land/bro-7283-cost",
-      "sha": "85b711f3a29ca768a9093388d718888afb66c924",
-      "landedAt": "2026-11-10T13:15:00.497Z"
-    },
-    {
       "id": "BRO-7175",
       "name": "Ingest the 21 expected-critics missing reviews (BRO-7166 audit)",
       "branch": "land/bro-7175-acks",
-      "sha": "5f8c8df034e7ca4d45ed7b7179230747e409f051",
-      "landedAt": "2026-11-09T01:45:36.923Z"
-    },
-    {
-      "id": "BRO-7174",
-      "name": "Approved duplicateOf/wrongShow survive the dedupe writers, and approved-fix drift reaches the digest",
-      "branch": "land/codex-bro-7174",
-      "sha": "655182680c317e4ffc5eb9dc55af2da2a020c616",
-      "landedAt": "2026-11-09T08:41:57.237Z"
+      "sha": "caf95eb63d15b7dad429d02fd63ae92ee011fb6b",
+      "landedAt": "2026-11-11T14:11:47.867Z"
     },
     {
       "id": "BRO-7156",
@@ -254,20 +240,6 @@
       "branch": "land/bro-7145-audit-v2",
       "sha": "97ab900455cde70e26b4aa93e878908793589b1b",
       "landedAt": "2026-11-08T21:21:04.832Z"
-    },
-    {
-      "id": "BRO-7129",
-      "name": "Opening grade: SERP census counts other cities' productions of classic titles (King Lear '0 of 13 known' were Manchester/London/Chicago/New Orleans/Texas)",
-      "branch": "land/bro-7129-census-place",
-      "sha": "b4d567558013eb2a3743a73ac97e680724c0a1b3",
-      "landedAt": "2026-11-08T17:21:21.621Z"
-    },
-    {
-      "id": "BRO-7116",
-      "name": "Root cause: \"Review gap — missing cited review\" keeps coming back (45 cards in 30 days)",
-      "branch": "land/bro-7116-cost",
-      "sha": "617747c4497befac599bab84a65b96fe93bd462f",
-      "landedAt": "2026-11-10T20:33:19.998Z"
     }
   ]
 }
