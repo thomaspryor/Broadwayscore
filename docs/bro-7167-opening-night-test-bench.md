@@ -1,6 +1,6 @@
 # BRO-7167: Opening-night test bench (plan for owner approval)
 
-Status: PLAN, nothing built beyond the 2-night pilot. Substantial tier (CLAUDE.md §20): needs `OWNER-PLAN-APPROVED:` before Phase 1.
+Status: PLAN v2 (revised after /plan-review, 2026-11-11), nothing built beyond the 2-night pilot. Substantial tier (CLAUDE.md §20): needs `OWNER-PLAN-APPROVED:` before Phase 1.
 
 ## In plain words
 
@@ -13,7 +13,11 @@ The pilot cost $0 and found one thing that matters before anything else: our rec
 both pilot nights (30 minutes early on one, an hour late on the other). Every timing grade so far was measured from the wrong
 start line. Fixing that comes first (Phase 0).
 
-Full run: about $40 to $80 in scraping and AI scoring across all 20 nights. Each phase has a stop point.
+The wrong start time is not only a grading problem: the live opening-night system also times its start from that guess, and no show
+has ever had its real time set (0 shows in shows.json carry `reviewEmbargoAt`). Phase 0 fixes both.
+
+Full run: about $60 to $100 in scraping and AI scoring across all 20 nights. Each phase has a stop point. The test bench never
+touches the switch that lets the live system run until the owner says so (decision D3).
 
 ## What already exists (reused, not rebuilt)
 
@@ -27,9 +31,13 @@ Full run: about $40 to $80 in scraping and AI scoring across all 20 nights. Each
 | Encrypted per-pass recordings | `scripts/capture-lane-night.js`, `scripts/lane-recording-import.js` | real pages as fetched on the night (private repo) |
 | Coverage gap audit | `scripts/slow-market-grade.js --check-gaps` | did every review an aggregator cited go live |
 | Wayback helpers | `scripts/lib/unwrap-wayback-url.js`, CDX year-bound test | URL unwrapping, CDX query bounds |
+| Observed release time | `press-night-record.js` `observedRelease` / `observedReleaseFromPublish` (:926, :950) | release time from outlet publish times, late releases only (>= 30 min) |
+| Page as of time T | `lane-recorded-nights/recording-night.js` `replayFetchFrom` (:47) | serves each URL the content current at the virtual time, from the recording format |
+| Nightly Broadway recording | press-night-probe.yml starts the shadow; `opening-night-lane-live.yml` BRO-6651 encrypted recording; `lane-recording-import.yml` imports it each morning (advisory, does not feed arming) | real page state for every new Broadway night already |
 
-New code is limited to: an embargo-truth step (Phase 0), a causal-fixture builder and a "page as of time T" provider for the
-existing replay harness (Phase 3), and widening the existing rehearsal's night list (Phase 4).
+New code is limited to: fixing the old grader to use the shared embargo helper and teaching the observed-release logic about
+early releases (Phase 0), a Wayback-to-recording importer that writes the existing recording format (Phase 3), and a separate
+`bench` rehearsal kind with its own record (Phase 4).
 
 ## The 20 nights
 
@@ -71,105 +79,149 @@ What the pilot changes in the plan:
 3. **Recent nights may never be archived densely.** Going forward, recording every Broadway night (Phase 3c) is the only way
    to get true per-minute page state.
 
-## Phase 0: embargo truth (prerequisite, about 2 hours, $0)
+## Phase 0: embargo truth (prerequisite, about half a day, $0)
 
-For each night: observed embargo = the earliest minute with 3 or more outlet publish timestamps within 10 minutes, cross-checked
-against the first review-texts commit and (where present) the lane shadow's first discovery. Store as
-`observedEmbargoAt` + evidence in the audit output, never by rewriting the press-night record. The existing per-show embargo
-override in `press-night-record.js` (`embargoInfo`, source `override`) is the forward fix; Phase 0 also reports every future
-night where observed and recorded embargo differ by 15 minutes or more, so the default stops silently skewing grades.
+[CHANGED v2: no new embargo concept; the fix reaches both graders and the live lane. Source: design, structure, Codex, pre-mortem]
+
+1. `scripts/lib/opening-grade.js:131` uses its own `estimateEmbargoMs` (22:00 local) and never sees a show's override. Switch it
+   to `pressNightRecord.embargoInfo(show)`, the helper the lane and probe already use.
+2. Extend `observedReleaseFromPublish` (`press-night-record.js:950`) to report early releases too (today only >= 30 min late),
+   using a cluster rule: 3 or more exact outlet publish times within 10 minutes. Fallback when there are fewer than 3: the lane
+   shadow's first discovery, else the first review-texts commit, labelled with its source. Nights with no answer are marked
+   "embargo unknown" and cannot PASS a timing check.
+3. Pass the same anchor into the shadow replay (`opening-night-lane-shadow.js` replay clock via an `--embargo-at` override), so
+   Phase 2 does not repeat the bias.
+4. Forward fix for live nights: when an observed embargo differs from the default by 15 minutes or more, report it in the morning
+   digest so the next show from the same press office gets `reviewEmbargoAt` set ahead of its night. Never rewrite past
+   press-night records; the observed time is stored beside them.
+
+Red-then-green test: the two pilot nights as fixtures (The Balusters observed 01:30Z, A Few Good Men 03:00Z).
 
 ## Phase 1: audit the old path on all 20 nights ($0, about half a day)
 
-Inputs only, no network: `grade-openings.js --show=<id> --from --to` per night (hand fixes and causes), timeline JSONL
-(live count at +1h/+3h/+24h/+7d from observed embargo), review-texts first-commit times (discovery curve), press-night records
-where present, `show-review-gap.json` (aggregator-cited final count), Linear cards and `ingest-urls` workflow runs in opening
-week (manual interventions not visible in git).
+[CHANGED v2: per-night output files, labelled clocks, "unknown" instead of interpolation. Source: Codex, structure, design]
 
-Output per night: time to first live review, live vs final aggregator-cited count at +1h/+3h/+24h/+7d, every miss with cause
-class (discovery, text, guard, attribution, scoring-by-hand), every manual intervention. One table across the 20 nights:
-the baseline the new lane must beat. Written to `data/audit/opening-night-test-bench/old-path.json` + a readable summary.
+Run `grade-openings.js --show=<id> --from --to --out=<per-night file>` one night at a time, locally, then one reducer builds the
+20-night table (an interrupted run keeps every finished night). Add only the missing fields to `gradeOpening`: discovery curve
+from review-texts first commits, live-count curve from the site timeline.
+
+Per night: time to first live review, live vs final aggregator-cited count at +1h/+3h/+24h/+7d, every miss with cause class,
+every manual intervention. Every number names its clock: "first committed" (we had the file), "first live" (on the site, from the
+timeline or press-night probe), or "published" (the outlet's own time). Where the timeline has no point in a window (The Balusters'
+first point is at +3.6h), the cell says unknown, never an interpolated count.
+
+Manual interventions come from git (offline) plus Linear cards and `ingest-urls` runs (network). GitHub keeps run logs about 90 days,
+so the April nights' run history is likely incomplete; the table marks those nights "interventions from git only".
 
 Stop point D1: owner sees the 20-night baseline before any spend.
 
 ## Phase 2: sandboxed redos with the new lane (shadow, no lease, no publish)
 
-`opening-night-lane-live.yml` mode=shadow with `--replay` for each night, graded by `lane-shadow-grade.js`, in batches of 5,
-spaced to respect concurrency. Same limits as today (aggregator pages read as they are now, so discovery timing is a best case),
-which Phase 3 corrects. Adds per night: lane vs old-path discovery curve and score agreement.
+[CHANGED v2: serial, local-first, observed embargo, never on a press-night day, and "on-time recall" is not called speed.
+Source: Codex, pre-mortem, user impact, structure]
 
-Old nights may break in replay-only ways (roundup pages moved, listing pages rolled past the post). Each failure is classed
-lane defect vs replay artifact before it counts, the same rule as BRO-6872.
+`opening-night-lane-shadow.js --replay --embargo-at=<Phase 0 time> --out=<per-night dir>` one night at a time, locally (no CI
+concurrency, no ledger pushes racing the hourly crons, no Discord failure warnings for replay-only breakage). CI one at a time is the
+fallback if a secret is CI-only. Never run on a day with a Broadway or West End press night (the live lane needs the same Bright
+Data daily headroom). Spend rows carry the show and night so they can be told apart from real-night rows.
 
-Stop point D2: after the first batch of 5, compare measured spend to the estimate below; stop if it runs over 1.5x.
+Graded by `lane-shadow-grade.js`. Its "on-time" means dated by night + 1 day, so Phase 2 measures recall, false positives and score
+agreement, not speed; speed is Phase 3. Each failure is classed lane defect or replay artifact (page moved, listing rolled past the
+post) with the evidence written next to it, the BRO-6872 rule.
+
+Ramp: night 1 is The Balusters (the April pilot night), then a batch of 4, then the rest. Stop point D2: after the first 5,
+compare spend with the estimate and stop at 1.5x.
 
 ## Phase 3: time-causal replays (what was discoverable at +15/+30/+60/+120)
 
-3a. **Causal fixture per night** (metadata only: URLs, outlets, timestamps, no copyrighted text in this repo). For each review:
-- `publishAt` with source and precision: outlet `datePublished`/`article:published_time` (plain fetch first, existing
-  `fetchPage` chain only for the rest, about 15 paid fetches per night).
-- `aggregatorListedAt`: earliest Wayback capture of each round-up / DTLI / Playbill Verdict / Show Score page that lists it
-  (an upper bound; true listing could be earlier).
-- `articleFirstCapturedAt`: earliest Wayback capture of the article URL itself (upper bound on publish time when no timestamp).
-- `oldPathFirstSeenAt`: first review-texts commit, or the press-night record's per-review live time.
-- Discovery route the lane would use: direct outlet adapter, aggregator-only, search-only, or unknown.
+[CHANGED v2: no synthetic page provider; Wayback captures become recordings in the existing format and replay through
+`replayFetchFrom` with the real page parsers. Missing evidence is "unknown", never "404". Source: design (P0), Codex, Gemini]
 
-3b. **Replay with a "page as of T" provider.** The existing harness (`lane-replay-grade.js`, injected clock) gets a page
-provider that, at clock T, serves each aggregator page listing only rows with `aggregatorListedAt <= T`, and each outlet
-adapter only rows with `publishAt <= T`. Run twice per night:
-- best case: discoverable at `publishAt`
-- worst case: discoverable at the first evidence capture
-Grades reported as a bracket: first-live minutes after observed embargo, live count at +15/+30/+60/+120, completeness at +2h vs
-final aggregator census, against the old path from Phase 1. Scores reuse Phase 2's lane scores (cached by text hash), so
-no new AI spend.
+3a. Hand-build one causal recording first (The Balusters): its Wayback captures (BWW +13m, Playbill +18m/+45m, DTLI +13.2h) written
+in the recording format, plus each review's evidence: outlet publish time, the article's first Wayback capture, our first commit.
+Measure the best-to-worst bracket. **If the bracket on first-live or +2h completeness is wider than about 60 minutes, stop Phase 3
+for old nights** (it could not tell the lane from the old path) and rely on 3c going forward. [CHANGED v2: hand ramp before tooling.
+Source: structure]
 
-3c. **Record every Broadway night from now on.** Extend `capture-lane-night.js` (today West End adapters only) to the Broadway
-adapters on a 5-minute cadence for the first 3 hours, encrypted into the private archive via `lane-recording-import.js`. This is
-the only source of true page state for future nights.
+3b. If 3a is narrow enough: a Wayback-to-recording importer for the other 19 nights, local, 1 request every 3 seconds, a hard stop
+after 5 consecutive 429/503 responses, resumable per night. Output lands only in the private lane-recordings archive
+(`recording-import.js` private-destination check); the repo gets only counts and timestamps. Replay through the real night modules
+with an injected clock, twice per night: best case (a review is visible from its publish time) and worst case (from its first
+evidence capture). A review with no time evidence at all is unknown and counts as a miss for the 30% "partial" rule; publish
+times later than our own first commit are rejected as edited.
 
-**What cannot be reconstructed (stated in every grade):** round-up page contents between Wayback captures (BWW and Playbill
-edit one page in place); outlet section and listing pages (0 captures in the pilot window); search engine state on the night;
-paywall or bot blocks on the night; site rebuild and deploy speed (measured separately by press-night records); articles edited
-since, where the CMS overwrote the publish time; any review with neither a timestamp nor an early capture (about half the
-reviews have no time-of-day publish stamp). Nights whose route is "unknown" for more than 30% of reviews are graded
-"partial", never PASS.
+Scoring: there is no score cache today, so Phase 3 rescores (about $1 per night) instead of building one. [CHANGED v2: the v1 plan
+assumed a cache that does not exist. Source: structure, Codex]
+
+3c. Already running for new Broadway nights: the press-night probe starts the shadow, which records pages (BRO-6651), and the
+recording is imported each morning. The only change is cadence and window (every 5 minutes for the first 3 hours) in the shadow's
+recorder, plus a fidelity flag when storage throttling substituted an older page body. [CHANGED v2: was "extend
+capture-lane-night.js", a one-off West End capture. Source: design, structure, pre-mortem]
+
+What cannot be reconstructed, stated in every grade: round-up contents between Wayback captures; outlet section pages (0 captures in
+the pilot); search engine state; paywall and bot blocks on the night; rebuild and deploy speed; articles whose CMS overwrote the
+publish time; reviews with no timestamp and no early capture (about half). Recall is measured only against reviews we know of today,
+so a review nobody ever found cannot show up as a miss.
 
 Stop point D3: owner sees old path vs new lane (best/worst bracket) for all 20 nights.
 
-## Phase 4: standing regression suite (gates arm-check)
+## Phase 4: standing regression suite (advisory until D3)
 
-Reuse `lane-rehearsal-recorded.yml`, which already reruns on every lane-code push to main and feeds `--arm-check`. Widen its
-night list from 2 Broadway + 1 West End to the 20 causal fixtures plus the nightly recordings from 3c. Pass rule per night:
-worst-case first-live no later than the old path's, +2h completeness no lower than the old path's, and the existing
-shadow-grade gate. Lands advisory (`continue-on-error`, CLAUDE.md §19) for two weeks of real lane-code changes, then blocks
-arm-check. Each new opening night's recording is added to the suite the morning after (`lane-recording-import.yml` already
-runs then). CI cost: offline, cached scores, a few minutes per run.
+[CHANGED v2: a separate `bench` rehearsal kind and record. The arming rehearsal, its night list and the arm record do not change
+until the owner approves D3. Source: all six reviewers (P0)]
 
-## Cost
+Widening the existing recorded rehearsal would disarm the live lane: it writes the record the arm gate reads, it skips the whole run
+(and writes nothing) when any night lacks an archived page, and `continue-on-error` does not change what the record says. So:
+
+- New kind `bench` with its own record file (`rehearsalRecordFile(repo, 'bench')`), outside `ARMING_REHEARSAL_KINDS`, in its own
+  workflow on the same lane-code paths. One night failing or missing marks that night, not the run.
+- Grades through the existing `gradeReplay` / `evaluateCheck` gates (`first-live`, `coverage-2h`) with the old-path numbers as the
+  reference, not a second pass/fail vocabulary.
+- The corpus is pinned: bench nights are exempt from the recording archive's 150 MiB oldest-first rotation.
+- Runtime is measured with all 20 nights before the job is scheduled; split by night if it nears the timeout.
+- At D3, nights are promoted into the arming set one at a time, each after a clean bench pass.
+
+## Cost (revised)
 
 | Item | Basis | Estimate |
 |---|---|---|
 | Pilot (done) | local files, 71 plain fetches, about 20 Wayback queries | **$0** |
-| Phase 0 and 1 | local files and git only | $0 |
-| Phase 2 scraping | measured: the Nov 5-6 shadow replays used 3,067 Bright Data calls (at the about $1.50 per 1,000 rate in `provider-spend-daily.jsonl`, about $4.60) plus 24k ScrapingDog and 1.2k ScrapingBee credits inside flat subscriptions (0.5% of ScrapingDog's monthly cap) over about 4 runs | about $1 to $2 per night, $20 to $40 for 20 |
-| Phase 2 AI scoring (3-model ensemble) | estimate, not measured: about 35 reviews per night, about 3 cents per review across the three models | about $1 per night, about $20 for 20 |
-| Phase 3 Wayback | about 50 CDX/snapshot requests per night, about 1,000 total, at 1 every 3 seconds with backoff (the archive returned "Temporarily Offline" once in the pilot) | $0, about 1 hour |
-| Phase 3 publish times | plain fetch for about half, about 15 paid fetches per night for the rest | under $5 total |
-| Phase 3 replays | offline, cached scores | $0 |
-| Phase 3c nightly recording | 3 hours of Broadway adapter fetches per opening | about $1 to $2 per opening |
+| Phase 0 and 1 | local files and git; a few Linear/GitHub reads | $0 |
+| Phase 2 scraping | measured: Nov 5-6 shadow replays, about 4 runs, used 3,067 Bright Data calls (about $4.60 at the about $1.50 per 1,000 rate in `provider-spend-daily.jsonl`) plus ScrapingDog/ScrapingBee credits inside flat subscriptions. Older nights may fall back to more fetches | $1 to $3 per night, $20 to $60 |
+| Phase 2 AI scoring | estimate, not measured: about 35 reviews per night at about 3 cents for three models; the first Balusters run measures it | about $1 per night, about $20 |
+| Phase 3 Wayback | about 50 requests per night, about 1,000 total, local, with backoff | $0, about 1 hour |
+| Phase 3 publish times | plain fetch for about half; about 15 paid fetches per night for the rest | under $5 |
+| Phase 3 rescoring | no cache exists, so rescore | about $1 per night, about $20 |
+| Phase 3c cadence change | extra page fetches in the first 3 hours of each new night | about $1 per opening |
 | Phase 4 | offline CI | $0 |
-| **Total one-off** | | **about $40 to $80** |
+| **Total one-off** | | **about $60 to $100** |
 
 ## Decisions for the owner
 
-- D0 (now): approve the plan. Phases 0 and 1 cost nothing and can start the same day.
-- D1 (after Phase 1): spend about $40 to $80 on Phase 2 redos, in batches of 5 with a stop at 1.5x estimate.
-- D2: record every Broadway opening night from now on (about $1 to $2 each).
-- D3 (after two advisory weeks): make the 20-night replay suite block arm-check.
+- D0 (now): approve the plan. Phase 0 (fixes a live timing problem too), Phase 1 and the 3c cadence change cost nothing or nearly
+  nothing and can start the same day. 3c moves up because every new night not recorded densely is lost for good.
+  [CHANGED v2. Source: structure]
+- D1 (after Phase 1): spend about $40 to $80 on Phase 2 redos, in batches with a stop at 1.5x estimate.
+- D2 (after the hand-built Balusters causal replay): continue Phase 3 on old nights only if its best/worst bracket is narrow.
+- D3 (after two weeks of the bench running advisory): promote bench nights into the arming rehearsal, one at a time.
 
-## Coverage check (acceptance command)
+## Review record (/plan-review, 2026-11-11)
 
-`node scripts/slow-market-grade.js --opened-from=2026-09-01 --opened-to=2026-11-08 --check-gaps` exits 1 on 2026-11-11 because
-of 27 flagged rows (10 FAIL, 12 BLIND, 5 NO-AUDIT). None of them are main-stem Broadway: the 6 Broadway openings in that window
-(wanted, a-few-good-men, the-imaginary-invalid, billy-crystal-860, other-desert-cities, school-girls) are PASS or STALE-after-PASS.
-The flagged rows are off-Broadway, West End, regional and tours, which the hourly gap audit owns.
+Coverage: Codex CLI (GPT, codebase access) usable; Gemini 2.5 Flash; four Claude reviewers (structure, pre-mortem, user impact,
+code design). Six of six ran.
+
+Verdict: v1 needed redrawing (P0 design findings on Phase 3b and Phase 4). v2 above resolves them.
+
+| Issue | Raised by | Severity | Resolution |
+|---|---|---|---|
+| Widening the arming rehearsal disarms the live lane; "advisory" via continue-on-error is impossible there | Codex, structure, pre-mortem, user impact, design | P0 | separate `bench` kind and record (Phase 4) |
+| Synthetic "page as of T" provider reinvents `replayFetchFrom` and drops real page shapes | design, Codex | P0 | Wayback captures become recordings (Phase 3) |
+| Observed embargo would reach neither grader; the wrong default also times the live lane | Codex, structure, design, user impact | P1 | Phase 0 fixes the shared helper path and the forward override |
+| Score cache assumed but absent | structure, Codex, pre-mortem | P1 | rescore in Phase 3, cost added |
+| Shared output file and parallel dispatch | Codex, structure, pre-mortem | P1 | per-night outputs, serial, local |
+| 3c should reuse the shadow recorder, and go first | design, structure, pre-mortem | P1 | 3c is a cadence change approved at D0 |
+| Sparse timelines and mixed clocks | structure, Codex, Gemini | P1 | labelled clocks, unknown cells |
+| Archive gaps read as page absence, embargo heuristic unvalidated | Codex, Gemini | P1 | unknown evidence and fallbacks with source labels |
+
+Restructure question (from the structure reviewer): build one causal night by hand before the importer. Adopted as 3a with a
+stop rule.
