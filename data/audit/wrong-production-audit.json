@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T11:35:49.562Z",
+  "timestamp": "2026-11-12T12:13:37.509Z",
   "stats": {
-    "totalReviews": 81620,
-    "alreadyFlagged": 22279,
+    "totalReviews": 81623,
+    "alreadyFlagged": 22280,
     "dateGuardCatches": 218,
     "directorMismatch": 3651,
     "tvFilmSignals": 2302,
-    "londonSignals": 3707,
+    "londonSignals": 3708,
     "offBroadwaySignals": 751,
     "yearMismatch": 372,
-    "noPublishDate": 8438
+    "noPublishDate": 8439
   },
   "findings": [
     {
@@ -95801,6 +95801,19 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "publishDate": "2026-11-12",
+      "url": "https://monstagigz.com/2026/11/12/theatre-review-cloud-9-starring-sam-troughton-tom-mothersdale-charlotte-ritchie-stuart-thompson-at-the-lyttelton-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "nytimes--houman-barekat.json",
       "score": 75,
       "publishDate": "2026-11-11",
@@ -95927,6 +95940,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "west-end-wilma--west-end-wilma.json",
+      "score": 77,
       "publishDate": "2026-11-12",
       "url": "https://westendwilma.com/cloud-9-national-theatre-review/?utm_source=rss&utm_medium=rss&utm_campaign=cloud-9-national-theatre-review",
       "findings": [
