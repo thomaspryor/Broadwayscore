@@ -14,6 +14,7 @@ const NETWORKS = Object.keys(C.VIDEO.channels);
 
 /** Owner 2026-11-12: Broadway shows, plus Off-Broadway shows of high importance (routing.js isHighProfile). */
 function videoWorthy(show, { reviewsByShow, shows }) {
+  // Intentionally NOT isBroadwayCategory: a show with no category must never auto-post a video (that helper treats null as Broadway)
   if (show.category === 'broadway') return true;
   if (show.category === 'off-broadway') return isHighProfile(show, (reviewsByShow || {})[show.id], shows);
   return false;
