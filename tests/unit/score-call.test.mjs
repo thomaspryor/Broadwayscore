@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const SC = require('../../src/lib/score-call.js');
 const P = require('../../scripts/lib/review-forecast-pilot.js');
-const { buildSyncRows } = require('../../scripts/lib/score-call-forecasts.js');
+const { buildSyncRows, nyToday } = require('../../scripts/lib/score-call-forecasts.js');
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 
 test('parseCall accepts only integers 0-100', () => {
@@ -130,4 +130,24 @@ test('auto-save only takes a number picked within 30 minutes; older ones wait fo
   assert.equal(SC.getPendingCall('a', s, t0 + 31 * 60000), 77, 'still pre-fills the slider');
   const src = fs.readFileSync(path.join(ROOT, 'src/components/show-page/CallTheScore.tsx'), 'utf8');
   assert.match(src, /getPendingCall\(show\.id, ls\(\), Date\.now\(\), AUTOSAVE_WINDOW_MS\)/);
+});
+
+test('nyToday uses the New York calendar day (BRO-7392)', () => {
+  assert.equal(nyToday(new Date('2026-11-12T03:00:00Z')), '2026-11-11'); // 10pm EST: UTC already tomorrow
+  assert.equal(nyToday(new Date('2026-11-12T05:30:00Z')), '2026-11-12'); // past midnight EST
+  assert.equal(nyToday(new Date('2026-07-12T03:30:00Z')), '2026-07-11'); // EDT
+  assert.equal(nyToday(new Date('2026-07-12T04:30:00Z')), '2026-07-12');
+});
+
+test('failed fetch is its own state, and the sync script clears reviews_live (BRO-7392)', () => {
+  const hook = fs.readFileSync(new URL('../../src/hooks/useScoreCall.ts', import.meta.url), 'utf8');
+  assert.match(hook, /const \{ data, error \} = await supabaseRestRpc<ScoreCall\[\]>\('get_my_score_calls'\)/);
+  assert.match(hook, /loadError: true/);
+  assert.match(hook, /retry/);
+  const sync = fs.readFileSync(new URL('../../scripts/sync-score-call-forecasts.mjs', import.meta.url), 'utf8');
+  assert.match(sync, /clear_score_call_reviews_live/);
+  assert.match(sync, /const today = nyToday\(\)/);
+  const mig = fs.readFileSync(new URL('../../supabase/migrations/20261112_score_call_clear_live.sql', import.meta.url), 'utf8');
+  assert.match(mig, /REVOKE ALL ON FUNCTION public\.clear_score_call_reviews_live\(TEXT\) FROM PUBLIC, anon, authenticated/);
+  assert.match(mig, /now\(\) >= cur\.closes_at/);
 });

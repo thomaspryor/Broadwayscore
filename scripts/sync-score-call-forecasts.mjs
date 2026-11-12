@@ -8,7 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { buildSyncRows, countReviewsByShow } = require('./lib/score-call-forecasts.js');
+const { buildSyncRows, countReviewsByShow, nyToday } = require('./lib/score-call-forecasts.js');
 const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=')[1];
 const DRY = process.argv.includes('--dry');
 const DIR = arg('dir');
@@ -27,7 +27,7 @@ if (fs.existsSync(LEDGER)) {
 }
 if (!rows.length) { console.error('ledger empty: nothing synced'); process.exit(0); }
 const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8')).shows;
-const today = new Date().toISOString().slice(0, 10);
+const today = nyToday();
 let reviewCounts;
 try { reviewCounts = countReviewsByShow(JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8'))); }
 catch (e) { console.error(`cannot count reviews (${e.message.slice(0, 80)}): nothing synced`); process.exit(1); }
@@ -40,6 +40,13 @@ const tally = {};
 for (const body of sync) {
   const res = await fetch(`${url}/rest/v1/rpc/sync_score_call_show`, { method: 'POST', signal: AbortSignal.timeout(30000), headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const out = res.ok ? await res.json() : `http_${res.status}`;
+  tally[out] = (tally[out] || 0) + 1;
+}
+// reviews_live is OR-only in sync_score_call_show; a show with no live reviews gets an explicit clear.
+for (const body of sync) {
+  if (body.p_reviews_live) continue;
+  const res = await fetch(`${url}/rest/v1/rpc/clear_score_call_reviews_live`, { method: 'POST', signal: AbortSignal.timeout(30000), headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_show_id: body.p_show_id }) });
+  const out = res.ok ? `clear_${await res.json()}` : `http_${res.status}`;
   tally[out] = (tally[out] || 0) + 1;
 }
 console.error(`synced: ${JSON.stringify(tally)}`);
