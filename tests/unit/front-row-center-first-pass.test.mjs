@@ -30,8 +30,13 @@ test('Tristan and Parcel headlines are filed from the feed item alone', () => {
   assert.deepEqual(ids(h.findMatchingShows('Parcel From America The Irish Musical', '/2026/11/parcel-from-america-the-irish-musical/', pool, '', { publishDate: '2026-11-04' })), [parcel.id]);
 });
 
-test('front-row-center is a reviewsOnly feed in the poller (its reviews carry no review word)', () => {
-  assert.equal(poller.OUTLET_STRATEGY_CONFIG['front-row-center'].reviewsOnly, true);
-  const it = item('Parcel From America The Irish Musical', 'parcel-from-america-the-irish-musical', '2026-11-04');
-  assert.deepEqual(ids(h.findPageConfirmCandidates({ ...it, headline: 'Parcel From America: Review Pending' }, pool, { reviewOnlyFeed: true })), [parcel.id]);
+test('front-row-center stays a plain feed: a non-review post that names a show is not a candidate', () => {
+  assert.notEqual(poller.OUTLET_STRATEGY_CONFIG['front-row-center'].reviewsOnly, true);
+  const news = item('Parcel From America Extends Through December', 'parcel-from-america-extends', '2026-11-04');
+  assert.deepEqual(ids(h.findPageConfirmCandidates({ ...news, headline: 'Irish musical news roundup' }, pool, {})), []);
+});
+
+test('generic two-word possessive remainders add no form', () => {
+  const bm = { id: 'bm', title: "Gore Vidal's The Best Man", creativeTeam: [{ name: 'Gore Vidal', role: 'Playwright' }] };
+  assert.equal(h.titleForms(bm).includes('best man'), false);
 });

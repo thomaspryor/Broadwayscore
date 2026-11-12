@@ -436,13 +436,13 @@ function computeTitleForms(show) {
     if (main && main !== full && main.replace(/\s+/g, '').length >= 3 && !COMMON_WORD_SHOW_TITLES.has(main)) forms.push(main);
   }
   // BRO-7402: "Clifford Odets’ Waiting for Lefty" is titled "Waiting For Lefty" by Front Row Center, so an
-  // author-possessive prefix is not part of the name outlets print. Two or more words remain, or no extra form.
+  // author-possessive prefix is not part of the name outlets print. Three or more words must remain ("best man", "white christmas" are too generic), or no extra form.
   const possessive = String((show && show.title) || '').match(AUTHOR_POSSESSIVE_RE);
   const owner = possessive ? hyphenSpaced(possessive[1]) : '';
   const onTeam = owner && ((show && show.creativeTeam) || []).some((p) => hyphenSpaced(p && p.name) === owner);
   if (onTeam) {
     const rest = hyphenSpaced(possessive[2].replace(/[_/]+/g, ' '));
-    if (rest && rest.split(/\s+/).length >= 2 && !forms.includes(rest) && !COMMON_WORD_SHOW_TITLES.has(rest)) forms.push(rest);
+    if (rest && rest.split(/\s+/).length >= 3 && !forms.includes(rest) && !COMMON_WORD_SHOW_TITLES.has(rest)) forms.push(rest);
   }
   return forms;
 }

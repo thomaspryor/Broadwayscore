@@ -158,8 +158,9 @@ const OUTLET_STRATEGY_CONFIG = {
   // Theater Life: covers shows + occasional ballet galas; findMatchingShows guards non-show content
   'theater-life':      { strategy: 'rss', url: 'https://theaterlife.com/feed' },
   // Front Row Center: covers theater + classical + cabaret; findMatchingShows guards non-theater content
-  // reviewsOnly (BRO-7402): 131/131 of its reviews carry no review word (BRO-6872), same as the lane's REVIEW_WITHOUT_WORD_HOSTS.
-  'front-row-center':  { strategy: 'rss', url: 'https://thefrontrowcenter.com/feed', reviewsOnly: true },
+  // NOT reviewsOnly (BRO-7402 ship-check): the feed also carries classical/cabaret news, and its show-titled reviews
+  // are caught by findMatchingShows or the bare-title candidate rule (titleForms, incl. the author-possessive form).
+  'front-row-center':  { strategy: 'rss', url: 'https://thefrontrowcenter.com/feed' },
   // NY Post theater-specific RSS; urlFilter keeps only slugs with "review" (drops news/awards coverage)
   nypost:              { strategy: 'rss', url: 'https://nypost.com/theater/feed/', urlFilter: /review/ },
   // Observer: observer.com/theater/feed/ stopped in June 2026 and the outlet's reviews now
