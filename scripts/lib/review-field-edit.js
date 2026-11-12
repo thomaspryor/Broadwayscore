@@ -149,10 +149,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
 // True when a record's syndication pointer names the record's own file
 // ("<folder>/<file>" or a bare "<file>"). ctx.folder and ctx.file come from
 // the on-disk path, so a plan cannot claim a pointer is stale.
+// BRO-7327: delegates to the canonical predicate the rebuild/explainExclusion use, so the plan
+// clear path and the inclusion path can never disagree on what a self-pointer is.
 function isSelfSyndicationPointer(record, ctx = {}) {
-  const ptr = record && record.syndicatedPrimaryFile;
-  if (typeof ptr !== 'string' || !ctx.folder || !ctx.file) return false;
-  return ptr === `${ctx.folder}/${ctx.file}` || ptr === ctx.file;
+  if (!ctx.folder || !ctx.file) return false;
+  return require('./syndication-pairs').isSelfSyndicationPointer(record, require('path').join(ctx.folder, ctx.file));
 }
 
 const compactLabel = (x) => String(x || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/gi, '').toLowerCase();

@@ -236,12 +236,14 @@ function isPrimaryFileFor(fileName, primaries, criticName) {
  * Otherwise (crossOutletDuplicate, isNonReview, invalid tier, ...) BOTH copies
  * would be dropped and the critic's review vanishes from reviews.json.
  */
-function isLiveSyndicationPrimary(d) {
+function isLiveSyndicationPrimary(d, filePath) {
   if (!d) return false;
+  // BRO-7327: with a path, a self-pointing isSyndicatedDuplicate flag does not count (canonical predicate).
+  const syndActive = filePath ? isSyndicatedDuplicateActive(d, filePath) : d.isSyndicatedDuplicate;
   // BRO-5245: a wrongShow file a person cleared in the rebuild gate ships, so it can be a primary.
   const { wrongShowExplicitlyCleared } = require('./review-guards');
   const wrongShowActive = d.wrongShow && !wrongShowExplicitlyCleared(d);
-  return !(d.wrongProduction || wrongShowActive || d.crossOutletDuplicate || d.isSyndicatedDuplicate
+  return !(d.wrongProduction || wrongShowActive || d.crossOutletDuplicate || syndActive
     || d.isNonReview || d.nonReviewFlag || d.nonReviewContent || d.duplicateOf
     || d.contentTier === 'invalid');
 }
@@ -269,7 +271,7 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
       if (p.criticName && criticFileSlug(p.criticName) !== criticFileSlug(criticName)) return false;
       // BRO-7327: a stub primary does not shield the complete secondary it only teases.
       if (hasFullerSecondary(showDir, f, p)) return false;
-      return isLiveSyndicationPrimary(p) && (!extraCheck || !!extraCheck(p, pPath));
+      return isLiveSyndicationPrimary(p, pPath) && (!extraCheck || !!extraCheck(p, pPath));
     } catch { return false; }
   });
 }
@@ -359,7 +361,7 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
   try {
     const sec = JSON.parse(fs.readFileSync(secPath, 'utf8'));
     if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return false;
-    if (!(sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec))) return false;
+    if (!(sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec, secPath))) return false;
     const guards = require('./review-guards');
     if (!guards.hasValidScore(sec)) return false; // a publishable score, not just any number
     return guards.explainExclusion(sec, _showFor(sec.showId), secPath, { ignoreKnownSyndication: true }) === null;

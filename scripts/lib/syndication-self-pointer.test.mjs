@@ -63,7 +63,8 @@ test('every exclusion site reads the flag through the canonical predicate (no ra
   const sites = ['review-guards.js', 'llm-scoring-parity.js', '../rebuild-all-reviews.js', '../scoring-delta.js', '../admin/compute-composite.js'];
   for (const rel of sites) {
     const src = fs.readFileSync(path.join(here, rel), 'utf8');
-    const raw = src.split('\n').filter((l) => /\bif \((data|review)\.isSyndicatedDuplicate === true\)/.test(l));
+    // any direct read of the flag inside an `if (` / `return` exclusion line, chained or not
+    const raw = src.split('\n').filter((l) => /\b(data|review)\.isSyndicatedDuplicate\b/.test(l) && /\bif \(|\breturn\b/.test(l) && !/^\s*\/\//.test(l));
     assert.deepEqual(raw, [], `${rel} gates on the raw isSyndicatedDuplicate flag; use isSyndicatedDuplicateActive(data, filePath)`);
   }
 });
