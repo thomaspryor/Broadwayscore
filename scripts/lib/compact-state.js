@@ -240,6 +240,70 @@ function writeCheckpoint(input) {
   return p;
 }
 
+/**
+ * Thrash guard (BRO-7397). After a compact a session restarts near 185K tokens
+ * (system prefix + summary + re-attached files and skills) against a 240K compact
+ * threshold, so one skill load or one long log refills it and the harness kills
+ * the turn after three compacts in a row. Nothing told the BRO-7350 worker
+ * (2026-11-12: 12 compacts in 18h, six in five minutes during close-out, then 72
+ * minutes dead). The PreCompact hook now counts compactions per session; the
+ * restore after the compact says so while the session still has room to act.
+ */
+const THRASH_WINDOW_MS = 15 * 60 * 1000; // compactions inside this window count as "recent"
+const THRASH_RECENT = 2;                 // the 2nd compact inside the window already warns
+const THRASH_LIFETIME = 8;               // a session this old is a poor vehicle for heavy work
+const COMPACT_LOG_KEEP = 40;
+
+function compactLogPath(sessionId, transcriptPath) {
+  return statePath(sessionId, transcriptPath).replace(/\.md$/, '.compactions.json');
+}
+
+/** Exact log first; else the newest main-transcript log for this session (restore input may omit transcript_path). */
+function findCompactLog(sessionId, transcriptPath) {
+  const exact = compactLogPath(sessionId, transcriptPath);
+  if (fs.existsSync(exact)) return exact;
+  const sid = safeKey(sessionId || 'unknown');
+  let best = null;
+  try {
+    for (const f of fs.readdirSync(STATE_DIR)) {
+      if (!f.endsWith('.compactions.json') || f.includes('__agent-')) continue;
+      if (f !== `${sid}.compactions.json` && !f.startsWith(`${sid}__`)) continue;
+      const m = fs.statSync(path.join(STATE_DIR, f)).mtimeMs;
+      if (!best || m > best.m) best = { f, m };
+    }
+  } catch { return exact; }
+  return best ? path.join(STATE_DIR, best.f) : exact;
+}
+
+function readCompactLog(p) {
+  try {
+    const arr = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return Array.isArray(arr) ? arr.filter(Number.isFinite) : [];
+  } catch { return []; }
+}
+
+/** Append this compaction's timestamp (ms) and return the full list. Never throws on bad input. */
+function recordCompaction(input, now = Date.now()) {
+  fs.mkdirSync(STATE_DIR, { recursive: true });
+  const p = compactLogPath(input.session_id, input.transcript_path);
+  const times = readCompactLog(p).concat(now).slice(-COMPACT_LOG_KEEP);
+  const tmp = `${p}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(times));
+  fs.renameSync(tmp, p);
+  return times;
+}
+
+/** '' while healthy; the guard text once compactions bunch up or pile up. */
+function getThrashWarning(times, now = Date.now()) {
+  const list = Array.isArray(times) ? times : [];
+  const recent = list.filter(t => now - t <= THRASH_WINDOW_MS).length;
+  if (recent < THRASH_RECENT && list.length < THRASH_LIFETIME) return '';
+  const why = recent >= THRASH_RECENT
+    ? `${recent} compactions in the last ${Math.round(THRASH_WINDOW_MS / 60000)} minutes`
+    : `${list.length} compactions in this session`;
+  return `COMPACTION THRASH GUARD (BRO-7397): ${why}. After a compact you restart near 185K of a 240K limit, so one skill load or long log refills it, and the harness stops the turn after three in a row (an owner session died this way on 2026-11-12 and sat dead for 72 minutes). Until the work is pushed: (1) no Read of files over 200 lines, no cat of diffs or logs, pipe output to a file and print tail -15, and do not re-invoke a Skill you already ran; (2) commit and push what exists now (land/ or visual-hold/ ref); (3) write the remaining steps as a handoff comment on the Linear card; (4) if more than about three steps remain, hand them off: a worker (started by create_session) sends the state to @parent, the owner's own session starts a fresh worker with create_session, then end with KEEP OPEN. Do not run the close-out chain (/ship-check, /what-else, /wrap-up) in this context; the fresh session runs it.`;
+}
+
 /** Checkpoints nobody restored (a subagent's, an abandoned session's) are removed once stale. */
 function pruneStale(now = Date.now()) {
   let names = [];
@@ -272,28 +336,34 @@ function getStaleEnvWarning(settingsEnv = {}, liveEnv) {
  * or a different task. Files older than MAX_AGE_MS are ignored for the same reason.
  */
 function restoreCheckpoint(input) {
-  const p = findStateFile(input.session_id, input.transcript_path);
-  if (!p) return null;
+  // The thrash guard must reach the model even when no checkpoint file survived.
+  let guard = '';
+  try { guard = getThrashWarning(readCompactLog(findCompactLog(input.session_id, input.transcript_path))); } catch { /* guard is advisory */ }
   let md = null;
-  try {
-    const ageMs = Date.now() - fs.statSync(p).mtimeMs;
-    if (ageMs <= MAX_AGE_MS) md = fs.readFileSync(p, 'utf8');
-  } finally {
-    try { fs.unlinkSync(p); } catch { /* already gone */ }
+  const p = findStateFile(input.session_id, input.transcript_path);
+  if (p) {
+    try {
+      const ageMs = Date.now() - fs.statSync(p).mtimeMs;
+      if (ageMs <= MAX_AGE_MS) md = fs.readFileSync(p, 'utf8');
+    } finally {
+      try { fs.unlinkSync(p); } catch { /* already gone */ }
+    }
   }
-  if (!md) return null;
-  // Read at restore time: a session's env stays frozen when repo settings change.
-  // Settings failures must never discard an otherwise usable checkpoint.
-  try {
-    const root = process.env.CLAUDE_PROJECT_DIR || path.resolve(__dirname, '../..');
-    const settings = JSON.parse(fs.readFileSync(path.join(root, '.claude/settings.json'), 'utf8'));
-    const warning = getStaleEnvWarning(settings && settings.env, process.env);
-    if (warning) md = `${md.slice(0, MAX_CHARS - warning.length - 2)}\n\n${warning}`;
-  } catch { /* unreadable settings: restore the checkpoint unchanged */ }
+  if (!md && !guard) return null;
+  if (md) {
+    // Read at restore time: a session's env stays frozen when repo settings change.
+    // Settings failures must never discard an otherwise usable checkpoint.
+    try {
+      const root = process.env.CLAUDE_PROJECT_DIR || path.resolve(__dirname, '../..');
+      const settings = JSON.parse(fs.readFileSync(path.join(root, '.claude/settings.json'), 'utf8'));
+      const warning = getStaleEnvWarning(settings && settings.env, process.env);
+      if (warning) md = `${md.slice(0, MAX_CHARS - warning.length - 2)}\n\n${warning}`;
+    } catch { /* unreadable settings: restore the checkpoint unchanged */ }
+  }
   return {
     hookSpecificOutput: {
       hookEventName: 'SessionStart',
-      additionalContext: md,
+      additionalContext: [guard, md].filter(Boolean).join('\n\n'),
     },
   };
 }
@@ -311,7 +381,11 @@ function main(argv) {
     : event === 'PreCompact' ? 'write'
     : event === 'SessionStart' && input.source === 'compact' ? 'restore'
     : 'noop';
-  if (want === 'write') { writeCheckpoint(input); return 0; }
+  if (want === 'write') {
+    try { recordCompaction(input); } catch (err) { logError(err); } // counted even if the checkpoint below fails
+    writeCheckpoint(input);
+    return 0;
+  }
   if (want === 'restore') {
     const out = restoreCheckpoint(input);
     if (out) process.stdout.write(JSON.stringify(out) + '\n');
@@ -320,7 +394,7 @@ function main(argv) {
   return 0;
 }
 
-module.exports = { parseTranscript, renderState, statePath, findStateFile, writeCheckpoint, restoreCheckpoint, getStaleEnvWarning, pruneStale, STATE_DIR, MAX_CHARS, MAX_AGE_MS };
+module.exports = { parseTranscript, renderState, statePath, findStateFile, writeCheckpoint, restoreCheckpoint, getStaleEnvWarning, pruneStale, recordCompaction, getThrashWarning, compactLogPath, findCompactLog, THRASH_WINDOW_MS, THRASH_RECENT, THRASH_LIFETIME, STATE_DIR, MAX_CHARS, MAX_AGE_MS };
 
 if (require.main === module) {
   let code = 0;
