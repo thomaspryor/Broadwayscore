@@ -227,5 +227,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-12T03:06:33.379Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7397-thrash-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7397-thrash-guard",
+    "description": "land.yml did not land land/bro-7397-thrash-guard: the unit-tests-node gate went red at 6afd16c76a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43150786985",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7397-thrash-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6afd16c76ab1ed765cc0db91f1b47eaa5b6e7004"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43150786985"
+      }
+    ],
+    "queuedAt": "2026-11-12T03:55:38.191Z"
   }
 ]
