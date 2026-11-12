@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T19:05:09.070Z",
+  "generatedAt": "2026-11-12T19:19:52.264Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2108,9 +2108,9 @@
       "status": "open",
       "slug": "cloud-9-west-end",
       "thumbnail": "/images/shows/cloud-9-west-end-2026/thumbnail.webp",
-      "siteScore": 77.47,
-      "liveScore": 77,
-      "scoreDrift": -0.46999999999999886,
+      "siteScore": 77.64,
+      "liveScore": 78,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2124,7 +2124,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 20,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2453,6 +2453,18 @@
           "t": "2026-11-12T19:05:09.070Z",
           "rc": 22,
           "s": 77.47,
+          "t1": 8,
+          "t2": 5,
+          "t3": 9,
+          "p": 19,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-12T19:19:52.264Z",
+          "rc": 22,
+          "s": 77.64,
           "t1": 8,
           "t2": 5,
           "t3": 9,
@@ -2878,17 +2890,17 @@
       "status": "open",
       "slug": "dogstar-off-west-end",
       "thumbnail": "/images/shows/dogstar-off-west-end-2026/thumbnail.webp",
-      "siteScore": 63.37,
-      "liveScore": 63,
-      "scoreDrift": -0.36999999999999744,
+      "siteScore": 64.05,
+      "liveScore": 64,
+      "scoreDrift": -0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
+      "total": 19,
       "t1": 2,
       "t2": 6,
-      "t3": 10,
-      "positive": 12,
+      "t3": 11,
+      "positive": 13,
       "mixed": 4,
       "negative": 2,
       "readiness": {
@@ -2896,7 +2908,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3233,6 +3245,18 @@
           "t2": 6,
           "t3": 10,
           "p": 12,
+          "m": 4,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-12T19:19:52.264Z",
+          "rc": 19,
+          "s": 64.05,
+          "t1": 2,
+          "t2": 6,
+          "t3": 11,
+          "p": 13,
           "m": 4,
           "n": 2,
           "bc": "waiting"
