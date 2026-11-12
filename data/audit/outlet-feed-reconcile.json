@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T17:10:55.855Z",
+  "generatedAt": "2026-11-12T18:12:32.179Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -79,6 +79,11 @@
       "openingDate": "2026-11-06"
     },
     {
+      "id": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+      "title": "Traitorz: The Unauthorized Musical Parody",
+      "openingDate": "2026-11-13"
+    },
+    {
       "id": "the-charioteer-off-broadway-2026",
       "title": "The Charioteer",
       "openingDate": "2026-11-08"
@@ -108,10 +113,6 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -132,7 +133,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 849,
+  "itemsScanned": 854,
   "matchedGaps": 16,
   "possibleGaps": 2,
   "gaps": [
@@ -221,19 +222,19 @@
       "showId": "dogstar-off-west-end-2026",
       "title": "Dogstar",
       "level": "matched",
-      "outletId": "liamodell",
-      "url": "https://liamodell.com/2026/11/12/dogstar-review-hampstead-theatre-daisy-hall-justin-edwards-abdul-jalloh-adam-rojko-vega/",
-      "headline": "&#8216;Dogstar&#8217; review &#8211; Scurvy and scuffles in slog of a sophomore play",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
       "outletId": "north-west-end",
       "url": "https://northwestend.com/dogstar-hampstead-theatre/",
       "headline": "Dogstar- Hampstead Theatre",
       "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+      "headline": "We’ll See ****, Ms. Blakk for President ****",
+      "publishDate": "2026-11-11"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",

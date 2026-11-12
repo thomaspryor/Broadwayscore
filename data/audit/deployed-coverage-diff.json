@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-12T17:10:55.478Z",
+  "generatedAt": "2026-11-12T18:12:31.769Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 323,
+  "checked": 324,
   "clean": 323,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.31 vs local 84.99 (Δ1.68)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-11-12T18:12:24.179Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
