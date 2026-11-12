@@ -11,14 +11,30 @@ const { findCandidateGaps } = require('./venue-complex-audit');
 // Slugs that match a complex by keyword but are a DIFFERENT venue. Add here, never unlink by hand.
 const NOT_SUB_VENUES = new Set([]);
 
+// Keyword overlap alone is a heuristic (BRO-155 Loft Story, BRO-3425 black box, BRO-447,
+// BRO-7068 Skywalk were all false positives). Auto-link only when the venue string itself
+// names the complex ("The Lion Theatre at Theatre Row" -> Theatre Row); the rest stay red for a human.
+const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+function namesComplex(def, complexSlug, cand) {
+  const name = norm(def.name).replace(/^the /, '');
+  if (!name) return false;
+  return (cand.rawStrings || []).some((r) => ` ${norm(r)} `.includes(` ${name} `));
+}
+
 function healCandidateGaps(shows, complexDefs, categoryFilter, marketKey) {
   const gaps = findCandidateGaps(shows, complexDefs, categoryFilter, marketKey);
   const defs = JSON.parse(JSON.stringify(complexDefs));
   const added = {};
+  // a slug matched by several complexes is ambiguous: never auto-link it
+  const owners = {};
+  for (const [c, list] of Object.entries(gaps)) for (const cand of list) (owners[cand.slug] ||= new Set()).add(c);
   for (const [complexSlug, candidates] of Object.entries(gaps)) {
     if (!Array.isArray(defs[complexSlug].subVenueSlugs)) continue;
-    for (const { slug } of candidates) {
+    for (const cand of candidates) {
+      const { slug } = cand;
       if (NOT_SUB_VENUES.has(slug)) continue;
+      if (owners[slug].size > 1) continue;
+      if (!namesComplex(defs[complexSlug], complexSlug, cand)) continue;
       if (defs[complexSlug].subVenueSlugs.includes(slug)) continue;
       defs[complexSlug].subVenueSlugs.push(slug);
       (added[complexSlug] ||= []).push(slug);
