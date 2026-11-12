@@ -108,13 +108,13 @@ COMPS.reveal = {
     const d = this.d, sc = d.score;
     this.g1.style.opacity = 1 - seg(t, 7.6, 8.1);
     this.g1.style.display = t > 8.2 ? 'none' : 'block';
-    const a = eob(seg(t, 0.1, 0.9)); this.art.style.opacity = seg(t, 0.1, 0.6); this.art.style.transform = `scale(${lerp(0.85, 1, a)})`;
+    const a = eob(seg(t, 0, 0.5)); this.art.style.opacity = seg(t, 0, 0.3); this.art.style.transform = `scale(${lerp(0.85, 1, a)})`;
     fade(this.cap1, seg(t, 0.9, 1.5), (1 - seg(t, 0.9, 1.5)) * 8);
     const bt = seg(t, 1.9, 4.5), v = sc * eo(bt);
-    this.bw.style.opacity = seg(t, 1.5, 1.9);
+    this.bw.style.opacity = seg(t, 0, 0.3);
     setBadge(this.bw, bt === 0 ? 0 : v);
     const pop = t > 4.5 ? 1 + 0.22 * Math.sin(Math.PI * seg(t, 4.5, 5.0)) : 1; this.bw.style.transform = `scale(${1.3 * pop})`;
-    const r = Math.round(sc); this.tl.innerHTML = `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`; fade(this.tl, seg(t, 4.6, 5.1), (1 - seg(t, 4.6, 5.1)) * 8);
+    const r = Math.round(sc); this.tl.innerHTML = `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`; fade(this.tl, seg(t, 0.0, 0.2), 0); // hook: the verdict is on screen from the first frame, with the title
     const k = Math.round(d.scores.length * eo(seg(t, 5.3, 6.9)));
     this.bc.innerHTML = barHtml(d.scores.slice(0, k), d.scores.length); fade(this.bc, seg(t, 5.2, 5.7), (1 - seg(t, 5.2, 5.7)) * 10);
     // quotes
