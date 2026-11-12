@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-12T12:13:37.509Z",
+  "timestamp": "2026-11-12T12:28:54.145Z",
   "stats": {
-    "totalReviews": 81623,
+    "totalReviews": 81618,
     "alreadyFlagged": 22280,
     "dateGuardCatches": 218,
     "directorMismatch": 3651,
     "tvFilmSignals": 2302,
-    "londonSignals": 3708,
+    "londonSignals": 3707,
     "offBroadwaySignals": 751,
     "yearMismatch": 372,
     "noPublishDate": 8439
@@ -6709,9 +6709,8 @@
     {
       "showId": "art-west-end-2016",
       "file": "standard--fiona-mountford.json",
-      "score": 76,
       "publishDate": "2016-12-21",
-      "url": null,
+      "url": "https://www.standard.co.uk/goingout/theatre/art-theatre-review-surface-gloss-rather-than-real-profundity-a3425276.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -103448,20 +103447,6 @@
       "score": 68,
       "publishDate": "2017-04-18",
       "url": "https://www.huffpost.com/entry/58f560e8e4b048372700daec",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "groundhog-day-2017",
-      "file": "latimes--charles-mcnulty.json",
-      "score": 71,
-      "publishDate": "2017-04-17",
-      "url": "https://www.latimes.com/entertainment/arts/la-et-cm-groundhog-day-review-20170417-story.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
