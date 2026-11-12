@@ -93,4 +93,9 @@ function clearPendingCall(showId, store, now = Date.now()) {
   writePending(store, o);
 }
 
-module.exports = { isCallableShow, parseCall, resultStrip, gapSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };
+/** Calls known after a load: locked calls never change, so ones this session already holds win over a read that may predate them. */
+function mergeCalls(fetched, held) {
+  return { ...(fetched && typeof fetched === 'object' ? fetched : {}), ...(held && typeof held === 'object' ? held : {}) };
+}
+
+module.exports = { mergeCalls, isCallableShow, parseCall, resultStrip, gapSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };

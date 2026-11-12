@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useSyncExternalStore } from 'react';
 import { supabaseRestRpc } from '@/lib/supabase-rest';
+import { mergeCalls } from '@/lib/score-call';
 import { useAuth } from '@/contexts/AuthContext';
 
 /** A locked call plus the forecast snapshot taken when it locked (null when no forecast existed). */
@@ -31,13 +32,15 @@ async function load(userId: string) {
     const { data, error } = await supabaseRestRpc<ScoreCall[]>('get_my_score_calls');
     if (store.inflight !== ref.p) return;
     // A failed fetch is not "no calls": it must not let a reader re-pick a show they already called.
-    if (error) { store = { userId, calls: {}, loaded: true, loadError: true, inflight: null }; emit(); return; }
+    // Calls locked this session stay: a late or failed read must not wipe them.
+    const held = store.userId === userId ? store.calls : {};
+    if (error) { store = { userId, calls: held, loaded: true, loadError: true, inflight: null }; emit(); return; }
     const calls: Record<string, ScoreCall> = {};
     for (const c of data || []) calls[c.show_id] = c;
-    store = { userId, calls, loaded: true, loadError: false, inflight: null };
+    store = { userId, calls: mergeCalls(calls, held) as Record<string, ScoreCall>, loaded: true, loadError: false, inflight: null };
     emit();
   })());
-  store = { userId, calls: {}, loaded: false, loadError: false, inflight: p };
+  store = { userId, calls: store.userId === userId ? store.calls : {}, loaded: false, loadError: false, inflight: p };
   return p;
 }
 
@@ -55,9 +58,11 @@ export function useScoreCall(showId: string) {
 
   const lock = useCallback(async (score: number): Promise<LockResult> => {
     const { data, error } = await supabaseRestRpc<ScoreCall[]>('lock_score_call', { p_show_id: showId, p_score: score });
+    // Signed out (or another user in) while pending: the server saved it, but nothing about it may enter the in-memory store.
+    const stale = !!userId && store.userId !== userId;
     if (error) {
       const m = error.message || '';
-      if (m.includes('already_called')) { store = { ...store, loaded: false, loadError: false, inflight: null }; if (userId) await load(userId); return { ok: false, reason: 'already_called' }; }
+      if (m.includes('already_called')) { if (stale) return { ok: false, reason: 'already_called' }; store = { ...store, loaded: false, loadError: false, inflight: null }; if (userId) await load(userId); return { ok: false, reason: 'already_called' }; }
       if (m.includes('calls_closed')) return { ok: false, reason: 'calls_closed' };
       if (m.includes('not_open')) return { ok: false, reason: 'not_open' };
       return { ok: false, reason: 'error' };
@@ -65,6 +70,7 @@ export function useScoreCall(showId: string) {
     const row = Array.isArray(data) ? data[0] : null;
     if (!row) return { ok: false, reason: 'error' };
     const call: ScoreCall = { show_id: showId, called_score: row.called_score as unknown as number, forecast: (row as unknown as { forecast: number | null }).forecast, lo80: (row as unknown as { lo80: number | null }).lo80, hi80: (row as unknown as { hi80: number | null }).hi80, locked_at: (row as unknown as { locked_at: string }).locked_at };
+    if (stale) return { ok: true, call };
     store = { ...store, userId, calls: { ...store.calls, [showId]: call }, loaded: true, loadError: false };
     emit();
     return { ok: true, call };

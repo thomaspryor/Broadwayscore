@@ -166,3 +166,20 @@ test('a successful lock resets loadError in the hook store', () => {
   const src = fs.readFileSync(path.join(ROOT, 'src/hooks/useScoreCall.ts'), 'utf8');
   assert.match(src, /\[showId\]: call \}, loaded: true, loadError: false/);
 });
+
+test('mergeCalls: calls held this session win over a read that may predate them', () => {
+  const fetched = { a: { called_score: 50 } };
+  const held = { b: { called_score: 70 }, a: { called_score: 55 } };
+  assert.deepEqual(SC.mergeCalls(fetched, held), { a: { called_score: 55 }, b: { called_score: 70 } });
+  assert.deepEqual(SC.mergeCalls(fetched, {}), fetched);
+  assert.deepEqual(SC.mergeCalls(null, held), held);
+  assert.deepEqual(SC.mergeCalls(undefined, undefined), {});
+});
+
+test('hook: load keeps held calls on success and on failure, and lock ignores a stale user', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'src/hooks/useScoreCall.ts'), 'utf8');
+  assert.match(src, /mergeCalls\(calls, held\)/);
+  assert.match(src, /calls: held, loaded: true, loadError: true/);
+  assert.match(src, /const stale = !!userId && store\.userId !== userId;/);
+  assert.match(src, /if \(stale\) return \{ ok: true, call \};/);
+});
