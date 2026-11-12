@@ -1,46 +1,46 @@
 {
-  "generatedAt": "2026-11-11T10:08:38.288Z",
-  "bannerText": "132/144 Done(14d) verified on main · 2 FAILED · 0 vacuous · 14 stuck-but-done · 1 mis-armed, needs re-arming (BRO-7351)",
+  "generatedAt": "2026-11-12T00:08:58.531Z",
+  "bannerText": "134/146 Done(14d) verified on main · 1 FAILED · 0 vacuous · 15 stuck-but-done · 2 mis-armed, needs re-arming (BRO-7387, BRO-7351)",
   "items": [
     {
-      "title": "FAILED BRO-6986 — Auto-fix (second try): Opening Night Poller Failed",
-      "detail": "(gh not authenticated; read runs from the public GitHub API) opening-night-poller.yml: MISMATCH — most recent run concluded 'cancelled', expected 'success' (https://github.com/tho…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6986/auto-fix-second-try-opening-night-poller-failed"
+      "title": "FAILED BRO-7237 — Yahoo reprints of TheWrap reviews are double-counted (Wanted: Robert Hofler twice) and Yahoo has no lane source",
+      "detail": "not ok: last 10 Broadway openings (when data/reviews.json is presen… | first failure: on-time outlets with no lane source:",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7237/yahoo-reprints-of-thewrap-reviews-are-double-counted-wanted-robert"
     },
     {
-      "title": "FAILED BRO-7270 — main Data Validation red: shouted title for little-bear-ridge-road-regional-2027",
-      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7270/main-data-validation-red-shouted-title-for-little-bear-ridge-road"
-    },
-    {
-      "title": "STUCK BRO-7089 — Codex runner: put the disk breakdown in the Linear summary and stand down cleanly on a full disk before git fetch",
+      "title": "STUCK BRO-7274 — Ingest 34 verified-live DC/LA hub reviews missing from corpus (BRO-7256 coverage gaps)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7089/codex-runner-put-the-disk-breakdown-in-the-linear-summary-and-stand"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7274/ingest-34-verified-live-dcla-hub-reviews-missing-from-corpus-bro-7256"
     },
     {
-      "title": "STUCK BRO-7041 — P1: The Unbelievers Time Out review rejected as wrong critic (BWW row credits Adam Feldman, page is by Billy McEntee)",
+      "title": "STUCK BRO-7268 — main test.yml red: E2E Tests / Run E2E tests — \"tests/e2e/visual-regression.spec.ts › Visual Regression › show hero layout\"",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7041/p1-the-unbelievers-time-out-review-rejected-as-wrong-critic-bww-row"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7268/main-testyml-red-e2e-tests-run-e2e-tests-testse2evisual"
     },
     {
-      "title": "STUCK BRO-7031 — P1: Opening night miss: 2:22 - A Ghost Story (2026-11-05)",
+      "title": "STUCK BRO-7216 — BSC Daily: Data quality: stale announced shows",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7031/p1-opening-night-miss-222-a-ghost-story-2026-11-05"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7216/bsc-daily-data-quality-stale-announced-shows"
     },
     {
-      "title": "STUCK BRO-6762 — Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
+      "title": "STUCK BRO-7213 — Aggregator yield: NYC Theatre and Playbill Verdict job timeouts, LBO West End drop, theatre.reviews dip, Stage backfill",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6762/fix-gaps-at-the-source-reviews-regular-gathering-still-misses-and-only"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7213/aggregator-yield-nyc-theatre-and-playbill-verdict-job-timeouts-lbo"
     },
     {
-      "title": "STUCK BRO-6625 — Main test.yml Data Validation red on Oct 30: girls-off-west-end-2026 the-recs auto-clear violation and Little Shop Guardian class-A cross-market leak",
+      "title": "STUCK BRO-7182 — Route the 5 remaining advisory --strict audits to worker cards (BRO-7181 cousins)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6625/main-testyml-data-validation-red-on-oct-30-girls-off-west-end-2026-the"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7182/route-the-5-remaining-advisory-strict-audits-to-worker-cards-bro-7181"
     },
     {
-      "title": "STUCK BRO-7299 — main test.yml red: Data Safety Guards / Checkout review-texts (private repo)",
+      "title": "STUCK BRO-7171 — Zero-gap review-text recovery: nightly engine (revised plan, ramped)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7299/main-testyml-red-data-safety-guards-checkout-review-texts-private-repo"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7171/zero-gap-review-text-recovery-nightly-engine-revised-plan-ramped"
+    },
+    {
+      "title": "STUCK BRO-7144 — validate-data.js: make the duplicate-show check sub-quadratic (58 s of every 77 s run)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7144/validate-datajs-make-the-duplicate-show-check-sub-quadratic-58-s-of"
     }
   ],
   "moreCount": 8
