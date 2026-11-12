@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-12T04:47:04.042Z",
+  "timestamp": "2026-11-12T05:50:36.961Z",
   "stats": {
-    "totalReviews": 81614,
-    "alreadyFlagged": 22276,
+    "totalReviews": 81613,
+    "alreadyFlagged": 22277,
     "dateGuardCatches": 218,
     "directorMismatch": 3651,
     "tvFilmSignals": 2302,
-    "londonSignals": 3702,
+    "londonSignals": 3703,
     "offBroadwaySignals": 751,
     "yearMismatch": 372,
-    "noPublishDate": 8445
+    "noPublishDate": 8442
   },
   "findings": [
     {
@@ -6825,19 +6825,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2022 (3x) more than 2025 (2x). 2022 matches production: as-you-like-it-west-end-2022"
-        }
-      ]
-    },
-    {
-      "showId": "as-you-like-it-regional-2026",
-      "file": "theatreandtonic--emmie-newitt.json",
-      "publishDate": "2026-10-19",
-      "url": "https://theatreandtonic.co.uk/blog/as-you-like-it-starring-jonathan-groff-at-the-rsc-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel evans\" from all-male-as-you-like-it-regional-2026"
         }
       ]
     },
@@ -66909,6 +66896,20 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2025-05-14",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-comedy-about-spies-review-inventive-humour-we-need-cd2nx6qlc",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
       "score": 61,
       "publishDate": "2025-05-14",
@@ -126300,6 +126301,20 @@
       "score": 74,
       "publishDate": "October 20, 2024",
       "url": "https://www.amny.com/entertainment/broadway/sunset-boulevard-revival-nicole-scherzinger-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "file": "artsfuse--chris-caggiano.json",
+      "score": null,
+      "publishDate": "2024-11-09",
+      "url": "https://artsfuse.org/300731/theater-review-the-broadway-revival-of-sunset-boulevard-assaults-the-senses/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
