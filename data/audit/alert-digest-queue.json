@@ -362,5 +362,20 @@
       }
     ],
     "queuedAt": "2026-11-12T07:41:26.544Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
+    "title": "Live-data test failing: BRO-93 acceptance: current shows.json produces zero stale announced flags (scripts/audit-stale-announced-shows.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-93 acceptance: current shows.json produces zero stale announced flags\" in scripts/audit-stale-announced-shows.test.mjs is red against the live corpus.\n\nexpected zero stale announced shows, got: [\n{\n\"id\": \"the-humans-west-end-2027\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n}\n]\n+ actual - expected\n\n+ [\n+   {\n+     id: 'the-humans-west-end-2027',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   }\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
+    "fields": [],
+    "queuedAt": "2026-11-12T08:06:56.361Z"
   }
 ]
