@@ -896,6 +896,7 @@ def _live_work():
                 m = idfield_re.search(res) or sid_re.search(res)
                 if m and ok:
                     child[m.group(1)] = {'idx': i, 'done': -1, 'archived': False,
+                        'createdAt': _parse_ts(result_ts_by_id.get(tid, '')),
                         'label': (inp.get('title') or re.sub(r'\s+', ' ', inp.get('prompt') or ''))[:60]}
             elif name in (R + 'get_session', R + 'archive_session'):
                 sid = str(inp.get('session_id') or '')
@@ -918,7 +919,7 @@ def _live_work():
             for mh in re.finditer(r'<agent-message\s+from="([^"]+)"', payload or ''):
                 task_done[mh.group(1)] = i
 
-    out = {'triggers': [], 'agents': [], 'children': [], 'waits': [], 'pr_watch': pr_watch}
+    out = {'triggers': [], 'agents': [], 'children': [], 'childCreatedAt': {}, 'waits': [], 'pr_watch': pr_watch}
     for k, t in trig.items():
         if t['done'] >= t['idx']:
             continue
@@ -932,6 +933,8 @@ def _live_work():
     for k, v in child.items():
         if v['done'] < v['idx']:
             out['children'].append('session %s "%s"' % (k, v['label']))
+            if v['createdAt'] is not None:
+                out['childCreatedAt'][k] = v['createdAt'] * 1000
     for k, (idx, lab) in waits.items():
         if task_done.get(k, -1) < idx:
             out['waits'].append(lab)
@@ -1505,17 +1508,11 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
         pass  # fail-open — never let this gate crash the rest of the script
 
 # ─── Child-wait gates (CHILDWAIT BRO-6264, CHILDJOBS + CHILDWATCH BRO-6717) ─
-# CHILDWAIT: a child worker (prompt has a `BUDGET: Nh` line) ending KEEP OPEN
-# on CI it started is never woken (BRO-6154 sat ~1 day); WAKELESS passed it on
-# an older background Bash. CHILDJOBS: a child ending KEEP OPEN on jobs it runs
-# (BRO-6518: "jobs still running ... I'll check back", container-local loop
-# died, idle 17h then 19h) needs a live background task or Monitor.
-# CHILDWATCH: a parent ending KEEP OPEN on a live child needs a live
-# `child-idle-watch.js watch` (an idle child never reports back). Decisions:
-# scripts/lib/child-session-wait-guard.js. Kill switches CHILDWAIT_GATE_DISABLE=1,
-# CHILDJOBS_GATE_DISABLE=1, CHILDWATCH_GATE_DISABLE=1.
-# CHILDSTALL (BRO-7183): a REPORT-BACK child ending ANY turn with nothing live
-# and no report or question sent to @parent since the parent's last message.
+# CHILDWAIT/CHILDJOBS: KEEP OPEN on a child's CI/jobs requires a live wake.
+# CHILDWATCH: KEEP OPEN on a child needs child-idle-watch; fresh long watches
+# advise --minutes 3 (BRO-7378). CHILDSTALL: a REPORT-BACK child needs live
+# work or a report/question to @parent since its last message (BRO-7183).
+# Decisions: scripts/lib/child-session-wait-guard.js; switches <CODE>_GATE_DISABLE=1.
 _CW_ALL = ('CHILDSTALL', 'CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH', 'OPENCLAIM')
 _CW_CODES = [c for c in _CW_ALL if os.environ.get(c + '_GATE_DISABLE', '0') != '1' and not _ve_seen(c)]
 if _CW_CODES:
@@ -1565,11 +1562,14 @@ if _CW_CODES:
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
                 'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES],
                 'liveChildren': _live_work()['children'] if _cw_keep else [], 'keepOpen': _cw_keep, 'stall': _cw_stall,
+                'childCreatedAt': _live_work()['childCreatedAt'] if _cw_keep else {},
                 'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids, 'openClaim': _oc_on,
                 'ocAnchor': max([_j for _j, (_k, _p) in enumerate(events) if _k == 'user_human' or (_k == 'user_text' and _OC_RT.search(_p or ''))] or [-1]),
                 'otherLive': bool((_cw_stall or _oc_on) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
+            for _cw_advisory in _cw_res.get('advisories', []):
+                sys.stderr.write('CHILDWATCH advisory: ' + _cw_advisory + '\n')
             if _cw_res.get('code') == 'OPENCLAIM' and _stall_gate_blocks('OPENCLAIM_GATE_MODE'):
                 _ve_block('OPENCLAIM')
             elif _cw_res.get('code') == 'OPENCLAIM':

@@ -174,10 +174,33 @@ function childJobsDecision(input) {
 // wakes the parent within 30 min to check get_session).
 const WATCH_CMD_RE = /child-idle-watch(?:\.js)?\s+watch\b/;
 const CHILD_WAIT_RE = /\b(?:sessions?|child(?:ren)?|workers?|report[- ]?backs?|reports? back|sub-?sessions?)\b/i;
+const { SAFE_WATCH_MINUTES } = require('./child-idle-watch.js');
 
-/** @returns {{block: boolean, reason: string}} */
+/** BRO-7378: log-only first-look advice; unknown ages/durations stay silent. */
+function firstWatchAdvisories({ ids = [], childCreatedAt = {}, watches = [], now = null } = {}) {
+  if (!Number.isFinite(now)) return [];
+  // Limit flags to this watch invocation so another command's --minutes or
+  // another child's timer cannot stand in for this child's first look.
+  const timers = watches.flatMap((t) => [...String(t.input.command).matchAll(/child-idle-watch(?:\.js)?\s+watch\b([^;&|\n]*)/g)]
+    .map((m) => {
+      const flag = (name) => {
+        const match = m[1].match(new RegExp(`(?:^|\\s)--${name}(?:\\s+|=)(?:"([^"]*)"|'([^']*)'|([^\\s]+))(?=\\s|$)`));
+        return match ? match[1] ?? match[2] ?? match[3] : undefined;
+      };
+      return { id: flag('session'), minutes: Number(flag('minutes') ?? SAFE_WATCH_MINUTES) };
+    }));
+  return ids.flatMap((id) => {
+    const created = childCreatedAt[id];
+    if (!Number.isFinite(created) || now < created || now - created >= 10 * 60000) return [];
+    const matching = timers.filter((t) => t.id === id);
+    if (!matching.length || !matching.every((t) => t.minutes > 6 && t.minutes <= 115)) return [];
+    return [`fresh child ${id} has only watches over 6 minutes; use child-idle-watch.js watch --session ${id} --minutes 3 for the first look`];
+  });
+}
+
+/** @returns {{block: boolean, reason: string, advisories?: string[]}} */
 function parentWatchDecision(input) {
-  const { closing = '', tools = [], done = [], liveChildren = [], now = null } = input || {};
+  const { closing = '', tools = [], done = [], liveChildren = [], childCreatedAt = {}, now = null } = input || {};
   const no = (reason) => ({ block: false, reason });
   if (!liveChildren.length) return no('no live child session');
   if (!verdictKeepOpen(closing)) return no('closing verdict is not KEEP OPEN');
@@ -186,7 +209,10 @@ function parentWatchDecision(input) {
   }
   const ids = liveChildren.map((c) => (String(c).match(/\b(?:session|cse)_[0-9A-Za-z]{10,}\b/) || [String(c)])[0]);
   const watches = liveBackground(tools, done, { cmdRe: WATCH_CMD_RE, now });
-  if (watches.some((t) => ids.some((id) => String(t.input.command).includes(id)))) return no('a child-idle-watch task is live');
+  if (watches.some((t) => ids.some((id) => String(t.input.command).includes(id)))) {
+    const advisories = firstWatchAdvisories({ ids, childCreatedAt, watches, now });
+    return { ...no('a child-idle-watch task is live'), ...(advisories.length ? { advisories } : {}) };
+  }
   return { block: true, reason: 'parent ends KEEP OPEN on a child session with no child-idle-watch running for it' };
 }
 
@@ -279,11 +305,12 @@ function openClaimDecision(input) {
  * the three KEEP OPEN gates run unless `keepOpen` is false. `skip` lists
  * codes already blocked in this Stop chain (or switched off); they are not
  * re-evaluated.
- * @returns {{block: boolean, code: string|null, reason: string}}
+ * @returns {{block: boolean, code: string|null, reason: string, advisories?: string[]}}
  */
 function decideAll(input) {
   const skip = new Set((input && input.skip) || []);
   const reasons = [];
+  const advisories = [];
   const gates = [];
   // The older KEEP OPEN gates go first: their messages name the exact wait.
   // CHILDSTALL (BRO-7183) is the catch-all for any closing.
@@ -295,14 +322,16 @@ function decideAll(input) {
   for (const [code, fn] of gates) {
     if (skip.has(code)) continue;
     const r = fn(input);
-    if (r.block) return { block: true, code, reason: r.reason, wrongTool: !!r.wrongTool, cards: r.cards };
+    advisories.push(...(r.advisories || []));
+    if (r.block) return { block: true, code, reason: r.reason, wrongTool: !!r.wrongTool, cards: r.cards,
+      ...(advisories.length ? { advisories } : {}) };
     reasons.push(code + ': ' + r.reason);
   }
-  return { block: false, code: null, reason: reasons.join('; ') };
+  return { block: false, code: null, reason: reasons.join('; '), ...(advisories.length ? { advisories } : {}) };
 }
 
 module.exports = { BG_DEFAULT_MS,
-  childWaitDecision, childJobsDecision, parentWatchDecision, childStallDecision, openClaimDecision, decideAll, NO_HUMAN_RE,
+  childWaitDecision, childJobsDecision, parentWatchDecision, firstWatchAdvisories, childStallDecision, openClaimDecision, decideAll, NO_HUMAN_RE,
   isChildSession, liveBackground, isDetached, CI_WAIT_RE, JOBS_WAIT_RE, CHILD_PROMPT_RE, WATCH_CMD_RE,
 };
 

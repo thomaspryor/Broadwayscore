@@ -378,3 +378,23 @@ test('BRO-7377: the verdict carries neverStarted so the sweep does not parse the
   assert.equal(decide({ session: INIT_FAILED, now: '2026-11-11T13:52:38Z' }).neverStarted, true);
   assert.equal(decide({ session: JSON.parse(JSON.stringify({ ccr: { ...INIT_FAILED.ccr, external_metadata: {} } })), now: '2026-11-11T13:52:38Z' }).neverStarted, undefined);
 });
+
+test('BRO-7378: Stop hook logs first-watch advice from creation timestamps without blocking', () => {
+  for (const [minutes, age, advisory, env] of [
+    [25, 3, true], [3, 3, false], [6, 3, false], [null, 3, true],
+    [25, 11, false], [25, null, false], [25, 3, false, { CHILDWATCH_GATE_DISABLE: '1' }],
+  ]) {
+    const create = { name: 'mcp__Claude_Code_Remote__create_session', input: { title: INIT_FAILED.ccr.title },
+      result: JSON.stringify(INIT_FAILED), ts: age === null ? undefined : new Date(Date.now() - age * 60000).toISOString() };
+    const watch = { name: 'Bash', input: { run_in_background: true,
+      command: `node scripts/lib/child-idle-watch.js watch --session ${INIT_FAILED.ccr.id}${minutes === null ? '' : ` --minutes ${minutes}`}` },
+    result: bgResult('bwatch7378'), ts: new Date().toISOString() };
+    const r = runHook('Check the trial child', [create, watch], 'KEEP OPEN: waiting on the child session', env);
+    assert.equal(r.status, 0, r.stderr);
+    assert.equal(r.stderr.includes('CHILDWATCH advisory:'), advisory, `minutes=${minutes}, age=${age}: ${r.stderr}`);
+    if (advisory) {
+      assert.match(r.stderr, /--minutes 3\b/);
+      assert.ok(r.stderr.includes(INIT_FAILED.ccr.id));
+    }
+  }
+});
