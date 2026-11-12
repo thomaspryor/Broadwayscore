@@ -1,18 +1,11 @@
 {
-  "updatedAt": "2026-11-12T00:19:09.477Z",
-  "scanned": 4809,
-  "showsWithViolations": 568,
-  "totalViolations": 856,
-  "newSinceLastRun": 8,
+  "updatedAt": "2026-11-12T10:43:37.729Z",
+  "scanned": 4810,
+  "showsWithViolations": 566,
+  "totalViolations": 853,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "the-lifespan-of-a-fact-2018::njcom--christopher-kelly.json",
-    "summer-2018::hollywood-reporter--david-rooney.json",
-    "summer-2018::newsday--barbara-schuler.json",
-    "the-normal-heart-2011::sfgate--mark-kennedy.json",
-    "the-normal-heart-2011::wsj--terry-teachout.json",
-    "cloud-9-west-end-2026::thestage--sam-marlowe.json",
-    "les-miserables-tour-2022::dazzlingdailydeals--amber.json",
-    "clybourne-park-west-end-2011::guardian--lyn-gardner.json"
+    "act-of-god-off-west-end-2026::thestage--holly-omahony.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -72,11 +65,9 @@
     "torch-song-2018::thestage--mark-shenton.json",
     "the-ferryman-2018::bobs-theater-blog--robert-sholiton.json",
     "the-lifespan-of-a-fact-2018::njcom--christopher-kelly.json",
-    "bernhardthamlet-2018::thestage--nicole-serratore.json",
     "the-boys-in-the-band-2018::broadwaynews--charles-isherwood.json",
     "the-iceman-cometh-2018::variety--marilyn-stasio.json",
     "summer-2018::hollywood-reporter--david-rooney.json",
-    "summer-2018::newsday--barbara-schuler.json",
     "children-of-a-lesser-god-2018::amny--matt-windman.json",
     "children-of-a-lesser-god-2018::thestage--mark-shenton.json",
     "three-tall-women-2018::thestage--mark-shenton.json",
@@ -161,7 +152,6 @@
     "one-man-two-guvnors-2012::backstage--david-sheward.json",
     "magicbird-2012::backstage--suzy-evans.json",
     "magicbird-2012::zap-2-it--jacqueline-cutler.json",
-    "newsies-the-musical-2012::nytimes--ben-brantley.json",
     "death-of-a-salesman-2012::northjerseycom--robert-feldberg.json",
     "wit-2012::ap--mark-kennedy.json",
     "wit-2012::financialtimes--brendan-lemon.json",
@@ -399,7 +389,6 @@
     "the-smile-of-her-off-west-end-2026::thestage--dave-fargnoli.json",
     "shit-meet-fan-off-broadway-2024::lighting-and-sound-america--david-barbour.json",
     "giant-west-end-2025::thestage--laurie-yule.json",
-    "what-the-animals-say-off-west-end-2026::reviewsgate--william-russell.json",
     "the-standard-of-living-west-end-2026::plays-to-see--tim-hochstrasser.json",
     "the-standard-of-living-west-end-2026::standard--nick-curtis.json",
     "the-standard-of-living-west-end-2026::theatrecat--unknown.json",
@@ -448,6 +437,7 @@
     "palesteenian-off-west-end-2026::guardian--arifa-akbar.json",
     "fire-fire-off-west-end-2026::thestage--dave-fargnoli.json",
     "the-master-builder-off-west-end-2026::thestage--dave-fargnoli.json",
+    "act-of-god-off-west-end-2026::thestage--holly-omahony.json",
     "the-legends-of-them-west-end-2024::guardian--arifa-akbar.json",
     "here-we-are-west-end-2025::times-uk--clive-davis.json",
     "waiting-for-godot-west-end-2024::times-uk--clive-davis.json",
@@ -2090,30 +2080,6 @@
       ]
     },
     {
-      "showId": "bernhardthamlet-2018",
-      "title": "Bernhardt/Hamlet",
-      "openingDate": "2018-09-25",
-      "message": "thestage/Nicole Serratore (thestage--nicole-serratore.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (303 chars, textIssues flag set): https://www.thestage.co.uk/reviews/2018/bernhardt-hamlet-janet-mcteer-review-american-airlines-theatre-new-york/",
-      "violations": [
-        {
-          "filename": "thestage--nicole-serratore.json",
-          "url": "https://www.thestage.co.uk/reviews/2018/bernhardt-hamlet-janet-mcteer-review-american-airlines-theatre-new-york/",
-          "outletId": "thestage",
-          "criticName": "Nicole Serratore",
-          "haystackLength": 303,
-          "textIssuesFlag": true,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "the-boys-in-the-band-2018",
       "title": "The Boys in the Band",
       "openingDate": "2018-05-31",
@@ -2165,29 +2131,13 @@
       "showId": "summer-2018",
       "title": "Summer",
       "openingDate": "2018-04-23",
-      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'Summer' (303 chars): https://www.hollywoodreporter.com/review/summer-donna-summer-musical-theater-review-1105049\nnewsday/Barbara Schuler (newsday--barbara-schuler.json) SHIPPED but fullText never mentions 'Summer' (303 chars): https://www.newsday.com/entertainment/theater/donna-summer-musical-1.18175235",
+      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'Summer' (303 chars): https://www.hollywoodreporter.com/review/summer-donna-summer-musical-theater-review-1105049",
       "violations": [
         {
           "filename": "hollywood-reporter--david-rooney.json",
           "url": "https://www.hollywoodreporter.com/review/summer-donna-summer-musical-theater-review-1105049",
           "outletId": "hollywood-reporter",
           "criticName": "David Rooney",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "newsday--barbara-schuler.json",
-          "url": "https://www.newsday.com/entertainment/theater/donna-summer-musical-1.18175235",
-          "outletId": "newsday",
-          "criticName": "Barbara Schuler",
           "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
@@ -3341,7 +3291,7 @@
       "showId": "all-the-way-2014",
       "title": "All The Way",
       "openingDate": "2014-03-06",
-      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED but fullText never mentions 'All The Way' (303 chars, textIssues flag set): https://abcnews.go.com/Entertainment/wireStory/review-bryan-cranston-superb-22811530%20%20\nap/Unknown (ap--unknown.json) SHIPPED but fullText never mentions 'All The Way' (1033 chars, textIssues flag set): https://abcnews.go.com/Entertainment/wireStory/review-bryan-cranston-superb-22811530%20%20\n⚠️  usatoday/Elysa Gardner (usatoday--elysa-gardner.json) also too short to assess (0 chars): http://www.usatoday.com/story/life/theater/2014/03/06/all-the-way-review-broadway/5978737/",
+      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED but fullText never mentions 'All The Way' (303 chars, textIssues flag set): https://abcnews.go.com/Entertainment/wireStory/review-bryan-cranston-superb-22811530%20%20\nap/Unknown (ap--unknown.json) SHIPPED but fullText never mentions 'All The Way' (1033 chars, textIssues flag set): https://abcnews.go.com/Entertainment/wireStory/review-bryan-cranston-superb-22811530%20%20",
       "violations": [
         {
           "filename": "ap--mark-kennedy.json",
@@ -4013,30 +3963,6 @@
           "outletId": "zap-2-it",
           "criticName": "Jacqueline Cutler",
           "haystackLength": 204,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
-      "showId": "newsies-the-musical-2012",
-      "title": "Newsies The Musical",
-      "openingDate": "2012-03-29",
-      "message": "nytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Newsies The Musical' (303 chars): http://theater.nytimes.com/2012/03/30/theater/reviews/newsies-the-musical-by-alan-menken-and-harvey-fierstein.html?ref=theater\n⚠️  faster-times/Jonathan Mandell (faster-times--jonathan-mandell.json) also too short to assess (0 chars): http://www.thefastertimes.com/newyorktheater/2012/03/29/newsies-review/",
-      "violations": [
-        {
-          "filename": "nytimes--ben-brantley.json",
-          "url": "http://theater.nytimes.com/2012/03/30/theater/reviews/newsies-the-musical-by-alan-menken-and-harvey-fierstein.html?ref=theater",
-          "outletId": "nytimes",
-          "criticName": "Ben Brantley",
-          "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -6846,7 +6772,7 @@
       "showId": "are-you-watching-west-end-2026",
       "title": "Are You Watching?",
       "openingDate": "2026-06-04",
-      "message": "london-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED but fullText never mentions 'Are You Watching?' (3168 chars): https://www.londontheatre.co.uk/reviews/are-you-watching-review-royal-court\n⚠️  the-recs/The Recs EM - Erin Muldoon (the-recs--the-recs-em-erin-muldoon.json) also too short to assess (0 chars): https://therecs.co.uk/are-you-watching-royal-court/",
+      "message": "london-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED but fullText never mentions 'Are You Watching?' (3168 chars): https://www.londontheatre.co.uk/reviews/are-you-watching-review-royal-court",
       "violations": [
         {
           "filename": "london-theatre--matt-wolf.json",
@@ -8931,30 +8857,6 @@
       ]
     },
     {
-      "showId": "what-the-animals-say-off-west-end-2026",
-      "title": "What The Animals Say",
-      "openingDate": "2026-10-02",
-      "message": "reviewsgate/William Russell (reviewsgate--william-russell.json) SHIPPED but fullText never mentions 'What The Animals Say' (2061 chars, textIssues flag set): https://www.reviewsgate.co.uk/all-reviews/what-the-animals-say-by-david-ireland-the-finborough-theatre-118-finborough-road-london-sw10-until-24-october-2026",
-      "violations": [
-        {
-          "filename": "reviewsgate--william-russell.json",
-          "url": "https://www.reviewsgate.co.uk/all-reviews/what-the-animals-say-by-david-ireland-the-finborough-theatre-118-finborough-road-london-sw10-until-24-october-2026",
-          "outletId": "reviewsgate",
-          "criticName": "William Russell",
-          "haystackLength": 2061,
-          "textIssuesFlag": true,
-          "triage": {
-            "bucket": "truncated",
-            "evidence": [
-              "contentTier=truncated"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "the-standard-of-living-west-end-2026",
       "title": "The Standard Of Living",
       "openingDate": "2026-09-29",
@@ -10038,6 +9940,30 @@
           "outletId": "thestage",
           "criticName": "Dave Fargnoli",
           "haystackLength": 3225,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "act-of-god-off-west-end-2026",
+      "title": "Act of God",
+      "openingDate": "2026-11-11",
+      "message": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED but fullText never mentions 'Act of God' (2777 chars): https://www.thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
+      "violations": [
+        {
+          "filename": "thestage--holly-omahony.json",
+          "url": "https://www.thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
+          "outletId": "thestage",
+          "criticName": "Holly O'Mahony",
+          "haystackLength": 2777,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
@@ -17182,14 +17108,14 @@
       "showId": "abigails-party-royal-exchange-regional-2025",
       "title": "Abigail's Party",
       "openingDate": "2025-04-10",
-      "message": "thestage/Chris Bartlett (thestage--chris-bartlett.json) SHIPPED but fullText never mentions 'Abigail's Party' (3199 chars): https://www.thestage.co.uk/reviews/abigails-party-review-royal-exchange-manchester-kym-marsh",
+      "message": "thestage/Chris Bartlett (thestage--chris-bartlett.json) SHIPPED but fullText never mentions 'Abigail's Party' (3047 chars): https://www.thestage.co.uk/reviews/abigails-party-review-royal-exchange-manchester-kym-marsh",
       "violations": [
         {
           "filename": "thestage--chris-bartlett.json",
           "url": "https://www.thestage.co.uk/reviews/abigails-party-review-royal-exchange-manchester-kym-marsh",
           "outletId": "thestage",
           "criticName": "Chris Bartlett",
-          "haystackLength": 3199,
+          "haystackLength": 3047,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "truncated",
@@ -19116,12 +19042,12 @@
     }
   ],
   "triage": {
-    "total": 856,
+    "total": 853,
     "counts": {
-      "excerpt": 192,
+      "excerpt": 189,
       "wrong-production": 8,
-      "unresolved": 580,
-      "truncated": 76
+      "unresolved": 581,
+      "truncated": 75
     },
     "outletPlans": [
       {
@@ -23182,9 +23108,9 @@
       },
       {
         "outletId": "newsday",
-        "total": 6,
+        "total": 5,
         "counts": {
-          "excerpt": 6
+          "excerpt": 5
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -23208,15 +23134,6 @@
           },
           {
             "file": "master-class-2011/newsday--linda-winer.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "summer-2018/newsday--barbara-schuler.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -23719,11 +23636,10 @@
       },
       {
         "outletId": "nytimes",
-        "total": 9,
+        "total": 8,
         "counts": {
           "wrong-production": 2,
           "unresolved": 5,
-          "excerpt": 1,
           "truncated": 1
         },
         "requiresArticleReview": true,
@@ -23780,15 +23696,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "newsies-the-musical-2012/nytimes--ben-brantley.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -24061,25 +23968,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          }
-        ]
-      },
-      {
-        "outletId": "reviewsgate",
-        "total": 1,
-        "counts": {
-          "truncated": 1
-        },
-        "requiresArticleReview": true,
-        "candidates": [
-          {
-            "file": "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
-            "bucket": "truncated",
-            "evidence": [
-              "contentTier=truncated"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         ]
@@ -25365,8 +25253,8 @@
         "total": 181,
         "counts": {
           "truncated": 19,
-          "unresolved": 150,
-          "excerpt": 12
+          "unresolved": 151,
+          "excerpt": 11
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -25515,6 +25403,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "act-of-god-off-west-end-2026/thestage--holly-omahony.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
             "file": "after-the-act-west-end-2025/thestage--laurie-yule.json",
             "bucket": "unresolved",
             "evidence": [
@@ -25656,15 +25553,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "bernhardthamlet-2018/thestage--nicole-serratore.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {

@@ -1,18 +1,20 @@
 {
-  "updatedAt": "2026-11-12T00:18:29.258Z",
-  "scanned": 4809,
+  "updatedAt": "2026-11-12T10:42:57.409Z",
+  "scanned": 4810,
   "showsWithViolations": 167,
-  "totalViolations": 223,
-  "newSinceLastRun": 0,
+  "totalViolations": 222,
+  "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 970,
+    "temporal-override-low-confidence": 972,
     "not-shipped": 57,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "shadowlands-west-end-2026::islingtontribune--unknown.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "hells-kitchen-2024::chelsea-community-news--michael-musto.json",
@@ -114,6 +116,7 @@
     "oliver-west-end-2024::financialtimes--sarah-hemming.json",
     "oliver-west-end-2024::sunday-telegraph--dominic-cavendish.json",
     "grace-pervades-west-end-2026::whatsonstage--kris-hallett.json",
+    "shadowlands-west-end-2026::islingtontribune--unknown.json",
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
     "sinatra-the-musical-west-end-2026::musical-theatre-review--unknown.json",
     "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
@@ -132,7 +135,6 @@
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-off-west-end-2026::musical-theatre-review--unknown.json",
     "operation-mincemeat-west-end-2024::the-recs--unknown.json",
-    "operation-mincemeat-west-end-2024::thereviewshub--the-reviews-hub-scotland.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
     "burlesque-off-west-end-2026::telegraph--claire-allfree.json",
     "making-a-show-of-myself-off-broadway-2026::pages-on-stages--mason-pilevsky.json",
@@ -231,7 +233,6 @@
     "love-love-love-off-broadway-2016::cititour--brian-scott-lipton.json",
     "love-love-love-off-broadway-2016::show-showdown--elizabeth-wollman.json",
     "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
-    "ghosts-off-broadway-2025::times-uk--clive-davis.json",
     "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json",
     "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json",
     "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
@@ -2105,6 +2106,27 @@
       ]
     },
     {
+      "showId": "shadowlands-west-end-2026",
+      "title": "Shadowlands",
+      "openingDate": "2026-02-12",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This review evaluates the 2019 Chichester Festival Theatre production of Shadowlands, which is being revived at the Aldw — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "violations": [
+        {
+          "filename": "islingtontribune--unknown.json",
+          "url": "https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+          "outletId": "islingtontribune",
+          "criticName": "Unknown",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This review evaluates the 2019 Chichester Festival Theatre production of Shadowlands, which is being revived at the Aldw",
+          "cvIssues": [
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run opening 2026-02-12",
+            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — this is a review OF the Chichester production being revived, not a review of the West End opening"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "all-my-sons-west-end-2025",
       "title": "All My Sons",
       "openingDate": "2025-11-17",
@@ -2422,7 +2444,7 @@
       "showId": "operation-mincemeat-west-end-2024",
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
-      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews a touring production of Operation Mincemeat, not the West End production  — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
+      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/",
       "violations": [
         {
           "filename": "the-recs--unknown.json",
@@ -2435,19 +2457,6 @@
           "cvIssues": [
             "Review describes Edinburgh touring production (Kings Theatre, Edinburgh, Nov 2026), not West End production at Fortune Theatre",
             "Review publish date (2026-11-03) aligns with Edinburgh tour performance date, not West End opening (2023-05-09)"
-          ]
-        },
-        {
-          "filename": "thereviewshub--the-reviews-hub-scotland.json",
-          "url": "https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
-          "outletId": "thereviewshub",
-          "criticName": "The Reviews Hub - Scotland",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a valid theater review, but it reviews a touring production of Operation Mincemeat, not the West End production ",
-          "cvIssues": [
-            "Review evaluates a touring production, not the West End run at Fortune Theatre",
-            "Critic attended a touring cast performance ('this touring cast'), not the West End production"
           ]
         }
       ]
@@ -4290,27 +4299,6 @@
           "cvIssues": [
             "Venue mismatch: Review describes performance at Irene Diamond Stage, but expected venue is Signature Center",
             "No critic byline found in scraped content (expected: David Roberts from Theatre Reviews Limited)"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "ghosts-off-broadway-2025",
-      "title": "Ghosts",
-      "openingDate": "2025-03-10",
-      "message": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 38d of opening, likely correct production] The scraped review clearly states it is reviewing 'G — https://www.thetimes.com/culture/theatre-dance/article/ghosts-review-lyric-theatre-09sj92lkg",
-      "violations": [
-        {
-          "filename": "times-uk--clive-davis.json",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/ghosts-review-lyric-theatre-09sj92lkg",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 38d of opening, likely correct production] The scraped review clearly states it is reviewing 'G",
-          "cvIssues": [
-            "Review is of a London West End production (Lyric Hammersmith), not an Off-Broadway production",
-            "Venue is explicitly named as 'Lyric Hammersmith in London'"
           ]
         }
       ]
