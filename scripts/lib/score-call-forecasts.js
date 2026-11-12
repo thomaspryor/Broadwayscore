@@ -7,7 +7,7 @@
 const P = require('./review-forecast-pilot');
 
 /** shows = shows.json array; ledgerRows = all ledger rows; reviewCounts = {showId: n reviews}. */
-function buildSyncRows({ shows, ledgerRows, today, reviewCounts = {} }) {
+function buildSyncRows({ shows, ledgerRows, today, reviewCounts = {}, clearReviewsLive = new Set() }) {
   const out = [];
   for (const s of shows) {
     if (!P.isPilotTarget(s, today)) continue;
@@ -18,6 +18,8 @@ function buildSyncRows({ shows, ledgerRows, today, reviewCounts = {} }) {
       p_lo: typeof row.lo80 === 'number' ? Math.round(row.lo80) : null,
       p_hi: typeof row.hi80 === 'number' ? Math.round(row.hi80) : null,
       p_reviews_live: (reviewCounts[s.id] || 0) > 0, p_enabled: true,
+      // Only for an explicitly named show whose reviews.json count is 0: never reopen a show that has reviews.
+      ...(clearReviewsLive.has(s.id) && !((reviewCounts[s.id] || 0) > 0) ? { p_clear_reviews_live: true } : {}),
     });
   }
   return out;

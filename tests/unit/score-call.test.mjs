@@ -131,3 +131,66 @@ test('auto-save only takes a number picked within 30 minutes; older ones wait fo
   const src = fs.readFileSync(path.join(ROOT, 'src/components/show-page/CallTheScore.tsx'), 'utf8');
   assert.match(src, /getPendingCall\(show\.id, ls\(\), Date\.now\(\), AUTOSAVE_WINDOW_MS\)/);
 });
+
+// ---- BRO-7392 follow-ups ----
+test('nyToday follows America/New_York, not UTC (evening ET is already tomorrow in UTC)', () => {
+  assert.equal(SC.nyToday(new Date('2026-11-12T03:30:00Z')), '2026-11-11', 'EST evening: UTC says the 12th, NY is still the 11th');
+  assert.equal(SC.nyToday(new Date('2026-07-12T03:30:00Z')), '2026-07-11', 'EDT evening');
+  assert.equal(SC.nyToday(new Date('2026-11-12T05:00:00Z')), '2026-11-12', 'EST midnight boundary (05:00Z)');
+  assert.equal(SC.nyToday(new Date('2026-03-08T04:59:00Z')), '2026-03-07', 'minute before the spring-forward day');
+  assert.equal(SC.nyToday(new Date('nope')), null);
+});
+test('a show opening tomorrow (NY) is still callable on the NY evening the UTC date has already rolled over', () => {
+  const show = { id: 'x', category: 'broadway', type: 'play', status: 'previews', openingDate: '2026-11-12' };
+  const at = new Date('2026-11-12T03:30:00Z'); // 10:30pm ET on the 11th, closes 00:00 ET on the 12th
+  assert.equal(SC.isCallableShow(show, SC.nyToday(at)), true);
+  assert.equal(SC.isCallableShow(show, at.toISOString().slice(0, 10)), false, 'the old UTC date wrongly hides it');
+});
+test('sync script and the show page use nyToday, not the UTC date', () => {
+  const sync = fs.readFileSync(path.join(ROOT, 'scripts/sync-score-call-forecasts.mjs'), 'utf8');
+  assert.match(sync, /nyToday\(new Date\(\)\)/);
+  assert.doesNotMatch(sync, /toISOString\(\)\.slice\(0, 10\)/);
+});
+test('parseMyCalls: error, non-array and null body are FAILED loads; rows keep null forecasts as null', () => {
+  assert.equal(SC.parseMyCalls({ data: null, error: { message: 'x' } }).ok, false);
+  assert.equal(SC.parseMyCalls({ data: null, error: null }).ok, false, '200 with an unreadable body is not "no predictions"');
+  assert.equal(SC.parseMyCalls({ data: { oops: 1 }, error: null }).ok, false);
+  assert.equal(SC.parseMyCalls(undefined).ok, false);
+  const empty = SC.parseMyCalls({ data: [], error: null });
+  assert.deepEqual([empty.ok, empty.calls], [true, {}]);
+  const r = SC.parseMyCalls({ data: [
+    { show_id: 'a', called_score: 70, forecast: 74, lo80: 62, hi80: 85, locked_at: '2026-11-01T00:00:00Z' },
+    { show_id: 'b', called_score: 55, forecast: null, lo80: null, hi80: null, locked_at: '2026-11-02T00:00:00Z' },
+    { show_id: 'c', called_score: 'bad' }, null,
+  ], error: null });
+  assert.equal(r.ok, true);
+  assert.deepEqual(Object.keys(r.calls), ['a', 'b']);
+  assert.equal(r.calls.b.forecast, null);
+  assert.equal(SC.gapSentence({ called: r.calls.b.called_score, forecast: r.calls.b.forecast, lo80: r.calls.b.lo80, hi80: r.calls.b.hi80 }), null);
+});
+test('hook: a failed load is retryable and never reads as a settled "no prediction"', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'src/hooks/useScoreCall.ts'), 'utf8');
+  assert.match(src, /parseMyCalls\(/);
+  assert.match(src, /failed: !parsed\.ok/);
+  assert.match(src, /store\.loaded && !store\.failed/, 'load() must not short-circuit on a failed result');
+  assert.match(src, /loadFailed/);
+});
+test('buildSyncRows: clear flag only for a named show with no reviews, never otherwise', () => {
+  const shows = ['a', 'b', 'c'].map((id) => ({ id, category: 'broadway', type: 'musical', status: 'previews', openingDate: '2026-12-01' }));
+  const ledger = shows.map((s) => ({ showId: s.id, recordedAt: '2026-11-10', forecast: 70, lo80: 60, hi80: 80 }));
+  const rows = buildSyncRows({ shows, ledgerRows: ledger, today: '2026-11-11', reviewCounts: { b: 3 }, clearReviewsLive: new Set(['a', 'b']) });
+  const by = Object.fromEntries(rows.map((r) => [r.p_show_id, r]));
+  assert.equal(by.a.p_clear_reviews_live, true, 'named + zero reviews => cleared');
+  assert.equal(by.b.p_clear_reviews_live, undefined, 'named but has reviews => never reopened');
+  assert.equal(by.c.p_clear_reviews_live, undefined, 'not named => untouched');
+  assert.equal(buildSyncRows({ shows, ledgerRows: ledger, today: '2026-11-11' }).some((r) => 'p_clear_reviews_live' in r), false, 'daily run never clears');
+});
+test('migration 20261112 replaces sync_score_call_show with a clear flag, drops the old overload, keeps it service-only', () => {
+  const sql = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20261112_score_call_clear_reviews_live.sql'), 'utf8');
+  assert.match(sql, /DROP FUNCTION IF EXISTS public\.sync_score_call_show\(TEXT, DATE, INTEGER, INTEGER, INTEGER, BOOLEAN, BOOLEAN\);/);
+  assert.match(sql, /p_clear_reviews_live BOOLEAN DEFAULT false/);
+  assert.match(sql, /CASE WHEN p_clear_reviews_live THEN p_reviews_live ELSE \(reviews_live OR p_reviews_live\) END/);
+  assert.match(sql, /REVOKE ALL ON FUNCTION public\.sync_score_call_show\([^)]*\) FROM PUBLIC, anon, authenticated;/);
+  assert.match(sql, /GRANT EXECUTE ON FUNCTION public\.sync_score_call_show\([^)]*\) TO service_role;/);
+  assert.doesNotMatch(sql, /TO (anon|authenticated|PUBLIC)/);
+});

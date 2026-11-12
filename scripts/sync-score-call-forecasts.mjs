@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
  * BRO-7350: sync pilot-ledger forecasts into Supabase score_call_shows (service role only).
- * Usage: node scripts/sync-score-call-forecasts.mjs --dir=<core-data>/review-forecast-pilot [--dry]
+ * Usage: node scripts/sync-score-call-forecasts.mjs --dir=<core-data>/review-forecast-pilot [--dry] [--clear-reviews-live=show-id,show-id]
+ * --clear-reviews-live (BRO-7392): explicit per-show reset of a wrongly set reviews_live flag. The daily run never passes it,
+ * so a transient gap in reviews.json can never reopen a show whose reviews are live.
  * Output is COUNTS ONLY. Aborts without writing when the ledger is empty.
  */
 import fs from 'node:fs';
@@ -9,6 +11,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { buildSyncRows, countReviewsByShow } = require('./lib/score-call-forecasts.js');
+const { nyToday } = require('../src/lib/score-call.js');
 const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=')[1];
 const DRY = process.argv.includes('--dry');
 const DIR = arg('dir');
@@ -27,11 +30,13 @@ if (fs.existsSync(LEDGER)) {
 }
 if (!rows.length) { console.error('ledger empty: nothing synced'); process.exit(0); }
 const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8')).shows;
-const today = new Date().toISOString().slice(0, 10);
+// The server closes calls at 00:00 America/New_York on opening day, so "today" is the New York date (the UTC date is a day ahead each evening).
+const today = nyToday(new Date());
+const CLEAR = new Set((arg('clear-reviews-live') || '').split(',').map((x) => x.trim()).filter(Boolean));
 let reviewCounts;
 try { reviewCounts = countReviewsByShow(JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8'))); }
 catch (e) { console.error(`cannot count reviews (${e.message.slice(0, 80)}): nothing synced`); process.exit(1); }
-const sync = buildSyncRows({ shows, ledgerRows: rows, today, reviewCounts });
+const sync = buildSyncRows({ shows, ledgerRows: rows, today, reviewCounts, clearReviewsLive: CLEAR });
 console.error(`ledger rows ${rows.length}, open shows to sync ${sync.length}${DRY ? ' (dry, nothing written)' : ''}`);
 if (DRY) process.exit(0);
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL; const key = process.env.SUPABASE_SERVICE_ROLE_KEY;

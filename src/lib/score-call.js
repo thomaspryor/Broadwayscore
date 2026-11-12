@@ -50,6 +50,28 @@ function gapSentence({ called, forecast, lo80, hi80 }) {
   return `We forecast ${forecast}${range}. ${tail}`;
 }
 
+/** Calendar date (YYYY-MM-DD) in America/New_York. The server closes calls at 00:00 New York time on opening day, so every "is it still open" cutoff uses this, never the UTC date. */
+function nyToday(now) {
+  const d = now instanceof Date ? now : new Date(now == null ? Date.now() : now);
+  if (!Number.isFinite(d.getTime())) return null;
+  const p = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(d);
+  const g = (t) => (p.find((x) => x.type === t) || {}).value;
+  return `${g('year')}-${g('month')}-${g('day')}`;
+}
+
+/** Shape a get_my_score_calls answer. A transport error or a non-array body is a FAILED load (ok:false), never "no predictions". Forecast fields are null when absent. */
+function parseMyCalls(result) {
+  const { data, error } = result || {};
+  if (error || !Array.isArray(data)) return { ok: false, calls: {} };
+  const num = (v) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
+  const calls = {};
+  for (const c of data) {
+    if (!c || typeof c.show_id !== 'string' || !Number.isInteger(c.called_score)) continue;
+    calls[c.show_id] = { show_id: c.show_id, called_score: c.called_score, forecast: num(c.forecast), lo80: num(c.lo80), hi80: num(c.hi80), locked_at: String(c.locked_at || '') };
+  }
+  return { ok: true, calls };
+}
+
 // Guess first, sign up second (owner 2026-11-11). The number a signed-out reader picks waits in
 // localStorage until they sign in; only the number is kept here, never the forecast.
 const PENDING_KEY = 'bsc_pending_score_calls';
@@ -93,4 +115,4 @@ function clearPendingCall(showId, store, now = Date.now()) {
   writePending(store, o);
 }
 
-module.exports = { isCallableShow, parseCall, resultStrip, gapSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };
+module.exports = { nyToday, parseMyCalls, isCallableShow, parseCall, resultStrip, gapSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };

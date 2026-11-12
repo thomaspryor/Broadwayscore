@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useSyncExternalStore } from 'react';
 import { supabaseRestRpc } from '@/lib/supabase-rest';
 import { useAuth } from '@/contexts/AuthContext';
+import { parseMyCalls } from '@/lib/score-call';
 
 /** A locked call plus the forecast snapshot taken when it locked (null when no forecast existed). */
 export interface ScoreCall {
@@ -15,27 +16,28 @@ export interface ScoreCall {
 }
 
 // One shared fetch for hero link, card and strip: they all read the same store.
-interface Store { userId: string | null; calls: Record<string, ScoreCall>; loaded: boolean; inflight: Promise<void> | null }
-let store: Store = { userId: null, calls: {}, loaded: false, inflight: null };
+// loaded = the fetch settled (kept true on failure so existing readers never spin). failed = it settled WITHOUT an answer, so an empty calls map means "unknown", not "no prediction".
+interface Store { userId: string | null; calls: Record<string, ScoreCall>; loaded: boolean; failed: boolean; inflight: Promise<void> | null }
+const EMPTY: Store = { userId: null, calls: {}, loaded: false, failed: false, inflight: null };
+let store: Store = EMPTY;
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach((l) => l());
 const subscribe = (l: () => void) => { listeners.add(l); return () => { listeners.delete(l); }; };
 const snapshot = () => store;
 
 async function load(userId: string) {
-  if (store.userId === userId && (store.loaded || store.inflight)) return store.inflight ?? undefined;
+  if (store.userId === userId && (store.inflight || (store.loaded && !store.failed))) return store.inflight ?? undefined;
   // A response only lands if it is still the current request: a sign-out or a different user signing
   // in meanwhile replaces store.inflight, so a late answer for the old user is dropped.
   const ref: { p?: Promise<void> } = {};
   const p: Promise<void> = (ref.p = (async () => {
-    const { data } = await supabaseRestRpc<ScoreCall[]>('get_my_score_calls');
+    const parsed = parseMyCalls(await supabaseRestRpc<ScoreCall[]>('get_my_score_calls').catch(() => ({ data: null, error: new Error('network') })));
     if (store.inflight !== ref.p) return;
-    const calls: Record<string, ScoreCall> = {};
-    for (const c of data || []) calls[c.show_id] = c;
-    store = { userId, calls, loaded: true, inflight: null };
+    // A failed load keeps any calls already known (a lock this session) and is retryable.
+    store = { userId, calls: parsed.ok ? (parsed.calls as Record<string, ScoreCall>) : store.calls, loaded: true, failed: !parsed.ok, inflight: null };
     emit();
   })());
-  store = { userId, calls: {}, loaded: false, inflight: p };
+  store = { userId, calls: store.userId === userId ? store.calls : {}, loaded: false, failed: false, inflight: p };
   return p;
 }
 
@@ -48,25 +50,28 @@ export function useScoreCall(showId: string) {
 
   useEffect(() => {
     if (userId) void load(userId);
-    else if (store.userId) { store = { userId: null, calls: {}, loaded: false, inflight: null }; emit(); }
+    else if (store.userId) { store = EMPTY; emit(); }
   }, [userId]);
 
   const lock = useCallback(async (score: number): Promise<LockResult> => {
     const { data, error } = await supabaseRestRpc<ScoreCall[]>('lock_score_call', { p_show_id: showId, p_score: score });
     if (error) {
       const m = error.message || '';
-      if (m.includes('already_called')) { store = { ...store, loaded: false, inflight: null }; if (userId) await load(userId); return { ok: false, reason: 'already_called' }; }
+      if (m.includes('already_called')) { store = { ...store, loaded: false, failed: false, inflight: null }; if (userId) await load(userId); return { ok: false, reason: 'already_called' }; }
       if (m.includes('calls_closed')) return { ok: false, reason: 'calls_closed' };
       if (m.includes('not_open')) return { ok: false, reason: 'not_open' };
       return { ok: false, reason: 'error' };
     }
     const row = Array.isArray(data) ? data[0] : null;
     if (!row) return { ok: false, reason: 'error' };
-    const call: ScoreCall = { show_id: showId, called_score: row.called_score as unknown as number, forecast: (row as unknown as { forecast: number | null }).forecast, lo80: (row as unknown as { lo80: number | null }).lo80, hi80: (row as unknown as { hi80: number | null }).hi80, locked_at: (row as unknown as { locked_at: string }).locked_at };
-    store = { ...store, userId, calls: { ...store.calls, [showId]: call }, loaded: true };
+    const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
+    const call: ScoreCall = { show_id: showId, called_score: row.called_score, forecast: num(row.forecast), lo80: num(row.lo80), hi80: num(row.hi80), locked_at: String(row.locked_at ?? '') };
+    store = { ...store, userId, calls: { ...store.calls, [showId]: call }, loaded: true, failed: false };
     emit();
     return { ok: true, call };
   }, [showId, userId]);
 
-  return { signedIn: !!userId, loaded: !userId || (s.userId === userId && s.loaded), call: userId && s.userId === userId ? s.calls[showId] ?? null : null, lock };
+  const retry = useCallback(() => { if (userId) { store = { ...store, loaded: false, failed: false, inflight: null }; void load(userId); } }, [userId]);
+
+  return { signedIn: !!userId, retry, loadFailed: !!userId && s.userId === userId && s.failed, loaded: !userId || (s.userId === userId && s.loaded), call: userId && s.userId === userId ? s.calls[showId] ?? null : null, lock };
 }
