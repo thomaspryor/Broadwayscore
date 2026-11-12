@@ -15,7 +15,7 @@ const fmtDate = (iso?: string | null) => (iso ? new Date(iso.slice(0, 10) + 'T12
 function Tile({ label, score, category, muted }: { label: string; score: number | null; category?: string; muted?: boolean }) {
   return (
     <div className="flex flex-col items-center gap-1.5 min-w-[5.5rem]">
-      {score == null ? <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl score-none font-bold text-gray-400 flex items-center justify-center">?</div> : <ScoreBadge score={score} size="lg" category={category} />}
+      <ScoreBadge score={score} size="lg" category={category} />
       <span className={`text-[11px] font-semibold uppercase tracking-[0.08em] ${muted ? 'text-fg-muted' : 'text-gray-300'}`}>{label}</span>
     </div>
   );
@@ -91,6 +91,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
           {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted />}
         </div>
         {sentence && <p className="text-sm text-gray-300 text-center m-0 mb-1">{sentence}</p>}
+        {call.forecast == null && <p className="text-sm text-gray-300 text-center m-0 mb-1">We don&apos;t have a forecast for this show.</p>}
         <p className="text-xs text-fg-muted text-center m-0">Both get scored when reviews land{show.openingDate ? ` on ${fmtDate(show.openingDate)}` : ''}.</p>
       </Wrap>
     );
@@ -108,7 +109,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
       <button type="button" className="btn-primary w-full mt-4" disabled={busy} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
       {!signedIn && saveAsk && <p className="text-sm text-gray-200 text-center mt-2 mb-0" data-testid="save-prompt">Save your prediction: create a free account or sign in.</p>}
       {msg && <p className="text-xs text-score-skip text-center mt-2 mb-0" role="alert">{msg}</p>}
-      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Want to see what we&apos;re predicting? Make your prediction to reveal it. Free account, one prediction per show, final once you lock it in.</p>
+      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Make your prediction and we&apos;ll show our forecast too, when we have one. Free account, one prediction per show, final once you lock it in.</p>
     </Wrap>
   );
 }
@@ -139,5 +140,5 @@ export function CallTheScoreHeroLink({ show }: { show: ShowLike }) {
   const [callable, setCallable] = useState(false);
   useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
   if (!callable) return null;
-  return <a href="#critic-reviews" className="inline-block mt-1.5 text-xs font-semibold text-brand hover:text-brand-hover transition-colors" data-testid="call-the-score-link">{call ? `You predicted ${call.called_score}` : 'Predict the score'}</a>;
+  return <a href="#critic-reviews" className="inline-flex items-center min-h-[44px] mt-0.5 text-xs font-semibold text-brand hover:text-brand-hover transition-colors" data-testid="call-the-score-link">{call ? `You predicted ${call.called_score}` : 'Predict the score'}</a>;
 }
