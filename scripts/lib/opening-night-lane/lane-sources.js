@@ -69,6 +69,8 @@ const LANE_FEEDS = [
   { url: 'https://theaterpizzazz.com/feed/', outletId: 'theater-pizzazz', name: 'Theater Pizzazz' },
   { url: 'https://frontmezzjunkies.com/feed/', outletId: 'frontmezzjunkies', name: 'Front Mezz Junkies' },
   { url: 'https://www.theatrereviews.com/feed/', outletId: 'theatre-reviews-limited', name: 'Theatre Reviews Limited' },
+  // BRO-7415: answers 406 to a bare curl, 200 through fetchPage directOnly (the lane's fetch); carries the A Few Good Men review (2026-11-12).
+  { url: 'https://www.thekomisarscoop.com/feed/', outletId: 'the-komisar-scoop', name: 'The Komisar Scoop' },
   { url: 'https://therecs.co.uk/feed/', outletId: 'the-recs', name: 'The Recs' },
   { url: 'https://www.stageandcinema.com/feed/', outletId: 'stageandcinema', name: 'Stage and Cinema' },
   { url: 'https://www.theaterscene.net/feed/', outletId: 'theater-scene', name: 'Theater Scene' },
@@ -121,6 +123,9 @@ const LANE_SOURCE_GAPS = {
   // BRO-7415: Head Topics is a news aggregator; its Wanted page is a summary of Deadline's review (author DEADLINE, "Original
   // source" link to Deadline, 2026-11-12). The Deadline feed finds the original; the summary carries no review of its own.
   headtopics: "aggregator summary of another outlet's review (Wanted: Deadline's); the original outlet's feed finds it; its /feed is a site-wide news list, not reviews (2026-11-12)",
+  // BRO-7415: soz6.com is a general news/dictionary site that reposts UK press reviews at /news/<slug>; its /feed lists /entry/N
+  // posts with no theater reviews (checked 2026-11-12), so nothing there can find a review on the night.
+  soz6: "general news site that reposts other outlets' reviews; its feed carries no theater reviews (2026-11-12); the original outlet's feed or SERP finds the review",
   nytimes: 'West End shows: the NYT Theater feed is read for Broadway only and nytimes.com/section/theater answers 403 (2026-11-04); Google News and SERP',
 };
 
