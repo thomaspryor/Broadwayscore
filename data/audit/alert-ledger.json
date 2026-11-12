@@ -37990,7 +37990,7 @@
       "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-11-06T04:56:22.650Z",
@@ -38002,7 +38002,9 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-12T17:31:14.599Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39052,13 +39054,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-12T12:48:20.062Z",
+      "lastSeen": "2026-11-12T17:31:14.576Z",
       "lastNotifiedAt": "2026-11-12T08:06:56.360Z",
       "lastSurfacedAt": "2026-11-12T08:06:56.360Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -39186,7 +39188,7 @@
       "resolvedAt": "2026-11-08T10:15:43.140Z"
     },
     "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
       "firstSeen": "2026-11-08T11:49:18.462Z",
@@ -39197,7 +39199,9 @@
       "lastSurfacedAt": "2026-11-12T12:48:20.041Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-12T17:31:14.625Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
       "status": "resolved",
@@ -42117,7 +42121,7 @@
       "linearIdentifier": "BRO-7379"
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
       "firstSeen": "2026-11-11T15:05:44.026Z",
@@ -42129,7 +42133,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-11-12T17:31:14.646Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-7373-cost": {
       "status": "open",
