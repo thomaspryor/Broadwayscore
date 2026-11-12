@@ -204,7 +204,19 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
           </button>
         )}
 
+        {/* Every control above saves the moment it changes. The sheet had no
+            button that said so, so owners hunted for "Save" and closed with the
+            X (owner, 2026-11-12). Done is the one primary action. */}
         <div className="mt-5 space-y-2 [&_[data-testid=add-to-calendar]]:w-full [&_[data-testid=add-to-calendar]]:h-12">
+          <button
+            type="button"
+            onClick={onClose}
+            data-testid="watchlist-plan-done"
+            className="btn btn-primary w-full h-12"
+          >
+            {saving ? 'Saving…' : 'Done'}
+          </button>
+          <p className="text-xs text-fg-muted text-center" aria-live="polite">Changes save automatically.</p>
           <AddToCalendarButtons event={event} />
           <button
             type="button"

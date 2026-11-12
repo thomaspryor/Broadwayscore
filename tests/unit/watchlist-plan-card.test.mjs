@@ -60,6 +60,19 @@ test('every sheet control is locked while saving', () => {
   assert.equal((sheet.match(/disabled=\{saving\}/g) || []).length, 3, 'date, Clear showtime and Remove each need disabled={saving}');
 });
 
+test('sheet has a primary Done button that closes it (BRO-7422)', () => {
+  // Controls autosave, so with no Save/Done button owners could not tell their
+  // change had stuck and had to hunt for the X. Done must stay, be the primary
+  // button style, and call onClose.
+  const sheet = CARD.slice(CARD.indexOf('function PlanSheet('));
+  assert.match(sheet, /onClick=\{onClose\}\s*data-testid="watchlist-plan-done"\s*className="btn btn-primary w-full h-12"/);
+  assert.match(sheet, /Changes save automatically/);
+  assert.ok(
+    sheet.indexOf('watchlist-plan-done') < sheet.indexOf('<AddToCalendarButtons'),
+    'Done is the primary action and sits above the secondary actions',
+  );
+});
+
 test('diary-only show page can delete a rating', () => {
   const diary = read('src/app/diary-show/[id]/DiaryShowClient.tsx');
   assert.match(diary, /<RatingEditor[\s\S]*?onDelete=\{editingReview \? handleDeleteRating : undefined\}/);
