@@ -18,14 +18,19 @@
     "ghost-notes-off-broadway-2026/oazis--unknown.json",
     "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
     "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
-    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
+    "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--julie-simpson.json",
+    "the-revlon-girl-off-west-end-2026/londonpubtheatres--chris-lilly.json",
+    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/british-theatre--unknown.json",
     "cloud-9-west-end-2026/times-uk--susannah-butter.json",
     "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
     "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
-    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
     "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
     "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
@@ -37,7 +42,11 @@
     "the-visitors-off-broadway-2026/boston-globe--unknown.json",
     "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
     "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/independent--unknown.json",
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -54,7 +63,12 @@
       "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
       "now-you-see-me-live-2026/nyt-theater--jonathan-mandell.json",
-      "ghost-notes-off-broadway-2026/oazis--unknown.json"
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--julie-simpson.json",
+      "the-revlon-girl-off-west-end-2026/londonpubtheatres--chris-lilly.json",
+      "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
     "amp": [],
     "browserbase": [
@@ -65,7 +79,8 @@
     "scrapingdog": [
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
       "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
-      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
     ],
     "scrapingbee": [
       "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
@@ -78,7 +93,7 @@
     ]
   },
   "startTime": "2026-11-12T20:06:25.494Z",
-  "lastProcessed": "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
   "log": [
     {
       "t": "2026-11-12T20:19:39.076Z",
@@ -145,6 +160,20 @@
       "t": "2026-11-12T20:45:51.183Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-12T21:04:13.217Z",
+      "event": "bb-session",
+      "session": "34bd68e3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-12T21:04:13.902Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
   ]
 }
