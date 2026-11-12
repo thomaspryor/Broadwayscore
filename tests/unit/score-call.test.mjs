@@ -174,6 +174,9 @@ test('hook: a failed load is retryable and never reads as a settled "no predicti
   assert.match(src, /failed: !parsed\.ok/);
   assert.match(src, /store\.loaded && !store\.failed/, 'load() must not short-circuit on a failed result');
   assert.match(src, /loadFailed/);
+  assert.match(src, /const stale = !!userId && store\.userId !== userId;/, 'a lock answered after sign-out must not enter the store');
+  assert.match(src, /\.\.\.held \}/, 'a late read must not drop a call locked this session');
+  assert.doesNotMatch(src, /calls: \{ \.\.\.store\.calls, \[showId\]: call \}, loaded: true, failed: false/, 'a lock must not clear failed for other shows');
 });
 test('buildSyncRows: clear flag only for a named show with no reviews, never otherwise', () => {
   const shows = ['a', 'b', 'c'].map((id) => ({ id, category: 'broadway', type: 'musical', status: 'previews', openingDate: '2026-12-01' }));

@@ -34,7 +34,9 @@ async function load(userId: string) {
     const parsed = parseMyCalls(await supabaseRestRpc<ScoreCall[]>('get_my_score_calls').catch(() => ({ data: null, error: new Error('network') })));
     if (store.inflight !== ref.p) return;
     // A failed load keeps any calls already known (a lock this session) and is retryable.
-    store = { userId, calls: parsed.ok ? (parsed.calls as Record<string, ScoreCall>) : store.calls, loaded: true, failed: !parsed.ok, inflight: null };
+    // Locked calls never change, so calls this session already holds win over a read that may predate them.
+    const held = store.userId === userId ? store.calls : {};
+    store = { userId, calls: { ...(parsed.ok ? (parsed.calls as Record<string, ScoreCall>) : {}), ...held }, loaded: true, failed: !parsed.ok, inflight: null };
     emit();
   })());
   store = { userId, calls: store.userId === userId ? store.calls : {}, loaded: false, failed: false, inflight: p };
@@ -55,9 +57,11 @@ export function useScoreCall(showId: string) {
 
   const lock = useCallback(async (score: number): Promise<LockResult> => {
     const { data, error } = await supabaseRestRpc<ScoreCall[]>('lock_score_call', { p_show_id: showId, p_score: score });
+    // Signed out (or switched user) while the request was pending: the server saved it, but nothing about it may enter the in-memory store.
+    const stale = !!userId && store.userId !== userId;
     if (error) {
       const m = error.message || '';
-      if (m.includes('already_called')) { store = { ...store, loaded: false, failed: false, inflight: null }; if (userId) await load(userId); return { ok: false, reason: 'already_called' }; }
+      if (m.includes('already_called')) { if (stale) return { ok: false, reason: 'already_called' }; store = { ...store, loaded: false, failed: false, inflight: null }; if (userId) await load(userId); return { ok: false, reason: 'already_called' }; }
       if (m.includes('calls_closed')) return { ok: false, reason: 'calls_closed' };
       if (m.includes('not_open')) return { ok: false, reason: 'not_open' };
       return { ok: false, reason: 'error' };
@@ -66,7 +70,8 @@ export function useScoreCall(showId: string) {
     if (!row) return { ok: false, reason: 'error' };
     const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
     const call: ScoreCall = { show_id: showId, called_score: row.called_score, forecast: num(row.forecast), lo80: num(row.lo80), hi80: num(row.hi80), locked_at: String(row.locked_at ?? '') };
-    store = { ...store, userId, calls: { ...store.calls, [showId]: call }, loaded: true, failed: false };
+    if (stale) return { ok: true, call };
+    store = { ...store, userId, calls: { ...store.calls, [showId]: call }, loaded: true };
     emit();
     return { ok: true, call };
   }, [showId, userId]);
