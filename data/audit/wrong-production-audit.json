@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-12T12:28:54.145Z",
+  "timestamp": "2026-11-12T13:36:52.676Z",
   "stats": {
-    "totalReviews": 81618,
-    "alreadyFlagged": 22280,
+    "totalReviews": 81620,
+    "alreadyFlagged": 22281,
     "dateGuardCatches": 218,
     "directorMismatch": 3651,
     "tvFilmSignals": 2302,
-    "londonSignals": 3707,
-    "offBroadwaySignals": 751,
-    "yearMismatch": 372,
+    "londonSignals": 3708,
+    "offBroadwaySignals": 752,
+    "yearMismatch": 373,
     "noPublishDate": 8439
   },
   "findings": [
@@ -1504,6 +1504,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "the-news-herald--sheri-gross.json",
+      "score": 75,
+      "publishDate": "2024-10-16",
+      "url": "https://www.news-herald.com/2024/10/16/a-beautiful-noise-at-playhouse-square-review-neil-diamond-jukebox-musical-sings/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2024 (2x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -41648,7 +41662,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2025-04-14",
       "url": "https://theartsdesk.com/theatre/manhunt-royal-court-review-terrifyingly-toxic-masculinity",
       "findings": [
@@ -41681,7 +41695,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "April 9th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/manhunt-review-robert-icke-royal-court-raoul-moat",
       "findings": [
@@ -41714,7 +41728,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 56,
+      "score": 61,
       "publishDate": "April 9th, 2025",
       "url": "https://www.thetimes.com/article/5af2b5b1-bbed-41ac-952b-1b34dc926c87",
       "findings": [
@@ -45278,7 +45292,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 97,
+      "score": 94,
       "publishDate": "2025-02-20",
       "url": "https://www.broadwayworld.com/westend/article/Review-MUCH-ADO-ABOUT-NOTHING-Theatre-Royal-Drury-Lane-20250220",
       "findings": [
@@ -45320,7 +45334,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "express-uk--stefan-kyriazis.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "2025-02-20",
       "url": "https://www.express.co.uk/entertainment/theatre/2016861/tom-hiddleston-hayley-atwell-Much-Ado-Shakespeare-review",
       "findings": [
@@ -45334,7 +45348,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 98,
+      "score": 96,
       "publishDate": "2025-02-20",
       "url": "https://www.ft.com/content/9f767a15-8d37-4bc3-bbf3-9417d8e9ad45",
       "findings": [
@@ -45348,7 +45362,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 98,
+      "score": 93,
       "publishDate": "February 20th, 2025",
       "url": "https://www.theguardian.com/stage/2025/feb/19/much-ado-about-nothing-review-theatre-royal-tom-hiddleston-hayley-atwell",
       "findings": [
@@ -45390,7 +45404,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 96,
+      "score": 92,
       "publishDate": "2025-02-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-about-nothing-theatre-royal-drury-lane-review",
       "findings": [
@@ -45479,7 +45493,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "radio-times--olivia-garrett.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2025-02-21",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/much-ado-about-nothing-review/",
       "findings": [
@@ -45493,7 +45507,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 97,
+      "score": 95,
       "publishDate": "2025-02-19",
       "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-tom-hiddleston-hayley-atwell-b1212063.html",
       "findings": [
@@ -45540,7 +45554,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 78,
+      "score": 81,
       "publishDate": "February 19th, 2025",
       "url": "https://theatreweekly.com/review-much-ado-about-nothing-at-theatre-royal-drury-lane/",
       "findings": [
@@ -45554,7 +45568,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "thestage--dave-fargnoli.json",
-      "score": 84,
+      "score": 89,
       "publishDate": "2025-02-20",
       "url": "https://www.thestage.co.uk/reviews/much-ado-about-nothing-review-theatre-royal-drury-lane-london-2025-tom-hiddleston-hayley-atwell-jamie-lloyd",
       "findings": [
@@ -45568,7 +45582,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 99,
+      "score": 98,
       "publishDate": null,
       "url": "https://www.timeout.com/london/theatre/much-ado-about-nothing-49-review",
       "findings": [
@@ -47128,7 +47142,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "guardian--david-jays.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2025-02-05",
       "url": "https://www.theguardian.com/stage/2025/feb/05/oedipus-review-delirious-dancers-and-booming-soundtrack-shake-the-plasterwork",
       "findings": [
@@ -47142,7 +47156,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 38,
+      "score": 36,
       "publishDate": "2025-02-05",
       "url": "https://inews.co.uk/culture/arts/rami-malek-fans-money-oedipus-3519801",
       "findings": [
@@ -47156,7 +47170,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 36,
+      "score": 39,
       "publishDate": "2025-02-05",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/rami-malek-oedipus-indira-varma-b2692489.html",
       "findings": [
@@ -47184,7 +47198,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "standard--tim-bano.json",
-      "score": 57,
+      "score": 65,
       "publishDate": "2025-02-05",
       "url": "https://www.standard.co.uk/culture/theatre/oedipus-old-vic-review-rami-malek-b1209249.html",
       "findings": [
@@ -47198,7 +47212,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "telegraph--claire-allfree.json",
-      "score": 35,
+      "score": 36,
       "publishDate": "2025-02-04",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/oedipus-old-vic-review-rami-malek/",
       "findings": [
@@ -47212,7 +47226,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "thestage--dave-fargnoli.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "2025-02-05",
       "url": "https://www.thestage.co.uk/reviews/oedipus-review-at-old-vic-theatre-london-by-ella-hickson-rami-malek-indira-varma",
       "findings": [
@@ -47240,7 +47254,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 54,
+      "score": 51,
       "publishDate": "2025-02-04",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oedipus-review-other-worldly-production-let-down-by-stiff-oscar-winner-cc73c8dgt",
       "findings": [
@@ -47273,7 +47287,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 60,
+      "score": 67,
       "publishDate": "2025-02-04",
       "url": "https://www.whatsonstage.com/news/oedipus-at-the-old-vic-review-rami-malek-and-indira-varma-start-strong-finish-stifled_1663421/",
       "findings": [
@@ -49867,7 +49881,7 @@
     {
       "showId": "p-rn-play-west-end-2025",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2025-11-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-PORN-PLAY-Royal-Court-20251114",
       "findings": [
@@ -95673,6 +95687,19 @@
       ]
     },
     {
+      "showId": "cloud-9-national-west-end-2026",
+      "file": "readaboutstuff--dan-english.json",
+      "publishDate": "2026-11-12",
+      "url": "https://readaboutstuff.com/2026/11/12/review-cloud-nine-national-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "cloud-9-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 74,
@@ -95801,6 +95828,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "monstagigz--unknown.json",
+      "score": 89,
       "publishDate": "2026-11-12",
       "url": "https://monstagigz.com/2026/11/12/theatre-review-cloud-9-starring-sam-troughton-tom-mothersdale-charlotte-ritchie-stuart-thompson-at-the-lyttelton-national-theatre/",
       "findings": [
@@ -110265,6 +110293,19 @@
       ]
     },
     {
+      "showId": "kate-allie-and-the-86-mets-off-broadway-2026",
+      "file": "openingnight--tulis-mccall.json",
+      "publishDate": "2026-11-10",
+      "url": "https://openingnight.online/kate-allie-and-the-86-mets-at-asylumnyc/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
       "score": 82,
@@ -112478,7 +112519,7 @@
     {
       "showId": "machinal-west-end-2024",
       "file": "artsdesk--david-nice.json",
-      "score": 100,
+      "score": 95,
       "publishDate": "April 19th, 2024",
       "url": "https://theartsdesk.com/theatre/machinal-old-vic-review-note-perfect-pity-and-terror",
       "findings": [
@@ -112520,7 +112561,7 @@
     {
       "showId": "machinal-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2024-04-28",
       "url": "https://www.thetimes.co.uk/article/the-long-island-housewife-sent-to-the-electric-chair-7fdb9r0tk",
       "findings": [
@@ -112825,7 +112866,7 @@
     {
       "showId": "man-and-boy-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": 65,
+      "score": 63,
       "publishDate": "2026-02-11",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/man-and-boy-review/",
       "findings": [
@@ -113006,7 +113047,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -113033,7 +113074,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-09-15",
       "url": "https://www.dailymail.com/tvshowbiz/article-16131281/PATRICK-MARMION-reviews-Man-Man-Royal-Court-Theatre.html",
       "findings": [
@@ -113324,7 +113365,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "the-recs--unknown.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-09-13",
       "url": "https://therecs.co.uk/man-to-man/",
       "findings": [
@@ -113477,7 +113518,7 @@
     {
       "showId": "manhunt-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "April 9th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/manhunt-royal-court-review-raoul-moat-b1221446.html",
       "findings": [
@@ -114690,7 +114731,7 @@
     {
       "showId": "mean-girls-west-end-2024",
       "file": "observer--susannah-clapp.json",
-      "score": 78,
+      "score": 72,
       "publishDate": "2024-06-30",
       "url": "https://www.theguardian.com/stage/article/2024/jun/30/the-week-in-theatre-the-constituent-kyoto-mean-girls-review",
       "findings": [
@@ -115399,7 +115440,7 @@
     {
       "showId": "mnemonic-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 80,
       "publishDate": "2024-07-03",
       "url": "https://www.londonboxoffice.co.uk/news/post/mnemonic-review",
       "findings": [
@@ -115413,7 +115454,7 @@
     {
       "showId": "mnemonic-west-end-2024",
       "file": "telegraph--nick-ferris.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "July 3rd, 2024",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/mnemonic-nationals-olivier-theatre-review/",
       "findings": [
@@ -115441,7 +115482,7 @@
     {
       "showId": "mnemonic-west-end-2024",
       "file": "whatsonstage--alex-wood.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "July 3rd, 2024",
       "url": "https://www.whatsonstage.com/news/mnemonic-at-the-national-theatre-review-the-iceman-stunneth_1611356/",
       "findings": [
@@ -115958,7 +115999,7 @@
     {
       "showId": "my-master-builder-west-end-2025",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 64,
+      "score": 63,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-my-master-builder-wyndham-s-theatre",
       "findings": [
@@ -115986,7 +116027,7 @@
     {
       "showId": "my-master-builder-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
-      "score": 60,
+      "score": 61,
       "publishDate": "2025-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
       "findings": [
@@ -116772,7 +116813,7 @@
     {
       "showId": "next-to-normal-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 97,
+      "score": 92,
       "publishDate": "2024-06-27",
       "url": "https://www.londonboxoffice.co.uk/news/post/next-to-normal-review",
       "findings": [
@@ -116786,7 +116827,7 @@
     {
       "showId": "next-to-normal-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
-      "score": 79,
+      "score": 80,
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/next-to-normal-review-donmar-warehouse",
       "findings": [
@@ -116828,7 +116869,7 @@
     {
       "showId": "next-to-normal-west-end-2024",
       "file": "radio-times--joanna-magill.json",
-      "score": 96,
+      "score": 95,
       "publishDate": null,
       "url": "https://www.radiotimes.com/going-out/tickets/next-to-normal-review/",
       "findings": [
@@ -116870,7 +116911,7 @@
     {
       "showId": "next-to-normal-west-end-2024",
       "file": "west-end-best-friend--stephanie-osztreicher.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "June 27th, 2024",
       "url": "https://www.westendbestfriend.co.uk/news/review-next-to-normal-wyndhams-theatre",
       "findings": [
@@ -117493,7 +117534,7 @@
     {
       "showId": "oedipus-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 94,
+      "score": 93,
       "publishDate": "2024-10-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/oedipus-wyndhams-review",
       "findings": [
@@ -117548,7 +117589,7 @@
     {
       "showId": "oedipus-west-end-2024",
       "file": "observer--unknown.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2024-10-20",
       "url": "https://www.theguardian.com/stage/2024/oct/20/the-week-in-theatre-oedipus-robert-icke-wyndhams-mark-strong-lesley-manville-review-the-fear-of-13-donmar-warehouse-lindsey-ferrentino-adrien-brody-justin-martin-the-duchess-of-malfi-zinnie-harris-john-webster-jodie-whittaker",
       "findings": [
@@ -117590,7 +117631,7 @@
     {
       "showId": "oedipus-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 66,
+      "score": 67,
       "publishDate": "2024-10-20",
       "findings": [
         {
@@ -117603,7 +117644,7 @@
     {
       "showId": "oedipus-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2025-02-05",
       "url": "https://www.allthatdazzles.co.uk/post/review-oedipus-the-old-vic",
       "findings": [
@@ -119982,7 +120023,7 @@
     {
       "showId": "people-places-and-things-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2024-06-02",
       "url": "https://www.theguardian.com/stage/article/2024/jun/02/the-week-in-theatre-bluets-royal-court-katie-mitchell-margaret-perry-maggie-nelson-review-people-places-and-things-trafalgar-theatre-denise-gough-duncan-macmillan-jeremy-herrin?CMP=Share_iOSApp_Other",
       "findings": [
@@ -119996,7 +120037,7 @@
     {
       "showId": "people-places-and-things-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2024-05-15",
       "url": "https://www.londonboxoffice.co.uk/news/post/people-places-things-review",
       "findings": [
@@ -120587,7 +120628,7 @@
     {
       "showId": "player-kings-west-end-2024",
       "file": "city-am--adam-bloodworth.json",
-      "score": 85,
+      "score": 88,
       "publishDate": "2024-04-12",
       "url": "https://www.cityam.com/player-kings-review-ian-mckellen-is-hilarious-in-immensely-cool-show/",
       "findings": [
@@ -120615,7 +120656,7 @@
     {
       "showId": "player-kings-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 81,
+      "score": 76,
       "publishDate": "2024-04-23",
       "url": "https://www.theguardian.com/stage/2024/apr/14/the-week-in-theatre-player-kings-robert-icke-ian-mckellen-noel-coward-theatre-review-red-pitch-tyrell-williams-sohoplace-underdog-the-other-other-bronte-sarah-gordon-dorfman-national-theatre",
       "findings": [
@@ -120629,7 +120670,7 @@
     {
       "showId": "player-kings-west-end-2024",
       "file": "standard--nick-curtis.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "April 11th, 2024",
       "url": "https://www.standard.co.uk/culture/theatre/player-kings-noel-coward-theatre-review-ian-mckellen-toheeb-jimoh-b1150748.html",
       "findings": [
@@ -120643,7 +120684,7 @@
     {
       "showId": "player-kings-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 90,
+      "score": 88,
       "publishDate": "2024-04-21",
       "url": "https://www.thetimes.co.uk/article/catch-mckellen-before-the-chimes-of-midnight-sv0v3ptfm",
       "findings": [
