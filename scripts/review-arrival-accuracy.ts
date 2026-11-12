@@ -35,10 +35,12 @@ const DAY = 86400000;
 const within3d = (id: string, open: string) => dates(id).filter((d) => d && Date.parse(String(d).slice(0, 10)) - Date.parse(open) <= 3 * DAY && Date.parse(String(d).slice(0, 10)) >= Date.parse(open)).length;
 
 const history: HistoryShow[] = shows
+  // Intentionally NOT isBroadwayCategory: the status backtest only counts shows explicitly marked broadway, same as src/lib/data-review-arrival.ts (null-category history shows have no press-night timing).
   .filter((s) => s.category === 'broadway' && s.openingDate)
   .map((s) => ({ id: s.id, category: s.category, openingDate: s.openingDate, reviewDates: dates(s.id) }));
 
 const opened = shows
+  // Intentionally NOT isBroadwayCategory: the status backtest only counts shows explicitly marked broadway, same as src/lib/data-review-arrival.ts (null-category history shows have no press-night timing).
   .filter((s) => s.category === 'broadway' && s.openingDate && Date.parse(s.openingDate) < ASOF - 5 * DAY && within3d(s.id, s.openingDate) >= 5)
   .sort((a, b) => (a.openingDate < b.openingDate ? 1 : -1))
   .slice(0, N);
