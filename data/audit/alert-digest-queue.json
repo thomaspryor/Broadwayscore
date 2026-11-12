@@ -199,5 +199,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-12T02:09:50.704Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:act-of-god-off-west-end-2026",
+    "title": "Auto-remediation gave up on act-of-god-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"act-of-god-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-12T03:06:33.379Z"
   }
 ]
