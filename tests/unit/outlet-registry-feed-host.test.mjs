@@ -42,7 +42,7 @@ test('every polled feed/API/census host matches the primary registry domain', ()
     if (!o || !o.domain || !h || PLATFORM_HOSTS.has(h) || FEED_HOST_EXEMPT[id]) continue;
     // Primary domain only: site:<domain> SERP queries and domain lookups use it, not the aliases.
     const d = o.domain.replace(/^www\./, '');
-    if (!(h === d || h.endsWith(`.${d}`) || d.endsWith(`.${h}`))) bad.push(`${id} (${kind}): feed host ${h}, registry primary domain ${d}`);
+    if (!(h === d || h.endsWith(`.${d}`))) bad.push(`${id} (${kind}): feed host ${h}, registry primary domain ${d}`);
   }
   assert.deepEqual(bad, [], 'registry domain disagrees with the host we actually poll; site: SERP queries target the wrong host');
 });
