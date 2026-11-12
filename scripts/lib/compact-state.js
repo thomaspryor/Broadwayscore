@@ -268,7 +268,8 @@ function findCompactLog(sessionId, transcriptPath) {
     for (const f of fs.readdirSync(STATE_DIR)) {
       if (!f.endsWith('.compactions.json') || f.includes('__agent-')) continue;
       if (f !== `${sid}.compactions.json` && !f.startsWith(`${sid}__`)) continue;
-      const m = fs.statSync(path.join(STATE_DIR, f)).mtimeMs;
+      let m = 0;
+      try { m = fs.statSync(path.join(STATE_DIR, f)).mtimeMs; } catch { continue; } // vanished mid-scan
       if (!best || m > best.m) best = { f, m };
     }
   } catch { return exact; }
@@ -301,7 +302,7 @@ function getThrashWarning(times, now = Date.now()) {
   const why = recent >= THRASH_RECENT
     ? `${recent} compactions in the last ${Math.round(THRASH_WINDOW_MS / 60000)} minutes`
     : `${list.length} compactions in this session`;
-  return `COMPACTION THRASH GUARD (BRO-7397): ${why}. After a compact you restart near 185K of a 240K limit, so one skill load or long log refills it, and the harness stops the turn after three in a row (an owner session died this way on 2026-11-12 and sat dead for 72 minutes). Until the work is pushed: (1) no Read of files over 200 lines, no cat of diffs or logs, pipe output to a file and print tail -15, and do not re-invoke a Skill you already ran; (2) commit and push what exists now (land/ or visual-hold/ ref); (3) write the remaining steps as a handoff comment on the Linear card; (4) if more than about three steps remain, hand them off: a worker (started by create_session) sends the state to @parent, the owner's own session starts a fresh worker with create_session, then end with KEEP OPEN. Do not run the close-out chain (/ship-check, /what-else, /wrap-up) in this context; the fresh session runs it.`;
+  return `COMPACTION THRASH GUARD (BRO-7397): ${why}. A compact restores far less room than it reports (the restart context is large), so one skill load or long log refills it, and the harness stops the turn after three in a row (an owner session died this way on 2026-11-12 and sat dead for 72 minutes). Until the work is pushed: (1) no Read of files over 200 lines, no cat of diffs or logs, pipe output to a file and print tail -15, and do not re-invoke a Skill you already ran; (2) commit and push what exists now (land/ or visual-hold/ ref); (3) write the remaining steps as a handoff comment on the Linear card; (4) if more than about three steps remain, hand them off: a worker (started by create_session) sends the state to @parent, the owner's own session starts a fresh worker with create_session, then end with KEEP OPEN. Do not run the close-out chain (/ship-check, /what-else, /wrap-up) in this context; the fresh session runs it.`;
 }
 
 /** Checkpoints nobody restored (a subagent's, an abandoned session's) are removed once stale. */
@@ -324,7 +325,7 @@ function logError(err) {
 /** Compare only the compaction knobs; an absent key means no env override. */
 function getStaleEnvWarning(settingsEnv = {}, liveEnv) {
   if (!settingsEnv || typeof settingsEnv !== 'object' || Array.isArray(settingsEnv)) return '';
-  const keys = ['CLAUDE_CODE_AUTO_COMPACT_WINDOW', 'CLAUDE_CODE_DISABLE_1M_CONTEXT'];
+  const keys = ['CLAUDE_CODE_AUTO_COMPACT_WINDOW', 'CLAUDE_CODE_DISABLE_1M_CONTEXT', 'CLAUDE_AUTOCOMPACT_PCT_OVERRIDE'];
   const stale = keys.filter(key => String(settingsEnv[key] ?? '') !== String(liveEnv[key] ?? ''));
   if (!stale.length) return '';
   return `Stale env: live compaction settings differ from .claude/settings.json (${stale.join(', ')}). This session retains its creation-time env and may keep thrashing. Hand remaining heavy work to a fresh session (create_session) and finish only the close-out here.`;
@@ -340,15 +341,17 @@ function restoreCheckpoint(input) {
   let guard = '';
   try { guard = getThrashWarning(readCompactLog(findCompactLog(input.session_id, input.transcript_path))); } catch { /* guard is advisory */ }
   let md = null;
-  const p = findStateFile(input.session_id, input.transcript_path);
-  if (p) {
-    try {
-      const ageMs = Date.now() - fs.statSync(p).mtimeMs;
-      if (ageMs <= MAX_AGE_MS) md = fs.readFileSync(p, 'utf8');
-    } finally {
-      try { fs.unlinkSync(p); } catch { /* already gone */ }
+  try {
+    const p = findStateFile(input.session_id, input.transcript_path);
+    if (p) {
+      try {
+        const ageMs = Date.now() - fs.statSync(p).mtimeMs;
+        if (ageMs <= MAX_AGE_MS) md = fs.readFileSync(p, 'utf8');
+      } finally {
+        try { fs.unlinkSync(p); } catch { /* already gone */ }
+      }
     }
-  }
+  } catch (err) { logError(err); } // a checkpoint failure must not discard the guard
   if (!md && !guard) return null;
   if (md) {
     // Read at restore time: a session's env stays frozen when repo settings change.
@@ -363,7 +366,7 @@ function restoreCheckpoint(input) {
   return {
     hookSpecificOutput: {
       hookEventName: 'SessionStart',
-      additionalContext: [guard, md].filter(Boolean).join('\n\n'),
+      additionalContext: [guard, md && guard ? md.slice(0, Math.max(0, MAX_CHARS - guard.length - 2)) : md].filter(Boolean).join('\n\n'),
     },
   };
 }
