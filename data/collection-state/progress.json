@@ -24,7 +24,11 @@
     "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
     "the-lives-of-others-west-end-2026/londontheatredirect--julie-simpson.json",
     "the-revlon-girl-off-west-end-2026/londonpubtheatres--chris-lilly.json",
-    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
+    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json",
+    "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "girls-off-west-end-2026/theartsdispatch--jim-keaveney.json",
+    "memoriam-off-west-end-2026/ground--unknown.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/british-theatre--unknown.json",
@@ -46,7 +50,10 @@
     "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
     "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
     "the-lives-of-others-west-end-2026/independent--unknown.json",
-    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json"
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
+    "girls-off-west-end-2026/londontheatre1--unknown.json",
+    "girls-off-west-end-2026/plays-to-see--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -68,19 +75,24 @@
       "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
       "the-lives-of-others-west-end-2026/londontheatredirect--julie-simpson.json",
       "the-revlon-girl-off-west-end-2026/londonpubtheatres--chris-lilly.json",
-      "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
+      "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json",
+      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "girls-off-west-end-2026/theartsdispatch--jim-keaveney.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json",
-      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
     ],
     "directCookies": [],
     "scrapingdog": [
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
       "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
       "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
-      "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
+      "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+      "memoriam-off-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
@@ -93,7 +105,7 @@
     ]
   },
   "startTime": "2026-11-12T20:06:25.494Z",
-  "lastProcessed": "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "memoriam-off-west-end-2026/ground--unknown.json",
   "log": [
     {
       "t": "2026-11-12T20:19:39.076Z",
@@ -215,6 +227,29 @@
       "t": "2026-11-12T21:56:39.555Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-12T22:24:35.711Z",
+      "event": "bb-session",
+      "session": "8af4626b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-12T22:24:36.091Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-12T22:30:31.313Z",
+      "event": "bb-session",
+      "session": "804b1e52",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-12T22:32:06.758Z",
+      "event": "bb-session",
+      "session": "1609012e",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ],
   "recoveredAfterFailure": [
