@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-11T23:31:10.178Z",
+  "lastChecked": "2026-11-12T09:58:13.223Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -94,22 +94,22 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "93 review(s) with no usable text, 64 rejected although verified as a review, 26 never scored, 35 with a blocked URL (0 published on the site), across 670 current shows"
+      "message": "94 review(s) with no usable text, 63 rejected although verified as a review, 26 never scored, 35 with a blocked URL (0 published on the site), across 676 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (48362 checked)"
+      "message": "No published review score contradicts the critic's rating (48487 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "21 early publish date(s) awaiting recheck (limit 40); 212 already attempted and not yet confirmed"
+      "message": "1 early publish date(s) awaiting recheck (limit 40); 213 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3443 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 3449 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -129,7 +129,7 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "2 discovered review(s) not reaching the composite score (0 T1). Oldest: rope-off-broadway-2026 — talkinbroadway (empty-body)"
+      "message": "2 discovered review(s) not reaching the composite score (0 T1). Oldest: the-cottage-regional-2026 — theatermania (empty-body)"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "system": "push-retry deadman",
   "status": "error",
-  "lastChecked": "2026-11-11T23:31:10.183Z",
+  "lastChecked": "2026-11-12T09:58:13.228Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Push-retry deadman",
       "status": "error",
-      "message": "5 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x3, Collect WE/OB Review Texts x1, Collect Review Texts x1]. Most recent reason: retries-exhausted. 17 committed file(s) discarded across 5 run(s). 254 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+      "message": "5 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x3, Collect WE/OB Review Texts x1, Collect Review Texts x1]. Most recent reason: retries-exhausted. 17 committed file(s) discarded across 5 run(s). 259 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
     }
   ]
 }

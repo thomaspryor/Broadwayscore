@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-11T23:31:10.179Z",
+  "lastChecked": "2026-11-12T09:58:13.224Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Quality: opening date vs review dates",
       "status": "warn",
-      "message": "1 show(s) store an opening date later than their reviews: the-ripple-the-wave-that-carried-me-home-off-broadway-2026 (stored 2026-11-18, reviews 2026-11-10)"
+      "message": "2 show(s) store an opening date later than their reviews: the-ripple-the-wave-that-carried-me-home-off-broadway-2026 (stored 2026-11-18, reviews 2026-11-10); spend-spend-spend-royal-exchange-regional-2024 (stored 2024-12-22, reviews 2024-11-29)"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -19,12 +19,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.3% scored (50420/51316)"
+      "message": "98.2% scored (50431/51363)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
+      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (2h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -38,8 +38,8 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "pass",
-      "message": "No probable domain moves in 366 unregistered host(s)"
+      "status": "warn",
+      "message": "1 unregistered host(s) name-match a registered outlet (e.g. rollingstone.co.uk → rollingstone) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1872 outlet(s), 81509 review(s)"
+      "message": "No broken-extractor signature in 1877 outlet(s), 81574 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1872 outlet(s), 81509 review(s)"
+      "message": "No broken-extractor signature in 1877 outlet(s), 81574 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -63,8 +63,8 @@
     },
     {
       "name": "Quality: expected critics missing",
-      "status": "pass",
-      "message": "Every usual critic has reviewed (or is acked) for openings 4-42 days old (17 more still being searched for automatically)"
+      "status": "warn",
+      "message": "1 usual-critic review(s) the automatic search could not settle (19 more still being searched for automatically): TheaterMania on The Morbs: no review on the site, and the automatic search has not looked for it yet."
     },
     {
       "name": "Quality: coverageExpectation drift",
