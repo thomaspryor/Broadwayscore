@@ -3478,6 +3478,8 @@ function stuckPipelineRow({ signals = [], errors = [], macSourcesPresent = true 
   return { name, status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' };
 }
 
+// LOCAL-FOLD(checkStuckPipelineItems): send-morning-digest.js folds the Mac-only
+// signals via localRollupIssues (digest-autofix.js), whose card verifies --live.
 function checkStuckPipelineItems() {
   const { gatherDigest, stuckSignals } = require('./lib/overnight-digest.js');
   const { MAIN_REPO_ROOT: repo } = require('./lib/repo-root.js');

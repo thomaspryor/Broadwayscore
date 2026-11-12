@@ -27,6 +27,8 @@ const AUDITED = [
   { fn: 'checkAutofixEffectiveness', disposition: 'fold', digestTokens: ['localLoopDeadMessage({ pendingIssues, pipelineIssues, skipMacLocal, now })'], localTokens: ['rows = readLedgerRows(ledgerPath)', 'rows.concat(reconcileDigestOutcomes(', 'const r = assessAutofixEffectiveness(rows,'] },
   { fn: 'checkDigestInvariantFail', disposition: 'fold', digestTokens: ['assessDigestInvariantFailRow(entries)', 'digest-invariant-fail-ledger.jsonl\');'] },
   { fn: 'checkSharedCheckoutShallow', disposition: 'fold', digestTokens: ['shallowDigestRow({ fromDir: REPO })', 'sections.health.errors.push'] },
+  // BRO-7276: Mac-only sources; the digest folds it as a local rollup row that verifies --live.
+  { fn: 'checkStuckPipelineItems', disposition: 'fold', digestTokens: ['stuckSignalTexts = stuckSignals(digest);', 'stuckSignals: stuckSignalTexts'] },
   { fn: 'checkDispatchHealth', disposition: 'fold', digestTokens: ['computeDispatchHealthDigest({ entries: dispatchEntries', 'computeHeadlessDispatchDigest({ entries: dispatchEntries', 'sections.health.errors.push'] },
 ];
 

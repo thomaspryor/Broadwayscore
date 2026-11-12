@@ -152,7 +152,7 @@ test('gatherDigest ignores routine reconcile heartbeat/success kinds', () => {
     const digest = gatherDigest({ repo });
     assert.equal(digest.stuck.headlessJobs, undefined);
   } finally {
-    fs.rmSync(repo, { recursive: true, force: true });
+    fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -171,7 +171,7 @@ test('gatherDigest surfaces genuinely actionable reconcile kinds', () => {
     assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[zombie-flip]')));
     assert.ok(!digest.stuck.headlessJobs.some(l => l.includes('[card-drift-pass]')));
   } finally {
-    fs.rmSync(repo, { recursive: true, force: true });
+    fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -191,7 +191,7 @@ test('gatherDigest suppresses an actionable event once its correlated resolving 
     assert.equal(digest.stuck.headlessJobs.length, 1);
     assert.match(digest.stuck.headlessJobs[0], /job j2/);
   } finally {
-    fs.rmSync(repo, { recursive: true, force: true });
+    fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -209,7 +209,7 @@ test('gatherDigest does not correlate flagless-session (shared pseudo-taskId) or
     assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[flagless-session]')));
     assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[zombie-flip]')));
   } finally {
-    fs.rmSync(repo, { recursive: true, force: true });
+    fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -224,7 +224,7 @@ test('gatherDigest({ skipFetch: true }) never shells out to git fetch', () => {
     const digest = gatherDigest({ repo, skipFetch: true });
     assert.ok(!digest.errors.some(e => /git fetch failed/.test(e)), `unexpected fetch error: ${JSON.stringify(digest.errors)}`);
   } finally {
-    fs.rmSync(repo, { recursive: true, force: true });
+    fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -279,7 +279,7 @@ test('gatherDigest drops a rebuild regression whose show has recovered (BRO-6432
     assert.equal(digest.stuck.reviewRegressions.length, 1);
     assert.match(digest.stuck.reviewRegressions[0], /^still-low:/);
   } finally {
-    fs.rmSync(repo, { recursive: true, force: true });
+    fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -294,7 +294,7 @@ test('gatherDigest keeps a regression when reviews.json is missing or older than
       JSON.stringify({ _meta: { lastUpdated: '2020-01-01T00:00:00Z' }, reviews: [{ showId: 's' }, { showId: 's' }] }));
     assert.equal(gatherDigest({ repo, skipFetch: true }).stuck.reviewRegressions.length, 1);
   } finally {
-    fs.rmSync(repo, { recursive: true, force: true });
+    fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -363,7 +363,7 @@ test('gatherDigest keeps a regression when reviews.json is missing or older than
     const lines = d.stuck.worktrees || [];
     assert.equal(lines.some((l) => l.startsWith('agent-x')), false, lines.join('|'));
     assert.equal(lines.some((l) => l.startsWith('stranded-y: 1 unmerged commit')), true, lines.join('|'));
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 }
 
