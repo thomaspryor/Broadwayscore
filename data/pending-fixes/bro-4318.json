@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-4318",
-  "planId": "d64c8731-9fb6-4008-82f6-d504f6a091ae",
+  "planId": "dd333a4a-b741-4ff8-ae1a-c418aee5ff24",
   "status": "pending",
-  "createdAt": "2026-11-12T03:17:28.210Z",
+  "createdAt": "2026-11-12T03:24:19.960Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-4318: resolve 23 sided-with-LLM adjudications that disputed a stored rating (correct 4 ratings, clear 13 mis-extracted ratings, clear 6 adjudications so the printed rating stands; plus the Misery HuffPost misspelled twin)",
+    "summary": "BRO-4318: resolve 23 sided-with-LLM adjudications that disputed a stored rating (correct 4 ratings, clear 13 mis-extracted ratings, clear 6 adjudications so the printed rating stands) plus 5 same-class cousins (part 1 of 2)",
     "steps": [
       "BRO-4318: clear mis-extracted rating A (llm-extracted-gemini); stored text prints 'Grade: B-' (not A); Culture Sauce letter grades do not parse in score-parsers, so the hallucinated A is cleared and the ",
       "BRO-4318: clear mis-extracted rating 4/5 (timeout-svg-stars); review url now redirects to the Time Out homepage (its listing cards carry 3/4/5-star widgets); the adjudication note quotes a 5/5, so the s",

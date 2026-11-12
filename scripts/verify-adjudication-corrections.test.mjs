@@ -27,8 +27,9 @@ function reviewTextsDir() {
 
 test('the disposition list is complete and carries no review text', () => {
   assert.equal(list.entries.length, 23);
-  assert.equal(new Set(list.entries.map((e) => e.file)).size, list.entries.length, 'no duplicate files');
-  for (const e of list.entries) {
+  const all = [...list.entries, ...(list.cousins || [])];
+  assert.equal(new Set(all.map((e) => e.file)).size, all.length, 'no duplicate files');
+  for (const e of all) {
     assert.match(e.file, /^[a-z0-9-]+\/[a-z0-9-]+--[a-z0-9-]+\.json$/, e.file);
     assert.ok(DISPOSITIONS.includes(e.disposition), `${e.file}: ${e.disposition}`);
     assert.ok(typeof e.evidence === 'string' && e.evidence.length < 300, `${e.file}: short evidence, no quoted review`);
@@ -51,7 +52,7 @@ test('every listed review is in its resolved state', (t) => {
   const dir = reviewTextsDir();
   if (!dir) { t.skip('review texts not present in this checkout'); return; }
   const unresolved = [];
-  for (const e of list.entries) {
+  for (const e of [...list.entries, ...(list.cousins || [])]) {
     const p = path.join(dir, e.file);
     const data = fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : null;
     const r = dispositionResolved(data, e.disposition, e.to);
