@@ -1,5 +1,9 @@
 #!/usr/bin/env node
-// BRO-7403: link unlinked candidate sub-venue slugs. `--write` edits the defs files.
+/**
+ * BRO-7403: link unlinked candidate sub-venue slugs.
+ * Usage: node scripts/heal-venue-complex-gaps.js [--write]  (dry run without --write)
+ */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { VENUE_COMPLEX_MARKETS } = require('./lib/venue-complex-audit');
