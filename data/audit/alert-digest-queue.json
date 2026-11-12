@@ -610,5 +610,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-12T13:22:24.448Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7376-opening-night-status",
+    "title": "Landing blocked: rebase red on land/bro-7376-opening-night-status",
+    "description": "land.yml did not land land/bro-7376-opening-night-status: the rebase gate went red at 5d14f5a726. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43232466626",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7376-opening-night-status"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5d14f5a726bedfdb0a29e674deb93b0528603412"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43232466626"
+      }
+    ],
+    "queuedAt": "2026-11-12T14:01:32.553Z"
   }
 ]
