@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "postedDetection": "skipped",
-    "postedDetectionFailingSince": "2026-11-12T11:50:20.953Z",
+    "postedDetection": "ok",
+    "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-12T11:50:51.985Z"
+    "lastRun": "2026-11-12T12:13:49.353Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3536,35 +3536,32 @@
       "market": "west-end",
       "subreddit": "TheWestEnd",
       "score": 77,
-      "reviewCount": 19,
+      "reviewCount": 20,
       "url": "https://westendscorecard.com/show/cloud-9-west-end",
       "notability": 43,
       "createdAt": "2026-11-11T15:41:17.013Z",
       "status": "ready",
-      "source": "gpt-4o",
+      "source": "claude-sonnet-5-5",
       "lintProblems": [],
-      "title": "11 reviews are in for Cloud 9 at the Lyttelton Theatre. 77/100, with 5 raves leading the charge!",
-      "body": "Cloud 9 just opened at the Lyttelton Theatre, and I found 19 reviews: 5 raves, 11 positive, 2 mixed, and 1 negative. Audiences are at a B (across Mezzanine, London Box Office, and Seatplan).\n\nStuart King at London Box Office called it \"an utter delight, delivered by a terrific cast and creative team who have worked wonders with the material.\" Meanwhile, Clive Davis at The Sunday Times noted that \"once Churchill has laid out her stall on the evils of the patriarchy and Union Jack imperialism, it turns out to be a long evening.\"\n\nhttps://westendscorecard.com/show/cloud-9-west-end\n\nI haven't seen this one yet and remain undecided on going to this one still. Anyone seen it?",
-      "why": "The hook is the 5 rave reviews, which suggests a strong positive reaction from some critics.",
-      "expectedPushback": "Someone might say that historical plays like Cloud 9 aren't relevant anymore.",
-      "suggestedReply": "I get that! Some critics did mention the historical angle. I'm curious how it feels live.",
+      "title": "Reviews are in for Cloud 9 at the Lyttelton. 77/100 from 20 critics, and the doubters are mostly about the play itself",
+      "body": "I found 20 reviews: 5 raves, 12 positive, 2 mixed, 1 negative. Audiences are at a B (across Mezzanine, London Box Office, and Seatplan).\n\nhttps://westendscorecard.com/show/cloud-9-west-end\n\nStuart King at London Box Office called it \"an utter delight.\" Meanwhile Nick Curtis at the Evening Standard liked the production but wrote that the play \"resonates more for its historical significance than its contemporary appeal.\" And Clive Davis at The Sunday Times wrote \"it turns out to be a long evening.\" Which I GET, it's a 1979 play, so some of it was always going to feel dated.\n\nSo it sounds like a strong production of a play that not everyone thinks has aged well. Anyone seen it?\n\nI haven't seen this one yet, and want to.",
+      "why": "Leads with the score and review count, then gives the one interesting split (the production gets praised, the doubts are about the play's age), using short plain quotes and a real question to the sub.",
+      "expectedPushback": "Someone will say a B from 33 audience reviews is hardly a rave, or that a 1979 Churchill play shouldn't be boiled down to a number.",
+      "suggestedReply": "Fair, the number is just my way of keeping track of what 20 critics wrote, and the quotes are the interesting part. I'm genuinely curious how it plays in the room, so tell me if you've seen it!",
       "personalLines": [
-        "I haven't seen this one yet and remain undecided on going to this one still.",
-        "I haven't seen this one yet and am desperate to.",
-        "I haven't seen this one yet, not sure this one's for me."
+        "I haven't seen this one yet, and I'm leaning toward going.",
+        "Still undecided on this one, honestly.",
+        "I haven't seen it, but the cast reactions have me curious."
       ],
-      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=11+reviews+are+in+for+Cloud+9+at+the+Lyttelton+Theatre.+77%2F100%2C+with+5+raves+leading+the+charge%21&text=Cloud+9+just+opened+at+the+Lyttelton+Theatre%2C+and+I+found+19+reviews%3A+5+raves%2C+11+positive%2C+2+mixed%2C+and+1+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+London+Box+Office%2C+and+Seatplan%29.%0A%0AStuart+King+at+London+Box+Office+called+it+%22an+utter+delight%2C+delivered+by+a+terrific+cast+and+creative+team+who+have+worked+wonders+with+the+material.%22+Meanwhile%2C+Clive+Davis+at+The+Sunday+Times+noted+that+%22once+Churchill+has+laid+out+her+stall+on+the+evils+of+the+patriarchy+and+Union+Jack+imperialism%2C+it+turns+out+to+be+a+long+evening.%22%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AI+haven%27t+seen+this+one+yet+and+remain+undecided+on+going+to+this+one+still.+Anyone+seen+it%3F",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=11+reviews+are+in+for+Cloud+9+at+the+Lyttelton+Theatre.+77%2F100%2C+with+5+raves+leading+the+charge%21&text=Cloud+9+just+opened+at+the+Lyttelton+Theatre%2C+and+I+found+19+reviews%3A+5+raves%2C+11+positive%2C+2+mixed%2C+and+1+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+London+Box+Office%2C+and+Seatplan%29.%0A%0AStuart+King+at+London+Box+Office+called+it+%22an+utter+delight%2C+delivered+by+a+terrific+cast+and+creative+team+who+have+worked+wonders+with+the+material.%22+Meanwhile%2C+Clive+Davis+at+The+Sunday+Times+noted+that+%22once+Churchill+has+laid+out+her+stall+on+the+evils+of+the+patriarchy+and+Union+Jack+imperialism%2C+it+turns+out+to+be+a+long+evening.%22%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AI+haven%27t+seen+this+one+yet+and+remain+undecided+on+going+to+this+one+still.+Anyone+seen+it%3F",
+      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+77%2F100+from+20+critics%2C+and+the+doubters+are+mostly+about+the+play+itself&text=I+found+20+reviews%3A+5+raves%2C+12+positive%2C+2+mixed%2C+1+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+London+Box+Office%2C+and+Seatplan%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+called+it+%22an+utter+delight.%22+Meanwhile+Nick+Curtis+at+the+Evening+Standard+liked+the+production+but+wrote+that+the+play+%22resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22+And+Clive+Davis+at+The+Sunday+Times+wrote+%22it+turns+out+to+be+a+long+evening.%22+Which+I+GET%2C+it%27s+a+1979+play%2C+so+some+of+it+was+always+going+to+feel+dated.%0A%0ASo+it+sounds+like+a+strong+production+of+a+play+that+not+everyone+thinks+has+aged+well.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+want+to.",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+77%2F100+from+20+critics%2C+and+the+doubters+are+mostly+about+the+play+itself&text=I+found+20+reviews%3A+5+raves%2C+12+positive%2C+2+mixed%2C+1+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+London+Box+Office%2C+and+Seatplan%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+called+it+%22an+utter+delight.%22+Meanwhile+Nick+Curtis+at+the+Evening+Standard+liked+the+production+but+wrote+that+the+play+%22resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22+And+Clive+Davis+at+The+Sunday+Times+wrote+%22it+turns+out+to+be+a+long+evening.%22+Which+I+GET%2C+it%27s+a+1979+play%2C+so+some+of+it+was+always+going+to+feel+dated.%0A%0ASo+it+sounds+like+a+strong+production+of+a+play+that+not+everyone+thinks+has+aged+well.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+want+to.",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
-      "emailedAt": "2026-11-11T23:17:10.051Z",
-      "reminderAt": "2026-11-11T23:17:10.051Z",
+      "emailedAt": "2026-11-12T12:15:30.872Z",
+      "reminderAt": "2026-11-12T12:15:30.872Z",
       "emailedScore": 77,
-      "emailedReviewCount": 18,
-      "updateCount": 4,
-      "refreshedAt": "2026-11-12T11:50:51.984Z",
-      "previousScore": 77,
-      "previousReviewCount": 18
+      "emailedReviewCount": 20,
+      "updateCount": 5
     }
   }
 }
