@@ -28,6 +28,7 @@ import { isWatchlistEntryRated, selectToBeRatedWatchlistEntries, selectUpcomingW
 
 import { useToastSafe } from '@/components/ui/Toast';
 import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
+import YourPredictions from '@/components/my-shows/YourPredictions';
 import { selectDeviceSavedShows } from '@/lib/device-saved-shows';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
@@ -949,6 +950,7 @@ export default function MyShowsClient() {
       {/* Diary tab */}
       {activeTab === 'diary' && (
         <div id="panel-diary" role="tabpanel" aria-labelledby="tab-diary">
+          {!isMockMode && <YourPredictions showMap={showMap} />}
           {reviews.length === 0 && upcomingWatchlistEntries.length === 0 && toBeRatedEntries.length === 0 ? (
             !isMockMode && (reviewsError || watchlistError) ? (
               <LoadError onRetry={() => { getAllReviews(); getWatchlist(true); }} />

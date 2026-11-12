@@ -80,3 +80,14 @@ export function useScoreCall(showId: string) {
 
   return { signedIn: !!userId, loadError: !!userId && s.userId === userId && s.loadError, retry, loaded: !userId || (s.userId === userId && s.loaded), call: userId && s.userId === userId ? s.calls[showId] ?? null : null, lock };
 }
+
+/** Every call the signed-in reader has locked, newest first (My Shows card). Shares the store above. */
+export function useMyScoreCalls() {
+  const { user } = useAuth();
+  const userId = user?.id ?? null;
+  const s = useSyncExternalStore(subscribe, snapshot, snapshot);
+  useEffect(() => { if (userId) void load(userId); }, [userId]);
+  const ready = !!userId && s.userId === userId && s.loaded;
+  const calls = ready ? Object.values(s.calls).sort((a, b) => b.locked_at.localeCompare(a.locked_at)) : [];
+  return { signedIn: !!userId, loaded: ready, calls };
+}
