@@ -33,4 +33,9 @@ function countReviewsByShow(json) {
   return counts;
 }
 
-module.exports = { buildSyncRows, countReviewsByShow };
+/** Today's date (YYYY-MM-DD) in New York. Openings are NY calendar dates; UTC would flip the day at 7-8pm ET. */
+function nyToday(now = new Date()) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+}
+
+module.exports = { buildSyncRows, countReviewsByShow, nyToday };
