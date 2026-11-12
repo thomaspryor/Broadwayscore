@@ -16,3 +16,10 @@ test('conflictPaths lands in the durable row, one line, valid JSON', () => {
 test('rows without conflict paths carry no field', () => {
   assert.equal('conflictPaths' in JSON.parse(buildFailureEntry(base)), false);
 });
+
+test('the CLI arg --conflict-paths reaches the durable entry (wiring)', () => {
+  const { entryLineFromArgs, parseArgs } = createRequire(import.meta.url)('../record-push-retry-failure.js');
+  const row = JSON.parse(entryLineFromArgs(parseArgs(['--reason=autostash-conflict', '--conflict-paths=data/a.json|data/b.json']), {}));
+  assert.equal(row.conflictPaths, 'data/a.json|data/b.json');
+  assert.equal('conflictPaths' in JSON.parse(entryLineFromArgs(parseArgs(['--reason=x']), {})), false);
+});

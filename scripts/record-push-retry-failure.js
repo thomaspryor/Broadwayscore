@@ -121,6 +121,34 @@ function jitterMs(attempt, base = 150, cap = 1800) {
   return Math.floor(Math.random() * Math.min(cap, base * 2 ** attempt));
 }
 
+// Pure: parsed CLI args -> one ledger line (exported so a test covers the arg wiring, BRO-4688).
+function entryLineFromArgs(args, env) {
+  return buildFailureEntry({
+    reason: args.reason,
+    attempt: Number(args.attempt) || 0,
+    maxRetries: Number(args['max-retries']) || 0,
+    branch: args.branch || 'main',
+    remote: args.remote || '',
+    workflow: args.workflow || env.GITHUB_WORKFLOW || '',
+    // Canonical detection is isGithubActionsRunner() (task #1901, tested by
+    // scripts/lib/push-retry-ci-detection.test.mjs); args.ci is an OR-fallback
+    // for the --ci=true/false the bash caller already computed identically
+    // (push-with-retry.sh:217), not a second independent source of truth.
+    ci: isGithubActionsRunner(env) || args.ci === 'true',
+    ts: new Date().toISOString(),
+    stallPhase: args['stall-phase'] || 'unknown',
+    // BRO-2839 — see buildFailureEntry's field comment in scripts/lib/push-ledger.js.
+    stallService: args['stall-service'] || 'unknown',
+    // BRO-3148 — files the failed push left behind (see buildFailureEntry).
+    unpushedCount: Number(args['unpushed-count']) || 0,
+    unpushedFiles: args['unpushed-files'] ? String(args['unpushed-files']).split(',').filter(Boolean) : [],
+    // BRO-3465 — see buildFailureEntry in scripts/lib/push-ledger.js.
+    traceCensus: args['trace-census'] || '',
+    trace2Summary: args['trace2-summary'] || '',
+    conflictPaths: args['conflict-paths'] || '',
+  });
+}
+
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
     console.log('Usage: node scripts/record-push-retry-failure.js --reason=X --attempt=N --max-retries=N --branch=main --remote=slug [--workflow=...] [--ci=true] [--stall-phase=...] [--stall-service=...] [--unpushed-count=N] [--unpushed-files=a,b] [--trace-census=...] [--trace2-summary=...] [--conflict-paths=...]');
@@ -138,30 +166,7 @@ async function main() {
     process.exit(0);
   }
 
-  const entryLine = buildFailureEntry({
-    reason,
-    attempt: Number(args.attempt) || 0,
-    maxRetries: Number(args['max-retries']) || 0,
-    branch: args.branch || 'main',
-    remote: args.remote || '',
-    workflow: args.workflow || process.env.GITHUB_WORKFLOW || '',
-    // Canonical detection is isGithubActionsRunner() (task #1901, tested by
-    // scripts/lib/push-retry-ci-detection.test.mjs); args.ci is an OR-fallback
-    // for the --ci=true/false the bash caller already computed identically
-    // (push-with-retry.sh:217), not a second independent source of truth.
-    ci: isGithubActionsRunner(process.env) || args.ci === 'true',
-    ts: new Date().toISOString(),
-    stallPhase: args['stall-phase'] || 'unknown',
-    // BRO-2839 — see buildFailureEntry's field comment in scripts/lib/push-ledger.js.
-    stallService: args['stall-service'] || 'unknown',
-    // BRO-3148 — files the failed push left behind (see buildFailureEntry).
-    unpushedCount: Number(args['unpushed-count']) || 0,
-    unpushedFiles: args['unpushed-files'] ? String(args['unpushed-files']).split(',').filter(Boolean) : [],
-    // BRO-3465 — see buildFailureEntry in scripts/lib/push-ledger.js.
-    traceCensus: args['trace-census'] || '',
-    trace2Summary: args['trace2-summary'] || '',
-    conflictPaths: args['conflict-paths'] || '',
-  });
+  const entryLine = entryLineFromArgs(args, process.env);
 
   const cwd = process.cwd();
   if (process.env.PUSH_LEDGER_ANY_ORIGIN !== '1' && !CANONICAL_ORIGIN_RE.test(originUrl(cwd))) {
@@ -194,4 +199,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { redactRemoteUrl, FAILURE_BRANCH, FAILURE_FILE };
+module.exports = { entryLineFromArgs, parseArgs, redactRemoteUrl, FAILURE_BRANCH, FAILURE_FILE };
