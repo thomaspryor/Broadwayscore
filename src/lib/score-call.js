@@ -13,7 +13,7 @@ const toDay = (iso) => {
 
 const PREVIEW_LOOKAHEAD_DAYS = 60;
 
-/** Same rule as review-forecast-pilot.isPilotTarget (a test pins them together): a show a reader can call. */
+/** Same rule as the pilot target predicate in scripts/lib (a unit test pins them together): a show a reader can call. */
 function isCallableShow(show, today) {
   if (!show || show.category !== 'broadway') return false;
   if (show.type !== 'play' && show.type !== 'musical') return false;
