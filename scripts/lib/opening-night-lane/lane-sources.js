@@ -118,6 +118,9 @@ const LANE_SOURCE_GAPS = {
   // BRO-7237: Yahoo's theater reviews are reprints of TheWrap's (syndication-pairs.js drops the copy), so the TheWrap feed
   // finds the original. Yahoo's entertainment feeds and review section answer 404 to the direct fetch (2026-11-09).
   yahoo: "reprints TheWrap's review (the TheWrap theater feed finds the original; syndication-pairs.js drops the copy); its feeds answer 404 (2026-11-09)",
+  // BRO-7415: Head Topics is a news aggregator; its Wanted page is a summary of Deadline's review (author DEADLINE, "Original
+  // source" link to Deadline, 2026-11-12). The Deadline feed finds the original; the summary carries no review of its own.
+  headtopics: "aggregator summary of another outlet's review (Wanted: Deadline's); the original outlet's feed finds it; its /feed is a site-wide news list, not reviews (2026-11-12)",
   nytimes: 'West End shows: the NYT Theater feed is read for Broadway only and nytimes.com/section/theater answers 403 (2026-11-04); Google News and SERP',
 };
 
