@@ -1,20 +1,15 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-11-10T09:52:18.565Z",
+  "lastChecked": "2026-11-11T23:31:10.182Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Cron failed: Update Show Status",
+      "name": "Cron failed: Update Lottery/Rush",
       "status": "warn",
-      "message": "Last run inconclusive: failure (16h ago), no success in 36h"
-    },
-    {
-      "name": "Cron failed: Reverse Discovery",
-      "status": "warn",
-      "message": "Last run inconclusive: failure (10h ago), no success in 24h"
+      "message": "Last run inconclusive: failure (2d ago), no success in 110h"
     }
   ]
 }

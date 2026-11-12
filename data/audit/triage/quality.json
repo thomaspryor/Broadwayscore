@@ -1,35 +1,35 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-11T09:30:10.889Z",
+  "lastChecked": "2026-11-11T23:31:10.179Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Quality: opening date vs review dates",
-      "status": "pass",
-      "message": "No opening date contradicts its reviews (1 acked)"
+      "status": "warn",
+      "message": "1 show(s) store an opening date later than their reviews: the-ripple-the-wave-that-carried-me-home-off-broadway-2026 (stored 2026-11-18, reviews 2026-11-10)"
     },
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "pass",
-      "message": "No new star/score contradictions (30 known/baselined)"
+      "message": "No new star/score contradictions (29 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.2% scored (50086/51012)"
+      "message": "98.3% scored (50420/51316)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
+      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "19330 messages, 0 auth failures (p=reject)"
+      "message": "20059 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -38,8 +38,8 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "warn",
-      "message": "3 unregistered host(s) name-match a registered outlet (e.g. theartsdispatch.com → theartsdispatch) — probable domain move dropping reviews via domain-mismatch"
+      "status": "pass",
+      "message": "No probable domain moves in 366 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,17 +49,17 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1872 outlet(s), 81345 review(s)"
+      "message": "No broken-extractor signature in 1872 outlet(s), 81509 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1872 outlet(s), 81345 review(s)"
+      "message": "No broken-extractor signature in 1872 outlet(s), 81509 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
-      "status": "warn",
-      "message": "1 outlet(s) drifted from outlet-registry.json standingCoverage flags (broadway promote: chicagotribune)"
+      "status": "pass",
+      "message": "No standingCoverage drift"
     },
     {
       "name": "Quality: expected critics missing",
