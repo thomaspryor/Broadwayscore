@@ -1454,6 +1454,144 @@ if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
+# ─── Mac finish-line Gates 2, 3 and 7, ported to cloud (BRO-4372) ───────────
+# The Mac finish-line-gate.sh refused three closings the cloud hook let through:
+#   DEFERQ     (Gate 2) the message ends on a permission question ("Should I
+#              delete the old branch?") instead of doing the obvious next step.
+#   FOUNDDEFER (Gate 3) it names a defect it found and left ("Found another
+#              failure but left it out of scope.") with no card, dispatch or
+#              owner decision.
+#   ABSENCE    (Gate 7) it claims something does not exist ("There are no
+#              matching reviews.") with no search, read or command run this turn
+#              to back it (global CLAUDE.md: audit claims need direct evidence).
+# All three read the final message through _closing() (code, inline code and
+# blockquotes dropped: quoting a phrase is not saying it), block once per turn
+# chain through _ve_block (BRO-4367 ledger), and fail open on any error.
+# PASSIVEOFFER and LOOSEENDS cover part of the same ground, so DEFERQ stands
+# down once PASSIVEOFFER blocked this chain and FOUNDDEFER once LOOSEENDS did:
+# one family never blocks the same text twice.
+# Escapes: NO-VERIFY: <reason> on all three; a DECISION NEEDED: block (DEFERQ,
+# FOUNDDEFER); BACKLOG-OK: / DISPATCHED: / DEFERRED: (FOUNDDEFER); CONTROL:
+# <the positive control that proves the search could find it> (ABSENCE).
+# Kill switches: DEFERQ_GATE_DISABLE=1, FOUNDDEFER_GATE_DISABLE=1, ABSENCE_GATE_DISABLE=1.
+_DEFERQ_RE = re.compile(
+    r"^(?:(?:so|and|also|then|ok(?:ay)?|now)\b[,\s]*)?"
+    r"(?:(?:should|shall|can|may|could) (?:I|we)\b(?! have\b)"
+    r"|(?:do|would) you (?:want|like|prefer)\b"
+    r"|(?:want|need) me to\b"
+    r"|(?:is it |is that |are you )?(?:ok|okay|alright|fine)(?: with you)? (?:if|to|for me)\b"
+    r"|ready for me to\b|any objections?\b"
+    r"|(?:proceed|go ahead|continue)\s*\?)",
+    re.IGNORECASE)
+
+def _deferq(text):
+    """The message's last sentence (closing verdict line aside), if it is a
+    question asking permission. A question answered later in the message
+    ("Should I have caught it? Yes, so ...") is not an ending."""
+    lines = [ln.strip() for ln in (text or '').splitlines()
+             if ln.strip() and not _STATUS_RE.match(ln.strip()) and not _CLOSE_DIVIDER_RE.match(ln.strip())]
+    if not lines or not lines[-1].rstrip('*_ ').endswith('?'):
+        return None
+    qs = re.findall(r'[^.!?]*\?', lines[-1])
+    if not qs:
+        return None
+    q = re.sub(r'^[\s*_#>•\-\d.)]+', '', qs[-1]).strip()
+    return q if _DEFERQ_RE.match(q) else None
+
+_FOUND_DEFER_RE = re.compile(
+    r"\bout of scope\b"
+    r"|\b(?:left|leave|leaving|parked?|saved?)\b[^.\n]{0,40}\bfor (?:later|a (?:later|future|follow-?up|separate) (?:session|card|pass|PR))\b"
+    r"|\b(?:left|leaving) (?:it|them|this|that|those) (?:alone|unfixed|as[- ]is|open)\b"
+    r"|\bnot (?:yet )?fixed\b|\bunfixed\b|\b(?:didn['’]t|did not|couldn['’]t|could not) fix\b"
+    r"|\bworth (?:a|its own) (?:follow-?up|separate|new)(?: \w+)? (?:card|ticket|issue|session|PR)\b"
+    r"|\bfiled\b[^.\n]{0,40}\bbacklog\b",
+    re.IGNORECASE)
+_DEFECT_RE = re.compile(
+    r"\b(?:failures?|failing|fails|bugs?|errors?|issues?|defects?|regressions?|problems?|crash(?:es)?|flak(?:e|es|y)|broken|leaks?)\b",
+    re.IGNORECASE)
+_FOUND_ESCAPE_RE = re.compile(r'^[\s*_>-]*(?:BACKLOG-OK|DISPATCHED|DEFERRED|DECISION NEEDED):', re.MULTILINE)
+
+def _found_defer(text):
+    for sent in re.split(r'(?<=[.!?])\s+|\n', text or ''):
+        if not _DEFECT_RE.search(sent):
+            continue
+        for m in _FOUND_DEFER_RE.finditer(sent):
+            clause = re.split(r'[,;:—–]', sent[:m.start()])[-1]
+            if not _LOOSE_NEG_RE.search(clause):
+                return sent.strip()
+    return None
+
+_ABSENCE_RE = re.compile(
+    r"\bthere (?:is|are|was|were)(?: currently| still)? no\b(?!\s+(?:need|reason|way|point|rush|longer|more|action|decision|risk|cost|charge|downside|harm|rollback|catch|difference)s?\b)"
+    r"|\bno (?:matches|matching \w+|results|hits|references|callers|usages|occurrences)\b"
+    r"|\b(?:does|do|did)(?: not|n['’]t) exist\b"
+    r"|\b(?:(?:is|are|was|were) not|isn['’]t|aren['’]t|wasn['’]t|weren['’]t) (?:wired|hooked|integrated|referenced|called|imported|registered|used) (?:in|up|anywhere|by)\b"
+    r"|\b(?:found|returns?|returned|shows?|showed) (?:no|zero|nothing)\b"
+    r"|\bnowhere in\b|\bnot (?:found|present) (?:in|anywhere)\b",
+    re.IGNORECASE)
+_LOOK_TOOLS = ('Grep', 'Glob', 'Read', 'LS', 'NotebookRead', 'WebFetch', 'WebSearch', 'ToolSearch')
+_LOOK_BASH_RE = re.compile(
+    r"(?:^|[\s|;&(`$])(?:grep|egrep|rg|ag|find|ls|cat|head|tail|wc|jq|sed|awk|stat|test|sqlite3|curl|gh|node|python3?|npm|npx"
+    r"|git\s+(?:grep|log|show|diff|ls-files|status|branch|rev-parse|cat-file))\b")
+
+def _turn_has_look():
+    """A search, read or command ran since the owner's last message."""
+    start = 0
+    for i in range(len(events) - 1, -1, -1):
+        if events[i][0] == 'user_human':
+            start = i
+            break
+    for kind, payload in events[start:]:
+        if kind != 'tool':
+            continue
+        name, inp, tid = payload
+        if tid in tool_refused_ids:
+            continue
+        name = name or ''
+        if name in _LOOK_TOOLS:
+            return True
+        if name.startswith('mcp__') and re.search(r'search|list|get|read|query|fetch|find', name.split('__')[-1], re.I):
+            return True
+        if name == 'Bash' and _LOOK_BASH_RE.search(str((inp or {}).get('command', ''))):
+            return True
+    return False
+
+if _last_msg and 'NO-VERIFY:' not in _last_msg:
+    _sg_raw = _sg_text = ''
+    try:
+        _sg_raw, _ = _closing()
+        _sg_text = '\n'.join(_VERDICT_TOKEN_RE.sub(' ', ln) for ln in _sg_raw.splitlines())
+    except Exception:
+        _sg_raw = _sg_text = ''
+    if (os.environ.get('DEFERQ_GATE_DISABLE', '0') != '1' and not _ve_seen('PASSIVEOFFER')
+            and not _ve_seen('DEFERQ')):
+        try:
+            _dq = _deferq(_sg_raw)
+            if _dq and not _owner_must_act(_sg_text):
+                sys.stderr.write('   permission question: "%s"\n' % re.sub(r'\s+', ' ', _dq)[:200])
+                _ve_block("DEFERQ")
+        except Exception:
+            pass  # fail-open
+    if (os.environ.get('FOUNDDEFER_GATE_DISABLE', '0') != '1' and not _ve_seen('LOOSEENDS')
+            and not _ve_seen('FOUNDDEFER') and not _FOUND_ESCAPE_RE.search(_last_msg)):
+        try:
+            _fd = _found_defer(_sg_text)
+            if _fd:
+                sys.stderr.write('   found but not fixed: "%s"\n' % re.sub(r'\s+', ' ', _fd)[:200])
+                _ve_block("FOUNDDEFER")
+        except Exception:
+            pass  # fail-open
+    if (os.environ.get('ABSENCE_GATE_DISABLE', '0') != '1' and not _ve_seen('ABSENCE')
+            and not re.search(r'^[\s*_>-]*CONTROL:\s*\S', _last_msg, re.MULTILINE)):
+        try:
+            _ab = _ABSENCE_RE.search(_sg_text)
+            if _ab and not _turn_has_look():
+                _s = max(0, _ab.start() - 40)
+                sys.stderr.write('   absence claim: "...%s..."\n' % re.sub(r'\s+', ' ', _sg_text[_s:_ab.end() + 40]).strip())
+                _ve_block("ABSENCE")
+        except Exception:
+            pass  # fail-open
+
 # ─── Wake gate (WAKELESS, BRO-5881, 2026-10-22) ─────────────────────────────
 # Owner: sessions end "NOT SAFE TO EXIT — waiting on X" and never come back;
 # a day later X is long done and nobody checked. Real case (session 014vS4Wn,
@@ -2575,6 +2713,21 @@ fi
 
 if [[ "$result" == "PASSIVEOFFER" ]]; then
   echo "🛑 BLOCKED: this message contains an offer to the owner (quoted above): \"say the word\", \"shall I\", \"want me to\", \"check out the PR\" (BRO-6546, owner 2026-10-29). The owner is not technical and never reviews or merges. In cloud, landing (\`land/<name>\`, CLOUD.md § Landing), building what was asked, fixing what you found, merging main into your branch and requesting the visual approval (\`node scripts/visual-approval.js request\`) are all pre-authorized: do the step now, then report what happened. Ask only a real owner call (money, an irreversible or destructive act, an email to a real person, product or taste): write it as a DECISION NEEDED: block with your recommendation and a default, and end ACTION NEEDED FROM YOU. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "DEFERQ" ]]; then
+  echo "🛑 BLOCKED: the message ends on a permission question (quoted above) (BRO-4372, Mac Gate 2). If the next step follows from the task, do it now and report what happened; technical calls are yours. Ask only a real owner call (money, an irreversible act, an email to a real person, taste) as a DECISION NEEDED: block with your recommendation and a default, ending ACTION NEEDED FROM YOU. Blocks once per turn. Bypass: NO-VERIFY: <reason>. Kill switch DEFERQ_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
+if [[ "$result" == "FOUNDDEFER" ]]; then
+  echo "🛑 BLOCKED: the message names a defect you found and left (quoted above) (BRO-4372, Mac Gate 3: found-but-not-fixed). Fix it now; or file a card and start a session for it (DISPATCHED: BRO-N), or add BACKLOG-OK: <why it can wait> once it is carded; or, if it needs the owner, write a DECISION NEEDED: block. If the sentence is not about a defect at all, reword it. Blocks once per turn. Bypass: NO-VERIFY: <reason>. Kill switch FOUNDDEFER_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
+if [[ "$result" == "ABSENCE" ]]; then
+  echo "🛑 BLOCKED: the message claims something is absent (quoted above) but nothing was searched, read or run since the owner's last message (BRO-4372, Mac Gate 7: absence claims need direct evidence). Run the search (Grep, a query, a listing) and state what you searched and where, then repeat the claim; or add CONTROL: <a search that does find a known positive, proving the method works>. If you are not claiming absence, reword it. Blocks once per turn. Bypass: NO-VERIFY: <reason>. Kill switch ABSENCE_GATE_DISABLE=1." >&2
   exit 2
 fi
 

@@ -158,9 +158,9 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       encoding: 'utf8',
       // BRO-5359: the review-coverage gate has its own tests (scripts/lib/review-coverage.test.mjs); these cases model
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
-      // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
+      // BRO-5881/BRO-5910/BRO-4372: LOOSEENDS, WAKELESS, CLEARCLOSE, DEFERQ, FOUNDDEFER and ABSENCE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', DEFERQ_GATE_DISABLE: '1', FOUNDDEFER_GATE_DISABLE: '1', ABSENCE_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -2611,5 +2611,168 @@ test('ENGINE_CRASH: a node pre-check that dies (not 0, not 2, not a timeout) blo
     }
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// ─── Mac Gates 2/3/7 ported to cloud (BRO-4372) ─────────────────────────────
+// DEFERQ: ending on a permission question. FOUNDDEFER: naming a defect you
+// found and left. ABSENCE: claiming something is absent with no search, read
+// or command run since the owner's last message. Each blocks once per chain
+// (BRO-4367 ledger) and must never trap a session: every case below that
+// blocks also proves the next Stop in the chain passes.
+const SG_ON = { DEFERQ_GATE_DISABLE: '0', FOUNDDEFER_GATE_DISABLE: '0', ABSENCE_GATE_DISABLE: '0' };
+const SG_ALL_ON = { ...SG_ON, PASSIVEOFFER_GATE_DISABLE: '0', LOOSEENDS_GATE_DISABLE: '0' };
+const PROBE_Q = 'Should I fix the remaining failures?';
+const PROBE_DEFER = 'Found another failure but left it out of scope.';
+const PROBE_ABSENT = 'There are no matching reviews.';
+function assertCode(r, code, message) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, tagRe(code), `${message}: expected [VE:${code}], got tail: ${r.stderr.slice(-300)}`);
+}
+function sgDir(label, calls = [], opts = { card: false }) {
+  const dir = makeTmpDir(label);
+  const t = writeTranscript(dir, calls, opts);
+  fs.rmSync(chainFileFor(t), { force: true, recursive: true });
+  return { dir, t, done: () => { fs.rmSync(chainFileFor(t), { force: true, recursive: true }); fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); } };
+}
+
+test('BRO-4372 probes: the three card endings exit 2 with every closing gate on', skipNoRepoHook, () => {
+  for (const msg of [PROBE_Q, PROBE_DEFER, PROBE_ABSENT]) {
+    const { t, done } = sgDir('sg-probe');
+    assertBlocked(runHook(t, msg, SG_ALL_ON), `probe: ${msg}`);
+    done();
+  }
+});
+
+test('BRO-4372 normal endings exit 0 with every closing gate on', skipNoRepoHook, () => {
+  for (const msg of [
+    'Done. The tests pass and the page is live.',
+    'Found the bug and fixed it; the regression test now passes.',
+    'Why did it fail? The cache key was stale. I fixed it and the run is green.',
+    'There is no need to rerun it: the run passed.',
+    'Nothing was left out of scope; every failure is fixed.',
+    'The Mac half of the card is out of scope now that work runs in cloud.',
+  ]) {
+    const { t, done } = sgDir('sg-normal');
+    assertAllowed(runHook(t, msg, SG_ALL_ON), `normal ending: ${msg}`);
+    done();
+  }
+});
+
+test('DEFERQ: permission questions block (PASSIVEOFFER off, so the port is tested alone)', skipNoRepoHook, () => {
+  for (const msg of [PROBE_Q, 'Fixed the parser. Should I delete the old branch?', 'All green.\nDo you want me to rerun the backfill?\n\nKEEP OPEN — waiting.', 'Is it okay if I remove the stale cache?']) {
+    const { t, done } = sgDir('sg-deferq');
+    assertCode(runHook(t, msg, SG_ON), 'DEFERQ', msg);
+    done();
+  }
+});
+
+test('DEFERQ false-positive guards: DECISION NEEDED, questions that are not permission asks, quoting, NO-VERIFY', skipNoRepoHook, () => {
+  for (const msg of [
+    'Two prices are possible.\n\nDECISION NEEDED: which price to charge?\nWhy this is your call: money.\nOption A — $5: cheap / low margin\nOption B — $9: margin / fewer sign-ups\nMy recommendation: B because margin.\nDefault: B.\n\nACTION NEEDED FROM YOU — pick a price',
+    'Should I have caught it earlier? Yes, so I added a test that fails without the fix.\nThe fix is live.',
+    'Should I fix the remaining failures? I did: all 12 pass now.',
+    'The gate now blocks endings like `Should I fix it?` and passes everything else.',
+    'What changed? The parser. It is fixed and live.',
+    'Should I delete the old branch?\nNO-VERIFY: quoting the owner',
+  ]) {
+    const { t, done } = sgDir('sg-deferq-ok');
+    assertAllowed(runHook(t, msg, SG_ON), msg.slice(0, 60));
+    done();
+  }
+});
+
+test('FOUNDDEFER: a found defect left unfixed blocks', skipNoRepoHook, () => {
+  for (const msg of [
+    PROBE_DEFER,
+    'Landed the fix. The flaky date test is still not fixed.',
+    'One more bug in the poller; I left it for a later session.',
+    'The crash in the importer is worth a follow-up card.',
+  ]) {
+    const { t, done } = sgDir('sg-found');
+    assertCode(runHook(t, msg, SG_ON), 'FOUNDDEFER', msg);
+    done();
+  }
+});
+
+test('FOUNDDEFER escapes: carded, dispatched, owner decision, negated, no defect, quoted, NO-VERIFY', skipNoRepoHook, () => {
+  for (const msg of [
+    `${PROBE_DEFER}\nBACKLOG-OK: carded as BRO-9002, cosmetic, can wait`,
+    `${PROBE_DEFER}\nDISPATCHED: BRO-9002 ("Fix the other failure")`,
+    `${PROBE_DEFER}\n\nDECISION NEEDED: fix the other failure now or after launch\nWhy this is your call: launch timing.\nMy recommendation: after.\nDefault: after.\n\nACTION NEEDED FROM YOU — pick`,
+    'Nothing was left out of scope; every failure is fixed.',
+    'The Mac half is out of scope now that work runs in cloud.',
+    '> Found another failure but left it out of scope.\nThat old line is what the new gate blocks.',
+    `${PROBE_DEFER}\nNO-VERIFY: quoting the probe`,
+  ]) {
+    const { t, done } = sgDir('sg-found-ok');
+    assertAllowed(runHook(t, msg, SG_ON), msg.slice(0, 60));
+    done();
+  }
+});
+
+test('ABSENCE: an absence claim with no look this turn blocks, even after a push or an older search', skipNoRepoHook, () => {
+  const older = [toolUse('Grep', { pattern: 'matching', path: 'data' }), { _notice: 'now check the reviews', _extra: { origin: { kind: 'human' } } }];
+  for (const [label, calls] of [['no tools', []], ['a non-look command only', [toolUse('Bash', { command: 'echo starting' })]], ['search before the owner\'s latest message', older]]) {
+    for (const msg of [PROBE_ABSENT, 'The helper does not exist in this repo.', 'That flag isn\'t wired in anywhere.']) {
+      const { t, done } = sgDir('sg-absent', calls);
+      assertCode(runHook(t, msg, SG_ON), 'ABSENCE', `${label}: ${msg}`);
+      done();
+    }
+  }
+});
+
+test('ABSENCE passes with evidence this turn, a CONTROL: line, a non-claim, or NO-VERIFY', skipNoRepoHook, () => {
+  const cases = [
+    [[toolUse('Grep', { pattern: 'matching', path: 'data' })], PROBE_ABSENT],
+    [[toolUse('Bash', { command: 'grep -c review data/reviews.json' })], PROBE_ABSENT],
+    [[toolUse('Bash', { command: 'node scripts/query.js "select count(*) from reviews"' })], PROBE_ABSENT],
+    [[toolUse('mcp__github__list_branches', { owner: 'o', repo: 'r' })], 'There are no stale branches.'],
+    [[], `${PROBE_ABSENT}\nCONTROL: the same query finds 41 reviews for hamilton`],
+    [[], 'There is no need to rerun it.'],
+    [[], `${PROBE_ABSENT}\nNO-VERIFY: restating the owner's own finding`],
+    [[], 'The new gate blocks `There are no matching reviews.` when nothing was searched.'],
+  ];
+  for (const [calls, msg] of cases) {
+    const { t, done } = sgDir('sg-absent-ok', calls);
+    assertAllowed(runHook(t, msg, SG_ON), `${calls.map((c) => c.name).join(',') || 'no tools'}: ${msg.slice(0, 60)}`);
+    done();
+  }
+});
+
+test('BRO-4372 loop guard: each gate blocks once per chain, a new chain blocks again, overlap gates never double-block', skipNoRepoHook, () => {
+  for (const [msg, code] of [[PROBE_Q, 'DEFERQ'], [PROBE_DEFER, 'FOUNDDEFER'], [PROBE_ABSENT, 'ABSENCE']]) {
+    const { t, done } = sgDir('sg-loop');
+    assertCode(runHook(t, msg, SG_ON), code, `first Stop: ${code}`);
+    assert.match(fs.readFileSync(chainFileFor(t), 'utf8'), new RegExp(`^${code}$`, 'm'), `${code} recorded in the ledger`);
+    assertAllowed(runHook(t, msg, SG_ON, true), `${code}: same text again in the chain passes`);
+    assertCode(runHook(t, msg, SG_ON), code, `${code}: a new chain (stop_hook_active false) checks again`);
+    done();
+  }
+  // PASSIVEOFFER blocks the probe question first; DEFERQ must not block the same text again.
+  const a = sgDir('sg-loop-po');
+  assertCode(runHook(a.t, PROBE_Q, SG_ALL_ON), 'PASSIVEOFFER', 'first Stop');
+  assertAllowed(runHook(a.t, PROBE_Q, SG_ALL_ON, true), 'DEFERQ stands down once PASSIVEOFFER blocked');
+  a.done();
+  // Two gates in one message: one block each, then through.
+  const b = sgDir('sg-loop-two');
+  const both = `${PROBE_DEFER} ${PROBE_ABSENT}`;
+  assertCode(runHook(b.t, both, SG_ON), 'FOUNDDEFER', 'first');
+  assertCode(runHook(b.t, both, SG_ON, true), 'ABSENCE', 'second');
+  assertAllowed(runHook(b.t, both, SG_ON, true), 'third passes');
+  b.done();
+});
+
+test('BRO-4372 loop guard: an unwritable ledger lets every gate through; kill switches work', skipNoRepoHook, () => {
+  for (const msg of [PROBE_Q, PROBE_DEFER, PROBE_ABSENT]) {
+    const { t, done } = sgDir('sg-unwritable');
+    fs.mkdirSync(chainFileFor(t));   // a directory: appends fail
+    assertAllowed(runHook(t, msg, SG_ALL_ON, true), `unwritable ledger: ${msg}`);
+    done();
+  }
+  for (const msg of [PROBE_Q, PROBE_DEFER, PROBE_ABSENT]) {
+    const { t, done } = sgDir('sg-kill');
+    assertAllowed(runHook(t, msg, {}), `kill switches (test default): ${msg}`);
+    done();
   }
 });
