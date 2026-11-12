@@ -54,6 +54,8 @@ test('expectedForShow uses only earlier Broadway openings, latest 10, never itse
 test('phase: hidden before opening-day noon, after the window, off-Broadway, with no expectation', () => {
   const i = { ...base, reviewCount: 0, scoreShowing: false };
   assert.equal(reviewArrivalPhase({ ...i, now: at('2026-11-15T10:00:00Z') }), null);
+  assert.equal(reviewArrivalPhase({ ...i, now: at('2026-11-15T15:00:00Z') }), null); // 10am ET opening day, before noon
+  assert.equal(reviewArrivalPhase({ ...i, now: at('2026-11-15T17:30:00Z') }), 'waiting'); // after noon ET
   assert.equal(reviewArrivalPhase({ ...i, now: at('2026-11-19T12:00:00Z') }), null);
   assert.equal(reviewArrivalPhase({ ...i, now: at('2026-11-15T20:00:00Z'), category: 'off-broadway' }), null);
   assert.equal(reviewArrivalPhase({ ...i, now: at('2026-11-15T20:00:00Z'), expected: null }), null);

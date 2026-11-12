@@ -44,7 +44,7 @@ const DAY_MS = 86400000;
 const EMBARGO_OFFSET_MS = DAY_MS + 3 * HOUR_MS;
 // The status appears on the afternoon of opening day, before the embargo, so
 // "opening night, reviews expected tonight" can show.
-const START_OFFSET_MS = 12 * HOUR_MS;
+const START_OFFSET_MS = 17 * HOUR_MS; // noon Eastern (EST), 1pm in EDT
 
 export type ArrivalPhase = 'waiting' | 'below-minimum' | 'early';
 
