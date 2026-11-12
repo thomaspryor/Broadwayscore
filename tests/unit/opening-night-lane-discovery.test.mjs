@@ -1046,6 +1046,7 @@ test('own-host section index and feed finds are vetted to their outlet: TheaterM
 // the path gate the way its adapter offers it. A new source without a sample fails here, so a source whose every review the
 // gate refuses (TheaterMania 309/309, L&SA 101/101 before this) cannot be added silently again.
 const LANE_SOURCE_SAMPLE_REVIEW = {
+  'the-komisar-scoop': 'https://www.thekomisarscoop.com/2026/11/a-few-good-men-is-ironic-label-of-immoral-killer-military/',
   theatermania: 'https://www.theatermania.com/news/review-a-dental-lab-technician-wrestles-with-questions-of-career-and-family-in-off-beat-a-good-day-to-me-not-to-you_1721265/',
   nytg: 'https://www.newyorktheatreguide.com/reviews/review-of-a-soldiers-play-starring-david-alan-grier-blair-underwood-on-broadway',
   timeout: 'https://www.timeout.com/newyork/news/broadway-review-aaron-sorkins-a-few-good-men-103026',
@@ -1112,6 +1113,7 @@ const LANE_FEED_SAMPLE_HEADLINE = {
   'theater-life': ['', 'A Good Day to Me Not to You'],
   'front-row-center': ['', 'Copperfield! The New Musical'],
   'bobs-theater-blog': ['A Few Good Men', 'A Few Good Men'],
+  'the-komisar-scoop': ['“A Few Good Men” Is Ironic Label of Immoral Killer Military', 'A Few Good Men'],
 };
 // Feeds kept although most of their reviews carry no review word: each finds the ones that do; the regular gather finds the rest.
 const LANE_FEED_HEADLINE_LIMITED = {

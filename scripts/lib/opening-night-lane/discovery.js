@@ -233,7 +233,7 @@ function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false, o
 // theaterscene.net 214/214, theaterlife 156/156, thefrontrowcenter 131/131, pagesonstages 131/131), and their feeds read
 // 2026-11-04 carried show-titled reviews only. Not frontmezzjunkies: its feed carries show-titled non-reviews ("...
 // I'm Already Kicking Myself About Missing Sleuth"). A host here still needs the show's title in the headline or slug.
-const REVIEW_WITHOUT_WORD_HOSTS = ['theaterpizzazz.com', 'nystagereview.com', 'offoffonline.com', 'theaterscene.net', 'theaterlife.com', 'thefrontrowcenter.com', 'pagesonstages.com'];
+const REVIEW_WITHOUT_WORD_HOSTS = ['theaterpizzazz.com', 'nystagereview.com', 'offoffonline.com', 'theaterscene.net', 'theaterlife.com', 'thefrontrowcenter.com', 'pagesonstages.com', 'thekomisarscoop.com'];
 
 /** A review-only outlet's page about this show: its host is in REVIEW_WITHOUT_WORD_HOSTS and the show's title is in the headline or slug. */
 function hostSignalsReview(url, title, showTitle) {
