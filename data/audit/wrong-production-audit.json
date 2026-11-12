@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-12T00:56:07.304Z",
+  "timestamp": "2026-11-12T01:06:49.655Z",
   "stats": {
-    "totalReviews": 81560,
+    "totalReviews": 81563,
     "alreadyFlagged": 22268,
     "dateGuardCatches": 218,
     "directorMismatch": 3631,
-    "tvFilmSignals": 2297,
-    "londonSignals": 3698,
+    "tvFilmSignals": 2299,
+    "londonSignals": 3701,
     "offBroadwaySignals": 751,
     "yearMismatch": 370,
     "noPublishDate": 8473
@@ -28595,6 +28595,42 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "publishDate": "2026-11-09",
+      "url": "https://www.londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-photos",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "musical-theatre-review--angela-thomas.json",
+      "publishDate": "2026-10-31",
+      "url": "https://musicaltheatrereview.com/london-debut-for-hamlet-hail-to-the-thief/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -104062,6 +104098,19 @@
       "score": 64,
       "publishDate": "2026-11-10",
       "url": "https://monstagigz.com/2026/11/10/theatre-review-hamlet-hail-to-the-thief-at-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-10-30",
+      "url": "https://theatreweekly.com/new-behind-the-scenes-photography-released-for-hamlet-hail-to-the-thief-as-barbican-previews-begin/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
