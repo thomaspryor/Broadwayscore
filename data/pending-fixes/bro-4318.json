@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-4318",
+  "planId": "d64c8731-9fb6-4008-82f6-d504f6a091ae",
+  "status": "pending",
+  "createdAt": "2026-11-12T03:17:28.210Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4318: resolve 23 sided-with-LLM adjudications that disputed a stored rating (correct 4 ratings, clear 13 mis-extracted ratings, clear 6 adjudications so the printed rating stands; plus the Misery HuffPost misspelled twin)",
+    "steps": [
+      "BRO-4318: clear mis-extracted rating A (llm-extracted-gemini); stored text prints 'Grade: B-' (not A); Culture Sauce letter grades do not parse in score-parsers, so the hallucinated A is cleared and the ",
+      "BRO-4318: clear mis-extracted rating 4/5 (timeout-svg-stars); review url now redirects to the Time Out homepage (its listing cards carry 3/4/5-star widgets); the adjudication note quotes a 5/5, so the s",
+      "BRO-4318: clear mis-extracted rating 2/5 stars (word-stars); Lighting & Sound America prints no star rating; the match was cast prose about the play's two lead actors",
+      "BRO-4318: correct mis-extracted rating A (none); EW grade printed at the end of the stored text: B+",
+      "BRO-4318: stored rating 2.5/4 stars verified (NY Post page star widget and the aggregator relay agree on 2.5/4; the adjudicator overrode a printed rating); clear the sided-with-LLM adjudication so the rating stands",
+      "BRO-4318: clear mis-extracted rating D (letter-grade); the blog prints no grade; the stored text has no grade line",
+      "BRO-4318: stored rating 5/5 stars verified (already corrected to the printed 2/5 by an earlier verified fix (humanReviewScore set); the stale adjudication made agai); clear the sided-with-LLM adjudication so the rating stands",
+      "BRO-4318: clear mis-extracted rating D (none); New York Theatre Guide prints no grade; none in the stored text",
+      "BRO-4318: clear mis-extracted rating D+ (none); Time Out rates in stars, never letter grades; no rating in the stored text",
+      "BRO-4318: clear mis-extracted rating A (llm-extracted-gemini); Deadline prints no rating; none in the stored text",
+      "BRO-4318: stored rating 2.5/5 stars verified (the stored text prints the verdict line '2.5 out of 5 stars'; the adjudicator wrongly believed a 5/5); clear the sided-with-LLM adjudication so the rating stands",
+      "BRO-4318: stored rating C- verified (EW grade printed at the end of the stored text: C-); clear the sided-with-LLM adjudication so the rating stands",
+      "BRO-4318: clear mis-extracted rating A (none); Stagezine prints no grade; none in the stored text",
+      "BRO-4318: stored rating C+ verified (EW grade printed at the end of the stored text: C+); clear the sided-with-LLM adjudication so the rating stands",
+      "BRO-4318: same url as huffpost--michael-giltz.json (the critic is Michael Giltz; this misspelled twin carries the same wrong A). Mark it the duplicate so the corrected Giltz file stays the published copy.",
+      "BRO-4318: twin of huffpost--michael-giltz.json; the critic header prints one star out of four for Misery (the A came from a ratings list run into a title)",
+      "BRO-4318: correct mis-extracted rating A (letter-grade); the critic's header prints one star out of four for this show",
+      "BRO-4318: clear mis-extracted rating 100% (reviewshub-percentage); the url now serves a different critic's 2026 tour review scored 100%; this critic's stored review has no percentage",
+      "BRO-4318: clear mis-extracted rating 1/5 (numeric-stars); the LBC page (fetched 2026-11-12) prints no rating; 1/5 matches nothing in the review",
+      "BRO-4318: stored rating 2/4 stars verified (the critic's header prints two stars out of four for this show; the adjudication was made against an older wrong A); clear the sided-with-LLM adjudication so the rating stands",
+      "BRO-4318: correct mis-extracted rating B+ (none); EW grade printed at the end of the stored text: C",
+      "BRO-4318: clear mis-extracted rating 5/5 stars (unicode-stars-fallthrough); the Time Out page (live and the 2026-07 archive copy) carries no star widget for this review; the stars came from elsewhere on the page",
+      "BRO-4318: clear mis-extracted rating A (none); Theater Pizzazz prints no grade; none in the stored text",
+      "BRO-4318: clear mis-extracted rating A (none); the Journal Inquirer prints no grade; none in the stored text",
+      "BRO-4318: correct mis-extracted rating A (none); the critic's header prints two and a half stars out of four for this show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "airline-highway-2015/culturesauce--thom-geier.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating A (llm-extracted-gemini); stored text prints 'Grade: B-' (not A); Culture Sauce letter grades do not parse in score-parsers, so the hallucinated A is cleared and the "
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bonnie-and-clyde-2011/timeout--adam-feldman.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating 4/5 (timeout-svg-stars); review url now redirects to the Time Out homepage (its listing cards carry 3/4/5-star widgets); the adjudication note quotes a 5/5, so the s"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chester-bailey-off-broadway-2022/lighting-and-sound-america--david-barbour.json",
+        "field": "originalScore",
+        "oldValue": "2/5 stars",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating 2/5 stars (word-stars); Lighting & Sound America prints no star rating; the match was cast prose about the play's two lead actors"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "collected-stories-2010/ew--melissa-rose-bernardo.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": "B+",
+        "description": "BRO-4318: correct mis-extracted rating A (none); EW grade printed at the end of the stored text: B+"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dead-outlaw-2025/nypost--johnny-oleksinski.json",
+        "field": "adjudicatedScore",
+        "oldValue": 48,
+        "newValue": null,
+        "description": "BRO-4318: stored rating 2.5/4 stars verified (NY Post page star widget and the aggregator relay agree on 2.5/4; the adjudicator overrode a printed rating); clear the sided-with-LLM adjudication so the rating stands"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+        "field": "originalScore",
+        "oldValue": "D",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating D (letter-grade); the blog prints no grade; the stored text has no grade line"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "adjudicatedScore",
+        "oldValue": 60,
+        "newValue": null,
+        "description": "BRO-4318: stored rating 5/5 stars verified (already corrected to the printed 2/5 by an earlier verified fix (humanReviewScore set); the stale adjudication made agai); clear the sided-with-LLM adjudication so the rating stands"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fiddler-on-the-roof-2015/nytg--marc-miller.json",
+        "field": "originalScore",
+        "oldValue": "D",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating D (none); New York Theatre Guide prints no grade; none in the stored text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fish-in-the-dark-2015/timeout--adam-feldman.json",
+        "field": "originalScore",
+        "oldValue": "D+",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating D+ (none); Time Out rates in stars, never letter grades; no rating in the stored text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/deadline--greg-evans.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating A (llm-extracted-gemini); Deadline prints no rating; none in the stored text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-night-and-good-luck-2025/digital-journal--markos-papadatos.json",
+        "field": "adjudicatedScore",
+        "oldValue": 25,
+        "newValue": null,
+        "description": "BRO-4318: stored rating 2.5/5 stars verified (the stored text prints the verdict line '2.5 out of 5 stars'; the adjudicator wrongly believed a 5/5); clear the sided-with-LLM adjudication so the rating stands"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jekyll-and-hyde-2013/ew--melissa-rose-bernardo.json",
+        "field": "adjudicatedScore",
+        "oldValue": 25,
+        "newValue": null,
+        "description": "BRO-4318: stored rating C- verified (EW grade printed at the end of the stored text: C-); clear the sided-with-LLM adjudication so the rating stands"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-2014/stagezine--david-nounou.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating A (none); Stagezine prints no grade; none in the stored text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lucky-guy-2013/ew--lisa-schwarzbaum.json",
+        "field": "adjudicatedScore",
+        "oldValue": 48,
+        "newValue": null,
+        "description": "BRO-4318: stored rating C+ verified (EW grade printed at the end of the stored text: C+); clear the sided-with-LLM adjudication so the rating stands"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "misery-2015/huffpost--michael-glitz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "huffpost--michael-giltz.json",
+        "description": "BRO-4318: same url as huffpost--michael-giltz.json (the critic is Michael Giltz; this misspelled twin carries the same wrong A). Mark it the duplicate so the corrected Giltz file stays the published copy."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "misery-2015/huffpost--michael-glitz.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": "1/4 stars",
+        "description": "BRO-4318: twin of huffpost--michael-giltz.json; the critic header prints one star out of four for Misery (the A came from a ratings list run into a title)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "misery-2015/huffpost--michael-giltz.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": "1/4 stars",
+        "description": "BRO-4318: correct mis-extracted rating A (letter-grade); the critic's header prints one star out of four for this show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-the-musical-west-end-2021/thereviewshub--richard-maguire.json",
+        "field": "originalScore",
+        "oldValue": "100%",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating 100% (reviewshub-percentage); the url now serves a different critic's 2026 tour review scored 100%; this critic's stored review has no percentage"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+        "field": "originalScore",
+        "oldValue": "1/5",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating 1/5 (numeric-stars); the LBC page (fetched 2026-11-12) prints no rating; 1/5 matches nothing in the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-2015/huffpost--michael-glitz.json",
+        "field": "adjudicatedScore",
+        "oldValue": 43,
+        "newValue": null,
+        "description": "BRO-4318: stored rating 2/4 stars verified (the critic's header prints two stars out of four for this show; the adjudication was made against an older wrong A); clear the sided-with-LLM adjudication so the rating stands"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/ew--kristen-baldwin.json",
+        "field": "originalScore",
+        "oldValue": "B+",
+        "newValue": "C",
+        "description": "BRO-4318: correct mis-extracted rating B+ (none); EW grade printed at the end of the stored text: C"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "public-charge-off-broadway-2026/timeout--unknown.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating 5/5 stars (unicode-stars-fallthrough); the Time Out page (live and the 2026-07 archive copy) carries no star widget for this review; the stars came from elsewhere on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-kite-runner-2022/theater-pizzazz--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating A (none); Theater Pizzazz prints no grade; none in the stored text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-prom-2018/journal-inquirer--tim-leininger.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": null,
+        "description": "BRO-4318: clear mis-extracted rating A (none); the Journal Inquirer prints no grade; none in the stored text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wolf-hall-parts-one-and-two-2015/huffpost--michael-glitz.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": "2.5/4 stars",
+        "description": "BRO-4318: correct mis-extracted rating A (none); the critic's header prints two and a half stars out of four for this show"
+      }
+    ]
+  }
+}

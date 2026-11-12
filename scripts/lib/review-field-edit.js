@@ -123,6 +123,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // starRating, scoreSource, the cleared breadcrumb) is derived by
   // verified-original-score.js, never edited on its own. null clears.
   'originalScore',
+  // adjudicatedScore (BRO-4318): CLEAR ONLY (null), on a record that carries a stored rating. For an auto-adjudication
+  // that disputed a star a human then checked and found right ("sided with LLM" against a printed C-): the star stands.
+  // The clear goes through star-reliability.invalidateStarSidedAdjudication, so the dropped score is kept in
+  // adjudicatedScoreInvalidated (the write guard's breadcrumb) and a history entry is added.
+  'adjudicatedScore',
   // Aggregator excerpts (BRO-4251): CLEAR ONLY. An aggregator can glue another
   // show's review onto this one's excerpt (NYC Theatre put Fat Ham text on
   // Shucked's Variety quote), and selectBestExcerpt prints it. A plan may null
@@ -289,6 +294,10 @@ const FIELD_VALUE_CHECKS = {
   showId: (v, record, ctx = {}) => (typeof v === 'string' && v && ctx.folder && v === ctx.folder
     ? null : 'showId may only be set to the folder the file lives in'),
   originalScore: (v, record) => require('./verified-original-score').verifiedRatingError(record, v),
+  adjudicatedScore: (v, record) => (v !== null ? 'adjudicatedScore may only be cleared (null)'
+    : !(record && record.originalScore != null && String(record.originalScore).trim())
+      ? 'adjudicatedScore: clear only on a record whose stored rating (originalScore) stands; fix the rating with an originalScore edit instead'
+      : null),
   // No null: both are write-guard PROTECTED_FIELDS with no clear breadcrumb,
   // so a clear would be silently restored on write.
   humanReviewScore: (v) => (Number.isInteger(v) && v >= 1 && v <= 100
@@ -562,6 +571,13 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     const r = require('./verified-original-score').applyVerifiedOriginalScore(next, newValue, `approved fix ${stamp.fixId}: rating verified against the outlet page`);
     if (!r.ok) return { ok: false, reason: r.reason };
     sideEffectKeys = unexpectedChanges(beforeRating, next, field);
+  }
+  if (field === 'adjudicatedScore') {
+    // The helper owns the whole clear (score, note, history, breadcrumb), so it starts from the stored values.
+    next.adjudicatedScore = record.adjudicatedScore === undefined ? null : record.adjudicatedScore;
+    const beforeClear = { ...next };
+    require('./star-reliability').invalidateStarSidedAdjudication(next, `approved fix ${stamp.fixId}: the stored rating was verified; it stands over the adjudication`, { anySide: true });
+    sideEffectKeys = unexpectedChanges(beforeClear, next, field);
   }
   if (field === 'aggregatorStars') {
     // The stars were the score's anchor: queue a rescore through the normal path, the same way
