@@ -77,6 +77,17 @@ function restorePrebuildResidue(root, git = (...a) => run('git', a, { cwd: root 
   return residue;
 }
 
+// BRO-7431: `next dev` writes .next/dev/types, which tsconfig.json includes. A stale or live copy
+// makes the tsc gate fail with TS6053 on code that is fine. Remove it before the gates run and
+// say so when a dev server is still alive (it will rewrite the dir).
+/** Remove <root>/.next/dev; -> { removed, devAlive } */
+function clearStaleDevTypes(root, { exists = fs.existsSync, rm = (p) => fs.rmSync(p, { recursive: true, force: true }), pgrep = () => run('pgrep', ['-f', 'next[ -]dev|next-server'], { cwd: root }).stdout } = {}) {
+  const dir = path.join(root, '.next', 'dev');
+  const removed = exists(dir);
+  if (removed) rm(dir);
+  return { removed, devAlive: !!String(pgrep() || '').trim() };
+}
+
 // BRO-7110: a run stopped mid-gauntlet never reaches restorePrebuildResidue, so
 // its regenerated outputs block the next run. Not restored here (the tree's
 // state at start is unknown), but named, with the one command that clears them.
@@ -307,6 +318,9 @@ function main(argv = process.argv.slice(2)) {
   const behind = Number(git('rev-list', '--count', `${head}..origin/main`).stdout) || 0;
   if (behind > 200) console.error(`land-local-check: HEAD is ${behind} commits behind origin/main; rebase for a closer match to what land.yml judges`);
 
+  const dev = clearStaleDevTypes(ROOT);
+  if (dev.removed) console.log('land-local-check: removed .next/dev (stale `next dev` types fail the tsc gate with TS6053)');
+  if (dev.devAlive) console.error('land-local-check: a `next dev`/`next-server` process is alive and will rewrite .next/dev/types; stop it (pkill -f "next dev") or tsc may fail with TS6053');
   const out = fs.mkdtempSync(path.join(os.tmpdir(), `land-local-check-${head.slice(0, 10)}-`));
   const branchDir = path.join(out, 'branch');
   const baseDir = path.join(out, 'base');
@@ -379,7 +393,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.

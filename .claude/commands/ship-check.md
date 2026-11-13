@@ -68,10 +68,10 @@ Run all of these simultaneously via Bash:
 4. **Build test (auth-aware):** Build with feature flags enabled (the public Sanity ids are set because cloud containers lack them and `/blog/[slug]` fails without them; the values are the same non-secret ones the workflows hardcode), but only include `userAccounts` if Supabase env vars are present:
    ```bash
    if [ -n "$NEXT_PUBLIC_SUPABASE_URL" ]; then
-     NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID:-fp1ft8k8} NEXT_PUBLIC_SANITY_DATASET=${NEXT_PUBLIC_SANITY_DATASET:-production} NEXT_PUBLIC_FEATURES=userAccounts,criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
+     NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID:-fp1ft8k8} NEXT_PUBLIC_SANITY_DATASET=${NEXT_PUBLIC_SANITY_DATASET:-production} NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=6144" NEXT_PUBLIC_FEATURES=userAccounts,criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
    else
      echo "Skipping userAccounts flag (no NEXT_PUBLIC_SUPABASE_URL). Building with other flags."
-     NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID:-fp1ft8k8} NEXT_PUBLIC_SANITY_DATASET=${NEXT_PUBLIC_SANITY_DATASET:-production} NEXT_PUBLIC_FEATURES=criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
+     NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID:-fp1ft8k8} NEXT_PUBLIC_SANITY_DATASET=${NEXT_PUBLIC_SANITY_DATASET:-production} NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=6144" NEXT_PUBLIC_FEATURES=criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
    fi
 
 **Expo:**

@@ -122,6 +122,7 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
   t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(String(p)) || exists(p));
   const checker = checkerWithRunner(t, (cmd, args, opts) => {
     const result = (stdout = '') => ({ status: 0, stdout, stderr: '' });
+    if (cmd === 'pgrep') return result();
     if (cmd === 'git') {
       gitCalls.push(args);
       switch (args[0]) {
@@ -490,4 +491,22 @@ test('BRO-7186: envFailureLogs finds ENOSPC in raw gate logs, not in clean ones'
 test('BRO-7186: parseMainLog reads git log rows', () => {
   const { parseMainLog } = require('./land-check-resources.js');
   assert.deepEqual(parseMainLog('abc\t2026-11-08T00:00:00Z\tfix(BRO-1): a\tb\n\n'), [{ sha: 'abc', ts: '2026-11-08T00:00:00Z', subject: 'fix(BRO-1): a\tb' }]);
+});
+
+test('BRO-7431: a stale .next/dev/types is removed before the gates run; a live next dev is reported', () => {
+  const { clearStaleDevTypes } = require('./land-local-check.js');
+  const root = mkdtempSync(join(tmpdir(), 'lcc-devtypes-'));
+  try {
+    fs.mkdirSync(join(root, '.next', 'dev', 'types'), { recursive: true });
+    writeFileSync(join(root, '.next', 'dev', 'types', 'routes.d.ts'), '');
+    fs.mkdirSync(join(root, '.next', 'types'), { recursive: true });
+    const r = clearStaleDevTypes(root, { pgrep: () => '123\n' });
+    assert.deepEqual(r, { removed: true, devAlive: true });
+    assert.equal(existsSync(join(root, '.next', 'dev')), false, 'stale dev types gone');
+    assert.equal(existsSync(join(root, '.next', 'types')), true, 'production types untouched');
+    assert.deepEqual(clearStaleDevTypes(root, { pgrep: () => '' }), { removed: false, devAlive: false });
+  } finally { rmSync(root, { recursive: true, force: true }); }
+  const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  assert.ok(main.indexOf('clearStaleDevTypes(ROOT)') > 0 && main.indexOf('clearStaleDevTypes(ROOT)') < main.indexOf('land-gauntlet.sh'), 'cleared before the gauntlet');
 });
