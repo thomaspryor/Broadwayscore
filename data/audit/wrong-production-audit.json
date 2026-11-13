@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T12:03:56.010Z",
+  "timestamp": "2026-11-13T13:19:57.055Z",
   "stats": {
-    "totalReviews": 81833,
-    "alreadyFlagged": 22345,
+    "totalReviews": 81838,
+    "alreadyFlagged": 22352,
     "dateGuardCatches": 220,
-    "directorMismatch": 3671,
+    "directorMismatch": 3670,
     "tvFilmSignals": 2309,
     "londonSignals": 3737,
     "offBroadwaySignals": 752,
     "yearMismatch": 375,
-    "noPublishDate": 8431
+    "noPublishDate": 8426
   },
   "findings": [
     {
@@ -31273,20 +31273,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 474d before show (June 4, 2015 vs 2016-09-20)"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "file": "nytg--tom-millward.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/hello-dolly",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
         }
       ]
     },
@@ -69947,7 +69933,7 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
-      "file": "hotchka--unknown.json",
+      "file": "hotchka--patrick-regal.json",
       "score": 45,
       "publishDate": "2026-02-05",
       "url": "https://hotchka.com/the-great-gatsby-tour-review-baltimore-hippodrome",
@@ -92371,7 +92357,7 @@
     },
     {
       "showId": "beetlejuice-tour-2022",
-      "file": "hotchka--unknown.json",
+      "file": "hotchka--chuck-duncan.json",
       "publishDate": "2023-05-17",
       "url": "https://hotchka.com/beetlejuice-tour-review",
       "findings": [
@@ -108150,7 +108136,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -113961,7 +113947,7 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--neil-dowden.json",
       "score": 60,
       "publishDate": "2026-09-15",
       "url": "https://playsinternational.org.uk/man-to-man-royal-court-theatre-downstairs/",
@@ -123229,7 +123215,7 @@
     {
       "showId": "rope-off-broadway-2026",
       "file": "nytimes--helen-shaw.json",
-      "score": 48,
+      "score": 49,
       "publishDate": "2026-11-05",
       "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
       "findings": [
