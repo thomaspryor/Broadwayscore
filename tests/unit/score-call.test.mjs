@@ -25,17 +25,27 @@ test('gapSentence', () => {
   assert.equal(SC.gapSentence({ called: 73, forecast: 74 }), 'Your prediction is 1 point below our forecast.');
   assert.equal(SC.gapSentence({ called: 70, forecast: null }), null);
   // Owner 2026-11-13: these phrasings read as sloppy; keep them out.
-  const all = [SC.gapSentence({ called: 59, forecast: 70, lo80: 56, hi80: 82 }), SC.resultSentence({ called: 59, r: SC.resultStrip({ called: 59, forecast: 70, critic: 66 }) })].join(' ');
+  const all = [SC.gapSentence({ called: 59, forecast: 70, lo80: 56, hi80: 82 }), SC.resultSentence({ r: SC.resultStrip({ called: 59, forecast: 70, critic: 66 }) })].join(' ');
   assert.doesNotMatch(all, /You are \d+ (above|below)|get scored|Off by/);
 });
 
 test('resultSentence and forecastMissSentence', () => {
   const r = SC.resultStrip({ called: 59, forecast: 70, critic: 61 });
-  assert.equal(SC.resultSentence({ called: 59, r }), 'You were 2 points off, and closer than our forecast.');
+  assert.equal(SC.resultSentence({ r }), 'You were 2 points off, and closer than our forecast.');
   assert.equal(SC.forecastMissSentence(r), 'Our forecast was 9 points off.');
   const exact = SC.resultStrip({ called: 61, forecast: null, critic: 61 });
-  assert.equal(SC.resultSentence({ called: 61, r: exact }), 'You got it exactly right.');
+  assert.equal(SC.resultSentence({ r: exact }), 'You got it exactly right.');
   assert.equal(SC.forecastMissSentence(exact), null);
+  const tie = SC.resultStrip({ called: 60, forecast: 66, critic: 63 });
+  assert.equal(SC.resultSentence({ r: tie }), 'You were 3 points off, the same as our forecast.');
+  assert.equal(SC.forecastMissSentence(tie), null);
+  const worse = SC.resultStrip({ called: 50, forecast: 62, critic: 63 });
+  assert.equal(SC.resultSentence({ r: worse }), 'You were 13 points off.');
+  assert.equal(SC.forecastMissSentence(worse), 'Our forecast was 1 point off.');
+  const bothExact = SC.resultStrip({ called: 63, forecast: 63, critic: 63 });
+  assert.equal(SC.resultSentence({ r: bothExact }), 'You got it exactly right.');
+  assert.equal(SC.forecastMissSentence(bothExact), 'Our forecast was exactly right.');
+  assert.equal(SC.gapSentence({ called: 60, forecast: 66, lo80: null, hi80: 80 }), 'Your prediction is 6 points below our forecast.');
 });
 test('buildSyncRows uses the last ledger row before opening, skips rows without forecast, flags live reviews', () => {
   const shows = [{ id: 'a', category: 'broadway', type: 'musical', status: 'previews', openingDate: '2026-12-01' }, { id: 'b', category: 'broadway', type: 'play', status: 'previews', openingDate: '2026-12-01' }];

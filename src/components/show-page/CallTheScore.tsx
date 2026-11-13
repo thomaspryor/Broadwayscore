@@ -15,7 +15,7 @@ const fmtDate = (iso?: string | null) => (iso ? new Date(iso.slice(0, 10) + 'T12
 /** predicted: dashed outline, the same cue /admin/forecasts uses, so a guess never reads as a real score. */
 function Tile({ label, score, category, muted, predicted }: { label: string; score: number | null; category?: string; muted?: boolean; predicted?: boolean }) {
   return (
-    <div className="flex flex-col items-center gap-2 min-w-[5.5rem]">
+    <div className="flex flex-col items-center gap-2 w-[5.25rem] sm:w-auto sm:min-w-[5.5rem]">
       <div className={predicted ? 'rounded-xl outline outline-2 outline-dashed outline-offset-2 outline-white/30' : undefined} data-predicted={predicted ? 'true' : undefined}>
         <ScoreBadge score={score} size="lg" category={category} />
       </div>
@@ -99,14 +99,14 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     const sentence = gapSentence({ called: call.called_score, forecast: call.forecast as number, lo80: call.lo80 as number, hi80: call.hi80 as number });
     return (
       <Wrap>
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Your prediction is locked in</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Prediction locked in</p>
         <div className="flex items-start justify-center gap-5 mb-3 pt-1">
           <Tile label="Your prediction" score={call.called_score} category={show.category} predicted />
           {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted predicted />}
         </div>
         {sentence && <p className="text-sm text-gray-300 text-center m-0 mb-1">{sentence}</p>}
         {call.forecast == null && <p className="text-sm text-gray-300 text-center m-0 mb-1">We don&apos;t have a forecast for this show.</p>}
-        <p className="text-xs text-fg-muted text-center m-0">Reviews come out after opening night{show.openingDate ? `, ${fmtDate(show.openingDate)}` : ''}. Come back to see {call.forecast != null ? 'who was closer' : 'how close you were'}.</p>
+        <p className="text-xs text-fg-muted text-center m-0">Reviews come out after opening night{show.openingDate ? ` on ${fmtDate(show.openingDate)}` : ''}. Come back to see {call.forecast != null ? 'who was closer' : 'how close your prediction was'}.</p>
       </Wrap>
     );
   }
@@ -123,7 +123,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
       <button type="button" className="btn-primary w-full mt-4" disabled={busy} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
       {!signedIn && saveAsk && <p className="text-sm text-gray-200 text-center mt-2 mb-0" data-testid="save-prompt">Save your prediction: create a free account or sign in.</p>}
       {msg && <p className="text-xs text-score-skip text-center mt-2 mb-0" role="alert">{msg}</p>}
-      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Lock in your prediction to see our forecast, when we have one. You&apos;ll need a free account, and a locked prediction can&apos;t be changed.</p>
+      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Lock in your prediction to see our forecast, if we have one. You&apos;ll need a free account, and a locked prediction can&apos;t be changed.</p>
     </Wrap>
   );
 }
@@ -136,9 +136,9 @@ export function CallResultStrip({ show, critic }: { show: ShowLike; critic: numb
   if (!r) return null;
   return (
     <div className="mb-4 rounded-lg bg-surface-overlay p-4" data-testid="call-result-strip">
-      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Your prediction</p>
-      <p className="text-base font-semibold text-white m-0 mb-3">{resultSentence({ called: call.called_score, r })}</p>
-      <div className="flex items-start justify-center gap-2 sm:gap-5 mb-2 pt-1">
+      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">How your prediction did</p>
+      <p className="text-base font-semibold text-white m-0 mb-3">{resultSentence({ r })}</p>
+      <div className="flex flex-wrap items-start justify-center gap-x-2 gap-y-3 sm:gap-x-5 mb-2 pt-1">
         <Tile label="Your prediction" score={call.called_score} category={show.category} predicted />
         {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted predicted />}
         <Tile label="Critic Score" score={r.critic} category={show.category} />

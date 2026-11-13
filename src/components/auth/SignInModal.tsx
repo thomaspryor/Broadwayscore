@@ -38,7 +38,7 @@ const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
   watchlist_local: "Your list is on this device for now. Sign in to see it on your phone and computer, and we'll move it over for you.",
   generic: 'Track the shows you’ve seen and the ones you want to see.',
   critic: 'A free account lets you add a photo, bio and links to your critic page.',
-  prediction: "Create a free account or sign in. We'll save your prediction, then show you our forecast when we have one.",
+  prediction: "Create a free account or sign in. We'll save your prediction, then show you our forecast if we have one.",
 };
 
 export default function SignInModal({ isOpen, onClose, onSignIn, onSendEmailCode, onVerifyEmailCode, context = 'generic', loading = false, error = null }: SignInModalProps) {

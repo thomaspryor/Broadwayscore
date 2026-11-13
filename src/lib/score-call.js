@@ -55,11 +55,12 @@ function gapSentence({ called, forecast, lo80, hi80 }) {
 /** Result headline once the Critic Score exists. The tiles carry the numbers. */
 function resultSentence({ r }) {
   if (r.off === 0) return r.beatForecast ? 'You got it exactly right, and beat our forecast.' : 'You got it exactly right.';
-  return `You were ${pts(r.off)} off${r.beatForecast ? ', and closer than our forecast' : ''}.`;
+  const tie = r.forecastMiss != null && r.forecastMiss === r.off;
+  return `You were ${pts(r.off)} off${r.beatForecast ? ', and closer than our forecast' : tie ? ', the same as our forecast' : ''}.`;
 }
 
 function forecastMissSentence(r) {
-  if (r.forecastMiss == null) return null;
+  if (r.forecastMiss == null || (r.off !== 0 && r.forecastMiss === r.off)) return null; // a tie is already in the headline
   return r.forecastMiss === 0 ? 'Our forecast was exactly right.' : `Our forecast was ${pts(r.forecastMiss)} off.`;
 }
 
