@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-13T18:54:09.531Z",
+  "timestamp": "2026-11-13T19:18:23.808Z",
   "stats": {
-    "totalReviews": 81948,
+    "totalReviews": 81951,
     "alreadyFlagged": 22361,
     "dateGuardCatches": 220,
     "directorMismatch": 3667,
     "tvFilmSignals": 2310,
-    "londonSignals": 3740,
+    "londonSignals": 3741,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
     "noPublishDate": 8475
@@ -96297,6 +96297,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "readaboutstuff--dan-english.json",
+      "score": 65,
+      "publishDate": "2026-11-12",
+      "url": "https://readaboutstuff.com/2026/11/12/review-cloud-nine-national-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
