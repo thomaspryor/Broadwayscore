@@ -212,7 +212,9 @@
     "broom-play-off-broadway-2026/patch--kampfire-pr.json",
     "speculations-off-west-end-2026/bestoftheatre--milo-garth.json",
     "rope-off-broadway-2026/nytimes--helen-shaw.json",
-    "middlemarch-rsc-regional-2026/stage-talk-magazine--stagetalk.json"
+    "middlemarch-rsc-regional-2026/stage-talk-magazine--stagetalk.json",
+    "dogstar-off-west-end-2026/islingtontribune--unknown.json",
+    "speculations-off-west-end-2026/westminsterextra--unknown.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/british-theatre--unknown.json",
@@ -505,12 +507,16 @@
       "broom-play-off-broadway-2026/patch--kampfire-pr.json",
       "speculations-off-west-end-2026/bestoftheatre--milo-garth.json",
       "middlemarch-rsc-regional-2026/stage-talk-magazine--stagetalk.json",
-      "jest-to-impress-off-broadway-2026/donyc--unknown.json"
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+      "dogstar-off-west-end-2026/islingtontribune--unknown.json",
+      "speculations-off-west-end-2026/westminsterextra--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/rope-off-broadway-2026/nytimes--helen-shaw.json",
-      "rope-off-broadway-2026/nytimes--helen-shaw.json"
+      "rope-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json",
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -605,7 +611,7 @@
     ]
   },
   "startTime": "2026-11-12T20:06:25.494Z",
-  "lastProcessed": "hamlet-hail-to-the-thief-off-west-end-2026/sunday-times--dominic-maxwell.json",
+  "lastProcessed": "girls-off-west-end-2026/radio-times--molly-moss.json",
   "log": [
     {
       "t": "2026-11-12T20:19:39.076Z",
@@ -795,6 +801,29 @@
       "t": "2026-11-13T02:25:03.174Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T03:20:04.231Z",
+      "event": "bb-session",
+      "session": "df734732",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T03:20:04.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-13T03:26:19.468Z",
+      "event": "bb-session",
+      "session": "ec376a91",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-13T03:27:48.655Z",
+      "event": "bb-session",
+      "session": "ce670fbe",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ],
   "recoveredAfterFailure": [
