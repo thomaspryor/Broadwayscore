@@ -1,21 +1,133 @@
 {
-  "processed": [],
+  "processed": [
+    "cloud-9-west-end-2026/afridiziak-theatre-news--unknown.json",
+    "cloud-9-west-end-2026/observer--unknown.json",
+    "cloud-9-west-end-2026/a-youngish-perspective--unknown.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-theatre--theo-bosanquet.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "ghost-notes-off-broadway-2026/oazis--unknown.json",
+    "the-visitors-off-broadway-2026/nytimes--brittani-samuel.json",
+    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+  ],
   "failed": [
-    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json"
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "cloud-9-west-end-2026/afridiziak-theatre-news--unknown.json",
+      "cloud-9-west-end-2026/observer--unknown.json",
+      "cloud-9-west-end-2026/a-youngish-perspective--unknown.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+      "hamlet-hail-to-the-thief-off-west-end-2026/london-theatre--theo-bosanquet.json",
+      "hamlet-hail-to-the-thief-off-west-end-2026/whatsonstage--sarah-crompton.json",
+      "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "ghost-notes-off-broadway-2026/oazis--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json",
+      "data/review-texts/the-visitors-off-broadway-2026/nytimes--brittani-samuel.json",
+      "the-visitors-off-broadway-2026/nytimes--brittani-samuel.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    ],
+    "scrapingbee": [
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
+    ]
   },
-  "startTime": "2026-11-13T11:48:01.680Z",
-  "lastProcessed": "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
-  "log": []
+  "startTime": "2026-11-13T11:07:48.390Z",
+  "lastProcessed": "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-13T11:09:52.579Z",
+      "event": "bb-session",
+      "session": "b21baa44",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T11:09:53.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-13T11:49:55.382Z",
+      "event": "bb-session",
+      "session": "b23fc71f",
+      "url": "https://www.nytimes.com/2026/11/13/theater/the-visitors-review-mary-wiseman.html"
+    },
+    {
+      "t": "2026-11-13T11:49:56.201Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T11:50:21.964Z",
+      "event": "bb-session",
+      "session": "7be4cc90",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-13T11:50:22.736Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-13T11:52:33.420Z",
+      "event": "bb-session",
+      "session": "9dd99e15",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-13T11:52:34.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T11:55:06.338Z",
+      "event": "bb-session",
+      "session": "012bf10d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-13T11:55:07.211Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T11:57:50.403Z",
+      "event": "bb-session",
+      "session": "808b6cc7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-13T11:57:51.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
