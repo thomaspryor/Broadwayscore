@@ -4,6 +4,7 @@
  * critic score forecast. NOTHING is published; output is JSON for the owner Artifact.
  *   node scripts/predict-critic-score.js [--from=2023-01-01] [--json=path] [--next]
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { forecast, peopleOf, band, cohortKey, mean } = require('./lib/critic-score-forecast');

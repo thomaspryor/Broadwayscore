@@ -92,6 +92,9 @@ on:
       # globbed). Never add a literal scripts/<name>.test.mjs entry:
       # tests/unit/test-yml-toplevel-test-glob.test.mjs refuses one.
       - 'scripts/*.test.mjs'
+      # BRO-7314: forecast backtest + its lib (research-only; test is covered by the glob above)
+      - 'scripts/predict-critic-score.js'
+      - 'scripts/lib/critic-score-forecast.js'
       # scripts/lib/check-orphan-commits.test.mjs requires ../check-orphan-commits.js
       # (a top-level scripts/ file, outside the glob above) and
       # scripts/lib/owner-accounts.test.mjs requires ../../vercel.json (a root
