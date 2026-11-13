@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T18:22:10.217Z",
+  "generatedAt": "2026-11-13T19:28:24.352Z",
   "windowDays": 45,
   "showsScanned": 241,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 107.33331055555556,
+      "fileAgeHours": 108.42889555555556,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 84.78497694444444,
+      "nonTerminalAgeHours": 85.88890333333333,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 5,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 76.56523472222223,
+      "fileAgeHours": 77.66394138888889,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 75.42053194444445,
+      "nonTerminalAgeHours": 76.52445833333333,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 93.12539833333334,
+      "fileAgeHours": 94.2269011111111,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 92.71253,
+      "nonTerminalAgeHours": 93.8164563888889,
       "needsManualRecovery": false
     },
     {
@@ -78,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 89.92503944444445,
+      "fileAgeHours": 91.02654166666666,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 88.85080277777777,
+      "nonTerminalAgeHours": 89.95472916666667,
       "needsManualRecovery": false
     }
   ],

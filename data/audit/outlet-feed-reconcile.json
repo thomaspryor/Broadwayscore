@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T18:22:30.960Z",
+  "generatedAt": "2026-11-13T19:28:49.705Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -130,11 +130,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 840,
-  "matchedGaps": 12,
-  "possibleGaps": 4,
+  "itemsScanned": 830,
+  "matchedGaps": 7,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "cloud-9-national-west-end-2026",
@@ -191,42 +195,6 @@
       "publishDate": "2026-11-11"
     },
     {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
-      "headline": "Cloud 9 | National Theatre",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/hamlet-hail-to-the-thief-barbican-theatre-london/",
-      "headline": "Hamlet Hail To The Thief – Barbican Theatre, London",
-      "publishDate": "2026-11-13"
-    },
-    {
-      "showId": "here-there-are-blueberries-2026",
-      "title": "Here There Are Blueberries",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/here-there-are-blueberries-the-banality-of-evil-revisited/",
-      "headline": "“HERE THERE ARE BLUEBERRIES”: THE BANALITY OF EVIL, REVISITED",
-      "publishDate": "2026-11-13"
-    },
-    {
-      "showId": "the-steel-man-off-broadway-2026",
-      "title": "The Steel Man",
-      "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/11/6/the-steel-man",
-      "headline": "The Steel Man",
-      "publishDate": "2026-11-13"
-    },
-    {
       "showId": "the-visitors-off-broadway-2026",
       "title": "The Visitors",
       "level": "matched",
@@ -234,24 +202,6 @@
       "url": "https://operawire.com/light-opera-of-new-jersey-to-present-amahl-and-the-night-visitors/",
       "headline": "Light Opera of New Jersey to Present &#8216;Amahl and the Night Visitors&#8217;",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/shakespeare-opera-theatre-to-present-amahl-and-the-night-visitors/",
-      "headline": "Shakespeare Opera Theatre to Present &#8216;Amahl and the Night Visitors&#8217;",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "level": "possible",
-      "outletId": "artsdesk",
-      "url": "https://theartsdesk.com/theatre/cloud-9-national-theatre-review-dazzlingly-successful-revival",
-      "headline": "Cloud 9, National Theatre review - a dazzlingly successful revival",
-      "publishDate": null
     },
     {
       "showId": "the-visitors-off-broadway-2026",
