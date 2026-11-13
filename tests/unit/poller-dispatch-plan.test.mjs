@@ -46,12 +46,38 @@ test('at most MAX_TARGETED shows, hottest (nearest the embargo) first, ties brok
   assert.deepEqual(p.targetedIds, ['other-hot', 'blueberries']); // 10 min and 30 min from embargo; third (170 min) is capped out
 });
 
+test('BRO-7443: shows past the cap round-robin across iterations, so none is starved (2026-11-12 King\'s Critique)', () => {
+  const N = Date.parse('2026-11-13T03:00:00Z');
+  const tied = ['first-and-last', 'the-good-thief', 'the-kings-critique'].map((id) => ({ id, embargoMs: N }));
+  const seen = new Set();
+  for (let it = 0; it < 2; it++) planPollerDispatch({ shows: tied, nowMs: N + 30 * M, rotation: it }).targetedIds.forEach((id) => seen.add(id));
+  assert.ok(seen.has('the-kings-critique'), 'every tied in-window show gets a targeted poll within 2 iterations');
+  assert.equal(seen.size, 3);
+  // near-tie (1 min apart) is covered too, not only exact ties
+  const near = [{ id: 'a', embargoMs: N }, { id: 'b', embargoMs: N + M }, { id: 'c', embargoMs: N + 2 * M }];
+  const seen2 = new Set();
+  for (let it = 0; it < 2; it++) planPollerDispatch({ shows: near, nowMs: N, rotation: it }).targetedIds.forEach((id) => seen2.add(id));
+  assert.equal(seen2.size, 3);
+});
+
+test('BRO-7443: the hottest show is never rotated out, and deferred shows are named in the reason', () => {
+  const four = [hot, hot2, { id: 'x3', embargoMs: E + 40 * M }, { id: 'x4', embargoMs: E + 50 * M }];
+  for (const r of [0, 1, 2, 3, -1, NaN, 1e9]) {
+    const p = planPollerDispatch({ shows: four, nowMs: E + 15 * M, rotation: r });
+    assert.equal(p.targetedIds.length, 2);
+    assert.equal(p.targetedIds[0], 'other-hot'); // 5 min from embargo: always kept
+    assert.match(p.reason, /deferred this iteration: /);
+  }
+  assert.doesNotMatch(planPollerDispatch({ shows: [old, hot], nowMs: E }).reason, /deferred/);
+});
+
 // The orchestrator is the only caller; pin the wiring that makes the plan matter.
 const wf = fs.readFileSync(new URL('../../.github/workflows/opening-night-orchestrator.yml', import.meta.url), 'utf8');
 
 test('orchestrator wiring: kill switch, planner CLI, targeted dispatch, deadline-driven loop, no cancel', () => {
   assert.match(wf, /POLLER_PER_SHOW_DISABLED: \$\{\{ vars\.POLLER_PER_SHOW_DISABLED \}\}/);
   assert.match(wf, /scripts\/lib\/poller-dispatch-plan\.js --shows="\$SHOWS"/);
+  assert.match(wf, /poller-dispatch-plan\.js [^\n]*--rotation="\$\(\( \$\{ITERATION:-1\} - 1 \)\)"/); // BRO-7443 wiring
   assert.match(wf, /gh workflow run opening-night-poller\.yml -f show_id="\$id" \$POLLER_ARGS/);
   assert.match(wf, /if \[ "\$PLAN_MODE" = "parallel" \]; then\s+dispatch_parallel\s+else/);
   assert.match(wf, /MAX_ITERATIONS=48/); // parallel iterations are minutes: run to DEADLINE, not 10 iterations

@@ -803,9 +803,10 @@ jobs:
           PLAN_MODE=legacy
           PLAN_TARGETS=""
           declare -A PREV_TARGETED_RUN
+          # BRO-7443: --rotation = iteration-1 round-robins in-window shows past the targeted cap (hottest stays fixed).
           plan_dispatch() {
             local out
-            out=$(timeout 30 node scripts/lib/poller-dispatch-plan.js --shows="$SHOWS" --disabled="${POLLER_PER_SHOW_DISABLED:-}" 2>/tmp/dispatch-plan.err) || out=""
+            out=$(timeout 30 node scripts/lib/poller-dispatch-plan.js --shows="$SHOWS" --disabled="${POLLER_PER_SHOW_DISABLED:-}" --rotation="$(( ${ITERATION:-1} - 1 ))" 2>/tmp/dispatch-plan.err) || out=""
             cat /tmp/dispatch-plan.err 2>/dev/null || true
             PLAN_MODE=$(echo "$out" | sed -n 's/^mode=//p')
             PLAN_TARGETS=$(echo "$out" | sed -n 's/^targeted=//p')
