@@ -1,0 +1,36 @@
+{
+  "processed": [],
+  "failed": [
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "startTime": "2026-11-13T17:07:48.694Z",
+  "lastProcessed": "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+  "log": [
+    {
+      "t": "2026-11-13T17:10:38.325Z",
+      "event": "bb-session",
+      "session": "2ffa3aee",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-13T17:10:38.903Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
+}
