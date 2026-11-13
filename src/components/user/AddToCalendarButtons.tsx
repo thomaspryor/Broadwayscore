@@ -18,8 +18,9 @@ interface AddToCalendarButtonsProps {
    *  (the ~100px grid card, the date column of a list row). Omit on wider
    *  surfaces for the one-line icon + label button. */
   compact?: boolean;
-  /** Text-link look (icon + label, no fill) for sheets where another button is
-   *  the one primary action, e.g. the To See plan sheet's Done. Still 44px tall. */
+  /** Text-link look (icon + label, no fill) for DARK sheets where another
+   *  button is the one primary action, e.g. the To See plan sheet's Done
+   *  (white text, so never use it on a light surface). Still 44px tall. */
   quiet?: boolean;
   /** Called when a calendar is chosen in the sheet (analytics). */
   onAdd?: (method: CalendarMethod) => void;
@@ -57,7 +58,7 @@ export default function AddToCalendarButtons({ event, compact, quiet, onAdd }: A
         type="button"
         onClick={openSheet}
         className={quiet
-          ? 'inline-flex items-center justify-center h-11 px-3 gap-1.5 text-sm font-semibold text-white hover:underline'
+          ? 'focus-ring rounded-lg inline-flex items-center justify-center h-11 px-3 gap-1.5 text-sm font-semibold text-white hover:underline'
           : compact
             ? 'btn btn-secondary w-full min-h-[44px] px-1.5 py-1 text-xs leading-tight'
             : 'btn btn-secondary h-11 px-3 gap-1.5 text-sm'}

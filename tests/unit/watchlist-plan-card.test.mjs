@@ -35,7 +35,7 @@ test('plan card and sheet controls are at least 44px tall', () => {
   assert.match(CARD, /function slotClass[\s\S]*?h-16/, 'showtime buttons must stay h-16');
   assert.match(CARD, /ariaLabel="Planned date"[\s\S]*?className="w-full h-12/, 'date field must stay h-12');
   assert.match(CARD, /Remove from To See/);
-  assert.match(CARD, /className="h-11 px-3 text-sm font-semibold text-score-skip hover:underline/, 'Remove is a 44px red text action');
+  assert.match(CARD, /className="focus-ring rounded-lg h-11 px-3 text-sm font-semibold text-score-skip hover:underline/, 'Remove is a 44px red text action');
   assert.match(CARD, /className="card-interactive w-full flex items-center gap-3 p-3/, 'row is a full-width card');
 });
 
@@ -65,7 +65,11 @@ test('sheet has a primary Done button that closes it (BRO-7422)', () => {
   // change had stuck and had to hunt for the X. Done must stay, be the primary
   // button style, and call onClose.
   const sheet = CARD.slice(CARD.indexOf('function PlanSheet('));
-  assert.match(sheet, /onClick=\{onClose\}\s*data-testid="watchlist-plan-done"\s*className="btn btn-primary w-full h-12"/);
+  // Order-independent: find the Done button element, then check its parts.
+  const done = sheet.match(/<button[^>]*data-testid="watchlist-plan-done"[^>]*>|<button(?:(?!<\/button>)[\s\S])*?data-testid="watchlist-plan-done"[\s\S]*?>/);
+  assert.ok(done, 'Done button missing');
+  assert.match(done[0], /onClick=\{onClose\}/, 'Done must close the sheet');
+  assert.match(done[0], /className="btn btn-primary w-full h-12"/, 'Done is the primary 48px button');
   assert.match(sheet, /Changes save automatically/);
   assert.ok(
     sheet.indexOf('watchlist-plan-done') < sheet.indexOf('<AddToCalendarButtons'),
@@ -76,6 +80,17 @@ test('sheet has a primary Done button that closes it (BRO-7422)', () => {
   assert.equal((sheet.match(/btn-primary/g) || []).length, 1, 'exactly one primary button');
   assert.doesNotMatch(sheet, /btn btn-secondary/, 'no second filled button in the sheet');
   assert.match(sheet, /<AddToCalendarButtons event=\{event\} quiet \/>/, 'calendar uses the quiet look');
+});
+
+test('quiet text actions keep 44px targets and a keyboard focus ring (BRO-7422 ship-check)', () => {
+  const sheet = CARD.slice(CARD.indexOf('function PlanSheet('));
+  assert.match(sheet, /className="focus-ring rounded-lg h-11 px-3 [^"]*text-score-skip/, 'Remove: focus ring + 44px');
+  assert.doesNotMatch(sheet, /aria-live/, 'a live region on static text announces nothing');
+  const cal = read('src/components/user/AddToCalendarButtons.tsx');
+  assert.match(cal, /'focus-ring rounded-lg inline-flex items-center justify-center h-11 [^']*text-white hover:underline'/, 'quiet calendar: focus ring + 44px');
+  // Other callers (MyShowsClient, SharedPlansView) never pass quiet: their look must not drift.
+  assert.match(cal, /'btn btn-secondary w-full min-h-\[44px\] px-1\.5 py-1 text-xs leading-tight'/, 'compact look unchanged');
+  assert.match(cal, /'btn btn-secondary h-11 px-3 gap-1\.5 text-sm'/, 'default look unchanged');
 });
 
 test('diary-only show page can delete a rating', () => {
