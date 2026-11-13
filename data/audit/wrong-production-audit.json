@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T15:31:13.328Z",
+  "timestamp": "2026-11-13T16:41:05.711Z",
   "stats": {
-    "totalReviews": 81851,
-    "alreadyFlagged": 22355,
+    "totalReviews": 81906,
+    "alreadyFlagged": 22357,
     "dateGuardCatches": 220,
-    "directorMismatch": 3670,
-    "tvFilmSignals": 2311,
+    "directorMismatch": 3667,
+    "tvFilmSignals": 2310,
     "londonSignals": 3739,
-    "offBroadwaySignals": 752,
+    "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8426
+    "noPublishDate": 8462
   },
   "findings": [
     {
@@ -24752,7 +24752,7 @@
     {
       "showId": "ghost-notes-off-broadway-2026",
       "file": "oazis--unknown.json",
-      "publishDate": null,
+      "publishDate": "2026-11-12",
       "url": "https://oazis.app/evenements/ghost-notes-2026-11-12",
       "findings": [
         {
@@ -48577,7 +48577,7 @@
       "showId": "on-the-twentieth-century-2015",
       "file": "huffpost--david-finkle.json",
       "score": 63,
-      "publishDate": null,
+      "publishDate": "2015-03-15T17:12:34-04:00",
       "url": "https://www.huffpost.com/david-finkle/first-nighter-chenoweth-g_b_6874632.html",
       "findings": [
         {
@@ -48645,20 +48645,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "on-the-twentieth-century-2015",
-      "file": "vulture--jesse-green.json",
-      "score": 78,
-      "publishDate": "March 13, 2015",
-      "url": "https://www.vulture.com/2015/03/theater-review-on-the-twentieth-century.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
         }
       ]
     },
@@ -57948,25 +57934,6 @@
     },
     {
       "showId": "six-degrees-of-separation-2017",
-      "file": "paste-magazine--stuart-miller.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://www.pastemagazine.com/theatre/review-six-degrees-of-separation",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "six-degrees-of-separation-2017",
       "file": "simon-seez--simon-saltzman.json",
       "score": 85,
       "publishDate": "April 29th, 2017",
@@ -57997,7 +57964,7 @@
       "showId": "six-degrees-of-separation-2017",
       "file": "towncountry--jesse-oxfeld.json",
       "score": 71,
-      "publishDate": null,
+      "publishDate": "April 25, 2017",
       "url": "https://www.townandcountrymag.com/leisure/arts-and-culture/a9562249/six-degrees-of-separation-broadway-review/",
       "findings": [
         {
@@ -62448,20 +62415,6 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 93,
-      "publishDate": "2017-02-23",
-      "url": "https://www.hollywoodreporter.com/news/general-news/sunday-in-the-park-with-george-theater-979116/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
       "file": "huffpost--steven-suskin.json",
       "score": 88,
       "publishDate": "2017-02-23",
@@ -62658,23 +62611,9 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "file": "timeout--adam-feldman.json",
+      "file": "timeout--david-cote.json",
       "score": 80,
       "publishDate": "February 23, 2017",
-      "url": "https://www.timeout.com/newyork/blog/broadway-review-jake-gyllenhaal-is-amazing-in-sunday-in-the-park-with-george-022317",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
-      "file": "timeout--david-cote.json",
-      "score": 82,
-      "publishDate": "February 23rd, 2017",
       "url": "https://www.timeout.com/newyork/blog/broadway-review-jake-gyllenhaal-is-amazing-in-sunday-in-the-park-with-george-022317",
       "findings": [
         {
@@ -68203,7 +68142,7 @@
       "showId": "the-elephant-man-2014",
       "file": "newsday--linda-winer.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2014-12-07T19:33:11-05:00",
       "url": "https://www.newsday.com/entertainment/theater/the-elephant-man-review-a-stellar-bradley-cooper-1.9685494",
       "findings": [
         {
@@ -121901,7 +121840,7 @@
       "showId": "prima-facie-2023",
       "file": "slantmagazine--dan-rubins.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2023-04-23T10:51:04-05:002023-04-23T10:51:04-05:002023-04-23T10:51:04-05:002023-04-23T10:51:04-05:002023-04-23T10:51:04-05:002023-04-23T10:51:04-05:002023-04-23T10:51:04-05:00",
       "url": "https://www.slantmagazine.com/theater/prima-facie-review-jodie-comer/",
       "findings": [
         {
@@ -134124,20 +134063,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lehman-trilogy-2021",
-      "file": "variety--charles-isherwood.json",
-      "score": 91,
-      "publishDate": "October 14, 2021",
-      "url": "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235081462/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },
