@@ -137,8 +137,14 @@ function codexLaneHealth({ nowMs, landed = null, summaries = null, ghRuns = null
     }
     // Judged on the parsed stop reason, never the summary body: bodies quote card titles and check output.
     const diskStops = cloud.filter((r) => nowMs - r.ms <= 12 * HOUR && DISK_STOP.test(r.f.stop || ''));
-    if (diskStops.length && cloud.length && DISK_STOP.test(cloud[0].f.stop || '')) {
-      breach('cloud', 'disk-low', `${diskStops.length} cloud summary(ies) in 12h stopped on disk: ${diskStops[0].f.stop.slice(0, 90)}`);
+    // BRO-7089: a slot that stood down 'disk' before git fetch posts a note, not a summary; it is the same alarm.
+    const diskNotes = cloudNotes.filter((x) => x.cls === 'disk' && nowMs - x.ms <= 12 * HOUR);
+    const newestDiskNoteMs = diskNotes.length ? Math.max(...diskNotes.map((x) => x.ms)) : -Infinity;
+    const newestSummaryMs = cloud.length ? cloud[0].ms : -Infinity;
+    const newestIsDisk = newestDiskNoteMs >= newestSummaryMs || (cloud.length && DISK_STOP.test(cloud[0].f.stop || ''));
+    if ((diskStops.length || diskNotes.length) && newestIsDisk) {
+      const first = diskNotes.length && newestDiskNoteMs >= newestSummaryMs ? diskNotes.find((x) => x.ms === newestDiskNoteMs).why.split('\n')[0] : diskStops[0].f.stop;
+      breach('cloud', 'disk-low', `${diskStops.length + diskNotes.length} cloud summary(ies) or stand-down(s) in 12h stopped on disk: ${String(first).slice(0, 90)}`);
     }
     const win = cloud.filter((r) => nowMs - r.ms <= floors.cloudLandWindowH * HOUR);
     const worked = win.reduce((a, r) => a + r.worked, 0);

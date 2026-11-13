@@ -245,7 +245,7 @@ function setupWorktree() {
     // BRO-7089: a full disk is a clean 'disk' stand-down, not a crash from the fetch.
     pruneDisk();
     const noRoom = R.diskStandDownReason(freeDisk());
-    if (noRoom) { logDiskUsage('before git fetch'); throw Object.assign(startFailure('disk', noRoom), { diskUsage: lastDiskUsage }); }
+    if (noRoom) { if (!lastDiskUsage) logDiskUsage('before git fetch'); throw Object.assign(startFailure('disk', noRoom), { diskUsage: lastDiskUsage }); }
     git(['fetch', 'origin', 'main'], ROOT);
     addWorktree(WT);
   }
@@ -1762,7 +1762,7 @@ async function runLocked(startedMs) {
     worktreeLine: R.worktreeSummaryLine({ mode: treeMode, bytes: R.measureTreeBytes(WT), fullBytes: Number(process.env.CODEX_FULL_TREE_BYTES) || null }),
     landedPerLane: SLOT === 0 ? landedPerLane() : null,
     ladderLine: ladderLine(),
-    diskLine: R.diskSummaryLine({ stop, slotShortfall: process.env.CODEX_SLOT_SHORTFALL, usage: lastDiskUsage || (R.runStoppedForDisk(stop) ? logDiskUsage('at stop') : '') }),
+    diskLine: R.diskSummaryLine({ stop, slotShortfall: process.env.CODEX_SLOT_SHORTFALL, usage: R.diskSummaryLine({ stop, slotShortfall: process.env.CODEX_SLOT_SHORTFALL, usage: 'x' }) ? logDiskUsage('at stop') || lastDiskUsage : '' }),
   });
   log(text);
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);

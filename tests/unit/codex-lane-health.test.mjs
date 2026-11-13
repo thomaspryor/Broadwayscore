@@ -109,3 +109,12 @@ test('cloud disk-low: the newest cloud summary stopped on disk (BRO-6304), judge
   const quoted = { createdAt: iso(1), body: sum(1).body + '\n- Runner error mid-card (back to Todo): BRO-9 (title: fix disk of the lane, No space left on device)' };
   assert.ok(!classes(h.codexLaneHealth({ ...healthy(), summaries: [quoted, sum(3), sum(5)] })).includes('cloud:disk-low'));
 });
+
+test('BRO-7089: a slot that stood down for disk before git fetch still trips cloud disk-low', () => {
+  const r = require('../../scripts/lib/codex-runner.js');
+  const note = (hrs) => ({ createdAt: iso(hrs), body: r.standDownNote({ cls: 'disk', why: r.diskStandDownReason(0.5e9), diskUsage: 'tmp/x 9G' }) });
+  const res = h.codexLaneHealth({ ...healthy(), summaries: [note(1), sum(3), sum(5)] });
+  assert.ok(classes(res).includes('cloud:disk-low'), JSON.stringify(classes(res)));
+  const healed = h.codexLaneHealth({ ...healthy(), summaries: [sum(0.2), note(1), sum(3)] });
+  assert.ok(!classes(healed).includes('cloud:disk-low'), 'cleared by a healthy run after the note');
+});

@@ -1884,7 +1884,6 @@ const DISK_STOP_RE = new RegExp(`GB of disk left|\\bout of disk\\b|\\bENOSPC\\b|
 // The lane alarm's disk-low fires on the FIRST cloud disk stop (12h look-back), so every disk stop in the row's 24h window
 // was already reported when it happened; the row must not re-file it a second time as 'crashed'.
 const DISK_ALARM_WINDOW_MS = 24 * 3600_000;
-/** A summary's 'Stopped early' line that is the runner's own disk stop (not a crash-streak line quoting a crash). */
 /**
  * BRO-7089: the stand-down reason when a slot would start with too little disk for `git fetch`
  * (null when there is room or the disk is unmeasurable). Checked AFTER pruneDisk, BEFORE the fetch,
@@ -1892,13 +1891,14 @@ const DISK_ALARM_WINDOW_MS = 24 * 3600_000;
  */
 function diskStandDownReason(freeDiskBytes) {
   if (!Number.isFinite(freeDiskBytes) || freeDiskBytes >= MIN_FREE_DISK_BYTES) return null;
-  return `only ${(freeDiskBytes / 1e9).toFixed(1)} GB of disk left after pruning (needs ${MIN_FREE_DISK_BYTES / 1e9} GB to set up a worktree), so the slot stopped before git fetch`;
+  return `only ${(freeDiskBytes / 1e9).toFixed(1)} GB of disk left after pruning (needs ${MIN_FREE_DISK_BYTES / 1e9} GB to run git fetch), so the slot stopped before it`;
 }
 /** BRO-7089: the summary's disk-usage line, only when the disk stopped or trimmed this run and a breakdown was measured. */
 function diskSummaryLine({ stop = '', slotShortfall = '', usage = '' } = {}) {
   const disky = runStoppedForDisk(stop) || /\bdisk\b/i.test(String(slotShortfall || ''));
   return disky && usage ? `- Disk usage (top consumers): ${String(usage).slice(0, 600)}` : '';
 }
+/** A summary's 'Stopped early' line that is the runner's own disk stop (not a crash-streak line quoting a crash). */
 function runStoppedForDisk(stop) {
   return DISK_STOP_RE.test(String(stop || '')) && !/runner errors in a row/i.test(String(stop || ''));
 }

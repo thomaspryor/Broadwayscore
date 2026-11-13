@@ -1926,7 +1926,7 @@ test('BRO-7089: a disk stop or trimmed slots put the disk breakdown in the Linea
 
 test('BRO-7089: a slot with too little disk after pruning stands down as class disk before git fetch', () => {
   assert.equal(r.diskStandDownReason(6.4e6) !== null, true);
-  assert.match(r.diskStandDownReason(6.4e6), /before git fetch/);
+  assert.match(r.diskStandDownReason(6.4e6), /run git fetch/);
   assert.equal(r.diskStandDownReason(r.MIN_FREE_DISK_BYTES), null);
   assert.equal(r.diskStandDownReason(null), null);
   assert.ok(r.STAND_DOWN_CLASSES.includes('disk'));
