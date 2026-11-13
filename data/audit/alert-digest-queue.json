@@ -211,5 +211,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-13T11:20:20.181Z"
+  },
+  {
+    "conditionKey": "corpus-drift:aggregator-archive-integrity",
+    "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff) (still open — BRO-4795)",
+    "description": "Still firing after 47 notifications since it was filed. Tracked at BRO-4795.\n\ncheck-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 7305 files\n  Skipped (no show in shows.json): 251\n  Bad: 1\n\n❌ NEW bad archives (1):\n   - dtli/sweeney-todd-2023\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-4795",
+    "fields": [],
+    "queuedAt": "2026-11-13T12:24:57.830Z"
+  },
+  {
+    "conditionKey": "corpus-drift:outlet-identity-hygiene",
+    "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets (still open — BRO-5823)",
+    "description": "Still firing after 37 notifications since it was filed. Tracked at BRO-5823.\n\ncheck-corpus-drift.js audit \"outlet-identity-hygiene\" (node scripts/audit-outlet-identity-hygiene.js --strict) has been drifting. Latest output:\n\nlive reviews scanned: 50522\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 16 outlet(s)\n  (+5 staged by the rebuild within the grace window, not failed: gaydesertguide, guide4moms, chrisgrum, new-york-review, broadways-summer)\ncorpus files scanned: 82140; provisional outlets without a decision: 19\n  globalnews2 (1) e.g. a-few-good-men-2026/globalnews2--unknown.json\n  beauty-news-nyc (1) e.g. afterglow-off-broadway-2017/beauty-news-nyc--pk-greenfield.json\n  inthespotlightinc (2) e.g. beetlejuice-tour-2022/inthespotlightinc--jarice-hanson.json\n  theglobalcelebritymeter (1) e.g. billy-crystal-860-2026/theglobalcelebritymeter--steve-smith.json\n  wtlgomag (5) e.g. book-of-mormon-tour-2022/wtlgomag--unknown.json\n  rivertribe (1) e.g. dog-mom-off-west-end-2026/rivertribe--lyndsay-kenwright.json\n  drtomstevens (2) e.g. fiorello-off-broadway-2016/drtomstevens--dr-thomas-g-jacoby.json\n  texannews (1) e.g. hadestown-tour-2024/texannews--unknown.json\n  withashleyandco (1) e.g. hamilton-tour-2024/withashleyandco--ashley.json\n  howlround (1) e.g. invisible-thread-off-broadway-2015/howlround--jonathan-mandell.json\n  marissavivian (1) e.g. king-of-the-yees-off-broadway-2026/marissavivian--marissa.json\n  zanderopper (1) e.g. love-and-money-off-broadway-2015/zanderopper--zander-opper.json\n  sdstageandscreen (1) e.g. mrs-doubtfire-tour-2023/sdstageandscreen--jean-lowerison.json\n  sflinsider (1) e.g. mrs-doubtfire-tour-2023/sflinsider--mark-shone.json\n  theorangecurtainrev (1) e.g. mrs-doubtfire-tour-2023/theorangecurtainrev--orange.json\n  new-york-is-an-affection-project (1) e.g. new-york-new-york-2023/new-york-is-an-affection-project--new-york.json\n  substack-com (1) e.g. other-desert-cities-2026/substack-com--sloan-ciccone.json\n  hourdetroit (1) e.g. some-like-it-hot-tour-2024/hourdetroit--natalia-holtzman.json\n  fxbgadvance (1) e.g. the-lion-king-tour-2021/fxbgadvance--leigh-anne-van-doren.json\nPROBLEMS: 35",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5823",
+    "fields": [],
+    "queuedAt": "2026-11-13T12:24:57.993Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +17 more). Checked 2026-11-13.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-13T12:24:58.353Z"
   }
 ]
