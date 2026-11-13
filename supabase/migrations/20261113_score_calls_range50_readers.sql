@@ -16,9 +16,9 @@ CREATE OR REPLACE FUNCTION public.score_call_range50(f INTEGER, lo80 INTEGER, hi
 RETURNS TABLE (lo50 SMALLINT, hi50 SMALLINT)
 LANGUAGE sql IMMUTABLE SET search_path = '' AS $$
   SELECT
-    CASE WHEN f IS NULL OR lo80 IS NULL OR hi80 IS NULL THEN NULL
+    CASE WHEN f IS NULL OR lo80 IS NULL OR hi80 IS NULL OR lo80 > f OR hi80 < f THEN NULL
       ELSE greatest(0, lo80, least(f, round(f - 0.53 * (CASE WHEN lo80 <= 0 AND hi80 < 100 THEN hi80 - f ELSE f - lo80 END))))::SMALLINT END,
-    CASE WHEN f IS NULL OR lo80 IS NULL OR hi80 IS NULL THEN NULL
+    CASE WHEN f IS NULL OR lo80 IS NULL OR hi80 IS NULL OR lo80 > f OR hi80 < f THEN NULL
       ELSE least(100, hi80, greatest(f, round(f + 0.53 * (CASE WHEN hi80 >= 100 AND lo80 > 0 THEN f - lo80 ELSE hi80 - f END))))::SMALLINT END
 $$;
 REVOKE ALL ON FUNCTION public.score_call_range50(INTEGER, INTEGER, INTEGER) FROM PUBLIC, anon, authenticated;
