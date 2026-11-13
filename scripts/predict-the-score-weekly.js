@@ -95,7 +95,7 @@ async function main() {
   const calls = await fetchCalls();
   const ownerIds = calls.length ? await findOwnerUserIds([owner, ...loadOwnerEmails()]) : new Set();
   const report = buildReport(calls, { ownerUserIds: ownerIds, titles: loadTitles() });
-  report.ownerFound = ownerIds.size > 0;
+  if (calls.length) report.ownerFound = ownerIds.size > 0;
   const { subject, text } = renderEmail(report);
   // Counts only in the log.
   console.log(`people=${report.people} predictions=${report.predictions} newPeople=${report.newPeople} newPredictions=${report.newPredictions} owner=${report.ownerPredictions} shows=${report.perShow.length}`);
@@ -116,11 +116,15 @@ async function main() {
       signal: AbortSignal.timeout(20000),
     });
     const body = await r.text();
-    if (!r.ok) throw new Error(`HTTP ${r.status}: ${body.slice(0, 200)}`);
+    if (!r.ok) {
+      // Status and Resend's error name only: a body can echo the recipient into the public log.
+      let name = ''; try { name = JSON.parse(body).name || ''; } catch { /* not JSON */ }
+      throw new Error(`HTTP ${r.status} ${name}`.trim());
+    }
     return JSON.parse(body);
   });
   } catch (e) {
-    if (/HTTP 409/.test(e.message) && /invalid_idempotent_request/.test(e.message)) {
+    if (/HTTP 409 invalid_idempotent_request/.test(e.message)) {
       console.log('Already sent today (Resend idempotency key matched with different content). Nothing more to send.');
       return;
     }

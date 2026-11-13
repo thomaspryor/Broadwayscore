@@ -24,6 +24,10 @@ on:
     # sends on Friday from 12:00 ET and once per ET day, so a late or doubled run is safe.
     - cron: '45 16 * * 5'
     - cron: '45 17 * * 5'
+    # Backups in case GitHub drops the two above. Safe: the Idempotency-Key is per ET day, so a
+    # later run the same Friday cannot send a second email. Both are after noon ET in EST and EDT.
+    - cron: '45 19 * * 5'
+    - cron: '45 21 * * 5'
   workflow_dispatch:
     inputs:
       redispatched:
@@ -224,7 +228,7 @@ jobs:
   # BRO-7463: owner's Friday Predict the Score count email. Counts only; Resend transactional to
   # OWNER_EMAIL, never a broadcast. A dispatch also ticks the metrics job above (harmless).
   predict-weekly:
-    if: (github.event.schedule == '45 16 * * 5' || github.event.schedule == '45 17 * * 5' || inputs.predict_weekly == true) && inputs.redispatched != 'true' && inputs.simulate != 'signin-stalled'
+    if: (github.event.schedule == '45 16 * * 5' || github.event.schedule == '45 17 * * 5' || github.event.schedule == '45 19 * * 5' || github.event.schedule == '45 21 * * 5' || inputs.predict_weekly == true) && inputs.redispatched != 'true' && inputs.simulate != 'signin-stalled'
     runs-on: ubuntu-latest
     concurrency:
       group: predict-weekly
@@ -239,7 +243,6 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          sparse: 'true'
       - name: Send Predict the Score count email
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
