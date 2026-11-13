@@ -118,7 +118,9 @@ test('splitSourceComplete records the whole article verdict, no opinion off hard
 // the 5,277-char joint column; inside its opening window it must not be
 // re-labelled or re-fetched.
 const RT = process.env.REVIEW_TEXTS_DIR
-  || [path.resolve('data/review-texts'), path.join(process.env.HOME || '', 'broadway-review-texts')].find((p) => fs.existsSync(p));
+  // A bare checkout can hold an EMPTY data/review-texts dir: require a show dir.
+  || [path.resolve('data/review-texts'), path.join(process.env.HOME || '', 'broadway-review-texts')]
+    .find((p) => fs.existsSync(path.join(p, 'the-unbelievers-off-broadway-2026')));
 const UNBELIEVERS = RT && path.join(RT, 'the-unbelievers-off-broadway-2026', 'nytimes--laura-collins-hughes.json');
 test('real data: The Unbelievers NYT section stays complete in its opening window', { skip: !(UNBELIEVERS && fs.existsSync(UNBELIEVERS)) && 'private review-texts not present' }, () => {
   const d = JSON.parse(fs.readFileSync(UNBELIEVERS, 'utf8'));
