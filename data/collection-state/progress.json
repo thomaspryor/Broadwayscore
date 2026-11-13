@@ -348,7 +348,9 @@
     "midnight-at-the-never-get-off-west-end-2026/everything-theatre--irene-lloyd.json",
     "the-oresteia-off-west-end-2026/broadwayworld--alexander-cohen.json",
     "sukkot-off-broadway-2026/prettykosher--anna-rahmanan.json",
-    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--m-m-de-voe.json"
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--m-m-de-voe.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/times-uk--susannah-butter.json",
@@ -523,7 +525,8 @@
     "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
     "the-car-man-off-west-end-2026/thestage--dave-fargnoli.json",
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-    "the-oresteia-off-west-end-2026/thestage--dave-fargnoli.json"
+    "the-oresteia-off-west-end-2026/thestage--dave-fargnoli.json",
+    "girls-off-west-end-2026/plays-to-see--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -720,7 +723,9 @@
       "matchbook-fest-off-broadway-2026/theatermania--david-gordon.json",
       "midnight-at-the-never-get-off-west-end-2026/evening-chronicle--alec-forsdike.json",
       "sukkot-off-broadway-2026/prettykosher--anna-rahmanan.json",
-      "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--m-m-de-voe.json"
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--m-m-de-voe.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -896,7 +901,7 @@
     ]
   },
   "startTime": "2026-11-13T11:07:48.390Z",
-  "lastProcessed": "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+  "lastProcessed": "girls-off-west-end-2026/plays-to-see--unknown.json",
   "log": [
     {
       "t": "2026-11-13T11:09:52.579Z",
@@ -1203,6 +1208,23 @@
       "t": "2026-11-13T15:28:22.160Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T15:36:28.113Z",
+      "event": "bb-session",
+      "session": "ca6c8859",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T15:36:28.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-13T15:42:54.156Z",
+      "event": "bb-session",
+      "session": "40fda2fa",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
