@@ -15,6 +15,7 @@ const { sanitizeVenueForWrite, isBroadwayCategory } = require('./venue-classific
 const { MARKET_BEFORE_TOUR_RE } = require('./tour-family');
 const { marketSuffixMismatch } = require('./show-id-market-suffix');
 const { setSynopsis } = require('./synopsis-source');
+const { undistinguishableSibling } = require('./work-identity');
 
 const REQUIRED = ['id', 'title', 'slug', 'venue', 'status', 'type', 'category', 'market'];
 const ALLOWED = new Set([
@@ -30,6 +31,9 @@ const ALLOWED = new Set([
   'city',
   // BRO-6518: local (non-transfer) show, see scripts/lib/local-market.js
   'localOnly',
+  // BRO-7429: work identity (scripts/lib/work-identity.js). workKey names a work that is not the
+  // title's default one; sameWorkAs lists the same-title rows a reviewer confirmed are the same work.
+  'workKey', 'sameWorkAs',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];
@@ -147,6 +151,13 @@ function applyAddShow(shows, action, { isRetired, root } = {}) {
   const declared = [].concat(action.distinctFrom || [], action.priorRunOf || [], action.crossLinkFrom || []);
   const dup = newRowDuplicate(shows, show, declared);
   if (dup) return { ok: false, duplicateOf: dup.other, reason: `add-show: "${show.id}" duplicates existing "${dup.other}" (${dup.reason}); if it is a genuinely distinct production list "${dup.other}" in the action's distinctFrom` };
+
+  // BRO-7429: a title is not a work. A new row that lists no writers and no workKey, beside a
+  // same-title row of the other kind (musical vs play) that does list writers, is how Brecht's
+  // Galileo got linked to the 2026 Galileo musical. Record the writers (creativeTeam, cited from the
+  // production's page), a workKey, or sameWorkAs before the row lands.
+  const indistinct = undistinguishableSibling(show, shows);
+  if (indistinct) return { ok: false, workIdentity: indistinct, reason: `add-show: "${show.id}" has no creativeTeam writers or workKey and shares its title with "${indistinct}", which looks like a different kind of work (musical vs play). Read the writer off the production's page and add creativeTeam, or add workKey (a different work) or sameWorkAs: ["${indistinct}"] (the same work)` };
 
   let from = null;
   if (action.crossLinkFrom) {

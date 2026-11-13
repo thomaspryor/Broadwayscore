@@ -19,6 +19,7 @@ const { extractPublishDate } = require('./lib/article-extractor');
 const tic = require('./lib/theatreinchicago');
 const stage = require('./lib/tic-stage');
 const { getCity } = require('./lib/tic-cities');
+const { undistinguishableSibling, sameWorkFromText } = require('./lib/work-identity');
 
 function arg(name, def) {
   const hit = process.argv.slice(2).find((a) => a.startsWith(`--${name}=`));
@@ -79,6 +80,15 @@ async function main() {
       if (city.since && entry.openingDate < city.since && entry.status !== 'open') { manifest.rejected[id] = 'before-since'; continue; }
       const dupe = stage.findDuplicate(entry, [...existing, ...Object.values(manifest.staged).map((r) => r.show)], city);
       if (dupe) { manifest.rejected[id] = `duplicate:${dupe.id}`; continue; }
+      // BRO-7429: a title is not a work. A row the matcher could not tell apart from a same-title
+      // musical/play sibling is resolved from the page text when it names that sibling's writer, and held otherwise.
+      const pool = [...existing, ...Object.values(manifest.staged).map((r) => r.show)];
+      const sibling = undistinguishableSibling(entry, pool);
+      if (sibling) {
+        const same = sameWorkFromText(`${detail.description || ''} ${page.title || ''}`, entry, pool);
+        if (!same) { manifest.rejected[id] = `work-identity:${sibling}`; continue; }
+        entry.sameWorkAs = [same];
+      }
       stage.dedupeId(entry, page, new Set([...existing.map((x) => x.id), ...Object.values(manifest.staged).map((r) => r.show.id)]));
       manifest.staged[id] = {
         show: entry,

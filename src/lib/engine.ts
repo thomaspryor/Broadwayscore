@@ -116,6 +116,9 @@ export interface RawShow {
   // Transfer pair: regional tryout or Broadway <-> West End (reciprocal ids; validate-data enforces).
   transferOf?: string | null;           // on the later production: id of its regional tryout or other-market original (BRO-6400)
   transferredTo?: string | null;        // on the earlier production: id of its Broadway / West End transfer
+  // Work identity (BRO-7429): kebab slug naming the work when it is NOT the title's default work
+  // (Brecht's Galileo: 'galileo-brecht-play'). Same title, different workKey = different work.
+  workKey?: string | null;
   // Multi-venue regional tryout (e.g. a national pre-Broadway tour with a
   // stop per city). Set on each per-venue leg; points at the aggregate show
   // that rolls up all legs' reviews into one combined score.
@@ -292,6 +295,8 @@ export interface ComputedShow {
   season?: string;
   transferOf?: string | null;
   transferredTo?: string | null;
+  workKey?: string | null;
+  sameWorkAs?: string[];
   tourParent?: string | null;
   tourOf?: string | null;
   city?: string | null;    // regional city hub metro slug (BRO-6515)

@@ -486,6 +486,22 @@ function validateNoDuplicates(shows) {
   const badIbdb = shows.map(s => ({ s, why: ibdbUrlRejectReason(s, s.ibdbUrl) })).filter(x => x.why);
   if (badIbdb.length > 0) warn(`${badIbdb.length} show(s) carry an ibdbUrl for a different/older production: ${badIbdb.slice(0, 8).map(x => `${x.s.id} (${x.why})`).join(', ')}`);
   else ok('No ibdbUrl points at an older production');
+  // Work identity (BRO-7429). A title is not a work: a row with no writers and no workKey beside a
+  // same-title musical/play sibling that lists writers (the Galileo shape) is listed under the
+  // sibling's Other Productions. Advisory first (CLAUDE.md §19), scoped to rows discovered on or after
+  // 2026-11-13; the existing groups are in docs/audits/same-title-works.md. Hard-fails only a malformed workKey.
+  {
+    const { undistinguishableSibling } = require('./lib/work-identity');
+    const { workKeyValueProblem } = require('./lib/feedback-pipeline-fields.js');
+    for (const s of shows) {
+      const p = s.workKey === undefined ? null : workKeyValueProblem(s.workKey);
+      if (p) error(`Show "${s.title}" (${s.id}): ${p}`);
+    }
+    const fresh = shows.filter(s => (s.discoveredAt || '') >= '2026-11-13');
+    const indistinct = fresh.map(s => ({ s, sib: undistinguishableSibling(s, shows) })).filter(x => x.sib);
+    if (indistinct.length > 0) warn(`${indistinct.length} new show(s) cannot be told apart from a same-title musical/play (no writers, no workKey): ${indistinct.slice(0, 8).map(x => `${x.s.id} vs ${x.sib}`).join(', ')}. Add creativeTeam writers (cited), workKey or sameWorkAs.`);
+    else ok('No new same-title row is indistinguishable from a different kind of work');
+  }
   const disjointCast = shows.filter(s => castDisjointFromBilling(s));
   if (disjointCast.length > 0) warn(`${disjointCast.length} show(s) have a cast array with zero overlap with their Playbill castBilling (wrong-production cast): ${disjointCast.slice(0, 8).map(s => s.id).join(', ')}`);
   else ok('Every cast array overlaps its Playbill billing');
