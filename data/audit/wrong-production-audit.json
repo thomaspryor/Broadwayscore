@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T20:52:17.861Z",
+  "timestamp": "2026-11-13T21:23:17.455Z",
   "stats": {
-    "totalReviews": 81957,
-    "alreadyFlagged": 22365,
+    "totalReviews": 81968,
+    "alreadyFlagged": 22367,
     "dateGuardCatches": 220,
-    "directorMismatch": 3668,
+    "directorMismatch": 3667,
     "tvFilmSignals": 2310,
-    "londonSignals": 3743,
+    "londonSignals": 3744,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8475
+    "noPublishDate": 8476
   },
   "findings": [
     {
@@ -5965,7 +5965,7 @@
     {
       "showId": "annie-2012",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
+      "score": 76,
       "publishDate": null,
       "url": "https://newyorktheater.me/2012/11/09/annie-review-sandy-is-sunny-on-broadway/",
       "findings": [
@@ -8542,6 +8542,7 @@
     {
       "showId": "beetlejuice-tour-2022",
       "file": "florida-theater-on-stage--bill-hirschman.json",
+      "score": 74,
       "publishDate": "2023-06-15",
       "url": "https://www.floridatheateronstage.com/general/beetlejuice-reappears-to-wreak-havoc-this-time-in-a-musical/",
       "findings": [
@@ -8555,6 +8556,7 @@
     {
       "showId": "beetlejuice-tour-2022",
       "file": "la-excites--imaan-jalali.json",
+      "score": 92,
       "publishDate": "2023-07-13",
       "url": "https://laexcites.com/2023/07/14/review-beetlejuice-the-musical-pantages-theatre/",
       "findings": [
@@ -8568,6 +8570,7 @@
     {
       "showId": "beetlejuice-tour-2022",
       "file": "latimes--ashley-lee.json",
+      "score": 78,
       "publishDate": "2023-07-20",
       "url": "https://www.latimes.com/entertainment-arts/story/2023-07-20/commentary-how-the-beetlejuice-musical-beat-bad-reviews-and-became-a-gen-z-hit",
       "findings": [
@@ -8623,6 +8626,7 @@
     {
       "showId": "beetlejuice-tour-2022",
       "file": "weliveentertainment--kevin-taft.json",
+      "score": 91,
       "publishDate": "2023-07-13",
       "url": "https://weliveentertainment.com/we-live-entertainment/theater-review-beetlejuice-musical-made-believer/",
       "findings": [
@@ -35798,6 +35802,7 @@
     {
       "showId": "jagged-little-pill-tour-2022",
       "file": "boston-globe--marlon-james.json",
+      "score": 68,
       "publishDate": "2023-06-15",
       "url": "https://www.bostonglobe.com/2023/06/15/arts/dynamism-jagged-little-pill-makes-its-flaws-easier-swallow/",
       "findings": [
@@ -35858,6 +35863,7 @@
     {
       "showId": "jagged-little-pill-tour-2022",
       "file": "broadwayworld--michael-rabice.json",
+      "score": 77,
       "publishDate": "2023-06-07",
       "url": "https://www.broadwayworld.com/buffalo/article/Review-JAGGED-LITTLE-PILL-at-Sheas-Buffalo-Theatre-20230607",
       "findings": [
@@ -35871,6 +35877,7 @@
     {
       "showId": "jagged-little-pill-tour-2022",
       "file": "broadwayworld--r-scott-reedy.json",
+      "score": 88,
       "publishDate": "2023-06-19",
       "url": "https://www.broadwayworld.com/boston/article/Review-JAGGED-LITTLE-PILL-at-Citizens-Bank-Opera-House-20230619",
       "findings": [
@@ -35966,6 +35973,7 @@
     {
       "showId": "jagged-little-pill-tour-2022",
       "file": "onstage-colorado--susan-harper.json",
+      "score": 90,
       "publishDate": "2023-08-20",
       "url": "https://onstagecolorado.com/emotional-and-cathartic-jagged-little-pill-delivers/",
       "findings": [
@@ -72491,7 +72499,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-11-01",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-lives-of-others-review-keira-knightley/",
       "findings": [
@@ -75688,19 +75696,6 @@
     },
     {
       "showId": "the-phantom-of-the-opera-tour-2025",
-      "file": "musical-theatre-review--unknown.json",
-      "publishDate": "2026-11-09",
-      "url": "https://musicaltheatrereview.com/trio-of-new-cast-members-to-join-west-ends-phantom-of-the-opera/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "newsbreak--christianne-klein.json",
       "score": 78,
       "publishDate": "2026-10-27",
@@ -77487,7 +77482,7 @@
     {
       "showId": "the-shark-is-broken-west-end-2021",
       "file": "guardian--ryan-gilbey.json",
-      "score": 63,
+      "score": 64,
       "publishDate": "2021-10-21",
       "url": "https://www.theguardian.com/stage/2021/oct/21/the-shark-is-broken-review-making-of-jaws",
       "findings": [
@@ -77501,7 +77496,7 @@
     {
       "showId": "the-shark-is-broken-west-end-2021",
       "file": "i-paper--sam-marlowe.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2021-10-22",
       "url": "https://inews.co.uk/culture/the-shark-is-broken-ambassadors-theatre-london-review-jaws-robert-ian-shaw-1263368",
       "findings": [
@@ -77529,7 +77524,7 @@
     {
       "showId": "the-shark-is-broken-west-end-2021",
       "file": "london-theatre--matt-wolf.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2021-10-23",
       "url": "https://www.londontheatre.co.uk/reviews/the-shark-is-broken-review-ambassadors-theatre",
       "findings": [
@@ -77557,7 +77552,7 @@
     {
       "showId": "the-shark-is-broken-west-end-2021",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 85,
+      "score": 90,
       "publishDate": "2021-10-21",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/shark-broken-review-just-thought-safe-go-back-theatre/",
       "findings": [
@@ -78032,7 +78027,7 @@
     {
       "showId": "the-time-travellers-wife-west-end-2023",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 57,
+      "score": 67,
       "publishDate": "November 2nd, 2023",
       "url": "https://www.timeout.com/london/theatre/the-time-travellers-wife-the-musical-review",
       "findings": [
@@ -78199,7 +78194,7 @@
     {
       "showId": "the-twilight-zone-west-end-2019",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "March 13th, 2019",
       "url": "https://theartsdesk.com/theatre/twilight-zone-ambassadors-theatre-review-%E2%80%93-retro-wit-our-new-space-age-0",
       "findings": [
@@ -78227,7 +78222,7 @@
     {
       "showId": "the-twilight-zone-west-end-2019",
       "file": "telegraph--claire-allfree.json",
-      "score": 39,
+      "score": 38,
       "publishDate": "March 13th, 2019",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/twilight-zone-review-ambassadors-theatre-spookily-unexciting/",
       "findings": [
@@ -79149,7 +79144,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "artsdesk--tom-teodorczuk.json",
-      "score": 59,
+      "score": 61,
       "publishDate": "2021-08-11",
       "url": "https://theartsdesk.com/theatre-tv/windsors-endgame-prince-wales-theatre-review-fitfully-pointed-fun",
       "findings": [
@@ -79177,7 +79172,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2021-08-10",
       "url": "https://theatreweekly.com/review-the-windsors-endgame-at-the-prince-of-wales-theatre/",
       "findings": [
@@ -79191,7 +79186,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "thestage--paul-vale.json",
-      "score": 58,
+      "score": 55,
       "publishDate": "2021-08-11",
       "url": "https://www.thestage.co.uk/long-reviews/the-windsors-endgame-harry-enfield-tracy-ann-oberman-prince-of-wales-theatre-london-2021",
       "findings": [
@@ -79233,7 +79228,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "whatsonstage--alex-wood.json",
-      "score": 60,
+      "score": 64,
       "publishDate": "2021-08-11",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/the-windsors-endgame-prince-wales_54667.html",
       "findings": [
@@ -96163,6 +96158,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "artsdesk--unknown.json",
+      "score": 84,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cloud-9-national-theatre-review-dazzlingly-successful-revival",
       "findings": [
@@ -105099,6 +105095,20 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "theupcoming--cristiana-ferrauti.json",
+      "score": null,
+      "publishDate": "2026-11-12",
+      "url": "https://www.theupcoming.co.uk/2026/11/12/hamlet-hail-to-the-thief-at-barbican-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "theupcoming--unknown.json",
       "publishDate": "2026-11-12",
       "url": "https://www.theupcoming.co.uk/2026/11/12/hamlet-hail-to-the-thief-at-barbican-theatre-theatre-review/",
@@ -107339,7 +107349,7 @@
     {
       "showId": "home-im-darling-west-end-2018",
       "file": "guardian--unknown.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2018-07-04",
       "url": "https://www.theguardian.com/stage/2018/jul/04/home-im-darling-review-laura-wade-katherine-parkinson",
       "findings": [
@@ -134336,7 +134346,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-11-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-lives-of-others-adelphi-theatre",
       "findings": [
@@ -134404,6 +134414,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "independent--alice-saville.json",
+      "score": 82,
       "publishDate": "2026-11-02",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/lives-of-others-review-keira-knightley-luke-thompson-b3077085.html?reloaded=1-restored",
       "findings": [
@@ -134609,7 +134620,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "theatreandtonic--ziwen.json",
-      "score": 76,
+      "score": 80,
       "publishDate": "2026-11-01",
       "url": "https://theatreandtonic.co.uk/blog/the-lives-of-others-starring-keira-knightley-review",
       "findings": [
@@ -137793,7 +137804,7 @@
     {
       "showId": "the-starry-messenger-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "2019-05-29T19:31:26+00:00",
       "url": "https://www.theguardian.com/stage/2019/may/29/the-starry-messenger-review-matthew-broderick-elizabeth-mcgovern-kenneth-lonergan",
       "findings": [
@@ -137807,7 +137818,7 @@
     {
       "showId": "the-starry-messenger-west-end-2019",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 58,
+      "score": 57,
       "publishDate": "2019-05-29T19:31:26+00:00",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/starry-messenger-review-wyndhams-theatrea-long-comic-drama-need/",
       "findings": [
@@ -138475,7 +138486,7 @@
     {
       "showId": "the-twilight-zone-west-end-2019",
       "file": "timeout-london--ka-bradley.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "March 13th, 2019",
       "url": "https://www.timeout.com/london/theatre/the-twilight-zone-review",
       "findings": [
@@ -138684,7 +138695,7 @@
     {
       "showId": "the-visit-or-the-old-lady-comes-to-call-west-end-2020",
       "file": "artsdesk--matt-wolf.json",
-      "score": 38,
+      "score": 35,
       "publishDate": "2020-02-15",
       "url": "https://theartsdesk.com/theatre/visit-national-theatre-review-star-turn-bolsters-baggy-rewrite",
       "findings": [
@@ -138698,7 +138709,7 @@
     {
       "showId": "the-visit-or-the-old-lady-comes-to-call-west-end-2020",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 66,
+      "score": 68,
       "publishDate": "February 14th, 2020",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/visit-national-lesley-manville-hugo-weaving_50947.html",
       "findings": [
@@ -138782,7 +138793,7 @@
     {
       "showId": "the-way-old-friends-do-west-end-2023",
       "file": "london-theatre--matt-wolf.json",
-      "score": 38,
+      "score": 35,
       "publishDate": "August 23rd, 2023",
       "url": "https://www.londontheatre.co.uk/reviews/the-way-old-friends-do-review-criterion-theatre",
       "findings": [
@@ -138810,7 +138821,7 @@
     {
       "showId": "the-welkin-west-end-2020",
       "file": "london-theatre--mark-shenton.json",
-      "score": 59,
+      "score": 55,
       "publishDate": "January 27th, 2020",
       "url": "https://www.londontheatre.co.uk/reviews/review-the-welkin-at-the-national-theatre",
       "findings": [
@@ -138992,7 +139003,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 94,
+      "score": 93,
       "publishDate": "2023-11-24",
       "url": "https://www.mailplus.co.uk/edition/showbiz/theatre/330664/dahls-witches-cast-a-spell-over-me",
       "findings": [
@@ -139034,7 +139045,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "london-box-office--stuart-king.json",
-      "score": 97,
+      "score": 95,
       "publishDate": "2023-11-22",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-witches-review",
       "findings": [
@@ -139048,7 +139059,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "musical-theatre-review--ian-bowkett.json",
-      "score": 97,
+      "score": 95,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/the-witches-national-theatre/",
       "findings": [
@@ -139062,7 +139073,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "November 21st, 2023",
       "url": "https://theatreweekly.com/review-roald-dahls-the-witches-at-the-national-theatre-olivier-theatre/",
       "findings": [
@@ -139090,7 +139101,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "west-end-best-friend--jordan-potts.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "November 28th, 2023",
       "url": "https://www.westendbestfriend.co.uk/news/review-the-witches-national-theatre",
       "findings": [
@@ -140038,7 +140049,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2024",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 82,
+      "score": 78,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-till-the-stars-come-down-national-theatre",
       "findings": [
@@ -140094,7 +140105,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 97,
+      "score": 96,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
       "findings": [
@@ -140108,7 +140119,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 96,
+      "score": 94,
       "publishDate": "2024-02-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/till-the-stars-come-down-review",
       "findings": [
