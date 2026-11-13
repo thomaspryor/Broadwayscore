@@ -13,6 +13,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { holdsReview } = require('./talkinbroadway-index');
 
 const COLLECTOR_WORKFLOW = 'collect-talkinbroadway-index.yml';
 const DEFAULTS = Object.freeze({ maxAgeHours: 12, minGapMin: 15, dailyCap: 6 });
@@ -28,11 +29,25 @@ function isStuckTbStub(data, nowMs, maxAgeHours = DEFAULTS.maxAgeHours) {
   return true;
 }
 
+/** True when root/{showId} already has a usable talkinbroadway--*.json (same test as the collector). */
+function showHoldsTbReview(root, showId) {
+  const dir = path.join(root, showId);
+  let files;
+  try { files = fs.readdirSync(dir).filter((f) => f.startsWith('talkinbroadway--') && f.endsWith('.json')); } catch { return false; }
+  for (const f of files) {
+    try { if (holdsReview(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')))) return true; } catch { /* unreadable: not held */ }
+  }
+  return false;
+}
+
 /** Stuck TB stubs under root/_pending/{showId} for the given shows. */
 function findStuckTbStubs(root, showIds, { now = new Date(), maxAgeHours = DEFAULTS.maxAgeHours } = {}) {
   const out = [];
   for (const showId of showIds) {
     const dir = path.join(root, '_pending', showId);
+    // The collector ingests into the show dir and leaves the _pending stub behind; once the show
+    // holds a real TB review the stub is not stuck, and kicking again would burn a session.
+    if (showHoldsTbReview(root, showId)) continue;
     let files;
     try { files = fs.readdirSync(dir).filter((f) => f.startsWith('talkinbroadway--') && f.endsWith('.json')); } catch { continue; }
     for (const file of files) {
@@ -52,7 +67,7 @@ function findStuckTbStubs(root, showIds, { now = new Date(), maxAgeHours = DEFAU
 function decideKick({ stuck, runs, now = new Date(), minGapMin = DEFAULTS.minGapMin, dailyCap = DEFAULTS.dailyCap }) {
   if (!stuck || stuck.length === 0) return { kick: false, reason: 'no stuck Talkin Broadway stub' };
   const list = Array.isArray(runs) ? runs : [];
-  if (list.some((r) => r.status === 'queued' || r.status === 'in_progress' || r.status === 'waiting' || r.status === 'pending')) {
+  if (list.some((r) => r.status === 'queued' || r.status === 'in_progress' || r.status === 'waiting' || r.status === 'requested' || r.status === 'pending')) {
     return { kick: false, reason: 'collector already queued or running' };
   }
   const nowMs = now.getTime();

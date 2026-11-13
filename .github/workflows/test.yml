@@ -541,6 +541,8 @@ on:
       - 'scripts/record-push-retry-failure.js'
       # tests/unit/pending-promote-validation.test.mjs
       - 'scripts/replay-pending-bylines.js'
+      # BRO-7442: scripts/lib/tb-collector-kick.test.mjs (colocated, globbed) covers it
+      - 'scripts/tb-collector-kick.js'
       # tests/unit/cast-changes-validate-event.test.mjs
       - 'scripts/scrape-cast-changes.js'
       # tests/unit/mezzanine-override-collision-auditor.test.mjs +

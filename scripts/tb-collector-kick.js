@@ -9,6 +9,7 @@
 'use strict';
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { COLLECTOR_WORKFLOW, findStuckTbStubs, decideKick } = require('./lib/tb-collector-kick');
 
 const arg = (n) => { const a = process.argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : ''; };
@@ -31,5 +32,9 @@ function main() {
     execFileSync('gh', ['workflow', 'run', COLLECTOR_WORKFLOW], { encoding: 'utf8', timeout: 60000 });
     console.log('tb-collector-kick: dispatched collect-talkinbroadway-index.yml');
   } catch (e) { console.log(`::warning::Talkin Broadway collector dispatch failed: ${String(e.message).split('\n')[0]}`); }
+}
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/tb-collector-kick.js --shows=a,b [--root=data/review-texts] [--dry-run]');
+  process.exit(0);
 }
 try { main(); } catch (e) { console.log(`::warning::tb-collector-kick failed: ${e.message}`); }

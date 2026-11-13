@@ -42,6 +42,17 @@ test('findStuckTbStubs reads _pending/{show} on disk and ignores other shows/out
   assert.deepEqual(findStuckTbStubs(root, ['other-show'], { now: NOW }), []);
 });
 
+test('findStuckTbStubs: a show that already holds the ingested TB review is not stuck (collector leaves the stub behind)', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'tbkick-'));
+  fs.mkdirSync(path.join(root, '_pending', realStub.showId), { recursive: true });
+  fs.mkdirSync(path.join(root, realStub.showId), { recursive: true });
+  fs.writeFileSync(path.join(root, '_pending', realStub.showId, 'talkinbroadway--7c3716d2.json'), JSON.stringify(realStub));
+  assert.equal(findStuckTbStubs(root, [realStub.showId], { now: NOW }).length, 1);
+  fs.writeFileSync(path.join(root, realStub.showId, 'talkinbroadway--james-wilson.json'),
+    JSON.stringify({ url: realStub.url, contentTier: 'complete', fullText: 'Theatre Review by James Wilson' }));
+  assert.equal(findStuckTbStubs(root, [realStub.showId], { now: NOW }).length, 0);
+});
+
 test('decideKick: dispatches for a stuck stub with no recent collector run', () => {
   const stuck = [{ showId: 'x', file: 'f' }];
   assert.equal(decideKick({ stuck, runs: [], now: NOW }).kick, true);
