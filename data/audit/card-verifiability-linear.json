@@ -1,20 +1,53 @@
 {
-  "generatedAt": "2026-11-12T14:01:02.368Z",
-  "total": 378,
-  "armedCount": 352,
-  "refusedCount": 26,
+  "generatedAt": "2026-11-13T13:22:13.095Z",
+  "total": 388,
+  "armedCount": 361,
+  "refusedCount": 27,
   "byKind": {
-    "shape": 23,
-    "no-section": 2,
+    "no-section": 3,
+    "shape": 22,
+    "no-command": 1,
     "basename": 1
   },
   "refused": [
     {
-      "id": "BRO-7414",
-      "name": "Social video: automatic TikTok + YouTube Shorts (score and compare videos) for Broadway + notable Off-Broadway",
+      "id": "BRO-7444",
+      "name": "Opening-night audit 2026-11-13",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7414/social-video-automatic-tiktok-youtube-shorts-score-and-compare-videos",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test scripts/video-proto/ scripts/social-autopost/)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7444/opening-night-audit-2026-11-13",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7433",
+      "name": "Board workers unhealthy: ScrapingBee smoke check fails (egress blocked)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7433/board-workers-unhealthy-scrapingbee-smoke-check-fails-egress-blocked",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-cloud-secrets.js --smoke)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7430",
+      "name": "Predict the Score: 50% likely range under forecast + readers' average tile",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7430/predict-the-score-50percent-likely-range-under-forecast-readers",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7427",
+      "name": "The Good Thief (Irish Rep): opening date is Nov 17, not Nov 12",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7427/the-good-thief-irish-rep-opening-date-is-nov-17-not-nov-12",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s https://broadwayscorecard.com/data/mobile-shows.json | grep -q '\"id\":\"the-good-thief-off-broadway-2026\"[^}]*\"od\")",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7418",
+      "name": "Social video: add the compare format to the automatic TikTok + YouTube lane (BRO-7414 follow-up)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7418/social-video-add-the-compare-format-to-the-automatic-tiktok-youtube",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/ scripts/social-autopost/ 2>&1 | grep -E \"^# fail 0\")",
       "kind": "shape"
     },
     {
@@ -62,7 +95,7 @@
       "name": "Design: opening-night 'reviews still arriving' status on the show page (some reviews in, more expected)",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7376/design-opening-night-reviews-still-arriving-status-on-the-show-page",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-opening-night-readiness.js --help)",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/review-arrival.test.ts). `node --test tests/unit/review-arrival.test.ts` cannot run under plain node (it cannot resolve this repo's TS imports); use: npx tsx --test tests/unit/review-arrival.test.ts",
       "kind": "shape"
     },
     {
@@ -72,14 +105,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7361/opening-night-audit-2026-11-11",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
-    },
-    {
-      "id": "BRO-7357",
-      "name": "Review forecast v2 shadow: Show Score input beside v1 in the nightly pilot",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7357/review-forecast-v2-shadow-show-score-input-beside-v1-in-the-nightly",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/backtest-review-forecast-v2.mjs --help)",
-      "kind": "shape"
     },
     {
       "id": "BRO-7346",
@@ -122,14 +147,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-7236",
-      "name": "Daily 404 watch from Vercel request logs (catch dead internal links before Search Console emails)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7236/daily-404-watch-from-vercel-request-logs-catch-dead-internal-links",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-404-watch.js --dry-run)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-7150",
       "name": "Small changes take hours to land: refusals arrive after 20-30 min, catch them locally in seconds",
       "priority": null,
@@ -167,14 +184,6 @@
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6956/critic-coverage-audit-is-blind-in-cloud-muck-rack-fetch-fails-for",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-critic-coverage.js --limit=3 prints no FETCH FAILED (muckrack) lines.)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-6849",
-      "name": "11 scripts/lib/*.test.js files never run in CI (glob is *.test.mjs only)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6849/11-scriptslibtestjs-files-never-run-in-ci-glob-is-testmjs-only",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const n=require('fs').readdirSync('scripts/lib').filter(f=>f.endsWith('.test.js')).length;console.log(n);proces)",
       "kind": "shape"
     },
     {
@@ -219,12 +228,21 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 262,
-    "checked": 262,
+    "total": 266,
+    "checked": 266,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-7428",
+      "name": "Re-check Off-Broadway opening dates against the venue's own show page in the week before opening",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7428/re-check-off-broadway-opening-dates-against-the-venues-own-show-page",
+      "cmd": "node --test scripts/lib/venue-opening-night-date.test.mjs",
+      "missingPaths": [
+        "scripts/lib/venue-opening-night-date.test.mjs"
+      ]
+    },
     {
       "id": "BRO-7342",
       "name": "Extend the model-retirement audit to Anthropic and Gemini pins (same drift gap OpenAI had)",
@@ -262,30 +280,12 @@
       ]
     },
     {
-      "id": "BRO-7314",
-      "name": "Review forecast: can we predict a show's critic score before reviews drop, and what product sits on it (owner request)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7314/review-forecast-can-we-predict-a-shows-critic-score-before-reviews",
-      "cmd": "node --test scripts/predict-critic-score.test.mjs",
-      "missingPaths": [
-        "scripts/predict-critic-score.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-7302",
       "name": "Make the wrong-production IBDB warnings in validate-data blocking",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7302/make-the-wrong-production-ibdb-warnings-in-validate-data-blocking",
       "cmd": "node --test tests/unit/validate-data-ibdb-blocking.test.mjs",
       "missingPaths": [
         "tests/unit/validate-data-ibdb-blocking.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7281",
-      "name": "Opening-night dispatch hardening: same-group run replacement, watchdog/sweep double-dispatch, sweep no-op rebuilds",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7281/opening-night-dispatch-hardening-same-group-run-replacement",
-      "cmd": "node --test tests/unit/opening-night-dispatch-hardening.test.mjs",
-      "missingPaths": [
-        "tests/unit/opening-night-dispatch-hardening.test.mjs"
       ]
     },
     {
@@ -349,15 +349,6 @@
       "cmd": "node --test scripts/verify-annual-task-docs.test.mjs",
       "missingPaths": [
         "scripts/verify-annual-task-docs.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7140",
-      "name": "Show published rating beside review date (web + app)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7140/show-published-rating-beside-review-date-web-app",
-      "cmd": "node --test tests/unit/rating-beside-date.test.mjs",
-      "missingPaths": [
-        "tests/unit/rating-beside-date.test.mjs"
       ]
     },
     {
