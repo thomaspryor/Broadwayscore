@@ -351,11 +351,8 @@
     "matchbook-fest-off-broadway-2026/theatermania--david-gordon.json",
     "midnight-at-the-never-get-off-west-end-2026/evening-chronicle--alec-forsdike.json",
     "midnight-at-the-never-get-off-west-end-2026/everything-theatre--irene-lloyd.json",
-    "spamalot-2005/whatsonstage--unknown.json",
     "dogstar-off-west-end-2026/islingtontribune--unknown.json",
-    "speculations-off-west-end-2026/westminsterextra--unknown.json",
-    "operation-mincemeat-2025/new-york-city-theatre--unknown.json",
-    "the-lion-king-tour-2021/washpost--celia-wren.json"
+    "speculations-off-west-end-2026/westminsterextra--unknown.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/british-theatre--unknown.json",
@@ -537,8 +534,10 @@
     "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
     "the-car-man-off-west-end-2026/thestage--dave-fargnoli.json",
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-    "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1792630529963.json",
-    "sinatra-the-musical-west-end-2026/staybook--unknown.json"
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/sunday-times--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -748,16 +747,15 @@
       "the-saviors-off-broadway-2026/playbill--extends-off-broadway.json",
       "matchbook-fest-off-broadway-2026/theatermania--david-gordon.json",
       "midnight-at-the-never-get-off-west-end-2026/evening-chronicle--alec-forsdike.json",
-      "spamalot-2005/whatsonstage--unknown.json",
       "dogstar-off-west-end-2026/islingtontribune--unknown.json",
-      "speculations-off-west-end-2026/westminsterextra--unknown.json",
-      "operation-mincemeat-2025/new-york-city-theatre--unknown.json"
+      "speculations-off-west-end-2026/westminsterextra--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/rope-off-broadway-2026/nytimes--helen-shaw.json",
       "rope-off-broadway-2026/nytimes--helen-shaw.json",
-      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -922,7 +920,7 @@
     ]
   },
   "startTime": "2026-11-12T20:06:25.494Z",
-  "lastProcessed": "bull-off-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "the-lives-of-others-west-end-2026/independent--unknown.json",
   "log": [
     {
       "t": "2026-11-12T20:19:39.076Z",
@@ -1156,6 +1154,17 @@
       "t": "2026-11-13T04:14:20.817Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T04:34:06.071Z",
+      "event": "bb-session",
+      "session": "7fc5b82e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T04:34:07.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ],
   "recoveredAfterFailure": [
