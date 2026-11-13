@@ -1,17 +1,25 @@
 {
   "processed": [
-    "hamlet-hail-to-the-thief-off-west-end-2026/all-that-dazzles-uk--unknown.json"
+    "cloud-9-west-end-2026/afridiziak-theatre-news--unknown.json",
+    "cloud-9-west-end-2026/observer--unknown.json",
+    "cloud-9-west-end-2026/a-youngish-perspective--unknown.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json"
   ],
   "failed": [
-    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "hamlet-hail-to-the-thief-off-west-end-2026/all-that-dazzles-uk--unknown.json"
+      "cloud-9-west-end-2026/afridiziak-theatre-news--unknown.json",
+      "cloud-9-west-end-2026/observer--unknown.json",
+      "cloud-9-west-end-2026/a-youngish-perspective--unknown.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -19,7 +27,19 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-13T11:07:10.127Z",
-  "lastProcessed": "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-  "log": []
+  "startTime": "2026-11-13T11:07:48.390Z",
+  "lastProcessed": "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+  "log": [
+    {
+      "t": "2026-11-13T11:09:52.579Z",
+      "event": "bb-session",
+      "session": "b21baa44",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T11:09:53.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
