@@ -70,6 +70,9 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // BRO-6769: Met Live in HD cinema broadcast, { date, encoreDate?, sourceUrl } or
     // null. sourceUrl must be a metopera.org page; liveInHdValueProblem checks it.
     'liveInHd',
+    // BRO-7429: kebab slug naming the work when the row is not the title's default work
+    // (scripts/lib/work-identity.js), or null. workKeyValueProblem checks it.
+    'workKey',
   ],
   // recoupedDate/recoupedSource/sources: a recoupment correction needs all
   // three (validate-data.js requires recoupedDate when recouped=true). The
@@ -269,6 +272,15 @@ function rejectedUrlsValueProblem(newValue, oldValue, unreject) {
   return null;
 }
 
+// shows.json workKey check for the human-approved data-edit path (BRO-7429).
+function workKeyValueProblem(newValue) {
+  if (newValue === null) return null;
+  if (typeof newValue !== 'string' || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(newValue) || newValue.length > 80) {
+    return 'workKey: newValue must be null or a kebab-case slug of at most 80 characters';
+  }
+  return null;
+}
+
 // shows.json officialUrl check for the human-approved data-edit path (BRO-5343):
 // null (clear) or an https URL on a dedicated site, never a ticket, review or
 // listing domain (the discovery blocklist). Returns an error string or null.
@@ -398,6 +410,7 @@ module.exports = {
   priorRunsValueProblem,
   appendedPriorRunProblem,
   officialUrlValueProblem,
+  workKeyValueProblem,
   firstRunStartValueProblem,
   liveInHdValueProblem,
   isIsoDay,

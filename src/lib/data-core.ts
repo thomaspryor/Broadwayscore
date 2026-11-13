@@ -34,6 +34,7 @@ import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs 
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { broadwayTheaterNames, stubTheaterName, foldVenueName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
 import { partitionShowRows } from '../../scripts/lib/show-row-guard';
+import { differentWorks } from '../../scripts/lib/work-identity';
 import { belongsOnOffBroadwayListing } from '../../scripts/lib/off-broadway-listing';
 import { readCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
 import { coverageHoldReleased } from '../../scripts/lib/coverage-floor';
@@ -1508,8 +1509,10 @@ export function getOtherProductions(show: ComputedShow): ComputedShow[] {
   return getAllShows()
     // Linked productions count even when the title differs (a tryout's title can
     // differ from the Broadway one): the show page no longer repeats the tryout
-    // in the top card, so this list is where it is found.
-    .filter(s => s.id !== show.id && isCategoryEnabled(s.category) && (normalize(s.title) === baseTitle || s.id === show.transferOf || s.transferOf === show.id))
+    // in the top card, so this list is where it is found. A shared title is not a
+    // shared work (BRO-7429): Brecht's Galileo is not the 2026 Galileo musical, so
+    // same-title matches drop out when scripts/lib/work-identity.js knows better.
+    .filter(s => s.id !== show.id && isCategoryEnabled(s.category) && (s.id === show.transferOf || s.transferOf === show.id || (normalize(s.title) === baseTitle && !differentWorks(show, s))))
     .sort((a, b) => {
       const catA = marketOrder[(a.category || 'broadway')] ?? 3;
       const catB = marketOrder[(b.category || 'broadway')] ?? 3;

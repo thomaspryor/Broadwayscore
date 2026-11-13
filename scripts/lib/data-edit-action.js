@@ -147,6 +147,12 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       if (problem) return { ok: false, reason: problem };
     }
 
+    if (field === 'workKey') {
+      const { workKeyValueProblem } = require('./feedback-pipeline-fields.js');
+      const problem = workKeyValueProblem(newValue);
+      if (problem) return { ok: false, reason: problem };
+    }
+
     if (field === 'firstRunStart') {
       const { firstRunStartValueProblem } = require('./feedback-pipeline-fields.js');
       const problem = firstRunStartValueProblem(newValue, shows[idx]);

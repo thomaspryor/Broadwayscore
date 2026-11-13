@@ -37,8 +37,9 @@ describe('feedback-pipeline-fields', () => {
     // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022);
     // firstRunStart by scripts/lib/video-production-context.js (BRO-4768);
     // liveInHd by the data-edit plan for Met Live in HD dates (BRO-6769);
-    // closingExtensions / closingExtensionCount by the closing-date writers and the BRO-7252 backfill plan.
-    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart', 'liveInHd', 'closingExtensions', 'closingExtensionCount']);
+    // closingExtensions / closingExtensionCount by the closing-date writers and the BRO-7252 backfill plan;
+    // workKey by the BRO-7429 work-identity data-edit plans until a row carries one.
+    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart', 'liveInHd', 'closingExtensions', 'closingExtensionCount', 'workKey']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
       if (writtenByPipeline.has(field)) continue;
       assert.ok(
@@ -140,7 +141,7 @@ describe('feedback-pipeline-fields', () => {
     // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022);
     // firstRunStart by scripts/lib/video-production-context.js (BRO-4768);
     // liveInHd by the data-edit plan for Met Live in HD dates (BRO-6769).
-    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart', 'liveInHd']);
+    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart', 'liveInHd', 'workKey']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
       if (writtenByPipeline.has(field)) continue;
       assert.ok(field in snapshot, `buildShowSnapshot() omits editable field "${field}"`);
@@ -158,7 +159,7 @@ describe('feedback-pipeline-fields', () => {
     // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022);
     // firstRunStart by scripts/lib/video-production-context.js (BRO-4768);
     // liveInHd by the data-edit plan for Met Live in HD dates (BRO-6769).
-    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart', 'liveInHd']);
+    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart', 'liveInHd', 'workKey']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
       if (writtenByPipeline.has(field)) continue;
       assert.ok(field in serialized, `"${field}" was dropped by JSON.stringify (undefined value) — issue #582 regression`);
