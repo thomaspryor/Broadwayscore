@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-11-13T13:06:59.853Z",
+  "generatedAt": "2026-11-13T14:44:15.716Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 323,
-  "clean": 321,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "a-few-good-men-2026",
-      "title": "A Few Good Men",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 63.45 vs local 63.25 (Δ0.2)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 34,
-      "deployedCount": 34,
-      "firstDefectAt": "2026-11-13T13:06:50.550Z"
-    },
-    {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.87 vs local 82.61 (Δ0.26)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23,
-      "firstDefectAt": "2026-11-13T13:06:50.550Z"
-    }
-  ],
+  "clean": 323,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

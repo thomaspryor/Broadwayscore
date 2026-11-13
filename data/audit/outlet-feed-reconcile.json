@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T13:07:00.163Z",
+  "generatedAt": "2026-11-13T14:44:16.042Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -94,20 +94,28 @@
   "feedsFailed": [
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 810,
+  "itemsScanned": 836,
   "matchedGaps": 11,
-  "possibleGaps": 1,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "cloud-9-national-west-end-2026",
@@ -164,13 +172,13 @@
       "publishDate": "2026-11-11"
     },
     {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
       "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-hamlet-hail-to-the-thief-barbican-theatre",
-      "headline": "Review: HAMLET HAIL TO THE THIEF, Barbican Theatre",
-      "publishDate": "2026-11-13"
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
+      "headline": "Cloud 9 | National Theatre",
+      "publishDate": "2026-11-12"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
@@ -182,13 +190,13 @@
       "publishDate": "2026-11-11"
     },
     {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
+      "showId": "the-steel-man-off-broadway-2026",
+      "title": "The Steel Man",
       "level": "matched",
-      "outletId": "the-interested-bystander",
-      "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
-      "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
-      "publishDate": "2026-11-11"
+      "outletId": "off-off-online",
+      "url": "https://www.offoffonline.com/offoffonline/2026/11/6/the-steel-man",
+      "headline": "The Steel Man",
+      "publishDate": "2026-11-13"
     },
     {
       "showId": "the-visitors-off-broadway-2026",
@@ -216,6 +224,24 @@
       "url": "https://theartsdesk.com/theatre/cloud-9-national-theatre-review-dazzlingly-successful-revival",
       "headline": "Cloud 9, National Theatre review - a dazzlingly successful revival",
       "publishDate": null
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "possible",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-alice-immersive-wonderland-dock-x",
+      "headline": "Review: ALICE IMMERSIVE WONDERLAND, Dock X",
+      "publishDate": "2026-11-13"
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "level": "possible",
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/wanted-on-broadway-extraordinary-voices-what-could-have-been-a-powerful-story-and-a-few-unfortunate-detours/",
+      "headline": "Wanted on Broadway: Extraordinary Voices, What Could Have Been a Powerful Story, and a Few Unfortunate Detours",
+      "publishDate": "2026-11-12"
     }
   ]
 }
