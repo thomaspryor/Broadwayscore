@@ -389,10 +389,41 @@ function areTitlesSimilar(title1, title2) {
   // (Levenshtein distance >= |len1 - len2|, so similarity can never reach threshold)
   if (Math.abs(title1.length - title2.length) > maxLen * (1 - threshold)) return false;
 
-  const distance = levenshteinDistance(title1, title2);
-  const similarity = 1 - (distance / maxLen);
+  // Largest edit distance that still reaches the threshold, computed with the
+  // same float expression as the final test so the verdict is identical to the
+  // old "full Levenshtein, then compare" path (BRO-7144).
+  let maxDistance = Math.floor(maxLen * (1 - threshold)) + 1;
+  while (maxDistance > 0 && 1 - (maxDistance / maxLen) < threshold) maxDistance--;
+  return boundedLevenshteinWithin(title1, title2, maxDistance);
+}
 
-  return similarity >= threshold;
+/**
+ * True when Levenshtein(a, b) <= maxDistance. Two-row DP that stops as soon as
+ * every cell in a row exceeds maxDistance (distances never decrease down a
+ * column band), so near-misses cost O(len * maxDistance) not O(len^2).
+ */
+function boundedLevenshteinWithin(a, b, maxDistance) {
+  const m = a.length;
+  const n = b.length;
+  if (Math.abs(m - n) > maxDistance) return false;
+  let prev = new Array(n + 1);
+  let cur = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
+  for (let i = 1; i <= m; i++) {
+    cur[0] = i;
+    let rowMin = cur[0];
+    const ai = a[i - 1];
+    for (let j = 1; j <= n; j++) {
+      const v = ai === b[j - 1]
+        ? prev[j - 1]
+        : 1 + Math.min(prev[j], cur[j - 1], prev[j - 1]);
+      cur[j] = v;
+      if (v < rowMin) rowMin = v;
+    }
+    if (rowMin > maxDistance) return false;
+    const t = prev; prev = cur; cur = t;
+  }
+  return prev[n] <= maxDistance;
 }
 
 /**
@@ -1004,23 +1035,47 @@ function sameHouseVenue(a, b) {
   return sameVenueOrRoom(canonicalVenueCached(a), canonicalVenueCached(b));
 }
 
+// Per-row derived strings for the pair loop (BRO-7144). Keyed by the row object
+// and stamped with the inputs they came from, so an in-place title/venue edit
+// (the add-show flow mutates rows) recomputes instead of serving stale values.
+const showProfiles = new WeakMap();
+function showProfile(show) {
+  const cached = showProfiles.get(show);
+  if (cached && cached.title === show.title && cached.rawVenue === show.venue) return cached;
+  const prof = {
+    title: show.title,
+    rawVenue: show.venue,
+    titleLower: show.title.toLowerCase().trim(),
+    titleNormalized: normalizeTitle(show.title),
+    venue: show.venue?.toLowerCase().trim(),
+  };
+  showProfiles.set(show, prof);
+  return prof;
+}
+
 function checkForDuplicate(newShow, existingShows) {
   const newSlug = slugify(newShow.title);
   const newTitleLower = newShow.title.toLowerCase().trim();
   const newTitleNormalized = normalizeTitle(newShow.title);
   const newVenue = newShow.venue?.toLowerCase().trim();
+  // Hoisted out of the per-pair loop (BRO-7144): the scan compares each row to
+  // every earlier row, so these two values were recomputed ~18M times.
+  const newPool = getMarketPool(newShow.category);
+  const newIsOpera = newShow.type === 'opera';
 
   for (const existing of existingShows) {
-    const existingTitleLower = existing.title.toLowerCase().trim();
-    const existingTitleNormalized = normalizeTitle(existing.title);
-    const existingVenue = existing.venue?.toLowerCase().trim();
-
     // Skip cross-market pairs (e.g., Broadway vs West End) — same title is expected
-    if (isCrossMarket(newShow, existing)) continue;
+    // (same test as isCrossMarket, with the new row's pool computed once)
+    if (newPool !== getMarketPool(existing.category)) continue;
 
     // Skip opera vs non-opera comparisons — similar-sounding titles are different works
     // (e.g., Verdi's "Otello" should never match Shakespeare's "Othello")
-    if ((newShow.type === 'opera') !== (existing.type === 'opera')) continue;
+    if (newIsOpera !== (existing.type === 'opera')) continue;
+
+    const prof = showProfile(existing);
+    const existingTitleLower = prof.titleLower;
+    const existingTitleNormalized = prof.titleNormalized;
+    const existingVenue = prof.venue;
 
     // Skip rows the candidate is explicitly cross-linked to (transferOf /
     // transferredTo / priorRuns naming the other id) — different productions
