@@ -175,7 +175,7 @@ for (const s of shows) {
   if (!flag('skip-reddit')) {
     try { reddit = await redditFor(s); } catch (e) { reddit = { available: false, reason: `error: ${String(e.message).slice(0, 120)}` }; }
   }
-  const v1Part = { forecast: Math.round(p.forecast), forecastRaw: Math.round(p.forecast * 10) / 10, lo80: Math.round(p.lo80), hi80: Math.round(p.hi80) };
+  const v1Part = { forecast: Math.round(p.forecast), forecastRaw: Math.round(p.forecast * 10) / 10, lo80: Math.round(p.lo80), hi80: Math.round(p.hi80), lo50: Math.round(p.lo50), hi50: Math.round(p.hi50) };
   // BRO-7357: v2 shadow beside v1, new field only. Uses the Show Score score+count already in audience-buzz; never fetched here.
   const v2 = V2S.buildV2Shadow({ features: f, v1: v1Part, showScore: V2S.showScoreInput(buzzOf(s.id)), openingDate: s.openingDate, recordedAt: TODAY, pageUrl: ssUrls[s.id] || null });
   // BRO-7382: v3 shadow, new field only. Earlier-run score dated by min(day before first preview, opening minus 3 days); no score means v3 = v2.

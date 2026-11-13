@@ -17,6 +17,9 @@ function buildSyncRows({ shows, ledgerRows, today, reviewCounts = {} }) {
       p_show_id: s.id, p_opening: s.openingDate, p_forecast: Math.round(row.forecast),
       p_lo: typeof row.lo80 === 'number' ? Math.round(row.lo80) : null,
       p_hi: typeof row.hi80 === 'number' ? Math.round(row.hi80) : null,
+      // True 50% band when the ledger row has one; null lets sync_score_call_show derive it (the only derivation).
+      p_lo50: typeof row.lo50 === 'number' ? Math.round(row.lo50) : null,
+      p_hi50: typeof row.hi50 === 'number' ? Math.round(row.hi50) : null,
       p_reviews_live: (reviewCounts[s.id] || 0) > 0, p_enabled: true,
     });
   }
