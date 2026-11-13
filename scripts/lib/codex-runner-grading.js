@@ -79,7 +79,7 @@ function runnerSummaryFacts(body) {
  * The summary body daily-runner.js posts on the runner card. Every line runnerSummaryFacts reads is
  * written here, so the writer and the parser cannot drift apart.
  */
-function runnerSummaryText({ heading, stats, worked, skipped, picks, stop, settingsLine, weeklyPct, checkCount, checkSpentUsd, checkByModel, slotShortfall, landedPerLane, ladderLine, worktreeLine }) {
+function runnerSummaryText({ heading, stats, worked, skipped, picks, stop, settingsLine, weeklyPct, checkCount, checkSpentUsd, checkByModel, slotShortfall, landedPerLane, ladderLine, worktreeLine, diskLine }) {
   const list = (a) => (a.length ? a.join(', ') : 'none');
   const landedCount = stats.landed.length + stats.landedPartial.length;
   return [
@@ -103,6 +103,7 @@ function runnerSummaryText({ heading, stats, worked, skipped, picks, stop, setti
     // A pinned lane shows in the next summary instead of days later (BRO-6129: one slot for 13 h unnoticed).
     ...(slotShortfall ? [`- Slots: ${slotShortfall}`] : []),
     ...(worktreeLine ? [`- Worktree: ${worktreeLine}`] : []),
+    ...(diskLine ? [diskLine] : []), // BRO-7089: what held the disk, kept past the container
     ...(landedPerLane ? [`- Landed on main, last 24h: ${landedPerLane}`] : []),
     ...(ladderLine ? [ladderLine] : []), // BRO-6303: the access the trust ladder gave this run
     `- Stopped early: ${stop || 'no'}`,

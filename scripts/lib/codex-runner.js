@@ -1465,13 +1465,15 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
  *   lock-held     another run holds this slot's lock (holderStartedMs: when that run started)
  *   sandbox|tools|picker|crash|lane  the lane cannot work until fixed
  */
-const STAND_DOWN_CLASSES = ['login', 'login-refresh', 'lock-held', 'sandbox', 'tools', 'picker', 'crash', 'lane'];
-function standDownNote({ lane = 'cloud', slot = 0, cls, why, holderStartedMs = NaN, loginExpiresMs = NaN }) {
+const STAND_DOWN_CLASSES = ['login', 'login-refresh', 'lock-held', 'sandbox', 'tools', 'picker', 'crash', 'lane', 'disk'];
+function standDownNote({ lane = 'cloud', slot = 0, cls, why, holderStartedMs = NaN, loginExpiresMs = NaN, diskUsage = '' }) {
   const c = STAND_DOWN_CLASSES.includes(cls) ? cls : 'crash';
   const stamps = [
     Number.isFinite(holderStartedMs) ? `Lock holder started: ${new Date(holderStartedMs).toISOString()}` : '',
     // login-refresh: the expiry this stand-down saw, so a later saved refresh does not make it look stuck.
     Number.isFinite(loginExpiresMs) ? `Login expires: ${new Date(loginExpiresMs).toISOString()}` : '',
+    // BRO-7089: what held the disk, so it survives the container (the run log does not).
+    c === 'disk' && diskUsage ? `Disk usage: ${String(diskUsage).slice(0, 600)}` : '',
   ].filter(Boolean);
   return `## Codex runner did not start (slot ${Number(slot) || 0}) (lane ${lane}) (reason ${c})\n\n${String(why || '').slice(0, 1500)}${stamps.length ? `\n\n${stamps.join('\n')}` : ''}`;
 }
@@ -1483,7 +1485,7 @@ function parseStandDownNote(body) {
   const lane = (head.match(/\(lane (cloud|gha)\)/) || [])[1] || 'cloud';
   const slot = Number((head.match(/\(slot (\d+)\)/) || [])[1] || 0);
   const cls = (head.match(/\(reason ([a-z-]+)\)/) || [])[1] || (/login/i.test(b) ? 'login' : 'crash');
-  const why = b.split('\n').slice(1).filter((l) => !/^(Lock holder started|Login expires): /.test(l)).join('\n').trim();
+  const why = b.split('\n').slice(1).filter((l) => !/^(Lock holder started|Login expires|Disk usage): /.test(l)).join('\n').trim();
   const stamp = (k) => Date.parse((b.match(new RegExp(`^${k}: (\\S+)$`, 'm')) || [])[1] || '');
   return { lane, slot, cls, why, holderStartedMs: stamp('Lock holder started'), loginExpiresMs: stamp('Login expires') };
 }
@@ -1883,6 +1885,20 @@ const DISK_STOP_RE = new RegExp(`GB of disk left|\\bout of disk\\b|\\bENOSPC\\b|
 // was already reported when it happened; the row must not re-file it a second time as 'crashed'.
 const DISK_ALARM_WINDOW_MS = 24 * 3600_000;
 /** A summary's 'Stopped early' line that is the runner's own disk stop (not a crash-streak line quoting a crash). */
+/**
+ * BRO-7089: the stand-down reason when a slot would start with too little disk for `git fetch`
+ * (null when there is room or the disk is unmeasurable). Checked AFTER pruneDisk, BEFORE the fetch,
+ * so a full disk is a clean 'disk' stand-down instead of a 'crash' from "No space left on device".
+ */
+function diskStandDownReason(freeDiskBytes) {
+  if (!Number.isFinite(freeDiskBytes) || freeDiskBytes >= MIN_FREE_DISK_BYTES) return null;
+  return `only ${(freeDiskBytes / 1e9).toFixed(1)} GB of disk left after pruning (needs ${MIN_FREE_DISK_BYTES / 1e9} GB to set up a worktree), so the slot stopped before git fetch`;
+}
+/** BRO-7089: the summary's disk-usage line, only when the disk stopped or trimmed this run and a breakdown was measured. */
+function diskSummaryLine({ stop = '', slotShortfall = '', usage = '' } = {}) {
+  const disky = runStoppedForDisk(stop) || /\bdisk\b/i.test(String(slotShortfall || ''));
+  return disky && usage ? `- Disk usage (top consumers): ${String(usage).slice(0, 600)}` : '';
+}
 function runStoppedForDisk(stop) {
   return DISK_STOP_RE.test(String(stop || '')) && !/runner errors in a row/i.test(String(stop || ''));
 }
@@ -1943,6 +1959,7 @@ module.exports = {
   summaryHeading, parseSummaryHeading, laneOfSummary,
   parseModelCandidates, parseEffortBySlot, CODEX_CLI_DEFAULT_MODEL, codexSettings, isUnknownModelError, codexSettingsLine, parseCodexSettingsLine, abReport, CODEX_EFFORTS,
   authAccessExpires, parseAuthMeta,
+  diskStandDownReason, diskSummaryLine,
   STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
   runnerSummaryFacts, runnerSummaryText, codexLadderAccess, reviewTextsPlan, ladderSkip,
   runnerHealth,

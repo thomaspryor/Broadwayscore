@@ -213,11 +213,11 @@ const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 // One attempt, 2 min at most: sh is spawnSync, so a timer cannot bound it, and linearBrain's retries
 // (up to an hour) would hold a stopped run's job. --pr runs are not card runs and post nothing here.
 let summaryPosted = false;
-function standDown(cls, why, { holderStartedMs = NaN, loginExpiresMs = NaN, exitCode = null } = {}) {
+function standDown(cls, why, { holderStartedMs = NaN, loginExpiresMs = NaN, exitCode = null, diskUsage = '' } = {}) {
   log(`not starting (${cls}): ${why}`);
   if (exitCode !== null) process.exitCode = exitCode;
   if (OPTS.dryRun || PR_NUM || summaryPosted) return;
-  const body = R.redactSecrets(R.standDownNote({ lane: OPTS.lane, slot: SLOT, cls, why, holderStartedMs, loginExpiresMs }), process.env);
+  const body = R.redactSecrets(R.standDownNote({ lane: OPTS.lane, slot: SLOT, cls, why, holderStartedMs, loginExpiresMs, diskUsage }), process.env);
   const r = sh('node', ['scripts/linear-brain.js', 'update', RUNNER_CARD, '--comment', body], { timeoutMs: 120_000 });
   if (r.code !== 0 && r.code !== 5) log(`stand-down note not posted: exit ${r.code} ${tail(r.out, 200)}`);
 }
@@ -242,6 +242,10 @@ function setupWorktree() {
   if (SB.dropStale(WT, { gitCommon: gitCommonDir() })) log(`removed ${WT}: a sandboxed run that did not finish left it owned by the sandbox`);
   if (!fs.existsSync(path.join(WT, '.git'))) {
     sh('git', ['worktree', 'prune']);
+    // BRO-7089: a full disk is a clean 'disk' stand-down, not a crash from the fetch.
+    pruneDisk();
+    const noRoom = R.diskStandDownReason(freeDisk());
+    if (noRoom) { logDiskUsage('before git fetch'); throw Object.assign(startFailure('disk', noRoom), { diskUsage: lastDiskUsage }); }
     git(['fetch', 'origin', 'main'], ROOT);
     addWorktree(WT);
   }
@@ -342,6 +346,7 @@ function pruneClaudeWorktrees() {
 }
 
 /** What holds the disk, for the run log when it runs low (BRO-6304): worktrees, temp dir, Codex home. */
+let lastDiskUsage = '';
 function logDiskUsage(why) {
   const kb = (p) => { const r = sh('du', ['-sk', p], { timeoutMs: 30_000 }); return r.code === 0 || r.stdout ? Number(r.stdout.split('\t')[0]) || 0 : 0; };
   const rows = [];
@@ -350,7 +355,9 @@ function logDiskUsage(why) {
   try { for (const n of fs.readdirSync(os.tmpdir())) add(`tmp/${n}`, path.join(os.tmpdir(), n)); } catch { /* none */ }
   add('CODEX_HOME', CODEX_HOME);
   const top = rows.sort((a, b) => b[1] - a[1]).slice(0, 8).map(([l, k]) => `${l} ${(k / 1e6).toFixed(1)}G`);
+  lastDiskUsage = top.join(', ');
   log(`disk usage (${why}): ${top.join(', ') || 'nothing measurable'}`);
+  return lastDiskUsage;
 }
 
 /**
@@ -1755,6 +1762,7 @@ async function runLocked(startedMs) {
     worktreeLine: R.worktreeSummaryLine({ mode: treeMode, bytes: R.measureTreeBytes(WT), fullBytes: Number(process.env.CODEX_FULL_TREE_BYTES) || null }),
     landedPerLane: SLOT === 0 ? landedPerLane() : null,
     ladderLine: ladderLine(),
+    diskLine: R.diskSummaryLine({ stop, slotShortfall: process.env.CODEX_SLOT_SHORTFALL, usage: lastDiskUsage || (R.runStoppedForDisk(stop) ? logDiskUsage('at stop') : '') }),
   });
   log(text);
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
@@ -1898,7 +1906,7 @@ if (require.main === module) {
   main().catch(async (e) => {
     log(`runner failed: ${e && e.stack ? e.stack : e}`);
     // Every exit says why (BRO-6139): a crash or a missing tool posts a stand-down note too.
-    try { standDown(e && e.standDownClass ? e.standDownClass : 'crash', `${e && e.standDownClass ? '' : 'runner failed: '}${e && e.message ? e.message : e}`); } catch { /* exit anyway */ }
+    try { standDown(e && e.standDownClass ? e.standDownClass : 'crash', `${e && e.standDownClass ? '' : 'runner failed: '}${e && e.message ? e.message : e}`, { diskUsage: e && e.diskUsage }); } catch { /* exit anyway */ }
     process.exit(e && e.exitCode ? e.exitCode : 1);
   });
 }

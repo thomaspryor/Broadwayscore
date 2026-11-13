@@ -1901,3 +1901,41 @@ test('class guard (BRO-7356): the daily row and the lane alarm share one disk-st
   for (const s of ['only 0.0 GB of disk left (needs 3 GB to start a card)', 'out of disk: ENOSPC', 'No space left on device']) assert.ok(r.DISK_STOP_RE.test(s), s);
   assert.ok(!r.DISK_STOP_RE.test('3 Claude REJECTs in a row'));
 });
+
+test('BRO-7089: a disk stop or trimmed slots put the disk breakdown in the Linear summary', () => {
+  const usage = 'worktrees/bro-1 1.3G, tmp/bro-5217-x 1.7G, CODEX_HOME 0.2G';
+  const stats = { landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], recoveredStops: [], carried: [], outOfTime: [], wouldLand: [] };
+  const base = { heading: '## Codex runner', stats, worked: 0, skipped: 0, picks: [], settingsLine: '- s', weeklyPct: 1, checkCount: 0, checkSpentUsd: 0, checkByModel: {} };
+  const stop = 'only 0.0 GB of disk left (needs 3 GB to start a card)';
+  const line = r.diskSummaryLine({ stop, usage });
+  assert.match(line, /Disk usage \(top consumers\): worktrees\/bro-1 1\.3G/);
+  assert.match(r.runnerSummaryText({ ...base, stop, diskLine: line }), /tmp\/bro-5217-x 1\.7G/);
+  assert.match(r.diskSummaryLine({ slotShortfall: '1 of 3 requested: 6.0 GB of disk free', usage }), /CODEX_HOME/);
+  // No disk problem, or nothing measured: no line (the summary stays as before).
+  assert.equal(r.diskSummaryLine({ stop: '3 Claude REJECTs in a row', usage }), '');
+  assert.equal(r.diskSummaryLine({ stop, usage: '' }), '');
+  assert.ok(!/Disk usage/.test(r.runnerSummaryText({ ...base, stop: null })));
+  // The stand-down note carries it for class 'disk' only, and the parser still reads the reason.
+  const note = r.standDownNote({ cls: 'disk', why: 'full', diskUsage: usage });
+  assert.match(note, /reason disk\)/);
+  assert.match(note, /^Disk usage: worktrees\/bro-1/m);
+  assert.equal(r.parseStandDownNote(note).cls, 'disk');
+  assert.equal(r.parseStandDownNote(note).why, 'full');
+  assert.ok(!/Disk usage/.test(r.standDownNote({ cls: 'crash', why: 'x', diskUsage: usage })));
+});
+
+test('BRO-7089: a slot with too little disk after pruning stands down as class disk before git fetch', () => {
+  assert.equal(r.diskStandDownReason(6.4e6) !== null, true);
+  assert.match(r.diskStandDownReason(6.4e6), /before git fetch/);
+  assert.equal(r.diskStandDownReason(r.MIN_FREE_DISK_BYTES), null);
+  assert.equal(r.diskStandDownReason(null), null);
+  assert.ok(r.STAND_DOWN_CLASSES.includes('disk'));
+  assert.match(r.standDownNote({ cls: 'disk', why: r.diskStandDownReason(1e9) }), /reason disk\)/);
+  // The runner wires it: prune, then the check, then (and only then) the fetch.
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  const fn = src.slice(src.indexOf('function setupWorktree()'), src.indexOf('/** BRO-7097'));
+  const iPrune = fn.indexOf('pruneDisk()'), iCheck = fn.indexOf('diskStandDownReason'), iFetch = fn.indexOf("'fetch', 'origin', 'main'");
+  assert.ok(iPrune > 0 && iPrune < iCheck && iCheck < iFetch, 'prune, disk check, then fetch');
+  assert.match(fn, /startFailure\('disk'/);
+  assert.match(src, /diskUsage: e && e\.diskUsage/);
+});
