@@ -1,32 +1,6 @@
 {
-  "generatedAt": "2026-11-12T21:54:01.207Z",
-  "promoted": [
-    {
-      "id": "portrait-of-a-man-off-west-end-2027",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": "https://www.hampsteadtheatre.com/production/portrait-of-a-man/"
-    },
-    {
-      "id": "the-rabbi-the-wife-and-the-prick-off-west-end-2027",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": "https://www.hampsteadtheatre.com/production/the-rabbi-the-wife-and-the-prick/"
-    },
-    {
-      "id": "democracy-off-west-end-2027",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": "https://www.hampsteadtheatre.com/production/democracy/"
-    },
-    {
-      "id": "it-never-rains-in-kennebunkport-off-west-end-2027",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": "https://www.hampsteadtheatre.com/production/it-never-rains-in-kennebunkport/"
-    },
-    {
-      "id": "driftweed-off-west-end-2027",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": "https://www.hampsteadtheatre.com/production/driftweed/"
-    }
-  ],
+  "generatedAt": "2026-11-13T21:29:37.103Z",
+  "promoted": [],
   "rejected": [
     {
       "title": "Desire Under the Elms",
@@ -309,6 +283,46 @@
       "reason": "already in shows.json as mother-russia-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Portrait of a Man",
+      "venue": "Hampstead Theatre",
+      "source": "venue-page:hampstead-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as portrait-of-a-man-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "The Rabbi, The Wife & The Prick",
+      "venue": "Hampstead Theatre",
+      "source": "venue-page:hampstead-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-rabbi-the-wife-and-the-prick-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Democracy",
+      "venue": "Hampstead Theatre",
+      "source": "venue-page:hampstead-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as democracy-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "It Never Rains In Kennebunkport",
+      "venue": "Hampstead Theatre",
+      "source": "venue-page:hampstead-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as it-never-rains-in-kennebunkport-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Driftweed",
+      "venue": "Hampstead Theatre",
+      "source": "venue-page:hampstead-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as driftweed-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "BERLIN",
       "venue": "Kiln Theatre",
       "source": "venue-page:kiln-theatre",
@@ -413,20 +427,20 @@
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
-      "title": "Garry Starr Classic Penguins",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
       "title": "A Homo Alone 2 Yikes We Did It Again",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Studio\"))"
+    },
+    {
+      "title": "Garry Starr Classic Penguins",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
     },
     {
       "title": "Feeling Afraid",
@@ -1267,14 +1281,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as frankenstein-off-west-end-2027 (london-pool-title-equal (venue \"Rose Theatre Kingston\" vs \"Rose Theatre\"))"
-    },
-    {
-      "title": "A Christmas Carol In Words and Music",
-      "venue": "Wilton's Music Hall",
-      "source": "venue-page:wilton-s-music-hall",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "An Audience with Virginia Woolf: Writing One's Mind",
