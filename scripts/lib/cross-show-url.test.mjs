@@ -301,3 +301,82 @@ test('BRO-6599: the same title under another production id or with a short credi
   assert.deepEqual(detectCrossShowUrlMismatch('school-girls-2026',
     'https://www.example.com/reviews/mean-girls-high-school-edition-review/', { index: idx })?.matchedShowId, 'mean-girls-2018');
 });
+
+// BRO-6599 title-overlap class: a title that overlaps another show's title
+// (shares, contains or spells it differently) must not read as that other
+// show, while a URL that really names the other show still flags. Real URLs
+// from the 2026-11-13 audit (55 unhandled -> 45).
+test('BRO-6599: a small number spelled out is the same title ("The Last 5 Years")', () => {
+  const { sameTitleModuloCredit } = require('./cross-show-url.js');
+  const idx = buildShowSlugIndex([
+    { id: 'the-last-5-years-regional-2026', title: 'The Last 5 Years' },
+    { id: 'the-last-five-years-2025', title: 'The Last Five Years' },
+    { id: 'schmigadoon-2026', title: 'Schmigadoon!' },
+  ]);
+  for (const url of [
+    'https://www.allieandtheafterparty.com/reviews/oil-lamp-theater-the-last-five-years',
+    'https://splashmags.com/2026/06/the-last-five-years-rekindles-lost-love-at-oil-lamp-theater-in-glenview/',
+  ]) assert.equal(detectCrossShowUrlMismatch('the-last-5-years-regional-2026', url, { index: idx }), null, url);
+  assert.equal(sameTitleModuloCredit('the-last-5-years', 'the-last-five-years'), true);
+  // Only whole small-number tokens: a year or a joined number is not spelled out.
+  assert.equal(sameTitleModuloCredit('1776', 'seventeen-seventy-six'), false);
+  assert.equal(sameTitleModuloCredit('4-48-psychosis', 'four-forty-eight-psychosis'), false);
+  // A real Last Five Years review filed under an unrelated show still flags.
+  assert.equal(detectCrossShowUrlMismatch('schmigadoon-2026',
+    'https://example.com/reviews/the-last-five-years-review/', { index: idx })?.matchedShowId, 'the-last-five-years-2025');
+});
+
+test('BRO-6599: this show\'s own title, connectors dropped, vouches for the url unless a longer title is named', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'mike-birbiglia-the-old-man-and-the-pool-2022', title: 'Mike Birbiglia: The Old Man & The Pool' },
+    { id: 'the-old-man-and-the-pool-regional-2022', title: 'The Old Man and the Pool' },
+    { id: 'the-old-man-and-the-pool-west-end-2023', title: 'The Old Man and the Pool' },
+    { id: 'the-deep-blue-sea-west-end-2016', title: 'The Deep Blue Sea' },
+    { id: 'danny-and-the-deep-blue-sea-off-broadway-2016', title: 'Danny and the Deep Blue Sea' },
+  ]);
+  assert.equal(detectCrossShowUrlMismatch('the-old-man-and-the-pool-regional-2022',
+    'https://chicago.suntimes.com/2022/4/29/23048999/mike-birbiglia-review-old-man-and-the-pool-steppenwolf-theatre-middle-age-mortality',
+    { index: idx }), null);
+  assert.equal(detectCrossShowUrlMismatch('the-old-man-and-the-pool-west-end-2023',
+    'https://theartsdesk.com/theatre/old-man-and-pool-wyndhams-theatre-mike-birbiglia-makes-big-splash', { index: idx }), null);
+  // The reviewer regression the canonical vouch must not reopen: the URL names
+  // a LONGER different show that contains this title.
+  assert.equal(detectCrossShowUrlMismatch('the-deep-blue-sea-west-end-2016',
+    'https://example.com/reviews/danny-deep-blue-sea-review/', { index: idx })?.matchedShowId,
+  'danny-and-the-deep-blue-sea-off-broadway-2016');
+});
+
+test('BRO-6599: own words behind a connector ("sequel-to-titus-andronicus") vouch for a contained title', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'gary-a-sequel-to-titus-andronicus-regional-2025', title: 'Gary: A Sequel to Titus Andronicus' },
+    { id: 'titus-andronicus-off-broadway-2026', title: 'Titus Andronicus' },
+  ]);
+  const gary = url => detectCrossShowUrlMismatch('gary-a-sequel-to-titus-andronicus-regional-2025', url, { index: idx });
+  assert.equal(gary('https://aroundthetownchicago.com/theatre-reviews/garya-sequel-to-titus-andronicus-reviewed-by-julia-w-rath/'), null);
+  // A plain Titus Andronicus review filed under Gary is still a misfile.
+  assert.equal(gary('https://example.com/reviews/titus-andronicus-review-red-bull-theater/')?.matchedShowId,
+    'titus-andronicus-off-broadway-2026');
+  // One own word elsewhere in the url is not the phrase.
+  assert.equal(gary('https://example.com/reviews/titus-andronicus-review-no-sequel-needed/')?.matchedShowId,
+    'titus-andronicus-off-broadway-2026');
+});
+
+test('BRO-6599: a one-word SHORTENED title only flags from a strict title position', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'king-hedley-ii-regional-2026', title: 'King Hedley II' },
+    { id: 'august-osage-county-west-end-2026', title: 'August: Osage County' },
+    { id: 'the-most-happy-fella-regional-2026', title: 'The Most Happy Fella' },
+    { id: 'beautiful-the-carole-king-musical-regional-2023', title: 'Beautiful: The Carole King Musical' },
+  ]);
+  const hedley = url => detectCrossShowUrlMismatch('king-hedley-ii-regional-2026', url, { index: idx });
+  assert.equal(hedley('https://www.newcitystage.com/2026/10/29/august-wilsons-antihero-king-without-a-country/'), null);
+  assert.equal(detectCrossShowUrlMismatch('the-most-happy-fella-regional-2026',
+    'https://sandiegostory.com/beautiful-emotions-at-north-coast-rep/', { index: idx }), null);
+  // Next to "review", as the whole segment, or as the full title, it still flags.
+  for (const url of [
+    'https://example.com/theatre/august-review/',
+    'https://example.com/theatre/review-august-at-the-national/',
+    'https://example.com/theatre/august/',
+    'https://example.com/theatre/august-osage-county-at-the-national/',
+  ]) assert.equal(hedley(url)?.matchedShowId, 'august-osage-county-west-end-2026', url);
+});

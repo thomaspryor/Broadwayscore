@@ -95,7 +95,12 @@ function hasSlugRun(urlPath, slug) {
 // glorious-..."), so it names a show only from a title position: right next to
 // "review(s)", or as the whole last path segment ("beautiful-review",
 // "/theater-review-midnight", "/glorious/").
-function isTitlePositioned(urlPath, slug) {
+// segmentOpen: false (BRO-6599) drops the "segment opens with the title" rule,
+// for a one-word title that is only a SHORTENING of a longer one ("August" of
+// August: Osage County, "Beautiful" of Beautiful: The Carole King Musical):
+// outlets slug those reviews with the full title, while "august-wilsons-..."
+// and "beautiful-emotions-at-..." are ordinary prose openings.
+function isTitlePositioned(urlPath, slug, { segmentOpen = true } = {}) {
   const esc = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const b = '(^|[^a-z0-9])';
   const e = '([^a-z0-9]|$)';
@@ -105,7 +110,7 @@ function isTitlePositioned(urlPath, slug) {
   // A path segment that opens with the title is how most outlets slug a review
   // ("hadestown-broadway-review-1236", "hadestown-is-a-thrilling-revival").
   const segs = urlPath.replace(/\/+$/, '').split('/').map(x => x.replace(/\.[a-z0-9]+$/, ''));
-  return segs.some(x => x === slug || x.startsWith(`${slug}-`));
+  return segs.some(x => x === slug || (segmentOpen && x.startsWith(`${slug}-`)));
 }
 
 // One significant word once a leading "the"/"a" is dropped.
@@ -120,9 +125,34 @@ function stripBwwSection(hostname, urlPath) {
   return urlPath.replace(/^\/[^/]+\/article\//, '/article/');
 }
 
-// Slug with digit runs joined ("4-48" = "448"), connectors and a leading "the" dropped.
+// Standalone small numbers spelled out (BRO-6599: "The Last 5 Years" is "The
+// Last Five Years"). Only whole tokens 1-10, so "1776" and "4-48" stay digits.
+const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+
+// Slug with digit runs joined ("4-48" = "448"), small numbers spelled out,
+// connectors and a leading "the" dropped.
 function canonTitleSlug(slug) {
-  return slug.replace(/(\d)-(?=\d)/g, '$1').replace(/-s(?=-|$)/g, '').replace(/-(?:and|the|or)(?=-)/g, '').replace(/^the-/, '');
+  return slug.replace(/(\d)-(?=\d)/g, '$1')
+    .replace(/(^|-)(10|[1-9])(?=-|$)/g, (_, pre, n) => `${pre}${NUMBER_WORDS[Number(n)]}`)
+    .replace(/-s(?=-|$)/g, '').replace(/-(?:and|the|or)(?=-)/g, '').replace(/^the-/, '');
+}
+
+// BRO-6599: true when the URL names THIS show's title once both are
+// canonicalised ("old-man-and-pool" = The Old Man and the Pool), unless the
+// run is part of a longer title of ANOTHER show that contains this one
+// ("danny-deep-blue-sea" is Danny and the Deep Blue Sea, not The Deep Blue
+// Sea; the namesLongerShowTitle rule of audit-show-review-gap.js, BRO-6640).
+function urlNamesOwnTitleCanonically(urlPath, thisShow, index) {
+  const own = canonTitleSlug(thisShow.slug);
+  if (own.length < 8 || !own.includes('-')) return false;
+  const canonPath = urlPath.split('/').map(canonTitleSlug).join('/');
+  if (!hasSlugRun(canonPath, own)) return false;
+  for (const other of index) {
+    if (other.id === thisShow.id) continue;
+    const longer = canonTitleSlug(other.slug);
+    if (longer.length > own.length && hasSlugRun(longer, own) && hasSlugRun(canonPath, longer)) return false;
+  }
+  return true;
 }
 
 // True when two title slugs are the same title once canonicalised. Author credits
@@ -242,6 +272,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
     if (idSlugNorm !== idSlug && idSlugNorm.length >= 8 && urlPath.includes(idSlugNorm)) return null;
     const slugNorm = stripConnectors(thisShow.slug);
     if (slugNorm !== thisShow.slug && slugNorm.length >= 8 && urlPath.includes(slugNorm)) return null;
+    if (ownSlugVouches && urlNamesOwnTitleCanonically(urlPath, thisShow, index)) return null;
 
     // Tokens of THIS show's title that can vouch for a URL when another show's title is
     // contained in this one (see the containment carve-out below). Generic words never vouch.
@@ -323,13 +354,21 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
         // "mean-girls-high-school" and "mean-girls-school-edition" are not).
         if (present.length > 0) {
           const phrases = [];
+          // BRO-6599: the nearest own word may sit behind connector words
+          // ("sequel-to-titus-andronicus" in Gary: A Sequel to Titus
+          // Andronicus), so skip generic words up to it and keep them in the phrase.
+          const filler = t => GENERIC_TOKENS.has(t) || t.length < 4;
           for (const [container, part] of [[thisShow.slug, other.slug], [idSlug, otherIdSlug], [idSlugNorm, otherIdSlugNorm]]) {
             const at = part ? container.indexOf(part) : -1;
             if (at < 0) continue;
-            const before = container.slice(0, at).split('-').filter(Boolean).pop();
-            const after = container.slice(at + part.length).split('-').filter(Boolean)[0];
-            if (before && present.includes(before)) phrases.push(`${before}-${part}`);
-            if (after && present.includes(after)) phrases.push(`${part}-${after}`);
+            const beforeWords = container.slice(0, at).split('-').filter(Boolean);
+            const afterWords = container.slice(at + part.length).split('-').filter(Boolean);
+            let i = beforeWords.length - 1;
+            while (i >= 0 && filler(beforeWords[i]) && !present.includes(beforeWords[i])) i--;
+            if (i >= 0 && present.includes(beforeWords[i])) phrases.push(`${beforeWords.slice(i).join('-')}-${part}`);
+            let j = 0;
+            while (j < afterWords.length && filler(afterWords[j]) && !present.includes(afterWords[j])) j++;
+            if (j < afterWords.length && present.includes(afterWords[j])) phrases.push(`${part}-${afterWords.slice(0, j + 1).join('-')}`);
           }
           if (phrases.some(p => urlPath.includes(p))) continue;
         }
@@ -380,8 +419,10 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       // "Beautiful" of Beautiful: The Carole King Musical) is an ordinary word
       // in review slugs ("august-wilsons-...", "...-is-beautiful"), so it only
       // counts from a title position (isTitlePositioned).
+      // BRO-6599: and only from a strict title position, never just by opening
+      // a path segment ("august-wilsons-antihero-...", "beautiful-emotions-at-...").
       if (baseTitle.length >= 6 && !URL_PATH_STOPWORDS.has(baseTitle)
-          && (!isOneWordSlug(baseTitle) || isTitlePositioned(urlPath, baseTitle))
+          && (!isOneWordSlug(baseTitle) || isTitlePositioned(urlPath, baseTitle, { segmentOpen: false }))
           && baseTitle !== idSlug
           && !idSlug.startsWith(baseTitle) && !baseTitle.startsWith(idSlug)
           && hasSlugRun(urlPath, baseTitle)

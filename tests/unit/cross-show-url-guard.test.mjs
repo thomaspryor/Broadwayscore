@@ -89,8 +89,9 @@ test('BRO-6910: a one-word title in a title position still flags', () => {
 
 // Ship-check review of the fix above: a title opening a url segment is the
 // common review slug and must keep flagging, and venue words from this show's
-// id must not vouch. Accepted cost: a url opening "august-wilson-..." still
-// flags a show titled August (one audit row, BRO-6910).
+// id must not vouch. (BRO-6599 later dropped the segment-opening rule for a
+// one-word SHORTENED title, so "august-wilson-..." no longer flags August:
+// Osage County; a full one-word title like Hadestown keeps it.)
 test('BRO-6910: a one-word title opening a url segment still flags; venue words never vouch', () => {
   for (const url of [
     'https://variety.com/2019/legit/reviews/hadestown-broadway-review-1236/',
