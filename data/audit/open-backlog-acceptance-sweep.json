@@ -1,30 +1,18 @@
 {
-  "generatedAt": "2026-11-12T10:29:29.847Z",
+  "generatedAt": "2026-11-13T09:46:01.256Z",
   "shadow": true,
-  "checkoutSha": "1012a6fda8f57a6b76842ebaba8628459d799340",
-  "totalCandidates": 300,
-  "eligibleCandidates": 96,
+  "checkoutSha": "34e1ffbf0437b72da8b4bfd151660eb9035c3c04",
+  "totalCandidates": 376,
+  "eligibleCandidates": 108,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 14,
-    "fail": 11,
-    "unverifiable": 5
+    "pass": 12,
+    "fail": 14,
+    "unverifiable": 4
   },
   "alreadyDone": [
-    {
-      "id": "BRO-7400",
-      "name": "Test red on main: validate-data-venue-complex-wiring (sandbox sentinel not written)",
-      "verifyCmd": "node --test tests/unit/validate-data-venue-complex-wiring.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7399",
-      "name": "Test red on main: push-core-data-scoped-refusal (5 subtests fail)",
-      "verifyCmd": "node --test tests/unit/push-core-data-scoped-refusal.test.mjs",
-      "detail": null
-    },
     {
       "id": "BRO-7397",
       "name": "Compaction thrash guard for cloud sessions (BRO-7350 worker died after 3 compacts)",
@@ -32,15 +20,15 @@
       "detail": null
     },
     {
-      "id": "BRO-7393",
-      "name": "Stub syndication primaries still shield complete secondaries that were never LLM-scored (~11 reviews)",
-      "verifyCmd": "node --test scripts/lib/syndication-stub-primary.test.mjs",
+      "id": "BRO-7394",
+      "name": "85 open cards have a VERIFY line naming a file that does not exist on main",
+      "verifyCmd": "node --test scripts/audit-card-verifiability.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7378",
-      "name": "Child watch guard: advise a 3-minute first watch on a freshly created child session (BRO-7377 follow-up)",
-      "verifyCmd": "node --test scripts/lib/child-session-wait-guard.test.mjs",
+      "id": "BRO-7393",
+      "name": "Stub syndication primaries still shield complete secondaries that were never LLM-scored (~11 reviews)",
+      "verifyCmd": "node --test scripts/lib/syndication-stub-primary.test.mjs",
       "detail": null
     },
     {
@@ -59,6 +47,12 @@
       "id": "BRO-7334",
       "name": "Root cause: \"Tech Scorecard weekly port\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class tech-scorecard-weekly-port --quiet",
+      "detail": null
+    },
+    {
+      "id": "BRO-7329",
+      "name": "Review forecast quiet pilot: record a dated forecast per upcoming Broadway opening with preview audience grades and pre-opening buzz, then grade it",
+      "verifyCmd": "node --test tests/unit/review-forecast-pilot.test.mjs",
       "detail": null
     },
     {
@@ -86,87 +80,105 @@
       "detail": null
     },
     {
-      "id": "BRO-7175",
-      "name": "Ingest the 21 expected-critics missing reviews (BRO-7166 audit)",
-      "verifyCmd": "node --test tests/unit/expected-critics.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7156",
-      "name": "Type the last 6 untyped off-broadway venue stubs before previews",
-      "verifyCmd": "node scripts/validate-market-expansion.js",
+      "id": "BRO-7281",
+      "name": "Opening-night dispatch hardening: same-group run replacement, watchdog/sweep double-dispatch, sweep no-op rebuilds",
+      "verifyCmd": "node --test tests/unit/opening-night-dispatch-hardening.test.mjs",
       "detail": null
     }
   ],
   "failing": [
     {
+      "id": "BRO-7403",
+      "name": "Root cause: \"Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-ov\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class off-broadway-venue-complex-unlinked-bare-form-keyword --quiet",
+      "detail": "FAIL: last case 7d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7402",
+      "name": "Root cause: first pass keeps missing front-row-center reviews (Off-Broadway, 3 shows in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-broadway-front-row-center --quiet",
+      "detail": "FAIL: last case 8d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7401",
+      "name": "Root cause: first pass keeps missing everything-theatre reviews (Off-West End, 3 shows in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-west-end-everything-theatre --quiet",
+      "detail": "FAIL: last case 7d ago, needs 21\n"
+    },
+    {
       "id": "BRO-7391",
       "name": "Root cause: \"Data quality: cross-outlet attribution drift\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class cross-outlet-attribution-drift --quiet",
-      "detail": "FAIL: last case 5d ago, needs 21\n"
+      "detail": "FAIL: last case 6d ago, needs 21\n"
     },
     {
       "id": "BRO-7389",
       "name": "Root cause: first pass keeps getting no full text from nytimes (Off-Broadway, 3 shows in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class text-missed-at-first-pass-off-broadway-nytimes --quiet",
-      "detail": "FAIL: last case 3d ago, needs 21\n"
+      "detail": "FAIL: last case 4d ago, needs 21\n"
     },
     {
       "id": "BRO-7356",
       "name": "Root cause: \"Codex runner: landing cards\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class codex-runner-landing-cards --quiet",
-      "detail": "FAIL: last case 3d ago, needs 21\n"
+      "detail": "FAIL: last case 4d ago, needs 21\n"
     },
     {
       "id": "BRO-7355",
       "name": "Root cause: \"Data: early publish dates awaiting page-date recheck\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class early-publish-dates-awaiting-page-date-recheck --quiet",
-      "detail": "FAIL: last case 3d ago, needs 21\n"
+      "detail": "FAIL: last case 4d ago, needs 21\n"
     },
     {
       "id": "BRO-7354",
       "name": "Root cause: \"Data quality: revival-unverified lifetime sweep\" keeps coming back (4 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class revival-unverified-lifetime-sweep --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-7333",
       "name": "Root cause: \"Data: armed-but-vacuous backlog cards\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class armed-but-vacuous-backlog-cards --quiet",
-      "detail": "FAIL: last case 2d ago, needs 21\n"
+      "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
       "id": "BRO-7332",
       "name": "Root cause: \"Cron's latest run failed: Update Lottery/Rush\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class update-lottery-rush --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-7277",
       "name": "Root cause: \"Data quality: stale announced shows\" keeps coming back (4 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class stale-announced-shows --quiet",
-      "detail": "FAIL: last case 2d ago, needs 21\n"
+      "detail": "FAIL: last case 3d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7276",
+      "name": "Root cause: \"Stuck pipeline items\" keeps coming back (5 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class stuck-pipeline-items --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-7275",
       "name": "Root cause: \"Opening-date audit: show need review\" keeps coming back (5 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class show-need-review --quiet",
-      "detail": "FAIL: last case 2d ago, needs 21\n"
+      "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
       "id": "BRO-7265",
       "name": "DC + LA hubs: source real key art for ~47 regional shows with no poster or a venue photo/logo",
       "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=washington-dc,los-angeles-ca --images",
       "detail": "FAIL washington-dc: show missing\nFAIL los-angeles-ca: show missing\n"
-    },
-    {
-      "id": "BRO-7202",
-      "name": "Root cause: \"Bright Data daily breaker TRIPPED: web_unlocker2\" keeps coming back (8 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class bright-data-daily-breaker-tripped-web-unlocker2 --quiet",
-      "detail": "FAIL: last case 9d ago, needs 21\n"
     }
   ],
   "unverifiable": [
+    {
+      "id": "BRO-7428",
+      "name": "Re-check Off-Broadway opening dates against the venue's own show page in the week before opening",
+      "verifyCmd": "node --test scripts/lib/venue-opening-night-date.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/venue-opening-night-date.test.mjs"
+    },
     {
       "id": "BRO-7342",
       "name": "Extend the model-retirement audit to Anthropic and Gemini pins (same drift gap OpenAI had)",
@@ -174,28 +186,16 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/provider-deprecations.test.mjs"
     },
     {
-      "id": "BRO-7281",
-      "name": "Opening-night dispatch hardening: same-group run replacement, watchdog/sweep double-dispatch, sweep no-op rebuilds",
-      "verifyCmd": "node --test tests/unit/opening-night-dispatch-hardening.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opening-night-dispatch-hardening.test.mjs"
+      "id": "BRO-7341",
+      "name": "Move the scoring ensemble's OpenAI leg off gpt-4o / gpt-4.1 before OpenAI shuts them down 2027-01-14",
+      "verifyCmd": "node --test tests/unit/scoring-openai-pin-live.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/scoring-openai-pin-live.test.mjs"
     },
     {
       "id": "BRO-7254",
       "name": "Closing Watch: better break-even estimates for shows with no published running cost",
       "verifyCmd": "node --test scripts/closing-watch-breakeven.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/closing-watch-breakeven.test.mjs"
-    },
-    {
-      "id": "BRO-7190",
-      "name": "Make WAKEPROMISE/OPENCLAIM advisory hits durable in cloud, then decide block mode",
-      "verifyCmd": "node --test scripts/lib/advisory-durability.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/advisory-durability.test.mjs"
-    },
-    {
-      "id": "BRO-7152",
-      "name": "Opening night live watch: move repeat passes out of the in-session sleep loop",
-      "verifyCmd": "node --test scripts/opening-night-watch.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/opening-night-watch.test.mjs"
     }
   ],
   "landedButOpen": [
@@ -209,9 +209,9 @@
     {
       "id": "BRO-7344",
       "name": "Triage ~19 unscored CV-promoted isNonReview files whose CV says review and carry no other exclusion flag",
-      "branch": "land/bro-7344-stuck-cv-promoted",
-      "sha": "ec60cf3417fff68e244ecd3eb96bf1e104c57419",
-      "landedAt": "2026-11-11T05:54:34.762Z"
+      "branch": "land/bro-7344-c",
+      "sha": "c7c320948c5c17272cae08c7671f0b3993205ba2",
+      "landedAt": "2026-11-13T01:00:29.600Z"
     },
     {
       "id": "BRO-7334",
@@ -221,6 +221,13 @@
       "landedAt": "2026-11-11T01:33:58.924Z"
     },
     {
+      "id": "BRO-7329",
+      "name": "Review forecast quiet pilot: record a dated forecast per upcoming Broadway opening with preview audience grades and pre-opening buzz, then grade it",
+      "branch": "land/bro-7329-review-forecast-pilot",
+      "sha": "c499aff88e63f865724f24e689d403448a569663",
+      "landedAt": "2026-11-10T23:53:56.209Z"
+    },
+    {
       "id": "BRO-7315",
       "name": "Guardrail slim-down: cut hooks, rules and CI gates, prove the survivors with tests",
       "branch": "land/bro-7315-cost-row",
@@ -228,18 +235,11 @@
       "landedAt": "2026-11-10T22:33:59.416Z"
     },
     {
-      "id": "BRO-7175",
-      "name": "Ingest the 21 expected-critics missing reviews (BRO-7166 audit)",
-      "branch": "land/bro-7175-acks",
-      "sha": "caf95eb63d15b7dad429d02fd63ae92ee011fb6b",
-      "landedAt": "2026-11-11T14:11:47.867Z"
-    },
-    {
-      "id": "BRO-7156",
-      "name": "Type the last 6 untyped off-broadway venue stubs before previews",
-      "branch": "land/job/linear-BRO-7156-mw8ctjy5",
-      "sha": "addf2491d6eea5456018c4955cb000099d45abde",
-      "landedAt": "2026-11-08T21:42:51.385Z"
+      "id": "BRO-7281",
+      "name": "Opening-night dispatch hardening: same-group run replacement, watchdog/sweep double-dispatch, sweep no-op rebuilds",
+      "branch": "land/bro-7281-sweep-retry",
+      "sha": "a57999eb5e2762768f0e046af49170438b41d6a8",
+      "landedAt": "2026-11-13T04:47:10.829Z"
     }
   ]
 }
