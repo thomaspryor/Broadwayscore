@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-11T17:05:15.598Z",
-    "completedAt": "2026-11-11T17:05:15.653Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "43061427215",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-11T17:14:11.147Z",
-    "completedAt": "2026-11-11T17:14:15.444Z",
-    "totalReviews": 20,
-    "processed": 1,
-    "skipped": 19,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4094,
-      "output": 283,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 12260
-    },
-    "costUsd": 0.016796,
-    "runId": "43064975033",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-11T17:19:13.351Z",
     "completedAt": "2026-11-11T17:19:13.366Z",
     "totalReviews": 0,
@@ -412934,6 +412896,50 @@
     },
     "costUsd": 0.7262168000000001,
     "runId": "43350993139",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T03:41:09.965Z",
+    "completedAt": "2026-11-13T04:34:52.616Z",
+    "totalReviews": 82117,
+    "processed": 377,
+    "skipped": 80776,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 2336574,
+      "output": 124037,
+      "cacheRead": 1341052,
+      "cacheWrite": 169261,
+      "total": 5935584
+    },
+    "costUsd": 9.48531165,
+    "runId": "43359751443",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "the-terms-of-my-surrender-2017",
+        "outletId": "talkinbroadway",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-13T04:39:51.669Z",
+    "completedAt": "2026-11-13T04:44:06.898Z",
+    "totalReviews": 114,
+    "processed": 114,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 302465,
+      "output": 25465,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 327930
+    },
+    "costUsd": 0.8362111999999999,
+    "runId": "43359751443",
     "source": "comparative-rescore",
     "errorDetails": []
   }
