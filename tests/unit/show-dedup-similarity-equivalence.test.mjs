@@ -47,3 +47,30 @@ test('checkForDuplicate notices an in-place title edit (profile cache is not sta
   existing.title = 'Hamilton Returns Again';
   assert.equal(checkForDuplicate(cand, [existing]).isDuplicate, true);
 });
+
+test('areTitlesSimilar agrees with the full rule at the exact threshold boundary for every length', () => {
+  for (let len = 6; len <= 120; len++) {
+    const threshold = 0.85;
+    // Largest edit count still similar, and one past it, built with substitutions only.
+    let ok = 0;
+    while (1 - (ok + 1) / len >= threshold) ok++;
+    const base = 'a'.repeat(len);
+    const sub = (n) => 'b'.repeat(n) + 'a'.repeat(len - n);
+    for (const n of [ok, ok + 1]) {
+      assert.equal(areTitlesSimilar(base, sub(n)), 1 - levenshteinDistance(base, sub(n)) / len >= threshold, `len ${len} edits ${n}`);
+    }
+  }
+});
+
+test('checkForDuplicate notices an in-place venue edit and still honours live category/type', () => {
+  const a = { id: 'x-2026', slug: 'x-2026', title: 'Long Shared Title Start One', category: 'broadway', venue: 'Hall One' };
+  const b = { id: 'y-2026', slug: 'y-2026', title: 'Long Shared Title Start Two', category: 'broadway', venue: 'Hall Two' };
+  const before = checkForDuplicate(b, [a]).isDuplicate;
+  a.venue = 'Hall Two';
+  assert.equal(checkForDuplicate(b, [a]).isDuplicate, true, `venue edit must be seen (was ${before})`);
+  a.category = 'west-end';
+  assert.equal(checkForDuplicate(b, [a]).isDuplicate, false, 'category read live: cross-market skipped');
+  a.category = 'broadway';
+  a.type = 'opera';
+  assert.equal(checkForDuplicate(b, [a]).isDuplicate, false, 'type read live: opera vs non-opera skipped');
+});
