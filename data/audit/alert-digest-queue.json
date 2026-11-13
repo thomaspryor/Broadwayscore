@@ -129,20 +129,6 @@
     "queuedAt": "2026-11-13T10:49:50.841Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
-    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-13T10:21:39.322Z"
-  },
-  {
     "conditionKey": "watchdog-park:linear:BRO-7167",
     "title": "Watchdog parked #linear:BRO-7167 — redispatch never produced a launch",
     "description": "Watchdog: card \"Opening-night test bench: audit last 20 Broadway openings + sandboxed and time-causal redos with the new lane (plan for owner approval)\" was claimed for redispatch at 2026-11-13T09:56:33.254Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7167), then re-arm with node scripts/linear-next.js --id BRO-7167 --force once fixed.",
@@ -155,6 +141,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-13T10:12:13.564Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-13T11:06:56.639Z"
   },
   {
     "conditionKey": "watchdog-park:linear:BRO-7435",
