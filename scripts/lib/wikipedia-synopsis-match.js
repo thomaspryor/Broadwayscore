@@ -11,6 +11,7 @@ const { stripWikiMarkup, hasWikiMarkup } = require('./wiki-utils');
 const { cleanSearchTitle, titlesMatch } = require('./title-normalization');
 const { classifyBadSynopsis } = require('./synopsis-validation');
 const { isTourShow } = require('./tour-family');
+const { selectDailyTargets } = require('./enrichment-targets');
 
 /**
  * Prioritize parents linked from active tours before applying the daily cap.
@@ -18,19 +19,34 @@ const { isTourShow } = require('./tour-family');
  * candidates, so repeatedly retrying the first 20 never reached it. A tour
  * with its own synopsis still links readers to its parent. Preserve source
  * order within each group and keep the existing verification gate unchanged.
+ *
+ * BRO-7437: BRO-4763's fix moved ONE show to the front; the structural bug it
+ * was an instance of stayed. `ordered.slice(0, limit)` with no rotation and no
+ * status ordering meant update-show-status.yml's daily `--limit=20` pass took
+ * the same 20 rows every single day. Measured on real data 2026-11-13: 3209
+ * candidates, 3174 of them closed, the first 20 all `status: 'closed'`, and
+ * ZERO of the 38 open shows the freshness report flagged missing_synopsis were
+ * reached on any day. That is why that gap count only grew. Ordering and
+ * rotation now come from scripts/lib/enrichment-targets.js, shared with the
+ * other daily enrichers; tests/unit/enrichment-target-reach.test.mjs fails if
+ * a daily slice ever again reaches none of the flagged open shows.
+ *
+ * `limit: 0` (an explicit --show, or a caller that wants the full list) is
+ * unchanged: no cap means nothing is starved, so there is nothing to rotate.
  */
-function selectSynopsisTargets(shows, { onlyShow = null, category = null, limit = 0 } = {}) {
+function selectSynopsisTargets(shows, { onlyShow = null, category = null, limit = 0, now = new Date() } = {}) {
   const activeTourParents = new Set(shows
     .filter(s => isTourShow(s) && ['open', 'upcoming', 'previews'].includes(s.status))
     .map(s => s.tourOf)
     .filter(Boolean));
   const targets = shows.filter(s => !isTourShow(s) && classifyBadSynopsis(s).bad &&
     (!onlyShow || s.id === onlyShow) && (!category || (s.category || 'broadway') === category));
-  const ordered = [
-    ...targets.filter(s => activeTourParents.has(s.id)),
-    ...targets.filter(s => !activeTourParents.has(s.id)),
-  ];
-  return limit > 0 ? ordered.slice(0, limit) : ordered;
+  // BRO-4763's tour parents are PINNED, not merely sorted first: they are
+  // usually closed revivals, so tiering alone would sink them into the
+  // historical tail and rotate them out of the window on most days.
+  const pinned = targets.filter(s => activeTourParents.has(s.id));
+  const ordered = [...pinned, ...targets.filter(s => !activeTourParents.has(s.id))];
+  return limit > 0 ? selectDailyTargets(ordered, limit, { now, pinned }) : ordered;
 }
 
 /**

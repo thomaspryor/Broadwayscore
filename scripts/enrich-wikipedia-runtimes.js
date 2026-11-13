@@ -18,6 +18,7 @@ const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-gu
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { selectDailyTargets } = require('./lib/enrichment-targets');
 
 const USAGE = `enrich-wikipedia-runtimes.js — Enrich shows.json with runtime, dates, and age recommendation data from Wikipedia.
 
@@ -254,8 +255,15 @@ async function main() {
   }
 
   if (LIMIT > 0) {
-    targets = targets.slice(0, LIMIT);
-    console.log(`Limiting to ${LIMIT} shows`);
+    // BRO-7437 (cousin of the synopsis starvation bug): this used to be a bare
+    // `targets.slice(0, LIMIT)`. update-show-status.yml runs this daily with
+    // --limit=20 over a file-ordered candidate list that is mostly closed
+    // shows, so it re-attempted the same 20 historical rows every day and
+    // never reached the live ones. Same shared ordering as the synopsis pass:
+    // open/previews/upcoming first, then day-of-month rotation over the tail.
+    const before = targets.length;
+    targets = selectDailyTargets(targets, LIMIT);
+    console.log(`Limiting to ${LIMIT} of ${before} shows (live shows first, then day-of-month rotation over the tail)`);
   }
 
   console.log(`Total shows: ${shows.length}`);
