@@ -20,6 +20,10 @@ on:
   schedule:
     - cron: '17 */3 * * *'   # metrics
     - cron: '41 7 * * *'     # signin-check (also runs the metrics job)
+    # BRO-7463 predict-weekly: Friday 12:45 ET. Two crons cover EST and EDT; the script only
+    # sends on Friday from 12:00 ET and once per ET day, so a late or doubled run is safe.
+    - cron: '45 16 * * 5'
+    - cron: '45 17 * * 5'
   workflow_dispatch:
     inputs:
       redispatched:
@@ -37,6 +41,11 @@ on:
         options: ['none', 'signin-stalled']
       signin_check:
         description: 'Also run the Google/Apple sign-in start check'
+        required: false
+        default: false
+        type: boolean
+      predict_weekly:
+        description: 'Send the Predict the Score count email to the owner now'
         required: false
         default: false
         type: boolean
@@ -210,4 +219,41 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Sign-in Check Failed'
+          severity: 'warning'
+
+  # BRO-7463: owner's Friday Predict the Score count email. Counts only; Resend transactional to
+  # OWNER_EMAIL, never a broadcast. A dispatch also ticks the metrics job above (harmless).
+  predict-weekly:
+    if: (github.event.schedule == '45 16 * * 5' || github.event.schedule == '45 17 * * 5' || inputs.predict_weekly == true) && inputs.redispatched != 'true' && inputs.simulate != 'signin-stalled'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: predict-weekly
+      cancel-in-progress: false
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+      - uses: ./.github/actions/setup-node
+      - name: Checkout core data (owner address list)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+      - name: Send Predict the Score count email
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          SCHEDULED: ${{ github.event_name == 'schedule' }}
+        run: |
+          # A manual dispatch always sends; the schedule only sends on Friday from noon ET.
+          if [ "$SCHEDULED" = "true" ]; then GATE="--friday-after-et-hour=12"; else GATE=""; fi
+          node scripts/predict-the-score-weekly.js $GATE
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Predict the Score Weekly Email Failed'
           severity: 'warning'

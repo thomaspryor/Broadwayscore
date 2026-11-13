@@ -85,7 +85,8 @@ function renderEmail(r) {
     lines.push('');
     lines.push(`Predictions: ${r.predictions} in total, ${r.newPredictions} in the last 7 days.`);
   }
-  lines.push(`These counts leave out your own account (${plural(r.ownerPredictions, 'prediction', 'predictions')} from you).`);
+  if (r.ownerFound === false) lines.push('Your own account was not found, so these counts may include you.');
+  else lines.push(`These counts leave out your own account (${plural(r.ownerPredictions, 'prediction', 'predictions')} from you).`);
 
   if (r.perShow.length) {
     lines.push('');
@@ -101,8 +102,12 @@ function renderEmail(r) {
 }
 
 /** Hour (0-23) in New York for a Date. Used to pick the DST-correct one of two crons. */
+function easternWeekday(d = new Date()) {
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short' }).format(d);
+}
+
 function easternHour(d = new Date()) {
   return Number(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hour12: false }).format(d)) % 24;
 }
 
-module.exports = { buildReport, renderEmail, easternHour, titleFor, ADMIN_URL };
+module.exports = { buildReport, renderEmail, easternHour, easternWeekday, titleFor, ADMIN_URL };

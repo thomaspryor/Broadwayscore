@@ -11,14 +11,15 @@
  *
  * Env: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, OWNER_EMAIL
  * Flags: --dry-run (print the email, send nothing)
- *        --require-et-hour=12 (exit quietly unless it is 12:xx in New York; the
- *        workflow has two crons so the send lands at ~12:45 ET in both EST and EDT)
+ *        --friday-after-et-hour=12 (exit quietly unless it is Friday in New York at 12:00 or
+ *        later. The workflow has two crons (EST and EDT) and GitHub often starts crons late, so
+ *        the gate is "Friday from noon on", not one exact hour. The Idempotency-Key is per
+ *        owner and ET day with no content hash, so a second run the same day cannot send again.)
  */
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const { inboxKey } = require('./lib/account-metrics');
-const { buildReport, renderEmail, easternHour } = require('./lib/predict-the-score-weekly');
+const { buildReport, renderEmail, easternHour, easternWeekday } = require('./lib/predict-the-score-weekly');
 const { sendWithRetry, buildIdempotencyKey } = require('./lib/resend-send-retry');
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => {
@@ -84,8 +85,8 @@ function loadTitles() {
 }
 
 async function main() {
-  if (args['require-et-hour'] && easternHour() !== Number(args['require-et-hour'])) {
-    console.log(`Not hour ${args['require-et-hour']} in New York yet; the other cron sends this one. Nothing to do.`);
+  if (args['friday-after-et-hour'] && !(easternWeekday() === 'Fri' && easternHour() >= Number(args['friday-after-et-hour']))) {
+    console.log('Not Friday after noon in New York; the other cron or a later run sends it. Nothing to do.');
     return;
   }
   const owner = process.env.OWNER_EMAIL;
@@ -94,6 +95,7 @@ async function main() {
   const calls = await fetchCalls();
   const ownerIds = calls.length ? await findOwnerUserIds([owner, ...loadOwnerEmails()]) : new Set();
   const report = buildReport(calls, { ownerUserIds: ownerIds, titles: loadTitles() });
+  report.ownerFound = ownerIds.size > 0;
   const { subject, text } = renderEmail(report);
   // Counts only in the log.
   console.log(`people=${report.people} predictions=${report.predictions} newPeople=${report.newPeople} newPredictions=${report.newPredictions} owner=${report.ownerPredictions} shows=${report.perShow.length}`);
@@ -102,9 +104,11 @@ async function main() {
   if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY not set');
 
   const day = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-  const key = buildIdempotencyKey('predict-the-score-weekly', day, owner,
-    crypto.createHash('sha256').update(subject + text).digest('hex').slice(0, 16));
-  const res = await sendWithRetry(async () => {
+  // No content hash: one email per owner per ET day, even if a second cron or a late run sees new counts.
+  const key = buildIdempotencyKey('predict-the-score-weekly', day, owner);
+  let res;
+  try {
+  res = await sendWithRetry(async () => {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'Idempotency-Key': key },
@@ -115,6 +119,13 @@ async function main() {
     if (!r.ok) throw new Error(`HTTP ${r.status}: ${body.slice(0, 200)}`);
     return JSON.parse(body);
   });
+  } catch (e) {
+    if (/HTTP 409/.test(e.message) && /invalid_idempotent_request/.test(e.message)) {
+      console.log('Already sent today (Resend idempotency key matched with different content). Nothing more to send.');
+      return;
+    }
+    throw e;
+  }
   if (!res || !res.id) throw new Error('Resend returned no email id: the email was NOT delivered');
   console.log(`Sent: "${subject}" (resend id ${res.id})`);
 }

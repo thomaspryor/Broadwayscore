@@ -38,6 +38,7 @@ const ALLOWLIST = new Set([
   'scripts/send-opening-digest.js',
   'scripts/reddit-engagement-digest.js',
   'scripts/fantasy-weekly-email.js',
+  'scripts/predict-the-score-weekly.js', // owner-requested Friday product email, counts only (BRO-7463)
   'scripts/generate-remediation-plan.js',
   'scripts/lib/brand-mention-email.js',
   'scripts/autonomous-email.js',

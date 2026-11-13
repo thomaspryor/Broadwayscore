@@ -65,3 +65,11 @@ test('title fallback and Eastern hour', () => {
   assert.equal(easternHour(new Date('2026-07-17T16:45:00Z')), 12); // EDT
   assert.equal(easternHour(new Date('2026-07-17T17:45:00Z')), 13);
 });
+
+test('weekday and owner-not-found wording', async () => {
+  const { easternWeekday } = require('./predict-the-score-weekly.js');
+  assert.equal(easternWeekday(new Date('2026-11-20T17:45:00Z')), 'Fri');
+  const r = buildReport(calls, { now: NOW });
+  r.ownerFound = false;
+  assert.match(renderEmail(r).text, /Your own account was not found/);
+});
