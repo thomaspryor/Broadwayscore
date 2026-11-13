@@ -1,65 +1,21 @@
 {
-  "updatedAt": "2026-11-13T13:02:04.727Z",
-  "processed": 12,
-  "failed": 15,
-  "successRate": "44.4%",
+  "updatedAt": "2026-11-13T13:29:40.516Z",
+  "processed": 172,
+  "failed": 93,
+  "successRate": "64.9%",
   "tierBreakdown": {
-    "playwright": 59,
+    "playwright": 105,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 3,
+    "scrapingdog": 13,
+    "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 41
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-11-13T11:49:55.382Z",
-      "event": "bb-session",
-      "session": "b23fc71f",
-      "url": "https://www.nytimes.com/2026/11/13/theater/the-visitors-review-mary-wiseman.html"
-    },
-    {
-      "t": "2026-11-13T11:49:56.201Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-13T11:50:21.964Z",
-      "event": "bb-session",
-      "session": "7be4cc90",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
-    },
-    {
-      "t": "2026-11-13T11:50:22.736Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-13T11:52:33.420Z",
-      "event": "bb-session",
-      "session": "9dd99e15",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-13T11:52:34.260Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-13T11:55:06.338Z",
-      "event": "bb-session",
-      "session": "012bf10d",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-13T11:55:07.211Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-11-13T11:57:50.403Z",
       "event": "bb-session",
@@ -72,59 +28,107 @@
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-13T12:53:36.458Z",
+      "t": "2026-11-13T12:34:33.736Z",
       "event": "bb-session",
-      "session": "e77cc587",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+      "session": "7f858300",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
     },
     {
-      "t": "2026-11-13T12:53:36.832Z",
+      "t": "2026-11-13T12:34:34.418Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T12:36:03.087Z",
+      "event": "bb-session",
+      "session": "18d3e647",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655418"
+    },
+    {
+      "t": "2026-11-13T12:36:03.698Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T12:41:57.571Z",
+      "event": "bb-session",
+      "session": "24afe3ba",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-13T12:48:24.101Z",
+      "event": "bb-session",
+      "session": "88bfca82",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-13T12:48:44.579Z",
+      "event": "bb-session",
+      "session": "1d34f71c",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-13T13:05:38.010Z",
+      "event": "bb-session",
+      "session": "c6145a75",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-13T13:05:38.650Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T13:12:50.542Z",
+      "event": "bb-session",
+      "session": "fd13c014",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-13T13:12:51.176Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-11-13T12:55:56.391Z",
+      "t": "2026-11-13T13:24:30.747Z",
       "event": "bb-session",
-      "session": "dc2e24dc",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+      "session": "2c139e90",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
     },
     {
-      "t": "2026-11-13T12:55:56.799Z",
+      "t": "2026-11-13T13:24:31.413Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-13T12:58:45.520Z",
+      "t": "2026-11-13T13:25:13.591Z",
       "event": "bb-session",
-      "session": "914ce4a0",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+      "session": "9ce93596",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
     },
     {
-      "t": "2026-11-13T12:58:45.806Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-13T13:00:52.704Z",
+      "t": "2026-11-13T13:25:36.627Z",
       "event": "bb-session",
-      "session": "677f5875",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+      "session": "93f55a8a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     },
     {
-      "t": "2026-11-13T13:00:53.035Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-13T13:02:01.568Z",
+      "t": "2026-11-13T13:25:46.091Z",
       "event": "bb-session",
-      "session": "3bc0f34d",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+      "session": "102a8ec3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     },
     {
-      "t": "2026-11-13T13:02:01.902Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "t": "2026-11-13T13:26:54.407Z",
+      "event": "bb-session",
+      "session": "1ac31da3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-13T13:27:02.672Z",
+      "event": "bb-session",
+      "session": "497de7e3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
     }
   ]
 }
