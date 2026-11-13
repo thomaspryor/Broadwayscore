@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7426",
   "planId": "3740ed6c-5ca5-4c82-a2d5-f4e8e92231a0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-13T03:40:26.786Z",
   "submitter": {
     "name": null,
@@ -142,5 +142,24 @@
         "description": "shows.json: maybe-happy-ending-2024.creativeTeam (add Will Aronson as Book & Lyrics co-writer per en.wikipedia.org/wiki/Maybe_Happy_Ending infobox: book Hue Park and Will Aronson, lyrics Hue Park and Will Aronson)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-13T23:45:58.148Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for galileo-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for chicago-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for maybe-happy-ending-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
