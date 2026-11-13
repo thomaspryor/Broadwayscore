@@ -556,5 +556,36 @@
       }
     ],
     "queuedAt": "2026-11-13T23:33:21.313Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7144-dedup-speed",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7144-dedup-speed",
+    "description": "land.yml did not land land/bro-7144-dedup-speed: the unit-tests-node gate went red at 7485d6dbb6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43527647663",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7144-dedup-speed"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7485d6dbb6f25c5be5aeec7cfa7a39a3b172bbc2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43527647663"
+      }
+    ],
+    "queuedAt": "2026-11-13T23:36:38.021Z"
   }
 ]
