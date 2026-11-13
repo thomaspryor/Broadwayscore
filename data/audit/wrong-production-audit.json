@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T16:53:00.997Z",
+  "timestamp": "2026-11-13T17:18:51.117Z",
   "stats": {
-    "totalReviews": 81908,
-    "alreadyFlagged": 22359,
+    "totalReviews": 81913,
+    "alreadyFlagged": 22360,
     "dateGuardCatches": 220,
     "directorMismatch": 3667,
     "tvFilmSignals": 2310,
-    "londonSignals": 3739,
+    "londonSignals": 3740,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8462
+    "noPublishDate": 8463
   },
   "findings": [
     {
@@ -64648,7 +64648,7 @@
     {
       "showId": "that-is-not-who-i-am-west-end-2022",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 38,
+      "score": 35,
       "publishDate": "2022-06-20",
       "url": "https://theartsdesk.com/theatre/not-who-i-am-royal-court-review-%E2%80%93-gimmicky-post-truth-spoof",
       "findings": [
@@ -64662,7 +64662,7 @@
     {
       "showId": "that-is-not-who-i-am-west-end-2022",
       "file": "guardian--kate-wyver.json",
-      "score": 84,
+      "score": 89,
       "publishDate": "2022-06-19",
       "url": "https://www.theguardian.com/stage/2022/jun/19/that-is-not-who-i-am-review-royal-court-london",
       "findings": [
@@ -65135,7 +65135,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "theupcoming--jim-compton-hall.json",
-      "score": 84,
+      "score": 90,
       "publishDate": "2026-04-03",
       "url": "https://www.theupcoming.co.uk/2026/04/03/the-authenticator-at-the-national-theatre-theatre-review/",
       "findings": [
@@ -100565,6 +100565,19 @@
       ]
     },
     {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "west-end-wilma--westendwilma.json",
+      "publishDate": "2026-11-09",
+      "url": "https://westendwilma.com/eurotrash-ben-whishaw-kathryn-hunter-young-vic-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "evanston-salt-costs-climbing-off-broadway-2022",
       "file": "off-off-online--adrienne-onofri.json",
       "score": 67,
@@ -126112,7 +126125,7 @@
     {
       "showId": "still-no-idea-west-end-2018",
       "file": "artsdesk--unknown.json",
-      "score": 80,
+      "score": 77,
       "publishDate": null,
       "url": "https://www.theartsdesk.com/theatre/still-no-idea-royal-court-review-spiky-funny-and-politically-pointed",
       "findings": [
@@ -126140,7 +126153,7 @@
     {
       "showId": "still-no-idea-west-end-2018",
       "file": "whatsonstage--alex-wood.json",
-      "score": 87,
+      "score": 86,
       "publishDate": "2018-11-05",
       "url": "https://www.whatsonstage.com/news/review-still-no-idea-royal-court_47942/",
       "findings": [
@@ -126875,7 +126888,7 @@
     {
       "showId": "strictly-ballroom-west-end-2018",
       "file": "artsdesk--matt-wolf.json",
-      "score": 38,
+      "score": 35,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/strictly-ballroom-musical-piccadilly-theatre-review-largely-naff",
       "findings": [
@@ -127055,7 +127068,7 @@
     {
       "showId": "sunny-afternoon-west-end-2014",
       "file": "londontheatre1--laura-jane-foley.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2016-01-25",
       "url": "https://www.londontheatre1.com/reviews/joyous-and-uplifting-sunny-afternoon-harold-pinter-theatre/",
       "findings": [
@@ -127195,7 +127208,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 85,
+      "score": 90,
       "publishDate": "October 13th, 2023",
       "url": "https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/",
       "findings": [
@@ -127391,7 +127404,7 @@
     {
       "showId": "sweeney-todd-west-end-2012",
       "file": "islington-gazette--tom-marshall.json",
-      "score": 87,
+      "score": 88,
       "publishDate": "2012-07-11",
       "url": "https://www.islingtongazette.co.uk/news/21243985.theatre-review-sweeney-todd-adelphi-theatre/",
       "findings": [
@@ -127433,7 +127446,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 61,
+      "score": 60,
       "publishDate": "2023-02-15",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-11761329/A-Shadow-Cabinet-minister-ruined-lust-tragedy-PATRICK-MARMION-reviews-Phaedra.html",
       "findings": [
@@ -127461,7 +127474,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "london-theatre--marianka-swain.json",
-      "score": 60,
+      "score": 59,
       "publishDate": "2023-02-15",
       "url": "https://www.londontheatre.co.uk/reviews/sylvia-review-old-vic-beverley-knight",
       "findings": [
@@ -127475,7 +127488,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "observer--susannah-clapp.json",
-      "score": 61,
+      "score": 67,
       "publishDate": "2023-02-15",
       "url": "https://www.theguardian.com/stage/2023/feb/19/phaedra-simon-stone-national-theatre-janet-mcteer-review-sylvia-musica-old-vic-kate-prince-beverley-knight-standing-at-the-skys-edge-national-chris-bush-richard-hawley",
       "findings": [
@@ -127489,7 +127502,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "times-uk--clive-davis.json",
-      "score": 60,
+      "score": 57,
       "publishDate": "2023-02-15",
       "url": "https://www.thetimes.co.uk/article/sylvia-review-beverley-knight-shines-in-a-stodgy-suffragette-show-2fln5l2qv",
       "findings": [
@@ -127740,7 +127753,7 @@
     {
       "showId": "tartuffe-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 61,
+      "score": 64,
       "publishDate": "2019-02-22",
       "url": "https://www.theguardian.com/stage/2019/feb/22/tartuffe-the-imposter-review-national-theatre-lyttelton",
       "findings": [
@@ -127754,7 +127767,7 @@
     {
       "showId": "tartuffe-west-end-2019",
       "file": "london-box-office--stuart-king.json",
-      "score": 55,
+      "score": 56,
       "publishDate": "2019-02-23",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-tartuffe-nt",
       "findings": [
@@ -127921,7 +127934,7 @@
     {
       "showId": "that-is-not-who-i-am-west-end-2022",
       "file": "independent--jessie-thompson.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "June 20th, 2022",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/that-is-not-who-i-am-royal-court-review-dave-davidson-b2104991.html",
       "findings": [
@@ -128439,7 +128452,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 79,
+      "score": 75,
       "publishDate": "2026-04-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-the-authenticator-national-theatre",
       "findings": [
@@ -128481,7 +128494,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "north-west-end--michelle-knight.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-04-07",
       "url": "https://northwestend.com/the-authenticator-national-theatre/",
       "findings": [
@@ -129123,7 +129136,7 @@
     {
       "showId": "the-boy-with-two-hearts-west-end-2022",
       "file": "whatsonstage--gareth-carr.json",
-      "score": 56,
+      "score": 60,
       "publishDate": "October 6th, 2022",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/the-boy-with-two-hearts-national_57541.html",
       "findings": [
@@ -129925,7 +129938,7 @@
     {
       "showId": "the-comeback-west-end-2020",
       "file": "standard--nick-curtis.json",
-      "score": 83,
+      "score": 86,
       "publishDate": "2020-12-14",
       "url": "https://www.standard.co.uk/culture/theatre/the-comeback-the-pin-noel-coward-theatre-review-b302006.html",
       "findings": [
@@ -130204,7 +130217,7 @@
     {
       "showId": "the-constituent-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 62,
+      "score": 63,
       "publishDate": "2024-06-25",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-constituent-old-vic-review/",
       "findings": [
@@ -130245,7 +130258,7 @@
     {
       "showId": "the-corn-is-green-west-end-2022",
       "file": "london-box-office--phil-willmott.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2022-04-25",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-the-corn-is-green-nt",
       "findings": [
@@ -130301,7 +130314,7 @@
     {
       "showId": "the-crown-jewels-west-end-2023",
       "file": "sunday-times--quentin-letts.json",
-      "score": 37,
+      "score": 40,
       "publishDate": "2023-07-30",
       "url": "https://www.thetimes.co.uk/article/the-crown-jewels-and-the-empress-and-now-for-something-completely-different-5qx79q5rc",
       "findings": [
