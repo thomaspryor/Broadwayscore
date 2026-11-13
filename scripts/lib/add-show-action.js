@@ -15,7 +15,6 @@ const { sanitizeVenueForWrite, isBroadwayCategory } = require('./venue-classific
 const { MARKET_BEFORE_TOUR_RE } = require('./tour-family');
 const { marketSuffixMismatch } = require('./show-id-market-suffix');
 const { setSynopsis } = require('./synopsis-source');
-const { undistinguishableSibling } = require('./work-identity');
 
 const REQUIRED = ['id', 'title', 'slug', 'venue', 'status', 'type', 'category', 'market'];
 const ALLOWED = new Set([
@@ -152,12 +151,9 @@ function applyAddShow(shows, action, { isRetired, root } = {}) {
   const dup = newRowDuplicate(shows, show, declared);
   if (dup) return { ok: false, duplicateOf: dup.other, reason: `add-show: "${show.id}" duplicates existing "${dup.other}" (${dup.reason}); if it is a genuinely distinct production list "${dup.other}" in the action's distinctFrom` };
 
-  // BRO-7429: a title is not a work. A new row that lists no writers and no workKey, beside a
-  // same-title row of the other kind (musical vs play) that does list writers, is how Brecht's
-  // Galileo got linked to the 2026 Galileo musical. Record the writers (creativeTeam, cited from the
-  // production's page), a workKey, or sameWorkAs before the row lands.
-  const indistinct = undistinguishableSibling(show, shows);
-  if (indistinct) return { ok: false, workIdentity: indistinct, reason: `add-show: "${show.id}" has no creativeTeam writers or workKey and shares its title with "${indistinct}", which looks like a different kind of work (musical vs play). Read the writer off the production's page and add creativeTeam, or add workKey (a different work) or sameWorkAs: ["${indistinct}"] (the same work)` };
+  // BRO-7429: workKey / sameWorkAs are accepted fields. A new row that cannot be told apart from a same-title
+  // sibling is NOT refused here (the type label is unreliable: regional Annie is labelled "play"); validate-data
+  // warns about it and tic-stage-shows resolves it from the page text.
 
   let from = null;
   if (action.crossLinkFrom) {

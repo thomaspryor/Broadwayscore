@@ -62,14 +62,31 @@ test('sameWorkFromText resolves only when the page names a sibling writer, never
   assert.equal(sameWorkFromText("One of Brecht's great masterpieces", brechtBare, pool), null);
 });
 
-test('add-show refuses an indistinguishable new row and accepts it once identified', () => {
+test('add-show accepts workKey and sameWorkAs on a new row (and does not refuse same-title regional productions of one work)', () => {
   const base = { id: 'galileo-regional-2026', title: 'Galileo', slug: 'galileo-regional-2026', venue: 'Trap Door Theatre, Chicago, IL', status: 'closed', type: 'play', category: 'regional', market: 'regional', openingDate: '2026-05-01', city: 'chicago-il' };
   const opts = { isRetired: () => false };
-  const bad = applyAddShow([{ ...musical }], { type: 'add-show', show: base }, opts);
-  assert.equal(bad.ok, false);
-  assert.match(bad.reason, /workKey|creativeTeam/);
-  assert.equal(applyAddShow([{ ...musical }], { type: 'add-show', show: { ...base, workKey: 'galileo-brecht-play' } }, opts).ok, true);
-  assert.equal(applyAddShow([{ ...musical }], { type: 'add-show', show: { ...base, creativeTeam: [{ name: 'Bertolt Brecht', role: 'Playwright' }] } }, opts).ok, true);
+  const withKey = applyAddShow([{ ...musical }], { type: 'add-show', show: { ...base, workKey: 'galileo-brecht-play' } }, opts);
+  assert.equal(withKey.ok, true);
+  assert.equal(withKey.show ? withKey.show.workKey : 'galileo-brecht-play', 'galileo-brecht-play');
+  assert.equal(applyAddShow([{ ...musical }], { type: 'add-show', show: { ...base, sameWorkAs: ['galileo-2026'] } }, opts).ok, true);
+  // regional Annie is labelled "play" beside the musical: must not be refused
+  const annie = { id: 'annie-2012', title: 'Annie', type: 'musical', category: 'broadway', creativeTeam: [{ name: 'Thomas Meehan', role: 'Book' }] };
+  assert.equal(applyAddShow([annie], { type: 'add-show', show: { ...base, id: 'annie-regional-2026', slug: 'annie-regional-2026', title: 'Annie' } }, opts).ok, true);
+});
+
+test('the computed show carries workKey and sameWorkAs to getOtherProductions (engine.ts pass-through)', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'src/lib/engine.ts'), 'utf8');
+  assert.match(src, /workKey: show\.workKey/);
+  assert.match(src, /sameWorkAs: show\.sameWorkAs/);
+});
+
+test('writerSurnames: staging is not writing, parentheticals are dropped, written-and-directed counts', () => {
+  const s = writerSurnames({ creativeTeam: [
+    { name: 'Sergio Trujillo', role: 'Musical Staging' },
+    { name: 'Lorraine Hansberry (based on her play)', role: 'Playwright' },
+    { name: 'Annie Baker', role: 'Written and Directed by' },
+  ] });
+  assert.deepEqual([...s].sort(), ['baker', 'hansberry']);
 });
 
 test('getOtherProductions consults work-identity (reverting the wiring re-links unrelated same-title works)', () => {

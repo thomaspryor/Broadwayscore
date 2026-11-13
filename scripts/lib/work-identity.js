@@ -7,7 +7,7 @@
  * "Galileo". Regional discovery records no creativeTeam, so nothing told them apart.
  *
  * Evidence, strongest first:
- *   1. An explicit link (transferOf, transferredTo, priorRunOf) or `sameWorkAs: [ids]`
+ *   1. An explicit link (transferOf, transferredTo) or `sameWorkAs: [ids]`
  *      (a reviewed statement that this row is the same work as those rows): same work.
  *   2. `workKey`: a kebab slug naming the work. When either show has one, the two
  *      are the same work only if both carry the same key. Set it on the shows that
@@ -24,7 +24,7 @@
 
 const WRITER_ROLE_RE = /^(book|books|music|lyrics?|lyricist|lyricists|composer|composers|playwright|playwrights|writer|writers|written|adapt|adaptation|adaptor|adapter|libretto|librettist|screenplay|story|created|conceived|translat|text|script|words)/i;
 // "Music Direction", "Music Supervision", "Orchestrations" etc. are not authorship.
-const NOT_WRITER_RE = /(direct|supervis|orchestrat|arrang|coordinat|design|contract|associate|assistant|casting|producer|choreograph)/i;
+const NOT_WRITER_RE = /(direct|supervis|orchestrat|arrang|coordinat|staging|design|contract|associate|assistant|casting|producer|choreograph)/i;
 const SUFFIX_RE = /^(jr|sr|ii|iii|iv|esq|phd)$/;
 
 const fold = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -34,10 +34,11 @@ function writerSurnames(show) {
   const out = new Set();
   for (const m of (show && show.creativeTeam) || []) {
     const role = String((m && m.role) || '').trim();
-    if (!role || !WRITER_ROLE_RE.test(role) || NOT_WRITER_RE.test(role)) continue;
+    if (!role || !WRITER_ROLE_RE.test(role)) continue;
+    if (NOT_WRITER_RE.test(role) && !/^written/i.test(role)) continue;
     // "A, B and C" / "A & B": one entry may name several people. Template junk
     // ("{{plainlist | ...") is dropped rather than parsed.
-    const raw = String((m && m.name) || '');
+    const raw = String((m && m.name) || '').replace(/\([^)]*\)/g, ' ');
     if (/[{}|]/.test(raw)) continue;
     for (const part of raw.split(/\s*(?:,|&|\band\b)\s*/i)) {
       const toks = fold(part).replace(/[^a-z\s'-]/g, ' ').split(/\s+/).filter(Boolean).filter((t) => !SUFFIX_RE.test(t));
@@ -58,8 +59,7 @@ function typeConflict(a, b) {
 function linked(a, b) {
   const declares = (x, y) => Array.isArray(x.sameWorkAs) && x.sameWorkAs.includes(y.id);
   return declares(a, b) || declares(b, a)
-    || a.transferOf === b.id || b.transferOf === a.id || a.transferredTo === b.id || b.transferredTo === a.id
-    || a.priorRunOf === b.id || b.priorRunOf === a.id;
+    || a.transferOf === b.id || b.transferOf === a.id || a.transferredTo === b.id || b.transferredTo === a.id;
 }
 
 /**
@@ -106,7 +106,6 @@ function undistinguishableSibling(show, allShows) {
     if (!s || s.id === show.id || normalizeTitle(s.title) !== key) continue;
     if (linked(show, s)) continue;
     if (typeConflict(show, s) && writerSurnames(s).size) return s.id;
-    if (s.workKey) return s.id;
   }
   return null;
 }

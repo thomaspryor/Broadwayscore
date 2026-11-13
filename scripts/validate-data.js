@@ -489,13 +489,13 @@ function validateNoDuplicates(shows) {
   // Work identity (BRO-7429). A title is not a work: a row with no writers and no workKey beside a
   // same-title musical/play sibling that lists writers (the Galileo shape) is listed under the
   // sibling's Other Productions. Advisory first (CLAUDE.md §19), scoped to rows discovered on or after
-  // 2026-11-13; the existing groups are in docs/audits/same-title-works.md. Hard-fails only a malformed workKey.
+  // 2026-11-13; the existing groups are in docs/audits/same-title-works.md. A malformed workKey also only warns (§19).
   {
     const { undistinguishableSibling } = require('./lib/work-identity');
     const { workKeyValueProblem } = require('./lib/feedback-pipeline-fields.js');
     for (const s of shows) {
       const p = s.workKey === undefined ? null : workKeyValueProblem(s.workKey);
-      if (p) error(`Show "${s.title}" (${s.id}): ${p}`);
+      if (p) warn(`Show "${s.title}" (${s.id}): ${p}`);
     }
     const fresh = shows.filter(s => (s.discoveredAt || '') >= '2026-11-13');
     const indistinct = fresh.map(s => ({ s, sib: undistinguishableSibling(s, shows) })).filter(x => x.sib);

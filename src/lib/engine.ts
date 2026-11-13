@@ -712,6 +712,8 @@ export function computeShowData(
     productionNumber: show.productionNumber,
     season: show.season,
     transferOf: show.transferOf,
+    workKey: show.workKey,           // BRO-7429: getOtherProductions work-identity
+    sameWorkAs: show.sameWorkAs,
     transferredTo: show.transferredTo,
     tourParent: show.tourParent,
     tourOf: show.tourOf,

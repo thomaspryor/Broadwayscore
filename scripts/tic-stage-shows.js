@@ -81,13 +81,13 @@ async function main() {
       const dupe = stage.findDuplicate(entry, [...existing, ...Object.values(manifest.staged).map((r) => r.show)], city);
       if (dupe) { manifest.rejected[id] = `duplicate:${dupe.id}`; continue; }
       // BRO-7429: a title is not a work. A row the matcher could not tell apart from a same-title
-      // musical/play sibling is resolved from the page text when it names that sibling's writer, and held otherwise.
+      // musical/play sibling is resolved from the page text when it names that sibling's writer, and otherwise staged and listed in manifest.needsWorkIdentity.
       const pool = [...existing, ...Object.values(manifest.staged).map((r) => r.show)];
       const sibling = undistinguishableSibling(entry, pool);
       if (sibling) {
         const same = sameWorkFromText(`${detail.description || ''} ${page.title || ''}`, entry, pool);
-        if (!same) { manifest.rejected[id] = `work-identity:${sibling}`; continue; }
-        entry.sameWorkAs = [same];
+        if (same) entry.sameWorkAs = [same];
+        else (manifest.needsWorkIdentity = manifest.needsWorkIdentity || {})[id] = sibling;
       }
       stage.dedupeId(entry, page, new Set([...existing.map((x) => x.id), ...Object.values(manifest.staged).map((r) => r.show.id)]));
       manifest.staged[id] = {
