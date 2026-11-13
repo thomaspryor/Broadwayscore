@@ -202,7 +202,7 @@ function hasOpened(show, openedDates, today) {
   // flagged from an 11-11 preview post). Only dates from one day before the
   // known opening count (outlets that publish a night early). Applies to
   // 'previews' with an ISO openingDate only; an 'open' show keeps the old rule.
-  if (show.status === 'previews' && /^\d{4}-\d{2}-\d{2}$/.test(show.openingDate || '')) {
+  if (show.status === 'previews' && /^\d{4}-\d{2}-\d{2}$/.test(show.openingDate || '') && Number.isFinite(Date.parse(show.openingDate + 'T00:00:00Z'))) {
     const floor = addDays(show.openingDate, -1);
     return (openedDates || []).some(d => d >= floor && d <= today);
   }

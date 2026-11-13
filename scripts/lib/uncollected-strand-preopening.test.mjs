@@ -27,3 +27,13 @@ test('open status with a stale future openingDate: dated reviews still alarm', (
 test('previews, opening date passed: blackout stands', () => {
   assert.equal(assessShow(show('2026-11-12'), files(...rs), { nowMs }).totalBlackout, true);
 });
+test('previews with an impossible openingDate does not throw and keeps the old rule', () => {
+  for (const d of ['2026-13-01', '2026-00-10', 'TBA']) {
+    assert.equal(assessShow(show(d), files(...rs), { nowMs }).totalBlackout, true);
+  }
+});
+test('previews, review dated exactly on openingDate: licenses the alarm', () => {
+  const on = [stub('https://a.test/5', '2026-11-16'), stub('https://a.test/6', '2026-11-16')];
+  const n = Date.parse('2026-11-16T20:00:00Z');
+  assert.equal(assessShow(show('2026-11-16'), files(...on), { nowMs: n }).totalBlackout, true);
+});
