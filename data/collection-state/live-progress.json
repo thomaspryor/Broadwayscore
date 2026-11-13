@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-13T23:11:50.120Z",
-  "processed": 66,
-  "failed": 54,
-  "successRate": "55.0%",
+  "updatedAt": "2026-11-13T23:31:54.534Z",
+  "processed": 67,
+  "failed": 55,
+  "successRate": "54.9%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 44,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
@@ -48,6 +48,23 @@
       "t": "2026-11-13T22:54:23.825Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T23:24:08.714Z",
+      "event": "bb-session",
+      "session": "61a95203",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T23:24:09.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-13T23:30:45.976Z",
+      "event": "bb-session",
+      "session": "5a4d14c1",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }

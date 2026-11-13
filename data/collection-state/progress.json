@@ -65,7 +65,8 @@
     "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
     "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
     "billy-crystal-860-2026/the-100-word-review--unknown.json",
-    "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json"
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
@@ -121,7 +122,8 @@
     "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
     "garry-starr-classic-penguins-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
-    "billy-crystal-860-2026/phusionpassenger--unknown.json"
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "girls-off-west-end-2026/plays-to-see--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -168,7 +170,8 @@
       "the-master-builder-off-west-end-2026/artsdesk--unknown.json",
       "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
       "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
-      "billy-crystal-860-2026/the-100-word-review--unknown.json"
+      "billy-crystal-860-2026/the-100-word-review--unknown.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -214,7 +217,7 @@
     ]
   },
   "startTime": "2026-11-13T19:51:30.116Z",
-  "lastProcessed": "billy-crystal-860-2026/phusionpassenger--unknown.json",
+  "lastProcessed": "girls-off-west-end-2026/plays-to-see--unknown.json",
   "log": [
     {
       "t": "2026-11-13T20:31:45.000Z",
@@ -248,6 +251,23 @@
       "t": "2026-11-13T22:54:23.825Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T23:24:08.714Z",
+      "event": "bb-session",
+      "session": "61a95203",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T23:24:09.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-13T23:30:45.976Z",
+      "event": "bb-session",
+      "session": "5a4d14c1",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ],
   "recoveredAfterFailure": [
