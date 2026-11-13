@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-11T17:31:51.397Z",
-    "completedAt": "2026-11-11T17:31:56.177Z",
-    "totalReviews": 26,
-    "processed": 0,
-    "skipped": 25,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4247,
-      "output": 214,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 12291
-    },
-    "costUsd": 0.0162849,
-    "runId": "43068061407",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-11T17:36:53.456Z",
-    "completedAt": "2026-11-11T17:36:53.469Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "43068061407",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-11T17:46:53.508Z",
     "completedAt": "2026-11-11T17:46:53.524Z",
     "totalReviews": 0,
@@ -412940,6 +412902,44 @@
     },
     "costUsd": 0,
     "runId": "43369059160",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T04:50:42.770Z",
+    "completedAt": "2026-11-13T05:45:45.675Z",
+    "totalReviews": 82117,
+    "processed": 378,
+    "skipped": 81162,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 2345957,
+      "output": 123634,
+      "cacheRead": 1372123,
+      "cacheWrite": 146718,
+      "total": 5964619
+    },
+    "costUsd": 9.4329555,
+    "runId": "43367557325",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T05:50:42.808Z",
+    "completedAt": "2026-11-13T05:54:49.857Z",
+    "totalReviews": 101,
+    "processed": 101,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 269694,
+      "output": 23110,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 292804
+    },
+    "costUsd": 0.7522455000000001,
+    "runId": "43367557325",
     "source": "comparative-rescore",
     "errorDetails": []
   }
