@@ -33,7 +33,7 @@ const ACCENT_TOP_EDGE: Record<Accent, string> = {
 };
 
 const CTA_CLASS: Record<Accent, string> = {
-  gold: 'bg-accent-warm text-surface group-hover:shadow-glow-sm',
+  gold: 'bg-cta text-white text-shadow-cta group-hover:bg-cta-hover group-hover:shadow-glow-sm',
   btc: 'bg-rose-500 text-white group-hover:bg-rose-400',
 };
 

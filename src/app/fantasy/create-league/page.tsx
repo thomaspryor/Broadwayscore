@@ -83,7 +83,7 @@ export default function CreateLeaguePage() {
           <button
             type="submit"
             disabled={loading || !name.trim() || !email.includes('@')}
-            className="w-full py-3 rounded-lg font-semibold bg-brand text-[#09090b] hover:bg-brand-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="w-full py-3 rounded-lg font-semibold bg-cta text-white text-shadow-cta hover:bg-cta-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {loading ? 'Creating...' : 'Create League →'}
           </button>

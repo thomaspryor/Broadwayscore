@@ -187,7 +187,7 @@ export default function HamburgerMenu({
                         // (saving the return page here directly was overwritten, BRO-4894).
                         closeInto(() => onSignIn?.(localList.length > 0 ? 'watchlist_local' : 'generic', { returnTo: '/my-shows' }));
                       }}
-                      className="mt-3 w-full flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-surface bg-brand rounded-lg hover:bg-brand-hover transition-colors"
+                      className="mt-3 w-full flex items-center justify-center px-4 py-2.5 text-sm font-semibold bg-cta text-white text-shadow-cta rounded-lg hover:bg-cta-hover transition-colors"
                     >
                       {localList.length > 0 ? 'Sign in to keep them' : 'Sign in · free'}
                     </button>

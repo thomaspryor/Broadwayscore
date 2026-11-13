@@ -428,7 +428,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                               <span className="absolute inset-0 bg-surface/50" aria-hidden="true" />
                             )}
                             {(picked || already) && (
-                              <span className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-brand text-surface flex items-center justify-center" aria-hidden="true">
+                              <span className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-cta text-white text-shadow-cta flex items-center justify-center" aria-hidden="true">
                                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                               </span>
                             )}

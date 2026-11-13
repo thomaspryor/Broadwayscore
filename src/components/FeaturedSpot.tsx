@@ -50,8 +50,8 @@ const ACCENT_DIVIDER: Record<Accent, string> = {
 };
 
 const CTA_CLASS: Record<Accent, string> = {
-  gold: 'bg-accent-warm text-surface hover:bg-brand hover:shadow-glow-sm',
-  brand: 'bg-brand text-surface hover:bg-brand-hover hover:shadow-glow-sm',
+  gold: 'bg-cta text-white text-shadow-cta hover:bg-cta-hover hover:shadow-glow-sm',
+  brand: 'bg-cta text-white text-shadow-cta hover:bg-cta-hover hover:shadow-glow-sm',
   btc: 'bg-rose-500 text-white hover:bg-rose-400 hover:shadow-glow-sm',
 };
 

@@ -26,7 +26,7 @@ function CopyLinkButton({ code }: { code: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand text-[#09090b] text-sm font-semibold hover:bg-brand-hover transition-all"
+      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cta text-white text-shadow-cta text-sm font-semibold hover:bg-cta-hover transition-all"
     >
       {copied ? '✓ Copied!' : '📋 Copy invite link'}
     </button>

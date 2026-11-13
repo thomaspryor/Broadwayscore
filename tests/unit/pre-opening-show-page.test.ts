@@ -80,6 +80,26 @@ test('cast: one "Cast" list before opening instead of Current Cast + Original Ca
   assert.match(src, /principalsFirst\(cast\)/);
 });
 
+test('credits read the role words our data uses (Composer, Lyricist, Book writer)', async () => {
+  const { getCreditSentences } = await import('../../src/lib/show-credits');
+  const out = getCreditSentences({ title: 'Some Show', creativeTeam: [
+    { name: 'Ann Book', role: 'Book writer' }, { name: 'Cal Tune', role: 'Composer' }, { name: 'Lee Word', role: 'Lyricist' },
+    { name: 'Max Both', role: 'Composer and Lyricist' }, { name: 'Dee Dance', role: 'Book & Choreography' },
+  ] });
+  assert.deepEqual(out, ['Book by Ann Book and Dee Dance.', 'Music by Cal Tune and Max Both.', 'Lyrics by Lee Word and Max Both.']);
+  assert.deepEqual(getCreditSentences({ title: 'Chicago', creativeTeam: [{ name: 'John Kander', role: 'Music' }, { name: 'Fred Ebb', role: 'Book & Lyrics' }, { name: 'Bob Fosse', role: 'Book' }] }), ['Book by Fred Ebb and Bob Fosse.', 'Music by John Kander.', 'Lyrics by Fred Ebb.'], 'co-writers share one sentence');
+});
+
+test('credits: plays, slash and combined roles, no long-runner stars (ship-check BRO-7426)', async () => {
+  const { getCreditSentences } = await import('../../src/lib/show-credits');
+  assert.deepEqual(getCreditSentences({ title: 'The Mousetrap', type: 'play', creativeTeam: [{ name: 'Agatha Christie', role: 'Book' }] }), ['Written by Agatha Christie.']);
+  assert.deepEqual(getCreditSentences({ title: 'X', type: 'musical', creativeTeam: [
+    { name: 'Ann Smith', role: 'Book/Music/Lyrics' }, { name: 'Bo Lee', role: 'Writer & Director' }, { name: 'Cy Day', role: 'Co-Director' },
+    { name: 'Di Fox', role: 'Director & Choreographer' }, { name: 'Ed Ray', role: 'Music Supervisor' },
+  ] }), ['Written by Bo Lee.', 'Book, music and lyrics by Ann Smith.', 'Directed by Bo Lee, Cy Day and Di Fox.']);
+  assert.deepEqual(getCreditSentences({ title: 'Chicago', castBilling: ['Reece Weaver', 'Lissa deGuzman'], openingCastIsCurrent: false, creativeTeam: [] }), [], 'no Starring from a long-runner billing list');
+});
+
 test('other productions stay out of the hero card (owner call, BRO-7426)', () => {
   const hero = readFileSync(path.join(process.cwd(), 'src/components/show-page/ShowHeroRedesign.tsx'), 'utf8');
   assert.doesNotMatch(hero, /other-productions|OtherProduction/i, 'the owner asked for other productions below the fold only');

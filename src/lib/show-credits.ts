@@ -27,16 +27,31 @@ interface CreditsInput {
 // "Book, music and lyrics by Lin-Manuel Miranda" instead of three sentences.
 const PARTS = ['written', 'book', 'music', 'lyrics', 'adapted'] as const;
 type Part = typeof PARTS[number];
-function writerParts(role: string): Part[] {
-  const r = role.toLowerCase().trim();
-  if (/^(play|playwright|written by|writer)$/.test(r)) return ['written'];
-  if (/^adaptation$/.test(r)) return ['adapted'];
-  const bits = r.replace(/^original\s+/, '').split(/\s*(?:&|and|,)\s*/).filter(Boolean);
-  if (!bits.length || !bits.every(b => b === 'book' || b === 'music' || b === 'lyrics')) return [];
-  return bits as Part[];
+// Role words as they appear in our data ("Composer" 29x, "Lyricist" 18x, "Book writer"
+// 20x on current shows). A role is split into bits ("Book/Music/Lyrics", "Writer &
+// Director"); one unknown bit drops the whole role, so a credit is never half-read.
+type Bit = Part | 'director' | 'skip';
+const BIT: Record<string, Bit | undefined> = {
+  book: 'book', 'book writer': 'book', 'book writers': 'book', libretto: 'book', librettist: 'book',
+  music: 'music', composer: 'music', composers: 'music',
+  lyrics: 'lyrics', lyricist: 'lyrics', lyricists: 'lyrics',
+  play: 'written', playwright: 'written', playwrights: 'written', writer: 'written', writers: 'written', written: 'written', author: 'written', 'co-author': 'written',
+  adaptation: 'adapted', adapter: 'adapted', adaptor: 'adapted',
+  director: 'director', 'co-director': 'director', directors: 'director',
+  choreographer: 'skip', choreography: 'skip',
+};
+function roleBits(role: string): Bit[] {
+  const bits = role.toLowerCase().trim().replace(/^original\s+/, '')
+    .split(/\s*(?:&|\band\b|,|\/)\s*/).filter(Boolean)
+    .map(b => BIT[b.replace(/\s+by$/, '')]);
+  return bits.length && bits.every(Boolean) ? bits as Bit[] : [];
+}
+function writerParts(role: string, isPlay: boolean): Part[] {
+  return roleBits(role).filter((b): b is Part => b !== 'director' && b !== 'skip')
+    // A play's "Book" credit is its script: "Written by Agatha Christie", not "Book by".
+    .map(b => (isPlay && b === 'book' ? 'written' : b));
 }
 const PART_LABEL: Record<Part, string> = { written: 'written', book: 'book', music: 'music', lyrics: 'lyrics', adapted: 'adapted' };
-const DIRECTOR = /^director(\s*(&|and)\s*choreographer)?$/i;
 
 /** "A", "A and B", "A, B and C". */
 export function joinNames(names: string[]): string {
@@ -77,30 +92,38 @@ export function getCreditSentences(input: CreditsInput): string[] {
   const team = input.creativeTeam ?? [];
   const out: string[] = [];
 
-  const billed = (input.castBilling ?? []).map(clean).filter(usable).slice(0, 2);
+  // Stars only while the cast data describes the current company (pre-opening or
+  // the first year). On a long-runner the Playbill list leads with whoever is
+  // billed first this season, often not a star (Chicago, The Lion King).
+  const billed = input.openingCastIsCurrent ? (input.castBilling ?? []).map(clean).filter(usable).slice(0, 2) : [];
   const stars = billed.length ? billed : [input.openingCastIsCurrent ? titleRoleStar(input.title, input.openingCast ?? []) : null].filter((n): n is string => !!n);
   if (stars.length) out.push(`Starring ${joinNames(stars)}.`);
 
-  // name -> parts, in team order; then group names that share the same parts.
-  const byName = new Map<string, Set<Part>>();
+  // part -> names in team order; parts with the same names merge, so one writer
+  // of everything reads "Book, music and lyrics by Lin-Manuel Miranda" and
+  // co-writers stay together ("Book by Fred Ebb and Bob Fosse").
+  const byPart = new Map<Part, string[]>();
   for (const m of team) {
-    const name = clean(m.name); const parts = writerParts(clean(m.role));
-    if (!usable(name) || !parts.length) continue;
-    const set = byName.get(name) ?? new Set<Part>(); parts.forEach(x => set.add(x)); byName.set(name, set);
+    const name = clean(m.name);
+    if (!usable(name)) continue;
+    for (const part of writerParts(clean(m.role), input.type === 'play')) {
+      const names = byPart.get(part) ?? [];
+      if (!names.includes(name)) byPart.set(part, [...names, name]);
+    }
   }
-  const groups = new Map<string, string[]>();
-  for (const [name, set] of byName) {
-    const key = PARTS.filter(x => set.has(x)).join('+');
-    groups.set(key, [...(groups.get(key) ?? []), name]);
+  const groups = new Map<string, Part[]>(); // names key -> parts, in PARTS order
+  for (const part of PARTS) {
+    const names = byPart.get(part);
+    if (!names) continue;
+    const key = names.join('\u0000');
+    groups.set(key, [...(groups.get(key) ?? []), part]);
   }
-  const rank = (key: string) => PARTS.indexOf(key.split('+')[0] as Part);
-  for (const key of [...groups.keys()].sort((x, y) => rank(x) - rank(y))) {
-    const parts = key.split('+').map(x => PART_LABEL[x as Part]);
-    const label = parts[0] === 'written' ? 'Written' : parts[0] === 'adapted' ? 'Adapted' : joinNames(parts);
-    out.push(`${label.charAt(0).toUpperCase()}${label.slice(1)} by ${joinNames(groups.get(key)!)}.`);
+  for (const [key, parts] of groups) {
+    const label = parts[0] === 'written' ? 'Written' : parts[0] === 'adapted' ? 'Adapted' : joinNames(parts.map(x => PART_LABEL[x]));
+    out.push(`${label.charAt(0).toUpperCase()}${label.slice(1)} by ${joinNames(key.split('\u0000'))}.`);
   }
 
-  const directors = namesFor(team, r => DIRECTOR.test(r));
+  const directors = namesFor(team, r => roleBits(r).includes('director'));
   if (directors.length) out.push(`Directed by ${joinNames(directors)}.`);
   return out;
 }

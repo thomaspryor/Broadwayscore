@@ -393,7 +393,7 @@
   }
 
   .btn-active {
-    @apply btn bg-cta text-white;
+    @apply btn bg-cta text-white font-bold text-shadow-cta;
   }
 
   /* Toolbar controls (Share, sort select, grid/list toggle) share one look
@@ -432,7 +432,7 @@
   }
 
   .filter-pill-active {
-    @apply filter-pill bg-cta text-white border-cta shadow-glow-sm;
+    @apply filter-pill bg-cta text-white font-semibold text-shadow-cta border-cta shadow-glow-sm;
   }
 
   .filter-pill-inactive {

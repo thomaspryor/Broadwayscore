@@ -228,7 +228,7 @@ export default function TourCityPicker({ cities, shows }: { cities: TourCityOpti
                   onClick={e => { e.preventDefault(); choose(c.slug); }}
                   aria-current={c.slug === selected ? 'true' : undefined}
                   className={`h-11 inline-flex items-center px-4 rounded-pill text-sm font-medium transition-colors ${
-                    c.slug === selected ? 'bg-brand text-surface' : 'bg-surface-overlay text-gray-200 hover:bg-surface-elevated'
+                    c.slug === selected ? 'bg-cta text-white text-shadow-cta' : 'bg-surface-overlay text-gray-200 hover:bg-surface-elevated'
                   }`}
                 >
                   {shortCity(c.city)}
