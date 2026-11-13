@@ -1,49 +1,5 @@
 [
   {
-    "startedAt": "2026-11-12T12:42:37.261Z",
-    "completedAt": "2026-11-12T12:48:01.261Z",
-    "totalReviews": 150,
-    "processed": 150,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 394102,
-      "output": 34206,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 428308
-    },
-    "costUsd": 1.0934055999999999,
-    "runId": "43218490245",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-12T13:30:11.735Z",
-    "completedAt": "2026-11-12T13:30:18.815Z",
-    "totalReviews": 2,
-    "processed": 65,
-    "skipped": 1,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 553378,
-      "output": 23922,
-      "cacheRead": 319741,
-      "cacheWrite": 15088,
-      "total": 1360131
-    },
-    "costUsd": 2.0765333999999998,
-    "runId": "43227013479",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "the-duchess-of-malfi-west-end-2024",
-        "outletId": "observer",
-        "error": "resume_input_hash_mismatch"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-11-12T13:35:15.566Z",
     "completedAt": "2026-11-12T13:35:15.574Z",
     "totalReviews": 0,
@@ -413572,6 +413528,44 @@
     },
     "costUsd": 0,
     "runId": "43520174070",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T22:58:29.922Z",
+    "completedAt": "2026-11-13T22:58:35.860Z",
+    "totalReviews": 5,
+    "processed": 1,
+    "skipped": 4,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6154,
+      "output": 313,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 15315
+    },
+    "costUsd": 0.036227050000000004,
+    "runId": "43523150589",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T23:03:32.082Z",
+    "completedAt": "2026-11-13T23:03:32.084Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "43523150589",
     "source": "comparative-rescore",
     "errorDetails": []
   }
