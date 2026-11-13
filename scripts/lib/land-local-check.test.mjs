@@ -505,7 +505,7 @@ test('BRO-7431: a stale .next/dev/types is removed before the gates run; a live 
     assert.equal(existsSync(join(root, '.next', 'dev')), false, 'stale dev types gone');
     assert.equal(existsSync(join(root, '.next', 'types')), true, 'production types untouched');
     assert.deepEqual(clearStaleDevTypes(root, { pgrep: () => '' }), { removed: false, devAlive: false });
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
   const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
   const main = src.slice(src.indexOf('function main('));
   assert.ok(main.indexOf('clearStaleDevTypes(ROOT)') > 0 && main.indexOf('clearStaleDevTypes(ROOT)') < main.indexOf('land-gauntlet.sh'), 'cleared before the gauntlet');
