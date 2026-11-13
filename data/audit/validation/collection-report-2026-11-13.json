@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-11-13T08:48:40.828Z",
+  "runDate": "2026-11-13T10:31:58.589Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hamlet-hail-to-the-thief-off-west-end-2026",
+    "showFilter": "cloud-9-west-end-2026,the-kings-critique-off-broadway-2026,now-you-see-me-live-2026,act-of-god-off-west-end-2026,hamlet-hail-to-the-thief-off-west-end-2026,first-and-last-off-broadway-2026,cloud-9-national-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 1,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -28,36 +28,39 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 1,
+    "failed": 4,
     "shows": [
-      "hamlet-hail-to-the-thief-off-west-end-2026"
+      "act-of-god-off-west-end-2026",
+      "cloud-9-west-end-2026",
+      "hamlet-hail-to-the-thief-off-west-end-2026",
+      "the-kings-critique-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,20 +68,34 @@
       "failed": 0
     }
   },
-  "processed": [],
+  "processed": [
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json"
+  ],
   "failed": [
-    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json"
   ],
   "cumulativeResumedState": {
-    "processed": [],
+    "processed": [
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json"
+    ],
     "failed": [
-      "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+      "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+      "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+      "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+      "cloud-9-west-end-2026/times-uk--susannah-butter.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -86,6 +103,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Stage Buddy": {
+      "count": 1,
+      "domain": "stagebuddy.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
