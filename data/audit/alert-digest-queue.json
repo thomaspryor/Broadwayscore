@@ -423,5 +423,24 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-13T18:22:04.401Z"
+  },
+  {
+    "conditionKey": "cron-health:Replay Push Rescue",
+    "title": "🚨 Critical cron stale, self-heal failed: Replay Push Rescue",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43488148794",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/43488148794)"
+      }
+    ],
+    "queuedAt": "2026-11-13T19:02:35.561Z"
   }
 ]
