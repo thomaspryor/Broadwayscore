@@ -164,5 +164,15 @@ test('press-night-clock keeps a failed sweep unfired via the helper, set -e safe
   const yml = readFileSync(new URL('../../.github/workflows/press-night-clock.yml', import.meta.url), 'utf8');
   assert.match(yml, /post-lane-sweep\.js[^\n]*\|\| RC=\$\?/);
   assert.match(yml, /retry-decision --attempts=/);
-  assert.doesNotMatch(yml, /did not dispatch \(the next slot retries\)"\n\s+FIRED=/);
+  assert.match(yml, /retry-decision[^\n]*\|\| echo "1 0"/, 'a failing helper must fail open');
+  assert.match(yml, /SWEEP_SLEEP"? =~ \^\[0-9\]\+\$/, 'sleep arg validated');
+});
+
+test('retry-decision CLI prints "<fired> <sleepS>" and is silent when only required', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const run = (a, e) => execFileSync('node', ['scripts/lib/post-lane-sweep.js', 'retry-decision', `--attempts=${a}`, `--exit=${e}`], { encoding: 'utf8' }).trim();
+  assert.equal(run(1, 1), '0 120');
+  assert.equal(run(3, 1), '1 0');
+  assert.equal(run(0, 0), '1 0');
+  assert.equal(execFileSync('node', ['-e', "require('./scripts/lib/post-lane-sweep')"], { encoding: 'utf8' }), '');
 });

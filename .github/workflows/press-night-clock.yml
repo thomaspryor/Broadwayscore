@@ -146,7 +146,10 @@ jobs:
                 SWEEP_TRIES[$KEY]=$(( ${SWEEP_TRIES[$KEY]:-0} + 1 ))
                 echo "::warning::post-lane sweep $KIND for $SHOW $NIGHT exited $RC (attempt ${SWEEP_TRIES[$KEY]})"
               fi
-              read -r SWEEP_FIRED SWEEP_SLEEP <<< "$(node scripts/lib/post-lane-sweep.js retry-decision --attempts="${SWEEP_TRIES[$KEY]:-0}" --exit="$RC")"
+              # Fail open: a broken helper must spend the slot, never abort the hop (set -e) or sleep on empty input.
+              SWEEP_FIRED=1; SWEEP_SLEEP=0
+              read -r SWEEP_FIRED SWEEP_SLEEP <<< "$(node scripts/lib/post-lane-sweep.js retry-decision --attempts="${SWEEP_TRIES[$KEY]:-0}" --exit="$RC" 2>/dev/null || echo "1 0")"
+              [[ "$SWEEP_FIRED" =~ ^[01]$ && "$SWEEP_SLEEP" =~ ^[0-9]+$ ]] || { SWEEP_FIRED=1; SWEEP_SLEEP=0; }
               if [ "$SWEEP_FIRED" = "1" ]; then
                 FIRED="${FIRED:+$FIRED,}$KEY"
               else
