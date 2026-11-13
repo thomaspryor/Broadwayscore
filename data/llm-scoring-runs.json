@@ -413380,21 +413380,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-13T21:12:13.646Z",
-    "completedAt": "2026-11-13T21:12:29.198Z",
-    "totalReviews": 3,
-    "processed": 3,
+    "startedAt": "2026-11-13T21:11:30.151Z",
+    "completedAt": "2026-11-13T21:12:31.059Z",
+    "totalReviews": 11,
+    "processed": 11,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 16819,
-      "output": 930,
-      "cacheRead": 11421,
-      "cacheWrite": 0,
-      "total": 43558
+      "input": 76624,
+      "output": 3374,
+      "cacheRead": 38070,
+      "cacheWrite": 3807,
+      "total": 181223
     },
-    "costUsd": 0.06452259999999999,
-    "runId": "43507828176",
+    "costUsd": 0.29312535,
+    "runId": "43507759148",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -414727,16 +414727,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "a-body-of-water-regional-2026",
-        "ourDistribution": {
-          "up": 2,
-          "flat": 0,
-          "down": 1,
-          "total": 3
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "a-boy-called-christmas-chichester-festival-regional-2025",
         "ourDistribution": {
           "up": 0,
@@ -414977,6 +414967,16 @@
           "flat": 0,
           "down": 0,
           "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "a-christmas-carol-regional-2025",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 0,
+          "down": 0,
+          "total": 11
         },
         "hasDisagreement": false
       },
@@ -464883,8 +464883,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-13T21:17:26.924Z",
-    "completedAt": "2026-11-13T21:17:26.926Z",
+    "startedAt": "2026-11-13T21:17:36.085Z",
+    "completedAt": "2026-11-13T21:17:36.087Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -464897,7 +464897,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "43507828176",
+    "runId": "43507759148",
     "source": "comparative-rescore",
     "errorDetails": []
   }
