@@ -1186,6 +1186,8 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   // the (always shorter) section judges the article, not the section.
   const sourceVerdict = splitSourceComplete(data);
   if (sourceVerdict != null) out.multiShowSplitSourceComplete = sourceVerdict;
+  else delete out.multiShowSplitSourceComplete;
+  out.multiShowSplitSectionHash = require('./paywall-completeness').sectionTextHash(out.fullText);
 
   // A rating an LLM read off the whole multi-show article may be another
   // show's: the Observer's Plaza Suite row carried Till the Stars Come Down's
@@ -1300,6 +1302,7 @@ function buildChild(parentData, section, parentShowId, now = new Date().toISOStr
   };
   // BRO-7389: same section/article record the parent carries.
   child.multiShowSplitTextLength = section.sectionText.length;
+  child.multiShowSplitSectionHash = require('./paywall-completeness').sectionTextHash(section.sectionText);
   const wholeText = parentData.fullText || parentData.wrongFullText || '';
   if (wholeText) child.multiShowSplitOriginalLength = wholeText.length;
   const sourceVerdict = splitSourceComplete(parentData);
@@ -1463,7 +1466,9 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
       continue;
     }
     if (dryRun || decision === 'skip' || decision === 'blocked') continue;
-    const child = buildChild(data, sec, ownShowId, now);
+    // The article the planner actually split (it falls back to wrongFullText
+    // when fullText is too short), so the child records that article's verdict.
+    const child = buildChild(plan.text === data.fullText ? data : { ...data, fullText: plan.text }, sec, ownShowId, now);
     // A 3-show article's children name each other, so the URL-ownership guard
     // treats every section as one review filed per show (BRO-5895).
     const siblings = plan.otherSections.map((o) => o.showId).filter((id) => id !== sec.showId);

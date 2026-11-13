@@ -225,6 +225,11 @@ function assessPaywallCompleteness(text, url, opts = {}) {
 
 // ---------- multi-show split sections (BRO-7389) ----------
 
+/** Whitespace-insensitive hash of a split section (BRO-7389). */
+function sectionTextHash(text) {
+  return require('crypto').createHash('sha1').update(String(text || '').replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 16);
+}
+
 /** Floor a whole article on this domain (and show category) must clear. */
 function wholeArticleFloor(domain, category) {
   const byCategory = CATEGORY_FLOORS[domain] && category ? CATEGORY_FLOORS[domain][category] : undefined;
@@ -248,8 +253,16 @@ function wholeArticleFloor(domain, category) {
 function isSplitSectionOfCompleteArticle(data) {
   if (!data || typeof data.fullText !== 'string' || !data.fullText) return false;
   if (data.multiShowSplitParent !== true && data.multiShowSplitChild !== true) return false;
-  const sectionLen = data.multiShowSplitTextLength;
-  if (!Number.isFinite(sectionLen) || data.fullText.length > sectionLen + 200) return false;
+  // The exemption belongs to the section the splitter cut, not to whatever
+  // text later lands on the record (a shorter paywall-cut refetch keeps every
+  // multiShowSplit* field, ship-check P1). New splits pin the section's hash;
+  // older ones must still be within 200 chars of the cut length.
+  if (data.multiShowSplitSectionHash) {
+    if (sectionTextHash(data.fullText) !== data.multiShowSplitSectionHash) return false;
+  } else {
+    const sectionLen = data.multiShowSplitTextLength;
+    if (!Number.isFinite(sectionLen) || Math.abs(data.fullText.length - sectionLen) > 200) return false;
+  }
   if (data.multiShowSplitSourceComplete === true) return true;
   if (data.multiShowSplitSourceComplete === false) return false;
   const domain = getHardPaywallDomain(data.url);
@@ -257,9 +270,11 @@ function isSplitSectionOfCompleteArticle(data) {
   return !!floor && Number.isFinite(data.multiShowSplitOriginalLength) && data.multiShowSplitOriginalLength >= floor;
 }
 
-// Reasons that still count on a split section: they are about the section's
-// own text (a bot wall or a paywall prompt), not about its length or ending.
-const SECTION_REASONS = new Set(['bot_wall_stub', 'paywall_prompt']);
+// Reasons that still count on a split section: a bot wall, a paywall prompt,
+// or a section that stops mid-sentence (a real section ends at a paragraph
+// break before the next show's). Only the length floor and the byline-after-
+// short-prose reason are whole-article checks.
+const SECTION_REASONS = new Set(['bot_wall_stub', 'paywall_prompt', 'no_ending_punctuation']);
 
 /**
  * assessPaywallCompleteness for a STORED review record. Same result, except a
@@ -450,9 +465,13 @@ function truncatedTierPatch(data) {
  * be kept instead of overwriting it with the new (still partial) result?
  * True when the stored text is at least as good by the same ranking.
  */
-function shouldKeepStoredText({ storedText, newText, url, criticName, category } = {}) {
+function shouldKeepStoredText({ storedText, newText, url, criticName, category, storedRecord } = {}) {
   if (!storedText || !isHardPaywallUrl(url)) return false;
-  const stored = { assessment: assessPaywallCompleteness(storedText, url, { criticName, category }) };
+  // BRO-7389: a stored split section is judged as the section of its article,
+  // so a partial whole-article refetch does not displace a complete section.
+  const stored = { assessment: storedRecord && storedRecord.fullText === storedText
+    ? assessStoredPaywallCompleteness({ ...storedRecord, url, criticName, category })
+    : assessPaywallCompleteness(storedText, url, { criticName, category }) };
   const fresh = { assessment: assessPaywallCompleteness(newText, url, { criticName, category }) };
   return !isBetterCandidate(fresh, stored);
 }
@@ -476,6 +495,7 @@ module.exports = {
   truncatedTierPatch,
   applyPaywallTierOverride,
   wholeArticleFloor,
+  sectionTextHash,
   isSplitSectionOfCompleteArticle,
   assessStoredPaywallCompleteness,
 };

@@ -7650,7 +7650,7 @@ async function processReview(review) {
         // A COMPLETE re-fetch always wins over a stored partial; only a
         // partial one has to be strictly longer (ship-check P2, BRO-4334).
         const notLonger = result.partial && review._paywallRecheck && storedLen > 0 && (result.text || '').length <= storedLen;
-        if (notLonger || shouldKeepStoredText({ storedText: stored.fullText, newText: result.text, url: review.url, criticName: stored.criticName || review.criticName, category: stored.category || review.category })) {
+        if (notLonger || shouldKeepStoredText({ storedText: stored.fullText, newText: result.text, url: review.url, criticName: stored.criticName || review.criticName, category: stored.category || review.category, storedRecord: stored })) {
           console.log(`  ↺ Re-fetch (${result.text.length} chars via ${result.method}) is no better than the stored text (${storedLen} chars) — keeping stored text`);
           // A stored text still labelled 'complete' is re-labelled truncated so
           // reviews.json / the opening-window refetch see it as incomplete.

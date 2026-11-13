@@ -127,3 +127,66 @@ test('real data: The Unbelievers NYT section stays complete in its opening windo
   assert.equal(pc.applyPaywallTierOverride(d, { contentTier: 'complete' }, inWindow).contentTier, 'complete');
   assert.equal(pc.needsPaywallRecheck({ ...d, contentTier: 'complete' }, inWindow), false);
 });
+
+// ---- ship-check findings (BRO-7389): the exemption belongs to the section ----
+
+test('a shorter paywall-cut refetch on a split record is NOT exempt (hash and legacy forms)', () => {
+  const d = vergeFirstPass();
+  const hashed = { ...d, multiShowSplitSectionHash: pc.sectionTextHash(d.fullText), multiShowSplitSourceComplete: true };
+  assert.equal(pc.isSplitSectionOfCompleteArticle(hashed), true);
+  // Whitespace-only differences keep the match.
+  assert.equal(pc.isSplitSectionOfCompleteArticle({ ...hashed, fullText: `${d.fullText.replace(/ /g, '  ')}\n` }), true);
+  const cut = prose(900);
+  assert.equal(pc.isSplitSectionOfCompleteArticle({ ...hashed, fullText: cut }), false, 'hash mismatch');
+  assert.equal(pc.needsPaywallRecheck({ ...hashed, fullText: cut }, NOW), true);
+  // Legacy record (no hash): a text that shrank well below the cut length.
+  assert.equal(pc.isSplitSectionOfCompleteArticle({ ...d, fullText: cut }), false, 'legacy shrink');
+});
+
+test('a section that stops mid-sentence still counts as cut', () => {
+  const d = vergeFirstPass({ multiShowSplitSourceComplete: true });
+  d.fullText = d.fullText.replace(/\.$/, ' and then the');
+  d.multiShowSplitTextLength = d.fullText.length;
+  const a = pc.assessStoredPaywallCompleteness(d);
+  assert.equal(a.complete, false);
+  assert.deepEqual(a.reasons, ['no_ending_punctuation']);
+});
+
+test('keep-stored ranking: a complete stored section beats a longer partial whole-article refetch', () => {
+  const d = vergeFirstPass();
+  const partialWhole = prose(2500).replace(/\.$/, ' and');
+  const args = { storedText: d.fullText, newText: partialWhole, url: d.url, criticName: d.criticName, category: d.category };
+  assert.equal(pc.shouldKeepStoredText(args), false, 'old ranking: the longer partial wins');
+  assert.equal(pc.shouldKeepStoredText({ ...args, storedRecord: d }), true);
+});
+
+// Real split, when private data is present: the Verge+Rope column (kept on
+// the Rope file as multiShowWholeArticleText) split in a temp dir.
+const ROPE = RT && path.join(RT, 'rope-off-broadway-2026', 'nytimes--helen-shaw.json');
+test('real data: the splitter stamps hash + article verdict on parent and child', { skip: !(ROPE && fs.existsSync(ROPE)) && 'private review-texts not present' }, () => {
+  const { applyMultiShowFanoutToFile } = require('./multi-show-review-fanout.js');
+  const { loadShows } = require('./multi-show-splitter.js');
+  const os = require('os');
+  const whole = JSON.parse(fs.readFileSync(ROPE, 'utf8')).multiShowWholeArticleText;
+  if (!whole) return;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7389-'));
+  try {
+    fs.mkdirSync(path.join(dir, 'the-verge-off-broadway-2026'));
+    const fp = path.join(dir, 'the-verge-off-broadway-2026', 'nytimes--helen-shaw.json');
+    fs.writeFileSync(fp, JSON.stringify({
+      showId: 'the-verge-off-broadway-2026', outletId: 'nytimes', outlet: 'The New York Times', criticName: 'Helen Shaw',
+      url: vergeFirstPass().url, publishDate: '2026-11-05', category: 'off-broadway', fullText: whole,
+      contentTier: 'complete', sourceMethod: 'browserbase', firstSeenAt: '2026-11-06T03:42:19.006Z',
+    }, null, 2));
+    const res = applyMultiShowFanoutToFile(fp, { shows: loadShows(), reviewTextsDir: dir });
+    assert.equal(res.applied, true);
+    const parent = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(parent.multiShowSplitSourceComplete, true);
+    assert.equal(parent.multiShowSplitSectionHash, pc.sectionTextHash(parent.fullText));
+    assert.equal(pc.applyPaywallTierOverride(parent, { contentTier: 'complete' }, NOW).contentTier, 'complete');
+    const childPath = path.join(dir, 'rope-off-broadway-2026', 'nytimes--helen-shaw.json');
+    const child = JSON.parse(fs.readFileSync(childPath, 'utf8'));
+    assert.equal(child.multiShowSplitSourceComplete, true);
+    assert.equal(child.multiShowSplitSectionHash, pc.sectionTextHash(child.fullText));
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
