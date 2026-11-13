@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-11-13T03:28:09.699Z",
-  "processed": 284,
-  "failed": 166,
-  "successRate": "63.1%",
+  "updatedAt": "2026-11-13T03:59:43.433Z",
+  "processed": 351,
+  "failed": 179,
+  "successRate": "66.2%",
   "tierBreakdown": {
-    "playwright": 173,
+    "playwright": 205,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 32,
-    "scrapingbee": 15,
+    "scrapingdog": 40,
+    "scrapingbee": 21,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 65
+    "archive": 88
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-11-12T21:49:14.322Z",
+      "event": "bb-session",
+      "session": "0a8105ad",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-12T21:49:15.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-12T21:51:45.441Z",
+      "event": "bb-session",
+      "session": "21c8fab6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-12T21:51:46.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
     {
       "t": "2026-11-12T21:55:03.106Z",
       "event": "bb-session",
@@ -105,29 +127,6 @@
       "t": "2026-11-13T02:25:03.174Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-13T03:20:04.231Z",
-      "event": "bb-session",
-      "session": "df734732",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
-    },
-    {
-      "t": "2026-11-13T03:20:04.842Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-11-13T03:26:19.468Z",
-      "event": "bb-session",
-      "session": "ec376a91",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
-    {
-      "t": "2026-11-13T03:27:48.655Z",
-      "event": "bb-session",
-      "session": "ce670fbe",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
