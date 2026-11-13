@@ -23,7 +23,7 @@
  *   --max-wait-minutes  give up waiting for the mutex after N min (default 20): exit 4 with a
  *            warning, so a worker is never stranded behind another check
  * Exit: 0 no new failures | 1 new failures (printed) | 2 usage | 3 not ready (tracked
- *       changes, under 3 GB free disk (BRO-7186), no common history with origin/main, or no local core data) | 4 skipped
+ *       changes, under 4 GB free disk (BRO-7186, BRO-7467), no common history with origin/main, or no local core data) | 4 skipped
  *       (mutex wait timed out)
  */
 'use strict';

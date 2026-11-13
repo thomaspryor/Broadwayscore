@@ -1901,3 +1901,26 @@ test('class guard (BRO-7356): the daily row and the lane alarm share one disk-st
   for (const s of ['only 0.0 GB of disk left (needs 3 GB to start a card)', 'out of disk: ENOSPC', 'No space left on device']) assert.ok(r.DISK_STOP_RE.test(s), s);
   assert.ok(!r.DISK_STOP_RE.test('3 Claude REJECTs in a row'));
 });
+
+test('BRO-7467: a disk-full git checkout ("unable to write file") is class disk only while the disk is low', () => {
+  const co = 'error: unable to write file data/audit/recollect-scores-state.json\nfatal: cannot create directory at \'data/audit\': Permission denied';
+  assert.equal(r.isDiskFailure(co, 0.5e9), true);
+  assert.equal(r.isDiskFailure('fatal: cannot create directory at x', 1e9), true);
+  assert.equal(r.isDiskFailure(co, 20e9), false); // a permissions error on a healthy disk is a crash
+  assert.equal(r.isDiskFailure(co, NaN), false);
+});
+
+test('BRO-7467: addWorktree routes a failed checkout through the disk classifier', () => {
+  const src = fs.readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
+  assert.match(src, /function addWorktree\(tree\) \{\s*try \{[\s\S]*?catch \(e\) \{[\s\S]*?throwIfDisk\([^\n]*'worktree add'\)/);
+});
+
+test('BRO-7467: land-local-check refuses under 4 GB free and runs the check before the base copy', async () => {
+  const { createRequire } = await import('node:module');
+  const res = createRequire(import.meta.url)('../../scripts/lib/land-check-resources.js');
+  assert.equal(res.MIN_FREE_BYTES, 4 * 1024 ** 3);
+  assert.match(res.lowDiskMessage(3.5 * 1024 ** 3), /3\.5 GB free/);
+  assert.equal(res.lowDiskMessage(4 * 1024 ** 3), null);
+  const src = fs.readFileSync(new URL('../../scripts/lib/land-local-check.js', import.meta.url), 'utf8');
+  assert.ok(src.indexOf('lowDiskMessage(freeBytesOf(ROOT))') < src.indexOf("const baseDir = path.join(out, 'base')"));
+});

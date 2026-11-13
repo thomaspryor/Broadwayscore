@@ -438,7 +438,7 @@ test('BRO-7110: main() refuses an incomplete install before fetching or running 
 // BRO-7186: false results from land tooling
 const { lowDiskMessage, looksLikeEnvFailure, landedOnMain, envFailureLogs, MIN_FREE_BYTES } = require('./land-check-resources.js');
 
-test('BRO-7186: under 3 GB free refuses; enough or unreadable does not', () => {
+test('BRO-7186: under 4 GB free refuses; enough or unreadable does not', () => {
   assert.match(lowDiskMessage(1024 ** 3), /1\.0 GB free before the run.*ENOSPC/s);
   assert.equal(lowDiskMessage(MIN_FREE_BYTES), null);
   assert.equal(lowDiskMessage(NaN), null);

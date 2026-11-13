@@ -260,9 +260,15 @@ function applyTreeMode(tree) {
 }
 /** A new detached worktree of origin/main in the current tree mode, without ever writing the excluded trees. */
 function addWorktree(tree) {
-  git(['worktree', 'add', '--no-checkout', '--detach', tree, 'origin/main'], ROOT);
-  git(R.treeModeArgs(treeMode), tree);
-  git(['checkout', '-q', '-f', 'HEAD'], tree);
+  try {
+    git(['worktree', 'add', '--no-checkout', '--detach', tree, 'origin/main'], ROOT);
+    git(R.treeModeArgs(treeMode), tree);
+    git(['checkout', '-q', '-f', 'HEAD'], tree);
+  } catch (e) {
+    // BRO-7467: a checkout that ran out of disk says "unable to write file", not "No space left"; classify it as disk, not a crash.
+    throwIfDisk(String(e && e.message || e), 'worktree add');
+    throw e;
+  }
 }
 /** Link <tree>/node_modules to ROOT's (a dangling link is replaced). Node finds ROOT's copy from a nested tree anyway, but tests that copy the tree to /tmp follow this link. */
 function linkNodeModules(tree) {

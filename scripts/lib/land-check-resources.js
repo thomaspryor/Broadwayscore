@@ -5,7 +5,8 @@
  * tested via require() in land-local-check.test.mjs.
  */
 
-const MIN_FREE_BYTES = 3 * 1024 ** 3;
+// BRO-7467: 4 GB (was 3): a run hit 0 bytes free mid-gauntlet, the base copy plus tests need the headroom.
+const MIN_FREE_BYTES = 4 * 1024 ** 3;
 const ENV_FAILURE_RE = /\bENOSPC\b|no space left on device/i;
 
 /** -> null when there is room, else the refusal message (land-local-check exit 3). */
