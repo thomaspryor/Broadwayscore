@@ -279,7 +279,20 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
       const headingYears = yearsInHeading.map(Number);
       const closestDiff = Math.min(...headingYears.map(y => Math.abs(y - options.openingYear)));
       if (closestDiff >= 4) {
-        return { valid: false, confidence: 0, reason: `year mismatch: heading years [${headingYears.join(',')}] vs show opened ${options.openingYear}` };
+        // BRO-7065: a subtitle can date the source material, not this run.
+        // NYC Theatre's 2026 Lost Boys roundup describes the 1987 film in h2.
+        // Only scoped publication metadata in the opening year can disambiguate
+        // it. Keep rejecting dates in title/h1, undated pages and old articles;
+        // modification dates, body dates and URL dates are not evidence here.
+        const primaryHeadingHasYear = /\b(19\d{2}|20\d{2})\b/.test(`${pageTitle} ${h1Text}`);
+        const sourceYears = [...h2Text.matchAll(/\b(19\d{2}|20\d{2})\b(?:\s+[\w'-]+){0,4}\s+(?:film|movie|novel|book)\b/gi)].map(m => Number(m[1]));
+        const onlySourceYears = headingYears.every(year => sourceYears.includes(year));
+        const published = primaryHeadingHasYear || !onlySourceYears ? null
+          : require('./article-extractor').extractPublishDate(html, undefined, { strictMetadata: true });
+        const publishedInOpeningYear = published && Number(published.slice(0, 4)) === options.openingYear;
+        if (!publishedInOpeningYear) {
+          return { valid: false, confidence: 0, reason: `year mismatch: heading years [${headingYears.join(',')}] vs show opened ${options.openingYear}` };
+        }
       }
     }
   }

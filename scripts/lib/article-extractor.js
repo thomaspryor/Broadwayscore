@@ -1482,9 +1482,11 @@ function entitySelfUrls(entity) {
  * date (care-west-end-2026 false flag). `url` is the page's fetch URL when the
  * caller has it (self-derived from <link canonical>/og:url otherwise).
  *
+ * strictMetadata accepts only page-level OpenGraph or canonical-matched article
+ * JSON-LD. Use it for validation exceptions that must not trust fallback dates.
  * Returns YYYY-MM-DD string or null.
  */
-function extractPublishDate(html, url) {
+function extractPublishDate(html, url, { strictMetadata = false } = {}) {
   if (!html || typeof html !== 'string') return null;
 
   // 1. OpenGraph published_time — page-level, never a related article.
@@ -1505,11 +1507,14 @@ function extractPublishDate(html, url) {
       const main = entities.find((e) => entitySelfUrls(e).includes(canonical));
       if (main) { const d = normalizeDate(main.datePublished, url); if (d) return d; }
     }
+    if (strictMetadata) return null;
     // No canonical, or no entity self-identifies with it: only trust JSON-LD when
     // every article entity agrees on one date (an unambiguous single-article page).
     const ldDates = [...new Set(entities.map((e) => normalizeDate(e.datePublished, url)).filter(Boolean))];
     if (ldDates.length === 1) return ldDates[0];
   }
+
+  if (strictMetadata) return null;
 
   // 3. First-match fallback — safe only when the document has ONE distinct date.
   const rawDates = [];
