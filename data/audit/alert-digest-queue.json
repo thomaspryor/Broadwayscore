@@ -381,5 +381,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-13T15:06:25.184Z"
+  },
+  {
+    "conditionKey": "toolchain:xcode-degraded",
+    "title": "Xcode toolchain degraded on the Mac (git is protected, other tools are not)",
+    "description": "Xcode license: Xcode 27.2 is installed but the accepted license is for 27.0; unattended repair is unavailable because the scoped sudoers rule at /etc/sudoers.d/xcodebuild-license is not installed. The managed git shim keeps `git` off Apple's license-gated /usr/bin/git stub, so sessions and the launchd fleet still have git. xcodebuild/xcrun/swift/clang route through the gate and will fail until this is resolved.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-13T15:57:42.654Z"
   }
 ]
