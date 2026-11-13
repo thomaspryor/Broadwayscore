@@ -1,40 +1,23 @@
 {
-  "updatedAt": "2026-11-13T13:29:40.516Z",
-  "processed": 172,
-  "failed": 93,
-  "successRate": "64.9%",
+  "updatedAt": "2026-11-13T13:36:07.396Z",
+  "processed": 90,
+  "failed": 23,
+  "successRate": "79.6%",
   "tierBreakdown": {
-    "playwright": 105,
+    "playwright": 62,
     "amp": 0,
     "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 8,
+    "scrapingdog": 8,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 41
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-11-13T11:57:50.403Z",
-      "event": "bb-session",
-      "session": "808b6cc7",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
-    },
-    {
-      "t": "2026-11-13T11:57:51.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-13T12:34:33.736Z",
-      "event": "bb-session",
-      "session": "7f858300",
-      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
-    },
-    {
-      "t": "2026-11-13T12:34:34.418Z",
+      "t": "2026-11-13T11:50:22.736Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -125,10 +108,26 @@
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
     },
     {
-      "t": "2026-11-13T13:27:02.672Z",
+      "t": "2026-11-13T13:02:01.902Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T13:28:35.075Z",
       "event": "bb-session",
-      "session": "497de7e3",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+      "session": "cf69c039",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T13:28:35.648Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-13T13:35:24.054Z",
+      "event": "bb-session",
+      "session": "72a1158c",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
