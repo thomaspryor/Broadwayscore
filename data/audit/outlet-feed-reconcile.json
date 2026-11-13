@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T21:34:29.334Z",
+  "generatedAt": "2026-11-13T00:15:42.346Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -12,11 +12,6 @@
       "id": "the-good-thief-off-broadway-2026",
       "title": "The Good Thief",
       "openingDate": "2026-11-12"
-    },
-    {
-      "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "title": "Iphigenie en Tauride - English National Opera",
-      "openingDate": "2026-11-06"
     },
     {
       "id": "cloud-9-west-end-2026",
@@ -37,11 +32,6 @@
       "id": "dogstar-off-west-end-2026",
       "title": "Dogstar",
       "openingDate": "2026-11-09"
-    },
-    {
-      "id": "nero-off-west-end-2026",
-      "title": "Nero",
-      "openingDate": "2026-11-06"
     },
     {
       "id": "here-there-are-blueberries-2026",
@@ -72,11 +62,6 @@
       "id": "act-of-god-off-west-end-2026",
       "title": "Act of God",
       "openingDate": "2026-11-11"
-    },
-    {
-      "id": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
-      "title": "Dr. Seuss' How the Grinch Stole Christmas!",
-      "openingDate": "2026-11-06"
     },
     {
       "id": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
@@ -113,10 +98,6 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -137,8 +118,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 848,
-  "matchedGaps": 11,
+  "itemsScanned": 846,
+  "matchedGaps": 14,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -214,6 +195,33 @@
       "publishDate": "2026-11-12"
     },
     {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "level": "matched",
+      "outletId": "theatre-weekly",
+      "url": "https://theatreweekly.com/review-hamlet-hail-to-the-thief-at-barbican-theatre/",
+      "headline": "Review: Hamlet Hail to the Thief at Barbican Theatre",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/hamlet-hail-to-the-thief/",
+      "headline": "Hamlet Hail To The Thief &#8211; Barbican  ★★★★★",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+      "headline": "We’ll See ****, Ms. Blakk for President ****",
+      "publishDate": "2026-11-11"
+    },
+    {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
       "level": "matched",
@@ -241,13 +249,13 @@
       "publishDate": "2026-11-12"
     },
     {
-      "showId": "nero-off-west-end-2026",
-      "title": "Nero",
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
       "level": "possible",
-      "outletId": "partially-obstructed-view",
-      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
-      "headline": "Theatre review: Nero",
-      "publishDate": "2026-11-10"
+      "outletId": "standard",
+      "url": "https://standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-review-barbican-radiohead-b1304586.html",
+      "headline": "Hamlet Hail to the Thief: Forceful and urgent Radiohead/Bard mash-up",
+      "publishDate": null
     },
     {
       "showId": "wanted-2022",

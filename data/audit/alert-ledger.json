@@ -19488,13 +19488,13 @@
     "roundup-gap:all": {
       "status": "open",
       "disposition": "auto",
-      "title": "Roundup gaps: 20 listed review(s) not captured across 4 show(s)",
+      "title": "Roundup gaps: 19 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-12T21:25:17.558Z",
-      "lastNotifiedAt": "2026-11-12T10:52:41.601Z",
+      "lastSeen": "2026-11-13T00:08:38.603Z",
+      "lastNotifiedAt": "2026-11-13T00:08:38.603Z",
       "lastSurfacedAt": null,
-      "notifyCount": 49,
+      "notifyCount": 50,
       "cardId": null,
       "linearIdentifier": "BRO-5500",
       "rollupMembers": [
@@ -19562,8 +19562,7 @@
         "cloud-9-national-west-end-2026",
         "the-good-thief-off-broadway-2026",
         "now-you-see-me-live-2026"
-      ],
-      "silentRefires": 7
+      ]
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -37248,13 +37247,13 @@
       "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
       "firstSeen": "2026-11-04T06:41:38.163Z",
       "incidentOpenedAt": "2026-11-04T06:41:38.163Z",
-      "lastSeen": "2026-11-12T17:10:31.284Z",
+      "lastSeen": "2026-11-13T00:15:25.464Z",
       "lastNotifiedAt": "2026-11-11T08:43:42.673Z",
       "lastSurfacedAt": "2026-11-11T08:43:42.673Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-4315-image-gate-renames": {
       "status": "resolved",
@@ -38661,12 +38660,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-12T21:25:17.489Z",
+      "lastSeen": "2026-11-13T00:08:38.549Z",
       "lastNotifiedAt": "2026-11-12T21:25:17.489Z",
       "lastSurfacedAt": "2026-11-12T21:25:17.489Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -41840,13 +41840,13 @@
       "title": "Review gap — \"As You Like It\" missing 5 cited review(s)",
       "firstSeen": "2026-11-11T02:57:44.180Z",
       "incidentOpenedAt": "2026-11-11T02:57:44.180Z",
-      "lastSeen": "2026-11-12T21:25:17.188Z",
+      "lastSeen": "2026-11-13T00:08:38.518Z",
       "lastNotifiedAt": "2026-11-12T04:28:59.813Z",
       "lastSurfacedAt": "2026-11-12T04:28:59.813Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-7331-round3": {
       "status": "open",
@@ -42303,13 +42303,13 @@
       "title": "Review gap — \"Cloud 9 National\" missing 14 cited review(s)",
       "firstSeen": "2026-11-11T22:02:12.294Z",
       "incidentOpenedAt": "2026-11-11T22:02:12.294Z",
-      "lastSeen": "2026-11-12T21:25:17.207Z",
+      "lastSeen": "2026-11-13T00:08:38.532Z",
       "lastNotifiedAt": "2026-11-12T18:11:38.376Z",
       "lastSurfacedAt": "2026-11-12T18:11:38.376Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-cloud-9-national-west-end-2026": {
       "status": "open",
@@ -42692,15 +42692,16 @@
       "title": "Live show has ZERO critic reviews on site: The Fantasticks",
       "firstSeen": "2026-11-12T21:34:05.447Z",
       "incidentOpenedAt": "2026-11-12T21:34:05.447Z",
-      "lastSeen": "2026-11-12T21:34:05.447Z",
+      "lastSeen": "2026-11-13T00:15:28.418Z",
       "lastNotifiedAt": "2026-11-12T21:34:05.447Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7420"
+      "linearIdentifier": "BRO-7420",
+      "silentRefires": 1
     },
     "uncollected-blackout:downstate-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Downstate",
       "firstSeen": "2026-11-12T21:34:12.563Z",
@@ -42710,7 +42711,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7421"
+      "linearIdentifier": "BRO-7421",
+      "resolvedAt": "2026-11-13T00:15:28.440Z",
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
     }
   }
 }
