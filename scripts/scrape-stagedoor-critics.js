@@ -34,6 +34,7 @@ const { londonAggregatorCandidates } = require('./lib/other-production-signal');
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { resolveIntEnv } = require('./lib/resolve-int-env');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 // Validate before opening a browser or making any requests.
 const SERP_DISCOVERY_CAP = resolveIntEnv(process.env.SD_SERP_DISCOVERY_CAP, {
@@ -346,7 +347,7 @@ async function main() {
     page = await context.newPage();
   } else {
     console.log('   Using local Playwright (may be blocked by Cloudflare)...');
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
     context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
     });

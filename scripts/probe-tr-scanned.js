@@ -22,6 +22,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { chromium } = require('playwright');
 const { pdfUrlVariants } = require('./lib/tr-pdf-url');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 const arg = (n, d) => (process.argv.find(a => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=') || d;
 const QUERIES = arg('queries', 'Kinky Boots').split(',').map(s => s.trim()).filter(Boolean);
@@ -45,7 +46,7 @@ function tesseractStats(imgPath) {
 
 (async () => {
   if (!TR_PASSWORD) { console.error('TR_PASSWORD required'); process.exit(1); }
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
   const context = await browser.newContext({ userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' });
   const page = await context.newPage();
   await page.goto('https://www.theatrerecord.com/login');

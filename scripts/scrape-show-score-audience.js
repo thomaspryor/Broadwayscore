@@ -44,6 +44,7 @@ const { setSynopsis } = require('./lib/synopsis-source');
 const { extractShowScoreSynopsis } = require('./lib/show-score-synopsis');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 const USAGE = `scrape-show-score-audience.js — Scrape Show Score audience data and update audience-buzz.json.
 
@@ -59,7 +60,7 @@ async function getPlaywrightBrowser() {
   if (playwrightBrowser) return playwrightBrowser;
   try {
     const { chromium } = require('playwright');
-    playwrightBrowser = await chromium.launch({ headless: true });
+    playwrightBrowser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
     return playwrightBrowser;
   } catch (e) {
     const msg = e.message || '';

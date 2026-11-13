@@ -29,6 +29,7 @@
  */
 
 const { chromium } = require('playwright');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -816,7 +817,8 @@ async function main() {
     // Launch local browser
     browser = await chromium.launch({
       headless: !headful,
-      args: ['--disable-blink-features=AutomationControlled']
+      args: ['--disable-blink-features=AutomationControlled'],
+      ...launchExtras(chromium)
     });
   }
 

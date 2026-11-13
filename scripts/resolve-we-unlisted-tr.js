@@ -35,6 +35,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { venueFamily } = require('./lib/we-historical-corroboration');
 const { azLookups } = require('./lib/we-az-lookups');
 const { normalizeTitle } = require('./lib/title-match');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 const ROOT = path.join(__dirname, '..');
 const USAGE = `resolve-we-unlisted-tr.js — Theatre Record lookups for WE reviews with no WOS listing (BRO-5031).
@@ -667,7 +668,7 @@ async function main() {
   }
 
   const { chromium } = require('playwright');
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
   const context = await browser.newContext({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
   });

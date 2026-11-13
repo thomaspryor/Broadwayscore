@@ -13,6 +13,7 @@ const path = require('path');
 const { pathToFileURL } = require('url');
 const { exitOnHelp } = require('./lib/cli-help');
 const { TOPIC_CARDS, HOME_CARD, SEASON_FALLBACK_CARD, seasonCard, seasonsWithData } = require('./lib/biz-og-cards');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 exitOnHelp(module);
 
@@ -30,7 +31,7 @@ async function main() {
   let playwright;
   try { playwright = require('playwright'); } catch { playwright = require(path.join(require('child_process').execSync('npm root -g', { encoding: 'utf8' }).trim(), 'playwright')); }
   const { chromium } = playwright;
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(launchExtras(chromium));
   const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
   for (const c of cards) {
     const url = new URL(pathToFileURL(TEMPLATE).href);

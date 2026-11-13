@@ -48,7 +48,7 @@ async function launchOtpBrowser(profileDir, { headless = false, userAgent } = {}
     return context;
   } catch (err) {
     console.log(`  -> real Chrome unavailable (${err.message.split('\n')[0]}); falling back to bundled chromium`);
-    return chromium.launchPersistentContext(profileDir, launchOpts);
+    return chromium.launchPersistentContext(profileDir, { ...launchOpts, ...require('./playwright-exe').launchExtras(chromium) });
   }
 }
 

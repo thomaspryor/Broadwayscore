@@ -34,6 +34,7 @@ const { checkAggregatorPageProduction, resolveProductionByPageDate, canonicalUrl
 const { isLondonMarket } = require('./lib/venue-classification');
 const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 const { discoverRoundupUrlsPlain, classifyRoundupPage, LOGIN_EXPIRED_MESSAGE } = require('./lib/thestage-fetch');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 // Memoized sibling-category index (same shape as scrape-bww-reviews.js) so
 // checkArchiveCategory()'s cross-market-sibling check can fire (BRO-2550).
@@ -85,7 +86,7 @@ async function launchBrowser() {
   }
 
   console.log('  Using local Playwright...');
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
   const context = await browser.newContext({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
   });

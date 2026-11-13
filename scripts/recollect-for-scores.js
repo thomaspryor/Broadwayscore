@@ -53,6 +53,7 @@ const { writableShowIds } = require('./lib/opening-night-lane/lease-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { withDeadline } = require('./lib/cron-deadline');
 const { loadState, saveState, orderTargets, recordAttempt, pruneState } = require('./lib/recollect-state');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const STATE_FILE = path.join(__dirname, '..', 'data', 'audit', 'recollect-scores-state.json');
@@ -136,7 +137,7 @@ let _context;
 async function ensureBrowser() {
   if (_browser) return;
   const { chromium } = require('playwright');
-  _browser = await chromium.launch({ headless: true });
+  _browser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
   _context = await _browser.newContext({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   });

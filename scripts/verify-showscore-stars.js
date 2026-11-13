@@ -31,6 +31,7 @@ const https = require('https');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
 const { setExtractedScore } = require('./lib/score-routing');
 const { cleanup: cleanupScraper } = require('./lib/scraper');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -273,7 +274,7 @@ async function phase4Playwright(reviews) {
   let browser;
   try {
     const { chromium } = require('playwright');
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
   } catch (err) {
     console.log(`  Playwright not available: ${err.message}\n`);
     return;

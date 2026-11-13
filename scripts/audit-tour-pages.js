@@ -92,13 +92,11 @@ async function sitemapUrls() {
 async function mobileOverflow(paths) {
   let chromium;
   try { ({ chromium } = require('playwright')); } catch { return { skipped: 'playwright not installed' }; }
-  const launch = { headless: true };
-  if (fs.existsSync('/opt/pw-browsers/chromium')) {
-    const dir = fs.readdirSync('/opt/pw-browsers').find(d => /^chromium-\d+$/.test(d));
-    const exe = dir && path.join('/opt/pw-browsers', dir, 'chrome-linux', 'chrome');
-    if (exe && fs.existsSync(exe)) launch.executablePath = exe;
-  }
-  const browser = await chromium.launch(launch);
+  // Was a hand-rolled copy of the cloud-chromium probe. scripts/lib/playwright-exe.js
+  // (BRO-6258) is the one place that logic lives; it returns {} on the Mac and in
+  // GitHub Actions, so this is a no-op everywhere but cloud.
+  const { launchExtras } = require('./lib/playwright-exe');
+  const browser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
   const results = [];
   await pool(paths, 3, async p => {

@@ -26,6 +26,7 @@ const http = require('http');
 const { spawn } = require('child_process');
 
 const { checksEnv } = require('./autonomous-checks.js');
+const { launchExtras } = require('./playwright-exe.js');
 
 // Two representative pages at two widths: the homepage (cards, shelves,
 // scores) and one show page (hero, review rows) — the two layouts nearly
@@ -102,7 +103,7 @@ async function captureUiScreenshots({ workdir, outDir, routes = DEFAULT_ROUTES }
       return { ok: false, files: [], error: `next start never became ready on ${base}: ${serverErr.slice(0, 200) || 'no output'}` };
     }
     fs.mkdirSync(outDir, { recursive: true });
-    browser = await chromium.launch();
+    browser = await chromium.launch(launchExtras(chromium));
     for (const route of routes) {
       for (const w of WIDTHS) {
         const page = await browser.newPage({ viewport: { width: w.width, height: w.height } });

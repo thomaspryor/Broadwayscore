@@ -46,6 +46,8 @@ import { randomBytes } from 'node:crypto';
 import { chromium } from 'playwright';
 import { createRequire as _createRequire } from 'node:module';
 import { captureTabletHeader } from './lib/header-overflow-probe.mjs';
+// BRO-7448: the cloud image ships a different chromium build than the pinned one.
+import { launchExtras } from './lib/playwright-exe.js';
 
 // The dedup normalizer lives in ONE place. This file used to carry its own
 // copy, and when scripts/lib/ux-walkthrough-filing.js was fixed to fold
@@ -1402,7 +1404,7 @@ async function main() {
     await rest(token, 'POST', 'profiles', { id: user.id, display_name: 'UX Walkthrough Test' }, 'return=representation,resolution=merge-duplicates');
 
     if (args.selftest) {
-      const browser = await chromium.launch();
+      const browser = await chromium.launch(launchExtras(chromium));
       try {
         const passed = await runSelfTest({ browser, session, baseUrl: args.baseUrl });
         exitCode = passed ? 0 : 1;
@@ -1416,7 +1418,7 @@ async function main() {
       seeded = [...reviewRows, ...watchlistRows, ...listRows];
       console.error(`[ux-walkthrough] seeded ${reviewRows.length} reviews, ${watchlistRows.length} watchlist, ${listRows.length} list row(s)`);
 
-      const browser = await chromium.launch();
+      const browser = await chromium.launch(launchExtras(chromium));
       let shots = [];
       let deterministicFindings = [];
       try {

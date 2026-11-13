@@ -34,6 +34,7 @@ const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isTrNoR
 
 const { DATE_SHORT, parseShortDate, countReviewHeaders, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, skeletonKeepLines, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
+const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 
 // BRO-6097 coverage probe: per-show outcome (counts and reasons only, never
 // review text) written to --probe-out, merged into what an earlier run wrote.
@@ -459,7 +460,7 @@ async function main() {
     if (browser) {
       try { await browser.close(); } catch (_) {}
     }
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, ...launchExtras(chromium) });
     context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
     });
