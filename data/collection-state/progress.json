@@ -201,7 +201,11 @@
     "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
-    "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+    "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "the-kings-critique-off-broadway-2026/nytg--austin-fimmano.json",
+    "the-kings-critique-off-broadway-2026/culturesauce--thom-geier.json",
+    "potus-off-broadway-2026/the-daily-gazette--patrick-white.json",
+    "broom-play-off-broadway-2026/patch--kampfire-pr.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/british-theatre--unknown.json",
@@ -355,7 +359,9 @@
     "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json",
     "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json",
     "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/telegraph--claire-allfree.json",
-    "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/whatsonstage--sarah-crompton.json"
+    "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -483,10 +489,16 @@
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
       "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+      "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+      "the-kings-critique-off-broadway-2026/nytg--austin-fimmano.json",
+      "the-kings-critique-off-broadway-2026/culturesauce--thom-geier.json",
+      "potus-off-broadway-2026/the-daily-gazette--patrick-white.json",
+      "broom-play-off-broadway-2026/patch--kampfire-pr.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
@@ -578,7 +590,7 @@
     ]
   },
   "startTime": "2026-11-12T20:06:25.494Z",
-  "lastProcessed": "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+  "lastProcessed": "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-12T20:19:39.076Z",
@@ -757,6 +769,50 @@
       "t": "2026-11-13T01:31:28.315Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T02:16:54.174Z",
+      "event": "bb-session",
+      "session": "21b0475c",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-13T02:16:54.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-13T02:19:32.146Z",
+      "event": "bb-session",
+      "session": "57465073",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-13T02:19:32.469Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T02:21:38.241Z",
+      "event": "bb-session",
+      "session": "714500c3",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-13T02:21:38.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T02:23:17.687Z",
+      "event": "bb-session",
+      "session": "b8f3d55d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-13T02:23:18.069Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
