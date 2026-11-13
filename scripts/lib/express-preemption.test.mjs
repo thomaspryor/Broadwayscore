@@ -85,7 +85,7 @@ test('a batch and the next batch it already dispatched restore as ONE chain (the
 test('parallel Express runs: a chain already live is not restored again (2026-11-13, 3 restores)', async () => {
   const { chainAlreadyLive, redispatch } = require('./express-preemption.js');
   const it = planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 1 left, limit 400, max-cost 15)');
-  const live = [{ displayTitle: 'LLM Ensemble Score Reviews (rescore chain, 1 left, limit 400, max-cost 15)' }];
+  const live = [{ databaseId: 99, displayTitle: 'LLM Ensemble Score Reviews (rescore chain, 1 left, limit 400, max-cost 15)' }];
   assert.equal(chainAlreadyLive(it, live), true);
   assert.equal(chainAlreadyLive(it, [{ displayTitle: 'LLM Ensemble Score Reviews — some-show-2026' }]), false);
   // different cap = different chain
@@ -95,6 +95,15 @@ test('parallel Express runs: a chain already live is not restored again (2026-11
   const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'ep-')), 'p.json');
   fs.writeFileSync(f, JSON.stringify([{ ...it, runId: 1 }]));
   assert.deepEqual(redispatch(f, { liveScoringRuns: live }), []);
+  // The run Express itself cancelled may still say in_progress: it is NOT a live chain.
+  const bin = fs.mkdtempSync(path.join(os.tmpdir(), 'ghstub-'));
+  fs.writeFileSync(path.join(bin, 'gh'), '#!/bin/sh\nexit 0\n', { mode: 0o755 });
+  const oldPath = process.env.PATH;
+  process.env.PATH = `${bin}:${oldPath}`;
+  try {
+    fs.writeFileSync(f, JSON.stringify([{ ...it, runId: 99 }]));
+    assert.equal(redispatch(f, { liveScoringRuns: live }).length, 1);
+  } finally { process.env.PATH = oldPath; }
 });
 test('pending scoring runs are cancelled only when they can be restored', () => {
   const src = fs.readFileSync(new URL('./express-preemption.js', import.meta.url), 'utf8');

@@ -166,7 +166,11 @@ function chainKey(it) {
 // Dedup so a cancel at start + re-cancel after scoring yields one dispatch each.
 function redispatch(file, { liveScoringRuns = null } = {}) {
   if (!fs.existsSync(file)) return [];
-  const items = collapseRescoreChains(JSON.parse(fs.readFileSync(file, 'utf8')));
+  const raw = JSON.parse(fs.readFileSync(file, 'utf8'));
+  // Runs this Express cancelled can still report in_progress while their
+  // if: always() push steps finish; they are not a live chain.
+  const cancelledIds = new Set(raw.map(it => String(it.runId)));
+  const items = collapseRescoreChains(raw);
   const seen = new Set();
   const done = [];
   let live = liveScoringRuns;
@@ -176,6 +180,7 @@ function redispatch(file, { liveScoringRuns = null } = {}) {
     seen.add(key);
     if (isRescoreChain(it)) {
       if (!live) live = ['in_progress', 'queued', 'pending'].flatMap(s => listRuns(SCORING, s));
+      live = live.filter(r => !cancelledIds.has(String(r.databaseId)));
       if (chainAlreadyLive(it, live)) {
         console.log(`  Not re-dispatching rescore chain ${JSON.stringify(it.fields)}: an identical chain is already queued or running`);
         continue;
