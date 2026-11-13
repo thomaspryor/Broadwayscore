@@ -76,10 +76,10 @@ test('updated copy: exit_intent/scroll_depth state a concrete deliverable, not a
 test('dismiss CTA is de-emphasized relative to the submit CTA', () => {
   const submitMatch = MODAL_SRC.match(/type="submit"[\s\S]{0,400}?className="([^"]+)"/);
   assert.ok(submitMatch, 'submit button must exist with a className');
-  assert.match(submitMatch[1], /bg-brand\b/, 'submit CTA must carry a solid brand fill');
+  assert.match(submitMatch[1], /bg-(brand|cta)\b/, 'submit CTA must carry a solid brand fill');
 
   const dismissBlockMatch = MODAL_SRC.match(/onClick=\{onClose\}[\s\S]{0,300}?>\s*Maybe later/);
   assert.ok(dismissBlockMatch, 'dismiss "Maybe later" control must exist and call onClose');
-  assert.doesNotMatch(dismissBlockMatch[0], /bg-brand|bg-\w+-\d{3}/,
+  assert.doesNotMatch(dismissBlockMatch[0], /bg-(brand|cta)|bg-\w+-\d{3}/,
     'dismiss control must not carry a filled background (must read as subordinate)');
 });

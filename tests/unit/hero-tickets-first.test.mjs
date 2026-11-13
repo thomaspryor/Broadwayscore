@@ -88,8 +88,12 @@ test('list button reads "Add to list" on phones and wraps instead of squeezing a
   assert.doesNotMatch(listBtn, /labelOnPhone|' w-10'/, 'no icon-only phone variant any more');
 });
 
-test('Get Tickets label is near-black on the gold (white on gold is 2.2-2.8:1, near-black 6.7+)', () => {
+// Owner call 2026-11-13 (BRO-7426): near-black on gold "looks really bad"; white
+// stays, made legible with bold weight and a dark text shadow on the button gold.
+test('Get Tickets label is bold white with the button-gold text shadow', () => {
   const m = hero.match(/primaryButtonClassName="([^"]*)"/);
-  assert.match(m[1], /text-\[#1a1208\]/);
-  assert.doesNotMatch(m[1], /\btext-white\b/);
+  assert.match(m[1], /\bbg-gradient-cta\b/);
+  assert.match(m[1], /\btext-white\b/);
+  assert.match(m[1], /\btext-shadow-cta\b/);
+  assert.doesNotMatch(m[1], /text-\[#1a1208\]/);
 });

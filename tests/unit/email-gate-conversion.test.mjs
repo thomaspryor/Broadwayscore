@@ -158,7 +158,7 @@ test('CTA prominence: submit button uses solid brand fill + bold weight; dismiss
   const submitMatch = MODAL_SRC.match(/type="submit"[\s\S]{0,400}?className="([^"]+)"/);
   assert.ok(submitMatch, 'submit button must exist with a className');
   const submitClass = submitMatch[1];
-  assert.match(submitClass, /bg-brand\b/, 'submit CTA must have a solid brand fill');
+  assert.match(submitClass, /bg-(brand|cta)\b/, 'submit CTA must have a solid brand fill');
   assert.match(submitClass, /font-(semibold|bold)/, 'submit CTA must be visually weighted');
 
   const dismissMatch = MODAL_SRC.match(/Maybe later[\s\S]{0,10}/);
@@ -167,7 +167,7 @@ test('CTA prominence: submit button uses solid brand fill + bold weight; dismiss
   const dismissBlockMatch = MODAL_SRC.match(/onClick=\{onClose\}[\s\S]{0,300}?>\s*Maybe later/);
   assert.ok(dismissBlockMatch, 'dismiss button must call onClose');
   const dismissBlock = dismissBlockMatch[0];
-  assert.doesNotMatch(dismissBlock, /bg-brand|bg-\w+-\d{3}/, 'dismiss control must not carry a filled background');
+  assert.doesNotMatch(dismissBlock, /bg-(brand|cta)|bg-\w+-\d{3}/, 'dismiss control must not carry a filled background');
   assert.match(dismissBlock, /text-(xs|sm)/, 'dismiss control must use a small text size');
   assert.match(dismissBlock, /text-(gray-[4-9]00|fg-muted)/, 'dismiss control must use a dim/muted color, not full-contrast text');
 });
