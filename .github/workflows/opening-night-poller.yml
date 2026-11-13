@@ -371,6 +371,8 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BD_OPENING_NIGHT: '1'
           IN_WINDOW_SHOWS: ${{ steps.find.outputs.shows }}
+          # BRO-7366: routeAlert files the pending-unrecoverable card; without the key it errored and filed nothing.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/replay-pending-bylines.js --shows="$IN_WINDOW_SHOWS" --time-budget-min=4
         continue-on-error: true
         timeout-minutes: 8
