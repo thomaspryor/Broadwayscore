@@ -101,15 +101,15 @@ export function useMyScoreCalls() {
 /** Other readers' rounded average for a show the viewer has locked, and how many. The server returns rows only for locked shows and never one row per reader. */
 export interface ScoreCallReaders { avg: number; n: number }
 const READERS_TTL_MS = 60_000;
-let readersCache: { userId: string; at: number; p: Promise<Record<string, ScoreCallReaders>> } | null = null;
-function loadReaders(userId: string): Promise<Record<string, ScoreCallReaders>> {
+let readersCache: { userId: string; at: number; p: Promise<Record<string, ScoreCallReaders> | null> } | null = null;
+/** null = the fetch failed (or the RPC is not deployed): show no Readers tile AND make no claim about how many readers there are. */
+function loadReaders(userId: string): Promise<Record<string, ScoreCallReaders> | null> {
   if (readersCache && readersCache.userId === userId && Date.now() - readersCache.at < READERS_TTL_MS) return readersCache.p;
-  const ref: { p?: Promise<Record<string, ScoreCallReaders>> } = {};
+  const ref: { p?: Promise<Record<string, ScoreCallReaders> | null> } = {};
   const p = (ref.p = (async () => {
     const { data, error } = await supabaseRestRpc<{ show_id: string; readers_avg: number; readers_n: number }[]>('get_score_call_readers');
-    // Any failure (including an RPC that is not deployed yet) means "no Readers tile", never an error state.
+    if (error) { if (readersCache && readersCache.p === ref.p) readersCache = null; return null; }
     const out: Record<string, ScoreCallReaders> = {};
-    if (error) { if (readersCache && readersCache.p === ref.p) readersCache = null; return out; }
     for (const r of data || []) if (Number.isFinite(r.readers_avg) && r.readers_n >= 1) out[r.show_id] = { avg: r.readers_avg, n: r.readers_n };
     return out;
   })());
@@ -121,14 +121,14 @@ function loadReaders(userId: string): Promise<Record<string, ScoreCallReaders>> 
 export function useScoreCallReaders(showId: string, locked: boolean) {
   const { user } = useAuth();
   const userId = user?.id ?? null;
-  const [state, setState] = useState<{ key: string; readers: ScoreCallReaders | null } | null>(null);
+  const [state, setState] = useState<{ key: string; readers: ScoreCallReaders | null; failed: boolean } | null>(null);
   const key = `${userId}:${showId}`;
   useEffect(() => {
     if (!userId || !locked) return;
     let live = true;
-    void loadReaders(userId).then((m) => { if (live) setState({ key, readers: m[showId] ?? null }); });
+    void loadReaders(userId).then((m) => { if (live) setState({ key, readers: m ? m[showId] ?? null : null, failed: m === null }); });
     return () => { live = false; };
   }, [userId, locked, showId, key]);
   const ready = !!userId && locked && state?.key === key;
-  return { ready, readers: ready ? state!.readers : null };
+  return { ready, readers: ready ? state!.readers : null, failed: ready && state!.failed };
 }
