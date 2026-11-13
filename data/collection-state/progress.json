@@ -664,25 +664,7 @@
     "please-please-me-off-west-end-2026/standard--nick-curtis.json",
     "beaches-2026/around-the-town-chicago--unknown.json",
     "beaches-2026/chicago-critic--tom-williams.json",
-    "proof-2026/times-uk--unknown.json",
-    "the-fear-of-13-2026/timeout-london--andrzej-lukowski.json",
-    "titanique-2026/frontmezzjunkies--unknown.json",
-    "titanique-2026/wsj--charles-isherwood.json",
-    "death-of-a-salesman-2026/dailybeast--tim-teeman.json",
-    "death-of-a-salesman-2026/theatrely--kobi-kassal.json",
-    "inter-alia-west-end-2026/telegraph--unknown.json",
-    "cats-the-jellicle-ball-2026/vulture--sara-holdren.json",
-    "les-liaisons-dangereuses-west-end-2026/standard--nick-curtis.json",
-    "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
-    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
-    "romeo-and-juliet-west-end-2026/newsday--unknown.json",
-    "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
-    "romeo-and-juliet-west-end-2026/amny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
-    "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
-    "romeo-and-juliet-west-end-2026/voice-magazine--unknown.json",
-    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json"
+    "king-lear-off-broadway-2026/patch--lauren-traut.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -930,7 +912,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/rope-off-broadway-2026/nytimes--helen-shaw.json",
-      "rope-off-broadway-2026/nytimes--helen-shaw.json"
+      "rope-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1153,7 +1136,7 @@
     ]
   },
   "startTime": "2026-11-12T20:06:25.494Z",
-  "lastProcessed": "public-charge-off-broadway-2026/timeout--unknown.json",
+  "lastProcessed": "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-12T20:19:39.076Z",
@@ -1343,6 +1326,50 @@
       "t": "2026-11-13T02:25:03.174Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T05:18:05.787Z",
+      "event": "bb-session",
+      "session": "971763f3",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-13T05:18:06.285Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-13T05:20:40.199Z",
+      "event": "bb-session",
+      "session": "9ca205f7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-13T05:20:40.663Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T05:24:08.194Z",
+      "event": "bb-session",
+      "session": "26a5ae8f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-13T05:24:08.719Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T05:25:48.342Z",
+      "event": "bb-session",
+      "session": "6ef9f6c5",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-13T05:25:48.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
