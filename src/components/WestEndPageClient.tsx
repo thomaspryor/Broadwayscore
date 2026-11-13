@@ -432,7 +432,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     { title: 'Perfect for Date Night', subtitle: 'Romantic shows to see with someone special', shows: dateNightShows, diversify: true },
     { title: 'Jukebox Musicals', subtitle: 'Shows built around classic pop and rock catalogues', shows: jukeboxMusicals, diversify: true },
     { title: 'Closing Soon', subtitle: 'Last chance: these shows end within 90 days', shows: closingSoonShows },
-  ]).slice(1), [topMusicals, topPlays, bestOffWestEnd, operaShows, beyondLondonShows, olivierWinners, lotteryShows, rushShows, inPreviewsShows, upcomingSoon, upcomingLater, kidsShows, dateNightShows, jukeboxMusicals, closingSoonShows]);
+  ], { maxVisible: SHELF_MAX_ITEMS }).slice(1), [topMusicals, topPlays, bestOffWestEnd, operaShows, beyondLondonShows, olivierWinners, lotteryShows, rushShows, inPreviewsShows, upcomingSoon, upcomingLater, kidsShows, dateNightShows, jukeboxMusicals, closingSoonShows]);
 
   const filteredAndSortedShows = useMemo(() => {
     // fuseResults is null while Fuse.js loads — fall through to normal filtering (avoids empty flash)

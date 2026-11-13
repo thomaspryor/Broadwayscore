@@ -52,6 +52,23 @@ test('a shelf the page hides (too few shows) does not count as seen', () => {
   assert.deepEqual(ids(out[2]), ['ham', 'bom', 'x', 'y', 'z', 'boheme']);
 });
 
+test('with maxVisible, a pushed-back show stays inside the visible cards', () => {
+  const out = diversifyShelves([
+    { title: 'picks', shows: shows(['ham', 'bom', 'mary', 'mhe']) },
+    { title: 'olivier', diversify: true, shows: shows(['ham', 'bom', 'a', 'b', 'c', 'd', 'e', 'f']) },
+  ], { maxVisible: 5 });
+  // only the first 5 (ham, bom, a, b, c) are visible: reorder within them, never push ham/bom past card 5
+  assert.deepEqual(ids(out[1]), ['a', 'b', 'c', 'ham', 'bom', 'd', 'e', 'f']);
+});
+
+test('with maxVisible, fewer than 3 fresh visible shows keeps the order', () => {
+  const out = diversifyShelves([
+    { title: 'picks', shows: shows(['ham', 'bom', 'mary', 'mhe']) },
+    { title: 'olivier', diversify: true, shows: shows(['ham', 'bom', 'mary', 'a', 'b', 'c', 'd']) },
+  ], { maxVisible: 4 });
+  assert.deepEqual(ids(out[1]), ['ham', 'bom', 'mary', 'a', 'b', 'c', 'd']);
+});
+
 for (const [file, prop] of [['HomePageClient.tsx', 'minCount'], ['WestEndPageClient.tsx', 'minShows']]) {
   test(`DEFAULT_MIN_COUNT matches the FeaturedRow default in ${file}`, () => {
     const src = fs.readFileSync(path.join(__dirname, '../../src/components', file), 'utf8');

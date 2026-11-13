@@ -26,19 +26,24 @@ const DEFAULT_MIN_COUNT = 4;
 /**
  * @template {{ shows: Array<{ id: string }>, diversify?: boolean, minCount?: number }} T
  * @param {T[]} shelves in page order
- * @param {{ leadWindow?: number, minFresh?: number }} [opts]
+ * @param {{ leadWindow?: number, minFresh?: number, maxVisible?: number }} [opts]
+ *   maxVisible: how many cards the page renders per shelf. When set, only the
+ *   visible cards are reordered, so a show pushed back never falls off the
+ *   end of a shelf that has no "View all" link (BRO-7462 review).
  * @returns {T[]} shelves with the same fields and possibly reordered `shows`
  */
 function diversifyShelves(shelves, opts = {}) {
   const leadWindow = opts.leadWindow ?? LEAD_WINDOW;
   const minFresh = opts.minFresh ?? MIN_FRESH;
+  const maxVisible = opts.maxVisible ?? Infinity;
   const seen = new Set();
   return shelves.map(shelf => {
     let shows = shelf.shows;
     if (shelf.diversify) {
-      const fresh = shows.filter(s => !seen.has(s.id));
+      const head = shows.slice(0, maxVisible);
+      const fresh = head.filter(s => !seen.has(s.id));
       if (fresh.length >= minFresh) {
-        shows = [...fresh, ...shows.filter(s => seen.has(s.id))];
+        shows = [...fresh, ...head.filter(s => seen.has(s.id)), ...shows.slice(maxVisible)];
       }
     }
     const visible = shows.length >= (shelf.minCount ?? DEFAULT_MIN_COUNT);
