@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7429-b",
   "planId": "d84e6b00-1419-4eab-8034-7a41db52f2d7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-13T04:57:45.622Z",
   "submitter": {
     "name": null,
@@ -336,5 +336,114 @@
         "description": "Repair garbled template text; source https://www.ibdb.com/broadway-production/galileo-545785"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-13T06:38:30.051Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for lend-me-a-tenor-musical-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for little-women-regional-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for little-women-york-royal-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for little-women-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for macbeth-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for medea-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for medea-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for oedipus-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for passion-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for rose-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for safe-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for sylvia-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for the-father-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for the-full-monty-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for the-three-musketeers-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for the-visit-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for galileo-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for pygmalion-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for kinky-boots-tour-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for jajas-african-hair-braiding-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for galileo-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
