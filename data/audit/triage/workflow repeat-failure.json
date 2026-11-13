@@ -1,15 +1,20 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-11-12T09:58:13.230Z",
+  "status": "error",
+  "lastChecked": "2026-11-13T09:36:20.758Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap / audit / Run gap audit",
+      "status": "error",
+      "message": "Audit Aggregator Review Gap / audit / Run gap audit failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
       "name": "Workflow repeat-failure: Fetch Guardian Reviews via API / fetch-guardian / Fetch Guardian reviews",
-      "status": "warn",
-      "message": "Fetch Guardian Reviews via API / fetch-guardian / Fetch Guardian reviews failed 2 times in the last 24h — likely broken, not transient."
+      "status": "error",
+      "message": "Fetch Guardian Reviews via API / fetch-guardian / Fetch Guardian reviews failed 3 times in the last 24h — likely broken, not transient."
     }
   ]
 }

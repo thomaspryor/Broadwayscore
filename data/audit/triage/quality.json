@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-12T09:58:13.224Z",
+  "lastChecked": "2026-11-13T09:36:20.753Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,17 +19,17 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.2% scored (50431/51363)"
+      "message": "98.2% scored (50513/51437)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (2h ago)"
+      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (6h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "20059 messages, 0 auth failures (p=reject)"
+      "message": "20127 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -38,8 +38,8 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "warn",
-      "message": "1 unregistered host(s) name-match a registered outlet (e.g. rollingstone.co.uk → rollingstone) — probable domain move dropping reviews via domain-mismatch"
+      "status": "pass",
+      "message": "No probable domain moves in 385 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1877 outlet(s), 81574 review(s)"
+      "message": "No broken-extractor signature in 1881 outlet(s), 81779 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1877 outlet(s), 81574 review(s)"
+      "message": "No broken-extractor signature in 1881 outlet(s), 81779 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -64,12 +64,12 @@
     {
       "name": "Quality: expected critics missing",
       "status": "warn",
-      "message": "1 usual-critic review(s) the automatic search could not settle (19 more still being searched for automatically): TheaterMania on The Morbs: no review on the site, and the automatic search has not looked for it yet."
+      "message": "2 usual-critic review(s) the automatic search could not settle (12 more still being searched for automatically): Time Out London on Iphigenie en Tauride - English National Opera: no review on the site, and the automatic search has stopped running. WhatsOnStage on Iphigenie en Tauride - English National Opera: no review on the site, and the automatic search has stopped running."
     },
     {
       "name": "Quality: coverageExpectation drift",
-      "status": "pass",
-      "message": "No coverageExpectation re-probes needed"
+      "status": "warn",
+      "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
@@ -79,7 +79,7 @@
     {
       "name": "Quality: outlet feed staleness",
       "status": "pass",
-      "message": "84 feed(s) checked, none stale or failing"
+      "message": "85 feed(s) checked, none stale or failing"
     }
   ]
 }

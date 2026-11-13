@@ -1,7 +1,7 @@
 {
   "system": "data",
-  "status": "warn",
-  "lastChecked": "2026-11-12T09:58:13.223Z",
+  "status": "error",
+  "lastChecked": "2026-11-13T09:36:20.753Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -68,13 +68,8 @@
     },
     {
       "name": "Data: live show with zero critic reviews on site",
-      "status": "pass",
-      "message": "No live show is missing every discovered critic review"
-    },
-    {
-      "name": "Data: uncollected live review strands",
-      "status": "pass",
-      "message": "Every discovered review URL for live shows was fetched"
+      "status": "error",
+      "message": "1 live show(s) have discovered review URL(s) but NOTHING collected. First: the-fantasticks-2026"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -84,32 +79,32 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "24 of 387 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7361 Opening-night audit 2026-11-11"
+      "message": "26 of 378 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7414 Social video: automatic TikTok + YouTube Shorts (score and compare videos) for Broadway + notable Off-Broadway"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-11"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-12"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "94 review(s) with no usable text, 63 rejected although verified as a review, 26 never scored, 35 with a blocked URL (0 published on the site), across 676 current shows"
+      "message": "91 review(s) with no usable text, 63 rejected although verified as a review, 31 never scored, 36 with a blocked URL (0 published on the site), across 671 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
-      "status": "pass",
-      "message": "No published review score contradicts the critic's rating (48487 checked)"
+      "status": "warn",
+      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 48500 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "1 early publish date(s) awaiting recheck (limit 40); 213 already attempted and not yet confirmed"
+      "message": "6 early publish date(s) awaiting recheck (limit 40); 212 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3449 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 3440 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -119,17 +114,22 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 547 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 548 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"What Do Critics Think of THE VISITORS Off-Broadway?\" (bww-roundup — missing 1d)"
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"What Do Critics Think of THE VISITORS Off-Broadway?\" (bww-roundup — missing 2d)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
       "message": "2 discovered review(s) not reaching the composite score (0 T1). Oldest: the-cottage-regional-2026 — theatermania (empty-body)"
+    },
+    {
+      "name": "Data: BWW roundup discovery misses near opening",
+      "status": "warn",
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: now-you-see-me-live-2026 (63 misses, last 2026-11-13T09:06:09.257Z)."
     }
   ]
 }
