@@ -1,59 +1,5 @@
 [
   {
-    "startedAt": "2026-11-11T12:07:52.139Z",
-    "completedAt": "2026-11-11T12:13:01.610Z",
-    "totalReviews": 81697,
-    "processed": 60,
-    "skipped": 81621,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 466810,
-      "output": 20954,
-      "cacheRead": 266490,
-      "cacheWrite": 11329,
-      "total": 1142014
-    },
-    "costUsd": 0.878348875,
-    "runId": "43016632861",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-11T12:19:24.232Z",
-    "completedAt": "2026-11-11T12:23:34.229Z",
-    "totalReviews": 81697,
-    "processed": 47,
-    "skipped": 77425,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 273169,
-      "output": 15220,
-      "cacheRead": 166913,
-      "cacheWrite": 22613,
-      "total": 712808
-    },
-    "costUsd": 1.13239815,
-    "runId": "43016632861",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-11T12:28:32.108Z",
     "completedAt": "2026-11-11T12:30:44.168Z",
     "totalReviews": 57,
@@ -464251,6 +464197,44 @@
     },
     "costUsd": 0.9265557000000001,
     "runId": "43333250542",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T01:10:59.168Z",
+    "completedAt": "2026-11-13T02:05:54.547Z",
+    "totalReviews": 82063,
+    "processed": 380,
+    "skipped": 79965,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 2242428,
+      "output": 124376,
+      "cacheRead": 1367999,
+      "cacheWrite": 142982,
+      "total": 5795887
+    },
+    "costUsd": 9.122991299999999,
+    "runId": "43341869110",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T02:10:51.463Z",
+    "completedAt": "2026-11-13T02:15:03.748Z",
+    "totalReviews": 113,
+    "processed": 113,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 294415,
+      "output": 25813,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 320228
+    },
+    "costUsd": 0.8236538,
+    "runId": "43341869110",
     "source": "comparative-rescore",
     "errorDetails": []
   }
