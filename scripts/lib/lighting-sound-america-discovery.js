@@ -62,12 +62,16 @@ async function discoverLightingSoundAmerica(showTitle, show, fetchImpl) {
   const nextMonth = opening && Number.isFinite(Date.parse(opening))
     ? new Date(Date.UTC(Number(opening.slice(0, 4)), Number(opening.slice(5, 7)), 1)).toISOString().slice(0, 10)
     : null;
-  // The rolling index covers the current month. Archive pages are fetched only
-  // for earlier months (previews/opening month, so a month-boundary review is
-  // not lost); the current or a future month would be a wasted paid fetch.
+  // BRO-7436: the rolling /news/ index holds only the last ~2 publishing days
+  // (live 2026-11-13: dates 11/10 and 11/12 only), NOT the whole month. LSA
+  // posts reviews 0-5 days after press night, so reviews had already scrolled
+  // off by the next poll and only the later sweep found them (Rope,
+  // Tristan & Yseult, Ms. Blakk for President). The month archive is the
+  // complete list, so fetch it for the current month too. Future months are
+  // still skipped (a wasted paid fetch).
   const thisMonth = new Date().toISOString().slice(0, 7);
-  for (const date of [show.previewsStartDate, opening, nextMonth]) {
-    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date) && date.slice(0, 7) < thisMonth) {
+  for (const date of [show.previewsStartDate, opening, nextMonth, new Date().toISOString().slice(0, 10)]) {
+    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date) && date.slice(0, 7) <= thisMonth) {
       urls.add(`${INDEX_URL}archive.asp?m=${Number(date.slice(5, 7))}&y=${date.slice(0, 4)}`);
     }
   }
@@ -85,7 +89,7 @@ async function discoverLightingSoundAmerica(showTitle, show, fetchImpl) {
   return [...found.values()];
 }
 
-// Each gather costs up to 4 paid fetches (index + 3 archive months), so only
+// Each gather costs up to 5 paid fetches (index + up to 4 archive months), so only
 // fire for shows whose review window is open: previews/opening within the
 // last 60 days or the next 21. Older shows' reviews were found at the time.
 const DAY = 86400000;
