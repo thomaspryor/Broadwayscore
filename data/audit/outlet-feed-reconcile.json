@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T19:28:49.705Z",
+  "generatedAt": "2026-11-13T20:35:05.474Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -92,11 +92,6 @@
       "id": "peter-pan-goes-wrong-regional-2026",
       "title": "Peter Pan Goes Wrong",
       "openingDate": "2026-11-13"
-    },
-    {
-      "id": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "openingDate": "2026-11-11"
     }
   ],
   "skipped": [
@@ -132,67 +127,26 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
+    },
+    {
       "outletId": "the-knockturnal",
       "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 830,
-  "matchedGaps": 7,
+  "itemsScanned": 822,
+  "matchedGaps": 2,
   "possibleGaps": 3,
   "gaps": [
     {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
       "level": "matched",
-      "outletId": "west-end-wilma",
-      "url": "https://westendwilma.com/cloud-9-national-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=cloud-9-national-theatre-review",
-      "headline": "CLOUD 9 at the National Theatre, Review &#8211; &#8220;overly complicated brilliance&#8221; ★★★★",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/11/ms-blakk-for-president-vineyard-theatre-review/",
+      "headline": "Off-Broadway Review: MS. BLAKK FOR PRESIDENT (Vineyard Theatre)",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/cloud-9-national-theatr-26207",
-      "headline": "Cloud 9",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "level": "matched",
-      "outletId": "city-am",
-      "url": "https://www.cityam.com/cloud-9-national-theatre-review/",
-      "headline": "Cloud 9 at the National Theatre review: Caryl Churchill’s 1979 shocker has lost its punch",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "level": "matched",
-      "outletId": "london-unattached",
-      "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
-      "headline": "Cloud 9 &#8211; Lyttelton National Theatre",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
-      "headline": "Cloud 9 &#8211; National Theatre, London",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-cloud-9-national-theatre",
-      "headline": "Review: CLOUD 9, National Theatre",
-      "publishDate": "2026-11-11"
     },
     {
       "showId": "the-visitors-off-broadway-2026",
