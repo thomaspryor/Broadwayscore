@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-11T12:19:24.232Z",
-    "completedAt": "2026-11-11T12:23:34.229Z",
-    "totalReviews": 81697,
-    "processed": 47,
-    "skipped": 77425,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 273169,
-      "output": 15220,
-      "cacheRead": 166913,
-      "cacheWrite": 22613,
-      "total": 712808
-    },
-    "costUsd": 1.13239815,
-    "runId": "43016632861",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-11T12:28:32.108Z",
-    "completedAt": "2026-11-11T12:30:44.168Z",
-    "totalReviews": 57,
-    "processed": 57,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 153411,
-      "output": 13247,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 166658
-    },
-    "costUsd": 0.42512239999999996,
-    "runId": "43016632861",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-11T12:57:43.563Z",
     "completedAt": "2026-11-11T12:57:43.564Z",
     "totalReviews": 0,
@@ -464235,6 +464197,44 @@
     },
     "costUsd": 0,
     "runId": "43350701284",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T02:28:58.211Z",
+    "completedAt": "2026-11-13T02:29:13.297Z",
+    "totalReviews": 4,
+    "processed": 3,
+    "skipped": 1,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 19069,
+      "output": 978,
+      "cacheRead": 11376,
+      "cacheWrite": 0,
+      "total": 46769
+    },
+    "costUsd": 0.0717014,
+    "runId": "43351999112",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-13T02:34:09.924Z",
+    "completedAt": "2026-11-13T02:34:09.931Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "43351999112",
     "source": "comparative-rescore",
     "errorDetails": []
   }
