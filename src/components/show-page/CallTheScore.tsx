@@ -49,7 +49,7 @@ function LockedCard({ show, call }: { show: ShowLike; call: NonNullable<ReturnTy
   return (
     <Wrap>
       <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Prediction locked in</p>
-      <div className="flex flex-wrap items-start justify-center gap-x-4 gap-y-3 mb-3 pt-1">
+      <div className={`flex flex-wrap items-start justify-center gap-y-3 mb-3 pt-1 ${readers && hasF ? 'gap-x-2 sm:gap-x-4' : 'gap-x-4'}`}>
         <Tile label="Your prediction" score={call.called_score} category={show.category} predicted />
         {readers && <Tile label="Readers" score={readers.avg} category={show.category} muted predicted caption={readersCaption(readers.n)} />}
         {hasF && <Tile label="Our forecast" score={call.forecast} category={show.category} muted predicted caption={rng ? <RangeCaption lo50={call.lo50} hi50={call.hi50} /> : undefined} />}

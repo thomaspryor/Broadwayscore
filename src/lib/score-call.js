@@ -102,10 +102,10 @@ function resultSentence({ r }) {
   return `You were ${pts(r.off)} off${r.beatForecast ? ', and closer than our forecast' : tie ? ', the same as our forecast' : ''}.`;
 }
 
-/** "Readers were 4 points off on average." avg is the rounded readers' average, critic the Critic Score. */
+/** "The readers' average was 4 points off." avg is the rounded readers' average, critic the Critic Score. */
 function readersMissSentence(readersAvg, critic) {
   if (!Number.isFinite(readersAvg) || !Number.isFinite(critic)) return null;
-  return `Readers were ${pts(Math.abs(Math.round(critic) - readersAvg))} off on average.`;
+  return `The readers' average was ${pts(Math.abs(Math.round(critic) - readersAvg))} off.`;
 }
 
 function forecastMissSentence(r) {

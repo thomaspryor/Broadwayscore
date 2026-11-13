@@ -68,9 +68,9 @@ test('captions, small print, strip footer, first-reader line (BRO-7430)', () => 
   assert.equal(SC.smallPrint({ hasForecast: true, hasRange: false, hasReaders: true, dateText: '' }), 'Reviews come out after opening night. Come back to see who was closest.', 'no range: no first sentence; no date: no date clause');
   assert.equal(SC.smallPrint({ hasForecast: false, hasRange: false, hasReaders: true, dateText: d }), 'Reviews come out after opening night on December 6, 2026. Come back to see who was closer.');
   assert.equal(SC.smallPrint({ hasForecast: false, hasRange: false, hasReaders: false, dateText: d }), 'Reviews come out after opening night on December 6, 2026. Come back to see how close your prediction was.');
-  assert.equal(SC.readersMissSentence(64, 66.4), 'Readers were 2 points off on average.');
-  assert.equal(SC.readersMissSentence(65, 66), 'Readers were 1 point off on average.');
-  assert.equal(SC.readersMissSentence(66, 66), 'Readers were 0 points off on average.');
+  assert.equal(SC.readersMissSentence(64, 66.4), "The readers' average was 2 points off.");
+  assert.equal(SC.readersMissSentence(65, 66), "The readers' average was 1 point off.");
+  assert.equal(SC.readersMissSentence(66, 66), "The readers' average was 0 points off.");
   assert.equal(SC.readersMissSentence(null, 66), null);
   assert.equal(SC.FIRST_READER_LINE, "You're the first reader to predict this show.");
   const all = [SC.FIRST_READER_LINE, SC.smallPrint({ hasForecast: true, hasRange: true, hasReaders: true, dateText: d }), SC.readersSentence({ called: 1, forecast: 9, readersAvg: 5, readersN: 3 }), SC.gapSentence({ called: 1, forecast: 9, lo50: 3, hi50: 12 })].join(' ');
