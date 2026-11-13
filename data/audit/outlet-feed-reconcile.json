@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T10:20:12.568Z",
+  "generatedAt": "2026-11-13T11:40:38.326Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -93,17 +93,33 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 860,
-  "matchedGaps": 16,
-  "possibleGaps": 1,
+  "itemsScanned": 837,
+  "matchedGaps": 11,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "cloud-9-national-west-end-2026",
@@ -163,55 +179,10 @@
       "showId": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "level": "matched",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/11/13/review-cloud-9/",
-      "headline": "REVIEW: Cloud 9",
-      "publishDate": "2026-11-13"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "observer",
-      "url": "https://observer.co.uk/culture/theatre/article/cloud-9-caryl-churchills-riotous-romp-is-still-radical",
-      "headline": null,
-      "publishDate": "2026-11-13"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "south-london",
-      "url": "https://southlondon.co.uk/area/southwark/review-cloud-9-national-theatre/",
-      "headline": "Review: Cloud 9 &#8211; National Theatre",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "afridiziak-theatre-news",
-      "url": "https://www.afridiziak.com/reviews/cloud-9-by-caryl-churchill-national-theatre/",
-      "headline": "Cloud 9 by Caryl Churchill – review",
-      "publishDate": "2026-11-13"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
       "outletId": "londontheatre1",
       "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
       "headline": "Cloud 9 | National Theatre",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
@@ -248,6 +219,15 @@
       "url": "https://www.nytimes.com/2026/11/13/theater/the-visitors-review-mary-wiseman.html",
       "headline": "‘The Visitors’ Review: A Sister’s Call for Help? Let the Squabbles Begin.",
       "publishDate": "2026-11-13"
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "level": "possible",
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/cloud-9-national-theatre-review-dazzlingly-successful-revival",
+      "headline": "Cloud 9, National Theatre review - a dazzlingly successful revival",
+      "publishDate": null
     },
     {
       "showId": "wanted-2022",
