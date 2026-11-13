@@ -63,7 +63,7 @@ function gapSentence({ called, forecast, lo50, hi50 }) {
   if (gap === 0) return 'Your prediction matches our forecast.';
   const dir = `Your prediction is ${pts(Math.abs(gap))} ${gap > 0 ? 'above' : 'below'} our forecast`;
   if (!hasRange(lo50, hi50)) return `${dir}.`;
-  return `${dir}, ${called < lo50 || called > hi50 ? 'and outside' : 'inside'} our likely range.`;
+  return `${dir}, ${called < lo50 || called > hi50 ? 'and outside' : 'but inside'} our likely range.`;
 }
 
 /**
@@ -103,9 +103,10 @@ function resultSentence({ r }) {
 }
 
 /** "The readers' average was 4 points off." avg is the rounded readers' average, critic the Critic Score. */
-function readersMissSentence(readersAvg, critic) {
+function readersMissSentence(readersAvg, critic, readersN) {
   if (!Number.isFinite(readersAvg) || !Number.isFinite(critic)) return null;
-  return `The readers' average was ${pts(Math.abs(Math.round(critic) - readersAvg))} off.`;
+  const off = pts(Math.abs(Math.round(critic) - readersAvg));
+  return readersN === 1 ? `The one other reader was ${off} off.` : `The readers' average was ${off} off.`;
 }
 
 function forecastMissSentence(r) {

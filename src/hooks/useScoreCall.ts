@@ -107,7 +107,9 @@ function loadReaders(userId: string): Promise<Record<string, ScoreCallReaders> |
   if (readersCache && readersCache.userId === userId && Date.now() - readersCache.at < READERS_TTL_MS) return readersCache.p;
   const ref: { p?: Promise<Record<string, ScoreCallReaders> | null> } = {};
   const p = (ref.p = (async () => {
-    const { data, error } = await supabaseRestRpc<{ show_id: string; readers_avg: number; readers_n: number }[]>('get_score_call_readers');
+    // supabaseRestRpc throws on a network failure; treat that like any other failed fetch so the card never waits forever.
+    const res = await supabaseRestRpc<{ show_id: string; readers_avg: number; readers_n: number }[]>('get_score_call_readers').catch(() => null);
+    const data = res ? res.data : null; const error = res ? res.error : new Error('network');
     if (error) { if (readersCache && readersCache.p === ref.p) readersCache = null; return null; }
     const out: Record<string, ScoreCallReaders> = {};
     for (const r of data || []) if (Number.isFinite(r.readers_avg) && r.readers_n >= 1) out[r.show_id] = { avg: r.readers_avg, n: r.readers_n };

@@ -132,7 +132,7 @@ function fitForecaster(rows, { minRows = 150 } = {}) {
     n: rows.length,
     predict(f) {
       const p = clamp(f.mu + RF.predictRidge(model, f.x));
-      return { forecast: p, lo80: clamp(p + q10), hi80: clamp(p + q90), lo50: clamp(p + q25), hi50: clamp(p + q75) };
+      return { forecast: p, lo80: clamp(p + q10), hi80: clamp(p + q90), lo50: Math.min(p, clamp(p + q25)), hi50: Math.max(p, clamp(p + q75)) }; // the forecast always sits inside its own likely range
     },
   };
 }

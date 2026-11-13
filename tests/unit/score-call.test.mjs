@@ -23,12 +23,12 @@ test('gapSentence: owner wording, inside/outside the likely range (BRO-7430)', (
   const R = { lo50: 63, hi50: 77 };
   assert.equal(SC.gapSentence({ called: 59, forecast: 70, ...R }), 'Your prediction is 11 points below our forecast, and outside our likely range.');
   assert.equal(SC.gapSentence({ called: 81, forecast: 70, ...R }), 'Your prediction is 11 points above our forecast, and outside our likely range.');
-  assert.equal(SC.gapSentence({ called: 66, forecast: 70, ...R }), 'Your prediction is 4 points below our forecast, inside our likely range.');
-  assert.equal(SC.gapSentence({ called: 63, forecast: 70, ...R }), 'Your prediction is 7 points below our forecast, inside our likely range.', 'edge is inside');
-  assert.equal(SC.gapSentence({ called: 77, forecast: 70, ...R }), 'Your prediction is 7 points above our forecast, inside our likely range.');
+  assert.equal(SC.gapSentence({ called: 66, forecast: 70, ...R }), 'Your prediction is 4 points below our forecast, but inside our likely range.');
+  assert.equal(SC.gapSentence({ called: 63, forecast: 70, ...R }), 'Your prediction is 7 points below our forecast, but inside our likely range.', 'edge is inside');
+  assert.equal(SC.gapSentence({ called: 77, forecast: 70, ...R }), 'Your prediction is 7 points above our forecast, but inside our likely range.');
   assert.equal(SC.gapSentence({ called: 78, forecast: 70, ...R }), 'Your prediction is 8 points above our forecast, and outside our likely range.');
   assert.equal(SC.gapSentence({ called: 70, forecast: 70, ...R }), 'Your prediction matches our forecast.');
-  assert.equal(SC.gapSentence({ called: 69, forecast: 70, ...R }), 'Your prediction is 1 point below our forecast, inside our likely range.', 'singular');
+  assert.equal(SC.gapSentence({ called: 69, forecast: 70, ...R }), 'Your prediction is 1 point below our forecast, but inside our likely range.', 'singular');
   assert.equal(SC.gapSentence({ called: 73, forecast: 74 }), 'Your prediction is 1 point below our forecast.', 'no range: no range clause');
   assert.equal(SC.gapSentence({ called: 73, forecast: 74, lo50: null, hi50: 80 }), 'Your prediction is 1 point below our forecast.');
   assert.equal(SC.gapSentence({ called: 70, forecast: null, ...R }), null);
@@ -72,6 +72,7 @@ test('captions, small print, strip footer, first-reader line (BRO-7430)', () => 
   assert.equal(SC.readersMissSentence(65, 66), "The readers' average was 1 point off.");
   assert.equal(SC.readersMissSentence(66, 66), "The readers' average was 0 points off.");
   assert.equal(SC.readersMissSentence(null, 66), null);
+  assert.equal(SC.readersMissSentence(72, 60, 1), 'The one other reader was 12 points off.');
   assert.equal(SC.FIRST_READER_LINE, "You're the first reader to predict this show.");
   const all = [SC.FIRST_READER_LINE, SC.smallPrint({ hasForecast: true, hasRange: true, hasReaders: true, dateText: d }), SC.readersSentence({ called: 1, forecast: 9, readersAvg: 5, readersN: 3 }), SC.gapSentence({ called: 1, forecast: 9, lo50: 3, hi50: 12 })].join(' ');
   assert.doesNotMatch(all, /[\u2014\u2013]/, 'no em or en dashes in copy');

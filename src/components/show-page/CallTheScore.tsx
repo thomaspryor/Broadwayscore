@@ -152,7 +152,7 @@ export function CallResultStrip({ show, critic }: { show: ShowLike; critic: numb
   if (!call) return null;
   const r = resultStrip({ called: call.called_score, forecast: call.forecast, critic });
   if (!r) return null;
-  const footer = [forecastMissSentence(r), readers ? readersMissSentence(readers.avg, critic) : null].filter(Boolean).join(' ');
+  const footer = [forecastMissSentence(r), readers ? readersMissSentence(readers.avg, critic, readers.n) : null].filter(Boolean).join(' ');
   return (
     <div className="mb-4 rounded-lg bg-surface-overlay p-4" data-testid="call-result-strip">
       <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">How your prediction did</p>
