@@ -70,8 +70,10 @@ test('/west-end lists no opera and gives it its own section below Best Off-West 
   assert.equal(got.length, Math.min(expected.length, SHELF_MAX_ITEMS));
   for (const id of got) assert.ok(expected.includes(id), id);
   const clientSrc = fs.readFileSync(new URL('../../src/components/WestEndPageClient.tsx', import.meta.url), 'utf8');
-  const bestOwe = clientSrc.indexOf('title="Best Off-West End"');
-  const opera = clientSrc.indexOf('title="Opera in London"');
+  // Rows may be JSX (title="X") or a diversifyShelves list (title: 'X'), BRO-7462.
+  const rowAt = t => clientSrc.search(new RegExp(`title(?:=|: )["']${t}["']`));
+  const bestOwe = rowAt('Best Off-West End');
+  const opera = rowAt('Opera in London');
   assert.ok(bestOwe > 0 && opera > bestOwe, 'opera section sits below Best Off-West End');
 });
 

@@ -203,5 +203,5 @@ test('UK market overrides and the view-all link are wired to existing UI callers
   const nav = readFileSync('src/components/MarketNav.tsx', 'utf8');
   assert.match(nav, /useCurrentMarket\(true\)/);
   assert.match(nav, /isUkRegional \? 'UK Regional'/);
-  assert.match(readFileSync('src/components/WestEndPageClient.tsx', 'utf8'), /title="Beyond London"[^>]+viewAllHref="\/browse\/beyond-london"/);
+  assert.match(readFileSync('src/components/WestEndPageClient.tsx', 'utf8'), /title(?:=|: )["']Beyond London["'][^\n]+viewAllHref(?:=|: )["']\/browse\/beyond-london["']/);
 });
