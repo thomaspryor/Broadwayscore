@@ -310,7 +310,9 @@ function priorCensusUrls(prevRow) {
 
 /**
  * isRiskyChange predicate for blastRadiusCheck({ ... }) over riskStateMap()
- * output: risky iff EITHER count went DOWN. A verdict word changing while
+ * output: risky iff EITHER count went DOWN, except (BRO-7445) a single live
+ * candidate vanishing together with its candidate slot (live-1 AND cand-1, shows
+ * with 4+ candidates). A verdict word changing while
  * both counts hold or grow (new gap discovered, or a gap got filled) is the
  * audit doing its job and is never risky.
  *
