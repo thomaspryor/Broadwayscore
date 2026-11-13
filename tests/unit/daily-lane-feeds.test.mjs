@@ -22,7 +22,7 @@ test('every LANE_FEEDS outlet is read by the daily poller', () => {
 test('a daily rss config for a lane outlet reads the lane feed url', () => {
   for (const f of LANE_FEEDS) {
     const c = poller.OUTLET_STRATEGY_CONFIG[f.outletId];
-    if (c && c.strategy === 'rss') assert.equal(c.url, f.url, `${f.outletId}: daily poller and lane read different feeds`);
+    if (c && c.strategy === 'rss') assert.ok([c.url, ...(c.extraUrls || [])].includes(f.url), `${f.outletId}: daily poller and lane read different feeds`);
   }
 });
 

@@ -127,6 +127,9 @@ const SKIP_OUTLETS = new Set(['broadwayworld', 'london-theatre', 'london-box-off
 //
 // After adding new entries here, run a one-time historical backfill:
 //   gh workflow run outlet-listing-poller.yml -f lookback_days=365
+// Theater Scene review paths: .net /plays|musicals/..., .com /reviews/<slug>/ (BRO-7435). Exported for the class guard.
+const THEATER_SCENE_URL_FILTER = /\/(plays|musicals|reviews)\//;
+
 const OUTLET_STRATEGY_CONFIG = {
   // RSS strategies
   guardian:            { strategy: 'rss', url: 'https://www.theguardian.com/stage/rss' },
@@ -150,7 +153,9 @@ const OUTLET_STRATEGY_CONFIG = {
   // Theater Scene: /plays/ and /musicals/ paths are reviews; /features/ /columns/ /multimedia/ are not
   // reviewsOnly (BRO-6921): every item after the filter is a review, so page
   // confirmation needs no "review" word in the headline. Set only where true.
-  'theater-scene':     { strategy: 'rss', url: 'https://www.theaterscene.net/feed/', urlFilter: /\/(plays|musicals)\//, reviewsOnly: true },
+  // BRO-7435: the site also publishes on theaterscene.com, /reviews/<slug>/ (no section path, no critic segment); Parcel from
+  // America and 2:22 - A Ghost Story were filed there only, so the .net-only feed + /plays|musicals/ filter never saw them.
+  'theater-scene':     { strategy: 'rss', url: 'https://www.theaterscene.net/feed/', extraUrls: ['https://theaterscene.com/feed/'], urlFilter: THEATER_SCENE_URL_FILTER, reviewsOnly: true },
   // Theatre Weekly (UK): review URLs have /review- prefix; drops news/industry pieces
   'theatre-weekly':    { strategy: 'rss', url: 'https://theatreweekly.com/feed', urlFilter: /\/review-/ },
   // Pages on Stages: theater review blog; no URL discriminator, findMatchingShows guards noise
@@ -629,9 +634,23 @@ async function fetchViaRss(outletId, config, cutoff, { proxyRetry = true, health
   if (health) health.url = url;
   console.log(`  [rss] Fetching ${url}`);
   const xml = await fetchXmlWithProxyRetry(url, 'rss', looksLikeFeed, { proxyRetry, health });
-  const items = applyRssFilters(parseRssFeed(xml, cutoff), config);
+  let items = applyRssFilters(parseRssFeed(xml, cutoff), config);
+  let healthXml = xml;
+  // extraUrls (BRO-7435): more feeds of the same outlet (Theater Scene runs .net and .com). A dead extra feed never
+  // fails the primary read.
+  for (const extra of config.extraUrls || []) {
+    try {
+      console.log(`  [rss] Fetching ${extra}`);
+      const exml = await fetchXmlWithProxyRetry(extra, 'rss', looksLikeFeed, { proxyRetry });
+      const have = new Set(items.map(i => i.url));
+      items = items.concat(applyRssFilters(parseRssFeed(exml, cutoff), config).filter(i => !have.has(i.url)));
+      healthXml += '\n' + exml;
+    } catch (err) {
+      console.warn(`  ⚠ extra feed ${extra} failed: ${err.message}`);
+    }
+  }
   if (health) {
-    const all = parseRssFeed(xml, new Date(0));
+    const all = parseRssFeed(healthXml, new Date(0));
     const matching = applyRssFilters(all, config);
     health.newestAny = newestItemDate(all);
     health.oldestAny = oldestItemDate(all);

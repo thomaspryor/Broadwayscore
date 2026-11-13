@@ -74,6 +74,8 @@ const LANE_FEEDS = [
   { url: 'https://therecs.co.uk/feed/', outletId: 'the-recs', name: 'The Recs' },
   { url: 'https://www.stageandcinema.com/feed/', outletId: 'stageandcinema', name: 'Stage and Cinema' },
   { url: 'https://www.theaterscene.net/feed/', outletId: 'theater-scene', name: 'Theater Scene' },
+  // BRO-7435: the same outlet publishes /reviews/<slug>/ on theaterscene.com (Parcel from America, 2:22 - A Ghost Story).
+  { url: 'https://theaterscene.com/feed/', outletId: 'theater-scene', name: 'Theater Scene (.com)' },
   { url: 'https://thefrontrowcenter.com/feed', outletId: 'front-row-center', name: 'Front Row Center' },
   { url: 'https://thecontending.com/feed/', outletId: 'the-contending', name: 'The Contending' },
   { url: 'https://t2conline.com/feed/', outletId: 'times-square-chronicles', name: 'Times Square Chronicles' },
@@ -141,11 +143,12 @@ function laneFeeds(show) {
   const market = laneMarket(show);
   const base = ALL_FEEDS.filter((f) => !f.market || f.market === market)
     .map((f) => ({ url: f.url, outletId: f.outletId, name: f.name, ...(f.reviewsOnly ? { reviewsOnly: true } : {}) }));
+  // An outlet in ALL_FEEDS is covered there; two LANE_FEEDS entries may share an outlet (Theater Scene .net + .com, BRO-7435).
   const haveOutlet = new Set(base.map((f) => f.outletId));
   const haveUrl = new Set(base.map((f) => f.url));
   for (const f of LANE_FEEDS) {
     if (haveOutlet.has(f.outletId) || haveUrl.has(f.url) || !outletInMarket(f.outletId, market)) continue;
-    haveOutlet.add(f.outletId); haveUrl.add(f.url);
+    haveUrl.add(f.url);
     base.push({ url: f.url, outletId: f.outletId, name: f.name, directOnly: true, ...(f.titledReviews ? { titledReviews: true } : {}) });
   }
   return base;
