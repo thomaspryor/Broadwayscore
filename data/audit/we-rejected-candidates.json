@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-12T21:34:14.935Z",
+  "generatedAt": "2026-11-13T20:58:30.370Z",
   "ttlDays": 90,
   "rejected": {
     "02188d27077a7d20": {
@@ -155,6 +155,17 @@
       "reason": "articlePublishedAt is 3176d stale relative to discoveredAt — refusing to auto-promote as currently open",
       "firstSeen": "2026-10-10T18:50:45.884Z",
       "lastSeen": "2026-10-10T18:50:45.884Z",
+      "count": 1
+    },
+    "542a7fcb723c65ff": {
+      "title": "Cloud 9 National",
+      "venue": "lyttelton",
+      "source": "lbo-sitemap",
+      "sourceUrl": "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
+      "kind": "skip-retired",
+      "reason": "matches retired cloud-9-national-west-end-2026 by id (data/retired-show-ids.json), never re-add",
+      "firstSeen": "2026-11-13T20:58:30.158Z",
+      "lastSeen": "2026-11-13T20:58:30.158Z",
       "count": 1
     },
     "6bf98491107708c9": {
