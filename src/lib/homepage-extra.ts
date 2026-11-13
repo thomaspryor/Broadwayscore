@@ -19,6 +19,7 @@ import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient'
 import { formatShowDate } from '@/lib/date-utils';
 import { formatClosingLabel, isRepeatedlyExtended } from '@/lib/closing-label';
 import { displaysCriticScore } from '@/lib/critic-score-display';
+import { diversifyShelves } from '../../scripts/lib/shelf-diversity';
 
 export interface HomepageExtra {
   featuredRows: FeaturedRowData[];
@@ -229,22 +230,26 @@ export function buildHomepageExtra(): HomepageExtra {
       return { ...serializeShow(s), subtitle, subtitleColor: 'text-gray-400' };
     }) : [];
 
-  const featuredRows: FeaturedRowData[] = [
+  // `diversify` marks themed shelves that push shows already leading an earlier
+  // shelf to the back (BRO-7461); ranked shelves keep their true order.
+  const shelves: Array<FeaturedRowData & { diversify?: boolean }> = [
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
     // Opera shelf \u2014 Met universe is small (3-4 productions running), so minCount 2.
     // Positioned right after Off-Broadway so opera coverage is visible without
     // scrolling past 3 sections (acceptance criterion on Notion 362637c5-416f-8183).
     { title: 'Opera: New York and London', shows: bestOperaList, viewAllHref: '/opera', minCount: 2 },
     ...(nytCriticsPicksList.length > 0 ? [{ title: "New York Times Critic\u2019s Picks", shows: nytCriticsPicksList, viewAllHref: '/critics/outlets/the-new-york-times' }] : []),
-    { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
-    { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
-    { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },
-    { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
+    { diversify: true, title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
+    { diversify: true, title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
     // Time-sensitive (previews/opening-soon) — keep near the top. Moved to
     // second-from-bottom in #825, owner asked to move it back here (#966,
     // 2026-10-02): burying it below evergreen shelves undersells shows that
     // just opened for sale.
     { title: 'Shows Starting Soon', shows: startingSoonList, viewAllHref: '/browse/upcoming-broadway-shows', minCount: 1 },
+    // Box office rows sit below Starting Soon (BRO-7461) so the two rows that
+    // Hamilton tops are not stacked under Critic's Picks and the ticket rows.
+    { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },
+    { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
     { title: 'Best of the West End', shows: bestWestEndList, viewAllHref: '/west-end' },
     // Pre-Broadway tryouts — differentiating coverage nobody else aggregates;
     // lower-shelf placement per user (2026-07-12). Closed tryouts included by
@@ -252,14 +257,16 @@ export function buildHomepageExtra(): HomepageExtra {
     // regional flag so a flag-off build emits nothing (not even the row title
     // in the RSC payload) — the /browse page and /show pages 404 when off.
     ...(featureFlags.regional ? [{ title: 'Pre-Broadway: Out-of-Town Shows', shows: preBroadwayList, viewAllHref: '/browse/pre-broadway-out-of-town-shows', minCount: 2 }] : []),
-    { title: 'Tony Winning Shows', shows: tonyWinnersShows, viewAllHref: '/browse/tony-winners-on-broadway' },
-    { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
-    { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/guides/best-broadway-shows-for-kids' },
+    { diversify: true, title: 'Tony Winning Shows', shows: tonyWinnersShows, viewAllHref: '/browse/tony-winners-on-broadway' },
+    { diversify: true, title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
+    { diversify: true, title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/guides/best-broadway-shows-for-kids' },
     { title: 'Jukebox Musicals', shows: jukeboxMusicalsList, viewAllHref: '/browse/jukebox-musicals-on-broadway' },
     // Near the bottom per owner (BRO-4757, 2026-10-05).
     ...(featureFlags.tour ? [{ title: 'On Tour Now', shows: onTourList, viewAllHref: '/browse/broadway-national-tours' }] : []),
     { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/guides/broadway-shows-closing-soon' },
   ];
+  const featuredRows: FeaturedRowData[] = diversifyShelves(shelves)
+    .map(({ diversify: _diversify, ...row }) => row);
 
   return {
     featuredRows,
