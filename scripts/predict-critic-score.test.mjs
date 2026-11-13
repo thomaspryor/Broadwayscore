@@ -77,3 +77,16 @@ test('backtest skips targets with no baseline instead of scoring baseline as 0',
   const res = backtest(rows, '2001-01-01');
   assert.ok(res.every((r) => r.catMean != null));
 });
+
+test('a person credited in two roles counts once', () => {
+  const dual = hist.map((h, i) => (i < 4 ? { ...h, score: 95, people: { creative: ['jo'], cast: ['jo'] } } : h));
+  const one = hist.map((h, i) => (i < 4 ? { ...h, score: 95, people: { creative: ['jo'], cast: [] } } : h));
+  const t = mk(39, null, { id: 'x', people: { creative: ['jo'], cast: [] } });
+  assert.equal(forecast(t, dual).pred, forecast(t, one).pred);
+});
+
+test('conflicting production ids block a same-title prior match', () => {
+  const other = { ...mk(1, 95, { id: 'o', title: 'T39', originalProductionId: 'A' }) };
+  const f = forecast(mk(39, null, { id: 'x', title: 'T39', originalProductionId: 'B' }), [...hist, other]);
+  assert.equal(f.priorScore, null);
+});

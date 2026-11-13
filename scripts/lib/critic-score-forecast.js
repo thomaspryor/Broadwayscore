@@ -12,6 +12,7 @@
  * clamped 30..98. Prior-run: when the same production has an earlier-run
  * score, blend it with the cohort-based prediction.
  */
+const { foldDiacritics } = require('./title-match');
 const PEOPLE_ROLES = /director|playwright|book|writer|composer|lyricist|music|choreograph/i;
 
 function cohortKey(s) {
@@ -20,8 +21,8 @@ function cohortKey(s) {
 function coarseKey(s) { return `${s.category || 'broadway'}:${s.type || 'play'}`; }
 
 function mean(a) { return a.length ? a.reduce((x, y) => x + y, 0) / a.length : null; }
-function normTitle(n) { return String(n || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim(); }
-function norm(n) { return String(n || '').toLowerCase().replace(/[^a-z ]/g, '').trim(); }
+function normTitle(n) { return foldDiacritics(String(n || '')).toLowerCase().replace(/[^a-z0-9 ]/g, '').trim(); }
+function norm(n) { return foldDiacritics(String(n || '')).toLowerCase().replace(/[^a-z ]/g, '').trim(); }
 
 /** People attached to a show, split into creative and star cast (top 3 billed). */
 function peopleOf(s, castTop = 3) {
@@ -62,13 +63,13 @@ function forecast(target, history, opts = {}) {
   const byPerson = new Map();
   for (const h of past) {
     const r = h.score - poolMean[coarseKey(h)];
-    for (const p of [...(h.people?.creative || []), ...(h.people?.cast || [])]) {
+    for (const p of new Set([...(h.people?.creative || []), ...(h.people?.cast || [])])) {
       if (!byPerson.has(p)) byPerson.set(p, []);
       byPerson.get(p).push(r);
     }
   }
   const effects = [];
-  for (const p of [...(target.people?.creative || []), ...(target.people?.cast || [])]) {
+  for (const p of new Set([...(target.people?.creative || []), ...(target.people?.cast || [])])) {
     const rs = byPerson.get(p);
     if (rs && rs.length) effects.push((rs.length / (rs.length + K)) * mean(rs));
   }
@@ -77,7 +78,7 @@ function forecast(target, history, opts = {}) {
   let priorScore = null;
   if (target.originalProductionId || target.title) {
     const sib = past.filter((h) => (target.originalProductionId && h.originalProductionId === target.originalProductionId) ||
-      (h.title && target.title && h.category === target.category && h.type === target.type && normTitle(h.title) === normTitle(target.title)));
+      (!(target.originalProductionId && h.originalProductionId) && h.title && target.title && h.category === target.category && h.type === target.type && normTitle(h.title) === normTitle(target.title)));
     if (sib.length) priorScore = sib.sort((a, b) => b.openingDate.localeCompare(a.openingDate))[0].score;
   }
   if (priorScore != null) pred = priorW * priorScore + (1 - priorW) * pred;

@@ -61,6 +61,10 @@ function metrics(rs) {
   for (const r of rs) { const b = Math.floor(r.pred / 5) * 5; (bins[b] ||= []).push(r); }
   m.calibration = Object.keys(bins).sort((a, b) => a - b).map((b) => ({ predBin: `${b}-${+b + 4}`, n: bins[b].length,
     meanPred: mean(bins[b].map((r) => r.pred)), meanActual: mean(bins[b].map((r) => r.actual)) }));
+  // Shows with priorRuns/transfers fold earlier-run reviews into `actual`; report a disjoint-review subset too.
+  const clean = rs.filter((r) => !r.hasPriorRuns);
+  m.cleanSubset = { n: clean.length, maeModel: mean(clean.map((r) => Math.abs(r.pred - r.actual))),
+    maeCategoryMean: mean(clean.map((r) => Math.abs(r.catMean - r.actual))) };
   m.bySegment = {};
   for (const c of [...new Set(rs.map((r) => r.category))]) {
     const g = rs.filter((r) => r.category === c);
