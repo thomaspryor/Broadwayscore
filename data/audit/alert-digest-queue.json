@@ -628,20 +628,6 @@
     "queuedAt": "2026-11-12T16:09:49.651Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-12.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-12T17:51:40.762Z"
-  },
-  {
     "conditionKey": "broadcast-gate:checklist:cloud-9-west-end-2026",
     "title": "Opening-night email draft on hold: a quality check flagged a review",
     "description": "The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Nothing is sent while it is on hold. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.",
@@ -892,5 +878,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-13T02:34:57.303Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-13.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-13T03:02:41.648Z"
   }
 ]
