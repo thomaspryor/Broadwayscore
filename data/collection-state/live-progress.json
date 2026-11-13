@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-13T02:56:32.133Z",
-  "processed": 206,
-  "failed": 155,
-  "successRate": "57.1%",
+  "updatedAt": "2026-11-13T03:27:05.337Z",
+  "processed": 213,
+  "failed": 154,
+  "successRate": "58.0%",
   "tierBreakdown": {
     "playwright": 133,
     "amp": 0,
@@ -14,8 +14,41 @@
     "archiveToday": 0,
     "archive": 48
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-11-12T21:49:14.322Z",
+      "event": "bb-session",
+      "session": "0a8105ad",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-12T21:49:15.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-12T21:51:45.441Z",
+      "event": "bb-session",
+      "session": "21c8fab6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-12T21:51:46.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-12T21:55:03.106Z",
+      "event": "bb-session",
+      "session": "e7bb72d8",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-12T21:55:03.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
     {
       "t": "2026-11-12T21:56:38.952Z",
       "event": "bb-session",
@@ -85,48 +118,15 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-13T02:16:54.174Z",
+      "t": "2026-11-13T02:25:02.287Z",
       "event": "bb-session",
-      "session": "21b0475c",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+      "session": "8b67b0d8",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
     },
     {
-      "t": "2026-11-13T02:16:54.584Z",
+      "t": "2026-11-13T02:25:03.174Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-13T02:19:32.146Z",
-      "event": "bb-session",
-      "session": "57465073",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-13T02:19:32.469Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-13T02:21:38.241Z",
-      "event": "bb-session",
-      "session": "714500c3",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-13T02:21:38.610Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-13T02:23:17.687Z",
-      "event": "bb-session",
-      "session": "b8f3d55d",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
-    },
-    {
-      "t": "2026-11-13T02:23:18.069Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
     }
   ]
 }
