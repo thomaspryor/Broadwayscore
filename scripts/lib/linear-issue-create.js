@@ -229,6 +229,32 @@ function defaultExistsOnOriginMain(relPath) {
 }
 
 /**
+ * BRO-7394: warn about missing VERIFY files even when their directory exists.
+ * CREATES: <path>[, <path>...] explicitly declares new artifacts. A mention in
+ * problem prose or the VERIFY command alone cannot distinguish a new test
+ * from a copied template typo. Use the audit's parser and tri-state oracle;
+ * the local origin/main ref needs no fetch. This advisory never rejects work.
+ */
+function missingVerifyPathWarning(body, existsFn = defaultExistsOnOriginMain) {
+  const v = require('./verify-gate.js').evaluateVerifiability(body || '', []);
+  if (!v.armed || !v.cmd) return null;
+  const creates = new Set();
+  for (const line of String(body || '').split(/\r?\n/)) {
+    const declaration = /^\s*CREATES:\s*(.+)$/i.exec(line);
+    if (declaration) {
+      for (const token of declaration[1].split(/[\s,`]+/).filter(Boolean)) creates.add(token);
+    }
+  }
+  const missing = require('./card-premises-auditor.js').auditCardCheckPaths(
+    [{ cmd: v.cmd }], (p) => creates.has(p) ? true : existsFn(p),
+  );
+  if (!missing.length) return null;
+  return `VERIFY paths absent from origin/main: ${[...new Set(missing[0].missingPaths)].join(', ')}. `
+    + 'Check the command for stale or mistyped paths. If this card adds these files, '
+    + 'declare them on a CREATES: <path>[, <path>...] line in its notes.';
+}
+
+/**
  * PURE (given existsFn). Why this card body's armed VERIFY command cannot test
  * the work, or null. Null when nothing is armed (missingVerifyReason owns that),
  * when the command is not a `test -f`, when the path does not exist yet (a file
@@ -364,6 +390,14 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
   const contractText = `${disposition.reason || ''}\n${body || ''}`;
   const contract = cardDedupe.hasPerCardContract(contractText)
     || ['digest-autofix', 'alert-router', 'e2e-canary'].includes(cardSource);
+  // Warn for every filer, including linear-brain.js create and cron filers.
+  // A probe failure must never turn an advisory into a lost alert.
+  try {
+    const warning = missingVerifyPathWarning(body);
+    if (warning) console.warn(`[linear-issue-create] MISSING-VERIFY-PATH: ${warning} (BRO-7394).`);
+  } catch (e) {
+    console.warn(`[linear-issue-create] missing-VERIFY-path check failed open: ${e.message}`);
+  }
   // BRO-5456: refuse a session card whose VERIFY is green before the work starts.
   // Workflow filers only get a warning: the alert router drops an alert whose create throws.
   let vacuous = null;
@@ -720,5 +754,5 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
 
 module.exports = {
   createLinearIssue, reuseOpenTwin, reuseNearDuplicate, rollUpFlood, defaultFindOpenIssueByTitle, twinServes, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
-  effectiveCreatePriority, priorityFromTitle, missingVerifyReason, vacuousVerifyReason, MISSING_VERIFY_MESSAGE, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
+  effectiveCreatePriority, priorityFromTitle, missingVerifyReason, missingVerifyPathWarning, vacuousVerifyReason, MISSING_VERIFY_MESSAGE, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
 };

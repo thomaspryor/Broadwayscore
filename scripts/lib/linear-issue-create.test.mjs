@@ -630,3 +630,57 @@ test('createLinearIssue: refuses a session card with a vacuous VERIFY before any
     },
   );
 });
+
+// BRO-7394: a real parent directory does not prove a VERIFY file is real.
+test('missingVerifyPathWarning: warns on the historical url-wipe-hold typo', () => {
+  const { missingVerifyPathWarning } = require('./linear-issue-create.js');
+  const warning = missingVerifyPathWarning('VERIFY: node --test scripts/lib/url-wipe-hold.test.mjs', () => false);
+  assert.match(warning, /scripts\/lib\/url-wipe-hold\.test\.mjs/);
+  assert.match(warning, /origin\/main/);
+  assert.match(warning, /CREATES:/);
+});
+
+test('missingVerifyPathWarning: only explicit creation declarations exempt missing files', () => {
+  const { missingVerifyPathWarning } = require('./linear-issue-create.js');
+  const cmd = 'VERIFY: node --test scripts/lib/new.test.mjs scripts/lib/other.test.mjs';
+  assert.equal(missingVerifyPathWarning(`CREATES: \`scripts/lib/new.test.mjs\`, scripts/lib/other.test.mjs\n${cmd}`, () => false), null);
+  const partial = missingVerifyPathWarning(`CREATES: scripts/lib/new.test.mjs\n${cmd}`, () => false);
+  assert.match(partial, /absent from origin\/main: scripts\/lib\/other\.test\.mjs/);
+  assert.ok(!partial.includes('absent from origin/main: scripts/lib/new.test.mjs'));
+  assert.ok(missingVerifyPathWarning(`The old template names scripts/lib/new.test.mjs.\n${cmd}`, () => false));
+  assert.ok(missingVerifyPathWarning(`CREATES: scripts/lib/new.test.mjs.extra\n${cmd}`, () => false));
+});
+
+test('missingVerifyPathWarning: handles tsx and artifact checks, present and unresolved paths', () => {
+  const { missingVerifyPathWarning } = require('./linear-issue-create.js');
+  for (const cmd of ['npx tsx --test tests/unit/new.test.ts', 'test -f docs/new.md']) {
+    assert.ok(missingVerifyPathWarning(`VERIFY: ${cmd}`, () => false));
+    assert.equal(missingVerifyPathWarning(`VERIFY: ${cmd}`, () => true), null);
+    assert.equal(missingVerifyPathWarning(`VERIFY: ${cmd}`, () => null), null);
+  }
+  for (const body of ['No command', 'VERIFY: owner-judgment', 'VERIFY: npm run lint', 'VERIFY: node scripts/rebuild-all-reviews.js']) {
+    assert.equal(missingVerifyPathWarning(body, () => { throw new Error('must not probe'); }), null);
+  }
+});
+
+test('createLinearIssue: missing VERIFY paths warn and still file for sessions and workflows', (t) => withTeam(async () => {
+  const warnings = [];
+  t.mock.method(console, 'warn', (message) => warnings.push(message));
+  t.mock.method(require('./origin-main-path-check.js'), 'pathExistsOnOriginMain', () => false);
+  for (const source of ['session', 'workflow:Audit']) {
+    const board = fakeBoard();
+    await createLinearIssue({ title: 'Missing VERIFY fixture', description: 'VERIFY: node --test scripts/lib/url-wipe-hold.test.mjs', dispatch: true, source, client: board.client });
+    assert.equal(board.created.length, 1);
+  }
+  assert.equal(warnings.filter(w => w.includes('MISSING-VERIFY-PATH:')).length, 2);
+}));
+
+test('createLinearIssue: a failed VERIFY path probe never prevents filing', (t) => withTeam(async () => {
+  const warnings = [];
+  t.mock.method(console, 'warn', (message) => warnings.push(message));
+  t.mock.method(require('./origin-main-path-check.js'), 'pathExistsOnOriginMain', () => { throw new Error('git unavailable'); });
+  const board = fakeBoard();
+  await createLinearIssue({ title: 'Failed VERIFY probe fixture', description: 'VERIFY: node --test scripts/lib/new.test.mjs', dispatch: true, client: board.client });
+  assert.equal(board.created.length, 1);
+  assert.ok(warnings.some(w => w.includes('missing-VERIFY-path check failed open: git unavailable')));
+}));
