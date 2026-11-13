@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-12T17:25:34.794Z",
+  "generatedAt": "2026-11-13T16:59:57.717Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-11-12T17:15:00.064Z",
-    "reviewsJsonAgeHours": 0.2,
+    "reviewsJsonLastUpdated": "2026-11-13T16:51:39.427Z",
+    "reviewsJsonAgeHours": 0.1,
     "freshnessBreach": false,
-    "showsScanned": 25,
-    "allShowsScanned": 4810,
-    "filesScanned": 81672,
+    "showsScanned": 26,
+    "allShowsScanned": 4818,
+    "filesScanned": 81870,
     "showsOverThreshold": 0,
-    "newOffenders": 1,
+    "newOffenders": 0,
     "blindShows": 26,
-    "orphanReviews": 3
+    "orphanReviews": 2
   },
   "thresholds": {
     "suppressedPerShow": 3,
@@ -18,19 +18,7 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "newOffenders": [
-    {
-      "showDir": "julius-caesar-globe-off-west-end-2026",
-      "suppressed": 1,
-      "actual": 0,
-      "files": [
-        "times-uk--kate-maltby.json"
-      ],
-      "newFiles": [
-        "times-uk--kate-maltby.json"
-      ]
-    }
-  ],
+  "newOffenders": [],
   "staleBaseline": [
     {
       "showDir": "china-doll-2015",
@@ -49,10 +37,6 @@
     }
   ],
   "orphanReviews": [
-    {
-      "showId": "pride-bridge-theatre-off-west-end-2026",
-      "count": 24
-    },
     {
       "showId": "the-apple-boys-regional-2025",
       "count": 4
@@ -73,8 +57,8 @@
     },
     {
       "showDir": "broom-play-off-broadway-2026",
-      "actual": 1,
-      "scanned": 3,
+      "actual": 2,
+      "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -89,25 +73,33 @@
     },
     {
       "showDir": "cloud-9-west-end-2026",
-      "actual": 21,
-      "scanned": 28,
+      "actual": 26,
+      "scanned": 32,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "dogstar-off-west-end-2026",
-      "actual": 17,
-      "scanned": 24,
+      "actual": 21,
+      "scanned": 30,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+      "actual": 1,
+      "scanned": 2,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "actual": 1,
-      "scanned": 7,
-      "suppressedCount": 2,
+      "actual": 15,
+      "scanned": 24,
+      "suppressedCount": 1,
       "suppressed": [
         {
           "file": "london-box-office--shehrazade-zafar-arif.json",
@@ -115,13 +107,6 @@
           "criticName": "Shehrazade Zafar-Arif",
           "publishDate": "2026-11-09",
           "url": "https://www.londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-photos"
-        },
-        {
-          "file": "theatremonkey--unknown.json",
-          "outletId": "theatremonkey",
-          "criticName": "Unknown",
-          "publishDate": "2026-11-11",
-          "url": "https://www.theatremonkey.com/2026/11/hamlet-hail-to-the-thief-barbican-theatre/"
         }
       ],
       "overThreshold": false
@@ -135,30 +120,6 @@
       "overThreshold": false
     },
     {
-      "showDir": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "actual": 11,
-      "scanned": 13,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "julius-caesar-globe-off-west-end-2026",
-      "actual": 0,
-      "scanned": 12,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "times-uk--kate-maltby.json",
-          "outletId": "times-uk",
-          "criticName": "Kate Maltby",
-          "publishDate": "2026-11-12",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/julius-caesar-review-harriet-walker-phyllida-lloyd-qrbstxwc0"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
       "showDir": "kate-allie-and-the-86-mets-off-broadway-2026",
       "actual": 1,
       "scanned": 2,
@@ -168,16 +129,16 @@
     },
     {
       "showDir": "msblackforpresident-off-broadway-2026",
-      "actual": 14,
-      "scanned": 22,
+      "actual": 16,
+      "scanned": 24,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "nero-off-west-end-2026",
-      "actual": 22,
-      "scanned": 35,
+      "showDir": "now-you-see-me-live-2026",
+      "actual": 1,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -186,6 +147,14 @@
       "showDir": "the-charioteer-off-broadway-2026",
       "actual": 2,
       "scanned": 3,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-kings-critique-off-broadway-2026",
+      "actual": 4,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -216,16 +185,16 @@
     },
     {
       "showDir": "the-visitors-off-broadway-2026",
-      "actual": 6,
-      "scanned": 11,
+      "actual": 7,
+      "scanned": 13,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "wanted-2022",
-      "actual": 23,
-      "scanned": 30,
+      "actual": 24,
+      "scanned": 31,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
