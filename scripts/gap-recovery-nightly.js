@@ -140,7 +140,9 @@ function main() {
   for (const p of [recSum, runSum, planPath]) { try { fs.unlinkSync(p); } catch { /* none */ } }
 
   const recExit = driver(['--reconcile', ...dryFlag, `--summary=${recSum}`], env, 15);
-  const reopened = (readJsonSafe(recSum) || {}).reopened || 0;
+  const recSummary = readJsonSafe(recSum) || {};
+  const reopened = recSummary.reopened || 0;
+  const superseded = recSummary.superseded || 0;
 
   let runExit = 0;
   let summary = null;
@@ -161,7 +163,7 @@ function main() {
   // BRO-7171 Stage 4: the owner batch scripts/gap-terminal.js --owner-batch wrote, until answered.
   const ownerBatch = readJsonSafe(path.join(STATE_DIR, 'owner-batch-pending.json'));
   const row = N.buildNightlyRow({
-    ...base, status, summary, counts, reopened, ledgerRows: L.readRows(runLedger),
+    ...base, status, summary, counts, reopened, superseded, ledgerRows: L.readRows(runLedger),
     driverExit: runExit || recExit, ownerBatch,
   });
   const code = finishRow(row, nightlyPath, ledgerPath);

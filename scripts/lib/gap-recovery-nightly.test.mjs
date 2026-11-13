@@ -140,3 +140,15 @@ test('nightly INERT_STRATEGIES matches the ledger set (copy kept off the digest 
   const L = require('./gap-recovery-ledger.js');
   assert.deepEqual([...N.INERT_STRATEGIES].sort(), [...L.INERT_STRATEGIES].sort());
 });
+
+test('buildNightlyRow: superseded reopens are recorded but raise no "lost the recovered text" alert (BRO-7171)', () => {
+  const summary = { attempted: 1, accepted: 0, landed: 0, byStrategy: {} };
+  const counts = { openTotal: 1, openRecent: 0, needsDecision: 0 };
+  const all = N.buildNightlyRow({ runId: 'r', status: 'ran', summary, counts, reopened: 6, superseded: 6, prevRows: [], ceiling: 60, nowMs: NOW });
+  assert.equal(all.reopened, 6);
+  assert.equal(all.superseded, 6);
+  assert.equal(all.alerts.some((a) => a.key === 'reconcile_reopened'), false);
+  const some = N.buildNightlyRow({ runId: 'r', status: 'ran', summary, counts, reopened: 6, superseded: 4, prevRows: [], ceiling: 60, nowMs: NOW });
+  const a = some.alerts.find((x) => x.key === 'reconcile_reopened');
+  assert.ok(a && /^2 reviews/.test(a.text), JSON.stringify(some.alerts));
+});

@@ -167,10 +167,11 @@ function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0
  * @param {object|null} a.summary driver --summary output ({attempted, accepted, landed, byStrategy, ceilingHit, pushFailed, authFailedOutlets, authOkOutlets, error})
  * @param {object} a.counts planCounts()
  * @param {number} a.reopened reconcile reopen count
+ * @param {number} a.superseded of those, recoveries another writer replaced (no alert)
  * @param {Array} a.ledgerRows all ledger rows after the run
  * @param {Array} a.prevRows earlier nightly rows
  */
-function buildNightlyRow({ runId, status, summary, counts, reopened = 0, ledgerRows = [], prevRows = [], ceiling, nowMs = Date.now(), driverExit = 0, ownerBatch = null }) {
+function buildNightlyRow({ runId, status, summary, counts, reopened = 0, superseded = 0, ledgerRows = [], prevRows = [], ceiling, nowMs = Date.now(), driverExit = 0, ownerBatch = null }) {
   const s = summary || {};
   // Streaks carry across busy/disabled/dry nights and count failed nights too.
   const base = summary ? lastSummaryRow(prevRows) : null;
@@ -194,6 +195,9 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, ledgerR
     recovered: s.landed || 0,
     byStrategy: s.byStrategy || {},
     reopened,
+    // Of reopened: another writer re-fetched the same url and its newer text
+    // stands (gap-recovery-ledger SUPERSEDED_REASON). Not a loss, no alert.
+    superseded,
     pendingStuck,
     authFailedStreak,
     authFailedStreaks,
@@ -208,7 +212,7 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, ledgerR
   };
   row.alerts = status === 'dry_run' || status === 'disabled' ? [] : decideAlerts({
     authFailedStreak, authOutlets: authFailedOutlets, pendingStuck, pushFailed: row.pushFailed,
-    reopened, ceilingHit: row.ceilingHit, ceiling, runFailed, runError: s.error,
+    reopened: Math.max(0, reopened - superseded), ceilingHit: row.ceilingHit, ceiling, runFailed, runError: s.error,
   });
   return row;
 }

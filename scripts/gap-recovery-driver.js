@@ -178,7 +178,7 @@ function printPlan(cands) {
 
 /** Stats for --summary (nightly reads it; never a review file). */
 let RUN_LEDGER = null; // set in main(); a live manual run publishes it at exit
-const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, error: null };
+const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, superseded: 0, error: null };
 function writeSummary() {
   const p = arg('summary');
   if (!p) return;
@@ -208,6 +208,7 @@ async function runReconcile({ dir, ledgerPath }) {
   if (!OPTS.dryRun && reopen.length) L.appendRows(reopen, ledgerPath);
   SUMMARY.mode = 'reconcile';
   SUMMARY.reopened = reopen.length;
+  SUMMARY.superseded = reopen.filter((r) => r.reason === L.SUPERSEDED_REASON).length;
   return reopen;
 }
 

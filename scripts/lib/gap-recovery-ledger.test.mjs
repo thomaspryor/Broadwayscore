@@ -345,3 +345,46 @@ test('URL_FIND_PROBE rows are logged but inert: no shadowing of pending_push/rec
   assert.equal(L.reconcileRecovered(rec, () => ({ fullText: '' , contentTier: 'excerpt' })).length, 1);
   assert.equal(L.indexRows([probe]).size, 0);
 });
+
+test('reconcile: a recovery another writer replaced by re-fetching the same url is superseded, and that strategy is not retried there (BRO-7171 loop)', () => {
+  // ilford-boy revstan 2026-11-12..13: the engine's raw-HTML text (2468, blog
+  // footer + comments) landed, the collector's article-body fetch (1383) replaced
+  // it, reconcile reopened it, the engine re-accepted the footer: every night.
+  const URL = 'https://revstanstheatreblog.co.uk/2026/10/25/review-ilford-boy-donmar-warehouse/';
+  const recTs = iso(NOW - DAY);
+  const rows = [row({ ts: recTs, outcome: 'recovered', strategy: 'REFETCH_FREE', url: URL, bytesAfter: 2468 })];
+  const collector = { url: URL, contentTier: 'truncated', fullText: 'x'.repeat(1383), fetchMethod: 'playwright', textFetchedAt: iso(NOW - DAY / 2) };
+  const reopen = L.reconcileRecovered(rows, () => collector);
+  assert.equal(reopen.length, 1);
+  assert.equal(reopen[0].reason, L.SUPERSEDED_REASON);
+  assert.equal(reopen[0].detail.supersededBy, 'playwright');
+  const after = [...rows, ...reopen];
+  const idx = L.indexRows(after);
+  const st = L.strategyState(idx, KEY, 'REFETCH_FREE');
+  assert.deepEqual(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: openMature, review: collector, gapClass: 'TRUNCATED_OTHER', state: st }),
+    { ok: false, reason: 'superseded_at_url' });
+  // trailing-slash / tracking variants are the same article
+  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: openMature, review: { ...collector, url: URL.replace(/\/$/, '') + '?utm_source=x' }, gapClass: 'TRUNCATED_OTHER', state: st }).ok, false);
+  // other strategies and a new url stay eligible
+  assert.equal(L.strategyEligibility({ strategy: 'ARCHIVE', show: openMature, review: collector, gapClass: 'TRUNCATED_OTHER', state: L.strategyState(idx, KEY, 'ARCHIVE') }).ok, true);
+  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: openMature, review: { ...collector, url: 'https://other.example/review' }, gapClass: 'TRUNCATED_OTHER', state: st }).ok, true);
+  // the block survives a later reopen (a reopen resets counts, not this)
+  const later = [...after, row({ ts: iso(NOW), outcome: 'reopened', strategy: 'ARCHIVE', reason: 'recovered_text_lost', url: URL })];
+  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: openMature, review: collector, gapClass: 'TRUNCATED_OTHER', state: L.strategyState(L.indexRows(later), KEY, 'REFETCH_FREE') }).ok, false);
+});
+
+test('reconcile: superseded only for a later, non-engine, same-url, substantive write; everything else stays a loss', () => {
+  const URL = 'https://example.com/review';
+  const recTs = iso(NOW - DAY);
+  const rows = [row({ ts: recTs, outcome: 'recovered', strategy: 'REFETCH_FREE', url: URL, bytesAfter: 3000 })];
+  const base = { url: URL, contentTier: 'truncated', fullText: 'x'.repeat(1500), fetchMethod: 'playwright', textFetchedAt: iso(NOW - DAY / 2) };
+  const reason = (rev) => L.reconcileRecovered(rows, () => rev)[0].reason;
+  assert.equal(reason(base), L.SUPERSEDED_REASON);
+  assert.equal(reason({ ...base, textFetchedAt: iso(NOW - 2 * DAY) }), 'recovered_text_lost', 'written before the recovery landed');
+  assert.equal(reason({ ...base, textFetchedAt: undefined }), 'recovered_text_lost', 'no fetch time');
+  assert.equal(reason({ ...base, url: 'https://example.com/other' }), 'recovered_text_lost', 'a different url');
+  assert.equal(reason({ ...base, fetchMethod: 'gap-recovery-refetch-free' }), 'recovered_text_lost', 'the engine itself');
+  assert.equal(reason({ ...base, contentTier: 'stub', fullText: 'x'.repeat(200) }), 'recovered_text_lost', 'clobbered to a stub');
+  assert.equal(reason({ ...base, contentTier: 'invalid' }), 'recovered_text_lost', 'clobbered to garbage');
+  assert.equal(reason({ ...base, fullText: 'x'.repeat(300) }), 'recovered_text_lost', 'too short to stand');
+});

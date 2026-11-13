@@ -174,8 +174,14 @@ function policyReasonOf(row) {
  * @returns {{evidenceAttempts:number, lastPolicyReason:string|null, retryAfter:string|null, abandoned:boolean, lastTs:string|null, nonEvidence:number}}
  */
 function strategyState(index, reviewKey, strategy) {
-  const rows = liveRows(index.get(reviewKey)).filter((r) => r.strategy === strategy);
-  const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0 };
+  const all = index.get(reviewKey) || [];
+  const rows = liveRows(all).filter((r) => r.strategy === strategy);
+  // Urls where another writer replaced this strategy's recovery (read across
+  // every reopen, never reset): re-accepting there is the nightly loop.
+  const supersededUrls = all
+    .filter((r) => r.outcome === 'reopened' && r.reason === SUPERSEDED_REASON && r.strategy === strategy && r.url)
+    .map((r) => r.url);
+  const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0, supersededUrls };
   for (const r of rows) {
     st.lastTs = r.ts;
     if (EVIDENCE_OUTCOMES.has(r.outcome)) {
@@ -219,6 +225,12 @@ function evidenceStamp({ show, strategy, outcome, reason, priorState }) {
  */
 function strategyEligibility({ strategy, show, review, gapClass, state }) {
   const rg = require('./review-guards');
+  if (FETCH_STRATEGIES.has(strategy) && review && review.url && state && Array.isArray(state.supersededUrls)) {
+    const { urlCanonicallyChanged } = require('./url-change-invariant');
+    if (state.supersededUrls.some((u) => !urlCanonicallyChanged(u, review.url))) {
+      return { ok: false, reason: 'superseded_at_url' };
+    }
+  }
   if (FETCH_STRATEGIES.has(strategy)) {
     const entry = state.evidenceAttempts ? { failureReason: state.lastPolicyReason, failureCount: state.evidenceAttempts } : null;
     const v = rg.shouldRetryFetch(show, { fetchRetryAfter: state.retryAfter, fetchDiscoveryAbandoned: state.abandoned }, entry);
@@ -310,6 +322,36 @@ function recoveredRowFromLanding(landed, info = {}) {
   });
 }
 
+// Reopen reason for a recovery another writer replaced by re-fetching the
+// SAME url after it landed (BRO-7171, 2026-11-13). The collector reads the live
+// page's article body; the engine parses raw HTML, which keeps blog footers,
+// "you might also like" lists and a second show's section of a joint column.
+// 24 of 54 reopens 2026-11-09..13 were this, and the engine re-accepted the
+// same chrome the next night (ilford-boy revstan: 2468 -> 1383 -> 2468 ...),
+// re-flagging a paid rescore each cycle. The newer writer's text stands; the
+// same strategy is not retried at that url (other strategies still are).
+const SUPERSEDED_REASON = 'recovered_text_superseded';
+// Below these the newer text is itself a gap (a stub, a wall): a real loss.
+const SUPERSEDE_MIN_CHARS = 500;
+const SUPERSEDE_TIERS = new Set(['complete', 'truncated']);
+
+/**
+ * Did a different writer re-fetch the recovered url after the recovery landed
+ * and store a substantive text? Pure.
+ * @param {object} review file on disk
+ * @param {object} recoveredRow the latest 'recovered' row
+ */
+function supersededByLaterFetch(review, recoveredRow) {
+  if (!review || !recoveredRow || !review.url || !recoveredRow.url) return false;
+  if (require('./url-change-invariant').urlCanonicallyChanged(recoveredRow.url, review.url)) return false;
+  const fetchedMs = Date.parse(review.textFetchedAt || '');
+  const recMs = Date.parse(recoveredRow.ts || '');
+  if (!Number.isFinite(fetchedMs) || !Number.isFinite(recMs) || fetchedMs <= recMs) return false;
+  if (/^gap-recovery/.test(String(review.fetchMethod || review.sourceMethod || ''))) return false;
+  const text = typeof review.fullText === 'string' ? review.fullText : '';
+  return text.length >= SUPERSEDE_MIN_CHARS && SUPERSEDE_TIERS.has(review.contentTier);
+}
+
 /**
  * Nightly reconcile (pure): every review whose latest row is 'recovered' but
  * whose recovered text is no longer on disk (fullText shorter than the row's
@@ -334,15 +376,19 @@ function reconcileRecovered(rows, readReview, nowIso = new Date().toISOString())
     const hasBytes = Number.isFinite(last.bytesAfter) && last.bytesAfter > 0;
     // 90%: a later whitespace/boilerplate trim of the recovered text is not a loss.
     if (review && (hasBytes ? onDisk >= Math.floor(last.bytesAfter * 0.9) : tier === 'complete')) continue;
+    const superseded = supersededByLaterFetch(review, last);
     out.push(makeRow({
       ts: nowIso,
       reviewKey: key,
       gapClass: last.gapClass,
       strategy: last.strategy,
       outcome: 'reopened',
-      reason: !review ? 'recovered_file_unreadable' : hasBytes ? 'recovered_text_lost' : 'recovered_file_not_complete',
+      reason: !review ? 'recovered_file_unreadable' : superseded ? SUPERSEDED_REASON : hasBytes ? 'recovered_text_lost' : 'recovered_file_not_complete',
       url: last.url,
-      detail: { tier, recoveredAt: last.ts, pushedBlob: last.pushedBlob || null },
+      detail: {
+        tier, recoveredAt: last.ts, pushedBlob: last.pushedBlob || null,
+        ...(superseded ? { supersededBy: review.fetchMethod || review.sourceMethod || null, supersededAt: review.textFetchedAt, bytesOnDisk: onDisk } : {}),
+      },
     }));
   }
   return out;
@@ -429,4 +475,6 @@ module.exports = {
   killSwitchActive,
   recoveredRowFromLanding,
   reconcileRecovered,
+  supersededByLaterFetch,
+  SUPERSEDED_REASON,
 };
