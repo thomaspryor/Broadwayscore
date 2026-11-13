@@ -24,7 +24,7 @@ function isStuckTbStub(data, nowMs, maxAgeHours = DEFAULTS.maxAgeHours) {
   if (typeof data.fullText === 'string' && data.fullText.trim()) return false; // has a body
   if (data.rssIdentityRejected || data.promoteSkippedReason) return false;      // judged not a review
   const seen = Date.parse(data.firstSeenAt || '');
-  if (Number.isFinite(seen) && nowMs - seen > maxAgeHours * 3600e3) return false; // old: the daily run owns it
+  if (!Number.isFinite(seen) || nowMs - seen > maxAgeHours * 3600e3) return false; // old or undated: the daily run owns it (bounds Browserbase spend)
   return true;
 }
 

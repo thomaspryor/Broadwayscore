@@ -27,6 +27,7 @@ test('not stuck: other outlet, has body, judged non-review, too old', () => {
   assert.equal(isStuckTbStub({ ...realStub, rssIdentityRejected: true }, NOW.getTime()), false);
   assert.equal(isStuckTbStub({ ...realStub, promoteSkippedReason: 'wrong show' }, NOW.getTime()), false);
   assert.equal(isStuckTbStub({ ...realStub, firstSeenAt: '2026-11-12T10:00:00Z' }, NOW.getTime()), false);
+  assert.equal(isStuckTbStub({ ...realStub, firstSeenAt: undefined }, NOW.getTime()), false);
   assert.equal(isStuckTbStub(null, NOW.getTime()), false);
 });
 
