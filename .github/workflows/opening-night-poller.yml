@@ -570,6 +570,14 @@ jobs:
                 BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               fi
 
+              # BRO-7442: talkinbroadway.com is behind a Cloudflare challenge that the replay's
+              # tiers mostly fail, so a Talkin' Broadway stub the drain could not promote stayed
+              # in _pending/ until a lucky fetch (The King's Critique: stub 10:25pm ET, live
+              # 1:54am). The Browserbase collector reads TB and ingests it; it ran once a day.
+              # Dispatch it now (deduped, capped; best-effort, the daily run is the backstop).
+              # lint-allow-swallow: best-effort dispatch; the daily collector run still ingests the review.
+              node scripts/tb-collector-kick.js --shows="$SHOW_ID" || echo "::warning::tb-collector-kick failed for $SHOW_ID"
+
               # Check if files were created (review-texts is a separate git checkout)
               CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
               if [ "$CREATED" -gt 0 ]; then
