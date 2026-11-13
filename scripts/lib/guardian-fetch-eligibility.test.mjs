@@ -46,7 +46,7 @@ test('excluded rows and api-has-no-star rows are not fetched again (BRO-6964 rev
   assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', wrongProduction: true }).eligible, false);
   assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', wrongShow: true }).eligible, false);
   assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', duplicateOf: 'a.json' }).eligible, false);
-  const r = guardianFetchEligibility({ fullText: text, url: 'u', guardianApi: { fetchedAt: '2026-01-01', starRating: null } });
+  const r = guardianFetchEligibility({ fullText: text, url: URL_, guardianApi: { fetchedAt: '2026-01-01', starRating: null } });
   assert.equal(r.eligible, false);
   assert.equal(r.reason, 'api-has-no-star');
 });
@@ -54,4 +54,20 @@ test('excluded rows and api-has-no-star rows are not fetched again (BRO-6964 rev
 test('queueRescoreForLateRating leaves human-review rows alone', () => {
   const { queueRescoreForLateRating } = require('./rescore-flagging.js');
   assert.equal(queueRescoreForLateRating({ scoreSource: 'llm-v6', humanReviewScore: 62 }, 'x'), false);
+});
+
+// BRO-7446: msblackforpresident's dateless serp-discovery stub 404'd every run and failed the workflow.
+const { isDatedGuardianArticleUrl, shouldFailRun } = require('./guardian-fetch-eligibility.js');
+
+test('BRO-7446: dateless Guardian stub URL is never eligible', () => {
+  const stub = 'https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play';
+  assert.deepEqual(guardianFetchEligibility({ url: stub }, { minTextLength: 500 }), { eligible: false, reason: 'undated-url' });
+  assert.equal(isDatedGuardianArticleUrl(stub), false);
+  assert.equal(isDatedGuardianArticleUrl('https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play'), true);
+});
+
+test('BRO-7446: only 404s with nothing fetched does not fail the run; real failures still do', () => {
+  assert.equal(shouldFailRun({ fetched: 0, failed: 1, notFound: 1 }), false);
+  assert.equal(shouldFailRun({ fetched: 0, failed: 2, notFound: 1 }), true);
+  assert.equal(shouldFailRun({ fetched: 1, failed: 3, notFound: 0 }), false);
 });

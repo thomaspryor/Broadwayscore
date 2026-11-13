@@ -29,6 +29,10 @@ function guardianFetchEligibility(data, { minTextLength = 200 } = {}) {
   if (data.wrongProduction || data.wrongShow || data.duplicateOf) return { eligible: false, reason: 'excluded-row' };
   if (hasText && hasRecordedRating(data)) return { eligible: false, reason: 'has-text-and-rating' };
   if (!data.url) return { eligible: false, reason: 'no-url' };
+  // BRO-7446: a Guardian review URL always carries /yyyy/mon/dd/. A dateless stub
+  // (serp-discovery: .../stage/2026/nov/ms-blakk-for-president-play, sibling of the real
+  // .../2026/nov/05/... file) is not an article path: the API 404s it on every run.
+  if (!isDatedGuardianArticleUrl(data.url)) return { eligible: false, reason: 'undated-url' };
   // Rating-only: the API already answered "no star" for this row. Do not ask again every run.
   if (hasText && data.guardianApi && data.guardianApi.fetchedAt && !data.guardianApi.starRating) {
     return { eligible: false, reason: 'api-has-no-star' };
@@ -36,4 +40,17 @@ function guardianFetchEligibility(data, { minTextLength = 200 } = {}) {
   return { eligible: true, mode: hasText ? 'rating-only' : 'fetch-text' };
 }
 
-module.exports = { guardianFetchEligibility, hasRecordedRating };
+/** True for theguardian.com article URLs with the /yyyy/mon/dd/ segment the Content API resolves. */
+function isDatedGuardianArticleUrl(url) {
+  return /\/\d{4}\/[a-z]{3}\/\d{1,2}\//i.test(String(url || ''));
+}
+
+/**
+ * Should fetch-guardian-reviews.js exit non-zero? A 404 ("could not be found") is a stale-row data
+ * problem, not a broken fetch; only real failures with nothing fetched fail the workflow (BRO-7446).
+ */
+function shouldFailRun({ fetched, failed, notFound }) {
+  return fetched === 0 && (failed - notFound) > 0;
+}
+
+module.exports = { guardianFetchEligibility, hasRecordedRating, isDatedGuardianArticleUrl, shouldFailRun };

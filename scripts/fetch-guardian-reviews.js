@@ -40,7 +40,7 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
-const { guardianFetchEligibility } = require('./lib/guardian-fetch-eligibility');
+const { guardianFetchEligibility, shouldFailRun } = require('./lib/guardian-fetch-eligibility');
 const { GUARDIAN_API_FIELDS, applyGuardianPublication } = require('./lib/guardian-publication');
 
 // Lazy show lookup so the Guardian fetcher can reject a prior-production article
@@ -92,6 +92,7 @@ const stats = {
   failed: 0,
   skipped: 0,
   apiErrors: 0,
+  notFound: 0,
 };
 
 /**
@@ -441,7 +442,8 @@ async function main() {
       } else {
         console.log(`  FAILED: ${result.error}`);
         stats.failed++;
-        stats.apiErrors++;
+        if (/could not be found/i.test(result.error || '')) stats.notFound++;
+        else stats.apiErrors++;
       }
     } catch (e) {
       console.log(`  ERROR: ${e.message}`);
@@ -470,7 +472,7 @@ async function main() {
   }
 
   // Exit with error if all failed
-  if (stats.fetched === 0 && toProcess.length > 0) {
+  if (shouldFailRun(stats) && toProcess.length > 0) {
     console.error('\nNo reviews were successfully fetched.');
     process.exit(1);
   }
