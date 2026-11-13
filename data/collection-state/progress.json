@@ -1,22 +1,71 @@
 {
-  "processed": [],
+  "processed": [
+    "the-lives-of-others-west-end-2026/independent--alice-saville.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/theupcoming--unknown.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+    "dogstar-off-west-end-2026/islingtontribune--unknown.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "julius-caesar-globe-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "julius-caesar-globe-off-west-end-2026/british-theatre--unknown.json",
+    "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "julius-caesar-globe-off-west-end-2026/whatsonstage--unknown.json",
+    "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "speculations-off-west-end-2026/westminsterextra--unknown.json"
+  ],
   "failed": [
     "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
-    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json"
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-lives-of-others-west-end-2026/independent--alice-saville.json",
+      "hamlet-hail-to-the-thief-off-west-end-2026/theupcoming--unknown.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+      "dogstar-off-west-end-2026/islingtontribune--unknown.json",
+      "julius-caesar-globe-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "julius-caesar-globe-off-west-end-2026/british-theatre--unknown.json",
+      "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "julius-caesar-globe-off-west-end-2026/whatsonstage--unknown.json",
+      "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "speculations-off-west-end-2026/westminsterextra--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-11-13T19:51:30.116Z",
-  "lastProcessed": "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
-  "log": []
+  "lastProcessed": "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+  "log": [
+    {
+      "t": "2026-11-13T20:31:45.000Z",
+      "event": "bb-session",
+      "session": "e48c0ca8",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T20:31:45.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
