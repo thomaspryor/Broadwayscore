@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T10:35:25.925Z",
+  "timestamp": "2026-11-13T11:16:27.897Z",
   "stats": {
-    "totalReviews": 81823,
+    "totalReviews": 81828,
     "alreadyFlagged": 22345,
     "dateGuardCatches": 220,
     "directorMismatch": 3671,
     "tvFilmSignals": 2309,
-    "londonSignals": 3732,
+    "londonSignals": 3733,
     "offBroadwaySignals": 752,
     "yearMismatch": 375,
-    "noPublishDate": 8431
+    "noPublishDate": 8430
   },
   "findings": [
     {
@@ -104931,6 +104931,19 @@
       "score": 88,
       "publishDate": "2026-11-13",
       "url": "https://1883magazine.com/hamlet-hail-to-the-thief-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "all-that-dazzles-uk--sam-woodward.json",
+      "publishDate": "2026-11-13",
+      "url": "https://www.allthatdazzles.co.uk/post/review-hamlet-hail-to-the-thief-barbican-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
