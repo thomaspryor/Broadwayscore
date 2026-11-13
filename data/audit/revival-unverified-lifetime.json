@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-11-12T10:46:12.526Z",
-  "scanned": 4810,
-  "showsWithViolations": 2,
-  "totalViolations": 2,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-11-13T10:02:59.088Z",
+  "scanned": 4818,
+  "showsWithViolations": 3,
+  "totalViolations": 3,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "cloud-9-national-west-end-2026"
+  ],
   "actionableViolations": 0,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
@@ -13,30 +15,43 @@
   "actionableKeys": [],
   "violationKeys": [
     "cloud-9-west-end-2026",
-    "tristan-and-yseult-off-broadway-2026"
+    "tristan-and-yseult-off-broadway-2026",
+    "cloud-9-national-west-end-2026"
   ],
   "hits": [
     {
       "showId": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "openingDate": "2026-11-10",
-      "message": "cloud-9-west-end-2026 review text mentions \"revival\" 29x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "cloud-9-west-end-2026 review text mentions \"revival\" 31x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {
           "titleMatch": false,
-          "mentionCount": 29
+          "mentionCount": 31
         }
       ]
     },
     {
       "showId": "tristan-and-yseult-off-broadway-2026",
       "title": "Tristan & Yseult",
-      "openingDate": "2026-11-01",
+      "openingDate": "2026-11-04",
       "message": "tristan-and-yseult-off-broadway-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {
           "titleMatch": false,
           "mentionCount": 5
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "openingDate": "2026-11-11",
+      "message": "cloud-9-national-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {
+          "titleMatch": false,
+          "mentionCount": 3
         }
       ]
     }

@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-12T10:42:57.409Z",
-  "scanned": 4810,
-  "showsWithViolations": 167,
+  "updatedAt": "2026-11-13T09:59:38.698Z",
+  "scanned": 4818,
+  "showsWithViolations": 168,
   "totalViolations": 222,
   "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 972,
+    "temporal-override-low-confidence": 973,
     "not-shipped": 57,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
@@ -13,7 +13,7 @@
     "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [
-    "shadowlands-west-end-2026::islingtontribune--unknown.json"
+    "julius-caesar-globe-off-west-end-2026::thestage--holly-omahony.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -49,7 +49,6 @@
     "charlie-and-the-chocolate-factory-2017::stageandcinema--tony-frankel.json",
     "the-little-foxes-2017::njcom--christopher-kelly.json",
     "oslo-2017::hollywood-reporter--david-rooney.json",
-    "oslo-2017::times-square-chronicles--suzanna-bowling.json",
     "present-laughter-2017::bsonarts--bruce-smith.json",
     "present-laughter-2017::frontmezzjunkies--steven-ross.json",
     "sweat-2017::more-than-the-play-blog--domenick-danza.json",
@@ -169,6 +168,7 @@
     "vanya-off-broadway-2025::thewrap--robert-hofler.json",
     "vanya-off-broadway-2025::vulture--sara-holdren.json",
     "primary-trust-off-broadway-2023::cititour--brian-scott-lipton.json",
+    "julius-caesar-globe-off-west-end-2026::thestage--holly-omahony.json",
     "nero-off-west-end-2026::theatre-weekly--greg-stewart.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::cititour--brian-scott-lipton.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
@@ -879,7 +879,7 @@
       "showId": "oslo-2017",
       "title": "Oslo",
       "openingDate": "2017-04-13",
-      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review, but it reviews the July 2016 off-Broadway premiere at Lincoln Center Theater, not the Broad — http://www.hollywoodreporter.com/review/oslo-theater-review-909909\ntimes-square-chronicles/Suzanna Bowling (times-square-chronicles--suzanna-bowling.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: While the scraped content is clearly a review of the Broadway production of 'Oslo' at Vivian Beaumont Theater (cast and  — https://t2conline.com/she-says-oslo-proves-when-talking-peace-it-is-never-short-or-easy/",
+      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review, but it reviews the July 2016 off-Broadway premiere at Lincoln Center Theater, not the Broad — http://www.hollywoodreporter.com/review/oslo-theater-review-909909",
       "violations": [
         {
           "filename": "hollywood-reporter--david-rooney.json",
@@ -892,19 +892,6 @@
           "cvIssues": [
             "Review is of the July 2016 OFF-BROADWAY premiere at Lincoln Center Theater, not the Broadway production",
             "Expected Broadway opening date is April 13, 2017, but this review was published July 11, 2016 (9 months before Broadway opening)"
-          ]
-        },
-        {
-          "filename": "times-square-chronicles--suzanna-bowling.json",
-          "url": "https://t2conline.com/she-says-oslo-proves-when-talking-peace-it-is-never-short-or-easy/",
-          "outletId": "times-square-chronicles",
-          "criticName": "Suzanna Bowling",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "While the scraped content is clearly a review of the Broadway production of 'Oslo' at Vivian Beaumont Theater (cast and ",
-          "cvIssues": [
-            "Scraped text is truncated mid-sentence ('T. Ryde' cuts off)",
-            "Critic byline 'Suzanna Bowling' is NOT present in the scraped content"
           ]
         }
       ]
@@ -3081,6 +3068,27 @@
           "cvIssues": [
             "Review publish date (2026-07-13) is ~3 years after Off-Broadway opening date (2023-05-25), indicating this may be a review of a different production run",
             "The scraped text is truncated mid-word ('played br') before reaching conclusion and critical assessment"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "openingDate": null,
+      "message": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While this is a valid review of Phyllida Lloyd's Julius Caesar revival, it evaluates the RSC First Encounters touring pr — https://thestage.co.uk/reviews/first-encounters-julius-caesar-review-other-place-stratford-upon-avon-royal-shakespeare-company-harriet-walter",
+      "violations": [
+        {
+          "filename": "thestage--holly-omahony.json",
+          "url": "https://thestage.co.uk/reviews/first-encounters-julius-caesar-review-other-place-stratford-upon-avon-royal-shakespeare-company-harriet-walter",
+          "outletId": "thestage",
+          "criticName": "Holly O'Mahony",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "While this is a valid review of Phyllida Lloyd's Julius Caesar revival, it evaluates the RSC First Encounters touring pr",
+          "cvIssues": [
+            "Review describes a production at Shakespeare's Globe Theatre, not Sam Wanamaker Playhouse (the expected Off-West End venue)",
+            "Review discusses RSC First Encounters initiative (RSC touring schools production), not an Off-West End stage production"
           ]
         }
       ]
