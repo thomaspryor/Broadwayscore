@@ -371,13 +371,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-13T16:57:55.796Z",
+      "lastSeen": "2026-11-13T18:22:30.690Z",
       "lastNotifiedAt": "2026-11-13T05:00:13.962Z",
       "lastSurfacedAt": "2026-11-09T20:23:30.357Z",
       "notifyCount": 81,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -19494,7 +19494,7 @@
       "title": "Roundup gaps: 31 listed review(s) not captured across 4 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-13T16:57:10.955Z",
+      "lastSeen": "2026-11-13T18:22:04.483Z",
       "lastNotifiedAt": "2026-11-13T13:06:16.244Z",
       "lastSurfacedAt": null,
       "notifyCount": 51,
@@ -19568,7 +19568,7 @@
         "potus-off-broadway-2026",
         "hamlet-hail-to-the-thief-off-west-end-2026"
       ],
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38670,13 +38670,12 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-13T16:57:10.896Z",
-      "lastNotifiedAt": "2026-11-12T21:25:17.489Z",
-      "lastSurfacedAt": "2026-11-12T21:25:17.489Z",
-      "notifyCount": 7,
+      "lastSeen": "2026-11-13T18:22:04.400Z",
+      "lastNotifiedAt": "2026-11-13T18:22:04.400Z",
+      "lastSurfacedAt": "2026-11-13T18:22:04.400Z",
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 11
+      "linearIdentifier": null
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -41847,13 +41846,13 @@
       "title": "Review gap — \"As You Like It\" missing 5 cited review(s)",
       "firstSeen": "2026-11-11T02:57:44.180Z",
       "incidentOpenedAt": "2026-11-11T02:57:44.180Z",
-      "lastSeen": "2026-11-13T16:57:10.857Z",
+      "lastSeen": "2026-11-13T18:22:04.348Z",
       "lastNotifiedAt": "2026-11-13T02:34:57.302Z",
       "lastSurfacedAt": "2026-11-13T02:34:57.302Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "land:land/bro-7331-round3": {
       "status": "open",
@@ -42310,13 +42309,13 @@
       "title": "Review gap — \"Cloud 9 National\" missing 21 cited review(s)",
       "firstSeen": "2026-11-11T22:02:12.294Z",
       "incidentOpenedAt": "2026-11-11T22:02:12.294Z",
-      "lastSeen": "2026-11-13T16:57:10.877Z",
+      "lastSeen": "2026-11-13T18:22:04.372Z",
       "lastNotifiedAt": "2026-11-13T14:41:24.040Z",
       "lastSurfacedAt": "2026-11-13T14:41:24.040Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-cloud-9-national-west-end-2026": {
       "status": "open",
@@ -42693,7 +42692,7 @@
       "linearIdentifier": null
     },
     "uncollected-blackout:the-fantasticks-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: The Fantasticks",
       "firstSeen": "2026-11-12T21:34:05.447Z",
@@ -42704,7 +42703,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7420",
-      "silentRefires": 11
+      "silentRefires": 11,
+      "resolvedAt": "2026-11-13T18:22:14.797Z",
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
     },
     "uncollected-blackout:downstate-2026": {
       "status": "resolved",
