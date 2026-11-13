@@ -1,30 +1,46 @@
 {
-  "generatedAt": "2026-11-13T11:40:37.878Z",
+  "generatedAt": "2026-11-13T13:06:59.853Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 323,
-  "clean": 322,
-  "defective": 1,
+  "clean": 321,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "openingDate": "2026-11-12",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "openingDate": "2026-10-29",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.22 vs local 77.05 (Δ0.17)"
+          "detail": "deployed cs 63.45 vs local 63.25 (Δ0.2)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-13T11:40:32.262Z"
+      "localCount": 34,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-11-13T13:06:50.550Z"
+    },
+    {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.87 vs local 82.61 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-13T13:06:50.550Z"
     }
   ],
   "persistentDefective": 0,
