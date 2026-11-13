@@ -488,6 +488,10 @@
     "audit-roundup-excerpt-mismatch.js": {
       "bucket": "b",
       "reason": "BRO-7293 read-only cousin scan (roundup excerpt not in fullText on a flagged or auto-cleared file); needs the private review-texts corpus (cloud-run-script --review-texts); class guard is scripts/lib/roundup-merge-flagged-file.test.mjs"
+    },
+    "audit-same-title-works.js": {
+      "bucket": "b",
+      "reason": "BRO-7429 manual audit of same-title groups (writes data/audit/same-title-works.json and docs/audits/same-title-works.md); the leak check runs as a test in scripts/lib/work-identity.test.mjs"
     }
   }
 }

@@ -94,6 +94,7 @@ review-texts finds hits, promote that script to (a).
 
 | Script | Why it stays manual |
 | --- | --- |
+| `audit-same-title-works.js` | BRO-7429 manual audit of same-title groups (work identity); the leak check also runs as a test in `scripts/lib/work-identity.test.mjs` |
 | `audit-always-commit-after-validate.js` | advisory workflow linter (BRO-5293); exits 0 by design, rule 19 forbids arming it |
 | `audit-page-furniture.js` | BRO-7171 read-only furniture survey of the private review-texts corpus and local raw-page archives; the CI class guard is `tests/unit/page-furniture-extractors.test.mjs`, so this stays a manual diagnostic |
 | `audit-cast-matching.js` | one-shot re-evaluation of cast files against new IBDB matching rules |

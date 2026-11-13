@@ -107,7 +107,7 @@ test('live data: no audited different-work pair is still linked, and the Galileo
     const plan = JSON.parse(fs.readFileSync(path.join(planDir, f), 'utf8')).plan;
     for (const a of (Array.isArray(plan) ? plan : plan.actions || plan.fixes || [])) if (byId[a.showId] && a.type === 'data-edit') byId[a.showId][a.field] = a.newValue;
   }
-  const { audit } = require('../audit-same-title-works.js');
+  const { audit } = require('./same-title-audit.js');
   const leaks = [];
   for (const g of audit(Object.values(byId))) for (const p of g.pairs) if (p.verdict === 'different' && !differentWorks(byId[p.a], byId[p.b])) leaks.push(`${p.a} / ${p.b}`);
   assert.deepEqual(leaks, [], `audited different works the matcher still links: ${leaks.join(', ')}`);
