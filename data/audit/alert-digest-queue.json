@@ -487,5 +487,33 @@
       }
     ],
     "queuedAt": "2026-11-13T19:58:12.366Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-hamlet-hail-to-the-thief-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Hamlet Hail to the Thief",
+    "description": "thereviewshub/John Cutler (thereviewshub--john-cutler.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a genuine review of 'Hamlet Hail to the Thief — https://www.thereviewshub.com/hamlet-hail-to-the-thief-barbican-theatre-london/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-13T20:14:01.623Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:peter-pan-goes-wrong-regional-2026",
+    "title": "Shipped review missing publishDate on Peter Pan Goes Wrong",
+    "description": "colin-thomas/Colin Thomas SHIPPED with no publishDate — cannot confirm post-opening: https://colinthomas.ca/peter-pan-goes-wrong-and-so-does-this-farce-sometimes/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-13T20:14:03.159Z"
   }
 ]

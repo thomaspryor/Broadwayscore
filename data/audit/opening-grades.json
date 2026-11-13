@@ -1,20 +1,20 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-11-12T23:53:25.017Z",
+  "generatedAt": "2026-11-13T20:14:44.275Z",
   "generator": "scripts/grade-openings.js (BRO-7082)",
-  "from": "2026-10-29",
-  "to": "2026-11-12",
+  "from": "2026-10-30",
+  "to": "2026-11-13",
   "windowHours": {
     "before": 72,
     "after": 168
   },
-  "historyFrom": "2026-10-18T23:59:48.000Z",
-  "commitsScanned": 2814,
+  "historyFrom": "2026-10-19T20:26:37.000Z",
+  "commitsScanned": 2830,
   "summary": {
     "broadway": {
-      "openings": 4,
+      "openings": 3,
       "onItsOwn": 2,
-      "neededHands": 2,
+      "neededHands": 1,
       "neededHandsIngestOnly": 0,
       "incomplete": 0,
       "noReviews": 0,
@@ -23,32 +23,32 @@
       "notGradable": 0
     },
     "off-broadway": {
-      "openings": 31,
+      "openings": 29,
       "onItsOwn": 10,
-      "neededHands": 10,
+      "neededHands": 9,
       "neededHandsIngestOnly": 1,
       "incomplete": 3,
-      "noReviews": 8,
-      "noReviewsClosed": 4,
+      "noReviews": 7,
+      "noReviewsClosed": 3,
       "coverageUnknown": 0,
       "notGradable": 0
     },
     "west-end": {
-      "openings": 5,
-      "onItsOwn": 2,
+      "openings": 3,
+      "onItsOwn": 1,
       "neededHands": 2,
       "neededHandsIngestOnly": 0,
-      "incomplete": 1,
+      "incomplete": 0,
       "noReviews": 0,
       "noReviewsClosed": 0,
       "coverageUnknown": 0,
       "notGradable": 0
     },
     "off-west-end": {
-      "openings": 12,
+      "openings": 11,
       "onItsOwn": 3,
-      "neededHands": 7,
-      "neededHandsIngestOnly": 1,
+      "neededHands": 6,
+      "neededHandsIngestOnly": 0,
       "incomplete": 1,
       "noReviews": 1,
       "noReviewsClosed": 1,
@@ -58,12 +58,54 @@
   },
   "grades": [
     {
+      "showId": "potus-off-broadway-2026",
+      "title": "POTUS",
+      "category": "off-broadway",
+      "openingDate": "2026-11-13",
+      "embargoAt": "2026-11-14T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-21T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 13,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+      "title": "Traitorz: The Unauthorized Musical Parody",
+      "category": "off-broadway",
+      "openingDate": "2026-11-13",
+      "embargoAt": "2026-11-14T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-21T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
       "showId": "first-and-last-off-broadway-2026",
       "title": "First and Last",
       "category": "off-broadway",
       "openingDate": "2026-11-12",
       "embargoAt": "2026-11-13T03:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
+      "embargoFrom": "press-night record",
       "windowEnd": "2026-11-20T03:00:00.000Z",
       "windowClosed": false,
       "live": 0,
@@ -87,34 +129,13 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-19T21:00:00.000Z",
       "windowClosed": false,
-      "live": 4,
+      "live": 18,
       "lateLive": 0,
-      "known": 4,
+      "known": 18,
       "missing": 0,
-      "censusCandidates": 10,
-      "hoursToLive": null,
+      "censusCandidates": 17,
+      "hoursToLive": 3.9,
       "verdict": "on-its-own",
-      "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "the-good-thief-off-broadway-2026",
-      "title": "The Good Thief",
-      "category": "off-broadway",
-      "openingDate": "2026-11-12",
-      "embargoAt": "2026-11-13T03:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-20T03:00:00.000Z",
-      "windowClosed": false,
-      "live": 0,
-      "lateLive": 0,
-      "known": 0,
-      "missing": 0,
-      "censusCandidates": 3,
-      "hoursToLive": null,
-      "verdict": "no-reviews",
       "onlyIngestDispatches": false,
       "signals": [],
       "historyCovers": true,
@@ -126,16 +147,16 @@
       "category": "off-broadway",
       "openingDate": "2026-11-12",
       "embargoAt": "2026-11-13T03:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
+      "embargoFrom": "press-night record",
       "windowEnd": "2026-11-20T03:00:00.000Z",
       "windowClosed": false,
-      "live": 0,
+      "live": 4,
       "lateLive": 0,
-      "known": 0,
+      "known": 4,
       "missing": 0,
       "censusCandidates": 2,
-      "hoursToLive": null,
-      "verdict": "no-reviews",
+      "hoursToLive": 0.1,
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
       "historyCovers": true,
@@ -172,45 +193,6 @@
       "expectedMissing": null
     },
     {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "category": "west-end",
-      "openingDate": "2026-11-11",
-      "embargoAt": "2026-11-11T22:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-18T22:00:00.000Z",
-      "windowClosed": false,
-      "live": 3,
-      "lateLive": 0,
-      "known": 17,
-      "missing": 14,
-      "censusCandidates": 19,
-      "hoursToLive": null,
-      "verdict": "on-its-own",
-      "onlyIngestDispatches": false,
-      "signals": [],
-      "sweepFinds": [
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-12T13:51:47.000Z",
-          "outletId": "financialtimes",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "3adc4c6a ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-12T13:24:17.000Z",
-          "outletId": "readaboutstuff",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "54caa884 ingest: audit-aggregator-gap auto-ingested review-texts"
-        }
-      ],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
       "showId": "now-you-see-me-live-2026",
       "title": "Now You See Me Live",
       "category": "broadway",
@@ -223,7 +205,7 @@
       "lateLive": 0,
       "known": 1,
       "missing": 0,
-      "censusCandidates": 5,
+      "censusCandidates": 6,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
@@ -240,11 +222,11 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-17T22:00:00.000Z",
       "windowClosed": false,
-      "live": 23,
+      "live": 30,
       "lateLive": 0,
-      "known": 23,
+      "known": 30,
       "missing": 0,
-      "censusCandidates": 11,
+      "censusCandidates": 12,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
@@ -279,11 +261,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-16T21:00:00.000Z",
       "windowClosed": false,
-      "live": 19,
+      "live": 21,
       "lateLive": 0,
-      "known": 19,
+      "known": 21,
       "missing": 0,
-      "censusCandidates": 23,
+      "censusCandidates": 27,
       "hoursToLive": 4.2,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -298,6 +280,30 @@
         }
       ],
       "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T10:19:35.000Z",
+          "outletId": "the-morning-star",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "2db6e0cc ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T02:35:02.000Z",
+          "outletId": "islingtontribune",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "b70250c8 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T02:07:12.000Z",
+          "outletId": "cherylmarkosky",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "ee617cc8 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-12T18:11:42.000Z",
@@ -387,11 +393,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-17T03:00:00.000Z",
       "windowClosed": false,
-      "live": 6,
+      "live": 7,
       "lateLive": 0,
-      "known": 6,
+      "known": 7,
       "missing": 0,
-      "censusCandidates": 5,
+      "censusCandidates": 6,
       "hoursToLive": 1.8,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -419,11 +425,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-16T03:00:00.000Z",
       "windowClosed": false,
-      "live": 15,
+      "live": 16,
       "lateLive": 0,
-      "known": 15,
+      "known": 16,
       "missing": 0,
-      "censusCandidates": 19,
+      "censusCandidates": 22,
       "hoursToLive": -0.1,
       "verdict": "needed-hands",
       "onlyIngestDispatches": true,
@@ -438,6 +444,14 @@
         }
       ],
       "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T14:41:27.000Z",
+          "outletId": "the-interested-bystander",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "97540c15 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-10T10:54:28.000Z",
@@ -530,7 +544,7 @@
       "lateLive": 0,
       "known": 24,
       "missing": 0,
-      "censusCandidates": 23,
+      "censusCandidates": 27,
       "hoursToLive": 0.3,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -599,6 +613,37 @@
       "expectedMissing": null
     },
     {
+      "showId": "curtains-off-broadway-2026",
+      "title": "Curtains",
+      "category": "off-broadway",
+      "openingDate": "2026-11-06",
+      "embargoAt": "2026-11-07T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-14T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 8,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-12T02:32:00.000Z",
+          "outletId": "theater-scene",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "373d5dc8 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
       "category": "west-end",
@@ -607,11 +652,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T21:00:00.000Z",
       "windowClosed": false,
-      "live": 13,
+      "live": 16,
       "lateLive": 0,
-      "known": 13,
+      "known": 16,
       "missing": 0,
-      "censusCandidates": 7,
+      "censusCandidates": 9,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -644,6 +689,14 @@
       "sweepFinds": [
         {
           "kind": "sweep-find",
+          "at": "2026-11-13T13:06:21.000Z",
+          "outletId": "classical-source",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "5d53c4ed ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
           "at": "2026-11-09T13:45:29.000Z",
           "outletId": "musicomh",
           "cause": "discovery-gap",
@@ -652,16 +705,110 @@
         }
       ],
       "historyCovers": true,
-      "expectedMissing": [
+      "expectedMissing": null
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "category": "off-west-end",
+      "openingDate": "2026-11-06",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-13T22:00:00.000Z",
+      "windowClosed": false,
+      "live": 2,
+      "lateLive": 0,
+      "known": 2,
+      "missing": 0,
+      "censusCandidates": 17,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
         {
-          "outletId": "timeout-london",
-          "name": "Time Out London"
+          "kind": "sweep-find",
+          "at": "2026-11-12T21:25:21.000Z",
+          "outletId": "therealchrisparkle",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a663f3a6 ingest: audit-aggregator-gap auto-ingested review-texts"
         },
         {
+          "kind": "sweep-find",
+          "at": "2026-11-12T21:25:21.000Z",
+          "outletId": "warwickshireworld",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a663f3a6 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T18:52:27.000Z",
+          "outletId": "bestoftheatre",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "92091c46 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T18:52:27.000Z",
+          "outletId": "theatre-weekly",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "92091c46 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T12:04:45.000Z",
+          "outletId": "guardian",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T21:35:29.000Z",
+          "outletId": "london-theatre",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "177a1e52 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T16:40:58.000Z",
           "outletId": "whatsonstage",
-          "name": "WhatsOnStage"
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "b618cc10 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T15:27:00.000Z",
+          "outletId": "afridiziak-theatre-news",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a6272b14 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T04:51:01.000Z",
+          "outletId": "around-the-town-chicago",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "3e6f57a0 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T04:51:01.000Z",
+          "outletId": "sueterryvoices",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "3e6f57a0 ingest: audit-aggregator-gap auto-ingested review-texts"
         }
-      ]
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "nero-off-west-end-2026",
@@ -676,7 +823,7 @@
       "lateLive": 0,
       "known": 23,
       "missing": 0,
-      "censusCandidates": 26,
+      "censusCandidates": 28,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -751,12 +898,12 @@
       "embargoAt": "2026-11-06T03:00:00.000Z",
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T03:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 12,
-      "lateLive": 0,
+      "lateLive": 1,
       "known": 12,
       "missing": 0,
-      "censusCandidates": 18,
+      "censusCandidates": 19,
       "hoursToLive": 1.6,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -815,7 +962,7 @@
       "embargoAt": "2026-11-06T03:00:00.000Z",
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-13T03:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 0,
       "lateLive": 0,
       "known": 0,
@@ -836,12 +983,12 @@
       "embargoAt": "2026-11-06T03:00:00.000Z",
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T03:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 0,
       "lateLive": 0,
       "known": 0,
       "missing": 0,
-      "censusCandidates": 12,
+      "censusCandidates": 11,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -898,10 +1045,10 @@
       "windowEnd": "2026-11-12T22:00:00.000Z",
       "windowClosed": true,
       "live": 35,
-      "lateLive": 0,
+      "lateLive": 3,
       "known": 35,
       "missing": 0,
-      "censusCandidates": 39,
+      "censusCandidates": 42,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -1090,12 +1237,12 @@
       "embargoAt": "2026-11-06T03:00:00.000Z",
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T03:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 16,
       "lateLive": 0,
       "known": 16,
       "missing": 0,
-      "censusCandidates": 11,
+      "censusCandidates": 12,
       "hoursToLive": 1.5,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -1168,7 +1315,7 @@
       "embargoAt": "2026-11-06T03:00:00.000Z",
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T03:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 13,
       "lateLive": 0,
       "known": 13,
@@ -1178,6 +1325,14 @@
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
       "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-13T00:46:32.000Z",
+          "outletId": "nytimes",
+          "cause": "other",
+          "source": "25103c73 data: re-trim NYT Verge+Rope joint column to each show's section (BRO-7389)",
+          "fileChange": "modified"
+        },
         {
           "kind": "hand-commit",
           "at": "2026-11-08T18:56:07.000Z",
@@ -1247,12 +1402,12 @@
       "windowEnd": "2026-11-12T03:00:00.000Z",
       "windowClosed": true,
       "live": 8,
-      "lateLive": 0,
+      "lateLive": 1,
       "known": 8,
       "missing": 0,
-      "censusCandidates": 13,
+      "censusCandidates": 15,
       "hoursToLive": null,
-      "verdict": "on-its-own",
+      "verdict": "incomplete",
       "onlyIngestDispatches": false,
       "signals": [],
       "sweepFinds": [
@@ -1329,7 +1484,7 @@
       "lateLive": 0,
       "known": 0,
       "missing": 0,
-      "censusCandidates": 3,
+      "censusCandidates": 4,
       "hoursToLive": null,
       "verdict": "no-reviews",
       "onlyIngestDispatches": false,
@@ -1407,7 +1562,7 @@
       "lateLive": 0,
       "known": 25,
       "missing": 0,
-      "censusCandidates": 27,
+      "censusCandidates": 28,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -1526,7 +1681,7 @@
       "lateLive": 1,
       "known": 15,
       "missing": 0,
-      "censusCandidates": 11,
+      "censusCandidates": 12,
       "hoursToLive": 1.9,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -1733,7 +1888,7 @@
       "lateLive": 2,
       "known": 1,
       "missing": 0,
-      "censusCandidates": 16,
+      "censusCandidates": 18,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -1796,7 +1951,7 @@
       "lateLive": 0,
       "known": 5,
       "missing": 0,
-      "censusCandidates": 14,
+      "censusCandidates": 15,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
@@ -1856,7 +2011,7 @@
       "lateLive": 0,
       "known": 2,
       "missing": 0,
-      "censusCandidates": 5,
+      "censusCandidates": 6,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
@@ -1995,7 +2150,7 @@
       "lateLive": 5,
       "known": 17,
       "missing": 0,
-      "censusCandidates": 21,
+      "censusCandidates": 22,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -2105,636 +2260,6 @@
           "cause": "discovery-gap",
           "fileChange": "added",
           "source": "c2f00539 ingest: audit-aggregator-gap auto-ingested review-texts"
-        }
-      ],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "a-few-good-men-2026",
-      "title": "A Few Good Men",
-      "category": "broadway",
-      "openingDate": "2026-10-29",
-      "embargoAt": "2026-10-30T02:00:00.000Z",
-      "embargoFrom": "press-night record",
-      "windowEnd": "2026-11-06T02:00:00.000Z",
-      "windowClosed": true,
-      "live": 29,
-      "lateLive": 4,
-      "known": 29,
-      "missing": 0,
-      "censusCandidates": 28,
-      "hoursToLive": 2.8,
-      "verdict": "needed-hands",
-      "onlyIngestDispatches": false,
-      "signals": [
-        {
-          "kind": "ingest-dispatch",
-          "at": "2026-10-30T08:42:13.000Z",
-          "outletId": "new-york-sun",
-          "cause": "discovery-gap",
-          "source": "17203104 ingest-urls: 1 review(s) for a-few-good-men-2026",
-          "fileChange": "added"
-        },
-        {
-          "kind": "ingest-dispatch",
-          "at": "2026-10-30T04:45:37.000Z",
-          "outletId": "thewrap",
-          "cause": "text-gap",
-          "source": "d2aad044 ingest-urls: 1 review(s) for a-few-good-men-2026",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "approved-fix",
-          "at": "2026-10-30T05:04:04.078Z",
-          "file": "a-few-good-men-2026/cititour--brian-scott-lipton.json",
-          "outletId": "cititour",
-          "cause": "date-guard",
-          "fields": [
-            "publishDate"
-          ]
-        },
-        {
-          "kind": "approved-fix",
-          "at": "2026-10-30T13:28:27.380Z",
-          "file": "a-few-good-men-2026/new-york-sun--elysa-gardner.json",
-          "outletId": "new-york-sun",
-          "cause": "date-guard",
-          "fields": [
-            "publishDate"
-          ]
-        }
-      ],
-      "sweepFinds": [
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-31T16:30:59.000Z",
-          "outletId": "jks-theatre-scene",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "06e68999 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-31T02:59:28.000Z",
-          "outletId": "globalnews2",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "26db9e06 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-31T02:59:28.000Z",
-          "outletId": "hoodline",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "26db9e06 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-30T23:33:28.000Z",
-          "outletId": "variety",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "be8ab770 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-30T19:13:45.000Z",
-          "outletId": "times-square-chronicles",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "77ee627b ingest: audit-aggregator-gap auto-ingested review-texts"
-        }
-      ],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "category": "off-west-end",
-      "openingDate": "2026-10-29",
-      "embargoAt": "2026-10-29T22:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-05T22:00:00.000Z",
-      "windowClosed": true,
-      "live": 20,
-      "lateLive": 1,
-      "known": 20,
-      "missing": 0,
-      "censusCandidates": 30,
-      "hoursToLive": null,
-      "verdict": "needed-hands",
-      "onlyIngestDispatches": true,
-      "signals": [
-        {
-          "kind": "ingest-dispatch",
-          "at": "2026-11-02T14:22:13.000Z",
-          "outletId": "thereviewshub",
-          "cause": "discovery-gap",
-          "source": "b0c9ca41 ingest-urls: 1 review(s) for ceilidh-the-musical-off-west-end-2026",
-          "fileChange": "added"
-        }
-      ],
-      "sweepFinds": [
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-04T19:31:41.000Z",
-          "outletId": "stagetopage",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "90423ee3 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T22:17:26.000Z",
-          "outletId": "theupcoming",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "4881e487 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T13:50:27.000Z",
-          "outletId": "london-theatre",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "d9c536c4 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T04:12:51.000Z",
-          "outletId": "soundsandstage",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "fd8be0e7 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T03:49:28.000Z",
-          "outletId": "everything-theatre",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "b66904a6 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-01T03:54:03.000Z",
-          "outletId": "coffee-table-notes",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "dba83277 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-31T16:30:59.000Z",
-          "outletId": "broadwayworld",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "06e68999 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-31T16:30:59.000Z",
-          "outletId": "musical-theatre-review",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "06e68999 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-30T14:00:20.000Z",
-          "outletId": "whatsonstage",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "9e656f41 ingest: audit-aggregator-gap auto-ingested review-texts"
-        }
-      ],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "ivy-day-off-broadway-2026",
-      "title": "Ivy Day",
-      "category": "off-broadway",
-      "openingDate": "2026-10-29",
-      "embargoAt": "2026-10-30T02:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-06T02:00:00.000Z",
-      "windowClosed": true,
-      "live": 0,
-      "lateLive": 0,
-      "known": 0,
-      "missing": 0,
-      "censusCandidates": 0,
-      "hoursToLive": null,
-      "verdict": "no-reviews",
-      "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
-      "title": "Kelly McCaughan: Catholic Guilt",
-      "category": "off-broadway",
-      "openingDate": "2026-10-29",
-      "embargoAt": "2026-10-30T02:00:00.000Z",
-      "embargoFrom": "press-night record",
-      "windowEnd": "2026-11-06T02:00:00.000Z",
-      "windowClosed": true,
-      "live": 1,
-      "lateLive": 1,
-      "known": 1,
-      "missing": 0,
-      "censusCandidates": 4,
-      "hoursToLive": null,
-      "verdict": "incomplete",
-      "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "showstopper-the-kids-show-off-west-end-2026",
-      "title": "Showstopper! The Kids Show",
-      "category": "off-west-end",
-      "openingDate": "2026-10-29",
-      "embargoAt": "2026-10-29T22:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-05T22:00:00.000Z",
-      "windowClosed": true,
-      "live": 1,
-      "lateLive": 0,
-      "known": 1,
-      "missing": 0,
-      "censusCandidates": 2,
-      "hoursToLive": null,
-      "verdict": "on-its-own",
-      "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "the-greatest-story-ever-off-broadway-2026",
-      "title": "The Greatest Story Ever",
-      "category": "off-broadway",
-      "openingDate": "2026-10-29",
-      "embargoAt": "2026-10-30T02:00:00.000Z",
-      "embargoFrom": "press-night record",
-      "windowEnd": "2026-11-06T02:00:00.000Z",
-      "windowClosed": true,
-      "live": 0,
-      "lateLive": 0,
-      "known": 0,
-      "missing": 0,
-      "censusCandidates": 0,
-      "hoursToLive": null,
-      "verdict": "no-reviews",
-      "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "category": "off-broadway",
-      "openingDate": "2026-10-29",
-      "embargoAt": "2026-10-30T02:00:00.000Z",
-      "embargoFrom": "press-night record",
-      "windowEnd": "2026-11-06T02:00:00.000Z",
-      "windowClosed": true,
-      "live": 20,
-      "lateLive": 1,
-      "known": 20,
-      "missing": 0,
-      "censusCandidates": 18,
-      "hoursToLive": 1.7,
-      "verdict": "needed-hands",
-      "onlyIngestDispatches": false,
-      "signals": [
-        {
-          "kind": "hand-commit",
-          "at": "2026-10-30T23:09:00.000Z",
-          "outletId": "nydailynews",
-          "cause": "wrong-label",
-          "source": "225406a9 BRO-6670: remove stale bro-4953 NY Daily News stub on The Heart (null URL, Heart of Rock and Roll excerpt) so a real NYDN review ca",
-          "fileChange": "deleted"
-        },
-        {
-          "kind": "hand-commit",
-          "at": "2026-10-30T23:08:13.000Z",
-          "outletId": "cititour",
-          "cause": "date-guard",
-          "source": "5e5a5c10 BRO-6670: set publishDate on The Heart Cititour so collected-before-previews guard stops re-flagging it",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "hand-commit",
-          "at": "2026-10-30T22:54:52.000Z",
-          "outletId": "cititour",
-          "cause": "wrong-label",
-          "source": "6616aad8 BRO-6670: drop stale combinedWith heart-of-rock-and-roll-2024 on The Heart Cititour review",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "hand-commit",
-          "at": "2026-10-30T22:25:34.000Z",
-          "outletId": "nytg",
-          "cause": "wrong-label",
-          "source": "d66dffa4 BRO-6670: clear stale bro-4953 wrongShow lock on The Heart NYT/NYTG/TheaterMania (real reviews now at these URLs)",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "hand-commit",
-          "at": "2026-10-30T22:25:34.000Z",
-          "outletId": "nytimes",
-          "cause": "wrong-label",
-          "source": "d66dffa4 BRO-6670: clear stale bro-4953 wrongShow lock on The Heart NYT/NYTG/TheaterMania (real reviews now at these URLs)",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "hand-commit",
-          "at": "2026-10-30T22:25:34.000Z",
-          "outletId": "theatermania",
-          "cause": "wrong-label",
-          "source": "d66dffa4 BRO-6670: clear stale bro-4953 wrongShow lock on The Heart NYT/NYTG/TheaterMania (real reviews now at these URLs)",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "ingest-dispatch",
-          "at": "2026-10-30T22:29:43.000Z",
-          "outletId": "theatermania",
-          "cause": "text-gap",
-          "source": "790b6925 ingest-urls: 1 review(s) for the-heart-off-broadway-2026",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "ingest-dispatch",
-          "at": "2026-10-30T22:21:01.000Z",
-          "outletId": "nytg",
-          "cause": "text-gap",
-          "source": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "ingest-dispatch",
-          "at": "2026-10-30T22:21:01.000Z",
-          "outletId": "nytimes",
-          "cause": "text-gap",
-          "source": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "ingest-dispatch",
-          "at": "2026-10-30T22:21:01.000Z",
-          "outletId": "stageandcinema",
-          "cause": "discovery-gap",
-          "source": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026",
-          "fileChange": "added"
-        },
-        {
-          "kind": "ingest-dispatch",
-          "at": "2026-10-30T22:21:01.000Z",
-          "outletId": "talkinbroadway",
-          "cause": "discovery-gap",
-          "source": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026",
-          "fileChange": "added"
-        },
-        {
-          "kind": "approved-fix",
-          "at": "2026-10-30T22:54:52.118Z",
-          "file": "the-heart-off-broadway-2026/cititour--brian-scott-lipton.json",
-          "outletId": "cititour",
-          "cause": "date-guard",
-          "fields": [
-            "combinedWith",
-            "publishDate"
-          ]
-        },
-        {
-          "kind": "approved-fix",
-          "at": "2026-10-30T22:25:34.669Z",
-          "file": "the-heart-off-broadway-2026/nytg--caroline-cao.json",
-          "outletId": "nytg",
-          "cause": "wrong-label",
-          "fields": [
-            "wrongShow"
-          ]
-        },
-        {
-          "kind": "approved-fix",
-          "at": "2026-10-30T22:25:34.669Z",
-          "file": "the-heart-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-          "outletId": "nytimes",
-          "cause": "wrong-label",
-          "fields": [
-            "wrongShow"
-          ]
-        }
-      ],
-      "sweepFinds": [
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-03T04:04:36.000Z",
-          "outletId": "musical-theatre-report",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "ecdd72ca ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-30T19:13:45.000Z",
-          "outletId": "boothhistory",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "77ee627b ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-30T19:13:45.000Z",
-          "outletId": "one-minute-critic",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "77ee627b ingest: audit-aggregator-gap auto-ingested review-texts"
-        }
-      ],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "category": "west-end",
-      "openingDate": "2026-10-29",
-      "embargoAt": "2026-10-29T21:00:00.000Z",
-      "embargoFrom": "press-night record",
-      "windowEnd": "2026-11-05T21:00:00.000Z",
-      "windowClosed": true,
-      "live": 30,
-      "lateLive": 3,
-      "known": 30,
-      "missing": 0,
-      "censusCandidates": 36,
-      "hoursToLive": null,
-      "verdict": "incomplete",
-      "onlyIngestDispatches": false,
-      "signals": [],
-      "sweepFinds": [
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-04T22:31:26.000Z",
-          "outletId": "hollywood-reporter",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "ffe7e9a0 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-04T22:31:26.000Z",
-          "outletId": "nytimes",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "ffe7e9a0 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-04T06:38:29.000Z",
-          "outletId": "britishtheatrecom",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "6309458c ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-04T06:38:29.000Z",
-          "outletId": "timeout-london",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "6309458c ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-03T04:04:36.000Z",
-          "outletId": "thereviewshub",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "ecdd72ca ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T20:39:54.000Z",
-          "outletId": "londontheatre1",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T20:39:54.000Z",
-          "outletId": "plays-international",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T20:39:54.000Z",
-          "outletId": "theartsdispatch",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T20:39:54.000Z",
-          "outletId": "theatreandtonic",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T20:39:54.000Z",
-          "outletId": "west-end-best-friend",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T17:01:25.000Z",
-          "outletId": "financialtimes",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "869cb94f ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T12:00:35.000Z",
-          "outletId": "broadwayworld",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "f56f6c71 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T12:00:35.000Z",
-          "outletId": "thestage",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "f56f6c71 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T12:00:35.000Z",
-          "outletId": "whatsonstage",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "f56f6c71 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T04:12:51.000Z",
-          "outletId": "all-that-dazzles-uk",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "fd8be0e7 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T04:12:51.000Z",
-          "outletId": "london-theatre",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "fd8be0e7 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T04:12:51.000Z",
-          "outletId": "shinylife",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "fd8be0e7 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-11-02T02:40:28.000Z",
-          "outletId": "artsdesk",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "1bd477e2 ingest: audit-aggregator-gap auto-ingested review-texts"
-        },
-        {
-          "kind": "sweep-find",
-          "at": "2026-10-31T20:57:36.000Z",
-          "outletId": "guardian",
-          "cause": "discovery-gap",
-          "fileChange": "added",
-          "source": "830676ee ingest: audit-aggregator-gap auto-ingested review-texts"
         }
       ],
       "historyCovers": true,
@@ -4052,6 +3577,17 @@
     },
     {
       "category": "west-end",
+      "outletId": "classical-source",
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "embargoAt": "2026-11-06T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T13:06:21.000Z",
+      "via": "5d53c4ed ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
       "outletId": "musicomh",
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
@@ -4070,6 +3606,116 @@
       "cause": "discovery-gap",
       "at": "2026-11-07T15:01:55.000Z",
       "via": "5a9cabec ingest-urls: 2 review(s) for iphigenie-en-tauride-english-national-opera-west-end-2026"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "afridiziak-theatre-news",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T15:27:00.000Z",
+      "via": "a6272b14 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "around-the-town-chicago",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T04:51:01.000Z",
+      "via": "3e6f57a0 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "bestoftheatre",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T18:52:27.000Z",
+      "via": "92091c46 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "guardian",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T12:04:45.000Z",
+      "via": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "london-theatre",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T21:35:29.000Z",
+      "via": "177a1e52 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "sueterryvoices",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T04:51:01.000Z",
+      "via": "3e6f57a0 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theatre-weekly",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T18:52:27.000Z",
+      "via": "92091c46 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "therealchrisparkle",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T21:25:21.000Z",
+      "via": "a663f3a6 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "warwickshireworld",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T21:25:21.000Z",
+      "via": "a663f3a6 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "whatsonstage",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T16:40:58.000Z",
+      "via": "b618cc10 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
     },
     {
       "category": "off-west-end",
@@ -4139,6 +3785,17 @@
     },
     {
       "category": "off-broadway",
+      "outletId": "theater-scene",
+      "showId": "curtains-off-broadway-2026",
+      "title": "Curtains",
+      "embargoAt": "2026-11-07T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T02:32:00.000Z",
+      "via": "373d5dc8 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
       "outletId": "the-cap-times",
       "showId": "broom-play-off-broadway-2026",
       "title": "Broom Play",
@@ -4193,6 +3850,17 @@
     },
     {
       "category": "off-broadway",
+      "outletId": "the-interested-bystander",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T14:41:27.000Z",
+      "via": "97540c15 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
       "outletId": "nytimes",
       "showId": "the-charioteer-off-broadway-2026",
       "title": "The Charioteer",
@@ -4213,6 +3881,17 @@
     },
     {
       "category": "off-west-end",
+      "outletId": "cherylmarkosky",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T02:07:12.000Z",
+      "via": "ee617cc8 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
       "outletId": "express-uk",
       "showId": "dogstar-off-west-end-2026",
       "title": "Dogstar",
@@ -4220,6 +3899,17 @@
       "cause": "text-gap",
       "at": "2026-11-10T06:39:05.000Z",
       "via": "0b291996 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "islingtontribune",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T02:35:02.000Z",
+      "via": "b70250c8 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
     },
     {
       "category": "off-west-end",
@@ -4241,6 +3931,17 @@
       "cause": "discovery-gap",
       "at": "2026-11-10T12:04:45.000Z",
       "via": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "the-morning-star",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T10:19:35.000Z",
+      "via": "2db6e0cc ingest: audit-aggregator-gap auto-ingested review-texts",
       "by": "sweep"
     },
     {
