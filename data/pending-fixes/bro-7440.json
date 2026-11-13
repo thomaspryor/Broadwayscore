@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7440",
   "planId": "4f23d263-63e0-409e-9400-3dcf38489778",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-13T09:42:12.612Z",
   "submitter": {
     "name": null,
@@ -31,5 +31,19 @@
         "description": "openingnight.online page is a Google News link card to the New York Theatre Guide review (no review text of its own); NYTG review is already ingested as nytg--kyle-turner/complete. Not a separate review."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-13T10:32:15.004Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json isNonReviewReason: null -> \"manual (not a review): openingnight.online page is a Google News link card to the New York Theatre Guide review (no review text of its own); NYTG review is already ingested as nytg--kyle-turner/complete. Not a separate review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
