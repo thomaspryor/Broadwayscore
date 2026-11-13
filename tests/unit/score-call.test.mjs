@@ -20,9 +20,22 @@ test('resultStrip: off by N, beat forecast, null forecast', () => {
   assert.equal(SC.resultStrip({ called: null, forecast: 1, critic: 5 }), null);
 });
 test('gapSentence', () => {
-  assert.equal(SC.gapSentence({ called: 80, forecast: 74, lo80: 62, hi80: 85 }), 'We forecast 74 (likely 62 to 85). You are 6 above.');
-  assert.equal(SC.gapSentence({ called: 74, forecast: 74 }), 'We forecast 74. You matched it.');
+  assert.equal(SC.gapSentence({ called: 80, forecast: 74, lo80: 62, hi80: 85 }), 'Your prediction is 6 points above our forecast. We expect the Critic Score to land between 62 and 85.');
+  assert.equal(SC.gapSentence({ called: 74, forecast: 74 }), 'Your prediction matches our forecast.');
+  assert.equal(SC.gapSentence({ called: 73, forecast: 74 }), 'Your prediction is 1 point below our forecast.');
   assert.equal(SC.gapSentence({ called: 70, forecast: null }), null);
+  // Owner 2026-11-13: these phrasings read as sloppy; keep them out.
+  const all = [SC.gapSentence({ called: 59, forecast: 70, lo80: 56, hi80: 82 }), SC.resultSentence({ called: 59, r: SC.resultStrip({ called: 59, forecast: 70, critic: 66 }) })].join(' ');
+  assert.doesNotMatch(all, /You are \d+ (above|below)|get scored|Off by/);
+});
+
+test('resultSentence and forecastMissSentence', () => {
+  const r = SC.resultStrip({ called: 59, forecast: 70, critic: 61 });
+  assert.equal(SC.resultSentence({ called: 59, r }), 'You were 2 points off, and closer than our forecast.');
+  assert.equal(SC.forecastMissSentence(r), 'Our forecast was 9 points off.');
+  const exact = SC.resultStrip({ called: 61, forecast: null, critic: 61 });
+  assert.equal(SC.resultSentence({ called: 61, r: exact }), 'You got it exactly right.');
+  assert.equal(SC.forecastMissSentence(exact), null);
 });
 test('buildSyncRows uses the last ledger row before opening, skips rows without forecast, flags live reviews', () => {
   const shows = [{ id: 'a', category: 'broadway', type: 'musical', status: 'previews', openingDate: '2026-12-01' }, { id: 'b', category: 'broadway', type: 'play', status: 'previews', openingDate: '2026-12-01' }];

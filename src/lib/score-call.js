@@ -41,13 +41,26 @@ function resultStrip({ called, forecast, critic }) {
   return { off, forecastMiss, beatForecast: hasF ? off < forecastMiss : false, critic: Math.round(critic) };
 }
 
-/** One line for the locked state, e.g. "We forecast 74 (likely 62 to 85). You are 6 above." */
+const pts = (n) => `${n} ${n === 1 ? 'point' : 'points'}`;
+
+/** Locked state, two short sentences. The tiles already show both numbers, so say only what they don't: the gap, and the range we expect. */
 function gapSentence({ called, forecast, lo80, hi80 }) {
   if (!Number.isFinite(forecast)) return null;
-  const range = Number.isFinite(lo80) && Number.isFinite(hi80) ? ` (likely ${lo80} to ${hi80})` : '';
   const gap = called - forecast;
-  const tail = gap === 0 ? 'You matched it.' : `You are ${Math.abs(gap)} ${gap > 0 ? 'above' : 'below'}.`;
-  return `We forecast ${forecast}${range}. ${tail}`;
+  const first = gap === 0 ? 'Your prediction matches our forecast.' : `Your prediction is ${pts(Math.abs(gap))} ${gap > 0 ? 'above' : 'below'} our forecast.`;
+  const range = Number.isFinite(lo80) && Number.isFinite(hi80) ? ` We expect the Critic Score to land between ${lo80} and ${hi80}.` : '';
+  return first + range;
+}
+
+/** Result headline once the Critic Score exists. The tiles carry the numbers. */
+function resultSentence({ r }) {
+  if (r.off === 0) return r.beatForecast ? 'You got it exactly right, and beat our forecast.' : 'You got it exactly right.';
+  return `You were ${pts(r.off)} off${r.beatForecast ? ', and closer than our forecast' : ''}.`;
+}
+
+function forecastMissSentence(r) {
+  if (r.forecastMiss == null) return null;
+  return r.forecastMiss === 0 ? 'Our forecast was exactly right.' : `Our forecast was ${pts(r.forecastMiss)} off.`;
 }
 
 // Guess first, sign up second (owner 2026-11-11). The number a signed-out reader picks waits in
@@ -98,4 +111,4 @@ function mergeCalls(fetched, held) {
   return { ...(fetched && typeof fetched === 'object' ? fetched : {}), ...(held && typeof held === 'object' ? held : {}) };
 }
 
-module.exports = { mergeCalls, isCallableShow, parseCall, resultStrip, gapSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };
+module.exports = { mergeCalls, isCallableShow, parseCall, resultStrip, gapSentence, resultSentence, forecastMissSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };
