@@ -329,7 +329,16 @@ function isRiskyGapChange(prevState, nextState) {
   const [prevLive, prevCandidates] = counts(prevState);
   const [nextLive, nextCandidates] = counts(nextState);
   if (String(prevState).endsWith(':prior-schema')) return nextLive < prevLive;
-  return nextLive < prevLive || nextCandidates < prevCandidates - candidateDropTolerance(prevCandidates);
+  const tol = candidateDropTolerance(prevCandidates);
+  const liveDrop = prevLive - nextLive;
+  const candDrop = prevCandidates - nextCandidates;
+  // BRO-7445: the candidate that vanished (BRO-5516 SERP/aggregator nondeterminism) may
+  // itself have been a LIVE one, so liveCount and candidateCount fall together
+  // (the-great-gatsby-2024 28:29 -> 27:28 quarantined and went red). Tolerate it only when
+  // the live loss is fully explained by the tolerated candidate loss; a live drop with
+  // no matching candidate drop is a review file going missing (partial checkout) = risky.
+  if (liveDrop > 0 && !(liveDrop <= tol && candDrop >= liveDrop)) return true;
+  return candDrop > tol;
 }
 
 /**

@@ -118,6 +118,19 @@ test('blast radius: a candidate drop against an older-rule row is not risky, a l
   assert.strictEqual(isRiskyGapChange('incomplete:4:9', 'incomplete:4:6'), true);
 });
 
+test('blast radius: one live candidate vanishing from the census is tolerated, lost review files are not (BRO-7445)', () => {
+  const { isRiskyGapChange } = require('./gap-audit-merge.js');
+  // the-great-gatsby-2024 2026-11-13: 28:29 -> 27:28 was quarantined and failed the run
+  assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:27:28'), false);
+  // live lost without a matching candidate loss = review file gone (partial checkout)
+  assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:27:29'), true);
+  assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:26:27'), true);
+  // small census stays strict
+  assert.strictEqual(isRiskyGapChange('incomplete:2:3', 'incomplete:1:2'), true);
+  // dead provider zeroes counts
+  assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'no-census-yet:0:0'), true);
+});
+
 test('an events-calendar page is rejected, a real review on the same host stays (BRO-4679)', () => {
   assert.strictEqual(classifyGapCandidateUrl('https://openingnight.online/crazy-mama-a-true-story-of-love-and-madness/').ok, false);
   assert.deepStrictEqual(classifyGapCandidateUrl('https://openingnight.online/the-invention-of-love/'), { ok: true, reason: null });
