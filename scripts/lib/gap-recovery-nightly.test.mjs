@@ -152,3 +152,10 @@ test('buildNightlyRow: superseded reopens are recorded but raise no "lost the re
   const a = some.alerts.find((x) => x.key === 'reconcile_reopened');
   assert.ok(a && /^2 reviews/.test(a.text), JSON.stringify(some.alerts));
 });
+
+test('planCounts: a historic review blocked by superseded_at_url reaches a decision (BRO-7171)', () => {
+  const c = N.planCounts([
+    { recency: 'historic', strategy: null, skipped: [{ strategy: 'REFETCH_FREE', reason: 'superseded_at_url' }, { strategy: 'ARCHIVE', reason: 'superseded_at_url' }] },
+  ]);
+  assert.deepEqual(c, { openTotal: 1, openRecent: 0, needsDecision: 1 });
+});

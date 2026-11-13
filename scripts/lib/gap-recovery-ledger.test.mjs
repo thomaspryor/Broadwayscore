@@ -365,8 +365,13 @@ test('reconcile: a recovery another writer replaced by re-fetching the same url 
     { ok: false, reason: 'superseded_at_url' });
   // trailing-slash / tracking variants are the same article
   assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: openMature, review: { ...collector, url: URL.replace(/\/$/, '') + '?utm_source=x' }, gapClass: 'TRUNCATED_OTHER', state: st }).ok, false);
-  // other strategies and a new url stay eligible
-  assert.equal(L.strategyEligibility({ strategy: 'ARCHIVE', show: openMature, review: collector, gapClass: 'TRUNCATED_OTHER', state: L.strategyState(idx, KEY, 'ARCHIVE') }).ok, true);
+  // every raw-HTML strategy is blocked at the url (ARCHIVE parses the same page
+  // with the same extractor); a subscriber browser session and a new url are not
+  assert.equal(L.strategyEligibility({ strategy: 'ARCHIVE', show: openMature, review: collector, gapClass: 'TRUNCATED_OTHER', state: L.strategyState(idx, KEY, 'ARCHIVE') }).reason, 'superseded_at_url');
+  assert.equal(L.strategyEligibility({ strategy: 'PAID_FETCH', show: openMature, review: collector, gapClass: 'TRUNCATED_OTHER', state: L.strategyState(idx, KEY, 'PAID_FETCH') }).reason, 'superseded_at_url');
+  assert.equal(L.strategyEligibility({ strategy: 'BROWSER_SESSION', show: openMature, review: collector, gapClass: 'TRUNCATED_OTHER', state: L.strategyState(idx, KEY, 'BROWSER_SESSION') }).ok, true);
+  // the block lifts once the newer text degrades to a stub
+  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: openMature, review: { ...collector, contentTier: 'stub', fullText: 'x'.repeat(200) }, gapClass: 'TRUNCATED_OTHER', state: st }).ok, true);
   assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: openMature, review: { ...collector, url: 'https://other.example/review' }, gapClass: 'TRUNCATED_OTHER', state: st }).ok, true);
   // the block survives a later reopen (a reopen resets counts, not this)
   const later = [...after, row({ ts: iso(NOW), outcome: 'reopened', strategy: 'ARCHIVE', reason: 'recovered_text_lost', url: URL })];
@@ -387,4 +392,17 @@ test('reconcile: superseded only for a later, non-engine, same-url, substantive 
   assert.equal(reason({ ...base, contentTier: 'stub', fullText: 'x'.repeat(200) }), 'recovered_text_lost', 'clobbered to a stub');
   assert.equal(reason({ ...base, contentTier: 'invalid' }), 'recovered_text_lost', 'clobbered to garbage');
   assert.equal(reason({ ...base, fullText: 'x'.repeat(300) }), 'recovered_text_lost', 'too short to stand');
+  assert.equal(reason({ ...base, fullText: 'x'.repeat(1100) }), 'recovered_text_lost', 'under 40% of the recovered bytes: a teaser cut');
+  assert.equal(reason({ ...base, url: 'not a url' }), 'recovered_text_lost', 'malformed url');
+});
+
+test('reconcile: a subscriber/archive/paid recovery replaced by a collector fetch stays a loss (alerts, not blocked)', () => {
+  // NYT the-unbelievers 2026-11-09: BROWSER_SESSION 5389 chars, then a 2399-char
+  // browserbase cut labelled complete; that must not be waved through.
+  const URL = 'https://www.nytimes.com/2026/10/01/theater/the-unbelievers-review.html';
+  const later = { url: URL, contentTier: 'complete', fullText: 'x'.repeat(2399), fetchMethod: 'browserbase', textFetchedAt: iso(NOW - DAY / 2) };
+  for (const strategy of ['BROWSER_SESSION', 'ARCHIVE', 'PAID_FETCH']) {
+    const rows = [row({ ts: iso(NOW - DAY), outcome: 'recovered', strategy, url: URL, bytesAfter: 5389 })];
+    assert.equal(L.reconcileRecovered(rows, () => later)[0].reason, 'recovered_text_lost', strategy);
+  }
 });

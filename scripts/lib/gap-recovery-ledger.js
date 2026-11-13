@@ -176,11 +176,12 @@ function policyReasonOf(row) {
 function strategyState(index, reviewKey, strategy) {
   const all = index.get(reviewKey) || [];
   const rows = liveRows(all).filter((r) => r.strategy === strategy);
-  // Urls where another writer replaced this strategy's recovery (read across
-  // every reopen, never reset): re-accepting there is the nightly loop.
-  const supersededUrls = all
-    .filter((r) => r.outcome === 'reopened' && r.reason === SUPERSEDED_REASON && r.strategy === strategy && r.url)
-    .map((r) => r.url);
+  // Urls where another writer replaced a raw-HTML recovery (read across every
+  // reopen, not reset by one): re-accepting there with any raw-HTML strategy
+  // brings the same page chrome back, i.e. the nightly loop.
+  const supersededUrls = RAW_HTML_STRATEGIES.has(strategy)
+    ? all.filter((r) => r.outcome === 'reopened' && r.reason === SUPERSEDED_REASON && r.url).map((r) => r.url)
+    : [];
   const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0, supersededUrls };
   for (const r of rows) {
     st.lastTs = r.ts;
@@ -225,7 +226,9 @@ function evidenceStamp({ show, strategy, outcome, reason, priorState }) {
  */
 function strategyEligibility({ strategy, show, review, gapClass, state }) {
   const rg = require('./review-guards');
-  if (FETCH_STRATEGIES.has(strategy) && review && review.url && state && Array.isArray(state.supersededUrls)) {
+  // The block holds only while the newer writer's text is still substantive:
+  // once it degrades to a stub, recovering at the url is worth trying again.
+  if (state && Array.isArray(state.supersededUrls) && state.supersededUrls.length && isSubstantiveText(review) && /^https?:\/\//i.test(String(review.url || ''))) {
     const { urlCanonicallyChanged } = require('./url-change-invariant');
     if (state.supersededUrls.some((u) => !urlCanonicallyChanged(u, review.url))) {
       return { ok: false, reason: 'superseded_at_url' };
@@ -334,6 +337,23 @@ const SUPERSEDED_REASON = 'recovered_text_superseded';
 // Below these the newer text is itself a gap (a stub, a wall): a real loss.
 const SUPERSEDE_MIN_CHARS = 500;
 const SUPERSEDE_TIERS = new Set(['complete', 'truncated']);
+// A newer text under this share of the recovered bytes looks like a teaser
+// cut, not a cleaner extraction of the same article.
+const SUPERSEDE_MIN_RATIO = 0.4;
+// Strategies that extract the article from raw HTML (gap-strategies fromHtml),
+// where the collector reads the same page with a cleaner extractor. A
+// BROWSER_SESSION recovery is subscriber text the collector cannot see (NYT
+// the-unbelievers 2026-11-09: 5389 subscriber chars, later a 2399-char
+// browserbase cut labelled complete): its replacement stays a loss and alerts.
+const RAW_HTML_STRATEGIES = new Set(['REFETCH_FREE', 'PAID_FETCH', 'ARCHIVE', 'URL_FIND', 'URL_REDISCOVER']);
+// Of those, the ones whose recovery a same-url collector fetch can supersede
+// (ARCHIVE/PAID_FETCH texts may hold what the live free page no longer has).
+const SUPERSEDABLE_STRATEGIES = new Set(['REFETCH_FREE', 'URL_FIND', 'URL_REDISCOVER']);
+
+function isSubstantiveText(review) {
+  const text = review && typeof review.fullText === 'string' ? review.fullText : '';
+  return text.length >= SUPERSEDE_MIN_CHARS && SUPERSEDE_TIERS.has(review.contentTier);
+}
 
 /**
  * Did a different writer re-fetch the recovered url after the recovery landed
@@ -343,13 +363,19 @@ const SUPERSEDE_TIERS = new Set(['complete', 'truncated']);
  */
 function supersededByLaterFetch(review, recoveredRow) {
   if (!review || !recoveredRow || !review.url || !recoveredRow.url) return false;
+  if (!SUPERSEDABLE_STRATEGIES.has(recoveredRow.strategy)) return false;
+  if (!/^https?:\/\//i.test(String(review.url))) return false;
   if (require('./url-change-invariant').urlCanonicallyChanged(recoveredRow.url, review.url)) return false;
   const fetchedMs = Date.parse(review.textFetchedAt || '');
   const recMs = Date.parse(recoveredRow.ts || '');
   if (!Number.isFinite(fetchedMs) || !Number.isFinite(recMs) || fetchedMs <= recMs) return false;
-  if (/^gap-recovery/.test(String(review.fetchMethod || review.sourceMethod || ''))) return false;
-  const text = typeof review.fullText === 'string' ? review.fullText : '';
-  return text.length >= SUPERSEDE_MIN_CHARS && SUPERSEDE_TIERS.has(review.contentTier);
+  // The engine's own writes stamp textFetchedAt before its recovered row, so
+  // the time test already excludes them; the label check is belt and braces.
+  if (/^gap-recovery/.test(String(review.fetchMethod || ''))) return false;
+  if (!isSubstantiveText(review)) return false;
+  const bytes = Number(recoveredRow.bytesAfter);
+  if (Number.isFinite(bytes) && bytes > 0 && review.fullText.length < bytes * SUPERSEDE_MIN_RATIO) return false;
+  return true;
 }
 
 /**
@@ -387,7 +413,7 @@ function reconcileRecovered(rows, readReview, nowIso = new Date().toISOString())
       url: last.url,
       detail: {
         tier, recoveredAt: last.ts, pushedBlob: last.pushedBlob || null,
-        ...(superseded ? { supersededBy: review.fetchMethod || review.sourceMethod || null, supersededAt: review.textFetchedAt, bytesOnDisk: onDisk } : {}),
+        ...(superseded ? { supersededBy: review.fetchMethod || null, supersededAt: review.textFetchedAt, bytesOnDisk: onDisk } : {}),
       },
     }));
   }
