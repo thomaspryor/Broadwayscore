@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "postedDetection": "skipped",
-    "postedDetectionFailingSince": "2026-11-12T20:55:26.075Z",
+    "postedDetection": "ok",
+    "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-12T20:56:07.087Z"
+    "lastRun": "2026-11-13T00:35:12.789Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3456,14 +3456,11 @@
       "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+ENO%27s+Iphig%C3%A9nie+en+Tauride.+75%2F100+from+12+critics%2C+with+the+orchestra+getting+the+loudest+applause&text=It+opened+at+the+London+Coliseum%2C+and+I+found+12+reviews%3A+1+rave%2C+9+positive%2C+2+mixed%2C+zero+negative.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fiphigenie-en-tauride-english-national-opera-west-end%0A%0ACheryl+Markosky+at+London+Theatre+said+Bate%27s+leadership+of+the+ENO+Orchestra+%22transports+us+to+another+realm.%22+Vera+Liber+at+British+Theatre+Guide+wrote+%22Turner%E2%80%99s+production+is+understated+and+ideal.%22+Meanwhile+Patrick+Shorrock+at+The+Reviews+Hub+wrote+%22They+give+Iphig%C3%A9nie+en+Tauride+the+best+possible+chance%2C+but+the+result+is+still+something+of+a+disappointment.%22%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AI+haven%27t+seen+this+one+yet%2C+so+I+remain+undecided+on+going.+Anyone+caught+it%3F",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
-      "emailedAt": "2026-11-11T20:01:21.314Z",
-      "reminderAt": "2026-11-11T20:01:21.314Z",
+      "emailedAt": "2026-11-13T00:38:47.385Z",
+      "reminderAt": "2026-11-13T00:38:47.385Z",
       "emailedScore": 75,
-      "emailedReviewCount": 11,
-      "updateCount": 4,
-      "refreshedAt": "2026-11-12T20:56:07.087Z",
-      "previousScore": 75,
-      "previousReviewCount": 11
+      "emailedReviewCount": 12,
+      "updateCount": 5
     },
     "here-there-are-blueberries-2026": {
       "showId": "here-there-are-blueberries-2026",
@@ -3538,7 +3535,7 @@
       "showTitle": "Cloud 9",
       "market": "west-end",
       "subreddit": "TheWestEnd",
-      "score": 77,
+      "score": 78,
       "reviewCount": 23,
       "url": "https://westendscorecard.com/show/cloud-9-west-end",
       "notability": 45,
@@ -3546,28 +3543,25 @@
       "status": "ready",
       "source": "claude-sonnet-5-5",
       "lintProblems": [],
-      "title": "Reviews are in for Cloud 9 at the Lyttelton. 77/100 from 23 critics, with a few doubts about how well the play has aged",
-      "body": "Cloud 9 opened at the Lyttelton Theatre on Nov 10, and I found 23 reviews: 7 raves, 13 positive, 2 mixed, 1 negative. Audiences are at a B (across Mezzanine, Seatplan, and London Box Office).\n\nhttps://westendscorecard.com/show/cloud-9-west-end\n\nStuart King at London Box Office called it \"an utter delight\" and praised the cast and creative team. Meanwhile Clive Davis at The Sunday Times wrote \"it turns out to be a long evening.\" Nick Curtis at the Evening Standard liked the production, but said \"the play resonates more for its historical significance than its contemporary appeal.\" Which, fair.\n\nI haven't seen this one yet, and the raves have me leaning toward going. Anyone caught it?",
-      "why": "The hook is the spread between King's 'utter delight' and Davis's 'long evening', with the age-of-the-play question underneath, which gives a mostly positive 77 some texture without treating the number as a verdict.",
-      "expectedPushback": "Someone will say a 77 for a Caryl Churchill play is meaningless, or that a play this radical shouldn't be reduced to a score at all.",
-      "suggestedReply": "Totally fair, I'm only ever trying to point people to what the critics actually wrote, and the quotes are the good part. The Critic Score is just a weighted average of the published critic reviews, so take it as a rough starting point and not a verdict.",
+      "title": "Reviews are in for Cloud 9 at the Lyttelton. 78/100 from 23 critics, and only one pan",
+      "body": "Cloud 9 just opened at the Lyttelton, and I found 23 reviews: 6 raves, 14 positive, 2 mixed, 1 negative. Audiences are at a B (across Mezzanine, Seatplan, and London Box Office).\n\nhttps://westendscorecard.com/show/cloud-9-west-end\n\nStuart King at London Box Office called it \"A play which shouldn’t work, which should make us cringe with embarrassment, is an utter delight.\" Meanwhile Clive Davis at The Sunday Times wrote that \"it turns out to be a long evening.\" Nick Curtis at the Evening Standard said \"the play resonates more for its historical significance than its contemporary appeal.\" Which I kind of get for a play from 1979.\n\nI haven't seen this one yet, and I'm leaning toward going. Anyone seen it?",
+      "why": "It leads with the show and the number plus a simple hook (23 critics, only one pan), then lets a rave and two cooler quotes carry the post, ending with a real question to people who may have seen it.",
+      "expectedPushback": "\"Does a 78 out of 100 really tell you anything about a play? Just go and decide for yourself.\"",
+      "suggestedReply": "Ha, fair, and honestly that's my plan too. I mostly like reading the reviews side by side, and the score is just a weighted average of the critic reviews, so the quotes are the interesting part.",
       "personalLines": [
-        "I haven't seen this one yet, but I'm leaning toward going.",
-        "Still undecided on this one, honestly.",
-        "Haven't seen it yet, and the raves have me curious."
+        "I haven't seen this one yet, and I'm leaning toward going.",
+        "Haven't seen it yet, and I'm still undecided on this one.",
+        "I haven't seen it yet, but the reviews have me curious."
       ],
-      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+77%2F100+from+23+critics%2C+with+a+few+doubts+about+how+well+the+play+has+aged&text=Cloud+9+opened+at+the+Lyttelton+Theatre+on+Nov+10%2C+and+I+found+23+reviews%3A+7+raves%2C+13+positive%2C+2+mixed%2C+1+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+called+it+%22an+utter+delight%22+and+praised+the+cast+and+creative+team.+Meanwhile+Clive+Davis+at+The+Sunday+Times+wrote+%22it+turns+out+to+be+a+long+evening.%22+Nick+Curtis+at+the+Evening+Standard+liked+the+production%2C+but+said+%22the+play+resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22+Which%2C+fair.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+the+raves+have+me+leaning+toward+going.+Anyone+caught+it%3F",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+77%2F100+from+23+critics%2C+with+a+few+doubts+about+how+well+the+play+has+aged&text=Cloud+9+opened+at+the+Lyttelton+Theatre+on+Nov+10%2C+and+I+found+23+reviews%3A+7+raves%2C+13+positive%2C+2+mixed%2C+1+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+called+it+%22an+utter+delight%22+and+praised+the+cast+and+creative+team.+Meanwhile+Clive+Davis+at+The+Sunday+Times+wrote+%22it+turns+out+to+be+a+long+evening.%22+Nick+Curtis+at+the+Evening+Standard+liked+the+production%2C+but+said+%22the+play+resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22+Which%2C+fair.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+the+raves+have+me+leaning+toward+going.+Anyone+caught+it%3F",
+      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+78%2F100+from+23+critics%2C+and+only+one+pan&text=Cloud+9+just+opened+at+the+Lyttelton%2C+and+I+found+23+reviews%3A+6+raves%2C+14+positive%2C+2+mixed%2C+1+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+called+it+%22A+play+which+shouldn%E2%80%99t+work%2C+which+should+make+us+cringe+with+embarrassment%2C+is+an+utter+delight.%22+Meanwhile+Clive+Davis+at+The+Sunday+Times+wrote+that+%22it+turns+out+to+be+a+long+evening.%22+Nick+Curtis+at+the+Evening+Standard+said+%22the+play+resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22+Which+I+kind+of+get+for+a+play+from+1979.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+toward+going.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+78%2F100+from+23+critics%2C+and+only+one+pan&text=Cloud+9+just+opened+at+the+Lyttelton%2C+and+I+found+23+reviews%3A+6+raves%2C+14+positive%2C+2+mixed%2C+1+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+called+it+%22A+play+which+shouldn%E2%80%99t+work%2C+which+should+make+us+cringe+with+embarrassment%2C+is+an+utter+delight.%22+Meanwhile+Clive+Davis+at+The+Sunday+Times+wrote+that+%22it+turns+out+to+be+a+long+evening.%22+Nick+Curtis+at+the+Evening+Standard+said+%22the+play+resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22+Which+I+kind+of+get+for+a+play+from+1979.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+toward+going.+Anyone+seen+it%3F",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
-      "emailedAt": "2026-11-12T18:25:58.178Z",
-      "reminderAt": "2026-11-12T18:25:58.178Z",
-      "emailedScore": 77,
-      "emailedReviewCount": 21,
-      "updateCount": 6,
-      "refreshedAt": "2026-11-12T20:55:53.468Z",
-      "previousScore": 77,
-      "previousReviewCount": 21
+      "emailedAt": "2026-11-13T00:38:43.483Z",
+      "reminderAt": "2026-11-13T00:38:43.483Z",
+      "emailedScore": 78,
+      "emailedReviewCount": 23,
+      "updateCount": 7
     }
   }
 }
