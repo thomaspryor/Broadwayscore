@@ -510,3 +510,4 @@
 {"ts":"2026-11-13T09:37:02.541Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-11-13T09:37:01.295Z","ok":true,"error":null}
 {"ts":"2026-11-13T09:37:43.971Z","conditionKey":"abandoned-review-rescue:midnight-off-broadway-2026","title":"midnight-off-broadway-2026: 1 real review(s) the servers cannot fetch","ok":true,"error":null}
 {"ts":"2026-11-13T09:38:09.541Z","conditionKey":"openai-retirement:unregistered","title":"OpenAI shutdown: 1 model the repo uses is not in the retirement registry","ok":true,"error":null}
+{"ts":"2026-11-13T10:21:39.321Z","conditionKey":"pending-unrecoverable:in-the-heights-off-broadway-2026","title":"1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
