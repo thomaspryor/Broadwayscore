@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T07:38:47.822Z",
+  "generatedAt": "2026-11-13T08:04:57.570Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1905,17 +1905,17 @@
       "status": "open",
       "slug": "hamlet-hail-to-the-thief-off-west-end",
       "thumbnail": "/images/shows/hamlet-hail-to-the-thief-off-west-end-2026/thumbnail.webp",
-      "siteScore": 75,
-      "liveScore": 75,
-      "scoreDrift": 0,
+      "siteScore": 77.05,
+      "liveScore": 77,
+      "scoreDrift": -0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 3,
+      "total": 10,
+      "t1": 4,
       "t2": 1,
       "t3": 5,
-      "positive": 5,
+      "positive": 6,
       "mixed": 4,
       "negative": 0,
       "readiness": {
@@ -1923,7 +1923,7 @@
         "reasons": [
           "T2:1/2"
         ],
-        "highConfidence": 9,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1936,10 +1936,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -2104,6 +2100,18 @@
           "t2": 1,
           "t3": 5,
           "p": 5,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-13T08:04:57.570Z",
+          "rc": 10,
+          "s": 77.05,
+          "t1": 4,
+          "t2": 1,
+          "t3": 5,
+          "p": 6,
           "m": 4,
           "n": 0,
           "bc": "waiting"

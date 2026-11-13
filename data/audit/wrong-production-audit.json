@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T07:38:36.288Z",
+  "timestamp": "2026-11-13T08:04:46.024Z",
   "stats": {
-    "totalReviews": 81816,
-    "alreadyFlagged": 22340,
+    "totalReviews": 81817,
+    "alreadyFlagged": 22344,
     "dateGuardCatches": 219,
-    "directorMismatch": 3668,
-    "tvFilmSignals": 2304,
-    "londonSignals": 3720,
-    "offBroadwaySignals": 751,
+    "directorMismatch": 3671,
+    "tvFilmSignals": 2309,
+    "londonSignals": 3731,
+    "offBroadwaySignals": 752,
     "yearMismatch": 375,
-    "noPublishDate": 8432
+    "noPublishDate": 8430
   },
   "findings": [
     {
@@ -4688,7 +4688,7 @@
     {
       "showId": "american-idiot-2010",
       "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 72,
+      "score": 68,
       "publishDate": "2010-04-21T08:45:36-04:00",
       "url": "http://www.nydailynews.com/entertainment/music/2010/04/21/2010-04-21_green_days_american_idiot_more_like_a_breakneck_event_than_a_broadway_musical.html",
       "findings": [
@@ -4859,6 +4859,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -6988,6 +6993,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "theupcoming--michael-higgs.json",
+      "score": 81,
+      "publishDate": "2026-04-17",
+      "url": "https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -11587,6 +11606,25 @@
       ]
     },
     {
+      "showId": "care-off-west-end-2026",
+      "file": "theupcoming--maggie-oshea.json",
+      "score": 66,
+      "publishDate": "2026-05-21",
+      "url": "https://www.theupcoming.co.uk/2026/05/21/care-at-the-young-vic-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "caroline-off-broadway-2026",
       "file": "off-off-online--adrienne-onofri.json",
       "score": 72,
@@ -14708,7 +14746,7 @@
     {
       "showId": "constellations-west-end-2021",
       "file": "thestage--natasha-tripney.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "July 1st, 2021",
       "url": "https://www.thestage.co.uk/reviews/constellations-vaudeville-peter-capaldi-zoe-wanamaker-sheila-atim-russell-tovey",
       "findings": [
@@ -20411,7 +20449,7 @@
     {
       "showId": "end-of-the-rainbow-west-end-2010",
       "file": "independent--matilda-battersby.json",
-      "score": 85,
+      "score": 96,
       "publishDate": "2010-11-23",
       "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/end-of-the-rainbow-trafalgar-studios-london-2144093.html",
       "findings": [
@@ -20848,6 +20886,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john dexter\" from equus-1974"
+        }
+      ]
+    },
+    {
+      "showId": "equus-off-west-end-2026",
+      "file": "londontheatrehub--peter-shaffer.json",
+      "score": null,
+      "publishDate": "2026-05-07",
+      "url": "https://londontheatrehub.co.uk/shows/equus/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thea sharrock\" from equus-2008"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john dexter\" from equus-1974"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -21864,7 +21926,7 @@
     {
       "showId": "farinelli-and-the-king-west-end-2015",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2015-09-30",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/farinelli-and-the-king-duke-of-yorks-theatre-review/",
       "findings": [
@@ -26569,6 +26631,20 @@
       ]
     },
     {
+      "showId": "grace-pervades-west-end-2026",
+      "file": "theupcoming--jim-compton-hall.json",
+      "score": 93,
+      "publishDate": "2026-05-01",
+      "url": "https://www.theupcoming.co.uk/2026/05/01/grace-pervades-at-theatre-royal-haymarket-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "grease-2007",
       "file": "nytimes--ben-brantley.json",
       "score": 30,
@@ -27787,7 +27863,7 @@
     {
       "showId": "gypsy-west-end-2015",
       "file": "whatsonstage--michael-coveney.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2015-04-16",
       "url": "https://www.whatsonstage.com/news/gypsy-savoy-theatre_37597/",
       "findings": [
@@ -30871,7 +30947,7 @@
     {
       "showId": "heathers-the-musical-off-broadway-2025",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": 65,
+      "score": 55,
       "publishDate": "July 10, 2025",
       "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
       "findings": [
@@ -36489,6 +36565,25 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 95,
+      "publishDate": null,
+      "url": "https://www.allthatdazzles.co.uk/post/review-john-proctor-is-the-villain-royal-court",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 98,
       "publishDate": "2026-03-27",
@@ -36961,7 +37056,7 @@
     {
       "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
       "file": "telegraph--claire-allfree.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2021-07-28",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/joseph-amazing-technicolor-dreamcoat-london-palladium-review/",
       "findings": [
@@ -36980,7 +37075,7 @@
     {
       "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
       "file": "thestage--tim-bano.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2021-07-28",
       "url": "https://www.thestage.co.uk/long-reviews/joseph-and-the-amazing-technicolor-dreamcoat-london-palladium-andrew-lloyd-webber-tim-rice-jason-donovan-alexandra-burke-jac-yarrow-2021",
       "findings": [
@@ -38763,7 +38858,7 @@
     {
       "showId": "lend-me-a-tenor-2010",
       "file": "wsj--terry-teachout.json",
-      "score": 63,
+      "score": 62,
       "publishDate": "2010-04-08T23:30:00-04:00",
       "url": "https://online.wsj.com/article/SB10001424052702303411604575168152141751426.html",
       "findings": [
@@ -54630,7 +54725,7 @@
     {
       "showId": "priscilla-queen-of-the-desert-2011",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 81,
+      "score": 77,
       "publishDate": "March 20, 2011",
       "url": "http://www.hollywoodreporter.com/review/priscilla-queen-desert-theater-review-169436",
       "findings": [
@@ -54700,7 +54795,7 @@
     {
       "showId": "private-lives-2011",
       "file": "backstage--erik-haagensen.json",
-      "score": 40,
+      "score": 41,
       "publishDate": "November 17, 2011",
       "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-private-lives-1005542242.story",
       "findings": [
@@ -54858,6 +54953,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2000 (2x) more than 2026 (0x). 2000 matches production: proof-2000"
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 65,
+      "publishDate": "2026-04-17",
+      "url": "https://www.nysun.com/article/this-proof-doesnt-fully-deliver-on-its-concept",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -65086,6 +65195,25 @@
       ]
     },
     {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "theupcoming--jim-compton-hall.json",
+      "score": 88,
+      "publishDate": "2026-04-03",
+      "url": "https://www.theupcoming.co.uk/2026/04/03/the-authenticator-at-the-national-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-bands-visit-2017",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 93,
@@ -70957,7 +71085,7 @@
     {
       "showId": "the-house-of-blue-leaves-2011",
       "file": "nytimes--ben-brantley.json",
-      "score": 62,
+      "score": 45,
       "publishDate": "2011-04-25",
       "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html",
       "findings": [
@@ -75409,7 +75537,7 @@
     {
       "showId": "the-peewee-herman-show-2010",
       "file": "backstage--david-sheward.json",
-      "score": 82,
+      "score": 76,
       "publishDate": null,
       "url": "https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i7fd4195ba1b2a8463e4b60fd878cd982",
       "findings": [
@@ -89783,7 +89911,7 @@
     {
       "showId": "american-buffalo-west-end-2015",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 73,
+      "score": 76,
       "publishDate": "2015-04-28",
       "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11561068/American-Buffalo-Wyndhams-Theatre-review-Damien-Lewis-has-bravura.html",
       "findings": [
@@ -90923,6 +91051,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "file": "oldvictheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.oldvictheatre.com/stage/arcadia/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -92642,6 +92784,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "bird-grove-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 39,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/bird-grove-hampstead-theatre-review-b1272229.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -97749,6 +97905,20 @@
     },
     {
       "showId": "dear-liar-off-west-end-2026",
+      "file": "london-box-office--miriam-gibson.json",
+      "score": 58,
+      "publishDate": "2026-02-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/dear-liar-jermyn-street-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-liar-off-west-end-2026",
       "file": "north-west-end--michelle-knight.json",
       "score": 80,
       "publishDate": "2026-02-12",
@@ -98755,6 +98925,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 42,
+      "publishDate": "2026-04-01",
+      "url": "https://www.theatrereviews.com/broadway-mini-review-dog-day-afternoon-at-the-august-wilson-theatre-through-sunday-july-12-2026/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -104757,6 +104941,20 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "guardian--alexis-petridis.json",
+      "score": 88,
+      "publishDate": "2026-11-13",
+      "url": "https://www.theguardian.com/stage/2026/nov/13/hamlet-hail-to-the-thief-radiohead-record-shakespeare-tragedy",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 75,
       "publishDate": "2026-11-13",
@@ -104780,6 +104978,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "sunday-times--dominic-maxwell.json",
+      "publishDate": "2026-11-12",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/hamlet-hail-to-the-thief-review-radiohead-gpzn0lhp0",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -110036,7 +110247,7 @@
     {
       "showId": "jews-in-their-own-words-west-end-2022",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "September 29th, 2022",
       "url": "https://theartsdesk.com/theatre/jews-their-own-words-royal-court-review-calling-out-ancient-prejudice",
       "findings": [
@@ -110092,7 +110303,7 @@
     {
       "showId": "jews-in-their-own-words-west-end-2022",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 58,
+      "score": 62,
       "publishDate": "September 30th, 2022",
       "url": "https://www.timeout.com/london/theatre/jews-in-their-own-words-review",
       "findings": [
@@ -110106,7 +110317,7 @@
     {
       "showId": "jitney-west-end-2022",
       "file": "express-uk--neil-norman.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2022-06-24",
       "url": "https://www.express.co.uk/entertainment/theatre/1630664/jitney-review-theatre-august-wilson",
       "findings": [
@@ -110343,7 +110554,7 @@
     {
       "showId": "julie-west-end-2018",
       "file": "artsdesk--matt-wolf.json",
-      "score": 39,
+      "score": 35,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/julie-national-theatre-review-vacuous-and-unilluminating",
       "findings": [
@@ -111137,6 +111348,20 @@
     },
     {
       "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 89,
+      "publishDate": "May 12th, 2026",
+      "url": "https://www.allthatdazzles.co.uk/post/review-krapp-s-last-tape-godot-s-to-do-list-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
       "file": "independent--alice-saville.json",
       "score": 79,
       "publishDate": "2026-05-12",
@@ -111292,7 +111517,7 @@
     {
       "showId": "lady-day-at-emersons-bar-and-grill-west-end-2017",
       "file": "guardian--michael-billington.json",
-      "score": 57,
+      "score": 60,
       "publishDate": "2017-06-27",
       "url": "https://www.theguardian.com/stage/2017/jun/27/lady-day-at-emersons-bar-and-grill-review-billie-holiday-audra-mcdonald",
       "findings": [
@@ -111306,7 +111531,7 @@
     {
       "showId": "lady-day-at-emersons-bar-and-grill-west-end-2017",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2017-06-28T07:22:57-04:00",
       "url": "http://www.telegraph.co.uk/theatre/what-to-see/utterly-intoxicating-evening-billie-holiday-lady-day-emersons/",
       "findings": [
@@ -113211,6 +113436,20 @@
       "score": 43,
       "publishDate": "2026-02-11",
       "url": "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "file": "liamodell--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://liamodell.com/2026/02/19/national-theatre-auracast-pilot-access-deaf-dorfman-theatre-man-and-boy/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -119084,7 +119323,7 @@
     {
       "showId": "once-2012",
       "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 90,
+      "score": 84,
       "publishDate": "2012-03-18T19:59:36-04:00",
       "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-article-1.1040927",
       "findings": [
@@ -122026,7 +122265,7 @@
     {
       "showId": "race-2009",
       "file": "observer--jesse-oxfeld.json",
-      "score": 38,
+      "score": 43,
       "publishDate": null,
       "url": "https://observer.com/2009/culture/make-way-mamet-didact-1",
       "findings": [
@@ -123978,7 +124217,7 @@
     {
       "showId": "shifters-west-end-2024",
       "file": "thestage--holly-omahony.json",
-      "score": 87,
+      "score": 83,
       "publishDate": "2024-02-27",
       "url": "https://www.thestage.co.uk/reviews/shifters-review-at-bush-theatre-london-by-benedict-lombe-similar-to-david-nicholls-one-day",
       "findings": [
@@ -128211,20 +128450,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "the-authenticator-west-end-2026",
-      "file": "theupcoming--jim-compton-hall.json",
-      "score": 88,
-      "publishDate": "2026-04-03",
-      "url": "https://www.theupcoming.co.uk/2026/04/03/the-authenticator-at-the-national-theatre-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
