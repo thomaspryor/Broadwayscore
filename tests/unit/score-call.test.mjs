@@ -105,7 +105,7 @@ test('buildSyncRows uses the last ledger row before opening, skips rows without 
   ];
   const rows = buildSyncRows({ shows, ledgerRows: ledger, today: '2026-11-11', reviewCounts: { a: 2 } });
   assert.equal(rows.length, 1);
-  assert.deepEqual(rows[0], { p_show_id: 'a', p_opening: '2026-12-01', p_forecast: 74, p_lo: 62, p_hi: 85, p_lo50: null, p_hi50: null, p_reviews_live: true, p_enabled: true });
+  assert.deepEqual(rows[0], { p_show_id: 'a', p_opening: '2026-12-01', p_forecast: 74, p_lo: 62, p_hi: 85, p_reviews_live: true, p_enabled: true });
 });
 // BRO-7348 owner-only board: allowed to read the ledger only while it stays admin-gated and per-request.
 const OWNER_ONLY = new Set(['src/app/admin/forecasts/page.tsx', 'src/lib/admin-review-forecasts.ts']);
@@ -249,14 +249,14 @@ test('hook: load keeps held calls on success and on failure, and lock ignores a 
   assert.match(src, /if \(stale\) return \{ ok: true, call \};/);
 });
 
-test('buildSyncRows passes the true 50% band when the ledger has one, null (server derives) when it does not (BRO-7430)', () => {
+test('buildSyncRows passes the true 50% band when the ledger has one, omitted (server derives) when it does not (BRO-7430)', () => {
   const shows = [{ id: 'a', openingDate: '2026-12-06', category: 'broadway', type: 'play', status: 'previews' }];
   const mk = (extra) => [{ showId: 'a', openingDate: '2026-12-06', recordedAt: '2026-11-01', forecast: 70, lo80: 56, hi80: 82, ...extra }];
   const withTrue = buildSyncRows({ shows, ledgerRows: mk({ lo50: 63, hi50: 77 }), today: '2026-11-13' });
   assert.equal(withTrue.length, 1);
   assert.equal(withTrue[0].p_lo50, 63); assert.equal(withTrue[0].p_hi50, 77);
   const old = buildSyncRows({ shows, ledgerRows: mk({}), today: '2026-11-13' });
-  assert.equal(old[0].p_lo50, null); assert.equal(old[0].p_hi50, null);
+  assert.equal('p_lo50' in old[0], false, 'keys omitted so a pre-migration loader still matches the old function');
 });
 
 test('fitForecaster returns lo50/hi50 inside the 80% band (BRO-7430)', () => {
@@ -292,5 +292,7 @@ test('readers fetch: only when locked, a failed or missing RPC is "no readers", 
   assert.match(hook, /readersCache = null; \/\/ a fresh lock/);
   const comp = fs.readFileSync(path.join(ROOT, 'src/components/show-page/CallTheScore.tsx'), 'utf8');
   assert.match(comp, /useScoreCallReaders\(show\.id, true\)/);
+  assert.match(comp, /ready && !failed && !readers/, 'a failed readers fetch never claims first reader');
+  assert.match(hook, /return null; \}/);
   assert.doesNotMatch(comp, /lo80|hi80/, 'the 80% band never reaches the reader');
 });

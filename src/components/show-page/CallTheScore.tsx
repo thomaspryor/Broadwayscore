@@ -28,7 +28,7 @@ function Tile({ label, score, category, muted, predicted, caption }: { label: st
 /** "likely 63 to 77": the numbers a touch brighter than the word. */
 function RangeCaption({ lo50, hi50 }: { lo50?: number | null; hi50?: number | null }) {
   const c = rangeCaption({ lo50: lo50 as number, hi50: hi50 as number });
-  return c ? <>{c.word} <span className="text-gray-300">{c.nums}</span></> : null;
+  return c ? <>{c.word} <span className="text-gray-300 whitespace-nowrap">{c.nums}</span></> : null;
 }
 
 // Module-level so React keeps the subtree (and the slider's drag) across renders.
@@ -40,7 +40,7 @@ const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions cl
 
 /** Locked state. Readers load after the lock; sentences wait for them so the text does not change under the reader. */
 function LockedCard({ show, call }: { show: ShowLike; call: NonNullable<ReturnType<typeof useScoreCall>['call']> }) {
-  const { ready, readers } = useScoreCallReaders(show.id, true);
+  const { ready, readers, failed } = useScoreCallReaders(show.id, true);
   const hasF = call.forecast != null;
   const rng = rangeCaption({ lo50: call.lo50 as number, hi50: call.hi50 as number });
   const sentence = readers
@@ -56,8 +56,8 @@ function LockedCard({ show, call }: { show: ShowLike; call: NonNullable<ReturnTy
       </div>
       {ready && sentence && <p className="text-sm text-gray-300 text-center m-0 mb-1">{sentence}</p>}
       {ready && !hasF && !readers && <p className="text-sm text-gray-300 text-center m-0 mb-1">We don&apos;t have a forecast for this show.</p>}
-      {ready && !readers && <p className="text-sm text-gray-300 text-center m-0 mb-1">{FIRST_READER_LINE}</p>}
-      <p className="text-xs text-fg-muted text-center m-0">{smallPrint({ hasForecast: hasF, hasRange: !!rng, hasReaders: !!readers, dateText: fmtDate(show.openingDate) })}</p>
+      {ready && !failed && !readers && <p className="text-sm text-gray-300 text-center m-0 mb-1">{FIRST_READER_LINE}</p>}
+      {ready && <p className="text-xs text-fg-muted text-center m-0">{smallPrint({ hasForecast: hasF, hasRange: !!rng, hasReaders: !!readers, dateText: fmtDate(show.openingDate) })}</p>}
     </Wrap>
   );
 }

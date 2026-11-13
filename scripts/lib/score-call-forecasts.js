@@ -17,9 +17,9 @@ function buildSyncRows({ shows, ledgerRows, today, reviewCounts = {} }) {
       p_show_id: s.id, p_opening: s.openingDate, p_forecast: Math.round(row.forecast),
       p_lo: typeof row.lo80 === 'number' ? Math.round(row.lo80) : null,
       p_hi: typeof row.hi80 === 'number' ? Math.round(row.hi80) : null,
-      // True 50% band when the ledger row has one; null lets sync_score_call_show derive it (the only derivation).
-      p_lo50: typeof row.lo50 === 'number' ? Math.round(row.lo50) : null,
-      p_hi50: typeof row.hi50 === 'number' ? Math.round(row.hi50) : null,
+      // True 50% band when the ledger row has one; omitted lets sync_score_call_show derive it (the only derivation).
+      // Keys are left out (not null) when absent, so a loader running before the 20261113 migration still matches the old function.
+      ...(typeof row.lo50 === 'number' && typeof row.hi50 === 'number' ? { p_lo50: Math.round(row.lo50), p_hi50: Math.round(row.hi50) } : {}),
       p_reviews_live: (reviewCounts[s.id] || 0) > 0, p_enabled: true,
     });
   }
