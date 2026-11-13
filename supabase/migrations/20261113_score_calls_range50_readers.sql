@@ -25,10 +25,14 @@ REVOKE ALL ON FUNCTION public.score_call_range50(INTEGER, INTEGER, INTEGER) FROM
 GRANT EXECUTE ON FUNCTION public.score_call_range50(INTEGER, INTEGER, INTEGER) TO service_role;
 
 -- Backfill: every forecast row and every locked snapshot gets a range, derived from its own 80% band.
-UPDATE public.score_call_shows s SET lo50 = d.lo50, hi50 = d.hi50
-  FROM LATERAL public.score_call_range50(s.forecast, s.lo80, s.hi80) d WHERE s.lo50 IS NULL AND s.forecast IS NOT NULL;
-UPDATE public.score_calls c SET lo50_at_lock = d.lo50, hi50_at_lock = d.hi50
-  FROM LATERAL public.score_call_range50(c.forecast_at_lock, c.lo80_at_lock, c.hi80_at_lock) d WHERE c.lo50_at_lock IS NULL AND c.forecast_at_lock IS NOT NULL;
+UPDATE public.score_call_shows s
+  SET lo50 = (SELECT d.lo50 FROM public.score_call_range50(s.forecast, s.lo80, s.hi80) d),
+      hi50 = (SELECT d.hi50 FROM public.score_call_range50(s.forecast, s.lo80, s.hi80) d)
+  WHERE s.lo50 IS NULL AND s.forecast IS NOT NULL;
+UPDATE public.score_calls c
+  SET lo50_at_lock = (SELECT d.lo50 FROM public.score_call_range50(c.forecast_at_lock, c.lo80_at_lock, c.hi80_at_lock) d),
+      hi50_at_lock = (SELECT d.hi50 FROM public.score_call_range50(c.forecast_at_lock, c.lo80_at_lock, c.hi80_at_lock) d)
+  WHERE c.lo50_at_lock IS NULL AND c.forecast_at_lock IS NOT NULL;
 
 -- The likely range always sits inside the 80% range.
 ALTER TABLE public.score_call_shows DROP CONSTRAINT IF EXISTS score_call_shows_range50_inside80;

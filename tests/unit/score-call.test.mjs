@@ -19,14 +19,63 @@ test('resultStrip: off by N, beat forecast, null forecast', () => {
   assert.equal(SC.resultStrip({ called: 60, forecast: null, critic: 78 }).forecastMiss, null);
   assert.equal(SC.resultStrip({ called: null, forecast: 1, critic: 5 }), null);
 });
-test('gapSentence', () => {
-  assert.equal(SC.gapSentence({ called: 80, forecast: 74, lo80: 62, hi80: 85 }), 'Your prediction is 6 points above our forecast. We expect the Critic Score to land between 62 and 85.');
-  assert.equal(SC.gapSentence({ called: 74, forecast: 74 }), 'Your prediction matches our forecast.');
-  assert.equal(SC.gapSentence({ called: 73, forecast: 74 }), 'Your prediction is 1 point below our forecast.');
-  assert.equal(SC.gapSentence({ called: 70, forecast: null }), null);
-  // Owner 2026-11-13: these phrasings read as sloppy; keep them out.
-  const all = [SC.gapSentence({ called: 59, forecast: 70, lo80: 56, hi80: 82 }), SC.resultSentence({ r: SC.resultStrip({ called: 59, forecast: 70, critic: 66 }) })].join(' ');
-  assert.doesNotMatch(all, /You are \d+ (above|below)|get scored|Off by/);
+test('gapSentence: owner wording, inside/outside the likely range (BRO-7430)', () => {
+  const R = { lo50: 63, hi50: 77 };
+  assert.equal(SC.gapSentence({ called: 59, forecast: 70, ...R }), 'Your prediction is 11 points below our forecast, and outside our likely range.');
+  assert.equal(SC.gapSentence({ called: 81, forecast: 70, ...R }), 'Your prediction is 11 points above our forecast, and outside our likely range.');
+  assert.equal(SC.gapSentence({ called: 66, forecast: 70, ...R }), 'Your prediction is 4 points below our forecast, inside our likely range.');
+  assert.equal(SC.gapSentence({ called: 63, forecast: 70, ...R }), 'Your prediction is 7 points below our forecast, inside our likely range.', 'edge is inside');
+  assert.equal(SC.gapSentence({ called: 77, forecast: 70, ...R }), 'Your prediction is 7 points above our forecast, inside our likely range.');
+  assert.equal(SC.gapSentence({ called: 78, forecast: 70, ...R }), 'Your prediction is 8 points above our forecast, and outside our likely range.');
+  assert.equal(SC.gapSentence({ called: 70, forecast: 70, ...R }), 'Your prediction matches our forecast.');
+  assert.equal(SC.gapSentence({ called: 69, forecast: 70, ...R }), 'Your prediction is 1 point below our forecast, inside our likely range.', 'singular');
+  assert.equal(SC.gapSentence({ called: 73, forecast: 74 }), 'Your prediction is 1 point below our forecast.', 'no range: no range clause');
+  assert.equal(SC.gapSentence({ called: 73, forecast: 74, lo50: null, hi50: 80 }), 'Your prediction is 1 point below our forecast.');
+  assert.equal(SC.gapSentence({ called: 70, forecast: null, ...R }), null);
+  assert.equal(SC.gapSentence({ called: 70, forecast: undefined }), null);
+});
+
+test('readersSentence: every branch (BRO-7430)', () => {
+  const f = (o) => SC.readersSentence({ forecast: 70, readersAvg: 64, readersN: 12, called: 59, ...o });
+  assert.equal(f({}), 'You are 5 points below other readers and 11 below our forecast.');
+  assert.equal(f({ called: 75, readersAvg: 70, forecast: 64 }), 'You are 5 points above other readers and 11 above our forecast.');
+  assert.equal(f({ called: 64 }), 'You are level with other readers and 6 below our forecast.');
+  assert.equal(f({ called: 70 }), 'You are 6 points above other readers and level with our forecast.');
+  assert.equal(f({ called: 70, readersAvg: 70 }), 'You are level with other readers and our forecast.');
+  assert.equal(f({ readersN: 1, called: 57 }), 'You are 7 points below the one other reader and 13 below our forecast.');
+  assert.equal(f({ readersN: 1, called: 57, readersAvg: 70 }), 'You are 13 points below the one other reader and 13 below our forecast.');
+  assert.equal(f({ readersN: 1, called: 65, readersAvg: 64, forecast: 66 }), 'You are 1 point above the one other reader and 1 below our forecast.');
+  assert.equal(f({ readersN: 1, called: 64 }), 'You are level with the one other reader and 6 below our forecast.');
+  assert.equal(f({ forecast: null }), 'You are 5 points below other readers.');
+  assert.equal(f({ forecast: null, called: 64 }), 'You are level with other readers.');
+  assert.equal(f({ forecast: null, readersN: 1, called: 70 }), 'You are 6 points above the one other reader.');
+  assert.equal(f({ readersN: 0 }), null);
+  assert.equal(f({ readersAvg: null }), null);
+});
+
+test('captions, small print, strip footer, first-reader line (BRO-7430)', () => {
+  assert.deepEqual(SC.rangeCaption({ lo50: 63, hi50: 77 }), { word: 'likely', nums: '63 to 77' });
+  assert.equal(SC.rangeCaption({ lo50: null, hi50: 77 }), null);
+  assert.equal(SC.rangeCaption({}), null);
+  assert.equal(SC.readersCaption(12), 'average of 12');
+  assert.equal(SC.readersCaption(2), 'average of 2');
+  assert.equal(SC.readersCaption(1), '1 other reader');
+  assert.equal(SC.readersCaption(0), null);
+  assert.equal(SC.readersCaption(null), null);
+  const d = 'December 6, 2026';
+  assert.equal(SC.smallPrint({ hasForecast: true, hasRange: true, hasReaders: false, dateText: d }), 'The Critic Score lands in our likely range about half the time. Reviews come out after opening night on December 6, 2026. Come back to see who was closer.');
+  assert.equal(SC.smallPrint({ hasForecast: true, hasRange: true, hasReaders: true, dateText: d }), 'The Critic Score lands in our likely range about half the time. Reviews come out after opening night on December 6, 2026. Come back to see who was closest.');
+  assert.equal(SC.smallPrint({ hasForecast: true, hasRange: false, hasReaders: true, dateText: '' }), 'Reviews come out after opening night. Come back to see who was closest.', 'no range: no first sentence; no date: no date clause');
+  assert.equal(SC.smallPrint({ hasForecast: false, hasRange: false, hasReaders: true, dateText: d }), 'Reviews come out after opening night on December 6, 2026. Come back to see who was closer.');
+  assert.equal(SC.smallPrint({ hasForecast: false, hasRange: false, hasReaders: false, dateText: d }), 'Reviews come out after opening night on December 6, 2026. Come back to see how close your prediction was.');
+  assert.equal(SC.readersMissSentence(64, 66.4), 'Readers were 2 points off on average.');
+  assert.equal(SC.readersMissSentence(65, 66), 'Readers were 1 point off on average.');
+  assert.equal(SC.readersMissSentence(66, 66), 'Readers were 0 points off on average.');
+  assert.equal(SC.readersMissSentence(null, 66), null);
+  assert.equal(SC.FIRST_READER_LINE, "You're the first reader to predict this show.");
+  const all = [SC.FIRST_READER_LINE, SC.smallPrint({ hasForecast: true, hasRange: true, hasReaders: true, dateText: d }), SC.readersSentence({ called: 1, forecast: 9, readersAvg: 5, readersN: 3 }), SC.gapSentence({ called: 1, forecast: 9, lo50: 3, hi50: 12 })].join(' ');
+  assert.doesNotMatch(all, /[\u2014\u2013]/, 'no em or en dashes in copy');
+  assert.doesNotMatch(all, /between \d+ and \d+/, 'the 80% sentence is gone');
 });
 
 test('resultSentence and forecastMissSentence', () => {
@@ -56,7 +105,7 @@ test('buildSyncRows uses the last ledger row before opening, skips rows without 
   ];
   const rows = buildSyncRows({ shows, ledgerRows: ledger, today: '2026-11-11', reviewCounts: { a: 2 } });
   assert.equal(rows.length, 1);
-  assert.deepEqual(rows[0], { p_show_id: 'a', p_opening: '2026-12-01', p_forecast: 74, p_lo: 62, p_hi: 85, p_reviews_live: true, p_enabled: true });
+  assert.deepEqual(rows[0], { p_show_id: 'a', p_opening: '2026-12-01', p_forecast: 74, p_lo: 62, p_hi: 85, p_lo50: null, p_hi50: null, p_reviews_live: true, p_enabled: true });
 });
 // BRO-7348 owner-only board: allowed to read the ledger only while it stays admin-gated and per-request.
 const OWNER_ONLY = new Set(['src/app/admin/forecasts/page.tsx', 'src/lib/admin-review-forecasts.ts']);
@@ -198,4 +247,50 @@ test('hook: load keeps held calls on success and on failure, and lock ignores a 
   assert.match(src, /calls: held, loaded: true, loadError: true/);
   assert.match(src, /const stale = !!userId && store\.userId !== userId;/);
   assert.match(src, /if \(stale\) return \{ ok: true, call \};/);
+});
+
+test('buildSyncRows passes the true 50% band when the ledger has one, null (server derives) when it does not (BRO-7430)', () => {
+  const shows = [{ id: 'a', openingDate: '2026-12-06', category: 'broadway', type: 'play', status: 'previews' }];
+  const mk = (extra) => [{ showId: 'a', openingDate: '2026-12-06', recordedAt: '2026-11-01', forecast: 70, lo80: 56, hi80: 82, ...extra }];
+  const withTrue = buildSyncRows({ shows, ledgerRows: mk({ lo50: 63, hi50: 77 }), today: '2026-11-13' });
+  assert.equal(withTrue.length, 1);
+  assert.equal(withTrue[0].p_lo50, 63); assert.equal(withTrue[0].p_hi50, 77);
+  const old = buildSyncRows({ shows, ledgerRows: mk({}), today: '2026-11-13' });
+  assert.equal(old[0].p_lo50, null); assert.equal(old[0].p_hi50, null);
+});
+
+test('fitForecaster returns lo50/hi50 inside the 80% band (BRO-7430)', () => {
+  const rows = Array.from({ length: 200 }, (_, i) => ({ season: 2000 + (i % 10), mu: 70, y: 60 + ((i * 7) % 31), x: Object.fromEntries(require('../../scripts/lib/review-forecast.js').FEATURE_NAMES.map((k) => [k, 0])) }));
+  const m = P.fitForecaster(rows);
+  const p = m.predict({ mu: 70, x: rows[0].x });
+  assert.ok(p.lo80 <= p.lo50 && p.lo50 <= p.forecast && p.forecast <= p.hi50 && p.hi50 <= p.hi80, JSON.stringify(p));
+  assert.ok(p.hi50 - p.lo50 < p.hi80 - p.lo80, '50% band is narrower');
+});
+
+test('20261113 migration: grants restated, readers RPC locked to the caller, derivation in one place (BRO-7430)', () => {
+  const mig = fs.readFileSync(new URL('../../supabase/migrations/20261113_score_calls_range50_readers.sql', import.meta.url), 'utf8');
+  assert.match(mig, /REVOKE ALL ON FUNCTION public\.lock_score_call\(TEXT, INTEGER\), public\.get_my_score_calls\(\), public\.get_score_call_readers\(\),\s+public\.sync_score_call_show\(TEXT, DATE, INTEGER, INTEGER, INTEGER, BOOLEAN, BOOLEAN, INTEGER, INTEGER\)\s+FROM PUBLIC, anon, authenticated/);
+  assert.match(mig, /GRANT EXECUTE ON FUNCTION public\.lock_score_call\(TEXT, INTEGER\), public\.get_my_score_calls\(\), public\.get_score_call_readers\(\) TO authenticated/);
+  assert.match(mig, /GRANT EXECUTE ON FUNCTION public\.sync_score_call_show\([^)]*\) TO service_role/);
+  assert.doesNotMatch(mig, /TO (anon|PUBLIC)\b/);
+  const readers = mig.slice(mig.indexOf('CREATE FUNCTION public.get_score_call_readers'), mig.indexOf('CREATE FUNCTION public.sync_score_call_show'));
+  assert.match(readers, /SECURITY DEFINER/);
+  assert.match(readers, /me\.user_id = auth\.uid\(\)/);
+  assert.match(readers, /o\.user_id <> me\.user_id/);
+  assert.match(readers, /GROUP BY o\.show_id/);
+  assert.doesNotMatch(readers, /o\.user_id,|SELECT o\.user_id|o\.called_score,/, 'never one row per reader');
+  assert.match(mig, /p_lo50 INTEGER DEFAULT NULL, p_hi50 INTEGER DEFAULT NULL/, 'an older loader still works');
+  assert.match(mig, /BEGIN;[\s\S]*COMMIT;/);
+  assert.equal((mig.match(/0\.53/g) || []).length >= 2, true);
+  assert.equal(fs.readFileSync(new URL('../../supabase/migrations/20261111_score_calls.sql', import.meta.url), 'utf8').includes('lo50'), false, 'applied migration untouched');
+});
+
+test('readers fetch: only when locked, a failed or missing RPC is "no readers", cache cleared on lock (BRO-7430)', () => {
+  const hook = fs.readFileSync(path.join(ROOT, 'src/hooks/useScoreCall.ts'), 'utf8');
+  assert.match(hook, /'get_score_call_readers'/);
+  assert.match(hook, /if \(!userId \|\| !locked\) return;/);
+  assert.match(hook, /readersCache = null; \/\/ a fresh lock/);
+  const comp = fs.readFileSync(path.join(ROOT, 'src/components/show-page/CallTheScore.tsx'), 'utf8');
+  assert.match(comp, /useScoreCallReaders\(show\.id, true\)/);
+  assert.doesNotMatch(comp, /lo80|hi80/, 'the 80% band never reaches the reader');
 });

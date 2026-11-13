@@ -13,7 +13,7 @@ const path = require('path');
 const { V2_KEYS } = require('./review-forecast-v2-shadow.js');
 const { V3_KEYS, V3_GRADE_KEYS } = require('./review-forecast-v3-blend.js'); // BRO-7382
 
-const V1_VALUE_KEYS = ['forecastRaw', 'categoryMean', 'missForecast', 'frozenRecordedAt'];
+const V1_VALUE_KEYS = ['forecastRaw', 'categoryMean', 'missForecast', 'frozenRecordedAt', 'lo50', 'hi50']; // lo50/hi50: BRO-7430 reader-facing range
 const V2_VALUE_KEYS = ['forecastV2', 'missForecastV2', 'forecastV1SameRow', 'inRange80V2', 'v2ModelVersion', 'v2ShowScoreMixed', ...V2_KEYS.filter((k) => k !== 'forecast' && k !== 'showScore')];
 // BRO-7382: every v3 field carries a `v3` prefix (or is forecastV3 / missForecastV3), so each is distinctive enough to flag on its own.
 // The list comes from the real v3 module; a key without the prefix would be generic ("origin", "forecast") and is refused by the guard test.

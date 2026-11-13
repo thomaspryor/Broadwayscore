@@ -126,11 +126,13 @@ function fitForecaster(rows, { minRows = 150 } = {}) {
   }
   resid.sort((a, b) => a - b);
   const q10 = RF.quantile(resid, 0.1); const q90 = RF.quantile(resid, 0.9);
+  // BRO-7430: the reader-facing 50% band, same residuals (matches band(nr.model, 0.25, 0.75) in the backtest).
+  const q25 = RF.quantile(resid, 0.25); const q75 = RF.quantile(resid, 0.75);
   return {
     n: rows.length,
     predict(f) {
       const p = clamp(f.mu + RF.predictRidge(model, f.x));
-      return { forecast: p, lo80: clamp(p + q10), hi80: clamp(p + q90) };
+      return { forecast: p, lo80: clamp(p + q10), hi80: clamp(p + q90), lo50: clamp(p + q25), hi50: clamp(p + q75) };
     },
   };
 }

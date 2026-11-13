@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import { supabaseRestRpc } from '@/lib/supabase-rest';
 import { mergeCalls } from '@/lib/score-call';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,6 +12,9 @@ export interface ScoreCall {
   forecast: number | null;
   lo80: number | null;
   hi80: number | null;
+  /** The 50% "likely range" shown to readers; absent from a response that predates the 20261113 migration. */
+  lo50?: number | null;
+  hi50?: number | null;
   locked_at: string;
 }
 
@@ -70,7 +73,8 @@ export function useScoreCall(showId: string) {
     }
     const row = Array.isArray(data) ? data[0] : null;
     if (!row) return { ok: false, reason: 'error' };
-    const call: ScoreCall = { show_id: showId, called_score: row.called_score as unknown as number, forecast: (row as unknown as { forecast: number | null }).forecast, lo80: (row as unknown as { lo80: number | null }).lo80, hi80: (row as unknown as { hi80: number | null }).hi80, locked_at: (row as unknown as { locked_at: string }).locked_at };
+    const call: ScoreCall = { show_id: showId, called_score: row.called_score as unknown as number, forecast: (row as unknown as { forecast: number | null }).forecast, lo80: (row as unknown as { lo80: number | null }).lo80, hi80: (row as unknown as { hi80: number | null }).hi80, lo50: (row as unknown as { lo50?: number | null }).lo50 ?? null, hi50: (row as unknown as { hi50?: number | null }).hi50 ?? null, locked_at: (row as unknown as { locked_at: string }).locked_at };
+    readersCache = null; // a fresh lock changes the answer for everyone else's average
     if (stale) return { ok: true, call };
     store = { ...store, userId, calls: { ...store.calls, [showId]: call }, loaded: true, loadError: false };
     emit();
@@ -92,4 +96,39 @@ export function useMyScoreCalls() {
   const calls = ready ? Object.values(s.calls).sort((a, b) => b.locked_at.localeCompare(a.locked_at)) : [];
   const retry = useCallback(() => { if (!userId) return; resetAndLoad(userId); }, [userId]);
   return { signedIn: !!userId, loaded: ready, loadError: !!userId && s.userId === userId && s.loadError, retry, calls };
+}
+
+/** Other readers' rounded average for a show the viewer has locked, and how many. The server returns rows only for locked shows and never one row per reader. */
+export interface ScoreCallReaders { avg: number; n: number }
+const READERS_TTL_MS = 60_000;
+let readersCache: { userId: string; at: number; p: Promise<Record<string, ScoreCallReaders>> } | null = null;
+function loadReaders(userId: string): Promise<Record<string, ScoreCallReaders>> {
+  if (readersCache && readersCache.userId === userId && Date.now() - readersCache.at < READERS_TTL_MS) return readersCache.p;
+  const ref: { p?: Promise<Record<string, ScoreCallReaders>> } = {};
+  const p = (ref.p = (async () => {
+    const { data, error } = await supabaseRestRpc<{ show_id: string; readers_avg: number; readers_n: number }[]>('get_score_call_readers');
+    // Any failure (including an RPC that is not deployed yet) means "no Readers tile", never an error state.
+    const out: Record<string, ScoreCallReaders> = {};
+    if (error) { if (readersCache && readersCache.p === ref.p) readersCache = null; return out; }
+    for (const r of data || []) if (Number.isFinite(r.readers_avg) && r.readers_n >= 1) out[r.show_id] = { avg: r.readers_avg, n: r.readers_n };
+    return out;
+  })());
+  readersCache = { userId, at: Date.now(), p };
+  return p;
+}
+
+/** Fetches only once the viewer's own call is locked (the RPC would return nothing before that). `ready` is false until the answer is in. */
+export function useScoreCallReaders(showId: string, locked: boolean) {
+  const { user } = useAuth();
+  const userId = user?.id ?? null;
+  const [state, setState] = useState<{ key: string; readers: ScoreCallReaders | null } | null>(null);
+  const key = `${userId}:${showId}`;
+  useEffect(() => {
+    if (!userId || !locked) return;
+    let live = true;
+    void loadReaders(userId).then((m) => { if (live) setState({ key, readers: m[showId] ?? null }); });
+    return () => { live = false; };
+  }, [userId, locked, showId, key]);
+  const ready = !!userId && locked && state?.key === key;
+  return { ready, readers: ready ? state!.readers : null };
 }

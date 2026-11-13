@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScoreBadge, getScoreTier } from '@/components/show-cards';
 import { useAuth } from '@/contexts/AuthContext';
-import { useScoreCall } from '@/hooks/useScoreCall';
-import { isCallableShow, gapSentence, resultStrip, resultSentence, forecastMissSentence, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS } from '@/lib/score-call';
+import { useScoreCall, useScoreCallReaders } from '@/hooks/useScoreCall';
+import { isCallableShow, gapSentence, readersSentence, rangeCaption, readersCaption, smallPrint, readersMissSentence, FIRST_READER_LINE, resultStrip, resultSentence, forecastMissSentence, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS } from '@/lib/score-call';
 
 interface ShowLike { id: string; category?: string; type?: string; status?: string; openingDate?: string | null; previewsStartDate?: string | null; previewDate?: string | null; cancelledBeforeOpening?: boolean }
 
@@ -13,15 +13,22 @@ const localToday = () => new Date().toISOString().slice(0, 10);
 const fmtDate = (iso?: string | null) => (iso ? new Date(iso.slice(0, 10) + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : '');
 
 /** predicted: dashed outline, the same cue /admin/forecasts uses, so a guess never reads as a real score. */
-function Tile({ label, score, category, muted, predicted }: { label: string; score: number | null; category?: string; muted?: boolean; predicted?: boolean }) {
+function Tile({ label, score, category, muted, predicted, caption }: { label: string; score: number | null; category?: string; muted?: boolean; predicted?: boolean; caption?: React.ReactNode }) {
   return (
     <div className="flex flex-col items-center gap-2 w-[5.25rem] sm:w-auto sm:min-w-[5.5rem]">
       <div className={predicted ? 'rounded-xl outline outline-2 outline-dashed outline-offset-2 outline-white/30' : undefined} data-predicted={predicted ? 'true' : undefined}>
         <ScoreBadge score={score} size="lg" category={category} />
       </div>
       <span className={`text-center text-[11px] font-semibold uppercase tracking-[0.08em] ${muted ? 'text-fg-muted' : 'text-gray-300'}`}>{label}</span>
+      {caption && <span className="-mt-1 text-center text-[11px] leading-tight text-fg-muted">{caption}</span>}
     </div>
   );
+}
+
+/** "likely 63 to 77": the numbers a touch brighter than the word. */
+function RangeCaption({ lo50, hi50 }: { lo50?: number | null; hi50?: number | null }) {
+  const c = rangeCaption({ lo50: lo50 as number, hi50: hi50 as number });
+  return c ? <>{c.word} <span className="text-gray-300">{c.nums}</span></> : null;
 }
 
 // Module-level so React keeps the subtree (and the slider's drag) across renders.
@@ -30,6 +37,30 @@ function Wrap({ children }: { children: React.ReactNode }) {
 }
 
 const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions closed when opening day began.' : reason === 'not_open' ? 'Predictions open soon for this show.' : reason === 'already_called' ? null : 'Could not save your prediction. Try again.');
+
+/** Locked state. Readers load after the lock; sentences wait for them so the text does not change under the reader. */
+function LockedCard({ show, call }: { show: ShowLike; call: NonNullable<ReturnType<typeof useScoreCall>['call']> }) {
+  const { ready, readers } = useScoreCallReaders(show.id, true);
+  const hasF = call.forecast != null;
+  const rng = rangeCaption({ lo50: call.lo50 as number, hi50: call.hi50 as number });
+  const sentence = readers
+    ? readersSentence({ called: call.called_score, forecast: call.forecast as number, readersAvg: readers.avg, readersN: readers.n })
+    : gapSentence({ called: call.called_score, forecast: call.forecast as number, lo50: call.lo50 as number, hi50: call.hi50 as number });
+  return (
+    <Wrap>
+      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Prediction locked in</p>
+      <div className="flex flex-wrap items-start justify-center gap-x-4 gap-y-3 mb-3 pt-1">
+        <Tile label="Your prediction" score={call.called_score} category={show.category} predicted />
+        {readers && <Tile label="Readers" score={readers.avg} category={show.category} muted predicted caption={readersCaption(readers.n)} />}
+        {hasF && <Tile label="Our forecast" score={call.forecast} category={show.category} muted predicted caption={rng ? <RangeCaption lo50={call.lo50} hi50={call.hi50} /> : undefined} />}
+      </div>
+      {ready && sentence && <p className="text-sm text-gray-300 text-center m-0 mb-1">{sentence}</p>}
+      {ready && !hasF && !readers && <p className="text-sm text-gray-300 text-center m-0 mb-1">We don&apos;t have a forecast for this show.</p>}
+      {ready && !readers && <p className="text-sm text-gray-300 text-center m-0 mb-1">{FIRST_READER_LINE}</p>}
+      <p className="text-xs text-fg-muted text-center m-0">{smallPrint({ hasForecast: hasF, hasRange: !!rng, hasReaders: !!readers, dateText: fmtDate(show.openingDate) })}</p>
+    </Wrap>
+  );
+}
 
 /** Pending-state card: pick 0-100 (signed out is fine), save it with an account, then see the forecast. Renders nothing for shows a reader cannot predict. */
 export default function CallTheScore({ show }: { show: ShowLike }) {
@@ -95,21 +126,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     );
   }
 
-  if (call) {
-    const sentence = gapSentence({ called: call.called_score, forecast: call.forecast as number, lo80: call.lo80 as number, hi80: call.hi80 as number });
-    return (
-      <Wrap>
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Prediction locked in</p>
-        <div className="flex items-start justify-center gap-5 mb-3 pt-1">
-          <Tile label="Your prediction" score={call.called_score} category={show.category} predicted />
-          {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted predicted />}
-        </div>
-        {sentence && <p className="text-sm text-gray-300 text-center m-0 mb-1">{sentence}</p>}
-        {call.forecast == null && <p className="text-sm text-gray-300 text-center m-0 mb-1">We don&apos;t have a forecast for this show.</p>}
-        <p className="text-xs text-fg-muted text-center m-0">Reviews come out after opening night{show.openingDate ? ` on ${fmtDate(show.openingDate)}` : ''}. Come back to see {call.forecast != null ? 'who was closer' : 'how close your prediction was'}.</p>
-      </Wrap>
-    );
-  }
+  if (call) return <LockedCard show={show} call={call} />;
 
   return (
     <Wrap>
@@ -131,19 +148,22 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
 /** Result strip once the show has a Critic Score. Only for readers who called. */
 export function CallResultStrip({ show, critic }: { show: ShowLike; critic: number }) {
   const { call } = useScoreCall(show.id);
+  const { readers } = useScoreCallReaders(show.id, !!call);
   if (!call) return null;
   const r = resultStrip({ called: call.called_score, forecast: call.forecast, critic });
   if (!r) return null;
+  const footer = [forecastMissSentence(r), readers ? readersMissSentence(readers.avg, critic) : null].filter(Boolean).join(' ');
   return (
     <div className="mb-4 rounded-lg bg-surface-overlay p-4" data-testid="call-result-strip">
       <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">How your prediction did</p>
       <p className="text-base font-semibold text-white m-0 mb-3">{resultSentence({ r })}</p>
       <div className="flex flex-wrap items-start justify-center gap-x-2 gap-y-3 sm:gap-x-5 mb-2 pt-1">
         <Tile label="Your prediction" score={call.called_score} category={show.category} predicted />
+        {readers && <Tile label="Readers" score={readers.avg} category={show.category} muted predicted caption={readersCaption(readers.n)} />}
         {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted predicted />}
         <Tile label="Critic Score" score={r.critic} category={show.category} />
       </div>
-      {forecastMissSentence(r) && <p className="text-xs text-fg-muted text-center m-0">{forecastMissSentence(r)}</p>}
+      {footer && <p className="text-xs text-fg-muted text-center m-0">{footer}</p>}
     </div>
   );
 }

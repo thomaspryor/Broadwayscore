@@ -43,13 +43,56 @@ function resultStrip({ called, forecast, critic }) {
 
 const pts = (n) => `${n} ${n === 1 ? 'point' : 'points'}`;
 
-/** Locked state, two short sentences. The tiles already show both numbers, so say only what they don't: the gap, and the range we expect. */
-function gapSentence({ called, forecast, lo80, hi80 }) {
+const hasRange = (lo, hi) => Number.isFinite(lo) && Number.isFinite(hi);
+
+/** Caption under the "Our forecast" tile: { word: 'likely', nums: '63 to 77' } (the UI brightens nums), or null with no range. */
+function rangeCaption({ lo50, hi50 }) {
+  return hasRange(lo50, hi50) ? { word: 'likely', nums: `${lo50} to ${hi50}` } : null;
+}
+
+/** Caption under the Readers tile. n is the count of OTHER readers (the viewer is never counted). */
+function readersCaption(n) {
+  if (!Number.isInteger(n) || n < 1) return null;
+  return n === 1 ? '1 other reader' : `average of ${n}`;
+}
+
+/** Sentence under the tiles when no other reader has predicted: the gap to our forecast and whether it is inside the likely range. */
+function gapSentence({ called, forecast, lo50, hi50 }) {
   if (!Number.isFinite(forecast)) return null;
   const gap = called - forecast;
-  const first = gap === 0 ? 'Your prediction matches our forecast.' : `Your prediction is ${pts(Math.abs(gap))} ${gap > 0 ? 'above' : 'below'} our forecast.`;
-  const range = Number.isFinite(lo80) && Number.isFinite(hi80) ? ` We expect the Critic Score to land between ${lo80} and ${hi80}.` : '';
-  return first + range;
+  if (gap === 0) return 'Your prediction matches our forecast.';
+  const dir = `Your prediction is ${pts(Math.abs(gap))} ${gap > 0 ? 'above' : 'below'} our forecast`;
+  if (!hasRange(lo50, hi50)) return `${dir}.`;
+  return `${dir}, ${called < lo50 || called > hi50 ? 'and outside' : 'inside'} our likely range.`;
+}
+
+/**
+ * Sentence when other readers exist (it replaces gapSentence): "You are 5 points below other readers and 11 below our forecast."
+ * avg is the rounded average of the OTHER readers, n how many. forecast may be null.
+ */
+function readersSentence({ called, forecast, readersAvg, readersN }) {
+  if (!Number.isFinite(readersAvg) || !(readersN >= 1)) return null;
+  const who = readersN === 1 ? 'the one other reader' : 'other readers';
+  const rg = called - readersAvg;
+  const first = rg === 0 ? `level with ${who}` : `${pts(Math.abs(rg))} ${rg > 0 ? 'above' : 'below'} ${who}`;
+  if (!Number.isFinite(forecast)) return `You are ${first}.`;
+  const fg = called - forecast;
+  if (rg === 0 && fg === 0) return `You are level with ${who} and our forecast.`;
+  const second = fg === 0 ? 'level with our forecast' : `${Math.abs(fg)} ${fg > 0 ? 'above' : 'below'} our forecast`;
+  return `You are ${first} and ${second}.`;
+}
+
+/** The line shown when the viewer is the only one to have predicted. */
+const FIRST_READER_LINE = "You're the first reader to predict this show.";
+
+/**
+ * Small print on the locked card. Range sentence only when a range exists; date clause only when the show has a date
+ * (dateText is already formatted); the closing names how many parties will be scored.
+ */
+function smallPrint({ hasForecast, hasRange: range, hasReaders, dateText }) {
+  const reviews = `Reviews come out after opening night${dateText ? ` on ${dateText}` : ''}.`;
+  const close = hasForecast && hasReaders ? 'Come back to see who was closest.' : hasForecast || hasReaders ? 'Come back to see who was closer.' : 'Come back to see how close your prediction was.';
+  return [range && hasForecast ? 'The Critic Score lands in our likely range about half the time.' : null, reviews, close].filter(Boolean).join(' ');
 }
 
 /** Result headline once the Critic Score exists. The tiles carry the numbers. */
@@ -57,6 +100,12 @@ function resultSentence({ r }) {
   if (r.off === 0) return r.beatForecast ? 'You got it exactly right, and beat our forecast.' : 'You got it exactly right.';
   const tie = r.forecastMiss != null && r.forecastMiss === r.off;
   return `You were ${pts(r.off)} off${r.beatForecast ? ', and closer than our forecast' : tie ? ', the same as our forecast' : ''}.`;
+}
+
+/** "Readers were 4 points off on average." avg is the rounded readers' average, critic the Critic Score. */
+function readersMissSentence(readersAvg, critic) {
+  if (!Number.isFinite(readersAvg) || !Number.isFinite(critic)) return null;
+  return `Readers were ${pts(Math.abs(Math.round(critic) - readersAvg))} off on average.`;
 }
 
 function forecastMissSentence(r) {
@@ -112,4 +161,4 @@ function mergeCalls(fetched, held) {
   return { ...(fetched && typeof fetched === 'object' ? fetched : {}), ...(held && typeof held === 'object' ? held : {}) };
 }
 
-module.exports = { mergeCalls, isCallableShow, parseCall, resultStrip, gapSentence, resultSentence, forecastMissSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };
+module.exports = { mergeCalls, isCallableShow, parseCall, resultStrip, gapSentence, readersSentence, rangeCaption, readersCaption, smallPrint, readersMissSentence, FIRST_READER_LINE, resultSentence, forecastMissSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };
