@@ -369,6 +369,12 @@ function openSignalFromDiscovery(show, discoveredFiles, isDateReached) {
   const pressNight = estimatePressNight(datesFromDiscoveredReviews(discoveredFiles, show));
   if (!pressNight || !isDateReached(pressNight)) return null;
   if (pressNight < show.previewsStartDate) return null;
+  // BRO-7450: a preview-night write-up is not press night. While the record's
+  // ISO openingDate is more than a day after the estimate, do not flip.
+  if (/^\d{4}-\d{2}-\d{2}$/.test(show.openingDate || '')) {
+    const t = Date.parse(show.openingDate + 'T00:00:00Z');
+    if (Number.isFinite(t) && pressNight < new Date(t - 86400000).toISOString().slice(0, 10)) return null;
+  }
   return { date: pressNight, source: 'discovery-open-signal' };
 }
 

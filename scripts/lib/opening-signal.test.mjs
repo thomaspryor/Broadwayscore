@@ -417,3 +417,15 @@ test('openingDateStillAhead: a known future opening blocks review-driven open (B
   assert.equal(openingDateStillAhead({ openingDate: null }, isReached), false);
   assert.equal(openingDateStillAhead(null, isReached), false);
 });
+
+// BRO-7450: preview-night posts must not flip a show whose opening is days away
+// (the-ripple, previews 2026-11-?? opening 2026-11-18, flagged from a 11-10 post).
+test('openSignalFromDiscovery: preview-period posts do not flip while opening is >1 day away', () => {
+  const reached = () => true;
+  const files = [{ publishDate: '2026-11-10', url: 'https://a.test/1', contentTier: 'stub' }];
+  const mk = (openingDate) => ({ id: 'r', status: 'previews', previewsStartDate: '2026-11-03', openingDate, category: 'off-broadway' });
+  assert.equal(openSignalFromDiscovery(mk('2026-11-18'), files, reached), null);
+  const garbage = openSignalFromDiscovery(mk('TBA'), files, reached);
+  const none = openSignalFromDiscovery(mk(null), files, reached);
+  assert.deepEqual(garbage, none);
+});
