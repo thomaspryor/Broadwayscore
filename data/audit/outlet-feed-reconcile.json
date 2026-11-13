@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T05:00:14.411Z",
+  "generatedAt": "2026-11-13T06:00:15.938Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -93,10 +93,6 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -115,14 +111,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "the-knockturnal",
-      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 829,
-  "matchedGaps": 11,
+  "itemsScanned": 845,
+  "matchedGaps": 13,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -183,6 +175,15 @@
       "showId": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "level": "matched",
+      "outletId": "observer",
+      "url": "https://observer.co.uk/culture/theatre/article/cloud-9-caryl-churchills-riotous-romp-is-still-radical",
+      "headline": null,
+      "publishDate": "2026-11-13"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
       "outletId": "south-london",
       "url": "https://southlondon.co.uk/area/southwark/review-cloud-9-national-theatre/",
       "headline": "Review: Cloud 9 &#8211; National Theatre",
@@ -196,6 +197,15 @@
       "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
       "headline": "Cloud 9 | National Theatre",
       "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+      "headline": "We’ll See ****, Ms. Blakk for President ****",
+      "publishDate": "2026-11-11"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",

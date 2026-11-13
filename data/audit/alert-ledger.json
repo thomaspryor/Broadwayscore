@@ -371,12 +371,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-13T05:00:13.962Z",
+      "lastSeen": "2026-11-13T06:00:15.671Z",
       "lastNotifiedAt": "2026-11-13T05:00:13.962Z",
       "lastSurfacedAt": "2026-11-09T20:23:30.357Z",
       "notifyCount": 81,
       "cardId": null,
-      "linearIdentifier": "BRO-5532"
+      "linearIdentifier": "BRO-5532",
+      "silentRefires": 1
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -577,12 +578,13 @@
       "title": "Review-gap audit refused to write — 25.9% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
       "incidentOpenedAt": "2026-11-07T16:40:54.348Z",
-      "lastSeen": "2026-11-13T04:59:30.223Z",
+      "lastSeen": "2026-11-13T05:59:47.306Z",
       "lastNotifiedAt": "2026-11-13T04:59:30.223Z",
       "lastSurfacedAt": "2026-11-09T07:55:47.811Z",
       "notifyCount": 92,
       "cardId": null,
-      "linearIdentifier": "BRO-5516"
+      "linearIdentifier": "BRO-5516",
+      "silentRefires": 1
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "resolved",
@@ -19492,7 +19494,7 @@
       "title": "Roundup gaps: 19 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-13T04:59:30.768Z",
+      "lastSeen": "2026-11-13T05:59:47.741Z",
       "lastNotifiedAt": "2026-11-13T00:08:38.603Z",
       "lastSurfacedAt": null,
       "notifyCount": 50,
@@ -19565,7 +19567,7 @@
         "now-you-see-me-live-2026",
         "potus-off-broadway-2026"
       ],
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38656,13 +38658,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-13T04:59:30.674Z",
+      "lastSeen": "2026-11-13T05:59:47.603Z",
       "lastNotifiedAt": "2026-11-12T21:25:17.489Z",
       "lastSurfacedAt": "2026-11-12T21:25:17.489Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -41834,13 +41836,13 @@
       "title": "Review gap — \"As You Like It\" missing 5 cited review(s)",
       "firstSeen": "2026-11-11T02:57:44.180Z",
       "incidentOpenedAt": "2026-11-11T02:57:44.180Z",
-      "lastSeen": "2026-11-13T04:59:30.617Z",
+      "lastSeen": "2026-11-13T05:59:47.542Z",
       "lastNotifiedAt": "2026-11-13T02:34:57.302Z",
       "lastSurfacedAt": "2026-11-13T02:34:57.302Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7331-round3": {
       "status": "open",
@@ -42297,13 +42299,13 @@
       "title": "Review gap — \"Cloud 9 National\" missing 14 cited review(s)",
       "firstSeen": "2026-11-11T22:02:12.294Z",
       "incidentOpenedAt": "2026-11-11T22:02:12.294Z",
-      "lastSeen": "2026-11-13T04:59:30.642Z",
+      "lastSeen": "2026-11-13T05:59:47.567Z",
       "lastNotifiedAt": "2026-11-12T18:11:38.376Z",
       "lastSurfacedAt": "2026-11-12T18:11:38.376Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-placeholder-synopsis-cloud-9-national-west-end-2026": {
       "status": "open",
@@ -42686,13 +42688,13 @@
       "title": "Live show has ZERO critic reviews on site: The Fantasticks",
       "firstSeen": "2026-11-12T21:34:05.447Z",
       "incidentOpenedAt": "2026-11-12T21:34:05.447Z",
-      "lastSeen": "2026-11-13T04:59:58.146Z",
+      "lastSeen": "2026-11-13T06:00:00.421Z",
       "lastNotifiedAt": "2026-11-12T21:34:05.447Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7420",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "uncollected-blackout:downstate-2026": {
       "status": "resolved",
