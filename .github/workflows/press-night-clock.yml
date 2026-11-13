@@ -74,6 +74,7 @@ jobs:
           printf '%s' "$CATEGORIES" | grep -Eq '^[a-z,-]+$' || { echo "::error::bad categories"; exit 1; }
           END=$(( $(date +%s) + 330 * 60 ))   # stop acting 15 min before the job timeout
           REPLANS=0
+          declare -A SWEEP_TRIES
           while true; do
             [ "$(date +%s)" -lt "$END" ] || { echo "Job budget used; re-chaining"; retry gh workflow run press-night-clock.yml -f fired="$FIRED" -f categories="$CATEGORIES" || exit 1; exit 0; }
             LINE=$(node scripts/lib/press-night-clock.js next --shows-file=data/shows.json --categories="$CATEGORIES" --fired="$FIRED") \
@@ -137,9 +138,20 @@ jobs:
             case "$KIND" in sw*)
               # BRO-7160 post-lane sweep (+4h15/+5h15/+6h15, verify +7h30): one targeted poller run (fast_path,
               # force_serp) once the lane has released. Advisory: a failure warns and the next slot tries again.
-              node scripts/post-lane-sweep.js --show="$SHOW" --night="$NIGHT" --embargo-at="$EMBARGO" --slot="$KIND" \
-                || echo "::warning::post-lane sweep $KIND for $SHOW $NIGHT did not dispatch (the next slot retries)"
-              FIRED="${FIRED:+$FIRED,}$KEY"
+              # BRO-7281: only exit 0 spends the slot. A failure keeps it unfired for up to 3 tries (120s apart; the count
+              # resets on a re-chain, bounded by each slot's late window); exit 2 (bad args) is never retried.
+              RC=0
+              node scripts/post-lane-sweep.js --show="$SHOW" --night="$NIGHT" --embargo-at="$EMBARGO" --slot="$KIND" || RC=$?
+              if [ "$RC" -ne 0 ]; then
+                SWEEP_TRIES[$KEY]=$(( ${SWEEP_TRIES[$KEY]:-0} + 1 ))
+                echo "::warning::post-lane sweep $KIND for $SHOW $NIGHT exited $RC (attempt ${SWEEP_TRIES[$KEY]})"
+              fi
+              read -r SWEEP_FIRED SWEEP_SLEEP <<< "$(node scripts/lib/post-lane-sweep.js retry-decision --attempts="${SWEEP_TRIES[$KEY]:-0}" --exit="$RC")"
+              if [ "$SWEEP_FIRED" = "1" ]; then
+                FIRED="${FIRED:+$FIRED,}$KEY"
+              else
+                sleep "$SWEEP_SLEEP"
+              fi
               continue ;;
             esac
             if [ "$KIND" != "kick" ]; then

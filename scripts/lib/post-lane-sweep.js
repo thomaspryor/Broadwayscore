@@ -113,7 +113,30 @@ function dispatchArgs(showId) {
   return ['workflow', 'run', POLLER_WORKFLOW, '-f', `show_id=${showId}`, '-f', 'fast_path=true', '-f', 'force_serp=true', '-f', 'collect_existing=true'];
 }
 
+const SWEEP_MAX_ATTEMPTS = 3;
+const SWEEP_RETRY_SLEEP_S = 120;
+
+/**
+ * What the press-night clock does with a sweep slot after post-lane-sweep.js ran (BRO-7281). Only exit 0 spends the
+ * slot; exit 2 (bad args, no embargo) can never succeed on retry; any other exit keeps the slot unfired for a short,
+ * bounded retry so a transient claim or dispatch failure is not silently skipped. attempts = failed runs so far,
+ * including this one. Pure. Returns {fired, sleepS}.
+ */
+function sweepRetryDecision({ attempts, exitCode }) {
+  if (Number(exitCode) === 0 || Number(exitCode) === 2) return { fired: true, sleepS: 0 };
+  if (Number(attempts) >= SWEEP_MAX_ATTEMPTS) return { fired: true, sleepS: 0 };
+  return { fired: false, sleepS: SWEEP_RETRY_SLEEP_S };
+}
+
 module.exports = {
+  sweepRetryDecision, SWEEP_MAX_ATTEMPTS,
   SWEEP_SLOTS, VERIFY_SLOT, POLLER_WORKFLOW, isSweepKind, slotAtMs, planSlots, isPollerRunFor, pollerRunsSince,
   dispatchExitCode, decideSweep, decideVerify, claimId, claimHolder, dispatchArgs, dispatchDespiteClaim,
 };
+
+// CLI for the workflow: `retry-decision --attempts=N --exit=RC` prints "<fired 0|1> <sleepS>".
+if (require.main === module && process.argv[2] === 'retry-decision') {
+  const a = (k) => { const h = process.argv.find((x) => x.startsWith(`--${k}=`)); return h ? h.slice(k.length + 3) : ''; };
+  const d = sweepRetryDecision({ attempts: a('attempts'), exitCode: a('exit') });
+  console.log(`${d.fired ? 1 : 0} ${d.sleepS}`);
+}

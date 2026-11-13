@@ -150,3 +150,19 @@ test('the production reconciliation port reads dispatch runs with one REST reque
   assert.ok(result);
   assert.deepEqual(calls, [['api', 'repos/thomaspryor/Broadwayscore/actions/workflows/opening-night-poller.yml/runs?per_page=60&event=workflow_dispatch']]);
 });
+
+test('sweep slot is spent only on exit 0, retried a bounded number of times, never for bad args', () => {
+  assert.deepEqual(sweep.sweepRetryDecision({ attempts: 0, exitCode: 0 }), { fired: true, sleepS: 0 });
+  assert.deepEqual(sweep.sweepRetryDecision({ attempts: 1, exitCode: 1 }), { fired: false, sleepS: 120 });
+  assert.deepEqual(sweep.sweepRetryDecision({ attempts: 2, exitCode: 1 }), { fired: false, sleepS: 120 });
+  assert.equal(sweep.sweepRetryDecision({ attempts: sweep.SWEEP_MAX_ATTEMPTS, exitCode: 1 }).fired, true);
+  assert.equal(sweep.sweepRetryDecision({ attempts: 1, exitCode: 2 }).fired, true);
+});
+
+test('press-night-clock keeps a failed sweep unfired via the helper, set -e safe', async () => {
+  const { readFileSync } = await import('node:fs');
+  const yml = readFileSync(new URL('../../.github/workflows/press-night-clock.yml', import.meta.url), 'utf8');
+  assert.match(yml, /post-lane-sweep\.js[^\n]*\|\| RC=\$\?/);
+  assert.match(yml, /retry-decision --attempts=/);
+  assert.doesNotMatch(yml, /did not dispatch \(the next slot retries\)"\n\s+FIRED=/);
+});
