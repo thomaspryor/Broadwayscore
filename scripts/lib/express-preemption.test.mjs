@@ -82,6 +82,20 @@ test('a batch and the next batch it already dispatched restore as ONE chain (the
   assert.equal(out2.length, 1);
   assert.equal(out2[0].fields.remaining_batches, '7');
 });
+test('parallel Express runs: a chain already live is not restored again (2026-11-13, 3 restores)', async () => {
+  const { chainAlreadyLive, redispatch } = require('./express-preemption.js');
+  const it = planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 1 left, limit 400, max-cost 15)');
+  const live = [{ displayTitle: 'LLM Ensemble Score Reviews (rescore chain, 1 left, limit 400, max-cost 15)' }];
+  assert.equal(chainAlreadyLive(it, live), true);
+  assert.equal(chainAlreadyLive(it, [{ displayTitle: 'LLM Ensemble Score Reviews — some-show-2026' }]), false);
+  // different cap = different chain
+  assert.equal(chainAlreadyLive(it, [{ displayTitle: 'LLM Ensemble Score Reviews (rescore chain, 3 left, limit 400, max-cost 6)' }]), false);
+  // redispatch skips it without calling gh
+  const os = await import('node:os'); const path = await import('node:path');
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'ep-')), 'p.json');
+  fs.writeFileSync(f, JSON.stringify([{ ...it, runId: 1 }]));
+  assert.deepEqual(redispatch(f, { liveScoringRuns: live }), []);
+});
 test('pending scoring runs are cancelled only when they can be restored', () => {
   const src = fs.readFileSync(new URL('./express-preemption.js', import.meta.url), 'utf8');
   assert.match(src, /const plan = planRedispatch\(workflow, run\.displayTitle\);\s*if \(status === 'pending' && !plan\)/);

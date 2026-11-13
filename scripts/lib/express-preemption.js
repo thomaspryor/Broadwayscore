@@ -133,30 +133,54 @@ function cancelAndRecord(outFile, ownShowId = '', { scoring = false } = {}) {
 // BRO-7419: a batch and the next batch it already dispatched are one chain.
 // Restore it once, from the batch with the most batches left (the unfinished one).
 // Chains with a different limit or budget cap are different chains and both come back.
+function isRescoreChain(it) {
+  return it.workflow === SCORING && it.fields && it.fields.chain === 'true' && it.fields.needs_rescore === 'true';
+}
 function collapseRescoreChains(items) {
-  const isChain = it => it.workflow === SCORING && it.fields && it.fields.chain === 'true' && it.fields.needs_rescore === 'true';
   const best = new Map();
-  for (const it of items.filter(isChain)) {
+  for (const it of items.filter(isRescoreChain)) {
     // The chain step fills an empty limit with 400 for the next batch
     // (llm-ensemble-score.yml LIMIT="${LIMIT:-400}"), so empty and 400 are one chain.
-    const k = `${it.fields.limit || '400'}|${it.fields.max_cost || ''}`;
+    const k = chainKey(it);
     const cur = best.get(k);
     if (!cur || Number(it.fields.remaining_batches) > Number(cur.fields.remaining_batches)) best.set(k, it);
   }
   const keep = new Set(best.values());
-  return items.filter(it => !isChain(it) || keep.has(it));
+  return items.filter(it => !isRescoreChain(it) || keep.has(it));
+}
+
+// A rescore chain already live (restored by a parallel Express run for another
+// show, or continued by its own chain step) must not be restored again: three
+// same-night Express runs each restored the same chain on 2026-11-13.
+function chainAlreadyLive(it, runs) {
+  const k = chainKey(it);
+  return runs.some(r => {
+    const plan = planRedispatch(SCORING, r.displayTitle);
+    return plan && chainKey(plan) === k;
+  });
+}
+function chainKey(it) {
+  return `${it.fields.limit || '400'}|${it.fields.max_cost || ''}`;
 }
 
 // Dedup so a cancel at start + re-cancel after scoring yields one dispatch each.
-function redispatch(file) {
+function redispatch(file, { liveScoringRuns = null } = {}) {
   if (!fs.existsSync(file)) return [];
   const items = collapseRescoreChains(JSON.parse(fs.readFileSync(file, 'utf8')));
   const seen = new Set();
   const done = [];
+  let live = liveScoringRuns;
   for (const it of items) {
     const key = it.workflow + JSON.stringify(it.fields);
     if (seen.has(key)) continue;
     seen.add(key);
+    if (isRescoreChain(it)) {
+      if (!live) live = ['in_progress', 'queued', 'pending'].flatMap(s => listRuns(SCORING, s));
+      if (chainAlreadyLive(it, live)) {
+        console.log(`  Not re-dispatching rescore chain ${JSON.stringify(it.fields)}: an identical chain is already queued or running`);
+        continue;
+      }
+    }
     const args = ['workflow', 'run', it.workflow];
     for (const [k, v] of Object.entries(it.fields)) args.push('-f', `${k}=${v}`);
     try { gh(args); done.push(it); console.log(`  Re-dispatched ${it.workflow} ${JSON.stringify(it.fields)} (was cancelled run ${it.runId})`); }
@@ -165,7 +189,7 @@ function redispatch(file) {
   return done;
 }
 
-module.exports = { planRedispatch, shouldCancel, scopedShowId, ORCH, POLLER, SCORING, RESCORE_CHAIN_RE, collapseRescoreChains, cancelAndRecord, redispatch };
+module.exports = { planRedispatch, shouldCancel, scopedShowId, ORCH, POLLER, SCORING, RESCORE_CHAIN_RE, collapseRescoreChains, chainAlreadyLive, cancelAndRecord, redispatch };
 
 if (require.main === module) {
   const [cmd, file, ...rest] = process.argv.slice(2);
