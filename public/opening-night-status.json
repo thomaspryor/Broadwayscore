@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T19:46:21.352Z",
+  "generatedAt": "2026-11-13T20:08:16.715Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1155,27 +1155,27 @@
       "slug": "peter-pan-goes-wrong-regional-2026",
       "thumbnail": "/images/shows/peter-pan-goes-wrong-regional-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 62,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 6,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
+      "t3": 1,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1517,6 +1517,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-13T20:08:16.715Z",
+          "rc": 1,
+          "s": 62,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -3202,17 +3216,17 @@
       "status": "open",
       "slug": "cloud-9-west-end",
       "thumbnail": "/images/shows/cloud-9-west-end-2026/thumbnail.webp",
-      "siteScore": 77.52,
+      "siteScore": 77.62,
       "liveScore": 78,
-      "scoreDrift": 0.480000000000004,
+      "scoreDrift": 0.37999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 29,
+      "total": 30,
       "t1": 9,
-      "t2": 7,
+      "t2": 8,
       "t3": 13,
-      "positive": 24,
+      "positive": 25,
       "mixed": 4,
       "negative": 1,
       "readiness": {
@@ -3256,10 +3270,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "The Arts Desk",
-          "isDualMarket": false
         },
         {
           "name": "BritishTheatre.com",
@@ -3615,6 +3625,18 @@
           "t2": 7,
           "t3": 13,
           "p": 24,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-13T20:08:16.715Z",
+          "rc": 30,
+          "s": 77.62,
+          "t1": 9,
+          "t2": 8,
+          "t3": 13,
+          "p": 25,
           "m": 4,
           "n": 1,
           "bc": "waiting"

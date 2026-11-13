@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T19:46:06.482Z",
+  "timestamp": "2026-11-13T20:08:01.905Z",
   "stats": {
-    "totalReviews": 81952,
+    "totalReviews": 81953,
     "alreadyFlagged": 22362,
     "dateGuardCatches": 220,
     "directorMismatch": 3668,
     "tvFilmSignals": 2310,
-    "londonSignals": 3740,
+    "londonSignals": 3741,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8476
+    "noPublishDate": 8477
   },
   "findings": [
     {
@@ -52363,6 +52363,7 @@
     {
       "showId": "peter-pan-goes-wrong-regional-2026",
       "file": "colin-thomas--colin-thomas.json",
+      "score": 62,
       "publishDate": null,
       "url": "https://colinthomas.ca/peter-pan-goes-wrong-and-so-does-this-farce-sometimes/",
       "findings": [
@@ -96156,6 +96157,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/cloud-9-national-theatre-review-dazzlingly-successful-revival",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
