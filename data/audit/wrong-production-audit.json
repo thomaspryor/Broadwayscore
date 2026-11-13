@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T02:39:33.861Z",
+  "timestamp": "2026-11-13T02:52:25.269Z",
   "stats": {
-    "totalReviews": 81776,
+    "totalReviews": 81780,
     "alreadyFlagged": 22326,
     "dateGuardCatches": 219,
     "directorMismatch": 3657,
-    "tvFilmSignals": 2302,
-    "londonSignals": 3716,
+    "tvFilmSignals": 2303,
+    "londonSignals": 3718,
     "offBroadwaySignals": 751,
     "yearMismatch": 371,
-    "noPublishDate": 8441
+    "noPublishDate": 8444
   },
   "findings": [
     {
@@ -60043,6 +60043,19 @@
       ]
     },
     {
+      "showId": "speculations-off-west-end-2026",
+      "file": "theupcoming--maggie-oshea.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.theupcoming.co.uk/2026/11/05/speculations-at-marylebone-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "spirited-away-west-end-2024",
       "file": "getthechance--hannah-goslin.json",
       "score": 82,
@@ -98581,6 +98594,19 @@
     },
     {
       "showId": "dogstar-off-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "publishDate": null,
+      "url": "https://www.islingtontribune.co.uk/article/review-dogstar-at-hampstead-theatre-downstairs",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
       "file": "sierz-co-uk--unknown.json",
       "score": 73,
       "publishDate": "2026-11-11",
@@ -124965,6 +124991,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "file": "westminsterextra--unknown.json",
+      "publishDate": null,
+      "url": "https://www.westminsterextra.co.uk/article/review-speculations-at-marylebone-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
