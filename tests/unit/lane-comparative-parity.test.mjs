@@ -16,9 +16,11 @@ const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runn
 const { getBestScore } = require('../../scripts/lib/rebuild-helpers.js');
 const core = require('../../scripts/llm-scoring/comparative-core.ts');
 
-const NIGHT = '2026-11-09';
+// The lane stamps seenAt from the real clock and trusts it only within a few days of the night (trust-model.js
+// SEEN_AFTER_DAYS), so a fixed night goes red once the calendar passes it (BRO-7424). Always use today.
+const NIGHT = new Date().toISOString().slice(0, 10);
 const SHOW = { id: 'parity-show-2026', title: 'Parity Show', openingDate: NIGHT };
-const T0 = Date.parse('2026-11-09T22:00:00-05:00');
+const T0 = Date.parse(`${NIGHT}T12:00:00Z`);
 const REVIEWS = [
   { url: 'https://www.nytimes.com/2026/11/09/theater/parity-show-review.html', outletId: 'nytimes', criticName: 'Critic One', isolated: 85 },
   { url: 'https://variety.com/2026/legit/reviews/parity-show-review-1236000000/', outletId: 'variety', criticName: 'Critic Two', isolated: 85 },

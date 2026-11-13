@@ -11,7 +11,9 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
 
-const NIGHT = '2026-11-09';
+// The lane stamps seenAt from the real clock and trusts it only within a few days of the night (trust-model.js
+// SEEN_AFTER_DAYS), so a fixed night goes red once the calendar passes it (BRO-7424). Always use today.
+const NIGHT = new Date().toISOString().slice(0, 10);
 const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
 const ONE = 'https://www.nytimes.com/2026/11/09/theater/test-show-review.html'; // outlets with no syndication pair: a
 // possible copy (The Guardian may be The Observer's) is held to the end of the pass on purpose, see lane-runner.js

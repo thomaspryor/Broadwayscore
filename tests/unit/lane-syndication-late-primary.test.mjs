@@ -11,7 +11,9 @@ const require = createRequire(import.meta.url);
 const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
 const { mergeShowRows } = require('../../scripts/lib/opening-night-lane/publish.js');
 
-const NIGHT = '2026-11-09';
+// The lane stamps seenAt from the real clock and trusts it only within a few days of the night (trust-model.js
+// SEEN_AFTER_DAYS), so a fixed night goes red once the calendar passes it (BRO-7424). Always use today.
+const NIGHT = new Date().toISOString().slice(0, 10);
 const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
 const COPY = 'https://www.nydailynews.com/2026/11/09/test-show-review/';
 const ORIG = 'https://www.chicagotribune.com/2026/11/09/test-show-review/';
