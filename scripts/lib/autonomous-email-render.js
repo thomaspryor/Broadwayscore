@@ -257,6 +257,7 @@ const PLAIN_HEALTH = [
   [/^Data: uncollected live review strands/, () => 'Found reviews of running shows not fetched yet'],
   [/^Data: live show with zero critic reviews/, () => 'A running show has no critic reviews on the site'],
   [/^Data: OB closing candidates/, () => 'An Off-Broadway show may have closed'],
+  [/^Data: BWW roundup discovery misses near opening/, () => 'A new show\'s review roundup could not be found yet'],
   [/^Data: tour review sweep held/, () => 'Tour reviews stuck on a Broadway page'],
   [/^Data: tour dates need a look/, () => 'A national tour could not be dated automatically'],
   [/^Data: national tours added automatically/, () => 'New national tours were added'],

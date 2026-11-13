@@ -1047,7 +1047,7 @@ function showProfile(show) {
     rawVenue: show.venue,
     titleLower: show.title.toLowerCase().trim(),
     titleNormalized: normalizeTitle(show.title),
-    venue: show.venue?.toLowerCase().trim(),
+    venueLower: show.venue?.toLowerCase().trim(),
   };
   showProfiles.set(show, prof);
   return prof;
@@ -1075,7 +1075,7 @@ function checkForDuplicate(newShow, existingShows) {
     const prof = showProfile(existing);
     const existingTitleLower = prof.titleLower;
     const existingTitleNormalized = prof.titleNormalized;
-    const existingVenue = prof.venue;
+    const existingVenue = prof.venueLower;
 
     // Skip rows the candidate is explicitly cross-linked to (transferOf /
     // transferredTo / priorRuns naming the other id) — different productions
