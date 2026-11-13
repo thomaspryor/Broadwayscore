@@ -119,6 +119,7 @@ export interface RawShow {
   // Work identity (BRO-7429): kebab slug naming the work when it is NOT the title's default work
   // (Brecht's Galileo: 'galileo-brecht-play'). Same title, different workKey = different work.
   workKey?: string | null;
+  sameWorkAs?: string[];
   // Multi-venue regional tryout (e.g. a national pre-Broadway tour with a
   // stop per city). Set on each per-venue leg; points at the aggregate show
   // that rolls up all legs' reviews into one combined score.

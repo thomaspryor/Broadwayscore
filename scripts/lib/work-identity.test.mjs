@@ -1,4 +1,5 @@
 // Class guard for BRO-7429: a shared title is not a shared work.
+// LIVE-DATA-LANE: reads data/shows.json and the BRO-7429 pending plans, so a bot data commit must not turn the blocking batch red
 // Fails with the fix reverted: getOtherProductions must consult work-identity, add-show must gate
 // indistinguishable rows, and the Galileo shape must resolve.
 import { test } from 'node:test';
