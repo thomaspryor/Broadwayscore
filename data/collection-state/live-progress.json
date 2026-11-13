@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-11-13T02:26:47.356Z",
-  "processed": 202,
-  "failed": 154,
-  "successRate": "56.7%",
+  "updatedAt": "2026-11-13T02:52:30.363Z",
+  "processed": 213,
+  "failed": 153,
+  "successRate": "58.2%",
   "tierBreakdown": {
-    "playwright": 128,
+    "playwright": 133,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 21,
+    "scrapingdog": 22,
     "scrapingbee": 10,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 47
+    "archive": 48
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-11-12T21:04:13.217Z",
-      "event": "bb-session",
-      "session": "34bd68e3",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
-    },
-    {
-      "t": "2026-11-12T21:04:13.902Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-11-12T21:49:14.322Z",
       "event": "bb-session",
@@ -125,6 +114,17 @@
     },
     {
       "t": "2026-11-13T01:31:28.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T02:25:02.287Z",
+      "event": "bb-session",
+      "session": "8b67b0d8",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-13T02:25:03.174Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
