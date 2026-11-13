@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T00:15:42.346Z",
+  "generatedAt": "2026-11-13T02:10:58.323Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -98,6 +98,14 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "nytimes",
+      "error": "HTTP 500 for https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml"
+    },
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -118,8 +126,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 846,
-  "matchedGaps": 14,
+  "itemsScanned": 837,
+  "matchedGaps": 13,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -195,33 +203,6 @@
       "publishDate": "2026-11-12"
     },
     {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "level": "matched",
-      "outletId": "theatre-weekly",
-      "url": "https://theatreweekly.com/review-hamlet-hail-to-the-thief-at-barbican-theatre/",
-      "headline": "Review: Hamlet Hail to the Thief at Barbican Theatre",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "level": "matched",
-      "outletId": "the-recs",
-      "url": "https://therecs.co.uk/hamlet-hail-to-the-thief/",
-      "headline": "Hamlet Hail To The Thief &#8211; Barbican  ★★★★★",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
-    },
-    {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
       "level": "matched",
@@ -229,6 +210,24 @@
       "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
       "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
       "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "the-kings-critique-off-broadway-2026",
+      "title": "The King's Critique",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/the-kings-critique-musical-off-broadway-review/",
+      "headline": "&#8216;The King&#8217;s Critique&#8217; is an unruly royal pain of a musical (Off Broadway review)",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "the-kings-critique-off-broadway-2026",
+      "title": "The King's Critique",
+      "level": "matched",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-a-critical-queen-reviews-the-kings-critique_1859467/",
+      "headline": "Review: A Critical Queen Reviews The King’s Critique",
+      "publishDate": "2026-11-12"
     },
     {
       "showId": "the-visitors-off-broadway-2026",
@@ -249,12 +248,12 @@
       "publishDate": "2026-11-12"
     },
     {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
+      "showId": "the-kings-critique-off-broadway-2026",
+      "title": "The King's Critique",
       "level": "possible",
-      "outletId": "standard",
-      "url": "https://standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-review-barbican-radiohead-b1304586.html",
-      "headline": "Hamlet Hail to the Thief: Forceful and urgent Radiohead/Bard mash-up",
+      "outletId": "nytg",
+      "url": "https://newyorktheatreguide.com/reviews/the-kings-critique-off-broadway-review",
+      "headline": "'The King's Critique' Off-Broadway review — a silly royal romp",
       "publishDate": null
     },
     {
