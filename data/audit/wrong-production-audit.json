@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T02:52:25.269Z",
+  "timestamp": "2026-11-13T03:09:48.999Z",
   "stats": {
-    "totalReviews": 81780,
-    "alreadyFlagged": 22326,
+    "totalReviews": 81813,
+    "alreadyFlagged": 22329,
     "dateGuardCatches": 219,
-    "directorMismatch": 3657,
-    "tvFilmSignals": 2303,
-    "londonSignals": 3718,
+    "directorMismatch": 3662,
+    "tvFilmSignals": 2304,
+    "londonSignals": 3719,
     "offBroadwaySignals": 751,
-    "yearMismatch": 371,
-    "noPublishDate": 8444
+    "yearMismatch": 375,
+    "noPublishDate": 8443
   },
   "findings": [
     {
@@ -8508,6 +8508,45 @@
     },
     {
       "showId": "beetlejuice-tour-2022",
+      "file": "florida-theater-on-stage--bill-hirschman.json",
+      "publishDate": "2023-06-15",
+      "url": "https://www.floridatheateronstage.com/general/beetlejuice-reappears-to-wreak-havoc-this-time-in-a-musical/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2022 (1x). 2019 matches production: beetlejuice-2019"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "la-excites--imaan-jalali.json",
+      "publishDate": "2023-07-13",
+      "url": "https://laexcites.com/2023/07/14/review-beetlejuice-the-musical-pantages-theatre/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2022 (0x). 2026 matches production: beetlejuice-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "latimes--ashley-lee.json",
+      "publishDate": "2023-07-20",
+      "url": "https://www.latimes.com/entertainment-arts/story/2023-07-20/commentary-how-the-beetlejuice-musical-beat-bad-reviews-and-became-a-gen-z-hit",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2022 (0x). 2026 matches production: beetlejuice-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
       "file": "magnetmagazine--magnet-staff.json",
       "score": 86,
       "publishDate": "2025-07-30",
@@ -8545,6 +8584,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: beetlejuice-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "weliveentertainment--kevin-taft.json",
+      "publishDate": "2023-07-13",
+      "url": "https://weliveentertainment.com/we-live-entertainment/theater-review-beetlejuice-musical-made-believer/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2022 (1x). 2026 matches production: beetlejuice-west-end-2026"
         }
       ]
     },
@@ -35642,6 +35694,24 @@
     },
     {
       "showId": "jagged-little-pill-tour-2022",
+      "file": "boston-globe--marlon-james.json",
+      "publishDate": "2023-06-15",
+      "url": "https://www.bostonglobe.com/2023/06/15/arts/dynamism-jagged-little-pill-makes-its-flaws-easier-swallow/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
       "file": "broadwayworld--james-lindhorst.json",
       "score": 77,
       "publishDate": "2024-01-20",
@@ -35684,9 +35754,48 @@
     },
     {
       "showId": "jagged-little-pill-tour-2022",
+      "file": "broadwayworld--michael-rabice.json",
+      "publishDate": "2023-06-07",
+      "url": "https://www.broadwayworld.com/buffalo/article/Review-JAGGED-LITTLE-PILL-at-Sheas-Buffalo-Theatre-20230607",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "publishDate": "2023-06-19",
+      "url": "https://www.broadwayworld.com/boston/article/Review-JAGGED-LITTLE-PILL-at-Citizens-Bank-Opera-House-20230619",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
       "file": "cbc--unknown.json",
       "publishDate": "2023-10-26",
       "url": "https://www.cbc.ca/music/alanis-jagged-little-pill-musical-1.7008708",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "cbsnews--chris-tanaka.json",
+      "publishDate": "2023-06-19",
+      "url": "https://www.cbsnews.com/boston/news/jagged-little-pill-musical-boston-alanis-morissette/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35743,6 +35852,19 @@
       "score": 66,
       "publishDate": "2023-10-28",
       "url": "https://nextmag.ca/review-jagged-little-pill-at-mirvish-is-bloated-but-occasionally-thrilling/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "onstage-colorado--susan-harper.json",
+      "publishDate": "2023-08-20",
+      "url": "https://onstagecolorado.com/emotional-and-cathartic-jagged-little-pill-delivers/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -60045,6 +60167,7 @@
     {
       "showId": "speculations-off-west-end-2026",
       "file": "theupcoming--maggie-oshea.json",
+      "score": 44,
       "publishDate": "2026-11-05",
       "url": "https://www.theupcoming.co.uk/2026/11/05/speculations-at-marylebone-theatre-theatre-review/",
       "findings": [
@@ -92034,6 +92157,19 @@
       ]
     },
     {
+      "showId": "beetlejuice-tour-2022",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2023-05-17",
+      "url": "https://hotchka.com/beetlejuice-tour-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "beetlejuice-tour-2026",
       "file": "dc-theater-arts--geoffrey-melada.json",
       "score": 49,
@@ -98595,6 +98731,7 @@
     {
       "showId": "dogstar-off-west-end-2026",
       "file": "islingtontribune--unknown.json",
+      "score": 68,
       "publishDate": null,
       "url": "https://www.islingtontribune.co.uk/article/review-dogstar-at-hampstead-theatre-downstairs",
       "findings": [
@@ -124997,6 +125134,7 @@
     {
       "showId": "speculations-off-west-end-2026",
       "file": "westminsterextra--unknown.json",
+      "score": 48,
       "publishDate": null,
       "url": "https://www.westminsterextra.co.uk/article/review-speculations-at-marylebone-theatre",
       "findings": [
