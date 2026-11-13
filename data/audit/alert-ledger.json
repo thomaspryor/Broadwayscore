@@ -29496,13 +29496,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-13T03:21:10.449Z",
+      "lastSeen": "2026-11-13T12:39:35.241Z",
       "lastNotifiedAt": "2026-11-12T18:06:57.835Z",
       "lastSurfacedAt": "2026-11-12T18:06:57.835Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -32297,14 +32297,15 @@
       "firstSeen": "2026-10-29T23:10:05.416Z",
       "incidentOpenedAt": "2026-11-13T03:21:10.421Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-13T03:21:10.421Z",
+      "lastSeen": "2026-11-13T12:39:35.202Z",
       "lastNotifiedAt": "2026-11-13T03:21:10.421Z",
       "lastSurfacedAt": "2026-11-13T03:21:10.421Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 7,
-      "sweptTracker": "BRO-7020"
+      "sweptTracker": "BRO-7020",
+      "silentRefires": 1
     },
     "land:land/bro-6546-voidfix": {
       "status": "resolved",
@@ -39057,13 +39058,12 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-13T03:21:10.398Z",
-      "lastNotifiedAt": "2026-11-12T08:06:56.360Z",
-      "lastSurfacedAt": "2026-11-12T08:06:56.360Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-13T12:39:35.182Z",
+      "lastNotifiedAt": "2026-11-13T12:39:35.182Z",
+      "lastSurfacedAt": "2026-11-13T12:39:35.182Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 4
+      "linearIdentifier": null
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -39207,21 +39207,18 @@
       "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: plain wording: no visitor-facing health check shows its raw name (BRO-7047) (tests/unit/morning-digest-quiet.test.mjs)",
       "firstSeen": "2026-11-08T11:49:18.563Z",
-      "incidentOpenedAt": "2026-11-11T12:25:00.426Z",
+      "incidentOpenedAt": "2026-11-13T12:39:35.223Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-11T16:55:47.898Z",
-      "lastNotifiedAt": "2026-11-11T12:25:00.426Z",
-      "lastSurfacedAt": "2026-11-11T12:25:00.426Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-13T12:39:35.223Z",
+      "lastNotifiedAt": "2026-11-13T12:39:35.223Z",
+      "lastSurfacedAt": "2026-11-13T12:39:35.223Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2,
-      "resolvedAt": "2026-11-12T08:06:56.453Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/job/linear-BRO-7126-mw7xdyzq": {
       "status": "resolved",
