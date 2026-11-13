@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "showId": "first-and-last-off-broadway-2026",
+  "night": "2026-11-12",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-13T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-13T02:30:04.643Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-13T04:55:12.452Z",
+    "lastOkSampleAt": "2026-11-13T04:55:12.452Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-13T04:00:09.830Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-13T05:00:30.109Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-13T05:00:30.187Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  }
+}
