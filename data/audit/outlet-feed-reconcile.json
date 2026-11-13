@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T06:00:15.938Z",
+  "generatedAt": "2026-11-13T07:07:03.479Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -97,24 +97,12 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 503 for https://theaterpizzazz.com/feed/"
     }
   ],
-  "itemsScanned": 845,
-  "matchedGaps": 13,
+  "itemsScanned": 849,
+  "matchedGaps": 14,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -197,6 +185,15 @@
       "url": "https://www.londontheatre1.com/reviews/cloud-9-national-theatre/",
       "headline": "Cloud 9 | National Theatre",
       "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/13/hamlet-hail-to-the-thief-radiohead-record-shakespeare-tragedy",
+      "headline": "Hamlet Hail to the Thief could have been rotten but redeems Radiohead’s ‘record that got away’ | Alexis Petridis",
+      "publishDate": "2026-11-13"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
