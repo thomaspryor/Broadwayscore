@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-11-13T02:35:46.808Z",
+  "generatedAt": "2026-11-13T05:00:13.788Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 320,
-  "clean": 318,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "openingDate": "2026-11-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.34 vs local 70.03 (Δ3.31)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-13T02:35:37.147Z"
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.99 vs local 83.31 (Δ1.68)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 33,
-      "deployedCount": 33,
-      "firstDefectAt": "2026-11-13T02:35:37.147Z"
-    }
-  ],
+  "checked": 323,
+  "clean": 323,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
