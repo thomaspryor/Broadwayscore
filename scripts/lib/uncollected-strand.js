@@ -197,7 +197,17 @@ function hasOpened(show, openedDates, today) {
   if (show.status === 'open' && show.openingDate && show.openingDate <= today) return true;
   // A future or garbage date must not license the alarm — the sibling signal
   // openSignalFromDiscovery applies the same isDateReached guard.
+  // BRO-7450: a blog's preview-night write-up (dated after previews began) is
+  // not press-night evidence while the show record still says opening is days
+  // away. The Fantasticks (previews 10-22, opening 11-16) tripped a total
+  // blackout on 2026-11-13 from a 11-11 preview post. One day of slack covers
+  // outlets that publish a night early.
+  if (show.openingDate && show.openingDate > addDays(today, 1)) return false;
   return (openedDates || []).some(d => d <= today);
+}
+
+function addDays(ymd, n) {
+  return new Date(Date.parse(ymd + 'T00:00:00Z') + n * 86400000).toISOString().slice(0, 10);
 }
 
 /**
