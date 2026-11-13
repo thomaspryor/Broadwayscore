@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
   "openingDate": "2026-11-12",
-  "detectedAt": "2026-11-13T04:46:18.941Z",
+  "detectedAt": "2026-11-13T05:13:19.750Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "1883magazine--nick-barr.json",
-      "outletId": "1883magazine",
-      "criticName": "Nick Barr",
-      "url": "https://1883magazine.com/hamlet-hail-to-the-thief-review/",
-      "fullTextLen": 5854,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "london-box-office--shehrazade-zafar-arif.json",
       "outletId": "london-box-office",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-11-13T04:46:18.941Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
