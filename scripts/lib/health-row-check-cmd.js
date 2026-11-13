@@ -68,6 +68,11 @@ function rowMatchKey(name) {
   return key.trimEnd();
 }
 
+// Only the Mac can supply this row's complete evidence.
+function rowRequiresLive(name) {
+  return rowMatchKey(name) === 'Stuck pipeline items';
+}
+
 /**
  * Encode one health-check row's RAW name into the check-health-row-absent.js
  * safe-form command. Callers pass the raw name, never a prose-sanitized one —
@@ -77,7 +82,11 @@ function rowMatchKey(name) {
  * @returns {string} a backtickable, SAFE_CHECK_FORMS-passing command
  */
 function rowAbsentCheckCmd(name) {
-  return `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(rowMatchKey(name), 'utf8').toString('base64url')}`;
+  const key = rowMatchKey(name);
+  // BRO-7276: CI cannot observe this row's Mac-local sources. All filers
+  // and the recovered-card closer must require the same live evidence.
+  const live = rowRequiresLive(key) ? ' --live' : '';
+  return `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(key, 'utf8').toString('base64url')}${live}`;
 }
 
 /**
@@ -156,4 +165,4 @@ function sanitizeRowText(s) {
     .replace(/VERIFY\s*:/gi, 'VERIFY -');
 }
 
-module.exports = { rowAbsentCheckCmd, alertAbsentCheckCmd, rowMatchKey, sanitizeRowText, healthRowNameFromConditionKey, clearedHealthCheckKeys, HEALTH_CHECK_PREFIX, ROW_NAME_MATCH_LIMIT, SAFE_TOKEN_MAX_CHARS };
+module.exports = { rowAbsentCheckCmd, rowRequiresLive, alertAbsentCheckCmd, rowMatchKey, sanitizeRowText, healthRowNameFromConditionKey, clearedHealthCheckKeys, HEALTH_CHECK_PREFIX, ROW_NAME_MATCH_LIMIT, SAFE_TOKEN_MAX_CHARS };

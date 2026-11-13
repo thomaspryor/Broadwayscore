@@ -246,7 +246,7 @@ test('every linear-orphaned-* kind bsc-reconcile reports is digest-actionable', 
   const kinds = [...src.matchAll(/kind: '(linear-orphaned-[a-z-]+)'/g)].map((m) => m[1]);
   assert.ok(kinds.includes('linear-orphaned-owner-alert'), 'owner alert kind must exist');
   // Informational only: would crowd the digest's visible slots, so deliberately not actionable.
-  const INFORMATIONAL = new Set(['linear-orphaned-redispatched']);
+  const INFORMATIONAL = new Set(['linear-orphaned-redispatched', 'linear-orphaned-issue-missing']);
   for (const k of new Set(kinds)) {
     if (INFORMATIONAL.has(k)) { assert.ok(!ACTIONABLE_RECONCILE_KINDS.has(k)); continue; }
     assert.ok(ACTIONABLE_RECONCILE_KINDS.has(k), `${k} missing from ACTIONABLE_RECONCILE_KINDS`);

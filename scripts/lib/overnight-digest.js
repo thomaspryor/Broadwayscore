@@ -27,6 +27,7 @@ const { execFileSync } = require('child_process');
 const { isDoneTitle, run: cmuxRun, LIST_RETRY_TIMEOUTS } = require('./cmux-workspaces.js');
 const { isNeedsYouTitle } = require('./needs-you-snapshot.js');
 const { shallowFetchArgs } = require('./shallow-fetch-args.js');
+const { classifyJobBranch } = require('./worktree-branch-guard.js');
 
 const CMUX_BIN = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -167,6 +168,27 @@ function summarizeWorktrees(entries) {
     .map(e => `${e.name}: ${e.ahead} unmerged commit${e.ahead > 1 ? 's' : ''}${e.lastCommitDays != null ? ` (last touched ${e.lastCommitDays}d ago)` : ''}`);
 }
 
+// BRO-7276: a Linux worker can also have .claude/worktrees, but it cannot
+// observe the Mac's cmux sessions and local reconciliation ledger.
+function hasMacStuckSources({ repo, platform = process.platform, exists = fs.existsSync }) {
+  return platform === 'darwin' && (exists(CMUX_BIN)
+    || exists(path.join(repo, 'data', 'audit', 'reconcile-report.jsonl')));
+}
+
+function stuckPipelineRow({ signals = [], errors = [], macSourcesPresent = false } = {}) {
+  const name = 'Stuck pipeline items';
+  if (signals.length) {
+    return { name, status: 'warn', message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest. ${signals.join(' | ')}`.slice(0, 500) };
+  }
+  if (errors.length) {
+    return { name, status: 'warn', message: `Overnight digest gathered partially (${errors.length} source(s) failed); cannot confirm clean: ${errors.join('; ')}`.slice(0, 500) };
+  }
+  if (!macSourcesPresent) {
+    return { name, status: 'pass', message: 'Skipped: Mac-only stuck sources are unavailable on this machine; cannot confirm the pipeline is clear.' };
+  }
+  return { name, status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' };
+}
+
 // ── Impure gatherer — every source fails soft ───────────────────────────────
 
 function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
@@ -233,14 +255,24 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
       try {
         const branch = run('git', ['branch', '--show-current'], wt, 5000).trim();
         if (!branch || branch === 'main') continue;
-        const ahead = Number(run('git', ['rev-list', '--count', `origin/main..${branch}`], wt, 5000).trim());
+        let ahead = Number(run('git', ['rev-list', '--count', `origin/main..${branch}`], wt, 5000).trim());
+        if (!ahead) continue;
+        // BRO-7276: rebasing changes SHAs, so raw ahead counts kept landed
+        // work alarming forever. Reuse the dispatcher's patch comparison.
+        // Neither a matching subject/card ID nor age proves work landed.
+        const classification = classifyJobBranch(branch, wt);
+        if (['landed', 'genuinely-empty'].includes(classification.status)) continue;
+        if (classification.status === 'unlanded-with-commits') ahead = classification.unlandedCommits.length;
+        else digest.errors.push(`couldn't verify worktree ${name}: ${classification.reason}`);
         let lastCommitDays = null;
         try {
           const ts = Number(run('git', ['log', '-1', '--format=%ct'], wt, 5000).trim()) * 1000;
           lastCommitDays = Math.floor((Date.now() - ts) / 86400000);
         } catch { /* cosmetic only */ }
         entries.push({ name, ahead, lastCommitDays });
-      } catch { /* not a live worktree — skip */ }
+      } catch (err) {
+        if (fs.existsSync(path.join(wt, '.git'))) digest.errors.push(`couldn't inspect worktree ${name}`);
+      }
     }
     digest.stuck.worktrees = summarizeWorktrees(entries);
   } catch (err) {
@@ -434,4 +466,4 @@ function renderDigestBlock(digest) {
   return parts.join('\n');
 }
 
-module.exports = { summarizeCommits, parseWorkspaces, summarizeWorktrees, gatherDigest, renderDigestBlock, stuckSignals, countStuckSignals, ACTIONABLE_RECONCILE_KINDS, CORRELATABLE_RECONCILE_KINDS, RESOLVING_RECONCILE_KINDS };
+module.exports = { summarizeCommits, parseWorkspaces, summarizeWorktrees, gatherDigest, renderDigestBlock, stuckSignals, countStuckSignals, hasMacStuckSources, stuckPipelineRow, ACTIONABLE_RECONCILE_KINDS, CORRELATABLE_RECONCILE_KINDS, RESOLVING_RECONCILE_KINDS };

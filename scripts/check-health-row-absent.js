@@ -82,6 +82,14 @@ async function main(argv) {
   }
   row = row.trim();
 
+  // BRO-7276: protect already-filed cards too. Their old command lacks
+  // --live, and a CI snapshot cannot prove the Mac's stuck signals cleared.
+  const { rowRequiresLive, rowAbsentCheckCmd } = require('./lib/health-row-check-cmd.js');
+  if (rowRequiresLive(row) && !args.includes('--live')) {
+    console.error(`[check-health-row-absent] CANNOT VERIFY: "${row}" requires Mac-local evidence. Run ${rowAbsentCheckCmd(row)}`);
+    return 3;
+  }
+
   if (args.includes('--live')) {
     const { probeHealthRowLive } = require('./lib/health-row-probe.js');
     let probe;

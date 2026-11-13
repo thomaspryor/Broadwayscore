@@ -457,6 +457,18 @@ function isArchivedIssueError(err) {
   );
 }
 
+// On a READ, "Entity not found: Issue" means the issue is unavailable, not
+// that its pipeline is stuck. Archived issues stay readable; deleted IDs
+// and IDs hidden by access changes can produce this response. Sweeps keep
+// retrying without raising a stuck signal (BRO-7276: BRO-25690 raised
+// 'linear-zombie-fetch-error' 2,187 times in 7 weeks and kept the digest's
+// "Stuck pipeline items" row permanently warn).
+function isIssueMissingOnRead(err) {
+  if (!err) return false;
+  if (Array.isArray(err.linearErrors) && err.linearErrors.some(e => /Entity not found: Issue\b/i.test(String(e?.message || '')))) return true;
+  return /Entity not found: Issue\b/i.test(String(err.message || ''));
+}
+
 async function getIssueArchivedAt(id) {
   const data = await graphql(`query($id: String!) { issue(id: $id) { archivedAt } }`, { id });
   return data.issue ? data.issue.archivedAt : null;
@@ -773,6 +785,7 @@ async function addLabelToIssue(issueId, labelId) {
 
 module.exports = {
   TEAM_KEY,
+  isIssueMissingOnRead,
   graphql,
   getTeam,
   listAllIssueTitles,

@@ -278,6 +278,61 @@ const candidateEntries = (identifier, jobId, cwd, spawnedTs = '2026-09-01T00:00:
 ]);
 const readRows = (p) => fs.readFileSync(p, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
 
+test('BRO-7276: missing issue reads do not emit stuck signals, including the post-verify read', async () => {
+  for (const failOnRead of [1, 2]) {
+    const h = harness({ entries: candidateEntries('BRO-25690', 'missing', '/wt/missing') });
+    let reads = 0;
+    h.deps.getIssueFn = async () => {
+      if (++reads === failOnRead) throw new Error('Linear GraphQL error: Entity not found: Issue');
+      return startedIssue2('Missing');
+    };
+    try {
+      await sweepLinearStartedZombies({ deps: h.deps });
+      assert.deepEqual(h.reported.map(r => r.kind), ['linear-zombie-issue-missing']);
+      assert.deepEqual(h.applied, []);
+    } finally {
+      fs.rmSync(path.dirname(h.statePath), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  }
+});
+
+test('BRO-7276: network failures remain actionable', async () => {
+  const h = harness({ entries: candidateEntries('BRO-25690', 'missing', '/wt/missing') });
+  h.deps.getIssueFn = async () => { throw new Error('fetch failed'); };
+  try {
+    await sweepLinearStartedZombies({ deps: h.deps });
+    assert.deepEqual(h.reported.map(r => r.kind), ['linear-zombie-fetch-error']);
+  } finally {
+    fs.rmSync(path.dirname(h.statePath), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-7276: orphaned missing issues stay informational and are retried after access recovers', async () => {
+  const { sweepOrphanedLinearInFlight } = require('../bsc-reconcile.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'orphan-missing-'));
+  const reports = [];
+  const now = Date.now();
+  let reads = 0;
+  const deps = {
+    readLedgerEntriesFn: () => [
+      { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-25690', jobId: 'gone', ts: new Date(now - 5 * 3600000).toISOString() },
+      { event: JOB_EVENTS.ORPHANED, taskId: 'linear:BRO-25690', jobId: 'gone', ts: new Date(now - 4 * 3600000).toISOString() },
+    ],
+    getIssueFn: async () => { reads++; throw new Error('Linear GraphQL error: Entity not found: Issue'); },
+    reportFn: r => reports.push(r), hasLiveLeaseFn: () => false,
+    statePath: path.join(dir, 'state.json'), nowFn: () => now,
+  };
+  try {
+    await sweepOrphanedLinearInFlight({ deps });
+    await sweepOrphanedLinearInFlight({ deps: { ...deps, nowFn: () => now + 2 * 3600000 } });
+    assert.equal(reads, 2);
+    assert.deepEqual(reports.map(r => r.kind), ['linear-orphaned-issue-missing', 'linear-orphaned-issue-missing']);
+    assert.deepEqual(JSON.parse(fs.readFileSync(deps.statePath)).handled, []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
 test('sweep: worktree-gone + VERIFY passes -> closes Done through the CLI path with the marker comment', async () => {
   const { deps, applied, ledgerPath } = harness({
     entries: candidateEntries('BRO-1', 'job-1', '/wt/gone'),

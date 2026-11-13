@@ -159,8 +159,9 @@ test('localRollupIssues: adds same-name rows when the snapshot lacks them', () =
   // Names must equal the core rows so a filed card is verifiable.
   assert.equal(ROLLUP_ROW_NAMES.freshness, hc.DATA_FRESHNESS_GAPS_CHECK);
   assert.equal(ROLLUP_ROW_NAMES.stuck, 'Stuck pipeline items');
-  assert.match(require('fs').readFileSync(new URL('../../scripts/health-check.js', import.meta.url), 'utf8'),
-    /name: 'Stuck pipeline items', status: 'pass'/);
+  const { stuckPipelineRow } = require('../../scripts/lib/overnight-digest.js');
+  assert.equal(stuckPipelineRow({ macSourcesPresent: true }).name, ROLLUP_ROW_NAMES.stuck);
+  assert.equal(stuckPipelineRow({ macSourcesPresent: true }).status, 'pass');
 });
 
 test('localRollupIssues: nothing when both counts are zero or health is missing', () => {

@@ -39,8 +39,7 @@ const noisy = async (fn) => {
 async function healthRowExit(row) {
   const { main } = require('./check-health-row-absent.js');
   const { rowAbsentCheckCmd } = require('./lib/health-row-check-cmd.js');
-  const token = rowAbsentCheckCmd(row).split(' ').pop();
-  return noisy(() => main(['node', 'check-health-row-absent.js', '--row-b64', token]));
+  return noisy(() => main(rowAbsentCheckCmd(row).split(' ')));
 }
 
 function prodExit(sha) {

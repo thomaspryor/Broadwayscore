@@ -92,6 +92,19 @@ test('probeHealthRowLive: row present with status pass -> verdict absent (fixed)
   assert.equal(out.matched.status, 'pass');
 });
 
+test('BRO-7276: legacy stuck commands cannot pass a blind snapshot; live requires observed sources', async () => {
+  const { stuckPipelineRow } = require('./overnight-digest.js');
+  const row = 'Stuck pipeline items';
+  for (const args of [['--row', row], ['--row-b64', b64url(row)]]) {
+    assert.equal(await checkMain(['node', 'check', ...args]), 3);
+  }
+  for (const [macSourcesPresent, exit] of [[false, 3], [true, 0]]) {
+    await withStubbedCoreResults([stuckPipelineRow({ macSourcesPresent })], async () => {
+      assert.equal(await checkMain(['node', 'check', '--row-b64', b64url(row), '--live']), exit);
+    });
+  }
+});
+
 test('probeHealthRowLive: row present with status error/warn and a real message -> verdict present (still broken)', async () => {
   const out = await withStubbedCoreResults(
     [{ name: 'Probe test: fixture row', status: 'error', message: 'still broken' }],
@@ -232,6 +245,7 @@ test('a probe run performs zero real fs writes (spy on the REAL, unpatched fs)',
 // autofix-canary-probe.test.mjs (BRO-3823).
 test('checkStuckPipelineItems calls gatherDigest with skipFetch (no added git-fetch side effect)', () => {
   const overnightDigestPath = require.resolve('./overnight-digest.js');
+  const realDigest = require(overnightDigestPath);
   const original = require.cache[overnightDigestPath];
   let capturedOpts = null;
   require.cache[overnightDigestPath] = {
@@ -239,6 +253,7 @@ test('checkStuckPipelineItems calls gatherDigest with skipFetch (no added git-fe
     filename: overnightDigestPath,
     loaded: true,
     exports: {
+      ...realDigest,
       gatherDigest: (opts) => { capturedOpts = opts; return { stuck: {}, errors: [] }; },
       stuckSignals: () => [],
     },
@@ -247,6 +262,7 @@ test('checkStuckPipelineItems calls gatherDigest with skipFetch (no added git-fe
     delete require.cache[HEALTH_CHECK_PATH];
     const { checkStuckPipelineItems } = require('../health-check.js');
     checkStuckPipelineItems();
+    assert.equal(capturedOpts.repo, require('./repo-root.js').MAIN_REPO_ROOT);
   } finally {
     if (original) require.cache[overnightDigestPath] = original;
     else delete require.cache[overnightDigestPath];

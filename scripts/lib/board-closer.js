@@ -93,7 +93,7 @@ function decideRecovered(exitCode) {
 /** Comment that closes a recovered alert card. */
 function recoveredComment(row, evidenceLine) {
   return [
-    `Closed by sweep-recovered-alert-cards (BRO-7135): the alert ledger marks this condition resolved and the health row "${row}" is absent from the latest daily health snapshot.`,
+    `Closed by sweep-recovered-alert-cards (BRO-7135): the alert ledger marks this condition resolved and the required health check confirms "${row}" is clear.`,
     'NO-ROOT-CAUSE: auto-close of a recovered alert, no fix was made by this closer',
     `VERIFY: ${rowAbsentCheckCmd(row)}`,
     evidenceLine ? `Evidence: ${evidenceLine}` : null,
