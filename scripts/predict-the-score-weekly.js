@@ -16,6 +16,7 @@
  *        the gate is "Friday from noon on", not one exact hour. The Idempotency-Key is per
  *        owner and ET day with no content hash, so a second run the same day cannot send again.)
  */
+require('./lib/cli-help').exitOnHelp(module); // --help prints usage and exits before any network call or send
 const fs = require('fs');
 const path = require('path');
 const { inboxKey } = require('./lib/account-metrics');
