@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-12T21:58:16.665Z",
+  "generated": "2026-11-13T00:43:39.636Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 55,
+  "count": 57,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -382,11 +382,25 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "true-west-2019",
+      "loserFile": "rollingstone--unknown.json",
+      "targetFile": "rollingstone--jonathan-bernstein.json",
+      "reason": "orphaned-duplicate-heal: rollingstone--jonathan-bernstein.json was flagged invalid after rollingstone--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "wicked-tour-2021",
       "loserFile": "providence-journal--unknown.json",
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "loserFile": "times-uk--clive-davis.json",
+      "targetFile": "times-uk--dominic-maxwell.json",
+      "reason": "orphaned-duplicate-heal: times-uk--dominic-maxwell.json was flagged invalid after times-uk--clive-davis.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
