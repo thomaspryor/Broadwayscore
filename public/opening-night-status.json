@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T06:13:16.007Z",
+  "generatedAt": "2026-11-13T07:23:17.762Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1516,28 +1516,27 @@
       "status": "open",
       "slug": "the-kings-critique-off-broadway",
       "thumbnail": "/images/shows/the-kings-critique-off-broadway-2026/thumbnail.webp",
-      "siteScore": 52.03,
-      "liveScore": 52,
-      "scoreDrift": -0.030000000000001137,
+      "siteScore": 54.85,
+      "liveScore": 55,
+      "scoreDrift": 0.14999999999999858,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 1,
       "positive": 1,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "4/12 total",
           "T1:0/3",
-          "T2:2/3",
-          "hi-conf:3/8"
+          "hi-conf:4/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1666,10 +1665,6 @@
         },
         {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -1883,6 +1878,18 @@
           "t3": 1,
           "p": 1,
           "m": 0,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-13T07:23:17.762Z",
+          "rc": 4,
+          "s": 54.85,
+          "t1": 0,
+          "t2": 3,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
           "n": 2,
           "bc": "waiting"
         }
