@@ -425,6 +425,20 @@
     "queuedAt": "2026-11-13T18:22:04.401Z"
   },
   {
+    "conditionKey": "llm-scoring:daily-cost-breach",
+    "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
+    "description": "Still firing after 24 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $82.15 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6732",
+    "fields": [],
+    "queuedAt": "2026-11-13T20:46:47.440Z"
+  },
+  {
     "conditionKey": "cron-health:Replay Push Rescue",
     "title": "🚨 Critical cron stale, self-heal failed: Replay Push Rescue",
     "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
@@ -442,20 +456,6 @@
       }
     ],
     "queuedAt": "2026-11-13T19:02:35.561Z"
-  },
-  {
-    "conditionKey": "llm-scoring:daily-cost-breach",
-    "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
-    "description": "Still firing after 24 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $81.57 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": "BRO-6732",
-    "fields": [],
-    "queuedAt": "2026-11-13T19:43:24.891Z"
   },
   {
     "conditionKey": "land:land/bro-7463-pts-weekly-email",
