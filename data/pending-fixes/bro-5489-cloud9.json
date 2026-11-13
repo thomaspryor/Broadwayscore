@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-5489-cloud9",
+  "planId": "3d5b1ce0-76e6-4481-87e2-3fff66bfc78f",
+  "status": "pending",
+  "createdAt": "2026-11-13T18:57:32.423Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire duplicate Cloud 9 National stub (cloud-9-national-west-end-2026) after moving its 3 reviews to cloud-9-west-end-2026; clears the review-gap opening-window alert",
+    "steps": [
+      "Move review to the real Cloud 9 (National Theatre) show",
+      "Move review to the real Cloud 9 show",
+      "Move review to the real Cloud 9 show",
+      "Same FT review already held under cloud-9-west-end-2026 (url differs by ?syn param only)",
+      "Body-less stub (no text, no byline); gather for cloud-9-west-end-2026 re-finds the page",
+      "retire-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cloud-9-national-west-end-2026/londontheatre1--chris-omaweng.json",
+        "destPath": "cloud-9-west-end-2026/londontheatre1--chris-omaweng.json",
+        "description": "Move review to the real Cloud 9 (National Theatre) show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cloud-9-national-west-end-2026/readaboutstuff--dan-english.json",
+        "destPath": "cloud-9-west-end-2026/readaboutstuff--dan-english.json",
+        "description": "Move review to the real Cloud 9 show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cloud-9-national-west-end-2026/south-london--michael-holland.json",
+        "destPath": "cloud-9-west-end-2026/south-london--michael-holland.json",
+        "description": "Move review to the real Cloud 9 show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cloud-9-national-west-end-2026/financialtimes--sarah-hemming.json",
+        "description": "Same FT review already held under cloud-9-west-end-2026 (url differs by ?syn param only)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cloud-9-national-west-end-2026/artsdesk--unknown.json",
+        "description": "Body-less stub (no text, no byline); gather for cloud-9-west-end-2026 re-finds the page"
+      },
+      {
+        "type": "retire-show",
+        "id": "cloud-9-national-west-end-2026",
+        "expectTitle": "Cloud 9 National",
+        "reason": "BRO-5489: duplicate stub minted by the lbo-sitemap roundup path for the National Theatre Cloud 9 already held as cloud-9-west-end-2026; reviews moved first"
+      }
+    ]
+  }
+}
