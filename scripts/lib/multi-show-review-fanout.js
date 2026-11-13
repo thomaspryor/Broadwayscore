@@ -1158,6 +1158,17 @@ function wordCount(s) {
   return String(s || '').split(/\s+/).filter(Boolean).length;
 }
 
+/**
+ * PURE. Paywall verdict on the whole article about to be split (BRO-7389):
+ * true / false on a hard-paywall URL, null elsewhere (no opinion).
+ */
+function splitSourceComplete(data) {
+  const pc = require('./paywall-completeness');
+  const text = (data && (data.fullText || data.wrongFullText)) || '';
+  if (!text || !pc.isHardPaywallUrl(data.url)) return null;
+  return pc.assessPaywallCompleteness(text, data.url, { criticName: data.criticName, category: data.category }).complete;
+}
+
 function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOString()) {
   const out = { ...data };
   out.fullText = ownSection.sectionText;
@@ -1171,6 +1182,10 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   // Lets the planner notice a later re-collection that put the whole article
   // back into fullText (the processed marker survives merges) and re-trim.
   out.multiShowSplitTextLength = out.fullText.length;
+  // BRO-7389: the whole article's own paywall verdict, so a later check on
+  // the (always shorter) section judges the article, not the section.
+  const sourceVerdict = splitSourceComplete(data);
+  if (sourceVerdict != null) out.multiShowSplitSourceComplete = sourceVerdict;
 
   // A rating an LLM read off the whole multi-show article may be another
   // show's: the Observer's Plaza Suite row carried Till the Stars Come Down's
@@ -1283,6 +1298,12 @@ function buildChild(parentData, section, parentShowId, now = new Date().toISOStr
     multiShowSplitProcessed: now,
     needsRescoreReason: 'multi-show-split: new child file, awaiting scoring',
   };
+  // BRO-7389: same section/article record the parent carries.
+  child.multiShowSplitTextLength = section.sectionText.length;
+  const wholeText = parentData.fullText || parentData.wrongFullText || '';
+  if (wholeText) child.multiShowSplitOriginalLength = wholeText.length;
+  const sourceVerdict = splitSourceComplete(parentData);
+  if (sourceVerdict != null) child.multiShowSplitSourceComplete = sourceVerdict;
   if (parentData.textFetchedAt) child.textFetchedAt = parentData.textFetchedAt;
   if (parentData.firstSeenAt) child.firstSeenAt = parentData.firstSeenAt;
   child.textWordCount = child.wordCount;
@@ -1554,6 +1575,7 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
 
 module.exports = {
   splitParentRegrew,
+  splitSourceComplete,
   fanoutMovesText,
   heldSiblingNeedsTrim,
   isHumanJudged,

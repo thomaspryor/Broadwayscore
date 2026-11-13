@@ -223,6 +223,59 @@ function assessPaywallCompleteness(text, url, opts = {}) {
   };
 }
 
+// ---------- multi-show split sections (BRO-7389) ----------
+
+/** Floor a whole article on this domain (and show category) must clear. */
+function wholeArticleFloor(domain, category) {
+  const byCategory = CATEGORY_FLOORS[domain] && category ? CATEGORY_FLOORS[domain][category] : undefined;
+  return byCategory || HARD_PAYWALL_FLOORS[domain] || null;
+}
+
+/**
+ * True when a stored text is ONE show's section of a joint multi-show review
+ * (the splitter cut it, and it has not grown back to the whole article) AND
+ * the whole article it was cut from passed the completeness check.
+ *
+ * The floor and ending checks are whole-article checks: a section is always
+ * shorter than the article, and it ends where the next show's section begins
+ * (no info box). NYT's two-show columns (The Verge + Rope, The Unbelievers +
+ * 2:22) were fetched whole on opening night, split correctly, and then the
+ * section was labelled "Paywall truncation: below_floor", which sent them to
+ * hand recovery. New splits record the article's own verdict
+ * (multiShowSplitSourceComplete); older ones fall back to the article's
+ * length against the floor.
+ */
+function isSplitSectionOfCompleteArticle(data) {
+  if (!data || typeof data.fullText !== 'string' || !data.fullText) return false;
+  if (data.multiShowSplitParent !== true && data.multiShowSplitChild !== true) return false;
+  const sectionLen = data.multiShowSplitTextLength;
+  if (!Number.isFinite(sectionLen) || data.fullText.length > sectionLen + 200) return false;
+  if (data.multiShowSplitSourceComplete === true) return true;
+  if (data.multiShowSplitSourceComplete === false) return false;
+  const domain = getHardPaywallDomain(data.url);
+  const floor = domain && wholeArticleFloor(domain, data.category);
+  return !!floor && Number.isFinite(data.multiShowSplitOriginalLength) && data.multiShowSplitOriginalLength >= floor;
+}
+
+// Reasons that still count on a split section: they are about the section's
+// own text (a bot wall or a paywall prompt), not about its length or ending.
+const SECTION_REASONS = new Set(['bot_wall_stub', 'paywall_prompt']);
+
+/**
+ * assessPaywallCompleteness for a STORED review record. Same result, except a
+ * split section of a complete article is judged by that article (see
+ * isSplitSectionOfCompleteArticle); `splitSection: true` marks that case.
+ * Every stored-text caller (collector label, opening-window recheck, rebuild
+ * tier override, keep-stored patch) goes through here.
+ */
+function assessStoredPaywallCompleteness(data) {
+  const d = data || {};
+  const a = assessPaywallCompleteness(d.fullText, d.url, { criticName: d.criticName, category: d.category });
+  if (!a.hardPaywall || a.complete || !isSplitSectionOfCompleteArticle(d)) return a;
+  const reasons = a.reasons.filter((r) => SECTION_REASONS.has(r));
+  return { ...a, reasons, complete: reasons.length === 0, splitSection: true };
+}
+
 /**
  * Rank two tier candidates: complete beats partial; otherwise the longer
  * assessed body wins. Candidates are `{ assessment, ... }`.
@@ -312,7 +365,7 @@ function needsPaywallRecheck(data, nowMs = Date.now()) {
   // pull old files back into the window.
   const seen = Date.parse(data.firstSeenAt || '');
   if (!Number.isFinite(seen) || nowMs - seen > RECHECK_WINDOW_MS) return false;
-  return !assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName, category: data.category }).complete;
+  return !assessStoredPaywallCompleteness(data).complete;
 }
 
 const PAYWALL_TRUNCATION_REASON_RE = /^Paywall truncation:/;
@@ -365,7 +418,7 @@ function applyPaywallTierOverride(data, tierResult, nowMs = Date.now()) {
   const seen = Date.parse(data.firstSeenAt || '');
   const inWindow = Number.isFinite(seen) && nowMs - seen <= RECHECK_WINDOW_MS;
   if (!labelled && !inWindow) return tierResult;
-  const a = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName, category: data.category });
+  const a = assessStoredPaywallCompleteness(data);
   if (a.complete) return tierResult;
   const reason = `Paywall truncation: ${a.reasons.join(', ')} for ${a.domain} (source: ${data.sourceMethod || data.fetchMethod})`;
   return { ...tierResult, contentTier: 'truncated', tierReason: reason, paywallOverride: true };
@@ -379,7 +432,7 @@ function truncatedTierPatch(data) {
   if (!data || data.contentTier !== 'complete' || !data.fullText) return null;
   if (!isHardPaywallUrl(data.url)) return null;
   if (!SCRAPED_SOURCE_METHODS.has(data.sourceMethod || data.fetchMethod)) return null;
-  const a = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName, category: data.category });
+  const a = assessStoredPaywallCompleteness(data);
   if (a.complete) return null;
   const reason = `Paywall truncation: ${a.reasons.join(', ')} for ${a.domain} (source: ${data.sourceMethod || data.fetchMethod})`;
   return {
@@ -422,4 +475,7 @@ module.exports = {
   needsPaywallRecheck,
   truncatedTierPatch,
   applyPaywallTierOverride,
+  wholeArticleFloor,
+  isSplitSectionOfCompleteArticle,
+  assessStoredPaywallCompleteness,
 };

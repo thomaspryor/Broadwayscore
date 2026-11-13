@@ -5921,7 +5921,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       const isProxy = PROXY_METHODS.has(data.sourceMethod);
       let truncReason = null;
       if (isProxy && isHardPaywallUrl(data.url)) {
-        const pa = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName || review.criticName, category: data.category || review.category });
+        // Stored-record form (BRO-7389): a kept multi-show split section is
+        // judged by the whole article it was cut from, not by its own length.
+        const pa = require('./lib/paywall-completeness').assessStoredPaywallCompleteness({ ...data, criticName: data.criticName || review.criticName, category: data.category || review.category });
         if (!pa.complete) {
           truncReason = `Paywall truncation: ${pa.reasons.join(', ')} for ${urlHost} (source: ${data.sourceMethod})`;
         }
