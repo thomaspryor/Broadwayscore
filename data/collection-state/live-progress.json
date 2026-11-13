@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-11-13T11:58:02.257Z",
-  "processed": 12,
-  "failed": 13,
-  "successRate": "48.0%",
+  "updatedAt": "2026-11-13T12:58:25.831Z",
+  "processed": 86,
+  "failed": 59,
+  "successRate": "59.3%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 59,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
+    "scrapingdog": 8,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 13
   },
   "browserbaseSessions": 5,
   "recentActivity": [
@@ -81,6 +81,46 @@
       "t": "2026-11-13T11:57:51.344Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T12:34:33.736Z",
+      "event": "bb-session",
+      "session": "7f858300",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-13T12:34:34.418Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T12:36:03.087Z",
+      "event": "bb-session",
+      "session": "18d3e647",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655418"
+    },
+    {
+      "t": "2026-11-13T12:36:03.698Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T12:41:57.571Z",
+      "event": "bb-session",
+      "session": "24afe3ba",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-13T12:48:24.101Z",
+      "event": "bb-session",
+      "session": "88bfca82",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-13T12:48:44.579Z",
+      "event": "bb-session",
+      "session": "1d34f71c",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
     }
   ]
 }
