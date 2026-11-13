@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-13T11:16:27.897Z",
+  "timestamp": "2026-11-13T11:40:01.997Z",
   "stats": {
-    "totalReviews": 81828,
+    "totalReviews": 81829,
     "alreadyFlagged": 22345,
     "dateGuardCatches": 220,
     "directorMismatch": 3671,
     "tvFilmSignals": 2309,
-    "londonSignals": 3733,
+    "londonSignals": 3737,
     "offBroadwaySignals": 752,
     "yearMismatch": 375,
     "noPublishDate": 8430
@@ -44268,7 +44268,7 @@
     {
       "showId": "motown-the-musical-west-end-2016",
       "file": "guardian--michael-billington.json",
-      "score": 39,
+      "score": 37,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2016/mar/08/motown-the-musical-review-berry-gordy-shaftesbury-theatre",
       "findings": [
@@ -96155,6 +96155,34 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "a-youngish-perspective--lucy-holz.json",
+      "score": 82,
+      "publishDate": "2026-11-13",
+      "url": "https://ayoungishperspective.co.uk/2026/11/13/review-cloud-9/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "afridiziak-theatre-news--mark-arbouine.json",
+      "score": 74,
+      "publishDate": "2026-11-13",
+      "url": "https://www.afridiziak.com/reviews/cloud-9-by-caryl-churchill-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 74,
       "publishDate": "2026-11-11",
@@ -96304,6 +96332,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "observer--susannah-clapp.json",
+      "score": 90,
+      "publishDate": "2026-11-13",
+      "url": "https://observer.co.uk/culture/theatre/article/cloud-9-caryl-churchills-riotous-romp-is-still-radical",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -104942,6 +104984,7 @@
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
+      "score": 82,
       "publishDate": "2026-11-13",
       "url": "https://www.allthatdazzles.co.uk/post/review-hamlet-hail-to-the-thief-barbican-theatre",
       "findings": [
@@ -104972,6 +105015,20 @@
       "score": 75,
       "publishDate": "2026-11-13",
       "url": "https://www.londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-barbican-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "london-theatre--theo-bosanquet.json",
+      "score": null,
+      "publishDate": "2026-11-13",
+      "url": "https://www.londontheatre.co.uk/reviews/hamlet-hail-to-the-thief-review-shakespeare-radiohead-barbican",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -115755,7 +115812,7 @@
     {
       "showId": "midnight-movie-west-end-2019",
       "file": "times-uk--sam-marlowe.json",
-      "score": 38,
+      "score": 42,
       "publishDate": "December 4th, 2019",
       "url": "https://www.thetimes.co.uk/article/midnight-movie-review-short-fractured-meditation-on-internet-habits-is-too-diffuse-vl6h6f9fp",
       "findings": [
@@ -115769,7 +115826,7 @@
     {
       "showId": "midnight-movie-west-end-2019",
       "file": "whatsonstage--alex-wood.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "December 6th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/midnight-movie-royal-court_50515.html",
       "findings": [
@@ -116328,7 +116385,7 @@
     {
       "showId": "mr-gum-and-the-dancing-bear-the-musical-west-end-2019",
       "file": "london-theatre--will-longman.json",
-      "score": 59,
+      "score": 64,
       "publishDate": "August 1st, 2019",
       "url": "https://www.londontheatre.co.uk/reviews/review-mr-gum-and-the-dancing-bear-the-musical-at-the-national-theatre",
       "findings": [
@@ -116356,7 +116413,7 @@
     {
       "showId": "mr-gum-and-the-dancing-bear-the-musical-west-end-2019",
       "file": "times-uk--chris-bennion.json",
-      "score": 100,
+      "score": 98,
       "publishDate": "August 2nd, 2019",
       "url": "https://www.thetimes.co.uk/article/mr-gum-and-the-dancing-bear-review-inventive-mischievous-and-thrilling-rq58l7d2b",
       "findings": [
@@ -116384,7 +116441,7 @@
     {
       "showId": "mrs-doubtfire-west-end-2023",
       "file": "telegraph--marianka-swain.json",
-      "score": 84,
+      "score": 87,
       "publishDate": "2024-06-21",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/mrs-doubtfire-shaftesbury-theatre-review-robin-williams/",
       "findings": [
@@ -116579,7 +116636,7 @@
     {
       "showId": "my-fair-lady-west-end-2022",
       "file": "artsdesk--unknown.json",
-      "score": 78,
+      "score": 77,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/my-fair-lady-london-coliseum-review-tasteful-revival-powered-stirring-performances",
       "findings": [
@@ -116593,7 +116650,7 @@
     {
       "showId": "my-fair-lady-west-end-2022",
       "file": "london-box-office--stuart-king.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2022-05-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/my-fair-lady-review",
       "findings": [
@@ -117155,7 +117212,7 @@
     {
       "showId": "network-west-end-2017",
       "file": "artsdesk--matt-wolf.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/network-national-theatre-review-bryan-cranstons-searing-london-stage-debut",
       "findings": [
@@ -117197,7 +117254,7 @@
     {
       "showId": "network-west-end-2017",
       "file": "guardian--michael-billington.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "November 13th, 2017",
       "url": "https://www.theguardian.com/stage/2017/nov/13/network-review-bryan-cranston-lyttelton-national-theatre-lee-hall",
       "findings": [
@@ -117211,7 +117268,7 @@
     {
       "showId": "network-west-end-2017",
       "file": "guardian--susannah-clapp.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "November 19th, 2017",
       "url": "https://www.theguardian.com/stage/2017/nov/19/network-bryan-cranston-national-theatre-review-ivo-van-hove-lee-hall",
       "findings": [
@@ -117225,7 +117282,7 @@
     {
       "showId": "network-west-end-2017",
       "file": "hollywood-reporter--demetrios-matheou.json",
-      "score": 88,
+      "score": 86,
       "publishDate": "November 14th, 2017",
       "url": "https://www.hollywoodreporter.com/review/network-theater-1057981",
       "findings": [
@@ -117239,7 +117296,7 @@
     {
       "showId": "network-west-end-2017",
       "file": "independent--holly-williams.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2017-11-15",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/network-review-national-theatre-breaking-bad-bryan-cranston-a8055836.html",
       "findings": [
@@ -117267,7 +117324,7 @@
     {
       "showId": "network-west-end-2017",
       "file": "metro-uk--adam-bloodworth.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2017-11-14",
       "url": "https://metro.co.uk/2017/11/14/network-national-theatre-review-bryan-cranston-is-immense-in-this-larger-than-life-play-about-the-media-7076788/",
       "findings": [
@@ -117295,7 +117352,7 @@
     {
       "showId": "network-west-end-2017",
       "file": "theatrebubble--antonia-windsor.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2017-11-15",
       "url": "http://www.theatrebubble.com/2017/11/network-national-theatre/",
       "findings": [
@@ -117309,7 +117366,7 @@
     {
       "showId": "network-west-end-2017",
       "file": "whatsonstage--daisy-bowie-sell.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "November 13th, 2017",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/bryan-cranston-network-national-ivo-van-hove_45130.html",
       "findings": [
@@ -117753,7 +117810,7 @@
     {
       "showId": "no-i-d-west-end-2023",
       "file": "guardian--kate-wyver.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2023/apr/20/no-id-review-a-frank-funny-and-intimate-exploration-of-gender-transition",
       "findings": [
@@ -118726,7 +118783,7 @@
     {
       "showId": "oklahoma-west-end-2023",
       "file": "musical-theatre-review--scott-matthewman.json",
-      "score": 93,
+      "score": 92,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/oklahoma-wyndhams-theatre/",
       "findings": [
@@ -118768,7 +118825,7 @@
     {
       "showId": "oklahoma-west-end-2023",
       "file": "timeout-london--alice-saville.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "February 28th, 2023",
       "url": "https://www.timeout.com/london/theatre/oklahoma-review",
       "findings": [
@@ -118894,7 +118951,7 @@
     {
       "showId": "old-friends-west-end-2023",
       "file": "standard--nick-curtis.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "October 4th, 2023",
       "url": "https://www.standard.co.uk/culture/theatre/old-friends-gielgud-theatre-review-bernadette-peters-lea-salonga-into-the-woods-b1111218.html",
       "findings": [
@@ -118922,7 +118979,7 @@
     {
       "showId": "old-friends-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "October 3rd, 2023",
       "url": "https://theatreweekly.com/review-stephen-sondheims-old-friends-at-the-gielgud-theatre/",
       "findings": [
@@ -119210,7 +119267,7 @@
     {
       "showId": "on-bear-ridge-west-end-2019",
       "file": "whatsonstage--alex-wood.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2019-10-29",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/on-bear-ridge-royal-court-rhys-ifans-sherman_50229.html",
       "findings": [
