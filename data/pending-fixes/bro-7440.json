@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7440",
   "planId": "23e6e1d9-0a70-45df-ae37-8f16e90dd053",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-13T09:42:12.612Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-13T10:05:14.123Z",
+  "results": [
+    {
+      "action": "ingest-html-handoff",
+      "ok": false,
+      "reason": "ingest-html-handoff: ingest failed (Command failed: /opt/hostedtoolcache/node/22.23.4/x64/bin/node scripts/ingest-review-from-url.js --show=midnight-off-broadway-2026 --url=https://openingnight.online/midnight-off-broadway-review-todrick-halls-new-musical-goes-big-new-york-theatre-guide/ --html-file=/home/runner/work/_temp/html-handoff-sMjBSv/page.html --outlet=openingnight --critic=Edward A Kliszus --publish-date=2026-10-16)"
+    }
+  ],
+  "executedIn": "ci"
 }
