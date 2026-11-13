@@ -949,5 +949,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-13T04:40:50.824Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7429-work-identity",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7429-work-identity",
+    "description": "land.yml did not land land/bro-7429-work-identity: the unit-tests-node gate went red at ed96c88976. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43369316348",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7429-work-identity"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ed96c889767c5bd6dd015f5977dda2e079892402"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43369316348"
+      }
+    ],
+    "queuedAt": "2026-11-13T05:07:05.988Z"
   }
 ]
