@@ -34,7 +34,7 @@ function loadManual() {
 function manualIndex(verdicts) {
   const m = new Map();
   for (const v of verdicts) {
-    for (const [x, y] of v.pairs || []) m.set([x, y].sort().join('|'), v);
+    for (const [x, y, verdict, evidence] of v.pairs || []) m.set([x, y].sort().join('|'), { verdict, evidence });
   }
   return m;
 }
@@ -57,7 +57,7 @@ function audit(shows, verdicts = loadManual()) {
         const auto = workIdentity(A, B);
         const man = manual.get([A.id, B.id].sort().join('|'));
         let verdict = auto.verdict; let basis = auto.basis; let evidence = null;
-        if (man && !(A.workKey || B.workKey)) { verdict = man.verdict; basis = 'manual'; evidence = man.evidence; }
+        if (man) { verdict = man.verdict; basis = 'manual'; evidence = man.evidence; }
         // "unknown" pairs carry a risk flag when something suggests they may be different works.
         let risk = null;
         if (verdict === 'unknown') {

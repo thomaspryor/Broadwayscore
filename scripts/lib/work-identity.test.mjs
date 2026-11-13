@@ -83,10 +83,16 @@ test('getOtherProductions consults work-identity (reverting the wiring re-links 
 test('live data: no audited different-work pair is still linked, and the Galileo musical lists only its tryout', { skip: !fs.existsSync(path.join(ROOT, 'data/shows.json')) }, () => {
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
   const shows = Array.isArray(raw) ? raw : raw.shows;
-  const byId = Object.fromEntries(shows.map((s) => [s.id, s]));
+  const byId = Object.fromEntries(shows.map((s) => [s.id, { ...s }]));
+  // The BRO-7429 data plans may be landed but not yet applied by execute-approved-fix: overlay them.
+  const planDir = path.join(ROOT, 'data/pending-fixes');
+  if (fs.existsSync(planDir)) for (const f of fs.readdirSync(planDir).filter((n) => /^bro-7429(-[a-z])?\.json$/.test(n))) {
+    const plan = JSON.parse(fs.readFileSync(path.join(planDir, f), 'utf8')).plan;
+    for (const a of (Array.isArray(plan) ? plan : plan.actions || plan.fixes || [])) if (byId[a.showId] && a.type === 'data-edit') byId[a.showId][a.field] = a.newValue;
+  }
   const { audit } = require('../audit-same-title-works.js');
   const leaks = [];
-  for (const g of audit(shows)) for (const p of g.pairs) if (p.verdict === 'different' && !differentWorks(byId[p.a], byId[p.b])) leaks.push(`${p.a} / ${p.b}`);
+  for (const g of audit(Object.values(byId))) for (const p of g.pairs) if (p.verdict === 'different' && !differentWorks(byId[p.a], byId[p.b])) leaks.push(`${p.a} / ${p.b}`);
   assert.deepEqual(leaks, [], `audited different works the matcher still links: ${leaks.join(', ')}`);
   const m = byId['galileo-2026']; const r = byId['galileo-regional-2025'];
   if (m && r && (r.workKey || (r.creativeTeam || []).length)) assert.equal(differentWorks(m, r), true);
