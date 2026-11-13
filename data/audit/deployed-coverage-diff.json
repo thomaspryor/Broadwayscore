@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-13T14:44:15.716Z",
+  "generatedAt": "2026-11-13T16:57:55.665Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 323,
-  "clean": 323,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 324,
+  "clean": 322,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "openingDate": "2026-11-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.41 vs local 77.66 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-11-13T16:57:49.427Z"
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "openingDate": "2026-11-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 61.28 vs local 61.72 (Δ0.44)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-13T16:57:49.427Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

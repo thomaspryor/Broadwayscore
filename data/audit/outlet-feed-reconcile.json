@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T14:44:16.042Z",
+  "generatedAt": "2026-11-13T16:57:55.975Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -59,8 +59,18 @@
       "openingDate": "2026-11-11"
     },
     {
+      "id": "dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+      "title": "Dolly Parton’s Smoky Mountain Christmas Carol",
+      "openingDate": "2026-11-13"
+    },
+    {
       "id": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
       "title": "Traitorz: The Unauthorized Musical Parody",
+      "openingDate": "2026-11-13"
+    },
+    {
+      "id": "potus-off-broadway-2026",
+      "title": "POTUS",
       "openingDate": "2026-11-13"
     },
     {
@@ -79,6 +89,11 @@
       "openingDate": "2026-11-07"
     },
     {
+      "id": "peter-pan-goes-wrong-regional-2026",
+      "title": "Peter Pan Goes Wrong",
+      "openingDate": "2026-11-13"
+    },
+    {
       "id": "cloud-9-national-west-end-2026",
       "title": "Cloud 9 National",
       "openingDate": "2026-11-11"
@@ -92,6 +107,10 @@
   ],
   "feedsChecked": 84,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -113,9 +132,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 836,
-  "matchedGaps": 11,
-  "possibleGaps": 3,
+  "itemsScanned": 837,
+  "matchedGaps": 12,
+  "possibleGaps": 4,
   "gaps": [
     {
       "showId": "cloud-9-national-west-end-2026",
@@ -181,13 +200,22 @@
       "publishDate": "2026-11-12"
     },
     {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
       "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/hamlet-hail-to-the-thief-barbican-theatre-london/",
+      "headline": "Hamlet Hail To The Thief – Barbican Theatre, London",
+      "publishDate": "2026-11-13"
+    },
+    {
+      "showId": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/here-there-are-blueberries-the-banality-of-evil-revisited/",
+      "headline": "“HERE THERE ARE BLUEBERRIES”: THE BANALITY OF EVIL, REVISITED",
+      "publishDate": "2026-11-13"
     },
     {
       "showId": "the-steel-man-off-broadway-2026",
@@ -232,6 +260,15 @@
       "outletId": "west-end-best-friend",
       "url": "https://www.westendbestfriend.co.uk/news/review-alice-immersive-wonderland-dock-x",
       "headline": "Review: ALICE IMMERSIVE WONDERLAND, Dock X",
+      "publishDate": "2026-11-13"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "possible",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-thursford-christmas-spectacular-2026",
+      "headline": "Review: THURSFORD CHRISTMAS SPECTACULAR 2026",
       "publishDate": "2026-11-13"
     },
     {
