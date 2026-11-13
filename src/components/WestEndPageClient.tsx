@@ -22,6 +22,7 @@ import { SHELF_MAX_ITEMS } from '@/lib/market-list-window';
 import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 import { creativeTeamSearchText } from '@/lib/creative-team-search';
 import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
+import { diversifyShelves } from '../../scripts/lib/shelf-diversity';
 
 // Serialized show data passed from server component
 export interface WestEndShow {
@@ -406,6 +407,32 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       .filter(show => (show.status === 'open' || show.status === 'upcoming' || show.status === 'previews') && show.tags?.includes('jukebox'))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
+
+  // Themed shelves (Oliviers, lotteries, rush, kids, date night, jukebox) are
+  // score-sorted, so without this they all led with the same top shows. Shows
+  // already near the front of an earlier shelf move to the back (BRO-7462).
+  // Ranked shelves keep their true order. Top Musicals, rendered above, only
+  // seeds what counts as already seen.
+  const featuredRows = useMemo(() => diversifyShelves<{
+    title: string; subtitle: string; shows: WestEndShow[]; minCount?: number; viewAllHref?: string; diversify?: boolean;
+  }>([
+    { title: 'Top Musicals', subtitle: '', shows: topMusicals, minCount: 1 },
+    { title: 'Top Plays', subtitle: 'Ranked by critical consensus', shows: topPlays },
+    { title: 'Best Off-West End', subtitle: 'Top-rated shows outside the West End proper', shows: bestOffWestEnd },
+    // Opera has its own section, as on the Broadway homepage (below Best Off-Broadway).
+    { title: 'Opera in London', subtitle: 'English National Opera and the Royal Opera House', shows: operaShows, minCount: 1, viewAllHref: '/opera' },
+    { title: 'Beyond London', subtitle: 'Major UK productions outside the capital', shows: beyondLondonShows, minCount: 1, viewAllHref: '/browse/beyond-london' },
+    { title: 'Olivier Award Winning Shows', subtitle: 'Current productions that have won Olivier Awards', shows: olivierWinners, diversify: true },
+    { title: 'West End Lotteries', subtitle: 'Enter for a chance at discounted tickets', shows: lotteryShows, diversify: true },
+    { title: 'Rush Tickets Available', subtitle: 'Same-day discount tickets, first come, first served', shows: rushShows, diversify: true },
+    { title: 'In Previews', subtitle: 'Open now, reviews still coming in', shows: inPreviewsShows },
+    { title: 'Opening Soon', subtitle: 'Starting in the next 60 days', shows: upcomingSoon },
+    { title: 'Coming Up Later', subtitle: 'Announced productions further out', shows: upcomingLater },
+    { title: 'Great for Kids', subtitle: 'Family-friendly shows for younger audiences', shows: kidsShows, diversify: true },
+    { title: 'Perfect for Date Night', subtitle: 'Romantic shows to see with someone special', shows: dateNightShows, diversify: true },
+    { title: 'Jukebox Musicals', subtitle: 'Shows built around classic pop and rock catalogues', shows: jukeboxMusicals, diversify: true },
+    { title: 'Closing Soon', subtitle: 'Last chance: these shows end within 90 days', shows: closingSoonShows },
+  ]).slice(1), [topMusicals, topPlays, bestOffWestEnd, operaShows, beyondLondonShows, olivierWinners, lotteryShows, rushShows, inPreviewsShows, upcomingSoon, upcomingLater, kidsShows, dateNightShows, jukeboxMusicals, closingSoonShows]);
 
   const filteredAndSortedShows = useMemo(() => {
     // fuseResults is null while Fuse.js loads — fall through to normal filtering (avoids empty flash)
@@ -832,21 +859,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
 
       {/* Featured Rows */}
       <div className="mt-8 pt-8 border-t border-white/5">
-        <FeaturedRow title="Top Plays" subtitle="Ranked by critical consensus" shows={topPlays} />
-        <FeaturedRow title="Best Off-West End" subtitle="Top-rated shows outside the West End proper" shows={bestOffWestEnd} />
-        {/* Opera has its own section, as on the Broadway homepage (below Best Off-Broadway). */}
-        <FeaturedRow title="Opera in London" subtitle="English National Opera and the Royal Opera House" shows={operaShows} minShows={1} viewAllHref="/opera" />
-        <FeaturedRow title="Beyond London" subtitle="Major UK productions outside the capital" shows={beyondLondonShows} minShows={1} viewAllHref="/browse/beyond-london" />
-        <FeaturedRow title="Olivier Award Winning Shows" subtitle="Current productions that have won Olivier Awards" shows={olivierWinners} />
-        <FeaturedRow title="West End Lotteries" subtitle="Enter for a chance at discounted tickets" shows={lotteryShows} />
-        <FeaturedRow title="Rush Tickets Available" subtitle="Same-day discount tickets, first come, first served" shows={rushShows} />
-        <FeaturedRow title="In Previews" subtitle="Open now, reviews still coming in" shows={inPreviewsShows} />
-        <FeaturedRow title="Opening Soon" subtitle="Starting in the next 60 days" shows={upcomingSoon} />
-        <FeaturedRow title="Coming Up Later" subtitle="Announced productions further out" shows={upcomingLater} />
-        <FeaturedRow title="Great for Kids" subtitle="Family-friendly shows for younger audiences" shows={kidsShows} />
-        <FeaturedRow title="Perfect for Date Night" subtitle="Romantic shows to see with someone special" shows={dateNightShows} />
-        <FeaturedRow title="Jukebox Musicals" subtitle="Shows built around classic pop and rock catalogues" shows={jukeboxMusicals} />
-        <FeaturedRow title="Closing Soon" subtitle="Last chance: these shows end within 90 days" shows={closingSoonShows} />
+        {featuredRows.map(({ diversify: _diversify, minCount, ...row }) => (
+          <FeaturedRow key={row.title} {...row} minShows={minCount} />
+        ))}
       </div>
 
       {/* Off-West End cross-promo link */}

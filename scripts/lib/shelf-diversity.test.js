@@ -52,9 +52,11 @@ test('a shelf the page hides (too few shows) does not count as seen', () => {
   assert.deepEqual(ids(out[2]), ['ham', 'bom', 'x', 'y', 'z', 'boheme']);
 });
 
-test('DEFAULT_MIN_COUNT matches FeaturedRow default in HomePageClient', () => {
-  const src = fs.readFileSync(path.join(__dirname, '../../src/components/HomePageClient.tsx'), 'utf8');
-  const m = /function FeaturedRow\([^)]*minCount = (\d+)/.exec(src);
-  assert.ok(m, 'FeaturedRow minCount default not found');
-  assert.equal(Number(m[1]), DEFAULT_MIN_COUNT);
-});
+for (const [file, prop] of [['HomePageClient.tsx', 'minCount'], ['WestEndPageClient.tsx', 'minShows']]) {
+  test(`DEFAULT_MIN_COUNT matches the FeaturedRow default in ${file}`, () => {
+    const src = fs.readFileSync(path.join(__dirname, '../../src/components', file), 'utf8');
+    const m = new RegExp(`function FeaturedRow\\([^)]*${prop} = (\\d+)`).exec(src);
+    assert.ok(m, `FeaturedRow ${prop} default not found in ${file}`);
+    assert.equal(Number(m[1]), DEFAULT_MIN_COUNT);
+  });
+}
