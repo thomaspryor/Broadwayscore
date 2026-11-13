@@ -168,7 +168,9 @@ test('real data: the splitter stamps hash + article verdict on parent and child'
   const { loadShows } = require('./multi-show-splitter.js');
   const os = require('os');
   const whole = JSON.parse(fs.readFileSync(ROPE, 'utf8')).multiShowWholeArticleText;
-  if (!whole) return;
+  // Needs both shows in data/shows.json too (absent in a bare checkout).
+  const shows = loadShows();
+  if (!whole || !['the-verge-off-broadway-2026', 'rope-off-broadway-2026'].every((id) => shows.some((s) => s.id === id))) return;
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7389-'));
   try {
     fs.mkdirSync(path.join(dir, 'the-verge-off-broadway-2026'));
@@ -178,7 +180,7 @@ test('real data: the splitter stamps hash + article verdict on parent and child'
       url: vergeFirstPass().url, publishDate: '2026-11-05', category: 'off-broadway', fullText: whole,
       contentTier: 'complete', sourceMethod: 'browserbase', firstSeenAt: '2026-11-06T03:42:19.006Z',
     }, null, 2));
-    const res = applyMultiShowFanoutToFile(fp, { shows: loadShows(), reviewTextsDir: dir });
+    const res = applyMultiShowFanoutToFile(fp, { shows, reviewTextsDir: dir });
     assert.equal(res.applied, true);
     const parent = JSON.parse(fs.readFileSync(fp, 'utf8'));
     assert.equal(parent.multiShowSplitSourceComplete, true);
