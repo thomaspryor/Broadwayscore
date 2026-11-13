@@ -305,7 +305,7 @@ export default function EmailCaptureModal({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-6 px-6 py-4 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-base font-bold rounded-lg shadow-lg shadow-brand/20 transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-surface-raised"
+            className="w-full mt-6 px-6 py-4 bg-cta hover:bg-cta-hover disabled:bg-cta/50 text-white text-shadow-cta text-base font-bold rounded-lg shadow-lg shadow-brand/20 transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-surface-raised"
           >
             {isSubmitting ? (
               <span className="flex items-center justify-center gap-2">

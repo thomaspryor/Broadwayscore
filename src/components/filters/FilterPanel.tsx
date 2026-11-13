@@ -164,7 +164,7 @@ export function FilterPanel({
           <button
             type="button"
             onClick={onClose}
-            className="w-full bg-brand text-gray-900 font-bold py-3.5 rounded-xl text-sm tracking-wide shadow-glow-sm hover:bg-brand-hover transition-colors"
+            className="w-full bg-cta text-white text-shadow-cta font-bold py-3.5 rounded-xl text-sm tracking-wide shadow-glow-sm hover:bg-cta-hover transition-colors"
           >
             Show {resultCount} {resultCount === 1 ? 'show' : 'shows'}
           </button>

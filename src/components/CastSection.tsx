@@ -6,6 +6,8 @@ import type { CastMemberOBC } from '@/lib/data-types';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import { TrophyIcon } from '@/components/icons';
 import { isLondonMarket } from '@/lib/market-utils';
+import { principalsFirst } from '@/lib/cast-order';
+import { isPreOpeningStatus } from '@/lib/pre-opening';
 
 function abbreviateTonyCategory(categories: string[]): string {
   // Prefer acting categories in cast context (more relevant than "Book" or "Score")
@@ -48,7 +50,10 @@ function formatDate(dateStr: string): string {
 
 function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs, tonyMap }: { cast: CastMemberOBC[]; initialCount?: number; actorSlugs?: Record<string, string>; tonyMap?: Record<string, ShowTonyInfo> }) {
   const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? cast : cast.slice(0, initialCount);
+  // Named roles before ensemble/swings/understudies, so the first eight rows
+  // are the leads (BRO-7426).
+  const ordered = principalsFirst(cast);
+  const visible = expanded ? ordered : ordered.slice(0, initialCount);
   const hasMore = cast.length > initialCount;
 
   return (
@@ -115,6 +120,9 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
   const hasCurrentCast = currentCast && currentCast.length > 0;
   const hasReplacements = replacements && replacements.length > 0;
   const isOpen = showStatus === 'open' || showStatus === 'previews' || showStatus === 'upcoming';
+  // Before opening night the current cast IS the opening cast: one list,
+  // headed "Cast", instead of the same names twice (BRO-7426).
+  const singleList = isOpen && isPreOpeningStatus(showStatus) && !!hasCurrentCast && hasOBC;
 
   // OBC for an actively-running show that opened >2y ago is almost certainly
   // not the cast on stage tonight. We don't have currentCast for it (IBDB only
@@ -155,7 +163,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
         {isOpen && hasCurrentCast && (
           <>
             <header className="flex items-center justify-between gap-3 mb-4">
-              <h2 className={eyebrow}>Current Cast</h2>
+              <h2 className={eyebrow}>{singleList ? 'Cast' : 'Current Cast'}</h2>
               {currentCastUpdatedAt && (
                 <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">
                   updated {formatDate(currentCastUpdatedAt)}
@@ -163,12 +171,12 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
               )}
             </header>
             <CastList cast={currentCast!} actorSlugs={actorSlugs} tonyMap={tonyMap} />
-            {hasOBC && <div className="border-t border-white/10 my-5" />}
+            {hasOBC && !singleList && <div className="border-t border-white/10 my-5" />}
           </>
         )}
 
         {/* Opening Night Cast */}
-        {hasOBC && (
+        {hasOBC && !singleList && (
           <>
             <h2 className={`${eyebrow} mb-4`}>
               {category === 'broadway' || !category ? 'Original Broadway Cast' : isLondonMarket(category) ? 'Original London Cast' : 'Original Cast'}

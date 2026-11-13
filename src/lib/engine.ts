@@ -106,6 +106,7 @@ export interface RawShow {
   officialUrl?: string;
   trailerUrl?: string;
   creativeTeam?: CreativeMember[];
+  castBilling?: string[];      // Playbill billing order (BRO-6746), names only
   tags?: string[];             // Musical, Comedy, Romance, New, etc.
   theaterAddress?: string;
   // Revival and historical tracking
@@ -287,6 +288,7 @@ export interface ComputedShow {
   officialUrl?: string;
   trailerUrl?: string;
   creativeTeam?: CreativeMember[];
+  castBilling?: string[];
   tags?: string[];
   theaterAddress?: string;
   // Revival and historical tracking
@@ -705,6 +707,7 @@ export function computeShowData(
     officialUrl: show.officialUrl,
     trailerUrl: show.trailerUrl,
     creativeTeam: show.creativeTeam,
+    castBilling: Array.isArray(show.castBilling) ? show.castBilling : undefined,
     tags: show.tags,
     theaterAddress: show.theaterAddress,
     // Revival and historical tracking

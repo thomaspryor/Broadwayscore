@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { cleanWikitext } = require('./lib/wikitext-clean');
 const https = require('https');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
@@ -42,26 +43,6 @@ function fetchJson(url) {
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
-}
-
-function cleanWikitext(text) {
-  return text
-    .replace(/<!--.*?-->/gs, '')
-    .replace(/<ref[^>]*>.*?<\/ref>/gis, '')       // Remove full ref tags
-    .replace(/<ref[^>]*\/>/gi, '')                  // Remove self-closing ref tags
-    .replace(/<\/?(?:br|small|nowiki)[^>]*>/gi, ', ') // br → separator
-    .replace(/\{\{(?:hidden|collapse|based on|Infobox|Cite)[^}]*\}\}/gis, '')
-    .replace(/\{\{efn\|[^}]*\}\}/gi, '')            // Remove efn (footnote) templates
-    .replace(/\{\{(?:unbulleted list|ubl|Ubl)\|/gi, '') // Strip list template open
-    .replace(/\{\{(?:Plainlist|plainlist)\|/gi, '')  // Strip plainlist template open
-    .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, '$2') // [[link|text]] → text
-    .replace(/'{2,3}/g, '')
-    .replace(/\*/g, ' ')
-    .replace(/\}\}/g, '')
-    .replace(/\s*,\s*,+/g, ',')                     // Collapse multiple commas
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/^[,\s]+|[,\s]+$/g, '');               // Trim leading/trailing commas
 }
 
 function buildSearchTitle(show) {

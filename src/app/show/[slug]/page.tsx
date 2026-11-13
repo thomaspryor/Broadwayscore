@@ -82,6 +82,8 @@ import { isShowIndexable } from '@/lib/seo-indexability';
 
 // Group A: personalized, auth-dependent, client-only (see ShowPageUserButtons).
 import { ShowPageWatchlistButton, ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
+import { isPreOpeningStatus } from '@/lib/pre-opening';
+import { getCreditSentences } from '@/lib/show-credits';
 
 export const revalidate = 86400;
 
@@ -376,6 +378,17 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const sortedTicketLinks = ticketLinks ? sortTicketLinks(ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
   const castFile = getShowCastFile(show.id);
+  // About-paragraph credits from our own data (BRO-7426). An opening cast is
+  // today's cast only before opening or in the first year.
+  const openedDaysAgo = show.openingDate ? (Date.now() - Date.parse(show.openingDate)) / 86_400_000 : null;
+  const creditSentences = getCreditSentences({
+    title: show.title,
+    type: show.type,
+    creativeTeam: show.creativeTeam,
+    openingCast: castFile?.openingNightCast ?? [],
+    castBilling: show.castBilling ?? null,
+    openingCastIsCurrent: isPreOpeningStatus(show.status) || (openedDaysAgo != null && openedDaysAgo < 365 && show.status !== 'closed'),
+  });
   // Pre-compute actor slug map for clickable cast names
   const castActorSlugs: Record<string, string> = {};
   if (featureFlags.castPages && castFile) {
@@ -423,7 +436,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         (s: (typeof relatedShowsOpenRaw)[number]) => isShowIndexable(s, s.slug),
       ).map(s => serializeRelated(s))
     : [];
-  const otherProductions = getOtherProductions(show).map(s => serializeRelated(s));
+  const otherProductionsRaw = getOtherProductions(show);
+  const otherProductions = otherProductionsRaw.map(s => serializeRelated(s));
   const comparisons = getComparisonsForShow(show.slug);
   const videoReviews = getVideoReviews(show.id);
 
@@ -584,6 +598,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               ranks={ranks}
               tourReviewYears={isTour && !show.openingDate ? getTourReviewYears(show.criticScore?.reviews) : null}
               trustLines={<ShowTrustLines show={show} />}
+              creditSentences={creditSentences}
             />
           </div>
         </RedesignOn>
@@ -1030,7 +1045,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               The CriticScore appears once enough local critics have reviewed the tour.
             </p>
           </section>
-        ) : show.status === 'previews' || show.status === 'upcoming' ? (
+        ) : isPreOpeningStatus(show.status) ? (
           <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-pending">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
@@ -1151,6 +1166,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           isCuratedHistoricalShow={isCuratedHistoricalShow}
           lastUpdated={lastUpdated}
           score={score}
+          creditSentences={creditSentences}
           faqs={getShowFAQs(show, consensus?.text ?? null, faqTour, faqExtras)}
         />
 

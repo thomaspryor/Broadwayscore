@@ -87,7 +87,7 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
       <div className="text-center">
         <p className="text-gray-400 mb-4">{error}</p>
         {error !== 'League not found.' && (
-          <button type="button" onClick={() => load()} className="block mx-auto mb-4 px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors">
+          <button type="button" onClick={() => load()} className="block mx-auto mb-4 px-6 py-2.5 bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-colors">
             Try again
           </button>
         )}

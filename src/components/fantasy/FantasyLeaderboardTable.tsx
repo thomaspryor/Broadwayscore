@@ -143,7 +143,7 @@ export default function FantasyLeaderboardTable() {
               <button
                 type="button"
                 onClick={() => setRetry(n => n + 1)}
-                className="px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+                className="px-6 py-2.5 bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-colors"
               >
                 Try again
               </button>
@@ -159,7 +159,7 @@ export default function FantasyLeaderboardTable() {
               <p className="text-fg-muted text-sm mb-6">Be the first to draft a team!</p>
               <a
                 href="/fantasy/draft"
-                className="px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+                className="px-6 py-2.5 bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-colors"
               >
                 Draft Now
               </a>

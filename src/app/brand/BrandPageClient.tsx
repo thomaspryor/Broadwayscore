@@ -130,7 +130,7 @@ className="bg-surface-raised"   // Cards
 className="bg-surface-overlay"  // Hover
 
 // Brand
-className="bg-brand hover:bg-brand-hover text-white"
+className="bg-cta hover:bg-cta-hover text-white text-shadow-cta"
 
 // Scores (CSS badge classes, from globals.css)
 className="score-badge score-must-see"   // 83-100
@@ -270,14 +270,14 @@ export default function BrandPageClient() {
             <div className="rounded-card bg-surface-raised border border-white/5 p-6">
               <ol className="space-y-4 text-sm">
                 <li className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand text-white text-xs font-bold flex items-center justify-center">1</span>
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-cta text-white text-shadow-cta text-xs font-bold flex items-center justify-center">1</span>
                   <div>
                     <div className="font-semibold text-white">Open Canva → Brand Hub</div>
                     <div className="text-gray-400 mt-1">In Canva, click <span className="text-gray-300 font-medium">Brand</span> in the left sidebar → <span className="text-gray-300 font-medium">Brand Kits</span> → pick or create a kit. Requires Canva Pro or Teams. (Exact path may vary; search &quot;Brand Kit&quot; from the Canva homepage if you can&apos;t find it.)</div>
                   </div>
                 </li>
                 <li className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand text-white text-xs font-bold flex items-center justify-center">2</span>
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-cta text-white text-shadow-cta text-xs font-bold flex items-center justify-center">2</span>
                   <div>
                     <div className="font-semibold text-white">Add the brand colors</div>
                     <div className="text-gray-400 mt-1 mb-3">Click <span className="text-gray-300 font-medium">+ Add new</span> under Brand Colors. Paste each hex below. Canva auto-fills the name.</div>
@@ -300,14 +300,14 @@ export default function BrandPageClient() {
                   </div>
                 </li>
                 <li className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand text-white text-xs font-bold flex items-center justify-center">3</span>
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-cta text-white text-shadow-cta text-xs font-bold flex items-center justify-center">3</span>
                   <div>
                     <div className="font-semibold text-white">Add the brand font</div>
                     <div className="text-gray-400 mt-1">Under <span className="text-gray-300 font-medium">Brand Fonts</span> → set Heading + Body to <span className="text-white font-mono text-xs bg-surface-overlay px-2 py-0.5 rounded">Inter</span>. It&apos;s free in Canva.</div>
                   </div>
                 </li>
                 <li className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand text-white text-xs font-bold flex items-center justify-center">4</span>
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-cta text-white text-shadow-cta text-xs font-bold flex items-center justify-center">4</span>
                   <div>
                     <div className="font-semibold text-white">Upload logo reference</div>
                     <div className="text-gray-400 mt-1">Under <span className="text-gray-300 font-medium">Logos</span> → upload the palette reference image (download below). Use it while designing to keep scores on-brand.</div>
@@ -357,7 +357,7 @@ export default function BrandPageClient() {
                   <div className="text-base sm:text-lg font-bold text-white group-hover:text-brand transition-colors">Download Entire Brand Kit</div>
                   <div className="text-xs sm:text-sm text-gray-400 mt-0.5">{brandKitAssetCount} PNGs · logos, score/grade badges, social templates · ZIP</div>
                 </div>
-                <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-pill bg-brand text-white text-xs font-bold group-hover:bg-brand-hover transition-colors">
+                <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-pill bg-cta text-white text-shadow-cta text-xs font-bold group-hover:bg-cta-hover transition-colors">
                   Get kit
                 </span>
               </div>
@@ -901,14 +901,14 @@ function BadgeBuilder() {
             <button
               type="button"
               onClick={() => setTransparent(false)}
-              className={`py-2 px-3 rounded-lg text-xs font-semibold transition-colors ${!transparent ? 'bg-brand text-white' : 'bg-surface border border-white/10 text-gray-300 hover:border-white/20'}`}
+              className={`py-2 px-3 rounded-lg text-xs font-semibold transition-colors ${!transparent ? 'bg-cta text-white text-shadow-cta' : 'bg-surface border border-white/10 text-gray-300 hover:border-white/20'}`}
             >
               Dark
             </button>
             <button
               type="button"
               onClick={() => setTransparent(true)}
-              className={`py-2 px-3 rounded-lg text-xs font-semibold transition-colors ${transparent ? 'bg-brand text-white' : 'bg-surface border border-white/10 text-gray-300 hover:border-white/20'}`}
+              className={`py-2 px-3 rounded-lg text-xs font-semibold transition-colors ${transparent ? 'bg-cta text-white text-shadow-cta' : 'bg-surface border border-white/10 text-gray-300 hover:border-white/20'}`}
             >
               Transparent
             </button>
@@ -931,7 +931,7 @@ function BadgeBuilder() {
           type="button"
           onClick={download}
           disabled={busy}
-          className="w-full py-3 px-4 rounded-lg bg-brand hover:bg-brand-hover text-white font-bold text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full py-3 px-4 rounded-lg bg-cta hover:bg-cta-hover text-white text-shadow-cta font-bold text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {busy ? 'Rendering\u2026' : 'Download PNG'}
         </button>

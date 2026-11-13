@@ -48,7 +48,7 @@ export function ToggleBar<T extends string>({
             title={option.title}
             className={`${pillSize} rounded-full cursor-pointer transition-all active:scale-95 ${
               value === option.value
-                ? 'bg-brand text-gray-900 shadow-glow-sm'
+                ? 'bg-cta text-white text-shadow-cta shadow-glow-sm'
                 : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
             }`}
           >

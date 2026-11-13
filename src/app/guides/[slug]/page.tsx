@@ -290,7 +290,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
             <Link
               href={`/guides/${config.slug}`}
               className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-                !year ? 'bg-brand text-white' : 'bg-surface-overlay hover:bg-surface-raised text-gray-400 hover:text-white'
+                !year ? 'bg-cta text-white text-shadow-cta' : 'bg-surface-overlay hover:bg-surface-raised text-gray-400 hover:text-white'
               }`}
             >
               All
@@ -300,7 +300,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                 key={y}
                 href={`/guides/${config.slug}-${y}`}
                 className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-                  year === y ? 'bg-brand text-white' : 'bg-surface-overlay hover:bg-surface-raised text-gray-400 hover:text-white'
+                  year === y ? 'bg-cta text-white text-shadow-cta' : 'bg-surface-overlay hover:bg-surface-raised text-gray-400 hover:text-white'
                 }`}
               >
                 {y}

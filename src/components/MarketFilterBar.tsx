@@ -66,7 +66,7 @@ export default function MarketFilterBar({
     'min-h-[44px] sm:min-h-0 px-3 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold leading-none inline-flex items-center gap-1.5 transition-all whitespace-nowrap';
 
   const primaryActiveClass = isNyc
-    ? 'bg-brand text-gray-900 shadow-glow-sm font-bold'
+    ? 'bg-cta text-white text-shadow-cta shadow-glow-sm font-bold'
     : 'bg-gradient-to-r from-pink-400 to-pink-500 text-gray-900 shadow-[0_0_12px_rgba(244,114,182,0.25)] font-bold';
   const primaryIdleClass =
     'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20';

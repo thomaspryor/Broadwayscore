@@ -57,7 +57,7 @@ export default function HeaderSubscribeButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="header-subscribe-cta ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors whitespace-nowrap"
+        className="header-subscribe-cta ml-1 px-3 py-1.5 text-sm font-semibold text-white text-shadow-cta bg-cta hover:bg-cta-hover rounded-lg transition-colors whitespace-nowrap"
       >
         {EMAIL_LIST_COPY.cta}
       </button>
@@ -97,7 +97,7 @@ export default function HeaderSubscribeButton() {
                   <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="w-full mt-3 px-4 py-2.5 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors"
+                    className="w-full mt-3 px-4 py-2.5 bg-cta hover:bg-cta-hover disabled:bg-cta/50 text-white text-shadow-cta text-sm font-semibold rounded-lg transition-colors"
                   >
                     {status === 'submitting' ? 'Sending...' : EMAIL_LIST_COPY.cta}
                   </button>

@@ -167,7 +167,7 @@ export default function FantasyGuidePage() {
         <div className="text-center">
           <a
             href="/fantasy/draft"
-            className="inline-block px-8 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+            className="inline-block px-8 py-3 bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-colors"
           >
             Start Your Draft
           </a>

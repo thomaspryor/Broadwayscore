@@ -11,7 +11,7 @@ export const runtime = 'nodejs';
 
 function page(title: string, body: string, status = 200): Response {
   return new Response(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="robots" content="noindex"><title>${escHtml(title)} - Broadway Scorecard</title>
-<style>body{margin:0;padding:40px 20px;background:#0f0f14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;text-align:center}h1{font-size:24px}p{color:rgba(255,255,255,.7);line-height:1.6;max-width:480px;margin:0 auto 16px}button{font-size:16px;font-weight:600;border:0;border-radius:8px;padding:12px 24px;background:#d4a574;color:#1a1208}a{color:#d4a574}</style></head><body>${body}</body></html>`,
+<style>body{margin:0;padding:40px 20px;background:#0f0f14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;text-align:center}h1{font-size:24px}p{color:rgba(255,255,255,.7);line-height:1.6;max-width:480px;margin:0 auto 16px}button{font-size:16px;font-weight:600;border:0;border-radius:8px;padding:12px 24px;background:#c99a6b;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(60,35,10,.55)}a{color:#d4a574}</style></head><body>${body}</body></html>`,
   { status, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
 }
 

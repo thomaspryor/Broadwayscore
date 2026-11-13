@@ -674,7 +674,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                       showName={showA.title} showId={showA.id} showSlug={showA.slug} showStatus={showA.status}
                       platform={sortedLinksA[0].platform} url={sortedLinksA[0].url}
                       pageType="comparison" linkPosition={0} totalLinks={sortedLinksA.length}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand/90 hover:bg-brand text-black text-sm font-semibold transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cta hover:bg-cta-hover text-white text-shadow-cta text-sm font-semibold transition-colors"
                     >
                       <TicketIcon />
                       {showA.title}{minPriceA ? <> from {currencyA}{minPriceA}</> : null}
@@ -687,7 +687,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                       showName={showB.title} showId={showB.id} showSlug={showB.slug} showStatus={showB.status}
                       platform={sortedLinksB[0].platform} url={sortedLinksB[0].url}
                       pageType="comparison" linkPosition={0} totalLinks={sortedLinksB.length}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand/90 hover:bg-brand text-black text-sm font-semibold transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cta hover:bg-cta-hover text-white text-shadow-cta text-sm font-semibold transition-colors"
                     >
                       <TicketIcon />
                       {showB.title}{minPriceB ? <> from {currencyB}{minPriceB}</> : null}

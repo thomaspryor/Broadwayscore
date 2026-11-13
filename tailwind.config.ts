@@ -79,6 +79,11 @@ const config: Config = {
           elevated: '#32323f',
         },
         // Brand - Muted gold for prestigious feel
+        // Fill for gold buttons and selected toggles, always with white text (BRO-7426).
+        cta: {
+          DEFAULT: '#c99a6b',
+          hover: '#b8895c',
+        },
         brand: {
           DEFAULT: '#d4a574',
           hover: '#c4956a',
@@ -127,6 +132,9 @@ const config: Config = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-brand': 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
+        // Button gold (BRO-7426): the brand champagne. Owner tried a deeper gold
+        // for contrast and rejected it (2026-11-13); white text carries a shadow instead.
+        'gradient-cta': 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
         'gradient-dark': 'linear-gradient(180deg, #1a1a24 0%, #0f0f14 100%)',
       },
       animation: {

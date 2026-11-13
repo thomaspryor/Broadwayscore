@@ -241,7 +241,7 @@ function FantasyDraftInner() {
             {!submitted.practice && <FantasyShareButton picks={selectedIds} teamName={teamName} />}
             <a
               href={submitted.practice ? '/fantasy' : '/fantasy/leaderboard'}
-              className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+              className="px-6 py-3 whitespace-nowrap bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-colors"
             >
               {submitted.practice ? 'Back to the game' : 'View Leaderboard'}
             </a>
@@ -270,7 +270,7 @@ function FantasyDraftInner() {
           </p>
           <a
             href="/fantasy/leaderboard"
-            className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+            className="px-6 py-3 whitespace-nowrap bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-colors"
           >
             View Leaderboard
           </a>
@@ -294,7 +294,7 @@ function FantasyDraftInner() {
           <p className="text-gray-400 mb-8">The real draft is open. Teams you draft now count, and picks are final.</p>
           <a
             href={`/fantasy/draft${leagueFromUrl ? `?league=${encodeURIComponent(leagueFromUrl)}` : ''}`}
-            className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+            className="px-6 py-3 whitespace-nowrap bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-colors"
           >
             Draft for real
           </a>
@@ -315,7 +315,7 @@ function FantasyDraftInner() {
           </p>
           <a
             href="/fantasy/guide"
-            className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+            className="px-6 py-3 whitespace-nowrap bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-colors"
           >
             Read the Draft Guide
           </a>
@@ -492,7 +492,7 @@ function FantasyDraftInner() {
           disabled={!canSubmit}
           className={`w-full py-3.5 rounded-lg font-semibold text-lg transition-all ${
             canSubmit
-              ? 'bg-brand text-white hover:bg-brand-hover active:scale-[0.98]'
+              ? 'bg-cta text-white text-shadow-cta hover:bg-cta-hover active:scale-[0.98]'
               : 'bg-surface-overlay text-fg-muted opacity-60 cursor-not-allowed'
           }`}
         >

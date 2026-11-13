@@ -28,7 +28,7 @@ p{color:rgba(255,255,255,.78);font-size:16px;margin:0 0 14px}
 .q{font-size:18px;color:#fff;font-weight:600}
 .box{background:#1a1a22;border:1px solid #2c2c38;border-radius:12px;padding:14px;margin:0 0 14px}
 .small{font-size:14px;color:rgba(255,255,255,.6)}
-button,a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;font-size:17px;font-weight:700;padding:14px 16px;border-radius:10px;border:0;margin:0 0 10px;background:#d4a574;color:#1a1208;cursor:pointer}
+button,a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;font-size:17px;font-weight:700;padding:14px 16px;border-radius:10px;border:0;margin:0 0 10px;background:#c99a6b;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(60,35,10,.55);cursor:pointer}
 a.btn.alt{background:#2c2c38;color:#fff}
 textarea{width:100%;box-sizing:border-box;min-height:140px;font-size:16px;padding:12px;border-radius:10px;border:1px solid #444;background:#15151c;color:#fff;margin:0 0 12px}
 a{color:#d4a574}

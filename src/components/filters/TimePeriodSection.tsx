@@ -138,7 +138,7 @@ function Pill({ label, isSelected, onClick }: { label: string; isSelected: boole
     >
       {label}
       {isSelected && (
-        <span className="w-3.5 h-3.5 rounded-full bg-brand text-gray-900 inline-flex items-center justify-center text-[10px] font-bold">
+        <span className="w-3.5 h-3.5 rounded-full bg-cta text-white text-shadow-cta inline-flex items-center justify-center text-[10px] font-bold">
           ✓
         </span>
       )}

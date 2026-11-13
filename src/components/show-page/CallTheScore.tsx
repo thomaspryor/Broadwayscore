@@ -130,17 +130,23 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
 
   return (
     <Wrap>
-      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Predict the score</p>
-      <h3 className="text-base font-semibold text-white m-0 mb-3">What will the critics give it?</h3>
-      <div className="flex items-center gap-4 mb-3">
-        <ScoreBadge score={value} size="lg" category={show.category} />
-        <span className="text-sm font-semibold text-gray-200" aria-live="polite">{tier?.label}</span>
+      {/* Left-aligned like every other card on the page (BRO-7426: the old
+          centered fine print and full-width button mixed alignments). */}
+      <h3 className="text-base font-semibold text-white m-0 mb-1">Predict the score</h3>
+      <p className="text-sm text-gray-400 m-0 mb-3">What will the critics give it? Lock in a number before the reviews land.</p>
+      <div className="flex items-center gap-4">
+        <ScoreBadge score={value} size="md" category={show.category} />
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-gray-200 m-0 mb-1.5" aria-live="polite"><span className="text-fg-muted font-medium">Your guess · </span>{tier?.label}</p>
+          <input type="range" min={0} max={100} step={1} value={value} onChange={(e) => setValue(Number(e.target.value))} aria-label="Your score prediction, 0 to 100" aria-valuetext={`${value}, ${tier?.label ?? ''}`} className="w-full accent-brand" />
+        </div>
       </div>
-      <input type="range" min={0} max={100} step={1} value={value} onChange={(e) => setValue(Number(e.target.value))} aria-label="Your score prediction, 0 to 100" aria-valuetext={`${value}, ${tier?.label ?? ''}`} className="w-full accent-brand" />
-      <button type="button" className="btn-primary w-full mt-4" disabled={busy} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
-      {!signedIn && saveAsk && <p className="text-sm text-gray-200 text-center mt-2 mb-0" data-testid="save-prompt">Save your prediction: create a free account or sign in.</p>}
-      {msg && <p className="text-xs text-score-skip text-center mt-2 mb-0" role="alert">{msg}</p>}
-      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Lock in your prediction to see our forecast, if we have one. You&apos;ll need a free account, and a locked prediction can&apos;t be changed.</p>
+      <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+        <button type="button" className="btn-primary w-full sm:w-auto sm:px-6" disabled={busy} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
+        <p className="text-xs text-fg-muted m-0">Free account. Locking shows our forecast, if we have one, and can&apos;t be undone.</p>
+      </div>
+      {!signedIn && saveAsk && <p className="text-sm text-gray-200 mt-2 mb-0" data-testid="save-prompt">Save your prediction: create a free account or sign in.</p>}
+      {msg && <p className="text-xs text-score-skip mt-2 mb-0" role="alert">{msg}</p>}
     </Wrap>
   );
 }
@@ -175,4 +181,28 @@ export function CallTheScoreHeroLink({ show }: { show: ShowLike }) {
   useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
   if (!callable) return null;
   return <a href="#critic-reviews" className="inline-flex items-center min-h-[44px] mt-0.5 text-xs font-semibold text-brand hover:text-brand-hover transition-colors" data-testid="call-the-score-link">{call ? `You predicted ${call.called_score}` : 'Predict the score'}</a>;
+}
+
+/**
+ * Pre-opening hero line (BRO-7426): a TBD badge and one left-aligned line in
+ * the title column, replacing the centered "Awaiting reviews" box. Links to
+ * the predictor in the Critic Scorecard, or shows the reader's prediction.
+ */
+export function PreOpeningReviewStatus({ show, nightLabel }: { show: ShowLike; nightLabel: string }) {
+  const { call } = useScoreCall(show.id);
+  const [callable, setCallable] = useState(false);
+  useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
+  return (
+    <a href="#critic-reviews" className="group flex items-center gap-3 pt-2 min-h-[44px] w-fit" data-testid="pre-opening-review-status">
+      <ScoreBadge score={null} status="previews" size="xs" />
+      <span className="min-w-0">
+        <span className="block text-sm font-semibold text-gray-200 leading-snug">Critic reviews after {nightLabel}</span>
+        {callable && (
+          <span className="block text-xs font-semibold text-brand group-hover:text-brand-hover transition-colors" data-testid="call-the-score-link">
+            {call ? `You predicted ${call.called_score}` : 'Predict the score'}
+          </span>
+        )}
+      </span>
+    </a>
+  );
 }

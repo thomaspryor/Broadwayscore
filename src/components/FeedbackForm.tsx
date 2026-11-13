@@ -238,7 +238,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="px-8 py-3 bg-brand text-gray-900 font-semibold rounded-lg hover:bg-brand-hover transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-cta text-white text-shadow-cta font-semibold rounded-lg hover:bg-cta-hover transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === 'submitting' ? 'Sending...' : 'Send Feedback'}
         </button>

@@ -205,7 +205,7 @@ export default function CompareShowPicker() {
         <button
           onClick={handleCompare}
           disabled={!canCompare}
-          className="px-6 py-3 rounded-lg bg-brand text-black font-bold text-base transition-all hover:bg-brand-hover disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap shadow-lg shadow-brand/20 hover:shadow-brand/30"
+          className="px-6 py-3 rounded-lg bg-cta text-white text-shadow-cta font-bold text-base transition-all hover:bg-cta-hover disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap shadow-lg shadow-brand/20 hover:shadow-brand/30"
         >
           Compare
         </button>

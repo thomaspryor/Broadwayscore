@@ -52,6 +52,7 @@ import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 import ScrollRow from '@/components/ScrollRow';
 import { getOperaHouseSuffix } from '@/lib/show-market';
 import { getClosingExtensionCount, ordinal } from '@/lib/closing-label';
+import { isPreOpeningStatus } from '@/lib/pre-opening';
 
 // BRO-5007: unreleased. A separate chunk, fetched only when the card renders,
 // so the held feature's code and copy stay out of every show page's bundle.
@@ -128,6 +129,8 @@ export interface ShowPageBelowFoldProps {
   /** Computed server-side by getShowFAQs() in page.tsx and passed down so the
       Q&A block can sit below Showtimes while staying 1:1 with faqSchema. */
   faqs: ShowFAQ[];
+  /** "Starring X. Book by Y. Directed by Z." (BRO-7426), shown with the synopsis. */
+  creditSentences?: string[];
 }
 
 function getGoogleMapsUrl(address: string): string {
@@ -189,6 +192,7 @@ export default function ShowPageBelowFold({
   lastUpdated,
   score,
   faqs,
+  creditSentences = [],
 }: ShowPageBelowFoldProps) {
   // Lottery/rush card is hidden before the first preview. For upcoming and
   // announced shows that depends on today's date, so it is decided after
@@ -203,8 +207,100 @@ export default function ShowPageBelowFold({
     if (previewsDateDependent) setStartedAfterMount(hasLocalDateArrived(show.previewsStartDate));
   }, [previewsDateDependent, show.previewsStartDate]);
   const previewsStarted = previewsDateDependent ? startedAfterMount : true;
+  // Not opened yet (BRO-7426): there is nothing to score, so the page leads with
+  // what a reader can learn about the show (cast, creative team, earlier
+  // productions) and drops the "data will appear later" placeholder cards for
+  // audience, box office and profitability. Guard: tests/unit/pre-opening-show-page.test.ts.
+  const preOpening = isPreOpeningStatus(show.status) && !isTour && !(show.criticScore?.reviewCount);
+  const castAndCreative = (
+    <>
+      {/* Cast — OBC and current cast from IBDB. Also renders an empty-state
+          placeholder for open shows with no cast data (mostly OB/WE, which
+          IBDB doesn't index) so the absence is explicit rather than silent.
+          castFile is null when the manifest has no entries for the show. */}
+      <div id="cast" className="scroll-mt-20" />
+      {featureFlags.castPages && (() => {
+        const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
+        const hasAnyCast = !!castFile && (
+          castFile.openingNightCast.length > 0 ||
+          (castFile.currentCast && castFile.currentCast.length > 0) ||
+          (castFile.replacements && castFile.replacements.length > 0)
+        );
+        if (!hasAnyCast && !isOpen) return null;
+        return (
+          <CastSection
+            openingNightCast={castFile?.openingNightCast || []}
+            currentCast={castFile?.currentCast}
+            currentCastUpdatedAt={castFile?.currentCastUpdatedAt || null}
+            replacements={castFile?.replacements}
+            showStatus={show.status}
+            openingDate={show.openingDate}
+            category={show.category}
+            actorSlugs={castActorSlugs}
+            tonyMap={castTonyMap}
+          />
+        );
+      })()}
+
+      {/* Creative Team — principal roles only */}
+      <div id="creative-team" className="scroll-mt-20" />
+      {featureFlags.creativePages && creativePrincipals.length > 0 && (
+        <div className="mb-8">
+          <div className="card p-5 sm:p-6">
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0 mb-4">Creative Team</h2>
+            <ul className="space-y-2.5 sm:space-y-2">
+              {creativePrincipals.map((member, i) => (
+                <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0">
+                  {member.link ? (
+                    <Link href={member.link} className="text-white font-medium hover:text-brand transition-colors">{member.name}</Link>
+                  ) : (
+                    <span className="text-white font-medium">{member.name}</span>
+                  )}
+                  <span className="text-fg-muted text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-fg-muted">{member.role}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
+    </>
+  );
+  const otherProductionsEl = (
+    <>
+      {/* Other Productions of the same show */}
+      {otherProductions.length > 0 && (
+        <section className={`scroll-mt-20 ${preOpening ? 'card p-5 sm:p-6 mb-8' : 'mt-8 pt-6 border-t border-white/5'}`} id="other-productions" data-testid="other-productions">
+          <h2 className={preOpening ? 'text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0 mb-4' : 'text-base font-bold text-white mb-3'}>Other Productions of {show.title}</h2>
+          <ScrollRow>
+            {otherProductions.map(prod => {
+              const openYear = prod.openingDate ? new Date(prod.openingDate + 'T12:00:00').getFullYear() : null;
+              const closeYear = prod.closingDate ? new Date(prod.closingDate + 'T12:00:00').getFullYear() : null;
+              const yearRange = openYear
+                ? closeYear && closeYear !== openYear
+                  ? `${openYear}–${String(closeYear).slice(-2)}`
+                  : String(openYear)
+                : null;
+              const market = getMarketLabel(prod.category ?? 'broadway');
+              const subtitle = [market, yearRange].filter(Boolean).join(' · ');
+              const subtitleColor = prod.status === 'open' || prod.status === 'previews' ? 'text-emerald-400' : 'text-gray-400';
+              return (
+                <MiniShowCard
+                  key={prod.id}
+                  show={{ ...prod, subtitle, subtitleColor }}
+                />
+              );
+            })}
+          </ScrollRow>
+        </section>
+      )}
+
+    </>
+  );
   return (
     <>
+      {preOpening && castAndCreative}
+      {preOpening && otherProductionsEl}
       {/* Video Reviews */}
       <div id="video-reviews" className="scroll-mt-20" />
       {featureFlags.videoReviews && videoReviews.length > 0 && (
@@ -230,7 +326,7 @@ export default function ShowPageBelowFold({
             ranks={ranks}
           />
         );
-      })() : show.status === 'previews' || show.status === 'upcoming' ? (
+      })() : !preOpening && (show.status === 'previews' || show.status === 'upcoming') ? (
         <section className="card p-5 sm:p-6 mb-6">
           <h2 className="text-lg font-bold text-white mb-3">Audience Grade</h2>
           <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
@@ -261,7 +357,7 @@ export default function ShowPageBelowFold({
           <BoxOfficeScorecard card={boxOfficeFacts} grosses={grosses} history={boxOfficeHistory} />
         ) : grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
           <BoxOfficeStats grosses={grosses} weekEnding={weekEnding ?? ''} history={boxOfficeHistory} />
-        ) : show.status === 'previews' || show.status === 'upcoming' ? (
+        ) : !preOpening && (show.status === 'previews' || show.status === 'upcoming') ? (
           <section className="card p-5 sm:p-6 mb-6">
             <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
             <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
@@ -286,7 +382,7 @@ export default function ShowPageBelowFold({
             breakEvenCard={featureFlags.commercial && featureFlags.boxOfficeV2 ? breakEvenCard : null}
             closingOutlook={closingOutlook}
           />
-        ) : show.status === 'previews' || show.status === 'upcoming' ? (
+        ) : !preOpening && (show.status === 'previews' || show.status === 'upcoming') ? (
           <section className="card p-5 sm:p-6 mb-6">
             <h2 className="text-lg font-bold text-white mb-3">Profitability Scorecard</h2>
             <p className="text-gray-400 text-sm">Financial data not available yet.</p>
@@ -359,55 +455,7 @@ export default function ShowPageBelowFold({
         <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
       )}
 
-      {/* Cast — OBC and current cast from IBDB. Also renders an empty-state
-          placeholder for open shows with no cast data (mostly OB/WE, which
-          IBDB doesn't index) so the absence is explicit rather than silent.
-          castFile is null when the manifest has no entries for the show. */}
-      <div id="cast" className="scroll-mt-20" />
-      {featureFlags.castPages && (() => {
-        const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
-        const hasAnyCast = !!castFile && (
-          castFile.openingNightCast.length > 0 ||
-          (castFile.currentCast && castFile.currentCast.length > 0) ||
-          (castFile.replacements && castFile.replacements.length > 0)
-        );
-        if (!hasAnyCast && !isOpen) return null;
-        return (
-          <CastSection
-            openingNightCast={castFile?.openingNightCast || []}
-            currentCast={castFile?.currentCast}
-            currentCastUpdatedAt={castFile?.currentCastUpdatedAt || null}
-            replacements={castFile?.replacements}
-            showStatus={show.status}
-            openingDate={show.openingDate}
-            category={show.category}
-            actorSlugs={castActorSlugs}
-            tonyMap={castTonyMap}
-          />
-        );
-      })()}
-
-      {/* Creative Team — principal roles only */}
-      <div id="creative-team" className="scroll-mt-20" />
-      {featureFlags.creativePages && creativePrincipals.length > 0 && (
-        <div className="mb-8">
-          <div className="card p-5 sm:p-6">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0 mb-4">Creative Team</h2>
-            <ul className="space-y-2.5 sm:space-y-2">
-              {creativePrincipals.map((member, i) => (
-                <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0">
-                  {member.link ? (
-                    <Link href={member.link} className="text-white font-medium hover:text-brand transition-colors">{member.name}</Link>
-                  ) : (
-                    <span className="text-white font-medium">{member.name}</span>
-                  )}
-                  <span className="text-fg-muted text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-fg-muted">{member.role}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      {!preOpening && castAndCreative}
 
       {/* Quick Facts - Structured data for users and AI systems */}
       <section className="card p-5 sm:p-6 mb-8" aria-labelledby="quick-facts-heading">
@@ -520,10 +568,13 @@ export default function ShowPageBelowFold({
               )}
             </dd>
           </div>
-          {show.synopsis && (
+          {(show.synopsis || creditSentences.length > 0) && (
             <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
-              <dt className="text-fg-muted">Synopsis</dt>
-              <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>
+              <dt className="text-fg-muted">About</dt>
+              {show.synopsis && <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>}
+              {creditSentences.length > 0 && (
+                <dd className="text-gray-400 mt-1 leading-relaxed" data-testid="about-credits">{creditSentences.join(' ')}</dd>
+              )}
             </div>
           )}
           {lastUpdated && (
@@ -544,32 +595,7 @@ export default function ShowPageBelowFold({
         </dl>
       </section>
 
-      {/* Other Productions of the same show */}
-      {otherProductions.length > 0 && (
-        <section className="mt-8 pt-6 border-t border-white/5">
-          <h2 className="text-base font-bold text-white mb-3">Other Productions of {show.title}</h2>
-          <ScrollRow>
-            {otherProductions.map(prod => {
-              const openYear = prod.openingDate ? new Date(prod.openingDate + 'T12:00:00').getFullYear() : null;
-              const closeYear = prod.closingDate ? new Date(prod.closingDate + 'T12:00:00').getFullYear() : null;
-              const yearRange = openYear
-                ? closeYear && closeYear !== openYear
-                  ? `${openYear}–${String(closeYear).slice(-2)}`
-                  : String(openYear)
-                : null;
-              const market = getMarketLabel(prod.category ?? 'broadway');
-              const subtitle = [market, yearRange].filter(Boolean).join(' · ');
-              const subtitleColor = prod.status === 'open' || prod.status === 'previews' ? 'text-emerald-400' : 'text-gray-400';
-              return (
-                <MiniShowCard
-                  key={prod.id}
-                  show={{ ...prod, subtitle, subtitleColor }}
-                />
-              );
-            })}
-          </ScrollRow>
-        </section>
-      )}
+      {!preOpening && otherProductionsEl}
 
       {/* Related Shows */}
       <RelatedShows shows={relatedShowsOpen} title="Open Shows You Might Like" />

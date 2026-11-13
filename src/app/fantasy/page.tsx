@@ -151,7 +151,7 @@ export default function FantasyLandingPage() {
         <div className="mb-3">
           <a
             href="/fantasy/draft"
-            className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
+            className="inline-block px-10 py-4 bg-cta text-white text-shadow-cta font-bold rounded-xl hover:bg-cta-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
           >
             Draft Your Team
           </a>
@@ -435,7 +435,7 @@ export default function FantasyLandingPage() {
         <div className="mb-3">
           <a
             href="/fantasy/draft"
-            className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
+            className="inline-block px-10 py-4 bg-cta text-white text-shadow-cta font-bold rounded-xl hover:bg-cta-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
           >
             Draft Your Team
           </a>

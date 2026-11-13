@@ -50,7 +50,7 @@ export default function FooterEmailCapture({ inputId = 'footer-email' }: { input
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="min-h-[40px] px-4 py-2 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
+          className="min-h-[40px] px-4 py-2 bg-cta hover:bg-cta-hover disabled:bg-cta/50 text-white text-shadow-cta text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
         >
           {status === 'submitting' ? 'Sending...' : 'Get emails'}
         </button>

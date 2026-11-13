@@ -6,7 +6,7 @@ import { accessToken } from './CriticClaimPanel';
 import { FLAG_NOTE_MAX, FLAG_REASONS, type FlagReason } from '@/lib/critic-claim';
 
 const inputClasses = 'w-full px-3 py-2.5 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-fg-muted focus:ring-2 focus:ring-brand focus:border-transparent';
-const btnPrimary = 'px-4 py-2 bg-brand text-gray-900 text-sm font-semibold rounded-lg hover:bg-brand-hover transition-colors disabled:opacity-50';
+const btnPrimary = 'px-4 py-2 bg-cta text-white text-shadow-cta text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-50';
 const label = 'block text-sm font-medium text-gray-200 mb-1';
 
 async function postCorrection(payload: Record<string, unknown>): Promise<string | null> {

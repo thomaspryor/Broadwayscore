@@ -369,8 +369,14 @@
     @apply inline-flex items-center justify-center px-4 py-2.5 rounded-badge font-semibold transition-all duration-200;
   }
 
+  /* Soft shadow under white text on gold fills (BRO-7426, owner option 2:
+     keep the champagne gold, make the white text crisper). */
+  .text-shadow-cta {
+    text-shadow: 0 1px 2px rgba(60, 35, 10, 0.55);
+  }
+
   .btn-primary {
-    @apply btn bg-gradient-brand text-white hover:shadow-glow-sm hover:scale-[1.02] active:scale-[0.98];
+    @apply btn bg-gradient-cta text-white font-bold text-shadow-cta hover:shadow-glow-sm hover:scale-[1.02] active:scale-[0.98];
   }
 
   .btn-ghost {
@@ -387,7 +393,7 @@
   }
 
   .btn-active {
-    @apply btn bg-brand text-white;
+    @apply btn bg-cta text-white;
   }
 
   /* Toolbar controls (Share, sort select, grid/list toggle) share one look
@@ -426,7 +432,7 @@
   }
 
   .filter-pill-active {
-    @apply filter-pill bg-brand text-white border-brand shadow-glow-sm;
+    @apply filter-pill bg-cta text-white border-cta shadow-glow-sm;
   }
 
   .filter-pill-inactive {

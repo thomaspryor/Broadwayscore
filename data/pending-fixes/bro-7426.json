@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-7426",
+  "planId": "3740ed6c-5ca5-4c82-a2d5-f4e8e92231a0",
+  "status": "pending",
+  "createdAt": "2026-11-13T03:40:26.786Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Galileo: add director Michael Mayer (TodayTix show page) so the About credits name the director. The writer split and the Brecht playwright fix landed in BRO-7429.",
+    "steps": [
+      "shows.json: galileo-2026.creativeTeam"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "galileo-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Danny Strong",
+            "role": "Book"
+          },
+          {
+            "name": "Zoe Sarnak",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Michael Weiner",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Danny Strong",
+            "role": "Book"
+          },
+          {
+            "name": "Zoe Sarnak",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Michael Weiner",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Michael Mayer",
+            "role": "Director"
+          }
+        ],
+        "description": "shows.json: galileo-2026.creativeTeam (add director Michael Mayer per todaytix.com/nyc/shows/46289; writer split already applied by bro-7429-b)"
+      }
+    ]
+  }
+}

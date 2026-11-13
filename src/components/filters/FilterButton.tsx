@@ -31,7 +31,7 @@ export function FilterButton({ activeCount, isOpen, onClick, controlsId }: Filte
         <line x1="10" y1="18" x2="14" y2="18" />
       </svg>
       {activeCount > 0 && (
-        <span className="absolute top-1 right-1 min-w-[16px] h-4 px-1 bg-brand text-gray-900 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-surface-raised box-content tabular-nums">
+        <span className="absolute top-1 right-1 min-w-[16px] h-4 px-1 bg-cta text-white text-shadow-cta text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-surface-raised box-content tabular-nums">
           {activeCount}
         </span>
       )}

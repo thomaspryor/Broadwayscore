@@ -143,7 +143,7 @@ function ModeToggle({ mode, onChange }: { mode: Mode; onChange: (m: Mode) => voi
           onClick={() => onChange(m)}
           className={[
             'px-3 py-1.5 rounded-md transition-colors',
-            mode === m ? 'bg-brand text-black font-medium' : 'text-gray-400 hover:text-white',
+            mode === m ? 'bg-cta text-white text-shadow-cta font-medium' : 'text-gray-400 hover:text-white',
           ].join(' ')}
         >
           {m === 'single' ? 'One review' : 'Paste a batch'}
@@ -543,7 +543,7 @@ function SinglePasteForm({
         className={[
           'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
           readyToSubmit && !submitting
-            ? 'bg-brand text-black hover:bg-brand/90'
+            ? 'bg-cta text-white text-shadow-cta hover:bg-cta-hover'
             : 'bg-white/5 text-fg-muted opacity-60 cursor-not-allowed',
         ].join(' ')}
       >
@@ -985,7 +985,7 @@ function BatchPasteForm({
             className={[
               'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
               readyToSubmit && !submitting
-                ? 'bg-brand text-black hover:bg-brand/90'
+                ? 'bg-cta text-white text-shadow-cta hover:bg-cta-hover'
                 : 'bg-white/5 text-fg-muted opacity-60 cursor-not-allowed',
             ].join(' ')}
           >

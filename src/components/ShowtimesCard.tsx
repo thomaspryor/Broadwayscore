@@ -241,7 +241,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
             platform={primaryLink!.platform}
             url={primaryLink!.url}
             pageType="showtimes"
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-accent-gold hover:bg-accent-gold/80 text-gray-900 hover:text-gray-900 text-sm font-bold shadow-sm shadow-accent-gold/20 transition-colors border border-accent-gold whitespace-nowrap mb-2"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-cta hover:bg-cta-hover text-white text-shadow-cta text-sm font-bold shadow-sm transition-colors border border-cta whitespace-nowrap mb-2"
           >
             {buttonText}
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

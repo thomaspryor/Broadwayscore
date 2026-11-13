@@ -17,6 +17,7 @@
  * Exit codes: 0 = OK, 1 = Errors found
  */
 
+const { hasWikiMarkup } = require('./lib/wikitext-clean');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { ibdbUrlRejectReason } = require('./lib/ibdb-year-guard');
 const { castDisjointFromBilling } = require('./lib/cast-billing-overlap');
@@ -1894,6 +1895,13 @@ function validateCreativeTeamQuality(shows) {
         issues++;
       } else if (member.name.length > 80) {
         warn(`Show "${show.title}" (${show.id}) creative team member name is suspiciously long (${member.name.length} chars): "${member.name.substring(0, 50)}..."`);
+        issues++;
+      }
+
+      // BRO-7426: a wiki list template leaked into a name ("{{plainlist | Zoe
+      // Sarnak Michael Weiner"). Advisory first (CLAUDE.md rule 19).
+      if (hasWikiMarkup(member.name)) {
+        warn(`Show "${show.title}" (${show.id}) creative team member "${member.name}" still has wiki markup`);
         issues++;
       }
 

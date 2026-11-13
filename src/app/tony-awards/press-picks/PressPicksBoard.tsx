@@ -68,7 +68,7 @@ export function PressPicksBoard({ categories, sources }: { categories: BoardCate
         <button
           type="button"
           onClick={() => selectMode('will')}
-          className={`${tabBase} ${mode === 'will' ? 'bg-amber-400 text-black' : 'text-gray-300 hover:text-white'}`}
+          className={`${tabBase} ${mode === 'will' ? 'bg-cta text-white text-shadow-cta' : 'text-gray-300 hover:text-white'}`}
           aria-pressed={mode === 'will'}
         >
           Will Win
@@ -76,7 +76,7 @@ export function PressPicksBoard({ categories, sources }: { categories: BoardCate
         <button
           type="button"
           onClick={() => selectMode('should')}
-          className={`${tabBase} ${mode === 'should' ? 'bg-amber-400 text-black' : 'text-gray-300 hover:text-white'}`}
+          className={`${tabBase} ${mode === 'should' ? 'bg-cta text-white text-shadow-cta' : 'text-gray-300 hover:text-white'}`}
           aria-pressed={mode === 'should'}
         >
           Should Win

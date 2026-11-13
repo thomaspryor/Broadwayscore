@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 export interface InviteCritic { slug: string; name: string; outlet: string; reviews: number; owned: boolean }
 
 const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-const btnPrimary = 'px-4 py-2 bg-brand text-gray-900 text-sm font-semibold rounded-lg hover:bg-brand-hover transition-colors disabled:opacity-50';
+const btnPrimary = 'px-4 py-2 bg-cta text-white text-shadow-cta text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-50';
 
 export default function InviteCreator({ critics }: { critics: InviteCritic[] }) {
   const [query, setQuery] = useState('');

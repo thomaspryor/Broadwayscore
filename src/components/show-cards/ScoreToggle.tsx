@@ -40,7 +40,7 @@ export function ScoreToggle({
           aria-pressed={value === key}
           className={`${btnClass} ${
             value === key
-              ? 'bg-brand text-gray-900 shadow-sm'
+              ? 'bg-cta text-white text-shadow-cta shadow-sm'
               : 'text-fg-muted hover:text-gray-300'
           }`}
         >

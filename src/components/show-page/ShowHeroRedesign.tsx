@@ -30,8 +30,9 @@
 
 import ReviewArrivalLine, { useArrivalActive } from './ReviewArrivalStatus';
 import type { ArrivalView } from '@/lib/review-arrival';
-import { CallTheScoreHeroLink } from './CallTheScore';
+import { CallTheScoreHeroLink, PreOpeningReviewStatus } from './CallTheScore';
 import { foldVenueName } from '@/lib/venue-fold';
+import { isPreOpeningStatus } from '@/lib/pre-opening';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
@@ -145,6 +146,8 @@ interface ShowHeroRedesignProps {
   /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
    *  shared with the legacy header so the redesign keeps those links. */
   trustLines?: React.ReactNode;
+  /** "Starring X. Book by Y. Directed by Z." from our own data (BRO-7426), shown under the synopsis. */
+  creditSentences?: string[];
 }
 
 // The hero is server-rendered: it carries the page's <h1>, score and verdict.
@@ -191,6 +194,7 @@ function Inner({
   reviewArrival,
   liveInHdText,
   trustLines,
+  creditSentences,
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
@@ -275,6 +279,13 @@ function Inner({
   const tier = score !== null ? getScoreTier(score, show.category) : null;
   const isClosed = show.status === 'closed';
   const isPreviews = show.status === 'previews' || show.status === 'upcoming';
+  // Not opened yet and no reviews (BRO-7426). The hero puts a one-line review
+  // status in the title column instead of the centered "Awaiting reviews" box,
+  // and from lg up the synopsis and buttons sit beside the poster instead of
+  // leaving that column mostly empty. Guard: tests/unit/pre-opening-show-page.test.ts.
+  const preOpening = !hasEnoughCriticReviews && reviewCount === 0 && !noReviewsExpected
+    && isPreOpeningStatus(show.status) && !isLiveTour(show)
+    && !arrivalLineCentered && !shouldShowReviewsSyncing(show);
 
   // Mobile score cards. Two side by side leave ~50px for the text next to the
   // badge on a phone, so "Recommended" ran past the card border (BRO-4525).
@@ -569,10 +580,17 @@ function Inner({
   const userFeaturesEnabled = featureFlags.userAccounts;
 
   return (
-    <div className="card p-4 sm:p-5 space-y-4 lg:space-y-3" data-testid="show-hero-redesign">
-      {/* Header: poster left + title block right. Poster scales up at desktop. */}
-      <div className="flex gap-4 lg:gap-6">
-        <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
+    <div
+      className={`card p-4 sm:p-5 space-y-4 lg:space-y-3 ${preOpening ? 'lg:relative lg:pl-[13.75rem] lg:min-h-[19rem] lg:space-y-4' : ''}`}
+      data-testid="show-hero-redesign"
+      data-pre-opening={preOpening ? 'true' : undefined}
+    >
+      {/* Header: poster left + title block right. Poster scales up at desktop.
+          Pre-opening at lg the header dissolves (lg:contents) and the poster is
+          pinned top-left, so the synopsis and buttons stack beside it instead of
+          below it. (A grid with a row-spanning poster pushed the column down.) */}
+      <div className={`flex gap-4 lg:gap-6 ${preOpening ? 'lg:contents' : ''}`}>
+        <div className={`flex-shrink-0 w-28 sm:w-36 lg:w-44 ${preOpening ? 'lg:absolute lg:left-5 lg:top-5' : ''}`}>
           <div className="group relative aspect-[2/3] rounded-xl overflow-visible shadow-2xl border border-white/10 bg-surface-raised">
             {userFeaturesEnabled && <ShowPageBookmark showId={show.id} size="compact" />}
             <div className="absolute inset-0 rounded-xl overflow-hidden">
@@ -601,7 +619,7 @@ function Inner({
             </div>
           </div>
         </div>
-        <div className="flex-1 min-w-0 space-y-1.5">
+        <div className={`flex-1 min-w-0 space-y-1.5`}>
           <div className="flex flex-wrap items-center gap-1.5">
             <FormatPill type={show.type} />
             {show.isRevival && <ProductionPill isRevival />}
@@ -639,6 +657,12 @@ function Inner({
             ) : null}
           </div>
           {trustLines ? <div className="pt-1" data-testid="hero-trust-lines">{trustLines}</div> : null}
+          {preOpening && (
+            <PreOpeningReviewStatus
+              show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate }}
+              nightLabel={isWestEnd ? 'press night' : 'opening night'}
+            />
+          )}
 
           {/* Desktop-only inline score block — lives INSIDE the right column,
               alongside title/meta. Mobile renders dual cards in a separate
@@ -682,7 +706,7 @@ function Inner({
       {/* Mobile/sm score row — dual cards. Hidden on desktop (score block lives
           inline in the title column on lg+). Awaiting card replaces both when
           there aren't enough critic reviews. */}
-      {!hasEnoughCriticReviews ? (
+      {preOpening ? null : !hasEnoughCriticReviews ? (
         <AwaitingCard show={show} reviewCount={reviewCount} reviewsRemaining={reviewsRemaining} noReviewsExpected={noReviewsExpected} arrivalLine={arrivalLineCentered} />
       ) : (
         <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
@@ -766,7 +790,11 @@ function Inner({
         <p className="mt-3 text-fg-muted text-sm leading-relaxed italic">Critics&apos; Take coming soon.</p>
       )}
       {!(hasEnoughCriticReviews && consensusText) && criticsTakeMode === 'synopsis' && (
-        <p className="mt-3 text-gray-400 text-sm leading-relaxed">{show.synopsis}</p>
+        <p className={`mt-3 text-gray-400 text-sm leading-relaxed ${preOpening ? 'lg:text-base lg:text-gray-300' : ''}`}>{show.synopsis}</p>
+      )}
+      {/* Who's in it and who made it, for a show with no reviews to read yet (BRO-7426). */}
+      {!(hasEnoughCriticReviews && consensusText) && (criticsTakeMode === 'synopsis' || preOpening) && creditSentences && creditSentences.length > 0 && (
+        <p className="mt-2 text-sm leading-relaxed text-fg-muted" data-testid="hero-credits">{creditSentences.join(' ')}</p>
       )}
 
       {/* Action cluster — user buttons + tickets share ONE space-y-2 group so
@@ -1004,7 +1032,7 @@ function Inner({
         officialUrl={show.officialUrl}
         pageType="show"
         splitVariant
-        primaryButtonClassName="w-full lg:flex-1 lg:min-w-[16rem] inline-flex items-center justify-center gap-1.5 h-10 sm:h-14 px-5 rounded-lg bg-gradient-brand text-[#1a1208] font-bold sm:font-extrabold text-sm sm:text-[17px] leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
+        primaryButtonClassName="w-full lg:flex-1 lg:min-w-[16rem] inline-flex items-center justify-center gap-1.5 h-10 sm:h-14 px-5 rounded-lg bg-gradient-cta text-white text-shadow-cta font-bold sm:font-extrabold text-sm sm:text-[17px] leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
         secondaryAfter={lotteryPill('hidden lg:inline-flex lg:h-14')}
       >
         {/* Keep the standalone lottery pill when no purchase link is available. */}

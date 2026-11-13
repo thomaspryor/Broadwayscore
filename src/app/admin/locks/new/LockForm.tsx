@@ -294,7 +294,7 @@ export default function LockForm({
         className={[
           'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
           ready
-            ? 'bg-brand text-black hover:bg-brand/90'
+            ? 'bg-cta text-white text-shadow-cta hover:bg-cta-hover'
             : 'bg-white/5 text-fg-muted opacity-60 cursor-not-allowed',
         ].join(' ')}
       >

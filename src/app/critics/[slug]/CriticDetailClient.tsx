@@ -261,7 +261,7 @@ export default function CriticDetailClient({ critic, profile, consensus = NO_CON
             <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2 flex-wrap">
               {critic.name}
               {profile && (
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-brand text-gray-900 align-middle">&#10003; Verified critic</span>
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-cta text-white text-shadow-cta align-middle">&#10003; Verified critic</span>
               )}
             </h1>
             {profile?.jobTitle && <p className="text-sm text-fg-muted">{profile.jobTitle}</p>}

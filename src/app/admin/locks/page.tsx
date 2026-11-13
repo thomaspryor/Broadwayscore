@@ -54,7 +54,7 @@ export default async function AdminLocksPage() {
           </div>
           <Link
             href="/admin/locks/new"
-            className="px-4 py-2 rounded-lg bg-brand text-black font-semibold text-sm hover:bg-brand/90"
+            className="px-4 py-2 rounded-lg bg-cta text-white text-shadow-cta font-semibold text-sm hover:bg-cta-hover"
           >
             + Lock a score
           </Link>

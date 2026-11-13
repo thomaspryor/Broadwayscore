@@ -141,7 +141,7 @@ export default function ShowFollowBanner({ showId, showTitle, city }: ShowFollow
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="px-4 py-2 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
+                className="px-4 py-2 bg-cta hover:bg-cta-hover disabled:bg-cta/50 text-white text-shadow-cta text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
               >
                 {status === 'submitting' ? '...' : SHOW_EMAIL_COPY.button}
               </button>
