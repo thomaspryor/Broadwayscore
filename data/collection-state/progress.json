@@ -531,7 +531,9 @@
     "ha-ha-ha-ha-ha-ha-ha-regional-2026/deadline--greg-evans.json",
     "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
     "the-car-man-off-west-end-2026/thestage--dave-fargnoli.json",
-    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json"
+    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -745,7 +747,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/rope-off-broadway-2026/nytimes--helen-shaw.json",
-      "rope-off-broadway-2026/nytimes--helen-shaw.json"
+      "rope-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -909,7 +912,7 @@
     ]
   },
   "startTime": "2026-11-12T20:06:25.494Z",
-  "lastProcessed": "midnight-at-the-never-get-off-west-end-2026/everything-theatre--irene-lloyd.json",
+  "lastProcessed": "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-12T20:19:39.076Z",
@@ -1099,6 +1102,50 @@
       "t": "2026-11-13T02:25:03.174Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-13T04:07:29.516Z",
+      "event": "bb-session",
+      "session": "e327bd0d",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-13T04:07:30.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-13T04:10:24.087Z",
+      "event": "bb-session",
+      "session": "5d4d3efa",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-13T04:10:24.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T04:12:32.931Z",
+      "event": "bb-session",
+      "session": "3c4cc93a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-13T04:12:33.411Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T04:14:19.665Z",
+      "event": "bb-session",
+      "session": "fe4c5d0f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-13T04:14:20.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
