@@ -57,3 +57,23 @@ test('backtest + metrics run and report both baselines', () => {
   const m = metrics(res);
   for (const k of ['n', 'maeModel', 'maeCategoryMean', 'bandHitModel', 'calibration']) assert.ok(k in m);
 });
+
+test('same-day opening and later siblings never supply history', () => {
+  const target = mk(20, null, { id: 'target', originalProductionId: 'p9' });
+  const sameDay = { ...mk(20, 99, { id: 'sd', originalProductionId: 'p9' }) };
+  const later = { ...mk(60, 99, { id: 'later', originalProductionId: 'p9' }) };
+  const f = forecast(target, [...hist, sameDay, later]);
+  assert.equal(f.priorScore, null);
+});
+
+test('title-only match across different category is rejected', () => {
+  const other = { ...mk(1, 95, { id: 'o', title: 'Giant', category: 'off-broadway' }) };
+  const f = forecast(mk(39, null, { id: 'x', title: 'Giant' }), [...hist, other]);
+  assert.equal(f.priorScore, null);
+});
+
+test('backtest skips targets with no baseline instead of scoring baseline as 0', () => {
+  const rows = [...hist.slice(0, 12), mk(50, 80, { id: 'solo', category: 'west-end' })];
+  const res = backtest(rows, '2001-01-01');
+  assert.ok(res.every((r) => r.catMean != null));
+});

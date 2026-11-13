@@ -77,7 +77,7 @@ function forecast(target, history, opts = {}) {
   let priorScore = null;
   if (target.originalProductionId || target.title) {
     const sib = past.filter((h) => (target.originalProductionId && h.originalProductionId === target.originalProductionId) ||
-      (h.title && target.title && normTitle(h.title) === normTitle(target.title)));
+      (h.title && target.title && h.category === target.category && h.type === target.type && normTitle(h.title) === normTitle(target.title)));
     if (sib.length) priorScore = sib.sort((a, b) => b.openingDate.localeCompare(a.openingDate))[0].score;
   }
   if (priorScore != null) pred = priorW * priorScore + (1 - priorW) * pred;

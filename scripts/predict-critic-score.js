@@ -21,6 +21,7 @@ function loadRows() {
     try { score = JSON.parse(fs.readFileSync(path.join(dir, x.id + '.json'), 'utf8')).cs; } catch { /* no slim */ }
     rows.push({ id: x.id, title: x.title, openingDate: x.openingDate, category: x.category, type: x.type,
       isRevival: !!x.isRevival, originalProductionId: x.originalProductionId || null, people: peopleOf(x),
+      hasPriorRuns: !!(x.priorRuns && x.priorRuns.length) || !!x.transferOf,
       score: typeof score === 'number' ? score : null, status: x.status });
   }
   return rows;
@@ -35,8 +36,9 @@ function backtest(rows, from, opts = {}) {
     if (!f) continue;
     const past = scored.filter((h) => h.openingDate < t.openingDate);
     const cm = mean(past.filter((h) => h.category === t.category && h.type === t.type).map((h) => h.score));
+    if (cm == null) continue; // no baseline available: skip rather than score as 0
     out.push({ id: t.id, title: t.title, opening: t.openingDate, category: t.category, type: t.type, actual: t.score,
-      pred: f.pred, catMean: cm, priorScore: f.priorScore, basis: f.basis, nEffects: f.nEffects });
+      pred: f.pred, catMean: cm, priorScore: f.priorScore, basis: f.basis, nEffects: f.nEffects, hasPriorRuns: !!t.hasPriorRuns });
   }
   return out;
 }
@@ -48,7 +50,7 @@ function metrics(rs) {
   const m = { n: rs.length, maeModel: mae('pred'), maeCategoryMean: mae('catMean'),
     bandHitModel: hit('pred'), bandHitCategoryMean: hit('catMean'),
     within10Model: within10('pred'), within10CategoryMean: within10('catMean') };
-  const wp = rs.filter((r) => r.priorScore != null);
+  const wp = rs.filter((r) => r.priorScore != null && !r.hasPriorRuns); // priorRuns shows fold earlier reviews into actual
   if (wp.length) {
     const mp = mean(wp.map((r) => Math.abs(r.priorScore - r.actual)));
     m.priorRun = { n: wp.length, maePriorRun: mp, maeModel: mean(wp.map((r) => Math.abs(r.pred - r.actual))),
