@@ -76,7 +76,11 @@ test('feeds: ALL_FEEDS keep their fetch chain; added feeds are direct only and n
   const base = new Set(ALL_FEEDS.filter((f) => !f.market || f.market === 'broadway').map((f) => f.url));
   for (const f of feeds) assert.equal(!!f.directOnly, !base.has(f.url), f.url);
   const ids = feeds.filter((f) => f.directOnly).map((f) => f.outletId);
-  assert.equal(new Set(ids).size, ids.length);
+  // One outlet may carry two feeds (Theater Scene .net + .com, BRO-7435), never the same feed twice.
+  const pairs = feeds.filter((f) => f.directOnly).map((f) => `${f.outletId} ${f.url}`);
+  assert.equal(new Set(pairs).size, pairs.length);
+  const baseIds = new Set(ALL_FEEDS.map((f) => f.outletId));
+  assert.deepEqual(ids.filter((id) => baseIds.has(id)), [], 'an ALL_FEEDS outlet is not re-added as a lane feed');
   assert.ok(ids.includes('theater-pizzazz') && ids.includes('stageandcinema') && ids.includes('culturesauce'));
 });
 
@@ -155,7 +159,7 @@ test('copied poller URLs have not drifted from scripts/outlet-listing-poller.js 
   const drift = [];
   for (const f of ls.LANE_FEEDS) {
     const p = poller[f.outletId];
-    if (p && p.strategy === 'rss' && p.url && p.url !== f.url) drift.push(`${f.outletId}: poller ${p.url}, lane ${f.url}`);
+    if (p && p.strategy === 'rss' && p.url && ![p.url, ...(p.extraUrls || [])].includes(f.url)) drift.push(`${f.outletId}: poller ${p.url}, lane ${f.url}`);
   }
   for (const [id, url] of Object.entries(ls.LANE_SECTION_INDEXES)) {
     const p = poller[id];
