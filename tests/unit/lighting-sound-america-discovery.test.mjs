@@ -81,7 +81,8 @@ test('archive failure does not discard a discovered review', async () => {
     const results = await searchOutletSites(title, [outletId], { show });
     assert.equal(results.length, 1);
     assert.equal(results[0].url, url);
-    assert.equal(warn.mock.callCount(), 2);
+    // Oct (opening) + Nov (next month) + Dec (current month, BRO-7436) archives all fail.
+    assert.equal(warn.mock.callCount(), 3);
   } finally { fetch.mock.restore(); warn.mock.restore(); }
 });
 test('applies() gate: only shows inside their review window trigger paid fetches', () => {
