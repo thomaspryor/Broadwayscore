@@ -1890,7 +1890,7 @@ const DISK_SURE_RE = /No space left on device|Out of disk ?space/i;
 // BRO-7467: git checkout/worktree add on a full disk says "unable to write file X / fatal: cannot create
 // directory", with no "No space left" text. Like a bare ENOSPC these also follow a permissions error, so they
 // count as disk only while the disk is low right now.
-const DISK_WRITE_RE = /\bENOSPC\b|failed to write object|unpack-objects failed|cannot create directory|unable to write file|unable to create (?:temporary )?file|unable to create directory/i;
+const DISK_WRITE_RE = /\bENOSPC\b|failed to write object|unpack-objects failed|(?:error|fatal): (?:unable to write file|cannot create directory|unable to create (?:temporary )?file|unable to create directory)/i;
 function isDiskFailure(text, freeDiskBytes) {
   const t = String(text || '');
   return DISK_SURE_RE.test(t)

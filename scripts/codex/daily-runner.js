@@ -169,7 +169,12 @@ function git(args, cwd = WT) {
     Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2000 * 2 ** i);
     r = sh('git', args, { cwd });
   }
-  if (r.code !== 0) throw new Error(`git ${args.join(' ')}: ${r.out.trim().split('\n').slice(-2).join(' ')}`);
+  if (r.code !== 0) {
+    const msg = `git ${args.join(' ')}: ${r.out.trim().split('\n').slice(-2).join(' ')}`;
+    // BRO-7467: a checkout/worktree add on a full disk says "unable to write file", not "No space left"; classify it as disk (not a crash that bans the card).
+    if (['checkout', 'worktree', 'reset', 'clean', 'read-tree', 'sparse-checkout'].includes(args[0])) throwIfDisk(msg, `git ${args[0]}`);
+    throw new Error(msg);
+  }
   return r.stdout.trim();
 }
 const tail = (s, n = 1500) => (s.length > n ? `...${s.slice(-n)}` : s);
@@ -260,15 +265,9 @@ function applyTreeMode(tree) {
 }
 /** A new detached worktree of origin/main in the current tree mode, without ever writing the excluded trees. */
 function addWorktree(tree) {
-  try {
-    git(['worktree', 'add', '--no-checkout', '--detach', tree, 'origin/main'], ROOT);
-    git(R.treeModeArgs(treeMode), tree);
-    git(['checkout', '-q', '-f', 'HEAD'], tree);
-  } catch (e) {
-    // BRO-7467: a checkout that ran out of disk says "unable to write file", not "No space left"; classify it as disk, not a crash.
-    throwIfDisk(String(e && e.message || e), 'worktree add');
-    throw e;
-  }
+  git(['worktree', 'add', '--no-checkout', '--detach', tree, 'origin/main'], ROOT);
+  git(R.treeModeArgs(treeMode), tree);
+  git(['checkout', '-q', '-f', 'HEAD'], tree);
 }
 /** Link <tree>/node_modules to ROOT's (a dangling link is replaced). Node finds ROOT's copy from a nested tree anyway, but tests that copy the tree to /tmp follow this link. */
 function linkNodeModules(tree) {

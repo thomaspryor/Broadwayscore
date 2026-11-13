@@ -1910,9 +1910,14 @@ test('BRO-7467: a disk-full git checkout ("unable to write file") is class disk 
   assert.equal(r.isDiskFailure(co, NaN), false);
 });
 
-test('BRO-7467: addWorktree routes a failed checkout through the disk classifier', () => {
+test('BRO-7467: the git() helper routes a failed checkout/worktree add through the disk classifier', () => {
   const src = fs.readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
-  assert.match(src, /function addWorktree\(tree\) \{\s*try \{[\s\S]*?catch \(e\) \{[\s\S]*?throwIfDisk\([^\n]*'worktree add'\)/);
+  assert.match(src, /\['checkout', 'worktree'[^\]]*\]\.includes\(args\[0\]\)\) throwIfDisk\(msg/);
+});
+
+test('BRO-7467: a test or review merely naming "cannot create directory" is not a disk failure', () => {
+  assert.equal(r.isDiskFailure('mkdir: cannot create directory x: Permission denied', 1e9), false);
+  assert.equal(r.isDiskFailure('fatal: cannot create directory at x', 1e9), true);
 });
 
 test('BRO-7467: land-local-check refuses under 4 GB free and runs the check before the base copy', async () => {
@@ -1922,5 +1927,5 @@ test('BRO-7467: land-local-check refuses under 4 GB free and runs the check befo
   assert.match(res.lowDiskMessage(3.5 * 1024 ** 3), /3\.5 GB free/);
   assert.equal(res.lowDiskMessage(4 * 1024 ** 3), null);
   const src = fs.readFileSync(new URL('../../scripts/lib/land-local-check.js', import.meta.url), 'utf8');
-  assert.ok(src.indexOf('lowDiskMessage(freeBytesOf(ROOT))') < src.indexOf("const baseDir = path.join(out, 'base')"));
+  const g = src.indexOf('lowDiskMessage(freeBytesOf(ROOT))'); assert.ok(g > 0 && g < src.indexOf("const baseDir = path.join(out, 'base')"));
 });
