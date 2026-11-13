@@ -183,5 +183,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-13T10:44:09.853Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:hamlet-hail-to-the-thief-off-west-end-2026",
+    "title": "Auto-remediation gave up on hamlet-hail-to-the-thief-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"hamlet-hail-to-the-thief-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-13T11:20:18.665Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:hamlet-hail-to-the-thief-off-west-end-2026:timeout-london",
+    "title": "Auto-remediation gave up on hamlet-hail-to-the-thief-off-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"hamlet-hail-to-the-thief-off-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-13T11:20:20.181Z"
   }
 ]
