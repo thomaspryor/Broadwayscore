@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7427",
   "planId": "9c91508a-5c65-4103-abb8-8081c41a22e7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-13T04:26:36.365Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: the-good-thief-off-broadway-2026.openingDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-13T04:34:39.221Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-good-thief-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
