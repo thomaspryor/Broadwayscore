@@ -35,3 +35,8 @@ test('lane treats a theaterscene.com show-titled page as a review without a revi
   assert.ok(hostSignalsReview(URLS['parcel-from-america-off-broadway-2026'], 'Parcel from America', 'Parcel from America'));
   assert.ok(hostSignalsReview(URLS['222-a-ghost-story-off-broadway-2026'], '2:22 - A Ghost Story', '2:22 - A Ghost Story'));
 });
+
+test('a dead .net feed does not hide the .com feed; all feeds dead still throws', async () => {
+  const cfg = { strategy: 'rss', url: 'http://127.0.0.1:1/dead-feed', extraUrls: ['http://127.0.0.1:1/dead-2'], reviewsOnly: true };
+  await assert.rejects(poller.fetchViaRss('x', cfg, new Date(0), { proxyRetry: false }));
+});

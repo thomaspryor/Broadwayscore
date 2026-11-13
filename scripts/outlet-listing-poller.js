@@ -633,9 +633,19 @@ async function fetchViaRss(outletId, config, cutoff, { proxyRetry = true, health
   const url = config.url;
   if (health) health.url = url;
   console.log(`  [rss] Fetching ${url}`);
-  const xml = await fetchXmlWithProxyRetry(url, 'rss', looksLikeFeed, { proxyRetry, health });
-  let items = applyRssFilters(parseRssFeed(xml, cutoff), config);
+  // A dead primary feed must not hide the extra feeds (BRO-7435 ship-check): throw only when every feed fails.
+  let xml = '';
+  let primaryErr = null;
+  try {
+    xml = await fetchXmlWithProxyRetry(url, 'rss', looksLikeFeed, { proxyRetry, health });
+  } catch (err) {
+    if (!(config.extraUrls || []).length) throw err;
+    primaryErr = err;
+    console.warn(`  ⚠ primary feed ${url} failed: ${err.message}`);
+  }
+  let items = xml ? applyRssFilters(parseRssFeed(xml, cutoff), config) : [];
   let healthXml = xml;
+  let extraOk = false;
   // extraUrls (BRO-7435): more feeds of the same outlet (Theater Scene runs .net and .com). A dead extra feed never
   // fails the primary read.
   for (const extra of config.extraUrls || []) {
@@ -645,10 +655,12 @@ async function fetchViaRss(outletId, config, cutoff, { proxyRetry = true, health
       const have = new Set(items.map(i => i.url));
       items = items.concat(applyRssFilters(parseRssFeed(exml, cutoff), config).filter(i => !have.has(i.url)));
       healthXml += '\n' + exml;
+      extraOk = true;
     } catch (err) {
       console.warn(`  ⚠ extra feed ${extra} failed: ${err.message}`);
     }
   }
+  if (primaryErr && !extraOk) throw primaryErr;
   if (health) {
     const all = parseRssFeed(healthXml, new Date(0));
     const matching = applyRssFilters(all, config);
