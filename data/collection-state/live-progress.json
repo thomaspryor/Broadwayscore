@@ -1,26 +1,21 @@
 {
-  "updatedAt": "2026-11-13T01:30:33.550Z",
-  "processed": 72,
-  "failed": 73,
-  "successRate": "49.7%",
+  "updatedAt": "2026-11-13T01:49:47.883Z",
+  "processed": 163,
+  "failed": 101,
+  "successRate": "61.7%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 106,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 3,
-    "brightdata": 0,
+    "scrapingdog": 19,
+    "scrapingbee": 9,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 30
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-11-12T20:45:51.183Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-11-12T21:04:13.217Z",
       "event": "bb-session",
@@ -100,32 +95,38 @@
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     },
     {
-      "t": "2026-11-12T23:56:04.007Z",
+      "t": "2026-11-12T23:28:55.393Z",
       "event": "bb-session",
-      "session": "9a707e6c",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-11-12T23:56:04.469Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-13T00:52:33.565Z",
-      "event": "bb-session",
-      "session": "64c6c2fc",
+      "session": "16be9c3d",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
     },
     {
-      "t": "2026-11-13T00:52:34.028Z",
+      "t": "2026-11-12T23:28:56.158Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     },
     {
-      "t": "2026-11-13T00:59:05.703Z",
+      "t": "2026-11-12T23:34:43.028Z",
       "event": "bb-session",
-      "session": "2f427360",
+      "session": "0f82777d",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-12T23:36:11.562Z",
+      "event": "bb-session",
+      "session": "9a2c4aa6",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-13T01:31:27.837Z",
+      "event": "bb-session",
+      "session": "a17247db",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-13T01:31:28.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
