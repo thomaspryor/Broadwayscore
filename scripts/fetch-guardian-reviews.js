@@ -466,6 +466,7 @@ async function main() {
   console.log(`Fetched:   ${stats.fetched}`);
   console.log(`Failed:    ${stats.failed}`);
   console.log(`API Errors: ${stats.apiErrors}`);
+  console.log(`Not found (stale URL, not a run failure): ${stats.notFound}`);
 
   if (CLI.dryRun) {
     console.log('\n(Dry run - no files were modified)');
