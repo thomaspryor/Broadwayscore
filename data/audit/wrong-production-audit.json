@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T03:09:48.999Z",
+  "timestamp": "2026-11-13T03:40:03.933Z",
   "stats": {
     "totalReviews": 81813,
-    "alreadyFlagged": 22329,
+    "alreadyFlagged": 22332,
     "dateGuardCatches": 219,
-    "directorMismatch": 3662,
+    "directorMismatch": 3668,
     "tvFilmSignals": 2304,
     "londonSignals": 3719,
     "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8443
+    "noPublishDate": 8433
   },
   "findings": [
     {
@@ -5949,6 +5949,20 @@
       "score": 71,
       "publishDate": "November 9, 2012",
       "url": "https://www.nydailynews.com/2012/11/08/theater-review-annie-on-broadway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-2012",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2012/11/09/annie-review-sandy-is-sunny-on-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31183,6 +31197,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 474d before show (June 4, 2015 vs 2016-09-20)"
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-1978",
+      "file": "nytg--tom-millward.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/hello-dolly",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
         }
       ]
     },
@@ -84502,6 +84530,25 @@
     },
     {
       "showId": "west-side-story-2020",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 71,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/world/WestSideStory.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
       "file": "telegraph--diane-snyder.json",
       "score": 96,
       "publishDate": "2020-02-21",
@@ -84535,6 +84582,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
+      "file": "theater-news-online--jeremy-gerard.json",
+      "score": 41,
+      "publishDate": "2020-02-20T19:47:08-05:00",
+      "url": "http://theaternewsonline.com/NYTheaterReviews/RECKLESSREVIVAL.cfm",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -90156,7 +90227,7 @@
     },
     {
       "showId": "and-juliet-2022",
-      "file": "frontmezzjunkies--unknown.json",
+      "file": "frontmezzjunkies--ross-pop.json",
       "score": 91,
       "publishDate": "2022-12-23",
       "url": "https://frontmezzjunkies.com/2022/12/23/juliet-the-new-broadway-musical/",
@@ -98725,20 +98796,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": 68,
-      "publishDate": null,
-      "url": "https://www.islingtontribune.co.uk/article/review-dogstar-at-hampstead-theatre-downstairs",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -125132,20 +125189,6 @@
       ]
     },
     {
-      "showId": "speculations-off-west-end-2026",
-      "file": "westminsterextra--unknown.json",
-      "score": 48,
-      "publishDate": null,
-      "url": "https://www.westminsterextra.co.uk/article/review-speculations-at-marylebone-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
       "showId": "speed-the-plow-west-end-2014",
       "file": "guardian--chris-wiegand.json",
       "score": null,
@@ -133798,6 +133841,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lifespan-of-a-fact-2018",
+      "file": "thestage--nicole-serratore.json",
+      "score": 77,
+      "publishDate": "2018-10-19",
+      "url": "https://www.thestage.co.uk/reviews/2018/lifespan-fact-starring-daniel-radcliffe-review-studio-54-new-york/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
