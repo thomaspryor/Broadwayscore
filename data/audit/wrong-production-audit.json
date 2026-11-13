@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T13:19:57.055Z",
+  "timestamp": "2026-11-13T13:59:46.229Z",
   "stats": {
-    "totalReviews": 81838,
+    "totalReviews": 81844,
     "alreadyFlagged": 22352,
     "dateGuardCatches": 220,
     "directorMismatch": 3670,
     "tvFilmSignals": 2309,
-    "londonSignals": 3737,
+    "londonSignals": 3739,
     "offBroadwaySignals": 752,
     "yearMismatch": 375,
-    "noPublishDate": 8426
+    "noPublishDate": 8428
   },
   "findings": [
     {
@@ -104983,6 +104983,20 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "broadwayworld--debbie-gilpin.json",
+      "score": 99,
+      "publishDate": "2026-11-13",
+      "url": "https://www.broadwayworld.com/westend/article/Review-HAMLET-HAIL-TO-THE-THIEF-Barbican-Theatre-20261113",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "guardian--alexis-petridis.json",
       "score": 88,
       "publishDate": "2026-11-13",
@@ -105089,6 +105103,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "west-end-best-friend--chris-abbott.json",
+      "score": 78,
+      "publishDate": "2026-11-13",
+      "url": "https://www.westendbestfriend.co.uk/news/review-hamlet-hail-to-the-thief-barbican-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
