@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T19:18:38.082Z",
+  "generatedAt": "2026-11-13T19:46:21.352Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1919,17 +1919,17 @@
       "status": "open",
       "slug": "hamlet-hail-to-the-thief-off-west-end",
       "thumbnail": "/images/shows/hamlet-hail-to-the-thief-off-west-end-2026/thumbnail.webp",
-      "siteScore": 76.79,
-      "liveScore": 77,
-      "scoreDrift": 0.20999999999999375,
+      "siteScore": 76.34,
+      "liveScore": 76,
+      "scoreDrift": -0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 5,
-      "t2": 4,
+      "t2": 5,
       "t3": 7,
-      "positive": 12,
+      "positive": 13,
       "mixed": 4,
       "negative": 0,
       "readiness": {
@@ -2176,6 +2176,18 @@
           "t2": 4,
           "t3": 7,
           "p": 12,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-13T19:46:21.352Z",
+          "rc": 17,
+          "s": 76.34,
+          "t1": 5,
+          "t2": 5,
+          "t3": 7,
+          "p": 13,
           "m": 4,
           "n": 0,
           "bc": "waiting"
@@ -3181,172 +3193,6 @@
       ]
     },
     {
-      "id": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-11-11",
-      "status": "open",
-      "slug": "cloud-9-national-west-end",
-      "thumbnail": "/images/shows/cloud-9-national-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 67,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
-      "siteFileExists": true,
-      "total": 3,
-      "t1": 0,
-      "t2": 1,
-      "t3": 2,
-      "positive": 1,
-      "mixed": 2,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "3/8 total",
-          "T1:0/3",
-          "T2:1/2",
-          "hi-conf:3/6"
-        ],
-        "highConfidence": 3,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Mail on Sunday",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "British Theatre Guide",
-          "isDualMarket": false
-        },
-        {
-          "name": "BritishTheatre.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Spectator (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Box Office",
-          "isDualMarket": false
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-11-12T14:09:09.778Z",
-          "rc": 1,
-          "s": 65,
-          "t1": 0,
-          "t2": 0,
-          "t3": 1,
-          "p": 0,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-11-12T15:04:12.409Z",
-          "rc": 3,
-          "s": 67,
-          "t1": 0,
-          "t2": 1,
-          "t3": 2,
-          "p": 1,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        }
-      ]
-    },
-    {
       "id": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "market": "west-end",
@@ -3356,23 +3202,23 @@
       "status": "open",
       "slug": "cloud-9-west-end",
       "thumbnail": "/images/shows/cloud-9-west-end-2026/thumbnail.webp",
-      "siteScore": 78.43,
+      "siteScore": 77.52,
       "liveScore": 78,
-      "scoreDrift": -0.4300000000000068,
+      "scoreDrift": 0.480000000000004,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 26,
+      "total": 29,
       "t1": 9,
-      "t2": 6,
-      "t3": 11,
-      "positive": 23,
-      "mixed": 2,
+      "t2": 7,
+      "t3": 13,
+      "positive": 24,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 25,
+        "highConfidence": 28,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3758,6 +3604,18 @@
           "t3": 11,
           "p": 23,
           "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-13T19:46:21.352Z",
+          "rc": 29,
+          "s": 77.52,
+          "t1": 9,
+          "t2": 7,
+          "t3": 13,
+          "p": 24,
+          "m": 4,
           "n": 1,
           "bc": "waiting"
         }

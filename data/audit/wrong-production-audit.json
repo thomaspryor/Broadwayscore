@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T19:18:23.808Z",
+  "timestamp": "2026-11-13T19:46:06.482Z",
   "stats": {
-    "totalReviews": 81951,
-    "alreadyFlagged": 22361,
+    "totalReviews": 81952,
+    "alreadyFlagged": 22362,
     "dateGuardCatches": 220,
-    "directorMismatch": 3667,
+    "directorMismatch": 3668,
     "tvFilmSignals": 2310,
-    "londonSignals": 3741,
+    "londonSignals": 3740,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8475
+    "noPublishDate": 8476
   },
   "findings": [
     {
@@ -52361,6 +52361,19 @@
       ]
     },
     {
+      "showId": "peter-pan-goes-wrong-regional-2026",
+      "file": "colin-thomas--colin-thomas.json",
+      "publishDate": null,
+      "url": "https://colinthomas.ca/peter-pan-goes-wrong-and-so-does-this-farce-sometimes/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam meggido\" from peter-pan-goes-wrong-2023"
+        }
+      ]
+    },
+    {
       "showId": "peter-pan-goes-wrong-west-end-2015",
       "file": "artsdesk--unknown.json",
       "score": 81,
@@ -96087,20 +96100,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
-      "file": "readaboutstuff--dan-english.json",
-      "score": 65,
-      "publishDate": "2026-11-12",
-      "url": "https://readaboutstuff.com/2026/11/12/review-cloud-nine-national-theatre-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
