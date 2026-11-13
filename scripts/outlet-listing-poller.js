@@ -147,10 +147,12 @@ const OUTLET_STRATEGY_CONFIG = {
   thewrap:             { strategy: 'rss', url: 'https://www.thewrap.com/creative-content/theater/feed/', urlFilter: /-review(?:\/|-(?!roundup|bomb))/ },
   // TheReviewsHub: 100-item RSS covering all UK theater; no urlFilter needed — findMatchingShows guards FPs
   thereviewshub:       { strategy: 'rss', url: 'https://www.thereviewshub.com/feed/' },
-  // Theater Scene: /plays/ and /musicals/ paths are reviews; /features/ /columns/ /multimedia/ are not
+  // Theater Scene: the site moved to theaterscene.com (BRO-7435): the .net feed now answers 403 and every
+  // review since the move lives under /reviews/ (before: /plays/ and /musicals/ on .net, still accepted).
+  // /features/ /columns/ /multimedia/ are not reviews.
   // reviewsOnly (BRO-6921): every item after the filter is a review, so page
   // confirmation needs no "review" word in the headline. Set only where true.
-  'theater-scene':     { strategy: 'rss', url: 'https://www.theaterscene.net/feed/', urlFilter: /\/(plays|musicals)\//, reviewsOnly: true },
+  'theater-scene':     { strategy: 'rss', url: 'https://theaterscene.com/feed/', urlFilter: /\/(plays|musicals|reviews)\//, reviewsOnly: true },
   // Theatre Weekly (UK): review URLs have /review- prefix; drops news/industry pieces
   'theatre-weekly':    { strategy: 'rss', url: 'https://theatreweekly.com/feed', urlFilter: /\/review-/ },
   // Pages on Stages: theater review blog; no URL discriminator, findMatchingShows guards noise

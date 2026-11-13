@@ -73,7 +73,7 @@ const LANE_FEEDS = [
   { url: 'https://www.thekomisarscoop.com/feed/', outletId: 'the-komisar-scoop', name: 'The Komisar Scoop' },
   { url: 'https://therecs.co.uk/feed/', outletId: 'the-recs', name: 'The Recs' },
   { url: 'https://www.stageandcinema.com/feed/', outletId: 'stageandcinema', name: 'Stage and Cinema' },
-  { url: 'https://www.theaterscene.net/feed/', outletId: 'theater-scene', name: 'Theater Scene' },
+  { url: 'https://theaterscene.com/feed/', outletId: 'theater-scene', name: 'Theater Scene' },
   { url: 'https://thefrontrowcenter.com/feed', outletId: 'front-row-center', name: 'Front Row Center' },
   { url: 'https://thecontending.com/feed/', outletId: 'the-contending', name: 'The Contending' },
   { url: 'https://t2conline.com/feed/', outletId: 'times-square-chronicles', name: 'Times Square Chronicles' },
