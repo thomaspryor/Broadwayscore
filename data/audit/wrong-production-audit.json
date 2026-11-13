@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T20:08:01.905Z",
+  "timestamp": "2026-11-13T20:52:17.861Z",
   "stats": {
-    "totalReviews": 81953,
-    "alreadyFlagged": 22362,
+    "totalReviews": 81957,
+    "alreadyFlagged": 22365,
     "dateGuardCatches": 220,
     "directorMismatch": 3668,
     "tvFilmSignals": 2310,
-    "londonSignals": 3741,
+    "londonSignals": 3743,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8477
+    "noPublishDate": 8475
   },
   "findings": [
     {
@@ -105099,6 +105099,19 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "publishDate": "2026-11-12",
+      "url": "https://www.theupcoming.co.uk/2026/11/12/hamlet-hail-to-the-thief-at-barbican-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
       "score": 54,
       "publishDate": "2026-11-12",
@@ -134380,6 +134393,19 @@
       "file": "guardian--ryan-gilbey.json",
       "publishDate": "2026-10-13",
       "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2026-11-02",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/lives-of-others-review-keira-knightley-luke-thompson-b3077085.html?reloaded=1-restored",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
