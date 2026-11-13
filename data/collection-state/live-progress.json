@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-13T05:26:00.342Z",
-  "processed": 419,
-  "failed": 222,
-  "successRate": "65.4%",
+  "updatedAt": "2026-11-13T05:45:58.850Z",
+  "processed": 441,
+  "failed": 224,
+  "successRate": "66.3%",
   "tierBreakdown": {
-    "playwright": 235,
+    "playwright": 239,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 44,
     "scrapingbee": 24,
@@ -14,25 +14,8 @@
     "archiveToday": 0,
     "archive": 139
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-11-12T22:24:35.711Z",
-      "event": "bb-session",
-      "session": "8af4626b",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
-    },
-    {
-      "t": "2026-11-12T22:24:36.091Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-11-12T22:30:31.313Z",
-      "event": "bb-session",
-      "session": "804b1e52",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
     {
       "t": "2026-11-12T22:32:06.758Z",
       "event": "bb-session",
@@ -127,6 +110,23 @@
       "t": "2026-11-13T05:25:48.811Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-13T05:38:21.742Z",
+      "event": "bb-session",
+      "session": "3f6ac21a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-13T05:38:22.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-13T05:45:15.640Z",
+      "event": "bb-session",
+      "session": "8798b3bd",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
