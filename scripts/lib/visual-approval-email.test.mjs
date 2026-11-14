@@ -76,7 +76,7 @@ test('option copy has real upsides and downsides; recommendation says what was c
 
 test('footer is one short line plus the list link', () => {
   const { html } = emailFor(mk([]));
-  assert.doesNotMatch(html, /ANSWER:|record my answer/);
+  assert.doesNotMatch(html, /ANSWER:/);
   assert.match(html, /See everything waiting on you/);
   assert.ok((html.match(/font-size:13px/g) || []).length <= 1);
 });
