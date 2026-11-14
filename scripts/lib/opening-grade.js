@@ -330,7 +330,14 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
       // or invalid body) is not a review the first pass missed. Julius Caesar's whatsonstage
       // /shows/ page was counted as a third "whatsonstage miss" that way. Only judged when the
       // grader was given the show's files, so a files-less call keeps the commit-only reading.
-      if ((files || []).length && !(files || []).some((f) => outletOfFile(f) === o && isLiveFile(f, show, rtDir))) continue;
+      // Judge the exact files the commit added (filename-derived outlet, like the outlet list above);
+      // fall back to the outlet's files only if those paths are gone (renamed critic).
+      if ((files || []).length) {
+        const addedPaths = mine.filter((p) => outletIdFromFile(p, show.id) === o && c.added.includes(p));
+        const present = files.filter((f) => addedPaths.includes(f._file));
+        const pool = present.length ? present : files.filter((f) => outletIdFromFile(f._file, show.id) === o);
+        if (!pool.some((f) => isLiveFile(f, show, rtDir))) continue;
+      }
       sweepFinds.push({ kind: 'sweep-find', at: new Date(at).toISOString(), outletId: o, cause: 'discovery-gap', fileChange: 'added', source: `${String(c.sha).slice(0, 8)} ${String(c.subject).slice(0, 120)}` });
     }
   }

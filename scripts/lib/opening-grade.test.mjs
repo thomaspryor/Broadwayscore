@@ -146,3 +146,14 @@ test('BRO-7471: a sweep-added file that is not a live review (show-listing page,
   const real = { ...good(2), _file: `${show.id}/whatsonstage--x.json`, outletId: 'whatsonstage' };
   assert.equal((run([good(1), real], 'whatsonstage').sweepFinds || []).length, 1);
 });
+
+test('BRO-7471 review: judge the added file itself (live sibling does not rescue it) and filename outlet wins over stored outletId', () => {
+  const mk = (name) => ({ sha: 'abcdef9999', at: iso(embargo + 20 * 3600000), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: 'ingest: audit-aggregator-gap auto-ingested review-texts', files: [`${show.id}/${name}`], added: [`${show.id}/${name}`] });
+  const run = (fs, c) => og.gradeOpening({ show, files: fs, commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  const sibling = { ...good(2), _file: `${show.id}/whatsonstage--a.json`, outletId: 'whatsonstage' };
+  const listing = { _file: `${show.id}/whatsonstage--b.json`, outletId: 'whatsonstage', firstSeenAt: '2026-10-21T03:00:00Z', contentTier: 'invalid', wrongProduction: true, fullText: '' };
+  assert.equal((run([good(1), sibling, listing], mk('whatsonstage--b.json')).sweepFinds || []).length, 0);
+  const renamed = { ...good(3), _file: `${show.id}/timeout--x.json`, outletId: 'timeout-london' };
+  assert.equal((run([good(1), renamed], mk('timeout--x.json')).sweepFinds || []).length, 1);
+});
