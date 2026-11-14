@@ -183,7 +183,12 @@
     "wicked-west-end-2021/west-end-wilma--unknown.json",
     "wicked-2003/theatrely--kobi-kassal.json",
     "mamma-mia-west-end-2021/standard--jessie-thompson.json",
-    "the-lion-king-1997/timeout--adam-feldman.json"
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -224,7 +229,6 @@
     "the-fantasticks-2026/bobs-theater-blog--unknown.json",
     "west-side-story-west-end-2026/theatremonkey--unknown.json",
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
-    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "rope-off-broadway-2026/talkinbroadway--unknown.json",
     "adirondack-chair-circle-regional-2026/talkinbroadway--unknown.json",
     "a-few-good-men-2026/theater-life--paulanne-simmons.json",
@@ -317,7 +321,14 @@
     "wicked-2003/trib-live--alexis-papalia.json",
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json"
+    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -422,7 +433,11 @@
       "wicked-west-end-2021/firstnightmagazine--unknown.json",
       "wicked-west-end-2021/stagedtheatre--karen-jemison.json",
       "wicked-west-end-2021/west-end-wilma--unknown.json",
-      "the-lion-king-1997/timeout--adam-feldman.json"
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -432,7 +447,8 @@
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/the-great-gatsby-2024/deadline--greg-evans.json",
-      "the-great-gatsby-2024/deadline--greg-evans.json"
+      "the-great-gatsby-2024/deadline--greg-evans.json",
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -524,11 +540,12 @@
       "hamilton-2015/nyt-theater--jonathan-mandell.json",
       "book-of-mormon-2011/village-voice--michael-musto.json",
       "wicked-west-end-2021/standard--jessie-thompson.json",
-      "mamma-mia-west-end-2021/standard--jessie-thompson.json"
+      "mamma-mia-west-end-2021/standard--jessie-thompson.json",
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
     ]
   },
   "startTime": "2026-11-14T10:38:22.852Z",
-  "lastProcessed": "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+  "lastProcessed": "girls-off-west-end-2026/londontheatre1--unknown.json",
   "log": [
     {
       "t": "2026-11-14T11:16:01.770Z",
@@ -753,6 +770,26 @@
       "t": "2026-11-14T13:03:32.975Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-14T13:23:49.299Z",
+      "event": "bb-session",
+      "session": "1bfddb84",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-14T13:23:49.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-14T13:31:46.598Z",
+      "event": "bb-session",
+      "session": "9c96e888",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
+  ],
+  "recoveredAfterFailure": [
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json"
   ]
 }
