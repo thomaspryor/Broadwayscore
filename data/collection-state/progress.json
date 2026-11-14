@@ -17,7 +17,12 @@
     "ghost-notes-off-broadway-2026/oazis--unknown.json",
     "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
     "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
-    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "julius-caesar-globe-off-west-end-2026/theatre-weekly--unknown.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--.json",
+    "the-revlon-girl-off-west-end-2026/londonpubtheatres--chris-lilly.json",
+    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -36,7 +41,12 @@
     "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
     "the-visitors-off-broadway-2026/boston-globe--unknown.json",
     "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
-    "msblackforpresident-off-broadway-2026/guardian--unknown.json"
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
+    "girls-off-west-end-2026/londontheatre1--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -52,7 +62,12 @@
       "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
-      "ghost-notes-off-broadway-2026/oazis--unknown.json"
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "julius-caesar-globe-off-west-end-2026/theatre-weekly--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--.json",
+      "the-revlon-girl-off-west-end-2026/londonpubtheatres--chris-lilly.json",
+      "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -76,7 +91,7 @@
     ]
   },
   "startTime": "2026-11-14T17:58:24.327Z",
-  "lastProcessed": "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+  "lastProcessed": "girls-off-west-end-2026/londontheatre1--unknown.json",
   "log": [
     {
       "t": "2026-11-14T18:51:14.606Z",
@@ -132,6 +147,23 @@
       "t": "2026-11-14T20:04:34.619Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T20:31:48.077Z",
+      "event": "bb-session",
+      "session": "299641d8",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-14T20:31:48.833Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-14T20:39:34.282Z",
+      "event": "bb-session",
+      "session": "1615c28b",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
