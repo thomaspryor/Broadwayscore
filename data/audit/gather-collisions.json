@@ -1,43 +1,5 @@
 [
   {
-    "recordedAt": "2026-11-04T15:59:47.897Z",
-    "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--sarah-crompton.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-07-07",
-      "incomingUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-review-ivo-van-hoves-devastating-take-on-the-classic-rock-musical_1570432/",
-      "incomingPublishDate": null
-    }
-  },
-  {
-    "recordedAt": "2026-11-04T15:59:48.179Z",
-    "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--sarah-crompton.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-07-07",
-      "incomingUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-cynthia-erivo-and-adam-lambert-review-a-divine-night-in-hollywood_1689366/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-11-04T15:59:48.462Z",
     "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9350,6 +9312,36 @@
   },
   {
     "recordedAt": "2026-11-14T00:00:17.603Z",
+    "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+    "newFile": "timeout-london--andrzej-lukowski.json",
+    "ok": false,
+    "file": "timeout-london--andrzej-lukowski.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-11-12",
+      "incomingPublishDate": "2025-05-08",
+      "diffDays": 553,
+      "existingUrl": "https://www.timeout.com/london/news/hamlet-hail-to-the-thief-barbican-review-111226",
+      "incomingUrl": "https://www.timeout.com/uk/news/review-hamlet-hail-to-the-thief-at-factory-international-manchester-050825"
+    }
+  },
+  {
+    "recordedAt": "2026-11-14T00:55:45.484Z",
+    "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+    "newFile": "standard--nick-curtis.json",
+    "ok": false,
+    "file": "standard--nick-curtis.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-11-12",
+      "incomingPublishDate": "2025-05-08",
+      "diffDays": 553,
+      "existingUrl": "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-review-barbican-radiohead-b1304586.html",
+      "incomingUrl": "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-aviva-studios-manchester-review-b1226517.html"
+    }
+  },
+  {
+    "recordedAt": "2026-11-14T00:55:48.428Z",
     "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
     "newFile": "timeout-london--andrzej-lukowski.json",
     "ok": false,
