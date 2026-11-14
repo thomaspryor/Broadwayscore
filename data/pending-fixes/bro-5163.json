@@ -1,0 +1,73 @@
+{
+  "issueNumber": "bro-5163",
+  "planId": "a4279f5b-43bf-428d-bff9-09305849e069",
+  "status": "applied",
+  "createdAt": "2026-10-29T04:59:01.870Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Unreject the Lyric Garrick page for noises-off-west-end-2019 (it is the 2019 production); clear noReliableArt so Fetch Show Images re-sources art",
+    "steps": [
+      "shows.json: noises-off-west-end-2019.rejectedImageUrls",
+      "shows.json: noises-off-west-end-2019.noReliableArt"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noises-off-west-end-2019",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "google-images:https://www.todaytix.com/london/shows/26701-noises-off",
+          "google-images:https://lyric.co.uk/shows/noises-off-at-the-garrick-theatre/",
+          "google-images:https://mtsunews.com/2019/02/12/noises-off-spring19/",
+          "google-images:https://sfplayhouse.org/2025-2026-season/noises-off/",
+          "google-images:https://www.amazon.com/Noises-Off-Broadway-Poster-Style/dp/B003SIDESG"
+        ],
+        "newValue": [
+          "google-images:https://www.todaytix.com/london/shows/26701-noises-off",
+          "google-images:https://mtsunews.com/2019/02/12/noises-off-spring19/",
+          "google-images:https://sfplayhouse.org/2025-2026-season/noises-off/",
+          "google-images:https://www.amazon.com/Noises-Off-Broadway-Poster-Style/dp/B003SIDESG"
+        ],
+        "description": "shows.json: noises-off-west-end-2019.rejectedImageUrls",
+        "unreject": [
+          {
+            "url": "google-images:https://lyric.co.uk/shows/noises-off-at-the-garrick-theatre/",
+            "reason": "Lyric Garrick page is the 2019 Garrick production (the TodayTix 26701 block is the 2023 revival); found in BRO-5036 re-check"
+          }
+        ]
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noises-off-west-end-2019",
+        "field": "noReliableArt",
+        "oldValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5022: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "noises off|garrick theatre|2019-10-03"
+        },
+        "newValue": null,
+        "description": "shows.json: noises-off-west-end-2019.noReliableArt"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T07:54:46.162Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for noises-off-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for noises-off-west-end-2019"
+    }
+  ],
+  "executedIn": "ci"
+}

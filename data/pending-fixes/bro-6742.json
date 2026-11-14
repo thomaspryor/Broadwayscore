@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-6742",
+  "planId": "d0f6f2ff-8478-45ad-88c3-a615ab047f84",
+  "status": "applied",
+  "createdAt": "2026-11-01T01:09:32.550Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Slow-market gap: isolate multi-show Interested Bystander posts by refetch, and hand-clear the read-confirmed Marjorie Prime false drop",
+    "steps": [
+      "marjorie-prime-2025/the-interested-bystander--cary-wong.json: publishDate",
+      "marjorie-prime-2025/the-interested-bystander--cary-wong.json: wrongProduction",
+      "Refetch Interested Bystander multi-show posts whose stored text lost its section headings, isolate this show's section, and clear wrongShow/wrongProduction verdicts that were made on the whole post (BRO-6742)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "marjorie-prime-2025/the-interested-bystander--cary-wong.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2025-12-08",
+        "description": "marjorie-prime-2025/the-interested-bystander--cary-wong.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marjorie-prime-2025/the-interested-bystander--cary-wong.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "marjorie-prime-2025/the-interested-bystander--cary-wong.json: wrongProduction"
+      },
+      {
+        "type": "run-script",
+        "description": "Refetch Interested Bystander multi-show posts whose stored text lost its section headings, isolate this show's section, and clear wrongShow/wrongProduction verdicts that were made on the whole post (BRO-6742)",
+        "script": "isolate-multi-show-sections.js",
+        "args": "--apply --refetch --deadline-sec=240"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T02:06:02.096Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marjorie-prime-2025/the-interested-bystander--cary-wong.json publishDate: null -> \"2025-12-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marjorie-prime-2025/the-interested-bystander--cary-wong.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran isolate-multi-show-sections.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

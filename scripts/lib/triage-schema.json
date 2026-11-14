@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "triage-schema.json",
+  "title": "Autonomous nightly-loop per-card triage verdict",
+  "description": "Contract for the LLM triage call in scripts/autonomous-triage.js. Validated by validateTriageResult() in scripts/lib/autonomous-triage-core.js (hand-rolled — keep the two in sync; the colocated test asserts congruence on enums and required keys). One retry echoing the validation errors, then the card is marked failed(\"triage\") — never silently skipped.",
+  "type": "object",
+  "required": ["size", "eligible", "reason", "checkableDone"],
+  "additionalProperties": false,
+  "properties": {
+    "size": {
+      "type": "string",
+      "enum": ["S", "M", "L"],
+      "description": "Effort estimate: S ≤30 min single-file, M ≤2h few-files, L = too big for one night (propose a split)"
+    },
+    "eligible": {
+      "type": "boolean",
+      "description": "LLM judgment that the work fits Tier-1 constraints (paths, no human decisions, checkable). ANDed with the deterministic pre-filter — the LLM can only narrow, never widen."
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 10,
+      "description": "One-sentence justification for size + eligibility"
+    },
+    "checkableDone": {
+      "type": "string",
+      "minLength": 10,
+      "description": "A concrete runnable command that proves the card is done. For eligible cards this MUST match one of the safe forms in SAFE_CHECK_FORMS (autonomous-triage-core.js) — node --test on tests//scripts/ *.test.mjs files, npx tsc --noEmit, npx next lint, or test -f on a docs//memory//tests/ path — because a later sprint EXECUTES this string and card text is untrusted (prompt injection → command execution otherwise). 'It works' is not acceptable."
+    },
+    "splitProposal": {
+      "type": "array",
+      "description": "Required non-empty when size is L AND eligible is true (ineligible L cards need no split — the loop won't touch them): child cards, each a self-contained handoff (notion-brain CARD_TEMPLATE sections; children inherit parent priority/tags/parentId at creation time).",
+      "items": {
+        "type": "object",
+        "required": ["title", "notes"],
+        "additionalProperties": false,
+        "properties": {
+          "title": { "type": "string", "minLength": 8 },
+          "notes": {
+            "type": "string",
+            "minLength": 300,
+            "description": "Must contain ## Problem, ## Suggested approach, ## Acceptance criteria sections (notion-brain validateCardNotes enforces on create)"
+          }
+        }
+      }
+    }
+  }
+}

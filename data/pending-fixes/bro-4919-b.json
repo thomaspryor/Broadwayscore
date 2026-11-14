@@ -1,0 +1,233 @@
+{
+  "issueNumber": "bro-4919-b",
+  "planId": "f414ef31-5278-4acb-9863-8e63e0f4bcbd",
+  "status": "applied",
+  "createdAt": "2026-10-16T21:06:24.892Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4919 (Woolf, Salesman, Miss Saigon): Standard Woolf West End date, Daily News 2012 flag, Variety 2012 byline, NYTG 2005 showId+flag, Telegraph Salesman 2012 byline, Talkin' Broadway Salesman 2026 flag, Salesman West End 2026 unsourced runtime, Miss Saigon 2017 BWW Michael Dale wrongShow. 16 actions, each checked against the stored file and (where reachable) the live page.",
+    "steps": [
+      "delete duplicates",
+      "byline/date fixes",
+      "move",
+      "flag clears",
+      "retier"
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-west-end-2026/standard--nick-curtis.json",
+        "field": "publishDate",
+        "oldValue": "2026-03-20",
+        "newValue": "2026-10-01",
+        "description": "BRO-4919: live page (standard.co.uk ...-b1299111.html, checked 2026-10-16) has datePublished 2026-10-01T11:00:27Z, author Nick Curtis, title names Gillian Anderson and Billy Crudup; stored text matches the live article (807/877 8-word shingles) and names the sohoplace cast. 2026-03-20 was an llm-scoring guess."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-west-end-2026/standard--nick-curtis.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "human-page-verified",
+        "description": "BRO-4919: date checked against the page JSON-LD datePublished"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2012/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4919: collector LLM false positive: the text says the drama \"is back on Broadway\" in a Steppenwolf production that \"opened Saturday\" (the 2012 Booth transfer, Letts/Morton), dated 2012-10-16. Steppenwolf is the producing company of this very Broadway run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2012/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4919: cleared after the manual-clear marker"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2012/variety--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Steven Oxman",
+        "description": "BRO-4919: live page variety.com/2012/legit/reviews/who-s-afraid-of-virginia-woolf-2-1117948558/ (checked 2026-10-16) says the text is Steven Oxman's review. Byline only; the wrongProduction flag is left as is (the page reposts the Chicago Steppenwolf review under Booth credits, an inclusion call this plan does not make)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json",
+        "field": "showId",
+        "oldValue": "whos-afraid-of-virginia-woolf-2020",
+        "newValue": "whos-afraid-of-virginia-woolf-2005",
+        "description": "BRO-4919: stale showId left by the BRO-4890 move from the 2020 folder; the text credits director Anthony Page and Kathleen Turner, Bill Irwin, David Harbour, Mireille Enos (the 2005 Longacre cast), so the folder is right."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4919: the only wrongProduction note is the showId/folder mismatch fixed by the previous action; the review is of this 2005 production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4919: cleared after the manual-clear marker"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2012/telegraph--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Dominic Cavendish",
+        "description": "BRO-4919: counted (91) with no critic; the stored text carries the byline Dominic Cavendish, 18 April 2012 (url .../9212434/Philip-Seymour-...)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2026/talkinbroadway--howard-miller.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4919: flag false positive: its own reason reads \"[OVERRIDE: review within 0d of opening, likely correct production]\" and calls it a genuine review at the Winter Garden on the opening date; url DeathofaSalesman26.html dated 2026-04-09, text names Lane, Metcalf and the Winter Garden."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2026/talkinbroadway--howard-miller.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4919: cleared after the manual-clear marker"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/broadwayworld--michael-dale.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4919: CV-promoted false positive: url is a BWW-Review dated 2017-03-24 (the 2017 Broadway Theatre revival), and the stored text evaluates the staging and cast (Briones, Noblezada, Brammer, the design team) and ends with a critical judgement, so it is a review of this production. Live page is Cloudflare-blocked (403) from this machine."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/broadwayworld--michael-dale.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4919: human \"this is a review\" marker so the stale content-verifier verdict is not re-promoted as a non-review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/broadwayworld--michael-dale.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4919: cleared after the manual-clear marker"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "BRO-4919: unsourced runtime on a production that has not started (National Theatre Lyttelton, 2027); the TodayTix listing (todaytix.com/london/shows/44288-death-of-a-salesman, checked 2026-10-16) has runTimeAndIntermission null. Clear rather than show a made-up 95 minutes."
+      },
+      {
+        "type": "run-script",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=whos-afraid-of-virginia-woolf-2012/nydailynews--joe-dziemianowicz.json,whos-afraid-of-virginia-woolf-2005/nytg--unknown.json,death-of-a-salesman-2026/talkinbroadway--howard-miller.json,miss-saigon-2017/broadwayworld--michael-dale.json --apply",
+        "description": "BRO-4919: recompute contentTier on the 4 rows whose wrong-content flag this plan clears (BRO-5356 file mode)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T21:49:50.632Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/standard--nick-curtis.json publishDate: \"2026-03-20\" -> \"2026-10-01\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/standard--nick-curtis.json dateSource: \"llm-scoring\" -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2012/nydailynews--joe-dziemianowicz.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2012/nydailynews--joe-dziemianowicz.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2012/variety--unknown.json criticName: \"Unknown\" -> \"Steven Oxman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json showId: \"whos-afraid-of-virginia-woolf-2020\" -> \"whos-afraid-of-virginia-woolf-2005\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2012/telegraph--unknown.json criticName: \"Unknown\" -> \"Dominic Cavendish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2026/talkinbroadway--howard-miller.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2026/talkinbroadway--howard-miller.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/broadwayworld--michael-dale.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/broadwayworld--michael-dale.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/broadwayworld--michael-dale.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for death-of-a-salesman-west-end-2026"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ]
+}

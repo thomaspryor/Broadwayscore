@@ -1,0 +1,179 @@
+{
+  "issueNumber": "bro-5243-c",
+  "planId": "26e79b9e-3596-426e-b6d7-fdde798f4523",
+  "status": "applied",
+  "createdAt": "2026-10-13T17:50:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243 (c): five WSJ rows hold Associated Press wire reviews syndicated on wsj.com (four live, inflating WSJ Tier-1 counts and one under Teachout's name); flag wrongAttribution. One WSJ row holds a news article; flag isNonReview.",
+    "steps": [
+      "wrongAttribution for AP wire reviews filed under WSJ",
+      "isNonReview for a stored news article"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243 sweep 2026-10-13: stored text is the Associated Press wire review by Mark Kennedy (opens 'NEW YORK —', AP style, Mark Kennedy sign-off), syndicated on an online.wsj.com/article/AP<id> page. It is not a Wall Street Journal review, and counting it under WSJ (Tier 1) misattributes AP's verdict. Here: live as WSJ/Mark Kennedy score 76."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/wsj--associated-press.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243 sweep 2026-10-13: stored text is the Associated Press wire review by Mark Kennedy (opens 'NEW YORK —', AP style, Mark Kennedy sign-off), syndicated on an online.wsj.com/article/AP<id> page. It is not a Wall Street Journal review, and counting it under WSJ (Tier 1) misattributes AP's verdict. Here: live as a second WSJ entry, score 81, next to Teachout's real WSJ review (52)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/wsj--associated-press.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-realistic-joneses-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243 sweep 2026-10-13: stored text is the Associated Press wire review by Mark Kennedy (opens 'NEW YORK —', AP style, Mark Kennedy sign-off), syndicated on an online.wsj.com/article/AP<id> page. It is not a Wall Street Journal review, and counting it under WSJ (Tier 1) misattributes AP's verdict. Here: live as WSJ/Mark Kennedy 63, double-counting the same AP review already live as ap/Mark Kennedy 62."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-realistic-joneses-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/wsj--terry-teachout.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243 sweep 2026-10-13: stored text is the Associated Press wire review by Mark Kennedy (opens 'NEW YORK —', AP style, Mark Kennedy sign-off), syndicated on an online.wsj.com/article/AP<id> page. It is not a Wall Street Journal review, and counting it under WSJ (Tier 1) misattributes AP's verdict. Here: live as WSJ/Terry Teachout score 94, so AP's review carries Teachout's name; the URL is online.wsj.com/article/AP216f8806...."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/wsj--terry-teachout.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holler-if-ya-hear-me-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243 sweep 2026-10-13: stored text is the Associated Press wire review by Mark Kennedy (opens 'NEW YORK —', AP style, Mark Kennedy sign-off), syndicated on an online.wsj.com/article/AP<id> page. It is not a Wall Street Journal review, and counting it under WSJ (Tier 1) misattributes AP's verdict. Here: not live yet (AP's own row ap--mark-kennedy.json is live at 66); flagged so it cannot double-count."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holler-if-ya-hear-me-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-testament-of-mary-2013/wsj--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243 sweep 2026-10-13: stored text (contentTier complete, 4,248 chars, from stream.wsj.com/story/latest-headlines/SS-2-63399/SS-2-217941/) is a news article about a Supreme Court ruling, not a theater review. Not live today (the live WSJ row for this show is wsj--terry-teachout.json)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-testament-of-mary-2013/wsj--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: stored page is a WSJ news article (court ruling), not a review of this show",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T20:00:48.778Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/wsj--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/wsj--mark-kennedy.json wrongAttributionReason: null -> \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json wrongAttributionReason: null -> \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-realistic-joneses-2014/wsj--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-realistic-joneses-2014/wsj--mark-kennedy.json wrongAttributionReason: null -> \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json wrongAttributionReason: null -> \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holler-if-ya-hear-me-2014/wsj--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "holler-if-ya-hear-me-2014/wsj--mark-kennedy.json wrongAttributionReason: null -> \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-testament-of-mary-2013/wsj--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-testament-of-mary-2013/wsj--unknown.json isNonReviewReason: null -> \"BRO-5243: stored page is a WSJ news article (court ruling), not a review of this show\""
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-4623-coverage-outcome",
+  "planId": "93b54fba-032a-4900-94e2-2c3e4cfe8b1d",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623: enroll Wanted with unknown finances and resolve Company 2021 to a sourced Fizzle.",
+    "steps": [
+      "Wanted previews and venue are confirmed by Playbill, June 23, 2026; all financial values remain unknown.",
+      "Broadway Journal, August 23, 2022, reports Company closed at a loss and its lead producer expected to return about one third of the $13M capitalization. This meets the 30 percent Fizzle threshold, with reported-loss as the basis.",
+      "Leave every other closed-show TBD unchanged: absence of a recoupment announcement does not establish an outcome."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "wanted",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": null,
+          "weeklyRunningCost": null,
+          "notes": "Broadway musical at the James Earl Jones Theatre. Previews began October 15, 2026, ahead of a November 8 opening.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/grammy-nominee-luke-james-to-star-in-wanted-on-broadway",
+              "date": "2026-06-23"
+            }
+          ]
+        },
+        "description": "Cover Wanted in previews without inventing financial figures."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "Company 2021: resolve the closed-run outcome using the producer report already cited in this record."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "Company 2021: resolve the closed-run outcome using the producer report already cited in this record."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Company 2021: resolve the closed-run outcome using the producer report already cited in this record."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "notes",
+        "oldValue": "Verified capitalization is $13 million.",
+        "newValue": "Closed at a loss in July 2022. Lead producer Chris Harper told investors that roughly one third of the $13 million capitalization would be returned (Broadway Journal, August 23, 2022).",
+        "description": "Company 2021: resolve the closed-run outcome using the producer report already cited in this record."
+      }
+    ]
+  }
+}

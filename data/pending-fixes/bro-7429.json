@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-7429",
+  "planId": "b6b7ad76-23f1-4452-adb7-69d392c6c676",
+  "status": "applied",
+  "createdAt": "2026-11-13T04:57:45.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7429: mark different same-title works with workKey, fix wrong/missing writers (part 1 of 2)",
+    "steps": [
+      "A Christmas Carol: Patrick Stewart solo version; source data",
+      "A Christmas Carol: Patrick Stewart solo version; source data",
+      "A Christmas Carol: Patrick Stewart solo version; source data",
+      "A Christmas Carol: Mays/Arden/Lyons solo adaptation; source https://www.broadwayworld.com/article/Jefferson-Mays-Will-Play-50-Roles-in-A-CHRISTMAS-CAROL-on-Broadway-20220907",
+      "A Christmas Carol: Patrick Barlow play (Improbable); source https://theatricalia.com/play/gne/a-christmas-carol/production/12ng",
+      "A Christmas Carol: Menken/Ahrens/Ockrent musical; source https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-christmas-carol_235143/",
+      "A Tale of Two Cities: Brendan Pelsue play adaptation; source https://www.theatreinchicago.com/a-tale-of-two-cities/12718/",
+      "Alice in Wonderland: Wildhorn/Murphy/Woolverton musical; source data",
+      "Alice in Wonderland: Sgouros/Bell musical; source data",
+      "As You Like It: Taub/Woolery musical (mislabelled type is musical); source https://www.theatreinchicago.com/as-you-like-it/12914/",
+      "As You Like It: Taub/Woolery musical (mislabelled play); source https://www.broadwayworld.com/article/AS-YOU-LIKE-IT-to-Open-at-New-Village-Arts-in-Carlsbad-20260922",
+      "As You Like It: Daryl Cloran adaptation with Beatles songs; source https://www.chicagoshakes.com/productions/2122-as-you-like-it/",
+      "Baby: Gurpreet Kaur Bhatti play (Clean Break); source https://www.cleanbreak.org.uk/productions/baby/",
+      "Cinderella: Rodgers & Hammerstein musical (2013 Broadway version); source https://www.theatreinchicago.com/cinderella/12221/",
+      "Cinderella: Wilson/Carr Chichester Youth Theatre version; source https://www.cft.org.uk/news/cinderella-an-interview-with-the-director-jon-pashley",
+      "Cinderella: Joel Horwood panto (Lyric Hammersmith); source https://www.broadwayworld.com/article/Cast-Set-for-CINDERELLA-at-Lyric-Hammersmith-Theatre-20260922",
+      "Come Back to the 5 & Dime Jimmy Dean, Jimmy Dean: Robinson/Sells/Shakina musical based on Graczyk play; source https://www.broadwayworld.com/article/Steven-Pasquale-Directed-CLIFFORD-ODETS-WAITING-FOR-LEFTY-and-More-Set-for-CSC-2627-Season-20260512",
+      "Cyrano: O'Connell/Withers adaptation of Rostand; source https://www.talktheatretome.com/theatre/oldglobcyrano",
+      "Frozen: Bryony Lavery play; source data",
+      "Galileo: Brecht play; source https://www.theatreinchicago.com/galileo/12910/",
+      "Giant: LaChiusa/Pearson musical from Edna Ferber; source https://en.wikipedia.org/wiki/Giant_(musical)",
+      "Hercules: Handel opera; source https://www.rbo.org.uk/production/hercules-barrie-kosky",
+      "Home: David Storey play; source data",
+      "Jane Eyre: Cookson/Akers play adaptation; source https://www.ents24.com/kingston-upon-thames-events/rose-theatre/jane-eyre/7532979",
+      "Jane Eyre: Cookson devised play (Bristol Old Vic/NT); source https://theatricalia.com/play/3cb/jane-eyre/production/zgj"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-2001",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "a-christmas-carol-patrick-stewart-solo-version",
+        "description": "A Christmas Carol: Patrick Stewart solo version; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-1994",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "a-christmas-carol-patrick-stewart-solo-version",
+        "description": "A Christmas Carol: Patrick Stewart solo version; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-1991",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "a-christmas-carol-patrick-stewart-solo-version",
+        "description": "A Christmas Carol: Patrick Stewart solo version; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-2022",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "a-christmas-carol-mays-arden-lyons-solo-adaptation",
+        "description": "A Christmas Carol: Mays/Arden/Lyons solo adaptation; source https://www.broadwayworld.com/article/Jefferson-Mays-Will-Play-50-Roles-in-A-CHRISTMAS-CAROL-on-Broadway-20220907"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2015",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "a-christmas-carol-patrick-barlow-play",
+        "description": "A Christmas Carol: Patrick Barlow play (Improbable); source https://theatricalia.com/play/gne/a-christmas-carol/production/12ng"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2020",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "a-christmas-carol-menken-ahrens-ockrent-musical",
+        "description": "A Christmas Carol: Menken/Ahrens/Ockrent musical; source https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-christmas-carol_235143/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-tale-of-two-cities-regional-2025",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "a-tale-of-two-cities-brendan-pelsue-play-adaptation",
+        "description": "A Tale of Two Cities: Brendan Pelsue play adaptation; source https://www.theatreinchicago.com/a-tale-of-two-cities/12718/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alice-in-wonderland-off-west-end-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "alice-in-wonderland-wildhorn-murphy-woolverton-musical",
+        "description": "Alice in Wonderland: Wildhorn/Murphy/Woolverton musical; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alice-in-wonderland-off-broadway-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "alice-in-wonderland-sgouros-bell-musical",
+        "description": "Alice in Wonderland: Sgouros/Bell musical; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-regional-2025",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "as-you-like-it-taub-woolery-musical",
+        "description": "As You Like It: Taub/Woolery musical (mislabelled type is musical); source https://www.theatreinchicago.com/as-you-like-it/12914/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-regional-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "as-you-like-it-taub-woolery-musical",
+        "description": "As You Like It: Taub/Woolery musical (mislabelled play); source https://www.broadwayworld.com/article/AS-YOU-LIKE-IT-to-Open-at-New-Village-Arts-in-Carlsbad-20260922"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-regional-2021",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "as-you-like-it-daryl-cloran-adaptation-with-beatles-songs",
+        "description": "As You Like It: Daryl Cloran adaptation with Beatles songs; source https://www.chicagoshakes.com/productions/2122-as-you-like-it/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "baby-off-west-end-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "baby-gurpreet-kaur-bhatti-play",
+        "description": "Baby: Gurpreet Kaur Bhatti play (Clean Break); source https://www.cleanbreak.org.uk/productions/baby/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-regional-2023",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "cinderella-rodgers-hammerstein-musical",
+        "description": "Cinderella: Rodgers & Hammerstein musical (2013 Broadway version); source https://www.theatreinchicago.com/cinderella/12221/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-chichester-festival-regional-2024",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "cinderella-wilson-carr-chichester-youth-theatre-version",
+        "description": "Cinderella: Wilson/Carr Chichester Youth Theatre version; source https://www.cft.org.uk/news/cinderella-an-interview-with-the-director-jon-pashley"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "cinderella-joel-horwood-panto",
+        "description": "Cinderella: Joel Horwood panto (Lyric Hammersmith); source https://www.broadwayworld.com/article/Cast-Set-for-CINDERELLA-at-Lyric-Hammersmith-Theatre-20260922"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "come-back-to-the-5-and-dime-jimmy-dean-musical",
+        "description": "Come Back to the 5 & Dime Jimmy Dean, Jimmy Dean: Robinson/Sells/Shakina musical based on Graczyk play; source https://www.broadwayworld.com/article/Steven-Pasquale-Directed-CLIFFORD-ODETS-WAITING-FOR-LEFTY-and-More-Set-for-CSC-2627-Season-20260512"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cyrano-regional-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "cyrano-o-connell-withers-adaptation-of-rostand",
+        "description": "Cyrano: O'Connell/Withers adaptation of Rostand; source https://www.talktheatretome.com/theatre/oldglobcyrano"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frozen-2004",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "frozen-bryony-lavery-play",
+        "description": "Frozen: Bryony Lavery play; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "galileo-regional-2025",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "galileo-brecht-play",
+        "description": "Galileo: Brecht play; source https://www.theatreinchicago.com/galileo/12910/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "giant-public-theater-off-broadway-2012",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "giant-lachiusa-pearson-musical-from-edna-ferber",
+        "description": "Giant: LaChiusa/Pearson musical from Edna Ferber; source https://en.wikipedia.org/wiki/Giant_(musical)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hercules-off-west-end-2027",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "hercules-handel-opera",
+        "description": "Hercules: Handel opera; source https://www.rbo.org.uk/production/hercules-barrie-kosky"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "home-1970",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "home-david-storey-play",
+        "description": "Home: David Storey play; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jane-eyre-rose-kingston-off-west-end-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "jane-eyre-cookson-akers-play-adaptation",
+        "description": "Jane Eyre: Cookson/Akers play adaptation; source https://www.ents24.com/kingston-upon-thames-events/rose-theatre/jane-eyre/7532979"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jane-eyre-west-end-2015",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "jane-eyre-cookson-akers-play-adaptation",
+        "description": "Jane Eyre: Cookson devised play (Bristol Old Vic/NT); source https://theatricalia.com/play/3cb/jane-eyre/production/zgj"
+      }
+    ]
+  },
+  "executedAt": "2026-11-13T06:33:02.285Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for a-christmas-carol-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for a-christmas-carol-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for a-christmas-carol-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for a-christmas-carol-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for a-christmas-carol-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for a-christmas-carol-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for a-tale-of-two-cities-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for alice-in-wonderland-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for alice-in-wonderland-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for as-you-like-it-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for as-you-like-it-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for as-you-like-it-regional-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for baby-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for cinderella-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for cinderella-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for cinderella-lyric-hammersmith-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for cyrano-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for frozen-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for galileo-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for giant-public-theater-off-broadway-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for hercules-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for home-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for jane-eyre-rose-kingston-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for jane-eyre-west-end-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

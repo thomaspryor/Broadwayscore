@@ -1,0 +1,82 @@
+{
+  "issueNumber": "bro-7146-c",
+  "planId": "e5fef5fe-fa00-49ff-b116-f5b368a7d892",
+  "status": "applied",
+  "createdAt": "2026-11-08T20:24:43.161Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7146 part 3: type four more venue-page stubs the first plan missed (59E59 Flight and The Two of You: plays; EGG: play; A History of Paper: two-character musical)",
+    "steps": [
+      "shows.json: flight-off-broadway-2027.type",
+      "shows.json: the-two-of-you-off-broadway-2027.type",
+      "shows.json: egg-or-anything-dipped-in-egg-gone-soften-off-broadway-2027.type",
+      "shows.json: a-history-of-paper-off-broadway-2027.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "flight-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: flight-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-two-of-you-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: the-two-of-you-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "egg-or-anything-dipped-in-egg-gone-soften-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: egg-or-anything-dipped-in-egg-gone-soften-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-history-of-paper-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "shows.json: a-history-of-paper-off-broadway-2027.type"
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T21:10:08.148Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for flight-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-two-of-you-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for egg-or-anything-dipped-in-egg-gone-soften-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for a-history-of-paper-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

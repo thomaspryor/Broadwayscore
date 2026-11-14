@@ -1,0 +1,173 @@
+{
+  "runDate": "2026-10-25T23:42:41.002Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "derren-brown-only-human-west-end-2026,phyl-off-broadway-2026,the-pianist-off-west-end-2026,cirque-berserk-west-end-2026,the-imaginary-invalid-2026,aftermath-art-new-york-off-broadway-2026,garry-starr-classic-penguins-off-west-end-2026,queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026,the-kick-inside-off-broadway-2026,women-who-eat-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 9,
+    "failed": 8,
+    "skipped": 0,
+    "successRate": "52.9%"
+  },
+  "tierBreakdown": {
+    "playwright": 7,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 14,
+    "tier1Success": 7,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 2,
+    "tier2Attempts": 5,
+    "tier2Success": 2,
+    "tier3Attempts": 5,
+    "tier3Success": 1,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 0,
+    "tier4Attempts": 13,
+    "tier4Success": 0,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 13,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.7,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 9,
+    "failed": 8,
+    "shows": [
+      "aftermath-art-new-york-off-broadway-2026",
+      "cirque-berserk-west-end-2026",
+      "derren-brown-only-human-west-end-2026",
+      "garry-starr-classic-penguins-off-west-end-2026",
+      "phyl-off-broadway-2026",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+      "the-imaginary-invalid-2026",
+      "the-pianist-off-west-end-2026"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "garry-starr-classic-penguins-off-west-end-2026/thereviewshub--steven-wang.json",
+    "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+    "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
+    "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+    "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+    "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+    "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json"
+  ],
+  "failed": [
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/soundsandstage--unknown.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [
+      "garry-starr-classic-penguins-off-west-end-2026/thereviewshub--steven-wang.json",
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json"
+    ],
+    "failed": [
+      "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/soundsandstage--unknown.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [
+      "garry-starr-classic-penguins-off-west-end-2026/thereviewshub--steven-wang.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
+    ],
+    "scrapingbee": [
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "North West End": {
+      "count": 1,
+      "domain": "northwestend.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Jonathan Baz": {
+      "count": 1,
+      "domain": "jonathanbaz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}

@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-5562-g",
+  "planId": "9d41b268-a034-4eb8-a9d7-fe834e6be0d5",
+  "status": "applied",
+  "createdAt": "2026-10-18T02:23:42.149Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5562 (part g): Sweeney Todd's notes contradicted its own recoupment source (found by the post-landing ship-check); the note now says no recoupment was announced at the time and BroadwayWorld later reported it.",
+    "steps": [
+      "The edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "field": "notes",
+        "oldValue": "Smash hit revival with Josh Groban and Annaleigh Ashford, then Sutton Foster. Opened Mar 2023, ran 487 performances through Jan 2025. Capitalized at $14.5M with ~$840K weekly nut. Often grossed $1.5-2M weekly at ~97% average capacity. Broadway Journal projected it would recoup by fall 2023; the producers never announced a recoupment. Grossed $100.12M total — a major commercial success.",
+        "newValue": "Smash hit revival with Josh Groban and Annaleigh Ashford, then Sutton Foster. Opened Mar 2023, ran 487 performances through Jan 2025. Capitalized at $14.5M with ~$840K weekly nut. Often grossed $1.5-2M weekly at ~97% average capacity. Broadway Journal projected it would recoup by fall 2023; no recoupment was announced at the time, and BroadwayWorld reported in August 2025 that it recouped its $14.5M in November 2023. Grossed $100.12M total, a major commercial success.",
+        "description": "sweeney-todd-2023: the notes said the producers never announced a recoupment, under a card that prints BroadwayWorld's report (Aug 1, 2025) that it recouped in November 2023; say both."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T03:25:03.457Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for sweeney-todd-2023"
+    }
+  ]
+}

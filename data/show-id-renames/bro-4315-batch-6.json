@@ -1,0 +1,18 @@
+{
+  "card": "BRO-4315",
+  "reason": "Market-suffix id renames (2026 data audit S8-T1). Batch 6: 12 rows with reader data in Supabase (run the printed UPDATEs after apply) or whose slug equals the id (old URL 301s via aliases); includes the-gin-game Off-Broadway row.",
+  "renames": [
+    { "oldId": "death-note-the-musical-west-end-2026", "newId": "death-note-the-musical-off-west-end-2026", "expectTitle": "Death Note: The Musical" },
+    { "oldId": "franz-and-marie-west-end-2026", "newId": "franz-and-marie-off-west-end-2026", "expectTitle": "Franz & Marie" },
+    { "oldId": "high-society-west-end-2026", "newId": "high-society-off-west-end-2026", "expectTitle": "High Society" },
+    { "oldId": "into-the-woods-west-end-2025", "newId": "into-the-woods-off-west-end-2025", "expectTitle": "Into the Woods" },
+    { "oldId": "jajas-african-hair-braiding-west-end-2026", "newId": "jajas-african-hair-braiding-off-west-end-2026", "expectTitle": "Jaja's African Hair Braiding" },
+    { "oldId": "starlight-express-west-end-2024", "newId": "starlight-express-off-west-end-2024", "expectTitle": "Starlight Express" },
+    { "oldId": "sweetmeats-west-end-2026", "newId": "sweetmeats-off-west-end-2026", "expectTitle": "Sweetmeats" },
+    { "oldId": "the-gin-game-2026", "newId": "the-gin-game-off-broadway-2026", "expectTitle": "The Gin Game" },
+    { "oldId": "the-hunger-games-on-stage-west-end-2025", "newId": "the-hunger-games-on-stage-off-west-end-2025", "expectTitle": "The Hunger Games On Stage" },
+    { "oldId": "the-oresteia-west-end-2026", "newId": "the-oresteia-off-west-end-2026", "expectTitle": "The Oresteia" },
+    { "oldId": "the-rat-trap-west-end-2026", "newId": "the-rat-trap-off-west-end-2026", "expectTitle": "The Rat Trap" },
+    { "oldId": "witness-for-the-prosecution-west-end-2022", "newId": "witness-for-the-prosecution-off-west-end-2022", "expectTitle": "Witness for the Prosecution" }
+  ]
+}

@@ -1,0 +1,263 @@
+{
+  "issueNumber": "bro-4639",
+  "planId": "ada9d17a-3de1-4271-a79b-1b0b68f80a8b",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 9: remove internal research wording from Stranger Things, The Notebook, Appropriate, Leopoldstadt, Our Town and Into the Woods, replace the Paranormal Activity placeholder note, and fix stale SIX and & Juliet notes.",
+    "steps": [
+      "SIX and & Juliet both close Jan 3, 2027 (BroadwayWorld, Aug 27 and Sep 10, 2026). Playbill calls & Juliet the first new musical of the 2022-23 season to recoup.",
+      "The Notebook: producer Kevin McCollum told WBEZ the Broadway move made it a $15M endeavor and it did not recoup on Broadway.",
+      "Appropriate keeps the owner's 2026-07-13 editorial call (recouped); only the wording of its source line changes."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stranger-things",
+        "showId": "stranger-things",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Now A Warning LLC, CIK 0002040672, filed Oct 11, 2024). Range: $29M min, $31.5M max. c/o 321 Theatrical. Previous $20M estimate from Deep Research was too low.",
+        "newValue": "SEC Form D (Now A Warning LLC, filed Oct 11, 2024): $29M minimum, $31.5M maximum",
+        "description": "stranger-things: capitalizationSource (internal wording in source line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "showId": "the-notebook",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filing / NYT (Kevin McCollum confirmed ~$15M)",
+        "newValue": "WBEZ (Aug 2026): producer Kevin McCollum said the Broadway move made it a $15M endeavor",
+        "description": "the-notebook: capitalizationSource (internal wording and own estimate in notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "showId": "the-notebook",
+        "field": "notes",
+        "oldValue": "Nicholas Sparks musical adaptation. $15M capitalization (SEC/NYT, producer McCollum confirmed). Previous $22M figure was incorrect. Weekly nut ~$700K. Closed Dec 15, 2024 after ~300 performances without recouping. Estimated 60-80% of cap recovered. Final week grossed $1.0M ($225K profit). National tour planned for 2025. Underlying rights royalties (Sparks + Warner Bros) raised breakeven bar. Eligible for $3M NY state tax credit.",
+        "newValue": "Nicholas Sparks musical adaptation. Opened Mar 14, 2024 and closed Dec 15, 2024 without recouping on Broadway; producer Kevin McCollum put the Broadway move at $15M (WBEZ). Rights royalties to Sparks and Warner Bros. raised the break-even bar. A national tour followed.",
+        "description": "the-notebook: notes (internal wording and own estimate in notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "showId": "the-notebook",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wbez.org/theater-stages/2026/08/13/broadway-chicago-musical-life-cycle-the-notebook-kevin-mccollum",
+            "date": "2026-08-13"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/08/the-notebook-broadway-closing-date-1236073760/",
+            "date": null
+          }
+        ],
+        "description": "the-notebook: sources (internal wording and own estimate in notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "showId": "appropriate",
+        "field": "recoupedSource",
+        "oldValue": "No public announcement. Kept recouped:true per owner review 2026-07-13 — editorial judgment: extension + Belasco commercial transfer, 3 Tonys incl. Best Revival, low $3.75M cap; industry consensus (BWW forum) investors repaid.",
+        "newValue": "No recoupment was announced. Counted as recouped as an editorial judgment: two extensions, a commercial transfer to the Belasco, the 2024 Tony for Best Revival of a Play and a low $3.75M capitalization.",
+        "description": "appropriate: recoupedSource (internal wording in source line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "showId": "leopoldstadt-2022",
+        "field": "notes",
+        "oldValue": "Recoupment claim demoted 2026-07-13 (owner decision): no announcement exists, and Broadway Journal (Aug 25 2023) states Prima Facie was the ONLY 2022-23 show to announce recoupment. Prior claim (2023-07) came from GPT deep-research. $8M cap; closed Jul 2 2023 after Tony win for Best Play.",
+        "newValue": "Tom Stoppard's play, winner of the 2023 Tony for Best Play; capitalized at $8M per its SEC filing. Closed Jul 2, 2023. No recoupment was announced; Broadway Journal (Aug 25, 2023) reported that, at that point, Prima Facie was the only 2022-23 show to have announced recoupment.",
+        "description": "leopoldstadt-2022: notes (internal wording in notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-town",
+        "showId": "our-town",
+        "field": "notes",
+        "oldValue": "Jim Parsons-led revival at Barrymore Theatre. $5,976,500 capitalization (SEC Form D, 'Grover's Corners Broadway LLC'). Played to ~95% capacity, grossed $1.084M in final week. No recoupment announcement found (2026-07-28 citation audit: Broadway News tracks every other 2024-25 season recoupment and has no Our Town entry); site model estimates ~55.6-109.6% recouped (mid 83.6%), so recouped=true was corrected to false pending an actual announcement. Previous $20M figure was likely a data error.",
+        "newValue": "Jim Parsons-led revival at the Ethel Barrymore. Capitalized at $5,976,500 per its SEC Form D/A (Grover's Corners Broadway LLC). Played to about 95% capacity and grossed $1.084M in its final week. No recoupment announced; Broadway News, which tracks 2024-25 recoupments, has no Our Town entry.",
+        "description": "our-town: notes (internal wording in notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "into-the-woods-2022",
+        "showId": "into-the-woods-2022",
+        "field": "recoupedSource",
+        "oldValue": "Broadway Journal (Aug 25 2023) lists Into the Woods among 2022-23 commercial winners. Month unverified (prior 2022-11 was GPT deep-research inference from ~3-4 month recoupment); year precision per owner review 2026-07-13.",
+        "newValue": "Broadway Journal (Aug 25, 2023) lists Into the Woods among the 2022-23 season's commercial winners; the month of recoupment was not reported.",
+        "description": "into-the-woods-2022: recoupedSource (internal wording in source line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "notes",
+        "oldValue": "Auto-enrolled stub; awaiting model + curation.",
+        "newValue": "Stage adaptation at the August Wilson; opened Aug 25, 2026 for a limited run through Jan 3, 2027. No capitalization reported.",
+        "description": "paranormal-activity: notes (placeholder note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "and-juliet",
+        "showId": "and-juliet",
+        "field": "notes",
+        "oldValue": "Fourth new musical to recoup post-pandemic. Max Martin jukebox catalogue drives consistent grosses.",
+        "newValue": "Max Martin jukebox musical. Recouped its $17M capitalization as of Apr 14, 2024, the first new musical of the 2022-23 season to recoup (Playbill). Closing Jan 3, 2027 at the Stephen Sondheim after more than $175M in grosses.",
+        "description": "and-juliet: notes (wrong claim; closing announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "and-juliet",
+        "showId": "and-juliet",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadways-juliet-recoups-initial-investment",
+            "date": "2024-06-11"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadways-juliet-recoups-initial-investment",
+            "date": "2024-06-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/-JULIET-to-Close-on-Broadway-In-January-20260910",
+            "date": "2026-09-10"
+          }
+        ],
+        "description": "and-juliet: sources (wrong claim; closing announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "notes",
+        "oldValue": "Low capitalization ($5-6.5M per SEC) + strong grosses = quick recoupment. Recouped by Dec 2021 (announced Mar 2023 retroactively). Received $10M SVOG grant (200% of $5M capitalization — largest SVOG-to-cap ratio among tracked shows). Was in previews when Broadway shut down Mar 2020. Reopened Oct 2021. Described as 'so cheap to run' on Reddit. Extended through Nov 2026. Multiple touring productions.",
+        "newValue": "Low capitalization (about $5M per Broadway Journal and Broadway News) and strong grosses. Recouped as of Dec 2021 (announced Mar 2023). Was in previews when Broadway shut down in Mar 2020 and reopened in Oct 2021. Closing Jan 3, 2027 at the Lena Horne.",
+        "description": "six: notes (stale extension note; forum quote)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/SIX-Recoups-its-Investment-on-Broadway-20230323",
+            "date": "2023-03-23"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/SIX-Recoups-its-Investment-on-Broadway-20230323",
+            "date": "2023-03-23"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/SIX-THE-MUSICAL-Will-Close-On-Broadway-This-Winter-20260827",
+            "date": "2026-08-27"
+          }
+        ],
+        "description": "six: sources (stale extension note; forum quote)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T01:18:23.166Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for stranger-things"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-notebook"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-notebook"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-notebook"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for our-town"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for into-the-woods-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for and-juliet"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for and-juliet"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for six"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5942-e",
+  "planId": "cc48582a-d054-4f3b-be61-6c8b6ee19d46",
+  "status": "applied",
+  "createdAt": "2026-10-23T03:48:00.601Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5942: clear two stale flags on split rows. The Thérèse Raquin Flipside row's wrong-production flag belonged to the mis-cut copy it replaced (push-time restore carried it over); the Camping Vulture row's wrong-show flag described the whole two-show article, and the row is now Camping's own section.",
+    "steps": [
+      "therese-raquin-2015/flipsidereviews--kevin-filipski.json: wrongProductionManualClear",
+      "camping-off-broadway-2026/vulture--sara-holdren.json: wrongShowManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "therese-raquin-2015/flipsidereviews--kevin-filipski.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "therese-raquin-2015/flipsidereviews--kevin-filipski.json: wrongProductionManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "camping-off-broadway-2026/vulture--sara-holdren.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "camping-off-broadway-2026/vulture--sara-holdren.json: wrongShowManualClear"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T05:11:08.545Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "therese-raquin-2015/flipsidereviews--kevin-filipski.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camping-off-broadway-2026/vulture--sara-holdren.json wrongShowManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6474-2",
+  "planId": "820775fd-114a-4d6f-81e8-37075d0163a4",
+  "status": "applied",
+  "createdAt": "2026-11-01T00:12:21.340Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Finish BRO-6474 by marking the unrelated ArtsHub Singapore article as wrongShow using its current value; the earlier production and article-clear corrections are already present.",
+    "steps": [
+      "art-west-end-2016/artshub--gina-fairley.json: wrongShow"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "wrongShow",
+        "oldValue": false,
+        "newValue": true,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: wrongShow"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T01:12:34.746Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/artshub--gina-fairley.json wrongShow: false -> true (retracted wrongShowSelfHealReason, wrongShowSelfHealed)"
+    }
+  ],
+  "executedIn": "ci"
+}

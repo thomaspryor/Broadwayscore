@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-5975-revivals",
+  "planId": "d9d5be8d-ad31-4bc3-b7b5-d00e2712a571",
+  "status": "applied",
+  "createdAt": "2026-10-22T14:40:02.385Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "IBDB revival backlog: 8 confirmed revivals, 4 title-collision false positives marked checked",
+    "steps": [
+      "shows.json: la-boheme-off-broadway-2025.isRevival",
+      "shows.json: carmen-off-broadway-2025.isRevival",
+      "shows.json: porgy-and-bess-off-broadway-2025.isRevival",
+      "shows.json: la-boheme-off-broadway-2026.isRevival",
+      "shows.json: macbeth-off-broadway-2026.isRevival",
+      "shows.json: la-boheme-off-broadway-2024.isRevival",
+      "shows.json: othello-off-broadway-2026.isRevival",
+      "shows.json: all-the-way-home-off-broadway-2027.isRevival",
+      "shows.json: caroline-off-broadway-2026.ibdbRevivalChecked",
+      "shows.json: you-go-on-off-broadway-2027.ibdbRevivalChecked",
+      "shows.json: miss-julie-off-broadway-2026.ibdbRevivalChecked",
+      "shows.json: flight-off-broadway-2027.ibdbRevivalChecked"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2025.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "carmen-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: carmen-off-broadway-2025.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "porgy-and-bess-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: porgy-and-bess-off-broadway-2025.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: macbeth-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: la-boheme-off-broadway-2024.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: othello-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-way-home-off-broadway-2027",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: all-the-way-home-off-broadway-2027.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caroline-off-broadway-2026",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: caroline-off-broadway-2026.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "you-go-on-off-broadway-2027",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: you-go-on-off-broadway-2027.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-julie-off-broadway-2026",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: miss-julie-off-broadway-2026.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "flight-off-broadway-2027",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: flight-off-broadway-2027.ibdbRevivalChecked"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T18:10:23.574Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for la-boheme-off-broadway-2025 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for carmen-off-broadway-2025 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for porgy-and-bess-off-broadway-2025 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for la-boheme-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for macbeth-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for la-boheme-off-broadway-2024 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for othello-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for all-the-way-home-off-broadway-2027 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbRevivalChecked updated for caroline-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbRevivalChecked updated for you-go-on-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbRevivalChecked updated for miss-julie-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbRevivalChecked updated for flight-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

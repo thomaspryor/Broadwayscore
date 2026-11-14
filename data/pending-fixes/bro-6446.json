@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-6446",
+  "planId": "f804fa7d-1182-415b-ba21-e5f024b23a07",
+  "status": "applied",
+  "createdAt": "2026-10-28T02:42:47.592Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6446 (owner option A): new/untested limited runs with no star draw are labeled by return, not Easy Winner: The Humans and What the Constitution Means to Me to Trickle; Appropriate (recoupment never announced) to TBD so it reads Recouped, return undisclosed",
+    "steps": [
+      "commercial.json: the-humans-2016.designation",
+      "commercial.json: the-humans-2016.humanReviewedDesignation",
+      "commercial.json: what-the-constitution-means-to-me-2019.designation",
+      "commercial.json: what-the-constitution-means-to-me-2019.humanReviewedDesignation",
+      "commercial.json: appropriate.designation",
+      "commercial.json: appropriate.humanReviewedDesignation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "Trickle",
+        "description": "commercial.json: the-humans-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "humanReviewedDesignation",
+        "oldValue": true,
+        "newValue": true,
+        "description": "commercial.json: the-humans-2016.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "what-the-constitution-means-to-me-2019",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "Trickle",
+        "description": "commercial.json: what-the-constitution-means-to-me-2019.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "what-the-constitution-means-to-me-2019",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: what-the-constitution-means-to-me-2019.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "TBD",
+        "description": "commercial.json: appropriate.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "humanReviewedDesignation",
+        "oldValue": true,
+        "newValue": true,
+        "description": "commercial.json: appropriate.humanReviewedDesignation"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T18:13:01.311Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for what-the-constitution-means-to-me-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for what-the-constitution-means-to-me-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for appropriate"
+    }
+  ],
+  "executedIn": "ci"
+}

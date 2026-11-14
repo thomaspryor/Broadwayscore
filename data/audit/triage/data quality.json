@@ -1,0 +1,55 @@
+{
+  "system": "data quality",
+  "status": "warn",
+  "lastChecked": "2026-11-14T09:07:36.581Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Data quality: provider spend ledger",
+      "status": "pass",
+      "message": "Newest entry (day=2026-11-12) 1d past its end-of-day"
+    },
+    {
+      "name": "Data quality: cross-outlet attribution drift",
+      "status": "pass",
+      "message": "No unreviewed suspects (23h ago)"
+    },
+    {
+      "name": "Data quality: cv-wrongproduction lifetime sweep",
+      "status": "warn",
+      "message": "1 NEW unhandled CV.wrongProduction review(s) since last run (222 total across 168 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: fulltext-mentions-show lifetime sweep",
+      "status": "warn",
+      "message": "10 NEW unmatched review(s) since last run (855 total across 566 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: slug-mismatch lifetime sweep",
+      "status": "pass",
+      "message": "No open violations with contamination evidence (227 known baseline across 4818 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: roundup-url-mismatch lifetime sweep",
+      "status": "pass",
+      "message": "No new violations since last run (38 known baseline across 4818 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: revival-unverified lifetime sweep",
+      "status": "pass",
+      "message": "No open violations with a same-title earlier production (3 known baseline across 4818 show(s); 1 new hit(s) with no a same-title earlier production added to the backlog, 23h ago)"
+    },
+    {
+      "name": "Data quality: missed opening-night broadcasts",
+      "status": "warn",
+      "message": "1 show(s) opened and qualified but never emailed subscribers (1 still alertable, 0 aged out past the paging window; 7 more were covered by a weekly round-up, 23h ago)"
+    },
+    {
+      "name": "Data quality: stale announced shows",
+      "status": "pass",
+      "message": "3 show(s) flagged < 2d, waiting on the status flip (11 silenced by contamination, 23h ago)"
+    }
+  ]
+}

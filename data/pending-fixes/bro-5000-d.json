@@ -1,0 +1,137 @@
+{
+  "issueNumber": "bro-5000-d",
+  "planId": "f996745d-040f-46c1-8b78-82ee2d4cd3db",
+  "status": "applied",
+  "createdAt": "2026-10-11T23:42:16.168Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5000 owner decision 2026-10-11: four returning shows keep their earlier run separate (inheritReviews false). The other eight links stay on the automatic rule (carry until 5 outlets re-review).",
+    "steps": [
+      "11 outlets reviewed the 2026 West End run itself, so it has its own critic base. The 2022 Gielgud run stays on its own entry.",
+      "35 outlets reviewed the 2026 Adelphi return, so it has its own critic base. The 2025 run stays on its own entry.",
+      "13 outlets reviewed the St. Ann's run, so it has its own critic base. The Skirball run stays on its own entry.",
+      "The one-part version is a re-staged, shortened show, not the two-part production reviewed from 2016, so its reviews are not carried over."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "to-kill-a-mockingbird-west-end-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "openingDate": "2022-03-01",
+            "closingDate": "2023-05-31",
+            "venue": "Gielgud Theatre"
+          }
+        ],
+        "newValue": [
+          {
+            "openingDate": "2022-03-01",
+            "closingDate": "2023-05-31",
+            "venue": "Gielgud Theatre",
+            "inheritReviews": false
+          }
+        ],
+        "description": "11 outlets reviewed the 2026 West End run itself, so it has its own critic base. The 2022 Gielgud run stays on its own entry."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-comedy-about-spies-west-end-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "openingDate": "2025-04-14",
+            "closingDate": "2025-08-03",
+            "venue": "Noël Coward Theatre",
+            "note": "Original sold-out 21-week West End run (Mischief Company) before the 2026 Adelphi Theatre return engagement (previews 2026-08-01). Same cast/creative team, same production. Sources: WestEndTheatre, WhatsOnStage."
+          }
+        ],
+        "newValue": [
+          {
+            "openingDate": "2025-04-14",
+            "closingDate": "2025-08-03",
+            "venue": "Noël Coward Theatre",
+            "note": "Original sold-out 21-week West End run (Mischief Company) before the 2026 Adelphi Theatre return engagement (previews 2026-08-01). Same cast/creative team, same production. Sources: WestEndTheatre, WhatsOnStage.",
+            "inheritReviews": false
+          }
+        ],
+        "description": "35 outlets reviewed the 2026 Adelphi return, so it has its own critic base. The 2025 run stays on its own entry."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kramerfauci-st-anns-off-broadway-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "openingDate": "2026-02-11",
+            "closingDate": "2026-02-21",
+            "venue": "NYU Skirball Center for the Performing Arts"
+          }
+        ],
+        "newValue": [
+          {
+            "openingDate": "2026-02-11",
+            "closingDate": "2026-02-21",
+            "venue": "NYU Skirball Center for the Performing Arts",
+            "inheritReviews": false
+          }
+        ],
+        "description": "13 outlets reviewed the St. Ann's run, so it has its own critic base. The Skirball run stays on its own entry."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+            "venue": "Palace Theatre",
+            "openingDate": "2016-07-30",
+            "closingDate": "2026-09-20"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+            "venue": "Palace Theatre",
+            "openingDate": "2016-07-30",
+            "closingDate": "2026-09-20",
+            "inheritReviews": false
+          }
+        ],
+        "description": "The one-part version is a re-staged, shortened show, not the two-part production reviewed from 2016, so its reviews are not carried over."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T06:37:10.205Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for to-kill-a-mockingbird-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for the-comedy-about-spies-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for kramerfauci-st-anns-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for harry-potter-and-the-cursed-child-one-part-west-end-2026"
+    }
+  ]
+}

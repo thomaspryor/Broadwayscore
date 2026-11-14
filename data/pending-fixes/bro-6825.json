@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-6825",
+  "planId": "8ca0b32f-22d9-48ac-ba71-bf6868178717",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "createdAt": "2026-11-05T17:00:27.803848Z",
+  "plan": {
+    "summary": "BRO-6825: remove Show Score audience scores that came from another production's page (betrayal-2013, machinal-2014, carmen, don-giovanni, elektra, fish, the-choir-of-man, the-boy-at-the-back-of-the-class, medea) from the private audience-buzz.json. The public mapping and show-score.json part landed with this change, recorded under _productionMismatch.",
+    "steps": [
+      "Run purge-wrong-production-show-score.js --apply against the private core data"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "purge-wrong-production-show-score.js",
+        "args": "--apply",
+        "description": "Remove showScore from audience-buzz.json for shows recorded under _productionMismatch (combinedScore recomputed, source tombstoned)."
+      }
+    ]
+  },
+  "executedAt": "2026-11-05T19:19:26.158Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran purge-wrong-production-show-score.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

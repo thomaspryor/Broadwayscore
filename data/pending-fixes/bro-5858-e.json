@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-5858-e",
+  "planId": "50170035-9d90-482b-88ff-41435eb063ee",
+  "status": "applied",
+  "createdAt": "2026-10-21T20:46:48.723Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5858 (part 5): after the same-url sweep, two corrected reviews stayed out of the scored set because of a stale or false-positive exclusion flag on the kept file. Clear each, with evidence.",
+    "steps": [
+      "Clear the stale exclusion flag on each kept file"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/whatsonstage--alex-wood.json",
+        "field": "fabricatedEntry",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5858: stale blanket flag (\"web-search source has 84% fabrication rate\"). The url is live: fetchPage loaded it and its byline credits Alex Wood; The Stage roundup quotes this excerpt. With the flag set the rebuild falls back to the wrong-critic copy (Sarah Crompton)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5858: human check of the url and content verification (isValid true, articleType review). Breadcrumb before clearing the obituary-heuristic nonReviewFlag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json",
+        "field": "nonReviewFlag",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5858: heuristic false positive (type obituary, matched \"passed away\": Here We Are is Sondheim posthumous musical). contentVerification on the same file says isValid true, articleType review; url is /post/review-here-we-are-lyttlelton-theatre. The flag drops the only live copy of this review."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T21:07:36.546Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/whatsonstage--alex-wood.json fabricatedEntry: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json nonReviewFlag: true -> false"
+    }
+  ],
+  "executedIn": "ci"
+}

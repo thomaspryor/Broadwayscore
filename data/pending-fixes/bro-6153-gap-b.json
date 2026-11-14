@@ -1,0 +1,332 @@
+{
+  "issueNumber": "bro-6153-gap-b",
+  "planId": "f3ca8ded-4b37-47bd-b3f0-4c5ae7c1c999",
+  "status": "applied",
+  "createdAt": "2026-10-25T01:26:42.375Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "OB historical backfill gap window (2025-06 to 2026-02): Playbill-validated productions from TheaterMania listings (BRO-6153) (part 2 of 5)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "other-off-broadway-2025",
+          "title": "Other",
+          "slug": "other-off-broadway-2025",
+          "venue": "Greenwich House Theater",
+          "previewsStartDate": "2025-10-08",
+          "openingDate": "2025-10-19",
+          "closingDate": "2025-12-06",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/other-off-broadway-greenwich-house-theater-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/other_1803716/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "playing-shylock-off-broadway-2025",
+          "title": "Playing Shylock",
+          "slug": "playing-shylock-off-broadway-2025",
+          "venue": "Theatre for a New Audience @ Polonsky Shakespeare Center",
+          "previewsStartDate": "2025-10-16",
+          "openingDate": "2025-10-25",
+          "closingDate": "2025-12-07",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/playing-shylock-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/playing-shylock_1800423/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "richard-ii-off-broadway-2025",
+          "title": "Richard II",
+          "slug": "richard-ii-off-broadway-2025",
+          "venue": "Astor Place Theatre",
+          "previewsStartDate": "2025-10-28",
+          "openingDate": "2025-11-10",
+          "closingDate": "2025-12-21",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/richard-ii-off-broadway-astor-place-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/richard-ii_1799725/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "art-of-leaving-off-broadway-2025",
+          "title": "Art of Leaving",
+          "slug": "art-of-leaving-off-broadway-2025",
+          "venue": "The Pershing Square Signature Center/Alice Griffin Jewel Box Theatre",
+          "previewsStartDate": "2025-10-10",
+          "openingDate": "2025-10-22",
+          "closingDate": "2025-12-14",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/art-of-leaving-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/art-of-leaving_1798352/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
+          "title": "Nothing Can Take You From the Hand of God",
+          "slug": "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
+          "venue": "Playwrights Horizons/Peter Jay Sharp Theater",
+          "previewsStartDate": "2025-10-02",
+          "openingDate": "2025-10-13",
+          "closingDate": "2025-11-16",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/nothing-can-take-you-from-the-hand-of-god-off-broadway-playwrights-horizons-peter-jay-sharp-theater-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/nothing-can-take-you-from-the-hand-of-god_1798172/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-midsummer-nights-dream-off-broadway-2025",
+          "title": "A Midsummer Night's Dream",
+          "slug": "a-midsummer-nights-dream-off-broadway-2025",
+          "venue": "Sheen Center",
+          "previewsStartDate": "2025-10-11",
+          "openingDate": "2025-10-15",
+          "closingDate": "2025-11-02",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/a-midsummer-nights-dream-off-broadway-sheen-center-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/a-midsummer-nights-dream_1797855/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sulfur-bottom-off-broadway-2025",
+          "title": "Sulfur Bottom",
+          "slug": "sulfur-bottom-off-broadway-2025",
+          "venue": "The Theater Center/ The Jerry Orbach Theater",
+          "previewsStartDate": "2025-08-13",
+          "openingDate": "2025-08-20",
+          "closingDate": "2025-10-25",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/sulfur-bottom-off-broadway-the-theater-center-the-jerry-orbach-theater-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sulfur-bottom_1797730/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "messy-white-gays-off-broadway-2025",
+          "title": "Messy White Gays",
+          "slug": "messy-white-gays-off-broadway-2025",
+          "venue": "The Duke on 42nd Street",
+          "previewsStartDate": "2025-10-06",
+          "openingDate": "2025-11-02",
+          "closingDate": "2026-01-11",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/messy-white-gays-off-broadway-the-duke-on-42nd-street-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/messy-white-gays_1797598/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-honey-trap-off-broadway-2025",
+          "title": "The Honey Trap",
+          "slug": "the-honey-trap-off-broadway-2025",
+          "venue": "Irish Repertory Theatre",
+          "previewsStartDate": "2025-09-17",
+          "openingDate": "2025-09-28",
+          "closingDate": "2026-02-15",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-honey-trap-off-broadway-irish-repertory-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-honey-trap_1797380/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "crooked-cross-off-broadway-2025",
+          "title": "Crooked Cross",
+          "slug": "crooked-cross-off-broadway-2025",
+          "venue": "Theatre Row Theatre",
+          "previewsStartDate": "2025-09-20",
+          "openingDate": "2025-10-09",
+          "closingDate": "2025-11-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/crooked-cross-off-broadway-theatre-row-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/crooked-cross_1796908/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T01:37:34.714Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added other-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added playing-shylock-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added richard-ii-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added art-of-leaving-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nothing-can-take-you-from-the-hand-of-god-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-nights-dream-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sulfur-bottom-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added messy-white-gays-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-honey-trap-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added crooked-cross-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

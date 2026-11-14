@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-4898-b",
+  "planId": "22d0b7b8-2132-4779-8921-6065e0ba5203",
+  "status": "applied",
+  "createdAt": "2026-10-13T02:46:43.903Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4898: Translations (2007) counts the same New York Times review twice (Isherwood and a duplicate Brantley credit); flag the Brantley file as a wrong attribution",
+    "steps": [
+      "Set wrongAttribution + reason on translations-2007/nytimes--ben-brantley.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "translations-2007/nytimes--ben-brantley.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "same NYT article (2007/01/26/theater/reviews/26tran.html) as nytimes--charles-isherwood.json, Isherwood's review; Brantley byline is a duplicate credit, one review counted twice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "translations-2007/nytimes--ben-brantley.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: same NYT article (2007/01/26/theater/reviews/26tran.html) as nytimes--charles-isherwood.json, Isherwood's review; Brantley byline is a duplicate credit, one review counted twice",
+        "description": "Reason for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:30:19.875Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "translations-2007/nytimes--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "translations-2007/nytimes--ben-brantley.json wrongAttributionReason: null -> \"BRO-4898: same NYT article (2007/01/26/theater/reviews/26tran.html) as nytimes--charles-isherwood.json, Isherwood's review; Brantley byline is a duplicate credit, one review counted twice\""
+    }
+  ]
+}

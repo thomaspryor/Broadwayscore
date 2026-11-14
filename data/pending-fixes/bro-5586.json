@@ -1,0 +1,84 @@
+{
+  "issueNumber": "bro-5586",
+  "planId": "c1f9f0dd-2507-4300-804a-61e3ecd8066b",
+  "status": "applied",
+  "createdAt": "2026-10-29T17:14:17.036Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add A Masked Ball (Verdi, Un ballo in maschera), the Royal Ballet and Opera new production by Philipp Stölzl at the Royal Opera House, 30 Nov to 18 Dec 2026, as an upcoming provisional off-west-end opera. Dates agree across londontheatre.co.uk (Start date 30th November 2026, End date 18th December 2026), westendtheatre.com and boxoffice.co.uk. validate-show-venue.js returned unresolved (no-london-url): the London Theatre page has no Event JSON-LD and its heading carries a company suffix, so provisional:true keeps it in the --all-provisional re-check. No Met or Broadway production exists in 2026-27.",
+    "steps": [
+      "Append a-masked-ball-off-west-end-2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-masked-ball-off-west-end-2026",
+          "title": "A Masked Ball",
+          "slug": "a-masked-ball-off-west-end-2026",
+          "venue": "Royal Opera House",
+          "openingDate": "2026-11-30",
+          "closingDate": "2026-12-18",
+          "previewsStartDate": "2026-11-30",
+          "status": "upcoming",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "tags": [
+            "upcoming"
+          ],
+          "synopsis": "Verdi's opera, inspired by the assassination of King Gustav III of Sweden: a fortune teller tells King Gustavus that his best friend's wife, Amelia, returns his love, and warns that the next man to shake his hand will kill him. Philipp Stölzl's new production for Royal Ballet and Opera, sung in Italian with English surtitles.",
+          "runtime": "2h 50m",
+          "intermissions": 1,
+          "openingDateSource": "londontheatre.co.uk",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "Bow Street, London WC2E 9DD",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Giuseppe Verdi",
+              "role": "Composer"
+            },
+            {
+              "name": "Antonio Somma",
+              "role": "Librettist"
+            },
+            {
+              "name": "Philipp Stölzl",
+              "role": "Director"
+            },
+            {
+              "name": "Antony McDonald",
+              "role": "Costume Designer"
+            },
+            {
+              "name": "Fabiana Piccioli",
+              "role": "Lighting Designer"
+            }
+          ],
+          "statusSource": "BRO-5586 2026-10-29: London Theatre listing 'A Masked Ball - Royal Ballet and Opera', Royal Opera House, 30 Nov - 18 Dec 2026",
+          "evidenceUrls": [
+            "https://www.londontheatre.co.uk/show/47250-un-ballo-in-maschera-royal-ballet-and-opera",
+            "https://www.westendtheatre.com/?p=358806"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T18:30:00.147Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-masked-ball-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

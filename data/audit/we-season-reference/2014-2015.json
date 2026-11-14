@@ -1,0 +1,751 @@
+{
+  "generatedAt": "2026-10-27T23:55:29.513Z",
+  "season": "2014-2015",
+  "issue": "BRO-6450",
+  "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
+  "sources": [
+    "theatricalia (venue histories)",
+    "tr-az",
+    "olt",
+    "guardian",
+    "wikipedia (venue articles)"
+  ],
+  "counts": {
+    "reference": 46,
+    "theatricaliaOnly": 6,
+    "excludedShortRuns": 3
+  },
+  "reference": [
+    {
+      "title": "King Charles III",
+      "venue": "Wyndham's Theatre",
+      "start": "2014-09-02",
+      "end": "2015-01-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dvj/king-charles-iii/production/vvd"
+    },
+    {
+      "title": "The Play That Goes Wrong",
+      "venue": "Duchess Theatre",
+      "start": "2014-09-14",
+      "end": "2020-03-16",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/egr/the-play-that-goes-wrong/production/xf3"
+    },
+    {
+      "title": "Evita",
+      "venue": "Dominion Theatre",
+      "start": "2014-09-16",
+      "end": "2014-11-01",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5q1/evita/production/wpf"
+    },
+    {
+      "title": "Private Peaceful / Macbeth / Selfie",
+      "venue": "Ambassadors Theatre",
+      "start": "2014-09-17",
+      "end": "2014-11-28",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gyd/private-peaceful-macbeth-selfie/production/1380"
+    },
+    {
+      "title": "Great Britain",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2014-09-26",
+      "end": "2015-01-10",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fhv/great-britain/production/1dag"
+    },
+    {
+      "title": "Urinetown, The Musical",
+      "venue": "Apollo Theatre",
+      "start": "2014-09-29",
+      "end": "2015-01-03",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/8w7/urinetown-the-musical/production/13e6"
+    },
+    {
+      "title": "Sunny Afternoon",
+      "venue": "Harold Pinter Theatre",
+      "start": "2014-10-04",
+      "end": "2016-05-28",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gpn/sunny-afternoon/production/12qf"
+    },
+    {
+      "title": "The Scottsboro Boys",
+      "venue": "Garrick Theatre",
+      "start": "2014-10-04",
+      "end": "2015-02-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gww/the-scottsboro-boys/production/1350"
+    },
+    {
+      "title": "Memphis The Musical",
+      "venue": "Shaftesbury Theatre",
+      "start": "2014-10-09",
+      "end": "2015-10-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/g0p/memphis-the-musical/production/1177"
+    },
+    {
+      "title": "Neville's Island",
+      "venue": "Duke of York's Theatre",
+      "start": "2014-10-21",
+      "end": "2015-01-03",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/65z/nevilles-island/production/14xs"
+    },
+    {
+      "title": "Made In Dagenham",
+      "venue": "Adelphi Theatre",
+      "start": "2014-11-05",
+      "end": "2015-04-11",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e5d/made-in-dagenham/production/ztd"
+    },
+    {
+      "title": "White Christmas",
+      "venue": "Dominion Theatre",
+      "start": "2014-11-08",
+      "end": "2015-01-03",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/drm/white-christmas/production/wpg"
+    },
+    {
+      "title": "Treasure Island",
+      "venue": "Olivier Theatre",
+      "start": "2014-12-01",
+      "end": "2015-04-08",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4pg/treasure-island/production/vvt"
+    },
+    {
+      "title": "Peppa Pig's Big Splash",
+      "venue": "Criterion Theatre",
+      "start": "2014-12-02",
+      "end": "2015-01-04",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h2w/peppa-pigs-big-splash/production/13jp"
+    },
+    {
+      "title": "Women On The Verge Of A Nervous Breakdown",
+      "venue": "Playhouse Theatre",
+      "start": "2015-01-12",
+      "end": "2015-05-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ftn/women-on-the-verge-of-a-nervous-breakdown/production/1564"
+    },
+    {
+      "title": "Taken at Midnight",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2015-01-15",
+      "end": "2015-03-14",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ek8/taken-at-midnight/production/1094"
+    },
+    {
+      "title": "The Ruling Class",
+      "venue": "Trafalgar Theatre",
+      "start": "2015-01-16",
+      "end": "2015-04-11",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7wf/the-ruling-class/production/wmp"
+    },
+    {
+      "title": "My Night with Reg",
+      "venue": "Apollo Theatre",
+      "start": "2015-01-17",
+      "end": "2015-04-11",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h0v/my-night-with-reg/production/13e5"
+    },
+    {
+      "title": "Di and Viv and Rose",
+      "venue": "Vaudeville Theatre",
+      "start": "2015-01-22",
+      "end": "2015-05-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dvs/di-and-viv-and-rose/production/vvz"
+    },
+    {
+      "title": "Man and Superman",
+      "venue": "Lyttelton Theatre",
+      "start": "2015-02-01",
+      "end": "2015-05-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/aq/man-and-superman/production/1dy5"
+    },
+    {
+      "title": "How to Hold Your Breath",
+      "venue": "Royal Court",
+      "start": "2015-02-04",
+      "end": "2015-03-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/j60/how-to-hold-your-breath/production/19s6"
+    },
+    {
+      "title": "A View from the Bridge",
+      "venue": "Wyndham's Theatre",
+      "start": "2015-02-10",
+      "end": "2015-04-11",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/487/a-view-from-the-bridge/production/1528"
+    },
+    {
+      "title": "The Nether",
+      "venue": "Duke of York's Theatre",
+      "start": "2015-02-23",
+      "end": "2015-04-26",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7mc/the-nether/production/14xr"
+    },
+    {
+      "title": "Beautiful, the Carole King Musical",
+      "venue": "Aldwych Theatre",
+      "start": "2015-02-24",
+      "end": "2017-08-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gq3/beautiful-the-carole-king-musical/production/12rn"
+    },
+    {
+      "title": "Let It Be",
+      "venue": "Garrick Theatre",
+      "start": "2015-02-28",
+      "end": "2015-09-27",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gwt/let-it-be/production/134y"
+    },
+    {
+      "title": "Harvey",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2015-03-23",
+      "end": "2015-05-02",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3v6/harvey/production/1096"
+    },
+    {
+      "title": "Oppenheimer",
+      "venue": "Vaudeville Theatre",
+      "start": "2015-03-27",
+      "end": "2015-05-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/72t/oppenheimer/production/14s9"
+    },
+    {
+      "title": "Gypsy",
+      "venue": "Savoy Theatre",
+      "start": "2015-04-15",
+      "end": "2015-11-28",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5d4/gypsy/production/14ng"
+    },
+    {
+      "title": "Light Shining in Buckinghamshire",
+      "venue": "Lyttelton Theatre",
+      "start": "2015-04-15",
+      "end": "2015-06-22",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/6a4/light-shining-in-buckinghamshire/production/19wj"
+    },
+    {
+      "title": "The Audience",
+      "venue": "Apollo Theatre",
+      "start": "2015-04-21",
+      "end": "2015-07-25",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h0r/the-audience/production/13e2"
+    },
+    {
+      "title": "American Buffalo",
+      "venue": "Wyndham's Theatre",
+      "start": "2015-04-27",
+      "end": "2015-06-27",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/69d/american-buffalo/production/wrg"
+    },
+    {
+      "title": "Hay Fever",
+      "venue": "Duke of York's Theatre",
+      "start": "2015-04-29",
+      "end": "2015-08-01",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/2w8/hay-fever/production/104y"
+    },
+    {
+      "title": "High Society",
+      "venue": "The Old Vic",
+      "start": "2015-04-30",
+      "end": "2015-08-22",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5gk/high-society/production/wsp"
+    },
+    {
+      "title": "Death of a Salesman",
+      "venue": "Noël Coward Theatre",
+      "start": "2015-05-09",
+      "end": "2015-07-18",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4az/death-of-a-salesman/production/12nj"
+    },
+    {
+      "title": "The Elephant Man",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2015-05-26",
+      "end": "2015-08-08",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7rv/the-elephant-man/production/1097"
+    },
+    {
+      "title": "Violence and Son",
+      "venue": "Royal Court",
+      "start": "2015-06-03",
+      "end": "2015-07-11",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fy4/violence-and-son/production/1117"
+    },
+    {
+      "title": "hang",
+      "venue": "Royal Court",
+      "start": "2015-06-11",
+      "end": "2015-07-18",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fp0/hang/production/10j0"
+    },
+    {
+      "title": "1984",
+      "venue": "Playhouse Theatre",
+      "start": "2015-06-18",
+      "end": "2015-09-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e7m/1984/production/zv4"
+    },
+    {
+      "title": "Bend It Like Beckham",
+      "venue": "Phoenix Theatre",
+      "start": "2015-06-24",
+      "end": "2016-03-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fmb/bend-it-like-beckham/production/10f5"
+    },
+    {
+      "title": "Stop! The Play",
+      "venue": "Trafalgar Theatre",
+      "start": "2015-07-01",
+      "end": "2015-07-27",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dzg/stop-the-play/production/w4e"
+    },
+    {
+      "title": "The Importance of Being Earnest",
+      "venue": "Vaudeville Theatre",
+      "start": "2015-07-01",
+      "end": "2015-11-07",
+      "sources": [
+        "theatricalia",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3f/the-importance-of-being-earnest/production/14zj"
+    },
+    {
+      "title": "The Mentalists",
+      "venue": "Wyndham's Theatre",
+      "start": "2015-07-13",
+      "end": "2015-08-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7jq/the-mentalists/production/152c"
+    },
+    {
+      "title": "Green Day's American Idiot",
+      "venue": "Arts Theatre",
+      "start": "2015-07-17",
+      "end": "2015-11-22",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ghn/green-days-american-idiot/production/12ex"
+    },
+    {
+      "title": "Impossible",
+      "venue": "Noël Coward Theatre",
+      "start": "2015-07-24",
+      "end": "2015-08-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gnc/impossible/production/12nh"
+    },
+    {
+      "title": "Dear Lupin",
+      "venue": "Apollo Theatre",
+      "start": "2015-07-30",
+      "end": "2015-09-19",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h0s/dear-lupin/production/13e3"
+    },
+    {
+      "title": "McQueen",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2015-08-27",
+      "end": "2015-10-17",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dy1/mcqueen/production/1095"
+    }
+  ],
+  "uncorroborated": [
+    {
+      "title": "James III: The True Mirror",
+      "venue": "Olivier Theatre",
+      "start": "2014-09-19",
+      "end": "2014-10-29",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/kk2/james-iii-the-true-mirror/production/1enq"
+    },
+    {
+      "title": "Dance 'Til Dawn",
+      "venue": "Aldwych Theatre",
+      "start": "2014-10-23",
+      "end": "2015-01-03",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/fxz/dance-til-dawn/production/110z"
+    },
+    {
+      "title": "Barmy Britain (Part Two)",
+      "venue": "Garrick Theatre",
+      "start": "2014-12-13",
+      "end": "2015-01-04",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gwv/barmy-britain-part-two/production/134z"
+    },
+    {
+      "title": "Be Bop A Lula (1st Wed. of each month)",
+      "venue": "Ambassadors Theatre",
+      "start": "2015-03-04",
+      "end": "2015-08-05",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gya/be-bop-a-lula-1st-wed-of-each-month/production/137w"
+    },
+    {
+      "title": "Barmy Britain Part Three",
+      "venue": "Garrick Theatre",
+      "start": "2015-07-25",
+      "end": "2015-09-05",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gy0/barmy-britain-part-three/production/137a"
+    },
+    {
+      "title": "A Midsummer Night's Dream in New Orleans",
+      "venue": "Arts Theatre",
+      "start": "2015-08-04",
+      "end": "2015-08-30",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gmb/a-midsummer-nights-dream-in-new-orleans/production/12km"
+    }
+  ],
+  "excluded": [
+    {
+      "title": "The Only Way is Downton",
+      "venue": "Ambassadors Theatre",
+      "start": "2014-12-02",
+      "end": "2014-12-09",
+      "reason": "run of 8 days < 14"
+    },
+    {
+      "title": "Lord of the Dance – Dangerous Games",
+      "venue": "Dominion Theatre",
+      "start": "2015-03-13",
+      "end": "2015-03-21",
+      "reason": "run of 9 days < 14"
+    },
+    {
+      "title": "Christmas with Lee Mead",
+      "venue": "Garrick Theatre",
+      "start": "2014-12-07",
+      "end": "2014-12-07",
+      "reason": "run of 1 days < 14"
+    }
+  ]
+}

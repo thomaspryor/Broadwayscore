@@ -1,0 +1,1046 @@
+{
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "issueNumber": "bro-5291",
+  "planId": "702eaac5-a061-4337-be12-8e24430fd652",
+  "createdAt": "2026-10-19T07:13:16Z",
+  "plan": {
+    "summary": "Commercial sources: replace 22 Wikipedia links with the trade/venue articles Wikipedia cites (or drop one with no footnotes)",
+    "steps": [
+      "For each record, follow the Wikipedia article's footnote for the production structure, closing date or producers, fetch it and check the fact appears",
+      "Replace sources[N].url with that article; drop the Grand Horizons Wikipedia source (article has no footnotes)",
+      "Not planned (could not verify): maybe-happy-ending, the-balusters sources[1], the-kite-runner-2022, prince-of-broadway-2017"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "showId": "liberation",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/07/bess-wohl-liberation-broadway-1236475323/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/producer-daryl-roth-on-why-liberation-needed-to-move-to-broadway/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Liberation_(play)",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/07/bess-wohl-liberation-broadway-1236475323/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/producer-daryl-roth-on-why-liberation-needed-to-move-to-broadway/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://playbill.com/article/bess-wohls-liberation-begins-broadway-previews-october-8",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "floyd-collins-2025",
+        "showId": "floyd-collins-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/floyd-collins/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Floyd_Collins_(musical)",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/floyd-collins/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://playbill.com/production/floyd-collins-broadway-vivian-beaumont-theater-2025",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-balusters",
+        "showId": "the-balusters",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/The_Balusters",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Manhattan_Theatre_Club",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://deadline.com/2026/05/balusters-broadway-closing-date-1236901278/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Manhattan_Theatre_Club",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cost-of-living-2022",
+        "showId": "cost-of-living-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/COST-OF-LIVING",
+            "date": "2022-11-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/cost-of-living-broadway-samuel-j-friedman-theatre-2022",
+            "date": "2022-11-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/Samuel_J._Friedman_Theatre",
+            "date": "2026-03-26"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/COST-OF-LIVING",
+            "date": "2022-11-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/cost-of-living-broadway-samuel-j-friedman-theatre-2022",
+            "date": "2022-11-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/venue/samuel-j-friedman-theatre-vault-0000000052",
+            "date": "2026-03-26"
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-collaboration-2022",
+        "showId": "the-collaboration-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/The_Collaboration_(play)",
+            "date": "2024-01-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.manhattantheatreclub.com/content/uploads/2023/12/MTC23AnnualReportV5.pdf",
+            "date": "2024-01-01"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.manhattantheatreclub.com/shows/2022-23-season/the-collaboration/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2022/02/warhol-basquiat-play-the-collaboration-movie-kwame-kwei-armah-paul-bettany-jeremy-pope-anthony-mccarten-1234926222/",
+            "date": "2024-01-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.manhattantheatreclub.com/content/uploads/2023/12/MTC23AnnualReportV5.pdf",
+            "date": "2024-01-01"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.manhattantheatreclub.com/shows/2022-23-season/the-collaboration/",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mcneal-2024",
+        "showId": "mcneal-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/mcneal-broadway-vivian-beaumont-theater-2024",
+            "date": "2024-11-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/Vivian_Beaumont_Theater",
+            "date": "2024-01-01"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/mcneal/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/people/team-downey/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadways-mcneal-starring-robert-downey-jr-completes-broadway-run-november-24",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/mcneal-broadway-vivian-beaumont-theater-2024",
+            "date": "2024-11-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/venue/vivian-beaumont-theater-vault-0000000344",
+            "date": "2024-01-01"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/mcneal/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/people/team-downey/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadways-mcneal-starring-robert-downey-jr-completes-broadway-run-november-24",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "casa-valentina-2014",
+        "showId": "casa-valentina-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://artsinla.com/Arts_In_NY_archives.html",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.facebook.com/MusicalsDaily/posts/harvey-fierstein-will-be-honored-with-the-2025-special-tony-award-for-lifetime-a/1315717370557555/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.jkstheatrescene.com/2014/05/review-casa-valentina.html",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Casa_Valentina",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.manhattantheatreclub.com/shows/2013-14-season/casa-valentina/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://artsinla.com/Arts_In_NY_archives.html",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.facebook.com/MusicalsDaily/posts/harvey-fierstein-will-be-honored-with-the-2025-special-tony-award-for-lifetime-a/1315717370557555/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.jkstheatrescene.com/2014/05/review-casa-valentina.html",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "http://www.playbill.com/article/harvey-fiersteins-casa-valentina-closes-its-doors-june-29-com-322948",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.manhattantheatreclub.com/shows/2013-14-season/casa-valentina/",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "english-2025",
+        "showId": "english-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/English_(play)",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.roundabouttheatre.org/get-tickets/2024-2025/english",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://playbill.com/article/sanaz-toossis-pulitzer-winning-english-begins-broadway-bow-january-3",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.roundabouttheatre.org/get-tickets/2024-2025/english",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "yellow-face-2024",
+        "showId": "yellow-face-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.ibdb.com/broadway-production/yellow-face-539490",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Yellow_Face_(play)",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.ibdb.com/broadway-production/yellow-face-539490",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://playbill.com/article/david-henry-hwangs-yellow-face-closes-on-broadway-november-24",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mother-play",
+        "showId": "mother-play",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/mother-play-broadway-helen-hayes-theatre-2024",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Mother_Play",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/mother-play-broadway-helen-hayes-theatre-2024",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.classicalite.com/articles/41582/20240320/paula-vogel-s-mother-play-is-gearing-up-for-its-world-premiere-in-broadway-s-second-stage-theater-this-april.htm",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/purpose-broadway-helen-hayes-theatre-2025",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Purpose_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Branden-Jacobs-Jenkins-PURPOSE-Extends-on-Broadway-for-Eight-Weeks-20250529",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/08/branden-jacobs-jenkins-purpose-broadway-phylicia-rashad-directing-1236039528/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/06/purpose-broadway-recoupment-1236941347/",
+            "date": "2026-06-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/branden-jacobs-jenkins-purpose-recoups-its-capitalization/",
+            "date": "2026-06-04"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/purpose-broadway-helen-hayes-theatre-2025",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://playbill.com/article/purpose-by-branden-jacobs-jenkins-directed-by-phylicia-rashad-will-play-on-broadway",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Branden-Jacobs-Jenkins-PURPOSE-Extends-on-Broadway-for-Eight-Weeks-20250529",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/08/branden-jacobs-jenkins-purpose-broadway-phylicia-rashad-directing-1236039528/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/06/purpose-broadway-recoupment-1236941347/",
+            "date": "2026-06-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/branden-jacobs-jenkins-purpose-recoups-its-capitalization/",
+            "date": "2026-06-04"
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "showId": "job-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/job-broadway-helen-hayes-theatre-2024",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Job_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/psychological-thriller-job-begins-broadway-transfer-july-15",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2023222/000200301324000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-05-29"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/job-broadway-helen-hayes-theatre-2024",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://playbill.com/article/psychological-thriller-job-extends-broadway-run",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/psychological-thriller-job-begins-broadway-transfer-july-15",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2023222/000200301324000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-05-29"
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "showId": "the-cottage",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/The_Cottage_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-cottage-broadway-helen-hayes-theatre-2023",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1961857/000196185723000002/xslFormDX01/primary_doc.xml",
+            "date": "2023-07-26"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://playbill.com/article/eric-mccormack-lilli-cooper-and-laura-bell-bundy-will-return-to-broadway-in-the-cottage",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-cottage-broadway-helen-hayes-theatre-2023",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1961857/000196185723000002/xslFormDX01/primary_doc.xml",
+            "date": "2023-07-26"
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "showId": "fat-ham-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaynews.com/2022/12/05/pulitzer-prize-winning-fat-ham-to-open-on-broadway-in-2023/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Fat_Ham",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaynews.com/2022/12/05/pulitzer-prize-winning-fat-ham-to-open-on-broadway-in-2023/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://playbill.com/article/pulitzer-winning-fat-ham-sets-2023-broadway-bow",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "i-need-that",
+        "showId": "i-need-that",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.roundabouttheatre.org/get-tickets/2023-2024-season/i-need-that",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Danny-DeVito-Will-Return-to-Broadway-in-Theresa-Rebecks-I-NEED-THAT-Roundabout-Announces-2023-2024-Season-20230321",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/danny-devito-and-lucy-devito-set-for-theresa-rebecks-i-need-that-with-roundabout-new-season-announced/",
+            "date": "2023-03-21",
+            "excerpt": "which is set to open at the American Airlines Theatre in October"
+          },
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/I_Need_That",
+            "date": "2026-01-02"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.roundabouttheatre.org/get-tickets/2023-2024-season/i-need-that",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Danny-DeVito-Will-Return-to-Broadway-in-Theresa-Rebecks-I-NEED-THAT-Roundabout-Announces-2023-2024-Season-20230321",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/danny-devito-and-lucy-devito-set-for-theresa-rebecks-i-need-that-with-roundabout-new-season-announced/",
+            "date": "2023-03-21",
+            "excerpt": "which is set to open at the American Airlines Theatre in October"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/production/i-need-that-broadway-american-airlines-theatre-2023",
+            "date": "2026-01-02"
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ink-2019",
+        "showId": "ink-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/west-end-hit-ink-to-premiere-on-broadway-in-2019",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Ink_(play)",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/west-end-hit-ink-to-premiere-on-broadway-in-2019",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "http://www.playbill.com/article/ink-closes-on-broadway-july-7",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "travesties-2018",
+        "showId": "travesties-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Travesties",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/travesties-starring-tom-hollander-begins-performances-on-broadway",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://variety.com/2017/legit/news/travesties-broadway-tom-hollander-1202528899/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/travesties-starring-tom-hollander-begins-performances-on-broadway",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jitney-2017",
+        "showId": "jitney-2017",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Jitney_(play)",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.ibdb.com/broadway-production/jitney-507859",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://theatermania.com/broadway/news/august-wilson-jitney-broadway-premiere_77080.html",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.ibdb.com/broadway-production/jitney-507859",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grand-horizons-2020",
+        "showId": "grand-horizons-2020",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Grand_Horizons",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/bess-wohls-grand-horizons-begins-on-broadway-december-23",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/bess-wohls-grand-horizons-begins-on-broadway-december-23",
+            "date": null
+          }
+        ],
+        "description": "Drop the Wikipedia source: the article has no footnotes to cite"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lobby-hero-2018",
+        "showId": "lobby-hero-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/broadway/news/the-cast-of-lobby-hero-takes-first-bows_84288.html/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Lobby_Hero",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/broadway/news/the-cast-of-lobby-hero-takes-first-bows_84288.html/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.hollywoodreporter.com/news/chris-evans-make-broadway-debut-kenneth-lonergans-lobby-hero-995787",
+            "date": null
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "showId": "here-there-are-blueberries",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/the-pulitzer-prize-finalist-here-there-are-blueberries-to-open-on-broadway-this-fall/",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Here_There_Are_Blueberries",
+            "date": "2026-09-17"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2154984/000215498426000001/xslFormDX01/primary_doc.xml",
+            "date": "2026-09-14"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/the-pulitzer-prize-finalist-here-there-are-blueberries-to-open-on-broadway-this-fall/",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "manual",
+            "url": "https://playbill.com/article/tectonic-theater-projects-here-there-are-blueberries-to-play-broadway-this-fall",
+            "date": "2026-09-17"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2154984/000215498426000001/xslFormDX01/primary_doc.xml",
+            "date": "2026-09-14"
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-imaginary-invalid",
+        "showId": "the-imaginary-invalid",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.roundabouttheatre.org/about/financial-information/",
+            "date": "2026-09-26"
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Todd_Haimes_Theatre",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.roundabouttheatre.org/about/financial-information/",
+            "date": "2026-09-26"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.playbill.com/venue/american-airlines-theatre-vault-0000000327",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          }
+        ],
+        "description": "Replace the Wikipedia link with the article its footnote cites (fetched, supports the record)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T07:27:27.635Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for floyd-collins-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-balusters"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for cost-of-living-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-collaboration-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for mcneal-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for casa-valentina-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for english-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for yellow-face-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for mother-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for i-need-that"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for ink-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for travesties-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for jitney-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for grand-horizons-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for lobby-hero-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for here-there-are-blueberries"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-imaginary-invalid"
+    }
+  ],
+  "executedIn": "ci"
+}

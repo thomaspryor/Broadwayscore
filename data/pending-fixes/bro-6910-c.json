@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6910-c",
+  "planId": "b10e049e-aa29-4c84-b77c-0f3642ea3738",
+  "status": "applied",
+  "createdAt": "2026-11-04T01:15:41.675Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6910: clear the stale not_a_review rejectionReason on the Theatrely Lefty review. A person cleared it as a review (nonReviewManualClear, plan bro-6910); the rejection stamp predates that clear and still excludes it from the rebuild. The scorer already skips re-rejecting human-cleared files (human-cleared-rejection.js).",
+    "steps": [
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json: rejectionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json: rejectionReason"
+      }
+    ]
+  },
+  "executedAt": "2026-11-04T01:40:33.352Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

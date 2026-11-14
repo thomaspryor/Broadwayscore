@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Opening-window NYT text recovery (BRO-7389). Every 20 min runs
+         scripts/gap-recovery-opening-window.js: the gap-recovery driver for
+         nytimes only, for shows opened in the last 4 days, so Helen Shaw /
+         Jesse Green / Laura Collins-Hughes reviews get their whole text on
+         opening night instead of at the 01:30 nightly. Same kill switch
+         (~/.broadwayscore-state/gap-recovery-disabled) and run lock as the nightly.
+         GUI LaunchAgent (the subscriber browser needs the console session).
+
+         Install:  cp scripts/launchd/com.broadwayscore.gap-recovery-opening-window.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.gap-recovery-opening-window.plist
+         Remove:   launchctl bootout gui/$(id -u)/com.broadwayscore.gap-recovery-opening-window -->
+    <key>Label</key>
+    <string>com.broadwayscore.gap-recovery-opening-window</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=gap-recovery-opening-window bash scripts/lib/sync-audit-checkout.sh &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/gap-recovery-opening-window.js</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/tompryor/.local/bin</string>
+        <key>BD_REQ_BUDGET</key>
+        <string>10</string>
+        <key>SERP_QUERY_BUDGET</key>
+        <string>10</string>
+    </dict>
+    <key>StartInterval</key>
+    <integer>1200</integer>
+    <key>StandardOutPath</key>
+    <string>/Users/tompryor/Library/Logs/broadwayscore/gap-recovery-opening-window.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/tompryor/Library/Logs/broadwayscore/gap-recovery-opening-window.log</string>
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

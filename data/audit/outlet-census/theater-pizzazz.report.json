@@ -1,0 +1,2284 @@
+{
+  "outletId": "theater-pizzazz",
+  "generatedAt": "2026-10-28T20:40:57.202Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "enumerated": 282,
+    "inWindow": 282,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "held": 13,
+      "catalog-gap": 103,
+      "not-review": 77,
+      "out-of-window": 55,
+      "gap": 24,
+      "ambiguous": 1,
+      "held-alt-url": 8,
+      "held-unmatched": 1
+    },
+    "viaTitleVariant": {
+      "gap": 4
+    },
+    "recall": 0.467,
+    "recallWithCatalog": 0.142
+  },
+  "corpusSide": {
+    "rowsInWindow": 242,
+    "notEnumerated": 204,
+    "noUrl": 0,
+    "samples": [
+      {
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "url": "https://www.theaterpizzazz.com/a-beautiful-noise-the-neil-diamond-musical/",
+        "publishDate": "2022-12-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-dolls-house-2023",
+        "url": "https://www.theaterpizzazz.com/a-dolls-house-2/",
+        "publishDate": "2023-03-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-ghost-in-your-ear-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/a-ghost-in-your-ear-gets-in-your-head-2/",
+        "publishDate": "2026-10-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-walk-on-the-moon-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/a-walk-on-the-moon-second-chances-can-cost/",
+        "publishDate": "2026-06-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "aftermath-art-new-york-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/aftermath-a-difficult-family-drama/",
+        "publishDate": "2026-10-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "aint-no-mo-2022",
+        "url": "https://www.theaterpizzazz.com/aint-no-mo-erupts-on-broadway/",
+        "publishDate": "2022-12-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "almost-famous-2022",
+        "url": "https://www.theaterpizzazz.com/almost-famous/",
+        "publishDate": "2022-11-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "amazing-grace-2015",
+        "url": "https://www.theaterpizzazz.com/amazing-grace/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "america-who-hurt-you-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
+        "publishDate": "2026-09-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "american-son-2018",
+        "url": "https://theaterpizzazz.com/american-son/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023",
+        "url": "https://www.theaterpizzazz.com/amid-falling-walls/",
+        "publishDate": "2023-11-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "an-american-daughter-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/an-american-daughter-spin-gender-and-power/",
+        "publishDate": "2026-08-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "and-juliet-2022",
+        "url": "https://www.theaterpizzazz.com/juliet/",
+        "publishDate": "2022-11-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "angels-in-america-2018",
+        "url": "https://theaterpizzazz.com/angels-in-america/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/anon-sends-a-qanon-mom-raging-into-the-storm-like-king-lear-but-with-more-hate/",
+        "publishDate": "2026-10-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "appropriate-2023",
+        "url": "https://www.theaterpizzazz.com/appropriate/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/are-you-now-or-have-you-ever-been-holds-a-chilling-mirror-to-america/",
+        "publishDate": "2026-06-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "arias-with-a-twist-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/arias-with-a-twist-extraordinary/",
+        "publishDate": "2026-09-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "arms-and-the-man-off-broadway-2023",
+        "url": "https://www.theaterpizzazz.com/disarmed-by-arms-and-the-man/",
+        "publishDate": "2023-10-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "art-of-leaving-off-broadway-2025",
+        "url": "https://theaterpizzazz.com/the-art-of-leaving-doesnt-just-feel-dated-it-feels-inert/",
+        "publishDate": "2025-10-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bad-cinderella-2023",
+        "url": "https://www.theaterpizzazz.com/bad-cinderella/",
+        "publishDate": "2023-03-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "be-more-chill-2019",
+        "url": "https://theaterpizzazz.com/be-more-chill-the-perfect-storm/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "becky-shaw-2026",
+        "url": "https://theaterpizzazz.com/becky-shaw-terrific-crackling-theater/",
+        "publishDate": "2026-04-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "between-riverside-and-crazy-2022",
+        "url": "https://theaterpizzazz.com/between-riverside-and-crazy/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "birthright-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/dialogue-sings-in-jonathan-spectors-new-play-birthright/",
+        "publishDate": "2026-07-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bite-me-off-broadway-2023",
+        "url": "https://www.theaterpizzazz.com/bite-me/",
+        "publishDate": "2023-10-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bob-fosses-dancin-2023",
+        "url": "https://theaterpizzazz.com/dancin-bob-fosse-gloriously-reimagined/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bright-star-2016",
+        "url": "https://www.theaterpizzazz.com/bright-star-twang-speaks-to-basic-emotions/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "buena-vista-social-club-off-broadway-2023",
+        "url": "https://www.theaterpizzazz.com/buena-vista-social-club/",
+        "publishDate": "2023-12-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "burn-this-2019",
+        "url": "https://theaterpizzazz.com/burn-this-lusty-hot-opposites-collide/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "carousel-2018",
+        "url": "https://theaterpizzazz.com/carousel/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cats-the-jellicle-ball-2026",
+        "url": "https://theaterpizzazz.com/cats-the-jellicle-ball-7-of-9-lives-still-cant-change-the-bones/",
+        "publishDate": "2026-04-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "charlie-and-the-chocolate-factory-2017",
+        "url": "https://theaterpizzazz.com/charlie-and-the-chocolate-factory-unsweetened/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chinese-republicans-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/chinese-republicans-is-a-decisive-win/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "choir-boy-2019",
+        "url": "https://theaterpizzazz.com/choir-boy-joyous/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "copperfield-the-new-musical-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/copperfield-the-new-musical-a-wonderfully-entertaining-version-of-the-saga/",
+        "publishDate": "2026-10-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/a-journey-to-the-cosmos-and-back-into-oneself-in-creation-stories/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dad-dont-read-this-off-broadway-2026",
+        "url": "https://theaterpizzazz.com/teenage-angst-rules-the-roost-in-dad-dont-read-this/",
+        "publishDate": "2026-06-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "url": "https://www.theaterpizzazz.com/days-of-wine-and-roses-love-danger-abandon/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dead-outlaw-off-broadway-2024",
+        "url": "https://www.theaterpizzazz.com/dead-outlaw/",
+        "publishDate": "2024-03-24",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://theaterpizzazz.com/irishtown-finding-what-makes-a-play-irish/",
+      "headline": "“IRISHTOWN,” FINDING WHAT MAKES A PLAY IRISH",
+      "publishDate": "2025-05-02",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "irishtown-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/beckett-briefs-explores-memory-isolation-absurdity-and-regret/",
+      "headline": "‘Not I,’ ‘Play,’ & ‘Krapp’s Last Tape’ – “Beckett Briefs” Prodigiously Serves Samuel Beckett’s Genius",
+      "publishDate": "2025-01-31",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "beckett-briefs-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/swept-away-overboard-in-the-arms-of-love-and-redemption-with-the-avett-brothers/",
+      "headline": "“Swept Away” – Overboard in the Arms of Love and Redemption with the Avett Brothers",
+      "publishDate": "2024-11-23",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "swept-away-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-beacon-shines-a-light-into-a-dark-family-history/",
+      "headline": "“The Beacon” Shines a Light Into a Dark Family History",
+      "publishDate": "2024-09-25",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-beacon-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/kinky-boots-off-broadway/",
+      "headline": "Kinky Boots",
+      "publishDate": "2022-08-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "kinky-boots-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "kinky-boots-2013"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/company-on-broadway-will-close-july-31/",
+      "headline": "Company on Broadway Will Close July 31",
+      "publishDate": "2022-06-22",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "company-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/circle-jerk-honors-pride/",
+      "headline": "Circle Jerk Honors Pride",
+      "publishDate": "2022-06-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "circle-jerk-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/eva-luna/",
+      "headline": "Eva Luna",
+      "publishDate": "2022-06-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "eva-luna-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/t-oliver-reid-will-play-hermes-in-hadestown/",
+      "headline": "T.Oliver Reid will play Hermes in Hadestown",
+      "publishDate": "2022-06-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hadestown-2019"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/new-production-of-cat-on-a-hot-tin-roof/",
+      "headline": "New Production of Cat On a Hot Tin Roof",
+      "publishDate": "2022-06-03",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cat-on-a-hot-tin-roof-2027"
+      ],
+      "outOfWindow": [
+        "cat-on-a-hot-tin-roof-2013",
+        "cat-on-a-hot-tin-roof-2008",
+        "cat-on-a-hot-tin-roof-1990",
+        "cat-on-a-hot-tin-roof-1974",
+        "cat-on-a-hot-tin-roof-2003"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/american-buffalo/",
+      "headline": "American Buffalo",
+      "publishDate": "2022-05-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "american-buffalo-2022"
+      ],
+      "outOfWindow": [
+        "american-buffalo-2008",
+        "american-buffalo-1983",
+        "american-buffalo-1977"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/potus/",
+      "headline": "POTUS",
+      "publishDate": "2022-05-06",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+      ],
+      "outOfWindow": [
+        "potus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/macbeth-2/",
+      "headline": "Macbeth",
+      "publishDate": "2022-05-04",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "macbeth-2022"
+      ],
+      "outOfWindow": [
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-skin-of-our-teeth-3/",
+      "headline": "The Skin of Our Teeth",
+      "publishDate": "2022-05-03",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-skin-of-our-teeth-2022"
+      ],
+      "outOfWindow": [
+        "the-skin-of-our-teeth-1975",
+        "teeth-off-broadway-2024",
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/pamela-anderson-rocks-as-chicagos-newest-roxie/",
+      "headline": "PAMELA ANDERSON ROCKS AS CHICAGO’S NEWEST ROXIE",
+      "publishDate": "2022-04-29",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "chicago-1996"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-minutes/",
+      "headline": "THE MINUTES",
+      "publishDate": "2022-04-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-minutes-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-little-prince/",
+      "headline": "The Little Prince",
+      "publishDate": "2022-04-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-little-prince-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/birthday-candles-2/",
+      "headline": "Birthday Candles",
+      "publishDate": "2022-04-15",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "birthday-candles-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/take-me-out/",
+      "headline": "TAKE ME OUT",
+      "publishDate": "2022-04-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "take-me-out-2022"
+      ],
+      "outOfWindow": [
+        "take-me-out-2003"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/only-15-minutes-of-fame/",
+      "headline": "Only 15 Minutes of Fame",
+      "publishDate": "2022-03-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-minutes-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/patti-lupone-back-in-company/",
+      "headline": "Patti LuPone Back in Company",
+      "publishDate": "2022-03-09",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "company-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/skeleton-crew/",
+      "headline": "Skeleton Crew",
+      "publishDate": "2022-02-05",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "skeleton-crew-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/aint-too-proud-bows-to-closing-nite-audience/",
+      "headline": "Ain’t Too Proud Bows to Closing Nite Audience",
+      "publishDate": "2022-01-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "aint-too-proud-2019"
+      ],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/flying-over-sunset-what-a-long-strange-trip/",
+      "headline": "Flying Over Sunset – What a Long, Strange Trip",
+      "publishDate": "2022-01-04",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "flying-over-sunset-2021"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://theaterpizzazz.com/the-real-reason-why-funny-girl-is-a-failure/",
+      "headline": "The Real Reason Why Funny Girl is a Failure",
+      "publishDate": "2022-05-02",
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "heldUrls": [
+        "https://theaterpizzazz.com/funny-girl/"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/mrs-doubtfire-reopens-on-broadway/",
+      "headline": "Mrs. Doubtfire Reopens on Broadway",
+      "publishDate": "2022-04-15",
+      "matched": [
+        "mrs-doubtfire-2021"
+      ],
+      "heldUrls": [
+        "https://theaterpizzazz.com/mrs-doubtfire-on-broadway/"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/mrs-doubtfire-returns-to-broadway/",
+      "headline": "Mrs. Doubtfire Returns to Broadway",
+      "publishDate": "2022-03-31",
+      "matched": [
+        "mrs-doubtfire-2021"
+      ],
+      "heldUrls": [
+        "https://theaterpizzazz.com/mrs-doubtfire-on-broadway/"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/on-the-red-carpet-at-plaza-suite-starring-matthew-broderick-and-sarah-jessica-parker/",
+      "headline": "On The Red Carpet at Plaza Suite Starring Matthew Broderick and Sarah Jessica Parker",
+      "publishDate": "2022-03-30",
+      "matched": [
+        "plaza-suite-2022"
+      ],
+      "heldUrls": [
+        "https://theaterpizzazz.com/plaza-suite/"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-music-man-on-the-red-carpet/",
+      "headline": "THE MUSIC MAN – ON THE RED CARPET",
+      "publishDate": "2022-02-11",
+      "matched": [
+        "the-music-man-2022"
+      ],
+      "heldUrls": [
+        "https://theaterpizzazz.com/the-music-man/"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-music-man-opens-on-broadway-cast-photos/",
+      "headline": "The Music Man Opens On Broadway – CAST PHOTOS (Updated)",
+      "publishDate": "2022-02-11",
+      "matched": [
+        "the-music-man-2022"
+      ],
+      "heldUrls": [
+        "https://theaterpizzazz.com/the-music-man/"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/plaza-suite-begins-rehearsals-with-matthew-broderick-and-sarah-jessica-parker/",
+      "headline": "Plaza Suite Begins Rehearsals with Matthew Broderick and Sarah Jessica Parker",
+      "publishDate": "2022-02-07",
+      "matched": [
+        "plaza-suite-2022"
+      ],
+      "heldUrls": [
+        "https://theaterpizzazz.com/plaza-suite/"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/mrs-doubtfire-will-close-temporarily/",
+      "headline": "Mrs. Doubtfire Will Close Temporarily",
+      "publishDate": "2022-01-03",
+      "matched": [
+        "mrs-doubtfire-2021"
+      ],
+      "heldUrls": [
+        "https://theaterpizzazz.com/mrs-doubtfire-on-broadway/"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://theaterpizzazz.com/mj-the-michael-jackson-musical/",
+      "headline": "MJ – The Michael Jackson Musical",
+      "publishDate": "2022-02-05",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://theaterpizzazz.com/floyd-collins-the-american-dream-realized-for-a-price/",
+      "headline": "“Floyd Collins” – The American Dream Realized for a Price",
+      "publishDate": "2025-04-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "floyd-collins-2025",
+        "the-price-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999"
+      ]
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://theaterpizzazz.com/dorothy-dandridge-musical-thats-love-opens-at-axelrod-pac-in-february/",
+      "headline": "Dorothy Dandridge Musical “That’s Love!” Opens At Axelrod PAC in February",
+      "publishDate": "2026-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-jackie-mason-musical-plays-the-new-york-comedy-festival-at-the-triad-theatre/",
+      "headline": "“The Jackie Mason Musical” Plays The New York Comedy Festival at The Triad Theatre",
+      "publishDate": "2025-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-theater-and-more-coming-up/",
+      "headline": "Theater Theater and More Coming Up",
+      "publishDate": "2024-02-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-coming-your-way/",
+      "headline": "Theater Coming Your Way",
+      "publishDate": "2024-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-and-more-upcoming/",
+      "headline": "Theater and More Upcoming",
+      "publishDate": "2024-01-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/jasper/",
+      "headline": "Jasper",
+      "publishDate": "2022-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-oresteia/",
+      "headline": "Oresteia",
+      "publishDate": "2022-08-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/what-the-end-will-be-a-second-look/",
+      "headline": "…what the end will be – A Second Look",
+      "publishDate": "2022-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/cherry-lane-theatre-offers-summertime-laughs-and-the-greenwich-house-theatre-alex-edelman/",
+      "headline": "Cherry Lane Theatre Offers Summertime Laughs and The Greenwich House Theater Alex Edelman",
+      "publishDate": "2022-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-news-18/",
+      "headline": "Theater News",
+      "publishDate": "2022-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/elevator-repair-service-at-nyu-skirball/",
+      "headline": "Elevator Repair Service at NYU Skirball",
+      "publishDate": "2022-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-soap-myth-with-bob-guntonjohn-rubenstein/",
+      "headline": "The Soap Myth with Bob Gunton,John Rubenstein",
+      "publishDate": "2022-06-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/chains/",
+      "headline": "Chains",
+      "publishDate": "2022-06-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/epiphany/",
+      "headline": "Epiphany",
+      "publishDate": "2022-06-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/chita-rivera-awards-outdoes-itself/",
+      "headline": "Chita Rivera Awards Outdoes Itself",
+      "publishDate": "2022-06-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/opening-night-photos-disneys-winnie-the-pooh/",
+      "headline": "Opening Night Photos Disney’s Winnie the Pooh",
+      "publishDate": "2022-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-tonys-to-stand-up-and-cheer-about/",
+      "headline": "A Tonys to Stand Up and Cheer About. . .",
+      "publishDate": "2022-06-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/jennifer-simard-joins-sardis-wall-of-fame/",
+      "headline": "Jennifer Simard Joins Sardi’s Wall of Fame",
+      "publishDate": "2022-06-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/broadway-radio-city-music-halls-donald-pippin-dies/",
+      "headline": "Broadway & Radio City Music Hall’s Donald Pippin Dies",
+      "publishDate": "2022-06-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/brooks-atkinson-theatre-renamed-lena-horne-theatre/",
+      "headline": "Brooks Atkinson Theatre Renamed Lena Horne Theatre",
+      "publishDate": "2022-06-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/el-otro-oz/",
+      "headline": "El Otro Oz",
+      "publishDate": "2022-06-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/audrey-the-new-musical/",
+      "headline": "Audrey the New Musical",
+      "publishDate": "2022-06-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/mr-parker/",
+      "headline": "Mr. Parker",
+      "publishDate": "2022-06-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-black-and-white-cookie-the-tank-theater/",
+      "headline": "A Black and White Cookie – The Tank Theater",
+      "publishDate": "2022-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/two-new-productions-added-to-2d-stage/",
+      "headline": "Two New Productions Added to 2d Stage",
+      "publishDate": "2022-06-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/what-the-end-will-be/",
+      "headline": "…what the end will be",
+      "publishDate": "2022-06-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/michael-mckeevers-latest-mr-parker/",
+      "headline": "Michael McKeever’s latest: Mr. Parker",
+      "publishDate": "2022-06-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/22nd-cimientos-play-development/",
+      "headline": "22nd Cimientos Play Development",
+      "publishDate": "2022-05-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/urban-stages-celebrates-38-years/",
+      "headline": "Urban Stages Celebrates 38 Years",
+      "publishDate": "2022-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/mikhail-baryshnikov-to-appear-off-broadway-in-the-orchard/",
+      "headline": "Mikhail Baryshnikov to Appear Off-Broadway in The Orchard",
+      "publishDate": "2022-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-case-for-the-existence-of-god/",
+      "headline": "A Case For the Existence of God",
+      "publishDate": "2022-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/true-or-false-jackman-to-timberlake/",
+      "headline": "True or False? Jackman to Timberlake?",
+      "publishDate": "2022-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/chita-rivera-awards-2022-nominees-are/",
+      "headline": "Chita Rivera Awards 2022 Nominees Are . . .",
+      "publishDate": "2022-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/golden-shield/",
+      "headline": "Golden Shield",
+      "publishDate": "2022-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/romeo-bernadette/",
+      "headline": "Romeo & Bernadette",
+      "publishDate": "2022-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/76th-annual-theatre-world-awards-2/",
+      "headline": "76th Annual Theatre World Awards",
+      "publishDate": "2022-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-vagrant-trilogy-a-refugees-decision-to-escape-or-remain/",
+      "headline": "The Vagrant Trilogy – A Refugee’s Decision to Escape or Remain",
+      "publishDate": "2022-05-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/candace-bushnell-at-cafe-caryle/",
+      "headline": "Candace Bushnell at Cafe Caryle",
+      "publishDate": "2022-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/new-york-stage-and-film-returns-july-9-thru-august-7/",
+      "headline": "New York Stage and Film Returns July 9 thru August 7",
+      "publishDate": "2022-05-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/more-tony-eligible-broadway-productions/",
+      "headline": "More Tony Eligible Broadway Productions",
+      "publishDate": "2022-05-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/37th-annual-lucille-lortel-awards-in-photos/",
+      "headline": "37th Annual Lucille Lortel Awards in Photos",
+      "publishDate": "2022-05-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/gretchen-cryer-and-true-stories/",
+      "headline": "Gretchen Cryer and True Stories",
+      "publishDate": "2022-05-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/2022-lucille-lortel-award-winners/",
+      "headline": "2022 Lucille Lortel Award Winners",
+      "publishDate": "2022-05-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/2020-off-broadway/",
+      "headline": "20@20 Off Broadway",
+      "publishDate": "2022-04-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/surviving-the-rosenthals-teatro-latea/",
+      "headline": "Surviving the Rosenthals – Teatro Latea",
+      "publishDate": "2022-04-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/to-my-girls/",
+      "headline": "To My Girls",
+      "publishDate": "2022-04-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/monday-night-magic/",
+      "headline": "MONDAY NIGHT MAGIC",
+      "publishDate": "2022-04-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/more-theater-updates-2/",
+      "headline": "More Theater Updates",
+      "publishDate": "2022-04-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-patsy/",
+      "headline": "The Patsy",
+      "publishDate": "2022-04-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/12-hour-theatre-community-expression-on-ukraine-tragedy/",
+      "headline": "12 Hour Theatre Community Expression on Ukraine Tragedy",
+      "publishDate": "2022-04-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/lucille-lortel-nominations/",
+      "headline": "Lucille Lortel Nominations",
+      "publishDate": "2022-04-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/more-theater-updates/",
+      "headline": "MORE THEATER UPDATES",
+      "publishDate": "2022-04-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/kpop-to-broadway-with-luna-this-fall/",
+      "headline": "KPOP to Broadway with Luna this Fall",
+      "publishDate": "2022-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-and-music-updates-3/",
+      "headline": "Theater and Music Updates",
+      "publishDate": "2022-03-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/confederates/",
+      "headline": "Confederates",
+      "publishDate": "2022-03-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-upcoming-and-news/",
+      "headline": "Theater Upcoming and News",
+      "publishDate": "2022-03-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/help-has-arrived/",
+      "headline": "HELP Has Arrived",
+      "publishDate": "2022-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/misdemeanor-dream/",
+      "headline": "Misdemeanor Dream",
+      "publishDate": "2022-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/garbageman/",
+      "headline": "Garbageman",
+      "publishDate": "2022-03-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-news-new-york-and-worldwide/",
+      "headline": "Theater News: New York and Worldwide",
+      "publishDate": "2022-03-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-and-more-theater/",
+      "headline": "Theater and More Theater",
+      "publishDate": "2022-03-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-life/",
+      "headline": "The Life",
+      "publishDate": "2022-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-coming-up/",
+      "headline": "THEATER COMING UP",
+      "publishDate": "2022-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-festival-of-50-performances-emerging-artists-theatre/",
+      "headline": "A Festival of 50 Performances – Emerging Artists Theatre",
+      "publishDate": "2022-03-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/94466-2/",
+      "headline": "Tulis McCall – Tulis Talks and Sings",
+      "publishDate": "2022-03-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/notes-from-now-2/",
+      "headline": "Notes From Now",
+      "publishDate": "2022-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-patsy-revival-by-transport-group/",
+      "headline": "The Patsy – Revival by Transport Group",
+      "publishDate": "2022-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/this-space-between-us/",
+      "headline": "THIS SPACE BETWEEN US",
+      "publishDate": "2022-03-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/on-sugarland/",
+      "headline": "ON SUGARLAND",
+      "publishDate": "2022-03-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/artists-help-ukraine-you-can-too/",
+      "headline": "Artists Help Ukraine – You Can Too",
+      "publishDate": "2022-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/new-musical-the-bedwetter/",
+      "headline": "New Musical The Bedwetter",
+      "publishDate": "2022-03-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/out-of-time-naatcos-presentation-at-the-public-theater/",
+      "headline": "Out of Time, NAATCO’s Presentation at the Public Theater",
+      "publishDate": "2022-03-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-day-in-hollywood-returns-to-the-new-york-stage/",
+      "headline": "‘A Day in Hollywood’ Returns to the New York Stage",
+      "publishDate": "2022-03-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-public-presents-the-vagrant-trilogy/",
+      "headline": "The Public Presents The Vagrant Trilogy",
+      "publishDate": "2022-02-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/gay-themed-drama-unearths-censored-chapter-in-chinese-history/",
+      "headline": "Gay Themed Drama Unearths Censored Chapter in Chinese History",
+      "publishDate": "2022-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/neil-diamond-musical-pre-broadway-run/",
+      "headline": "Neil Diamond Musical Pre Broadway Run",
+      "publishDate": "2022-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-news-17/",
+      "headline": "THEATER NEWS",
+      "publishDate": "2022-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-upcoming/",
+      "headline": "Theater Upcoming",
+      "publishDate": "2022-02-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-news-15/",
+      "headline": "THEATER NEWS",
+      "publishDate": "2022-02-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/2-for-1-tickets-nyc-off-broadway-week/",
+      "headline": "2-for-1 Tickets NYC Off-Broadway Week",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/93132-2/",
+      "headline": "THEATER NEWS",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-garden-of-the-finzi-continis/",
+      "headline": "The Garden of the Finzi-Continis",
+      "publishDate": "2022-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/new-works-in-motion-at-ny-theatre-barn/",
+      "headline": "New Works in Motion at NY Theatre Barn",
+      "publishDate": "2022-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/off-broadway-theater-news/",
+      "headline": "Off Broadway Theater News",
+      "publishDate": "2022-01-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-on-and-off-broadway/",
+      "headline": "THEATER On and Off Broadway",
+      "publishDate": "2022-01-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/for-colored-girls-delays-one-month/",
+      "headline": "For Colored Girls . . . Delays one Month",
+      "publishDate": "2022-01-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-new-yiddish-reps-updated-crazy-meshuge-hurricane-earthquake-really-is/",
+      "headline": "The New Yiddish Rep’s Updated Crazy Meshuge Hurricane Earthquake Really Is!",
+      "publishDate": "2022-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-streets-of-new-york-melodrama-most-melodious/",
+      "headline": "The Streets of New York: Melodrama Most Melodious",
+      "publishDate": "2022-01-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/penelope-or-how-the-odyssey-was-really-written/",
+      "headline": "Penelope or How the Odyssey Was Really Written",
+      "publishDate": "2022-01-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/bucks-country-playhouse-brings-buddy-holly-story-rob-mcclure-the-golden-girls-puppet-parody/",
+      "headline": "Bucks Country Playhouse Brings Buddy Holly Story, Rob McClure, The Golden Girls Puppet Parody",
+      "publishDate": "2022-01-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/whisper-house/",
+      "headline": "WHISPER HOUSE",
+      "publishDate": "2022-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/broadway-backwards-new-performance-date/",
+      "headline": "Broadway Backwards – New Performance Date",
+      "publishDate": "2022-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/coal-country/",
+      "headline": "COAL COUNTRY",
+      "publishDate": "2022-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/prospect-theater-co-notes-from-now/",
+      "headline": "Prospect Theater Co – Notes From Now",
+      "publishDate": "2022-01-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/reflex/",
+      "headline": "REFLEX",
+      "publishDate": "2022-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-news-13/",
+      "headline": "Theater News",
+      "publishDate": "2022-01-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/off-broadway-january-show-openings-news/",
+      "headline": "Off Broadway January Show Openings & News",
+      "publishDate": "2022-01-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/english-in-rehearsals-at-atlantic-theater-co/",
+      "headline": "English in Rehearsal at Atlantic Theater Co.",
+      "publishDate": "2022-01-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/austin-pendleton-joins-this-beautiful-future/",
+      "headline": "Austin Pendleton Joins This Beautiful Future",
+      "publishDate": "2022-01-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-updates-cancellations-closings/",
+      "headline": "Theater Updates – Cancellations, Closings",
+      "publishDate": "2022-01-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/mcc-theater-space-dogs/",
+      "headline": "MCC Theater – Space Dogs Begins January 25",
+      "publishDate": "2022-01-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/theater-news-for-2022/",
+      "headline": "Theater News for 2022",
+      "publishDate": "2022-01-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterpizzazz.com/success-at-lincoln-centers-restart-stages/",
+      "headline": "Success at Lincoln Center’s Restart Stages",
+      "publishDate": "2021-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://theaterpizzazz.com/charles-dickens-a-christmas-carol-brought-to-life-at-the-merchants-house-museum/",
+      "headline": "Charles Dickens’ “A Christmas Carol” Brought To Life At The Merchant’s House Museum",
+      "publishDate": "2025-11-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-power-of-womens-voices-shines-bright-at-triad-theater-showcase/",
+      "headline": "The Power of Women’s Voices Shines Bright at Triad Theater Showcase",
+      "publishDate": "2025-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "voices-1972"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-united-states-vs-ulysses-a-win-for-civil-liberties-and-readers/",
+      "headline": "The United States vs Ulysses – A Win for Civil Liberties and Readers",
+      "publishDate": "2025-05-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ulysses-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/safety-not-guaranteed-reconciling-regrets-at-bam-harvey-theatre/",
+      "headline": "“Safety Not Guaranteed” – Reconciling Regrets at BAM Harvey Theatre",
+      "publishDate": "2024-10-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harvey-2012"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/on-stage-in-georgia-whos-afraid-of-virginia-woolf/",
+      "headline": "On Stage in Georgia – Who’s Afraid of Virginia Woolf?",
+      "publishDate": "2024-06-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "whos-afraid-of-virginia-woolf-2012",
+        "whos-afraid-of-virginia-woolf-2020",
+        "whos-afraid-of-virginia-woolf-1976",
+        "whos-afraid-of-virginia-woolf-2005"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/onstage-atlanta-the-piano-lesson/",
+      "headline": "Onstage Atlanta – The Piano Lesson",
+      "publishDate": "2024-02-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-piano-lesson-2022",
+        "the-piano-lesson-1990"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/atlanta-theater-remember-this-the-lesson-of-jan-karski/",
+      "headline": "Atlanta Theater – Remember This: The Lesson of Jan Karski",
+      "publishDate": "2024-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "remember-this-the-lesson-of-jan-karski-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/atlantas-horizon-theatres-return-engagement-of-natasha-pierre-the-great-comet-of-1812/",
+      "headline": "Atlanta’s Horizon Theatre’s Return Engagement of Natasha, Pierre & the Great Comet of 1812",
+      "publishDate": "2024-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "natasha-pierre-and-the-great-comet-of-1812-2016"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/as-you-like-it-the-public-works-musical/",
+      "headline": "As You Like It – The Public Works Musical",
+      "publishDate": "2022-09-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-1974",
+        "as-you-like-it-1986"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/richard-iii-shakespeare-in-the-park/",
+      "headline": "Richard III – Shakespeare in the Park",
+      "publishDate": "2022-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/hamlet-at-the-park-avenue-armory/",
+      "headline": "Hamlet at the Park Avenue Armory",
+      "publishDate": "2022-07-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/nate-patten-no-holds-barred-broadway-and-tony-roast/",
+      "headline": "Nate Patten: No Holds Barred Broadway and Tony Roast",
+      "publishDate": "2022-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-roast-1980"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/sister-act/",
+      "headline": "Sister Act",
+      "publishDate": "2022-06-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sister-act-2011"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/76th-annual-theatre-world-awards-honor-michael-oberholtzer-harvey-fierstein-and-outstanding-new-performers/",
+      "headline": "76th Annual Theatre World Awards Honor Michael Oberholtzer, Harvey Fierstein and Outstanding New Performers",
+      "publishDate": "2022-06-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-performers-2012",
+        "harvey-2012"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/almost-famous-coming-to-broadway/",
+      "headline": "Almost Famous Coming to Broadway",
+      "publishDate": "2022-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "almost-famous-2022"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/will-reynolds-and-eric-price-radioactive/",
+      "headline": "Will Reynolds and Eric Price ‘Radioactive’",
+      "publishDate": "2022-06-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/outer-critics-circle-presents-2021-22-awards/",
+      "headline": "Outer Critics Circle Presents 2021/22 Awards",
+      "publishDate": "2022-05-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/fat-ham/",
+      "headline": "Fat Ham Extended thru July 17",
+      "publishDate": "2022-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/into-the-woods-moves-to-broadway/",
+      "headline": "Into The Woods Moves to Broadway",
+      "publishDate": "2022-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/richard-iii-takes-over-central-park-next-month/",
+      "headline": "RICHARD III TAKES OVER CENTRAL PARK NEXT MONTH",
+      "publishDate": "2022-05-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/shakespeares-cymbeline-free-in-the-parks/",
+      "headline": "Shakespeare’s Cymbeline Free in the Parks",
+      "publishDate": "2022-05-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cymbeline-2007"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/kimberly-akimbo-coming-to-broadway/",
+      "headline": "Kimberly Akimbo Coming to Broadway",
+      "publishDate": "2022-05-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kimberly-akimbo-2022"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/new-and-current-shows-on-the-other-side-of-the-pond/",
+      "headline": "New and Current Shows on the Other Side of the Pond",
+      "publishDate": "2022-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/harmony-closes-at-nytf-eyeing-a-broadway-run/",
+      "headline": "HARMONY Closes at NYTF Eyeing a Broadway Run",
+      "publishDate": "2022-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harmony-2023",
+        "a-broadway-musical-1978"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/outer-critics-circle-award-winners-2/",
+      "headline": "Outer Critics Circle Award Winners",
+      "publishDate": "2022-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-walk-on-the-moon-2/",
+      "headline": "A Walk on the Moon",
+      "publishDate": "2022-05-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-walk-on-the-moon-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/into-the-woods/",
+      "headline": "INTO THE WOODS",
+      "publishDate": "2022-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/cyrano-de-bergerac-reinvigorating-a-classic/",
+      "headline": "Cyrano de Bergerac – Reinvigorating a Classic",
+      "publishDate": "2022-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-de-bergerac-2012",
+        "cyrano-de-bergerac-2007",
+        "cyrano-the-musical-1993",
+        "cyrano-1973",
+        "cyrano-de-bergerac-1984"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/nominees-71st-annual-outer-critics-circle-awards/",
+      "headline": "Nominees – 71st Annual Outer Critics Circle Awards",
+      "publishDate": "2022-04-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/cross-culturalthe-legend-of-the-waitress-the-robber/",
+      "headline": "Cross Cultural:The Legend of the Waitress & The Robber",
+      "publishDate": "2022-04-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "waitress-2021",
+        "waitress-2016"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/somelike-it-hot-to-broadways-shubert-theatre/",
+      "headline": "Some Like it Hot to Broadway’s Shubert Theatre",
+      "publishDate": "2022-04-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "some-like-it-hot-2022"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/george-c-white-honored-at-the-21st-monte-cristo-award-gala/",
+      "headline": "George C. White Honored at the 21st Monte Cristo Award Gala",
+      "publishDate": "2022-04-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "monte-cristo-the-york-theatre-company-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/harmony-a-new-musical/",
+      "headline": "Harmony: A New Musical",
+      "publishDate": "2022-04-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harmony-2023"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/hamlet-and-oresteia-in-repertory-at-park-avenue-armory/",
+      "headline": "Hamlet and Oresteia in Repertory at Park Avenue Armory",
+      "publishDate": "2022-04-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/alex-edelman-just-for-us/",
+      "headline": "Alex Edelman – Just For Us",
+      "publishDate": "2022-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "just-for-us-2023"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-piano-lesson-returns-to-broadway/",
+      "headline": "The Piano Lesson Returns to Broadway",
+      "publishDate": "2022-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-piano-lesson-2022",
+        "the-piano-lesson-1990"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-touch-of-the-poet-2/",
+      "headline": "A Touch of the Poet",
+      "publishDate": "2022-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-touch-of-the-poet-2005",
+        "a-touch-of-the-poet-1977",
+        "touch-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-walk-on-the-moon/",
+      "headline": "A Walk on the Moon",
+      "publishDate": "2022-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-walk-on-the-moon-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-bakers-wife/",
+      "headline": "The Baker’s Wife",
+      "publishDate": "2022-03-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bakers-wife-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/sorrow-at-hart-island/",
+      "headline": "Sorrow at Hart Island",
+      "publishDate": "2022-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-day-in-hollywood-a-night-in-the-ukraine/",
+      "headline": "A Day in Hollywood/A Night in the Ukraine",
+      "publishDate": "2022-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-day-in-hollywood-a-night-in-the-ukraine-1980"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-merchant-of-venice/",
+      "headline": "The Merchant of Venice",
+      "publishDate": "2022-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-1977",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-skin-of-our-teeth-cast/",
+      "headline": "The Skin of Our Teeth Cast",
+      "publishDate": "2022-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-skin-of-our-teeth-2022",
+        "the-skin-of-our-teeth-1975",
+        "teeth-off-broadway-2024",
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/a-class-act-all-the-way/",
+      "headline": "“A CLASS ACT” ALL THE WAY",
+      "publishDate": "2022-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "all-the-way-2014",
+        "a-class-act-2001"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/not-so-long-days-journey-into-night/",
+      "headline": "(Not So) Long Day’s Journey Into Night",
+      "publishDate": "2022-02-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "long-days-journey-into-night-2016",
+        "long-days-journey-into-night-2003",
+        "long-days-journey-into-night-1986",
+        "long-days-journey-into-night-1988"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-tap-dance-kid/",
+      "headline": "THE TAP DANCE KID",
+      "publishDate": "2022-02-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tap-dance-kid-1983"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/prayer-for-the-french-republic/",
+      "headline": "PRAYER FOR THE FRENCH REPUBLIC",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/assassins-cancels-remaining-performances-due-to-covid/",
+      "headline": "ASSASSINS Cancels Remaining Performances Due to Covid",
+      "publishDate": "2022-01-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "assassins-2004"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/92790-2/",
+      "headline": "SESAME STREET LIVE! at Madison Square Garden",
+      "publishDate": "2022-01-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sesame-street-the-musical-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/the-kite-runner-coming-to-broadway/",
+      "headline": "The Kite Runner Coming to Broadway",
+      "publishDate": "2022-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-kite-runner-2022"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/birthday-candles/",
+      "headline": "BIRTHDAY CANDLES",
+      "publishDate": "2022-01-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "birthday-candles-2022"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/mr-saturday-night-casting-complete-adding-shoshana-bean/",
+      "headline": "Mr. Saturday Night Casting Complete Adding Shoshana Bean",
+      "publishDate": "2022-01-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mr-saturday-night-2022"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/swept-away/",
+      "headline": "Swept Away",
+      "publishDate": "2022-01-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "swept-away-2024"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/paradise-square-delays-to-march-15/",
+      "headline": "Paradise Square Delays to March 15",
+      "publishDate": "2022-01-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "paradise-square-2022"
+      ]
+    },
+    {
+      "url": "https://theaterpizzazz.com/inspired-by-baroque-presents-my-cyrano/",
+      "headline": "My Cyrano Inspired ‘By Baroque’",
+      "publishDate": "2021-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-the-musical-1993",
+        "cyrano-1973"
+      ]
+    }
+  ]
+}

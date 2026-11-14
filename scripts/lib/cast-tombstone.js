@@ -1,0 +1,134 @@
+const { ibdbUrlRejectReason } = require('./ibdb-year-guard');
+
+// Pure decision for backfill-cast.js's empty-result branch.
+// Tested by tests/unit/cast-tombstone.test.mjs.
+//
+// When a lookupIBDBCast result has no Opening Night Cast, the backfill must
+// decide whether to write an empty "tombstone" file (which permanently blocks
+// re-scraping, since default runs skip shows that already have a cast file).
+//
+// A wrong-production IBDB page (productionMismatch) is not a genuine empty either:
+// the right production may exist later, so never lock the show out (BRO-5809).
+// Tombstone ONLY a genuine empty — a page that loaded and parsed fine but whose
+// production has no cast on IBDB. NEVER tombstone a transient scrape failure
+// (page didn't load / wasn't HTML / didn't parse / network error): that would
+// turn one bad scrape into a permanently-empty show. Hamilton lost its entire
+// cast this way on 2026-06-24 (a transient miss was tombstoned, then skipped on
+// every subsequent run until a forced re-scrape).
+function shouldTombstone(result) {
+  return !(result && (result.fetchFailed || result.productionMismatch));
+}
+
+// A wrong-production result for a show that ALREADY stores that production (a cast file on disk
+// or show.ibdbUrl set) means bad data is in. Leaving it ("will retry next run") re-asserts it
+// forever: wanted-2022 kept a 1928 cast file and ibdbUrl through every weekly run. Pure decision
+// for backfill-cast.js; MAX_WRONG_PRODUCTION_PURGES caps one run so a guard regression cannot
+// delete the library.
+const MAX_WRONG_PRODUCTION_PURGES = 5;
+// Purges only on the production-id rejection (never the softer year check, which can be wrong
+// about a correct stored url) and only when the rejected url IS the one stored on the show or in
+// its cast file, so a search that stumbles on an old run cannot delete a correct cast.
+function shouldPurgeWrongProduction(result, show, hasCastFile, purgedSoFar = 0, castFileUrl = null) {
+  if (!result || !result.productionMismatch || !show) return false;
+  if (result.rejectReason !== 'predates-show' && result.rejectReason !== 'no-production-id') return false;
+  if (!show.ibdbUrl && !hasCastFile) return false;
+  const stored = [show.ibdbUrl, castFileUrl].filter(Boolean);
+  if (!result.rejectedUrl || !stored.includes(result.rejectedUrl)) return false;
+  return purgedSoFar < MAX_WRONG_PRODUCTION_PURGES;
+}
+
+// Mass-wipe circuit breaker for --force backfill runs. A scraper regression
+// that makes every fetch look like a genuine empty (the exact Cloudflare
+// class above) would otherwise sail through shouldTombstone() one show at a
+// time with no aggregate check. Trips when the wiped share of previously-
+// populated cast files this run crosses `threshold` — the caller restores
+// its backed-up files and aborts (task #712, wiped 29-30 shows twice: Jul 29
+// and again Aug 5 when the fix hadn't landed yet).
+function shouldAbortMassWipe(populatedBefore, wipedCount, threshold = 0.3) {
+  if (!populatedBefore || populatedBefore <= 0) return false;
+  return (wipedCount / populatedBefore) > threshold;
+}
+
+// IBDB <title> reads "The Imaginary Invalid – Broadway Play – 1967 Revival | IBDB".
+// A stored ibdbUrl skips title validation, so a URL pointing at an earlier
+// production of the same title silently imports THAT cast (BRO-4171: the 2026
+// Roundabout revival got the 1967 cast — Denholm Elliott et al.).
+function parseIbdbProductionYear(docTitle) {
+  const m = /\b((?:18|19|20)\d{2})\s+(?:Revival|Original|Production)\b/i.exec(docTitle || '');
+  return m ? parseInt(m[1], 10) : null;
+}
+
+// The page body's own "Opening Date Nov 08, 1928" (same label ibdb-dates.js trusts). Original-run
+// <title>s carry no year, so this is the only year signal for a same-title original (wanted-2022).
+function parseIbdbOpeningYear(bodyText) {
+  const m = /Opening Date\s*[A-Z][a-z]{2,8}\s+\d{1,2},\s*((?:18|19|20)\d{2})/.exec(bodyText || '');
+  return m ? parseInt(m[1], 10) : null;
+}
+
+// True only when both years are known and the IBDB production is more than a
+// year away from the show's opening year (tryout/previews straddle New Year).
+function isProductionYearMismatch(productionYear, openingYear) {
+  if (!productionYear || !openingYear) return false;
+  return Math.abs(productionYear - openingYear) > 1;
+}
+
+// Announced shows have no openingDate, so the year check above never fired and
+// a stored/searched IBDB URL for an earlier run supplied that cast (BRO-5809:
+// private-lives-2025 carried the 1948 Tallulah Bankhead cast). Fall back to the
+// previews year, then to the year the show id carries ("-2025").
+function expectedOpeningYear(show) {
+  if (!show) return null;
+  for (const d of [show.openingDate, show.previewsStartDate]) {
+    const m = /^((?:18|19|20)\d{2})/.exec(d || '');
+    if (m) return parseInt(m[1], 10);
+  }
+  // id year is only trusted while the show has not opened (ids of long runners drift from their dates)
+  if (show.status && show.status !== 'announced' && show.status !== 'upcoming') return null;
+  const idm = /-((?:19|20)\d{2})$/.exec(show.id || '');
+  return idm ? parseInt(idm[1], 10) : null;
+}
+
+// Why a data/cast file may NOT be copied onto its show, or null when it may.
+// 'year-mismatch': IBDB production year is more than a year off the show's year.
+// 'unverified-ibdb': an IBDB-sourced file for a show that has not opened and
+// whose file records no production year, so nothing proves which run it is.
+function castFileMismatchReason(castData, show) {
+  if (!castData || !show) return null;
+  const expected = expectedOpeningYear(show);
+  if (isProductionYearMismatch(castData.productionYear, expected)) return 'year-mismatch';
+  const unopened = !show.openingDate && (show.status === 'announced' || show.status === 'upcoming' || !show.status);
+  if (unopened && castData.ibdbUrl && !castData.productionYear) return 'unverified-ibdb';
+  // An original-run IBDB <title> carries no year, so productionYear can be null and the year check
+  // above passes. The url's production id still proves an older run (wanted-2022 / 1928 play).
+  if (castData.ibdbUrl && ibdbUrlRejectReason(show, castData.ibdbUrl) === 'predates-show') return 'old-production-id';
+  return null;
+}
+
+// An empty tombstone on an open/previews show whose openingDate has passed is a coverage gap
+// the daily health check counts (BRO-7479: Wanted opened 2026-11-08, tombstoned 11-11 before IBDB
+// listed the cast, then skipped by every default run until the weekly --force pass). The default
+// (non-force) pass retries such tombstones once they are RETRY_MS old, so a late IBDB listing is
+// picked up within a day instead of a week. Pre-opening previews keep the weekly cadence.
+const TOMBSTONE_RETRY_WINDOW_DAYS = 7;
+const TOMBSTONE_RETRY_MS = 20 * 60 * 60 * 1000;
+function shouldRetryTombstone(castFile, show, now = Date.now()) {
+  if (!castFile || !show) return false;
+  if (show.status !== 'open' && show.status !== 'previews') return false;
+  if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return false;
+  // Bounded: only within TOMBSTONE_RETRY_WINDOW_DAYS after openingDate, so a show that is
+  // genuinely empty on IBDB is not re-scraped (and the daily job not woken) forever. No
+  // openingDate = weekly cadence only.
+  if (!show.openingDate) return false;
+  const today = new Date(now).toISOString().slice(0, 10);
+  if (show.openingDate > today) return false;
+  const windowEnd = new Date(Date.parse(show.openingDate) + TOMBSTONE_RETRY_WINDOW_DAYS * 864e5).toISOString().slice(0, 10);
+  if (today > windowEnd) return false;
+  const at = Date.parse(castFile.scrapedAt);
+  return !Number.isFinite(at) || now - at >= TOMBSTONE_RETRY_MS;
+}
+
+module.exports = {
+  shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
+  shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, MAX_WRONG_PRODUCTION_PURGES, parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch,
+  expectedOpeningYear, castFileMismatchReason,
+};

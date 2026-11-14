@@ -1,0 +1,107 @@
+{
+  "base": "https://broadwayscorecard.com",
+  "pagesChecked": 5,
+  "pagesFailed": 0,
+  "destinationsChecked": 3,
+  "destinationsBroken": 0,
+  "destinationsSkipped": 0,
+  "allDestinationsSkipped": false,
+  "results": [
+    {
+      "id": "a-few-good-men-2026",
+      "slug": "a-few-good-men",
+      "status": "open",
+      "todaytixId": 47264,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/a-few-good-men",
+      "verdict": "pass",
+      "linksFound": 2,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/47264-a-few-good-men",
+        "https://www.todaytix.com/nyc/shows/47264-a-few-good-men"
+      ]
+    },
+    {
+      "id": "aladdin-2014",
+      "slug": "aladdin",
+      "status": "open",
+      "todaytixId": 105,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/aladdin",
+      "verdict": "pass",
+      "linksFound": 2,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway"
+      ]
+    },
+    {
+      "id": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
+      "slug": "austentatious-an-improvised-jane-austen-novel-west-end",
+      "status": "open",
+      "todaytixId": 43897,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/austentatious-an-improvised-jane-austen-novel-west-end",
+      "verdict": "pass",
+      "linksFound": 3,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel",
+        "https://www.todaytix.com/booking/seating-plan?showId=43897&showtimeId=2482765",
+        "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel"
+      ]
+    },
+    {
+      "id": "222-a-ghost-story-off-broadway-2026",
+      "slug": "222-a-ghost-story-off-broadway",
+      "status": "open",
+      "todaytixId": 47218,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/222-a-ghost-story-off-broadway",
+      "verdict": "pass",
+      "linksFound": 2,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/47218-2-22-a-ghost-story",
+        "https://www.todaytix.com/nyc/shows/47218-2-22-a-ghost-story"
+      ]
+    },
+    {
+      "id": "heathers-the-musical-off-broadway-2025",
+      "slug": "heathers-the-musical-off-broadway",
+      "status": "closed",
+      "todaytixId": 42261,
+      "expectLinks": false,
+      "url": "https://broadwayscorecard.com/show/heathers-the-musical-off-broadway",
+      "verdict": "pass",
+      "linksFound": 0,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": []
+    }
+  ],
+  "destChecks": [
+    {
+      "dest": "https://www.todaytix.com/nyc/shows/47264-a-few-good-men",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    }
+  ],
+  "updatedAt": "2026-11-09T22:48:20.381Z"
+}

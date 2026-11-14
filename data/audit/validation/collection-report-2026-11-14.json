@@ -1,0 +1,114 @@
+{
+  "runDate": "2026-11-14T18:02:29.417Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "the-kings-critique-off-broadway-2026,now-you-see-me-live-2026,act-of-god-off-west-end-2026,dolly-partons-smoky-mountain-christmas-carol-tour-2026,traitorz-the-unauthorized-musical-parody-off-broadway-2026,potus-off-broadway-2026,hamlet-hail-to-the-thief-off-west-end-2026,first-and-last-off-broadway-2026,peter-pan-goes-wrong-regional-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 4,
+    "skipped": 0,
+    "successRate": "20.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 5,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 1,
+    "failed": 4,
+    "shows": [
+      "act-of-god-off-west-end-2026",
+      "hamlet-hail-to-the-thief-off-west-end-2026",
+      "the-kings-critique-off-broadway-2026",
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+  ],
+  "failed": [
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+    ],
+    "failed": [
+      "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+      "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+      "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+      "act-of-god-off-west-end-2026/london-box-office--stuart-king.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "Stage Buddy": {
+      "count": 1,
+      "domain": "stagebuddy.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}

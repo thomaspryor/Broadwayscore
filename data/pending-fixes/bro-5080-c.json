@@ -1,0 +1,588 @@
+{
+  "issueNumber": "bro-5080-c",
+  "planId": "e172481c-563a-4186-b467-17d360ea1b48",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:34:08.880Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 part 3 (apply after part 2): fix wrong basic facts the sourced sample audit found on the historical backfills (24 edits, each description carrying its source URL).",
+    "steps": [
+      "Dates: set the sourced value",
+      "Type/venue/credits: set the sourced value",
+      "Synopsis: clear marketing / other-production / wrong-work text so the production-verified enricher refills it",
+      "Posters of other productions: clear, reject the source, mark no reliable art"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "torch-song-trilogy-1982",
+        "field": "closingDate",
+        "oldValue": "1985-05-18",
+        "newValue": "1985-05-19",
+        "description": "torch-song-trilogy-1982: closingDate -> 1985-05-19: other: original Broadway run closed May 19, 1985, not May 18 (OpenAI's 1983 date is wrong). (https://www.theatermania.com/news/michael-urie-and-harvey-fierstein-introduce-torch-song_82481/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sacrilege-1995",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/sacrilege-1995/thumbnail.jpg",
+          "poster": "/images/shows/sacrilege-1995/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "sacrilege-1995: poster, thumbnail and hero cleared: poster-wrong-show: image is a Titanique ticket ad, not Sacrilege."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sacrilege-1995",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-wrong-show",
+          "key": "sacrilege|belasco theatre|1995-11-02"
+        },
+        "description": "sacrilege-1995: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-young-man-from-atlanta-1997",
+        "field": "synopsis",
+        "oldValue": "The Young Man from Atlanta is a drama written by American dramatist Horton Foote first produced Off-Broadway by the Signature Theatre in January 1995. Foote received the 1995 Pulitzer Prize for Drama.",
+        "newValue": null,
+        "description": "the-young-man-from-atlanta-1997: synopsis cleared (synopsis-wrong-production) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/The_Young_Man_from_Atlanta)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-young-man-from-atlanta-1997",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-young-man-from-atlanta-1997/thumbnail.jpg",
+          "poster": "/images/shows/the-young-man-from-atlanta-1997/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-young-man-from-atlanta-1997: poster, thumbnail and hero cleared: poster-other-production: credits director Michael Wilson (2019 Signature revival); 1997 Broadway was directed by Robert Falls with Rip Torn and Shirley Knight. (https://en.wikipedia.org/wiki/The_Young_Man_from_Atlanta)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-young-man-from-atlanta-1997",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/4842/medium_1574788037-YMA_Photo2_800x1200.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/4842/preview_1574788037-YMA_Photo2_800x1200.jpg"
+        ],
+        "description": "the-young-man-from-atlanta-1997: never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-young-man-from-atlanta-1997",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "the young man from atlanta|longacre theatre|1997-03-27"
+        },
+        "description": "the-young-man-from-atlanta-1997: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ritz-2007",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "the-ritz-2007: venue -> Studio 54: venue-other-production: the Roundabout revival was at Studio 54; the Steinberg Center is Roundabout's Off-Broadway complex at 111 W 46th. (https://en.wikipedia.org/wiki/The_Ritz_(play))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ritz-2007",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-ritz-2007/thumbnail.jpg",
+          "poster": "/images/shows/the-ritz-2007/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-ritz-2007: poster, thumbnail and hero cleared: poster-other-production: original 1975 Longacre Theatre poster (Jack Weston, Rita Moreno, Jerry Stiller)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ritz-2007",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "the ritz|studio 54|2007-10-11"
+        },
+        "description": "the-ritz-2007: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bandstand-2017",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bandstand-2017/thumbnail.jpg",
+          "poster": "/images/shows/bandstand-2017/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "bandstand-2017: poster, thumbnail and hero cleared: poster-not-art: cinema screening ad (Returns to Cinemas Nov 15 and 19), not Broadway production art."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bandstand-2017",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-not-art",
+          "key": "bandstand|bernard b. jacobs theatre|2017-04-26"
+        },
+        "description": "bandstand-2017: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "do-you-turn-somersaults-1978",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/do-you-turn-somersaults-1978/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "do-you-turn-somersaults-1978: poster, thumbnail and hero cleared: poster-not-art: image is a newspaper page of theatre ads (Mel Brooks High Anxiety etc.), not show art. (https://playbill.com/production/do-you-turn-somersaults-46th-street-theatre-vault-0000003094)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "do-you-turn-somersaults-1978",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-not-art",
+          "key": "do you turn somersaults?|richard rodgers theatre|1978-01-09"
+        },
+        "description": "do-you-turn-somersaults-1978: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "home-front-1985",
+        "field": "synopsis",
+        "oldValue": "Home Front is a play by Warren Leight. It tells the story of an interracial couple, Annie and James, who meet while celebrating V-J Day, and was inspired by the famous photo of a kiss in Times Square. The story showcases the daily life of the couple in New York City and the deep South, where James is stationed awaiting his final release.",
+        "newValue": null,
+        "description": "home-front-1985: synopsis cleared (synopsis-wrong-work) so the production-verified enricher refills it (https://playbill.com/production/home-front-royale-theatre-vault-0000010205)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ghetto-1989",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Joshua Sobol",
+            "role": "Playwright"
+          },
+          {
+            "name": "Gedalia Besser",
+            "role": "Director"
+          },
+          {
+            "name": "Nir Ben-Gal and Liat Dror",
+            "role": "Director"
+          },
+          {
+            "name": "Adrian Vaux",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Edna Sobol",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Kevin Rigdon",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "William Schimmel",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Jeremy Sams",
+            "role": "Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Joshua Sobol",
+            "role": "Playwright"
+          },
+          {
+            "name": "Gedalia Besser",
+            "role": "Director"
+          },
+          {
+            "name": "Adrian Vaux",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Edna Sobol",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Kevin Rigdon",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "William Schimmel",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Jeremy Sams",
+            "role": "Lyrics"
+          }
+        ],
+        "description": "ghetto-1989: directors: credit-other-production: Nir Ben-Gal and Liat Dror are not credited on the 1989 Broadway production; Besser directed. (https://en.wikipedia.org/wiki/Ghetto_(play))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "timon-of-athens-1993",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright"
+          },
+          {
+            "name": "Stanley Silverman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Michael Langham",
+            "role": "Director"
+          },
+          {
+            "name": "George Faison",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Douglas Stein",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Ann Hould-Ward",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Richard Nelson",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Keith Handegord",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright"
+          },
+          {
+            "name": "Michael Langham",
+            "role": "Director"
+          },
+          {
+            "name": "George Faison",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Douglas Stein",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Ann Hould-Ward",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Richard Nelson",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Keith Handegord",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "timon-of-athens-1993: writers: wrong-person: Stanley Silverman is credited for music (arranging Ellington score, Drama Desk music nomination), not as writer. (https://en.wikipedia.org/wiki/Timon_of_Athens)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hairspray-2002",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/hairspray-2002/hero.webp",
+          "thumbnail": "/images/shows/hairspray-2002/thumbnail.webp",
+          "poster": "/images/shows/hairspray-2002/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "hairspray-2002: poster, thumbnail and hero cleared: poster-other-production: London Coliseum limited season art, not the NY Neil Simon Theatre production. (https://en.wikipedia.org/wiki/Hairspray_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hairspray-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7ylUCw5IS8hIGIR2Ppj5Iy/684cc345cebb0cfc2882c55221fa065a/prod_1626362694713_HS-QUOTE-480x720-TTG.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7ylUCw5IS8hIGIR2Ppj5Iy/684cc345cebb0cfc2882c55221fa065a/prod_1626362694713_HS-QUOTE-480x720-TTG.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5RUGFGtbLzwBTsQnWaFXEi/6409688d24bcb297aa503e6868b4e6c3/Hairspray-TT-Hero-30-06-21.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "hairspray-2002: never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hairspray-2002",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "hairspray|neil simon theatre|2002-08-15"
+        },
+        "description": "hairspray-2002: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "that-championship-season-2011",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/that-championship-season-2011/thumbnail.jpg",
+          "poster": "/images/shows/that-championship-season-2011/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "that-championship-season-2011: poster, thumbnail and hero cleared: poster-other-production: Booth Theatre 1972 original Playbill cover, not the 2011 Jacobs revival. (https://en.wikipedia.org/wiki/That_Championship_Season)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "that-championship-season-2011",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "that championship season|bernard b. jacobs theatre|2011-03-06"
+        },
+        "description": "that-championship-season-2011: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rocky-2014",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rocky-2014/thumbnail.jpg",
+          "poster": "/images/shows/rocky-2014/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "rocky-2014: poster, thumbnail and hero cleared: poster-other-production: German Rocky Das Musical (Stage Entertainment, Klitschko) art, not Broadway. (https://en.wikipedia.org/wiki/Rocky_the_Musical)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rocky-2014",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "rocky|winter garden theatre|2014-03-13"
+        },
+        "description": "rocky-2014: no reliable art; the image sweep and self-heal skip it until the row changes"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:32:40.486Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for torch-song-trilogy-1982"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sacrilege-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for sacrilege-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-young-man-from-atlanta-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-young-man-from-atlanta-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-young-man-from-atlanta-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-young-man-from-atlanta-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-ritz-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-ritz-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-ritz-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for bandstand-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for bandstand-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for do-you-turn-somersaults-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for do-you-turn-somersaults-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for home-front-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for ghetto-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for timon-of-athens-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for hairspray-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for hairspray-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for hairspray-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for that-championship-season-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for that-championship-season-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for rocky-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for rocky-2014"
+    }
+  ]
+}

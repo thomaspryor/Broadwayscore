@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6818-bb-date",
+  "planId": "3e344a0a-0ce7-4cfb-84d3-a3b8ee721d88",
+  "status": "applied",
+  "createdAt": "2026-11-02T11:20:06.792Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct publishDate on the Around the Town Chicago review of the Beauty and the Beast tour: stored 2023-01-01 was an LLM estimate; the outlet's WordPress post data gives 2025-07-11 (Cadillac Palace launch of the current tour)",
+    "steps": [
+      "beauty-and-the-beast-tour-2025/around-the-town-chicago--alan-bresloff.json: publishDate",
+      "beauty-and-the-beast-tour-2025/around-the-town-chicago--alan-bresloff.json: dateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "beauty-and-the-beast-tour-2025/around-the-town-chicago--alan-bresloff.json",
+        "field": "publishDate",
+        "oldValue": "2023-01-01",
+        "newValue": "2025-07-11",
+        "description": "beauty-and-the-beast-tour-2025/around-the-town-chicago--alan-bresloff.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beauty-and-the-beast-tour-2025/around-the-town-chicago--alan-bresloff.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "human-page-verified",
+        "description": "beauty-and-the-beast-tour-2025/around-the-town-chicago--alan-bresloff.json: dateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-02T11:30:25.985Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beauty-and-the-beast-tour-2025/around-the-town-chicago--alan-bresloff.json publishDate: \"2023-01-01\" -> \"2025-07-11\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beauty-and-the-beast-tour-2025/around-the-town-chicago--alan-bresloff.json dateSource: \"llm-scoring\" -> \"human-page-verified\""
+    }
+  ],
+  "executedIn": "ci"
+}

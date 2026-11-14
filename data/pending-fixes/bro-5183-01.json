@@ -1,0 +1,119 @@
+{
+  "issueNumber": "bro-5183-01",
+  "planId": "7ebc63c3-4c59-4c45-a976-7b46f152e045",
+  "status": "applied",
+  "createdAt": "2026-10-12T19:00:46.383Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5183 pilot (5 rows): repair made-up urls of legacy web-search reviews (excluded by BRO-5107) to the outlet's real review url, and the byline where it differs. collect-review-texts then refetches and verifies each page.",
+    "steps": [
+      "1984-2017/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/19842017.html",
+      "1984-2017/talkinbroadway--matthew-murray.json: criticName -> Michael Portantiere",
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json: url -> https://www.timeout.com/newyork/blog/broadway-review-a-bronx-tale-earns-a-bronx-cheer-120216",
+      "amelie-a-new-musical-2017/vulture--jesse-green.json: url -> https://www.vulture.com/2017/04/theater-review-amlie-and-the-limits-of-whimsy.html",
+      "leap-of-faith-2012/variety--marilyn-stasio.json: url -> http://www.variety.com/review/VE1117947451?refCatId=33",
+      "leap-of-faith-2012/variety--marilyn-stasio.json: criticName -> Steven Suskin",
+      "the-norman-conquests-2009/nytimes--ben-brantley.json: url -> https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "1984-2017/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/1984.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/19842017.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/1984.html came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/19842017.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "1984-2017/talkinbroadway--matthew-murray.json",
+        "field": "criticName",
+        "oldValue": "Matthew Murray",
+        "newValue": "Michael Portantiere",
+        "description": "Byline of https://www.talkinbroadway.com/page/world/19842017.html is Michael Portantiere; Matthew Murray came from the legacy web-search step. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+        "field": "url",
+        "oldValue": "https://www.timeout.com/newyork/theater/a-bronx-tale-review",
+        "newValue": "https://www.timeout.com/newyork/blog/broadway-review-a-bronx-tale-earns-a-bronx-cheer-120216",
+        "description": "Stored url https://www.timeout.com/newyork/theater/a-bronx-tale-review came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://www.timeout.com/newyork/blog/broadway-review-a-bronx-tale-earns-a-bronx-cheer-120216. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amelie-a-new-musical-2017/vulture--jesse-green.json",
+        "field": "url",
+        "oldValue": "https://www.vulture.com/2017/04/theater-review-amelie-a-new-musical.html",
+        "newValue": "https://www.vulture.com/2017/04/theater-review-amlie-and-the-limits-of-whimsy.html",
+        "description": "Stored url https://www.vulture.com/2017/04/theater-review-amelie-a-new-musical.html came from the legacy LLM web-search step (url_dead). The outlet's real review of this production is https://www.vulture.com/2017/04/theater-review-amlie-and-the-limits-of-whimsy.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leap-of-faith-2012/variety--marilyn-stasio.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2012/legit/reviews/leap-of-faith-1117947436/",
+        "newValue": "http://www.variety.com/review/VE1117947451?refCatId=33",
+        "description": "Stored url https://variety.com/2012/legit/reviews/leap-of-faith-1117947436/ came from the legacy LLM web-search step (partial_text). The outlet's real review of this production is http://www.variety.com/review/VE1117947451?refCatId=33. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leap-of-faith-2012/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Steven Suskin",
+        "description": "Byline of http://www.variety.com/review/VE1117947451?refCatId=33 is Steven Suskin; Marilyn Stasio came from the legacy web-search step. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-norman-conquests-2009/nytimes--ben-brantley.json",
+        "field": "url",
+        "oldValue": "https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html",
+        "newValue": "https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html",
+        "description": "Stored url https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html came from the legacy LLM web-search step (url_dead). The outlet's real review of this production is https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T22:31:00.100Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1984-2017/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/1984.html\" -> \"https://www.talkinbroadway.com/page/world/19842017.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1984-2017/talkinbroadway--matthew-murray.json criticName: \"Matthew Murray\" -> \"Michael Portantiere\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json url: \"https://www.timeout.com/newyork/theater/a-bronx-tale-review\" -> \"https://www.timeout.com/newyork/blog/broadway-review-a-bronx-tale-earns-a-bronx-cheer-120216\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amelie-a-new-musical-2017/vulture--jesse-green.json url: \"https://www.vulture.com/2017/04/theater-review-amelie-a-new-musical.html\" -> \"https://www.vulture.com/2017/04/theater-review-amlie-and-the-limits-of-whimsy.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leap-of-faith-2012/variety--marilyn-stasio.json url: \"https://variety.com/2012/legit/reviews/leap-of-faith-1117947436/\" -> \"http://www.variety.com/review/VE1117947451?refCatId=33\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leap-of-faith-2012/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-norman-conquests-2009/nytimes--ben-brantley.json url: \"https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html\" -> \"https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html\""
+    }
+  ]
+}

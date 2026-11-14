@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-6585-b",
+  "planId": "42a50fe6-1928-457b-a73b-2488a9207698",
+  "status": "applied",
+  "createdAt": "2026-10-30T07:12:00.848Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "A Few Good Men 2026: delete duplicate Independent file independent--bcaitlin-hornik.json (BWW roundup excerpt, garbled critic \"BCaitlin\", no url) that double-counts Caitlin Hornik alongside independent--caitlin-hornik.json; correct Billy Crystal 860 Independent critic name ACaitlin Hornik -> Caitlin Hornik (same BWW grade-letter glue)",
+    "steps": [
+      "delete a-few-good-men-2026/independent--bcaitlin-hornik.json",
+      "billy-crystal-860-2026/independent--caitlin-hornik.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-few-good-men-2026/independent--bcaitlin-hornik.json",
+        "description": "duplicate of independent--caitlin-hornik.json (same BWW excerpt, garbled byline, no url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/independent--caitlin-hornik.json",
+        "field": "criticName",
+        "oldValue": "ACaitlin Hornik",
+        "newValue": "Caitlin Hornik",
+        "description": "BWW roundup glued the previous entry grade letter onto the byline"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T07:45:34.351Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-few-good-men-2026/independent--bcaitlin-hornik.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/independent--caitlin-hornik.json criticName: \"ACaitlin Hornik\" -> \"Caitlin Hornik\""
+    }
+  ],
+  "executedIn": "ci"
+}

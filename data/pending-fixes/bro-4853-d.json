@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-4853-d",
+  "planId": "f47be729-328d-4ed7-b533-6ad5ed8ec80c",
+  "status": "applied",
+  "createdAt": "2026-10-08T00:08:35.129Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 4 of 4. Synopsis sweep (BRO-4853, owner request 2026-10-07). Other Desert Cities carried a false Tony claim copied from Show Score; a site-wide audit (regex detectors plus a whole-corpus model sweep, every hit read by hand) found 70 more bad synopses: Fela! (1776 text), The Great Society (Great Comet text), 5 cookie-banner records, and 63 records holding another work's Wikipedia article, a person's biography, a disambiguation page, a song list or wiki markup.",
+    "steps": [
+      "Rewrite the Other Desert Cities (2026), Fela! and The Great Society synopses from sourced facts",
+      "Clear the 5 cookie-banner synopses",
+      "Clear the 63 wrong-article synopses so the production-verified enricher can refill them"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-and-day-1979",
+        "field": "synopsis",
+        "oldValue": "mute = setting = The living room of a large colonial house in an African nation premiere = place = Phoenix Theatre, London orig_lang = English series = subject = Colonialism, the media genre = Drama web = Night and Day is a 1978 play by Tom Stoppard. The sets and costumes were designed by Carl Toms and it ran for two years at the Phoenix Theatre in central London, UK.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is wiki infobox markup. Cleared so the production-verified Wikipedia enricher can refill it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-08T01:00:43.727Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for night-and-day-1979"
+    }
+  ]
+}
