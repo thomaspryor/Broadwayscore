@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T18:59:15.843Z",
+  "generatedAt": "2026-11-14T19:49:51.566Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -102,11 +102,35 @@
       "id": "a-body-of-water-regional-2026",
       "title": "A Body of Water",
       "openingDate": "2026-11-09"
+    },
+    {
+      "id": "annie-regional-2026-drury-lane-oakbrook",
+      "title": "Annie",
+      "openingDate": "2026-11-13"
+    },
+    {
+      "id": "year-one-regional-2026",
+      "title": "Year One",
+      "openingDate": "2026-11-12"
+    },
+    {
+      "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+      "title": "The Elaborate Entrance of Chad Deity",
+      "openingDate": "2026-11-13"
+    },
+    {
+      "id": "passing-strange-regional-2026",
+      "title": "Passing Strange",
+      "openingDate": "2026-11-11"
     }
   ],
   "skipped": [
     {
       "showId": "first-and-last-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "les-miserables-regional-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -138,9 +162,36 @@
     }
   ],
   "itemsScanned": 850,
-  "matchedGaps": 2,
-  "possibleGaps": 3,
+  "matchedGaps": 5,
+  "possibleGaps": 4,
   "gaps": [
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "level": "matched",
+      "outletId": "musical-theatre-review",
+      "url": "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre/",
+      "headline": "Hamlet Hail to the Thief – Barbican Theatre",
+      "publishDate": "2026-11-14"
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "title": "Passing Strange",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/10/passing-strange-pasadena-playhouse-review/",
+      "headline": "Theater Review: PASSING STRANGE (Pasadena Playhouse / Los Angeles)",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "title": "Passing Strange",
+      "level": "matched",
+      "outletId": "variety",
+      "url": "https://variety.com/2026/legit/news/passing-strange-pasadena-playhouse-stew-heidi-interview-1236942647/",
+      "headline": "&#8216;Passing Strange&#8217; Comes to Pasadena Playhouse: Creators Stew and Heidi Rodewald on the Rock Musical Reaching L.A. Almost Two Decades After Tony-Winning Broadway Run",
+      "publishDate": "2026-11-08"
+    },
     {
       "showId": "the-visitors-off-broadway-2026",
       "title": "The Visitors",
@@ -157,6 +208,15 @@
       "outletId": "operawire",
       "url": "https://operawire.com/light-opera-of-new-jersey-to-present-amahl-and-the-night-visitors/",
       "headline": "Light Opera of New Jersey to Present &#8216;Amahl and the Night Visitors&#8217;",
+      "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "title": "Annie",
+      "level": "possible",
+      "outletId": "west-end-wilma",
+      "url": "https://westendwilma.com/after-birth-royal-court-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=after-birth-royal-court-theatre",
+      "headline": "After Birth &#8211; the reality of life after birth at Royal Court Theatre",
       "publishDate": "2026-11-12"
     },
     {
