@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T22:25:31.192Z",
+  "generatedAt": "2026-11-14T23:04:14.530Z",
   "shows": {
     "the-rocky-horror-show": {
       "capitalization": null,
@@ -34,6 +34,37 @@
       "researchTrigger": "sweep-requeue-low-conf",
       "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
       "autoApplyBlockedAt": "2026-11-12T10:00:32.007Z"
+    },
+    "parade-2023": {
+      "capitalization": 6500000,
+      "capitalizationSource": "Broadway Journal (Dec. 23, 2022): \"At $6.5 million, the show's capitalization...\" https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive",
+      "weeklyRunningCost": 659000,
+      "costMethodology": "trade-reported",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "No public recoupment announcement located; Broadway Journal said full capitalization required 32 weeks at the same level plus the tax credit, and Playbill reported the Broadway run ended Aug. 6, 2023 after 169 performances.",
+      "estimatedRecoupmentPct": null,
+      "notes": "Broadway Journal's investor-deck coverage put capitalization at $6.5M and weekly operating expenses at $659k before royalties; Playbill reported the run ended Aug. 6, 2023 after 169 performances. No public recoupment announcement was found, so I classified the production as Did Not Recoup. ([broadwayjournal.com](https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive",
+          "date": "2022-12-23"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/broadways-parade-finishes-limited-run-august-6",
+          "date": "2023-08-06"
+        }
+      ],
+      "title": "Parade",
+      "slug": "parade-2023",
+      "openingDate": "2023-03-16",
+      "status": "closed",
+      "researchedAt": "2026-11-14T22:40:28.230Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
     },
     "the-rocky-horror-show-2026": {
       "title": "The Rocky Horror Show",
@@ -177,16 +208,13 @@
     },
     "indecent-2017": {
       "capitalization": 3417500,
-      "capitalizationSource": "SEC Form D/A (May 11, 2017): \"Offering capitalized at $3,417,500.\" https://www.sec.gov/Archives/edgar/data/1689492/000168949217000001/primary_doc.xml",
+      "capitalizationSource": "SEC filing (May 11, 2017): \"Offering capitalized at $3,417,500\". https://www.sec.gov/Archives/edgar/data/1689492/000168949217000001/primary_doc.xml ([sec.gov](https://www.sec.gov/Archives/edgar/data/1689492/000168949217000001/primary_doc.xml?utm_source=openai))",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": true,
-      "recoupedDate": "2017-08",
-      "recoupedSource": "Los Angeles Times (Apr 12, 2018): \"recouped their investment after just 15 weeks on Broadway.\" https://www.latimes.com/entertainment/arts/la-ca-cm-la-jolla-playhouse-broadway-20180412-story.html",
       "estimatedRecoupmentPct": null,
       "designation": "Recouped",
-      "notes": "Broadway capital was publicly disclosed in SEC Form D/A; no public weekly nut found. Recoupment was reported by the Los Angeles Times as happening after 15 weeks on Broadway, so the exact month is approximate.",
-      "confidence": "medium",
+      "notes": "SEC filing shows maximum capitalization was $3,750,000 and the offering was capitalized at $3,417,500. Daryl Roth later said the production sold out the extra six weeks and broke even. Exact recoupment day was not published, so August 2017 is month-level only. ([sec.gov](https://www.sec.gov/Archives/edgar/data/1689492/000168949217000001/primary_doc.xml?utm_source=openai))",
+      "confidence": "high",
       "sources": [
         {
           "type": "sec",
@@ -195,23 +223,22 @@
         },
         {
           "type": "trade",
-          "url": "https://www.latimes.com/entertainment/arts/la-ca-cm-la-jolla-playhouse-broadway-20180412-story.html",
-          "date": "2018-04-12"
+          "url": "https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose/",
+          "date": "2019-03-06"
         }
       ],
-      "_recoupedClaim": true,
       "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
       "title": "Indecent",
       "slug": "indecent-2017",
       "openingDate": "2017-04-18",
       "status": "closed",
-      "researchedAt": "2026-11-07T23:00:08.150Z",
+      "researchedAt": "2026-11-14T22:53:00.645Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
-      "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-11-12T10:00:41.261Z",
-      "verifyAttempts": 1,
-      "lastVerifyAttemptAt": "2026-11-14T02:18:02.243Z"
+      "claimStripped": {
+        "at": "2026-11-14T22:53:00.645Z",
+        "reason": "source previously rejected: https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose"
+      }
     },
     "billy-crystal-860-2026": {
       "title": "Billy Crystal 860",
@@ -243,6 +270,749 @@
       "researchedAt": "2026-11-07T21:48:33.775Z",
       "autoApplyBlocked": "record validation: commercial.json: \"billy-crystal-860\" has designation \"Easy Winner\" but recouped=null (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md)",
       "autoApplyBlockedAt": "2026-11-12T10:01:11.453Z"
+    },
+    "lost-lear": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Announced, pre-opening Broadway production at the Booth Theatre; no verified capitalization, weekly running cost, or recoupment figures were found.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://shubert.nyc/press/jessica-chastain-returns-to-broadway-in-lost-lear/",
+          "date": "2026-11-11"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/lost-lear-548744",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.broadway.org/shows/lost-lear",
+          "date": null
+        }
+      ],
+      "title": "Lost Lear",
+      "slug": "lost-lear",
+      "openingDate": null,
+      "status": "announced",
+      "researchedAt": "2026-11-14T22:32:03.775Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "new-show"
+    },
+    "the-odd-couple": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Announced 15-week limited engagement at the Stephen Sondheim Theatre; no verified public capitalization, weekly nut, or recoupment data found in the targeted sources.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/steve-carell-and-john-c-reilly-to-star-in-the-odd-couple-on-broadway/",
+          "date": "2026-11-12"
+        },
+        {
+          "type": "manual",
+          "url": "https://oddcouplebroadway.com/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/the-odd-couple-548750",
+          "date": null
+        }
+      ],
+      "title": "The Odd Couple",
+      "slug": "the-odd-couple",
+      "openingDate": null,
+      "status": "announced",
+      "researchedAt": "2026-11-14T22:32:48.354Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "new-show"
+    },
+    "downstate": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Still in previews; no verified public capitalization or weekly nut located. The show’s first preview moved to October 22, 2026, which makes it ineligible for the NYC theatrical tax credit cutoff noted in Broadway News.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://downstateonbroadway.com/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/bruce-norris-downstate-delays-first-broadway-preview-again-due-to-illness/",
+          "date": "2026-10-19"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/downstate-tax-credit-extended-for-broadway-productions/",
+          "date": "2025-09-15"
+        }
+      ],
+      "title": "Downstate",
+      "slug": "downstate",
+      "openingDate": "2026-11-15",
+      "status": "previews",
+      "researchedAt": "2026-11-14T22:34:47.006Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "pre-opening"
+    },
+    "three-days-of-rain": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public sources confirm only the January 30, 2027 preview date and March 1, 2027 opening at the Longacre Theatre for a strictly limited 16-week engagement; I found no verified capitalization, weekly nut, or recoupment figures.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://shubert.nyc/press/three-days-of-rain-announces-theatre-dates-and-design-team/",
+          "date": "2026-10-13"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/broadway-will-get-a-three-days-of-rain-revival-starring-francois-arnaud-david-corenswet-yvonne-strahovski-in-2027",
+          "date": "2026-06-25"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "Three Days of Rain",
+      "slug": "three-days-of-rain",
+      "openingDate": "2027-03-01",
+      "status": "upcoming",
+      "researchedAt": "2026-11-14T22:35:25.216Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "wanted": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No public capitalization or weekly running cost was verified. Broadway Journal says Wanted has not disclosed its capitalization in SEC filings, and the official FAQ/IBDB confirm it is open on Broadway as of Nov. 8, 2026. ([broadwayjournal.com](https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+          "date": "2026-08-12"
+        },
+        {
+          "type": "manual",
+          "url": "https://wantedmusical.com/faq/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/wanted-546156",
+          "date": null
+        }
+      ],
+      "title": "Wanted",
+      "slug": "wanted",
+      "openingDate": "2026-11-08",
+      "status": "open",
+      "researchedAt": "2026-11-14T22:37:21.774Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "galileo": {
+      "capitalization": 20000000,
+      "capitalizationSource": "SEC Form D (Jun. 30, 2025): \"Total Offering Amount $20000000.\" https://www.sec.gov/Archives/edgar/data/2074445/000207444525000001/xslFormDX08/primary_doc.xml",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Verified capitalization is $20 million. The production is still in previews, so recoupment is not yet publicly knowable; no verified weekly running cost was found.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2074445/000207444525000001/xslFormDX08/primary_doc.xml",
+          "date": "2025-06-30"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/equity-audition/GALILEO--Broadway--Map-the-Sky-LLC-2026-50041",
+          "date": "2026-03-11"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/galileo-starring-raul-esparza-and-joy-woods-completes-broadway-cast/",
+          "date": "2026-09-14"
+        }
+      ],
+      "title": "Galileo",
+      "slug": "galileo",
+      "openingDate": "2026-12-06",
+      "status": "previews",
+      "researchedAt": "2026-11-14T22:38:40.854Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "midnight-in-the-garden-of-good-and-evil": {
+      "capitalization": 25000000,
+      "capitalizationSource": "Broadway Journal (Mar. 10, 2025): scheduled to open later that year at a capitalization of up to $25 million; SEC Form D (Feb. 24, 2025) lists a total offering amount of $25,000,000. ([broadwayjournal.com](https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Broadway News identified Hal Luftig, Craig Haffner, and Sherry Wright as the producers of Midnight in the Garden of Good and Evil; the SEC Form D for Midnight on Broadway Ltd Liability Co lists those same people as related persons and shows a $25 million offering with $0 sold as of Feb. 24, 2025. I did not find a verified public weekly nut or any recoupment announcement. ([broadwaynews.com](https://www.broadwaynews.com/broadway-will-welcome-jason-robert-browns-midnight-in-the-garden-of-good-and-evil-in-2025/))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2055457/000205545725000001/xslFormDX01/primary_doc.xml",
+          "date": "2025-02-24"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle",
+          "date": "2025-03-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/broadway-will-welcome-jason-robert-browns-midnight-in-the-garden-of-good-and-evil-in-2025/",
+          "date": "2024-09-30"
+        }
+      ],
+      "title": "Midnight in the Garden of Good and Evil",
+      "slug": "midnight-in-the-garden-of-good-and-evil",
+      "openingDate": null,
+      "status": "announced",
+      "researchedAt": "2026-11-14T22:42:10.582Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "warriors": {
+      "capitalization": null,
+      "capitalizationSource": "Broadway Journal (Aug. 12, 2026): 'Wanted and Warriors haven’t disclosed their capitalizations in Securities and Exchange Commission filings.' https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No public capitalization, weekly nut, or recoupment announcement could be verified. The show is still upcoming, with previews scheduled for March 9, 2027 and opening on April 8, 2027.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+          "date": "2026-08-12"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Amber-Gray-Jasmine-Cephas-Jones-and-More-Will-Lead-Lin-Manuel-Miranda-and-Eisa-Davis-WARRIORS-20261020",
+          "date": "2026-10-20"
+        },
+        {
+          "type": "manual",
+          "url": "https://warriorsmusical.com/about/",
+          "date": null
+        }
+      ],
+      "title": "Warriors",
+      "slug": "warriors",
+      "openingDate": "2027-04-08",
+      "status": "upcoming",
+      "researchedAt": "2026-11-14T22:43:48.107Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "blue-man-group-a-new-holiday-surprise": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "I found no verified public capitalization, weekly nut, or recoupment data for this limited Broadway engagement. Trade coverage explicitly said the announcement did not disclose capitalization or weekly operating costs, and the show was still in previews at the time of review.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.theamericanquorum.com/blue-man-group-seven-week-broadway-debut/",
+          "date": "2026-09-23"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwaydirect.com/blue-man-group-a-new-holiday-surprise-heres-what-we-know/",
+          "date": "2026-09-24"
+        },
+        {
+          "type": "reddit",
+          "url": "https://forum.broadwayworld.com/thread/BLUE-MAN-GROUP--A-New-Holiday-Surprise-LuntFontanne",
+          "date": "2026-09-23"
+        }
+      ],
+      "title": "Blue Man Group “A New Holiday Surprise”",
+      "slug": "blue-man-group-a-new-holiday-surprise",
+      "openingDate": "2026-11-17",
+      "status": "previews",
+      "researchedAt": "2026-11-14T22:45:10.646Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "cat-on-a-hot-tin-roof": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Announced spring 2027 revival; no verified public financials found in the sources checked.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.loeb.com/en/newsevents/news/2026/04/loeb-guides-seaview-in-acquisition-of-rights-to-pulitzer-prize-winning-play-cat-on-a-hot-tin-roof",
+          "date": "2026-04-21"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Sam-Gold-Will-Direct-CAT-ON-A-HOT-TIN-ROOF-Revival-on-Broadway-20260421",
+          "date": "2026-04-21"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "Cat on a Hot Tin Roof",
+      "slug": "cat-on-a-hot-tin-roof",
+      "openingDate": null,
+      "status": "announced",
+      "researchedAt": "2026-11-14T22:46:43.273Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "much-ado-about-nothing": {
+      "capitalization": 7500000,
+      "capitalizationSource": "SEC Form D (May 4, 2026): \"The maximum capitalization is $7,500,000; the minimum capitalization is $6,000,000.\" https://www.sec.gov/Archives/edgar/data/2133246/000213324626000001/xslFormDX01/primary_doc.xml",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public filings show a $6.0M-$7.5M capitalization range; the revival is still in previews (first preview Oct. 31, 2026, opening Nov. 19, 2026), and I did not find a verified public weekly nut or any recoupment announcement.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2133246/000213324626000001/xslFormDX01/primary_doc.xml",
+          "date": "2026-05-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/MUCH-ADO-ABOUT-NOTHING",
+          "date": "2026-11-10"
+        }
+      ],
+      "title": "Much Ado About Nothing",
+      "slug": "much-ado-about-nothing",
+      "openingDate": "2026-11-19",
+      "status": "previews",
+      "researchedAt": "2026-11-14T22:48:09.442Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "small-mouth-sounds": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No public capitalization or weekly nut surfaced. The only explicit weekly figure I found was an Equity Production minimum of $2,799/week for an understudy in a casting notice, which is not the show's running cost; the NYC tax-credit page also had no match for the title or producers. Official/public dates conflict between a March 18, 2027 announcement and current listings for Feb. 10 previews / Mar. 11 opening. ([playwright.co](https://playwright.co/auditions/small-mouth-sounds-broadway-equity-video-submissions-deadline-111826-0ccdad0b?utm_source=openai))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://shubert.nyc/press/2026-pulitzer-prize-and-2026-tony-award-winner-bess-wohl-returns-to-broadway-this-season-with-her-play-small-mouth-sounds/",
+          "date": "2026-09-08"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadway.org/shows/small-mouth-sounds",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://smallmouthsoundsbroadway.com/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.playwright.co/auditions/small-mouth-sounds-broadway-equity-video-submissions-deadline-111826-0ccdad0b",
+          "date": null
+        }
+      ],
+      "title": "Small Mouth Sounds",
+      "slug": "small-mouth-sounds",
+      "openingDate": "2027-03-18",
+      "status": "upcoming",
+      "researchedAt": "2026-11-14T22:49:45.194Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "purple-rain": {
+      "capitalization": 29500000,
+      "capitalizationSource": "New York Times (Jul 27, 2026): \"It will cost up to $29.5 million to bring Purple Rain to Broadway.\" https://monorepo-sample2.nyt.net/2026/07/27/theater/prince-purple-rain-broadway.html",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public sources verify $29.5M capitalization; no show-specific weekly nut was found; Broadway opening is scheduled for Apr. 12, 2027, so recoupment is not yet determinable. ([sec.gov](https://www.sec.gov/Archives/edgar/data/2037632/000203763224000001/primary_doc.xml?utm_source=openai))",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2037632/000203763224000001/primary_doc.xml",
+          "date": "2024-09-18"
+        },
+        {
+          "type": "trade",
+          "url": "https://monorepo-sample2.nyt.net/2026/07/27/theater/prince-purple-rain-broadway.html",
+          "date": "2026-07-27"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/purple-rain-will-rock-broadway-in-spring-2027/",
+          "date": "2026-07-27"
+        }
+      ],
+      "title": "Purple Rain",
+      "slug": "purple-rain",
+      "openingDate": "2027-04-12",
+      "status": "upcoming",
+      "researchedAt": "2026-11-14T22:51:05.407Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "springsteen-on-broadway-2021": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "IBDB lists the 2021 production as a return engagement at the St. James Theatre, opening June 26, 2021 and closing September 4, 2021, with 30 performances. The Broadway League said it would not publicly report grosses for the 2021-2022 season, so I could not verify a public capitalization, weekly operating cost, or recoupment announcement for this limited engagement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/springsteen-on-broadway-531787",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/broadway-shows-will-not-report-grosses-this-season/",
+          "date": "2021-08-09"
+        }
+      ],
+      "title": "Springsteen on Broadway",
+      "slug": "springsteen-on-broadway-2021",
+      "openingDate": "2021-06-26",
+      "status": "closed",
+      "researchedAt": "2026-11-14T22:55:49.135Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "dreamgirls": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Announced for fall 2026, but I could not verify any public capitalization, weekly running cost, or recoupment data for this production.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://omdkc.com/27764-2/",
+          "date": "2025-09-19"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/dreamgirls-will-return-to-broadway-in-2026-with-camille-a-brown-as-director-choreographer/",
+          "date": "2025-09-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "Dreamgirls",
+      "slug": "dreamgirls",
+      "openingDate": null,
+      "status": "announced",
+      "researchedAt": "2026-11-14T22:56:55.240Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "paddington-the-musical": {
+      "capitalization": 31000000,
+      "capitalizationSource": "The Express Gazette (Jul 22, 2026): \"Paddington alone has a capitalization of $31 million.\" https://www.express-gazette.com/culture-entertainment/broadway-s-next-blockbusters-dolly-parton-and-paddington-bear-musicals-face-high-stakes-75857",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Broadway transfer is scheduled for the Al Hirschfeld Theatre with previews on 2027-03-30 and opening on 2027-04-18. I found a verified $31M capitalization, but no public weekly nut or recoupment status.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.express-gazette.com/culture-entertainment/broadway-s-next-blockbusters-dolly-parton-and-paddington-bear-musicals-face-high-stakes-75857",
+          "date": "2026-07-22"
+        },
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2130739/000213073926000001/primary_doc.xml",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows",
+          "date": null
+        }
+      ],
+      "title": "Paddington The Musical",
+      "slug": "paddington-the-musical",
+      "openingDate": "2027-04-18",
+      "status": "upcoming",
+      "researchedAt": "2026-11-14T22:59:00.540Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "inter-alia": {
+      "capitalization": 7000000,
+      "capitalizationSource": "SEC Form D (May 4, 2026): “Total Offering Amount | $7,000,000”; the filing also reports $425,000 sold. https://www.sec.gov/Archives/edgar/data/2133084/000213308426000001/xslFormDX01/primary_doc.xml",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public SEC filing shows a $7M offering amount, but I found no public weekly running cost or recoupment announcement. The production is still in previews, so recoupment is too early to tell.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2133084/000213308426000001/xslFormDX01/primary_doc.xml",
+          "date": "2026-05-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://news.frombroadway.com/post/inter-alia-broadway-first-preview-moves-november-11",
+          "date": "2026-11-11"
+        }
+      ],
+      "title": "Inter Alia",
+      "slug": "inter-alia",
+      "openingDate": "2026-12-01",
+      "status": "previews",
+      "researchedAt": "2026-11-14T23:00:29.810Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "evita": {
+      "capitalization": 16000000,
+      "capitalizationSource": "SEC Form D (Jun 26, 2026): \"The maximum capitalization is $16,000,000. The minimum capitalization is $13,000,000.\" https://www.sec.gov/Archives/edgar/data/2139502/000213950226000001/primary_doc.xml",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public filings identify Star Quality NY Limited Partnership as the EVITA Broadway entity and set the show's public capitalization at up to $16 million (minimum $13 million). No show-specific weekly running cost or recoupment data was publicly verifiable from the sources checked, and the production has not opened yet.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2139502/000213950226000001/primary_doc.xml",
+          "date": "2026-06-26"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/jamie-lloyd-directed-evita-will-transfer-to-broadway-with-rachel-zegler-in-2027",
+          "date": "2026-04-29"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/evita-broadway-winter-garden-theatre-2027",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/equity-audition/EVITA-Star-Quality-NY-Limited-Partnership--2026-50798",
+          "date": "2026-05-04"
+        }
+      ],
+      "title": "Evita",
+      "slug": "evita",
+      "openingDate": "2027-03-25",
+      "status": "upcoming",
+      "researchedAt": "2026-11-14T23:01:38.136Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "the-amish-project": {
+      "capitalization": 6000000,
+      "capitalizationSource": "SEC Form D (Nov 2, 2026): 'The maximum capitalization is $6,000,000. The minimum capitalization is $4,500,000.' https://www.sec.gov/Archives/edgar/data/2158877/000215887726000001/primary_doc.xml",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public materials identify the show as upcoming at the Broadhurst Theatre. The only public financing figure I found is the Form D maximum capitalization of $6,000,000 (with a $4,500,000 minimum); no public weekly running cost was disclosed.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2158877/000215887726000001/primary_doc.xml",
+          "date": "2026-11-02"
+        },
+        {
+          "type": "manual",
+          "url": "https://amishprojectbroadway.com/gdpr",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/the-amish-project-548608",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadway.org/shows/the-amish-project?l=1",
+          "date": null
+        }
+      ],
+      "title": "The Amish Project",
+      "slug": "the-amish-project",
+      "openingDate": null,
+      "status": "upcoming",
+      "researchedAt": "2026-11-14T23:02:57.132Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "10-things-i-hate-about-you-on-broadway": {
+      "capitalization": 18000000,
+      "capitalizationSource": "SEC Form D (Oct 30, 2026): \"The minimum capitalization is $16,000,000. The maximum capitalization is $18,000,000.\" https://www.sec.gov/Archives/edgar/data/2161511/000216151126000001/xslFormDX01/primary_doc.xml",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Verified public financing disclosure shows an $18M offering and a $16M-$18M capitalization range. I found no verified public weekly running cost, and the production has not opened yet.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2161511/000216151126000001/xslFormDX01/primary_doc.xml",
+          "date": "2026-10-30"
+        },
+        {
+          "type": "trade",
+          "url": "https://au.variety.com/2026/more/news/10-things-i-hate-about-you-musical-broadway-date-lena-dunham-39469/",
+          "date": "2026-08-18"
+        }
+      ],
+      "title": "10 Things I Hate About You",
+      "slug": "10-things-i-hate-about-you-on-broadway",
+      "openingDate": null,
+      "status": "upcoming",
+      "researchedAt": "2026-11-14T23:04:14.530Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
     },
     "the-lost-boys-2026": {
       "title": "The Lost Boys",
