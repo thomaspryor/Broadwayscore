@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T03:31:46.728Z",
+  "timestamp": "2026-11-14T04:36:18.706Z",
   "stats": {
-    "totalReviews": 81980,
-    "alreadyFlagged": 22376,
+    "totalReviews": 81981,
+    "alreadyFlagged": 22377,
     "dateGuardCatches": 220,
     "directorMismatch": 3683,
     "tvFilmSignals": 2313,
-    "londonSignals": 3745,
+    "londonSignals": 3744,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8449
+    "noPublishDate": 8448
   },
   "findings": [
     {
@@ -65330,25 +65330,6 @@
       ]
     },
     {
-      "showId": "the-authenticator-west-end-2026",
-      "file": "theupcoming--jim-compton-hall.json",
-      "score": 90,
-      "publishDate": "2026-04-03",
-      "url": "https://www.theupcoming.co.uk/2026/04/03/the-authenticator-at-the-national-theatre-theatre-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "the-bands-visit-2017",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 93,
@@ -80433,6 +80414,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "nytg--austin-fimmano.json",
+      "score": 78,
+      "publishDate": "2026-11-13",
+      "url": "https://www.newyorktheatreguide.com/reviews/traitorz-the-unauthorized-musical-parody-off-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -98165,20 +98160,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "dear-liar-off-west-end-2026",
-      "file": "london-box-office--miriam-gibson.json",
-      "score": 58,
-      "publishDate": "2026-02-11",
-      "url": "https://www.londonboxoffice.co.uk/news/post/dear-liar-jermyn-street-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -128842,6 +128823,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "theupcoming--jim-compton-hall.json",
+      "score": 90,
+      "publishDate": "2026-04-03",
+      "url": "https://www.theupcoming.co.uk/2026/04/03/the-authenticator-at-the-national-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
