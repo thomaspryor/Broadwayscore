@@ -570,6 +570,25 @@ function isFetchAbandonedAwaitingManual(entry) {
   return !Number.isNaN(Date.parse(entry.firstSeen || '')) && !Number.isNaN(Date.parse(entry.gapSeenAt || ''));
 }
 
+// BRO-7472: "T1/T2 silent review gaps" was filed 3 times in 30 days (BRO-5436,
+// BRO-7364, BRO-7453), each time for a tier-2 empty-body stub (theatermania,
+// talkinbroadway forum thread) that automation was still retrying: the forum
+// budget alone runs one slow try a day for days. The health row warned after
+// 24h, digest-autofix filed a card, and a cloud worker had nothing to run.
+// A gap is only "silent" once automation has stopped working on it. A tier-2
+// gap that still has an automated path stays quiet until the file has been held
+// MANUAL_RECOVERY_FILE_DAYS (the same clock that moves spent gaps to the FYI line);
+// after that, still-recoverable means automation is stuck and the row warns.
+// Tier 1 and rejected-unscoreable never get this window: those the owner sees at 24h.
+function isAutomationStillWorking(entry, now = new Date()) {
+  if (!entry || typeof entry !== 'object') return false;
+  if (entry.tier === 1 || entry.type === 'rejected-unscoreable') return false;
+  if (hasNoAutomatedPath(entry)) return false;
+  const fileAt = Date.parse(entry.firstSeen || '');
+  if (Number.isNaN(fileAt)) return false; // fail open: unstamped stays visible
+  return now.getTime() - fileAt < MANUAL_RECOVERY_FILE_DAYS * 86400000;
+}
+
 function needsManualRecovery(entry, now = new Date()) {
   if (!hasNoAutomatedPath(entry)) return false;
   const fileAt = Date.parse(entry.firstSeen || '');
@@ -622,6 +641,7 @@ function staleOpenGapKeys(ledger, { dirExists, fileExists }) {
 module.exports = {
   hasNoAutomatedPath,
   isFetchAbandonedAwaitingManual,
+  isAutomationStillWorking,
   manualRecoveryDigestLine,
   MANUAL_RECOVERY_CONDITION_KEY,
   needsManualRecovery,
