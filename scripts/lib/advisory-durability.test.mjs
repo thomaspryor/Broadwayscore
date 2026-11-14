@@ -19,9 +19,12 @@ function run(kind, detail, env, root, tmp) {
   });
   assert.equal(r.status, 0, r.stderr);
 }
+const DIRS = [];
+process.on('exit', () => DIRS.forEach((d) => fs.rmSync(d, { recursive: true, force: true })));
 function fixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'adv-root-'));
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'adv-tmp-'));
+  DIRS.push(root, tmp);
   fs.mkdirSync(path.join(root, 'scripts'));
   const log = path.join(root, 'calls.jsonl');
   fs.writeFileSync(path.join(root, 'scripts/linear-brain.js'),
@@ -61,6 +64,7 @@ test('once per session and kind; a different kind still posts', async () => {
   run('WAKEPROMISE', 'later', CLOUD, f.root, f.tmp);
   const kinds = (await f.calls(2)).map((x) => x[3].split('-ADVISORY')[0]).sort();
   assert.deepEqual(kinds, ['OPENCLAIM', 'WAKEPROMISE']);
+  assert.equal(f.markers().length, 2); // synchronous marker: a broken once-per-session check cannot hide behind timing
 });
 
 test('not cloud, or no Linear key: nothing posted and no crash', async () => {
