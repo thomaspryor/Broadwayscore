@@ -893,7 +893,8 @@ async function updateShowStatuses() {
       const fix = openingDateCorrectionFromCluster(show, loadDiscoveredReviews(show.id), isDateReached);
       if (fix) {
         changes.status = { from: show.status, to: 'open' };
-        changes.reviewDriven = true;
+        // A real opening tonight must still reach opening-night automation.
+        if (fix.date < new Date().toISOString().slice(0, 10)) changes.reviewDriven = true;
         changes.openingDate = { from: show.openingDate, to: fix.date };
         changes.note = `${fix.earlyOutlets} of ${fix.outlets} outlets reviewed on ${fix.date}, before stored openingDate ${show.openingDate}: date corrected`;
         console.log(`  ⚠️  ${show.title} (${show.id}): ${changes.note}`);

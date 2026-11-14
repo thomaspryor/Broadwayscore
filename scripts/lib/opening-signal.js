@@ -402,7 +402,8 @@ const CLUSTER_EARLY_DAYS = 2;
  * @returns {{date, source, outlets, earlyOutlets}|null}
  */
 function openingDateCorrectionFromCluster(show, files, isDateReached) {
-  if (!show || !PRE_OPEN_STATUSES.has(show.status)) return null;
+  // previews/upcoming only: 'announced' rows go through blockAnnouncedCatchUp.
+  if (!show || (show.status !== 'previews' && show.status !== 'upcoming')) return null;
   if (!/^\d{4}-\d{2}-\d{2}$/.test(show.openingDate || '')) return null;
   if (isDateReached(show.openingDate)) return null;
   if (!show.previewsStartDate || !isDateReached(show.previewsStartDate)) return null;
@@ -413,7 +414,10 @@ function openingDateCorrectionFromCluster(show, files, isDateReached) {
     if (typeof raw !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(raw)) continue;
     const day = raw.slice(0, 10);
     if (day < show.previewsStartDate) continue;
-    const key = review.outletId || review.outlet || review.url;
+    let host = null;
+    try { host = new URL(review.url).hostname.replace(/^www\./, ''); } catch { /* no host */ }
+    const key = review.outletId || review.outlet || host;
+    if (!key) continue;
     const prev = earliestByOutlet.get(key);
     if (!prev || day < prev) earliestByOutlet.set(key, day);
   }
@@ -424,6 +428,9 @@ function openingDateCorrectionFromCluster(show, files, isDateReached) {
   if (early.length < CLUSTER_MIN_OUTLETS || early.length / days.length < CLUSTER_MIN_EARLY_SHARE) return null;
   const pressNight = estimatePressNight(early);
   if (!pressNight || !isDateReached(pressNight)) return null;
+  // Previews-week blog posts scattered over several days must not move a date:
+  // the press wave itself has to be 3+ outlets on the same day.
+  if (early.filter((d) => d === pressNight).length < CLUSTER_MIN_OUTLETS) return null;
   return { date: pressNight, source: 'review-derived-press-night', outlets: days.length, earlyOutlets: early.length };
 }
 

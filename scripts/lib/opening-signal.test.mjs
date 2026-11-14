@@ -464,3 +464,21 @@ import { readFileSync as _readFileSync } from 'node:fs';
     assertS.match(src, /openingDateCorrectionFromCluster\(show, loadDiscoveredReviews\(show\.id\)/);
   });
 }
+
+{
+  const { test: t2 } = await import('node:test');
+  const a2 = (await import('node:assert/strict')).default;
+  const sig2 = (await import('node:module')).createRequire(import.meta.url)('./opening-signal.js');
+  const reached2 = (d) => d <= '2026-11-14';
+  const show2 = { id: 'r', status: 'previews', openingDate: '2026-11-18', previewsStartDate: '2026-10-21' };
+  const rv = (o, d) => ({ outletId: o, publishDate: d, url: `https://${o}.example/r` });
+  t2('BRO-7487 review: previews-week blogs on different days do not move a date', () => {
+    a2.equal(sig2.openingDateCorrectionFromCluster(show2, [rv('a', '2026-10-25'), rv('b', '2026-10-28'), rv('c', '2026-11-02')], reached2), null);
+  });
+  t2('BRO-7487 review: announced rows and url-only records from one host are not counted', () => {
+    const three = ['a', 'b', 'c'].map((o) => rv(o, '2026-11-10'));
+    a2.equal(sig2.openingDateCorrectionFromCluster({ ...show2, status: 'announced' }, three, reached2), null);
+    const sameHost = [1, 2, 3].map((n) => ({ publishDate: '2026-11-10', url: `https://one.example/r${n}` }));
+    a2.equal(sig2.openingDateCorrectionFromCluster(show2, sameHost, reached2), null);
+  });
+}
