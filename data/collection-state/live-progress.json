@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-14T11:22:07.833Z",
-  "processed": 5,
-  "failed": 11,
-  "successRate": "31.3%",
+  "updatedAt": "2026-11-14T12:13:29.322Z",
+  "processed": 42,
+  "failed": 54,
+  "successRate": "43.8%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 25,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 7,
+    "scrapingbee": 2,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 8
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-11-14T11:16:01.770Z",
@@ -59,6 +59,67 @@
       "t": "2026-11-14T11:21:50.026Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T11:43:18.772Z",
+      "event": "bb-session",
+      "session": "f256c9bc",
+      "url": "https://www.nytimes.com/2024/08/15/theater/sydney-lemmon-job-broadway.html"
+    },
+    {
+      "t": "2026-11-14T11:43:19.612Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-14T11:53:58.729Z",
+      "event": "bb-session",
+      "session": "f101209e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466"
+    },
+    {
+      "t": "2026-11-14T11:53:59.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T11:54:58.822Z",
+      "event": "bb-session",
+      "session": "5ab10b86",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html"
+    },
+    {
+      "t": "2026-11-14T11:54:59.663Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T12:02:32.236Z",
+      "event": "bb-session",
+      "session": "e35986d0",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655430"
+    },
+    {
+      "t": "2026-11-14T12:02:33.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T12:05:42.081Z",
+      "event": "bb-session",
+      "session": "954f012c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655407"
+    },
+    {
+      "t": "2026-11-14T12:05:42.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T12:07:05.441Z",
+      "event": "bb-session",
+      "session": "01e033d5",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
