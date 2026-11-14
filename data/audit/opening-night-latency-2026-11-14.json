@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-14T18:11:52.821Z",
+  "generatedAt": "2026-11-14T22:02:28.978Z",
   "date": "2026-11-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 232702,
+  "entryCount": 242369,
   "shows": [
     {
       "showId": "wicked-tour-2021",
@@ -298,7 +298,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 213079,
+        "scored-to-rebuilt": 293103,
         "rebuilt-to-deployed": 96086703
       },
       "reviews_over_15min": 1,
@@ -3300,13 +3300,13 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "reviewCount": 22,
+      "reviewCount": 24,
       "median_e2e_ms": 98516836,
       "p90_e2e_ms": 128172090,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 325307,
-        "scored-to-rebuilt": 471178,
+        "collected-to-scored": 386777,
+        "scored-to-rebuilt": 376927,
         "rebuilt-to-deployed": 96864873
       },
       "reviews_over_15min": 5,
@@ -15146,13 +15146,13 @@
     },
     {
       "showId": "roleplay-off-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 76755,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16076,13 +16076,13 @@
     },
     {
       "showId": "the-unbelievers-off-broadway-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 569166,
+        "scored-to-rebuilt": 524569,
         "rebuilt-to-deployed": 63553477
       },
       "reviews_over_15min": 0,
@@ -16704,6 +16704,111 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 257438,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "year-one-regional-2026",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1299183,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1264539,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "confederates-regional-2026-fountain-theatre",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1079348,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-elaborate-entrance-of-chad-deity-regional-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1047780,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1446755,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "reviewCount": 25,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 916117,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
