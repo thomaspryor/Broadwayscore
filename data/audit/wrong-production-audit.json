@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T18:21:00.561Z",
+  "timestamp": "2026-11-14T19:14:55.024Z",
   "stats": {
-    "totalReviews": 82080,
-    "alreadyFlagged": 22379,
+    "totalReviews": 82081,
+    "alreadyFlagged": 22380,
     "dateGuardCatches": 220,
     "directorMismatch": 3687,
-    "tvFilmSignals": 2312,
+    "tvFilmSignals": 2313,
     "londonSignals": 3751,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8478
+    "noPublishDate": 8476
   },
   "findings": [
     {
@@ -46837,6 +46837,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "score": 45,
+      "publishDate": "2026-11-10",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -109728,7 +109742,7 @@
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "file": "artsdesk--david-nice.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "2026-11-10",
       "url": "https://theartsdesk.com/opera/iphigenie-en-tauride-english-national-opera-review-stylised-stylishly-sung-rarity",
       "findings": [
