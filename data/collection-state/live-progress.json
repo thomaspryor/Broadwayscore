@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-11-14T12:34:09.569Z",
-  "processed": 49,
-  "failed": 60,
-  "successRate": "45.0%",
+  "updatedAt": "2026-11-14T12:45:12.914Z",
+  "processed": 140,
+  "failed": 76,
+  "successRate": "64.8%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 83,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 2,
+    "scrapingdog": 17,
+    "scrapingbee": 5,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 35
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-11-14T11:19:18.472Z",
-      "event": "bb-session",
-      "session": "95f7ae9e",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
     {
       "t": "2026-11-14T11:19:18.946Z",
       "event": "bb-cookie-inject",
@@ -100,33 +94,38 @@
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     },
     {
-      "t": "2026-11-14T12:26:18.870Z",
+      "t": "2026-11-14T12:17:11.412Z",
       "event": "bb-session",
-      "session": "65b5e023",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+      "session": "7efd0089",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
     },
     {
-      "t": "2026-11-14T12:26:19.448Z",
+      "t": "2026-11-14T12:17:32.190Z",
+      "event": "bb-session",
+      "session": "c0512c40",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-14T12:32:02.368Z",
+      "event": "bb-session",
+      "session": "b5695e79",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-14T12:32:03.178Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-14T12:31:50.667Z",
+      "t": "2026-11-14T12:37:56.574Z",
       "event": "bb-session",
-      "session": "b247d8ca",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "b5d87424",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-14T12:33:18.699Z",
-      "event": "bb-session",
-      "session": "cb74304e",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
-    },
-    {
-      "t": "2026-11-14T12:33:55.065Z",
-      "event": "bb-session",
-      "session": "21ca98e5",
-      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+      "t": "2026-11-14T12:37:57.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
