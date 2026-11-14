@@ -17,8 +17,8 @@
  *   - emailed 20h+ ago, still not posted, numbers steady → one "Still ready" reminder
  *   - posted, stale (past DRAFT_TTL_DAYS) → nothing
  * Sends stamp emailedAt / reminderAt on the draft so nothing sends twice; the
- * job's commit step persists that. Sends go out BEFORE that commit (outputs
- * before state), so a failed commit can at worst repeat an email, never drop one.
+ * job's commit step persists that. Resend history and stable idempotency keys
+ * also guard same-day repeats when that commit fails or a run is retried.
  *
  * RULE 17: transactional, one explicit recipient, never a broadcast.
  *
@@ -26,7 +26,7 @@
  *   node scripts/send-reddit-post-email.js                 # send due emails
  *   node scripts/send-reddit-post-email.js --dry-run       # print, send nothing, save nothing
  *   node scripts/send-reddit-post-email.js --send-to=EMAIL # override recipient
- *   node scripts/send-reddit-post-email.js --resend=a,b     # send these drafts again now
+ *   node scripts/send-reddit-post-email.js --resend=a,b     # resend unless already sent today
  */
 
 'use strict';
@@ -51,7 +51,7 @@ const USAGE = `send-reddit-post-email.js: email each new Reddit opening-post dra
   --dry-run          print subjects + HTML, send and save nothing
   --send-to=EMAIL    override recipient (default: owner)
   --no-screenshots   skip the phone-width page screenshots
-  --resend=ID,ID     send these unposted drafts again now (ignores age and earlier sends)`;
+  --resend=ID,ID     resend these unposted drafts (ignores age, skips identical subjects sent today)`;
 
 const os = require('os');
 const { dueEmails, resendEmails, buildSubject, buildHtml, stampsFor, afterSend, liveMatchesDraft, SHOW_HEADER } = require('./lib/reddit-post-email');
@@ -113,10 +113,17 @@ async function main() {
     process.exit(1);
   }
 
+  const { loadScheduledSendHistory, planScheduledSend } = require('./lib/scheduled-send-guard.js');
+  const history = DRY_RUN ? null : await loadScheduledSendHistory({ apiKey: process.env.RESEND_API_KEY, recipient: SEND_TO });
   let failed = 0;
   const started = Date.now();
   for (const { draft, kind } of due) {
     const subject = buildSubject(draft, kind);
+    const guard = DRY_RUN ? null : planScheduledSend({ sender: 'reddit-post-ready', recipient: SEND_TO, subject, history });
+    if (guard?.alreadySent) {
+      console.log(`Skipping ${draft.showId}: this subject was already sent today (ET).`);
+      continue;
+    }
     // Phone-shaped screenshots of the live page, so the owner doesn't take
     // them by hand (BRO-4597). Never blocks the email: no images on failure,
     // and none once the run's screenshot budget is spent (the job has a
@@ -147,7 +154,8 @@ async function main() {
     }
     try {
       const res = await postJSON('https://api.resend.com/emails', { from: FROM, to: [SEND_TO], subject, html, headers: { [SHOW_HEADER]: draft.showId }, ...(attachments.length ? { attachments } : {}) },
-        { Authorization: `Bearer ${process.env.RESEND_API_KEY}` });
+        { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Idempotency-Key': guard.idempotencyKey });
+      history.emails.push({ to: [SEND_TO], subject, created_at: new Date().toISOString() });
       const stamp = new Date().toISOString();
       drafts.drafts[draft.showId] = afterSend(drafts.drafts[draft.showId], stampsFor(kind, draft, stamp, { resend: RESEND.length > 0 }));
       // Stamp right away: a run killed later in the loop must not re-send this one.

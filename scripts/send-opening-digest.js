@@ -975,14 +975,18 @@ async function main() {
     process.exit(1);
   }
 
+  const { loadScheduledSendHistory, planScheduledSend } = require('./lib/scheduled-send-guard.js');
+  const history = await loadScheduledSendHistory({ apiKey: RESEND_API_KEY, recipient: SEND_TO });
+  const { alreadySent, idempotencyKey } = planScheduledSend({ sender: 'opening-digest', recipient: SEND_TO, subject, history });
+  if (alreadySent) {
+    console.log(`Opening digest already sent for ${history.dayKey} (ET); skipping.`);
+    return;
+  }
   console.log(`Sending opening digest to ${SEND_TO}...`);
   // BRO-6157: one 15s Resend timeout cost the 2026-10-23 send. Retry transient
   // failures; the shared Idempotency-Key keeps a timed-out-but-accepted attempt
   // from double-sending.
-  const { sendWithRetry, buildIdempotencyKey } = require('./lib/resend-send-retry.js');
-  const todayET = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-  const idempotencyKey = buildIdempotencyKey('opening-digest', todayET, SEND_TO,
-    require('crypto').createHash('sha256').update(subject + html).digest('hex').slice(0, 16));
+  const { sendWithRetry } = require('./lib/resend-send-retry.js');
   const res = await sendWithRetry(() => postJSON('https://api.resend.com/emails', {
     from: `${FROM_NAME} <${FROM_EMAIL}>`,
     to: [SEND_TO],
