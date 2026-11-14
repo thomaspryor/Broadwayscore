@@ -325,7 +325,7 @@ const ShowListCard = memo(function ShowListCard({
             {show.closingDate && (
               // Separator outside the nowrap span so phones can break the line
               // after "Just opened ·" instead of overflowing into the score.
-              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? ' · ' : ''}<span className="whitespace-nowrap">{formatClosingLabel(show, formatOpeningDate(show.closingDate))}</span></span>
+              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? '\u00a0· ' : ''}<span className="whitespace-nowrap">{formatClosingLabel(show, formatOpeningDate(show.closingDate))}</span></span>
             )}
           </>
         )}
@@ -474,7 +474,10 @@ const ShowListCard = memo(function ShowListCard({
         height={112}
         decoding="async"
         sizes="(min-width: 640px) 112px, 96px"
-        className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300${isCompact ? '' : ' will-change-transform'}`}
+        // Absolute so the image never sets the row height: a portrait thumb
+        // (96x144) in flow made phone cards ~178px when the text needed ~110
+        // (BRO-7469 review). The wrapper's size or self-stretch decides it.
+        className={`absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300${isCompact ? '' : ' will-change-transform'}`}
         fallback={
           <div className="w-full h-full flex flex-col items-center justify-center text-fg-muted px-2" aria-hidden="true">
             <div className="text-2xl mb-0.5">🎭</div>
