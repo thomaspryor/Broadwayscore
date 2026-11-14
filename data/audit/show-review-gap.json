@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-14T01:35:46.504Z",
+  "generatedAt": "2026-11-14T05:24:29.223Z",
   "windowDays": 1095,
-  "targets": 207,
-  "auditedThisRun": 25,
-  "carriedForward": 2648,
+  "targets": 230,
+  "auditedThisRun": 26,
+  "carriedForward": 2649,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 656,
-    "missingCurrentRun": 1362,
+    "withGap": 655,
+    "missingCurrentRun": 1357,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 900,
     "totalRecoverable": 52,
     "totalRecovered": 115,
     "humanExcluded": 23,
-    "automatedExcluded": 996,
+    "automatedExcluded": 992,
     "automatedExcludedListed": 706,
-    "priorProductionCitations": 8750
+    "priorProductionCitations": 8746
   },
   "results": [
     {
@@ -4934,40 +4934,15 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://chicagoreader.com/theater-review/body-of-water-elsinore-ensemble",
         "https://aroundthetownchicago.com/theatre-reviews/a-body-of-water-reviewed-by-frank-meccia/",
-        "https://chicagoreader.com/performing-arts/theater/theater-review/body-of-water-elsinore-ensemble/",
-        "https://aroundthetownchicago.com/theatre-reviews/a-body-of-water"
+        "https://aroundthetownchicago.com/theatre-reviews/a-body-of-water",
+        "https://chicagoreader.com/theater-review/body-of-water-elsinore-ensemble",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/body-of-water-elsinore-ensemble/"
       ],
-      "dirFiles": 3,
-      "dirClean": 3,
-      "inReviewsJson": 3,
-      "missing": [
-        {
-          "url": "https://chicagoreader.com/theater-review/body-of-water-elsinore-ensemble",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/body-of-water-elsinore-ensemble/",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
       "dirOnly": [
         {
           "host": "entertainingchicago.com",
@@ -4982,128 +4957,19 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"A Body of Water\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"A Body of Water\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"A Body of Water\" review athenaeum",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "A Body of Water Athenaeum Theatre, Chicago, IL review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "A Body of Water Athenaeum Theatre, Chicago, IL review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "A Body of Water Athenaeum Theatre, Chicago, IL review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 4,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 3,
-        "byReason": {
-          "non-review-host": 1,
-          "tag-index-page": 1,
-          "census-junk-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://chicagoreader.com/theater-review/body-of-water-elsinore-ensemble",
-          "host": "chicagoreader.com",
-          "outletId": "chicago-reader",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-        },
-        {
-          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/body-of-water-elsinore-ensemble/",
-          "host": "chicagoreader.com",
-          "outletId": "chicago-reader",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "chicago-reader",
-            "outlet": "chicago-reader",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://chicagoreader.com/theater-review/body-of-water-elsinore-ensemble"
-          },
-          {
-            "outletId": "chicago-reader",
-            "outlet": "chicago-reader",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://chicagoreader.com/performing-arts/theater/theater-review/body-of-water-elsinore-ensemble/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -5120,25 +4986,23 @@
           },
           {
             "url": "https://chicagoreader.com/theater-review/body-of-water-elsinore-ensemble",
-            "outletId": "chicago-reader",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "chicagoreader.com",
+            "state": "live",
             "firstSeenAt": "2026-11-14T00:31:07.833Z"
           },
           {
             "url": "https://chicagoreader.com/performing-arts/theater/theater-review/body-of-water-elsinore-ensemble/",
-            "outletId": "chicago-reader",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "chicagoreader.com",
+            "state": "live",
             "firstSeenAt": "2026-11-14T00:31:07.833Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 1,
+        "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "a-boy-called-christmas-chichester-festival-regional-2025",
@@ -22840,14 +22704,15 @@
       "previewsStartDate": "2026-11-09",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.allthatdazzles.co.uk/post/review-act-of-god-riverside-studios",
-        "https://theatreandtonic.co.uk/blog/act-of-god-at-riverside-studios-review",
         "https://www.londonboxoffice.co.uk/news/post/act-of-god-riverside-studios-review",
+        "https://theatreandtonic.co.uk/blog/act-of-god-at-riverside-studios-review",
+        "https://www.timeout.com/london/theatre/act-of-god",
+        "https://ingoodtastedenver.com/an-act-of-god",
+        "https://www.allthatdazzles.co.uk/post/review-act-of-god-riverside-studios",
         "https://www.thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
         "https://www.westendbestfriend.co.uk/news/review-act-of-god-riverside-studios",
         "https://www.thereviewshub.com/act-of-god-riverside-studios-london/",
         "https://thespyinthestalls.com/2026/11/act-of-god/",
-        "https://www.timeout.com/london/theatre/act-of-god",
         "https://ingoodtastedenver.com/an-act-of-god/",
         "https://www.theatermania.com/news/an-act-of-god_82780/",
         "https://broadwaybaby.com/shows/act-of-god/839216"
@@ -22943,12 +22808,76 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Act of God\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Act of God\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Act of God\" review riverside",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Act of God Riverside Studios review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Act of God Riverside Studios review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Act of God Riverside Studios review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 8,
+        "byReason": {
+          "non-review-host": 1,
+          "no-review-evidence": 2,
+          "roundup-page": 1,
+          "tag-index-page": 2,
+          "census-junk-host": 1,
+          "show-hub": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -22958,6 +22887,14 @@
           "knownOutletId": "timeout-london",
           "nonReviewVerdict": "timeout-listing-blurb",
           "nonReviewDetail": "unauthored-and-pre-opening"
+        },
+        {
+          "url": "https://ingoodtastedenver.com/an-act-of-god",
+          "host": "ingoodtastedenver.com",
+          "knownOutletId": "in-good-taste-denver",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2016-11-18"
         },
         {
           "url": "https://ingoodtastedenver.com/an-act-of-god/",
@@ -22992,10 +22929,10 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-act-of-god-riverside-studios",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.londonboxoffice.co.uk/news/post/act-of-god-riverside-studios-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-12T04:04:15.458Z"
+            "firstSeenAt": "2026-11-13T05:59:46.866Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/act-of-god-at-riverside-studios-review",
@@ -23004,10 +22941,22 @@
             "firstSeenAt": "2026-11-12T04:04:15.458Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/act-of-god-riverside-studios-review",
-            "outletId": "londonboxoffice.co.uk",
+            "url": "https://www.timeout.com/london/theatre/act-of-god",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-11-13T05:59:46.866Z"
+            "firstSeenAt": "2026-11-09T19:32:25.338Z"
+          },
+          {
+            "url": "https://ingoodtastedenver.com/an-act-of-god",
+            "outletId": "ingoodtastedenver.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-14T05:24:29.223Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-act-of-god-riverside-studios",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-12T04:04:15.458Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
@@ -23032,12 +22981,6 @@
             "outletId": "thespyinthestalls.com",
             "state": "live",
             "firstSeenAt": "2026-11-11T14:18:27.904Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/act-of-god",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T19:32:25.338Z"
           },
           {
             "url": "https://ingoodtastedenver.com/an-act-of-god/",
@@ -23067,6 +23010,11 @@
             "reason": "timeout-listing-blurb"
           },
           {
+            "url": "https://ingoodtastedenver.com/an-act-of-god",
+            "host": "ingoodtastedenver.com",
+            "reason": "page-date-before-run"
+          },
+          {
             "url": "https://ingoodtastedenver.com/an-act-of-god/",
             "host": "ingoodtastedenver.com",
             "reason": "page-date-before-run"
@@ -23080,7 +23028,7 @@
         "liveCount": 10,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-14T01:35:46.504Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "act-your-age-regional-2026",
@@ -23129,6 +23077,7 @@
       "previewsStartDate": "2026-11-11",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://dancemagazine.com/adaku-part-2",
         "https://www.villagevoice.com/review-adaku-part-1-the-road-opens-brings-africa-to-the-stage-at-bams-next-wave-festival/",
         "https://airmail.news/arts-intel/events/adaku-part-1-the-road-opens"
       ],
@@ -23151,6 +23100,39 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://dancemagazine.com/adaku-part-2",
+          "host": "dancemagazine.com",
+          "knownOutletId": "dance-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dance-magazine--lauren-wingenroth.json",
+              "flag": "clean",
+              "urlInDir": "https://dancemagazine.com/adaku-part-2/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://airmail.news/arts-intel/events/adaku-part-1-the-road-opens",
           "host": "airmail.news",
@@ -23184,12 +23166,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"adaku, part 2\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"adaku, part 2\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"adaku, part 2\" review fisher",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "adaku, part 2 BAM Fisher (Fishman Space) review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "adaku, part 2 BAM Fisher (Fishman Space) review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "adaku, part 2 BAM Fisher (Fishman Space) review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 8,
+        "byReason": {
+          "non-review-host": 6,
+          "no-review-evidence": 1,
+          "tag-index-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -23248,11 +23291,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://dancemagazine.com/adaku-part-2",
+            "host": "dancemagazine.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-14T01:35:46.504Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "adirondack-chair-circle-regional-2026",
@@ -47440,6 +47489,45 @@
         "candidateCount": 1
       },
       "computedAt": "2026-11-10T06:28:29.441Z"
+    },
+    {
+      "showId": "are-you-even-indian-off-west-end-2026",
+      "title": "Are You Even Indian?",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-11-17",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "are-you-mad-at-me-off-broadway-2026",
@@ -89115,12 +89203,13 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://aroundthetownchicago.com/theatre-reviews/church-hurt",
+        "https://chicagoreader.com/theater/theater-review/church-hurt-red-theater",
+        "https://thirdcoastreview.com/stages/2026/11/03/review-red-theater-church-hurt",
         "https://www.conversationswithedtracy.com/picksinsix/2026/10/28/picksinsix-review-church-hurt-red-theater",
         "https://aroundthetownchicago.com/theatre-reviews/church-hurt/",
         "https://www.chicagotheatrereview.com/2026/10/red-theater-presents-the-world-premiere-of-church-hurt-by-brunne-frauenhoffer/",
         "https://www.newcitystage.com/2026/11/04/church-hurt-reveals-the-remnants-of-an-evangelical-upbringing/",
-        "https://chicagoreader.com/theater/theater-review/church-hurt-red-theater",
-        "https://thirdcoastreview.com/stages/2026/11/03/review-red-theater-church-hurt",
         "https://chicagoreader.com/performing-arts/theater/theater-review/church-hurt-red-theater/",
         "https://splashmags.com/2026/10/redemption-and-real-life-vie-in-red-theaters-church-hurt/",
         "https://www.buzznews.net/theatre/upcoming-theatre/item/6734-red-theater-presents-the-world-premiere-of-church-hurt-october-24-november-21-2026.html"
@@ -89166,8 +89255,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -89176,7 +89265,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 4,
             "accepted": 2,
             "error": null
           },
@@ -89186,7 +89275,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -89196,7 +89285,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -89206,26 +89295,21 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 2,
             "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 4,
         "byReason": {
-          "non-review-host": 14,
-          "aggregator-internal-nav": 3,
-          "census-junk-host": 6,
-          "review-hub-page": 2,
-          "bare-host": 2,
-          "venue-production-page": 1,
-          "review-index-page": 1
+          "non-review-host": 2,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -89263,6 +89347,24 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/church-hurt",
+            "outletId": "aroundthetownchicago.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-14T05:24:29.223Z"
+          },
+          {
+            "url": "https://chicagoreader.com/theater/theater-review/church-hurt-red-theater",
+            "outletId": "chicagoreader.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-13T13:06:15.619Z"
+          },
+          {
+            "url": "https://thirdcoastreview.com/stages/2026/11/03/review-red-theater-church-hurt",
+            "outletId": "thirdcoastreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T10:39:44.907Z"
+          },
+          {
             "url": "https://www.conversationswithedtracy.com/picksinsix/2026/10/28/picksinsix-review-church-hurt-red-theater",
             "outletId": "conversationswithedtracy.com",
             "state": "live",
@@ -89285,18 +89387,6 @@
             "outletId": "newcitystage.com",
             "state": "live",
             "firstSeenAt": "2026-11-07T18:24:01.554Z"
-          },
-          {
-            "url": "https://chicagoreader.com/theater/theater-review/church-hurt-red-theater",
-            "outletId": "chicagoreader.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-13T13:06:15.619Z"
-          },
-          {
-            "url": "https://thirdcoastreview.com/stages/2026/11/03/review-red-theater-church-hurt",
-            "outletId": "thirdcoastreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T10:39:44.907Z"
           },
           {
             "url": "https://chicagoreader.com/performing-arts/theater/theater-review/church-hurt-red-theater/",
@@ -89323,7 +89413,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-13T13:06:15.619Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end-2026",
@@ -93062,16 +93152,14 @@
         "https://www.telegraph.co.uk/theatre/what-to-see/cloud-9-revival-review-modern-classic/",
         "https://www.theguardian.com/stage/2026/nov/11/cloud-9-review-national-theatre-london-caryl-churchill",
         "https://www.broadwayworld.com/westend/article/Review-CLOUD-9-National-Theatre-20261111",
-        "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
-        "https://www.beyondthejoke.co.uk/content/theatre-review-cloud-9",
+        "https://www.timeout.com/london/theatre/cloud-9",
         "https://thespyinthestalls.com/2026/11/cloud-9",
         "https://thespyinthestalls.com/2026/11/cloud-9/",
         "https://theatreandtonic.co.uk/blog/cloud-9-lyttelton-national-theatre-london-review",
         "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-orgasms-and-orgies-in-the-foliage-fchw23k6r",
-        "https://www.telegraph.co.uk/what-to-see/cloud-9-revival-review-modern-classic",
-        "https://www.timeout.com/london/theatre/cloud-9",
         "https://www.timeout.com/london/news/cloud-9-review-national-theatre-caryl-churchill-2026-111126",
         "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
+        "https://www.beyondthejoke.co.uk/content/theatre-review-cloud-9",
         "https://www.beyondthejoke.co.uk/content/18097/theatre-review-cloud-9"
       ],
       "dirFiles": 36,
@@ -93110,6 +93198,10 @@
         },
         {
           "host": "afridiziak.com",
+          "count": 1
+        },
+        {
+          "host": "allthatdazzles.co.uk",
           "count": 1
         },
         {
@@ -93263,86 +93355,17 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Cloud 9\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Cloud 9\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 7,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Cloud 9\" review lyttelton",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Cloud 9\" Cooke review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Cloud 9 Lyttelton Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Cloud 9 Lyttelton Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Cloud 9 Lyttelton Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 6,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 300,
+        "count": 292,
         "byReason": {
-          "non-review-host": 21,
           "not-http-url": 51,
+          "non-review-host": 15,
           "aggregator-internal-nav": 220,
           "aggregator-section-root": 5,
-          "podcast-episode": 1,
-          "write-path-blocked": 1,
-          "venue-production-page": 1
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
@@ -93459,18 +93482,6 @@
             "firstSeenAt": "2026-11-14T00:01:13.731Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/11/cloud-9/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-13T14:41:23.451Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/cloud-9-lyttelton-national-theatre-london-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-12T21:25:16.573Z"
-          },
-          {
             "url": "https://www.timeout.com/london/news/cloud-9-review-national-theatre-caryl-churchill-2026-111126",
             "outletId": "timeout.com",
             "state": "live",
@@ -93505,10 +93516,10 @@
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 14
+        "liveCount": 12,
+        "candidateCount": 13
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "cloud-nine-off-broadway-2015",
@@ -103277,16 +103288,15 @@
     {
       "showId": "curtains-off-broadway-2026",
       "title": "Curtains",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-11-06",
+      "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-11-06",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://theaterlife.com/curtains-opening-night",
         "https://abrummiehomeandabroad.com/theatre-review-curtains/",
-        "http://www.curtainup.com/curtainsny.html",
         "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
-        "https://www.newyorktheatreguide.com/reviews/curtains",
         "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre",
         "https://theaterlife.com/curtains-opening-night/",
         "https://arpelli.com.uy/handbook/GjI89G6FE110/Curtains_Musical_Script",
@@ -103298,6 +103308,18 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://theaterlife.com/curtains-opening-night",
+          "host": "theaterlife.com",
+          "knownOutletId": "theater-life",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://abrummiehomeandabroad.com/theatre-review-curtains/",
           "host": "abrummiehomeandabroad.com",
@@ -103315,20 +103337,6 @@
           "host": "thebearchat.com",
           "knownOutletId": null,
           "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/curtains",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2017-09-22",
           "sources": [
             {
               "source": "serp-census",
@@ -103416,11 +103424,11 @@
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Curtains\" Off-Broadway review",
+        "query": "\"Curtains\" Off-Broadway review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"Curtains\" Off-Broadway review",
+            "query": "\"Curtains\" Off-Broadway review 2026",
             "page": 0,
             "geo": "us",
             "ok": true,
@@ -103434,7 +103442,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -103444,8 +103452,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 5,
+            "results": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -103454,7 +103462,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -103464,45 +103472,27 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 5,
             "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 6,
         "byReason": {
-          "non-review-host": 12,
-          "aggregator-internal-nav": 2,
-          "census-junk-host": 1,
-          "no-review-evidence": 1,
+          "non-review-host": 4,
           "production-database-listing": 1,
-          "bare-host": 1,
-          "venue-production-page": 1
+          "tag-index-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
-      "unextractable": [
-        {
-          "url": "http://www.curtainup.com/curtainsny.html",
-          "host": "curtainup.com",
-          "knownOutletId": "curtainup",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "zeroCharAttempts": 5
-        }
-      ],
+      "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "https://abrummiehomeandabroad.com/theatre-review-curtains/",
@@ -103516,13 +103506,6 @@
           "host": "thebearchat.com",
           "priorRun": false,
           "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/curtains",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run",
           "censusGateOn": true
         },
         {
@@ -103556,6 +103539,21 @@
       ],
       "ingestResults": [
         {
+          "url": "https://theaterlife.com/curtains-opening-night",
+          "host": "theaterlife.com",
+          "outletId": "theater-life",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Cross-market reroute: curtains-off-broadway-2026 → curtains-2007 (sibling opening 11d from publishDate vs current 7158d)\n  ⊘ url kept: dropping textFetchedAt merged from refused https://theaterlife.com/curtains-opening-night on /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/curtains-2007/theater-life--eric-march.json\n\n❌ Stale merge: url, fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/curtains-2007/theater-life--eric-march.json that does not match this ingest — merge-into-existing only fills blank fields, it does "
+        },
+        {
           "url": "https://theaterlife.com/curtains-opening-night/",
           "host": "theaterlife.com",
           "outletId": "theater-life",
@@ -103568,7 +103566,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: curtains-off-broadway-2026 → curtains-2007 (year-level sibling match (review year 2007 vs current show year 2026))\n  ⊘ url kept: dropping textFetchedAt merged from refused https://theaterlife.com/curtains-opening-night/ on /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/curtains-2007/theater-life--eric-march.json\n\n❌ Stale merge: url, fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/curtains-2007/theater-life--eric-march.json that does not match this ingest — merge-into-existing only fills blank"
+          "reason": "⚠️  Cross-market reroute: curtains-off-broadway-2026 → curtains-2007 (sibling opening 11d from publishDate vs current 7158d)\n  ⊘ url kept: dropping textFetchedAt merged from refused https://theaterlife.com/curtains-opening-night/ on /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/curtains-2007/theater-life--eric-march.json\n\n❌ Stale merge: url, fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/curtains-2007/theater-life--eric-march.json that does not match this ingest — merge-into-existing only fills blank fields, it does"
         },
         {
           "url": "https://www.britishtheatreguide.info/reviews/curtains-rev",
@@ -103576,20 +103574,27 @@
           "outletId": "british-theatre",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
+          "reason": "⛔ Refusing old-production review: https://www.britishtheatreguide.info/reviews/curtains-rev (dated 2007-01-01, over a year before curtains-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theater-life",
+            "outlet": "theater-life",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theaterlife.com/curtains-opening-night"
+          },
           {
             "outletId": "abrummiehomeandabroad.com",
             "outlet": "abrummiehomeandabroad.com",
@@ -103650,59 +103655,66 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://theaterlife.com/curtains-opening-night",
+            "outletId": "theater-life",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-14T05:24:29.223Z"
+          },
+          {
             "url": "https://abrummiehomeandabroad.com/theatre-review-curtains/",
             "outletId": "abrummiehomeandabroad.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-10T05:34:49.082Z"
           },
           {
             "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
             "outletId": "thebearchat.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-08T06:35:10.988Z"
           },
           {
             "url": "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre",
             "outletId": "onstagentx.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-07T04:50:57.436Z"
           },
           {
             "url": "https://theaterlife.com/curtains-opening-night/",
             "outletId": "theater-life",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-10T20:25:26.330Z"
           },
           {
             "url": "https://arpelli.com.uy/handbook/GjI89G6FE110/Curtains_Musical_Script",
             "outletId": "arpelli.com.uy",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-09T13:45:24.394Z"
           },
           {
             "url": "https://creativefutures.online/reviews/curtains",
             "outletId": "creativefutures.online",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-10T20:25:26.330Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/curtains-rev",
             "outletId": "british-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-07T04:50:57.436Z"
           },
           {
             "url": "https://smeharbinger.net/138182/arts-and-entertainment/curtains-review/",
             "outletId": "smeharbinger.net",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-10T12:04:40.258Z"
           }
         ],
@@ -103711,7 +103723,7 @@
         "liveCount": 0,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-13T13:06:15.619Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "cygnus-regional-2025",
@@ -119886,13 +119898,11 @@
       "previewsStartDate": "2026-11-10",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
-        "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
-        "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
         "https://www.ayoungertheatre.com/review-desire-under-the-elms",
-        "https://www.britishtheatreguide.info/desire-under-th-lyric-hammersmi-8123",
         "https://www.timeout.com/london/theatre/desire-under-the-elms",
         "https://www.rotherhamadvertiser.co.uk/whats-on/arts-and-entertainment/theatre-review-desire-under-the-elms-4313802",
+        "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
+        "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
         "https://www.newyorktheatreguide.com/reviews/desire-under-the-elms",
         "https://www.ayoungertheatre.com/review-desire-under-the-elms/",
         "https://www.reviewsgate.co.uk/reviews-archive-part-2/desire-under-the-elms-till-9-october",
@@ -119919,30 +119929,6 @@
           "url": "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
           "host": "theartsdesk.com",
           "knownOutletId": "artsdesk",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/desire-under-th-lyric-hammersmi-8123",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/desire-under-the-elms",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
           "serpCensus": true,
           "sources": [
             {
@@ -120001,41 +119987,7 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/desire-under-the-elms-2"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -120082,83 +120034,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Desire Under the Elms\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Desire Under the Elms\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Desire Under the Elms\" review almeida",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Desire Under the Elms\" O'Neill review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Desire Under the Elms Almeida Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Desire Under the Elms Almeida Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Desire Under the Elms Almeida Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 9,
-        "byReason": {
-          "non-review-host": 6,
-          "no-review-evidence": 2,
-          "write-path-blocked": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -120185,6 +120066,14 @@
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2017-09-28"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/desire-under-the-elms",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2017-09-22"
         }
       ],
       "automatedExcludedListed": 0,
@@ -120207,19 +120096,19 @@
       ],
       "ingestResults": [
         {
-          "url": "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk",
+          "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/desire-under-the-elms-till-9-october",
+          "host": "reviewsgate.co.uk",
+          "outletId": "reviewsgate",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "desire-under-the-elms-off-west-end-2026: https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "⛔ Refusing old-production review: https://www.reviewsgate.co.uk/reviews-archive-part-2/desire-under-the-elms-till-9-october (dated 2018-05-17, over a year before desire-under-the-elms-off-west-end-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
         },
         {
           "url": "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
@@ -120237,39 +120126,9 @@
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
         },
         {
-          "url": "https://www.britishtheatreguide.info/desire-under-th-lyric-hammersmi-8123",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=britishtheatreguide.info): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=britishtheatreguide.info): ScrapingBee HTTP 404: <!doctype html>\n\n<html lang=\"en\">\n\n  <head>\n\n    <title>The page you were looking for doesn’t exist (404 Not found)</title>\n\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"initial-scale\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/desire-under-the-elms",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⛔ Refusing old-production review: https://www.newyorktheatreguide.com/reviews/desire-under-the-elms (dated 2017-09-22, over a year before desire-under-the-elms-off-west-end-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
-        },
-        {
-          "url": "https://www.ayoungertheatre.com/review-desire-under-the-elms/",
-          "host": "ayoungertheatre.com",
-          "outletId": "a-younger-theatre",
+          "url": "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -120277,6 +120136,21 @@
           "conflictReason": null,
           "expected": true,
           "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "desire-under-the-elms-off-west-end-2026: https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.ayoungertheatre.com/review-desire-under-the-elms/",
+          "host": "ayoungertheatre.com",
+          "outletId": "a-younger-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
           "reason": "⛔ Refusing old-production review: https://www.ayoungertheatre.com/review-desire-under-the-elms/ (dated 2012-10-11, over a year before desire-under-the-elms-off-west-end-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
@@ -120299,20 +120173,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith"
-          },
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/desire-under-th-lyric-hammersmi-8123"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/desire-under-the-elms"
           },
           {
             "outletId": "a-younger-theatre",
@@ -120364,6 +120224,12 @@
             "firstSeenAt": "2026-11-12T04:04:15.458Z"
           },
           {
+            "url": "https://www.newyorktheatreguide.com/reviews/desire-under-the-elms",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-12T11:58:54.431Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
             "outletId": "guardian",
             "state": "IN_FLIGHT",
@@ -120378,28 +120244,17 @@
             "firstSeenAt": "2026-11-11T14:18:27.904Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/desire-under-th-lyric-hammersmi-8123",
-            "outletId": "british-theatre",
+            "url": "https://www.ayoungertheatre.com/review-desire-under-the-elms/",
+            "outletId": "a-younger-theatre",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-11-13T18:22:03.602Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/desire-under-the-elms",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-12T11:58:54.431Z"
-          },
-          {
-            "url": "https://www.ayoungertheatre.com/review-desire-under-the-elms/",
-            "outletId": "ayoungertheatre.com",
-            "state": "live",
             "firstSeenAt": "2026-11-10T17:34:07.012Z"
           },
           {
             "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/desire-under-the-elms-till-9-october",
-            "outletId": "reviewsgate.co.uk",
-            "state": "live",
+            "outletId": "reviewsgate",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
             "firstSeenAt": "2026-11-10T17:34:07.012Z"
           },
           {
@@ -120435,15 +120290,15 @@
             "reason": "page-date-before-run"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
-            "host": "timeout.com",
-            "reason": "confirmed-non-review"
+            "url": "https://www.newyorktheatreguide.com/reviews/desire-under-the-elms",
+            "host": "newyorktheatreguide.com",
+            "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 3,
-        "candidateCount": 11
+        "liveCount": 4,
+        "candidateCount": 10
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "detroit-67-regional-2026",
@@ -123859,72 +123714,13 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Dogstar\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Dogstar\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Dogstar\" review hampstead",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Dogstar Hampstead Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Dogstar Hampstead Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Dogstar Hampstead Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 6,
+        "count": 2,
         "byReason": {
-          "non-review-host": 1,
-          "write-path-blocked": 2,
-          "venue-production-page": 3
+          "write-path-blocked": 2
         }
       },
       "dedupedVariants": [
@@ -124261,7 +124057,7 @@
         "liveCount": 24,
         "candidateCount": 27
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -126386,8 +126182,8 @@
       "candidatesRejected": {
         "count": 573,
         "byReason": {
-          "non-review-host": 31,
           "not-http-url": 107,
+          "non-review-host": 31,
           "aggregator-internal-nav": 423,
           "aggregator-section-root": 10,
           "podcast-episode": 2
@@ -126511,7 +126307,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
@@ -184475,7 +184271,6 @@
         "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-review-barbican-radiohead-b1304586.html",
         "https://www.theguardian.com/stage/2026/nov/13/hamlet-hail-to-the-thief-radiohead-record-shakespeare-tragedy",
         "https://theatreweekly.com/review-hamlet-hail-to-the-thief-at-barbican-theatre",
-        "https://musicaltheatrereview.com/london-debut-for-hamlet-hail-to-the-thief",
         "https://www.allthatdazzles.co.uk/post/review-hamlet-hail-to-the-thief-barbican-theatre",
         "https://www.londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-barbican-theatre-review",
         "https://1883magazine.com/hamlet-hail-to-the-thief-review/",
@@ -184491,8 +184286,8 @@
         "https://www.reviewsgate.co.uk/all-reviews/hamlet-hail-to-the-thief-shakespeare-radioheadrsc-rst-stratford-upon-avon",
         "https://www.theatremonkey.com/2026/11/hamlet-hail-to-the-thief-barbican-theatre/",
         "https://therecs.co.uk/hamlet-hail-to-the-thief/",
-        "https://theatreweekly.com/new-production-images-released-for-hamlet-hail-to-the-thief-at-the-barbican-theatre/",
         "https://theatreweekly.com/review-hamlet-hail-to-the-thief-at-barbican-theatre/",
+        "https://theatreweekly.com/new-production-images-released-for-hamlet-hail-to-the-thief-at-the-barbican-theatre/",
         "https://www.rollingstone.co.uk/music/live-reviews/hamlet-hail-to-the-thief-review-photos-radiohead-thom-yorke-50031/",
         "https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-hamlet-hail-thief-unmissable-31588332",
         "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-aviva-studios-manchester-review-b1226517.html",
@@ -184672,41 +184467,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://musicaltheatrereview.com/london-debut-for-hamlet-hail-to-the-thief",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musical-theatre-review--angela-thomas.json",
-              "flag": "clean",
-              "urlInDir": "https://musicaltheatrereview.com/london-debut-for-hamlet-hail-to-the-thief/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 18,
@@ -184762,79 +184523,18 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Hamlet Hail to the Thief\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Hamlet Hail to the Thief\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Hamlet Hail to the Thief\" review barbican",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Hamlet Hail to the Thief Barbican Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Hamlet Hail to the Thief Barbican Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Hamlet Hail to the Thief Barbican Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 4,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 298,
+        "count": 291,
         "byReason": {
-          "non-review-host": 17,
           "not-http-url": 49,
+          "non-review-host": 15,
           "aggregator-internal-nav": 220,
           "aggregator-section-root": 5,
           "podcast-episode": 1,
-          "write-path-blocked": 2,
-          "ticket-seller-product-page": 1,
-          "no-review-evidence": 1,
-          "stored-date-before-production": 1,
-          "ticketing-listing": 1
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -185150,17 +184850,12 @@
             "url": "https://www.reviewsgate.co.uk/all-reviews/hamlet-hail-to-the-thief-shakespeare-radioheadrsc-rst-stratford-upon-avon",
             "host": "reviewsgate.co.uk",
             "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/london-debut-for-hamlet-hail-to-the-thief",
-            "host": "musicaltheatrereview.com",
-            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 17,
         "candidateCount": 18
       },
-      "computedAt": "2026-11-14T00:01:13.731Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "hamlet-off-broadway-2024",
@@ -203664,7 +203359,6 @@
       "previewsStartDate": "2026-11-02",
       "aggregatorArticles": [
         "https://www.broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-on-Broadway-20261109",
-        "https://www.broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-At-New-York-Theater-Workshop-20240514",
         "https://playbill.com/article/reviews-what-did-critics-think-of-here-there-are-blueberries"
       ],
       "aggregatorListedUrls": [
@@ -203684,15 +203378,11 @@
         "https://www.theatrely.com/post/an-incredibly-strong-ensemble-with-here-there-are-blueberries-review",
         "https://www.timeout.com/newyork/news/broadway-review-here-there-are-blueberries-is-a-feast-of-strange-fruit-111026",
         "https://nypost.com/2026/11/09/entertainment/here-there-are-blueberries-review-holocaust-docu-drama-is-chilling-and-riveting/",
-        "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
-        "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/",
-        "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
-        "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
-        "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
         "https://www.nydailynews.com/2026/11/09/broadway-review-here-there-are-blueberries/",
         "https://www.nysun.com/article/here-there-are-blueberries-finds-new-urgency-in-an-unflinching-reckoning-with-nazi-evil",
-        "https://mildconcern.substack.com/theatre-reviews-here-there-are-blueberries",
+        "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
         "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-just-off-camera-4cbff82f",
+        "https://mildconcern.substack.com/theatre-reviews-here-there-are-blueberries",
         "https://www.artburstmiami.com/film-theater-articles/review-here-there-are-blueberries-at-miami-new-drama-uses-powerful-lens-to-tell-story",
         "https://airmail.news/arts-intel/events/here-there-are-blueberries",
         "https://www.3viewstheater.com/views/here-but-not-now-on-here-there-are-blueberries",
@@ -203705,19 +203395,6 @@
       "dirClean": 22,
       "inReviewsJson": 22,
       "missing": [
-        {
-          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-At-New-York-Theater-Workshop-20240514"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://mildconcern.substack.com/theatre-reviews-here-there-are-blueberries",
           "host": "mildconcern.substack.com",
@@ -203823,70 +203500,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-At-New-York-Theater-Workshop-20240514"
-            }
-          ],
-          "reverify": false
-        },
-        {
-          "url": "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-At-New-York-Theater-Workshop-20240514"
-            }
-          ],
-          "reverify": false
-        },
-        {
           "url": "https://www.nydailynews.com/2026/11/09/broadway-review-here-there-are-blueberries/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -203948,109 +203561,26 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Here There Are Blueberries\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Here There Are Blueberries\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Here There Are Blueberries\" review ethel",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Here There Are Blueberries\" Kaufman review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Here There Are Blueberries Ethel Barrymore Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Here There Are Blueberries Ethel Barrymore Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Here There Are Blueberries Ethel Barrymore Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 696,
+        "count": 392,
         "byReason": {
-          "non-review-host": 51,
-          "not-http-url": 147,
-          "aggregator-internal-nav": 460,
-          "aggregator-section-root": 15,
-          "podcast-episode": 2,
-          "roundup-page": 7,
+          "not-http-url": 86,
+          "non-review-host": 35,
+          "aggregator-internal-nav": 244,
+          "aggregator-section-root": 10,
+          "podcast-episode": 1,
+          "roundup-page": 6,
           "production-database-listing": 9,
-          "non-stage-review": 1,
-          "no-review-evidence": 2,
-          "show-hub": 1,
-          "other-place": 1
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-At-New-York-Theater-Workshop-20240514",
-          "publishDate": "2024-05-14"
-        }
-      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://www.artburstmiami.com/film-theater-articles/review-here-there-are-blueberries-at-miami-new-drama-uses-powerful-lens-to-tell-story",
           "host": "artburstmiami.com",
@@ -204295,22 +203825,16 @@
             "firstSeenAt": "2026-11-10T14:52:32.075Z"
           },
           {
-            "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
-            "outletId": "newyorktheater.me",
+            "url": "https://www.nysun.com/article/here-there-are-blueberries-finds-new-urgency-in-an-unflinching-reckoning-with-nazi-evil",
+            "outletId": "nysun.com",
             "state": "live",
-            "firstSeenAt": "2026-11-10T10:54:23.190Z"
+            "firstSeenAt": "2026-11-10T04:23:20.364Z"
           },
           {
             "url": "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
             "outletId": "thewrap.com",
             "state": "live",
             "firstSeenAt": "2026-11-10T10:54:23.190Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/here-there-are-blueberries-finds-new-urgency-in-an-unflinching-reckoning-with-nazi-evil",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T04:23:20.364Z"
           },
           {
             "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-just-off-camera-4cbff82f",
@@ -204386,7 +203910,7 @@
         "liveCount": 17,
         "candidateCount": 25
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -288514,10 +288038,11 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.mtrainproductions.com/shows/metamorphosis/gallery.cfm",
-        "https://www.mtrainproductions.com/shows/metamorphosis/tour.cfm",
+        "https://artsfuse.org/theater-review-metamorphosis-everybody-in-the-pool",
         "https://mdtheatreguide.com/2026/11/theatre-review-metamorphosis-presented-by-scena-theatre-at-the-dc-arts-center/",
-        "https://artsfuse.org/318037/theater-review-metamorphosis-everybody-in-the-pool/"
+        "https://artsfuse.org/318037/theater-review-metamorphosis-everybody-in-the-pool/",
+        "https://www.mtrainproductions.com/shows/metamorphosis/gallery.cfm",
+        "https://www.mtrainproductions.com/shows/metamorphosis/tour.cfm"
       ],
       "dirFiles": 2,
       "dirClean": 1,
@@ -288563,8 +288088,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
-            "accepted": 2,
+            "results": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -288573,8 +288098,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -288583,7 +288108,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -288593,7 +288118,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -288603,29 +288128,34 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 3,
             "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 4,
         "byReason": {
-          "non-review-host": 14,
+          "non-review-host": 2,
           "aggregator-internal-nav": 1,
-          "census-junk-host": 4,
-          "no-review-evidence": 2,
-          "show-hub": 1,
-          "venue-production-page": 2
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
+        {
+          "url": "https://artsfuse.org/theater-review-metamorphosis-everybody-in-the-pool",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2025-10-09"
+        },
         {
           "url": "https://artsfuse.org/318037/theater-review-metamorphosis-everybody-in-the-pool/",
           "host": "artsfuse.org",
@@ -288676,6 +288206,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://artsfuse.org/theater-review-metamorphosis-everybody-in-the-pool",
+            "outletId": "artsfuse.org",
+            "state": "live",
+            "firstSeenAt": "2026-11-14T05:24:29.223Z"
+          },
+          {
             "url": "https://mdtheatreguide.com/2026/11/theatre-review-metamorphosis-presented-by-scena-theatre-at-the-dc-arts-center/",
             "outletId": "mdtheatreguide.com",
             "state": "live",
@@ -288705,6 +288241,11 @@
         "censusSchema": 4,
         "excluded": [
           {
+            "url": "https://artsfuse.org/theater-review-metamorphosis-everybody-in-the-pool",
+            "host": "artsfuse.org",
+            "reason": "page-date-before-run"
+          },
+          {
             "url": "https://artsfuse.org/318037/theater-review-metamorphosis-everybody-in-the-pool/",
             "host": "artsfuse.org",
             "reason": "page-date-before-run"
@@ -288713,7 +288254,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-13T13:06:15.619Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "mexodus-off-broadway-2026",
@@ -300232,13 +299773,13 @@
         "https://pagesonstages.com/2026/11/08/ms-blakk-for-president",
         "https://1minutecritic.com/ms-blakk-for-president-vineyard-theatre-review",
         "https://www.nytimes.com/2026/11/10/theater/ms-blakk-for-president-review-mccraney-glick-blankson-wood.html",
-        "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president",
         "https://thefrontrowcenter.com/2026/11/ms-blakk-for-president",
-        "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
         "https://1minutecritic.com/ms-blakk-for-president-vineyard-theatre-review/",
         "https://newyorknotebook.substack.com/p/ms-blakk-for-president",
         "https://www.theatermania.com/news/review-ms-blakk-for-president-a-drag-queens-long-shot-campaign-in-92_1859063/",
         "https://theaterpizzazz.com/ms-blakk-for-president-a-drag-queens-campaign-runs-on-fabulousness-not-drama/",
+        "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president",
+        "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
         "https://theaterlife.com/well-see-ms-blakk-for-president",
         "https://theaterlife.com/well-see-ms-blakk-for-president/",
         "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
@@ -300465,83 +300006,15 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Ms. Blakk for President\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Ms. Blakk for President\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Ms. Blakk for President\" review vineyard",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Ms. Blakk for President\" Landau review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Ms. Blakk for President Vineyard Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Ms. Blakk for President Vineyard Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Ms. Blakk for President Vineyard Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 6,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 8,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 302,
+        "count": 298,
         "byReason": {
-          "non-review-host": 16,
-          "census-junk-host": 1,
           "not-http-url": 56,
-          "aggregator-internal-nav": 221,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 219,
           "aggregator-section-root": 5,
           "podcast-episode": 1,
           "roundup-page": 2
@@ -300575,34 +300048,49 @@
       ],
       "ingestResults": [
         {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
-          "host": "aroundthetownchicago.com",
-          "outletId": "around-the-town-chicago",
+          "url": "https://www.theatermania.com/news/wayne-brady-to-play-drag-queen-presidential-candidate-in-ms-blakk-for-president_1835442/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "msblackforpresident-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         },
         {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
-          "host": "aroundthetownchicago.com",
-          "outletId": "around-the-town-chicago",
+          "url": "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+        },
+        {
+          "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
+          "host": "variety.com",
+          "outletId": "variety",
           "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
           "conflictReason": null,
           "expected": true,
-          "expectedReason": "publish-date-unresolved",
+          "expectedReason": "pre-opening-non-review",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "msblackforpresident-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "msblackforpresident-off-broadway-2026: https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/ is dated before this show's opening on a review outlet and its URL has no review/critic word, so it was read as a pre-opening news, feature or interview page (BRO-6588, non-review-url-patterns.js preOpeningNonReviewReason). Expected rejection; if it IS an early-published review, ingest it with --allow-non-review-url."
         },
         {
           "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
@@ -300633,38 +300121,23 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "msblackforpresident-off-broadway-2026: https://theaterlife.com/well-see-ms-blakk-for-president is already owned by well-see-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/well-see-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-          "host": "theaterlife.com",
-          "outletId": "theater-life",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "msblackforpresident-off-broadway-2026: https://theaterlife.com/well-see-ms-blakk-for-president/ is already owned by well-see-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/well-see-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.theatermania.com/news/wayne-brady-to-play-drag-queen-presidential-candidate-in-ms-blakk-for-president_1835442/",
-          "host": "theatermania.com",
-          "outletId": "theatermania"
+          "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+          "host": "theaterlife.com",
+          "outletId": "theater-life"
         },
         {
-          "url": "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/",
-          "host": "theatermania.com",
-          "outletId": "theatermania"
+          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
         },
         {
-          "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
-          "host": "variety.com",
-          "outletId": "variety"
+          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
         }
       ],
       "censusVerdict": {
@@ -300969,7 +300442,7 @@
         "liveCount": 13,
         "candidateCount": 20
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "much-ado-about-nothing-2026",
@@ -308008,13 +307481,14 @@
       "previewsStartDate": "2026-11-02",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
         "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
+        "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
+        "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant",
+        "https://www.timeout.com/london/theatre/nero-review",
+        "https://cineramafilm.com/2026/11/08/nero-review",
+        "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
         "https://www.londontheatre.co.uk/reviews/nero-review-southwark-playhouse",
         "https://everything-theatre.co.uk/2026/11/review-nero-southwark-playhouse-elephant/",
-        "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
-        "https://westendwilma.com/nero-musical-southwark-playhouse-elephant-2026/",
-        "https://www.londontheatrereviews.co.uk/post.cfm?p=29541",
         "https://www.thereviewshub.com/nero-southwark-playhouse-elephant-london/",
         "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant/",
         "https://www.harrytheatrelife.co.uk/post/review-nero-a-new-musical-southwark-playhouse-theatre-elephant-london",
@@ -308022,16 +307496,10 @@
         "https://cineramafilm.com/2026/11/08/nero-review/",
         "https://www.broadwayworld.com/westend/article/Review-NERO-Southwark-Playhouse-20261107",
         "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant/",
-        "https://www.britishtheatreguide.info/listings/7656",
-        "https://londondecanted.com/articles/nero-at-southwark-playhouse-elephant-a-musical-with-great-songs-and-too-many-ide-c8a88e61",
-        "https://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero",
         "https://www.theupcoming.co.uk/2026/11/07/nero-at-southwark-playhouse-theatre-review/",
-        "https://www.timeout.com/london/theatre/nero-review",
         "https://www.thestage.co.uk/reviews/nero-review-southwark-playhouse-elephant-london",
         "https://www.broadwayworld.com/translate/pt/Review-NERO-Southwark-Playhouse-20261107",
         "https://www.allthatdazzles.co.uk/post/review-nero-southwark-playhouse-elephant",
-        "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant",
-        "https://cineramafilm.com/2026/11/08/nero-review",
         "https://www.broadwayworld.com/translate/th/Review-NERO-Southwark-Playhouse-20261107",
         "https://readaboutstuff.com/2026/11/10/review-nero-southwark-playhouse-elephant-london/",
         "https://thespyinthestalls.com/2026/11/nero/",
@@ -308043,9 +307511,10 @@
         "https://www.broadwayworld.com/translate/ja/Review-NERO-Southwark-Playhouse-20261107",
         "http://www.broadwayworld.com/westend/article/Review-NERO-Southwark-Playhouse-20261107",
         "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant",
-        "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
         "https://firstnightmagazine.com/2026/11/09/review-of-nero-2026-southwark-playhouse-historical-musical-is-unlikely-to-make-history/",
         "https://www.standard.co.uk/culture/theatre/nero-southwark-playhouse-review-b1304267.html",
+        "https://londondecanted.com/articles/nero-at-southwark-playhouse-elephant-a-musical-with-great-songs-and-too-many-ide-c8a88e61",
+        "https://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero",
         "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03/2",
         "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
         "http://www.curtainup.com/nero.html",
@@ -308106,77 +307575,15 @@
       ],
       "dirOnly": [
         {
+          "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
           "host": "reviewsgate.co.uk",
           "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--mark-lawson.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://westendwilma.com/nero-musical-southwark-playhouse-elephant-2026/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-wilma--westendwilma.json",
-              "flag": "clean",
-              "urlInDir": "https://westendwilma.com/nero-musical-southwark-playhouse-elephant-2026/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "http://www.curtainup.com/nero.html",
           "host": "curtainup.com",
@@ -308297,8 +307704,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 8,
+            "results": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -308307,7 +307714,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 3,
             "accepted": 3,
             "error": null
           },
@@ -308317,8 +307724,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -308327,8 +307734,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -308337,39 +307744,24 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 1,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 19,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 2,
         "byReason": {
-          "non-review-host": 11,
-          "write-path-blocked": 2,
-          "non-review-path": 1,
-          "review-hub-page": 1,
-          "roundup-page": 1,
-          "ticketing-listing": 1,
-          "guide-article": 1
+          "non-review-host": 1,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.britishtheatreguide.info/listings/7656",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-07-21"
-        }
-      ],
       "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
@@ -308394,8 +307786,8 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=partially-obstructed-view.blogspot.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=partially-obstructed-view.blogspot.com): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html class='v2' dir='ltr' lang='en-GB'>\n<head>\n<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>\n<meta content='wi\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "zeroChar": true,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=partially-obstructed-view.blogspot.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=partially-obstructed-view.blogspot.com): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html class='v2' dir='ltr' lang='en-GB'>\n<head>\n<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>\n<meta content='wi\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extrac"
         },
         {
           "url": "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03/2",
@@ -308478,16 +307870,40 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
+            "url": "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T06:35:10.988Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
             "outletId": "musicaltheatrereview.com",
             "state": "live",
             "firstSeenAt": "2026-11-09T06:26:00.733Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant",
+            "outletId": "theatreweekly.com",
             "state": "live",
-            "firstSeenAt": "2026-11-08T06:35:10.988Z"
+            "firstSeenAt": "2026-11-09T06:26:00.733Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/nero-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T15:05:38.712Z"
+          },
+          {
+            "url": "https://cineramafilm.com/2026/11/08/nero-review",
+            "outletId": "cineramafilm.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-10T20:25:26.330Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T06:26:00.733Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/nero-review-southwark-playhouse",
@@ -308500,12 +307916,6 @@
             "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-08T22:57:12.505Z"
-          },
-          {
-            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29541",
-            "outletId": "londontheatrereviews.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-12T18:11:37.728Z"
           },
           {
             "url": "https://www.thereviewshub.com/nero-southwark-playhouse-elephant-london/",
@@ -308550,22 +307960,10 @@
             "firstSeenAt": "2026-11-09T10:39:44.907Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/listings/7656",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-11-13T13:06:15.619Z"
-          },
-          {
             "url": "https://www.theupcoming.co.uk/2026/11/07/nero-at-southwark-playhouse-theatre-review/",
             "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-10T12:04:40.258Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/nero-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T15:05:38.712Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/nero-review-southwark-playhouse-elephant-london",
@@ -308584,18 +307982,6 @@
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-08T22:57:12.505Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T06:26:00.733Z"
-          },
-          {
-            "url": "https://cineramafilm.com/2026/11/08/nero-review",
-            "outletId": "cineramafilm.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T20:25:26.330Z"
           },
           {
             "url": "https://www.broadwayworld.com/translate/th/Review-NERO-Southwark-Playhouse-20261107",
@@ -308664,12 +308050,6 @@
             "firstSeenAt": "2026-11-09T06:26:00.733Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
-            "outletId": "musicaltheatrereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T06:26:00.733Z"
-          },
-          {
             "url": "https://firstnightmagazine.com/2026/11/09/review-of-nero-2026-southwark-playhouse-historical-musical-is-unlikely-to-make-history/",
             "outletId": "firstnightmagazine.com",
             "state": "live",
@@ -308725,27 +308105,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.britishtheatreguide.info/listings/7656",
-            "host": "britishtheatreguide.info",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
-            "host": "theguardian.com",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://westendwilma.com/nero-musical-southwark-playhouse-elephant-2026/",
-            "host": "westendwilma.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
-        "liveCount": 22,
-        "candidateCount": 28
+        "excluded": [],
+        "liveCount": 20,
+        "candidateCount": 26
       },
-      "computedAt": "2026-11-13T13:06:15.619Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "network-regional-2024",
@@ -312906,8 +312270,8 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://newyorktheater.me/2026/11/12/now-you-see-me-live-broadway-review/",
-        "https://www.timeout.com/newyork/theater/now-you-see-me-live",
         "https://newyorktheater.me/2026/11/12/now-you-see-me-live-broadway-review",
+        "https://www.timeout.com/newyork/theater/now-you-see-me-live",
         "https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/",
         "https://isolatednation.com/articles/2026/1/30/now-you-see-me-live",
         "https://avenueone.sg/going-out/now-you-see-me-live-review/",
@@ -312984,12 +312348,85 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Now You See Me Live\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Now You See Me Live\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Now You See Me Live\" review hirschfeld",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Now You See Me Live\" Duffy review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Now You See Me Live Al Hirschfeld Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Now You See Me Live Al Hirschfeld Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Now You See Me Live Al Hirschfeld Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 7,
+        "byReason": {
+          "non-review-host": 3,
+          "aggregator-internal-nav": 1,
+          "no-review-evidence": 1,
+          "stored-date-before-production": 1,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -313099,16 +312536,16 @@
             "firstSeenAt": "2026-11-13T04:59:29.565Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/theater/now-you-see-me-live",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-11T17:15:17.876Z"
-          },
-          {
             "url": "https://newyorktheater.me/2026/11/12/now-you-see-me-live-broadway-review",
             "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-11-13T13:06:15.619Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/now-you-see-me-live",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T17:15:17.876Z"
           },
           {
             "url": "https://variety.com/2026/legit/news/now-you-see-me-live-show-broadway-1236856971/",
@@ -313157,7 +312594,7 @@
         "liveCount": 2,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-14T01:35:46.504Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "now-you-see-me-live-off-west-end-2026",
@@ -326175,7 +325612,6 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.timeout.com/london/theatre/orlando-a-pornobiography",
-        "https://oazis.app/evenements/orlando-a-pornobiography",
         "https://www.flickermagazine.art/queer-events/orlando-a-pornobiography-new-diorama"
       ],
       "dirFiles": 13,
@@ -326208,41 +325644,7 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://oazis.app/evenements/orlando-a-pornobiography",
-          "host": "oazis.app",
-          "knownOutletId": "oazis",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oazis--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://oazis.app/evenements/orlando-a-pornobiography"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -326289,74 +325691,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Orlando: A Pornobiography\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Orlando: A Pornobiography\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Orlando: A Pornobiography\" review diorama",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Orlando: A Pornobiography New Diorama Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Orlando: A Pornobiography New Diorama Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Orlando: A Pornobiography New Diorama Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 6,
-        "byReason": {
-          "tag-index-page": 1,
-          "no-review-evidence": 2,
-          "show-hub": 2,
-          "write-path-blocked": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -326430,17 +325770,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://oazis.app/evenements/orlando-a-pornobiography",
-            "host": "oazis.app",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "orphans-off-west-end-2026",
@@ -345740,7 +345074,7 @@
         "https://www.roccitymag.com/arts-entertainment/theater-review-potus-18335584/",
         "https://www.dailygazette.com/life_and_arts/potus-theatre-satire-dorset-playhouse-renee-wymer-interview/article_abbc9aab-0c1d-48df-b49d-2aaf4a1bea29.html"
       ],
-      "dirFiles": 1,
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -345927,18 +345261,6 @@
           ]
         },
         {
-          "url": "https://www.manchesterjournal.com/arts-and-culture/dorset-players-high-octane-potus-is-a-landslide-wave/5055088",
-          "host": "manchesterjournal.com",
-          "knownOutletId": "manchester-journal",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.showsiveseen.com/potus-play-review-act-theatre",
           "host": "showsiveseen.com",
           "knownOutletId": "showsiveseen",
@@ -346047,18 +345369,6 @@
           ]
         },
         {
-          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477/",
-          "host": "backstage.com",
-          "knownOutletId": "backstage",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://nextbestpicture.com/playing-potus/",
           "host": "nextbestpicture.com",
           "knownOutletId": null,
@@ -346122,6 +345432,39 @@
       "dirOnly": [],
       "flaggedMisses": [
         {
+          "url": "https://www.manchesterjournal.com/arts-and-culture/dorset-players-high-octane-potus-is-a-landslide-wave/5055088",
+          "host": "manchesterjournal.com",
+          "knownOutletId": "manchester-journal",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "manchester-journal--telly-halkias.json",
+              "flag": "clean",
+              "urlInDir": "https://www.manchesterjournal.com/arts-and-culture/dorset-players-high-octane-potus-is-a-landslide-wave/5055088"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://www.dailygazette.com/life_and_arts/potus-theatre-satire-dorset-playhouse-renee-wymer-interview/article_abbc9aab-0c1d-48df-b49d-2aaf4a1bea29.html",
           "host": "dailygazette.com",
           "knownOutletId": "the-daily-gazette",
@@ -346154,77 +345497,19 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"POTUS\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"POTUS\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"POTUS\" review gallery",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "POTUS Gallery Players review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "POTUS Gallery Players review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "POTUS Gallery Players review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 4,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 152,
+        "count": 144,
         "byReason": {
-          "non-review-host": 24,
           "not-http-url": 7,
-          "aggregator-internal-nav": 54,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 52,
           "aggregator-section-root": 4,
           "roundup-page": 48,
           "production-database-listing": 11,
           "non-stage-review": 1,
-          "write-path-blocked": 2,
           "bare-host": 1
         }
       },
@@ -346236,7 +345521,21 @@
         }
       ],
       "automatedExcludedListed": 1,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477/",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "zeroCharAttempts": 6
+        }
+      ],
       "weIngestBlocked": [
         {
           "url": "https://cititour.com/NYC_Broadway/POTUS/1078",
@@ -346367,9 +345666,54 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://www.showsiveseen.com/potus-play-review-act-theatre",
+          "host": "showsiveseen.com",
+          "outletId": "showsiveseen",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing old-production review: https://www.showsiveseen.com/potus-play-review-act-theatre (dated 2024-09-17, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+        },
+        {
+          "url": "https://www.showsiveseen.com/potus-play-review-act-theatre/",
+          "host": "showsiveseen.com",
+          "outletId": "showsiveseen",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing old-production review: https://www.showsiveseen.com/potus-play-review-act-theatre/ (dated 2024-09-17, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+        },
+        {
+          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477",
+          "host": "backstage.com",
+          "outletId": "backstage",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "potus-off-broadway-2026: https://www.backstage.com/casting/potus-gallery-players-production-3219477 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477/",
+          "host": "backstage.com",
+          "outletId": "backstage",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -346382,24 +345726,9 @@
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
-          "url": "https://ctxlivetheatre.com/reviews/20241021-review-potus-by-jarrott-productions/",
-          "host": "ctxlivetheatre.com",
-          "outletId": "ctxlivetheatre",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "potus-off-broadway-2026: https://ctxlivetheatre.com/reviews/20241021-review-potus-by-jarrott-productions/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/potus",
-          "host": "stagebuddy.com",
-          "outletId": "stagebuddy",
+          "url": "https://www.ashleyhajimirsadeghi.com/blog/potus-or-behind-every-great-dumbass",
+          "host": "ashleyhajimirsadeghi.com",
+          "outletId": "ashleyhajimirsadeghi",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -346409,65 +345738,10 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing old-production review: https://stagebuddy.com/theater/theater-review/potus (dated 2022-05-07, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
-        },
-        {
-          "url": "https://www.manchesterjournal.com/arts-and-culture/dorset-players-high-octane-potus-is-a-landslide-wave/5055088",
-          "host": "manchesterjournal.com",
-          "outletId": "manchester-journal",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://larchmontbuzz.com/theater/theatre-review-potus",
-          "host": "larchmontbuzz.com",
-          "outletId": "larchmont-buzz",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⛔ Refusing old-production review: https://larchmontbuzz.com/theater/theatre-review-potus (dated 2024-02-01, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+          "reason": "⛔ Refusing old-production review: https://www.ashleyhajimirsadeghi.com/blog/potus-or-behind-every-great-dumbass (dated 2022-08-23, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
         }
       ],
       "ingestSkippedByCap": [
-        {
-          "url": "https://www.showsiveseen.com/potus-play-review-act-theatre",
-          "host": "showsiveseen.com",
-          "outletId": "showsiveseen"
-        },
-        {
-          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477",
-          "host": "backstage.com",
-          "outletId": "backstage"
-        },
-        {
-          "url": "https://www.ashleyhajimirsadeghi.com/blog/potus-or-behind-every-great-dumbass",
-          "host": "ashleyhajimirsadeghi.com",
-          "outletId": "ashleyhajimirsadeghi"
-        },
-        {
-          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477/",
-          "host": "backstage.com",
-          "outletId": "backstage"
-        },
-        {
-          "url": "https://www.showsiveseen.com/potus-play-review-act-theatre/",
-          "host": "showsiveseen.com",
-          "outletId": "showsiveseen"
-        },
         {
           "url": "https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/",
           "host": "exeuntnyc.com",
@@ -346477,18 +345751,31 @@
           "url": "https://www.roccitymag.com/arts-entertainment/theater-review-potus-18335584/",
           "host": "roccitymag.com",
           "outletId": "roc-city-mag"
+        },
+        {
+          "url": "https://larchmontbuzz.com/theater/theatre-review-potus",
+          "host": "larchmontbuzz.com",
+          "outletId": "larchmont-buzz"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/20241021-review-potus-by-jarrott-productions/",
+          "host": "ctxlivetheatre.com",
+          "outletId": "ctxlivetheatre"
+        },
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/potus",
+          "host": "stagebuddy.com",
+          "outletId": "stagebuddy"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "manchester-journal",
-            "outlet": "manchester-journal",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.manchesterjournal.com/arts-and-culture/dorset-players-high-octane-potus-is-a-landslide-wave/5055088"
-          },
           {
             "outletId": "showsiveseen",
             "outlet": "showsiveseen",
@@ -346553,13 +345840,6 @@
             "url": "https://www.meetdaisy.co/calendars/gallery-players/events/potus-1245982"
           },
           {
-            "outletId": "backstage",
-            "outlet": "backstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477/"
-          },
-          {
             "outletId": "nextbestpicture.com",
             "outlet": "nextbestpicture.com",
             "critic": "Unknown",
@@ -346604,13 +345884,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.manchesterjournal.com/arts-and-culture/dorset-players-high-octane-potus-is-a-landslide-wave/5055088",
-            "outletId": "manchester-journal",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-14T00:31:07.833Z"
-          },
           {
             "url": "https://www.showsiveseen.com/potus-play-review-act-theatre",
             "outletId": "showsiveseen",
@@ -346675,13 +345948,6 @@
             "firstSeenAt": "2026-11-13T02:34:56.640Z"
           },
           {
-            "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477/",
-            "outletId": "backstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-13T02:34:56.640Z"
-          },
-          {
             "url": "https://nextbestpicture.com/playing-potus/",
             "outletId": "nextbestpicture.com",
             "state": "GAP",
@@ -346725,11 +345991,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.manchesterjournal.com/arts-and-culture/dorset-players-high-octane-potus-is-a-landslide-wave/5055088",
+            "host": "manchesterjournal.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 15
+        "candidateCount": 14
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "prayer-circle-regional-2026",
@@ -348279,11 +347551,11 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londontheatredirect.com/news/reasons-to-see-pride-at-bridge",
-        "https://musicaltheatrereview.com/bridge-theatre-transfer-for-hit-musical-pride",
-        "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026",
         "https://www.westendbestfriend.co.uk/news/pride-transfer-bridge-theatre-november-2026",
         "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/",
         "https://variety.com/2026/theater/news/pride-musical-bridge-theatre-transfer-november-1236841452/",
+        "https://musicaltheatrereview.com/bridge-theatre-transfer-for-hit-musical-pride",
+        "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026",
         "https://musicaltheatrereview.com/bridge-theatre-transfer-for-hit-musical-pride/",
         "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026/"
       ],
@@ -348469,73 +347741,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Pride - Bridge Theatre\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Pride - Bridge Theatre\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Pride - Bridge Theatre\" review bridge",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Pride - Bridge Theatre Bridge Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Pride - Bridge Theatre Bridge Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Pride - Bridge Theatre Bridge Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 4,
-        "byReason": {
-          "non-review-host": 2,
-          "non-stage-review": 1,
-          "ticketing-reseller": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -348750,7 +347961,7 @@
         "liveCount": 4,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-14T00:01:13.731Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "pride-theatre-dorfman-west-end-2026",
@@ -360147,7 +359358,6 @@
       "aggregatorListedUrls": [
         "https://www.timeout.com/london/theatre/relative-motion",
         "https://westendwilma.com/show-relative-motion-southwark-playhouse/",
-        "https://www.timeout.com/london/theatre/relative-motion",
         "https://www.bestoftheatre.co.uk/blog/post/stephanie-greenwood-and-sean-hart-star-in-relative-motion-at-southwark-playhouse-borough"
       ],
       "dirFiles": 2,
@@ -360274,75 +359484,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Relative Motion\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Relative Motion\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Relative Motion\" review southwark",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Relative Motion Southwark Playhouse review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Relative Motion Southwark Playhouse review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Relative Motion Southwark Playhouse review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 11,
-        "byReason": {
-          "non-review-host": 4,
-          "census-junk-host": 2,
-          "aggregator-internal-nav": 1,
-          "no-review-evidence": 3,
-          "write-path-blocked": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
@@ -360419,7 +359566,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "relics-off-west-end-2026",
@@ -391758,49 +390905,13 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-11",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://westendwilma.com/squid-a-victim-impact-statement-arcola-theatre/"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://westendwilma.com/squid-a-victim-impact-statement-arcola-theatre/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-wilma--westendwilma.json",
-              "flag": "clean",
-              "urlInDir": "https://westendwilma.com/squid-a-victim-impact-statement-arcola-theatre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -391841,81 +390952,17 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"SQUID: A Victim Impact Statement\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"SQUID: A Victim Impact Statement\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"SQUID: A Victim Impact Statement\" review arcola",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "SQUID: A Victim Impact Statement Arcola Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "SQUID: A Victim Impact Statement Arcola Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "SQUID: A Victim Impact Statement Arcola Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 2,
-        "byReason": {
-          "write-path-blocked": 1,
-          "aggregator-internal-nav": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -391923,17 +390970,11 @@
         "suppressedMissing": [],
         "candidates": [],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://westendwilma.com/squid-a-victim-impact-statement-arcola-theatre/",
-            "host": "westendwilma.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T01:35:46.504Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "staff-meal-off-broadway-2024",
@@ -423511,75 +422552,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Charioteer\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Charioteer\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Charioteer\" review cell",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Charioteer the cell review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Charioteer the cell review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Charioteer the cell review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 11,
-        "byReason": {
-          "write-path-blocked": 1,
-          "aggregator-internal-nav": 6,
-          "non-stage-review": 1,
-          "non-review-host": 2,
-          "census-junk-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -423654,7 +422632,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-14T01:35:46.504Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -493819,74 +492797,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Steel Man\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Steel Man\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Steel Man\" review 59e59",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Steel Man 59E59 Theaters review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Steel Man 59E59 Theaters review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Steel Man 59E59 Theaters review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 8,
-        "byReason": {
-          "non-review-host": 4,
-          "census-junk-host": 1,
-          "aggregator-internal-nav": 1,
-          "show-listing-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -493940,7 +492856,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -499280,6 +498196,45 @@
       "computedAt": "2026-11-04T09:29:25.745Z"
     },
     {
+      "showId": "the-ugly-one-off-west-end-2026",
+      "title": "The Ugly One",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-11-17",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-14T05:24:29.223Z"
+    },
+    {
       "showId": "the-unbelievers-off-broadway-2026",
       "title": "The Unbelievers",
       "openingDate": "2026-11-05",
@@ -501581,87 +500536,18 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Visitors\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Visitors\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Visitors\" review second",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"The Visitors\" Turner review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Visitors Second Stage Theater/Irene Diamond Stage at The Pershing Square Signature Center review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Visitors Second Stage Theater/Irene Diamond Stage at The Pershing Square Signature Center review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Visitors Second Stage Theater/Irene Diamond Stage at The Pershing Square Signature Center review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 299,
+        "count": 296,
         "byReason": {
-          "non-review-host": 16,
-          "tag-index-page": 1,
           "not-http-url": 66,
+          "non-review-host": 15,
           "aggregator-internal-nav": 204,
           "aggregator-section-root": 5,
           "podcast-episode": 1,
-          "roundup-page": 5,
-          "show-hub": 1
+          "roundup-page": 5
         }
       },
       "dedupedVariants": [],
@@ -501732,7 +500618,7 @@
         "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-14T00:31:07.833Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "the-wanderers-off-broadway-2023",
@@ -509958,8 +508844,8 @@
       "previewsStartDate": "2026-10-30",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://jerseykids.net/2026/10/25/one-times-square-with-kids",
         "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
-        "https://en.musenytravel.com/one-times-square.html",
         "https://stardrift.ai/saved/alpine-inlet/times-square-skywalk-at-one-times-square"
       ],
       "dirFiles": 0,
@@ -509967,8 +508853,8 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
-          "host": "otsy.com",
+          "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids",
+          "host": "jerseykids.net",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -509979,8 +508865,8 @@
           ]
         },
         {
-          "url": "https://en.musenytravel.com/one-times-square.html",
-          "host": "musenytravel.com",
+          "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
+          "host": "otsy.com",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -510018,7 +508904,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -510028,8 +508914,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 2,
+            "results": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -510038,7 +508924,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -510048,7 +508934,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -510058,22 +508944,22 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 2,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 39,
+        "count": 4,
         "byReason": {
-          "non-review-host": 33,
+          "non-review-host": 2,
           "aggregator-internal-nav": 1,
-          "no-review-evidence": 5
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -510081,15 +508967,15 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
-          "host": "otsy.com",
+          "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids",
+          "host": "jerseykids.net",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
         },
         {
-          "url": "https://en.musenytravel.com/one-times-square.html",
-          "host": "musenytravel.com",
+          "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
+          "host": "otsy.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -510108,18 +508994,18 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "jerseykids.net",
+            "outlet": "jerseykids.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids"
+          },
+          {
             "outletId": "otsy.com",
             "outlet": "otsy.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792"
-          },
-          {
-            "outletId": "musenytravel.com",
-            "outlet": "musenytravel.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://en.musenytravel.com/one-times-square.html"
           },
           {
             "outletId": "stardrift.ai",
@@ -510132,18 +509018,18 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids",
+            "outletId": "jerseykids.net",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-14T05:24:29.223Z"
+          },
+          {
             "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
             "outletId": "otsy.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-10T18:54:19.357Z"
-          },
-          {
-            "url": "https://en.musenytravel.com/one-times-square.html",
-            "outletId": "musenytravel.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-13T00:08:38.050Z"
           },
           {
             "url": "https://stardrift.ai/saved/alpine-inlet/times-square-skywalk-at-one-times-square",
@@ -510158,7 +509044,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-13T13:06:15.619Z"
+      "computedAt": "2026-11-14T05:24:29.223Z"
     },
     {
       "showId": "tina-2019",
@@ -550618,29 +549504,30 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-14T01:35:46.504Z",
+    "at": "2026-11-14T05:24:29.223Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "ghost-notes-off-broadway-2026",
-      "1972-regional-2026",
-      "medea-off-broadway-2026",
-      "a-few-good-men-2026"
+      "times-square-skywalk-off-broadway-2026",
+      "nero-off-west-end-2026",
+      "curtains-off-broadway-2026",
+      "metamorphosis-regional-2026",
+      "church-hurt-regional-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "goblin-off-west-end-2026",
-      "blue-man-group-a-new-holiday-surprise-2026"
+      "the-ugly-one-off-west-end-2026",
+      "are-you-even-indian-off-west-end-2026"
     ],
-    "neverAuditedDueAtStart": 43,
+    "neverAuditedDueAtStart": 41,
     "oldestDueRowAtStart": {
       "showId": "the-lion-king-tour-2021",
       "computedAt": "2026-11-01T17:41:14.610Z",
-      "ageHours": 295.6
+      "ageHours": 299.4
     },
     "oldestDueRowAfterRun": {
       "showId": "the-lion-king-tour-2021",
       "computedAt": "2026-11-01T17:41:14.610Z",
-      "ageHours": 295.9
+      "ageHours": 299.7
     }
   }
 }

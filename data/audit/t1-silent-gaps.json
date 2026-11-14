@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T01:35:52.424Z",
+  "generatedAt": "2026-11-14T05:24:34.818Z",
   "windowDays": 45,
   "showsScanned": 246,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 114.56184833333333,
+      "fileAgeHours": 118.37354666666667,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 92.01336777777777,
+      "nonTerminalAgeHours": 95.82514361111112,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 83.79369416666667,
+      "fileAgeHours": 87.60543861111111,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 82.64892277777778,
+      "nonTerminalAgeHours": 86.46069861111111,
       "needsManualRecovery": false
     },
     {
@@ -58,29 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 100.35380972222222,
+      "fileAgeHours": 104.1655775,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 99.94092083333334,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "the-cottage-regional-2026",
-      "title": "The Cottage",
-      "openingDate": "2026-10-28",
-      "file": "theatermania--unknown.json",
-      "outletId": "theatermania",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": null,
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
-      "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 97.15344972222222,
-      "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 96.07919361111111,
+      "nonTerminalAgeHours": 103.75269666666667,
       "needsManualRecovery": false
     }
   ],
