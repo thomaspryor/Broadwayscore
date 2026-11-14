@@ -2272,6 +2272,8 @@ on:
       # but the workflow only fires when a push-path matches; without this entry
       # edits to the gate would get ZERO CI coverage (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/transcript-scan.mjs'
+      # BRO-7491: before/after screenshot driver; its colocated test (scripts/lib/visual-identical.test.mjs) runs it end to end.
+      - 'scripts/visual-identical.mjs'
       # Push-boundary review gate (Notion 39c637c5) — prose-independent
       # enforcement lib for pre-push-review-gate.sh. Without these entries a
       # solo edit triggers ZERO CI (allow-list gate).

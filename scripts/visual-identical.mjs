@@ -86,7 +86,7 @@ async function main(argv = process.argv.slice(2)) {
       const variants = [{ name: '' }, ...((states[route] || []).map((s) => ({ name: s.name, ...s })))];
       for (const width of WIDTHS) {
         for (const v of variants) {
-          const key = `${route.replace(/[^a-z0-9]+/gi, '_')}_${width}_${(v.name || 'page').replace(/[^a-z0-9]+/gi, '_')}`;
+          const key = `${route.replace(/\W+/g, '_')}_${width}_${(v.name || 'page').replace(/\W+/g, '_')}`;
           const pair = { route, width, state: v.name || '' };
           try {
             const st = v.click ? v : null;

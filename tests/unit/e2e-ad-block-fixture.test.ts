@@ -58,7 +58,10 @@ test('AD_NETWORK_URL_RE leaves our own and analytics hosts alone', () => {
 });
 
 test('scripts/visual-qa.mjs blocks the same ad hosts and sets the opt-out cookie', () => {
+  // The regex lives in the shared capture helper (BRO-7491); visual-qa.mjs and visual-identical.mjs import it.
+  const cap = readFileSync(join(__dirname, '..', '..', 'scripts', 'lib', 'visual-capture.mjs'), 'utf-8');
+  assert.ok(cap.includes(`/${AD_NETWORK_URL_RE.source}/i`), 'AD_NETWORK_URL_RE drifted from tests/e2e/helpers/test.ts');
   const src = readFileSync(join(__dirname, '..', '..', 'scripts', 'visual-qa.mjs'), 'utf-8');
-  assert.ok(src.includes(`/${AD_NETWORK_URL_RE.source}/i`), 'AD_NETWORK_URL_RE drifted from tests/e2e/helpers/test.ts');
+  assert.match(src, /AD_NETWORK_URL_RE/);
   assert.match(src, /name: 'bwsc_noads', value: '1'/);
 });
