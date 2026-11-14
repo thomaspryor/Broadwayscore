@@ -207948,21 +207948,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-14T19:19:59.220Z",
-    "completedAt": "2026-11-14T19:20:28.347Z",
-    "totalReviews": 5,
-    "processed": 5,
+    "startedAt": "2026-11-14T19:20:42.473Z",
+    "completedAt": "2026-11-14T19:21:02.128Z",
+    "totalReviews": 4,
+    "processed": 4,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 34023,
-      "output": 1559,
+      "input": 25340,
+      "output": 1191,
       "cacheRead": 15228,
-      "cacheWrite": 3807,
-      "total": 81458
+      "cacheWrite": 0,
+      "total": 62195
     },
-    "costUsd": 0.13871435000000001,
-    "runId": "43631196900",
+    "costUsd": 0.0941352,
+    "runId": "43631281346",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -213130,6 +213130,16 @@
           "flat": 0,
           "down": 0,
           "total": 12
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "annie-regional-2026-drury-lane-oakbrook",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -259248,16 +259258,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "year-one-regional-2026",
-        "ourDistribution": {
-          "up": 3,
-          "flat": 1,
-          "down": 1,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "yellow-face-2024",
         "ourDistribution": {
           "up": 31,
@@ -259527,8 +259527,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-14T19:25:25.277Z",
-    "completedAt": "2026-11-14T19:25:25.279Z",
+    "startedAt": "2026-11-14T19:25:58.489Z",
+    "completedAt": "2026-11-14T19:25:58.491Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -259541,7 +259541,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "43631196900",
+    "runId": "43631281346",
     "source": "comparative-rescore",
     "errorDetails": []
   }
