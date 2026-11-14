@@ -481,12 +481,15 @@ function Inner({
         const newReviewId = inserted?.id;
         let failed = 0;
         // Loaded only when a photo was staged, so the upload pipeline stays out of first-load JS (BRO-7486).
-        const { uploadReviewPhoto, emitReviewPhotosChanged } = await import('@/lib/review-photos');
+        // The review row already exists, so a failed chunk load must not throw out of the save
+        // (the editor would show "Could not save" and a second tap would insert a duplicate).
+        let photos: typeof import('@/lib/review-photos') | null = null;
+        try { photos = await import('@/lib/review-photos'); } catch { photos = null; }
         for (const file of data.photos) {
-          if (!newReviewId) { failed++; continue; }
-          try { await uploadReviewPhoto({ userId: user.id, reviewId: newReviewId, photoId: newPhotoId(), file }); } catch { failed++; }
+          if (!newReviewId || !photos) { failed++; continue; }
+          try { await photos.uploadReviewPhoto({ userId: user.id, reviewId: newReviewId, photoId: newPhotoId(), file }); } catch { failed++; }
         }
-        if (newReviewId) emitReviewPhotosChanged(newReviewId);
+        if (newReviewId && photos) photos.emitReviewPhotosChanged(newReviewId);
         if (failed) showToast?.(`${failed === 1 ? 'A photo' : `${failed} photos`} didn’t upload. Add ${failed === 1 ? 'it' : 'them'} from your entry in My Ratings & Reviews.`, 'error');
       }
       // Watchlist = shows you WANT to see. Rating a show means you've seen it,

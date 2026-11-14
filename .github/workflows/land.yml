@@ -342,8 +342,8 @@ jobs:
           [ -f scripts/check-main-red-workflows.js ] || { echo "main-red check not on this tree yet; skipping"; exit 0; }
           node scripts/check-main-red-workflows.js > /tmp/main-red.txt
           cat /tmp/main-red.txt
-          if grep -q '::warning::' /tmp/main-red.txt; then
-            { echo "### Main has a red workflow"; sed 's/^::warning:://' /tmp/main-red.txt; } >> "$GITHUB_STEP_SUMMARY"
+          if grep -q '^::warning' /tmp/main-red.txt; then
+            { echo "### Main has a red workflow"; sed -E 's/^::warning[^:]*(:[^:]+)*::/- /' /tmp/main-red.txt; } >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Check coordinator card acknowledged (advisory)
