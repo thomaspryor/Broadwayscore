@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T13:29:36.219Z",
+  "timestamp": "2026-11-14T14:44:06.811Z",
   "stats": {
-    "totalReviews": 81993,
+    "totalReviews": 82011,
     "alreadyFlagged": 22380,
     "dateGuardCatches": 220,
-    "directorMismatch": 3684,
+    "directorMismatch": 3685,
     "tvFilmSignals": 2314,
-    "londonSignals": 3744,
+    "londonSignals": 3745,
     "offBroadwaySignals": 749,
     "yearMismatch": 376,
-    "noPublishDate": 8447
+    "noPublishDate": 8455
   },
   "findings": [
     {
@@ -28634,6 +28634,7 @@
     {
       "showId": "hamilton-2015",
       "file": "nytimes--ao-scott.json",
+      "score": 91,
       "publishDate": "2020-06-30",
       "url": "https://www.nytimes.com/2020/06/30/movies/hamilton-review-disney-plus.html",
       "findings": [
@@ -62426,7 +62427,7 @@
     {
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "broadwayworld--michael-dale.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2017-02-24",
       "url": "http://www.broadwayworld.com/article/BWW-Review-Annaleigh-Ashford-and-Jake-Gyllenhaal-Star-In-A-Glorious-SUNDAY-IN-THE-PARK-WITH-GEORGE-20170224",
       "findings": [
@@ -76786,6 +76787,20 @@
       ]
     },
     {
+      "showId": "the-real-thing-2014",
+      "file": "variety--marilyn-stasio.json",
+      "score": 42,
+      "publishDate": "2014-10-30T20:08:43-04:00",
+      "url": "https://variety.com/2014/legit/reviews/real-thing-review-ewan-mcgregor-broadway-1201342500/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from the-real-thing-1984"
+        }
+      ]
+    },
+    {
       "showId": "the-realistic-joneses-2014",
       "file": "newsday--linda-winer.json",
       "score": 80,
@@ -84375,7 +84390,7 @@
     {
       "showId": "west-side-story-2020",
       "file": "amny--matt-windman.json",
-      "score": 18,
+      "score": 44,
       "publishDate": "2020-02-20",
       "url": "https://www.amny.com/news/arts-entertainment/theater/review-west-side-story-revival-gets-lost-in-brutal-violence-and-overwhelming-video-imagery/amp/?__twitter_impression=true",
       "findings": [
@@ -85695,6 +85710,7 @@
     {
       "showId": "white-rose-the-musical-off-broadway-2024",
       "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 43,
       "publishDate": "2024-01-26",
       "url": "https://t2conline.com/white-rose-the-musical-i-should-have-loved/",
       "findings": [
@@ -92603,6 +92619,7 @@
     {
       "showId": "beetlejuice-tour-2022",
       "file": "hotchka--chuck-duncan.json",
+      "score": 88,
       "publishDate": "2023-05-17",
       "url": "https://hotchka.com/beetlejuice-tour-review",
       "findings": [
@@ -108442,7 +108459,7 @@
     {
       "showId": "ilford-boy-off-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2026-10-25",
       "url": "https://revstanstheatreblog.co.uk/2026/10/25/review-ilford-boy-donmar-warehouse/",
       "findings": [
@@ -109650,6 +109667,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "file": "artsdesk--david-nice.json",
+      "publishDate": "2026-11-10",
+      "url": "https://theartsdesk.com/opera/iphigenie-en-tauride-english-national-opera-review-stylised-stylishly-sung-rarity",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -127836,7 +127866,7 @@
     {
       "showId": "table-17-off-west-end-2026",
       "file": "monstagigz--unknown.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2026-10-21",
       "url": "https://monstagigz.com/2026/10/21/theatre-review-table-17-starring-marisha-wallace-and-jamael-westman-at-the-kiln-theatre/",
       "findings": [
