@@ -107,12 +107,17 @@ function checkDir(dir) {
 module.exports = { detectDrift, formatMessage, checkDir, findNodeModules, majorOf };
 
 if (require.main === module) {
-  const dir = path.resolve(process.argv[2] || process.cwd());
-  const r = checkDir(dir);
+  const args = process.argv.slice(2);
+  const sessionStart = args.includes('--session-start');
+  const dir = path.resolve(args.find((a) => !a.startsWith('--')) || process.cwd());
+  // Session-start hook mode: main checkout only (a worktree's lockfile is its branch's); never fails the hook.
+  if (sessionStart && dir.includes('/.claude/worktrees/')) process.exit(0);
+  let r = null;
+  try { r = checkDir(dir); } catch { /* fail-open */ }
   const msg = r ? formatMessage(r, dir) : '';
   if (msg) {
-    console.log(msg);
-    process.exit(1);
+    console.log(sessionStart ? `\n${msg}\n` : msg);
+    process.exit(sessionStart ? 0 : 1);
   }
   process.exit(0);
 }

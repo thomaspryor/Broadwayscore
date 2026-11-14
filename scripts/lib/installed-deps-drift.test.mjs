@@ -95,3 +95,23 @@ test('devOptional deps absent (npm install --omit=dev) are not drift', () => {
   const l = { packages: { '': { dependencies: { a: '1' } }, 'node_modules/a': { version: '1.0.0', devOptional: true } } };
   assert.equal(detectDrift(l, () => null).drift.length, 0);
 });
+
+test('--session-start: prints but exits 0 on drift; silent inside a worktree path', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'idd-'));
+  fs.writeFileSync(path.join(root, 'package-lock.json'), JSON.stringify(lock));
+  fs.mkdirSync(path.join(root, 'node_modules', '.bin'), { recursive: true });
+  for (const [n, v] of [['next', '15.5.27'], ['react', '19.1.0'], ['typescript', '5.6.2']]) {
+    fs.mkdirSync(path.join(root, 'node_modules', n), { recursive: true });
+    fs.writeFileSync(path.join(root, 'node_modules', n, 'package.json'), JSON.stringify({ version: v }));
+  }
+  const cli = new URL('./installed-deps-drift.js', import.meta.url).pathname;
+  const main = spawnSync('node', [cli, '--session-start', root], { encoding: 'utf8' });
+  assert.equal(main.status, 0);
+  assert.match(main.stdout, /NODE_MODULES DRIFT/);
+  const wt = path.join(root, '.claude', 'worktrees', 'w');
+  fs.mkdirSync(wt, { recursive: true });
+  fs.writeFileSync(path.join(wt, 'package-lock.json'), JSON.stringify(lock));
+  const w = spawnSync('node', [cli, '--session-start', wt], { encoding: 'utf8' });
+  assert.equal(w.status, 0);
+  assert.equal(w.stdout, '');
+});
