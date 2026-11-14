@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T16:59:53.314Z",
+  "generatedAt": "2026-11-14T17:22:40.311Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -113,10 +113,6 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -137,10 +133,28 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 851,
-  "matchedGaps": 0,
+  "itemsScanned": 858,
+  "matchedGaps": 2,
   "possibleGaps": 3,
   "gaps": [
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+      "headline": "We’ll See ****, Ms. Blakk for President ****",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "matched",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/the-visitors-second-stage-off-broadway-review/",
+      "headline": "A life-or-death request puts family loyalty on trial in &#8216;The Visitors&#8217;",
+      "publishDate": "2026-11-14"
+    },
     {
       "showId": "the-visitors-off-broadway-2026",
       "title": "The Visitors",

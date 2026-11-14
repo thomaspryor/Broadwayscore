@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-14T16:59:52.896Z",
+  "generatedAt": "2026-11-14T17:22:39.883Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 326,
-  "clean": 325,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
-      "title": "the ripple, the wave that carried me home",
-      "openingDate": "2026-11-10",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.91 vs local 72.04 (Δ2.13)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-14T16:59:43.708Z"
-    }
-  ],
+  "clean": 326,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
