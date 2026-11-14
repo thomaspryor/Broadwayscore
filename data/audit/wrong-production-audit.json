@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T17:26:52.109Z",
+  "timestamp": "2026-11-14T17:42:36.760Z",
   "stats": {
-    "totalReviews": 82079,
-    "alreadyFlagged": 22378,
+    "totalReviews": 82083,
+    "alreadyFlagged": 22379,
     "dateGuardCatches": 220,
     "directorMismatch": 3687,
     "tvFilmSignals": 2312,
-    "londonSignals": 3748,
+    "londonSignals": 3751,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8479
+    "noPublishDate": 8478
   },
   "findings": [
     {
@@ -96584,6 +96584,34 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "partially-obstructed-view--unknown.json",
+      "score": 76,
+      "publishDate": "2026-11-12",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-cloud-9.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "plays-to-see--unknown.json",
+      "score": 78,
+      "publishDate": "2026-11-14",
+      "url": "https://playstosee.com/reviews/top-rated/cloud-9/?utm_source=rss&utm_medium=rss&utm_campaign=cloud-9",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "readaboutstuff--dan-english.json",
       "score": 65,
       "publishDate": "2026-11-12",
@@ -96635,6 +96663,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "the-recs--unknown.json",
+      "publishDate": "2026-11-14",
+      "url": "https://therecs.co.uk/cloud-9-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
