@@ -1,11 +1,15 @@
-# BRO-6428 state (2026-11-03 ~14:40Z)
-## Done
-- 2013-14 and 2012-13 are already listed and promoted (completeness 0.85/0.93). Gap is supply only.
-- Audit baseline: 2013-14 displayable 0.65 (16 shows below 5 reviews), 2012-13 displayable 0.25 (36 below).
-- Dispatched gather-reviews (spend_purpose=historical-backfill, 10 shards x <=2 shows) for the 16 shortfall 2013-14 shows: run 41641643375, all 10 gather shards + aggregator scrape succeeded; its inline rebuild was cancelled. Dispatched rebuild-fast, then gather for the first 20 of the 36 2012-13 shortfall shows.
-## Remaining
-1. git pull data; `node scripts/audit-we-historical-season.js --season=2013-2014` (collect-review-texts + llm-ensemble-score drain; dispatch if reviews are unscored/unfetched).
-2. Gather the other 16 2012-13 shows (list = shows in the audit with displayable=false not in the first 20), then TR (review-refresh.yml tr_show_filter; pre-2015 TR is scanned PDF, OCR path not built), fetch-guardian-reviews.yml shows=..., scrape-whatsonstage.js.
-3. Score (llm-ensemble-score.yml sync), rebuild, fact-check sample (fact-check-historical-sample.js --cohort=we-historical --season=S --n=30).
-4. Note: acceptance cmd `verify-data-backfill.js --show=2013-2014,2012-2013` checks show IDs and cannot pass (no such ids); the real gate is audit-we-historical-season.js.
-5. Record spend vs BRO-6268.
+# BRO-7156 state (session 2026-11-13/14)
+
+Done:
+- 5 of the card's 6 stubs were already typed by an earlier run (bro-7156.json etc).
+- Standing On the Corner (Cherry Lane, previews 2026-12-17): NOT typable. Vivenu box office placeholder only
+  (blank description, no image); the venue's own December calendar does not list it. Validator warns from
+  2026-11-17 and errors from 2026-12-17 if still untyped. Recheck 2026-12-10.
+- Found 4 same-run duplicate rows (one was a new untyped stub, honor-an-artist-lecture-off-broadway-2027).
+- Step 1 commits (cb9f970, 61d2e28): isSameRunLeadingTitle + retire/retitle support + plan bro-7156-b. Land run 43534748155.
+
+Remaining:
+1. After step 1 lands on main: node scripts/cloud-dispatch.js execute-approved-fix.yml -f issue_number=bro-7156-b -f plan_id=698bcd04-e6ff-4bbd-947e-cb64070a399f -f mode=apply --wait
+2. Step 2 (only after the plan applied): copy /tmp/bro7156/new/deduplication.js (Check 7d only) and the normaliser 1a' step
+   (/tmp/bro7156/new/show-title-normalize.js) + test /tmp/bro7156/same-run-leading-title-dedup.test.mjs; validate-data must be 0 errors; land.
+3. node scripts/linear-session.js report --issue=BRO-7156 ...
