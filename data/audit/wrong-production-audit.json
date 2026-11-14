@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T03:06:10.633Z",
+  "timestamp": "2026-11-14T03:31:46.728Z",
   "stats": {
     "totalReviews": 81980,
-    "alreadyFlagged": 22374,
+    "alreadyFlagged": 22376,
     "dateGuardCatches": 220,
-    "directorMismatch": 3674,
-    "tvFilmSignals": 2310,
-    "londonSignals": 3746,
+    "directorMismatch": 3683,
+    "tvFilmSignals": 2313,
+    "londonSignals": 3745,
     "offBroadwaySignals": 750,
-    "yearMismatch": 375,
-    "noPublishDate": 8462
+    "yearMismatch": 376,
+    "noPublishDate": 8449
   },
   "findings": [
     {
@@ -56606,6 +56606,20 @@
       ]
     },
     {
+      "showId": "rope-off-broadway-2026",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 81,
+      "publishDate": "2026-11-11",
+      "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "routes-regional-2022",
       "file": "chicagotribune--chris-jones.json",
       "score": 61,
@@ -62397,10 +62411,38 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
+      "file": "broadwayworld--michael-dale.json",
+      "score": null,
+      "publishDate": "2017-02-24",
+      "url": "http://www.broadwayworld.com/article/BWW-Review-Annaleigh-Ashford-and-Jake-Gyllenhaal-Star-In-A-Glorious-SUNDAY-IN-THE-PARK-WITH-GEORGE-20170224",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
       "file": "chicagotribune--chris-jones.json",
       "score": 70,
       "publishDate": "2017-02-23",
       "url": "https://www.chicagotribune.com/entertainment/theater/broadway/sc-sunday-park-george-broadway-review-ent-0223-20170223-column.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_Broadway/Sunday-in-the-Park-With-George/190",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62443,6 +62485,20 @@
       "score": 90,
       "publishDate": "February 24th, 2017",
       "url": "http://newyork.edgemedianetwork.com/entertainment/theatre/reviews//211194/_review_::_sunday_in_the_park_with_george",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
+      "file": "esquire--tyler-coates.json",
+      "score": null,
+      "publishDate": "February 24, 2017",
+      "url": "http://www.esquire.com/entertainment/a53404/jake-gyllenhaal-sunday-in-the-park-with-george-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62579,6 +62635,20 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
+      "file": "paste-magazine--chris-kompanek.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.pastemagazine.com/articles/2017/03/review-sunday-in-the-park-with-george.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
       "file": "stagebuddy--jose-solis.json",
       "score": 87,
       "publishDate": "February 23rd, 2017",
@@ -62621,6 +62691,25 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
+      "file": "theater-life--david-sheward.json",
+      "score": null,
+      "publishDate": "2017-03-02",
+      "url": "http://theaterlife.com/sunday-in-the-park-with-george-linda-12/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2008 (2x) more than 2017 (1x). 2008 matches production: sunday-in-the-park-with-george-2008"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
       "file": "theater-life--isa-goldberg.json",
       "score": 96,
       "publishDate": "2017-03-30T13:08:48",
@@ -62653,6 +62742,20 @@
       "score": 77,
       "publishDate": "February 23rd, 2017",
       "url": "http://www.theatermania.com/broadway/reviews/sunday-in-the-park-with-george_80121.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
+      "file": "theatlantic--sophie-gilbert.json",
+      "score": null,
+      "publishDate": "February 26, 2017",
+      "url": "https://www.theatlantic.com/entertainment/archive/2017/02/sunday-in-the-park-with-george-jake-gyllenhaal-annaleigh-ashford-review/517647/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62705,6 +62808,20 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
+      "file": "towncountry--jesse-oxfeld.json",
+      "score": null,
+      "publishDate": "February 24, 2017",
+      "url": "http://www.townandcountrymag.com/leisure/arts-and-culture/a9678/jake-gyllenhaal-sunday-in-the-park-with-george/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
       "file": "variety--marilyn-stasio.json",
       "score": 88,
       "publishDate": "2017-02-24",
@@ -62737,6 +62854,20 @@
       "score": 79,
       "publishDate": "February 23, 2017",
       "url": "https://www.vulture.com/2017/02/theater-jake-gyllenhaal-in-sunday-in-the-park-with-george.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
+      "file": "washpost--peter-marks.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2017/02/23/jake-gyllenhaal-keeps-getting-better-you-only-have-to-see-him-in-sunday-in-the-park-with-george-to-know/?utm_term=.8b57552e8c35",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -68220,6 +68351,20 @@
     },
     {
       "showId": "the-elephant-man-2014",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2014-12-07",
+      "url": "https://newyorktheater.me/2014/12/07/the-elephant-man-review-bradley-cooper/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-2014",
       "file": "nytimes--ben-brantley.json",
       "score": 78,
       "publishDate": "December 7, 2014",
@@ -68234,6 +68379,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2002 (2x) more than 2014 (1x). 2002 matches production: the-elephant-man-2002"
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-2014",
+      "file": "theater-life--unknown.json",
+      "score": null,
+      "publishDate": "2015-02-11",
+      "url": "https://theaterlife.com/the-elephant-man-and-a-delicate-balance/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sean mathias\" from the-elephant-man-2002"
         }
       ]
     },
@@ -72195,6 +72354,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": null,
+      "publishDate": "2021-10-06",
+      "url": "https://www.nytimes.com/2021/10/06/theater/adrian-lester-lehman-trilogy-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -133775,7 +133948,7 @@
     {
       "showId": "the-kings-critique-off-broadway-2026",
       "file": "the-knockturnal--karen-snyder.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2026-11-13",
       "url": "https://theknockturnal.com/the-kings-critique-review/",
       "findings": [
@@ -134531,19 +134704,6 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "independent--lizzie-edmonds.json",
-      "publishDate": "2026-11-02",
-      "url": "https://www.independent.co.uk/bulletin/culture/keira-knightley-theatre-the-lives-of-others-review-b3077335.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "file": "independent--unknown.json",
       "publishDate": "2026-11-02",
       "url": "https://www.independent.co.uk/bulletin/culture/keira-knightley-theatre-the-lives-of-others-review-b3077335.html",
       "findings": [

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-14T02:56:39.237Z",
+  "generated": "2026-11-14T03:23:29.600Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 54,
+  "count": 53,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -323,13 +323,6 @@
       "loserFile": "nytimes--unknown.json",
       "targetFile": "nytimes--nan-robertson.json",
       "reason": "orphaned-duplicate-heal: nytimes--nan-robertson.json was flagged invalid after nytimes--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "loserFile": "independent--unknown.json",
-      "targetFile": "independent--lizzie-edmonds.json",
-      "reason": "orphaned-duplicate-heal: independent--lizzie-edmonds.json was flagged invalid after independent--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
