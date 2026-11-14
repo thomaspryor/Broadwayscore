@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T06:53:29.992Z",
+  "generatedAt": "2026-11-14T07:20:36.179Z",
   "windowDays": 45,
   "showsScanned": 246,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 119.85547666666666,
+      "fileAgeHours": 120.30722694444445,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 97.30713638888889,
+      "nonTerminalAgeHours": 97.75885527777778,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 89.08740444444445,
+      "fileAgeHours": 89.53914055555556,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 87.94269138888889,
+      "nonTerminalAgeHours": 88.39441027777778,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 105.6475761111111,
+      "fileAgeHours": 106.09929583333333,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 105.23468944444444,
+      "nonTerminalAgeHours": 105.68640833333333,
       "needsManualRecovery": false
     }
   ],
