@@ -339,5 +339,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-14T15:29:51.911Z"
+  },
+  {
+    "conditionKey": "land:land/bro7490-batch-slot-sync",
+    "title": "Landing blocked: unit-tests-node red on land/bro7490-batch-slot-sync",
+    "description": "land.yml did not land land/bro7490-batch-slot-sync: the unit-tests-node gate went red at 297d008a36. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43619720380",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro7490-batch-slot-sync"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "297d008a369392be7a0fb9c9cad34f7e3c4d8aa2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43619720380"
+      }
+    ],
+    "queuedAt": "2026-11-14T17:33:41.022Z"
   }
 ]
