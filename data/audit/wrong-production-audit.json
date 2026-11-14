@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T14:44:06.811Z",
+  "timestamp": "2026-11-14T15:39:31.747Z",
   "stats": {
-    "totalReviews": 82011,
-    "alreadyFlagged": 22380,
+    "totalReviews": 82034,
+    "alreadyFlagged": 22373,
     "dateGuardCatches": 220,
-    "directorMismatch": 3685,
-    "tvFilmSignals": 2314,
+    "directorMismatch": 3686,
+    "tvFilmSignals": 2312,
     "londonSignals": 3745,
-    "offBroadwaySignals": 749,
+    "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8455
+    "noPublishDate": 8476
   },
   "findings": [
     {
@@ -10995,24 +10995,10 @@
     },
     {
       "showId": "burn-the-floor-2009",
-      "file": "nytimes--ben-brantley.json",
+      "file": "nytimes--charles-isherwood.json",
       "score": 57,
       "publishDate": "August 3, 2009",
       "url": "https://www.nytimes.com/2009/08/03/theater/reviews/03burn.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "burn-the-floor-2009",
-      "file": "nytimes--charles-isherwood.json",
-      "score": 56,
-      "publishDate": "July 26, 2009",
-      "url": "http://theater2.nytimes.com/2009/08/03/theater/reviews/03burn.html?partner=rss&emc=rss",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -11452,20 +11438,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"ellis rabb\" from caesar-and-cleopatra-1977"
-        }
-      ]
-    },
-    {
-      "showId": "call-me-izzy-2025",
-      "file": "cititour--unknown.json",
-      "score": 47,
-      "publishDate": "2025-06-12",
-      "url": "https://cititour.com/NYC_News/Review-Jean-Smart-Talks-the-Talk-in-Call-Me-Izzy/9591",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -45958,6 +45930,20 @@
       "score": 72,
       "publishDate": "2025-02-20",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-tom-hiddleston-3mfwhtv89",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 97,
+      "publishDate": "February 19th, 2025",
+      "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-with-tom-hiddleston-and-hayley-atwell-review-simply-sublime-shakespeare_1665700/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -87129,20 +87115,6 @@
     },
     {
       "showId": "1536-west-end-2026",
-      "file": "timeout-london--isobel-lewis.json",
-      "score": 93,
-      "publishDate": "2026-05-13",
-      "url": "https://www.timeout.com/london/theatre/1536-review-1",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "1536-west-end-2026",
       "file": "times-uk--laura-hackett-fiction-editor.json",
       "score": 76,
       "publishDate": "2026-05-23",
@@ -109673,6 +109645,7 @@
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "file": "artsdesk--david-nice.json",
+      "score": 78,
       "publishDate": "2026-11-10",
       "url": "https://theartsdesk.com/opera/iphigenie-en-tauride-english-national-opera-review-stylised-stylishly-sung-rarity",
       "findings": [
@@ -119446,6 +119419,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2025-01-15",
+      "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332?srsltid=AfmBOooFYMS55-_sjSgOF1w5BRmrcWtQCQjXYzkBVdqyq__jNXXIJNa6",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -141216,7 +141202,7 @@
       "showId": "travesties-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2018-04-24T20:08:27-04:00",
       "url": "https://www.thedailybeast.com/big-questions-big-fun-tom-stoppards-travesties-returns-to-broadway/",
       "findings": [
         {
@@ -141279,6 +141265,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "travesties-2018",
+      "file": "stage-left--robert-russo.json",
+      "score": 93,
+      "publishDate": "2018-05-07",
+      "url": "https://www.stageleft.nyc/blog/2018/5/7/reviews-the-revivals-cometh-broadways-2017-2018-season-ends-with-the-iceman-cometh-saint-joan-and-travesties",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
