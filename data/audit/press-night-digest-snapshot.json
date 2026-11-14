@@ -1,28 +1,20 @@
 {
-  "generatedAt": "2026-11-14T03:23:37.755Z",
-  "night": "2026-11-12",
+  "generatedAt": "2026-11-14T06:34:07.742Z",
+  "night": "2026-11-13",
   "counts": {
-    "total": 4,
+    "total": 2,
     "passed": 0,
-    "failed": 1,
-    "notGraded": 3
+    "failed": 0,
+    "notGraded": 2
   },
   "lines": [
     {
-      "verdict": "FAIL",
-      "line": "The King's Critique: published by the regular pipeline; 3 of 4 reviews live by 12:00am; Talkin' Broadway went live at 1:54am (late); no Reddit draft emailed. Failed."
+      "verdict": "PENDING",
+      "line": "POTUS: not graded yet, still being checked."
     },
     {
-      "verdict": "UNKNOWN",
-      "line": "First and Last: not graded, no reviews were published overnight."
-    },
-    {
-      "verdict": "UNKNOWN",
-      "line": "Hamlet Hail to the Thief: published by the regular pipeline; 0 of 1 review live by 6:00pm; The Times (UK) came out later and went live at 7:08pm, on time. Not graded: could not check when the first review went live or the critics list at the 2-hour mark or which reviews came in that night."
-    },
-    {
-      "verdict": "UNKNOWN",
-      "line": "The Good Thief: not graded, no reviews were published overnight."
+      "verdict": "PENDING",
+      "line": "Traitorz: The Unauthorized Musical Parody: not graded yet, still being checked."
     }
   ],
   "scoreboard": {
@@ -30,8 +22,5 @@
     "passed": 2,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {
-    "the-kings-critique-off-broadway-2026|2026-11-12|review:talkinbroadway:James Wilson": "2026-11-13T11:20:40.456Z",
-    "the-kings-critique-off-broadway-2026|2026-11-12|email:reddit:missing": "2026-11-14T03:23:37.755Z"
-  }
+  "missFirstSeen": {}
 }
