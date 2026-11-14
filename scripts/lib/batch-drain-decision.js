@@ -134,12 +134,16 @@ function mayStartNewBatch(existingState) {
  * @param {boolean} a.slotBusy a batch from an earlier run is still in flight
  * @param {number} a.syncFallbackUsed reviews already scored via the fallback this run
  * @param {number} [a.cap] SYNC_FALLBACK_MAX_REVIEWS
- * @returns {'queue'|'sync'|'defer'}
+ * @returns {{route: 'queue'|'sync'|'defer', countsTowardCap: boolean}}
+ *   countsTowardCap: this sync call is a fallback the caller must count
+ *   (urgent and non-batch sync were always sync and never count).
  */
 function routeNewReview({ batchMode, urgent, slotBusy, syncFallbackUsed, cap = SYNC_FALLBACK_MAX_REVIEWS }) {
-  if (!batchMode || urgent) return 'sync';
-  if (!slotBusy) return 'queue';
-  return syncFallbackUsed < cap ? 'sync' : 'defer';
+  if (!batchMode || urgent) return { route: 'sync', countsTowardCap: false };
+  if (!slotBusy) return { route: 'queue', countsTowardCap: false };
+  return syncFallbackUsed < cap
+    ? { route: 'sync', countsTowardCap: true }
+    : { route: 'defer', countsTowardCap: false };
 }
 
 module.exports = { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch, routeNewReview, SYNC_FALLBACK_MAX_REVIEWS };

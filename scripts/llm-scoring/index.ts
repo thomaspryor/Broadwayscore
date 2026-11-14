@@ -2407,7 +2407,7 @@ async function main(): Promise<void> {
     // BATCH: run stage 1 only, queue the item, and move on. The models are
     // called once for the whole run after this loop finishes. Reviews for
     // shows near opening night skip the batch and score now (BRO-5047).
-    const route = routeNewReview({
+    const { route, countsTowardCap } = routeNewReview({
       batchMode,
       urgent: urgentShowIds.has(reviewFile.showId),
       slotBusy: batchSlotBusy,
@@ -2417,7 +2417,7 @@ async function main(): Promise<void> {
       syncFallbackDeferred++;
       continue;
     }
-    if (route === 'sync' && batchSlotBusy && !urgentShowIds.has(reviewFile.showId)) syncFallbackUsed++;
+    if (countsTowardCap) syncFallbackUsed++;
     if (route === 'queue') {
       const prepared = (scorer as EnsembleReviewScorer).prepareScoringInput(reviewFile);
       if (!prepared.ok || !prepared.prep) {
@@ -2525,7 +2525,7 @@ async function main(): Promise<void> {
   // ========================================
   if (batchMode && !skipNewWork) {
     if (batchSlotBusy) {
-      console.log(`\n📦 Batch slot busy: scored ${syncFallbackUsed} review(s) synchronously instead of queueing${syncFallbackDeferred ? `; ${syncFallbackDeferred} left for the next run (cap ${SYNC_FALLBACK_MAX_REVIEWS})` : ''}.`);
+      console.log(`\n📦 Batch slot busy: sent ${syncFallbackUsed} review(s) to synchronous scoring instead of queueing${syncFallbackDeferred ? `; ${syncFallbackDeferred} left for the next run (cap ${SYNC_FALLBACK_MAX_REVIEWS})` : ''}.`);
       if (syncFallbackDeferred) console.log(`::warning::Batch slot busy: ${syncFallbackDeferred} review(s) left unscored past the ${SYNC_FALLBACK_MAX_REVIEWS}-review sync cap.`);
     }
     if (pendingBatchItems.length === 0) {
