@@ -45,6 +45,7 @@ jobs:
         env:
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          VISUAL_AUTO_SHIP: ${{ vars.VISUAL_AUTO_SHIP }}
           BRANCH: ${{ github.event.workflow_run.head_branch }}
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |

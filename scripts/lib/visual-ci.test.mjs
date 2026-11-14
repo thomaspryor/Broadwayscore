@@ -98,6 +98,7 @@ test('planAuto: every guard blocks; only a clean identical result ships', () => 
   assert.equal(vci.planAuto({ ...ok, holdFiles: ['scripts/x.js'] }).auto, false);
   assert.equal(vci.planAuto({ ...ok, driftFiles: ['src/components/B.tsx'] }).auto, false, 'main moved');
   assert.equal(vci.planAuto({ ...ok, driftFiles: null }).auto, false, 'unreadable git');
+  assert.equal(vci.planAuto({ ...ok, holdFiles: null }).auto, false, 'unreadable hold diff must not skip the never-auto check');
 });
 
 test('ciHoldReason: only while armed, only while a check can still clear the ask', () => {

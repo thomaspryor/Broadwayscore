@@ -62,6 +62,7 @@ async function comparePairs(shots, plan, manifest) {
     const p = have.get(ci.pairKey(e));
     if (!p) continue; // absent: evaluate() reports it as incomplete
     const pair = { route: e.route, width: e.width, state: e.state };
+    if (p.status !== 'error' && ![p.domBase, p.domHead, p.domHead2].every((d) => typeof d === 'string' && d)) { out.push({ ...pair, status: 'error', reason: 'the capture manifest lacks page fingerprints' }); continue; }
     if (p.status === 'error') { out.push({ ...pair, status: 'error', reason: String(p.reason || 'capture error').slice(0, 160) }); continue; }
     const key = keyOf(e); // never trust a manifest-supplied file name
     const f = (n) => path.join(shots, `${key}.${n}.png`);

@@ -234,7 +234,7 @@ function autoDecision(issue, secret, env = process.env, now = Date.now()) {
     holdFiles = va.git(['diff', '--name-only', `origin/main...origin/${hb}`]).split('\n').filter(Boolean);
     driftFiles = va.git(['diff', '--name-only', ci.base, 'origin/main']).split('\n').filter(Boolean);
   } catch { /* planAuto treats unreadable git as not auto */ }
-  return vci.planAuto({ ci, flagOn: true, emailed, rejected, holdFiles: holdFiles || [], driftFiles });
+  return vci.planAuto({ ci, flagOn: true, emailed, rejected, holdFiles, driftFiles });
 }
 
 async function main(argv = process.argv.slice(2)) {

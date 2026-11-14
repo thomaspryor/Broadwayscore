@@ -131,7 +131,7 @@ const OUTCOME_TEXT = {
 /** The comment body the trusted job posts: readable line, machine line, signed marker. */
 function buildCiComment({ secret, id, patch, outcome, base, digest, reasons, armed }) {
   const lines = [`Before/after check (CI${armed ? '' : ', trial run, you are still asked as usual'}): ${OUTCOME_TEXT[outcome] || outcome}.`];
-  for (const r of (reasons || []).slice(0, 5)) lines.push(`- ${r}`);
+  for (const r of (reasons || []).slice(0, 5)) lines.push(`- ${String(r).replace(/[\r\n]+/g, ' ').slice(0, 200)}`);
   lines.push('', `VISUAL-CI: outcome=${outcome} base=${base} digest=${digest}`, '', ciMarker(ciMac(secret, id, patch, outcome, base, digest)));
   return lines.join('\n');
 }
@@ -169,7 +169,8 @@ function planAuto({ ci, flagOn, emailed, rejected, holdFiles, driftFiles }) {
   if (ci.outcome !== 'identical') return { auto: false, why: `CI result is ${ci.outcome}` };
   if (rejected) return { auto: false, why: 'the owner already answered' };
   if (emailed) return { auto: false, why: 'the owner was already asked by email' };
-  const bad = (holdFiles || []).find((f) => NEVER_AUTO_RE.test(f));
+  if (!Array.isArray(holdFiles)) return { auto: false, why: 'could not read the files the hold changes' };
+  const bad = holdFiles.find((f) => NEVER_AUTO_RE.test(f));
   if (bad) return { auto: false, why: `the change touches ${bad}` };
   if (!Array.isArray(driftFiles)) return { auto: false, why: 'could not tell whether main moved since the check' };
   const drift = driftFiles.find((f) => DRIFT_RE.test(f));
@@ -180,7 +181,7 @@ function planAuto({ ci, flagOn, emailed, rejected, holdFiles, driftFiles }) {
 /** Emailer-side: hold the ask while a check that can still clear it is running (only when armed). */
 function ciHoldReason({ flagOn, hasVisualBlock, ci, askedAt, now = Date.now(), emailed }) {
   if (!flagOn || !hasVisualBlock || emailed) return null;
-  if (ci) return ci.outcome === 'identical' ? { reason: 'auto-shipping', detail: 'the before/after check matched exactly; the lander ships it' } : null;
+  if (ci) return ci.outcome === 'identical' && askedAt != null && now - askedAt < CI_PENDING_MS ? { reason: 'auto-shipping', detail: 'the before/after check matched exactly; the lander ships it' } : null;
   if (askedAt != null && now - askedAt < CI_PENDING_MS) return { reason: 'visual-check-pending', detail: `the before/after check is still running (${Math.round((now - askedAt) / 60000)} min)` };
   return null;
 }
