@@ -1,7 +1,9 @@
 // Shared by scripts/visual-qa.mjs and scripts/visual-identical.mjs (BRO-7491): one list of widths,
 // one ad-host regex, one Chromium launcher, so the two drivers cannot drift apart.
 import { existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { chromium } from 'playwright';
+const { launchExtras } = createRequire(import.meta.url)('./playwright-exe.js');
 
 // Same hosts as tests/e2e/helpers/test.ts AD_NETWORK_URL_RE (BRO-5893).
 export const AD_NETWORK_URL_RE =
@@ -17,7 +19,7 @@ export const WIDTHS = [360, 414, 768, 1024, 1440];
 const PREINSTALLED_CHROMIUM = process.env.PW_CHROMIUM_EXECUTABLE || '/opt/pw-browsers/chromium';
 export async function launchChromium() {
   try {
-    return await chromium.launch();
+    return await chromium.launch({ ...launchExtras(chromium) });
   } catch (e) {
     if (!/Executable doesn't exist/.test(String(e?.message)) || !existsSync(PREINSTALLED_CHROMIUM)) throw e;
     console.log(`[visual-capture] bundled Chromium build missing, using ${PREINSTALLED_CHROMIUM}`);
