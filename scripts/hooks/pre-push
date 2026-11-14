@@ -427,6 +427,10 @@ if grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
       echo ""
       cat /tmp/pre-push-tsc.out
       echo ""
+      # BRO-7492: name stale node_modules as the cause (next 15 installed vs 16 locked
+      # produced TS2554 errors that looked like a code bug). Fail-open.
+      node "$REPO_ROOT/scripts/lib/installed-deps-drift.js" "$REPO_ROOT" 2>/dev/null || true
+      echo ""
       echo "(Bypass for emergencies: git push --no-verify)"
       rm -f /tmp/pre-push-tsc.out
       exit 1

@@ -404,6 +404,22 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
 fi
 
 
+# node_modules vs package-lock drift (BRO-7492). Reset/merge paths advance the
+# main checkout without reinstalling; on 2026-11-14 next 15.5.27 was installed vs
+# 16.4.3 locked and every local tsc / pre-push failed with misleading TS2554s.
+# Main checkout only; pure check in scripts/lib/installed-deps-drift.js. Fail-open.
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
+   && [ -n "$REPO_ROOT" ] && [[ "$REPO_ROOT" != *"/.claude/worktrees/"* ]] \
+   && [ -f "$REPO_ROOT/scripts/lib/installed-deps-drift.js" ] && command -v node >/dev/null 2>&1; then
+  DEPS_DRIFT_MSG=$(perl -e 'alarm shift; exec @ARGV' 10 node "$REPO_ROOT/scripts/lib/installed-deps-drift.js" "$REPO_ROOT" 2>/dev/null || true)
+  if [ -n "$DEPS_DRIFT_MSG" ]; then
+    echo ""
+    echo "$DEPS_DRIFT_MSG"
+    echo ""
+  fi
+fi
+
+
 # Scoring-delta session baseline (added 2026-06-04). data/review-texts is a single
 # clone SHARED by all concurrent CMUX sessions, so `scoring-delta.js`'s `git diff
 # HEAD` saw the UNION of every session's uncommitted churn and reported dozens of
