@@ -1,19 +1,75 @@
 {
-  "updatedAt": "2026-11-14T18:01:37.082Z",
-  "processed": 1,
-  "failed": 4,
-  "successRate": "20.0%",
+  "updatedAt": "2026-11-14T18:56:19.446Z",
+  "processed": 5,
+  "failed": 12,
+  "successRate": "29.4%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-11-14T18:50:20.322Z",
+      "event": "bb-session",
+      "session": "a8ba62fb",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T18:50:20.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-14T18:50:36.503Z",
+      "event": "bb-session",
+      "session": "5aa42e33",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T18:50:36.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-14T18:50:37.267Z",
+      "event": "bb-session",
+      "session": "2949c774",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-14T18:50:37.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T18:53:06.415Z",
+      "event": "bb-session",
+      "session": "83da713f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-14T18:53:06.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T18:55:52.005Z",
+      "event": "bb-session",
+      "session": "23a1081a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-14T18:55:52.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

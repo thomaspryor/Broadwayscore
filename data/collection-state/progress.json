@@ -1,28 +1,104 @@
 {
   "processed": [
-    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+    "ghost-notes-off-broadway-2026/oazis--unknown.json",
+    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
     "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
     "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
-    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json"
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
+    ]
   },
   "startTime": "2026-11-14T17:58:24.327Z",
-  "lastProcessed": "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
-  "log": []
+  "lastProcessed": "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+  "log": [
+    {
+      "t": "2026-11-14T18:50:20.322Z",
+      "event": "bb-session",
+      "session": "a8ba62fb",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T18:50:20.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-14T18:50:36.503Z",
+      "event": "bb-session",
+      "session": "5aa42e33",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T18:50:36.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-14T18:50:37.267Z",
+      "event": "bb-session",
+      "session": "2949c774",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-14T18:50:37.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T18:53:06.415Z",
+      "event": "bb-session",
+      "session": "83da713f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-14T18:53:06.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T18:55:52.005Z",
+      "event": "bb-session",
+      "session": "23a1081a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-14T18:55:52.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
