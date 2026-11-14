@@ -1,23 +1,50 @@
 {
-  "updatedAt": "2026-11-14T01:39:39.230Z",
-  "processed": 0,
-  "failed": 3,
-  "successRate": "0%",
+  "updatedAt": "2026-11-14T01:40:16.396Z",
+  "processed": 246,
+  "failed": 176,
+  "successRate": "58.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 143,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 27,
+    "scrapingbee": 9,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 64
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 17,
   "recentActivity": [
     {
-      "t": "2026-11-14T01:38:13.207Z",
+      "t": "2026-11-14T00:45:39.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T00:55:00.134Z",
+      "event": "bb-session",
+      "session": "3f829229",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-14T00:55:00.797Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-14T00:58:28.773Z",
+      "event": "bb-session",
+      "session": "437782e2",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch945.html"
+    },
+    {
+      "t": "2026-11-14T00:58:29.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T01:08:21.686Z",
       "event": "bb-session",
       "session": "a155a3a3",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
@@ -26,6 +53,80 @@
       "t": "2026-11-14T01:38:13.905Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T01:09:28.775Z",
+      "event": "bb-session",
+      "session": "997b64df",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-14T01:09:52.890Z",
+      "event": "bb-session",
+      "session": "acbbf294",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-14T01:10:02.088Z",
+      "event": "bb-session",
+      "session": "d67531c1",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-14T01:11:02.559Z",
+      "event": "bb-session",
+      "session": "f915b4cd",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-14T01:11:11.060Z",
+      "event": "bb-session",
+      "session": "5b9c23a9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-14T01:15:42.619Z",
+      "event": "bb-session",
+      "session": "8b13f6e4",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-14T01:15:43.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-14T01:15:51.409Z",
+      "event": "bb-session",
+      "session": "994ef8e4",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-14T01:15:51.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-14T01:26:02.131Z",
+      "event": "bb-session",
+      "session": "2ae22d6b",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-14T01:26:02.783Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-14T01:26:19.575Z",
+      "event": "bb-session",
+      "session": "98098bbc",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-14T01:26:20.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
