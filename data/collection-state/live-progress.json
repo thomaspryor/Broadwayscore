@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-14T20:40:17.939Z",
-  "processed": 23,
-  "failed": 22,
-  "successRate": "51.1%",
+  "updatedAt": "2026-11-14T21:21:27.902Z",
+  "processed": 55,
+  "failed": 66,
+  "successRate": "45.5%",
   "tierBreakdown": {
-    "playwright": 17,
-    "amp": 0,
-    "browserbase": 2,
+    "playwright": 41,
+    "amp": 1,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 10,
+    "scrapingbee": 3,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-11-14T18:51:14.606Z",
@@ -87,6 +87,17 @@
       "event": "bb-session",
       "session": "1615c28b",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-14T20:54:02.069Z",
+      "event": "bb-session",
+      "session": "c87ad246",
+      "url": "http://theater2.nytimes.com/2005/11/07/theater/reviews/07jers.html"
+    },
+    {
+      "t": "2026-11-14T20:54:02.562Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
