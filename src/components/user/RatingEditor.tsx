@@ -4,6 +4,7 @@ import { isIsoDateOnly } from '@/lib/iso-date-only';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Modal from '@/components/show-cards/Modal';
+import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import StarRating from './StarRating';
 import { sanitizeRating } from '@/lib/rating';
 import DatePickerButton from './DatePickerButton';
@@ -286,6 +287,8 @@ export default function RatingEditor({
             Time <span className="text-fg-muted">(optional)</span>
           </label>
           <div className="w-full sm:w-96">
+            {/* A failed chunk drops just this row; the rating and note stay intact (BRO-7494). */}
+            <LazyChunkBoundary>
             <ShowtimeSegmented
               showId={showId}
               date={dateSeen}
@@ -294,6 +297,7 @@ export default function RatingEditor({
               autoPick={false}
               disabled={saving}
             />
+            </LazyChunkBoundary>
           </div>
         </div>
   );
@@ -424,8 +428,10 @@ export default function RatingEditor({
       {/* Photos attach to a saved review (user_review_photos.review_id is a
           FK). An existing entry uploads straight away; a brand-new rating
           (stagePhotos) holds them here and the caller uploads after its insert. */}
+      <LazyChunkBoundary>
       {reviewId && <ReviewPhotosField reviewId={reviewId} showTitle={showTitle} />}
       {!reviewId && stagePhotos && <StagedPhotosField files={stagedFiles} onChange={setStagedFiles} showTitle={showTitle} disabled={saving} />}
+      </LazyChunkBoundary>
 
       {/* Inline error — save failed, nothing was lost */}
       {error && (

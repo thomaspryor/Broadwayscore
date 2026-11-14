@@ -33,22 +33,24 @@ export function createLazyChunk<P>(
 }
 
 /**
- * Local error boundary for a lazily loaded panel or sheet. A failed chunk load
- * (or any render error inside it) renders nothing and calls `onError`, which
- * should close the panel and tell the user, instead of bubbling to
- * src/app/error.tsx and replacing the whole show page.
+ * Local error boundary for anything loaded with lazy()/next/dynamic. A failed
+ * chunk load (or any render error inside it) renders `fallback` (default:
+ * nothing) and calls `onError`, instead of bubbling to src/app/error.tsx and
+ * replacing the whole page. For a panel or sheet, `onError` should close it and
+ * tell the user. scripts/tests guard: tests/unit/lazy-chunk-boundary.test.mjs
+ * fails on a lazy()/dynamic() component rendered without one.
  */
 export class LazyChunkBoundary extends Component<
-  { children: ReactNode; onError: (error: unknown) => void },
+  { children: ReactNode; onError?: (error: unknown) => void; fallback?: ReactNode },
   { failed: boolean }
 > {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
   componentDidCatch(error: unknown) {
     console.error('[lazy-chunk] panel failed to load', error);
-    this.props.onError(error);
+    this.props.onError?.(error);
   }
-  render() { return this.state.failed ? null : this.props.children; }
+  render() { return this.state.failed ? (this.props.fallback ?? null) : this.props.children; }
 }
 
 export const LAZY_PANEL_ERROR_MESSAGE = 'Couldn’t open that. Check your connection and try again.';

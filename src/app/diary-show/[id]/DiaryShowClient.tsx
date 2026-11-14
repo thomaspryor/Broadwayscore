@@ -18,6 +18,7 @@ import ShowImage from '@/components/ShowImage';
 import type { UserReview } from '@/types/user';
 import { marketLabel, type DiaryShowDetail } from '@/lib/diary-show-types';
 import { formatShowDate } from '@/lib/date-utils';
+import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 
 const ShowPageWatchlistButton = dynamic(() => import('@/components/user/ShowPageWatchlistButton'), { ssr: false });
 
@@ -230,6 +231,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
         )}
       </div>
 
+      <LazyChunkBoundary>
       <ShowPageWatchlistButton
         showId={show.id}
         title={show.title}
@@ -238,6 +240,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
         category={show.category}
         venue={show.venue}
       />
+      </LazyChunkBoundary>
 
       {ratePanelOpen && (
         <RatingEditor
