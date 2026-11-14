@@ -268,5 +268,47 @@
     "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
     "fields": [],
     "queuedAt": "2026-11-14T11:59:46.172Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
+    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T13:13:51.247Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:well-see-off-broadway-2026",
+    "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline — escalated after 15 notifications",
+    "description": "Filed BRO-7485 for owner triage after 15 repeats with no tracker.\n\nreplay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--6991e48c.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/well-see/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7485",
+    "fields": [],
+    "queuedAt": "2026-11-14T13:13:55.300Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:tristan-and-yseult-off-broadway-2026",
+    "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nydailynews--39951290.json (nydailynews): fetch failed: All scraping methods failed http://www.nydailynews.com/entertainment/theater-arts/tristan-yseult-shines-brooklyn-article-1.2022234",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T13:14:26.776Z"
   }
 ]
