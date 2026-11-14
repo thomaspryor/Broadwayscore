@@ -47,6 +47,7 @@ const { approvedFixDriftResults } = require('./lib/approved-fix-drift-health');
 const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
 const { playbookWorkerHint, hasPlaybookAction, ownerDigestInstruction } = require('./lib/playbook-copy.js');
 const { untrackedPersistentRowsResult, ROW_NAME: UNTRACKED_ROWS_ROW_NAME } = require('./lib/untracked-persistent-rows.js');
+const { uncardedDigestRowsResult, ROW_NAME: UNCARDED_DIGEST_ROW_NAME } = require('./lib/uncarded-digest-rows.js');
 // BRO-5168: card filings per run for failing rows with no playbook route.
 const MAX_UNROUTED_FILINGS_PER_RUN = 4;
 const { routeAlert, resolveQuietConditions, resolveAbsentConditions, readDispatchAttempts, peekDigestQueue, clearDigestQueue, toSnapshotQueuedRow } = require('./lib/owner-alert-router.js');
@@ -3392,6 +3393,22 @@ async function checkUntrackedPersistentRows() {
   }
 }
 
+// BRO-7488: advisory (warn-only) tripwire for a digest row listed 4+ days with
+// no card. Reads the PREVIOUS run's tracked snapshot (this run rewrites it
+// after the checks) and Linear's open issues, both visible from CI.
+async function checkUncardedDigestRows() {
+  try {
+    let snapshot = null;
+    try { snapshot = JSON.parse(fs.readFileSync(HEALTH_DIGEST_SNAPSHOT_FILE, 'utf8')); } catch { snapshot = null; }
+    return [await uncardedDigestRowsResult({
+      snapshot,
+      listOpenIssues: () => require('./lib/linear-client.js').listOpenIssuesWithDescriptions(),
+    })];
+  } catch (err) {
+    return [{ name: UNCARDED_DIGEST_ROW_NAME, status: 'warn', message: `Unmeasurable: ${String(err.message || err).slice(0, 160)}` }];
+  }
+}
+
 // LOCAL-FOLD(checkAutofixThroughput): CI-skipped; the real row is evaluated
 // by send-morning-digest.js localLoopDeadMessage() (BRO-3321) on the Mac.
 // Enforced by tests/unit/audit-health-check-audit.test.mjs (BRO-2199).
@@ -6404,6 +6421,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixCanary(isCI),
     ...checkAutofixThroughput(isCI),
     ...(await checkUntrackedPersistentRows()),
+    ...(await checkUncardedDigestRows()),
     ...checkDigestInvariantFail(isCI),
     ...checkStuckPipelineItems(),
     ...checkDataFreshnessGaps(),
@@ -6635,4 +6653,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };
+module.exports = { invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };

@@ -257,6 +257,31 @@ const SEEN_PRUNE_AFTER_DAYS = 14;
 const DIGEST_SEEN_PATH = process.env.DIGEST_AUTOFIX_SEEN_PATH
   || path.join(require('os').homedir(), '.broadwayscore-state', 'digest-autofix-seen.json');
 
+// BRO-7488: the persistence clock must not live only in a machine-local file.
+// Every health-check row in the tracked snapshot carries `firstSeen`
+// (health-first-seen.js), which survives a row clearing for up to 7 days, so
+// the sender and the Mac pass read the same clock. Used to compute a row's AGE
+// only; it is never written into the local seen file. health-first-seen.js
+// seeds rows with 1970-01-01 when its history file is missing or unreadable,
+// so anything before 2000 counts as unknown, never as "very old".
+const REAL_FIRSTSEEN_AFTER_MS = Date.parse('2000-01-01T00:00:00Z');
+// A row released ONLY by the shared clock (the local clock still says young)
+// is capped per run so a reset local file cannot file a burst of cards at once.
+const SHARED_CLOCK_RELEASE_CAP = 3;
+
+/** PURE. ISO string when `v` is a believable first-seen time at or before `nowMs`, else null. */
+function validFirstSeen(v, nowMs = Date.now()) {
+  const t = Date.parse(v);
+  return Number.isFinite(t) && t > REAL_FIRSTSEEN_AFTER_MS && t <= nowMs + 3600000 ? new Date(t).toISOString() : null;
+}
+
+/** PURE. The earlier of two optional first-seen values (null when neither is believable). */
+function earlierFirstSeen(a, b) {
+  const x = validFirstSeen(a), y = validFirstSeen(b);
+  if (x && y) return Date.parse(x) <= Date.parse(y) ? x : y;
+  return x || y;
+}
+
 /** PURE. Stable identity for a plan row across days. */
 function persistenceKey(row) {
   // BRO-5486: a folded row's conditionKey is its FIRST show's, which changes as
@@ -338,6 +363,7 @@ function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
   }
   const nowIso = new Date(nowMs).toISOString();
   const hold = [];
+  const sharedReleased = []; // { row, ageHours }: old by the shared clock only
   for (const row of plan || []) {
     const key = persistenceKey(row);
     const prev = next[key];
@@ -345,8 +371,13 @@ function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
     const continuing = prev && Number.isFinite(prevLast) && (nowMs - prevLast) / 3600000 <= SEEN_GAP_RESET_HOURS;
     const firstSeen = continuing ? prev.firstSeen : nowIso;
     next[key] = { firstSeen, lastSeen: nowIso };
-    const ageHours = (nowMs - Date.parse(firstSeen)) / 3600000;
-    if (row.state !== 'needs-card' || ageHours >= PERSIST_BEFORE_FILING_HOURS - GATE_SLACK_HOURS) continue;
+    const localAge = (nowMs - Date.parse(firstSeen)) / 3600000;
+    // BRO-7488: the shared snapshot clock can only make a row older, and is
+    // never written into `next`.
+    const sharedFirst = validFirstSeen(row.firstSeen, nowMs);
+    const sharedAge = sharedFirst ? (nowMs - Date.parse(sharedFirst)) / 3600000 : 0;
+    const threshold = PERSIST_BEFORE_FILING_HOURS - GATE_SLACK_HOURS;
+    if (row.state !== 'needs-card' || localAge >= threshold) continue;
     // Number-free too (BRO-6081), matching fileCard's reattach: a row whose
     // live count moved still has its open card.
     if (openTitles && (openTitles.has(row.title) || [...openTitles].some((t) => numberFreeTitle(t) === numberFreeTitle(row.title)))) continue;
@@ -355,8 +386,12 @@ function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
     // with nothing working on it. Low volume (1-2 a day), and the resolved-
     // alert sweep cancels a START-NOW card once its row clears.
     if (row.healthError && isVisitorFacingRow(row)) continue;
+    if (sharedAge >= threshold) { sharedReleased.push({ row, ageHours: sharedAge }); continue; }
     hold.push(row);
   }
+  // Oldest first; the rest wait for tomorrow's run (their shared clock keeps running).
+  sharedReleased.sort((a, b) => b.ageHours - a.ageHours);
+  for (const { row } of sharedReleased.slice(SHARED_CLOCK_RELEASE_CAP)) hold.push(row);
   return { seen: next, hold };
 }
 
@@ -584,6 +619,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const split = (r.decision || r.tracked || r.info) ? null : splitOnShowSuffix(r.name);
     if (!split) {
       const row = buildPlanRow(r, { tasks, today });
+      row.firstSeen = validFirstSeen(r.firstSeen);
       if (fromHealth.has(r)) row.fromHealth = true;
       if (healthErrors.has(r)) row.healthError = true;
       planRows.push(row);
@@ -593,6 +629,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
 
     const open = openAnchor.get(key);
     if (open && open.row.affected.length < MAX_FOLD_PER_CONDITION) {
+      open.row.firstSeen = earlierFirstSeen(open.row.firstSeen, r.firstSeen);
       open.row.affected.push({ name: r.name, message: String(r.message || '').slice(0, 400), ...(r.conditionKey ? { conditionKey: r.conditionKey } : {}) });
       // BRO-3427 ship-check finding: isRowAcknowledged only ever runs on the
       // ANCHOR (inside buildPlanRow) — a later-joining member here never
@@ -625,6 +662,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const batch = open ? open.batch + 1 : 1;
     const titleOverride = `${BSC_DAILY_TITLE_PREFIX}${split.condition}${batch > 1 ? ` (batch ${batch})` : ''}`;
     const row = buildPlanRow(r, { tasks, today, titleOverride });
+    row.firstSeen = validFirstSeen(r.firstSeen);
     if (fromHealth.has(r)) row.fromHealth = true;
     if (healthErrors.has(r)) row.healthError = true;
     row.affected = [{ name: r.name, message: String(r.message || '').slice(0, 400), ...(r.conditionKey ? { conditionKey: r.conditionKey } : {}) }];
@@ -1669,7 +1707,7 @@ module.exports = {
   keepDecisionQueued, localRollupIssues, stuckSignalDetail, ROLLUP_ROW_NAMES,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, reconcileAndAppendDigest, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
-  persistenceKey, computePersistenceGate, markTrackedReportOnly, coveredRowTitles, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
+  persistenceKey, computePersistenceGate, validFirstSeen, earlierFirstSeen, SHARED_CLOCK_RELEASE_CAP, markTrackedReportOnly, coveredRowTitles, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
   fileCard, reattachedLiveState, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
-  splitOnShowSuffix, MAX_FOLD_PER_CONDITION, affectedNoun,
+  splitOnShowSuffix, MAX_FOLD_PER_CONDITION, affectedNoun, numberFreeTitle,
 };

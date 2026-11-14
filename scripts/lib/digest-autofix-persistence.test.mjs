@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { persistenceKey, applyPersistenceGate, planAutofix, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS } = require('./digest-autofix.js');
+const { persistenceKey, applyPersistenceGate, planAutofix, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, SHARED_CLOCK_RELEASE_CAP } = require('./digest-autofix.js');
 
 const H = 3600 * 1000;
 const NOW = Date.parse('2026-10-02T12:00:00Z');
@@ -157,4 +157,55 @@ test('applyPersistenceGate: a row whose open card differs only in a live count i
   applyPersistenceGate(plan, {}, NOW, { openTitles: new Set(['BSC Daily: breaker TRIPPED: web_unlocker2 (2445/1750 reqs)']) });
   assert.equal(plan[0].state, 'needs-card', 'same condition, new count: straight to reattach');
   assert.equal(plan[1].state, 'watching', 'a different zone is a different card');
+});
+
+// BRO-7488: the 72h clock must not depend only on the Mac-local seen file.
+// 2026-11-14: UGC + bundle repeat-failure rows were listed since 11-09 with no card.
+test('BRO-7488: the shared snapshot firstSeen releases a row the empty local file would hold', () => {
+  const mk = () => [row('BSC Daily: Flapping thing', { firstSeen: iso(5 * 24 * H) })];
+  const plan = mk();
+  applyPersistenceGate(plan, {}, NOW); // wiped / never-written local file
+  assert.equal(plan[0].state, 'needs-card', 'snapshot says 5 days old, so it files');
+  const noShared = [row('BSC Daily: Flapping thing')];
+  applyPersistenceGate(noShared, {}, NOW);
+  assert.equal(noShared[0].state, 'watching', 'without a shared clock the old behaviour is unchanged');
+});
+
+test('BRO-7488: the 1970 legacy seed and unreadable values never count as old', () => {
+  for (const bad of ['1970-01-01T00:00:00.000Z', null, 'garbage', new Date(NOW + 30 * 24 * H).toISOString()]) {
+    const plan = [row('BSC Daily: Seeded', { firstSeen: bad })];
+    applyPersistenceGate(plan, {}, NOW);
+    assert.equal(plan[0].state, 'watching', `firstSeen=${bad}`);
+  }
+});
+
+test('BRO-7488: the shared clock is never written into the local seen file', () => {
+  const plan = [row('BSC Daily: Old shared', { firstSeen: iso(9 * 24 * H) })];
+  const seen = applyPersistenceGate(plan, {}, NOW);
+  assert.equal(seen[persistenceKey(plan[0])].firstSeen, new Date(NOW).toISOString());
+});
+
+test('BRO-7488: rows released only by the shared clock are capped per run, oldest first', () => {
+  const plan = [1, 2, 3, 4, 5].map((n) => row(`BSC Daily: Row ${String.fromCharCode(64 + n)}`, { firstSeen: iso((4 + n) * 24 * H) }));
+  applyPersistenceGate(plan, {}, NOW);
+  const released = plan.filter((r) => r.state === 'needs-card').map((r) => r.title);
+  assert.equal(released.length, SHARED_CLOCK_RELEASE_CAP);
+  assert.deepEqual(released, ['BSC Daily: Row C', 'BSC Daily: Row D', 'BSC Daily: Row E'], 'the three oldest');
+  assert.equal(plan.filter((r) => r.state === 'watching').length, 2);
+});
+
+test('BRO-7488: planAutofix carries the snapshot firstSeen onto plan rows (folded rows take the earliest)', () => {
+  const plan = planAutofix({
+    health: { errors: [], warns: [
+      { name: 'Workflow repeat-failure: Test UGC Features / UGC Tests / Run UGC tests', message: 'failed 2 times', firstSeen: '2026-11-09T09:53:09.444Z' },
+      { name: 'Quality: opening date vs review dates', message: 'x', firstSeen: '1970-01-01T00:00:00.000Z' },
+      { name: 'Data: missing poster on Hamilton', message: 'x', firstSeen: '2026-11-12T00:00:00.000Z' },
+      { name: 'Data: missing poster on Wicked', message: 'x', firstSeen: '2026-11-05T00:00:00.000Z' },
+    ] },
+    tasks: [], today: '2026-11-14',
+  });
+  const by = Object.fromEntries(plan.map((r) => [r.title, r]));
+  assert.equal(by['BSC Daily: Test UGC Features'].firstSeen, '2026-11-09T09:53:09.444Z');
+  assert.equal(by['BSC Daily: Quality: opening date vs review dates'].firstSeen, null, 'legacy seed is unknown, not old');
+  assert.equal(by['BSC Daily: Data: missing poster'].firstSeen, '2026-11-05T00:00:00.000Z');
 });
