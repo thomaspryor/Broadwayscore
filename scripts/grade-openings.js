@@ -6,7 +6,7 @@
  * Off-West End): did the pipeline get its reviews live on its own, or did a
  * person / Claude session step in? Logic in scripts/lib/opening-grade.js.
  *
- * Reads: data/shows.json, data/review-texts/** (files + git history),
+ * Reads: data/shows.json, data/reviews.json, data/review-texts/** (files + git history),
  *        data/audit/press-night/*.json, data/audit/show-review-gap.json.
  * Writes: data/audit/opening-grades.json (single writer), or --out.
  *
@@ -115,6 +115,9 @@ function main() {
   const showsDoc = readJson(path.join(ROOT, 'data/shows.json'), null);
   const shows = Array.isArray(showsDoc) ? showsDoc : showsDoc && showsDoc.shows;
   if (!Array.isArray(shows)) { console.error('grade-openings: data/shows.json unreadable'); process.exit(1); }
+  const reviewsDoc = readJson(path.join(ROOT, 'data/reviews.json'), null);
+  const publishedReviews = Array.isArray(reviewsDoc) ? reviewsDoc : reviewsDoc && reviewsDoc.reviews;
+  if (!Array.isArray(publishedReviews)) { console.error('grade-openings: data/reviews.json unreadable'); process.exit(1); }
   let openings = og.selectOpenings(shows, { fromDate, toDate });
   if (arg('show')) openings = openings.filter((s) => s.id === arg('show'));
 
@@ -139,6 +142,7 @@ function main() {
   const grades = openings.map((show) => { const files = loadFiles(rtDir, show.id); const pn = og.pickPressNight(records, show); const hi = og.openingWindow(show, pn).hi; return og.gradeOpening({
     show,
     files,
+    publishedReviews,
     rtDir,
     commits,
     historyFromMs: hist,
@@ -156,7 +160,7 @@ function main() {
   }); }).sort((a, b) => (b.openingDate.localeCompare(a.openingDate)) || a.showId.localeCompare(b.showId));
 
   const doc = {
-    schemaVersion: 3, // BRO-7147: known = live + cited-missing; verdict incomplete. BRO-7161: live = rebuild-includable, week-frozen (lateLive), verdict coverage-unknown, summary noReviewsClosed/coverageUnknown. BRO-7166: expectedMissing
+    schemaVersion: 4, // BRO-7374: live = published rows; lateLive is a subset, openingWeekLive excludes late arrivals.
     generatedAt: new Date(nowMs).toISOString(),
     generator: 'scripts/grade-openings.js (BRO-7082)',
     from: fromDate,

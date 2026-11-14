@@ -125,10 +125,11 @@ test('F20: files first seen after opening week are late rescues, not part of the
   const lateAt = iso(embargo + (og.AFTER_H + 48) * 3600000);
   const files2 = [good(1), good(2, { firstSeenAt: lateAt }), good(3, { firstSeenAt: lateAt })];
   const g = og.gradeOpening({ show, files: files2, gapResult, missingCited: 2, nowMs: closed + 5 * 86400000 });
-  assert.equal(g.live, 1);
+  assert.equal(g.live, 3);
+  assert.equal(g.openingWeekLive, 1);
   assert.equal(g.lateLive, 2);
   assert.equal(g.verdict, 'incomplete', 'the week ended with cited reviews missing, whatever was rescued later');
-  assert.match(og.gradeLine(g), /2 more added after opening week/);
+  assert.match(og.gradeLine(g), /including 2 added after opening week/);
   // Audit re-run after the rescue shows nothing missing: still not on-its-own.
   const rerun = og.gradeOpening({ show, files: files2, gapResult, missingCited: 0, nowMs: closed + 5 * 86400000 });
   assert.equal(rerun.verdict, 'incomplete');

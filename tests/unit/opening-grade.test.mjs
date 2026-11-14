@@ -35,6 +35,50 @@ test('a pipeline-only opening ran on its own', () => {
   assert.match(og.gradeLine(g), /ran on its own\.$/);
 });
 
+test('BRO-7374: two files for one critic count as the single published review', () => {
+  const review = { showId: SHOW.id, outletId: 'nytimes', criticName: 'A Critic', url: 'https://example.com/review' };
+  const copies = files.map((f) => ({ ...f, ...review }));
+  const g = grade({ files: copies, publishedReviews: [review, { ...review, showId: 'another-show' }] });
+  assert.equal(g.live, 1);
+  assert.equal(g.known, 1);
+});
+
+test('BRO-7374: the published snapshot wins over eligible, held and missing local files', () => {
+  const review = { showId: SHOW.id, outletId: 'nytimes', criticName: 'A Critic' };
+  assert.equal(grade({ publishedReviews: [] }).live, 0, 'eligible files awaiting publication are not live');
+  assert.equal(grade({ files: [], publishedReviews: [review] }).live, 1, 'published rows need not have a local file');
+  assert.equal(grade({ files: [{ ...files[0], ...review, isNonReview: true }], publishedReviews: [review] }).live, 1,
+    'a changed local guard must not rewrite what the snapshot currently publishes');
+});
+
+test('BRO-7374: published late arrivals count once and cannot erase the opening-week miss', () => {
+  const review = { showId: SHOW.id, outletId: 'nytimes', criticName: 'A Critic', url: 'https://example.com/review' };
+  const late = { ...files[0], ...review, firstSeenAt: '2026-11-10T00:00:00Z' };
+  const g = grade({ files: [late, { ...late, _file: 'test-show-2026/nytimes--copy.json' }], publishedReviews: [review] });
+  assert.equal(g.live, 1);
+  assert.equal(g.lateLive, 1);
+  assert.equal(g.openingWeekLive, 0);
+  assert.equal(g.verdict, 'incomplete');
+  assert.match(og.gradeLine(g), /1 review live \(including 1 added after opening week\)/);
+  const earlyCopy = { ...files[0], ...review };
+  const early = grade({ files: [late, earlyCopy], publishedReviews: [review] });
+  assert.equal(early.lateLive, 0, 'a late duplicate cannot make an early review late');
+  assert.equal(early.verdict, 'on-its-own');
+  const { openingWeekLive, ...legacy } = g;
+  assert.match(og.gradeLine(legacy), /1 more added after opening week/, 'older snapshots counted late reviews separately');
+});
+
+test('BRO-7374: owner wording never pairs the total with the per-review median', () => {
+  const g = grade({ pressNight: { embargoAt: EMB, perReview: [
+    { firstLiveAt: '2026-10-30T01:00:00Z', baseline: true },
+    { firstLiveAt: '2026-10-30T02:30:00Z' },
+    { firstLiveAt: '2026-10-30T03:30:00Z' },
+  ] } });
+  assert.equal(g.hoursToLive, 1, 'median excludes the pre-embargo baseline');
+  assert.match(og.gradeLine(g), /2 reviews live, ran on its own/);
+  assert.doesNotMatch(og.gradeLine(g), / in 1\s*h/);
+});
+
 test('a hand ingest-urls dispatch (AFGM 2026-10-29, d2aad044 TheWrap) needs hands', () => {
   const c = { sha: 'd2aad04400', at: '2026-10-30T04:45:37Z', ...BOT, subject: 'ingest-urls: 1 review(s) for test-show-2026', files: ['test-show-2026/thewrap--c.json'] };
   const g = grade({ commits: [routine, c] });

@@ -223,6 +223,8 @@ const median = (a) => {
  * @param {object} p
  * @param {object} p.show            shows.json entry
  * @param {object[]} p.files         parsed review files for the show (each with _file = '<show>/<name>.json')
+ * @param {object[]|null} p.publishedReviews reviews.json rows (all shows allowed).
+ *   Authoritative for current live counts; null keeps a file-based estimate for historical replays.
  * @param {object[]} p.commits       review-texts commits (press-night-manual-actions.parseGitLog shape)
  * @param {number|null} p.historyFromMs  earliest instant the git history covers (null = full history)
  * @param {object|null} p.pressNight press-night record or null
@@ -232,7 +234,7 @@ const median = (a) => {
  *   when there is no audit row
  * @param {number} p.nowMs
  */
-function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pressNight = null, gapResult = null, missingCited = null, rtDir = null, expectedMissing = null, nowMs = Date.now() }) {
+function gradeOpening({ show, files = [], publishedReviews = null, commits = [], historyFromMs = null, pressNight = null, gapResult = null, missingCited = null, rtDir = null, expectedMissing = null, nowMs = Date.now() }) {
   const { embargoMs, lo, hi } = openingWindow(show, pressNight);
   const inWin = (t) => t != null && t >= lo && t <= hi;
 
@@ -283,14 +285,25 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     }
   }
 
-  // BRO-7161 F17: live = files the rebuild would include. F20: only files first
-  // seen by the end of opening week count toward the week's outcome; later
-  // rescues are reported as lateLive, never folded into the week's grade. A file
-  // with no firstSeenAt cannot be shown to be late, so it counts.
-  const liveFiles = (files || []).filter((f) => isLiveFile(f, show, rtDir));
+  // BRO-7374: eligibility precedes rebuild dedupe and holds, so it cannot tell
+  // us how many reviews readers see. Count the published snapshot directly.
+  // Files supply timing only; a missing file cannot remove a published row.
+  const liveFiles = publishedReviews === null
+    ? (files || []).filter((f) => isLiveFile(f, show, rtDir))
+    : publishedReviews.filter((r) => r.showId === show.id).map((r) => {
+      const byUrl = files.filter((f) => r.url && f.url === r.url);
+      const name = (v) => String(v || '').trim().toLowerCase();
+      const matches = byUrl.length ? byUrl : files.filter((f) => r.outletId && f.outletId === r.outletId && name(f.criticName) === name(r.criticName));
+      // A later duplicate must not turn an early review into a late arrival.
+      const times = matches.map((f) => toMs(f.firstSeenAt)).filter((t) => t !== null);
+      return { firstSeenAt: times.length ? new Date(Math.min(...times)).toISOString() : null };
+    });
+  // BRO-7161 F20: late rescues remain visible and cannot pass opening week.
+  // Unknown timing cannot prove lateness. lateLive is a subset of live.
   const isLate = (f) => { const t = toMs(f.firstSeenAt); return t != null && t > hi; };
-  const live = liveFiles.filter((f) => !isLate(f)).length;
-  const lateLive = liveFiles.length - live;
+  const live = liveFiles.length;
+  const lateLive = liveFiles.filter(isLate).length;
+  const openingWeekLive = live - lateLive;
   // BRO-7147: "known" was the census candidateCount, which counts every URL any
   // source ever surfaced, other productions included (King Lear OB "2 of 10":
   // all 8 extra were a DC, a Sydney, a Chicago and a Texas staging). Known is now
@@ -367,6 +380,7 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     windowClosed,
     live,
     lateLive,
+    openingWeekLive,
     known,
     missing,
     censusCandidates,
@@ -464,7 +478,9 @@ function gradeLine(g) {
   // census count here (other productions included); they age out in 14 days.
   const count = g.known != null && g.known > g.live ? `${n} of ${g.known} cited` : n;
   const sofar = g.windowClosed ? '' : ' so far';
-  const late = g.lateLive > 0 ? ` (${g.lateLive} more added after opening week)` : '';
+  const late = g.lateLive > 0
+    ? (g.openingWeekLive != null ? ` (including ${g.lateLive} added after opening week)` : ` (${g.lateLive} more added after opening week)`)
+    : '';
   let tail;
   if (g.verdict === 'needed-hands') {
     const n = g.signals.length;
