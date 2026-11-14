@@ -92,7 +92,12 @@ test.describe('lazy rating editor guards (phone)', () => {
 
     const sheet = page.getByTestId('rating-editor-skeleton-sheet');
     await expect(sheet).toBeVisible();
+    // Anchored to the screen (not trapped in the hero card) and about the editor sheet's height.
+    const skelTop = (await sheet.locator('> div').last().boundingBox())!.y;
     await expect(page.getByTestId('rating-editor')).toBeVisible({ timeout: 15000 });
     await expect(sheet).toHaveCount(0);
+    const realTop = (await page.getByRole('dialog').locator('> div').last().boundingBox())!.y;
+    console.log(`phone sheet top: skeleton ${skelTop.toFixed(0)}px, editor ${realTop.toFixed(0)}px`);
+    expect(Math.abs(skelTop - realTop)).toBeLessThanOrEqual(24);
   });
 });
