@@ -915,7 +915,7 @@ async function processShow(show, { rediscovered = false } = {}) {
 
     const data = extractAudienceData(html, show.id);
     const metadata = extractMetadata(html);
-    noRatingsYet = !data.score && /Be the first to review/i.test(html);
+    noRatingsYet = !data.score && !data.reviewCount && !/aggregateRating/i.test(html) && /Be the first to review/i.test(html);
 
     if (metadata.runtime) console.log(`  Runtime: ${metadata.runtime}`);
     if (metadata.synopsis) console.log(`  Synopsis: ${metadata.synopsis.slice(0, 80)}...`);
@@ -1320,9 +1320,10 @@ async function main() {
           delete audienceBuzz.shows[show.id].showScoreNoRatingsAt;
           saveAudienceBuzz(audienceBuzz);
         }
-      } else if (data && data.score && audienceBuzz.shows && audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].showScoreUkPageAt) {
+      } else if (data && data.score && audienceBuzz.shows && audienceBuzz.shows[show.id] && (audienceBuzz.shows[show.id].showScoreUkPageAt || audienceBuzz.shows[show.id].showScoreNoRatingsAt)) {
         // The NYC page arrived and scored: the London-page marker no longer applies.
         delete audienceBuzz.shows[show.id].showScoreUkPageAt;
+        delete audienceBuzz.shows[show.id].showScoreNoRatingsAt;
         if (!dryRun && !shardOutput) saveAudienceBuzz(audienceBuzz);
       }
     } catch (e) {
