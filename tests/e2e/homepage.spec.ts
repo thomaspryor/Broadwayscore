@@ -165,7 +165,7 @@ test.describe('Homepage', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await expect(page.locator('[data-testid="show-card"]').first()).toBeVisible({ timeout: 10000 });
-    const cards = await page.$$eval('[data-testid="show-card"]', (els) => els.slice(0, 12).map((card) => {
+    const cards = await page.$$eval('[data-testid="show-card"]', (els) => els.map((card) => {
       const kids = Array.from(card.children) as HTMLElement[];
       const [thumb, ...rest] = kids;
       const score = rest[rest.length - 1];

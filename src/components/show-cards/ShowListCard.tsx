@@ -320,12 +320,14 @@ const ShowListCard = memo(function ShowListCard({
             {(() => {
               const duration = getRunAgeLabel(show.openingDate, category, undefined, durationSuffix);
               // Today-relative text: keep the server copy on hydration (BRO-5419).
-              return duration ? <span className="whitespace-nowrap" suppressHydrationWarning>{duration}</span> : null;
+              return duration ? <span suppressHydrationWarning>{duration}</span> : null;
             })()}
             {show.closingDate && (
-              // Separator outside the nowrap span so phones can break the line
-              // after "Just opened ·" instead of overflowing into the score.
-              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? '\u00a0· ' : ''}<span className="whitespace-nowrap">{formatClosingLabel(show, formatOpeningDate(show.closingDate))}</span></span>
+              // No whitespace-nowrap here: labels like "6 months on Broadway" or
+              // "Extended through May 2027 (4th extension)" are wider than the
+              // ~117px phone column and ran under the score (BRO-7469). The
+              // nbsp keeps the dot on the first line.
+              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? '\u00a0· ' : ''}{formatClosingLabel(show, formatOpeningDate(show.closingDate))}</span>
             )}
           </>
         )}
