@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7478",
+  "planId": "bd34b5cf-02e2-422c-8471-81df5134735e",
+  "status": "pending",
+  "createdAt": "2026-11-14T12:07:17.036Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Traitorz opening-night audit: The Recs review byline (page signs 'The Recs RDC - Randall David Cook') and missing pull quote",
+    "steps": [
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--unknown.json: criticName",
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--unknown.json: llmPullQuote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Randall David Cook",
+        "description": "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--unknown.json",
+        "field": "llmPullQuote",
+        "oldValue": null,
+        "newValue": "It’s a killer good time.",
+        "description": "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--unknown.json: llmPullQuote"
+      }
+    ]
+  }
+}
