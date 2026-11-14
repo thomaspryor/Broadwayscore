@@ -739,7 +739,15 @@
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "dracula-west-end-2025/talkinbroadway--unknown.json",
     "arcadia-west-end-2026/backstage--erik-haagensen.json",
-    "arcadia-west-end-2026/thestage--dave-fargnoli.json"
+    "arcadia-west-end-2026/thestage--dave-fargnoli.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -985,7 +993,9 @@
       "the-disappear-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
@@ -1240,7 +1250,7 @@
     ]
   },
   "startTime": "2026-11-13T19:51:30.116Z",
-  "lastProcessed": "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
+  "lastProcessed": "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-14T01:38:13.207Z",
@@ -1408,6 +1418,50 @@
     },
     {
       "t": "2026-11-14T02:57:42.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T04:28:57.844Z",
+      "event": "bb-session",
+      "session": "93eb8ce2",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T04:28:58.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-14T04:29:44.164Z",
+      "event": "bb-session",
+      "session": "ad3a0923",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-14T04:29:44.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T04:31:18.565Z",
+      "event": "bb-session",
+      "session": "32d45929",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-14T04:31:19.380Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T04:34:10.991Z",
+      "event": "bb-session",
+      "session": "b41a0dfe",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-14T04:34:11.926Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }

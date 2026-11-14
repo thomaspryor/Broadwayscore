@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-14T04:18:41.607Z",
+  "updatedAt": "2026-11-14T04:35:58.904Z",
   "processed": 483,
-  "failed": 255,
-  "successRate": "65.4%",
+  "failed": 263,
+  "successRate": "64.7%",
   "tierBreakdown": {
     "playwright": 239,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 45,
     "scrapingbee": 18,
@@ -14,52 +14,8 @@
     "archiveToday": 0,
     "archive": 177
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-11-14T01:15:43.244Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-11-14T01:15:51.409Z",
-      "event": "bb-session",
-      "session": "994ef8e4",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-11-14T01:15:51.972Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-11-14T01:26:02.131Z",
-      "event": "bb-session",
-      "session": "2ae22d6b",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-11-14T01:26:02.783Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-11-14T01:26:19.575Z",
-      "event": "bb-session",
-      "session": "98098bbc",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-11-14T01:26:20.209Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-11-14T01:51:44.160Z",
-      "event": "bb-session",
-      "session": "1aa95697",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
     {
       "t": "2026-11-14T01:54:56.345Z",
       "event": "bb-session",
@@ -124,6 +80,50 @@
     },
     {
       "t": "2026-11-14T02:57:42.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T04:28:57.844Z",
+      "event": "bb-session",
+      "session": "93eb8ce2",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T04:28:58.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-14T04:29:44.164Z",
+      "event": "bb-session",
+      "session": "ad3a0923",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-14T04:29:44.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T04:31:18.565Z",
+      "event": "bb-session",
+      "session": "32d45929",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-14T04:31:19.380Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T04:34:10.991Z",
+      "event": "bb-session",
+      "session": "b41a0dfe",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-14T04:34:11.926Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
