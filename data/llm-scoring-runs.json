@@ -207948,21 +207948,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-14T19:20:42.473Z",
-    "completedAt": "2026-11-14T19:21:02.128Z",
-    "totalReviews": 4,
-    "processed": 4,
-    "skipped": 0,
+    "startedAt": "2026-11-14T19:21:04.785Z",
+    "completedAt": "2026-11-14T19:21:52.982Z",
+    "totalReviews": 82404,
+    "processed": 9,
+    "skipped": 82308,
     "errors": 0,
     "tokensUsed": {
-      "input": 25340,
-      "output": 1191,
-      "cacheRead": 15228,
+      "input": 59363,
+      "output": 2728,
+      "cacheRead": 34263,
       "cacheWrite": 0,
-      "total": 62195
+      "total": 143625
     },
-    "costUsd": 0.0941352,
-    "runId": "43631281346",
+    "costUsd": 0.2195254,
+    "runId": "43631194350",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -259258,6 +259258,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "year-one-regional-2026",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 1,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "yellow-face-2024",
         "ourDistribution": {
           "up": 31,
@@ -259527,21 +259537,21 @@
     ]
   },
   {
-    "startedAt": "2026-11-14T19:25:58.489Z",
-    "completedAt": "2026-11-14T19:25:58.491Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-14T19:26:49.551Z",
+    "completedAt": "2026-11-14T19:27:13.412Z",
+    "totalReviews": 5,
+    "processed": 5,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 15524,
+      "output": 1052,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 16576
     },
-    "costUsd": 0,
-    "runId": "43631281346",
+    "costUsd": 0.04074900000000001,
+    "runId": "43631194350",
     "source": "comparative-rescore",
     "errorDetails": []
   }
