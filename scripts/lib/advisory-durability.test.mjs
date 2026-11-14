@@ -26,9 +26,16 @@ function fixture() {
   const log = path.join(root, 'calls.jsonl');
   fs.writeFileSync(path.join(root, 'scripts/linear-brain.js'),
     `require('fs').appendFileSync(${JSON.stringify(log)}, JSON.stringify(process.argv.slice(2)) + '\\n');\n`);
-  const calls = () => new Promise((res) => setTimeout(res, 1500)).then(() =>
-    fs.existsSync(log) ? fs.readFileSync(log, 'utf8').trim().split('\n').map((l) => JSON.parse(l)) : []);
-  return { root, tmp, calls };
+  const read = () => (fs.existsSync(log) ? fs.readFileSync(log, 'utf8').trim().split('\n').map((l) => JSON.parse(l)) : []);
+  // Poll until n posts arrive (deadline 8s) instead of a fixed sleep; then a short grace so extras would show.
+  const calls = async (n = 0) => {
+    const end = Date.now() + 8000;
+    while (read().length < n && Date.now() < end) await new Promise((r) => setTimeout(r, 50));
+    if (n) await new Promise((r) => setTimeout(r, 400));
+    return read();
+  };
+  const markers = () => fs.readdirSync(tmp).filter((x) => x.startsWith('stall-advisory-'));
+  return { root, tmp, calls, markers };
 }
 const CLOUD = { CLAUDE_CODE_REMOTE: 'true', LINEAR_API_KEY: 'k', CLAUDE_CODE_SESSION_ID: 'sess-1' };
 
@@ -41,7 +48,7 @@ test('hook function was extracted and both advisory sites call it', () => {
 test('cloud hit becomes a durable card comment on BRO-7190, queryable by kind', async () => {
   const f = fixture();
   run('WAKEPROMISE', 'I will check back', CLOUD, f.root, f.tmp);
-  const c = await f.calls();
+  const c = await f.calls(1);
   assert.equal(c.length, 1);
   assert.deepEqual(c[0].slice(0, 3), ['update', 'BRO-7190', '--comment']);
   assert.match(c[0][3], /^WAKEPROMISE-ADVISORY: session sess-1 I will check back/);
@@ -52,7 +59,7 @@ test('once per session and kind; a different kind still posts', async () => {
   run('OPENCLAIM', '[BRO-1]', CLOUD, f.root, f.tmp);
   run('OPENCLAIM', '[BRO-2]', CLOUD, f.root, f.tmp);
   run('WAKEPROMISE', 'later', CLOUD, f.root, f.tmp);
-  const kinds = (await f.calls()).map((x) => x[3].split('-ADVISORY')[0]).sort();
+  const kinds = (await f.calls(2)).map((x) => x[3].split('-ADVISORY')[0]).sort();
   assert.deepEqual(kinds, ['OPENCLAIM', 'WAKEPROMISE']);
 });
 
@@ -60,6 +67,7 @@ test('not cloud, or no Linear key: nothing posted and no crash', async () => {
   const f = fixture();
   run('OPENCLAIM', 'x', { ...CLOUD, CLAUDE_CODE_REMOTE: '' }, f.root, f.tmp);
   run('OPENCLAIM', 'x', { ...CLOUD, LINEAR_API_KEY: '' }, f.root, f.tmp);
+  assert.deepEqual(f.markers(), []);
   assert.deepEqual(await f.calls(), []);
 });
 
