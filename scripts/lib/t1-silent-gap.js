@@ -579,10 +579,13 @@ function isFetchAbandonedAwaitingManual(entry) {
 // gap that still has an automated path stays quiet until the file has been held
 // MANUAL_RECOVERY_FILE_DAYS (the same clock that moves spent gaps to the FYI line);
 // after that, still-recoverable means automation is stuck and the row warns.
-// Tier 1 and rejected-unscoreable never get this window: those the owner sees at 24h.
+// Tier 1, other gap types (unscored, rejected-unscoreable) and unstamped or
+// tier-less entries never get this window: the owner sees those at 24h.
 function isAutomationStillWorking(entry, now = new Date()) {
   if (!entry || typeof entry !== 'object') return false;
-  if (entry.tier === 1 || entry.type === 'rejected-unscoreable') return false;
+  // Only the fetch-stub case: an unscored gap the scorer has not taken in 24h is a
+  // scorer fault (BRO-5166) and a missing tier fails open.
+  if (entry.tier !== 2 || entry.type !== 'empty-body') return false;
   if (hasNoAutomatedPath(entry)) return false;
   const fileAt = Date.parse(entry.firstSeen || '');
   if (Number.isNaN(fileAt)) return false; // fail open: unstamped stays visible

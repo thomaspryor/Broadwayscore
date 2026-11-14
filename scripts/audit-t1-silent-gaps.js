@@ -42,7 +42,7 @@ const { execFileSync } = require('child_process');
 
 const {
   classifySilentGap, shouldAlertGap, shouldDispatchScoring, shouldEmailUnscoredGap, MAJOR_TIER_MAX,
-  classifyGapCardState, dedupeGapCards, otherAlertPathKey, GAP_CARD_STATE, needsManualRecovery, isFetchAbandonedAwaitingManual, manualRecoveryDigestLine, MANUAL_RECOVERY_CONDITION_KEY,
+  classifyGapCardState, dedupeGapCards, otherAlertPathKey, GAP_CARD_STATE, needsManualRecovery, isFetchAbandonedAwaitingManual, isAutomationStillWorking, manualRecoveryDigestLine, MANUAL_RECOVERY_CONDITION_KEY,
 } = require('./lib/t1-silent-gap');
 const { detectFlagContradiction, contradictionFixCommand, shouldAlertContradiction } = require('./lib/flag-contradiction');
 const { wouldAutoClear, shadowObservation } = require('./lib/autoclear-shadow');
@@ -842,6 +842,7 @@ async function main() {
     const agedRaw = gaps.filter((g) =>
       g.needsManualRecovery !== true
       && !isFetchAbandonedAwaitingManual(g)
+      && !isAutomationStillWorking(g, now) // BRO-7472: tier-2 stub automation is still retrying
       && isAgedNonTerminalGap({ file: { firstSeenAt: g.gapSeenAt }, now })
       && !pagedGapOutletKeys.has(`${g.showId}/${g.outletId}`));
     // BRO-341: collapse to one card per show+outlet here too — an aged

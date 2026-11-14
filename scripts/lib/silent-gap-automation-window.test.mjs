@@ -41,3 +41,12 @@ test('a T1 gap still warns at 24h', () => {
   const r = silentGapBacklogResults({ gaps: [forumStub({ tier: 1, url: 'https://www.theguardian.com/a', recoverable: true, forumLinkRecoveryCount: 0, firstSeen: daysAgo(2) })] }, NOW);
   assert.equal(r.length, 1);
 });
+
+test('unscored, tier-less and rejected gaps get no window; hidden gaps still count as in flight', () => {
+  const uns = { tier: 2, type: 'unscored', dispatchable: true, firstSeen: daysAgo(2) };
+  assert.equal(isAutomationStillWorking(uns, NOW), false);
+  assert.equal(isAutomationStillWorking(forumStub({ tier: undefined }), NOW), false);
+  const other = forumStub({ showId: 'x', firstSeen: daysAgo(9), outletId: 'theatermania', url: 'https://www.theatermania.com/x' });
+  const r = silentGapBacklogResults({ gaps: [forumStub(), other] }, NOW);
+  assert.match(r[0].message, /1 newer still in flight/);
+});

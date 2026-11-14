@@ -4934,8 +4934,8 @@ function silentGapBacklogResults(report, now = new Date()) {
   // A dispatched session has nothing to run for them either; they join the FYI
   // line when the clock does. Without this the row fired on day one.
   // BRO-7472: and gaps automation is still retrying (isAutomationStillWorking): not silent yet.
-  const automatable = report.gaps.filter((g) => g.needsManualRecovery !== true && !isFetchAbandonedAwaitingManual(g) && !isAutomationStillWorking(g, now));
-  const gaps = automatable.filter((g) => {
+  const automatable = report.gaps.filter((g) => g.needsManualRecovery !== true && !isFetchAbandonedAwaitingManual(g));
+  const gaps = automatable.filter((g) => !isAutomationStillWorking(g, now)).filter((g) => {
     const seen = Date.parse(g.firstSeen || '');
     return Number.isNaN(seen) || now.getTime() - seen >= SILENT_GAP_IN_FLIGHT_HOURS * 3600000;
   });
