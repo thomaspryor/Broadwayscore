@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T14:55:25.433Z",
+  "generatedAt": "2026-11-14T16:59:53.314Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -37,6 +37,11 @@
       "id": "downstate-2026",
       "title": "Downstate",
       "openingDate": "2026-11-15"
+    },
+    {
+      "id": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+      "title": "the ripple, the wave that carried me home",
+      "openingDate": "2026-11-10"
     },
     {
       "id": "the-kings-critique-off-broadway-2026",
@@ -84,6 +89,11 @@
       "openingDate": "2026-11-12"
     },
     {
+      "id": "nutty-nattys-magic-puppet-show-off-broadway-2026",
+      "title": "Nutty Natty's Magic Puppet Show",
+      "openingDate": "2026-11-14"
+    },
+    {
       "id": "peter-pan-goes-wrong-regional-2026",
       "title": "Peter Pan Goes Wrong",
       "openingDate": "2026-11-13"
@@ -108,7 +118,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -125,65 +135,12 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 801,
-  "matchedGaps": 5,
+  "itemsScanned": 851,
+  "matchedGaps": 0,
   "possibleGaps": 3,
   "gaps": [
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "partially-obstructed-view",
-      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-cloud-9.html",
-      "headline": "Theatre review: Cloud 9",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-dogstar-hampstead-theatre",
-      "headline": "Review: Dogstar (Hampstead Theatre)",
-      "publishDate": "2026-11-14"
-    },
-    {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/hamlet-hail-to-barbican-theatr-26211",
-      "headline": "Hamlet Hail to the Thief",
-      "publishDate": "2026-11-14"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/11/ms-blakk-for-president-vineyard-theatre-review/",
-      "headline": "Off-Broadway Review: MS. BLAKK FOR PRESIDENT (Vineyard Theatre)",
-      "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/light-opera-of-new-jersey-to-present-amahl-and-the-night-visitors/",
-      "headline": "Light Opera of New Jersey to Present &#8216;Amahl and the Night Visitors&#8217;",
-      "publishDate": "2026-11-12"
-    },
     {
       "showId": "the-visitors-off-broadway-2026",
       "title": "The Visitors",
@@ -206,10 +163,10 @@
       "showId": "wanted-2022",
       "title": "Wanted",
       "level": "possible",
-      "outletId": "lighting-and-sound-america",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TOGPB8",
-      "headline": "Theatre&#32;in&#32;Review:&#32;Wanted&#32;(James&#32;Earl&#32;Jones&#32;Theatre)",
-      "publishDate": "2026-11-13"
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/wanted-on-broadway-extraordinary-voices-what-could-have-been-a-powerful-story-and-a-few-unfortunate-detours/",
+      "headline": "Wanted on Broadway: Extraordinary Voices, What Could Have Been a Powerful Story, and a Few Unfortunate Detours",
+      "publishDate": "2026-11-12"
     }
   ]
 }
