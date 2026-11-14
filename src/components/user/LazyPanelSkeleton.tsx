@@ -1,5 +1,7 @@
 'use client';
 
+import { createPortal } from 'react-dom';
+
 /**
  * Placeholders shown while a lazily loaded panel's chunk downloads (BRO-7494),
  * so a first tap on a slow network gets instant feedback and the layout doesn't
@@ -40,13 +42,17 @@ function EditorRows() {
 function SheetShell({ children, maxWidth, testId, label, zIndex }: {
   children: React.ReactNode; maxWidth: string; testId: string; label: string; zIndex: number;
 }) {
-  return (
+  // Portal to <body> like Modal: the show hero's .card sets `contain: layout`,
+  // which would pin a position:fixed sheet to the card instead of the screen.
+  if (typeof document === 'undefined') return null;
+  return createPortal(
     <div className="fixed inset-0 flex items-end sm:items-center justify-center" style={{ zIndex }} role="status" aria-label={label} data-testid={testId}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" aria-hidden="true" />
       <div className={`relative w-full ${maxWidth} bg-surface-raised border border-white/10 rounded-t-2xl sm:rounded-2xl pb-[env(safe-area-inset-bottom)] sm:pb-0 shadow-2xl max-h-[85vh] overflow-hidden`}>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
