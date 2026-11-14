@@ -462,8 +462,11 @@ async function scrapeNYCTheatreRoundups() {
   // NYC Theatre covers New York productions. A national tour's title search
   // finds its Broadway page, whose excerpts were being filed as tour reviews
   // (Maybe Happy Ending's tour got the Times' Broadway rave; BRO-4325).
-  const { kept, tours } = require('./lib/tour-family').withoutTours(recentShows);
+  // Regional shows too (BRO-7453): their search lands on the same-title
+  // Broadway page (The Cottage, Purpose, Paranormal Activity).
+  const { kept, tours, regional } = require('./lib/tour-family').nycTheatreTargets(recentShows);
   if (tours.length) console.log(`Skipping ${tours.length} national tour(s): NYC Theatre reviews New York productions only (${tours.map(s => s.id).join(', ')})`);
+  if (regional.length) console.log(`Skipping ${regional.length} regional show(s): NYC Theatre reviews New York productions only (${regional.slice(0, 10).map(s => s.id).join(', ')}${regional.length > 10 ? ', ...' : ''})`);
   recentShows = kept;
 
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);

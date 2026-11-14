@@ -207,6 +207,21 @@ test('New-York-only aggregators never take a national tour (BRO-4325: NYC Theatr
   assert.deepEqual(out.tours.map(s => s.id), ['maybe-happy-ending-tour-2026']);
 });
 
+test('NYC Theatre never takes a regional show (BRO-7453: Broadway Cottage/Purpose excerpts scored on regional runs)', () => {
+  const { nycTheatreTargets } = require('../../scripts/lib/tour-family.js');
+  const out = nycTheatreTargets([
+    { id: 'the-cottage-2023', category: 'broadway' },
+    { id: 'the-cottage-regional-2026', category: 'regional' },
+    { id: 'purpose-regional-2026', category: 'regional' },
+    { id: 'maybe-happy-ending-tour-2026', category: 'tour' },
+    { id: 'oh-mary-west-end-2025', category: 'west-end' },
+    { id: 'some-off-broadway-2026', category: 'off-broadway' },
+  ]);
+  assert.deepEqual(out.kept.map(s => s.id), ['the-cottage-2023', 'oh-mary-west-end-2025', 'some-off-broadway-2026']);
+  assert.deepEqual(out.regional.map(s => s.id), ['the-cottage-regional-2026', 'purpose-regional-2026']);
+  assert.deepEqual(out.tours.map(s => s.id), ['maybe-happy-ending-tour-2026']);
+});
+
 test('a tour booked ahead is a candidate before it opens', () => {
   const booked = page([
     row('Cerritos, CA', 'Cerritos Center', 'January 19-24, 2027'),

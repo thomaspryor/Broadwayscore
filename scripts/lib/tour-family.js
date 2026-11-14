@@ -312,6 +312,25 @@ function withoutTours(shows) {
   return { kept, tours };
 }
 
+/**
+ * Targets for NYC Theatre (newyorkcitytheatre.com) roundups, which cover New
+ * York productions only. Tours as in withoutTours, plus every regional show:
+ * a regional title search lands on the same-title New York page (the scraper
+ * searches "broadway" for regional, and the page year check tolerates up to 3
+ * years), so the 2023 Broadway Cottage, 2025 Broadway Purpose and Broadway
+ * Paranormal Activity excerpts were filed and scored as reviews of their
+ * San Diego / Boston productions (BRO-7340, BRO-7453). Playbill's Verdict does
+ * cover regional runs, so it keeps using withoutTours.
+ * Returns { kept, tours, regional }.
+ */
+function nycTheatreTargets(shows) {
+  const { kept: notTours, tours } = withoutTours(shows);
+  const kept = [];
+  const regional = [];
+  for (const s of notTours) (s && s.category === 'regional' ? regional : kept).push(s);
+  return { kept, tours, regional };
+}
+
 module.exports = {
   tourFallbackArt,
   TOUR_PARENT_CATEGORIES,
@@ -321,6 +340,7 @@ module.exports = {
   productionsOfTitle,
   normTitle,
   withoutTours,
+  nycTheatreTargets,
   isTourShow,
   tourImageProblems,
   allowedTourArtIds,
