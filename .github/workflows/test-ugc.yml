@@ -131,7 +131,6 @@ jobs:
       # not enough). One dispatched card per incident, resolved by the next green run.
       - name: Route alert on failure (BRO-7486)
         if: failure() && github.ref == 'refs/heads/main'
-        continue-on-error: true
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -140,7 +139,6 @@ jobs:
 
       - name: Resolve alert when green (BRO-7486)
         if: success() && github.ref == 'refs/heads/main'
-        continue-on-error: true
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
