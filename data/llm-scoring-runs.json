@@ -362172,12 +362172,12 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-14T13:19:57.677Z",
-    "completedAt": "2026-11-14T13:19:57.679Z",
-    "totalReviews": 0,
+    "startedAt": "2026-11-14T11:43:31.800Z",
+    "completedAt": "2026-11-14T13:42:46.813Z",
+    "totalReviews": 82305,
     "processed": 0,
-    "skipped": 0,
-    "errors": 0,
+    "skipped": 82232,
+    "errors": 3,
     "tokensUsed": {
       "input": 0,
       "output": 0,
@@ -362186,45 +362186,67 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "43598357248",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-14T13:31:11.978Z",
-    "completedAt": "2026-11-14T13:31:15.077Z",
-    "totalReviews": 40,
-    "processed": 0,
-    "skipped": 39,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4112,
-      "output": 135,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 12036
-    },
-    "costUsd": 0.02781755,
-    "runId": "43599798570",
+    "runId": "43591086255",
     "source": "index",
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
   },
   {
-    "startedAt": "2026-11-14T13:36:15.040Z",
-    "completedAt": "2026-11-14T13:36:15.089Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-14T13:43:07.061Z",
+    "completedAt": "2026-11-14T13:46:40.381Z",
+    "totalReviews": 82305,
+    "processed": 29,
+    "skipped": 82256,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 252039,
+      "output": 11902,
+      "cacheRead": 159759,
+      "cacheWrite": 15091,
+      "total": 655130
+    },
+    "costUsd": 0.99575795,
+    "runId": "43591086255",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "ceilidh-the-musical-off-west-end-2026",
+        "outletId": "daily-echo",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-14T13:51:35.263Z",
+    "completedAt": "2026-11-14T13:52:06.880Z",
+    "totalReviews": 10,
+    "processed": 10,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 26435,
+      "output": 2087,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 28522
     },
-    "costUsd": 0,
-    "runId": "43599798570",
+    "costUsd": 0.0739852,
+    "runId": "43591086255",
     "source": "comparative-rescore",
     "errorDetails": []
   }
