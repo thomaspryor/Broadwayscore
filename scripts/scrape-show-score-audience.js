@@ -915,7 +915,7 @@ async function processShow(show, { rediscovered = false } = {}) {
 
     const data = extractAudienceData(html, show.id);
     const metadata = extractMetadata(html);
-    noRatingsYet = !data.score && !data.reviewCount && !/aggregateRating/i.test(html) && /Be the first to review/i.test(html);
+    noRatingsYet = !data.score && !/aggregateRating/i.test(html) && /Be the first to review/i.test(html);
 
     if (metadata.runtime) console.log(`  Runtime: ${metadata.runtime}`);
     if (metadata.synopsis) console.log(`  Synopsis: ${metadata.synopsis.slice(0, 80)}...`);
