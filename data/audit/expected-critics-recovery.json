@@ -82,6 +82,10 @@
         {
           "at": "2026-11-10T20:52:16.223Z",
           "outcome": "existing_file"
+        },
+        {
+          "at": "2026-11-14T15:58:41.092Z",
+          "outcome": "existing_file"
         }
       ]
     },
@@ -218,8 +222,16 @@
         {
           "at": "2026-11-11T17:24:14.572Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-14T15:58:54.496Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-14T15:58:54.496Z",
+        "note": "auto (BRO-7312): 3 targeted searches of theatermania for medea-off-broadway-2026 found no review (2026-11-10, 2026-11-11, 2026-11-14)"
+      }
     },
     "tosca-english-national-opera-west-end-2026::timeout-london": {
       "showId": "tosca-english-national-opera-west-end-2026",
@@ -234,8 +246,16 @@
         {
           "at": "2026-11-11T17:24:28.488Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-14T15:59:06.646Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-14T15:59:06.646Z",
+        "note": "auto (BRO-7312): 3 targeted searches of timeout-london for tosca-english-national-opera-west-end-2026 found no review (2026-11-10, 2026-11-11, 2026-11-14)"
+      }
     },
     "tosca-english-national-opera-west-end-2026::whatsonstage": {
       "showId": "tosca-english-national-opera-west-end-2026",
@@ -250,8 +270,16 @@
         {
           "at": "2026-11-12T17:45:01.982Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-14T15:59:06.646Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-14T15:59:06.646Z",
+        "note": "auto (BRO-7312): 3 targeted searches of whatsonstage for tosca-english-national-opera-west-end-2026 found no review (2026-11-11, 2026-11-12, 2026-11-14)"
+      }
     },
     "tristan-and-yseult-off-broadway-2026::theatermania": {
       "showId": "tristan-and-yseult-off-broadway-2026",
@@ -285,6 +313,13 @@
         {
           "at": "2026-11-13T17:22:39.584Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-14T15:59:27.290Z",
+          "outcome": "non_evidence",
+          "collectorOutcome": "rejected",
+          "reason": "no-publish-date",
+          "url": "https://www.thestage.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum-english-national-opera"
         }
       ]
     },
@@ -297,6 +332,10 @@
         {
           "at": "2026-11-13T17:22:39.584Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-14T15:59:27.290Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -308,6 +347,10 @@
       "attempts": [
         {
           "at": "2026-11-13T17:22:39.584Z",
+          "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-14T15:59:27.290Z",
           "outcome": "no_evidence"
         }
       ]
@@ -372,6 +415,18 @@
       "attempts": [
         {
           "at": "2026-11-13T17:23:01.743Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "the-steel-man-off-broadway-2026::theatermania": {
+      "showId": "the-steel-man-off-broadway-2026",
+      "outletId": "theatermania",
+      "openingDate": "2026-11-08",
+      "firstSeenMissingAt": "2026-11-14T15:58:40.325Z",
+      "attempts": [
+        {
+          "at": "2026-11-14T15:59:31.497Z",
           "outcome": "no_evidence"
         }
       ]
