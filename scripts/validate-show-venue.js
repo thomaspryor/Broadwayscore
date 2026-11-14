@@ -14,10 +14,14 @@
  *   London shows instead use lib/london-venue-validation: venue websites
  *   from OWE_VENUE_CONFIGS, plus London Theatre / Official London Theatre.
  *   Fetched production headings, event dates and venues supply the evidence.
+ *   Venue-discovered OB shows opening in the next 10 days first check their
+ *   venue's own Opening Night key date (lib/venue-opening-night-date).
  *
  * Comparison:
  *   - venue: canonicalVenue() from scripts/lib/title-match.js
  *   - openingDate: > 30-day delta = mismatch
+ *   - venue Opening Night: any date disagreement = mismatch, audited and
+ *     routed through the existing --fail-on-mismatch workflow notification
  *   - opening-year: shows.json year vs Playbill URL year (last 4 digits of slug)
  *
  * Output: data/audit/venue-date-mismatches.json (full report each run).
@@ -112,6 +116,7 @@ const { venueSearchToken } = require('./lib/venue-search-token');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { classifyNamedShowRun } = require('./lib/named-show-verdict');
 const { routeVenueValidation, validateLondonShow } = require('./lib/london-venue-validation');
+const { validateWithVenueOpeningNight, prioritizeVenueOpeningChecks } = require('./lib/venue-opening-night-date');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -736,14 +741,17 @@ function parseFactDates(html) {
 
 async function validateOne(show, log) {
   log(`\n${show.id}  "${show.title}"  (${show.venue})`);
-  return routeVenueValidation(show, {
-    london: async s => {
-      const row = await validateLondonShow(s, { fetchPage, serpQuery, log }, timeBudget);
-      log(`  London verdict: ${row.result}`);
-      row.mismatches.forEach(m => log(`    - ${m.field}: shows=${m.shows} source=${m.playbill}`));
-      return row;
-    },
-    playbill: s => validatePlaybillShow(s, log),
+  return validateWithVenueOpeningNight(show, {
+    fetchPage, log: console.log,
+    validateFallback: s => routeVenueValidation(s, {
+      london: async s => {
+        const row = await validateLondonShow(s, { fetchPage, serpQuery, log }, timeBudget);
+        log(`  London verdict: ${row.result}`);
+        row.mismatches.forEach(m => log(`    - ${m.field}: shows=${m.shows} source=${m.playbill}`));
+        return row;
+      },
+      playbill: s => validatePlaybillShow(s, log),
+    }),
   });
 }
 
@@ -908,6 +916,7 @@ async function main() {
     console.error('Pass --show=ID, --all-provisional, --all, or --candidates-file=PATH');
     process.exit(2);
   }
+  targets = prioritizeVenueOpeningChecks(targets);
   if (limit > 0) targets = targets.slice(0, limit);
 
   console.log(`validate-show-venue: ${targets.length} target(s)`);
@@ -1047,7 +1056,7 @@ async function main() {
     for (const r of mismatches) {
       console.log(`  ${r.id}`);
       for (const m of r.mismatches) {
-        console.log(`    - ${m.field}: shows=${JSON.stringify(m.shows ?? m.showsCanonical)} playbill=${JSON.stringify(m.playbill ?? m.playbillCanonical)}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`);
+        console.log(`    - ${m.field}: shows=${JSON.stringify(m.shows ?? m.showsCanonical)} ${m.source === 'venue-opening-night' ? 'venue' : 'playbill'}=${JSON.stringify(m.playbill ?? m.playbillCanonical)}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`);
       }
       console.log(`    source: ${r.sourceUrl || r.playbillUrl}`);
     }
@@ -1104,7 +1113,7 @@ async function main() {
   if (failOnMismatch && (mismatches.length || deferredHighPriority.length)) {
     for (const r of mismatches) {
       for (const m of r.mismatches) {
-        console.log(`::error::${r.id}: ${m.field} shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}`);
+        console.log(`::error::${r.id}: ${m.field} shows=${m.shows ?? m.showsCanonical} ${m.source === 'venue-opening-night' ? 'venue' : 'playbill'}=${m.playbill ?? m.playbillCanonical}`);
       }
     }
     if (deferredHighPriority.length) {
