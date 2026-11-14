@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T15:39:31.747Z",
+  "timestamp": "2026-11-14T16:03:53.716Z",
   "stats": {
-    "totalReviews": 82034,
-    "alreadyFlagged": 22373,
+    "totalReviews": 82035,
+    "alreadyFlagged": 22374,
     "dateGuardCatches": 220,
     "directorMismatch": 3686,
     "tvFilmSignals": 2312,
-    "londonSignals": 3745,
+    "londonSignals": 3747,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8476
+    "noPublishDate": 8475
   },
   "findings": [
     {
@@ -65671,7 +65671,7 @@
     },
     {
       "showId": "the-black-mirror-experience-off-broadway-2026",
-      "file": "the-recs--unknown.json",
+      "file": "the-recs--randall-david-cook.json",
       "score": 78,
       "publishDate": "2026-07-01",
       "url": "https://therecs.co.uk/the-black-mirror-experience-the-shed/",
@@ -105300,6 +105300,20 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "standard--luke-reevey.json",
+      "score": null,
+      "publishDate": "2026-11-14",
+      "url": "https://www.standard.co.uk/culture/radiohead-theatre-hamlet-hail-to-the-thief-shakespeare-b1304678.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "sunday-times--dominic-maxwell.json",
       "publishDate": "2026-11-12",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/hamlet-hail-to-the-thief-review-radiohead-gpzn0lhp0",
@@ -126506,6 +126520,19 @@
       "score": 59,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/sting-young-vic-review-emotionally-gruelling-bit-bizarre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "sting-off-west-end-2026",
+      "file": "guardian--anya-ryan.json",
+      "publishDate": "2026-06-24",
+      "url": "https://www.theguardian.com/stage/2026/jun/24/sting-review-young-vic-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
