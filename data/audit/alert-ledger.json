@@ -18790,7 +18790,7 @@
       "resolvedAt": "2026-10-15T08:59:13.336Z"
     },
     "llm-scoring:daily-cost-breach": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
@@ -18801,7 +18801,9 @@
       "notifyCount": 24,
       "cardId": null,
       "linearIdentifier": "BRO-6732",
-      "silentRefires": 21
+      "silentRefires": 21,
+      "resolvedAt": "2026-11-14T08:15:00.228Z",
+      "resolveReason": "Rolling 24h LLM scoring cost $7.40 is at or below the $10.00 alarm line."
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
