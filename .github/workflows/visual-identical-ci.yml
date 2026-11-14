@@ -52,6 +52,7 @@ jobs:
           echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
           git config user.name "visual-ci"
           git config user.email "visual-ci@users.noreply.github.com"
+          # keep-run-ok: a throwaway checkout of the hold branch, merged only to build it; nothing is pushed back
           git merge --no-edit "$BASE_SHA"
 
       - name: Setup Node.js and install base dependencies

@@ -37,7 +37,7 @@ function evalGroup(raw, inputs) {
   const github = {
     workflow: 'wf', ref: 'refs/heads/main', ref_name: 'main', sha: 'a'.repeat(40),
     run_id: '40310614635', event_name: 'workflow_dispatch',
-    event: { inputs, issue: { number: 123 }, pull_request: { number: 123 } },
+    event: { inputs, issue: { number: 123 }, pull_request: { number: 123 }, workflow_run: { head_branch: 'visual-hold/bro-7495' } },
   };
   const stub = new Proxy({}, { get: () => 'value' });
   const fns = {
