@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { hasNoAutomatedPath, isFetchAbandonedAwaitingManual } = require('../../scripts/lib/t1-silent-gap.js');
+const { hasNoAutomatedPath, isFetchAbandonedAwaitingManual, isAutomationStillWorking } = require('../../scripts/lib/t1-silent-gap.js');
 const { silentGapBacklogResults, bwwRoundupMissBacklogResults, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
@@ -554,9 +554,10 @@ test('silentGapBacklogResults: real audit report shape', async t => {
   if (!existsSync(file)) return t.skip('Audit report unavailable');
   const report = JSON.parse(readFileSync(file, 'utf8'));
   // Clock two days after the report: every gap is past the in-flight window.
-  const rows = silentGapBacklogResults(report, new Date(Date.parse(report.generatedAt) + 86400000 * 2));
+  const clock = new Date(Date.parse(report.generatedAt) + 86400000 * 2);
+  const rows = silentGapBacklogResults(report, clock);
   // BRO-6082: needsManualRecovery gaps are the audit's FYI digest line, not a warn row.
-  assert.equal(rows.length, report.gaps.some(g => g.needsManualRecovery !== true && !isFetchAbandonedAwaitingManual(g)) ? 1 : 0);
+  assert.equal(rows.length, report.gaps.some(g => g.needsManualRecovery !== true && !isFetchAbandonedAwaitingManual(g) && !isAutomationStillWorking(g, clock)) ? 1 : 0);
   if (rows.length) assert.match(rows[0].message, /Oldest:/);
 });
 
