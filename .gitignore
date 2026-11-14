@@ -431,6 +431,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # BRO-4907 outlet tier audit: the card's acceptance criteria require these committed.
 !/docs/audits/
 /docs/audits/*
+# BRO-6537: retain the attributed backfill outlet-yield measurement.
+!/docs/audits/bro-6537-backfill-outlet-yield.md
 # BRO-7394: preserve the VERIFY-path repair inventory for the follow-up Linear edits.
 !/docs/audits/bro-7394-verify-path-triage.md
 !/docs/audits/bro-6582-type-verification.json
