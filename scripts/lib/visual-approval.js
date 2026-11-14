@@ -125,7 +125,7 @@ function whatProblem(what) {
 
 /** Small JPEG for the email: top of the shot only (full-page shots can be 150,000 px tall), downscaled, under THUMB_MAX_BYTES. */
 async function makeEmailThumb(srcAbs, outAbs) {
-  const sharp = require('sharp');
+  const sharp = (await import('sharp')).default; // dynamic import: the morning digest walks require() chains and must not see an npm package here
   const meta = await sharp(srcAbs, { limitInputPixels: false }).metadata();
   const h = Math.min(meta.height, THUMB_MAX_HEIGHT);
   let width = Math.min(meta.width, THUMB_MAX_WIDTH);

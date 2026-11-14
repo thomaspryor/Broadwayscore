@@ -19,7 +19,7 @@ async function compareImages(aPath, bPath, opts = {}) {
   const maxDiff = opts.maxDiffPixels ?? MAX_DIFF_PIXELS;
   try {
     if (!fs.existsSync(aPath) || !fs.existsSync(bPath)) return { same: false, reason: 'missing image' };
-    const sharp = require('sharp');
+    const sharp = (await import('sharp')).default;
     const [a, b] = await Promise.all([aPath, bPath].map((p) => sharp(p).ensureAlpha().raw().toBuffer({ resolveWithObject: true })));
     if (a.info.width !== b.info.width || a.info.height !== b.info.height) {
       return { same: false, reason: `size differs (${a.info.width}x${a.info.height} vs ${b.info.width}x${b.info.height})` };
@@ -61,7 +61,7 @@ const OUTCOME_TEXT = {
 /** What a shadow run records. skipAsk is ALWAYS false in Phase 1 (class guard: tested directly). */
 function shadowDecision(report, patch) {
   if (!report || typeof report !== 'object') return { skipAsk: false, outcome: 'not-run', line: `${SHADOW_MARK} not run.` };
-  if (patch && report.patch && report.patch !== patch) return { skipAsk: false, outcome: 'not-run', line: `${SHADOW_MARK} not run on this version of the change.` };
+  if (report.schema !== 1 || !report.patch || (patch && report.patch !== patch)) return { skipAsk: false, outcome: 'not-run', line: `${SHADOW_MARK} not run on this version of the change.` };
   const d = decide(report.pairs, report.canaryOk);
   const text = (OUTCOME_TEXT[d.outcome] || OUTCOME_TEXT.invalid)((report.pairs || []).length);
   return { skipAsk: false, outcome: d.outcome, line: `${SHADOW_MARK} ${text}` };

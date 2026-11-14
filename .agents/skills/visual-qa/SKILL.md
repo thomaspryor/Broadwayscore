@@ -113,3 +113,7 @@ Otherwise the gate is firm. If you genuinely cannot run /visual-qa (cloud sandbo
 - `.claude/hooks/verify-edits.sh` — Stop hook with `is_ui_edit` branch.
 - `memory/feedback_local_preview_before_push.md` — why this gate exists (FeaturedSpot post-mortem).
 - `memory/feedback_two_model_ui_review.md` — original two-model rationale.
+
+## Optional before/after check (BRO-7491, trial run only)
+
+With a dev server on origin/main and one on your change, `node scripts/visual-identical.mjs --base-url=<main> --head-url=<change> --paths=/,/x [--states=states.json]` screenshots both at every width (and in listed states such as a panel open) and writes `identical.json`. `visual-approval.js request` then notes the result on the card. This phase only collects evidence: the owner is still asked every time. States JSON: `{ "/route": [ { "name": "panel open", "click": "<selector>", "waitFor": "<selector>" } ] }`.

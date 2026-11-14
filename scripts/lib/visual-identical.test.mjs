@@ -59,8 +59,8 @@ test('decide: only "every pair same and the self-test passed" is identical', () 
 });
 
 test('class guard: a shadow decision never skips the owner, whatever the report says', () => {
-  const allSame = { canaryOk: true, patch: 'p1', pairs: [{ route: '/', width: 360, state: '', status: 'same' }] };
-  for (const report of [allSame, null, undefined, {}, { canaryOk: true, pairs: [] }, { ...allSame, patch: 'other' }, 'x', 5]) {
+  const allSame = { schema: 1, canaryOk: true, patch: 'p1', pairs: [{ route: '/', width: 360, state: '', status: 'same' }] };
+  for (const report of [allSame, null, undefined, {}, { canaryOk: true, pairs: [] }, { ...allSame, patch: 'other' }, { ...allSame, patch: '' }, { ...allSame, schema: 2 }, 'x', 5]) {
     const d = vi.shadowDecision(report, 'p1');
     assert.equal(d.skipAsk, false);
     assert.ok(d.line.startsWith(vi.SHADOW_MARK));
@@ -73,9 +73,10 @@ test('class guard: a shadow decision never skips the owner, whatever the report 
 test('request wiring: the shadow record sits after the ask and cannot stop it', () => {
   const src = fs.readFileSync(new URL('../visual-approval.js', import.meta.url), 'utf8');
   const ask = src.indexOf("createComment(issue.id, `Asked the owner to look at");
-  const shadow = src.indexOf('shadowDecision(');
+  const shadow = src.lastIndexOf('shadowDecision(');
   assert.ok(ask > 0 && shadow > ask, 'shadow record must come after the ask comment');
-  assert.match(src.slice(shadow - 200, shadow + 400), /try\s*\{[\s\S]*catch/);
+  assert.match(src.slice(shadow - 700, shadow + 600), /try\s*\{[\s\S]*catch/);
+  assert.doesNotMatch(src.split('\n').filter((l) => /^const .*require\(/.test(l)).join('\n'), /visual-identical/, 'must be loaded inside the guarded block, not at module level');
   assert.doesNotMatch(src, /skipAsk\s*\)\s*return|if\s*\(\s*[a-z.]*skipAsk/);
 });
 
@@ -115,7 +116,28 @@ test('end to end: identical pages (including an opened panel) are identical; a p
   assert.ok(diff.report.pairs.some((p) => p.state === 'panel open' && p.status === 'different'));
 });
 
-test('the driver refuses the same server for before and after', () => {
+test('the driver refuses the same server (even under another hostname) and a page-wide mask', () => {
+  const same = spawnSync('node', ['scripts/visual-identical.mjs', '--base-url=http://localhost:3000', '--head-url=http://127.0.0.1:3000'], { encoding: 'utf8' });
+  assert.equal(same.status, 2);
+  const m = spawnSync('node', ['scripts/visual-identical.mjs', '--base-url=http://x:1', '--head-url=http://y:2', '--mask=body'], { encoding: 'utf8' });
+  assert.equal(m.status, 2);
   const r = spawnSync('node', ['scripts/visual-identical.mjs', '--base-url=http://x:1', '--head-url=http://x:1'], { encoding: 'utf8' });
   assert.equal(r.status, 2);
+});
+
+test('a states file that cannot be read, or a state with no click, makes the run "could not render", never identical', async (t) => {
+  const sb = await serve(page('#fff')); const out = fs.mkdtempSync(path.join(tmp, 'bad-'));
+  const run = (statesPath) => new Promise((resolve) => {
+    const c = spawn('node', ['scripts/visual-identical.mjs', `--base-url=http://127.0.0.1:${sb.address().port}`, '--head-url=http://127.0.0.1:9', '--paths=/', `--states=${statesPath}`, `--out=${out}`], { env: { ...process.env, VISUAL_IDENTICAL_SETTLE_MS: '50' } });
+    c.stdout.resume(); c.stderr.resume(); c.on('close', () => resolve(JSON.parse(fs.readFileSync(path.join(out, 'identical.json'), 'utf8'))));
+  });
+  try {
+    const r1 = await run(path.join(out, 'missing.json'));
+    assert.equal(r1.identical, false);
+    const bad = path.join(out, 'noclick.json'); fs.writeFileSync(bad, JSON.stringify({ '/': [{ name: 'open' }] }));
+    const r2 = await run(bad);
+    assert.equal(r2.identical, false);
+    assert.match(JSON.stringify(r2.pairs), /no name or no click/);
+    assert.equal(fs.readdirSync(out).filter((f) => f.includes('work')).length, 0, 'no scratch folder is left under the evidence dir');
+  } finally { sb.close(); }
 });

@@ -11,7 +11,8 @@
 // Writes <out>/identical.json (default .claude/visual-qa/<branch>/identical.json). Exit 0 whenever it wrote a report.
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { WIDTHS, AD_NETWORK_URL_RE, launchChromium } from './lib/visual-capture.mjs';
@@ -33,7 +34,7 @@ async function shoot(browser, baseUrl, route, width, state, masks, { canary = fa
   try {
     await context.addCookies([{ name: 'bwsc_noads', value: '1', url: baseUrl }]);
     await context.route(AD_NETWORK_URL_RE, (r) => r.abort('blockedbyclient'));
-    await context.addInitScript(`(() => { const T = ${FROZEN}; const R = Date; globalThis.Date = class extends R { constructor(...a) { super(...(a.length ? a : [T])); } static now() { return T; } }; })();`);
+    await context.addInitScript(`(() => { const T = ${FROZEN}; const R = Date; const F = function (...a) { return new.target ? new R(...(a.length ? a : [T])) : new R(T).toString(); }; F.now = () => T; F.prototype = R.prototype; F.UTC = R.UTC; F.parse = R.parse; globalThis.Date = F; })();`);
     const page = await context.newPage();
     const res = await page.goto(baseUrl + route, { waitUntil: 'load', timeout: 20000 });
     if (!res || res.status() >= 400) throw new Error(`page answered ${res ? res.status() : 'nothing'}`);
@@ -58,23 +59,30 @@ async function main(argv = process.argv.slice(2)) {
   const paths = (arg(argv, 'paths') || '/').split(',').map((s) => s.trim()).filter(Boolean);
   const masks = (arg(argv, 'mask') || '').split(',').map((s) => s.trim()).filter(Boolean).concat(['time', '[data-visual-mask]']);
   const statesFile = arg(argv, 'states');
+  const broad = masks.find((m) => /^(html|body|main|#root|#__next|\*)$/i.test(m));
+  if (broad) { console.error(`Refused: --mask ${broad} would hide the whole page, so nothing could be compared.`); return 2; }
   if (!baseUrl || !headUrl) { console.error('Usage: node scripts/visual-identical.mjs --base-url=<url> --head-url=<url> [--paths=/,/x] [--states=file.json] [--mask=<css>] [--out=<dir>]'); return 2; }
-  if (baseUrl === headUrl) { console.error('Refused: --base-url and --head-url are the same server, so the comparison would prove nothing.'); return 2; }
+  const hostKey = (u) => { try { const x = new URL(u); return `${x.hostname === 'localhost' ? '127.0.0.1' : x.hostname}:${x.port || (x.protocol === 'https:' ? 443 : 80)}`; } catch { return u; } };
+  if (hostKey(baseUrl) === hostKey(headUrl)) { console.error('Refused: --base-url and --head-url are the same server, so the comparison would prove nothing.'); return 2; }
 
   const git = (a) => { try { return execFileSync('git', a, { encoding: 'utf8' }).trim(); } catch { return ''; } };
   const branch = git(['branch', '--show-current']) || 'detached';
   const out = arg(argv, 'out') || join('.claude', 'visual-qa', branch);
   mkdirSync(out, { recursive: true });
-  const work = join(out, 'identical-work'); mkdirSync(work, { recursive: true });
+  // Scratch pictures live in the system temp dir, never under <out>: visual-approval.js reads that folder for evidence.
+  const work = mkdtempSync(join(tmpdir(), 'visual-identical-'));
   let states = {};
-  if (statesFile) { try { states = JSON.parse(readFileSync(statesFile, 'utf8')); } catch (e) { console.error(`Could not read ${statesFile}: ${e.message}`); } }
+  let setupError = '';
+  if (statesFile) { try { states = JSON.parse(readFileSync(statesFile, 'utf8')); } catch (e) { setupError = `could not read the states file: ${e.message}`; } }
+  for (const list of Object.values(states)) for (const st of (Array.isArray(list) ? list : [])) if (!st || !st.name || !st.click) setupError = setupError || 'a listed state has no name or no click selector';
 
   const pairs = [];
+  if (setupError) pairs.push({ route: paths[0], width: 0, state: '', status: 'error', reason: setupError });
   let canaryOk = false;
   let browser;
   try {
     browser = await launchChromium();
-    for (const route of paths) {
+    for (const route of setupError ? [] : paths) {
       const variants = [{ name: '' }, ...((states[route] || []).map((s) => ({ name: s.name, ...s })))];
       for (const width of WIDTHS) {
         for (const v of variants) {
@@ -103,17 +111,16 @@ async function main(argv = process.argv.slice(2)) {
     } catch { canaryOk = false; }
   } catch (e) {
     pairs.push({ route: paths[0], width: 0, state: '', status: 'error', reason: String(e.message || e).split('\n')[0].slice(0, 160) });
-  } finally { if (browser) await browser.close().catch(() => {}); }
+  } finally { if (browser) await browser.close().catch(() => {}); try { rmSync(work, { recursive: true, force: true }); } catch { /* best effort */ } }
 
   const decision = ident.decide(pairs, canaryOk);
   const mergeBase = git(['merge-base', 'origin/main', 'HEAD']);
   const report = {
     schema: 1, outcome: decision.outcome, identical: decision.identical, reasons: decision.reasons, canaryOk,
-    baseUrl, headUrl, mergeBase, headSha: git(['rev-parse', 'HEAD']), patch: va.patchId('origin/main', 'HEAD', process.cwd()) || '',
+    baseUrl, headUrl, mergeBase, headSha: git(['rev-parse', 'HEAD']), patch: (() => { try { return va.patchId('origin/main', 'HEAD', process.cwd()) || ''; } catch { return ''; } })(),
     widths: WIDTHS, masks, statesFile: statesFile || '', statesSha: statesFile && existsSync(statesFile) ? sha(readFileSync(statesFile, 'utf8')) : '', pairs,
   };
   writeFileSync(join(out, 'identical.json'), JSON.stringify(report, null, 2));
-  try { rmSync(work, { recursive: true, force: true }); } catch { /* best effort */ }
   console.log(`[visual-identical] ${decision.outcome}: ${pairs.length} pair(s), canary ${canaryOk ? 'ok' : 'FAILED'}; wrote ${join(out, 'identical.json')}`);
   for (const r of decision.reasons) console.log(`  - ${r}`);
   return 0;
