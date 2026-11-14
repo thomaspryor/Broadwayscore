@@ -259518,21 +259518,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-14T20:53:18.371Z",
-    "completedAt": "2026-11-14T22:05:57.030Z",
-    "totalReviews": 82413,
-    "processed": 72,
-    "skipped": 82326,
-    "errors": 4,
+    "startedAt": "2026-11-14T22:03:43.386Z",
+    "completedAt": "2026-11-14T22:03:49.523Z",
+    "totalReviews": 3,
+    "processed": 63,
+    "skipped": 2,
+    "errors": 5,
     "tokensUsed": {
-      "input": 450379,
-      "output": 23998,
-      "cacheRead": 300571,
+      "input": 391198,
+      "output": 20772,
+      "cacheRead": 258694,
       "cacheWrite": 15136,
-      "total": 1179170
+      "total": 1023500
     },
-    "costUsd": 0.8868644,
-    "runId": "43639539250",
+    "costUsd": 1.5465225,
+    "runId": "43645753111",
     "source": "index",
     "errorDetails": [
       {
@@ -259541,38 +259541,43 @@
         "error": "resume_input_hash_mismatch"
       },
       {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
+        "showId": "the-elephant-man-2014",
+        "outletId": "latimes",
+        "error": "resume_reload_failed:ENOENT: no such file or directory, open '/home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/the-elephant-man-2014/latimes--unknown.json'"
       },
       {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
+        "showId": "the-elephant-man-2014",
+        "outletId": "theater-life",
+        "error": "resume_reload_failed:ENOENT: no such file or directory, open '/home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/the-elephant-man-2014/theater-life--unknown.json'"
       },
       {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
+        "showId": "water-for-elephants-2024",
+        "outletId": "ew",
+        "error": "resume_input_hash_mismatch"
+      },
+      {
+        "showId": "jersey-boys-2005",
+        "outletId": "nytimes",
+        "error": "resume_reload_failed:ENOENT: no such file or directory, open '/home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/jersey-boys-2005/nytimes--unknown.json'"
       }
     ]
   },
   {
-    "startedAt": "2026-11-14T22:06:09.619Z",
-    "completedAt": "2026-11-14T22:06:46.350Z",
-    "totalReviews": 13,
-    "processed": 13,
+    "startedAt": "2026-11-14T22:08:47.091Z",
+    "completedAt": "2026-11-14T22:08:47.093Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 36249,
-      "output": 2976,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 39225
+      "total": 0
     },
-    "costUsd": 0.0989346,
-    "runId": "43639539250",
+    "costUsd": 0,
+    "runId": "43645753111",
     "source": "comparative-rescore",
     "errorDetails": []
   }
