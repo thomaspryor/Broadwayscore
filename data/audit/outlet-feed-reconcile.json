@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T08:41:09.919Z",
+  "generatedAt": "2026-11-14T10:23:27.969Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -100,7 +100,7 @@
       "reason": "no data/review-texts directory for this show"
     }
   ],
-  "feedsChecked": 84,
+  "feedsChecked": 85,
   "feedsFailed": [
     {
       "outletId": "theater-life",
@@ -125,10 +125,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 840,
-  "matchedGaps": 5,
+  "itemsScanned": 845,
+  "matchedGaps": 6,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -147,6 +151,15 @@
       "outletId": "all-that-dazzles-uk",
       "url": "https://www.allthatdazzles.co.uk/post/review-dogstar-hampstead-theatre",
       "headline": "Review: Dogstar (Hampstead Theatre)",
+      "publishDate": "2026-11-14"
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "level": "matched",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/lifestyle/review-hamlet-hail-to-the-thief-barbican/",
+      "headline": "Review: Hamlet Hail to the Thief &#8211; Barbican",
       "publishDate": "2026-11-14"
     },
     {
