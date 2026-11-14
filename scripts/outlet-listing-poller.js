@@ -18,8 +18,9 @@
  *       rss     — Free RSS/Atom feed (Guardian, Vulture)
  *       wp-api  — WordPress REST API (NYSR)
  *       serp    — SERP site: query (all others, including paywalled)
- *   - Four outlets are skipped (have dedicated scrapers/pollers):
- *       broadwayworld, london-theatre, london-box-office, loureviews
+ *   - Three outlets are skipped (have dedicated scrapers/pollers):
+ *       broadwayworld, london-box-office, loureviews
+ *     (london-theatre is polled via its /reviews listing, BRO-7470)
  *
  * Usage:
  *   node scripts/outlet-listing-poller.js [options]
@@ -115,7 +116,10 @@ const REJECTED_URL_CACHE_MAX = 1000;
 // loureviews: owned by poll-loureviews.yml (full-text WP ingest + its own tested
 // matcher, scripts/lib/loureviews-match.js) — polling it here too made two
 // writers for one outlet (BRO-4185 plan review).
-const SKIP_OUTLETS = new Set(['broadwayworld', 'london-theatre', 'london-box-office', 'loureviews']);
+// london-theatre was listed here as "dedicated scraper" but none exists (BRO-7470):
+// Ceilidh, Julius Caesar and Dogstar were all missed by the first pass and only
+// found later by audit-aggregator-gap. It is polled via its /reviews listing below.
+const SKIP_OUTLETS = new Set(['broadwayworld', 'london-box-office', 'loureviews']);
 
 // Per-outlet fetch strategies. Each entry declares a strategy + required URL/config.
 // Outlets not listed here fall back to SERP. All strategy fetches are wrapped in
@@ -197,6 +201,9 @@ const OUTLET_STRATEGY_CONFIG = {
   timeout:           { strategy: 'listing-html', url: 'https://www.timeout.com/newyork/theater/new-york-theater-and-broadway-reviews', urlFilter: /\/theater\/[^/]+-review(?!s)[^/]*$/, usePlainFetch: true },
   // timeout-london: SSR reviews index, BD fetches directly (~35 links)
   'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
+  // londontheatre.co.uk (BRO-7470): SSR /reviews index, plain fetch OK; lists West End AND fringe/Off-West-End
+  // reviews as /reviews/<show>-review-<venue>. Page 1 carries the newest ~20.
+  'london-theatre':  { strategy: 'listing-html', url: 'https://www.londontheatre.co.uk/reviews', urlFilter: /\/reviews\/[^/?#]+-review[^/?#]*$/, usePlainFetch: true },
   // Evening Standard UK theatre reviews topic page — SSR, reviews-only (avoids news/features on /culture/theatre)
   standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/topic/theatre-reviews', usePlainFetch: true },
   // WhatsOnStage: /news/?categories=reviews is a React SPA — plain fetch returns only the shell.
