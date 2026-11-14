@@ -1,45 +1,61 @@
 {
-  "generatedAt": "2026-11-13T13:22:13.095Z",
-  "total": 388,
-  "armedCount": 361,
-  "refusedCount": 27,
+  "generatedAt": "2026-11-14T12:29:05.303Z",
+  "total": 379,
+  "armedCount": 354,
+  "refusedCount": 25,
   "byKind": {
-    "no-section": 3,
-    "shape": 22,
+    "no-section": 2,
+    "shape": 21,
     "no-command": 1,
     "basename": 1
   },
   "refused": [
     {
-      "id": "BRO-7444",
-      "name": "Opening-night audit 2026-11-13",
+      "id": "BRO-7478",
+      "name": "Opening-night audit 2026-11-14",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7444/opening-night-audit-2026-11-13",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7478/opening-night-audit-2026-11-14",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
     },
     {
-      "id": "BRO-7433",
-      "name": "Board workers unhealthy: ScrapingBee smoke check fails (egress blocked)",
+      "id": "BRO-7477",
+      "name": "The Recs bylines land as Unknown: extractor rejects 'The Recs RDC - Name' author meta",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7433/board-workers-unhealthy-scrapingbee-smoke-check-fails-egress-blocked",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-cloud-secrets.js --smoke)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7477/the-recs-bylines-land-as-unknown-extractor-rejects-the-recs-rdc-name",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-the-recs-byline.js)",
       "kind": "shape"
     },
     {
-      "id": "BRO-7430",
-      "name": "Predict the Score: 50% likely range under forecast + readers' average tile",
+      "id": "BRO-7466",
+      "name": "Recheck: nightly forecast sync step after lo50/hi50 RPC change (BRO-7430)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7430/predict-the-score-50percent-likely-range-under-forecast-readers",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7466/recheck-nightly-forecast-sync-step-after-lo50hi50-rpc-change-bro-7430",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
     },
     {
-      "id": "BRO-7427",
-      "name": "The Good Thief (Irish Rep): opening date is Nov 17, not Nov 12",
+      "id": "BRO-7464",
+      "name": "Owner step from BRO-7276: Root cause: \"Stuck pipeline items\" keeps coming back (5 cards in 30 da",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7427/the-good-thief-irish-rep-opening-date-is-nov-17-not-nov-12",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s https://broadwayscorecard.com/data/mobile-shows.json | grep -q '\"id\":\"the-good-thief-off-broadway-2026\"[^}]*\"od\")",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7464/owner-step-from-bro-7276-root-cause-stuck-pipeline-items-keeps-coming",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7463",
+      "name": "Weekly Friday Predict the Score count email, runs in GitHub Actions",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7463/weekly-friday-predict-the-score-count-email-runs-in-github-actions",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/predict-the-score-weekly.test.mjs)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7458",
+      "name": "Orphaned git index-pack fills the container disk (14 GB of tmp_pack_*), crashing the Codex lane",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7458/orphaned-git-index-pack-fills-the-container-disk-14-gb-of-tmp-pack",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/<guard>.test.mjs)",
       "kind": "shape"
     },
     {
@@ -48,22 +64,6 @@
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7418/social-video-add-the-compare-format-to-the-automatic-tiktok-youtube",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/ scripts/social-autopost/ 2>&1 | grep -E \"^# fail 0\")",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7408",
-      "name": "Opening-night audit 2026-11-12",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7408/opening-night-audit-2026-11-12",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-7386",
-      "name": "P2: Opening night miss: Cloud 9 (2026-11-10)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7386/p2-opening-night-miss-cloud-9-2026-11-10",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/produce-press-night-digest-snapshot.js --night=2026-11-10 --check=cloud-9-west-end-2026)",
       "kind": "shape"
     },
     {
@@ -99,14 +99,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-7361",
-      "name": "Opening-night audit 2026-11-11",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7361/opening-night-audit-2026-11-11",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
       "id": "BRO-7346",
       "name": "Refetch clean text for 3 genuine reviews with spliced foreign text (BRO-7344 leftovers)",
       "priority": null,
@@ -120,14 +112,6 @@
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7321/city-hub-audit-boston-ma-2026-w46-3-new-findings",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=boston-ma --no-llm --dry-run --open)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7320",
-      "name": "City hub audit san-diego-ca 2026-W46: 5 new finding(s)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7320/city-hub-audit-san-diego-ca-2026-w46-5-new-findings",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=san-diego-ca --no-llm --dry-run --open)",
       "kind": "shape"
     },
     {
@@ -228,19 +212,19 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 266,
-    "checked": 266,
+    "total": 262,
+    "checked": 262,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-7428",
-      "name": "Re-check Off-Broadway opening dates against the venue's own show page in the week before opening",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7428/re-check-off-broadway-opening-dates-against-the-venues-own-show-page",
-      "cmd": "node --test scripts/lib/venue-opening-night-date.test.mjs",
+      "id": "BRO-7459",
+      "name": "Orphaned git index-pack fills the container disk, crashing the Codex lane",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7459/orphaned-git-index-pack-fills-the-container-disk-crashing-the-codex",
+      "cmd": "node --test tests/unit/git-temp-pack-reap.test.mjs",
       "missingPaths": [
-        "scripts/lib/venue-opening-night-date.test.mjs"
+        "tests/unit/git-temp-pack-reap.test.mjs"
       ]
     },
     {
@@ -289,15 +273,6 @@
       ]
     },
     {
-      "id": "BRO-7267",
-      "name": "Gold buttons sitewide: switch white labels to near-black (btn-primary, hero sign-in buttons, TicketButtonsAB default)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7267/gold-buttons-sitewide-switch-white-labels-to-near-black-btn-primary",
-      "cmd": "node --test tests/unit/gold-button-label-contrast.test.mjs",
-      "missingPaths": [
-        "tests/unit/gold-button-label-contrast.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-7254",
       "name": "Closing Watch: better break-even estimates for shows with no published running cost",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7254/closing-watch-better-break-even-estimates-for-shows-with-no-published",
@@ -325,15 +300,6 @@
       ]
     },
     {
-      "id": "BRO-7190",
-      "name": "Make WAKEPROMISE/OPENCLAIM advisory hits durable in cloud, then decide block mode",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7190/make-wakepromiseopenclaim-advisory-hits-durable-in-cloud-then-decide",
-      "cmd": "node --test scripts/lib/advisory-durability.test.mjs",
-      "missingPaths": [
-        "scripts/lib/advisory-durability.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-7152",
       "name": "Opening night live watch: move repeat passes out of the in-session sleep loop",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7152/opening-night-live-watch-move-repeat-passes-out-of-the-in-session",
@@ -358,15 +324,6 @@
       "cmd": "node --test tests/unit/url-content-mismatch.test.mjs",
       "missingPaths": [
         "tests/unit/url-content-mismatch.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6949",
-      "name": "x",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6949/x",
-      "cmd": "node --test tests/unit/session.test.mjs",
-      "missingPaths": [
-        "tests/unit/session.test.mjs"
       ]
     },
     {
@@ -721,33 +678,6 @@
       ]
     },
     {
-      "id": "BRO-5075",
-      "name": "Data: ~130 review files store relative (non-absolute) URLs (/article/, /chicago/article/, /people/)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5075/data-130-review-files-store-relative-non-absolute-urls-article",
-      "cmd": "node --test scripts/audit-relative-review-urls.test.mjs",
-      "missingPaths": [
-        "scripts/audit-relative-review-urls.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5045",
-      "name": "P3: arm validate-data shows.json deletion check (snapshot path is warn-only since BRO-5033)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5045/p3-arm-validate-data-showsjson-deletion-check-snapshot-path-is-warn",
-      "cmd": "node --test scripts/validate-data.test.mjs",
-      "missingPaths": [
-        "scripts/validate-data.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4987",
-      "name": "Re-fetch Playbill preview counts for ~1,500 grosses-history rows stored with 0 performances",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4987/re-fetch-playbill-preview-counts-for-1500-grosses-history-rows-stored",
-      "cmd": "node --test scripts/lib/grosses-history-repair.test.mjs",
-      "missingPaths": [
-        "scripts/lib/grosses-history-repair.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4939",
       "name": "Tours follow-ups after the BRO-4931 launch (reviews to confirm, five open tour decisions, wiring)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4939/tours-follow-ups-after-the-bro-4931-launch-reviews-to-confirm-five",
@@ -808,15 +738,6 @@
       "cmd": "node --test scripts/verify-adjudication-corrections.test.mjs",
       "missingPaths": [
         "scripts/verify-adjudication-corrections.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4245",
-      "name": "Reddit via ScrapingBee premium_proxy costs 10 credits/request: test cheaper routes",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4245/reddit-via-scrapingbee-premium-proxy-costs-10-creditsrequest-test",
-      "cmd": "node --test scripts/reddit-api.test.mjs",
-      "missingPaths": [
-        "scripts/reddit-api.test.mjs"
       ]
     },
     {
