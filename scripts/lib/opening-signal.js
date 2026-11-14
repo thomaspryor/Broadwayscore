@@ -378,6 +378,55 @@ function openSignalFromDiscovery(show, discoveredFiles, isDateReached) {
   return { date: pressNight, source: 'discovery-open-signal' };
 }
 
+// BRO-7487: a review cluster this wide, all landing before a stored FUTURE
+// openingDate, means the stored date is wrong (a venue's nominal "opening"
+// printed after the press performances), not that the reviews are early.
+const CLUSTER_MIN_OUTLETS = 3;
+const CLUSTER_MIN_EARLY_SHARE = 0.6;
+const CLUSTER_EARLY_DAYS = 2;
+
+/**
+ * Corrects a stored openingDate that is still AHEAD while 3+ distinct outlets
+ * already reviewed the run (the Check 2d suppression in update-show-status.js,
+ * `openingDateStillAhead`, used to just log and leave the show "In previews"
+ * with its score hidden: the-ripple-the-wave-that-carried-me-home-off-broadway-2026,
+ * stored 2026-11-18, seven outlets dated 2026-11-10; confirmed sources such as
+ * 'playbill' are never re-dated by the other correctors).
+ *
+ * Guards: pre-open status; ISO stored date in the future; previews already
+ * started and every counted review on/after previewsStartDate (a prior run's
+ * coverage cannot count); distinct outlets, a majority of them dated more than
+ * CLUSTER_EARLY_DAYS before the stored date; press night (modal date) reached.
+ *
+ * @param files parsed discovery-layer review JSON for the show
+ * @returns {{date, source, outlets, earlyOutlets}|null}
+ */
+function openingDateCorrectionFromCluster(show, files, isDateReached) {
+  if (!show || !PRE_OPEN_STATUSES.has(show.status)) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(show.openingDate || '')) return null;
+  if (isDateReached(show.openingDate)) return null;
+  if (!show.previewsStartDate || !isDateReached(show.previewsStartDate)) return null;
+  const earliestByOutlet = new Map();
+  for (const review of files || []) {
+    if (!isCleanDiscoveredReview(review)) continue;
+    const raw = review.publishDate || review.date;
+    if (typeof raw !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(raw)) continue;
+    const day = raw.slice(0, 10);
+    if (day < show.previewsStartDate) continue;
+    const key = review.outletId || review.outlet || review.url;
+    const prev = earliestByOutlet.get(key);
+    if (!prev || day < prev) earliestByOutlet.set(key, day);
+  }
+  const days = [...earliestByOutlet.values()];
+  if (days.length < CLUSTER_MIN_OUTLETS) return null;
+  const cutoff = new Date(Date.parse(show.openingDate + 'T00:00:00Z') - CLUSTER_EARLY_DAYS * 86400000).toISOString().slice(0, 10);
+  const early = days.filter((d) => d < cutoff);
+  if (early.length < CLUSTER_MIN_OUTLETS || early.length / days.length < CLUSTER_MIN_EARLY_SHARE) return null;
+  const pressNight = estimatePressNight(early);
+  if (!pressNight || !isDateReached(pressNight)) return null;
+  return { date: pressNight, source: 'review-derived-press-night', outlets: days.length, earlyOutlets: early.length };
+}
+
 /**
  * Find every stuck show. `countMap` is the output of countByShow().
  *
@@ -467,6 +516,8 @@ module.exports = {
   isCleanDiscoveredReview,
   datesFromDiscoveredReviews,
   openSignalFromDiscovery,
+  openingDateCorrectionFromCluster,
+  CLUSTER_MIN_OUTLETS,
   chooseOpeningDateBackfill,
   findStuckPreviews,
 };

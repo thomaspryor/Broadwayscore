@@ -429,3 +429,38 @@ test('openSignalFromDiscovery: preview-period posts do not flip while opening is
   const none = openSignalFromDiscovery(mk(null), files, reached);
   assert.deepEqual(garbage, none);
 });
+
+// BRO-7487: Ripple OB 2026 stored 2026-11-18 (playbill), seven outlets on 2026-11-10.
+import { readFileSync as _readFileSync } from 'node:fs';
+{
+  const { test: t } = await import('node:test');
+  const assertS = (await import('node:assert/strict')).default;
+  const { createRequire: cr } = await import('node:module');
+  const sig = cr(import.meta.url)('./opening-signal.js');
+  const reached = (d) => d <= '2026-11-14';
+  const ripple = { id: 'r', status: 'previews', openingDate: '2026-11-18', openingDateSource: 'playbill', previewsStartDate: '2026-10-21' };
+  const rev = (o, d, x = {}) => ({ outletId: o, publishDate: d, url: `https://${o}.example/r`, ...x });
+
+  t('cluster of 3+ outlets before a future stored date corrects it (confirmed source too)', () => {
+    const files = ['nytg', 'theatermania', 'exeunt', 'culturesauce'].map((o) => rev(o, '2026-11-10'));
+    const fix = sig.openingDateCorrectionFromCluster(ripple, files, reached);
+    assertS.equal(fix.date, '2026-11-10');
+    assertS.equal(fix.source, 'review-derived-press-night');
+  });
+  t('two outlets, duplicate-outlet files, prior-run dates and wrong-production flags do not trigger it', () => {
+    assertS.equal(sig.openingDateCorrectionFromCluster(ripple, [rev('a', '2026-11-10'), rev('b', '2026-11-10')], reached), null);
+    assertS.equal(sig.openingDateCorrectionFromCluster(ripple, [rev('a', '2026-11-10'), rev('a', '2026-11-10'), rev('b', '2026-11-10')], reached), null);
+    assertS.equal(sig.openingDateCorrectionFromCluster(ripple, ['a', 'b', 'c'].map((o) => rev(o, '2026-09-01')), reached), null);
+    assertS.equal(sig.openingDateCorrectionFromCluster(ripple, ['a', 'b', 'c'].map((o) => rev(o, '2026-11-10', { wrongProduction: true })), reached), null);
+  });
+  t('no correction when the stored date is reached, previews not started, or reviews are within 2 days', () => {
+    const files = ['a', 'b', 'c'].map((o) => rev(o, '2026-11-10'));
+    assertS.equal(sig.openingDateCorrectionFromCluster({ ...ripple, openingDate: '2026-11-12' }, files, reached), null);
+    assertS.equal(sig.openingDateCorrectionFromCluster({ ...ripple, previewsStartDate: '2026-12-01' }, files, reached), null);
+    assertS.equal(sig.openingDateCorrectionFromCluster({ ...ripple, openingDate: '2026-11-11' }, files, reached), null);
+  });
+  t('update-show-status.js wires the correction into Check 2d', () => {
+    const src = _readFileSync(new URL('../update-show-status.js', import.meta.url), 'utf8');
+    assertS.match(src, /openingDateCorrectionFromCluster\(show, loadDiscoveredReviews\(show\.id\)/);
+  });
+}

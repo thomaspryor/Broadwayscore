@@ -24,7 +24,7 @@ const { shouldTrustShowScoreClosed } = require('./lib/showscore-closure-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { isTodayTixBookingHorizon } = require('./lib/closing-date-evidence');
 const { hasBookableEvidence, buildBlockedReopenRecord, formatBlockedReopensSummary } = require('./lib/todaytix-reopen-guard');
-const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
+const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, openingDateCorrectionFromCluster, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
 const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp, typeForListedShow } = require('./lib/announced-promotion');
@@ -885,6 +885,24 @@ async function updateShowStatuses() {
     const previewsAheadOfOpening = !changes.status && openingDateStillAhead(show, isDateReached);
     if (previewsAheadOfOpening && reviewCounts[show.id] && isStuckInPreviews(show, reviewCounts[show.id])) {
       console.log(`  ⚠️  ${show.title} (${show.id}): ${reviewCounts[show.id].count} scored reviews but openingDate ${show.openingDate} is ahead — not flipping to open (check the reviews belong to this run, or the date)`);
+    }
+    // BRO-7487: 3+ outlets already reviewed the run while the stored date is
+    // still ahead => the date is wrong. Correct it (and open the show) instead
+    // of only logging. reviewDriven keeps it out of opening-night automation.
+    if (previewsAheadOfOpening) {
+      const fix = openingDateCorrectionFromCluster(show, loadDiscoveredReviews(show.id), isDateReached);
+      if (fix) {
+        changes.status = { from: show.status, to: 'open' };
+        changes.reviewDriven = true;
+        changes.openingDate = { from: show.openingDate, to: fix.date };
+        changes.note = `${fix.earlyOutlets} of ${fix.outlets} outlets reviewed on ${fix.date}, before stored openingDate ${show.openingDate}: date corrected`;
+        console.log(`  ⚠️  ${show.title} (${show.id}): ${changes.note}`);
+        if (!dryRun) {
+          show.status = 'open';
+          show.openingDate = fix.date;
+          show.openingDateSource = fix.source;
+        }
+      }
     }
     if (!changes.status && !previewsAheadOfOpening) {
       const entry = reviewCounts[show.id];
