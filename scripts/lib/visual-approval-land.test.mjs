@@ -124,7 +124,7 @@ test('lost-block restore lists thumbnails only (BRO-7491), at most 3, never the 
   const ev = land.planRecovery(lost([askComment, ownerComment('Approved')]), S, f2).restore.lines.filter((l) => /^Evidence:/.test(l));
   assert.equal(ev.length, 2);
   assert.ok(ev.every((l) => /\/thumb_hub__[ab]\.png\.jpg$/.test(l)));
-  assert.ok(ev.some((l) => l.startsWith('Evidence: hub  a |') || l.startsWith('Evidence: hub a |')) || ev[0].includes('hub'));
+  assert.ok(ev.some((l) => /^Evidence: hub +a \|/.test(l)));
 });
 
 test('lost block + email Approve: the lander restores the machine lines and the next pass lands it', () => {

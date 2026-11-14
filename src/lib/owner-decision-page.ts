@@ -45,9 +45,15 @@ h2{font-size:17px;margin:0 0 6px}
 }
 
 /** Screenshots a visual-approval card carries (BRO-6241). The parser only keeps raw.githubusercontent.com URLs of this repo; esc() covers the rest. */
+/** Evidence URLs are email thumbnails (thumb_<name>.jpg); a tap should open the full-size original beside it. */
+function fullSizeUrl(url: string): string {
+  const m = /^(.*\/)thumb_(.+\.(?:png|jpe?g))\.jpg$/i.exec(url);
+  return m ? m[1] + m[2] : url;
+}
+
 export function evidenceHtml(evidence: { label: string; url: string }[] | undefined): string {
   if (!evidence || !evidence.length) return '';
-  return evidence.slice(0, 8).map((e) => `<figure class="shot"><a href="${esc(e.url)}" rel="noreferrer"><img src="${esc(e.url)}" alt="${esc(e.label)}" loading="lazy"></a><figcaption>${esc(e.label)}</figcaption></figure>`).join('');
+  return evidence.slice(0, 8).map((e) => `<figure class="shot"><a href="${esc(fullSizeUrl(e.url))}" rel="noreferrer"><img src="${esc(e.url)}" alt="${esc(e.label)}" loading="lazy"></a><figcaption>${esc(e.label)}</figcaption></figure>`).join('');
 }
 
 export function notice(title: string, text: string, status = 200): Response {
