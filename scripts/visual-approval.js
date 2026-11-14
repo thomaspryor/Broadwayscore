@@ -20,6 +20,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const va = require('./lib/visual-approval.js');
 const link = require('../src/lib/owner-decision-link.js');
+const identical = require('./lib/visual-identical.js');
 
 const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run] [--shared-style-change] [--page-shots-ok="<why whole pages show the change>"]';
 
@@ -100,6 +101,13 @@ async function request(argv) {
   const label = await linear.findOrCreateLabel(team.id, link.AWAITING_OWNER_LABEL);
   await linear.addLabelToIssue(issue.id, label.id);
   await linear.createComment(issue.id, `Asked the owner to look at ${thumbs.length} screenshot(s). Held change: ${hold} (patch ${patch.slice(0, 12)}). It ships by itself after Approve; Reject returns the card with the owner's note.`);
+  // BRO-7491 Phase 1 (SHADOW): note what the before/after screenshot check found. It never changes the ask above
+  // and a failure here must never undo it, so it sits after the ask and is fully guarded.
+  try {
+    const idf = path.join(dir, 'identical.json');
+    let rep = null; try { rep = JSON.parse(fs.readFileSync(idf, 'utf8')); } catch { /* not run */ }
+    await linear.createComment(issue.id, identical.shadowDecision(rep, patch).line);
+  } catch (e) { console.error(`[visual-approval] shadow note skipped: ${e.message}`); }
   console.log(`Asked the owner on ${issueId}. Held on ${hold}; screenshots on ${evBranch}. The decision list and the next email will show it. Stop work on this card now: end the session, do not wait or poll for the answer (the lander ships it).`);
   console.log(va.showInlineHint(crops, cwd));
   return 0;
