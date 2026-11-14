@@ -19490,7 +19490,7 @@
       "title": "Roundup gaps: 13 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-14T05:24:30.012Z",
+      "lastSeen": "2026-11-14T06:53:12.748Z",
       "lastNotifiedAt": "2026-11-14T01:35:46.991Z",
       "lastSurfacedAt": null,
       "notifyCount": 52,
@@ -19564,7 +19564,7 @@
         "potus-off-broadway-2026",
         "hamlet-hail-to-the-thief-off-west-end-2026"
       ],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -37241,13 +37241,13 @@
       "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
       "firstSeen": "2026-11-04T06:41:38.163Z",
       "incidentOpenedAt": "2026-11-04T06:41:38.163Z",
-      "lastSeen": "2026-11-14T00:33:36.076Z",
+      "lastSeen": "2026-11-14T06:55:51.736Z",
       "lastNotifiedAt": "2026-11-11T08:43:42.673Z",
       "lastSurfacedAt": "2026-11-11T08:43:42.673Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "land:land/bro-4315-image-gate-renames": {
       "status": "resolved",
@@ -38666,13 +38666,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-14T05:24:29.943Z",
+      "lastSeen": "2026-11-14T06:53:12.668Z",
       "lastNotifiedAt": "2026-11-13T18:22:04.400Z",
       "lastSurfacedAt": "2026-11-13T18:22:04.400Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -40733,7 +40733,7 @@
       "silentRefires": 3
     },
     "review-gap:opening-window:the-visitors-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"The Visitors\" missing 1 cited review(s)",
       "firstSeen": "2026-11-10T04:23:20.845Z",
@@ -40744,7 +40744,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-14T06:53:12.620Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "land:land/worktree-agent-ac55ac6c5eeaee060": {
       "status": "resolved",
