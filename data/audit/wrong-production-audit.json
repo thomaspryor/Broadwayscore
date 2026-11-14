@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T12:02:48.675Z",
+  "timestamp": "2026-11-14T13:16:33.092Z",
   "stats": {
-    "totalReviews": 81992,
-    "alreadyFlagged": 22378,
+    "totalReviews": 81993,
+    "alreadyFlagged": 22380,
     "dateGuardCatches": 220,
-    "directorMismatch": 3683,
+    "directorMismatch": 3684,
     "tvFilmSignals": 2314,
     "londonSignals": 3744,
     "offBroadwaySignals": 749,
     "yearMismatch": 376,
-    "noPublishDate": 8450
+    "noPublishDate": 8447
   },
   "findings": [
     {
@@ -84744,6 +84744,19 @@
     },
     {
       "showId": "west-side-story-2020",
+      "file": "nydailynews--chris-jones.json",
+      "publishDate": "2020-02-20T19:47:08-05:00",
+      "url": "https://www.nydailynews.com/entertainment/ny-west-side-story-review-20200221-aj3bmsaqendola4enfovf3y76i-story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
       "file": "nypost--johnny-oleksinski.json",
       "score": 80,
       "publishDate": "February 20, 2020",
@@ -108436,7 +108449,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
