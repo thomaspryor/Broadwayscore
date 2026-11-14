@@ -11,6 +11,7 @@
  * signed "Visual CI result VQK<mac>" comment on the card. It never approves anything; the lander decides.
  * Exit: 0 wrote a result or skipped a stale run, 1 could not finish (the run is red), 2 usage.
  */
+// secret-optional: APPROVAL_HMAC_SECRET, LINEAR_API_KEY only the `record` subcommand uses them (trusted recorder); `plan` runs in the secret-free capture job and never reads them (BRO-7495).
 'use strict';
 require('./lib/cli-help').exitOnHelp(module);
 

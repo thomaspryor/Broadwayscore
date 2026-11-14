@@ -225,7 +225,7 @@ test('capture-only driver + trusted compare: same pages identical, a recolour di
     };
     const a = await run('same', same, ['[data-testid="x"]']);
     if (a === null) { t.skip('no browser here'); return; }
-    assert.equal(a.outcome, 'identical');
+    assert.equal(a.outcome, 'identical', `reasons: ${JSON.stringify(a.reasons)}`);
     assert.equal((await run('recolour', other, ['[data-testid="x"]'])).outcome, 'different');
     assert.equal((await run('noel', same, ['[data-testid="nope"]'])).outcome, 'incomplete');
   } finally { for (const s of [base, same, other]) s.close(); fs.rmSync(tmp, { recursive: true, force: true }); }
