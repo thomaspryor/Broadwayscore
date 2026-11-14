@@ -134,3 +134,15 @@ test('F20: files first seen after opening week are late rescues, not part of the
   assert.equal(rerun.verdict, 'incomplete');
   assert.match(og.gradeLine(rerun), /ended before 2 reviews were found/);
 });
+
+test('BRO-7471: a sweep-added file that is not a live review (show-listing page, wrong production) is no first-pass miss', () => {
+  const sweep = (outlet) => ({ sha: 'abcdef1234', at: iso(embargo + 20 * 3600000), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: 'ingest: audit-aggregator-gap auto-ingested review-texts', files: [`${show.id}/${outlet}--x.json`], added: [`${show.id}/${outlet}--x.json`] });
+  const run = (fs, outlet) => og.gradeOpening({ show, files: fs, commits: [sweep(outlet)], gapResult, missingCited: 0, nowMs: closed });
+  // whatsonstage /shows/ listing page (julius-caesar-globe-off-west-end-2026): present, but never includable.
+  const listing = { _file: `${show.id}/whatsonstage--x.json`, outletId: 'whatsonstage', firstSeenAt: '2026-10-21T03:00:00Z', url: 'https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/julius-caesar-remixed_1735359/', contentTier: 'invalid', wrongProduction: true, fullText: '' };
+  assert.equal((run([good(1), listing], 'whatsonstage').sweepFinds || []).length, 0);
+  // a real live review added by the sweep is still a miss
+  const real = { ...good(2), _file: `${show.id}/whatsonstage--x.json`, outletId: 'whatsonstage' };
+  assert.equal((run([good(1), real], 'whatsonstage').sweepFinds || []).length, 1);
+});

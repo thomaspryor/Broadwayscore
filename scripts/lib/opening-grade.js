@@ -326,6 +326,11 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     const outlets = [...new Set(mine.map((f) => outletIdFromFile(f, show.id)).filter(Boolean))];
     for (const o of outlets) {
       if (fileChangeOf(c, mine.filter((f) => outletIdFromFile(f, show.id) === o)) !== 'added') continue;
+      // BRO-7471: an added file that is not a live review (a show-listing page, a wrong-production
+      // or invalid body) is not a review the first pass missed. Julius Caesar's whatsonstage
+      // /shows/ page was counted as a third "whatsonstage miss" that way. Only judged when the
+      // grader was given the show's files, so a files-less call keeps the commit-only reading.
+      if ((files || []).length && !(files || []).some((f) => outletOfFile(f) === o && isLiveFile(f, show, rtDir))) continue;
       sweepFinds.push({ kind: 'sweep-find', at: new Date(at).toISOString(), outletId: o, cause: 'discovery-gap', fileChange: 'added', source: `${String(c.sha).slice(0, 8)} ${String(c.subject).slice(0, 120)}` });
     }
   }
