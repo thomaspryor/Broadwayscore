@@ -1,0 +1,270 @@
+{
+  "issueNumber": "bro-6742-e",
+  "planId": "4b90ba1c-be1b-4e3e-bfe4-7b294c8f4d1e",
+  "status": "applied",
+  "createdAt": "2026-11-01T03:35:32.088Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6742 plan e: read-confirmed false drops (CV preview labels and wrong-production flags on real reviews) plus a body restore and one aggregator-cited ingest",
+    "steps": [
+      "Read-confirmed: Theater Scene full evaluative review by Victor Gluck, not a preview",
+      "Clear CV preview label on a real review",
+      "Read-confirmed: The Arts Desk review by Aleks Sierz of this production, not a preview",
+      "Read-confirmed: The Arts Desk review by Aleks Sierz, an evaluative review",
+      "Read-confirmed: All That Dazzles review by Daz Gale of this production, not a preview",
+      "Read-confirmed: All That Dazzles review by Daz Gale, an evaluative review",
+      "Read-confirmed: WhatsOnStage review by Rachel Agyekum of this production, not a preview",
+      "Read-confirmed: WhatsOnStage review by Rachel Agyekum, an evaluative review",
+      "Read-confirmed right production: names this production cast (Adrian Lester) and director",
+      "BRO-6742 manual clear: names this production cast (Adrian Lester) and director",
+      "Read-confirmed right production: names this production cast (Mark Addy, Jenna Russell); Chichester transfer",
+      "BRO-6742 manual clear: names this production cast (Mark Addy, Jenna Russell); Chichester transfer",
+      "Read-confirmed right production: published two days after the Soho Place opening; Chichester mentioned only as history",
+      "BRO-6742 manual clear: published two days after the Soho Place opening; Chichester mentioned only as history",
+      "Read-confirmed right production: matches every other review of this production (same lead); shows.json cast entry is the outlier",
+      "BRO-6742 manual clear: matches every other review of this production (same lead); shows.json cast entry is the outlier",
+      "Restore the quarantined body now that the wrong-production flag is cleared",
+      "Ingest the aggregator-cited This Week in New York review; page shows date 4 Oct 2026 but has no machine-readable date"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: Theater Scene full evaluative review by Victor Gluck, not a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV preview label on a real review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: The Arts Desk review by Aleks Sierz of this production, not a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: The Arts Desk review by Aleks Sierz, an evaluative review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: All That Dazzles review by Daz Gale of this production, not a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: All That Dazzles review by Daz Gale, an evaluative review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: WhatsOnStage review by Rachel Agyekum of this production, not a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: WhatsOnStage review by Rachel Agyekum, an evaluative review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed right production: names this production cast (Adrian Lester) and director"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6742 manual clear: names this production cast (Adrian Lester) and director"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed right production: names this production cast (Mark Addy, Jenna Russell); Chichester transfer"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6742 manual clear: names this production cast (Mark Addy, Jenna Russell); Chichester transfer"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed right production: published two days after the Soho Place opening; Chichester mentioned only as history"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6742 manual clear: published two days after the Soho Place opening; Chichester mentioned only as history"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "im-sorry-prime-minister-west-end-2026/artsdesk--helen-hawkins.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed right production: matches every other review of this production (same lead); shows.json cast entry is the outlier"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "im-sorry-prime-minister-west-end-2026/artsdesk--helen-hawkins.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6742 manual clear: matches every other review of this production (same lead); shows.json cast entry is the outlier"
+      },
+      {
+        "type": "run-script",
+        "description": "Restore the quarantined body now that the wrong-production flag is cleared",
+        "script": "restore-released-quarantined-body.js",
+        "args": "--file=the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json --apply"
+      },
+      {
+        "type": "run-script",
+        "description": "Ingest the aggregator-cited This Week in New York review; page shows date 4 Oct 2026 but has no machine-readable date",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --url=https://twi-ny.com/2026/10/04/in-honor-of-jean-michel-basquiat-roger-guenveur-smith-nytw/ --outlet=this-week-in-new-york --critic=\"Mark Rifkin\" --publish-date=2026-10-04"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T03:44:19.626Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2026/standard--nick-curtis.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2026/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "im-sorry-prime-minister-west-end-2026/artsdesk--helen-hawkins.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "im-sorry-prime-minister-west-end-2026/artsdesk--helen-hawkins.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran restore-released-quarantined-body.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

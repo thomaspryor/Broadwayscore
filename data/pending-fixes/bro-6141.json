@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-6141",
+  "planId": "6b1f0c52-3a7e-4d19-8e44-91c5a2d07b36",
+  "status": "applied",
+  "createdAt": "2026-10-24T16:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6141: delete the 529 aggregator-archive pages that fail their own category check (a page filed under one show that holds another show's, production's or market's page). Delete only, no tombstone, so the next scrape can fetch the right page; the writers now refuse to archive such a page.",
+    "steps": [
+      "Run quarantine-poisoned-aggregator-archive.js --delete --expect=529 on the checked-out private archive (aborts, deleting nothing, if the count differs)",
+      "The workflow pushes the deletions to the private repo"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "quarantine-poisoned-aggregator-archive.js",
+        "args": "--delete --expect=529",
+        "description": "Delete aggregator-archive pages that fail the category check"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T17:14:52.366Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran quarantine-poisoned-aggregator-archive.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5295-b",
+  "planId": "0399ed1e-d66a-4d78-b0bb-ea6bb25b4c1e",
+  "status": "applied",
+  "createdAt": "2026-10-13T22:40:00Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5295 follow-up (plan bro-5295, planId 2f70b6f4-c9c7-425a-b5e2-96c6db1fd9c8): 9 of 10 actions applied; the Her Campus originalScore removal was refused because the write guard only honours a NEW clear and that record was already cleared. review-field-edit.js now forces that one narrow case. Clears the phantom 2/5 (the 87 provisional human score from the first plan is already in place).",
+    "steps": [
+      "Death Becomes Her tour: clear HerCampus phantom 2/5 on the already-cleared record"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json",
+        "field": "originalScore",
+        "oldValue": "2/5",
+        "newValue": null,
+        "description": "BRO-5295: HerCampus student article prints no rating; the 2/5 is '1992 starring Meryl Streep' read as stars and was re-added by the collector pre-pass after BRO-305 cleared it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T23:37:24.721Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json originalScore: \"2/5\" -> null (retracted originalScoreClearedReason, originalScoreNormalized, originalScoreSource)"
+    }
+  ]
+}

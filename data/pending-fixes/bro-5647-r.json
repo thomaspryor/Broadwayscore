@@ -1,0 +1,187 @@
+{
+  "issueNumber": "bro-5647-r",
+  "planId": "d883aaa2-7f32-4c95-ae4c-2a2e315d1516",
+  "status": "applied",
+  "createdAt": "2026-10-21T18:47:19.535Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Two 2026-27 SEC Form D filings traced to their shows (the filings do not name them): Evita (Star Quality NY LP, general partners The Jamie Lloyd Company and Michael Harrison's LWH Broadway, the announced producers; 'star quality' is an Evita lyric) up to $16M, and Other Desert Cities (Terribly Kind People LLC; related persons Gavin Kalin and ATG's John Rogers, announced producers; address of Envoy Theatricals, its GM) up to $6.5M with $6.2M raised. Held: Billy Crystal 860 (only James Nederlander links it) and Warriors (only Jeffrey Seller). Old values from the private core data.",
+    "steps": [
+      "Evita and Other Desert Cities budgets"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "evita",
+        "showId": "evita",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 16000000,
+        "description": "evita: SEC Form D maximum"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "evita",
+        "showId": "evita",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D (Star Quality NY Limited Partnership, CIK 0002139502, signed Jun 26, 2026): total offering $16,000,000; \"The maximum capitalization is $16,000,000. The minimum capitalization is $13,000,000.\" Nothing sold yet. The filing does not name the show; its general partners are TJLC Productions III LLC (The Jamie Lloyd Company) and LWH Broadway LLC (Michael Harrison), the producers announced for Evita, and the name is an Evita lyric. https://www.sec.gov/Archives/edgar/data/2139502/000213950226000001/primary_doc.xml",
+        "description": "evita: quote the filing and how it was traced"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "evita",
+        "showId": "evita",
+        "field": "notes",
+        "oldValue": "Announced Broadway revival at the Winter Garden Theatre; producers and capitalization not confirmed.",
+        "newValue": "Jamie Lloyd's production starring Rachel Zegler, transferring from the London Palladium to the Winter Garden (previews Feb 27, 2027; opens Mar 25, 2027). Produced by The Jamie Lloyd Company and Lloyd Webber Harrison Musicals. Capitalized for up to $16 million (minimum $13 million) per its SEC filing.",
+        "description": "evita: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "evita",
+        "showId": "evita",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2139502/000213950226000001/primary_doc.xml",
+            "date": "2026-06-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/evita-starring-rachel-zegler-directed-by-jamie-lloyd-will-transfer-to-broadway-next-spring/",
+            "date": null
+          }
+        ],
+        "description": "evita: add the filing and the producers announcement"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "other-desert-cities",
+        "showId": "other-desert-cities",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 6500000,
+        "description": "other-desert-cities: SEC Form D maximum"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "other-desert-cities",
+        "showId": "other-desert-cities",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D (Terribly Kind People LLC, CIK 0002159436, signed Oct 8, 2026): total offering up to $6.5 million, with $6,200,000 raised by then from 113 investors. The filing does not name the show; it lists Gavin Kalin and John Rogers of ATG Entertainment (both among the play's announced producers) and the address of Envoy Theatricals, its general manager. https://www.sec.gov/Archives/edgar/data/2159436/000215943626000001/primary_doc.xml",
+        "description": "other-desert-cities: quote the filing and how it was traced"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "other-desert-cities",
+        "showId": "other-desert-cities",
+        "field": "notes",
+        "oldValue": "Commercial revival at the Hudson, limited run through Jan 17, 2027 (Julia Louis-Dreyfus, Ed Harris, Allison Janney). No capitalization reported.",
+        "newValue": "Commercial revival at the Hudson, limited run through Jan 17, 2027 (Julia Louis-Dreyfus, Ed Harris, Allison Janney). Produced by Gavin Kalin Productions, ATG Productions, Bad Robot Live and others; general manager Envoy Theatricals. Its SEC filing offers up to $6.5 million, $6.2 million raised by Oct 8, 2026.",
+        "description": "other-desert-cities: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "other-desert-cities",
+        "showId": "other-desert-cities",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/05/julia-louis-dreyfus-broadway-other-desert-cities-ed-harris-1236920897/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/05/julia-louis-dreyfus-broadway-other-desert-cities-ed-harris-1236920897/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2159436/000215943626000001/primary_doc.xml",
+            "date": "2026-10-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/julia-louis-dreyfus-to-make-broadway-debut-in-other-desert-cities-revival",
+            "date": "2026-05-26"
+          }
+        ],
+        "description": "other-desert-cities: add the filing and the producers announcement"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:54:07.384Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for evita"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for evita"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for evita"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for evita"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for other-desert-cities"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for other-desert-cities"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for other-desert-cities"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for other-desert-cities"
+    }
+  ],
+  "executedIn": "ci"
+}

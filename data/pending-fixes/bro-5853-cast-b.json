@@ -1,0 +1,1084 @@
+{
+  "issueNumber": "bro-5853-cast-b",
+  "planId": "75d24e07-aa8d-4ddf-b54f-5f47df36ff21",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5853: replace shows.json cast lists that no review of the production names with the performers the reviews credit (found by scripts/audit-cast-vs-reviews.js), and add the director where the reviews credit one and the row has none. Every name was re-checked against the review text. Held back for a person: operation-mincemeat-2025, magic-mike-live-west-end-2021, chicago-1996, les-miserables-west-end-2021, the-play-that-goes-wrong-west-end-2021, the-mousetrap-west-end-2021, sticks-and-bones-1972 (their review sets belong to a different production or era than the row).",
+    "steps": [
+      "Replace cast, one data-edit per show",
+      "Add Director where missing"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rheology-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Okieriete Onaodowan",
+            "role": "mixed martial arts champion"
+          },
+          {
+            "name": "Aigner Mizzelle",
+            "role": "estranged younger half-sister"
+          },
+          {
+            "name": "Sean Hayes",
+            "role": "writer"
+          },
+          {
+            "name": "Emma D’Arcy",
+            "role": "Antigone"
+          },
+          {
+            "name": "Tobias Menzies",
+            "role": "uncle"
+          },
+          {
+            "name": "McKinley Belcher III",
+            "role": "Coriolanus"
+          },
+          {
+            "name": "Roslyn Ruff",
+            "role": "mater"
+          },
+          {
+            "name": "Mickey Sumner",
+            "role": "Volscian nemesis"
+          },
+          {
+            "name": "Adam Chanler-Berat",
+            "role": "surveillance agent"
+          },
+          {
+            "name": "Steven Boyer",
+            "role": "surveillance agent"
+          },
+          {
+            "name": "Rebecca Naomi Jones",
+            "role": "pop star"
+          },
+          {
+            "name": "David Turner",
+            "role": "Mother Russia"
+          },
+          {
+            "name": "Kathleen Chalfant",
+            "role": "member of recovery group"
+          },
+          {
+            "name": "Elizabeth Marvel",
+            "role": "member of recovery group"
+          },
+          {
+            "name": "Josh Hamilton",
+            "role": "successful writer"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Shayok Misha Chowdhury",
+            "role": "Misha (himself)"
+          },
+          {
+            "name": "Bulbul Chakraborty",
+            "role": "Bulbul (herself)"
+          },
+          {
+            "name": "George Crotty",
+            "role": "cellist / music director"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the rheology-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rheology-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Playwright",
+            "role": "Book Writer"
+          },
+          {
+            "name": "Playwright's Mother",
+            "role": "Performer"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Playwright",
+            "role": "Book Writer"
+          },
+          {
+            "name": "Playwright's Mother",
+            "role": "Performer"
+          },
+          {
+            "name": "Shayok Misha Chowdhury",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Hedydd Dylan",
+            "role": "Hippolyta / Titania"
+          },
+          {
+            "name": "Jack Humphrey",
+            "role": "Quince / Egeus"
+          },
+          {
+            "name": "Lou Jackson",
+            "role": "Demetrius / Cobweb"
+          },
+          {
+            "name": "Pria Kalsi",
+            "role": "Flute / Child"
+          },
+          {
+            "name": "Danny Kirrane",
+            "role": "Bottom"
+          },
+          {
+            "name": "Tiwa Lade",
+            "role": "Hermia / Mustardseed"
+          },
+          {
+            "name": "Michael Marcus",
+            "role": "Theseus / Oberon"
+          },
+          {
+            "name": "David Olaniregun",
+            "role": "Lysander / Moth"
+          },
+          {
+            "name": "Tara Tijani",
+            "role": "Helena / Peaseblossom"
+          },
+          {
+            "name": "Sergo Vares",
+            "role": "Puck"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Michael Grady-Hall",
+            "role": "Puck"
+          },
+          {
+            "name": "Enyi Okoronkwo",
+            "role": "Oberon / Theseus"
+          },
+          {
+            "name": "Audrey Brisson",
+            "role": "Titania / Hippolyta"
+          },
+          {
+            "name": "Adrian Richards",
+            "role": "Bottom"
+          },
+          {
+            "name": "Mel Lowe",
+            "role": "Lysander"
+          },
+          {
+            "name": "Sophie Cox",
+            "role": "Hermia"
+          },
+          {
+            "name": "Romaya Weaver",
+            "role": "Helena"
+          },
+          {
+            "name": "Gavi Singh Chera",
+            "role": "Demetrius"
+          },
+          {
+            "name": "Victoria Moseley",
+            "role": "Quince"
+          },
+          {
+            "name": "Jamal Franklin",
+            "role": "Snug"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the a-midsummer-nights-dream-globe-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Emily Lim",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Rosamund Pike",
+            "role": "Jessica Parks"
+          },
+          {
+            "name": "Jamie Glover",
+            "role": "Michael Wheatley"
+          },
+          {
+            "name": "Cormac McAlinden",
+            "role": "Harry Wheatley"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Gary Oldman",
+            "role": "Krapp"
+          },
+          {
+            "name": "Shakeel Haakim",
+            "role": "Godot (Godot's To-Do List)"
+          },
+          {
+            "name": "Flora Ashton",
+            "role": "the disembodied voice (Godot's To-Do List)"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the krapps-last-tape-godots-todo-list-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Aneesha Srinivasan",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "making-a-show-of-myself-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Kate Burton",
+            "role": "IRISHTOWN"
+          },
+          {
+            "name": "Saoirse-Monica Jackson",
+            "role": "IRISHTOWN"
+          },
+          {
+            "name": "Kevin Oliver Lynch",
+            "role": "IRISHTOWN"
+          },
+          {
+            "name": "Brenda Meaney",
+            "role": "IRISHTOWN"
+          },
+          {
+            "name": "Angela Reed",
+            "role": "IRISHTOWN"
+          },
+          {
+            "name": "Roger Clark",
+            "role": "Voiceover"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Mary Kate O Flanagan",
+            "role": "herself (solo storyteller)"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the making-a-show-of-myself-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "making-a-show-of-myself-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Will O'Connell",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-unknown-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Maurice Browne",
+            "role": "A French Soldier"
+          },
+          {
+            "name": "Rosalinde Fuller",
+            "role": "Aude"
+          },
+          {
+            "name": "Daniel Reed",
+            "role": "An Elderly Man"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Sean Hayes",
+            "role": "Elliott (also plays ~10 other characters)"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the the-unknown-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-unknown-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Leigh Silverman",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerome-off-broadway-2025",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Betsy Wolfe",
+            "role": "Joy"
+          },
+          {
+            "name": "Brandon Espinoza",
+            "role": "Tony"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Stephen Spinella",
+            "role": "Con"
+          },
+          {
+            "name": "Jeorge Bennett Watson",
+            "role": "Doane"
+          },
+          {
+            "name": "Ken Barnett",
+            "role": "Bruin"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the jerome-off-broadway-2025 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerome-off-broadway-2025",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Dustin Wills",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relics-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Simon Lipkin",
+            "role": "Fagin"
+          },
+          {
+            "name": "Ava Brennan",
+            "role": "Nancy"
+          },
+          {
+            "name": "Aaron Sidwell",
+            "role": "Bill Sikes"
+          },
+          {
+            "name": "Aaron MacGregor",
+            "role": "Artful Dodger"
+          },
+          {
+            "name": "Oscar Conlon-Morrey",
+            "role": "Mr. Bumble"
+          },
+          {
+            "name": "Katy Secombe",
+            "role": "Widow Corney"
+          },
+          {
+            "name": "Stephen Matthews",
+            "role": "Mr. Sowerberry/Dr. Grimwig"
+          },
+          {
+            "name": "Jamie Birkett",
+            "role": "Mrs. Sowerberry/Mrs. Bedwin"
+          },
+          {
+            "name": "Philip Franks",
+            "role": "Mr. Brownlow"
+          },
+          {
+            "name": "Isaac Hackett",
+            "role": "Oliver Twist"
+          },
+          {
+            "name": "James Miller",
+            "role": "Oliver Twist"
+          },
+          {
+            "name": "Thomas Newman",
+            "role": "Oliver Twist"
+          },
+          {
+            "name": "Jacob Sanders-Jones",
+            "role": "Oliver Twist"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Sally Phillips",
+            "role": "Olivia"
+          },
+          {
+            "name": "Sam Swainsbury",
+            "role": "Rob"
+          },
+          {
+            "name": "Charly Clive",
+            "role": "Michelle (Shelly)"
+          },
+          {
+            "name": "JJ Feild",
+            "role": "Jonny"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the relics-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "please-please-me-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Ruth Abbott",
+            "role": "Mary Cole Farnum"
+          },
+          {
+            "name": "Olga Burgoyne",
+            "role": "Lida"
+          },
+          {
+            "name": "Bette Butterworth",
+            "role": "Roberta Farnum"
+          },
+          {
+            "name": "Claire Devine",
+            "role": "Mrs. Rhoda Wheeler"
+          },
+          {
+            "name": "Donald Dillaway",
+            "role": "Johnny Gibbons"
+          },
+          {
+            "name": "Lillian Emerson",
+            "role": "Floy Farnum"
+          },
+          {
+            "name": "Marie Falls",
+            "role": "Mrs. Louisa Wilcox"
+          },
+          {
+            "name": "Robert T. Haines",
+            "role": "Anthony Farnum"
+          },
+          {
+            "name": "Wilfred Henry",
+            "role": "Monty"
+          },
+          {
+            "name": "Henry Hull Jr.",
+            "role": "Stanley Lane"
+          },
+          {
+            "name": "Richard Hunter",
+            "role": "Sam"
+          },
+          {
+            "name": "John L. Kearney",
+            "role": "Carter"
+          },
+          {
+            "name": "Eleanor Malcolm",
+            "role": "Mrs. Agnes Elliott"
+          },
+          {
+            "name": "Rosalie Norman",
+            "role": "Carolyn Page"
+          },
+          {
+            "name": "Jean Rodney",
+            "role": "Sylvia O'Connor"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Calam Lynch",
+            "role": "Brian Epstein"
+          },
+          {
+            "name": "Noah Ritter",
+            "role": "John Lennon"
+          },
+          {
+            "name": "Eleanor Worthington-Cox",
+            "role": "Aunt Mimi / Cynthia / Cilla Black"
+          },
+          {
+            "name": "Arthur Wilson",
+            "role": "Geoffrey / Epstein senior"
+          },
+          {
+            "name": "William Robinson",
+            "role": "Peter"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the please-please-me-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "please-please-me-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Amit Sharma",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-to-man-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Ben Daniels",
+            "role": "Gregor Antonescu"
+          },
+          {
+            "name": "Laurie Kynaston",
+            "role": "Basil Anthony"
+          },
+          {
+            "name": "Phoebe Campbell",
+            "role": "Carol Penn"
+          },
+          {
+            "name": "Isabella Laughland",
+            "role": "Countess Antonescu"
+          },
+          {
+            "name": "Malcolm Sinclair",
+            "role": "Mark Herries"
+          },
+          {
+            "name": "Leo Wan",
+            "role": "David Beeston"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tilda Swinton",
+            "role": "Ella (Ella/Max)"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the man-to-man-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-to-man-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Stephen Unwin",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-in-four-seasons-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Karen Olivo",
+            "role": "Satine"
+          },
+          {
+            "name": "Aaron Tveit",
+            "role": "Christian"
+          },
+          {
+            "name": "Danny Burstein",
+            "role": "Harold Zidler"
+          },
+          {
+            "name": "Robyn Hurder",
+            "role": "Nini"
+          },
+          {
+            "name": "Tam Mutu",
+            "role": "The Duke of Monroth"
+          },
+          {
+            "name": "Sahr Ngaujah",
+            "role": "Toulouse-Lautrec"
+          },
+          {
+            "name": "Ricky Rojas",
+            "role": "Santiago"
+          },
+          {
+            "name": "Jacqueline B. Arnold",
+            "role": "La Chocolat"
+          },
+          {
+            "name": "Holly James",
+            "role": "Arabia"
+          },
+          {
+            "name": "Reed Luplau",
+            "role": "Pierre"
+          },
+          {
+            "name": "Jeigh Madjus",
+            "role": "Baby Doll"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tanesha Aba",
+            "role": "Spring Heart"
+          },
+          {
+            "name": "Beryl Tay",
+            "role": "Spring Head"
+          },
+          {
+            "name": "Ethan Vijn",
+            "role": "Spring Gut"
+          },
+          {
+            "name": "Michael Naylor",
+            "role": "Summer Gut"
+          },
+          {
+            "name": "Louis Mackrodt",
+            "role": "Summer Head"
+          },
+          {
+            "name": "Emi Ichikawa",
+            "role": "Summer Heart"
+          },
+          {
+            "name": "Carrie-Anne Ingrouille",
+            "role": "Autumn Head"
+          },
+          {
+            "name": "Robia Brown",
+            "role": "Autumn Heart"
+          },
+          {
+            "name": "Nadia Sohawon",
+            "role": "Autumn Gut"
+          },
+          {
+            "name": "Susan Kempster",
+            "role": "Winter Head"
+          },
+          {
+            "name": "Mark Smith",
+            "role": "Winter Heart"
+          },
+          {
+            "name": "Mami Tomotani",
+            "role": "Winter Gut"
+          },
+          {
+            "name": "Laura Dawn Pyatt"
+          },
+          {
+            "name": "Kazmin Borrer"
+          },
+          {
+            "name": "Jacqui Jameson"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the a-life-in-four-seasons-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-in-four-seasons-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Tinuke Craig",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-reservoir-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Adrián González",
+            "role": "Hugo / Others"
+          },
+          {
+            "name": "Marin Hinkle",
+            "role": "Patricia / Others"
+          },
+          {
+            "name": "Jake Horowitz",
+            "role": "Josh"
+          },
+          {
+            "name": "Liz Larsen",
+            "role": "Beverly"
+          },
+          {
+            "name": "Carolyn Mignini",
+            "role": "Irene"
+          },
+          {
+            "name": "Geoffrey Wade",
+            "role": "Hank"
+          },
+          {
+            "name": "Lee Wilkof",
+            "role": "Shrimpy"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Noah Galvin",
+            "role": "Josh"
+          },
+          {
+            "name": "Mary Beth Peil",
+            "role": "Irene"
+          },
+          {
+            "name": "Chip Zien",
+            "role": "Shrimpy"
+          },
+          {
+            "name": "Caroline Aaron",
+            "role": "Beverly"
+          },
+          {
+            "name": "Peter Maloney",
+            "role": "Hank"
+          },
+          {
+            "name": "Matthew Saldívar",
+            "role": "Hugo / Taylor / Dr. Yaakov Stern"
+          },
+          {
+            "name": "Heidi Armbruster",
+            "role": "Patricia / Lenni / Rabbi Silver"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the the-reservoir-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-reservoir-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Shelley Butler",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "im-not-being-funny-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Jonelle Allen",
+            "role": "Silvia"
+          },
+          {
+            "name": "Diana Davila",
+            "role": "Julia"
+          },
+          {
+            "name": "Clifton Davis",
+            "role": "Valentine"
+          },
+          {
+            "name": "Raul Julia",
+            "role": "Proteus"
+          },
+          {
+            "name": "John Bottoms",
+            "role": "Launce"
+          },
+          {
+            "name": "Alix Elias",
+            "role": "Lucetta"
+          },
+          {
+            "name": "Alvin Lum",
+            "role": "Eglamour"
+          },
+          {
+            "name": "Norman Matlock",
+            "role": "Duke of Milan"
+          },
+          {
+            "name": "Frank O'Brien",
+            "role": "Thurio"
+          },
+          {
+            "name": "Jose Perez",
+            "role": "Speed"
+          },
+          {
+            "name": "Frederic Warriner",
+            "role": "Antonio"
+          },
+          {
+            "name": "Loretta Abbott",
+            "role": "Citizen of Verona and Milan"
+          },
+          {
+            "name": "Christopher Alden",
+            "role": "Citizen of Verona and Milan"
+          },
+          {
+            "name": "Roger Briant",
+            "role": "Citizen of Verona and Milan"
+          },
+          {
+            "name": "Douglas Brickhouse",
+            "role": "Citizen of Verona and Milan"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jerome Yates",
+            "role": "Peter"
+          },
+          {
+            "name": "Tia Bannon",
+            "role": "Billie"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the im-not-being-funny-west-end-2026 reviews; replaced with the performers the reviews credit"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:24:11.087Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for rheology-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for rheology-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for a-midsummer-nights-dream-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for a-midsummer-nights-dream-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for krapps-last-tape-godots-todo-list-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for krapps-last-tape-godots-todo-list-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for making-a-show-of-myself-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for making-a-show-of-myself-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-unknown-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-unknown-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for jerome-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for jerome-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for relics-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for please-please-me-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for please-please-me-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for man-to-man-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for man-to-man-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for a-life-in-four-seasons-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for a-life-in-four-seasons-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-reservoir-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-reservoir-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for im-not-being-funny-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

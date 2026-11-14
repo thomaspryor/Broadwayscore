@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-5805-b",
+  "planId": "184e0efa-01b1-4698-984a-2cef74b7a9f9",
+  "status": "applied",
+  "createdAt": "2026-10-26T09:36:01.178Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5805 follow-up: Marcel on the Train (Talkin Broadway, James Wilson) is still excluded by a high-confidence not-a-review verdict from the content check that read the navigation prefix. Clear it so the real review counts.",
+    "steps": [
+      "marcel-on-the-train Talkin Broadway: set wrongArticleManualClear"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "marcel-on-the-train-off-broadway-2026/talkinbroadway--james-wilson.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the stored text earlier in BRO-5805: after site navigation links, a review of Marcel on the Train naming 5 of the 6 cast in the show record. The first plan cleared wrongShow but the content check also carries a high-confidence not-a-review verdict that kept the file out of the score."
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T13:15:20.383Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marcel-on-the-train-off-broadway-2026/talkinbroadway--james-wilson.json wrongArticleManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

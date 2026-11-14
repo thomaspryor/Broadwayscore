@@ -1,0 +1,25 @@
+{
+  "system": "commercial model",
+  "status": "pass",
+  "lastChecked": "2026-11-14T09:07:36.582Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Commercial model: stored vs fresh run",
+      "status": "pass",
+      "message": "479 records match a fresh run"
+    },
+    {
+      "name": "Commercial model: Boring Waltz fit",
+      "status": "pass",
+      "message": "overall 45% inside (n=87); <0.9x cost too few rows; 0.9-1.3x 54% inside (n=68); >=1.3x 13% inside (n=16); his posts to 2026-11-04, trailing 84 days"
+    },
+    {
+      "name": "Commercial model: running-show bar revisit",
+      "status": "pass",
+      "message": "Running-show bars stay off: plays 1/2 inside, musicals 5/8 (needs 10+ rows and 80%+ each)"
+    }
+  ]
+}

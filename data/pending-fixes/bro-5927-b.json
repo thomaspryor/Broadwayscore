@@ -1,0 +1,372 @@
+{
+  "issueNumber": "bro-5927-b",
+  "planId": "9f74334b-7100-44c7-b018-1d47f2fc4313",
+  "status": "applied",
+  "createdAt": "2026-10-23T13:53:48.987Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5927: set 28 published review scores that contradict the critic's own rating into the rating's band (part 2 of 3)",
+    "steps": [
+      "much-ado-about-nothing-west-end-2022/london-theatre--marianka-swain.json: humanReviewNote",
+      "mnemonic-west-end-2024/times-uk--dominic-maxwell.json: published 82 contradicts 5/5 (same-article sibling record), set in-band 100",
+      "mnemonic-west-end-2024/times-uk--dominic-maxwell.json: humanReviewNote",
+      "matilda-the-musical-west-end-2021/sunday-telegraph--tim-walker.json: published 75 contradicts 3/5 stars (same-article sibling record), set in-band 60",
+      "matilda-the-musical-west-end-2021/sunday-telegraph--tim-walker.json: humanReviewNote",
+      "manor-west-end-2021/londontheatre1--chris-omaweng.json: published 47 contradicts 3/5 stars (same-article sibling record), set in-band 60",
+      "manor-west-end-2021/londontheatre1--chris-omaweng.json: humanReviewNote",
+      "man-of-la-mancha-west-end-2019/daily-mail--giles-smith.json: published 76 contradicts 3/5 stars (same-article sibling record), set in-band 60",
+      "man-of-la-mancha-west-end-2019/daily-mail--giles-smith.json: humanReviewNote",
+      "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json: published 78 contradicts 5/5 stars (same-article sibling record), set in-band 100",
+      "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json: humanReviewNote",
+      "inside-bitch-west-end-2019/standard--fiona-mountford.json: published 25 contradicts 2/5 stars (same-article sibling record), set in-band 40",
+      "inside-bitch-west-end-2019/standard--fiona-mountford.json: humanReviewNote",
+      "here-we-are-west-end-2025/broadwayworld--alexander-cohen.json: published 62 contradicts 2/5 (same-article sibling record), set in-band 40",
+      "here-we-are-west-end-2025/broadwayworld--alexander-cohen.json: humanReviewNote",
+      "evita-west-end-2017/daily-mail--quentin-letts.json: published 77 contradicts 3/5 stars (same-article sibling record), set in-band 60",
+      "evita-west-end-2017/daily-mail--quentin-letts.json: humanReviewNote",
+      "every-brilliant-thing-west-end-2025/londontheatre1--chris-omaweng.json: published 88 contradicts 5/5 stars (same-article sibling record), set in-band 100",
+      "every-brilliant-thing-west-end-2025/londontheatre1--chris-omaweng.json: humanReviewNote",
+      "every-brilliant-thing-west-end-2025/broadwayworld--alexander-cohen.json: published 76 contradicts 3/5 (same-article sibling record), set in-band 64",
+      "every-brilliant-thing-west-end-2025/broadwayworld--alexander-cohen.json: humanReviewNote",
+      "darkling-off-west-end-2026/whatsonstage--alexander-cohen.json: published 62 contradicts 2/5 stars (same-article sibling record), set in-band 40",
+      "darkling-off-west-end-2026/whatsonstage--alexander-cohen.json: humanReviewNote",
+      "cock-west-end-2022/london-theatre--suzy-evans.json: published 63 contradicts 4/5 (same-article sibling record), set in-band 73",
+      "cock-west-end-2022/london-theatre--suzy-evans.json: humanReviewNote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2022/london-theatre--marianka-swain.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 93 sat outside the critic printed rating 4/5 stars (stored on the same-URL sibling record london-theatre--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 80.",
+        "description": "much-ado-about-nothing-west-end-2022/london-theatre--marianka-swain.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mnemonic-west-end-2024/times-uk--dominic-maxwell.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 100,
+        "description": "mnemonic-west-end-2024/times-uk--dominic-maxwell.json: published 82 contradicts 5/5 (same-article sibling record), set in-band 100"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mnemonic-west-end-2024/times-uk--dominic-maxwell.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 82 sat outside the critic printed rating 5/5 (stored on the same-URL sibling record times-uk--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 100.",
+        "description": "mnemonic-west-end-2024/times-uk--dominic-maxwell.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/sunday-telegraph--tim-walker.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 60,
+        "description": "matilda-the-musical-west-end-2021/sunday-telegraph--tim-walker.json: published 75 contradicts 3/5 stars (same-article sibling record), set in-band 60"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/sunday-telegraph--tim-walker.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 75 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record telegraph--tim-walker.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.",
+        "description": "matilda-the-musical-west-end-2021/sunday-telegraph--tim-walker.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "manor-west-end-2021/londontheatre1--chris-omaweng.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 60,
+        "description": "manor-west-end-2021/londontheatre1--chris-omaweng.json: published 47 contradicts 3/5 stars (same-article sibling record), set in-band 60"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "manor-west-end-2021/londontheatre1--chris-omaweng.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 47 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record londontheatre1--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.",
+        "description": "manor-west-end-2021/londontheatre1--chris-omaweng.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-of-la-mancha-west-end-2019/daily-mail--giles-smith.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 60,
+        "description": "man-of-la-mancha-west-end-2019/daily-mail--giles-smith.json: published 76 contradicts 3/5 stars (same-article sibling record), set in-band 60"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-of-la-mancha-west-end-2019/daily-mail--giles-smith.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 76 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record daily-mail--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.",
+        "description": "man-of-la-mancha-west-end-2019/daily-mail--giles-smith.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 100,
+        "description": "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json: published 78 contradicts 5/5 stars (same-article sibling record), set in-band 100"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 78 sat outside the critic printed rating 5/5 stars (stored on the same-URL sibling record telegraph--tim-robey.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 100.",
+        "description": "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inside-bitch-west-end-2019/standard--fiona-mountford.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 40,
+        "description": "inside-bitch-west-end-2019/standard--fiona-mountford.json: published 25 contradicts 2/5 stars (same-article sibling record), set in-band 40"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inside-bitch-west-end-2019/standard--fiona-mountford.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 25 sat outside the critic printed rating 2/5 stars (stored on the same-URL sibling record standard--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.",
+        "description": "inside-bitch-west-end-2019/standard--fiona-mountford.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/broadwayworld--alexander-cohen.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 40,
+        "description": "here-we-are-west-end-2025/broadwayworld--alexander-cohen.json: published 62 contradicts 2/5 (same-article sibling record), set in-band 40"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/broadwayworld--alexander-cohen.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 62 sat outside the critic printed rating 2/5 (stored on the same-URL sibling record broadwayworld--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.",
+        "description": "here-we-are-west-end-2025/broadwayworld--alexander-cohen.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2017/daily-mail--quentin-letts.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 60,
+        "description": "evita-west-end-2017/daily-mail--quentin-letts.json: published 77 contradicts 3/5 stars (same-article sibling record), set in-band 60"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2017/daily-mail--quentin-letts.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 77 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record daily-mail--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.",
+        "description": "evita-west-end-2017/daily-mail--quentin-letts.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-west-end-2025/londontheatre1--chris-omaweng.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 100,
+        "description": "every-brilliant-thing-west-end-2025/londontheatre1--chris-omaweng.json: published 88 contradicts 5/5 stars (same-article sibling record), set in-band 100"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-west-end-2025/londontheatre1--chris-omaweng.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 88 sat outside the critic printed rating 5/5 stars (stored on the same-URL sibling record londontheatre1--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 100.",
+        "description": "every-brilliant-thing-west-end-2025/londontheatre1--chris-omaweng.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-west-end-2025/broadwayworld--alexander-cohen.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 64,
+        "description": "every-brilliant-thing-west-end-2025/broadwayworld--alexander-cohen.json: published 76 contradicts 3/5 (same-article sibling record), set in-band 64"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-west-end-2025/broadwayworld--alexander-cohen.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 76 sat outside the critic printed rating 3/5 (stored on the same-URL sibling record broadwayworld--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 64.",
+        "description": "every-brilliant-thing-west-end-2025/broadwayworld--alexander-cohen.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "darkling-off-west-end-2026/whatsonstage--alexander-cohen.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 40,
+        "description": "darkling-off-west-end-2026/whatsonstage--alexander-cohen.json: published 62 contradicts 2/5 stars (same-article sibling record), set in-band 40"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "darkling-off-west-end-2026/whatsonstage--alexander-cohen.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 62 sat outside the critic printed rating 2/5 stars (stored on the same-URL sibling record whatsonstage--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.",
+        "description": "darkling-off-west-end-2026/whatsonstage--alexander-cohen.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cock-west-end-2022/london-theatre--suzy-evans.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 73,
+        "description": "cock-west-end-2022/london-theatre--suzy-evans.json: published 63 contradicts 4/5 (same-article sibling record), set in-band 73"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cock-west-end-2022/london-theatre--suzy-evans.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 63 sat outside the critic printed rating 4/5 (stored on the same-URL sibling record london-theatre--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 73.",
+        "description": "cock-west-end-2022/london-theatre--suzy-evans.json: humanReviewNote"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T16:40:08.978Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2022/london-theatre--marianka-swain.json humanReviewNote: null -> \"BRO-5927: published 93 sat outside the critic printed rating 4/5 stars (stored on the same-URL sibling record london-theatre--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 80.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mnemonic-west-end-2024/times-uk--dominic-maxwell.json humanReviewScore: null -> 100"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mnemonic-west-end-2024/times-uk--dominic-maxwell.json humanReviewNote: null -> \"BRO-5927: published 82 sat outside the critic printed rating 5/5 (stored on the same-URL sibling record times-uk--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 100.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "matilda-the-musical-west-end-2021/sunday-telegraph--tim-walker.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "matilda-the-musical-west-end-2021/sunday-telegraph--tim-walker.json humanReviewNote: null -> \"BRO-5927: published 75 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record telegraph--tim-walker.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manor-west-end-2021/londontheatre1--chris-omaweng.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manor-west-end-2021/londontheatre1--chris-omaweng.json humanReviewNote: null -> \"BRO-5927: published 47 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record londontheatre1--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-of-la-mancha-west-end-2019/daily-mail--giles-smith.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-of-la-mancha-west-end-2019/daily-mail--giles-smith.json humanReviewNote: null -> \"BRO-5927: published 76 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record daily-mail--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json humanReviewScore: null -> 100"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json humanReviewNote: null -> \"BRO-5927: published 78 sat outside the critic printed rating 5/5 stars (stored on the same-URL sibling record telegraph--tim-robey.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 100.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inside-bitch-west-end-2019/standard--fiona-mountford.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inside-bitch-west-end-2019/standard--fiona-mountford.json humanReviewNote: null -> \"BRO-5927: published 25 sat outside the critic printed rating 2/5 stars (stored on the same-URL sibling record standard--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/broadwayworld--alexander-cohen.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/broadwayworld--alexander-cohen.json humanReviewNote: null -> \"BRO-5927: published 62 sat outside the critic printed rating 2/5 (stored on the same-URL sibling record broadwayworld--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2017/daily-mail--quentin-letts.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2017/daily-mail--quentin-letts.json humanReviewNote: null -> \"BRO-5927: published 77 sat outside the critic printed rating 3/5 stars (stored on the same-URL sibling record daily-mail--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 60.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/londontheatre1--chris-omaweng.json humanReviewScore: null -> 100"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/londontheatre1--chris-omaweng.json humanReviewNote: null -> \"BRO-5927: published 88 sat outside the critic printed rating 5/5 stars (stored on the same-URL sibling record londontheatre1--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 100.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/broadwayworld--alexander-cohen.json humanReviewScore: null -> 64"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/broadwayworld--alexander-cohen.json humanReviewNote: null -> \"BRO-5927: published 76 sat outside the critic printed rating 3/5 (stored on the same-URL sibling record broadwayworld--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 64.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "darkling-off-west-end-2026/whatsonstage--alexander-cohen.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "darkling-off-west-end-2026/whatsonstage--alexander-cohen.json humanReviewNote: null -> \"BRO-5927: published 62 sat outside the critic printed rating 2/5 stars (stored on the same-URL sibling record whatsonstage--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cock-west-end-2022/london-theatre--suzy-evans.json humanReviewScore: null -> 73"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cock-west-end-2022/london-theatre--suzy-evans.json humanReviewNote: null -> \"BRO-5927: published 63 sat outside the critic printed rating 4/5 (stored on the same-URL sibling record london-theatre--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 73.\""
+    }
+  ],
+  "executedIn": "ci"
+}

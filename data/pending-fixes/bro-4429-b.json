@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-4429-b",
+  "planId": "de90a171-ba45-4cc6-83f8-a94fab02187e",
+  "status": "applied",
+  "createdAt": "2026-09-30T17:22:59.149Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4429: clear the stale ensemble garbage_text rejection on the woman-in-mind Standard review (JSON-blob cousin).",
+    "steps": [
+      "clear rejectionReason/Reasoning/By/At on woman-in-mind standard--nick-curtis"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "rejectionReason",
+        "oldValue": "garbage_text",
+        "newValue": null,
+        "description": "BRO-4429: ensemble rejected the file as garbage_text because it read the JSON-blob prefix; text is a real Nick Curtis review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This appears to be a JSON data structure containing news articles and headlines, not a coherent review text of Woman in Mind; openai: The text provided is a collection of unrelated news articles and not a review of the show 'Woman in Mind'.",
+        "newValue": null,
+        "description": "BRO-4429: ensemble rejected the file as garbage_text because it read the JSON-blob prefix; text is a real Nick Curtis review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-4429: ensemble rejected the file as garbage_text because it read the JSON-blob prefix; text is a real Nick Curtis review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-03-16T19:25:49.990Z",
+        "newValue": null,
+        "description": "BRO-4429: ensemble rejected the file as garbage_text because it read the JSON-blob prefix; text is a real Nick Curtis review"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T17:56:34.205Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json rejectionReason: \"garbage_text\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json rejectionReasoning: \"claude: This appears to be a JSON data structure containing news articles and headlines, not a coherent review text of Woman in Mind; openai: The text provided is a collection of unrelated news articles and not a review of the show 'Woman in Mind'.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json rejectedAt: \"2026-03-16T19:25:49.990Z\" -> null"
+    }
+  ]
+}

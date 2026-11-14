@@ -1,0 +1,2284 @@
+{
+  "outletId": "nyt-theater",
+  "generatedAt": "2026-10-28T20:45:32.671Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "enumerated": 654,
+    "inWindow": 654,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "gap": 37,
+      "held": 287,
+      "held-unmatched": 14,
+      "catalog-gap": 61,
+      "not-review": 173,
+      "out-of-window": 76,
+      "held-alt-url": 5,
+      "ambiguous": 1
+    },
+    "viaTitleVariant": {
+      "gap": 2,
+      "held": 17,
+      "not-review": 2,
+      "held-alt-url": 1
+    },
+    "recall": 0.888,
+    "recallWithCatalog": 0.749
+  },
+  "corpusSide": {
+    "rowsInWindow": 416,
+    "notEnumerated": 15,
+    "noUrl": 3,
+    "samples": [
+      {
+        "showId": "dead-outlaw-2025",
+        "url": "https://newyorktheater.me/2025/04/27/dead-outlaw-opens-on-broadway/",
+        "publishDate": "2025-04-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "duke-and-roya-off-broadway-2025",
+        "url": "https://newyorktheater.me/2025/06/24/duke-roya-review-reper",
+        "publishDate": "2025-06-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
+        "url": "https://newyorktheater.me/2024/09/19/forbidden-broadway-merrily-we-stole-a-song/",
+        "publishDate": "2024-09-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
+        "url": "https://newyorktheater.me/2026/07/25/giulia-the-poison-queen-of-palermo/",
+        "publishDate": "2026-07-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "url": "https://newyorktheater.me/2024/04/22/the-heart-of-rock-and-roll/",
+        "publishDate": "2024-04-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "hold-on-to-me-darling-off-broadway-2024",
+        "url": "https://newyorktheater.me/2024/10/16/hold-on-to-me-darling-adam-driver-is-the-celebrity-draw/",
+        "publishDate": "2024-10-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025",
+        "url": "https://newyorktheater.me/2025/02/22/how-is-it-that-we-live-or-shakey-jake-alice-whats-the-frequency-lenneth/",
+        "publishDate": "2025-02-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "illinoise-2024",
+        "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
+        "publishDate": "2024-03-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "macbeth-1981",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "macbeth-1988",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "macbeth-2000",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "oh-mary-2024",
+        "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+        "publishDate": "2024-07-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "url": "https://newyorktheater.me/2024/05/16/the-music-of-stereophonic/",
+        "publishDate": "2024-05-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
+        "url": "https://newyorktheater.me/2026/03/05/fringe-the-amazing-sex-life-of-rabbits/",
+        "publishDate": "2026-03-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-saviors-off-broadway-2026",
+        "url": "https://newyorktheater.me/2026/08/01/the-saviors/",
+        "publishDate": "2026-08-01",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-witness-room-off-broadway-2024",
+        "url": "https://newyorktheater.me/2024/09/21/the-witness-room/",
+        "publishDate": "2024-09-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "triumph-off-broadway-2026",
+        "url": "https://newyorktheater.me/2026/10/11/triumph-by-caryl-churchill-at-the-public/",
+        "publishDate": "2026-10-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "watch-me-walk-off-broadway-2026",
+        "url": "https://newyorktheater.me/2026/01/27/under-the-radar-watch-me-walk/",
+        "publishDate": "2026-01-27",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://newyorktheater.me/2026/10/25/the-dog-show-review/",
+      "headline": "The Dog Show Review",
+      "publishDate": "2026-10-25",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "the-dog-show-come-sit-stay-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2026/08/25/paranormal-activity-broadway-reviews/",
+      "headline": "Paranormal Activity Broadway Reviews",
+      "publishDate": "2026-08-25",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "paranormal-activity-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2026/03/28/teatro-la-plazas-hamlet-review/",
+      "headline": "Teatro La Plaza’s Hamlet Review.  Step aside Lord Olivier. Make room for Jaimlet.",
+      "publishDate": "2026-03-28",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hamlet-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2026/02/23/mother-russia-review/",
+      "headline": "Mother Russia Review",
+      "publishDate": "2026-02-23",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mother-russia-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/",
+      "headline": "Nothing Can Take You From the Hand of God Review",
+      "publishDate": "2025-10-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+      "headline": "Heathers the Musical Review",
+      "publishDate": "2025-07-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "heathers-the-musical-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/07/08/prince-faggot-review/",
+      "headline": "Prince Faggot Review",
+      "publishDate": "2025-07-08",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "prince-faggot-playwrights-horizons-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "prince-faggot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/03/23/othello-broadway-reviews-denzel-and-jake-take-on-the-bard/",
+      "headline": "Othello Broadway Reviews. Denzel and Jake Take on the Bard",
+      "publishDate": "2025-03-23",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "othello-2025"
+      ],
+      "outOfWindow": [
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/03/10/the-jonathan-larson-project-review/",
+      "headline": "The Jonathan Larson Project Review",
+      "publishDate": "2025-03-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-jonathan-larson-project-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/09/29/the-hills-of-california-broadway-review/",
+      "headline": "The Hills of California Broadway Review",
+      "publishDate": "2024-09-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-hills-of-california-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/09/14/counting-and-cracking-review-a-multigenerational-saga-demanding-and-rewarding/",
+      "headline": "Counting and Cracking Review. A Multigenerational Saga, Demanding and Rewarding",
+      "publishDate": "2024-09-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "counting-and-cracking-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/08/12/once-upon-a-mattress-broadway-review/",
+      "headline": "Once Upon A Mattress Broadway Review",
+      "publishDate": "2024-08-12",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "once-upon-a-mattress-2024"
+      ],
+      "outOfWindow": [
+        "once-upon-a-mattress-1996"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/07/31/someone-spectacular-review-grief-in-a-group/",
+      "headline": "Someone Spectacular Review. Grief, in a group.",
+      "publishDate": "2024-07-31",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "someone-spectacular-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/06/09/what-became-of-us-review-immigrant-siblings-quirky-choices/",
+      "headline": "What Became of Us Review. Immigrant Siblings, Quirky Choices.",
+      "publishDate": "2024-06-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "what-became-of-us-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/04/22/patriots-broadway-review/",
+      "headline": "Patriots Broadway Review",
+      "publishDate": "2024-04-22",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "patriots-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/04/18/suffs-broadway-review/",
+      "headline": "Suffs Broadway Review",
+      "publishDate": "2024-04-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "suffs-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/04/17/the-wiz-broadway-review/",
+      "headline": "The Wiz Broadway Review",
+      "publishDate": "2024-04-17",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "the-wiz-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/03/30/dead-outlaw-review/",
+      "headline": "Dead Outlaw Review",
+      "publishDate": "2024-03-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "dead-outlaw-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "dead-outlaw-2025"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/03/07/illinoise-review/",
+      "headline": "Illinoise Review",
+      "publishDate": "2024-03-07",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "illinoise-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "illinoise-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/12/17/buena-vista-social-club-off-broadway-review/",
+      "headline": "Buena Vista Social Club Off Broadway Review",
+      "publishDate": "2023-12-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "buena-vista-social-club-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "buena-vista-social-club-2025"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/11/18/a-good-day-for-me-not-for-you-review/",
+      "headline": "A Good Day To Me Not To You Review",
+      "publishDate": "2023-11-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-good-day-to-me-not-to-you-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/10/29/stereophonic-review/",
+      "headline": "Stereophonic Review",
+      "publishDate": "2023-10-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "stereophonic-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "stereophonic-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/07/30/cat-kid-comic-club-the-musical-review/",
+      "headline": "Cat Kid Comic Club The Musical Review",
+      "publishDate": "2023-07-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cat-kid-comic-club-the-musical-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/07/18/orpheus-descending-review-tennessee-williams-peculiar-southern-gothic-nightmare/",
+      "headline": "Orpheus Descending Review. Tennessee Williams peculiar Southern Gothic nightmare",
+      "publishDate": "2023-07-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "orpheus-descending-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "orpheus-descending-1989"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/06/17/the-doctor-review-antisemitism-abortion-but-mostly-identity-politics/",
+      "headline": "The Doctor Review: Antisemitism, Abortion, but mostly Identity Politics",
+      "publishDate": "2023-06-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-doctor-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/06/15/days-of-wine-and-roses-review-kelli-ohara-and-brian-darcy-james-as-alcoholics/",
+      "headline": "Days of Wine and Roses Review. Kelli O’Hara and Brian d’Arcy James as alcoholics",
+      "publishDate": "2023-06-15",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "days-of-wine-and-roses-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "days-of-wine-and-roses-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/05/18/the-fears-review/",
+      "headline": "The Fears Review. The traumatized, gently satirized.",
+      "publishDate": "2023-05-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-fears-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/05/05/broadway-review-the-sign-in-sidney-brusteins-window/",
+      "headline": "Broadway review: The Sign in Sidney Brustein’s Window",
+      "publishDate": "2023-05-05",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-sign-in-sidney-brusteins-window-2023"
+      ],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-1972"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/04/20/the-thanksgiving-play-broadway-review/",
+      "headline": "The Thanksgiving Play Broadway Review",
+      "publishDate": "2023-04-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-thanksgiving-play-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/04/06/sweeney-todd-broadway-review/",
+      "headline": "Sweeney Todd Broadway Review",
+      "publishDate": "2023-04-06",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "sweeney-todd-2023"
+      ],
+      "outOfWindow": [
+        "sweeney-todd-2005",
+        "sweeney-todd-1989",
+        "sweeney-todd-1979"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/03/03/love-review/",
+      "headline": "Love Review",
+      "publishDate": "2023-03-03",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "love-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/02/21/a-bright-new-boise-review-samuel-d-hunter-on-religious-extremism/",
+      "headline": "A Bright New Boise Review. Samuel D. Hunter on religious extremism.",
+      "publishDate": "2023-02-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-bright-new-boise-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/02/16/the-wanderers-review-two-jewish-couples-and-a-movie-star/",
+      "headline": "The Wanderers Review: Two Jewish Couples and a Movie Star",
+      "publishDate": "2023-02-16",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-wanderers-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/01/08/merrily-we-roll-along-pre-broadway-review/",
+      "headline": "Merrily We Roll Along Pre Broadway Review",
+      "publishDate": "2023-01-08",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "merrily-we-roll-along-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "merrily-we-roll-along-2023",
+        "merrily-we-roll-along-1981"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/06/14/circle-jerk-review-gay-digital-spoof-now-on-stage/",
+      "headline": "Circle Jerk Review: Gay Digital Spoof Now On Stage",
+      "publishDate": "2022-06-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "circle-jerk-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/10/14/the-lehman-trilogy-on-broadway-review-changing-with-the-times-but-enough/",
+      "headline": "The Lehman Trilogy on Broadway Review. Changing with the times, but enough?",
+      "publishDate": "2021-10-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-lehman-trilogy-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/08/27/pass-over-on-broadway-review-fiery-foul-funny-flawed-and-first/",
+      "headline": "Pass Over on Broadway Review: Fiery, Foul, Funny, Flawed…and First!",
+      "publishDate": "2021-08-27",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "pass-over-2021"
+      ],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+      "headline": "Other Desert Cities Original Broadway Review",
+      "publishDate": "2026-09-10",
+      "matched": [
+        "other-desert-cities-2026"
+      ],
+      "heldUrls": [
+        "https://newyorktheater.me/2026/10/18/other-desert-cities-broadway-review-julia-louis-dreyfus-spars/"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/10/08/art-broadway-review/",
+      "headline": "Art Broadway Review",
+      "publishDate": "2025-10-08",
+      "matched": [
+        "art-2025"
+      ],
+      "heldUrls": [
+        "https://newyorktheater.me/2025/09/16/art-broadway-reviews/"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/06/24/duke-roya-review-repercussions-from-american-involvement-in-a-foreign-war/",
+      "headline": "Duke & Roya Review. Repercussions from American Involvement in a Foreign War",
+      "publishDate": "2025-06-24",
+      "matched": [
+        "duke-and-roya-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "https://newyorktheater.me/2025/06/24/duke-roya-review-reper"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/03/25/broadway-openings-enemy-elephants-elsewhere-bathhouse-teeth-rot-fishburne-delivered-stageworthy-week-in-reviews/",
+      "headline": "Broadway Openings: Enemy, Elephants. Elsewhere: Bathhouse, Teeth, Rot, Fishburne, Delivered. Stageworthy Week in Reviews.",
+      "publishDate": "2024-03-25",
+      "matched": [
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://newyorktheater.me/2024/03/19/teeth-review/"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/10/29/brecht-on-brecht-review-an-artist-defying-the-darkness-by-a-company-defying-expectations/",
+      "headline": "Brecht on Brecht review. An artist defying the darkness, by a company defying expectations.",
+      "publishDate": "2021-10-29",
+      "matched": [
+        "company-2021"
+      ],
+      "heldUrls": [
+        "https://newyorktheater.me/2021/12/09/company-on-broadway-review-sondheim-helps-us-survive-being-alive/"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://newyorktheater.me/2026/10/21/860-review-billy-crystal-recalls-his-lost-home-plus-61-celebrities/",
+      "headline": "860 Review. Billy Crystal recalls his lost home plus 61 celebrities",
+      "publishDate": "2026-10-21",
+      "via": null,
+      "held": [
+        "billy-crystal-860-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2026/06/18/la-cage-aux-folles-encores-review-billy-porter-and-wayne-brady-lead-an-all-black-cast/",
+      "headline": "La Cage Aux Folles Encores Review. Billy Porter and Wayne Brady lead an all-Black cast.",
+      "publishDate": "2026-06-18",
+      "via": null,
+      "held": [
+        "encores-la-cage-aux-folles-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "la-cage-aux-folles-2010",
+        "la-cage-aux-folles-2004",
+        "la-cage-aux-folles-1983"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2026/03/20/the-wild-party-encores-review/",
+      "headline": "The Wild Party Encores Review",
+      "publishDate": "2026-03-20",
+      "via": null,
+      "held": [
+        "encores-the-wild-party-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-wild-party-2000"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2026/01/11/bug-broadway-review/",
+      "headline": "Bug Broadway Review",
+      "publishDate": "2026-01-11",
+      "via": null,
+      "held": [
+        "bug-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/08/07/rosie-odonnell-common-knowledge-review/",
+      "headline": "Roșie O’Donnell Common Knowledge Review",
+      "publishDate": "2025-08-07",
+      "via": null,
+      "held": [
+        "rosie-odonnell-common-knowledge-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "rosie-odonnell-common-knowledge-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/05/08/sexual-misconduct-of-the-middle-classes-review-hugh-jackman-launches-his-company/",
+      "headline": "Sexual Misconduct of the Middle Classes Review. Hugh Jackman launches his company",
+      "publishDate": "2025-05-08",
+      "via": null,
+      "held": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/04/19/rheology-review-theater-meets-science-over-sand/",
+      "headline": "Rheology Review. Theater meets Science Over Sand",
+      "publishDate": "2025-04-19",
+      "via": null,
+      "held": [
+        "rheology-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "rheology-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/04/08/sondheims-old-friends-broadway-review/",
+      "headline": "Sondheim’s Old Friends Broadway Review",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
+      "headline": "Boop Broadway Review",
+      "publishDate": "2025-04-07",
+      "via": null,
+      "held": [
+        "boop-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/11/17/elf-broadway-review/",
+      "headline": "Elf Broadway Review",
+      "publishDate": "2024-11-17",
+      "via": null,
+      "held": [
+        "elf-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/07/30/job-broadway-review/",
+      "headline": "Job Broadway Review",
+      "publishDate": "2024-07-30",
+      "via": null,
+      "held": [
+        "job-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/04/21/cabaret-broadway-review/",
+      "headline": "Cabaret Broadway Review",
+      "publishDate": "2024-04-21",
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/03/18/enemy-of-the-people-broadway-review/",
+      "headline": "Enemy of the People Broadway Review. Jeremy Strong is no total hero, Michael Imperioli no total villain",
+      "publishDate": "2024-03-18",
+      "via": null,
+      "held": [
+        "an-enemy-of-the-people-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/10/07/six-review-wronged-queens-in-a-broadway-musical-of-sonic-wave-feminism/",
+      "headline": "Six Review. Wronged Queens in a Broadway Musical of Sonic Wave Feminism",
+      "publishDate": "2021-10-07",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-broadway-musical-1978",
+        "queens-off-broadway-2025"
+      ]
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://newyorktheater.me/2022/10/11/broadway-reviews-death-of-a-salesman-1776-cost-of-living-stageworthy-news-of-the-week/",
+      "headline": "Broadway Reviews: Death of a Salesman. 1776. Cost of Living. Broadway Goes Hybrid, Again! #Stageworthy News of the Week",
+      "publishDate": "2022-10-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "death-of-a-salesman-2022",
+        "cost-of-living-2022"
+      ],
+      "outOfWindow": [
+        "death-of-a-salesman-2026",
+        "death-of-a-salesman-2012",
+        "death-of-a-salesman-1999",
+        "death-of-a-salesman-1975",
+        "death-of-a-salesman-1984"
+      ]
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://newyorktheater.me/2026/10/14/prelude-review-en-garde-arts-at-40/",
+      "headline": "Prelude Review. En Garde Arts at 40",
+      "publishDate": "2026-10-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/10/22/dimension-zero-review/",
+      "headline": "Dimension Zero Review. A puppet musical Mamdani should love.",
+      "publishDate": "2025-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/10/21/italian-american-reconciliation-review-in-moonstrucks-shadow-again/",
+      "headline": "Italian-American Reconciliation Review.  In Moonstruck’s Shadow, Again.",
+      "publishDate": "2025-10-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/09/28/weer-at-cherry-lane-theater-review/",
+      "headline": "Weer at Cherry Lane Theater Review",
+      "publishDate": "2025-09-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/08/28/destination-undefined-review-maybe-unhappy-ending/",
+      "headline": "Destination Undefined Review.  Maybe Unhappy Ending",
+      "publishDate": "2025-08-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/08/18/jeff-ross-take-a-banana-for-the-road-broadway-review/",
+      "headline": "Jeff Ross Take a Banana for the Ride Broadway Review",
+      "publishDate": "2025-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/08/09/edinburgh-fringe-review-hot-mess/",
+      "headline": "Edinburgh Fringe Review: Hot Mess. Earth and her fickle lover Humanity.",
+      "publishDate": "2025-08-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/06/27/beau-the-musical-review/",
+      "headline": "Beau the Musical Review. Coming of Age, and Coming Out, in Tennessee.",
+      "publishDate": "2025-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/05/18/creditors-review/",
+      "headline": "Creditors Review",
+      "publishDate": "2025-05-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/04/13/the-end-of-all-flesh-fringe-review-hillbillies-as-post-apocalyptic-philosophers/",
+      "headline": "The End of All Flesh Fringe Review.  Hillbillies as Post-Apocalyptic Philosophers",
+      "publishDate": "2025-04-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/11/23/true-love-forever-review-third-rail-project-turns-the-dating-game-into-a-dance/",
+      "headline": "True Love Forever Review. Third Rail Projects turns the dating game into a dance",
+      "publishDate": "2024-11-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/10/15/vladimir-review/",
+      "headline": "Vladimir Review",
+      "publishDate": "2024-10-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/08/15/language-city-review-looking-at-nyc-through-its-700-languages/",
+      "headline": "Language City Review. Looking at NYC through its 700 languages",
+      "publishDate": "2024-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2024/01/02/broadway-2024-whats-ahead-2023-in-review-stageworthy-news/",
+      "headline": "Broadway 2024: What’s Ahead? 2023 In Review. Stageworthy News",
+      "publishDate": "2024-01-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/12/05/manahatta-review/",
+      "headline": "Manahatta Review",
+      "publishDate": "2023-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/11/08/watch-night-review/",
+      "headline": "Watch Night Review. A Lyrical, Harsh Response to Mass Shootings at the World Trade Center’s PAC NYC",
+      "publishDate": "2023-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/11/07/south-review-an-argentinians-songs-of-home-in-nyc/",
+      "headline": "South Review. An Argentinian’s Songs of Home in NYC",
+      "publishDate": "2023-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/10/27/the-holylanders-review-what-israelis-find-funny/",
+      "headline": "The Holylanders Review. What Israelis find funny",
+      "publishDate": "2023-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/09/08/the-writing-on-the-stall-review-5-ways-this-bathroom-graffiti-musical-made-me-uncomfortable/",
+      "headline": "The Writing On The Stall Review: 5 Ways this “bathroom graffiti musical” made me uncomfortable",
+      "publishDate": "2023-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/08/29/how-to-steal-an-election-musical-review/",
+      "headline": "How To Steal An Election Musical Review",
+      "publishDate": "2023-08-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/08/20/el-mago-pop-broadway-review/",
+      "headline": "El Mago Pop Broadway Review. Antonio Diaz’s Magic, Charm and Hype.",
+      "publishDate": "2023-08-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/08/05/the-nobodies-who-were-everybody-review-a-play-about-the-federal-theatre-project/",
+      "headline": "The Nobodies Who Were Everybody Review: A play about the Federal Theatre Project",
+      "publishDate": "2023-08-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/06/20/eisenhower-review-john-rubinstein-as-affable-ike/",
+      "headline": "Eisenhower Review. John Rubinstein as Affable Ike",
+      "publishDate": "2023-06-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/05/06/dimanche-review-climate-awareness-via-puppetry-and-clowning/",
+      "headline": "Dimanche Review. Climate Awareness via Puppetry and Clowning",
+      "publishDate": "2023-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/05/04/shadow-land-off-broadway-review-in-the-eye-of-hurricane-katrina/",
+      "headline": "shadow/land Off Broadway Review: In The Eye of Hurricane Katrina",
+      "publishDate": "2023-05-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/03/18/dear-world-review-donna-murphy-in-jerry-hermans-flop-musical/",
+      "headline": "Dear World Review. Donna Murphy in Jerry Herman’s Flop Musical.",
+      "publishDate": "2023-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/03/09/dark-disabled-stories-review/",
+      "headline": "Dark Disabled Stories Review",
+      "publishDate": "2023-03-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/03/02/eric-bogosians-11-review/",
+      "headline": "Eric Bogosian’s 1+1 Review",
+      "publishDate": "2023-03-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/02/27/becomes-a-woman-review/",
+      "headline": "Becomes A Woman Review",
+      "publishDate": "2023-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/01/25/without-you-review-anthony-rapp-looks-back-at-rent-and-grief/",
+      "headline": "Without You Review. Anthony Rapp looks back at Rent and grief",
+      "publishDate": "2023-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2023/01/02/broadway-2023-is-a-question-2022-in-review-stageworthy-news/",
+      "headline": "Broadway 2023: What’s Ahead? 2022 in Review. #Stageworthy News",
+      "publishDate": "2023-01-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/11/09/where-we-belong-review-a-native-american-who-identifies-with-caliban/",
+      "headline": "Where We Belong Review: A Native American Who Identifies with Caliban",
+      "publishDate": "2022-11-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/11/06/my-broken-language-off-broadway-review-quiara-alegria-hudes-stages-her-memoir/",
+      "headline": "My Broken Language Off Broadway Review: Quiara Alegría Hudes Stages Her Memoir",
+      "publishDate": "2022-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/10/26/straight-line-crazy-review-ralph-fiennes-as-robert-moses/",
+      "headline": "Straight Line Crazy Review. Ralph Fiennes as Robert Moses",
+      "publishDate": "2022-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/09/29/next-wave-festival-review-300-el-x-50-el-x-30-el/",
+      "headline": "Next Wave Festival Review: 300 el x 50 el x 30 el",
+      "publishDate": "2022-09-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/09/20/four-saints-in-three-acts-review-david-greenspan-does-gertrude-stein-solo/",
+      "headline": "Four Saints in Three Acts Review. David Greenspan Does Gertrude Stein Solo",
+      "publishDate": "2022-09-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/09/10/burbank-review/",
+      "headline": "Burbank Review. Walt Disney vs. Goofy’s Dad in 1941 Animators Strike",
+      "publishDate": "2022-09-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/05/19/english-and-wish-you-were-here-by-san-toossi-theater-reviews/",
+      "headline": "English, and Wish You Were Here by Sanaz Toossi: Theater Reviews",
+      "publishDate": "2022-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/05/08/wedding-band-review-alice-childress-love-hate-story-in-black-and-white/",
+      "headline": "Wedding Band Review. Alice Childress’ Love/Hate Story in Black and White",
+      "publishDate": "2022-05-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/03/24/help-review/",
+      "headline": "Help Review. A Black Woman on What White People Are Thinking",
+      "publishDate": "2022-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/03/10/coal-country-review/",
+      "headline": "Coal Country Review: A Mining Tragedy with Songs and Echoes",
+      "publishDate": "2022-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/02/15/black-no-more-review/",
+      "headline": "Black No More Review",
+      "publishDate": "2022-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/02/11/arden-review/",
+      "headline": "Arden Review. The Flea Theater returns, after trauma",
+      "publishDate": "2022-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/02/01/mj-the-musical-review/",
+      "headline": "MJ The Musical Review: Michael Jackson as Thriller, not Dangerous",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/01/20/addressless-theater-review-the-game-of-finding-an-apartment-in-nyc/",
+      "headline": "Addressless Theater Review. The Game of Finding an Apartment in NYC",
+      "publishDate": "2022-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2022/01/03/%ef%bf%bcbroadway-on-edge-in-2022-2021-in-review-stageworthy-week/",
+      "headline": "￼Broadway on Edge in 2022. 2021 in Review.  #Stageworthy Week.",
+      "publishDate": "2022-01-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/12/06/selling-kabul-review-left-behind-in-afghanistan/",
+      "headline": "Selling Kabul Review: Left Behind in Afghanistan",
+      "publishDate": "2021-12-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/11/17/theater-reviews-cullud-wattah-and-in-the-southern-breeze/",
+      "headline": "Theater Reviews: Cullud Wattah and  In The Southern Breeze",
+      "publishDate": "2021-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/11/06/generation-rise-review-undesirable-elements-in-this-latest-ping-chong-play-about-teens/",
+      "headline": "Generation Rise Review. Undesirable elements in this latest Ping Chong play about teens",
+      "publishDate": "2021-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/11/04/the-visitor-review-cuddly-immigrants-march-to-the-beat-of-an-old-drummer/",
+      "headline": "The Visitor Review. Cuddly immigrants march to the beat of a dated drummer",
+      "publishDate": "2021-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/11/02/tammany-hall-review-an-immersive-election-night/",
+      "headline": "Tammany Hall Review. An immersive New York Election Night",
+      "publishDate": "2021-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/10/24/fairycakes-review/",
+      "headline": "Fairycakes Review. Mashed Up Fairy Tales in Verse and Worse",
+      "publishDate": "2021-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/10/09/hit-your-mark-die-beautiful-review-whats-so-bad-about-off-off-broadway/",
+      "headline": "Hit Your Mark, Die Beautiful Review. What’s so bad about Off Off Broadway.",
+      "publishDate": "2021-10-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/09/27/a-commercial-jingle-for-regina-comet-review/",
+      "headline": "A Commercial Jingle for Regina Comet Review",
+      "publishDate": "2021-09-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/09/18/repulsing-the-monkey-review-a-play-about-gentrification-staged-at-the-white-horse-tavern/",
+      "headline": "Repulsing the Monkey Review: A play about gentrification, staged at the White Horse Tavern",
+      "publishDate": "2021-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/09/09/what-happened-review-10-pithy-poignant-and-exasperating-aspects-of-richard-nelsons-rhinebeck-panorama-formula/",
+      "headline": "What Happened? Review. 10 Pithy, Poignant, and Exasperating Aspects of Richard Nelson’s Rhinebeck Panorama formula.",
+      "publishDate": "2021-09-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/08/03/critical-care-review-tncs-summer-theater-coronavirus-clowning-and-social-consciousness/",
+      "headline": "Critical Care Review: TNC’s Summer Theater Coronavirus Clowning and Social Consciousness",
+      "publishDate": "2021-08-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/07/03/enemy-of-the-people-review-we-are-all-complicit/",
+      "headline": "Enemy of the People Review.  We are all complicit!",
+      "publishDate": "2021-07-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/07/01/the-watering-hole-review-theater-as-a-sacred-depressing-water-ritual/",
+      "headline": "The Watering Hole Review: Theater as a Sacred (Depressing) Water Ritual",
+      "publishDate": "2021-07-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/06/25/off-broadway-the-play-review-an-indictment-of-off-broadway/",
+      "headline": "Off Broadway The Play Review.  An Indictment of Off Broadway.",
+      "publishDate": "2021-06-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2021/06/04/worlds-fair-inn-review-off-broadway-reopens/",
+      "headline": "Worlds Fair Inn Review.  Off-Broadway reopens!",
+      "publishDate": "2021-06-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://newyorktheater.me/2026/09/12/follies-broadway-review/",
+      "headline": "Follies Broadway Review",
+      "publishDate": "2026-09-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "follies-2011",
+        "follies-1971",
+        "follies-2001"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2026/09/08/clybourne-park-broadway-review/",
+      "headline": "Clybourne Park Broadway Review",
+      "publishDate": "2026-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "clybourne-park-2012"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2026/08/30/fringe-review-bigfoot-ripped-my-dog-in-half-i-saw-it/",
+      "headline": "Fringe Review: Bigfoot Ripped My Dog in Half I Saw It",
+      "publishDate": "2026-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "bigfoot-off-broadway-2026",
+        "bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2026/08/23/edinburgh-fringe-review-women-of-will/",
+      "headline": "Edinburgh Fringe Review: Women of Will",
+      "publishDate": "2026-08-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2026/01/23/edward-review-27-objects-that-tell-a-life/",
+      "headline": "Edward Review. 27 Objects That Tell A Life",
+      "publishDate": "2026-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-life-1980"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/12/10/oklahoma-samovar-review-jews-on-the-american-frontier/",
+      "headline": "Oklahoma Samovar Review. Jews on the American frontier",
+      "publishDate": "2025-12-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oklahoma-2019",
+        "oklahoma-2002",
+        "oklahoma-1979"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/10/26/are-the-bennet-girls-ok-review/",
+      "headline": "Are The Bennet Girls Ok? Review",
+      "publishDate": "2025-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "are-the-bennet-girls-ok-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/10/04/mexodus-review/",
+      "headline": "Mexodus Review. A Riff on Freedom, Then and Now",
+      "publishDate": "2025-10-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/09/18/this-is-not-a-drill-review-38-minutes-that-changed-their-lives/",
+      "headline": "This Is Not a Drill Review. 38 minutes that changed their lives.",
+      "publishDate": "2025-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-minutes-2022"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/08/21/twelfth-night-at-the-delacorte-review/",
+      "headline": "Twelfth Night at the Delacorte Review",
+      "publishDate": "2025-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/08/20/well-ill-let-you-go-review/",
+      "headline": "Well, I’ll Let You Go Review",
+      "publishDate": "2025-08-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "well-ill-let-you-go-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/08/01/edinburgh-fringe-review-smile-the-story-of-charlie-chaplin/",
+      "headline": "Edinburgh Fringe Review: Smile, The Story of Charlie Chaplin",
+      "publishDate": "2025-08-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "chaplin-2012",
+        "smile-1986"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/06/17/prosperous-fools-review-taylor-mac-bites-the-hands-that-fund-the-arts/",
+      "headline": "Prosperous Fools Review. Taylor Mac bites the hands that fund the arts.",
+      "publishDate": "2025-06-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/05/30/blood-sweat-and-queers-review/",
+      "headline": "Blood, Sweat and Queers Review",
+      "publishDate": "2025-05-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sweat-2017"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/05/04/the-united-states-vs-ulysses-review/",
+      "headline": "The United States vs. Ulysses Review",
+      "publishDate": "2025-05-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ulysses-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2025/02/06/still-review-love-vs-politics/",
+      "headline": "Still Review. Love vs. Politics",
+      "publishDate": "2025-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/10/22/franklinland-review-benjamin-franklin-brilliant-scientist-lousy-father/",
+      "headline": "Franklinland Review. Benjamin Franklin, brilliant scientist, lousy father?",
+      "publishDate": "2024-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/10/19/a-woman-among-women-review-arthur-miller-male-to-female-in-bushwick/",
+      "headline": "A Woman Among Women Review. Arthur Miller, Male to Female, in Bushwick",
+      "publishDate": "2024-10-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973",
+        "a-woman-among-women-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/09/24/ks6-small-forward-review-a-basketball-champ-turned-dissident/",
+      "headline": "KS6: Small Forward Review. A basketball champ turned dissident",
+      "publishDate": "2024-09-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/07/19/the-widow-review-maria-irene-fornes-first-play/",
+      "headline": "The Widow Review. María Irene Fornés first play",
+      "publishDate": "2024-07-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/06/25/relics-and-their-humans-review/",
+      "headline": "Relics and Their Humans Review",
+      "publishDate": "2024-06-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-humans-2016"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/06/21/titanic-encores-review/",
+      "headline": "Titanic Encores Review",
+      "publishDate": "2024-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/05/08/small-acts-of-daring-invention-theater-review/",
+      "headline": "Small Acts of Daring Invention Theater Review",
+      "publishDate": "2024-05-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
+      "headline": "Here There Are Blueberries Theater Review. The Holocaust through a different lens",
+      "publishDate": "2024-05-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/04/07/the-four-lives-review-puppet-insects-humans-plants-and-minerals/",
+      "headline": "The Four Lives Review. Puppet Insects, Humans, Plants and Minerals.",
+      "publishDate": "2024-04-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-humans-2016"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/02/22/jellys-last-jam-encores-review-and-videos/",
+      "headline": "Jelly’s Last Jam Encores Review and Videos",
+      "publishDate": "2024-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jellys-last-jam-1992"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/02/15/where-women-go-review-tina-howes-final-play/",
+      "headline": "Where Women Go Review. Tina Howe’s final play",
+      "publishDate": "2024-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/02/07/bark-of-millions-review/",
+      "headline": "Bark of Millions Review. Taylor Mac and Matt Ray’s 260 Minutes of Queer Love and Music",
+      "publishDate": "2024-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-minutes-2022"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/01/25/once-upon-a-mattress-encores-review/",
+      "headline": "Once Upon A Mattress Encores Review",
+      "publishDate": "2024-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "once-upon-a-mattress-2024",
+        "once-upon-a-mattress-1996"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2024/01/13/10-mean-girls-movie-musical-reviews-from-meanest-to-nicest/",
+      "headline": "10 Mean Girls Movie Musical Reviews, from Meanest to Nicest",
+      "publishDate": "2024-01-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mean-girls-2018"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/12/13/death-let-me-do-my-show-review/",
+      "headline": "Death, Let Me Do My Show Review. Rachel Bloom’s Crazy Existential Riff",
+      "publishDate": "2023-12-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "death-let-me-do-my-show-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/11/19/hells-kitchen-review/",
+      "headline": "Hell’s Kitchen Review: An Alicia Keys musical",
+      "publishDate": "2023-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/11/05/poor-yella-rednecks-review-vietgones-vietnamese-refugees-chapter-two/",
+      "headline": "Poor Yella Rednecks Review:  Vietgone’s Vietnamese refugees, chapter two",
+      "publishDate": "2023-11-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "chapter-two-1977"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/11/03/food-review-at-bams-next-wave-festival/",
+      "headline": "FOOD Review.  A fake, freaky, fun dinner party at BAM’s Next Wave Festival.",
+      "publishDate": "2023-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-dinner-party-2000"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/09/14/alt-hamlet-review-a-post-roe-satire/",
+      "headline": "alt-Hamlet Review. A “post-Roe satire”",
+      "publishDate": "2023-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/08/30/the-tempest-review-renee-elise-goldsberry-as-prospero-in-a-public-works-musical/",
+      "headline": "The Tempest Review: Renée Elise Goldsberry as Prospero in A Public Works Musical",
+      "publishDate": "2023-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-1995"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/06/28/hamlet-at-shakespeare-in-the-park-review/",
+      "headline": "Hamlet at Shakespeare in the Park Review",
+      "publishDate": "2023-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/03/15/the-harder-they-come-review-suzan-lori-parks-adapts-jimmy-cliffs-reggae-movie/",
+      "headline": "The Harder They Come Review. Suzan-Lori Parks Adapts Jimmy Cliff’s Reggae Movie",
+      "publishDate": "2023-03-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "reggae-1980"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/02/28/the-seagull-woodstock-ny-review/",
+      "headline": "The Seagull/Woodstock NY Review",
+      "publishDate": "2023-02-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/02/27/the-sign-in-sidney-brusteins-window-review-lorraine-hansberrys-greenwich-village/",
+      "headline": "The Sign in Sidney Brustein’s Window Review. Lorraine Hansberry’s Greenwich Village",
+      "publishDate": "2023-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-2023",
+        "the-sign-in-sidney-brusteins-window-1972"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2023/01/23/small-talk-review-colin-quinn/",
+      "headline": "Small Talk Review. Colin Quinn’s 7th solo show",
+      "publishDate": "2023-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/11/20/the-patient-gloria-review/",
+      "headline": "The Patient Gloria Review. Psychotherapy as Misogyny in Phallic Fringe Theater",
+      "publishDate": "2022-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gloria-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/11/15/downstate-review-a-contrarians-play-about-pedophiles-and-punishment/",
+      "headline": "Downstate Review: A Contrarian’s Play About Pedophiles and Punishment",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/10/25/a-raisin-in-the-sun-review/",
+      "headline": "A Raisin in the Sun Review: Lorraine Hansberry’s classic with some added scenes and characters",
+      "publishDate": "2022-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-raisin-in-the-sun-2014",
+        "a-raisin-in-the-sun-2004"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/09/19/sesame-street-the-musical-review/",
+      "headline": "Sesame Street The Musical Review. Aiming for Muppet loving first-time theatergoers.",
+      "publishDate": "2022-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981",
+        "sesame-street-the-musical-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/08/30/as-you-like-it-review/",
+      "headline": "As You Like It Review. 5 Reasons to Love Shaina Taub’s Version of Shakespeare’s Comedy About Love",
+      "publishDate": "2022-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-1974",
+        "as-you-like-it-1986"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/08/16/patience-review-solitaire-as-metaphor-for-black-achievement-and-isolation/",
+      "headline": "Patience Review: Solitaire as Metaphor for Black Achievement and Isolation",
+      "publishDate": "2022-08-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "solitaire-1971"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/05/26/fat-ham-review/",
+      "headline": "Fat Ham Review",
+      "publishDate": "2022-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/05/15/suffs-review/",
+      "headline": "Suffs Review. A women’s suffrage musical after the Roe leak",
+      "publishDate": "2022-05-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "suffs-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/04/13/harmony-review-barry-manilows-musical-in-nyc-at-last/",
+      "headline": "Harmony Review. Barry Manilow’s Musical in NYC At Last",
+      "publishDate": "2022-04-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harmony-2023"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/03/30/oratorio-for-living-things-review/",
+      "headline": "Oratorio for Living Things Review: Heather Christian’s Hip Religious Experience",
+      "publishDate": "2022-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oratorio-for-living-things-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/03/27/confederates-review-two-black-women-160-years-apart-fight-for-freedom/",
+      "headline": "Confederates Review: Two Black Women 160 Years Apart Fight For ‘Freedom’",
+      "publishDate": "2022-03-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/03/13/tiananmen-requiem-review/",
+      "headline": "Tiananmen Requiem Review: A Gay Couple Struggles for Love and Democracy in China",
+      "publishDate": "2022-03-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "democracy-2004"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/03/08/the-chinese-lady-review/",
+      "headline": "The Chinese Lady Review: Immigrant as First Freak, Still Fresh",
+      "publishDate": "2022-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "freak-1998",
+        "the-first-1981",
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/02/27/sandblasted-review-black-women-in-a-beckett-world/",
+      "headline": "Sandblasted Review: Black Women in a Beckett World",
+      "publishDate": "2022-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/02/03/the-tap-dance-kid-at-encores-review/",
+      "headline": "The Tap Dance Kid at Encores! Review",
+      "publishDate": "2022-02-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tap-dance-kid-1983"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/02/01/antisemitism-on-stage-prayer-for-the-french-republic-and-the-garden-of-the-finzi-continis-reviews/",
+      "headline": "Antisemitism on Stage: Prayer for the French Republic and The Garden of the Finzi-Continis Reviews",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2022/01/11/%ef%bf%bcthe-search-for-signs-of-intelligent-life-in-the-universe-review-cecily-strong-takes-over-lily-tomlins-characters/",
+      "headline": "￼The Search for Signs of Intelligent Life in the Universe Review. Cecily Strong Takes Over Lily Tomlin’s Characters",
+      "publishDate": "2022-01-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-search-for-signs-of-intelligent-life-in-the-universe-1985",
+        "the-search-for-signs-of-intelligent-life-in-the-universe-2000"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/12/16/becoming-dr-ruth-review-tovah-feldshuh-as-celebrity-sex-therapist-sniper-survivor/",
+      "headline": "Becoming Dr. Ruth Review: Tovah Feldshuh as celebrity sex therapist, sniper, survivor",
+      "publishDate": "2021-12-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-survivor-1981"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/12/12/kimberly-akimbo-musical-review-she-is-16-going-on-70/",
+      "headline": "Kimberly Akimbo musical review. She is 16 going on 70.",
+      "publishDate": "2021-12-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kimberly-akimbo-2022"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/12/08/just-for-us-review-alex-edelman-a-jewish-comic-who-tries-to-charm-some-antisemites/",
+      "headline": "Just For Us Review: Alex Edelman, a  Jewish comic who tries to charm some antisemites",
+      "publishDate": "2021-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "just-for-us-2023"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/12/02/candlelight-review-john-patrick-shanleys-west-side-story/",
+      "headline": "Candlelight Review: John Patrick Shanley’s West Side Story?",
+      "publishDate": "2021-12-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "west-side-story-2020",
+        "west-side-story-2009",
+        "west-side-story-1980"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/11/15/mornings-at-seven-review/",
+      "headline": "Morning’s at Seven Review. A Starry evergreen comedy that turns existential",
+      "publishDate": "2021-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mornings-at-seven-2002",
+        "mornings-at-seven-1980"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/11/14/assassins-review-csc-revives-sondheims-unsettling-musical-about-lee-harvey-oswald-john-wilkes-booth-and-7-others/",
+      "headline": "Assassins Review: CSC Revives Sondheim’s Unsettling Musical about Lee Harvey Oswald, John Wilkes Booth and 7 others",
+      "publishDate": "2021-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harvey-2012",
+        "assassins-2004"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/11/01/theater-review-twilight-los-angeles-1992/",
+      "headline": "Theater review: Twilight: Los Angeles, 1992",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twilight-los-angeles-1992-1994"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/10/28/mrs-warrens-profession-review/",
+      "headline": "Mrs Warren’s Profession Review",
+      "publishDate": "2021-10-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mrs-warrens-profession-2010",
+        "mrs-warrens-profession-1976"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/10/12/letters-of-suresh-review/",
+      "headline": "Letters of Suresh Review. Unfolding the mysteries of the heart",
+      "publishDate": "2021-10-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/10/02/the-nosebleed-review-a-long-dead-father-vulnerability-failure-and-healing/",
+      "headline": "The Nosebleed Review: A Long-Dead Father, Vulnerability, Failure and Healing",
+      "publishDate": "2021-10-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/08/18/alma-baya-review-life-as-a-hybrid-in-outer-and-other-space/",
+      "headline": "Alma Baya Review. Life as a Hybrid in Outer (and Other) Space",
+      "publishDate": "2021-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/08/06/detroit-67-review-dominique-morisseaus-early-play-about-the-motown-riots/",
+      "headline": "Detroit ‘67 Review: Dominique Morisseau’s early play about the Motown riots",
+      "publishDate": "2021-08-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "motown-the-musical-2016",
+        "motown-the-musical-2013"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/07/22/zoom-with-a-view-review-interviewing-the-coronavirus-and-other-plays-from-the-pandemic/",
+      "headline": "Zoom With A View Review: Interviewing the Coronavirus and other Plays from the Pandemic",
+      "publishDate": "2021-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/07/17/east-to-edinburgh-2021-reviews-testament-static-democracy-sucks/",
+      "headline": "East to Edinburgh 2021 Reviews: Testament. Static. Democracy Sucks.",
+      "publishDate": "2021-07-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "democracy-2004"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/07/16/schmigadoon-review-sweet-and-stuck-musical-tv-series-parodying-broadway-musicals/",
+      "headline": "Schmigadoon! Review. Sweet and stuck musical TV series parodying Broadway musicals",
+      "publishDate": "2021-07-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "schmigadoon-2026"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/07/08/fruma-sarah-waiting-in-the-wings-review/",
+      "headline": "Fruma-Sarah (Waiting in the Wings) Review",
+      "publishDate": "2021-07-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wings-1979",
+        "waiting-in-the-wings-1999"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/06/16/its-only-a-play-review-terrence-mcnallys-bitchy-semi-updated-broadway-backstage-comedy/",
+      "headline": "It’s Only A Play review. Terrence McNally’s bitchy semi-updated  Broadway backstage comedy",
+      "publishDate": "2021-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "its-only-a-play-2014"
+      ]
+    },
+    {
+      "url": "https://newyorktheater.me/2021/06/07/chekhovos-an-experimental-game-review-the-cherry-orchard-as-a-virtual-video-game-but-not-really/",
+      "headline": "chekhovOS /an experimental game Review: The Cherry Orchard as a Virtual Video Game (but not really)",
+      "publishDate": "2021-06-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    }
+  ]
+}

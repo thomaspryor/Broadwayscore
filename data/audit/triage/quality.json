@@ -1,0 +1,85 @@
+{
+  "system": "quality",
+  "status": "warn",
+  "lastChecked": "2026-11-14T09:07:36.580Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Quality: opening date vs review dates",
+      "status": "warn",
+      "message": "2 show(s) store an opening date later than their reviews: the-ripple-the-wave-that-carried-me-home-off-broadway-2026 (stored 2026-11-18, reviews 2026-11-10); spend-spend-spend-royal-exchange-regional-2024 (stored 2024-12-22, reviews 2024-11-29)"
+    },
+    {
+      "name": "Quality: star-vs-score mismatch",
+      "status": "pass",
+      "message": "No new star/score contradictions (29 known/baselined)"
+    },
+    {
+      "name": "Quality: scored review ratio",
+      "status": "pass",
+      "message": "98.2% scored (50407/51331)"
+    },
+    {
+      "name": "Quality: corpus drift",
+      "status": "pass",
+      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
+    },
+    {
+      "name": "Quality: DMARC deliverability",
+      "status": "pass",
+      "message": "20144 messages, 0 auth failures (p=reject)"
+    },
+    {
+      "name": "Quality: missing contentTier",
+      "status": "pass",
+      "message": "No scored reviews missing contentTier"
+    },
+    {
+      "name": "Quality: outlet domain moves",
+      "status": "pass",
+      "message": "No probable domain moves in 402 unregistered host(s)"
+    },
+    {
+      "name": "Quality: Show Score gap",
+      "status": "warn",
+      "message": "1 opened show(s) have a cached Show Score URL but no Show Score audience score (jest-to-impress-off-broadway-2026)"
+    },
+    {
+      "name": "Quality: outlet stub rate",
+      "status": "pass",
+      "message": "No broken-extractor signature in 1883 outlet(s), 81943 review(s)"
+    },
+    {
+      "name": "Quality: outlet invalid-content rate",
+      "status": "pass",
+      "message": "No broken-extractor signature in 1883 outlet(s), 81943 review(s)"
+    },
+    {
+      "name": "Quality: standingCoverage drift",
+      "status": "pass",
+      "message": "No standingCoverage drift"
+    },
+    {
+      "name": "Quality: expected critics missing",
+      "status": "warn",
+      "message": "2 usual-critic review(s) the automatic search could not settle (12 more still being searched for automatically): Time Out London on From The Heart: no review on the site, and the automatic search has stopped running. TheaterMania on The Steel Man: no review on the site, and the automatic search has not looked for it yet."
+    },
+    {
+      "name": "Quality: coverageExpectation drift",
+      "status": "warn",
+      "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
+    },
+    {
+      "name": "Quality: outlet-heartbeat red flags",
+      "status": "pass",
+      "message": "151 outlet×market rows checked, none NEW silent 2+ consecutive weeks (43 known/baselined, 5d ago)"
+    },
+    {
+      "name": "Quality: outlet feed staleness",
+      "status": "pass",
+      "message": "85 feed(s) checked, none stale or failing"
+    }
+  ]
+}

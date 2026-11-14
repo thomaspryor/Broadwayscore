@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-6518-strange-loop",
+  "planId": "469f3bc2-d29a-4f4f-80d0-19f83b83ad6c",
+  "status": "applied",
+  "createdAt": "2026-10-31T17:52:49.468Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "A Strange Loop (Raven Theatre) extended: closing 2026-11-22 -> 2026-12-13 per theatreinchicago.com (BRO-6518 audit)",
+    "steps": [
+      "shows.json: a-strange-loop-regional-2026.closingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-strange-loop-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-11-22",
+        "newValue": "2026-12-13",
+        "description": "shows.json: a-strange-loop-regional-2026.closingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T18:54:41.463Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for a-strange-loop-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

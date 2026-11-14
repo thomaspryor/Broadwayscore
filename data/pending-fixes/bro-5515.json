@@ -1,0 +1,228 @@
+{
+  "issueNumber": "bro-5515",
+  "planId": "fae8ecbc-1640-42d5-ae71-443b1d2a842d",
+  "status": "applied",
+  "createdAt": "2026-10-17T02:37:50.633Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5515: finish the nonprofit-to-commercial switch audit across every season. Of the nonprofit-origin shows checked (LCT: My Fair Lady, Camelot, Oslo; MTC: Old Friends, Ink, The Little Foxes; Roundabout/2ST: 1776, Pirates!, Appropriate), only Appropriate switched: Second Stage's Hayes run closed Mar 3, 2024 and a commercial run produced by ATG, Annapurna Theatre, Bad Robot Live and others began at the Belasco on Mar 25, 2024. Its editorial recoupment month (2024-03) predates any commercial week, so it moves to the run's final month. The audit also found that Old Friends' $12M capitalization came from the Form D of 'Old Friends Broadway Limited Partnership' (CIK 1977214), which is Merrily We Roll Along's investor partnership (general partners SFP-NY, Chocolate Factory, P-Cat; $12M sold to 190 investors; Merrily recouped its $12M in Mar 2024). The revue has no reported capitalization. Plaza Suite's $8.0M is an estimate inferred from its $2,000,887 tax credit at the 25% rate (its source says so), but the record did not flag it, so /biz printed it as a reported figure: it is flagged as an estimate.",
+    "steps": [
+      "recoupedDate moves to 2024-06 before or with the conversion: commercial-record-checks.js refuses a recoupedDate month before the commercial run began."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "recoupedDate",
+        "oldValue": "2024-03",
+        "newValue": "2024-06",
+        "description": "appropriate: 2024-03 -> 2024-06. No recoupment was announced; the editorial judgment is dated to the commercial run's final month (it closed Jun 30, 2024). 2024-03 fell before any commercial week."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "recoupedSource",
+        "oldValue": "No recoupment was announced. Counted as recouped as an editorial judgment: two extensions, a commercial transfer to the Belasco, the 2024 Tony for Best Revival of a Play and a low $3.75M capitalization.",
+        "newValue": "No recoupment was announced. Counted as recouped as an editorial judgment, dated to the commercial run's final month: two extensions, a commercial run at the Belasco (Mar 25 - Jun 30, 2024), the 2024 Tony for Best Revival of a Play, a $3.75M capitalization and a $1,720,089 New York tax credit paid in Jan 2025.",
+        "description": "appropriate: the public explanation now names the dated window and the tax credit Empire State Development paid (investmentbroadway.com list, Aug 2025; BroadwayWorld, Sep 4, 2025)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "commercialConversion",
+        "oldValue": null,
+        "newValue": {
+          "date": "2024-03-25",
+          "sourceUrl": "https://www.broadwaynews.com/appropriate-will-get-commercial-transfer-to-broadways-belasco-theatre/"
+        },
+        "description": "appropriate: Broadway News (Feb 13, 2024): 'First mounted on Broadway as a limited engagement through March 3 at the not-for-profit Second Stage's Hayes Theater, the play will now extend and make a commercial transfer to the Belasco Theatre. The extended run is set to begin performances on March 25.' Playbill (Mar 25, 2024) confirms the start."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 446000,
+        "description": "appropriate: the commercial run's budgeted weekly operating cost. The RainMakers (Feb 25, 2024), on the offering: 'The total capitalization is $3,750,000. The total weekly operating budget is $446K.' The capitalization matches Forbes (Feb 9, 2024)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "The RainMakers (Feb 25, 2024), on the investor offering: \"The total weekly operating budget is $446K.\" https://the-rainmakers.beehiiv.com/p/collective",
+        "description": "appropriate: cite the weekly budget."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "weeklyRunningCostNote",
+        "oldValue": "Estimated mid $300-400K/week breakeven; consistently grossed $860K-$1.17M in final weeks",
+        "newValue": null,
+        "description": "appropriate: the old \"mid $300-400K/week breakeven\" estimate is superseded by the cited $446K budget."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stephen-sondheims-old-friends-2025",
+        "field": "capitalization",
+        "oldValue": 12000000,
+        "newValue": null,
+        "description": "stephen-sondheims-old-friends-2025: $12M -> unknown. The cited Form D/A (2024-06-18, 'Old Friends Broadway Limited Partnership', CIK 1977214) is Merrily We Roll Along's partnership: its general partners are Sonia Friedman's SFP-NY, David Babani's Chocolate Factory and Patrick Catullo's P-Cat, it sold $12M to 190 investors, and Broadway News (Mar 20, 2024) reported Merrily recouping its $12M. The revue was MTC's, in association with CMI and Daryl Roth; no capitalization has been reported for it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stephen-sondheims-old-friends-2025",
+        "field": "capitalizationSource",
+        "oldValue": "Form D amendment filed June 18, 2024 on sec.gov showing offering capitalized at $12,000,000",
+        "newValue": null,
+        "description": "stephen-sondheims-old-friends-2025: no capitalization, no source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stephen-sondheims-old-friends-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1977214/000197721424000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-06-18"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/stephen-sondheims-old-friends-broadway-samuel-j-friedman-theatre-2025",
+            "date": "2025-06-29"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/sondheim-revue-old-friends-with-bernadette-peters-and-lea-salonga-sets-broadway-run-with-manhattan-theatre-club-new-season-announced/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/stephen-sondheims-old-friends-gets-2nd-final-extension-on-broadway",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/stephen-sondheims-old-friends-broadway-samuel-j-friedman-theatre-2025",
+            "date": "2025-06-29"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/sondheim-revue-old-friends-with-bernadette-peters-and-lea-salonga-sets-broadway-run-with-manhattan-theatre-club-new-season-announced/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/stephen-sondheims-old-friends-gets-2nd-final-extension-on-broadway",
+            "date": null
+          }
+        ],
+        "description": "stephen-sondheims-old-friends-2025: drop Merrily's Form D from the revue's sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stephen-sondheims-old-friends-2025",
+        "field": "notes",
+        "oldValue": "West End-origin Sondheim revue brought to Broadway by Cameron Mackintosh (CMI) and Daryl Roth in partnership with MTC at the Friedman — explicit enhancement arrangement. Bernadette Peters and Lea Salonga reprised West End roles. Two extensions; final 12+-week run closed 2025-06-29. 91.86% avg capacity on $7.67M total gross.",
+        "newValue": "West End-origin Sondheim revue brought to Broadway by Cameron Mackintosh (CMI) and Daryl Roth in partnership with MTC at the Friedman — explicit enhancement arrangement. Bernadette Peters and Lea Salonga reprised West End roles. Two extensions; final 12+-week run closed 2025-06-29. 91.86% avg capacity on $7.67M total gross. No capitalization has been reported for the revue; an SEC filing by \"Old Friends Broadway Limited Partnership\" belongs to the 2023 Merrily We Roll Along revival.",
+        "description": "stephen-sondheims-old-friends-2025: say why there is no capitalization, so the filing is not matched to the revue again."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "plaza-suite-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "plaza-suite-2022: the capitalization is an estimate (capitalizationSource: 'Estimate: $2,000,887 NYC theatrical tax credit ... at the 25% credit rate'), so it prints with '~' like Hangmen, POTUS and The Minutes, whose caps were inferred the same way."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T04:12:25.455Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: commercialConversion updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostNote updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for plaza-suite-2022"
+    }
+  ]
+}

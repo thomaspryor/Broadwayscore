@@ -1,0 +1,353 @@
+{
+  "issueNumber": "bro-5647-n",
+  "planId": "cc07e99f-491d-459a-afb6-899df1ab9680",
+  "status": "applied",
+  "createdAt": "2026-10-21T16:27:31.660Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Twelve 2017-20 Broadway productions with no commercial record, from the owner's Oct 21 ChatGPT Deep Research batch (tracker prompts p26-p28), each figure re-read at its source here: SEC filings for Network, The Ferryman, To Kill a Mockingbird; Broadway News, Deadline, the LA Times, AWN, NYT via WRAL and INTIX Access quotes. Recouped: To Kill a Mockingbird (Windfall, Apr 2019), Network (Easy Winner, Mar 2019), The Boys in the Band and The Lifespan of a Fact (Easy Winner), The Ferryman (Trickle, recouped on its closing day). Reported losses: SpongeBob SquarePants, The Prom. Budget only, outcome TBD: The Cher Show, Be More Chill, Carousel, American Son; Once on This Island gets its reported ~$450K weekly cost. Held for Dots: Forbes-only figures (SpongeBob $800K weekly, Escape to Margaritaville $15M, Burn This $4M; Forbes blocks cloud fetches), The Stage's 'presumed' non-recoupment, the Oklahoma! joint Broadway+tour $8.5M forum lead. Not added: Beetlejuice 2019 (its $21M already sits on beetlejuice-2022, the same production). Old values: none (new entries; core data at 34ca3fd).",
+    "steps": [
+      "Five recouped shows",
+      "Two reported losses",
+      "Five budget-only entries"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "to-kill-a-mockingbird-2018",
+        "entry": {
+          "designation": "Windfall",
+          "recouped": true,
+          "recoupedDate": "2019-04",
+          "recoupedSource": "Broadway News (Apr 26, 2019): \"'To Kill a Mockingbird' has recouped its entire investment, producer Scott Rudin announced Friday morning.\" It recouped 19 weeks after its Dec 13, 2018 opening. https://www.broadwaynews.com/to-kill-a-mockingbird-announces-recoupment/",
+          "capitalization": 7500000,
+          "capitalizationSource": "Broadway News (Apr 26, 2019): \"The play was capitalized for up to $7.5 million, according to documents filed with the Securities and Exchange Commission.\" Its SEC Form D (Atticus LLC, managing members Scott Rudin and Barry Diller, CIK 0001748292, signed Aug 3, 2018) offered $7,500,000 with $400,000 sold by then. https://www.broadwaynews.com/to-kill-a-mockingbird-announces-recoupment/ https://www.sec.gov/Archives/edgar/data/1748292/000174829218000001/xslFormDX01/primary_doc.xml",
+          "notes": "Aaron Sorkin's adaptation at the Shubert, starring Jeff Daniels; opened Dec 13, 2018. Recouped its up-to-$7.5 million capitalization in 19 weeks (Apr 2019) and became the top-grossing American play in Broadway history. Orin Wolf replaced Scott Rudin as executive producer before the Oct 2021 reopening; the run ended Jan 16, 2022 and the planned return did not happen. Total profit was never reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/to-kill-a-mockingbird-announces-recoupment/",
+              "date": "2019-04-26"
+            },
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/1748292/000174829218000001/xslFormDX01/primary_doc.xml",
+              "date": "2018-08-03"
+            }
+          ]
+        },
+        "description": "to-kill-a-mockingbird-2018: add (recouped Apr 2019)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "network-2018",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2019-03",
+          "recoupedSource": "Deadline (Mar 6, 2019): \"Broadway's 'Network' Recoups $7.8M Capitalization In 15 Weeks.\" https://deadline.com/2019/03/network-broadway-recoup-7-million-capitalization-1202570575/",
+          "capitalization": 7800000,
+          "capitalizationSource": "Deadline (Mar 6, 2019) reported a $7.8 million capitalization, recouped in 15 weeks. Its SEC Form D (Network on Broadway LLC, CIK 0001755149, signed Oct 2, 2018) listed a $7,750,000 offering with $5,658,000 sold by then. https://deadline.com/2019/03/network-broadway-recoup-7-million-capitalization-1202570575/ https://www.sec.gov/Archives/edgar/data/1755149/000175514918000001/xslFormDX01/primary_doc.xml",
+          "notes": "Ivo van Hove's staging of Network with Bryan Cranston at the Belasco (opened Dec 6, 2018; closed Jun 8, 2019). Recouped its $7.8 million capitalization in 15 weeks (Deadline).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://deadline.com/2019/03/network-broadway-recoup-7-million-capitalization-1202570575/",
+              "date": "2019-03-06"
+            },
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/1755149/000175514918000001/xslFormDX01/primary_doc.xml",
+              "date": "2018-10-02"
+            }
+          ]
+        },
+        "description": "network-2018: add (recouped Mar 2019)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-ferryman-2018",
+        "entry": {
+          "designation": "Trickle",
+          "recouped": true,
+          "recoupedDate": "2019-07",
+          "recoupedSource": "Broadway News (Jul 7, 2019): \"'The Ferryman' has recouped its investment on Broadway, the production announced Sunday.\" It closed the same day. https://www.broadwaynews.com/the-ferryman-announces-recoupment/",
+          "capitalization": 6700000,
+          "capitalizationSource": "SEC Form D/A filing (Ferryman Broadway Limited Partnership, CIK 0001733075, signed Dec 11, 2018): $6,700,000 sold of $6,700,000 offered (fully sold). https://www.sec.gov/Archives/edgar/data/1733075/000173307518000002/xslFormDX01/primary_doc.xml",
+          "notes": "Jez Butterworth's Tony-winning play at the Bernard B. Jacobs (opened Oct 21, 2018). Announced recoupment of its $6.7 million on its closing day, Jul 7, 2019, so little profit beyond break-even.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-ferryman-announces-recoupment/",
+              "date": "2019-07-07"
+            },
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/1733075/000173307518000002/xslFormDX01/primary_doc.xml",
+              "date": "2018-12-11"
+            }
+          ]
+        },
+        "description": "the-ferryman-2018: add (recouped at closing)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-boys-in-the-band-2018",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2018-07",
+          "recoupedSource": "Broadway News (Jul 16, 2018): \"'The Boys in the Band' has recouped its $3.5 million investment after 11 weeks on Broadway, the show's producers announced Monday.\" https://www.broadwaynews.com/the-boys-in-the-band-recoups-capitalization/",
+          "capitalization": 3500000,
+          "capitalizationSource": "Broadway News (Jul 16, 2018): \"'The Boys in the Band' has recouped its $3.5 million investment after 11 weeks on Broadway.\" https://www.broadwaynews.com/the-boys-in-the-band-recoups-capitalization/",
+          "notes": "Limited-run revival at the Booth (opened May 31, 2018; closed Aug 11, 2018) produced by David Stone and Ryan Murphy. Recouped its $3.5 million in 11 weeks.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-boys-in-the-band-recoups-capitalization/",
+              "date": "2018-07-16"
+            }
+          ]
+        },
+        "description": "the-boys-in-the-band-2018: add (recouped Jul 2018)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-lifespan-of-a-fact-2018",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2018-12",
+          "recoupedSource": "Broadway News (Dec 20, 2018): \"'The Lifespan of a Fact' has recouped its production costs after running on Broadway for three months.\" https://www.broadwaynews.com/the-lifespan-of-a-fact-recoups-production-costs-in-three-months/",
+          "capitalization": 4100000,
+          "capitalizationSource": "Deadline (Jan 14, 2019): \"Capitalized at a reported $4.1 million, Lifespan, which recouped its investment last month...\" https://deadline.com/2019/01/broadway-box-office-32-million-daniel-radcliffe-lifespan-of-a-fact-network-to-kill-a-mockingbird-1202534984/",
+          "notes": "Limited 16-week run at Studio 54 (opened Oct 18, 2018; closed Jan 13, 2019) with Daniel Radcliffe, produced by Jeffrey Richards. Recouped its reported $4.1 million in about three months.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-lifespan-of-a-fact-recoups-production-costs-in-three-months/",
+              "date": "2018-12-20"
+            },
+            {
+              "type": "trade",
+              "url": "https://deadline.com/2019/01/broadway-box-office-32-million-daniel-radcliffe-lifespan-of-a-fact-network-to-kill-a-mockingbird-1202534984/",
+              "date": "2019-01-14"
+            }
+          ]
+        },
+        "description": "the-lifespan-of-a-fact-2018: add (recouped Dec 2018)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "spongebob-squarepants-2017",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "designationBasis": "reported-loss",
+          "recouped": false,
+          "recoupedSource": "Deadline (Jul 9, 2018): \"The musical will close without recouping its reported $18 million capitalization.\" https://deadline.com/2018/07/broadway-spongebob-squarepants-closing-date-1202422980/",
+          "capitalization": 18350000,
+          "capitalizationSource": "Animation World Network (Jul 9, 2018): the show closes \"failing to recoup the $18.35 million production capitalization it reported in a Securities and Exchange Commission filing.\" Deadline rounded it to $18 million. https://www.awn.com/news/spongebob-squarepants-broadway-musical-close",
+          "notes": "Nickelodeon's musical at the Palace (opened Dec 4, 2017; closed Sep 16, 2018), Tony-nominated for Best Musical. Closed without recouping its $18.35 million capitalization.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://deadline.com/2018/07/broadway-spongebob-squarepants-closing-date-1202422980/",
+              "date": "2018-07-09"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.awn.com/news/spongebob-squarepants-broadway-musical-close",
+              "date": "2018-07-09"
+            }
+          ]
+        },
+        "description": "spongebob-squarepants-2017: add (did not recoup)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-prom-2018",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "designationBasis": "reported-loss",
+          "recouped": false,
+          "recoupedSource": "Los Angeles Times (Dec 12, 2020), on the Netflix film: \"the stage show did not recoup its investment.\" https://www.latimes.com/entertainment-arts/movies/story/2020-12-12/the-prom-netflix-broadway-profit-sharing-commentary",
+          "capitalization": 13500000,
+          "capitalizationSource": "Broadway News (Jun 19, 2019): \"'The Prom' was initially capitalized for up to $13.5 million, according to documents filed with the Securities and Exchange Commission.\" https://www.broadwaynews.com/the-prom-announces-aug-11-closing-date/",
+          "notes": "Original musical at the Longacre (opened Nov 15, 2018; closed Aug 11, 2019). Capitalized for up to $13.5 million; the Los Angeles Times reported it did not recoup.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-prom-announces-aug-11-closing-date/",
+              "date": "2019-06-19"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.latimes.com/entertainment-arts/movies/story/2020-12-12/the-prom-netflix-broadway-profit-sharing-commentary",
+              "date": "2020-12-12"
+            }
+          ]
+        },
+        "description": "the-prom-2018: add (did not recoup)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-cher-show-2018",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 19000000,
+          "capitalizationSource": "Broadway News (Jun 25, 2019): \"The musical was capitalized for up to $19 million, according to a filing with the Securities and Exchange Commission.\" https://www.broadwaynews.com/the-cher-show-will-end-its-run-in-august/",
+          "notes": "Cher bio-musical at the Neil Simon (opened Dec 3, 2018; closed Aug 18, 2019). Capitalized for up to $19 million; no recoupment announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-cher-show-will-end-its-run-in-august/",
+              "date": "2019-06-25"
+            }
+          ]
+        },
+        "description": "the-cher-show-2018: add (budget only)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "be-more-chill-2019",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 9500000,
+          "capitalizationSource": "Broadway News (Jun 20, 2019): \"The musical was capitalized for up to $9.5 million, according to documents filed with the Securities and Exchange Commission.\" https://www.broadwaynews.com/be-more-chill-to-end-run-in-august/",
+          "notes": "Joe Iconis musical at the Lyceum (opened Mar 10, 2019; closed Aug 11, 2019). Capitalized for up to $9.5 million; no recoupment announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/be-more-chill-to-end-run-in-august/",
+              "date": "2019-06-20"
+            }
+          ]
+        },
+        "description": "be-more-chill-2019: add (budget only)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "carousel-2018",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 15250000,
+          "capitalizationSource": "Broadway News (Aug 7, 2018): \"The production was capitalized for $15.25 million, according to filings with the Securities and Exchange Commission.\" https://www.broadwaynews.com/carousel-to-play-final-performance-on-sept-16/",
+          "notes": "Revival at the Imperial (opened Apr 12, 2018; closed Sep 16, 2018). Capitalized for $15.25 million (Forbes listed $15 million); no recoupment announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/carousel-to-play-final-performance-on-sept-16/",
+              "date": "2018-08-07"
+            }
+          ]
+        },
+        "description": "carousel-2018: add (budget only)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "american-son-2018",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 4200000,
+          "capitalizationSource": "The New York Times (Oct 2018), via WRAL: Kerry Washington co-produced, \"helping to raise the $4.2 million capitalization.\" https://www.wral.com/archive/17909214/",
+          "notes": "Christopher Demos-Brown play at the Booth (opened Nov 4, 2018; closed Jan 27, 2019) starring and co-produced by Kerry Washington. Capitalized at $4.2 million; no recoupment announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.wral.com/archive/17909214/",
+              "date": null
+            }
+          ]
+        },
+        "description": "american-son-2018: add (budget only)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "once-on-this-island-2017",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": 450000,
+          "costMethodology": "trade-reported",
+          "weeklyRunningCostSource": "INTIX Access (Dec 3, 2018): \"An investor said the production's weekly operating costs are about $450,000, and it will close without making a profit.\" https://access.intix.org/Full-Article/three-broadway-shows-to-close-as-box-office-sinks-and-long-term-issues-loom",
+          "notes": "Revival at Circle in the Square (opened Dec 3, 2017; closed Jan 6, 2019), Tony winner for Best Revival. An investor put weekly costs at about $450,000 and said it would close without a profit; no capitalization reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://access.intix.org/Full-Article/three-broadway-shows-to-close-as-box-office-sinks-and-long-term-issues-loom",
+              "date": "2018-12-03"
+            }
+          ]
+        },
+        "description": "once-on-this-island-2017: add (weekly cost only)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T16:35:04.443Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added to-kill-a-mockingbird-2018 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added network-2018 (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-ferryman-2018 (Trickle)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-boys-in-the-band-2018 (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-lifespan-of-a-fact-2018 (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added spongebob-squarepants-2017 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-prom-2018 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-cher-show-2018 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added be-more-chill-2019 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added carousel-2018 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added american-son-2018 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added once-on-this-island-2017 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
+}

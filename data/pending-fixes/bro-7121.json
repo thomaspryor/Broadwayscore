@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-7121",
+  "planId": "9e616f0b-5843-416a-9889-c8f0774fa301",
+  "status": "applied",
+  "createdAt": "2026-11-08T12:39:42.191Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Waiting for Godot (2009): Backstage/Erik Haagensen and Chicago Tribune/Chris Jones rows are 9 to 5 reviews pulled in by the BWW 9 to 5 + Godot double roundup; flag wrongShow.",
+    "steps": [
+      "waiting-for-godot-2009/backstage--erik-haagensen.json: wrongShow",
+      "waiting-for-godot-2009/chicagotribune--chris-jones.json: wrongShow"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2009/backstage--erik-haagensen.json",
+        "field": "wrongShow",
+        "oldValue": false,
+        "newValue": true,
+        "description": "waiting-for-godot-2009/backstage--erik-haagensen.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2009/chicagotribune--chris-jones.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "waiting-for-godot-2009/chicagotribune--chris-jones.json: wrongShow"
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T13:23:31.600Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2009/backstage--erik-haagensen.json wrongShow: false -> true (retracted wrongShowSelfHealReason, wrongShowSelfHealed)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2009/chicagotribune--chris-jones.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

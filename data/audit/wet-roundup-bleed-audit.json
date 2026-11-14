@@ -1,0 +1,307 @@
+{
+  "generatedAt": "2026-10-16T07:27:35.937Z",
+  "card": "BRO-4858",
+  "method": "Archive rows only: WET pages are behind a Cloudflare challenge and the archive holds parsed rows, not HTML, so the fixed parser cannot be re-run on source pages. A bleed row is identified by the fingerprint the old parser left (critic + url copied from a later row whose outlet owns the url); for those rows the fixed parser output is critic null, url null.",
+  "archive": {
+    "files": 358,
+    "rows": 2529,
+    "unreadable": []
+  },
+  "bleeds": [
+    {
+      "showId": "betrayal-2019",
+      "archive": "betrayal-2019.json",
+      "index": 4,
+      "outlet": "The Times",
+      "outletId": "times-uk",
+      "stars": 4,
+      "stored": {
+        "critic": "Michael Billington",
+        "url": "https://www.theguardian.com/stage/2019/mar/14/betrayal-review-a-haunting-reminder-of-deceptions-impact"
+      },
+      "reparsed": {
+        "critic": null,
+        "url": null
+      },
+      "donor": {
+        "index": 5,
+        "outlet": "The Guardian",
+        "outletId": "guardian",
+        "critic": "Michael Billington",
+        "url": "https://www.theguardian.com/stage/2019/mar/14/betrayal-review-a-haunting-reminder-of-deceptions-impact"
+      },
+      "reviewTextFiles": []
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "archive": "evening-all-afternoon-west-end-2026.json",
+      "index": 4,
+      "outlet": "The Times",
+      "outletId": "times-uk",
+      "stars": 4,
+      "stored": {
+        "critic": "Emma John",
+        "url": "https://www.theguardian.com/stage/2024/nov/07/the-curious-case-of-benjamin-button-review-musical-ambassadors-theatre"
+      },
+      "reparsed": {
+        "critic": null,
+        "url": null
+      },
+      "donor": {
+        "index": 5,
+        "outlet": "The Guardian",
+        "outletId": "guardian",
+        "critic": "Emma John",
+        "url": "https://www.theguardian.com/stage/2024/nov/07/the-curious-case-of-benjamin-button-review-musical-ambassadors-theatre"
+      },
+      "reviewTextFiles": []
+    },
+    {
+      "showId": "evita-west-end-2025",
+      "archive": "evita-west-end-2025.json",
+      "index": 9,
+      "outlet": "TimeOut",
+      "outletId": "timeout-london",
+      "stars": 4,
+      "stored": {
+        "critic": "Arifa Akbar",
+        "url": "https://www.theguardian.com/stage/2025/jul/02/evita-review-rachel-zegler-jamie-lloyd-london-palladium"
+      },
+      "reparsed": {
+        "critic": null,
+        "url": null
+      },
+      "donor": {
+        "index": 10,
+        "outlet": "The Guardian",
+        "outletId": "guardian",
+        "critic": "Arifa Akbar",
+        "url": "https://www.theguardian.com/stage/2025/jul/02/evita-review-rachel-zegler-jamie-lloyd-london-palladium"
+      },
+      "reviewTextFiles": []
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "archive": "macbeth-off-broadway-2026.json",
+      "index": 5,
+      "outlet": "The Observer",
+      "outletId": "observer",
+      "stars": 4,
+      "stored": {
+        "critic": "Sarah Crompton",
+        "url": "https://www.whatsonstage.com/news/macbeth-review-david-tennant-and-cush-jumbo-in-a-scottish-play-for-the-digital-age_1558775/"
+      },
+      "reparsed": {
+        "critic": null,
+        "url": null
+      },
+      "donor": {
+        "index": 6,
+        "outlet": "What's On Stage",
+        "outletId": "whatsonstage",
+        "critic": "Sarah Crompton",
+        "url": "https://www.whatsonstage.com/news/macbeth-review-david-tennant-and-cush-jumbo-in-a-scottish-play-for-the-digital-age_1558775/"
+      },
+      "reviewTextFiles": []
+    },
+    {
+      "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
+      "archive": "the-spy-who-came-in-from-the-cold-west-end-2025.json",
+      "index": 4,
+      "outlet": "The Telegraph",
+      "outletId": "telegraph",
+      "stars": 3,
+      "stored": {
+        "critic": "Dominic Maxwell",
+        "url": "https://www.thetimes.com/culture/theatre-dance/article/spy-who-came-in-from-the-cold-review-le-carre-minerva-chichester-bxfdkscb5"
+      },
+      "reparsed": {
+        "critic": null,
+        "url": null
+      },
+      "donor": {
+        "index": 5,
+        "outlet": "The Times",
+        "outletId": "times-uk",
+        "critic": "Dominic Maxwell",
+        "url": "https://www.thetimes.com/culture/theatre-dance/article/spy-who-came-in-from-the-cold-review-le-carre-minerva-chichester-bxfdkscb5"
+      },
+      "reviewTextFiles": []
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "archive": "wicked-west-end-2021.json",
+      "index": 6,
+      "outlet": "Empire",
+      "outletId": "empire",
+      "stars": 3,
+      "stored": {
+        "critic": null,
+        "url": "https://www.timeout.com/movies/wicked-for-good-review-2025"
+      },
+      "reparsed": {
+        "critic": null,
+        "url": null
+      },
+      "donor": {
+        "index": 7,
+        "outlet": "TimeOut",
+        "outletId": "timeout-london",
+        "critic": null,
+        "url": "https://www.timeout.com/movies/wicked-for-good-review-2025"
+      },
+      "reviewTextFiles": []
+    }
+  ],
+  "domainMismatches": [
+    {
+      "file": "all-about-me-2010/times-uk--daily-express.json",
+      "outletId": "times-uk",
+      "urlOutletId": "express-uk",
+      "criticName": "Daily Express",
+      "url": "https://www.express.co.uk/posts/view/172311/All-The-Fun-of-the-Fair-Garrick-Theatre-London",
+      "source": "westendtheatre",
+      "hasFullText": true,
+      "fullTextChars": 3296,
+      "flags": [
+        "wrongProduction"
+      ]
+    },
+    {
+      "file": "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+      "outletId": "the-sun",
+      "urlOutletId": "times-uk",
+      "criticName": "Dominic Maxwell",
+      "url": "https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f",
+      "source": null,
+      "hasFullText": false,
+      "fullTextChars": 0,
+      "flags": [
+        "duplicateOf=sunday-times--dominic-maxwell.json"
+      ]
+    }
+  ],
+  "leads": [
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "archive": "the-lehman-trilogy-2021.json",
+      "kind": "archive-shared-critic",
+      "index": 0,
+      "outlet": "The Times",
+      "outletId": "times-uk",
+      "critic": "Dominic Cavendish",
+      "url": "https://www.thetimes.com/article/13ef775f-3fa7-4fe1-a197-8b79bfc7e7c0",
+      "otherIndex": 7,
+      "otherOutlet": "The Telegraph",
+      "otherOutletId": "telegraph",
+      "otherUrl": "https://www.telegraph.co.uk/theatre/what-to-see/lehman-trilogy-gillian-lynne-theatre-review-sam-mended-directs/",
+      "adjacent": false,
+      "urlOwnedBySelf": true,
+      "reviewTextFiles": [
+        {
+          "file": "the-lehman-trilogy-2021/times-uk--dominic-cavendish.json",
+          "criticName": "Dominic Cavendish",
+          "url": "https://www.thetimes.com/article/13ef775f-3fa7-4fe1-a197-8b79bfc7e7c0",
+          "source": "westendtheatre",
+          "hasFullText": false,
+          "fullTextChars": 0,
+          "flags": [
+            "wrongProduction"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "archive": "the-lehman-trilogy-2021.json",
+      "kind": "archive-shared-critic",
+      "index": 7,
+      "outlet": "The Telegraph",
+      "outletId": "telegraph",
+      "critic": "Dominic Cavendish",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/lehman-trilogy-gillian-lynne-theatre-review-sam-mended-directs/",
+      "otherIndex": 0,
+      "otherOutlet": "The Times",
+      "otherOutletId": "times-uk",
+      "otherUrl": "https://www.thetimes.com/article/13ef775f-3fa7-4fe1-a197-8b79bfc7e7c0",
+      "adjacent": false,
+      "urlOwnedBySelf": true,
+      "reviewTextFiles": [
+        {
+          "file": "the-lehman-trilogy-2021/telegraph--dominic-cavendish.json",
+          "criticName": "Dominic Cavendish",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/lehman-trilogy-gillian-lynne-theatre-review-sam-mended-directs/",
+          "source": "westendtheatre",
+          "hasFullText": false,
+          "fullTextChars": 0,
+          "flags": [
+            "wrongProduction"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "my-name-is-lucy-barton-2020",
+      "kind": "review-text-critic-of-other-outlet",
+      "file": "my-name-is-lucy-barton-2020/guardian--andrzej-lukowski.json",
+      "outletId": "guardian",
+      "critic": "Andrzej Lukowski",
+      "url": "https://www.theguardian.com/stage/2018/jun/07/my-name-is-lucy-barton-review-laura-linney-triumphs-as-a-writer-confronting-her-past",
+      "otherOutlet": "TimeOut",
+      "otherOutletId": "timeout-london",
+      "otherUrl": "https://www.theguardian.com/stage/2018/jun/07/my-name-is-lucy-barton-review-laura-linney-triumphs-as-a-writer-confronting-her-past",
+      "criticName": "Andrzej Lukowski",
+      "source": "westendtheatre",
+      "hasFullText": true,
+      "fullTextChars": 3436,
+      "flags": [
+        "wrongProduction"
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "kind": "review-text-critic-of-other-outlet",
+      "file": "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+      "outletId": "the-sun",
+      "critic": "Dominic Maxwell",
+      "url": "https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f",
+      "otherOutlet": "The Sunday Times",
+      "otherOutletId": "sunday-times",
+      "otherUrl": "https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f",
+      "criticName": "Dominic Maxwell",
+      "source": null,
+      "hasFullText": false,
+      "fullTextChars": 0,
+      "flags": [
+        "duplicateOf=sunday-times--dominic-maxwell.json"
+      ]
+    },
+    {
+      "showId": "the-seagull-globe-off-west-end-2026",
+      "kind": "review-text-critic-of-other-outlet",
+      "file": "the-seagull-globe-off-west-end-2026/standard--alice-saville.json",
+      "outletId": "standard",
+      "critic": "Alice Saville",
+      "url": "https://www.standard.co.uk/culture/theatre/the-seagull-harold-pinter-theatre-london-review-emilia-clarke-b1011031.html",
+      "otherOutlet": "The Independent",
+      "otherOutletId": "independent",
+      "otherUrl": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-seagull-barbican-cate-blanchett-review-tom-burke-b2710342.html",
+      "criticName": "Alice Saville",
+      "source": "westendtheatre",
+      "hasFullText": false,
+      "fullTextChars": 0,
+      "flags": [
+        "wrongProduction"
+      ]
+    }
+  ],
+  "summary": {
+    "archiveFiles": 358,
+    "archiveRows": 2529,
+    "bleedRows": 6,
+    "bleedReviewTextFiles": 0,
+    "domainMismatches": 2,
+    "leads": 5,
+    "unflaggedFiles": []
+  }
+}

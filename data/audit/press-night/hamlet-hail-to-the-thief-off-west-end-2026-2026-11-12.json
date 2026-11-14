@@ -1,0 +1,1262 @@
+{
+  "schemaVersion": 1,
+  "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+  "night": "2026-11-12",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-12T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-12T20:30:06.503Z",
+    "endedAt": "2026-11-13T03:00:49.336Z",
+    "intervalMin": 5,
+    "samples": 78,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-13T02:59:05.243Z",
+    "lastOkSampleAt": "2026-11-13T02:59:05.243Z"
+  },
+  "firstLiveAt": "2026-11-12T20:30:06.503Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-13T02:24:03.202Z",
+  "liveCount": 8,
+  "liveCountAt": {
+    "1h": 2,
+    "2h": 2,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-12T22:00:10.013Z",
+    "2h": "2026-11-12T23:03:51.952Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-12",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "theatremonkey|unknown",
+      "outlet": "TheatreMonkey",
+      "critic": null,
+      "tier": 3,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-12T20:30:06.503Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-12T17:14:09.790Z"
+    },
+    {
+      "key": "monstagigz|unknown",
+      "outlet": "Monstagigz",
+      "critic": null,
+      "tier": 4,
+      "publishAt": "2026-11-10",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-12T20:30:06.503Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-10T22:29:29.311Z"
+    },
+    {
+      "key": "the times (uk)|dominic maxwell",
+      "outlet": "The Times (UK)",
+      "critic": "Dominic Maxwell",
+      "tier": 1,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T00:08:55.907Z",
+      "prevOkSampleAt": "2026-11-13T00:03:55.408Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-12T23:48:48.251Z"
+    },
+    {
+      "key": "time out london|andrzej lukowski",
+      "outlet": "Time Out London",
+      "critic": "Andrzej Lukowski",
+      "tier": 1,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T00:33:57.200Z",
+      "prevOkSampleAt": "2026-11-13T00:28:56.809Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T00:15:25.696Z"
+    },
+    {
+      "key": "evening standard|nick curtis",
+      "outlet": "Evening Standard",
+      "critic": "Nick Curtis",
+      "tier": 1,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T00:53:58.166Z",
+      "prevOkSampleAt": "2026-11-13T00:48:57.834Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T00:15:20.859Z"
+    },
+    {
+      "key": "london box office|stuart king",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "tier": 2,
+      "publishAt": "2026-11-13",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T00:53:58.166Z",
+      "prevOkSampleAt": "2026-11-13T00:48:57.834Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T00:15:16.217Z"
+    },
+    {
+      "key": "the recs|unknown",
+      "outlet": "The Recs",
+      "critic": null,
+      "tier": 3,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T02:24:03.202Z",
+      "prevOkSampleAt": "2026-11-13T02:19:02.876Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T02:13:15.543Z"
+    },
+    {
+      "key": "the spy in the stalls|jonathan evans",
+      "outlet": "The Spy in the Stalls",
+      "critic": "Jonathan Evans",
+      "tier": 4,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T02:24:03.202Z",
+      "prevOkSampleAt": "2026-11-13T02:19:02.876Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T02:13:20.726Z"
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 2,
+      "fetchedAt": "2026-11-12T23:00:27.481Z",
+      "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 8,
+      "fetchedAt": "2026-11-13T03:00:42.071Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-12T23:00:27.559Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-13T03:00:42.149Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-13T03:00:42.731Z",
+    "files": [
+      {
+        "file": "1883magazine--nick-barr.json",
+        "outletId": "1883magazine",
+        "outlet": "1883 Magazine",
+        "critic": "Nick Barr",
+        "firstSeenAt": "2026-11-13T02:51:26.878Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-13",
+        "url": "1883magazine.com/hamlet-hail-to-the-thief-review",
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "artsdesk--unknown.json",
+        "outletId": "artsdesk",
+        "outlet": "The Arts Desk",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-13T01:47:41.433Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "theartsdesk.com/theatre/hamlet-hail-thief-rsc-stratford-review-radiohead-mark-bards-card",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "bestoftheatre--maria-boot.json",
+        "outletId": "bestoftheatre",
+        "outlet": "Best Of Theatre",
+        "critic": "Maria Boot",
+        "firstSeenAt": "2026-11-12T17:20:54.929Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-30",
+        "url": "bestoftheatre.co.uk/blog/post/alex-lake-photographs-final-rehearsals-hamlet-hail-to-the-thief",
+        "includable": false,
+        "reason": "wrongShow",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "london-box-office--shehrazade-zafar-arif.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Shehrazade Zafar-Arif",
+        "firstSeenAt": "2026-11-12T00:39:57.715Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-09",
+        "url": "londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-photos",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": null
+      },
+      {
+        "file": "london-box-office--stuart-king.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Stuart King",
+        "firstSeenAt": "2026-11-13T00:12:08.098Z",
+        "scoredAt": "2026-11-13T00:15:16.217Z",
+        "publishDate": "2026-11-13",
+        "url": "londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-barbican-theatre-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "londonist--matt-brown.json",
+        "outletId": "londonist",
+        "outlet": "Londonist",
+        "critic": "Matt Brown",
+        "firstSeenAt": "2026-11-12T16:59:13.213Z",
+        "scoredAt": null,
+        "publishDate": "2026-06-12",
+        "url": "londonist.com/london/music/radiohead-shakespeare-hamlet-hail-to-the-thief",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "monstagigz--unknown.json",
+        "outletId": "monstagigz",
+        "outlet": "Monstagigz",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-10T18:26:18.796Z",
+        "scoredAt": "2026-11-10T22:29:29.311Z",
+        "publishDate": "2026-11-10",
+        "url": "monstagigz.com/2026/11/10/theatre-review-hamlet-hail-to-the-thief-at-the-barbican",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "musical-theatre-review--angela-thomas.json",
+        "outletId": "musical-theatre-review",
+        "outlet": "Musical Theatre Review",
+        "critic": "Angela Thomas",
+        "firstSeenAt": "2026-11-12T00:40:12.490Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-31",
+        "url": "musicaltheatrereview.com/london-debut-for-hamlet-hail-to-the-thief",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "standard--nick-curtis.json",
+        "outletId": "standard",
+        "outlet": "Evening Standard",
+        "critic": "Nick Curtis",
+        "firstSeenAt": "2026-11-13T00:11:18.623Z",
+        "scoredAt": "2026-11-13T00:15:20.859Z",
+        "publishDate": "2026-11-12",
+        "url": "standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-review-barbican-radiohead-b1304586.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "sunday-times--dominic-maxwell.json",
+        "outletId": "sunday-times",
+        "outlet": "The Sunday Times",
+        "critic": "Dominic Maxwell",
+        "firstSeenAt": "2026-11-13T01:33:25.243Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-12",
+        "url": "thetimes.com/culture/theatre-dance/article/hamlet-hail-to-the-thief-review-radiohead-gpzn0lhp0",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "the-recs--the-recs-sw.json",
+        "outletId": "the-recs",
+        "outlet": "The Recs",
+        "critic": "The Recs SW",
+        "firstSeenAt": "2026-11-13T01:54:23.038Z",
+        "scoredAt": "2026-11-13T02:13:15.543Z",
+        "publishDate": "2026-11-12",
+        "url": "therecs.co.uk/hamlet-hail-to-the-thief",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "the-spy-in-the-stalls--jonathan-evans.json",
+        "outletId": "the-spy-in-the-stalls",
+        "outlet": "The Spy in the Stalls",
+        "critic": "Jonathan Evans",
+        "firstSeenAt": "2026-11-13T01:54:05.008Z",
+        "scoredAt": "2026-11-13T02:13:20.726Z",
+        "publishDate": "2026-11-12",
+        "url": "thespyinthestalls.com/2026/11/hamlet-hail-to-the-thief",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "theatre-weekly--greg-stewart.json",
+        "outletId": "theatre-weekly",
+        "outlet": "Theatre Weekly",
+        "critic": "Staff Writer",
+        "firstSeenAt": "2026-11-13T00:11:19.115Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-12",
+        "url": "theatreweekly.com/review-hamlet-hail-to-the-thief-at-barbican-theatre",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "theatre-weekly--unknown.json",
+        "outletId": "theatre-weekly",
+        "outlet": "Theatre Weekly",
+        "critic": "Greg Stewart",
+        "firstSeenAt": "2026-11-13T01:54:01.614Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-12",
+        "url": "theatreweekly.com/review-hamlet-hail-to-the-thief-at-barbican-theatre",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "theatremonkey--unknown.json",
+        "outletId": "theatremonkey",
+        "outlet": "TheatreMonkey",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-12T16:58:01.837Z",
+        "scoredAt": "2026-11-12T17:14:09.790Z",
+        "publishDate": "2026-11-11",
+        "url": "theatremonkey.com/2026/11/hamlet-hail-to-the-thief-barbican-theatre",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "timeout-london--andrzej-lukowski.json",
+        "outletId": "timeout-london",
+        "outlet": "Time Out London",
+        "critic": "Andrzej Lukowski",
+        "firstSeenAt": "2026-11-13T00:11:20.153Z",
+        "scoredAt": "2026-11-13T00:15:25.696Z",
+        "publishDate": "2026-11-12",
+        "url": "timeout.com/london/news/hamlet-hail-to-the-thief-barbican-review-111226",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "times-uk--dominic-maxwell.json",
+        "outletId": "times-uk",
+        "outlet": "The Times (UK)",
+        "critic": "Dominic Maxwell",
+        "firstSeenAt": "2026-11-12T23:44:01.165Z",
+        "scoredAt": "2026-11-12T23:48:48.251Z",
+        "publishDate": "2026-11-12",
+        "url": "thetimes.com/culture/theatre-dance/article/hamlet-hail-to-the-thief-review-radiohead-gpzn0lhp0",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "whatsonstage--alex-wood.json",
+        "outletId": "whatsonstage",
+        "outlet": "WhatsOnStage",
+        "critic": "Alex Wood",
+        "firstSeenAt": "2026-11-12T16:58:10.740Z",
+        "scoredAt": null,
+        "publishDate": "2026-06-10",
+        "url": "whatsonstage.com/news/hamlet-hail-to-the-thief-to-have-london-premiere-at-the-barbican_1724480",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      }
+    ]
+  },
+  "pipelineRuns": {
+    "capturedAt": "2026-11-13T03:00:49.270Z",
+    "window": {
+      "from": "2026-11-12T19:00:00Z",
+      "to": "2026-11-13T00:00:00Z"
+    },
+    "complete": true,
+    "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-12T17:36:40Z",
+        "updatedAt": "2026-11-12T22:39:04Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-12T17:36:42Z",
+        "updatedAt": "2026-11-12T21:49:20Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T17:37:56Z",
+        "updatedAt": "2026-11-12T19:03:28Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T18:40:24Z",
+        "updatedAt": "2026-11-12T19:29:30Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T18:50:27Z",
+        "updatedAt": "2026-11-12T19:01:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T18:53:44Z",
+        "updatedAt": "2026-11-12T19:03:04Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "failure",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T19:05:11Z",
+        "updatedAt": "2026-11-12T19:20:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T19:07:10Z",
+        "updatedAt": "2026-11-12T19:13:19Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T19:07:43Z",
+        "updatedAt": "2026-11-12T19:58:56Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T19:10:27Z",
+        "updatedAt": "2026-11-12T19:19:45Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T19:14:27Z",
+        "updatedAt": "2026-11-12T19:21:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T19:17:31Z",
+        "updatedAt": "2026-11-12T19:27:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T19:18:58Z",
+        "updatedAt": "2026-11-12T19:27:20Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — clifford-odets-waiting-for-lefty-off-broadway-2026",
+        "startedAt": "2026-11-12T19:29:41Z",
+        "updatedAt": "2026-11-12T19:43:23Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — in-the-heights-off-broadway-2026",
+        "startedAt": "2026-11-12T19:29:42Z",
+        "updatedAt": "2026-11-12T19:44:36Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-12T19:29:43Z",
+        "updatedAt": "2026-11-12T19:47:06Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-heart-off-broadway-2026",
+        "startedAt": "2026-11-12T19:29:45Z",
+        "updatedAt": "2026-11-12T19:42:52Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-unbelievers-off-broadway-2026",
+        "startedAt": "2026-11-12T19:29:46Z",
+        "updatedAt": "2026-11-12T19:45:07Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-visitors-off-broadway-2026",
+        "startedAt": "2026-11-12T19:29:47Z",
+        "updatedAt": "2026-11-12T19:43:03Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — wanted-2022",
+        "startedAt": "2026-11-12T19:29:48Z",
+        "updatedAt": "2026-11-12T19:44:08Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — well-see-off-broadway-2026",
+        "startedAt": "2026-11-12T19:29:50Z",
+        "updatedAt": "2026-11-12T19:40:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-unbelievers-off-broadway-2026",
+        "startedAt": "2026-11-12T19:40:34Z",
+        "updatedAt": "2026-11-12T19:47:48Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — clifford-odets-waiting-for-lefty-off-broadway-2026",
+        "startedAt": "2026-11-12T19:40:36Z",
+        "updatedAt": "2026-11-12T19:50:31Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T19:40:36Z",
+        "updatedAt": "2026-11-12T19:53:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T19:40:36Z",
+        "updatedAt": "2026-11-12T19:51:10Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-heart-off-broadway-2026",
+        "startedAt": "2026-11-12T19:40:38Z",
+        "updatedAt": "2026-11-12T19:48:44Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — in-the-heights-off-broadway-2026",
+        "startedAt": "2026-11-12T19:40:40Z",
+        "updatedAt": "2026-11-12T19:49:32Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T19:42:48Z",
+        "updatedAt": "2026-11-12T19:43:22Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T19:43:20Z",
+        "updatedAt": "2026-11-12T19:44:35Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — wanted-2022",
+        "startedAt": "2026-11-12T19:43:43Z",
+        "updatedAt": "2026-11-12T19:52:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-12T19:43:44Z",
+        "updatedAt": "2026-11-12T19:54:32Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-visitors-off-broadway-2026",
+        "startedAt": "2026-11-12T19:43:46Z",
+        "updatedAt": "2026-11-12T19:51:56Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T19:44:33Z",
+        "updatedAt": "2026-11-12T19:45:07Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T19:45:03Z",
+        "updatedAt": "2026-11-12T20:06:02Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T19:45:12Z",
+        "updatedAt": "2026-11-12T20:49:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T19:49:23Z",
+        "updatedAt": "2026-11-12T19:59:35Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-12T20:00:09Z",
+        "updatedAt": "2026-11-13T00:15:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T20:01:09Z",
+        "updatedAt": "2026-11-12T20:09:28Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T20:01:44Z",
+        "updatedAt": "2026-11-12T21:32:20Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T20:01:52Z",
+        "updatedAt": "2026-11-12T20:27:42Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T20:04:37Z",
+        "updatedAt": "2026-11-12T20:16:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T20:11:13Z",
+        "updatedAt": "2026-11-12T20:20:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T20:14:27Z",
+        "updatedAt": "2026-11-12T21:11:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T20:17:18Z",
+        "updatedAt": "2026-11-12T20:29:34Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T20:18:45Z",
+        "updatedAt": "2026-11-12T20:28:21Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T20:29:31Z",
+        "updatedAt": "2026-11-12T20:40:26Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — iphigenie-en-tauride-english-national-opera-west-end-2026",
+        "startedAt": "2026-11-12T20:31:24Z",
+        "updatedAt": "2026-11-12T20:38:58Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — cloud-9-west-end-2026",
+        "startedAt": "2026-11-12T20:31:25Z",
+        "updatedAt": "2026-11-12T20:39:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T20:40:00Z",
+        "updatedAt": "2026-11-12T20:50:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T20:43:26Z",
+        "updatedAt": "2026-11-12T21:08:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T20:59:17Z",
+        "updatedAt": "2026-11-12T21:09:16Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T21:00:46Z",
+        "updatedAt": "2026-11-12T21:10:09Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T21:05:26Z",
+        "updatedAt": "2026-11-12T22:09:33Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T21:05:35Z",
+        "updatedAt": "2026-11-12T21:34:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T21:09:47Z",
+        "updatedAt": "2026-11-12T21:20:11Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T21:10:03Z",
+        "updatedAt": "2026-11-12T22:58:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T21:22:55Z",
+        "updatedAt": "2026-11-12T21:31:54Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T21:24:40Z",
+        "updatedAt": "2026-11-12T22:02:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T21:25:01Z",
+        "updatedAt": "2026-11-12T21:35:44Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — in-the-heights-off-broadway-2026",
+        "startedAt": "2026-11-12T21:25:34Z",
+        "updatedAt": "2026-11-12T21:39:00Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — julius-caesar-globe-off-west-end-2026",
+        "startedAt": "2026-11-12T21:25:36Z",
+        "updatedAt": "2026-11-12T21:38:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — in-the-heights-off-broadway-2026",
+        "startedAt": "2026-11-12T21:25:37Z",
+        "updatedAt": "2026-11-12T21:46:19Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — julius-caesar-globe-off-west-end-2026",
+        "startedAt": "2026-11-12T21:25:39Z",
+        "updatedAt": "2026-11-12T21:44:12Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T21:26:22Z",
+        "updatedAt": "2026-11-12T22:22:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — as-you-like-it-regional-2026",
+        "startedAt": "2026-11-12T21:36:25Z",
+        "updatedAt": "2026-11-12T21:49:33Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T21:38:24Z",
+        "updatedAt": "2026-11-12T21:48:23Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T21:38:56Z",
+        "updatedAt": "2026-11-12T22:03:56Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — saint-megan-regional-2026",
+        "startedAt": "2026-11-12T21:39:50Z",
+        "updatedAt": "2026-11-12T21:51:30Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T21:41:31Z",
+        "updatedAt": "2026-11-12T21:51:05Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — as-you-like-it-regional-2026",
+        "startedAt": "2026-11-12T21:47:30Z",
+        "updatedAt": "2026-11-12T21:57:16Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T21:49:30Z",
+        "updatedAt": "2026-11-12T22:18:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T21:52:59Z",
+        "updatedAt": "2026-11-12T22:03:04Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — broom-play-off-broadway-2026",
+        "startedAt": "2026-11-12T21:53:56Z",
+        "updatedAt": "2026-11-12T22:04:46Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T21:59:23Z",
+        "updatedAt": "2026-11-12T22:08:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T21:59:46Z",
+        "updatedAt": "2026-11-12T22:08:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T22:08:00Z",
+        "updatedAt": "2026-11-12T22:17:55Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — broom-play-off-broadway-2026",
+        "startedAt": "2026-11-12T22:08:29Z",
+        "updatedAt": "2026-11-12T22:15:56Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T22:09:39Z",
+        "updatedAt": "2026-11-12T22:53:00Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T22:09:49Z",
+        "updatedAt": "2026-11-12T22:36:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T22:12:30Z",
+        "updatedAt": "2026-11-12T22:21:36Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T22:16:00Z",
+        "updatedAt": "2026-11-12T22:26:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T22:20:40Z",
+        "updatedAt": "2026-11-12T22:58:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T22:26:28Z",
+        "updatedAt": "2026-11-12T22:35:02Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T22:41:41Z",
+        "updatedAt": "2026-11-12T22:50:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T22:43:09Z",
+        "updatedAt": "2026-11-12T22:54:19Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T22:51:52Z",
+        "updatedAt": "2026-11-12T23:15:23Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews (rescore chain, 7 left, limit 400, max-cost 15)",
+        "startedAt": "2026-11-12T22:58:04Z",
+        "updatedAt": "2026-11-12T23:58:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T23:01:34Z",
+        "updatedAt": "2026-11-12T23:11:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T23:06:59Z",
+        "updatedAt": "2026-11-12T23:14:53Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-12T23:15:08Z",
+        "updatedAt": "2026-11-12T23:15:11Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T23:16:19Z",
+        "updatedAt": "2026-11-12T23:56:48Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T23:16:27Z",
+        "updatedAt": "2026-11-12T23:39:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T23:21:50Z",
+        "updatedAt": "2026-11-12T23:34:02Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T23:30:54Z",
+        "updatedAt": "2026-11-12T23:39:59Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T23:31:06Z",
+        "updatedAt": "2026-11-13T00:30:16Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T23:31:16Z",
+        "updatedAt": "2026-11-13T00:06:50Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T23:34:21Z",
+        "updatedAt": "2026-11-12T23:44:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T23:47:14Z",
+        "updatedAt": "2026-11-12T23:57:36Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T23:54:58Z",
+        "updatedAt": "2026-11-13T00:34:37Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T23:57:52Z",
+        "updatedAt": "2026-11-13T00:09:07Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews (rescore chain, 6 left, limit 400, max-cost 15)",
+        "startedAt": "2026-11-12T23:58:25Z",
+        "updatedAt": "2026-11-13T01:02:57Z"
+      }
+    ]
+  }
+}

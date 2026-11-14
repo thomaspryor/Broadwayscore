@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-6996",
+  "planId": "8c3f1087-1882-4f21-b065-34122d012c34",
+  "status": "applied",
+  "createdAt": "2026-11-05T05:22:05.764Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6996: In the Heights (New York City Center) closes Nov 15, not Nov 8 (NYCC, BroadwayWorld and Playbill agree). Also file the In the Heights capsule of The Musical Theatre Report's Nov 1 column as its own review, and trim The Heart's row of the same column to its own section; both queue for a rescore.",
+    "steps": [
+      "shows.json: in-the-heights-off-broadway-2026.closingDate",
+      "Ben West's Musical Theatre Report column (Nov 1) reviews The Heart and In the Heights and is filed only under The Heart. File the In the Heights capsule (from 'IN THE HEIGHTS AT NEW YORK CITY CENTER' to 'borders on poor') as in-the-heights-off-broadway-2026/musical-theatre-report--ben-west.json and cut The Heart row to its own section so its score comes from that section only. Both rows are queued for a rescore."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-the-heights-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-11-08",
+        "newValue": "2026-11-15",
+        "description": "shows.json: in-the-heights-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "run-script",
+        "description": "Ben West's Musical Theatre Report column (Nov 1) reviews The Heart and In the Heights and is filed only under The Heart. File the In the Heights capsule (from 'IN THE HEIGHTS AT NEW YORK CITY CENTER' to 'borders on poor') as in-the-heights-off-broadway-2026/musical-theatre-report--ben-west.json and cut The Heart row to its own section so its score comes from that section only. Both rows are queued for a rescore.",
+        "script": "copy-multishow-section.js",
+        "args": "--from=the-heart-off-broadway-2026/musical-theatre-report--ben-west.json --to-show=in-the-heights-off-broadway-2026 --method=markers --expect-start=IN_THE_HEIGHTS_AT_NEW_YORK_CITY_CENTER_In --expect-end=that_borders_on_poor --own-start=THE_HEART_AT_THE_LAURA_PELS_THEATRE_The --own-end=with_a_16_million_max --apply"
+      }
+    ]
+  },
+  "executedAt": "2026-11-05T05:31:32.469Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for in-the-heights-off-broadway-2026"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

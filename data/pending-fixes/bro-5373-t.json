@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5373-t",
+  "planId": "01d645cc-72fc-4f07-8bd1-c2b9a7ab1748",
+  "status": "applied",
+  "createdAt": "2026-10-15T01:15:12.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (t): clear the Shadowlands mis-credited copy's url (another critic's review).",
+    "steps": [
+      "url clear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "shadowlands-west-end-2026/mail-on-sunday--robert-gore-langton.json",
+        "field": "url",
+        "oldValue": "https://www.dailymail.co.uk/tv/article-15559075/PATRICK-MARMION-review-Shadowlands-London-Aldwych-Theatre-Hugh-Bonneville.html",
+        "newValue": "",
+        "description": "BRO-5373: retry of plan s's refused action. Marmion's own file now holds this url as a live primary (its duplicateOf was cleared by plan s), so this Theatre Record row's url is provably another critic's review; cleared to '' keeping the row (which stays excluded by wrongAttribution)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T01:57:35.486Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shadowlands-west-end-2026/mail-on-sunday--robert-gore-langton.json url: \"https://www.dailymail.co.uk/tv/article-15559075/PATRICK-MARMION-review-Shadowlands-London-Aldwych-Theatre-Hugh-Bonneville.html\" -> \"\""
+    }
+  ]
+}

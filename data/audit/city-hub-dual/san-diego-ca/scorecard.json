@@ -1,0 +1,1624 @@
+{
+ "city": "san-diego-ca",
+ "today": "2026-11-10",
+ "models": {
+  "gemini": "gemini-2.5-flash",
+  "openai": "gpt-5-mini"
+ },
+ "itemsChecked": {
+  "shows": 8,
+  "images": 0,
+  "publishedReviews": 41,
+  "excludedFiles": 0,
+  "reviewsWithoutText": 4,
+  "tourStops": 0,
+  "coverageShows": 3,
+  "totalShows": 47,
+  "totalPublished": 154
+ },
+ "flaggedByGemini": 12,
+ "flaggedByOpenAI": 11,
+ "flaggedLocalChecks": 151,
+ "flaggedAny": 162,
+ "flaggedByBoth": 11,
+ "triagedItems": 0,
+ "confirmed": 0,
+ "falsePositives": 0,
+ "fixed": 0,
+ "remaining": [],
+ "untriaged": 162,
+ "flags": [
+  {
+   "kind": "show",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-24 / page 2026-07-17"
+  },
+  {
+   "kind": "show",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-07-24 / page 2026-07-17"
+  },
+  {
+   "kind": "show",
+   "id": "begin-again-regional-2026",
+   "label": "Begin Again",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-17 / page 2026-09-06"
+  },
+  {
+   "kind": "show",
+   "id": "begin-again-regional-2026",
+   "label": "Begin Again",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-17 / page 2026-09-06"
+  },
+  {
+   "kind": "show",
+   "id": "a-room-in-the-castle-regional-2026",
+   "label": "A Room in the Castle",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-16 / page 2026-05-10"
+  },
+  {
+   "kind": "show",
+   "id": "a-room-in-the-castle-regional-2026",
+   "label": "A Room in the Castle",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "a-room-in-the-castle-regional-2026",
+   "label": "A Room in the Castle",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-16 / page 2026-05-10"
+  },
+  {
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-12"
+  },
+  {
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-12, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-12"
+  },
+  {
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-12, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"La Jolla Playhouse, La Jolla, CA\" / page \"Mandell Weiss Theatre\""
+  },
+  {
+   "kind": "show",
+   "id": "seussical-regional-2026",
+   "label": "Seussical",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-15, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "seussical-regional-2026",
+   "label": "Seussical",
+   "model": "gemini",
+   "code": "venue",
+   "detail": "ours \"San Diego Musical Theatre, San Diego, CA\" / page \"SDMT Stage\""
+  },
+  {
+   "kind": "show",
+   "id": "seussical-regional-2026",
+   "label": "Seussical",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-15"
+  },
+  {
+   "kind": "show",
+   "id": "seussical-regional-2026",
+   "label": "Seussical",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"San Diego Musical Theatre, San Diego, CA\" / page \"SDMT Stage\""
+  },
+  {
+   "kind": "show",
+   "id": "kims-convenience-regional-2026",
+   "label": "Kim's Convenience",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-15, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "kims-convenience-regional-2026",
+   "label": "Kim's Convenience",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "kims-convenience-regional-2026",
+   "label": "Kim's Convenience",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-15, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "kims-convenience-regional-2026",
+   "label": "Kim's Convenience",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "rent-regional-2026",
+   "label": "Rent",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-31 / page 2026-05-28"
+  },
+  {
+   "kind": "show",
+   "id": "rent-regional-2026",
+   "label": "Rent",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-06-28 / page 2026-06-14"
+  },
+  {
+   "kind": "show",
+   "id": "rent-regional-2026",
+   "label": "Rent",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-21, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "rent-regional-2026",
+   "label": "Rent",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-21, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-hombres-regional-2026",
+   "label": "The Hombres",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-hombres-regional-2026",
+   "label": "The Hombres",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-30, ours empty"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-cygnet-regional-2026|https://www.broadwayworld.com/san-diego/article/review-dear-evan-hansen-at-cygnet-theatre-20260913|erinmarie reiter",
+   "label": "Dear Evan Hansen | BroadwayWorld / ErinMarie Reiter",
+   "model": "gemini",
+   "code": "score-vs-text",
+   "detail": "text reads mixed, score 79"
+  },
+  {
+   "kind": "review",
+   "id": "a-black-billed-cuckoo-regional-2026|https://sandiegostory.com/emotional-growth-through-an-unexpected-activity|david dixon",
+   "label": "a-black-billed-cuckoo-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/emotional-growth-through-an-unexpected-activity/"
+  },
+  {
+   "kind": "review",
+   "id": "a-black-billed-cuckoo-regional-2026|https://www.sandiegouniontribune.com/2026/09/20/review-la-jolla-playhouses-sweet-black-billed-cuckoo-packed-with-humor-surprises|pam kragen",
+   "label": "a-black-billed-cuckoo-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/09/20/review-la-jolla-playhouses-sweet-black-billed-cuckoo-packed-with-humor-surprises/"
+  },
+  {
+   "kind": "review",
+   "id": "a-black-billed-cuckoo-regional-2026|https://stageandcinema.com/2026/10/04/black-billed-cuckoo-la-jolla-playhouse|jason mannino",
+   "label": "a-black-billed-cuckoo-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/10/04/black-billed-cuckoo-la-jolla-playhouse/"
+  },
+  {
+   "kind": "review",
+   "id": "a-room-in-the-castle-regional-2026|https://www.broadwayworld.com/san-diego/article/review-a-room-in-the-castle-at-moxie-theatre-20260516|erinmarie reiter",
+   "label": "a-room-in-the-castle-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-A-ROOM-IN-THE-CASTLE-at-MOXIE-Theatre-20260516"
+  },
+  {
+   "kind": "review",
+   "id": "a-room-in-the-castle-regional-2026|https://fromanother0.com/moxie-theatre-closes-season-with-the-san-diego-debut-of-lauren-gundersons-a-room-in-the-castle|alejandra enciso",
+   "label": "a-room-in-the-castle-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/moxie-theatre-closes-season-with-the-san-diego-debut-of-lauren-gundersons-a-room-in-the-castle/"
+  },
+  {
+   "kind": "review",
+   "id": "a-room-in-the-castle-regional-2026|https://stageandcinema.com/2026/05/16/a-room-in-the-castle-moxie-theatre-review|milo shapiro",
+   "label": "a-room-in-the-castle-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/05/16/a-room-in-the-castle-moxie-theatre-review/"
+  },
+  {
+   "kind": "review",
+   "id": "adult-storytime-a-caregivers-guide-to-the-blues-regional-2026|https://www.broadwayworld.com/san-diego/article/review-adult-storytime-a-caregivers-guide-to-the-blues-at-onword-theatre-20260626|erinmarie reiter",
+   "label": "adult-storytime-a-caregivers-guide-to-the-blues-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-ADULT-STORYTIME-A-CAREGIVERS-GUIDE-TO-THE-BLUES-at-OnWord-Theatre-20260626"
+  },
+  {
+   "kind": "review",
+   "id": "adult-storytime-a-caregivers-guide-to-the-blues-regional-2026|https://www.sandiegouniontribune.com/2026/06/13/review-adult-storytime-a-relatable-collection-of-caregivers-ups-downs|pam kragen",
+   "label": "adult-storytime-a-caregivers-guide-to-the-blues-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/13/review-adult-storytime-a-relatable-collection-of-caregivers-ups-downs/"
+  },
+  {
+   "kind": "review",
+   "id": "arcadia-regional-2026|https://www.broadwayworld.com/san-diego/article/review-arcadia-at-cygnet-theatre-20260721|erinmarie reiter",
+   "label": "arcadia-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-ARCADIA-at-Cygnet-Theatre-20260721"
+  },
+  {
+   "kind": "review",
+   "id": "arcadia-regional-2026|https://fromanother0.com/un-viaje-hacia-la-madriguera-guiado-por-elenco-de-lujo|alejandra enciso",
+   "label": "arcadia-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/un-viaje-hacia-la-madriguera-guiado-por-elenco-de-lujo/"
+  },
+  {
+   "kind": "review",
+   "id": "arcadia-regional-2026|https://sandiegostory.com/cygnet-theaters-arcadians-keep-on-slippin-slippin-into-the-future|mark burgess",
+   "label": "arcadia-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/cygnet-theaters-arcadians-keep-on-slippin-slippin-into-the-future/"
+  },
+  {
+   "kind": "review",
+   "id": "arcadia-regional-2026|https://www.sandiegouniontribune.com/2026/07/20/review-cygnet-theatre-finds-the-romance-and-humor-in-complex-arcadia|pam kragen",
+   "label": "arcadia-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/07/20/review-cygnet-theatre-finds-the-romance-and-humor-in-complex-arcadia/"
+  },
+  {
+   "kind": "review",
+   "id": "arcadia-regional-2026|https://theatrereviewskurahashi.wordpress.com/2026/07/19/waltzing-through-time-in-arcadia-cygnet-theatres-arcadia|yuko kurahashi",
+   "label": "arcadia-regional-2026 | Theatre Reviews Kurahashi",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://theatrereviewskurahashi.wordpress.com/2026/07/19/waltzing-through-time-in-arcadia-cygnet-theatres-arcadia/"
+  },
+  {
+   "kind": "review",
+   "id": "as-you-like-it-regional-2026|https://www.sandiegouniontribune.com/2026/10/26/review-new-village-arts-as-you-like-it-a-spirited-twist-on-shakespeare|pam kragen",
+   "label": "as-you-like-it-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/10/26/review-new-village-arts-as-you-like-it-a-spirited-twist-on-shakespeare/"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://www.broadwayworld.com/san-diego/article/review-begin-again-at-the-old-globe-20260919|erinmarie reiter",
+   "label": "begin-again-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-BEGIN-AGAIN-at-The-Old-Globe-20260919"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://www.broadwayworld.com/los-angeles/article/review-begin-again-at-the-old-globe-theatre-20260925|evan henerson",
+   "label": "begin-again-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/los-angeles/article/Review-BEGIN-AGAIN-at-the-Old-Globe-Theatre-20260925"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://culturevulture.net/theater/begin-again|josh baxt",
+   "label": "begin-again-regional-2026 | Culture Vulture",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://culturevulture.net/theater/begin-again/"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://fromanother0.com/the-broadway-bound-begin-again-premieres-at-the-old-globe|alejandra enciso",
+   "label": "begin-again-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/the-broadway-bound-begin-again-premieres-at-the-old-globe/"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://www.latimes.com/entertainment-arts/story/2026-09-22/begin-again-theater-review-musical-old-globe-san-diego|charles mcnulty",
+   "label": "begin-again-regional-2026 | Los Angeles Times",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.latimes.com/entertainment-arts/story/2026-09-22/begin-again-theater-review-musical-old-globe-san-diego"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://www.sdjewishworld.com/2026/09/18/begin-again-is-truly-a-feel-good-play-at-the-old-globe|",
+   "label": "begin-again-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/09/18/begin-again-is-truly-a-feel-good-play-at-the-old-globe/"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://sandiegostory.com/an-ode-to-the-power-of-music|david dixon",
+   "label": "begin-again-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/an-ode-to-the-power-of-music/"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://www.sandiegouniontribune.com/2026/09/18/review-old-globes-magic-filled-begin-again-is-tuneful-and-touching|pam kragen",
+   "label": "begin-again-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/09/18/review-old-globes-magic-filled-begin-again-is-tuneful-and-touching/"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://stageandcinema.com/2026/09/19/begin-again-old-globe-review|milo shapiro",
+   "label": "begin-again-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/09/19/begin-again-old-globe-review/"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://stageraw.com/stage-raw-review-begin-again|keelyn mcdermott",
+   "label": "begin-again-regional-2026 | Stage Raw",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageraw.com/stage-raw-review-begin-again/"
+  },
+  {
+   "kind": "review",
+   "id": "begin-again-regional-2026|https://www.theatermania.com/news/review-new-musical-begin-again-needs-to-start-over_1854940|jonas schwartz",
+   "label": "begin-again-regional-2026 | TheaterMania",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermania.com/news/review-new-musical-begin-again-needs-to-start-over_1854940/"
+  },
+  {
+   "kind": "review",
+   "id": "come-from-away-moonlight-regional-2026|https://www.broadwayworld.com/san-diego/article/review-come-from-away-at-moonlight-stage-20260918|erinmarie reiter",
+   "label": "come-from-away-moonlight-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-COME-FROM-AWAY-at-Moonlight-Stage-20260918"
+  },
+  {
+   "kind": "review",
+   "id": "come-from-away-moonlight-regional-2026|https://sandiegostory.com/resonant-come-from-away-ripples-through-moonlight|cassiopeia guthrie",
+   "label": "come-from-away-moonlight-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/resonant-come-from-away-ripples-through-moonlight/"
+  },
+  {
+   "kind": "review",
+   "id": "come-from-away-moonlight-regional-2026|https://www.sandiegouniontribune.com/2026/09/10/review-moonlights-moving-come-from-away-a-balm-for-the-soul|pam kragen",
+   "label": "come-from-away-moonlight-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/09/10/review-moonlights-moving-come-from-away-a-balm-for-the-soul/"
+  },
+  {
+   "kind": "review",
+   "id": "cyrano-regional-2026|https://www.broadwayworld.com/san-diego/article/review-cyrano-at-the-old-globe-20260730|erinmarie reiter",
+   "label": "cyrano-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-CYRANO-at-The-Old-Globe-20260730"
+  },
+  {
+   "kind": "review",
+   "id": "cyrano-regional-2026|https://www.sdjewishworld.com/2026/07/30/old-globe-stages-cyrano-without-the-titular-characters-big-nose|sandi masori",
+   "label": "cyrano-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/07/30/old-globe-stages-cyrano-without-the-titular-characters-big-nose/"
+  },
+  {
+   "kind": "review",
+   "id": "cyrano-regional-2026|https://sandiegostory.com/cyrano-effectively-tugs-at-the-heartstrings|david dixon",
+   "label": "cyrano-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/cyrano-effectively-tugs-at-the-heartstrings/"
+  },
+  {
+   "kind": "review",
+   "id": "cyrano-regional-2026|https://www.sandiegouniontribune.com/2026/07/24/review-old-globes-fast-paced-cyrano-wins-sans-a-nose|pam kragen",
+   "label": "cyrano-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/07/24/review-old-globes-fast-paced-cyrano-wins-sans-a-nose/"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-cygnet-regional-2026|https://www.broadwayworld.com/san-diego/article/review-dear-evan-hansen-at-cygnet-theatre-20260913|erinmarie reiter",
+   "label": "dear-evan-hansen-cygnet-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-DEAR-EVAN-HANSEN-at-Cygnet-Theatre-20260913"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-cygnet-regional-2026|https://fromanother0.com/cygnet-theatre-presents-first-regional-staging-of-dear-evan-hansen|alejandra enciso",
+   "label": "dear-evan-hansen-cygnet-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/cygnet-theatre-presents-first-regional-staging-of-dear-evan-hansen/"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-cygnet-regional-2026|https://www.sdjewishworld.com/2026/09/14/cygnets-dear-evan-hansen-is-the-olympics-of-awkwardness-but-in-a-good-way|sandi masori",
+   "label": "dear-evan-hansen-cygnet-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/09/14/cygnets-dear-evan-hansen-is-the-olympics-of-awkwardness-but-in-a-good-way/"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-cygnet-regional-2026|https://www.sandiegouniontribune.com/2026/09/13/review-cygnets-evan-hansen-finds-the-heart-in-dazzling-high-tech-musical|pam kragen",
+   "label": "dear-evan-hansen-cygnet-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/09/13/review-cygnets-evan-hansen-finds-the-heart-in-dazzling-high-tech-musical/"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-cygnet-regional-2026|https://stageandcinema.com/2026/09/17/dear-evan-hansen-cygnet-theatre|milo shapiro",
+   "label": "dear-evan-hansen-cygnet-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/09/17/dear-evan-hansen-cygnet-theatre/"
+  },
+  {
+   "kind": "review",
+   "id": "good-night-oscar-regional-2026|https://www.broadwayworld.com/san-diego/article/review-good-night-oscar-at-north-coast-repertory-theatre-20260920|erinmarie reiter",
+   "label": "good-night-oscar-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-GOOD-NIGHT-OSCAR-at-North-Coast-Repertory-Theatre-20260920"
+  },
+  {
+   "kind": "review",
+   "id": "good-night-oscar-regional-2026|https://sandiegostory.com/a-life-of-humor-and-sorrow|david dixon",
+   "label": "good-night-oscar-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/a-life-of-humor-and-sorrow/"
+  },
+  {
+   "kind": "review",
+   "id": "good-night-oscar-regional-2026|https://www.sandiegouniontribune.com/2026/09/21/review-north-coast-reps-good-night-oscar-a-moving-story-of-tortured-genius|pam kragen",
+   "label": "good-night-oscar-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/09/21/review-north-coast-reps-good-night-oscar-a-moving-story-of-tortured-genius/"
+  },
+  {
+   "kind": "review",
+   "id": "good-night-oscar-regional-2026|https://stageandcinema.com/2026/09/23/good-night-oscar-review-north-coast-rep|milo shapiro",
+   "label": "good-night-oscar-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/09/23/good-night-oscar-review-north-coast-rep/"
+  },
+  {
+   "kind": "review",
+   "id": "grim-regional-2026|https://www.broadwayworld.com/san-diego/article/review-life-love-and-limbo-grim-at-la-jolla-playhouse-20261109|erinmarie reiter",
+   "label": "grim-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-Life-Love-and-Limbo-GRIM-at-La-Jolla-Playhouse-20261109"
+  },
+  {
+   "kind": "review",
+   "id": "guys-and-dolls-regional-2026|https://www.broadwayworld.com/san-diego/article/review-guys-and-dolls-at-moonlight-stage-20260820|erinmarie reiter",
+   "label": "guys-and-dolls-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-GUYS-AND-DOLLS-at-Moonlight-Stage-20260820"
+  },
+  {
+   "kind": "review",
+   "id": "guys-and-dolls-regional-2026|https://sandiegostory.com/a-charming-return-to-runyonland|david dixon",
+   "label": "guys-and-dolls-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/a-charming-return-to-runyonland/"
+  },
+  {
+   "kind": "review",
+   "id": "guys-and-dolls-regional-2026|https://www.sandiegouniontribune.com/2026/08/13/review-moonlights-guys-and-dolls-a-classic-that-still-sparkles|pam kragen",
+   "label": "guys-and-dolls-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/08/13/review-moonlights-guys-and-dolls-a-classic-that-still-sparkles/"
+  },
+  {
+   "kind": "review",
+   "id": "ha-ha-ha-ha-ha-ha-ha-regional-2026|https://www.broadwayworld.com/san-diego/article/review-ha-ha-ha-ha-ha-ha-ha-at-la-jolla-playhouse-20260801|erinmarie reiter",
+   "label": "ha-ha-ha-ha-ha-ha-ha-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-HA-HA-HA-HA-HA-HA-HA-at-La-Jolla-Playhouse-20260801"
+  },
+  {
+   "kind": "review",
+   "id": "ha-ha-ha-ha-ha-ha-ha-regional-2026|https://www.sandiegouniontribune.com/2026/07/31/review-la-jolla-playhouses-ha-ha-ha-delivers-odd-solutions-to-all-the-worlds-problems|pam kragen",
+   "label": "ha-ha-ha-ha-ha-ha-ha-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/07/31/review-la-jolla-playhouses-ha-ha-ha-delivers-odd-solutions-to-all-the-worlds-problems/"
+  },
+  {
+   "kind": "review",
+   "id": "hairspray-regional-2026|https://www.broadwayworld.com/san-diego/article/review-hairspray-at-new-village-arts-20260619|erinmarie reiter",
+   "label": "hairspray-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-HAIRSPRAY-at-New-Village-Arts-20260619"
+  },
+  {
+   "kind": "review",
+   "id": "hairspray-regional-2026|https://www.sdjewishworld.com/2026/06/26/hairspray-recalls-1960s-teen-dance-tv-shows|sandi masori",
+   "label": "hairspray-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/06/26/hairspray-recalls-1960s-teen-dance-tv-shows/"
+  },
+  {
+   "kind": "review",
+   "id": "hairspray-regional-2026|https://www.sandiegouniontribune.com/2026/06/16/review-new-villages-hairspray-is-fun-but-uneven|pam kragen",
+   "label": "hairspray-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/16/review-new-villages-hairspray-is-fun-but-uneven/"
+  },
+  {
+   "kind": "review",
+   "id": "isaacs-eye-regional-2026|https://www.broadwayworld.com/san-diego/article/review-isaacs-eye-at-onstage-playhouse-20260717|erinmarie reiter",
+   "label": "isaacs-eye-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-ISAACS-EYE-at-OnStage-Playhouse-20260717"
+  },
+  {
+   "kind": "review",
+   "id": "isaacs-eye-regional-2026|https://fromanother0.com/onstage-playhouse-debuts-lucas-hnaths-isaacs-eye|alejandra enciso",
+   "label": "isaacs-eye-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/onstage-playhouse-debuts-lucas-hnaths-isaacs-eye/"
+  },
+  {
+   "kind": "review",
+   "id": "isaacs-eye-regional-2026|https://www.sandiegouniontribune.com/2026/06/29/review-onstage-playhouses-isaacs-eye-a-blazing-fast-scientific-yarn|pam kragen",
+   "label": "isaacs-eye-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/29/review-onstage-playhouses-isaacs-eye-a-blazing-fast-scientific-yarn/"
+  },
+  {
+   "kind": "review",
+   "id": "kims-convenience-regional-2026|https://www.broadwayworld.com/san-diego/article/review-kims-convenience-at-the-old-globe-20260522|erinmarie reiter",
+   "label": "kims-convenience-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-KIMS-CONVENIENCE-at-The-Old-Globe-20260522"
+  },
+  {
+   "kind": "review",
+   "id": "kims-convenience-regional-2026|https://culturevulture.net/theater/kims-convenience-old-globe-theater|josh baxt",
+   "label": "kims-convenience-regional-2026 | Culture Vulture",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://culturevulture.net/theater/kims-convenience-old-globe-theater/"
+  },
+  {
+   "kind": "review",
+   "id": "kims-convenience-regional-2026|https://www.sdjewishworld.com/2026/05/24/television-sit-com-kims-convenience-comes-to-old-globe-stage|sandi masori",
+   "label": "kims-convenience-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/05/24/television-sit-com-kims-convenience-comes-to-old-globe-stage/"
+  },
+  {
+   "kind": "review",
+   "id": "kims-convenience-regional-2026|https://sandiegostory.com/humor-and-pathos-at-the-old-globe|david dixon",
+   "label": "kims-convenience-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/humor-and-pathos-at-the-old-globe/"
+  },
+  {
+   "kind": "review",
+   "id": "kims-convenience-regional-2026|https://www.sandiegouniontribune.com/2026/05/22/review-kims-convenience-a-funny-and-touching-look-at-the-immigrant-experience|pam kragen",
+   "label": "kims-convenience-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/05/22/review-kims-convenience-a-funny-and-touching-look-at-the-immigrant-experience/"
+  },
+  {
+   "kind": "review",
+   "id": "kims-convenience-regional-2026|https://theatrereviewskurahashi.wordpress.com/2026/05/25/humanity-love-and-caring-in-the-old-globe-theatres-kims-convenience|yuko kurahashi",
+   "label": "kims-convenience-regional-2026 | Theatre Reviews Kurahashi",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://theatrereviewskurahashi.wordpress.com/2026/05/25/humanity-love-and-caring-in-the-old-globe-theatres-kims-convenience/"
+  },
+  {
+   "kind": "review",
+   "id": "measure-for-measure-regional-2026|https://www.broadwayworld.com/san-diego/article/review-measure-for-measure-at-the-old-globe-20260625|erinmarie reiter",
+   "label": "measure-for-measure-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-MEASURE-FOR-MEASURE-at-The-Old-Globe-20260625"
+  },
+  {
+   "kind": "review",
+   "id": "measure-for-measure-regional-2026|https://culturevulture.net/theater/measure-for-measure-2|josh baxt",
+   "label": "measure-for-measure-regional-2026 | Culture Vulture",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://culturevulture.net/theater/measure-for-measure-2/"
+  },
+  {
+   "kind": "review",
+   "id": "measure-for-measure-regional-2026|https://www.sdjewishworld.com/2026/06/22/old-globe-presents-measure-for-measure-in-balboa-park|sandi masori",
+   "label": "measure-for-measure-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/06/22/old-globe-presents-measure-for-measure-in-balboa-park/"
+  },
+  {
+   "kind": "review",
+   "id": "measure-for-measure-regional-2026|https://sandiegostory.com/the-laws-of-nature-humanity-and-live-theater-collide-at-the-old-globes-measure-for-measure|mark burgess",
+   "label": "measure-for-measure-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/the-laws-of-nature-humanity-and-live-theater-collide-at-the-old-globes-measure-for-measure/"
+  },
+  {
+   "kind": "review",
+   "id": "measure-for-measure-regional-2026|https://www.sandiegouniontribune.com/2026/06/22/review-old-globes-measure-for-measure-a-twisty-power-struggle|pam kragen",
+   "label": "measure-for-measure-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/22/review-old-globes-measure-for-measure-a-twisty-power-struggle/"
+  },
+  {
+   "kind": "review",
+   "id": "mensa-regional-2026|https://www.broadwayworld.com/san-diego/article/review-mensa-at-onstage-playhouse-20260910|erinmarie reiter",
+   "label": "mensa-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-MENSA-at-OnStage-Playhouse-20260910"
+  },
+  {
+   "kind": "review",
+   "id": "mensa-regional-2026|https://fromanother0.com/onstage-playhouses-last-production-in-chula-vista|alejandra enciso",
+   "label": "mensa-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/onstage-playhouses-last-production-in-chula-vista/"
+  },
+  {
+   "kind": "review",
+   "id": "mensa-regional-2026|https://www.sdjewishworld.com/2026/08/31/190584|",
+   "label": "mensa-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/08/31/190584/"
+  },
+  {
+   "kind": "review",
+   "id": "mensa-regional-2026|https://sandiegostory.com/a-thoughtful-and-topical-play-at-onstage-playhouse|david dixon",
+   "label": "mensa-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/a-thoughtful-and-topical-play-at-onstage-playhouse/"
+  },
+  {
+   "kind": "review",
+   "id": "much-ado-about-nothing-regional-2026|https://www.broadwayworld.com/san-diego/article/review-much-ado-about-nothing-at-the-old-globe-20260810|erinmarie reiter",
+   "label": "much-ado-about-nothing-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-MUCH-ADO-ABOUT-NOTHING-at-The-Old-Globe-20260810"
+  },
+  {
+   "kind": "review",
+   "id": "much-ado-about-nothing-regional-2026|https://culturevulture.net/theater/much-ado-about-nothing|josh baxt",
+   "label": "much-ado-about-nothing-regional-2026 | Culture Vulture",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://culturevulture.net/theater/much-ado-about-nothing/"
+  },
+  {
+   "kind": "review",
+   "id": "much-ado-about-nothing-regional-2026|https://www.sdjewishworld.com/2026/08/09/much-ado-about-nothing-is-really-something|sandi masori",
+   "label": "much-ado-about-nothing-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/08/09/much-ado-about-nothing-is-really-something/"
+  },
+  {
+   "kind": "review",
+   "id": "much-ado-about-nothing-regional-2026|https://sandiegostory.com/much-ado-about-nothing|mark burgess",
+   "label": "much-ado-about-nothing-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/much-ado-about-nothing/"
+  },
+  {
+   "kind": "review",
+   "id": "much-ado-about-nothing-regional-2026|https://www.sandiegouniontribune.com/2026/08/10/review-old-globes-vibrant-much-ado-is-a-musical-time-machine|pam kragen",
+   "label": "much-ado-about-nothing-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/08/10/review-old-globes-vibrant-much-ado-is-a-musical-time-machine/"
+  },
+  {
+   "kind": "review",
+   "id": "ni-mi-madre-regional-2026|https://www.broadwayworld.com/san-diego/article/review-ni-mi-madre-unpacks-motherhood-with-humor-and-grace-at-diversionary-theatre-20260825|lucia serrano",
+   "label": "ni-mi-madre-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-NI-MI-MADRE-Unpacks-Motherhood-with-Humor-and-Grace-at-Diversionary-Theatre-20260825"
+  },
+  {
+   "kind": "review",
+   "id": "ni-mi-madre-regional-2026|https://fromanother0.com/diversionarys-west-coast-premiere-of-ni-mi-madre|alejandra enciso",
+   "label": "ni-mi-madre-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/diversionarys-west-coast-premiere-of-ni-mi-madre/"
+  },
+  {
+   "kind": "review",
+   "id": "ni-mi-madre-regional-2026|https://www.sandiegouniontribune.com/2026/08/24/review-ni-mi-madre-an-eye-opening-portrait-of-a-complex-mom|pam kragen",
+   "label": "ni-mi-madre-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/08/24/review-ni-mi-madre-an-eye-opening-portrait-of-a-complex-mom/"
+  },
+  {
+   "kind": "review",
+   "id": "ni-mi-madre-regional-2026|https://timesofsandiego.com/arts/2026/08/25/diversionary-ni-mi-madre-brazilian-mother-queer-son|drew sitton",
+   "label": "ni-mi-madre-regional-2026 | Times of San Diego",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://timesofsandiego.com/arts/2026/08/25/diversionary-ni-mi-madre-brazilian-mother-queer-son/"
+  },
+  {
+   "kind": "review",
+   "id": "north-by-northwest-old-regional-2026|https://www.broadwayworld.com/san-diego/article/review-north-by-northwest-at-the-old-globe-20260711|erinmarie reiter",
+   "label": "north-by-northwest-old-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-NORTH-BY-NORTHWEST-at-The-Old-Globe-20260711"
+  },
+  {
+   "kind": "review",
+   "id": "north-by-northwest-old-regional-2026|https://fromanother0.com/the-uk-comes-to-san-diego-in-the-north-american-premiere-of-north-by-northwest|alejandra enciso",
+   "label": "north-by-northwest-old-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/the-uk-comes-to-san-diego-in-the-north-american-premiere-of-north-by-northwest/"
+  },
+  {
+   "kind": "review",
+   "id": "north-by-northwest-old-regional-2026|https://www.sdjewishworld.com/2026/07/19/north-by-northwest-not-exactly-a-musical-something-else-altogether|sandi masori",
+   "label": "north-by-northwest-old-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/07/19/north-by-northwest-not-exactly-a-musical-something-else-altogether/"
+  },
+  {
+   "kind": "review",
+   "id": "north-by-northwest-old-regional-2026|https://sandiegostory.com/creative-interpretation-of-a-hitchcock-classic|david dixon",
+   "label": "north-by-northwest-old-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/creative-interpretation-of-a-hitchcock-classic/"
+  },
+  {
+   "kind": "review",
+   "id": "north-by-northwest-old-regional-2026|https://stageandcinema.com/2026/07/14/north-by-northwest-old-globe-review-san-diego|michael m landman karny",
+   "label": "north-by-northwest-old-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/07/14/north-by-northwest-old-globe-review-san-diego/"
+  },
+  {
+   "kind": "review",
+   "id": "north-by-northwest-old-regional-2026|https://www.theatermania.com/news/review-north-by-northwest-an-all-over-the-map-hitchcock-adaptation_1845981|jonas schwartz",
+   "label": "north-by-northwest-old-regional-2026 | TheaterMania",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermania.com/news/review-north-by-northwest-an-all-over-the-map-hitchcock-adaptation_1845981/"
+  },
+  {
+   "kind": "review",
+   "id": "north-by-northwest-old-regional-2026|https://theatrereviewskurahashi.wordpress.com/2026/07/13/a-hitchcock-thriller-in-physical-theatre-north-by-northwest-at-the-old-globe|yuko kurahashi",
+   "label": "north-by-northwest-old-regional-2026 | Theatre Reviews Kurahashi",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://theatrereviewskurahashi.wordpress.com/2026/07/13/a-hitchcock-thriller-in-physical-theatre-north-by-northwest-at-the-old-globe/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-lajolla-regional-2026|https://www.broadwayworld.com/san-diego/article/review-purpose-at-la-jolla-playhouse-20260519|erinmarie reiter",
+   "label": "purpose-lajolla-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-PURPOSE-at-La-Jolla-Playhouse-20260519"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-lajolla-regional-2026|https://fromanother0.com/the-tony-award-winning-play-makes-its-west-coast-premiere-with-layered-performances-and-intentional-direction|alejandra enciso",
+   "label": "purpose-lajolla-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/the-tony-award-winning-play-makes-its-west-coast-premiere-with-layered-performances-and-intentional-direction/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-lajolla-regional-2026|https://www.sdjewishworld.com/2026/05/22/public-lives-not-matched-by-familys-private-ones-in-purpose|sandi masori",
+   "label": "purpose-lajolla-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/05/22/public-lives-not-matched-by-familys-private-ones-in-purpose/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-lajolla-regional-2026|https://www.sandiegoreader.com/news/2026/may/21/theater-review-empurposeem-at-la-jolla-playhouse|matthew lickona",
+   "label": "purpose-lajolla-regional-2026 | San Diego Reader",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegoreader.com/news/2026/may/21/theater-review-empurposeem-at-la-jolla-playhouse/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-lajolla-regional-2026|https://www.sandiegouniontribune.com/2026/05/18/review-purpose-a-funny-superbly-crafted-tale-of-a-family-that-has-lost-its-way|pam kragen",
+   "label": "purpose-lajolla-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/05/18/review-purpose-a-funny-superbly-crafted-tale-of-a-family-that-has-lost-its-way/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-lajolla-regional-2026|https://theatrereviewskurahashi.wordpress.com/2026/05/22/looking-back-into-the-era-of-the-civil-rights-movement-with-the-jaspers-la-jolla-playhouses-purpose|yuko kurahashi",
+   "label": "purpose-lajolla-regional-2026 | Theatre Reviews Kurahashi",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://theatrereviewskurahashi.wordpress.com/2026/05/22/looking-back-into-the-era-of-the-civil-rights-movement-with-the-jaspers-la-jolla-playhouses-purpose/"
+  },
+  {
+   "kind": "review",
+   "id": "rent-regional-2026|https://www.broadwayworld.com/san-diego/article/review-rent-at-diversionary-theatre-20260531|erinmarie reiter",
+   "label": "rent-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-RENT-at-Diversionary-Theatre-20260531"
+  },
+  {
+   "kind": "review",
+   "id": "rent-regional-2026|https://fromanother0.com/diversionary-brings-the-house-down-with-production-of-rent|alejandra enciso",
+   "label": "rent-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/diversionary-brings-the-house-down-with-production-of-rent/"
+  },
+  {
+   "kind": "review",
+   "id": "rent-regional-2026|https://www.sandiegouniontribune.com/2026/06/01/review-diversionarys-ambitious-take-on-rent-reignites-its-immediacy|pam kragen",
+   "label": "rent-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/01/review-diversionarys-ambitious-take-on-rent-reignites-its-immediacy/"
+  },
+  {
+   "kind": "review",
+   "id": "rent-regional-2026|https://timesofsandiego.com/arts/2026/06/01/diversionarys-rent-updates-delights|drew sitton",
+   "label": "rent-regional-2026 | Times of San Diego",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://timesofsandiego.com/arts/2026/06/01/diversionarys-rent-updates-delights/"
+  },
+  {
+   "kind": "review",
+   "id": "rent-regional-2026|https://makaylahoppe.com/2026/06/05/diversionary-theatre-rent|makayla hoppe",
+   "label": "rent-regional-2026 | To See or Not to See",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://makaylahoppe.com/2026/06/05/diversionary-theatre-rent/"
+  },
+  {
+   "kind": "review",
+   "id": "ripcord-regional-2026|https://www.sdjewishworld.com/2026/10/15/191378|eva trieger",
+   "label": "ripcord-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/10/15/191378/"
+  },
+  {
+   "kind": "review",
+   "id": "ripcord-regional-2026|https://www.sandiegouniontribune.com/2026/10/13/review-roustabouts-ripcord-a-laugh-filled-tale-about-aging-with-grace|pam kragen",
+   "label": "ripcord-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/10/13/review-roustabouts-ripcord-a-laugh-filled-tale-about-aging-with-grace/"
+  },
+  {
+   "kind": "review",
+   "id": "ripcord-regional-2026|https://stageandcinema.com/2026/10/16/ripcord-roustabouts-review|milo shapiro",
+   "label": "ripcord-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/10/16/ripcord-roustabouts-review/"
+  },
+  {
+   "kind": "review",
+   "id": "rock-of-ages-regional-2026|https://www.broadwayworld.com/san-diego/article/review-rock-of-ages-at-san-diego-musical-theatre-20260823|erinmarie reiter",
+   "label": "rock-of-ages-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-ROCK-OF-AGES-at-San-Diego-Musical-Theatre-20260823"
+  },
+  {
+   "kind": "review",
+   "id": "rock-of-ages-regional-2026|https://fromanother0.com/san-diego-musical-theatre-presents-a-vibrant-and-sexy-production-of-rock-of-ages|alejandra enciso",
+   "label": "rock-of-ages-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/san-diego-musical-theatre-presents-a-vibrant-and-sexy-production-of-rock-of-ages/"
+  },
+  {
+   "kind": "review",
+   "id": "rock-of-ages-regional-2026|https://www.sandiegouniontribune.com/2026/08/28/review-sd-musical-theatres-big-budget-ages-musical-really-rocks|pam kragen",
+   "label": "rock-of-ages-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/08/28/review-sd-musical-theatres-big-budget-ages-musical-really-rocks/"
+  },
+  {
+   "kind": "review",
+   "id": "scapin-regional-2026|https://sandiegostory.com/moliere-meets-austin-powers-meets-benny-hill-in-scapin-at-north-county-repertory-theater|mark burgess",
+   "label": "scapin-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/moliere-meets-austin-powers-meets-benny-hill-in-scapin-at-north-county-repertory-theater/"
+  },
+  {
+   "kind": "review",
+   "id": "scapin-regional-2026|https://www.sandiegouniontribune.com/2026/07/28/review-in-north-coast-reps-scapin-the-actors-are-having-the-most-fun|pam kragen",
+   "label": "scapin-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/07/28/review-in-north-coast-reps-scapin-the-actors-are-having-the-most-fun/"
+  },
+  {
+   "kind": "review",
+   "id": "scapin-regional-2026|https://stageandcinema.com/2026/07/27/scapin-north-coast-rep-review|milo shapiro",
+   "label": "scapin-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/07/27/scapin-north-coast-rep-review/"
+  },
+  {
+   "kind": "review",
+   "id": "seussical-regional-2026|https://www.broadwayworld.com/san-diego/article/review-seussical-the-musica-at-san-diego-musical-theatre-20260520|erinmarie reiter",
+   "label": "seussical-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-SEUSSICAL-THE-MUSICA-at-San-Diego-Musical-Theatre-20260520"
+  },
+  {
+   "kind": "review",
+   "id": "seussical-regional-2026|https://www.sdjewishworld.com/2026/05/18/seussical-the-musical-is-pleasure-ical-but-arts-funding-is-not|sandi masori",
+   "label": "seussical-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/05/18/seussical-the-musical-is-pleasure-ical-but-arts-funding-is-not/"
+  },
+  {
+   "kind": "review",
+   "id": "seussical-regional-2026|https://www.sandiegouniontribune.com/2026/05/21/review-sdmts-seussical-a-sweet-imaginative-musical-for-families|pam kragen",
+   "label": "seussical-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/05/21/review-sdmts-seussical-a-sweet-imaginative-musical-for-families/"
+  },
+  {
+   "kind": "review",
+   "id": "seussical-regional-2026|https://makaylahoppe.com/2026/05/23/seussical-sdmt|makayla hoppe",
+   "label": "seussical-regional-2026 | To See or Not to See",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://makaylahoppe.com/2026/05/23/seussical-sdmt/"
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | Cititour",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | Cititour",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026|https://culturevulture.net/theater/the-cottage|lynne friedmann",
+   "label": "the-cottage-regional-2026 | Culture Vulture",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://culturevulture.net/theater/the-cottage/"
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | Entertainment Weekly",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | Entertainment Weekly",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026|https://fromanother0.com/the-cottage-at-north-coast-rep|alejandra enciso",
+   "label": "the-cottage-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/the-cottage-at-north-coast-rep/"
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | New York Stage Review",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | New York Stage Review",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | New York Theatre Guide",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | New York Theatre Guide",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026|https://www.sandiegouniontribune.com/2026/11/02/review-women-rule-the-roost-in-north-coast-reps-surprise-packed-cottage|pam kragen",
+   "label": "the-cottage-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/11/02/review-women-rule-the-roost-in-north-coast-reps-surprise-packed-cottage/"
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026|https://stageandcinema.com/2026/11/03/the-cottage-north-coast-rep-review|milo shapiro",
+   "label": "the-cottage-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/11/03/the-cottage-north-coast-rep-review/"
+  },
+  {
+   "kind": "review",
+   "id": "the-family-album-regional-2026|https://behindtheencore.substack.com/p/the-family-album-review-a-beautiful|",
+   "label": "the-family-album-regional-2026 | Behind The Encore",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://behindtheencore.substack.com/p/the-family-album-review-a-beautiful"
+  },
+  {
+   "kind": "review",
+   "id": "the-family-album-regional-2026|https://www.broadwayworld.com/san-diego/article/review-the-family-album-at-la-jolla-playhouse-20260728|erinmarie reiter",
+   "label": "the-family-album-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-THE-FAMILY-ALBUM-at-La-Jolla-Playhouse-20260728"
+  },
+  {
+   "kind": "review",
+   "id": "the-family-album-regional-2026|https://fromanother0.com/the-family-album-from-waves-to-stage|alejandra enciso",
+   "label": "the-family-album-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/the-family-album-from-waves-to-stage/"
+  },
+  {
+   "kind": "review",
+   "id": "the-family-album-regional-2026|https://sandiegostory.com/an-emotionally-truthful-la-jolla-playhouse-musical|david dixon",
+   "label": "the-family-album-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/an-emotionally-truthful-la-jolla-playhouse-musical/"
+  },
+  {
+   "kind": "review",
+   "id": "the-family-album-regional-2026|https://www.sandiegouniontribune.com/2026/07/27/review-la-jolla-playhouses-family-album-a-heartbreaking-but-moving-musical-about-self-acceptance|pam kragen",
+   "label": "the-family-album-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/07/27/review-la-jolla-playhouses-family-album-a-heartbreaking-but-moving-musical-about-self-acceptance/"
+  },
+  {
+   "kind": "review",
+   "id": "the-family-album-regional-2026|https://www.talktheatretome.com/theatre/ljpthefamilyalbum|",
+   "label": "the-family-album-regional-2026 | Talk Theatre to Me",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.talktheatretome.com/theatre/ljpthefamilyalbum"
+  },
+  {
+   "kind": "review",
+   "id": "the-family-album-regional-2026|https://timesofsandiego.com/arts/2026/08/10/the-family-album-una-conmovedora-reflexion-sobre-la-familia-la-identidad-y-el-valor-de-encontrar-la-propia-voz|alejandro maciel",
+   "label": "the-family-album-regional-2026 | Times of San Diego",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://timesofsandiego.com/arts/2026/08/10/the-family-album-una-conmovedora-reflexion-sobre-la-familia-la-identidad-y-el-valor-de-encontrar-la-propia-voz/"
+  },
+  {
+   "kind": "review",
+   "id": "the-family-album-regional-2026|https://makaylahoppe.com/2026/08/01/the-family-album|makayla hoppe",
+   "label": "the-family-album-regional-2026 | To See or Not to See",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://makaylahoppe.com/2026/08/01/the-family-album/"
+  },
+  {
+   "kind": "review",
+   "id": "the-hombres-regional-2026|https://www.broadwayworld.com/san-diego/article/review-the-hombres-at-the-old-globe-20260606|erinmarie reiter",
+   "label": "the-hombres-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-THE-HOMBRES-at-The-Old-Globe-20260606"
+  },
+  {
+   "kind": "review",
+   "id": "the-hombres-regional-2026|https://www.sdjewishworld.com/2026/06/07/the-hombres-explores-masculinity|sandi masori",
+   "label": "the-hombres-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/06/07/the-hombres-explores-masculinity/"
+  },
+  {
+   "kind": "review",
+   "id": "the-hombres-regional-2026|https://sandiegostory.com/masculinity-explored-in-the-old-globes-thoughtful-play|david dixon",
+   "label": "the-hombres-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/masculinity-explored-in-the-old-globes-thoughtful-play/"
+  },
+  {
+   "kind": "review",
+   "id": "the-hombres-regional-2026|https://www.sandiegouniontribune.com/2026/06/05/review-hombres-explores-masculinity-with-poignancy-and-humor|pam kragen",
+   "label": "the-hombres-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/05/review-hombres-explores-masculinity-with-poignancy-and-humor/"
+  },
+  {
+   "kind": "review",
+   "id": "the-hombres-regional-2026|https://stageandcinema.com/2026/06/05/the-hombres-old-globe-review|milo shapiro",
+   "label": "the-hombres-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/06/05/the-hombres-old-globe-review/"
+  },
+  {
+   "kind": "review",
+   "id": "the-monsters-regional-2026|https://www.broadwayworld.com/san-diego/article/review-the-monsters-at-la-jolla-playhouse-20260606|erinmarie reiter",
+   "label": "the-monsters-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-THE-MONSTERS-at-La-Jolla-Playhouse-20260606"
+  },
+  {
+   "kind": "review",
+   "id": "the-monsters-regional-2026|https://www.sdjewishworld.com/2026/06/13/the-monsters-portrays-family-reconciliation|sandi masori",
+   "label": "the-monsters-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/06/13/the-monsters-portrays-family-reconciliation/"
+  },
+  {
+   "kind": "review",
+   "id": "the-monsters-regional-2026|https://www.sandiegouniontribune.com/2026/06/06/review-la-jolla-playhouses-mma-themed-monsters-is-a-winner|pam kragen",
+   "label": "the-monsters-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/06/review-la-jolla-playhouses-mma-themed-monsters-is-a-winner/"
+  },
+  {
+   "kind": "review",
+   "id": "the-monsters-regional-2026|https://timesofsandiego.com/arts/2026/06/05/la-jolla-playhouse-presenta-exitosamente-su-nueva-produccion-the-monsters-una-historia-de-hermanos-que-se-reconectan-a-traves-de-las-artes-marciales|alejandro maciel",
+   "label": "the-monsters-regional-2026 | Times of San Diego",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://timesofsandiego.com/arts/2026/06/05/la-jolla-playhouse-presenta-exitosamente-su-nueva-produccion-the-monsters-una-historia-de-hermanos-que-se-reconectan-a-traves-de-las-artes-marciales/"
+  },
+  {
+   "kind": "review",
+   "id": "the-most-happy-fella-regional-2026|https://www.broadwayworld.com/san-diego/article/review-the-most-happy-fella-at-north-coast-repertory-theatre-20260607|erinmarie reiter",
+   "label": "the-most-happy-fella-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-THE-MOST-HAPPY-FELLA-at-North-Coast-Repertory-Theatre-20260607"
+  },
+  {
+   "kind": "review",
+   "id": "the-most-happy-fella-regional-2026|https://culturevulture.net/theater/the-most-happy-fella|lynne friedmann",
+   "label": "the-most-happy-fella-regional-2026 | Culture Vulture",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://culturevulture.net/theater/the-most-happy-fella/"
+  },
+  {
+   "kind": "review",
+   "id": "the-most-happy-fella-regional-2026|https://www.sandiegouniontribune.com/2026/06/07/review-north-coast-reps-most-happy-fella-is-dated-but-well-staged|pam kragen",
+   "label": "the-most-happy-fella-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/07/review-north-coast-reps-most-happy-fella-is-dated-but-well-staged/"
+  },
+  {
+   "kind": "review",
+   "id": "the-rise-and-fall-of-little-voice-regional-2026|https://www.broadwayworld.com/san-diego/article/review-the-rise-fall-of-little-voice-at-backyard-renaissance-20260625|erinmarie reiter",
+   "label": "the-rise-and-fall-of-little-voice-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-THE-RISE-FALL-OF-LITTLE-VOICE-at-Backyard-Renaissance-20260625"
+  },
+  {
+   "kind": "review",
+   "id": "the-rise-and-fall-of-little-voice-regional-2026|https://www.sandiegouniontribune.com/2026/06/23/review-backyards-little-voice-dramedy-an-acting-showcase|pam kragen",
+   "label": "the-rise-and-fall-of-little-voice-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/23/review-backyards-little-voice-dramedy-an-acting-showcase/"
+  },
+  {
+   "kind": "review",
+   "id": "the-rise-and-fall-of-little-voice-regional-2026|https://stageandcinema.com/2026/06/21/rise-and-fall-of-little-voice-review-backyard-renaissance|milo shapiro",
+   "label": "the-rise-and-fall-of-little-voice-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/06/21/rise-and-fall-of-little-voice-review-backyard-renaissance/"
+  },
+  {
+   "kind": "review",
+   "id": "the-spongebob-musical-regional-2026|https://www.broadwayworld.com/san-diego/article/review-the-spongebob-musical-at-cygnet-theatre-20260619|erinmarie reiter",
+   "label": "the-spongebob-musical-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-THE-SPONGEBOB-MUSICAL-at-Cygnet-Theatre-20260619"
+  },
+  {
+   "kind": "review",
+   "id": "the-spongebob-musical-regional-2026|https://www.sdjewishworld.com/2026/06/15/cygnets-spongebob-musical-brings-bikini-bottom-to-the-stage|",
+   "label": "the-spongebob-musical-regional-2026 | San Diego Jewish World",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sdjewishworld.com/2026/06/15/cygnets-spongebob-musical-brings-bikini-bottom-to-the-stage/"
+  },
+  {
+   "kind": "review",
+   "id": "the-spongebob-musical-regional-2026|https://www.sandiegouniontribune.com/2026/06/15/review-cygnets-spongebob-musical-a-joyful-cartoon-come-to-life|pam kragen",
+   "label": "the-spongebob-musical-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/06/15/review-cygnets-spongebob-musical-a-joyful-cartoon-come-to-life/"
+  },
+  {
+   "kind": "review",
+   "id": "the-spongebob-musical-regional-2026|https://stageandcinema.com/2026/06/27/the-spongebob-musical-review-cygnet-theatre-san-diego|milo shapiro",
+   "label": "the-spongebob-musical-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/06/27/the-spongebob-musical-review-cygnet-theatre-san-diego/"
+  },
+  {
+   "kind": "review",
+   "id": "the-spongebob-musical-regional-2026|https://theatrereviewskurahashi.wordpress.com/2026/07/10/transforming-two-dimensional-figures-to-three-dimensional-live-characters-cygnet-theatres-the-spongebob-musical|yuko kurahashi",
+   "label": "the-spongebob-musical-regional-2026 | Theatre Reviews Kurahashi",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://theatrereviewskurahashi.wordpress.com/2026/07/10/transforming-two-dimensional-figures-to-three-dimensional-live-characters-cygnet-theatres-the-spongebob-musical/"
+  },
+  {
+   "kind": "review",
+   "id": "theatre-people-or-the-angel-next-door-regional-2026|https://fromanother0.com/theatre-people-or-the-angel-next-door-at-scripps-ranch|alejandra enciso",
+   "label": "theatre-people-or-the-angel-next-door-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/theatre-people-or-the-angel-next-door-at-scripps-ranch/"
+  },
+  {
+   "kind": "review",
+   "id": "theatre-people-or-the-angel-next-door-regional-2026|https://sandiegostory.com/plenty-of-laughter-at-scripps-ranch-theatre|david dixon",
+   "label": "theatre-people-or-the-angel-next-door-regional-2026 | San Diego Story",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sandiegostory.com/plenty-of-laughter-at-scripps-ranch-theatre/"
+  },
+  {
+   "kind": "review",
+   "id": "theatre-people-or-the-angel-next-door-regional-2026|https://www.sandiegouniontribune.com/2026/09/01/review-scripps-ranch-theatres-people-delivers-fast-paced-fun|pam kragen",
+   "label": "theatre-people-or-the-angel-next-door-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/09/01/review-scripps-ranch-theatres-people-delivers-fast-paced-fun/"
+  },
+  {
+   "kind": "review",
+   "id": "theatre-people-or-the-angel-next-door-regional-2026|https://stageandcinema.com/2026/09/04/theatre-people-scripps-ranch-theatre-review|milo shapiro",
+   "label": "theatre-people-or-the-angel-next-door-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/09/04/theatre-people-scripps-ranch-theatre-review/"
+  },
+  {
+   "kind": "review",
+   "id": "topdog-underdog-old-regional-2026|https://culturevulture.net/theater/topdog-underdog-old-globe-theatre-san-diego|josh baxt",
+   "label": "topdog-underdog-old-regional-2026 | Culture Vulture",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://culturevulture.net/theater/topdog-underdog-old-globe-theatre-san-diego/"
+  },
+  {
+   "kind": "review",
+   "id": "topdog-underdog-old-regional-2026|https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces|pam kragen",
+   "label": "topdog-underdog-old-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces/"
+  },
+  {
+   "kind": "review",
+   "id": "topdog-underdog-old-regional-2026|https://stageandcinema.com/2026/10/05/topdog-underdog-old-globe|jason mannino",
+   "label": "topdog-underdog-old-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/10/05/topdog-underdog-old-globe/"
+  },
+  {
+   "kind": "review",
+   "id": "we-will-rock-you-regional-2026|https://www.broadwayworld.com/san-diego/article/review-we-will-rock-you-at-new-village-arts-20260818|erinmarie reiter",
+   "label": "we-will-rock-you-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/san-diego/article/Review-WE-WILL-ROCK-YOU-at-New-Village-Arts-20260818"
+  },
+  {
+   "kind": "review",
+   "id": "we-will-rock-you-regional-2026|https://fromanother0.com/new-village-arts-welcomes-the-25th-anniversary-season-with-the-west-ends-we-will-rock-you|alejandra enciso",
+   "label": "we-will-rock-you-regional-2026 | From Another Zero",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://fromanother0.com/new-village-arts-welcomes-the-25th-anniversary-season-with-the-west-ends-we-will-rock-you/"
+  },
+  {
+   "kind": "review",
+   "id": "we-will-rock-you-regional-2026|https://www.sandiegouniontribune.com/2026/08/16/review-with-queen-musical-come-for-the-music-not-the-script|pam kragen",
+   "label": "we-will-rock-you-regional-2026 | San Diego Union-Tribune",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.sandiegouniontribune.com/2026/08/16/review-with-queen-musical-come-for-the-music-not-the-script/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "San Diego Theatre Critics Circle / Eli Ander-Biegelsen 2026-07-29 https://www.sdcriticscircle.org/reviewers-of-tomorrow-alumni-reviews/thezfamilyalbumljp"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "San Diego Jewish World / Sandi Masori 2026-08-04 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFuJ_-uEx7Q6t3AGI7C18BQJigTIkXl5ZBOW_UhhlHKb1BkWhaWeH9gBvyBR8fL7dl43KrP471T5oh_YvShh8wNt6mqvC4HAzxg1l644cwH0XeUZgD2ADNa46X9GY1LljshCxJywwTvSDb9Za9Y17Sd2ptkf105QeXVEFbUcGAwzvXCXEaa6DLUPIwRci-hxiT8CPQ2WAkeoYxxwTKErlgUX18dwU="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The San Diego Voice & Viewpoint / Barbara Smith 2026-08-13 https://sdvoice.info/the-family-albums-focus-on-home/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage West / David Coddon 2026-08-13 http://www.davidcoddon.com/theatre-reviews.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Behind's Substack / Behind The Encore 2026-08-04 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH-Cy8cvXPjpbinnL7nuOZq3kWRTPVrHLL1F_V38b0JUs-jM07kPnO37BtShrcbjIIv46bLxbHR0U-UZQBiArYbbxgLkJNHOz87H99F-5HmhjtsaHKaHpJ0CIdndjc3csFHCSnYG6Y11TSNPndUAqroRZMgQsVPoWaz5FiKp7KdIFrekyw="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Talk Theatre to Me / ErinMarie Reiter 2026-08-23 https://butterfly-hexagon-abdg.squarespace.com/theatre/tag/Review"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Music Connection Magazine / Andrea Beenham 2026-07-28 https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "San Diego Jewish World / Sandi Masori 2026-08-04 https://www.sdjewishworld.com/2026/08/04/asian-american-family-dynamics-resemble-those-of-jewish-americans/"
+  },
+  {
+   "kind": "coverage",
+   "id": "begin-again-regional-2026",
+   "label": "Begin Again",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "From Another Zero / Alejandra Enciso 2026-09-20 https://fromanotherzero.com/2026/09/20/the-broadway-bound-begin-again-premieres-at-the-old-globe/"
+  },
+  {
+   "kind": "coverage",
+   "id": "begin-again-regional-2026",
+   "label": "Begin Again",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "KR Headtopics (syndicated republish of San Diego Union-Tribune review) / Pam Kragen 2026-09-19 https://kr.headtopics.com/news/review-old-globe-s-magic-filled-begin-again-is-tuneful-87898550"
+  },
+  {
+   "kind": "coverage",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Carol's Theatre Reviews ~ It's Fun To Go Out /  2026-06-23 https://gilatwo.blogspot.com/2026/06/?m=0"
+  },
+  {
+   "kind": "coverage",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Talk Theatre to Me / ErinMarie Reiter 2026-06-18 https://www.talktheatretome.com/theatre/nvahairspray"
+  },
+  {
+   "kind": "coverage",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage West (David Coddon) / David Coddon 2026-06-19 https://www.davidcoddon.com/theatre-reviews/archives/06-2026"
+  },
+  {
+   "kind": "coverage",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "HeadTopics (mirror of San Diego Union-Tribune content) /  2026-06-16 https://us.headtopics.com/news/review-new-village-s-hairspray-is-fun-but-uneven-84577484"
+  }
+ ]
+}

@@ -1,0 +1,595 @@
+{
+  "issueNumber": "bro-5268",
+  "planId": "bd01614c-4db0-42bc-ac6c-269b47f9253d",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5268: cite trade/producer reports for recoupment outcomes on smash-2025, tammy-faye-2024, boop, death-becomes-her, suffs, bob-fosses-dancin-2023, paradise-square-2022, once-upon-a-one-more-time",
+    "steps": [
+      "Apply each commercial.json data-edit (compare-and-set on oldValue)",
+      "Each citation was read on the article page; excerpts are at most 15 quoted words"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "smash-2025",
+        "showId": "smash-2025",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "smash-2025: NYT: closed at a total loss of its investment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "smash-2025",
+        "showId": "smash-2025",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Sep 22, 2025, by Michael Paulson; syndicated by Boston.com) reported Tammy Faye, Boop! and Smash each closed at a loss to investors: \"All three lost their entire investments.\" https://www.boston.com/culture/arts/2025/09/23/the-broadway-musical-is-in-trouble/",
+        "description": "smash-2025: NYT: closed at a total loss of its investment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "smash-2025",
+        "showId": "smash-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1995780/000199578025000002/primary_doc.xml",
+            "date": "2025-06-04"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1995780/000199578025000002/primary_doc.xml",
+            "date": "2025-06-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.boston.com/culture/arts/2025/09/23/the-broadway-musical-is-in-trouble/",
+            "date": "2025-09-22",
+            "excerpt": "All three lost their entire investments."
+          }
+        ],
+        "description": "smash-2025: NYT: closed at a total loss of its investment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tammy-faye-2024",
+        "showId": "tammy-faye-2024",
+        "field": "recoupedSource",
+        "oldValue": "NY Times states all three shows (Tammy Faye, Boop!, Smash) lost their entire investments",
+        "newValue": "The New York Times (Sep 22, 2025, by Michael Paulson; syndicated by Boston.com) reported Tammy Faye, Boop! and Smash each closed at a loss to investors: \"All three lost their entire investments.\" https://www.boston.com/culture/arts/2025/09/23/the-broadway-musical-is-in-trouble/",
+        "description": "tammy-faye-2024: NYT: closed at a total loss of its investment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tammy-faye-2024",
+        "showId": "tammy-faye-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+            "date": "2024-10-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+            "date": "2024-10-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.boston.com/culture/arts/2025/09/23/the-broadway-musical-is-in-trouble/",
+            "date": "2025-09-22",
+            "excerpt": "All three lost their entire investments."
+          }
+        ],
+        "description": "tammy-faye-2024: NYT: closed at a total loss of its investment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          0,
+          10
+        ],
+        "newValue": [
+          0,
+          0
+        ],
+        "description": "boop: NYT: investors lost their entire investment (0% returned)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": "GPT DR: Investors lost ~80-100% of capital. Rarely grossed above $700K vs $750K nut.",
+        "newValue": "The New York Times (Sep 22, 2025, by Michael Paulson; syndicated by Boston.com) reported Tammy Faye, Boop! and Smash investors lost 100% of their money: \"All three lost their entire investments.\" https://www.boston.com/culture/arts/2025/09/23/the-broadway-musical-is-in-trouble/",
+        "description": "boop: NYT: investors lost their entire investment (0% returned)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": "2026-02-03",
+        "newValue": "2025-09-22",
+        "description": "boop: NYT: investors lost their entire investment (0% returned)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/legit/news/broadway-boop-musical-closing-date-1236440762/",
+            "date": "2025-06-25"
+          },
+          {
+            "type": "trade",
+            "url": "http://www.steveumberger.com/p/notes_12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.facebook.com/MusicalsDaily/posts/its-bleak-for-new-musicals-on-broadway-right-nownot-one-of-the-18-new-musicals-f/1413758824086742/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/06/boop-the-musical-broadway-closing-1236442740/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/legit/news/broadway-boop-musical-closing-date-1236440762/",
+            "date": "2025-06-25"
+          },
+          {
+            "type": "trade",
+            "url": "http://www.steveumberger.com/p/notes_12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.facebook.com/MusicalsDaily/posts/its-bleak-for-new-musicals-on-broadway-right-nownot-one-of-the-18-new-musicals-f/1413758824086742/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/06/boop-the-musical-broadway-closing-1236442740/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.boston.com/culture/arts/2025/09/23/the-broadway-musical-is-in-trouble/",
+            "date": "2025-09-22",
+            "excerpt": "All three lost their entire investments."
+          }
+        ],
+        "description": "boop: NYT: investors lost their entire investment (0% returned)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          70,
+          80
+        ],
+        "newValue": [
+          0,
+          0
+        ],
+        "description": "death-becomes-her: Broadway Journal: total loss to investors as of early Feb 2026 (AG filing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": "Deep Research Jan 2026: $63M+ gross - ~$45M costs = ~$18M profit toward $31.5M cap (57-73%)",
+        "newValue": "Broadway Journal (Aug 12, 2026) reported the $31.5 million production \"resulted in a total loss to investors as of early February 2026,\" citing a financial statement filed with the New York attorney general, so investors had recouped 0% at that date. https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+        "description": "death-becomes-her: Broadway Journal: total loss to investors as of early Feb 2026 (AG filing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": "2026-01-28",
+        "newValue": "2026-02-01",
+        "description": "death-becomes-her: Broadway Journal: total loss to investors as of early Feb 2026 (AG filing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "notes",
+        "oldValue": "Most expensive show of 2024-2025 season. Grossed $63M+ in 46 weeks with $1.0-1.1M weekly costs. On track to recoup Spring 2026. Eligible for $3M NY tax credit (25% of costs up to $12M). Break-even ~$1.2M weekly. [Merged from duplicate death-becomes-her-2024 entry: High-budget musical ($31.5M) that opened November 2024 and is described as one of the major commercial successes of the season thus far, but insufficient data on recoupment status]",
+        "newValue": "Most expensive show of 2024-2025 season. Grossed $63M+ in 46 weeks with $1.0-1.1M weekly costs. Closed June 2026; Broadway Journal (Aug 12, 2026) reported a total loss to investors as of early February 2026. Eligible for $3M NY tax credit (25% of costs up to $12M). Break-even ~$1.2M weekly. [Merged from duplicate death-becomes-her-2024 entry: High-budget musical ($31.5M) that opened November 2024 and is described as one of the major commercial successes of the season thus far, but insufficient data on recoupment status]",
+        "description": "death-becomes-her: Broadway Journal: total loss to investors as of early Feb 2026 (AG filing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+            "date": "2025-01-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+            "date": "2024-10-24"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+            "date": "2025-01-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+            "date": "2024-10-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+            "date": "2026-08-12",
+            "excerpt": "resulted in a total loss to investors as of early February 2026"
+          }
+        ],
+        "description": "death-becomes-her: Broadway Journal: total loss to investors as of early Feb 2026 (AG filing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "showId": "suffs",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "The New York Times, as relayed by Fox News (Oct 13, 2024), reported the $19 million production had not recouped when it announced its closing: \"it has not recouped that amount\" https://www.foxnews.com/media/hillary-clinton-produced-feminist-musical-end-broadway-run-due-money-issues-report",
+        "description": "suffs: NYT (via Fox News): had not recouped at its closing announcement"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "showId": "suffs",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1953229/000195322924000001/primary_doc.xml",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1953229/000195322924000001/primary_doc.xml",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.foxnews.com/media/hillary-clinton-produced-feminist-musical-end-broadway-run-due-money-issues-report",
+            "date": "2024-10-13",
+            "excerpt": "it has not recouped that amount"
+          }
+        ],
+        "description": "suffs: NYT (via Fox News): had not recouped at its closing announcement"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "showId": "bob-fosses-dancin-2023",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "bob-fosses-dancin-2023: Broadway Journal: a backer got back about 10%"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "showId": "bob-fosses-dancin-2023",
+        "field": "recoupedSource",
+        "oldValue": "Federal judge ordered producer Joey Parnes to pay more than $200,000 owed to designers, indicating financial difficulties",
+        "newValue": "Broadway Journal (May 29, 2025) reported a loss to investors; one backer said he: \"retrieved about 10 percent of his money, due to the tax credit.\" https://broadwayjournal.com/dancin-designers-due-more-than-200000/",
+        "description": "bob-fosses-dancin-2023: Broadway Journal: a backer got back about 10%"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "showId": "bob-fosses-dancin-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaystars.com/news/2010/index.php?author=Philip+Boroff",
+            "date": "2025-05-16"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.thewrap.com/bob-fosse-dancin-broadway-review/",
+            "date": "2023-03-20"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2023/legit/reviews/dancin-review-broadway-1235559028/",
+            "date": "2023-12-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaystars.com/news/2010/index.php?author=Philip+Boroff",
+            "date": "2025-05-16"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.thewrap.com/bob-fosse-dancin-broadway-review/",
+            "date": "2023-03-20"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2023/legit/reviews/dancin-review-broadway-1235559028/",
+            "date": "2023-12-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwayjournal.com/dancin-designers-due-more-than-200000/",
+            "date": "2025-05-29",
+            "excerpt": "retrieved about 10 percent of his money, due to the tax credit."
+          }
+        ],
+        "description": "bob-fosses-dancin-2023: Broadway Journal: a backer got back about 10%"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "paradise-square-2022: TheaterMania: closed without recouping its $15M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "TheaterMania (Dec 22, 2022) reported it closed without recouping: \"failing to recoup the $15 million investment for which it was capitalized.\" https://www.theatermania.com/broadway/news/broadway-shockers-2022-garth-drabinsky-sues-equity_94683.html",
+        "description": "paradise-square-2022: TheaterMania: closed without recouping its $15M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-paradise-square-to-close-after-tony-win-1235178082/",
+            "date": "2022-07-11"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-paradise-square-to-close-after-tony-win-1235178082/",
+            "date": "2022-07-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/broadway/news/broadway-shockers-2022-garth-drabinsky-sues-equity_94683.html",
+            "date": "2022-12-22",
+            "excerpt": "failing to recoup the $15 million investment for which it was capitalized."
+          }
+        ],
+        "description": "paradise-square-2022: TheaterMania: closed without recouping its $15M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-one-more-time",
+        "showId": "once-upon-a-one-more-time",
+        "field": "recoupedSource",
+        "oldValue": "Broadway Journal reported it closed 'at a substantial loss' with weekly box office averaging less than $600K against $900K breakeven",
+        "newValue": "Broadway Journal (Aug 25, 2023) reported it would close at a loss to investors: \"will close Sept. 3, at a substantial loss of its $20 million capitalization\" https://www.broadwayjournal.com/p/solo-shows-deliver-as-aspiring-blockbusters-struggle",
+        "description": "once-upon-a-one-more-time: Broadway Journal: closed at a substantial loss"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T16:39:43.001Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for smash-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for smash-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for smash-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for tammy-faye-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for tammy-faye-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for once-upon-a-one-more-time"
+    }
+  ]
+}

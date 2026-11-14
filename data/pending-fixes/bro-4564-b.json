@@ -1,0 +1,230 @@
+{
+  "issueNumber": "bro-4564-b",
+  "planId": "0d64fc1a-83d6-4c92-a6bb-ce0c1921c594",
+  "status": "applied",
+  "createdAt": "2026-10-14T05:52:15.808Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Restore 5 reviews excluded as not-a-review or wrong-show on a cut-off fetch (BRO-4564): camelot-2023, come-from-away-2017, dana-h-2021, dracula-west-end-2025, hamilton-2015.",
+    "steps": [
+      "Set the human-clear markers and clear wrongShow / isNonReview / rejectionReason on each file, so the rebuild stops re-promoting the truncated-fetch verdict."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "camelot-2023/wsj--charles-isherwood.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The not-a-review / wrong-show verdict was judged on a cut-off fetch (the verifier or classifier saw only the lede, a paywall stub, or page chrome) of a review-shaped url inside the production run (BRO-4564, same class as BRO-4563)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "camelot-2023/wsj--charles-isherwood.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the truncated-fetch wrongShow (marker set above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "camelot-2023/wsj--charles-isherwood.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-from-away-2017/thestage--mark-shenton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The not-a-review / wrong-show verdict was judged on a cut-off fetch (the verifier or classifier saw only the lede, a paywall stub, or page chrome) of a review-shaped url inside the production run (BRO-4564, same class as BRO-4563)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-from-away-2017/thestage--mark-shenton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the truncated-fetch isNonReview (marker set above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-from-away-2017/thestage--mark-shenton.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-from-away-2017/thestage--mark-shenton.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "The rejection came from the same truncated-fetch verdict."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dana-h-2021/wsj--terry-teachout.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The not-a-review / wrong-show verdict was judged on a cut-off fetch (the verifier or classifier saw only the lede, a paywall stub, or page chrome) of a review-shaped url inside the production run (BRO-4564, same class as BRO-4563)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dana-h-2021/wsj--terry-teachout.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the truncated-fetch wrongShow (marker set above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dana-h-2021/wsj--terry-teachout.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dracula-west-end-2025/times-uk--clive-davis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The not-a-review / wrong-show verdict was judged on a cut-off fetch (the verifier or classifier saw only the lede, a paywall stub, or page chrome) of a review-shaped url inside the production run (BRO-4564, same class as BRO-4563)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dracula-west-end-2025/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the truncated-fetch wrongShow (marker set above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dracula-west-end-2025/times-uk--clive-davis.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/nyt-theater--jonathan-mandell.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The not-a-review / wrong-show verdict was judged on a cut-off fetch (the verifier or classifier saw only the lede, a paywall stub, or page chrome) of a review-shaped url inside the production run (BRO-4564, same class as BRO-4563)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/nyt-theater--jonathan-mandell.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the truncated-fetch wrongShow (marker set above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/nyt-theater--jonathan-mandell.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T07:38:16.478Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camelot-2023/wsj--charles-isherwood.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camelot-2023/wsj--charles-isherwood.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camelot-2023/wsj--charles-isherwood.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/thestage--mark-shenton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/thestage--mark-shenton.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/thestage--mark-shenton.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/thestage--mark-shenton.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dana-h-2021/wsj--terry-teachout.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dana-h-2021/wsj--terry-teachout.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dana-h-2021/wsj--terry-teachout.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dracula-west-end-2025/times-uk--clive-davis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dracula-west-end-2025/times-uk--clive-davis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dracula-west-end-2025/times-uk--clive-davis.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/nyt-theater--jonathan-mandell.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/nyt-theater--jonathan-mandell.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/nyt-theater--jonathan-mandell.json wrongArticleManualClear: null -> true"
+    }
+  ]
+}

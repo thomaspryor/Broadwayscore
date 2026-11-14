@@ -1,0 +1,324 @@
+{
+  "issueNumber": "bro-4317-b-06",
+  "planId": "532e98af-9222-45ac-9c65-aede66a5e56b",
+  "status": "applied",
+  "createdAt": "2026-10-13T01:56:27.498Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 6/9: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete the-unknown-2026/theatermania--zachary-stewart.json",
+      "delete the-waterfall-2026/lighting-and-sound-america--david-barbour.json",
+      "delete the-waterfall-2026/off-off-online--adrienne-onofri.json",
+      "delete this-is-my-favorite-song-2024/lighting-and-sound-america--david-barbour.json",
+      "delete touch-2026/blogcritics--jon-sobel.json",
+      "delete touch-2026/broadwayworld--marina-kennedy.json",
+      "delete touch-2026/epoch-times--judd-hollander.json",
+      "delete touch-2026/plays-to-see--austin-fimmano.json",
+      "delete touch-2026/talkinbroadway--howard-miller.json",
+      "delete touch-2026/theater-pizzazz--beatrice-williams-rude.json",
+      "delete touch-2026/theater-scene--victor-gluck.json",
+      "delete ulysses-2026/culturesauce--thom-geier.json",
+      "delete ulysses-2026/lighting-and-sound-america--david-barbour.json",
+      "delete ulysses-2026/off-off-online--charles-wright.json",
+      "delete ulysses-2026/theatre-reviews-limited--david-roberts.json",
+      "move data-2026/the-interested-bystander--cary-wong.json -> data-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "delete kinky-boots-2026/royberkinfo--roy-berko.json",
+      "move motherfucker-off-broadway-2026/_blocklist.json -> jena-friedman-motherfucker-off-broadway-2026/_blocklist.json",
+      "delete motherfucker-off-broadway-2026/ticketsmarter--unknown.json",
+      "delete the-choir-of-man-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+      "delete the-choir-of-man-west-end-2026/everything-theatre--rob-warren.json",
+      "delete the-choir-of-man-west-end-2026/shy-strange-manic--kariss-ainsworth.json",
+      "delete the-choir-of-man-west-end-2026/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+      "delete the-choir-of-man-west-end-2026/west-end-best-friend--natalie-pedro.json",
+      "move the-play-that-goes-wrong-2019/front-row-center--stanford-friedman.json -> the-play-that-goes-wrong-off-broadway-2019/front-row-center--stanford-friedman.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-unknown-2026/theatermania--zachary-stewart.json",
+        "description": "same-url copy already in the-unknown-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-waterfall-2026/lighting-and-sound-america--david-barbour.json",
+        "description": "same-url copy already in the-waterfall-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-waterfall-2026/off-off-online--adrienne-onofri.json",
+        "description": "same-url copy already in the-waterfall-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "this-is-my-favorite-song-2024/lighting-and-sound-america--david-barbour.json",
+        "description": "same-url copy already in this-is-my-favorite-song-off-broadway-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "touch-2026/blogcritics--jon-sobel.json",
+        "description": "same-url copy already in touch-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "touch-2026/broadwayworld--marina-kennedy.json",
+        "description": "same-url copy already in touch-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "touch-2026/epoch-times--judd-hollander.json",
+        "description": "same-url copy already in touch-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "touch-2026/plays-to-see--austin-fimmano.json",
+        "description": "same-url copy already in touch-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "touch-2026/talkinbroadway--howard-miller.json",
+        "description": "same-url copy already in touch-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "touch-2026/theater-pizzazz--beatrice-williams-rude.json",
+        "description": "same-url copy already in touch-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "touch-2026/theater-scene--victor-gluck.json",
+        "description": "same-url copy already in touch-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ulysses-2026/culturesauce--thom-geier.json",
+        "description": "same-url copy already in ulysses-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ulysses-2026/lighting-and-sound-america--david-barbour.json",
+        "description": "same-url copy already in ulysses-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ulysses-2026/off-off-online--charles-wright.json",
+        "description": "same-url copy already in ulysses-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ulysses-2026/theatre-reviews-limited--david-roberts.json",
+        "description": "same-url copy already in ulysses-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "data-2026/the-interested-bystander--cary-wong.json",
+        "destPath": "data-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "description": "date in data-off-broadway-2026 run; market-dropped twin folder"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/royberkinfo--roy-berko.json",
+        "description": "0-text stub, Sept 2015 regional tour review, no tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "motherfucker-off-broadway-2026/_blocklist.json",
+        "destPath": "jena-friedman-motherfucker-off-broadway-2026/_blocklist.json",
+        "description": "blocklist belongs with the renamed show id"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "motherfucker-off-broadway-2026/ticketsmarter--unknown.json",
+        "description": "ticket listing page, not a review; twin already holds one"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-choir-of-man-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+        "description": "0-text stub, 2022-23 Arts Theatre run; no tracked production (2026 Wimbledon/Marble Arch rows do not cover it)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-choir-of-man-west-end-2026/everything-theatre--rob-warren.json",
+        "description": "0-text stub, 2022-23 Arts Theatre run; no tracked production (2026 Wimbledon/Marble Arch rows do not cover it)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-choir-of-man-west-end-2026/shy-strange-manic--kariss-ainsworth.json",
+        "description": "0-text stub, 2022-23 Arts Theatre run; no tracked production (2026 Wimbledon/Marble Arch rows do not cover it)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-choir-of-man-west-end-2026/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+        "description": "0-text stub, 2022-23 Arts Theatre run; no tracked production (2026 Wimbledon/Marble Arch rows do not cover it)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-choir-of-man-west-end-2026/west-end-best-friend--natalie-pedro.json",
+        "description": "0-text stub, 2022-23 Arts Theatre run; no tracked production (2026 Wimbledon/Marble Arch rows do not cover it)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/front-row-center--stanford-friedman.json",
+        "destPath": "the-play-that-goes-wrong-off-broadway-2019/front-row-center--stanford-friedman.json",
+        "description": "publishDate Feb 21 2019, 10d after off-Broadway opening 2019-02-11"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:35:53.191Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-unknown-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-waterfall-2026/lighting-and-sound-america--david-barbour.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-waterfall-2026/off-off-online--adrienne-onofri.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted this-is-my-favorite-song-2024/lighting-and-sound-america--david-barbour.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted touch-2026/blogcritics--jon-sobel.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted touch-2026/broadwayworld--marina-kennedy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted touch-2026/epoch-times--judd-hollander.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted touch-2026/plays-to-see--austin-fimmano.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted touch-2026/talkinbroadway--howard-miller.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted touch-2026/theater-pizzazz--beatrice-williams-rude.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted touch-2026/theater-scene--victor-gluck.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ulysses-2026/culturesauce--thom-geier.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ulysses-2026/lighting-and-sound-america--david-barbour.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ulysses-2026/off-off-online--charles-wright.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ulysses-2026/theatre-reviews-limited--david-roberts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved data-2026/the-interested-bystander--cary-wong.json → data-off-broadway-2026/the-interested-bystander--cary-wong.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/royberkinfo--roy-berko.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved motherfucker-off-broadway-2026/_blocklist.json → jena-friedman-motherfucker-off-broadway-2026/_blocklist.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted motherfucker-off-broadway-2026/ticketsmarter--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-choir-of-man-west-end-2026/all-that-dazzles-uk--daz-gale.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-choir-of-man-west-end-2026/everything-theatre--rob-warren.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-choir-of-man-west-end-2026/shy-strange-manic--kariss-ainsworth.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-choir-of-man-west-end-2026/tim-talks-theatre-uk--tim-talks-theatre-uk.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-choir-of-man-west-end-2026/west-end-best-friend--natalie-pedro.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/front-row-center--stanford-friedman.json → the-play-that-goes-wrong-off-broadway-2019/front-row-center--stanford-friedman.json"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "generatedAt": "2026-11-14T09:34:06.120Z",
+  "apply": true,
+  "auditGeneratedAt": "2026-11-14T09:27:59.308Z",
+  "counts": {
+    "bounce:recheck-after-pending": 3,
+    "bounce:no-auto-worker": 3,
+    "bounce:recent-activity": 1,
+    "no-landing-naming-card": 1,
+    "recent-activity": 6,
+    "closed": 2,
+    "no-commit-naming-card-touched-test": 1,
+    "sweep:eligible": 1,
+    "sweep:no-evidence": 1,
+    "backlog:skip:not-a-single-test-file": 5,
+    "backlog:state-Paused": 6,
+    "backlog:recent-activity": 2,
+    "backlog:no-commit-finishing-card-touched-test": 1
+  },
+  "rows": [
+    {
+      "id": "BRO-7204",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recheck-after-pending"
+    },
+    {
+      "id": "BRO-6571",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recheck-after-pending"
+    },
+    {
+      "id": "BRO-6121",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-7404",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-7390",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recheck-after-pending"
+    },
+    {
+      "id": "BRO-7357",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-7328",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-7268",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-landing-naming-card"
+    },
+    {
+      "id": "BRO-7213",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-7182",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6762",
+      "state": "In Progress",
+      "action": "closed",
+      "sha": "5ceef1d2a9b865a0f512eba60c58e5861518d6c9"
+    },
+    {
+      "id": "BRO-6625",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-commit-naming-card-touched-test"
+    },
+    {
+      "id": "BRO-7467",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-7447",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-7445",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-7442",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-7411",
+      "state": "In Review",
+      "action": "closed",
+      "sha": "c15c97313057ca9d63c1b6fc25f14857ac421bef"
+    },
+    {
+      "id": "BRO-6452",
+      "state": "In Review",
+      "action": "sweep-leave",
+      "reason": "no-evidence"
+    },
+    {
+      "id": "BRO-7443",
+      "state": "Paused",
+      "action": "backlog-leave",
+      "reason": "state-Paused"
+    },
+    {
+      "id": "BRO-7417",
+      "state": "Paused",
+      "action": "backlog-leave",
+      "reason": "state-Paused"
+    },
+    {
+      "id": "BRO-7397",
+      "state": "Paused",
+      "action": "backlog-leave",
+      "reason": "state-Paused"
+    },
+    {
+      "id": "BRO-7393",
+      "state": "Todo",
+      "action": "backlog-leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-7374",
+      "state": "Todo",
+      "action": "backlog-leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-7329",
+      "state": "Paused",
+      "action": "backlog-leave",
+      "reason": "state-Paused"
+    },
+    {
+      "id": "BRO-7325",
+      "state": "Todo",
+      "action": "backlog-leave",
+      "reason": "no-commit-finishing-card-touched-test"
+    },
+    {
+      "id": "BRO-7324",
+      "state": "Paused",
+      "action": "backlog-leave",
+      "reason": "state-Paused"
+    },
+    {
+      "id": "BRO-7281",
+      "state": "Paused",
+      "action": "backlog-leave",
+      "reason": "state-Paused"
+    }
+  ],
+  "backlogSweepGeneratedAt": "2026-11-14T09:27:50.415Z"
+}

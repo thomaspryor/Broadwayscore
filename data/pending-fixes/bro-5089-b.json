@@ -1,0 +1,497 @@
+{
+  "issueNumber": "bro-5089-b",
+  "planId": "4655899d-d5b7-436b-89ba-d0b75f0e374f",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.559Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 2/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-raisin-in-the-sun-2014",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-raisin-in-the-sun-2014/hero.webp",
+          "thumbnail": "/images/shows/a-raisin-in-the-sun-2014/thumbnail.webp",
+          "poster": "/images/shows/a-raisin-in-the-sun-2014/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-raisin-in-the-sun-2014: poster, thumbnail and hero cleared, other-production: Poster includes the word 'PUBLIC.' (The Public Theater), indicating a Public Theater staging rather than the Ethel Barrymore Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-raisin-in-the-sun-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1LtUQTalA8ESXXZWpxgpEY/2d94286cb48355fc47ffc5da1ebf5f69/2223Public_Raisin_todaytix_V1_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1LtUQTalA8ESXXZWpxgpEY/2d94286cb48355fc47ffc5da1ebf5f69/2223Public_Raisin_todaytix_V1_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1LtUQTalA8ESXXZWpxgpEY/2d94286cb48355fc47ffc5da1ebf5f69/2223Public_Raisin_todaytix_V1_480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-raisin-in-the-sun-2014: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "richard-iii-2013",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/richard-iii-2013/hero.webp",
+          "thumbnail": "/images/shows/richard-iii-2013/thumbnail.webp",
+          "poster": "/images/shows/richard-iii-2013/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "richard-iii-2013: poster, thumbnail and hero cleared, other-production: Poster text reads 'THE PUBLIC.' and 'FREE SHAKESPEARE IN THE PARK', indicating the Public Theater/Free Shakespeare in the Park staging rather than the Belasco Broadway production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "richard-iii-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1Au5v2bOpY4gqHduPEIlrz/382db9b435902719dafedb04cd103f06/22SITP_TodayTix_V1_480x720RIII.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1Au5v2bOpY4gqHduPEIlrz/382db9b435902719dafedb04cd103f06/22SITP_TodayTix_V1_480x720RIII.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1Au5v2bOpY4gqHduPEIlrz/382db9b435902719dafedb04cd103f06/22SITP_TodayTix_V1_480x720RIII.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "richard-iii-2013: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ann-2013",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ann-2013/thumbnail.jpg",
+          "poster": "/images/shows/ann-2013/poster.webp",
+          "hero": "/images/shows/ann-2013/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/ann-2013/hero.webp"
+        },
+        "description": "ann-2013: poster and thumbnail cleared, wrong-show: The image text reads 'SYMPHONY SPACE', 'SELECTED SHORTS' and 'A Passport to Ireland with Colum McCann' (not the play title 'Ann' or Vivian Beaumont Theatre). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ann-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6UMd8IFp4uJIrBqy5I8Dnc/30ecbc408fc53632df2768f46f40cee5/Mccann_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6BL51oIsc8vlxpEWvMgyVO/b3aea1fd2b31af272ccdc75d25c7756e/McCann_TodayTix_Name_1080x1080.png?fm=webp&q=90"
+        ],
+        "description": "ann-2013: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "picnic-2013",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/picnic-2013/thumbnail.jpg",
+          "poster": "/images/shows/picnic-2013/poster.webp",
+          "hero": "/images/shows/picnic-2013/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/picnic-2013/hero.webp"
+        },
+        "description": "picnic-2013: poster and thumbnail cleared, wrong-show: Poster text reads 'PICNIC AT HANGING ROCK — THE MUSICAL' and 'Based on the novel by JOAN LINDSAY', which is a different work than William Inge's 'Picnic' produced at Todd Haimes Theatre (2012–2013). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "picnic-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3Rad4H1WUVeProUXCBZiDF/05e7e5eeffc23aeb9c896b683dff6a05/251028_PAHR_TodayTix_480x720_JK.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3Rad4H1WUVeProUXCBZiDF/05e7e5eeffc23aeb9c896b683dff6a05/251028_PAHR_TodayTix_480x720_JK.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "picnic-2013: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-story-the-musical-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-christmas-story-the-musical-2012/thumbnail.jpg",
+          "poster": "/images/shows/a-christmas-story-the-musical-2012/poster.webp",
+          "hero": "/images/shows/a-christmas-story-the-musical-2012/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/a-christmas-story-the-musical-2012/hero.webp"
+        },
+        "description": "a-christmas-story-the-musical-2012: poster and thumbnail cleared, wrong-show: The poster text reads \"A Christmas Carol the Musical\", not \"A Christmas Story The Musical\". (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-story-the-musical-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/VERZGk5SdoCzcvqIvkIsb/b9301d5f69489125fd8ceb7ebe6aa208/Poster_480x720_2025.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/VERZGk5SdoCzcvqIvkIsb/b9301d5f69489125fd8ceb7ebe6aa208/Poster_480x720_2025.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "a-christmas-story-the-musical-2012: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-2013",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/twelfth-night-2013/hero.webp",
+          "thumbnail": "/images/shows/twelfth-night-2013/thumbnail.webp",
+          "poster": "/images/shows/twelfth-night-2013/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/twelfth-night-2013/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "twelfth-night-2013: poster and thumbnail cleared, other-production: Poster text includes 'PUBLIC' and 'FREE SHAKESPEARE' (and 'FREE SHAKESPEARE' surrounding 'TWELFTH NIGHT'), indicating the Public Theater/Free Shakespeare in the Park production rather than the Belasco Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/DiPuMMW2mXTjBr4qJvjzZ/981ce680ce64ffb25193bba38c7d05f0/25SITP_12N_todaytix_V1_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/DiPuMMW2mXTjBr4qJvjzZ/981ce680ce64ffb25193bba38c7d05f0/25SITP_12N_todaytix_V1_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "twelfth-night-2013: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "newsies-the-musical-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/newsies-the-musical-2012/thumbnail.jpg",
+          "poster": "/images/shows/newsies-the-musical-2012/poster.webp",
+          "hero": "/images/shows/newsies-the-musical-2012/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "newsies-the-musical-2012: poster, thumbnail and hero cleared, other-production: The poster prominently reads 'WINNER! OLIVIER AWARDS 2023', indicating a 2023 West End production rather than the 2012–2014 Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "newsies-the-musical-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/2KcLVFMNiSEI2qZPeBYLHl/9cf747c45c4c28ffbb774b11b22b6d6b/NEWSIES_TTG_OLIVIER_ASSETSx3_APR23_TTG_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2KcLVFMNiSEI2qZPeBYLHl/9cf747c45c4c28ffbb774b11b22b6d6b/NEWSIES_TTG_OLIVIER_ASSETSx3_APR23_TTG_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2KcLVFMNiSEI2qZPeBYLHl/9cf747c45c4c28ffbb774b11b22b6d6b/NEWSIES_TTG_OLIVIER_ASSETSx3_APR23_TTG_480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "newsies-the-musical-2012: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-edwin-drood-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-mystery-of-edwin-drood-2012/thumbnail.jpg",
+          "poster": "/images/shows/the-mystery-of-edwin-drood-2012/poster.webp",
+          "hero": "/images/shows/the-mystery-of-edwin-drood-2012/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/the-mystery-of-edwin-drood-2012/hero.webp"
+        },
+        "description": "the-mystery-of-edwin-drood-2012: poster and thumbnail cleared, other-production: The poster prominently displays '54 BELOW' at the bottom (a different venue than the Harold and Miriam Steinberg Center) and includes 'Jarrett Winters Morley' and the phrasing 'The History of The Mystery of Edwin Drood,' (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-edwin-drood-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5oSyg46NHwhDexaNWv6YJ7/c2c75de7533a64a1c0bbcb390c4af832/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5oSyg46NHwhDexaNWv6YJ7/c2c75de7533a64a1c0bbcb390c4af832/poster-image.jpeg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "the-mystery-of-edwin-drood-2012: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-and-the-starcatcher-2012",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/peter-and-the-starcatcher-2012/hero.webp",
+          "thumbnail": "/images/shows/peter-and-the-starcatcher-2012/thumbnail.webp",
+          "poster": "/images/shows/peter-and-the-starcatcher-2012/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "peter-and-the-starcatcher-2012: poster, thumbnail and hero cleared, other-production: Poster text reads 'GALLERY PLAYERS PRESENTS' and shows run dates 'DEC 3 - DEC 18 2022', indicating a 2022 Gallery Players staging rather than the 2012–2013 Broadway run at the Lena Horne/Brooks Atkinson Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-and-the-starcatcher-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/2ouxmuCLdt0AudwjK4SfVb/04cf1b77f51c6c7782ae0f204950d3fc/Peter-TT-poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2ouxmuCLdt0AudwjK4SfVb/04cf1b77f51c6c7782ae0f204950d3fc/Peter-TT-poster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2ouxmuCLdt0AudwjK4SfVb/04cf1b77f51c6c7782ae0f204950d3fc/Peter-TT-poster.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "peter-and-the-starcatcher-2012: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bring-it-on-the-musical-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bring-it-on-the-musical-2012/thumbnail.jpg",
+          "poster": "/images/shows/bring-it-on-the-musical-2012/poster.webp",
+          "hero": "/images/shows/bring-it-on-the-musical-2012/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "bring-it-on-the-musical-2012: poster, thumbnail and hero cleared, other-production: The image text reads 'Shoba Narayan' and 'FEINSTEIN'S/54 BELOW', indicating a different performer and venue (Feinstein's/54 Below) rather than the St. James Theatre production of Bring It On. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bring-it-on-the-musical-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7DiLN6JWPKTghNaIFZRU6U/fb47d14cc24df356c2bc9b5c806fcbe1/shoba_-_poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7DiLN6JWPKTghNaIFZRU6U/fb47d14cc24df356c2bc9b5c806fcbe1/shoba_-_poster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7DiLN6JWPKTghNaIFZRU6U/fb47d14cc24df356c2bc9b5c806fcbe1/shoba_-_poster.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "bring-it-on-the-musical-2012: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wit-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wit-2012/thumbnail.jpg",
+          "poster": "/images/shows/wit-2012/poster.webp",
+          "hero": "/images/shows/wit-2012/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/wit-2012/hero.webp"
+        },
+        "description": "wit-2012: poster and thumbnail cleared, wrong-show: The poster clearly says 'SYMPHONY SPACE' and 'A First Time for Everything with Meg Wolitzer' (Selected Shorts), not the play title 'Wit' or the Samuel J. Friedman/Biltmore Theatre run information. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wit-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4tBavxHbVsCMDMKGKaWuys/39eaa8c970e7589a3324bc8322b60646/Wolitzer_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1kq5xTerpKCeIjQQnBLQSN/4bb3031f6baa8b1f38c8d5f106cf16fb/Wolitzer_TodayTix_Name_1080x1080.png?fm=webp&q=90"
+        ],
+        "description": "wit-2012: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-a-clear-day-you-can-see-forever-2011",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/on-a-clear-day-you-can-see-forever-2011/hero.webp",
+          "thumbnail": "/images/shows/on-a-clear-day-you-can-see-forever-2011/thumbnail.webp",
+          "poster": "/images/shows/on-a-clear-day-you-can-see-forever-2011/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "on-a-clear-day-you-can-see-forever-2011: poster, thumbnail and hero cleared, other-production: Poster text reads 'Irish Repertory Theatre' and credits 'Mapped & Directed by Charlotte Moore' (not Michael Mayer), indicating a different production/venue. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-a-clear-day-you-can-see-forever-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1sv7yC1moV7oqA8QBTaRLj/abcb8002e34d3e61622dfaf1704bb842/1528760127812_Poster-2__282_29.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1sv7yC1moV7oqA8QBTaRLj/abcb8002e34d3e61622dfaf1704bb842/1528760127812_Poster-2__282_29.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1sv7yC1moV7oqA8QBTaRLj/abcb8002e34d3e61622dfaf1704bb842/1528760127812_Poster-2__282_29.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "on-a-clear-day-you-can-see-forever-2011: never re-take this art source (BRO-5089)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:54:38.036Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-raisin-in-the-sun-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-raisin-in-the-sun-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for richard-iii-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for richard-iii-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for ann-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for ann-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for picnic-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for picnic-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-christmas-story-the-musical-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-christmas-story-the-musical-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for twelfth-night-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for twelfth-night-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for newsies-the-musical-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for newsies-the-musical-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-mystery-of-edwin-drood-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-mystery-of-edwin-drood-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for peter-and-the-starcatcher-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for peter-and-the-starcatcher-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for bring-it-on-the-musical-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for bring-it-on-the-musical-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for wit-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for wit-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for on-a-clear-day-you-can-see-forever-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for on-a-clear-day-you-can-see-forever-2011"
+    }
+  ]
+}

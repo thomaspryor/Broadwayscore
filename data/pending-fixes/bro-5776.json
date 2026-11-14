@@ -1,0 +1,248 @@
+{
+  "issueNumber": "bro-5776",
+  "planId": "2c02f506-6927-4d6d-9980-95f2b298a6e7",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5776: 2026-27 Broadway slate audit against Playbill's 2026-10-20 schedule. Three announced shows lacked dates (so the Season Report missed them), The Full Monty was postponed on 2026-10-15, and two holiday specials were typed as plays.",
+    "steps": [
+      "Date Three Days of Rain, Warriors and Rhinoceros (and fix Rhinoceros' first preview)",
+      "Clear The Full Monty's dates and set it to announced (postponed)",
+      "Type Now You See Me Live and Blue Man Group's holiday show as specials"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-days-of-rain-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-01-30",
+        "description": "First preview Jan 30, 2027. Playbill schedule of upcoming Broadway shows (2026-10-20): https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-days-of-rain-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-03-01",
+        "description": "Opening Mar 1, 2027 (Longacre; also New York Theatre Guide). Playbill schedule of upcoming Broadway shows (2026-10-20): https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-days-of-rain-2026",
+        "field": "openingDateSource",
+        "oldValue": null,
+        "newValue": "playbill",
+        "description": "Dates from Playbill's schedule."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-days-of-rain-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "Dated production: announced -> upcoming."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "warriors-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-03-09",
+        "description": "First preview Mar 9, 2027 at the Lunt-Fontanne. Playbill schedule of upcoming Broadway shows (2026-10-20): https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "warriors-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-04-08",
+        "description": "Opening Apr 8, 2027. Playbill schedule of upcoming Broadway shows (2026-10-20): https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "warriors-2026",
+        "field": "openingDateSource",
+        "oldValue": null,
+        "newValue": "playbill",
+        "description": "Dates from Playbill's schedule."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "warriors-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "Dated production: announced -> upcoming."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-2027",
+        "field": "previewsStartDate",
+        "oldValue": "2027-04-25",
+        "newValue": "2027-04-07",
+        "description": "Apr 25 is the opening, not the first preview; performances begin Apr 7, 2027. Broadway.com 2026-10-15: https://www.broadway.com/buzz/207479/tony-shalhoub-john-turturro-and-tatiana-maslany-to-star-in-broadways-rhinoceros-as-the-full-monty-is-postponed/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-2027",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-04-25",
+        "description": "Opening Apr 25, 2027 at the Todd Haimes (limited run through Jun 13). Broadway.com 2026-10-15: https://www.broadway.com/buzz/207479/tony-shalhoub-john-turturro-and-tatiana-maslany-to-star-in-broadways-rhinoceros-as-the-full-monty-is-postponed/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-2027",
+        "field": "openingDateSource",
+        "oldValue": null,
+        "newValue": "playbill",
+        "description": "Dates from Playbill's schedule and Broadway.com."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-full-monty-2027",
+        "field": "previewsStartDate",
+        "oldValue": "2027-04-03",
+        "newValue": null,
+        "description": "Postponed 'due to cast availability', no new dates; Rhinoceros takes its Todd Haimes slot. Broadway.com 2026-10-15: https://www.broadway.com/buzz/207479/tony-shalhoub-john-turturro-and-tatiana-maslany-to-star-in-broadways-rhinoceros-as-the-full-monty-is-postponed/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-full-monty-2027",
+        "field": "openingDate",
+        "oldValue": "2027-04-25",
+        "newValue": null,
+        "description": "Postponed with no new dates. Broadway.com 2026-10-15: https://www.broadway.com/buzz/207479/tony-shalhoub-john-turturro-and-tatiana-maslany-to-star-in-broadways-rhinoceros-as-the-full-monty-is-postponed/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-full-monty-2027",
+        "field": "status",
+        "oldValue": "upcoming",
+        "newValue": "announced",
+        "description": "Postponed: back to announced until new dates are set (Playbill lists it under In the Works)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "now-you-see-me-live-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "special",
+        "description": "An 'illusion spectacular' holiday engagement (Nov 11 2026 - Jan 3 2027), not a play. https://www.broadway.com/buzz/207653/abracadabra-now-you-see-me-live-set-for-broadway-this-holiday-season/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blue-man-group-a-new-holiday-surprise-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "special",
+        "description": "A holiday special engagement, not a play (Playbill schedule)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T22:47:25.878Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for three-days-of-rain-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for three-days-of-rain-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for three-days-of-rain-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for warriors-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for warriors-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for warriors-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for rhinoceros-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for rhinoceros-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-full-monty-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-full-monty-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-full-monty-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for now-you-see-me-live-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for blue-man-group-a-new-holiday-surprise-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

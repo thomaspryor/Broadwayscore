@@ -1,0 +1,134 @@
+{
+  "issueNumber": "bro-6725-wp",
+  "planId": "cb209437-8d3d-4064-a565-3a499a655fa2",
+  "status": "applied",
+  "createdAt": "2026-10-31T16:36:45.573Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6725: flag 4 UK regional reviews that cover a different production run (Dark Noon NYC, two London Saint Joan reviews, a 2021 Four Quartets review). Audit of all 1,229 UK regional reviews found 87 flagged by both models; the other 83 are the same production at another venue (shared cast and creative team) and are kept.",
+    "steps": [
+      "Reviews the New York (St Ann's Warehouse) run, which has its own Off-Broadway entry, not the Aviva Studios Manchester run.",
+      "Reviews the New York (St Ann's Warehouse) run, which has its own Off-Broadway entry, not the Aviva Studios Manchester run.",
+      "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews.",
+      "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews.",
+      "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews.",
+      "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews.",
+      "Only review is the June 2021 premiere run at Theatre Royal Bath, not the 2026 run.",
+      "Only review is the June 2021 premiere run at Theatre Royal Bath, not the 2026 run."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "dark-noon-aviva-studios-regional-2024/nyc-theatre-addict--michael-higgins.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Reviews the New York (St Ann's Warehouse) run, which has its own Off-Broadway entry, not the Aviva Studios Manchester run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dark-noon-aviva-studios-regional-2024/nyc-theatre-addict--michael-higgins.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Reviews the New York (St Ann's Warehouse) run, which has its own Off-Broadway entry, not the Aviva Studios Manchester run.",
+        "description": "Reviews the New York (St Ann's Warehouse) run, which has its own Off-Broadway entry, not the Aviva Studios Manchester run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "saint-joan-citizens-regional-2026/loureviews--louise-penn.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "saint-joan-citizens-regional-2026/loureviews--louise-penn.json",
+        "field": "wrongProductionReason",
+        "oldValue": "CV-promoted: This is a genuine theater review of a Saint Joan production, but it reviews a completely different staging than expected. The critic attended Arches Lane Theatre in London (a fringe venue, not a Broad",
+        "newValue": "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews.",
+        "description": "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "saint-joan-citizens-regional-2026/plays-to-see--tim-hochstrasser.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "saint-joan-citizens-regional-2026/plays-to-see--tim-hochstrasser.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews.",
+        "description": "Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "four-quartets-royal-bath-regional-2026/artsdesk--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Only review is the June 2021 premiere run at Theatre Royal Bath, not the 2026 run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "four-quartets-royal-bath-regional-2026/artsdesk--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Only review is the June 2021 premiere run at Theatre Royal Bath, not the 2026 run.",
+        "description": "Only review is the June 2021 premiere run at Theatre Royal Bath, not the 2026 run."
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T19:04:29.396Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dark-noon-aviva-studios-regional-2024/nyc-theatre-addict--michael-higgins.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dark-noon-aviva-studios-regional-2024/nyc-theatre-addict--michael-higgins.json wrongProductionReason: null -> \"Reviews the New York (St Ann's Warehouse) run, which has its own Off-Broadway entry, not the Aviva Studios Manchester run.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "saint-joan-citizens-regional-2026/loureviews--louise-penn.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "saint-joan-citizens-regional-2026/loureviews--louise-penn.json wrongProductionReason: \"CV-promoted: This is a genuine theater review of a Saint Joan production, but it reviews a completely different staging than expected. The critic attended Arches Lane Theatre in London (a fringe venue, not a Broad\" -> \"Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "saint-joan-citizens-regional-2026/plays-to-see--tim-hochstrasser.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "saint-joan-citizens-regional-2026/plays-to-see--tim-hochstrasser.json wrongProductionReason: null -> \"Reviews a separate Arches Lane Theatre (London) Saint Joan, not the Citizens Theatre Glasgow production; no cast or creative team shared with the show's other reviews.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "four-quartets-royal-bath-regional-2026/artsdesk--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "four-quartets-royal-bath-regional-2026/artsdesk--unknown.json wrongProductionReason: null -> \"Only review is the June 2021 premiere run at Theatre Royal Bath, not the 2026 run.\""
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,165 @@
+{
+  "issueNumber": "bro-7426",
+  "planId": "3740ed6c-5ca5-4c82-a2d5-f4e8e92231a0",
+  "status": "applied",
+  "createdAt": "2026-11-13T03:40:26.786Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Galileo: add director Michael Mayer (TodayTix show page) so the About credits name the director. The writer split and the Brecht playwright fix landed in BRO-7429. Also restores two co-writers dropped by the old wikitext list parsing: Bob Fosse (Chicago book) and Will Aronson (Maybe Happy Ending book and lyrics).",
+    "steps": [
+      "shows.json: galileo-2026.creativeTeam",
+      "shows.json: chicago-1996.creativeTeam",
+      "shows.json: maybe-happy-ending-2024.creativeTeam"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "galileo-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Danny Strong",
+            "role": "Book"
+          },
+          {
+            "name": "Zoe Sarnak",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Michael Weiner",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Danny Strong",
+            "role": "Book"
+          },
+          {
+            "name": "Zoe Sarnak",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Michael Weiner",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Michael Mayer",
+            "role": "Director"
+          }
+        ],
+        "description": "shows.json: galileo-2026.creativeTeam (add director Michael Mayer per todaytix.com/nyc/shows/46289; writer split already applied by bro-7429-b)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chicago-1996",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "John Kander",
+            "role": "Music"
+          },
+          {
+            "name": "Fred Ebb",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Bob Fosse",
+            "role": "Book & Choreography"
+          },
+          {
+            "name": "Walter Bobbie",
+            "role": "Director"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "John Kander",
+            "role": "Music"
+          },
+          {
+            "name": "Fred Ebb",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Bob Fosse",
+            "role": "Book"
+          },
+          {
+            "name": "Bob Fosse",
+            "role": "Book & Choreography"
+          },
+          {
+            "name": "Walter Bobbie",
+            "role": "Director"
+          }
+        ],
+        "description": "shows.json: chicago-1996.creativeTeam (add Bob Fosse as Book co-writer per en.wikipedia.org/wiki/Chicago_(musical) infobox: book by Fred Ebb and Bob Fosse)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "maybe-happy-ending-2024",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Will Aronson",
+            "role": "Music"
+          },
+          {
+            "name": "Hue Park",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Michael Arden",
+            "role": "Director"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Will Aronson",
+            "role": "Music"
+          },
+          {
+            "name": "Hue Park",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Will Aronson",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Michael Arden",
+            "role": "Director"
+          }
+        ],
+        "description": "shows.json: maybe-happy-ending-2024.creativeTeam (add Will Aronson as Book & Lyrics co-writer per en.wikipedia.org/wiki/Maybe_Happy_Ending infobox: book Hue Park and Will Aronson, lyrics Hue Park and Will Aronson)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-13T23:45:58.148Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for galileo-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for chicago-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for maybe-happy-ending-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

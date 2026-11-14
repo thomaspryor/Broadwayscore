@@ -1,0 +1,102 @@
+# Delete an opening-night Resend draft that will never be sent, WITHOUT
+# sending it (BRO-2935; owner decision 2026-10-11).
+#
+# DELETE ONLY. Runs scripts/discard-stuck-broadcast-drafts.js, which refuses
+# unless every tracker record of the draft is unsent, every show a combo draft
+# covers is named, and a live Resend GET says the broadcast is still a draft
+# (a 404 is refused: Resend also reaps sent broadcasts). It then deletes the
+# draft and stamps the tracker records discardedAt, so nothing re-queues it or
+# reports the show as a missed send. Nothing here ever calls /send.
+#
+# Kept out of reconcile-broadcast-state.yml on purpose: that hourly job's
+# contract is read-mostly and it must never delete anything.
+#
+# dry_run defaults to true: the rehearsal checks live status and prints what
+# would be deleted, but deletes and writes nothing.
+name: Discard Broadcast Draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Show id(s), comma-separated; every show of a combo draft'
+        required: true
+        type: string
+      reason:
+        description: 'Why it is being discarded (recorded on the tracker)'
+        required: false
+        type: string
+        default: 'owner decision: unsent draft deleted, not sent'
+      no_draft:
+        description: "Show has no Resend draft (never drafted, or it 404s): just record that it will not be sent (BRO-3087)"
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Rehearse only (check status, delete nothing)'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+# Shares reconcile-broadcast-state's group so the hourly reconcile cannot read
+# and re-push the tracker while a discard is mid-write.
+concurrency:
+  group: reconcile-broadcast-state
+  # concurrency-queue-ok: manual-only and rare; an evicted pending discard is never silent, because the missed-broadcast alert keeps naming the same command until a discard lands
+  cancel-in-progress: false
+
+jobs:
+  discard:
+    name: Discard unsent Resend draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Discard draft
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SHOWS: ${{ inputs.shows }}
+          REASON: ${{ inputs.reason }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          NO_DRAFT: ${{ inputs.no_draft }}
+        run: |
+          SHOWS="${SHOWS//[[:space:]]/}"
+          if ! [[ "$SHOWS" =~ ^[a-z0-9-]+(,[a-z0-9-]+)*$ ]]; then
+            echo "::error::shows must be comma-separated show ids, got: $SHOWS"
+            exit 1
+          fi
+          FLAGS="--execute"
+          [ "$DRY_RUN" = "true" ] && FLAGS=""
+          [ "$NO_DRAFT" = "true" ] && FLAGS="$FLAGS --no-draft"
+          node scripts/discard-stuck-broadcast-drafts.js --show="$SHOWS" --reason="$REASON" $FLAGS
+
+      # opening-night-sent.json is a CORE_FILE: untracked in the public repo,
+      # persisted only through push-core-data. always(): a partial run that
+      # deleted some drafts before failing must still record them.
+      - name: Push core data to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Discard unsent opening-night broadcast draft'
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Discard Broadcast Draft Failed'
+          severity: 'warning'

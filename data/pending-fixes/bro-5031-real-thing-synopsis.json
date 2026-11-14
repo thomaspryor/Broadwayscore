@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5031-real-thing-synopsis",
+  "planId": "b1aedf12-ca2f-48dc-a0d0-0ad2ff011e2a",
+  "status": "applied",
+  "createdAt": "2026-10-11T18:17:01.848Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Drop the pitch opener (\"Head to the Old Vic to experience ...\") from the-real-thing-west-end-2024 synopsis, keeping its story sentences (BRO-5031).",
+    "steps": [
+      "shows.json the-real-thing-west-end-2024 synopsis: remove the opening pitch sentence"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-real-thing-west-end-2024",
+        "field": "synopsis",
+        "oldValue": "Head to the Old Vic to experience one of Tom Stoppard's most famous plays, The Real Thing, in an exciting new revival. Together, the ensemble tells the story of Henry, a married playwright, and Annie, an actress, who fall in love. Through layers of fact and fiction and a play within the play, the show explores themes of reality versus appearance, love, and infidelity.",
+        "newValue": "Henry, a married playwright, and Annie, an actress, fall in love. Through layers of fact and fiction and a play within the play, the show explores themes of reality versus appearance, love, and infidelity."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T20:13:07.858Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-real-thing-west-end-2024"
+    }
+  ]
+}

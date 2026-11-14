@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "description": "Social video lane: one entry per show video (scripts/social-autopost/video-run.js)",
+    "lastUpdated": "2026-11-14T07:02:24.438Z"
+  },
+  "posts": [
+    {
+      "type": "score",
+      "fmt": "reveal",
+      "showId": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "score": 81,
+      "createdAt": "2026-11-12T16:57:42.299Z",
+      "dueAt": "2026-11-12T17:07:42.299Z",
+      "channels": {
+        "tiktok": {
+          "postId": "6af5f0c0aec6d1aed149646e",
+          "url": "https://tcbkoevwfemkicrwpypb.supabase.co/storage/v1/object/public/social-videos/2026/11/here-there-are-blueberries-2026-reveal-tiktok.mp4",
+          "createdAt": "2026-11-12T16:57:42.299Z",
+          "result": "sent",
+          "externalLink": "https://tiktok.com/@bwayscorecard/video/7707333173943815437",
+          "sentAt": "2026-11-12T17:11:01.655Z"
+        },
+        "youtube": {
+          "postId": "6af5f0c3cae14c0f3f64a14f",
+          "url": "https://tcbkoevwfemkicrwpypb.supabase.co/storage/v1/object/public/social-videos/2026/11/here-there-are-blueberries-2026-reveal-youtube.mp4",
+          "createdAt": "2026-11-12T16:57:42.299Z",
+          "result": "sent",
+          "externalLink": "https://www.youtube.com/shorts/hCEZLw7JqOU",
+          "sentAt": "2026-11-12T17:08:45.699Z"
+        }
+      }
+    },
+    {
+      "type": "london-compare",
+      "fmt": "compare",
+      "showId": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "score": 81,
+      "createdAt": "2026-11-13T07:16:58.099Z",
+      "dueAt": "2026-11-13T14:00:00.000Z",
+      "channels": {
+        "tiktok": {
+          "postId": "6af6b9fbe1d8eff610a9900a",
+          "url": "https://tcbkoevwfemkicrwpypb.supabase.co/storage/v1/object/public/social-videos/2026/11/here-there-are-blueberries-2026-compare-tiktok.mp4",
+          "createdAt": "2026-11-13T07:16:58.099Z",
+          "result": "sent",
+          "externalLink": "https://tiktok.com/@bwayscorecard/video/7707656200061455630",
+          "sentAt": "2026-11-13T14:05:01.224Z"
+        },
+        "youtube": {
+          "postId": "6af6b9fde1d8eff610a99079",
+          "url": "https://tcbkoevwfemkicrwpypb.supabase.co/storage/v1/object/public/social-videos/2026/11/here-there-are-blueberries-2026-compare-youtube.mp4",
+          "createdAt": "2026-11-13T07:16:58.099Z",
+          "result": "sent",
+          "externalLink": "https://www.youtube.com/shorts/Ql9Mob1F_cA",
+          "sentAt": "2026-11-13T14:01:01.243Z"
+        }
+      }
+    }
+  ],
+  "failures": [
+    {
+      "key": "score:wanted-2022",
+      "at": "2026-11-14T07:01:22.409Z",
+      "error": "render.js failed (1):     at /home/runner/work/Broadwayscore/Broadwayscore/scripts/video-proto/render.js:365:72 |     at Object.<anonymous> (/home/runner/work/Broadwayscore/Broadwayscore/scripts/video-proto/render.js:394:3) |     at Module._compile (node:internal/modules/cjs/loader:1781:14) |     at Object..js (node:internal/modules/cjs/loader:1913:10)"
+    }
+  ]
+}

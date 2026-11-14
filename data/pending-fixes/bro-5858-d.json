@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-5858-d",
+  "planId": "2172afcf-70a1-46da-9ea0-c9d299996fb1",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:54:26.686Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5858 (part 4/4): same-url pairs where the right-critic file pointed duplicateTextOf at the wrong-critic file, which holds the text. Keep the text-holding file and set its criticName to the critic the page byline or aggregator excerpt names, and retire the other file as duplicateOf it (the reverse would close a pointer cycle). See the BRO-5858 change table.",
+    "steps": [
+      "Set criticName on the text-holding file to the attested critic",
+      "Mark the other file duplicateOf the text-holding file"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json",
+        "field": "criticName",
+        "oldValue": "Alex Wood",
+        "newValue": "Sarah Crompton",
+        "description": "BRO-5858: this file holds the article text (whatsonstage--sarah-crompton.json points duplicateTextOf here); the article is by Sarah Crompton (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-month-in-the-country-west-end-2026/whatsonstage--sarah-crompton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--alex-wood.json",
+        "description": "BRO-5858: same article url and text as whatsonstage--alex-wood.json, which now carries Sarah Crompton; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burn-the-floor-2009/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "BRO-5858: this file holds the article text (nytimes--charles-isherwood.json points duplicateTextOf here); the article is by Charles Isherwood (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burn-the-floor-2009/nytimes--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "BRO-5858: same article url and text as nytimes--ben-brantley.json, which now carries Charles Isherwood; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json",
+        "field": "criticName",
+        "oldValue": "Deb Miller",
+        "newValue": "Victor Gluck",
+        "description": "BRO-5858: this file holds the article text (theater-scene--victor-gluck.json points duplicateTextOf here); the article is by Victor Gluck (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theater-scene--deb-miller.json",
+        "description": "BRO-5858: same article url and text as theater-scene--deb-miller.json, which now carries Victor Gluck; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/nydailynews--chris-jones.json",
+        "field": "criticName",
+        "oldValue": "Chris Jones",
+        "newValue": "Joe Dziemianowicz",
+        "description": "BRO-5858: this file holds the article text (nydailynews--joe-dziemianowicz.json points duplicateTextOf here); the article is by Joe Dziemianowicz (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/nydailynews--joe-dziemianowicz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nydailynews--chris-jones.json",
+        "description": "BRO-5858: same article url and text as nydailynews--chris-jones.json, which now carries Joe Dziemianowicz; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gore-vidals-the-best-man-2012/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "BRO-5858: this file holds the article text (nytimes--charles-isherwood.json points duplicateTextOf here); the article is by Charles Isherwood (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gore-vidals-the-best-man-2012/nytimes--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "BRO-5858: same article url and text as nytimes--ben-brantley.json, which now carries Charles Isherwood; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "manic-street-creature-west-end-2026/broadwayworld--guest-author.json",
+        "field": "criticName",
+        "oldValue": "Guest Author",
+        "newValue": "Katie Kirkpatrick",
+        "description": "BRO-5858: this file holds the article text (broadwayworld--katie-kirkpatrick.json points duplicateTextOf here); the article is by Katie Kirkpatrick (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "manic-street-creature-west-end-2026/broadwayworld--katie-kirkpatrick.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "broadwayworld--guest-author.json",
+        "description": "BRO-5858: same article url and text as broadwayworld--guest-author.json, which now carries Katie Kirkpatrick; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-west-end-2024/express-uk--neil-norman.json",
+        "field": "criticName",
+        "oldValue": "Neil Norman",
+        "newValue": "Stefan Kyriazis",
+        "description": "BRO-5858: this file holds the article text (express-uk--stefan-kyriazis.json points duplicateTextOf here); the article is by Stefan Kyriazis (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-west-end-2024/express-uk--stefan-kyriazis.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "express-uk--neil-norman.json",
+        "description": "BRO-5858: same article url and text as express-uk--neil-norman.json, which now carries Stefan Kyriazis; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json",
+        "field": "criticName",
+        "oldValue": "Financial Times",
+        "newValue": "Sarah Hemming",
+        "description": "BRO-5858: this file holds the article text (financialtimes--sarah-hemming.json points duplicateTextOf here); the article is by Sarah Hemming (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "financialtimes--financial-times.json",
+        "description": "BRO-5858: same article url and text as financialtimes--financial-times.json, which now carries Sarah Hemming; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wonderland-2011/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "BRO-5858: this file holds the article text (nytimes--charles-isherwood.json points duplicateTextOf here); the article is by Charles Isherwood (page byline or aggregator excerpt attribution, see BRO-5858 change table), so the kept file carries that critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wonderland-2011/nytimes--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "BRO-5858: same article url and text as nytimes--ben-brantley.json, which now carries Charles Isherwood; retire this copy (marking the other way would close a duplicateOf/duplicateTextOf cycle the write guard refuses)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:30:46.053Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-month-in-the-country-west-end-2026/whatsonstage--alex-wood.json criticName: \"Alex Wood\" -> \"Sarah Crompton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-month-in-the-country-west-end-2026/whatsonstage--sarah-crompton.json duplicateOf: null -> \"whatsonstage--alex-wood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-the-floor-2009/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-the-floor-2009/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json criticName: \"Deb Miller\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--victor-gluck.json duplicateOf: null -> \"theater-scene--deb-miller.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/nydailynews--chris-jones.json criticName: \"Chris Jones\" -> \"Joe Dziemianowicz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/nydailynews--joe-dziemianowicz.json duplicateOf: null -> \"nydailynews--chris-jones.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gore-vidals-the-best-man-2012/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gore-vidals-the-best-man-2012/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manic-street-creature-west-end-2026/broadwayworld--guest-author.json criticName: \"Guest Author\" -> \"Katie Kirkpatrick\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manic-street-creature-west-end-2026/broadwayworld--katie-kirkpatrick.json duplicateOf: null -> \"broadwayworld--guest-author.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-west-end-2024/express-uk--neil-norman.json criticName: \"Neil Norman\" -> \"Stefan Kyriazis\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-west-end-2024/express-uk--stefan-kyriazis.json duplicateOf: null -> \"express-uk--neil-norman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/financialtimes--financial-times.json criticName: \"Financial Times\" -> \"Sarah Hemming\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/financialtimes--sarah-hemming.json duplicateOf: null -> \"financialtimes--financial-times.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wonderland-2011/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wonderland-2011/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-6742-h",
+  "planId": "3f6c53e2-78b6-4257-be41-92d33220c148",
+  "status": "applied",
+  "createdAt": "2026-11-01T06:17:56.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6742: re-ingest Read About Stuff's Memoriam and The Moth reviews, which an earlier interview by the same critic held out of the slot (interview-slot guard now landed)",
+    "steps": [
+      "Ingest Read About Stuff's Memoriam review over the interview slot",
+      "Ingest Read About Stuff's The Moth review over the interview slot"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Ingest Read About Stuff's Memoriam review over the interview slot",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=memoriam-off-west-end-2026 --url=https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/ --outlet=readaboutstuff --critic=\"Dan English\""
+      },
+      {
+        "type": "run-script",
+        "description": "Ingest Read About Stuff's The Moth review over the interview slot",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-moth-off-west-end-2026 --url=https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/ --outlet=readaboutstuff --critic=\"Dan English\""
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T07:19:51.585Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

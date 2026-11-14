@@ -1,0 +1,304 @@
+#!/usr/bin/env node
+
+/**
+ * Recover WSJ review full text via a real authenticated browser session.
+ *
+ * recover-wsj-subscriber.js's plain-fetch() + __NEXT_DATA__.isServerUnlockedContent
+ * approach is dead on two independent counts (verified live 2026-08-02, task #779):
+ *   1. A bare Node fetch() with valid session cookies gets HTTP 401 — WSJ's edge
+ *      appears to gate on TLS/request fingerprint, not just the Cookie header.
+ *   2. Even inside a REAL authenticated browser, the server-rendered
+ *      __NEXT_DATA__ payload stays paywall-locked (isServerUnlockedContent:
+ *      false) for a genuinely active subscriber — full text only appears in
+ *      the live DOM after client-side hydration resolves entitlements.
+ * So recovery now requires an actual page load + DOM read, not a raw request.
+ *
+ * Cookies come from data/cookies/wsj.json, produced by scripts/wsj-otp-login.js
+ * (the Safari-cookie-extraction replacement — see task #779).
+ *
+ * Usage:
+ *   node scripts/recover-wsj-browser.js --auth-only         # fast health check
+ *   node scripts/recover-wsj-browser.js --shows=id1,id2      # targeted re-run
+ *   node scripts/recover-wsj-browser.js                      # full candidate sweep
+ *
+ * Env:
+ *   MAX_URLS=N        Limit number of URLs processed (0 = all)
+ *   DRY_RUN=true       Discovery only, no file writes
+ *   TIME_BUDGET_MIN=N  Wall-clock budget; stops cleanly and checkpoints at the edge
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const args = process.argv.slice(2);
+if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
+  console.log('Usage: node scripts/recover-wsj-browser.js [--auth-only] [--shows=id1,id2] [--dry-run]');
+  console.log('');
+  console.log('Recovers WSJ review full text via a real authenticated browser session');
+  console.log('(plain HTTP fetch is dead — see file header). Requires data/cookies/wsj.json');
+  console.log('from scripts/wsj-otp-login.js.');
+  process.exit(0);
+}
+
+const authOnly = args.includes('--auth-only');
+const dryRun = args.includes('--dry-run') || process.env.DRY_RUN === 'true';
+const showsFilter = args.find(a => a.startsWith('--shows='));
+const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(',')) : null;
+
+const { loadCookiesForDomain } = require('./lib/cookie-loader');
+// The gate, the locked writes and the scoped commit/push are shared with every
+// other recovery script (BRO-7171); this file keeps only its WSJ specifics.
+const { processRecoveredText, stampDead, startRun, checkpoint: sharedCheckpoint, REVIEW_TEXTS_DIR } = require('./lib/browser-recovery-helpers');
+const { listShowDirs } = require('./lib/list-show-dirs');
+
+const CONFIG = {
+  reviewTextsDir: REVIEW_TEXTS_DIR,
+  reportPath: path.join(__dirname, '..', 'data', 'audit', 'wsj-browser-recovery-report.json'),
+  minTextLength: 300,
+  delayMinMs: 6000,
+  delayMaxMs: 12000,
+  checkpointInterval: parseInt(process.env.CHECKPOINT_INTERVAL || '8'),
+  maxUrls: parseInt(process.env.MAX_URLS || '0') || Infinity,
+  timeBudgetMs: process.env.TIME_BUDGET_MIN ? parseInt(process.env.TIME_BUDGET_MIN) * 60000 : Infinity,
+};
+
+const TEST_URL = 'https://www.wsj.com/articles/smash-review-an-inside-broadway-musical-bdcafc62';
+const AUTH_MIN_CHARS = 1500;
+const { resolveBrowserMiss } = require('./lib/browser-outlet-adapters');
+
+function jitterDelay() {
+  return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
+}
+
+// One extractor shared with the nightly gap-recovery driver (BRO-7171 Stage 4).
+const extractArticle = require('./lib/browser-outlet-adapters').ADAPTERS.wsj.extract;
+
+function loadCandidates() {
+  const dirs = listShowDirs(CONFIG.reviewTextsDir);
+  const candidates = [];
+  for (const dir of dirs) {
+    if (showsAllowlist && !showsAllowlist.has(dir)) continue;
+    const showPath = path.join(CONFIG.reviewTextsDir, dir);
+
+    let files;
+    try { files = fs.readdirSync(showPath); } catch { continue; }
+    for (const f of files) {
+      if (!f.startsWith('wsj') || !f.endsWith('.json')) continue;
+      const filePath = path.join(showPath, f);
+      let data;
+      try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+
+      if (data.contentTier === 'complete') continue;
+      if (data.wrongShow || data.wrongProduction) continue;
+      if (!data.url) continue;
+
+      candidates.push({
+        reviewId: `${dir}/${f}`,
+        filePath,
+        url: data.url,
+        showId: data.showId || dir,
+        existingChars: (data.fullText || '').length,
+        contentTier: data.contentTier || 'unknown',
+      });
+    }
+  }
+  // Recency-first: extract a trailing -YYYY year from the showId as a cheap
+  // proxy (openingDate/publishDate parsing was too inconsistent across the
+  // corpus to rely on — many files carry a stale wrongProduction date instead
+  // of the show's real date). Undated ids sort last.
+  candidates.sort((a, b) => {
+    const ya = (a.showId.match(/-(\d{4})$/) || [])[1] || '0';
+    const yb = (b.showId.match(/-(\d{4})$/) || [])[1] || '0';
+    return yb.localeCompare(ya);
+  });
+
+  return candidates.slice(0, CONFIG.maxUrls);
+}
+
+const WSJ_LABELS = {
+  fetchMethod: 'wsj-subscriber-browser-session',
+  sourceMethod: 'wsj-subscriber-recovery-otp-login',
+  contentTierReasonFallback: 'Recovered via authenticated WSJ browser session (task #779)',
+};
+
+function checkpoint(stats) {
+  return sharedCheckpoint({ ...stats, dryRun }, 'WSJ browser recovery');
+}
+
+async function main() {
+  // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.
+  require('./lib/browser-recovery-helpers').acquireRecoveryRunLock('recover-wsj-browser');
+  const cookies = loadCookiesForDomain('wsj.com');
+  if (!cookies) {
+    console.error('ERROR: no WSJ cookies available. Run: node scripts/wsj-otp-login.js');
+    process.exit(1);
+  }
+  console.log(`Loaded ${cookies.length} WSJ cookies.`);
+
+  // Bundled headless Chromium gets served a stripped/paywall-locked page even
+  // with valid session cookies (verified live 2026-08-02: "No article element
+  // found" on every request) — same anti-bot fingerprinting class as #712.
+  // Real installed Chrome + a persistent profile is what worked for login
+  // (scripts/wsj-otp-login.js); reuse the identical launch strategy here.
+  const { chromium } = require('playwright');
+  // BRO-7171 plan item 8: the outlet's shared persistent profile (renew lock held).
+  const PROFILE_DIR = require('./lib/cookie-renew').claimOutletProfile('wsj', { legacy: ['/tmp/wsj-recovery-browser-profile', '/tmp/wsj-otp-browser-profile', '/tmp/wsj-browser-profile'] }).dir;
+  const launchOpts = {
+    headless: false,
+    viewport: { width: 1280, height: 900 },
+    args: ['--disable-blink-features=AutomationControlled'],
+    ignoreDefaultArgs: ['--enable-automation'],
+    locale: 'en-US',
+    timezoneId: 'America/New_York',
+  };
+  let context;
+  try {
+    context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchOpts, channel: 'chrome' });
+    console.log('  -> using installed Google Chrome (channel: chrome)');
+  } catch (err) {
+    console.log(`  -> real Chrome unavailable; falling back to bundled chromium`);
+    context = await chromium.launchPersistentContext(PROFILE_DIR, launchOpts);
+  }
+
+  // Playwright's addCookies() requires each cookie to carry a valid sameSite
+  // value and no undefined fields; our stored shape already matches.
+  await context.addCookies(cookies.map(c => ({
+    name: c.name,
+    value: c.value,
+    domain: c.domain,
+    path: c.path || '/',
+    expires: c.expires && c.expires > 0 ? c.expires : undefined,
+    httpOnly: !!c.httpOnly,
+    secure: !!c.secure,
+    sameSite: ['Strict', 'Lax', 'None'].includes(c.sameSite) ? c.sameSite : 'Lax',
+  })));
+
+  const page = context.pages()[0] || (await context.newPage());
+
+  console.log('Testing authentication...');
+  const testResult = await extractArticle(page, TEST_URL);
+  if (testResult.error || !testResult.text || testResult.len < AUTH_MIN_CHARS) {
+    console.error(`Auth test FAILED: ${testResult.error || `only ${testResult.len || 0} chars`}`);
+    console.error('Cookies may be expired. Re-run: node scripts/wsj-otp-login.js');
+    await context.close();
+    process.exit(1);
+  }
+  console.log(`Auth test PASSED — ${testResult.len} chars, title: "${testResult.title}"`);
+
+  if (authOnly) {
+    await context.close();
+    return;
+  }
+
+  // Push/restore anything an earlier run committed but could not land
+  // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
+  if (!dryRun) {
+    try { startRun(); } catch (e) { await context.close(); throw e; }
+  }
+  const candidates = loadCandidates();
+  console.log(`\n${candidates.length} candidates to process.\n`);
+  if (candidates.length === 0) {
+    await context.close();
+    return;
+  }
+
+  const stats = { total: candidates.length, recovered: 0, dead: 0, blocked: 0, tooShort: 0, garbage: 0, notMentioned: 0, notLonger: 0 };
+  const deadEntries = [];
+  const startTime = Date.now();
+
+  // A failed push (ReviewTextsPushError) or lock timeout stops the run, but
+  // the report is still written and the browser still closed (BRO-7171).
+  let runError = null;
+  try {
+    for (let i = 0; i < candidates.length; i++) {
+      if (Date.now() - startTime > CONFIG.timeBudgetMs) {
+        console.log(`\nTime budget reached (${CONFIG.timeBudgetMin || CONFIG.timeBudgetMs / 60000}min) — stopping cleanly.`);
+        break;
+      }
+
+      const c = candidates[i];
+      console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
+
+      if (i > 0) await page.waitForTimeout(jitterDelay());
+
+      let result;
+      try {
+        result = await extractArticle(page, c.url);
+      } catch (e) {
+        result = { error: e.message };
+      }
+
+      if (result.error || !result.text) {
+        // BRO-7171: a bot check, an access wall or a lost session is never
+        // evidence about the review: skip it, or stop the run, never stamp it.
+        const miss = await resolveBrowserMiss(result, { probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS });
+        if (miss.action === 'stop') { console.log(`  ✗ ${result.error || 'no text extracted'}; ${miss.reason}: stopping the run`); stats.sessionLost = miss.reason; break; }
+        if (miss.action === 'skip') { console.log(`  ✗ ${result.error || 'no text extracted'} (${miss.reason}; not evidence, not stamped)`); stats.skipped = (stats.skipped || 0) + 1; continue; }
+        const reason = result.error || 'no text extracted';
+        console.log(`  ✗ ${reason}`);
+        stats.dead++;
+        deadEntries.push({ reviewId: c.reviewId, url: c.url, reason });
+        if (!dryRun) {
+          // incompleteReason is a controlled-vocabulary field (see scripts/lib/incomplete-reason.js)
+          // that collect-review-texts.js/gather-reviews.js gate SERP re-discovery eligibility on
+          // ('wrong_content' -> needsSerpDiscovery). A free-text string here silently disables that
+          // downstream auto-recovery until the next rebuild-all-reviews.js recomputes it — use the
+          // real enum value instead, with our diagnostic in incompleteDetail.
+          stampDead(c, {
+            incompleteReason: reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content',
+            incompleteDetail: `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`,
+          });
+        }
+        continue;
+      }
+
+      if (dryRun) {
+        console.log(`  [DRY RUN] would process ${result.len} chars`);
+        continue;
+      }
+
+      const outcome = processRecoveredText(c, result.text, WSJ_LABELS);
+      if (outcome.ok) {
+        stats.recovered++;
+        console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
+        if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats);
+      } else {
+        if (outcome.code === 'too_short') {
+          const miss = await resolveBrowserMiss(result, { probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS, refusalCode: 'too_short' });
+          if (miss.action === 'stop') { console.log(`  ✗ ${outcome.reason}; ${miss.reason}: stopping the run`); stats.sessionLost = miss.reason; break; }
+        }
+        console.log(`  ✗ ${outcome.reason}`);
+        if (outcome.reason.includes('too short')) stats.tooShort++;
+        else if (outcome.reason.includes('garbage')) stats.garbage++;
+        else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
+        else if (outcome.reason.includes('not longer')) stats.notLonger++;
+        else stats.blocked++;
+      }
+    }
+
+    // Tracker-driven: also lands dead-candidate stamps when nothing was recovered.
+    if (!dryRun) checkpoint(stats);
+  } catch (e) {
+    runError = e;
+  }
+
+  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString(), error: runError ? runError.message : null, dryRun }, null, 2) + '\n');
+
+  console.log(`\n${'='.repeat(60)}`);
+  console.log('Summary');
+  console.log(`${'='.repeat(60)}`);
+  console.log(`  Candidates: ${stats.total}`);
+  console.log(`  Recovered:  ${stats.recovered}`);
+  console.log(`  Dead (stamped incompleteReason): ${stats.dead}`);
+  if (stats.sessionLost) console.log(`  Session lost mid-run (${stats.sessionLost}): stopped, nothing stamped after it`);
+  if (stats.skipped) console.log(`  Skipped (bot check / access wall, not evidence): ${stats.skipped}`);
+  console.log(`  Too short: ${stats.tooShort}  Garbage: ${stats.garbage}  Not mentioned: ${stats.notMentioned}  Not longer: ${stats.notLonger}`);
+
+  await context.close();
+  if (runError) throw runError;
+}
+
+main().catch(err => {
+  console.error('\nFATAL ERROR:', err.message);
+  process.exit(1);
+});

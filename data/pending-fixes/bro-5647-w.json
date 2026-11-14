@@ -1,0 +1,145 @@
+{
+  "issueNumber": "bro-5647-w",
+  "planId": "ecd35ceb-95f6-474e-855e-763a92f83dee",
+  "status": "applied",
+  "createdAt": "2026-10-21T20:42:21.274Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From Dots' Oct 21 audit of eight ChatGPT and Gemini reports, re-read at source where reachable: The Last Five Years closed at a significant loss (BroadwayWorld, Dec 19 2025, read here); The Sign in Sidney Brustein's Window investors lost some money (Next Avenue, Mar 28 2024, archived copy read by the auditor; web.archive.org is unreachable from this machine); JOB failed to turn a Broadway profit (BroadwayWorld, Oct 5 2026, read here; basis stays no-recoupment-announced since no profit can mean break-even); The Lehman Trilogy and Death of a Salesman (2026) SEC Form D filings read here ($5.75M and $8.9M offered, $0 sold at filing). Rejected wrong-show leads (Spamalot's $600K, Six's $390K, Kimberly Akimbo's $7M, Dorian Gray's $8M) were never in the data. Old values from the private core data.",
+    "steps": [
+      "Two reported losses",
+      "JOB no-profit source",
+      "Lehman and Salesman SEC filings"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "showId": "the-last-five-years-2025",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "the-last-five-years-2025: a trade report says it closed at a significant loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "showId": "the-last-five-years-2025",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 475 days ago, no trade-press recoupment found",
+        "newValue": "BroadwayWorld (Ben Waterhouse, Dec 19, 2025): \"Even revivals, like last year's The Last Five Years starring Nick Jonas, which closed at a significant loss.\" No amount or share returned was reported. https://www.broadwayworld.com/article/What-Lies-Ahead-for-Broadway-in-2026-20251219",
+        "description": "the-last-five-years-2025: loss source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "the-sign-in-sidney-brusteins-window-2023: an investor profile says investors lost money"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Next Avenue (Mar 28, 2024), a profile of Broadway investors in the production: \"investors lost some money.\" No amount or share returned was reported. The same sentence says the show closed early; it in fact played its announced limited run through Jul 2, 2023. Archived copy (the publisher's page has moved): https://web.archive.org/web/20250723013940/https://www.nextavenue.org/what-its-like-to-be-a-broadway-producer/",
+        "description": "the-sign-in-sidney-brusteins-window-2023: loss source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Commercial revival (Seaview) at the James Earl Jones, Apr to Jul 2, 2023, a limited engagement that closed as scheduled. Miriam Silverman won the 2023 Tony for Best Featured Actress in a Play. A 2024 Next Avenue profile of its investors reported that they lost some money.",
+        "description": "the-sign-in-sidney-brusteins-window-2023: note"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "showId": "job-2024",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 713 days ago, no trade-press recoupment found",
+        "newValue": "BroadwayWorld (Ben Waterhouse, Oct 5, 2026): \"But Job, in spite of a number of commercially successful off-Broadway productions, failed to turn a profit on Broadway.\" No profit could still mean break-even, so this is not a reported loss. https://www.broadwayworld.com/article/Big-Hits-Small-Houses-Why-Off-Broadway-Is-Having-a-Moment-20261005",
+        "description": "job-2024: no-profit source replaces the inferred one"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "showId": "the-lehman-trilogy-2021",
+        "field": "capitalizationSource",
+        "oldValue": "BroadwayNews (Jun 2021): capitalized for up to $5.75 million, per 2019 financial documents",
+        "newValue": "SEC Form D filing (Three Brothers Broadway LLC, CIK 0001793358, signed Nov 8, 2019): total offering amount up to $5,750,000, $0 sold at filing (first sale yet to occur). BroadwayNews (Jun 2021) reported the same up to $5.75 million for the resumed run. https://www.sec.gov/Archives/edgar/data/1793358/000159140819000027/xslFormDX01/primary_doc.xml",
+        "description": "the-lehman-trilogy-2021: cite the SEC filing itself"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "notes",
+        "oldValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. Capitalized for up to $8.9 million. The Hollywood Reporter noted after closing that no recoupment had been announced (these producers typically do not announce one). A BroadwayWorld forum poster estimated in June that it was about three weeks from recouping; that is a guess, not a report.",
+        "newValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. Capitalized for up to $8.9 million. The Hollywood Reporter noted after closing that no recoupment had been announced (these producers typically do not announce one). A BroadwayWorld forum poster estimated in June that it was about three weeks from recouping; that is a guess, not a report. Its SEC Form D (Loman Broadway Ltd Liability Co, CIK 0002107826, signed Feb 3, 2026) offered $8,900,000 with $0 sold at filing, before the first sale: https://www.sec.gov/Archives/edgar/data/2107826/000210782626000001/xslFormDX01/primary_doc.xml",
+        "description": "death-of-a-salesman: add the SEC filing"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:55:35.925Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    }
+  ],
+  "executedIn": "ci"
+}

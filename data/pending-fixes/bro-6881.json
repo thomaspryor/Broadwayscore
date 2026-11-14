@@ -1,0 +1,137 @@
+{
+  "issueNumber": "bro-6881",
+  "planId": "c56a16d4-3bad-4ce2-a588-b4c29fca260a",
+  "status": "applied",
+  "createdAt": "2026-11-03T07:00:15.764Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear dangling image pointers on 5 LA regional rows; null feel-good hero (no file)",
+    "steps": [
+      "shows.json: cassatt-regional-2026.images",
+      "shows.json: crossing-delancey-regional-2026.images",
+      "shows.json: lakefront-regional-2026.images",
+      "shows.json: how-high-the-moon-regional-2026.images",
+      "shows.json: the-feel-good-story-america-needs-right-now-regional-2026.images"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cassatt-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/cassatt-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/cassatt-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/cassatt-regional-2026/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: cassatt-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "crossing-delancey-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/crossing-delancey-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/crossing-delancey-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/crossing-delancey-regional-2026/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: crossing-delancey-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lakefront-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/lakefront-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/lakefront-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/lakefront-regional-2026/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: lakefront-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "how-high-the-moon-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/how-high-the-moon-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/how-high-the-moon-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/how-high-the-moon-regional-2026/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: how-high-the-moon-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-feel-good-story-america-needs-right-now-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-feel-good-story-america-needs-right-now-regional-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-feel-good-story-america-needs-right-now-regional-2026/poster.jpg",
+          "hero": "/images/shows/the-feel-good-story-america-needs-right-now-regional-2026/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-feel-good-story-america-needs-right-now-regional-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-feel-good-story-america-needs-right-now-regional-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "shows.json: the-feel-good-story-america-needs-right-now-regional-2026.images"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T08:34:18.722Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for cassatt-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for crossing-delancey-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lakefront-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for how-high-the-moon-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-feel-good-story-america-needs-right-now-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

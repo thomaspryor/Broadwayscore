@@ -1,0 +1,129 @@
+{
+  "runDate": "2026-11-02T22:23:17.678Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "tosca-english-national-opera-west-end-2026,medea-off-broadway-2026,tosca-off-broadway-2026,msblackforpresident-off-broadway-2026,dogstar-off-west-end-2026,the-moth-off-west-end-2026,the-blue-violinist-over-west-end-avenue-off-broadway-2026,specimen-off-broadway-2026,a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 3,
+    "failed": 8,
+    "skipped": 0,
+    "successRate": "27.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 6,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 9,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 6,
+    "tier1_9Success": 0,
+    "tier2Attempts": 6,
+    "tier2Success": 0,
+    "tier3Attempts": 6,
+    "tier3Success": 0,
+    "tier3_6Attempts": 6,
+    "tier3_6Success": 6,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 8,
+    "scrapingBeePageCredits": 5,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 1.1,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 3,
+    "failed": 8,
+    "shows": [
+      "dogstar-off-west-end-2026",
+      "medea-off-broadway-2026",
+      "msblackforpresident-off-broadway-2026",
+      "the-moth-off-west-end-2026",
+      "tosca-english-national-opera-west-end-2026",
+      "tosca-off-broadway-2026"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "tosca-off-broadway-2026/new-york-classical-review--unknown.json",
+    "dogstar-off-west-end-2026/theatreboard--unknown.json",
+    "the-moth-off-west-end-2026/artsdesk--unknown.json"
+  ],
+  "failed": [
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
+    "msblackforpresident-off-broadway-2026/backstage--unknown.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/london-unattached--unknown.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [
+      "tosca-off-broadway-2026/new-york-classical-review--unknown.json",
+      "dogstar-off-west-end-2026/theatreboard--unknown.json",
+      "the-moth-off-west-end-2026/artsdesk--unknown.json"
+    ],
+    "failed": [
+      "medea-off-broadway-2026/express-uk--neil-norman.json",
+      "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
+      "msblackforpresident-off-broadway-2026/backstage--unknown.json",
+      "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+      "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+      "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+      "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+      "tosca-english-national-opera-west-end-2026/london-unattached--unknown.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [
+      "tosca-off-broadway-2026/new-york-classical-review--unknown.json",
+      "dogstar-off-west-end-2026/theatreboard--unknown.json",
+      "the-moth-off-west-end-2026/artsdesk--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/msblackforpresident-off-broadway-2026/backstage--unknown.json",
+      "data/review-texts/medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+      "data/review-texts/tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+      "data/review-texts/tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+      "data/review-texts/tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+      "data/review-texts/tosca-english-national-opera-west-end-2026/london-unattached--unknown.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}

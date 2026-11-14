@@ -1,0 +1,355 @@
+{
+  "issueNumber": "bro-4599-a",
+  "planId": "2f1070a2-c00c-4bd3-953f-99192fdb65b2",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Articles filed under 2+ shows with one shared pull quote (audit-shared-url-quote.js): give each show its own section quote and score, flag misfiled copies, human-clear flags that misread a multi-show column. Part 1 of 6.",
+    "steps": [
+      "a-woman-among-women-off-broadway-2026: per-show fix",
+      "airline-highway-2015: per-show fix",
+      "allegiance-2015: per-show fix",
+      "american-idiot-2010: per-show fix",
+      "an-american-daughter-off-broadway-2026: per-show fix",
+      "and-then-the-rodeo-burned-down-off-broadway-2026: per-show fix",
+      "benevolent-off-broadway-2026: per-show fix",
+      "bloody-bloody-andrew-jackson-2010: per-show fix",
+      "boop-2025: per-show fix"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-woman-among-women-off-broadway-2026/nyt-theater--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 83,
+        "description": "section is clearly positive; LLM score reasoning blended in Girl, Interrupted reservations"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-woman-among-women-off-broadway-2026/nyt-theater--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Two-show column. A Woman Among Women section calls it smart, sharp and ultimately gutting with a standout lead; positive, scored 83 from that section only.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-woman-among-women-off-broadway-2026/nyt-theater--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Jonathan Mandell",
+        "description": "BRO-4599: byline of the shared article (same critic as the sibling file)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "airline-highway-2015/deadline--jeremy-gerard.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 50,
+        "description": "section finds the play too neat, characters types, never reaches its aim"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "airline-highway-2015/deadline--jeremy-gerard.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Two-show column. Airline Highway section praises Mantello staging but says characters are types and the play falls short; mixed-negative, 50.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/huffpost--michael-glitz.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4599 human clear: article contains a full Allegiance at the Longacre section; earlier verifier only saw the Misery/View sections"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/huffpost--michael-glitz.json",
+        "field": "llmPullQuote",
+        "oldValue": "What might seem creepy on film plays as silly and campy on stage.",
+        "newValue": "But the music and lyrics by Kuo while moving the plot forward are rarely good enough to stand out on their own.",
+        "description": "shared quote came from the Misery section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/huffpost--michael-glitz.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 58,
+        "description": "2.5 out of 4 stars for Allegiance"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/huffpost--michael-glitz.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Three-show column, Allegiance section rated 2.5/4 stars: strong book, weak score; 58. Not a wrong production. originalScore A is bogus and should be cleared.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-idiot-2010/village-voice--michael-feingold.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4599 human clear: fullText has a full American Idiot review section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-idiot-2010/village-voice--michael-feingold.json",
+        "field": "llmPullQuote",
+        "oldValue": "Yet the show feels puzzlingly lackluster, like a last-minute birthday gift originally purchased for somebody else.",
+        "newValue": "What I can't live without, in the theater, is drama, of which American Idiot, like many previous album-based shows, provides only the slightest wisp.",
+        "description": "shared quote came from the Sondheim on Sondheim section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-idiot-2010/village-voice--michael-feingold.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 58,
+        "description": "held attention, strong leads, but thin drama and unsatisfying"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-idiot-2010/village-voice--michael-feingold.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Multi-show column. American Idiot section: held attention, astute casting, but drama is a wisp and left critic unsatisfied; mixed, 58. wrongShow cleared: real review section.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-daughter-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "llmPullQuote",
+        "oldValue": "Running just over an hour, it’s a perfect cap to dinner with friends or a stimulating start to a night before drinks and dancing.",
+        "newValue": "The current political climate, however, may not have been the right time to revive An American Daughter as all the play’s cutting observations pale in comparison to the willful disregard of competence on display today.",
+        "description": "shared quote came from the Cat Cohen review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-daughter-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 42,
+        "description": "lead lacks weight, production listless; only two veterans land"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-daughter-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Page has two reviews. American Daughter section: lead lacks gravitas, play feels listless, revival badly timed; negative, 42. The 5/5 originalScore belongs to nothing in this section and should be cleared.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "and-then-the-rodeo-burned-down-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "llmPullQuote",
+        "oldValue": "It may simply be a good example of a piece developed for a local audience that doesn't travel well.",
+        "newValue": "Much talent is involved, but, to my eyes, this is comedy in a vacuum, a lot of fooling around for no clear reason.",
+        "description": "shared quote came from the Catch of the Day section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "benevolent-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "llmPullQuote",
+        "oldValue": "Worse yet, we leave the theater feeling like we've just spent the evening with people we never hope to meet again.",
+        "newValue": "One hopes benevolent will be able to move to an off-Broadway theater so this important play can be seen by a larger audience.",
+        "description": "shared quote came from The Pass section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "benevolent-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 82,
+        "description": "4/5 stars for benevolent"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "benevolent-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Three-play roundup, benevolent section rated 4/5 stars with praise for script, cast and staging; 82.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bloody-bloody-andrew-jackson-2010/usatoday--elysa-gardner.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 86,
+        "description": "3.5 out of 4 stars for Andrew Jackson"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bloody-bloody-andrew-jackson-2010/usatoday--elysa-gardner.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Two-show column, Andrew Jackson section rated 3.5/4 stars: exhilarating, thought-provoking, magnetic lead; 86.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "boop-2025/washpost--naveen-kumar.json",
+        "field": "llmPullQuote",
+        "oldValue": "Never mind that Monroe was more siren than foghorn; their resounding pipes are the highlight of an otherwise thinly conceived spin-off.",
+        "newValue": "As the cartoon vixen sprung to life in “Boop!,” Jasmine Amy Rogers gives the most sensational star-making Broadway turn in years — funny, captivating, a total knockout.",
+        "description": "shared quote came from the Smash material"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "boop-2025/washpost--naveen-kumar.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 85,
+        "description": "Boop! sections are a clear positive with only a meandering second act noted"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "boop-2025/washpost--naveen-kumar.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Joint review. Boop! sections: star-making lead, creative triumph, strong score, minor second-act meander; positive, 85.",
+        "description": "section score"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:56:17.721Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-woman-among-women-off-broadway-2026/nyt-theater--unknown.json humanReviewScore: null -> 83"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-woman-among-women-off-broadway-2026/nyt-theater--unknown.json humanReviewNote: null -> \"BRO-4599: Two-show column. A Woman Among Women section calls it smart, sharp and ultimately gutting with a standout lead; positive, scored 83 from that section only.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-woman-among-women-off-broadway-2026/nyt-theater--unknown.json criticName: \"Unknown\" -> \"Jonathan Mandell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "airline-highway-2015/deadline--jeremy-gerard.json humanReviewScore: null -> 50"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "airline-highway-2015/deadline--jeremy-gerard.json humanReviewNote: null -> \"BRO-4599: Two-show column. Airline Highway section praises Mantello staging but says characters are types and the play falls short; mixed-negative, 50.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "allegiance-2015/huffpost--michael-glitz.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "allegiance-2015/huffpost--michael-glitz.json llmPullQuote: \"What might seem creepy on film plays as silly and campy on stage.\" -> \"But the music and lyrics by Kuo while moving the plot forward are rarely good enough to stand out on their own.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "allegiance-2015/huffpost--michael-glitz.json humanReviewScore: null -> 58"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "allegiance-2015/huffpost--michael-glitz.json humanReviewNote: null -> \"BRO-4599: Three-show column, Allegiance section rated 2.5/4 stars: strong book, weak score; 58. Not a wrong production. originalScore A is bogus and should be cleared.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-idiot-2010/village-voice--michael-feingold.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-idiot-2010/village-voice--michael-feingold.json llmPullQuote: \"Yet the show feels puzzlingly lackluster, like a last-minute birthday gift originally purchased for somebody else.\" -> \"What I can't live without, in the theater, is drama, of which American Idiot, like many previous album-based shows, provides only the slightest wisp.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-idiot-2010/village-voice--michael-feingold.json humanReviewScore: null -> 58"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-idiot-2010/village-voice--michael-feingold.json humanReviewNote: null -> \"BRO-4599: Multi-show column. American Idiot section: held attention, astute casting, but drama is a wisp and left critic unsatisfied; mixed, 58. wrongShow cleared: real review section.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/the-interested-bystander--cary-wong.json llmPullQuote: \"Running just over an hour, it’s a perfect cap to dinner with friends or a stimulating start to a night before drinks and dancing.\" -> \"The current political climate, however, may not have been the right time to revive An American Daughter as all the play’s cutting observations pale in comparison to the willful disregard of competence on display today.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/the-interested-bystander--cary-wong.json humanReviewScore: null -> 42"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/the-interested-bystander--cary-wong.json humanReviewNote: null -> \"BRO-4599: Page has two reviews. American Daughter section: lead lacks gravitas, play feels listless, revival badly timed; negative, 42. The 5/5 originalScore belongs to nothing in this section and should be cleared.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-then-the-rodeo-burned-down-off-broadway-2026/lighting-and-sound-america--david-barbour.json llmPullQuote: \"It may simply be a good example of a piece developed for a local audience that doesn't travel well.\" -> \"Much talent is involved, but, to my eyes, this is comedy in a vacuum, a lot of fooling around for no clear reason.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "benevolent-off-broadway-2026/la-voce-di-new-york--jk-clarke.json llmPullQuote: \"Worse yet, we leave the theater feeling like we've just spent the evening with people we never hope to meet again.\" -> \"One hopes benevolent will be able to move to an off-Broadway theater so this important play can be seen by a larger audience.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "benevolent-off-broadway-2026/la-voce-di-new-york--jk-clarke.json humanReviewScore: null -> 82"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "benevolent-off-broadway-2026/la-voce-di-new-york--jk-clarke.json humanReviewNote: null -> \"BRO-4599: Three-play roundup, benevolent section rated 4/5 stars with praise for script, cast and staging; 82.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bloody-bloody-andrew-jackson-2010/usatoday--elysa-gardner.json humanReviewScore: null -> 86"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bloody-bloody-andrew-jackson-2010/usatoday--elysa-gardner.json humanReviewNote: null -> \"BRO-4599: Two-show column, Andrew Jackson section rated 3.5/4 stars: exhilarating, thought-provoking, magnetic lead; 86.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "boop-2025/washpost--naveen-kumar.json llmPullQuote: \"Never mind that Monroe was more siren than foghorn; their resounding pipes are the highlight of an otherwise thinly conceived spin-off.\" -> \"As the cartoon vixen sprung to life in “Boop!,” Jasmine Amy Rogers gives the most sensational star-making Broadway turn in years — funny, captivating, a total knockout.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "boop-2025/washpost--naveen-kumar.json humanReviewScore: null -> 85"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "boop-2025/washpost--naveen-kumar.json humanReviewNote: null -> \"BRO-4599: Joint review. Boop! sections: star-making lead, creative triumph, strong score, minor second-act meander; positive, 85.\""
+    }
+  ]
+}

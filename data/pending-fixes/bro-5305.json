@@ -1,0 +1,56 @@
+{
+  "issueNumber": "bro-5305",
+  "planId": "108e1522-64de-4f54-95b1-70e8baec2752",
+  "status": "applied",
+  "createdAt": "2026-10-29T04:59:48.578Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Replace the misfiled london-theatre--unknown.json (Jack Shaw's London Theatre Reviews text, no url) with the real londontheatrereviews.co.uk review",
+    "steps": [
+      "Delete the misfiled london-theatre--unknown.json",
+      "Ingest the real London Theatre Reviews page (post.cfm?p=27600, Jack Shaw, 2026-04-15)",
+      "Rebuild and run verify-review-recovery.js"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heart-wall-west-end-2026/london-theatre--unknown.json",
+        "description": "BRO-5305: misfiled, no url; text ends \"Review: Jack Shaw Photos: Harry Elletson\" (London Theatre Reviews credit format). Replaced by the real londontheatrereviews.co.uk review via the handoff below."
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "heart-wall-west-end-2026",
+        "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27600",
+        "outlet": "london-theatre-reviews",
+        "critic": "Jack Shaw",
+        "publishDate": "2026-04-15",
+        "description": "BRO-5886 html handoff: ingest https://www.londontheatrereviews.co.uk/post.cfm?p=27600 from HTML fetched outside CI",
+        "htmlBytes": 45427,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "d32fb97cc2d421869b6e6e3fba155809e8bf9ea009bb3355c28772b806c2eec3",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T06:41:21.550Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heart-wall-west-end-2026/london-theatre--unknown.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.londontheatrereviews.co.uk/post.cfm?p=27600 for heart-wall-west-end-2026 from handed-off HTML (45420 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

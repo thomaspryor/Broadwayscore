@@ -1,0 +1,260 @@
+{
+  "issueNumber": "bro-6742-d",
+  "planId": "b1667c64-3fe2-426e-b33f-b039690c928f",
+  "status": "applied",
+  "createdAt": "2026-11-01T03:28:19.122Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6742 batch 4/5: clear 7 read-confirmed false drops (roundup-as-primary copy, preview/non-review flags, CV wrong-production misreads)",
+    "steps": [
+      "Reason for clear",
+      "Read-confirmed: Culture Sauce full review by Thom Geier; the matched primary is a roundup quoting it",
+      "Read-confirmed: a full critic review, not a preview",
+      "Clear heuristic preview_article flag",
+      "Read-confirmed: Victor Gluck review with evaluative verdict",
+      "Clear CV-promoted non-review flag",
+      "Read-confirmed: Victor Gluck review of the production, not a feature",
+      "Clear CV-promoted non-review flag",
+      "Clear not_a_review rejection",
+      "Read-confirmed: CV itself says it evaluates the performance and qualifies as a review",
+      "Human clear of CV other/wrongArticle",
+      "Clear CV-promoted non-review flag",
+      "Clear not_a_review rejection",
+      "Read-confirmed: reviews the 2026 Irish Rep production; CV treated 2026 as the future",
+      "Human clear",
+      "Read-confirmed: reviews this production; CV confused the Pan Asian Rep co-producer with another company",
+      "Human clear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "giulia-the-poison-queen-of-palermo-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6742: primary was the BroadwayWorld review roundup, which quotes this review; a roundup is never a copy primary",
+        "description": "Reason for clear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "giulia-the-poison-queen-of-palermo-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: Culture Sauce full review by Thom Geier; the matched primary is a roundup quoting it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shifters-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: a full critic review, not a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shifters-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "nonReviewFlag",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear heuristic preview_article flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-maids-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: Victor Gluck review with evaluative verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-maids-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV-promoted non-review flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: Victor Gluck review of the production, not a feature"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV-promoted non-review flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear not_a_review rejection"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: CV itself says it evaluates the performance and qualifies as a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear of CV other/wrongArticle"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV-promoted non-review flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear not_a_review rejection"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ulster-american-irish-repertory-theatre-off-broadway-2026/irish-central--walter-murphy.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: reviews the 2026 Irish Rep production; CV treated 2026 as the future"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ulster-american-irish-repertory-theatre-off-broadway-2026/irish-central--walter-murphy.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ai-yah-goy-vey-off-broadway-2026/off-off-online--adrienne-onofri.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: reviews this production; CV confused the Pan Asian Rep co-producer with another company"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ai-yah-goy-vey-off-broadway-2026/off-off-online--adrienne-onofri.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T03:37:02.053Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "giulia-the-poison-queen-of-palermo-off-broadway-2026/culturesauce--thom-geier.json crossOutletClearReason: null -> \"BRO-6742: primary was the BroadwayWorld review roundup, which quotes this review; a roundup is never a copy primary\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "giulia-the-poison-queen-of-palermo-off-broadway-2026/culturesauce--thom-geier.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shifters-off-broadway-2026/lighting-and-sound-america--david-barbour.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shifters-off-broadway-2026/lighting-and-sound-america--david-barbour.json nonReviewFlag: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-maids-off-broadway-2026/theater-scene--victor-gluck.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-maids-off-broadway-2026/theater-scene--victor-gluck.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ulster-american-irish-repertory-theatre-off-broadway-2026/irish-central--walter-murphy.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ulster-american-irish-repertory-theatre-off-broadway-2026/irish-central--walter-murphy.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ai-yah-goy-vey-off-broadway-2026/off-off-online--adrienne-onofri.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ai-yah-goy-vey-off-broadway-2026/off-off-online--adrienne-onofri.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

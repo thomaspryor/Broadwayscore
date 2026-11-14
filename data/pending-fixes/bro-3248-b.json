@@ -1,0 +1,190 @@
+{
+  "issueNumber": "bro-3248-b",
+  "planId": "a5309ded-296a-43bc-abba-f0bbc2faa4ee",
+  "status": "applied",
+  "createdAt": "2026-10-13T10:51:56.985Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3248 part b: drop audience-buzz.json keys that are not shows.json ids (orphans of renamed/retired/test ids); one rename to its live id.",
+    "steps": [
+      "drop-orphan-key per key; each refuses a live id"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "proof-express-test-2026",
+        "reason": "no live show under this id (BRO-3248)",
+        "description": "Drop orphan key proof-express-test-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "proof-express-test-v2-2026",
+        "reason": "no live show under this id (BRO-3248)",
+        "description": "Drop orphan key proof-express-test-v2-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "juilliard-opera-presents-verdis-falstaff-off-broadway-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key juilliard-opera-presents-verdis-falstaff-off-broadway-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "betty-buckley-random-notes-off-broadway-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key betty-buckley-random-notes-off-broadway-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "the-karate-kid-the-musical-west-end-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key the-karate-kid-the-musical-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "noughts-and-crosses-off-west-end-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key noughts-and-crosses-off-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "godots-to-do-list-west-end-2026",
+        "reason": "no live show under this id (BRO-3248)",
+        "description": "Drop orphan key godots-to-do-list-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "senior-dance-production-off-broadway-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key senior-dance-production-off-broadway-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "peppa-pigs-big-family-show-west-end-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key peppa-pigs-big-family-show-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "sylvia-off-west-end-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key sylvia-off-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "be-like-blippi-off-west-end-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key be-like-blippi-off-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "electrapersona-west-end-2026",
+        "reason": "no live show under this id (BRO-3248)",
+        "description": "Drop orphan key electrapersona-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "motherfucker-off-broadway-2026",
+        "reason": "retired id (data/retired-show-ids.json) (BRO-3248)",
+        "description": "Drop orphan key motherfucker-off-broadway-2026"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:55:54.416Z",
+  "results": [
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key proof-express-test-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key proof-express-test-v2-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key juilliard-opera-presents-verdis-falstaff-off-broadway-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key betty-buckley-random-notes-off-broadway-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-karate-kid-the-musical-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key noughts-and-crosses-off-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key godots-to-do-list-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key senior-dance-production-off-broadway-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key peppa-pigs-big-family-show-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key sylvia-off-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key be-like-blippi-off-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key electrapersona-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key motherfucker-off-broadway-2026"
+    }
+  ]
+}
