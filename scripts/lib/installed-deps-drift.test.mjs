@@ -58,3 +58,20 @@ test('checkDir + CLI exit code on real files', () => {
   const ok = spawnSync('node', [new URL('./installed-deps-drift.js', import.meta.url).pathname, d]);
   assert.equal(ok.status, 0);
 });
+
+test('worktree-shaped dir: lockfile in child, node_modules in an ancestor', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'idd-'));
+  const wt = path.join(root, '.claude', 'worktrees', 'w');
+  fs.mkdirSync(wt, { recursive: true });
+  fs.writeFileSync(path.join(wt, 'package-lock.json'), JSON.stringify(lock));
+  for (const [n, v] of [['next', '15.5.27'], ['react', '19.1.0'], ['typescript', '5.6.2']]) {
+    fs.mkdirSync(path.join(root, 'node_modules', n), { recursive: true });
+    fs.writeFileSync(path.join(root, 'node_modules', n, 'package.json'), JSON.stringify({ version: v }));
+  }
+  assert.equal(checkDir(wt).drift[0].name, 'next');
+});
+
+test('installed package.json without a version is skipped, not "missing"', () => {
+  const r = detectDrift(lock, (n) => (n === 'next' ? undefined : n === 'react' ? '19.1.0' : n === 'typescript' ? '5.6.2' : null));
+  assert.equal(r.drift.length, 0);
+});

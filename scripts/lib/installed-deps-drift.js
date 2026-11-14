@@ -44,7 +44,8 @@ function detectDrift(lock, readInstalled) {
     if (!entry || !entry.version || entry.link) continue;
     checked++;
     const installed = readInstalled(name);
-    if (installed == null) {
+    if (installed === undefined) continue; // present but versionless: cannot compare
+    if (installed === null) {
       // Optional deps (platform binaries) are legitimately absent.
       if (!optional.has(name) && !entry.optional) drift.push({ name, locked: entry.version, installed: null, kind: 'missing' });
       continue;
@@ -72,6 +73,14 @@ function formatMessage(result, repoDir) {
   );
 }
 
+function findNodeModules(dir) {
+  for (let d = path.resolve(dir); ; d = path.dirname(d)) {
+    const c = path.join(d, 'node_modules');
+    if (fs.existsSync(c)) return c;
+    if (path.dirname(d) === d) return null;
+  }
+}
+
 /** Reads <dir>/package-lock.json and <dir>/node_modules/*; null when there is nothing to compare. */
 function checkDir(dir) {
   let lock;
@@ -80,11 +89,13 @@ function checkDir(dir) {
   } catch {
     return null;
   }
-  const nm = path.join(dir, 'node_modules');
-  if (!fs.existsSync(nm)) return null; // never installed here: not drift
+  // Worktrees have no node_modules of their own; Node/tsc resolve the nearest
+  // ancestor's, so compare the lockfile in `dir` against that one.
+  const nm = findNodeModules(dir);
+  if (!nm) return null; // never installed: not drift
   const read = (name) => {
     try {
-      return JSON.parse(fs.readFileSync(path.join(nm, name, 'package.json'), 'utf8')).version || null;
+      return JSON.parse(fs.readFileSync(path.join(nm, name, 'package.json'), 'utf8')).version || undefined;
     } catch {
       return null;
     }
@@ -92,7 +103,7 @@ function checkDir(dir) {
   return detectDrift(lock, read);
 }
 
-module.exports = { detectDrift, formatMessage, checkDir, majorOf };
+module.exports = { detectDrift, formatMessage, checkDir, findNodeModules, majorOf };
 
 if (require.main === module) {
   const dir = path.resolve(process.argv[2] || process.cwd());
