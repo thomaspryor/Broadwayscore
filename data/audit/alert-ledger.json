@@ -431,10 +431,10 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-11-06T09:29:18.224Z",
-      "lastSeen": "2026-11-13T09:39:55.906Z",
-      "lastNotifiedAt": "2026-11-13T09:39:55.906Z",
-      "lastSurfacedAt": "2026-11-13T09:39:55.906Z",
-      "notifyCount": 54,
+      "lastSeen": "2026-11-14T09:21:32.455Z",
+      "lastNotifiedAt": "2026-11-14T09:21:32.455Z",
+      "lastSurfacedAt": "2026-11-14T09:21:32.455Z",
+      "notifyCount": 55,
       "cardId": null,
       "linearIdentifier": "BRO-6867"
     },
@@ -9983,10 +9983,10 @@
       "title": "Overdue P0/P1 queue: 16 P0 older than 24h, 26 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-13T09:37:04.623Z",
-      "lastNotifiedAt": "2026-11-13T09:37:04.623Z",
+      "lastSeen": "2026-11-14T09:07:58.952Z",
+      "lastNotifiedAt": "2026-11-14T09:07:58.952Z",
       "lastSurfacedAt": "2026-11-09T09:55:22.973Z",
-      "notifyCount": 41,
+      "notifyCount": 42,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -17823,13 +17823,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-13T09:39:54.209Z",
+      "lastSeen": "2026-11-14T09:21:30.816Z",
       "lastNotifiedAt": "2026-11-11T09:59:22.165Z",
       "lastSurfacedAt": "2026-11-11T09:59:22.165Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -29282,8 +29282,10 @@
       "lastSurfacedAt": "2026-11-13T14:24:48.588Z",
       "notifyCount": 16,
       "cardId": null,
-      "linearIdentifier": "BRO-7460",
-      "silentRefires": 4
+      "linearIdentifier": null,
+      "silentRefires": 4,
+      "sweptTracker": "BRO-7460",
+      "notifyCountAtRelease": 16
     },
     "land:land/job/linear-BRO-6384-mvqsbs80": {
       "status": "resolved",
@@ -35197,10 +35199,10 @@
       "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-01T14:15:28.863Z",
       "incidentOpenedAt": "2026-11-01T14:15:28.863Z",
-      "lastSeen": "2026-11-13T09:37:23.238Z",
-      "lastNotifiedAt": "2026-11-13T09:37:23.238Z",
-      "lastSurfacedAt": "2026-11-13T09:37:23.238Z",
-      "notifyCount": 13,
+      "lastSeen": "2026-11-14T09:08:13.733Z",
+      "lastNotifiedAt": "2026-11-14T09:08:13.733Z",
+      "lastSurfacedAt": "2026-11-14T09:08:13.733Z",
+      "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -40170,30 +40172,28 @@
       "silentRefires": 3
     },
     "coverage-holes:dogstar-off-west-end-2026": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "dogstar-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-09T09:56:18.136Z",
-      "incidentOpenedAt": "2026-11-09T09:56:18.136Z",
-      "lastSeen": "2026-11-09T09:56:18.136Z",
-      "lastNotifiedAt": "2026-11-09T09:56:18.136Z",
-      "lastSurfacedAt": "2026-11-09T09:56:18.136Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-11-14T09:08:13.764Z",
+      "lastSeen": "2026-11-14T09:08:13.764Z",
+      "lastNotifiedAt": "2026-11-14T09:08:13.764Z",
+      "lastSurfacedAt": "2026-11-14T09:08:13.764Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-10T09:54:32.791Z",
-      "resolveReason": "no rejected-but-verified review, no unqueued out-of-band score and no double-counted teaser"
+      "linearIdentifier": null
     },
     "syndicated-critic-pairs:unexplained": {
       "status": "open",
       "disposition": "auto",
-      "title": "Same-critic outlet pairs: 51 show/critic pairs counted at two outlets",
+      "title": "Same-critic outlet pairs: 53 show/critic pairs counted at two outlets",
       "firstSeen": "2026-11-09T09:57:37.244Z",
       "incidentOpenedAt": "2026-11-09T09:57:37.244Z",
-      "lastSeen": "2026-11-13T09:38:06.425Z",
-      "lastNotifiedAt": "2026-11-13T09:38:06.425Z",
+      "lastSeen": "2026-11-14T09:08:46.795Z",
+      "lastNotifiedAt": "2026-11-14T09:08:46.795Z",
       "lastSurfacedAt": null,
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-7207"
     },
@@ -40203,10 +40203,10 @@
       "title": "Default-critic diversity: 13 outlets credit blank bylines to one of several critics",
       "firstSeen": "2026-11-09T09:57:49.316Z",
       "incidentOpenedAt": "2026-11-09T09:57:49.316Z",
-      "lastSeen": "2026-11-13T09:38:20.904Z",
-      "lastNotifiedAt": "2026-11-13T09:38:20.904Z",
+      "lastSeen": "2026-11-14T09:08:57.450Z",
+      "lastNotifiedAt": "2026-11-14T09:08:57.450Z",
       "lastSurfacedAt": null,
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-7208"
     },
@@ -41025,10 +41025,10 @@
       "title": "iphigenie-en-tauride-english-national-opera-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-10T09:54:32.719Z",
       "incidentOpenedAt": "2026-11-10T09:54:32.719Z",
-      "lastSeen": "2026-11-13T09:37:23.196Z",
-      "lastNotifiedAt": "2026-11-13T09:37:23.196Z",
-      "lastSurfacedAt": "2026-11-13T09:37:23.196Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-14T09:08:13.695Z",
+      "lastNotifiedAt": "2026-11-14T09:08:13.695Z",
+      "lastSurfacedAt": "2026-11-14T09:08:13.695Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -42554,10 +42554,10 @@
       "title": "Star-band drift: 1 published score outside the critic's own rating",
       "firstSeen": "2026-11-12T10:00:07.652Z",
       "incidentOpenedAt": "2026-11-12T10:00:07.652Z",
-      "lastSeen": "2026-11-13T09:38:05.439Z",
-      "lastNotifiedAt": "2026-11-13T09:38:05.439Z",
+      "lastSeen": "2026-11-14T09:08:45.988Z",
+      "lastNotifiedAt": "2026-11-14T09:08:45.988Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-7407"
     },
@@ -42755,10 +42755,12 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7420",
+      "linearIdentifier": null,
       "silentRefires": 11,
       "resolvedAt": "2026-11-13T18:22:14.797Z",
-      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout",
+      "sweptTracker": "BRO-7420",
+      "notifyCountAtRelease": 1
     },
     "uncollected-blackout:downstate-2026": {
       "status": "resolved",
@@ -42928,7 +42930,7 @@
       "linearIdentifier": null
     },
     "abandoned-review-rescue:midnight-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "midnight-off-broadway-2026: 1 real review(s) the servers cannot fetch",
       "firstSeen": "2026-11-13T09:37:42.356Z",
@@ -42942,7 +42944,9 @@
       "dispatch": {
         "requestedAt": "2026-11-13T09:37:42.356Z",
         "mode": "dispatch-at-filing"
-      }
+      },
+      "resolvedAt": "2026-11-14T09:08:28.982Z",
+      "resolveReason": "every abandoned review recovered"
     },
     "openai-retirement:unregistered": {
       "status": "open",
@@ -42950,10 +42954,10 @@
       "title": "OpenAI shutdown: 1 model the repo uses is not in the retirement registry",
       "firstSeen": "2026-11-13T09:38:07.488Z",
       "incidentOpenedAt": "2026-11-13T09:38:07.488Z",
-      "lastSeen": "2026-11-13T09:38:07.488Z",
-      "lastNotifiedAt": "2026-11-13T09:38:07.488Z",
+      "lastSeen": "2026-11-14T09:08:47.870Z",
+      "lastNotifiedAt": "2026-11-14T09:08:47.870Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-7441"
     },
@@ -43108,8 +43112,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7465",
-      "resolvedAt": "2026-11-14T00:31:26.618Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-14T00:31:26.618Z",
+      "sweptTracker": "BRO-7465",
+      "notifyCountAtRelease": 1
     },
     "opening-night-cv-wrongproduction-unhandled-hamlet-hail-to-the-thief-off-west-end-2026": {
       "status": "open",

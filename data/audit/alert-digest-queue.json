@@ -1,1 +1,58 @@
-[]
+[
+  {
+    "conditionKey": "coverage-holes:iphigenie-en-tauride-english-national-opera-west-end-2026",
+    "title": "iphigenie-en-tauride-english-national-opera-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- teaser pointing to the same critic's full review, both counted: iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json (full review: london-theatre--cheryl-markosky.json)\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T09:08:13.696Z"
+  },
+  {
+    "conditionKey": "coverage-holes:tosca-off-broadway-2026",
+    "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: tosca-off-broadway-2026/broadwayworld--dc-felton.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T09:08:13.733Z"
+  },
+  {
+    "conditionKey": "coverage-holes:dogstar-off-west-end-2026",
+    "title": "dogstar-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: dogstar-off-west-end-2026/theatreboard--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T09:08:13.764Z"
+  },
+  {
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget (still open — BRO-6867)",
+    "description": "Still firing after 55 notifications since it was filed. Tracked at BRO-6867.\n\nDay 2026-11-13. Over budget: scrapingbee on pace to run out before renewal: ~13870 credits/day (7-day average) x 21 days to 2026-12-05 = 291264 > 104009 left. 2026-11-13 · Browserbase: $0.73 (124 sessions, 32.13min) · 2026-11-13 · Bright Data: $2.98 (319 serp / 1666 unlocker) · ScrapingBee: 15560 credits (145991 this cycle) · ScrapingDog: 63097 credits (741264 this cycle) · Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 105, bww-rr-discover.js 17, collect-talkinbroadway-index.js 1, sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 100% attributed — top callers (covers 99% of billed calls): opening-night-poller.js 605, audit-show-review-gap.js 403, gather-reviews.js 383, collect-review-texts.js 352, replay-pending-bylines.js 219 · ScrapingBee attribution: 100% attributed — top callers (covers 100% of billed credits): opening-night-poller.js 7775cr, gather-reviews.js 6774cr, discover-opening-night-reviews.js 3250cr, collect-review-texts.js 1720cr, scrape-show-score-audience.js 390cr · ScrapingDog attribution: 100% attributed — top callers (covers 81% of billed credits): gather-reviews.js 23306cr, audit-show-review-gap.js 10725cr, discover-opening-night-reviews.js 8323cr, scrape-nyc-theatre-roundups.js 4365cr, collect-review-texts.js 4279cr · 2026-11-13 · LLM APIs (metered estimate, not the full bill): Gemini est $3.99 (3131 calls; 26 repeats) · OpenAI est $25.47 (2817 calls; 1 repeats) · top: scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $20.89; scripts/llm-scoring/comparative-rescore.ts [LLM Ensemble Score Reviews] $4.50; scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $2.87. Verification streak reset to 0.",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "info": false,
+    "decisionPrompt": "Scraping spend over budget: scrapingbee on pace to run out before renewal: ~13870 credits/day (7-day average) x 21 days to 2026-12-05 = 291264 > 104009 left. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?",
+    "model": null,
+    "tracked": "BRO-6867",
+    "fields": [],
+    "queuedAt": "2026-11-14T09:21:32.606Z"
+  }
+]
