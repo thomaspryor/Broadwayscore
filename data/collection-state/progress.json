@@ -245,7 +245,8 @@
     "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/lbilondon--unknown.json",
     "the-legend-of-sleepy-hollow-regional-2026/broadwayworld--audrey-cahak.json",
     "wives-regional-2026/stage-raw--julyza-commodore.json",
-    "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
+    "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
@@ -298,7 +299,6 @@
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "i-became-we-off-broadway-2026/theater-life--paulanne-simmons.json",
     "memoriam-off-west-end-2026/ground--unknown.json",
-    "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
     "garry-starr-classic-penguins-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
@@ -423,7 +423,8 @@
     "phyl-off-broadway-2026/phusionpassenger--unknown.json",
     "murder-cathedral-off-west-end-2026/plays-to-see--tim-hochstrasser.json",
     "baby-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-to-see--olivia-hurton.json"
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-to-see--olivia-hurton.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -570,10 +571,14 @@
       "jane-eyre-rose-kingston-off-west-end-2026/5thingstodotoday--bolton131.json",
       "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/lbilondon--unknown.json",
       "wives-regional-2026/stage-raw--julyza-commodore.json",
-      "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
+      "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json",
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
@@ -688,7 +693,7 @@
     ]
   },
   "startTime": "2026-11-13T19:51:30.116Z",
-  "lastProcessed": "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+  "lastProcessed": "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
   "log": [
     {
       "t": "2026-11-14T01:38:13.207Z",
@@ -785,6 +790,32 @@
       "t": "2026-11-14T01:26:20.209Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-14T01:56:31.861Z",
+      "event": "bb-session",
+      "session": "c3216938",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-14T01:56:32.764Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-14T02:02:16.939Z",
+      "event": "bb-session",
+      "session": "f6880323",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-14T02:03:52.185Z",
+      "event": "bb-session",
+      "session": "42dd1dfc",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
+  ],
+  "recoveredAfterFailure": [
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
   ]
 }
