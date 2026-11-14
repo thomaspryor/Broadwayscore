@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-14T10:03:08.607Z",
+  "generatedAt": "2026-11-14T11:34:39.458Z",
   "date": "2026-11-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 207285,
+  "entryCount": 213513,
   "shows": [
     {
       "showId": "wicked-tour-2021",
@@ -3300,13 +3300,13 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": 66872836,
       "p90_e2e_ms": 96528090,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 314824,
-        "scored-to-rebuilt": 473617,
+        "collected-to-scored": 325307,
+        "scored-to-rebuilt": 471178,
         "rebuilt-to-deployed": 65220873
       },
       "reviews_over_15min": 5,
@@ -16124,13 +16124,13 @@
     },
     {
       "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 472099,
-        "scored-to-rebuilt": 1899006,
+        "scored-to-rebuilt": 1136356,
         "rebuilt-to-deployed": 22170963
       },
       "reviews_over_15min": 0,
@@ -16214,13 +16214,13 @@
     },
     {
       "showId": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": 8046147,
       "p90_e2e_ms": 8046147,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 35681,
-        "scored-to-rebuilt": 517866,
+        "collected-to-scored": 959570,
+        "scored-to-rebuilt": 286255,
         "rebuilt-to-deployed": 7189819
       },
       "reviews_over_15min": 1,

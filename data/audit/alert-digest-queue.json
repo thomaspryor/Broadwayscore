@@ -155,5 +155,61 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-14T10:35:58.471Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:jenufa-off-broadway-2026",
+    "title": "Auto-remediation gave up on jenufa-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jenufa-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T11:34:37.458Z"
+  },
+  {
+    "conditionKey": "opening-night-review-cards-complete-traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+    "title": "Review cards missing outlet name or quote on Traitorz: The Unauthorized Musical Parody",
+    "description": "1/2 review card(s) missing outlet name or quote (1 no criticName, 1 no pullQuote)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T11:34:38.924Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:peter-pan-goes-wrong-regional-2026",
+    "title": "Auto-remediation gave up on peter-pan-goes-wrong-regional-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"peter-pan-goes-wrong-regional-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T11:34:38.986Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:ted-talks-and-talks-regional-2026",
+    "title": "Auto-remediation gave up on ted-talks-and-talks-regional-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"ted-talks-and-talks-regional-2026\",\"category\":\"regional\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T11:34:38.998Z"
   }
 ]
