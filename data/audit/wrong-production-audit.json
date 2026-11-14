@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-13T21:39:03.336Z",
+  "timestamp": "2026-11-14T00:23:36.006Z",
   "stats": {
-    "totalReviews": 81968,
-    "alreadyFlagged": 22367,
+    "totalReviews": 81969,
+    "alreadyFlagged": 22371,
     "dateGuardCatches": 220,
-    "directorMismatch": 3667,
+    "directorMismatch": 3670,
     "tvFilmSignals": 2310,
-    "londonSignals": 3744,
+    "londonSignals": 3745,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8476
+    "noPublishDate": 8463
   },
   "findings": [
     {
@@ -22227,6 +22227,19 @@
       "score": 94,
       "publishDate": "2026-09-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-FENCES-Leeds-Playhouse-20260918",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel bailey\" from fences-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "fences-leeds-regional-2026",
+      "file": "east-midlands-theatre--unknown.json",
+      "publishDate": "2026-11-11",
+      "url": "https://eastmidlandstheatre.com/2026/11/11/review-fences-nottingham-playhouse/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -80247,7 +80260,7 @@
     {
       "showId": "translations-west-end-2019",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 84,
+      "score": 87,
       "publishDate": "October 22nd, 2019",
       "url": "https://theartsdesk.com/theatre/translations-national-theatre-review-stunning-revival-poignant-tragicomedy",
       "findings": [
@@ -81963,7 +81976,7 @@
     {
       "showId": "under-milk-wood-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "2021-06-24",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-9719159/Michael-Sheen-Sian-Phillips-poetry-PATRICK-MARMIONs-night-review-Milk-Wood.html",
       "findings": [
@@ -82668,7 +82681,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "artsdesk--unknown.json",
-      "score": 60,
+      "score": 64,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/waitress-adelphi-theatre-review-sweet-if-sometimes-silly-musical-arrives-broadway",
       "findings": [
@@ -82715,7 +82728,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "independent--paul-taylor.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "March 7th, 2019",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/waitress-adelphi-theatre-london-review-a8811911.html",
       "findings": [
@@ -82795,7 +82808,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "standard--henry-hitchings.json",
-      "score": 77,
+      "score": 80,
       "publishDate": "2019-03-08",
       "url": "https://www.standard.co.uk/culture/theatre/waitress-musical-london-review-a-satisfying-mix-of-whimsy-warmth-and-sadness-a4086001.html",
       "findings": [
@@ -82809,7 +82822,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "March 7th, 2019",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/waitress-reviewadelphi-theatre-meaty-musical-packed-delicious/",
       "findings": [
@@ -82823,7 +82836,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "thestage--tim-bano.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2019-03-07",
       "url": "https://www.thestage.co.uk/reviews/waitress-review-at-adelphi-theatre-london--sweet-as-the-best-homemade-pie",
       "findings": [
@@ -84135,6 +84148,25 @@
     },
     {
       "showId": "west-side-story-2020",
+      "file": "amny--matt-windman.json",
+      "score": 18,
+      "publishDate": "2020-02-20",
+      "url": "https://www.amny.com/news/arts-entertainment/theater/review-west-side-story-revival-gets-lost-in-brutal-violence-and-overwhelming-video-imagery/amp/?__twitter_impression=true",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 67,
       "publishDate": "February 21st, 2020",
@@ -85336,7 +85368,7 @@
     {
       "showId": "white-pearl-west-end-2019",
       "file": "timeout-london--ka-bradley.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "May 18th, 2019",
       "url": "https://www.timeout.com/london/theatre/white-pearl-review",
       "findings": [
@@ -96200,7 +96232,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-11-11",
       "url": "https://www.ft.com/content/ef9eec04-6960-4997-a0ca-f974b7eddc9e?syn-25a6b1a6=1",
       "findings": [
@@ -96381,7 +96413,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-11-12",
       "url": "https://theatreandtonic.co.uk/blog/cloud-9-lyttelton-national-theatre-london-review",
       "findings": [
@@ -105013,7 +105045,7 @@
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2026-11-13",
       "url": "https://www.londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-barbican-theatre-review",
       "findings": [
@@ -105096,7 +105128,7 @@
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "theupcoming--cristiana-ferrauti.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2026-11-12",
       "url": "https://www.theupcoming.co.uk/2026/11/12/hamlet-hail-to-the-thief-at-barbican-theatre-theatre-review/",
       "findings": [
@@ -119206,6 +119238,19 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "sunday-times--dominic-maxwell.json",
+      "publishDate": "2025-01-14",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "sunday-times--unknown.json",
       "score": 82,
       "publishDate": "2025-01-14",
@@ -119697,7 +119742,7 @@
     },
     {
       "showId": "operation-mincemeat-2025",
-      "file": "frontmezzjunkies--unknown.json",
+      "file": "frontmezzjunkies--ross-it.json",
       "score": 90,
       "publishDate": "2025-03-24",
       "url": "https://frontmezzjunkies.com/2025/03/24/operation-mincemeat-lands-on-broadway/",
@@ -140287,7 +140332,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 98,
+      "score": 94,
       "publishDate": "2022-04-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-to-kill-a-mockingbird-gielgud-theatre",
       "findings": [
@@ -140315,7 +140360,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2022-04-01",
       "url": "https://www.theguardian.com/stage/2022/mar/31/to-kill-a-mockingbird-review-aaron-sorkin-rafe-spall-gielgud-theatre",
       "findings": [
@@ -140495,7 +140540,7 @@
     {
       "showId": "top-girls-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2019-04-04",
       "url": "https://www.theguardian.com/stage/2019/apr/04/top-girls-review-caryl-churchill-revival-lyttelton-national-theatre",
       "findings": [
@@ -140565,7 +140610,7 @@
     {
       "showId": "top-girls-west-end-2019",
       "file": "thestage--david-benedict.json",
-      "score": 59,
+      "score": 62,
       "publishDate": "April 4th, 2019",
       "url": "https://www.thestage.co.uk/reviews/top-girls-review-at-national-theatre-london--underpowered-revival-of-caryl-churchills-masterpiece",
       "findings": [
@@ -140788,7 +140833,7 @@
     {
       "showId": "translations-west-end-2018",
       "file": "artsdesk--matt-wolf.json",
-      "score": 97,
+      "score": 95,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/translations-national-theatre-review-irish-classic-returns-cascading-force",
       "findings": [
@@ -140816,7 +140861,7 @@
     {
       "showId": "translations-west-end-2018",
       "file": "guardian--michael-billington.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2018-05-31",
       "url": "https://www.theguardian.com/stage/2018/may/31/translations-review-brian-friel-culture-clash-language-ireland",
       "findings": [
@@ -141472,7 +141517,7 @@
     {
       "showId": "two-palestinians-go-dogging-west-end-2022",
       "file": "whatsonstage--james-fitzgerald.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "May 23rd, 2022",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/two-palestinians-go-dogging-at-the-royal-court_56564.html",
       "findings": [
@@ -141514,7 +141559,7 @@
     {
       "showId": "under-milk-wood-west-end-2021",
       "file": "independent--paul-taylor.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2021-06-24",
       "url": "https://www.independent.co.uk/independentpremium/culture/under-milk-wood-review-michael-sheen-b1872028.html",
       "findings": [
@@ -141528,7 +141573,7 @@
     {
       "showId": "under-milk-wood-west-end-2021",
       "file": "standard--unknown.json",
-      "score": 84,
+      "score": 88,
       "publishDate": "June 25th, 2021",
       "url": "https://www.standard.co.uk/culture/theatre/under-milk-wood-at-national-theatre-review-dylan-thomas-michael-sheen-b942368.html",
       "findings": [
@@ -141779,7 +141824,7 @@
     {
       "showId": "vanya-west-end-2023",
       "file": "london-theatre--suzy-evans.json",
-      "score": 99,
+      "score": 96,
       "publishDate": "October 6th, 2023",
       "url": "https://www.londontheatre.co.uk/reviews/vanya-review-duke-of-yorks-theatre-andrew-scott",
       "findings": [
@@ -142490,7 +142535,7 @@
     {
       "showId": "what-if-if-only-west-end-2021",
       "file": "artsdesk--unknown.json",
-      "score": 78,
+      "score": 82,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/what-if-if-only-royal-court-review-short-if-not-sweet",
       "findings": [
@@ -142504,7 +142549,7 @@
     {
       "showId": "what-if-if-only-west-end-2021",
       "file": "guardian--mark-lawson.json",
-      "score": 77,
+      "score": 78,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2021/oct/01/what-if-if-only-review-short-and-sharp-with-shades-of-scrooge",
       "findings": [
@@ -143238,7 +143283,7 @@
     {
       "showId": "wise-children-west-end-2018",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2018-10-17",
       "url": "https://www.timeout.com/london/theatre/wise-children-review",
       "findings": [
@@ -143419,7 +143464,7 @@
     {
       "showId": "word-play-west-end-2023",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "July 29th, 2023",
       "url": "https://www.broadwayworld.com/westend/article/Review-WORD-PLAY-Royal-Court-20230729",
       "findings": [
@@ -143433,7 +143478,7 @@
     {
       "showId": "word-play-west-end-2023",
       "file": "everything-theatre--irene-lloyd.json",
-      "score": 59,
+      "score": 66,
       "publishDate": "July 28th, 2023",
       "url": "https://everything-theatre.co.uk/2023/07/review-word-play-royal-court-theatre/",
       "findings": [
@@ -143461,7 +143506,7 @@
     {
       "showId": "word-play-west-end-2023",
       "file": "guardian--arifa-akbar.json",
-      "score": 60,
+      "score": 57,
       "publishDate": "July 27th, 2023",
       "url": "https://www.theguardian.com/stage/2023/jul/27/word-play-review-royal-court-theatre",
       "findings": [
@@ -143503,7 +143548,7 @@
     {
       "showId": "word-play-west-end-2023",
       "file": "thestage--natasha-tripney.json",
-      "score": 58,
+      "score": 59,
       "publishDate": "July 27th, 2023",
       "url": "https://www.thestage.co.uk/reviews/word-play-review-jerwood-theatre-upstairs-royal-court-theatre-london-rabiah-hussain",
       "findings": [
@@ -143517,7 +143562,7 @@
     {
       "showId": "word-play-west-end-2023",
       "file": "whatsonstage--julia-rank.json",
-      "score": 57,
+      "score": 63,
       "publishDate": "July 27th, 2023",
       "url": "https://www.whatsonstage.com/news/word-play-at-the-royal-court-review_1514359/",
       "findings": [
@@ -143545,7 +143590,7 @@
     {
       "showId": "woyzeck-west-end-2017",
       "file": "guardian--michael-billington.json",
-      "score": 60,
+      "score": 56,
       "publishDate": "2017-05-24",
       "url": "https://www.theguardian.com/stage/2017/may/24/woyzeck-review-john-boyega-jack-thorne-georg-buchner-old-vic-london",
       "findings": [
@@ -143587,7 +143632,7 @@
     {
       "showId": "woyzeck-west-end-2017",
       "file": "standard--fiona-mountford.json",
-      "score": 60,
+      "score": 63,
       "publishDate": "2017-05-24",
       "url": "https://www.standard.co.uk/goingout/theatre/woyzeck-theatre-review-john-boyega-gives-a-muscular-committed-performance-a3546841.html",
       "findings": [

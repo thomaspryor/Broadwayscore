@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-13T21:29:21.480Z",
+  "generated": "2026-11-14T00:14:12.797Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 55,
+  "count": 56,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -228,13 +228,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "oliver-west-end-2024",
-      "loserFile": "the-sun--dominic-maxwell.json",
-      "targetFile": "sunday-times--dominic-maxwell.json",
-      "reason": "orphaned-duplicate-heal: sunday-times--dominic-maxwell.json was flagged invalid after the-sun--dominic-maxwell.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -387,6 +380,20 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "loserFile": "sunday-times--dominic-maxwell.json",
+      "targetFile": "times-uk--neil-fisher.json",
+      "reason": "orphaned-duplicate-heal: times-uk--neil-fisher.json was flagged invalid after sunday-times--dominic-maxwell.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "loserFile": "times-uk--clive-davis.json",
+      "targetFile": "times-uk--dominic-maxwell.json",
+      "reason": "orphaned-duplicate-heal: times-uk--dominic-maxwell.json was flagged invalid after times-uk--clive-davis.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
