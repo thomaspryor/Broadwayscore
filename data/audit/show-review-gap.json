@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-14T17:36:57.132Z",
-  "windowDays": 21,
-  "targets": 10,
-  "auditedThisRun": 10,
-  "carriedForward": 2681,
+  "generatedAt": "2026-11-14T18:58:34.405Z",
+  "windowDays": 1095,
+  "targets": 173,
+  "auditedThisRun": 20,
+  "carriedForward": 2673,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 664,
-    "missingCurrentRun": 1362,
+    "withGap": 662,
+    "missingCurrentRun": 1356,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 903,
-    "totalRecoverable": 54,
-    "totalRecovered": 111,
+    "totalFlaggedMisses": 908,
+    "totalRecoverable": 55,
+    "totalRecovered": 116,
     "humanExcluded": 23,
-    "automatedExcluded": 987,
-    "automatedExcludedListed": 709,
-    "priorProductionCitations": 8684
+    "automatedExcluded": 991,
+    "automatedExcludedListed": 714,
+    "priorProductionCitations": 8625
   },
   "results": [
     {
@@ -12243,9 +12243,9 @@
       "previewsStartDate": "2026-11-13",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.timeout.com/london/theatre/homo-alone-2-yikes-we-did-it-again",
         "https://theatreweekly.com/a-homo-alone-2-yikes-we-did-it-again-returns-to-the-other-palace-studio-this-christmas/",
         "https://fairypoweredproductions.com/are-you-thirsty-for-more-kevin-is-back-at-the-other-palace-for-a-homo-alone-2-yikes-we-did-it-again/",
-        "https://www.timeout.com/london/theatre/homo-alone-2-yikes-we-did-it-again",
         "https://musicalinfo.co.uk/a_homo_alone_2_yikes_we_did_it_again_returns_to_the_other_palace_this_christmas_1027"
       ],
       "dirFiles": 1,
@@ -12325,12 +12325,74 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Homo Alone 2: Yikes, We Did It Again!\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Homo Alone 2: Yikes, We Did It Again!\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Homo Alone 2: Yikes, We Did It Again!\" review other",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Homo Alone 2: Yikes, We Did It Again! The Other Palace - Studio review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Homo Alone 2: Yikes, We Did It Again! The Other Palace - Studio review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Homo Alone 2: Yikes, We Did It Again! The Other Palace - Studio review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 14,
+        "byReason": {
+          "non-review-host": 10,
+          "aggregator-internal-nav": 1,
+          "ticketing-reseller": 1,
+          "ticketing-listing": 2
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -12443,7 +12505,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "a-knock-on-the-roof-off-broadway-2025",
@@ -45687,6 +45749,44 @@
         "candidateCount": 4
       },
       "computedAt": "2026-10-31T22:05:43.219Z"
+    },
+    {
+      "showId": "anything-goes-regional-2024",
+      "title": "Anything Goes",
+      "openingDate": "2024-01-19",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "applause-regional-2026",
@@ -94245,32 +94345,20 @@
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thevaults.london/club-nvrlnd",
         "https://www.timeout.com/london/theatre/club-nvrlnd-review",
         "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
+        "https://www.thevaults.london/club-nvrlnd",
         "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
         "https://www.voicemag.uk/review/club-nvrlnd-review"
       ],
-      "dirFiles": 1,
-      "dirClean": 1,
+      "dirFiles": 2,
+      "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
           "url": "https://www.thevaults.london/club-nvrlnd",
           "host": "thevaults.london",
           "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
           "serpCensus": true,
           "sources": [
             {
@@ -94293,7 +94381,70 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.timeout.com/london/theatre/club-nvrlnd-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--andrzej-lukowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/club-nvrlnd-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musical-theatre-review--molly-glenn.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -94340,76 +94491,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Club NVRLND\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Club NVRLND\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Club NVRLND\" review vaults",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Club NVRLND The Vaults Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Club NVRLND The Vaults Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Club NVRLND The Vaults Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 9,
-        "byReason": {
-          "non-review-host": 4,
-          "aggregator-internal-nav": 1,
-          "ticketing-listing": 1,
-          "ticketing-reseller": 1,
-          "ticket-seller-product-page": 1,
-          "bare-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -94422,7 +94509,7 @@
           "nonReviewDetail": "2025-08-20"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -94434,21 +94521,6 @@
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.voicemag.uk/review/club-nvrlnd-review",
           "host": "voicemag.uk",
@@ -94462,7 +94534,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=voicemag.uk): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=voicemag.uk): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Bright Data failed: "
+          "reason": "⚠️  ScrapingBee failed (render_js=false, domain=voicemag.uk): ScrapingBee HTTP 500: {\"error\": \"Error with your request, please try again (you will not be charged for this request).You should: 1) check that your URL is correctly encoded 2) try with render_js=True (5 credits per reques\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
         }
       ],
       "ingestSkippedByCap": [],
@@ -94477,28 +94549,22 @@
             "url": "https://www.thevaults.london/club-nvrlnd"
           },
           {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe"
-          },
-          {
             "outletId": "voice-magazine",
             "outlet": "voice-magazine",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.voicemag.uk/review/club-nvrlnd-review"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/club-nvrlnd-review"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.timeout.com/london/theatre/club-nvrlnd-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-14T17:21:53.242Z"
-          },
           {
             "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
             "outletId": "theatreandtonic.co.uk",
@@ -94513,15 +94579,15 @@
             "firstSeenAt": "2026-11-14T17:21:53.242Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
-            "outletId": "musical-theatre-review",
+            "url": "https://www.voicemag.uk/review/club-nvrlnd-review",
+            "outletId": "voice-magazine",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-11-14T17:21:53.242Z"
           },
           {
-            "url": "https://www.voicemag.uk/review/club-nvrlnd-review",
-            "outletId": "voice-magazine",
+            "url": "https://www.timeout.com/london/theatre/club-nvrlnd-review",
+            "outletId": "timeout-london",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-11-14T17:21:53.242Z"
@@ -94533,12 +94599,17 @@
             "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
             "host": "theatreandtonic.co.uk",
             "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
+            "host": "musicaltheatrereview.com",
+            "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 2,
-        "candidateCount": 5
+        "liveCount": 1,
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-14T17:21:53.242Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "clue-tour-2025",
@@ -103840,10 +103911,12 @@
       "previewsStartDate": "2026-11-06",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://theaterlife.com/curtains-opening-night",
         "https://abrummiehomeandabroad.com/theatre-review-curtains/",
-        "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
         "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre",
+        "https://thebearchat.com/showcase/curtains-review-a-tough-act-to-follow",
+        "http://www.nytheaterscene.com/RevNCurtainsDR.html",
+        "https://theaterlife.com/curtains-opening-night",
+        "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
         "https://theaterlife.com/curtains-opening-night/",
         "https://arpelli.com.uy/handbook/GjI89G6FE110/Curtains_Musical_Script",
         "https://creativefutures.online/reviews/curtains",
@@ -103854,18 +103927,6 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://theaterlife.com/curtains-opening-night",
-          "host": "theaterlife.com",
-          "knownOutletId": "theater-life",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://abrummiehomeandabroad.com/theatre-review-curtains/",
           "host": "abrummiehomeandabroad.com",
@@ -103879,7 +103940,19 @@
           ]
         },
         {
-          "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
+          "url": "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre",
+          "host": "onstagentx.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://thebearchat.com/showcase/curtains-review-a-tough-act-to-follow",
           "host": "thebearchat.com",
           "knownOutletId": null,
           "serpCensus": true,
@@ -103891,8 +103964,20 @@
           ]
         },
         {
-          "url": "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre",
-          "host": "onstagentx.com",
+          "url": "https://theaterlife.com/curtains-opening-night",
+          "host": "theaterlife.com",
+          "knownOutletId": "theater-life",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
+          "host": "thebearchat.com",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -103964,7 +104049,37 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.nytheaterscene.com/RevNCurtainsDR.html",
+          "host": "nytheaterscene.com",
+          "knownOutletId": "theater-scene",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-scene--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nytheaterscene.com/RevNCurtainsDR.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -103998,8 +104113,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 0,
+            "results": 6,
+            "accepted": 3,
             "error": null
           },
           {
@@ -104008,8 +104123,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -104019,25 +104134,25 @@
             "geo": "us",
             "ok": true,
             "results": 5,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 6,
+        "count": 9,
         "byReason": {
-          "non-review-host": 4,
-          "production-database-listing": 1,
-          "tag-index-page": 1
+          "non-review-host": 6,
+          "aggregator-internal-nav": 2,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -104048,15 +104163,22 @@
           "censusGateOn": true
         },
         {
-          "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
+          "url": "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre",
+          "host": "onstagentx.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://thebearchat.com/showcase/curtains-review-a-tough-act-to-follow",
           "host": "thebearchat.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
         },
         {
-          "url": "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre",
-          "host": "onstagentx.com",
+          "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
+          "host": "thebearchat.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -104135,13 +104257,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theater-life",
-            "outlet": "theater-life",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterlife.com/curtains-opening-night"
-          },
-          {
             "outletId": "abrummiehomeandabroad.com",
             "outlet": "abrummiehomeandabroad.com",
             "critic": "Unknown",
@@ -104149,18 +104264,32 @@
             "url": "https://abrummiehomeandabroad.com/theatre-review-curtains/"
           },
           {
-            "outletId": "thebearchat.com",
-            "outlet": "thebearchat.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/"
-          },
-          {
             "outletId": "onstagentx.com",
             "outlet": "onstagentx.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre"
+          },
+          {
+            "outletId": "thebearchat.com",
+            "outlet": "thebearchat.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thebearchat.com/showcase/curtains-review-a-tough-act-to-follow"
+          },
+          {
+            "outletId": "theater-life",
+            "outlet": "theater-life",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theaterlife.com/curtains-opening-night"
+          },
+          {
+            "outletId": "thebearchat.com",
+            "outlet": "thebearchat.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/"
           },
           {
             "outletId": "theater-life",
@@ -104196,17 +104325,17 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://smeharbinger.net/138182/arts-and-entertainment/curtains-review/"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytheaterscene.com/RevNCurtainsDR.html"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://theaterlife.com/curtains-opening-night",
-            "outletId": "theater-life",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-14T05:24:29.223Z"
-          },
           {
             "url": "https://abrummiehomeandabroad.com/theatre-review-curtains/",
             "outletId": "abrummiehomeandabroad.com",
@@ -104215,18 +104344,32 @@
             "firstSeenAt": "2026-11-10T05:34:49.082Z"
           },
           {
-            "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
-            "outletId": "thebearchat.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-08T06:35:10.988Z"
-          },
-          {
             "url": "https://www.onstagentx.com/reviews/curtains-allen-contemporary-theatre",
             "outletId": "onstagentx.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-07T04:50:57.436Z"
+          },
+          {
+            "url": "https://thebearchat.com/showcase/curtains-review-a-tough-act-to-follow",
+            "outletId": "thebearchat.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-14T18:58:34.405Z"
+          },
+          {
+            "url": "https://theaterlife.com/curtains-opening-night",
+            "outletId": "theater-life",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-14T05:24:29.223Z"
+          },
+          {
+            "url": "https://thebearchat.com/7700/showcase/curtains-review-a-tough-act-to-follow/",
+            "outletId": "thebearchat.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-08T06:35:10.988Z"
           },
           {
             "url": "https://theaterlife.com/curtains-opening-night/",
@@ -104262,14 +104405,21 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-10T12:04:40.258Z"
+          },
+          {
+            "url": "http://www.nytheaterscene.com/RevNCurtainsDR.html",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-14T18:58:34.405Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 8
+        "candidateCount": 9
       },
-      "computedAt": "2026-11-14T05:24:29.223Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "cygnus-regional-2025",
@@ -107746,76 +107896,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Dead Centre: Deaf Republic\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Dead Centre: Deaf Republic\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Dead Centre: Deaf Republic\" review skirball",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Dead Centre: Deaf Republic NYU Skirball review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 6,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Dead Centre: Deaf Republic NYU Skirball review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Dead Centre: Deaf Republic NYU Skirball review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 11,
-        "byReason": {
-          "non-review-host": 5,
-          "aggregator-internal-nav": 1,
-          "no-review-evidence": 1,
-          "ticketing-listing": 1,
-          "venue-production-page": 2,
-          "institutional-press-release": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -107829,7 +107915,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "dead-girls-quinceanera-regional-2026",
@@ -125314,6 +125400,7 @@
       "market": "tour",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.partonandpearl.com/blog/review-dolly-partons-smoky-mountain-christmas-carol",
         "https://www.allthatdazzles.co.uk/post/review-dolly-parton-s-smoky-mountain-christmas-carol-queen-elizabeth-hall-southbank-centre",
         "https://inews.co.uk/culture/arts/dolly-parton-smoky-mountain-christmas-carol-review-2028237",
         "https://www.express.co.uk/entertainment/theatre/1712010/dolly-parton-charles-dickens-smoky-mountain-christmas-carol-southbank-centre-review"
@@ -125332,15 +125419,83 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dolly Parton’s Smoky Mountain Christmas Carol\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dolly Parton’s Smoky Mountain Christmas Carol\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dolly Parton’s Smoky Mountain Christmas Carol\" review american",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dolly Parton’s Smoky Mountain Christmas Carol North American Tour review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dolly Parton’s Smoky Mountain Christmas Carol North American Tour review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dolly Parton’s Smoky Mountain Christmas Carol North American Tour review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 6,
+        "byReason": {
+          "non-review-host": 5,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
+        {
+          "url": "https://www.partonandpearl.com/blog/review-dolly-partons-smoky-mountain-christmas-carol",
+          "host": "partonandpearl.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2021-11-30"
+        },
         {
           "url": "https://www.allthatdazzles.co.uk/post/review-dolly-parton-s-smoky-mountain-christmas-carol-queen-elizabeth-hall-southbank-centre",
           "host": "allthatdazzles.co.uk",
@@ -125374,6 +125529,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.partonandpearl.com/blog/review-dolly-partons-smoky-mountain-christmas-carol",
+            "outletId": "partonandpearl.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-14T18:58:34.405Z"
+          },
+          {
             "url": "https://www.allthatdazzles.co.uk/post/review-dolly-parton-s-smoky-mountain-christmas-carol-queen-elizabeth-hall-southbank-centre",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
@@ -125395,6 +125556,11 @@
         "censusSchema": 4,
         "excluded": [
           {
+            "url": "https://www.partonandpearl.com/blog/review-dolly-partons-smoky-mountain-christmas-carol",
+            "host": "partonandpearl.com",
+            "reason": "page-date-before-run"
+          },
+          {
             "url": "https://www.allthatdazzles.co.uk/post/review-dolly-parton-s-smoky-mountain-christmas-carol-queen-elizabeth-hall-southbank-centre",
             "host": "allthatdazzles.co.uk",
             "reason": "page-date-before-run"
@@ -125410,10 +125576,10 @@
             "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 3,
-        "candidateCount": 3
+        "liveCount": 4,
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -129131,12 +129297,78 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Drunk Christmas Carol NYC\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Drunk Christmas Carol NYC\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Drunk Christmas Carol NYC\" review ruby",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Drunk Christmas Carol NYC The Ruby Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Drunk Christmas Carol NYC The Ruby Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Drunk Christmas Carol NYC The Ruby Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "non-review-host": 2,
+          "aggregator-internal-nav": 3,
+          "no-review-evidence": 3,
+          "production-database-listing": 1,
+          "venue-production-page": 1,
+          "ticketing-reseller": 1,
+          "non-review-path": 9,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -129150,7 +129382,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "drunk-dracula-nyc-off-broadway-2026",
@@ -149888,12 +150120,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"First and Last\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"First and Last\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"First and Last\" review artxnyc",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "First and Last artXnyc review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "First and Last artXnyc review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "First and Last artXnyc review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 12,
+        "byReason": {
+          "non-review-host": 10,
+          "news-roundup-site": 1,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -149907,7 +150200,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "first-date-regional-2024",
@@ -215644,6 +215937,58 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T22:05:43.219Z"
+    },
+    {
+      "showId": "in-quietness-regional-2024",
+      "title": "In Quietness",
+      "openingDate": "2024-01-21",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://chicagoreader.com/arts-culture/theater/theater-review/in-quietness-a-red-orchid-theatre/",
+          "host": "chicagoreader.com",
+          "file": "chicago-reader--emily-mcclanathan.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "in-the-amazon-warehouse-parking-lot-off-broadway-2024",
@@ -306649,19 +306994,24 @@
       "previewsStartDate": "2026-11-02",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
         "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
+        "https://everything-theatre.co.uk/2026/11/review-nero-southwark-playhouse-elephant/",
+        "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
+        "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03",
+        "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+        "https://cineramafilm.com/2026/11/08/nero-review",
+        "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant",
+        "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
+        "https://cineramafilm.com/2026/11/08/nero-review/",
+        "https://thespyinthestalls.com/2026/11/nero/",
         "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant",
         "https://www.timeout.com/london/theatre/nero-review",
-        "https://cineramafilm.com/2026/11/08/nero-review",
         "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
         "https://www.londontheatre.co.uk/reviews/nero-review-southwark-playhouse",
-        "https://everything-theatre.co.uk/2026/11/review-nero-southwark-playhouse-elephant/",
         "https://www.thereviewshub.com/nero-southwark-playhouse-elephant-london/",
         "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant/",
         "https://www.harrytheatrelife.co.uk/post/review-nero-a-new-musical-southwark-playhouse-theatre-elephant-london",
         "https://www.whatsonstage.com/news/nero-musical-at-southwark-playhouse-elephant-review_1736407/",
-        "https://cineramafilm.com/2026/11/08/nero-review/",
         "https://www.broadwayworld.com/westend/article/Review-NERO-Southwark-Playhouse-20261107",
         "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant/",
         "https://www.theupcoming.co.uk/2026/11/07/nero-at-southwark-playhouse-theatre-review/",
@@ -306670,7 +307020,6 @@
         "https://www.allthatdazzles.co.uk/post/review-nero-southwark-playhouse-elephant",
         "https://www.broadwayworld.com/translate/th/Review-NERO-Southwark-Playhouse-20261107",
         "https://readaboutstuff.com/2026/11/10/review-nero-southwark-playhouse-elephant-london/",
-        "https://thespyinthestalls.com/2026/11/nero/",
         "https://www.thetimes.com/culture/theatre-dance/article/nero-review-what-were-the-makers-of-this-new-musical-thinking-g0t0ldf5g",
         "https://www.broadwayworld.com/translate/zh/Review-NERO-Southwark-Playhouse-20261107",
         "https://www.broadwayworld.com/translate/tr/Review-NERO-Southwark-Playhouse-20261107",
@@ -306678,7 +307027,6 @@
         "https://www.timeout.com/london/theatre/nero",
         "https://www.broadwayworld.com/translate/ja/Review-NERO-Southwark-Playhouse-20261107",
         "http://www.broadwayworld.com/westend/article/Review-NERO-Southwark-Playhouse-20261107",
-        "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant",
         "https://firstnightmagazine.com/2026/11/09/review-of-nero-2026-southwark-playhouse-historical-musical-is-unlikely-to-make-history/",
         "https://www.standard.co.uk/culture/theatre/nero-southwark-playhouse-review-b1304267.html",
         "https://londondecanted.com/articles/nero-at-southwark-playhouse-elephant-a-musical-with-great-songs-and-too-many-ide-c8a88e61",
@@ -306692,6 +307040,30 @@
       "dirClean": 22,
       "inReviewsJson": 22,
       "missing": [
+        {
+          "url": "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
+          "host": "partially-obstructed-view.blogspot.com",
+          "knownOutletId": "partially-obstructed-view",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://londondecanted.com/articles/nero-at-southwark-playhouse-elephant-a-musical-with-great-songs-and-too-many-ide-c8a88e61",
           "host": "londondecanted.com",
@@ -306752,6 +307124,39 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--mark-lawson.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "http://www.curtainup.com/nero.html",
           "host": "curtainup.com",
@@ -306872,8 +307277,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -306882,8 +307287,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
-            "accepted": 3,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -306892,8 +307297,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 5,
+            "accepted": 3,
             "error": null
           },
           {
@@ -306902,7 +307307,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 3,
+            "results": 4,
             "accepted": 1,
             "error": null
           },
@@ -306912,21 +307317,23 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 1,
-            "accepted": 1,
+            "results": 2,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 2,
+        "count": 9,
         "byReason": {
-          "non-review-host": 1,
-          "write-path-blocked": 1
+          "non-review-host": 5,
+          "write-path-blocked": 2,
+          "tag-index-page": 1,
+          "stored-date-before-production": 1
         }
       },
       "dedupedVariants": [],
@@ -306942,6 +307349,36 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03",
+          "host": "londonboxoffice.co.uk",
+          "outletId": "london-box-office",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=londonboxoffice.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+        },
+        {
+          "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
+          "host": "partially-obstructed-view.blogspot.com",
+          "outletId": "partially-obstructed-view",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
         {
           "url": "https://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero",
           "host": "partially-obstructed-view.blogspot.com",
@@ -306993,6 +307430,20 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "london-box-office",
+            "outlet": "london-box-office",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03"
+          },
+          {
+            "outletId": "partially-obstructed-view",
+            "outlet": "partially-obstructed-view",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html"
+          },
+          {
             "outletId": "londondecanted.com",
             "outlet": "londondecanted.com",
             "critic": "Unknown",
@@ -307038,16 +307489,46 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T06:26:00.733Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/11/review-nero-southwark-playhouse-elephant/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T22:57:12.505Z"
+          },
+          {
             "url": "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-08T06:35:10.988Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
-            "outletId": "musicaltheatrereview.com",
+            "url": "https://cineramafilm.com/2026/11/08/nero-review",
+            "outletId": "cineramafilm.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-10T20:25:26.330Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant",
+            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-11-09T06:26:00.733Z"
+          },
+          {
+            "url": "https://cineramafilm.com/2026/11/08/nero-review/",
+            "outletId": "cineramafilm.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T22:57:12.505Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/11/nero/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T06:35:10.988Z"
           },
           {
             "url": "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant",
@@ -307062,12 +307543,6 @@
             "firstSeenAt": "2026-11-09T15:05:38.712Z"
           },
           {
-            "url": "https://cineramafilm.com/2026/11/08/nero-review",
-            "outletId": "cineramafilm.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T20:25:26.330Z"
-          },
-          {
             "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
             "outletId": "musicaltheatrereview.com",
             "state": "live",
@@ -307078,12 +307553,6 @@
             "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-08T06:35:10.988Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/11/review-nero-southwark-playhouse-elephant/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-08T22:57:12.505Z"
           },
           {
             "url": "https://www.thereviewshub.com/nero-southwark-playhouse-elephant-london/",
@@ -307108,12 +307577,6 @@
             "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-11-10T05:34:49.082Z"
-          },
-          {
-            "url": "https://cineramafilm.com/2026/11/08/nero-review/",
-            "outletId": "cineramafilm.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-08T22:57:12.505Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-NERO-Southwark-Playhouse-20261107",
@@ -307164,12 +307627,6 @@
             "firstSeenAt": "2026-11-10T12:04:40.258Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/11/nero/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-08T06:35:10.988Z"
-          },
-          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/nero-review-what-were-the-makers-of-this-new-musical-thinking-g0t0ldf5g",
             "outletId": "thetimes.com",
             "state": "live",
@@ -307212,12 +307669,6 @@
             "firstSeenAt": "2026-11-09T15:05:38.712Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T06:26:00.733Z"
-          },
-          {
             "url": "https://firstnightmagazine.com/2026/11/09/review-of-nero-2026-southwark-playhouse-historical-musical-is-unlikely-to-make-history/",
             "outletId": "firstnightmagazine.com",
             "state": "live",
@@ -307228,6 +307679,20 @@
             "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-11T10:45:40.076Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03",
+            "outletId": "london-box-office",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-14T18:58:34.405Z"
+          },
+          {
+            "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-nero.html",
+            "outletId": "partially-obstructed-view",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-14T18:58:34.405Z"
           },
           {
             "url": "https://londondecanted.com/articles/nero-at-southwark-playhouse-elephant-a-musical-with-great-songs-and-too-many-ide-c8a88e61",
@@ -307273,11 +307738,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+            "host": "theguardian.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 20,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-14T05:24:29.223Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "network-regional-2024",
@@ -310022,13 +310493,10 @@
       "previewsStartDate": "2026-11-12",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://westendwilma.com/nine-night-kiln-theatre-london/",
         "https://www.britishtheatreguide.info/reviews/nine-night-dorfman-theatre-15850",
-        "https://www.timeout.com/london/theatre/nine-night-1",
-        "https://www.bestoftheatre.co.uk/blog/post/nine-night-kiln-theatre-rehearsal-photos",
-        "https://www.ikonlondonmagazine.com/natasha-gordon-nine-night-kiln-theatre",
         "https://www.afridiziak.com/reviews/nine-night/",
         "https://www.londontheatre1.com/reviews/nine-night-by-natasha-gordon-at-trafalgar-studios-review/",
+        "https://www.timeout.com/london/theatre/nine-night-1",
         "https://www.theguardian.com/nine-night-review-dorfman-national-theatre-london",
         "https://fringereview.co.uk/review/fringereview-uk/nine-night",
         "https://fairypoweredproductions.com/nine-night-review/",
@@ -310115,107 +310583,7 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://westendwilma.com/nine-night-kiln-theatre-london/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-wilma--westendwilma.json",
-              "flag": "clean",
-              "urlInDir": "https://westendwilma.com/nine-night-kiln-theatre-london/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/nine-night-kiln-theatre-rehearsal-photos",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--maria-boot.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/nine-night-kiln-theatre-rehearsal-photos"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.ikonlondonmagazine.com/natasha-gordon-nine-night-kiln-theatre",
-          "host": "ikonlondonmagazine.com",
-          "knownOutletId": "ikonlondonmagazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ikonlondonmagazine--elena-leo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.ikonlondonmagazine.com/natasha-gordon-nine-night-kiln-theatre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 1,
@@ -310262,84 +310630,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Nine Night\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Nine Night\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Nine Night\" review kiln",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Nine Night\" Gordon review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Nine Night Kiln Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Nine Night Kiln Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 8,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Nine Night Kiln Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 14,
-        "byReason": {
-          "non-review-host": 10,
-          "write-path-blocked": 2,
-          "ticket-seller-product-page": 1,
-          "census-junk-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -310568,27 +310864,12 @@
             "url": "https://www.londontheatre1.com/reviews/nine-night-by-natasha-gordon-at-trafalgar-studios-review/",
             "host": "londontheatre1.com",
             "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://westendwilma.com/nine-night-kiln-theatre-london/",
-            "host": "westendwilma.com",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/nine-night-kiln-theatre-rehearsal-photos",
-            "host": "bestoftheatre.co.uk",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://www.ikonlondonmagazine.com/natasha-gordon-nine-night-kiln-theatre",
-            "host": "ikonlondonmagazine.com",
-            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 3,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "no-excuses-no-limits-off-broadway-2026",
@@ -311776,86 +312057,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Now You See Me Live\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Now You See Me Live\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Now You See Me Live\" review hirschfeld",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Now You See Me Live\" Duffy review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Now You See Me Live Al Hirschfeld Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Now You See Me Live Al Hirschfeld Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Now You See Me Live Al Hirschfeld Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 18,
-        "byReason": {
-          "non-review-host": 10,
-          "ticketing-reseller": 3,
-          "aggregator-internal-nav": 2,
-          "no-review-evidence": 1,
-          "bare-host": 1,
-          "stored-date-before-production": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -312023,7 +312230,7 @@
         "liveCount": 2,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "now-you-see-me-live-off-west-end-2026",
@@ -312142,155 +312349,39 @@
       "showId": "nutty-nattys-magic-puppet-show-off-broadway-2026",
       "title": "Nutty Natty's Magic Puppet Show",
       "openingDate": "2026-11-14",
-      "status": "upcoming",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://concerts.consequence.net/events/nutty-nattys-magic-puppet-show-at-the-theater-center-on-2026-12-05-11-00--1"
-      ],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://concerts.consequence.net/events/nutty-nattys-magic-puppet-show-at-the-theater-center-on-2026-12-05-11-00--1",
-          "host": "consequence.net",
-          "knownOutletId": "consequence",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Nutty Natty's Magic Puppet Show\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Nutty Natty's Magic Puppet Show\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Nutty Natty's Magic Puppet Show\" review jerry",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 18,
-        "byReason": {
-          "non-review-host": 2,
-          "ticketing-reseller": 2,
-          "aggregator-internal-nav": 3,
-          "no-review-evidence": 2,
-          "bare-host": 1,
-          "merch-store": 6,
-          "write-path-blocked": 1,
-          "review-hub-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://concerts.consequence.net/events/nutty-nattys-magic-puppet-show-at-the-theater-center-on-2026-12-05-11-00--1",
-          "host": "consequence.net",
-          "outletId": "consequence",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "consequence",
-            "outlet": "consequence",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://concerts.consequence.net/events/nutty-nattys-magic-puppet-show-at-the-theater-center-on-2026-12-05-11-00--1"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://concerts.consequence.net/events/nutty-nattys-magic-puppet-show-at-the-theater-center-on-2026-12-05-11-00--1",
-            "outletId": "consequence",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-14T14:25:41.013Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "nye-west-end-2024",
@@ -341905,31 +341996,16 @@
       "openingDate": "2026-11-13",
       "status": "open",
       "category": "regional",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
-        "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
-        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
-        "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
-        "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
-        "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
-        "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
-        "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
-        "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
-        "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
-        "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
-        "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
-        "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
-        "https://www.bostonglobe.com/2026/11/12/arts/lyric-stage-peter-pan-goes-wrong/",
         "https://www.lancasterpa-theater.com/reviews/our/peter-pan-goes-wrong",
         "https://www.houston-theater.com/reviews/our/peter-pan-goes-wrong",
-        "https://www.thereviewshub.com/peter-pan-goes-wrong-lyric-theatre-london/",
         "https://colinthomas.ca/peter-pan-goes-wrong-and-so-does-this-farce-sometimes",
         "https://theatreandtonic.co.uk/blog/peter-pan-goes-wrong-mischief-theatre-review",
         "https://www.londontheatre.co.uk/reviews/peter-pan-goes-wrong-review",
         "https://colinthomas.ca/peter-pan-goes-wrong-and-so-does-this-farce-sometimes/",
+        "https://spokanecivictheatre.com/gonzaga-bulletin-peter-pan-goes-wrong",
+        "https://www.gbtarticles.com/reviews/3415458_theatre-reviews-peter-pan-goes-wrong",
         "https://spokanecivictheatre.com/gonzaga-bulletin-peter-pan-goes-wrong/",
         "https://fairypoweredproductions.com/peter-pan-goes-wrong-review-10/",
         "https://megaphoneoz.com/review-peter-pan-goes-wrong-lyric-theatre/",
@@ -341940,175 +342016,6 @@
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
-        {
-          "url": "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
-            }
-          ]
-        },
         {
           "url": "https://spokanecivictheatre.com/gonzaga-bulletin-peter-pan-goes-wrong",
           "host": "spokanecivictheatre.com",
@@ -342125,30 +342032,6 @@
           "url": "https://www.gbtarticles.com/reviews/3415458_theatre-reviews-peter-pan-goes-wrong",
           "host": "gbtarticles.com",
           "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.thereviewshub.com/peter-pan-goes-wrong-lyric-theatre-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/peter-pan-goes-wrong-review",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
           "serpCensus": true,
           "sources": [
             {
@@ -342209,39 +342092,6 @@
       "dirOnly": [],
       "flaggedMisses": [
         {
-          "url": "https://www.bostonglobe.com/2026/11/12/arts/lyric-stage-peter-pan-goes-wrong/",
-          "host": "bostonglobe.com",
-          "knownOutletId": "boston-globe",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "boston-globe--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bostonglobe.com/2026/11/12/arts/lyric-stage-peter-pan-goes-wrong/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
           "url": "https://www.bostonherald.com/2026/11/08/peter-pan-goes-wrong-brings-controlled-chaos-to-lyric-stage/",
           "host": "bostonherald.com",
           "knownOutletId": "boston-herald",
@@ -342274,103 +342124,20 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Peter Pan Goes Wrong\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Peter Pan Goes Wrong\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Peter Pan Goes Wrong\" review lyric",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Peter Pan Goes Wrong Lyric Stage Company of Boston, Boston, MA review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Peter Pan Goes Wrong Lyric Stage Company of Boston, Boston, MA review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Peter Pan Goes Wrong Lyric Stage Company of Boston, Boston, MA review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 4,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 138,
+        "count": 1,
         "byReason": {
-          "non-review-host": 24,
-          "ticketing-reseller": 1,
-          "aggregator-internal-nav": 62,
-          "bare-host": 1,
-          "stored-date-before-production": 1,
-          "write-path-blocked": 1,
-          "not-http-url": 6,
-          "aggregator-section-root": 4,
-          "production-database-listing": 34,
-          "non-stage-review": 1,
-          "roundup-page": 1,
-          "census-junk-host": 1,
-          "tag-index-page": 1
+          "stored-date-before-production": 1
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong",
-          "publishDate": "2023-04-19"
-        }
-      ],
       "nonReviewCandidates": [
         {
           "url": "https://www.lancasterpa-theater.com/reviews/our/peter-pan-goes-wrong",
           "host": "lancasterpa-theater.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-05-22"
-        },
-        {
-          "url": "https://www.houston-theater.com/reviews/our/peter-pan-goes-wrong",
-          "host": "houston-theater.com",
           "knownOutletId": null,
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
@@ -342398,103 +342165,12 @@
           "knownOutletId": "london-theatre",
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-10-11"
+          "nonReviewDetail": "2016-06-08"
         }
       ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
-          "host": "cititour.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
-          "host": "nypost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://spokanecivictheatre.com/gonzaga-bulletin-peter-pan-goes-wrong",
           "host": "spokanecivictheatre.com",
@@ -342533,36 +342209,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.thereviewshub.com/peter-pan-goes-wrong-lyric-theatre-london/",
-          "host": "thereviewshub.com",
-          "outletId": "thereviewshub",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/peter-pan-goes-wrong-review",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "peter-pan-goes-wrong-regional-2026: https://www.londontheatre.co.uk/reviews/peter-pan-goes-wrong-review dated 2016-06-08 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
-        {
           "url": "https://fairypoweredproductions.com/peter-pan-goes-wrong-review-10/",
           "host": "fairypoweredproductions.com",
           "outletId": "fairypoweredproductions",
@@ -342595,20 +342241,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.gbtarticles.com/reviews/3415458_theatre-reviews-peter-pan-goes-wrong"
-          },
-          {
-            "outletId": "thereviewshub",
-            "outlet": "thereviewshub",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thereviewshub.com/peter-pan-goes-wrong-lyric-theatre-london/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/peter-pan-goes-wrong-review"
           },
           {
             "outletId": "spokanecivictheatre.com",
@@ -342661,12 +342293,6 @@
             "firstSeenAt": "2026-11-14T00:01:13.731Z"
           },
           {
-            "url": "https://www.thereviewshub.com/peter-pan-goes-wrong-lyric-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-13T10:19:32.113Z"
-          },
-          {
             "url": "https://colinthomas.ca/peter-pan-goes-wrong-and-so-does-this-farce-sometimes",
             "outletId": "colinthomas.ca",
             "state": "live",
@@ -342703,20 +342329,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-13T02:34:56.640Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/peter-pan-goes-wrong-lyric-theatre-london/",
-            "outletId": "thereviewshub",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-13T10:19:32.113Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/peter-pan-goes-wrong-review",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-13T10:19:32.113Z"
           },
           {
             "url": "https://spokanecivictheatre.com/gonzaga-bulletin-peter-pan-goes-wrong/",
@@ -342767,11 +342379,6 @@
             "reason": "page-date-before-run"
           },
           {
-            "url": "https://www.houston-theater.com/reviews/our/peter-pan-goes-wrong",
-            "host": "houston-theater.com",
-            "reason": "page-date-before-run"
-          },
-          {
             "url": "https://theatreandtonic.co.uk/blog/peter-pan-goes-wrong-mischief-theatre-review",
             "host": "theatreandtonic.co.uk",
             "reason": "page-date-before-run"
@@ -342780,17 +342387,12 @@
             "url": "https://www.londontheatre.co.uk/reviews/peter-pan-goes-wrong-review",
             "host": "londontheatre.co.uk",
             "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.bostonglobe.com/2026/11/12/arts/lyric-stage-peter-pan-goes-wrong/",
-            "host": "bostonglobe.com",
-            "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 12
+        "liveCount": 5,
+        "candidateCount": 11
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "peter-pan-off-west-end-2026",
@@ -345487,9 +345089,9 @@
         "https://www.thewrap.com/potus-broadway-review-rachel-dratch-vanessa-williams-julianne-hough/",
         "https://www.ashleyhajimirsadeghi.com/blog/potus-or-behind-every-great-dumbass",
         "https://www.showsiveseen.com/potus-play-review-act-theatre",
-        "https://www.houstonfilmfanatics.com/potus-review",
-        "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/",
+        "https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/",
         "https://larchmontbuzz.com/theater/theatre-review-potus",
+        "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/",
         "https://www.backstage.com/casting/potus-gallery-players-production-3219477",
         "http://www.houstonfilmfanatics.com/potus-review.html",
         "https://ctxlivetheatre.com/reviews/20241021-review-potus-by-jarrott-productions/",
@@ -345712,21 +345314,9 @@
           ]
         },
         {
-          "url": "https://www.houstonfilmfanatics.com/potus-review",
-          "host": "houstonfilmfanatics.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
           "serpCensus": true,
           "sources": [
             {
@@ -345739,6 +345329,18 @@
           "url": "https://larchmontbuzz.com/theater/theatre-review-potus",
           "host": "larchmontbuzz.com",
           "knownOutletId": "larchmont-buzz",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "serpCensus": true,
           "sources": [
             {
@@ -345891,78 +345493,20 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"POTUS\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"POTUS\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"POTUS\" review gallery",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "POTUS Gallery Players review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "POTUS Gallery Players review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "POTUS Gallery Players review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 6,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 153,
+        "count": 144,
         "byReason": {
-          "non-review-host": 25,
-          "aggregator-internal-nav": 54,
-          "bare-host": 1,
-          "write-path-blocked": 2,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 52,
+          "non-stage-review": 1,
+          "production-database-listing": 11,
           "not-http-url": 7,
           "aggregator-section-root": 4,
-          "production-database-listing": 11,
-          "non-stage-review": 1,
-          "roundup-page": 48
+          "roundup-page": 48,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -345973,21 +345517,7 @@
         }
       ],
       "automatedExcludedListed": 1,
-      "unextractable": [
-        {
-          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477/",
-          "host": "backstage.com",
-          "knownOutletId": "backstage",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "zeroCharAttempts": 6
-        }
-      ],
+      "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "https://cititour.com/NYC_Broadway/POTUS/1078",
@@ -346088,13 +345618,6 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.houstonfilmfanatics.com/potus-review",
-          "host": "houstonfilmfanatics.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
           "url": "http://www.houstonfilmfanatics.com/potus-review.html",
           "host": "houstonfilmfanatics.com",
           "priorRun": false,
@@ -346125,9 +345648,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://larchmontbuzz.com/theater/theatre-review-potus",
-          "host": "larchmontbuzz.com",
-          "outletId": "larchmont-buzz",
+          "url": "https://www.ashleyhajimirsadeghi.com/blog/potus-or-behind-every-great-dumbass",
+          "host": "ashleyhajimirsadeghi.com",
+          "outletId": "ashleyhajimirsadeghi",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -346137,12 +345660,42 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing old-production review: https://larchmontbuzz.com/theater/theatre-review-potus (dated 2024-02-01, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+          "reason": "⛔ Refusing old-production review: https://www.ashleyhajimirsadeghi.com/blog/potus-or-behind-every-great-dumbass (dated 2022-08-23, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
         },
         {
-          "url": "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://www.showsiveseen.com/potus-play-review-act-theatre",
+          "host": "showsiveseen.com",
+          "outletId": "showsiveseen",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing old-production review: https://www.showsiveseen.com/potus-play-review-act-theatre (dated 2024-09-17, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+        },
+        {
+          "url": "https://www.showsiveseen.com/potus-play-review-act-theatre/",
+          "host": "showsiveseen.com",
+          "outletId": "showsiveseen",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing old-production review: https://www.showsiveseen.com/potus-play-review-act-theatre/ (dated 2024-09-17, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+        },
+        {
+          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477",
+          "host": "backstage.com",
+          "outletId": "backstage",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -346152,79 +345705,49 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
-        {
-          "url": "https://ctxlivetheatre.com/reviews/20241021-review-potus-by-jarrott-productions/",
-          "host": "ctxlivetheatre.com",
-          "outletId": "ctxlivetheatre",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "potus-off-broadway-2026: https://ctxlivetheatre.com/reviews/20241021-review-potus-by-jarrott-productions/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⛔ Refusing old-production review: https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/ (dated 2022-04-30, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
-        },
-        {
-          "url": "https://www.roccitymag.com/arts-entertainment/theater-review-potus-18335584/",
-          "host": "roccitymag.com",
-          "outletId": "roc-city-mag",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⛔ Refusing old-production review: https://www.roccitymag.com/arts-entertainment/theater-review-potus-18335584/ (dated 2024-10-27, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.ashleyhajimirsadeghi.com/blog/potus-or-behind-every-great-dumbass",
-          "host": "ashleyhajimirsadeghi.com",
-          "outletId": "ashleyhajimirsadeghi"
-        },
-        {
-          "url": "https://www.showsiveseen.com/potus-play-review-act-theatre",
-          "host": "showsiveseen.com",
-          "outletId": "showsiveseen"
-        },
-        {
-          "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477",
-          "host": "backstage.com",
-          "outletId": "backstage"
-        },
-        {
-          "url": "https://www.showsiveseen.com/potus-play-review-act-theatre/",
-          "host": "showsiveseen.com",
-          "outletId": "showsiveseen"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=backstage.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=backstage.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nArticle extraction r"
         },
         {
           "url": "https://stagebuddy.com/theater/theater-review/potus",
           "host": "stagebuddy.com",
-          "outletId": "stagebuddy"
+          "outletId": "stagebuddy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing old-production review: https://stagebuddy.com/theater/theater-review/potus (dated 2022-05-07, over a year before potus-off-broadway-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine"
+        },
+        {
+          "url": "https://larchmontbuzz.com/theater/theatre-review-potus",
+          "host": "larchmontbuzz.com",
+          "outletId": "larchmont-buzz"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/20241021-review-potus-by-jarrott-productions/",
+          "host": "ctxlivetheatre.com",
+          "outletId": "ctxlivetheatre"
+        },
+        {
+          "url": "https://www.roccitymag.com/arts-entertainment/theater-review-potus-18335584/",
+          "host": "roccitymag.com",
+          "outletId": "roc-city-mag"
         }
       ],
       "censusVerdict": {
@@ -346245,18 +345768,11 @@
             "url": "https://www.showsiveseen.com/potus-play-review-act-theatre"
           },
           {
-            "outletId": "houstonfilmfanatics.com",
-            "outlet": "houstonfilmfanatics.com",
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.houstonfilmfanatics.com/potus-review"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/"
+            "url": "https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/"
           },
           {
             "outletId": "larchmont-buzz",
@@ -346264,6 +345780,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://larchmontbuzz.com/theater/theatre-review-potus"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-potus-or-behind-this-bad-play-are-eight-women-trying-to-keep-it-alive-and-they-do_93706/"
           },
           {
             "outletId": "backstage",
@@ -346374,13 +345897,6 @@
             "firstSeenAt": "2026-11-13T16:57:10.355Z"
           },
           {
-            "url": "https://larchmontbuzz.com/theater/theatre-review-potus",
-            "outletId": "larchmont-buzz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-14T00:31:07.833Z"
-          },
-          {
             "url": "https://www.backstage.com/casting/potus-gallery-players-production-3219477",
             "outletId": "backstage",
             "state": "GAP",
@@ -346456,7 +345972,7 @@
         "liveCount": 0,
         "candidateCount": 14
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "prayer-circle-regional-2026",
@@ -370251,28 +369767,48 @@
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/santas-first-christmas",
         "https://www.primarytimes.co.uk/south_london/listings/santa-s-first-christmas-605048"
       ],
-      "dirFiles": 0,
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
         {
           "url": "https://www.primarytimes.co.uk/south_london/listings/santa-s-first-christmas-605048",
           "host": "primarytimes.co.uk",
           "knownOutletId": "primarytimes",
-          "serpCensus": true,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "primarytimes--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.primarytimes.co.uk/south_london/listings/santa-s-first-christmas-605048"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
           "sources": [
             {
               "source": "serp-census",
               "sourceUrl": null
             }
-          ]
+          ],
+          "serpCensus": true,
+          "reverify": false
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -370319,145 +369855,33 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Santa's First Christmas\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Santa's First Christmas\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Santa's First Christmas\" review unicorn",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Santa's First Christmas Unicorn Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Santa's First Christmas Unicorn Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Santa's First Christmas Unicorn Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 8,
-        "byReason": {
-          "non-review-host": 3,
-          "census-junk-host": 2,
-          "no-review-evidence": 1,
-          "show-listing-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.timeout.com/london/theatre/santas-first-christmas",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-10-11"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.primarytimes.co.uk/south_london/listings/santa-s-first-christmas-605048",
-          "host": "primarytimes.co.uk",
-          "outletId": "primarytimes",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "primarytimes",
-            "outlet": "primarytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.primarytimes.co.uk/south_london/listings/santa-s-first-christmas-605048"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.timeout.com/london/theatre/santas-first-christmas",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-14T16:58:19.618Z"
-          },
-          {
-            "url": "https://www.primarytimes.co.uk/south_london/listings/santa-s-first-christmas-605048",
-            "outletId": "primarytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-14T16:58:19.618Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://www.timeout.com/london/theatre/santas-first-christmas",
-            "host": "timeout.com",
-            "reason": "page-date-before-run"
+            "url": "https://www.primarytimes.co.uk/south_london/listings/santa-s-first-christmas-605048",
+            "host": "primarytimes.co.uk",
+            "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 1,
-        "candidateCount": 2
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-11-14T16:58:19.618Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "saturday-church-off-broadway-2025",
@@ -391949,13 +391373,49 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-11",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://list.co.uk/event/2026-squid-a-victim-impact-statement-659804"
+      ],
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://list.co.uk/event/2026-squid-a-victim-impact-statement-659804",
+          "host": "list.co.uk",
+          "knownOutletId": "the-list",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-list--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://list.co.uk/event/2026-squid-a-victim-impact-statement-659804"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -391996,17 +391456,83 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"SQUID: A Victim Impact Statement\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"SQUID: A Victim Impact Statement\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"SQUID: A Victim Impact Statement\" review arcola",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "SQUID: A Victim Impact Statement Arcola Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "SQUID: A Victim Impact Statement Arcola Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "SQUID: A Victim Impact Statement Arcola Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 7,
+        "byReason": {
+          "non-review-host": 3,
+          "no-review-evidence": 1,
+          "event-listings-page": 2,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -392014,11 +391540,17 @@
         "suppressedMissing": [],
         "candidates": [],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://list.co.uk/event/2026-squid-a-victim-impact-statement-659804",
+            "host": "list.co.uk",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "staff-meal-off-broadway-2024",
@@ -423688,12 +423220,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Charioteer\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Charioteer\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Charioteer\" review cell",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Charioteer the cell review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Charioteer the cell review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Charioteer the cell review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 12,
+        "byReason": {
+          "non-review-host": 5,
+          "aggregator-internal-nav": 4,
+          "non-stage-review": 2,
+          "production-database-listing": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -423768,7 +423362,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -510582,7 +510176,6 @@
       "previewsStartDate": "2026-10-30",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://jerseykids.net/2026/10/25/one-times-square-with-kids",
         "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
         "https://stardrift.ai/saved/alpine-inlet/times-square-skywalk-at-one-times-square"
       ],
@@ -510590,18 +510183,6 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids",
-          "host": "jerseykids.net",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
           "host": "otsy.com",
@@ -510642,7 +510223,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -510652,8 +510233,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 1,
+            "results": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -510662,7 +510243,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -510672,7 +510253,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -510682,20 +510263,20 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 4,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 4,
+        "count": 16,
         "byReason": {
-          "non-review-host": 2,
+          "non-review-host": 14,
           "aggregator-internal-nav": 1,
           "no-review-evidence": 1
         }
@@ -510704,13 +510285,6 @@
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids",
-          "host": "jerseykids.net",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        },
         {
           "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
           "host": "otsy.com",
@@ -510732,13 +510306,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "jerseykids.net",
-            "outlet": "jerseykids.net",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids"
-          },
-          {
             "outletId": "otsy.com",
             "outlet": "otsy.com",
             "critic": "Unknown",
@@ -510755,13 +510322,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids",
-            "outletId": "jerseykids.net",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-14T05:24:29.223Z"
-          },
           {
             "url": "https://otsy.com/share/venue/one-times-square-skywalk-admission-ticket/14655792",
             "outletId": "otsy.com",
@@ -510780,9 +510340,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-14T05:24:29.223Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "tina-2019",
@@ -539628,29 +539188,42 @@
       "category": "west-end",
       "previewsStartDate": "2026-11-12",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Barrington-Stages-WEST-SIDE-STORY-20180810"
+        "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
       ],
       "aggregatorListedUrls": [
-        "https://www.timesunion.com/7day-arts/article/Review-West-Side-Story-Barrington-Stage-13140872.php",
-        "https://theberkshireedge.com/theatre-review-west-side-story-at-barrington-stage-is-one-of-the-most-rapturous-thrilling-evenings-of-musical-theater-anywhere/",
-        "https://thewestfieldnews.com/review-west-side-story-at-barrington-stage/",
-        "http://www.iberkshires.com/story/58094/Review-West-Side-Story-at-Barrington-Stage-Wow-.html",
+        "https://abcnews.go.com/GMA/Culture/review-west-side-story-sets-screen-ablaze/story?id=81453213",
+        "https://www.amny.com/news/review-west-side-story-shines-despite-draggy-screenplay/",
+        "https://deadline.com/video/west-side-story-review-steven-spielberg-remove-term-ansel-elgort-rachel-zegler/",
+        "https://www.empireonline.com/movies/reviews/west-side-story-2021/",
+        "https://ew.com/movies/movie-reviews/west-side-story-steven-spielberg-review/",
+        "https://www.hollywoodreporter.com/movies/movie-reviews/west-side-story-steven-spielberg-1235056068/",
+        "https://www.theguardian.com/film/2021/dec/02/west-side-story-review-steven-spielberg",
+        "https://www.ign.com/articles/west-side-story-review-steven-spielberg",
+        "https://www.latimes.com/entertainment-arts/movies/story/2021-12-02/west-side-story-review-steven-spielberg-remake",
+        "https://nypost.com/2021/12/02/west-side-story-review-spielberg-does-decent-job-with-classic/",
+        "https://www.nytimes.com/2021/12/08/movies/west-side-story-review.html",
+        "https://datebook.sfchronicle.com/movies-tv/review-steven-spielbergs-transcendent-west-side-story-improves-on-originals-greatness",
+        "https://www.timeout.com/movies/west-side-story-2021",
+        "https://www.usatoday.com/story/entertainment/movies/2021/12/02/west-side-story-review-steven-spielberg-revamps-american-classic/8813720002/",
+        "https://www.vanityfair.com/hollywood/2021/12/steven-spielbergs-west-side-story-updates-and-enlivens-a-classic",
+        "https://variety.com/2021/film/reviews/west-side-story-review-steven-spielberg-ansel-elgort-rachel-zegler-1235122664/",
+        "https://www.washingtonpost.com/goingoutguide/movies/west-side-story-movie-review/2021/12/07/fa8badc0-56df-11ec-a808-3197a22b19fa_story.html",
+        "https://www.thewrap.com/west-side-story-review-2021-steven-spielberg/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-west-side-story-an-above-average-production-but-no-masterpiece-8754188.html",
-        "https://variety.com/legit/reviews/west-side-story-4-1200444347",
-        "https://musicaltheatrereview.com/latest-issue-3/west-side-story-web",
         "https://www.britishtheatreguide.info/reviews/west-side-story-victoria-wareho-9328",
         "https://www.britishtheatre.com/posts/review-west-side-story-bishopsgate-institute",
         "https://www.express.co.uk/entertainment/theatre/420817/Theatre-Review-West-Side-Story",
+        "https://variety.com/legit/reviews/west-side-story-4-1200444347",
+        "https://musicaltheatrereview.com/latest-issue-3/west-side-story-web",
         "https://www.chad.co.uk/arts-and-culture/theatre-and-stage/theatre-review-an-energetic-and-vibrant-west-side-story-shows-no-sign-of-ageing-2288086",
         "https://aroundthetownchicago.com/theatre-reviews/west-side-story-7/",
         "https://musicalzentrale.de/154052/west-side-story-86/",
         "https://qa5-app-vercel.telegraph.co.uk/theatre/what-to-see/west-side-story-review-broadway-theatre-new-york-bernsteins/",
         "https://www.miltonkeynes.co.uk/arts-and-culture/theatre-and-stage/review-west-side-story-is-a-timeless-masterpiece-2284307",
         "https://www.voicemag.uk/review/15559/theatre-review-west-side-story-stage-experience-alexandra-theatre",
+        "https://test.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival",
         "https://www.theatremonkey.com/show/west-side-story",
         "https://www.theatremonkey.com/show/west-side-story/",
-        "https://test.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival",
-        "https://www.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival",
         "https://www.timeout.com/london/theatre/west-side-story-1"
       ],
       "dirFiles": 7,
@@ -539658,52 +539231,234 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.timesunion.com/7day-arts/article/Review-West-Side-Story-Barrington-Stage-13140872.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
+          "url": "https://abcnews.go.com/GMA/Culture/review-west-side-story-sets-screen-ablaze/story?id=81453213",
+          "host": "go.com",
+          "knownOutletId": "abc-news",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Barrington-Stages-WEST-SIDE-STORY-20180810"
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://theberkshireedge.com/theatre-review-west-side-story-at-barrington-stage-is-one-of-the-most-rapturous-thrilling-evenings-of-musical-theater-anywhere/",
-          "host": "theberkshireedge.com",
-          "knownOutletId": "berkshire-edge",
+          "url": "https://www.amny.com/news/review-west-side-story-shines-despite-draggy-screenplay/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Barrington-Stages-WEST-SIDE-STORY-20180810"
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://thewestfieldnews.com/review-west-side-story-at-barrington-stage/",
-          "host": "thewestfieldnews.com",
-          "knownOutletId": "westfield-news",
+          "url": "https://deadline.com/video/west-side-story-review-steven-spielberg-remove-term-ansel-elgort-rachel-zegler/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Barrington-Stages-WEST-SIDE-STORY-20180810"
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.iberkshires.com/story/58094/Review-West-Side-Story-at-Barrington-Stage-Wow-.html",
-          "host": "iberkshires.com",
-          "knownOutletId": null,
+          "url": "https://www.empireonline.com/movies/reviews/west-side-story-2021/",
+          "host": "empireonline.com",
+          "knownOutletId": "empire",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Barrington-Stages-WEST-SIDE-STORY-20180810"
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/west-side-story-steven-spielberg-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/west-side-story-steven-spielberg-1235056068/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/dec/02/west-side-story-review-steven-spielberg",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ign.com/articles/west-side-story-review-steven-spielberg",
+          "host": "ign.com",
+          "knownOutletId": "ign",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2021-12-02/west-side-story-review-steven-spielberg-remake",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2021/12/02/west-side-story-review-spielberg-does-decent-job-with-classic/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2021/12/08/movies/west-side-story-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-steven-spielbergs-transcendent-west-side-story-improves-on-originals-greatness",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/movies/west-side-story-2021",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2021/12/02/west-side-story-review-steven-spielberg-revamps-american-classic/8813720002/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2021/12/steven-spielbergs-west-side-story-updates-and-enlivens-a-classic",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/west-side-story-review-steven-spielberg-ansel-elgort-rachel-zegler-1235122664/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/goingoutguide/movies/west-side-story-movie-review/2021/12/07/fa8badc0-56df-11ec-a808-3197a22b19fa_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/west-side-story-review-2021-steven-spielberg/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie"
             }
           ],
           "priorRun": true,
@@ -539879,39 +539634,6 @@
           "reverify": true
         },
         {
-          "url": "https://www.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival",
-          "host": "theatre-news.com",
-          "knownOutletId": "theatre-news",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-news--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
           "url": "https://www.timeout.com/london/theatre/west-side-story-1",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
@@ -539987,88 +539709,26 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"West Side Story\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"West Side Story\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"West Side Story\" review olivier",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "West Side Story Olivier Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "West Side Story Olivier Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "West Side Story Olivier Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 278,
+        "count": 136,
         "byReason": {
           "non-review-host": 20,
-          "aggregator-internal-nav": 205,
-          "show-listing-page": 1,
-          "not-http-url": 38,
-          "aggregator-section-root": 5,
-          "podcast-episode": 1,
-          "roundup-page": 2,
-          "ticket-seller-product-page": 1,
-          "tag-index-page": 1,
-          "venue-production-page": 1,
-          "guide-article": 2,
-          "non-review-path": 1
+          "aggregator-internal-nav": 47,
+          "non-stage-review": 1,
+          "production-database-listing": 10,
+          "not-http-url": 6,
+          "aggregator-section-root": 4,
+          "roundup-page": 48
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Barrington-Stages-WEST-SIDE-STORY-20180810",
-          "publishDate": "2018-08-10"
+          "url": "https://playbill.com/article/read-the-reviews-for-the-new-west-side-story-movie",
+          "publishDate": "2021-12-02"
         }
       ],
       "nonReviewCandidates": [
@@ -540109,29 +539769,127 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.timesunion.com/7day-arts/article/Review-West-Side-Story-Barrington-Stage-13140872.php",
-          "host": "timesunion.com",
+          "url": "https://abcnews.go.com/GMA/Culture/review-west-side-story-sets-screen-ablaze/story?id=81453213",
+          "host": "go.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://theberkshireedge.com/theatre-review-west-side-story-at-barrington-stage-is-one-of-the-most-rapturous-thrilling-evenings-of-musical-theater-anywhere/",
-          "host": "theberkshireedge.com",
+          "url": "https://www.amny.com/news/review-west-side-story-shines-despite-draggy-screenplay/",
+          "host": "amny.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://thewestfieldnews.com/review-west-side-story-at-barrington-stage/",
-          "host": "thewestfieldnews.com",
+          "url": "https://deadline.com/video/west-side-story-review-steven-spielberg-remove-term-ansel-elgort-rachel-zegler/",
+          "host": "deadline.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "http://www.iberkshires.com/story/58094/Review-West-Side-Story-at-Barrington-Stage-Wow-.html",
-          "host": "iberkshires.com",
+          "url": "https://www.empireonline.com/movies/reviews/west-side-story-2021/",
+          "host": "empireonline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/west-side-story-steven-spielberg-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/west-side-story-steven-spielberg-1235056068/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/dec/02/west-side-story-review-steven-spielberg",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ign.com/articles/west-side-story-review-steven-spielberg",
+          "host": "ign.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2021-12-02/west-side-story-review-steven-spielberg-remake",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2021/12/02/west-side-story-review-spielberg-does-decent-job-with-classic/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2021/12/08/movies/west-side-story-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-steven-spielbergs-transcendent-west-side-story-improves-on-originals-greatness",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/movies/west-side-story-2021",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2021/12/02/west-side-story-review-steven-spielberg-revamps-american-classic/8813720002/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2021/12/steven-spielbergs-west-side-story-updates-and-enlivens-a-classic",
+          "host": "vanityfair.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/west-side-story-review-steven-spielberg-ansel-elgort-rachel-zegler-1235122664/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/goingoutguide/movies/west-side-story-movie-review/2021/12/07/fa8badc0-56df-11ec-a808-3197a22b19fa_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/west-side-story-review-2021-steven-spielberg/",
+          "host": "thewrap.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -540160,24 +539918,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://musicaltheatrereview.com/latest-issue-3/west-side-story-web",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
-        {
-          "url": "https://test.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival",
-          "host": "theatre-news.com",
-          "outletId": "theatre-news",
+          "url": "https://www.voicemag.uk/review/15559/theatre-review-west-side-story-stage-experience-alexandra-theatre",
+          "host": "voicemag.uk",
+          "outletId": "voice-magazine",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -540187,7 +539930,7 @@
           "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "west-side-story-west-end-2026: https://test.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "west-side-story-west-end-2026: https://www.voicemag.uk/review/15559/theatre-review-west-side-story-stage-experience-alexandra-theatre has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://variety.com/legit/reviews/west-side-story-4-1200444347",
@@ -540203,6 +539946,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=variety.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/latest-issue-3/west-side-story-web",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/west-side-story-7/",
@@ -540232,14 +539990,14 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=qa5-app-vercel.telegraph.co.uk): Scrapingdog HTTP 404: {\"message\":\"DNS resolution failed for hostname \\\"qa5-app-vercel.telegraph.co.uk\\\". The domain could not be translated to an IP address - it may be misspelled, expired, not registered, or its DNS may n\n⚠️  Playwright failed: page.goto: net::ERR_NAME_NOT_RESOLVED at https://qa5-app-vercel.telegraph.co.uk/theatre/what-to-see/west-side-story-review-broadway-theatre-new-york-bernsteins/\nCall log:\n  - navigating to \"https://qa5-app-vercel.telegraph.co.uk/theatre/what-to-see/west-side-story-review-bro"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=qa5-app-vercel.telegraph.co.uk): Scrapingdog HTTP 404: {\"message\":\"DNS resolution failed for hostname \\\"qa5-app-vercel.telegraph.co.uk\\\". The domain could not be translated to an IP address - it may be misspelled, expired, not registered, or its DNS may n\n⚠️  ScrapingBee failed (render_js=false, domain=qa5-app-vercel.telegraph.co.uk): ScrapingBee HTTP 500: {\"error\": \"Error with your request, please try again (you will not be charged for this request).You should: 1) check that your URL is correctly encoded 2) try with render_js=True (5 credits per r"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.voicemag.uk/review/15559/theatre-review-west-side-story-stage-experience-alexandra-theatre",
-          "host": "voicemag.uk",
-          "outletId": "voice-magazine"
+          "url": "https://test.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival",
+          "host": "theatre-news.com",
+          "outletId": "theatre-news"
         }
       ],
       "censusVerdict": {
@@ -540462,17 +540220,12 @@
             "url": "https://www.express.co.uk/entertainment/theatre/420817/Theatre-Review-West-Side-Story",
             "host": "express.co.uk",
             "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.theatre-news.com/news/UK/130068/West-Side-Story-returns-to-London-stage-in-major-National-Theatre-revival",
-            "host": "theatre-news.com",
-            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 4,
         "candidateCount": 15
       },
-      "computedAt": "2026-11-14T14:52:44.565Z"
+      "computedAt": "2026-11-14T18:58:34.405Z"
     },
     {
       "showId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
@@ -550684,29 +550437,28 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-14T16:58:19.617Z",
+    "at": "2026-11-14T18:58:34.404Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "wicked-tour-2021",
-      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
-      "austentatious-an-improvised-jane-austen-novel-west-end-2025",
-      "stranger-things-the-first-shadow-west-end-2023"
+      "times-square-skywalk-off-broadway-2026",
+      "nero-off-west-end-2026",
+      "curtains-off-broadway-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "in-the-heights-regional-2024",
-      "wish-you-werent-here-sheffield-regional-2024"
+      "in-quietness-regional-2024",
+      "anything-goes-regional-2024"
     ],
-    "neverAuditedDueAtStart": 25,
+    "neverAuditedDueAtStart": 23,
     "oldestDueRowAtStart": {
-      "showId": "wicked-tour-2021",
-      "computedAt": "2026-11-01T17:41:14.610Z",
-      "ageHours": 311
+      "showId": "fallen-angels-2026",
+      "computedAt": "2026-10-31T17:11:01.350Z",
+      "ageHours": 337.5
     },
     "oldestDueRowAfterRun": {
-      "showId": "amaze-magic-off-broadway-2025",
-      "computedAt": "2026-11-02T06:46:27.997Z",
-      "ageHours": 298.2
+      "showId": "fallen-angels-2026",
+      "computedAt": "2026-10-31T17:11:01.350Z",
+      "ageHours": 337.8
     }
   }
 }

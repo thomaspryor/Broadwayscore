@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T17:37:21.506Z",
+  "generatedAt": "2026-11-14T18:59:15.843Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -113,8 +113,12 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -131,30 +135,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 797,
-  "matchedGaps": 1,
-  "possibleGaps": 2,
+  "itemsScanned": 850,
+  "matchedGaps": 2,
+  "possibleGaps": 3,
   "gaps": [
     {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
-    },
-    {
       "showId": "the-visitors-off-broadway-2026",
       "title": "The Visitors",
       "level": "matched",
@@ -167,10 +154,10 @@
       "showId": "the-visitors-off-broadway-2026",
       "title": "The Visitors",
       "level": "matched",
-      "outletId": "one-minute-critic",
-      "url": "https://1minutecritic.com/the-visitors-second-stage-off-broadway-review/",
-      "headline": "A life-or-death request puts family loyalty on trial in &#8216;The Visitors&#8217;",
-      "publishDate": "2026-11-14"
+      "outletId": "operawire",
+      "url": "https://operawire.com/light-opera-of-new-jersey-to-present-amahl-and-the-night-visitors/",
+      "headline": "Light Opera of New Jersey to Present &#8216;Amahl and the Night Visitors&#8217;",
+      "publishDate": "2026-11-12"
     },
     {
       "showId": "the-visitors-off-broadway-2026",
@@ -189,6 +176,15 @@
       "url": "https://www.westendbestfriend.co.uk/news/review-thursford-christmas-spectacular-2026",
       "headline": "Review: THURSFORD CHRISTMAS SPECTACULAR 2026",
       "publishDate": "2026-11-13"
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "level": "possible",
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/wanted-on-broadway-extraordinary-voices-what-could-have-been-a-powerful-story-and-a-few-unfortunate-detours/",
+      "headline": "Wanted on Broadway: Extraordinary Voices, What Could Have Been a Powerful Story, and a Few Unfortunate Detours",
+      "publishDate": "2026-11-12"
     }
   ]
 }
