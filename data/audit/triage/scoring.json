@@ -1,15 +1,15 @@
 {
   "system": "scoring",
-  "status": "pass",
-  "lastChecked": "2026-11-13T09:36:20.753Z",
+  "status": "warn",
+  "lastChecked": "2026-11-14T09:07:36.580Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Scoring: batch state",
-      "status": "pass",
-      "message": "No batch in flight"
+      "status": "warn",
+      "message": "Batch in flight 14h (30 reviews) — next run resumes polling"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-13T09:36:20.753Z",
+  "lastChecked": "2026-11-14T09:07:36.580Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,17 +19,17 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.2% scored (50513/51437)"
+      "message": "98.2% scored (50407/51331)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (6h ago)"
+      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "20127 messages, 0 auth failures (p=reject)"
+      "message": "20144 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,7 +39,7 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "pass",
-      "message": "No probable domain moves in 385 unregistered host(s)"
+      "message": "No probable domain moves in 402 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1881 outlet(s), 81779 review(s)"
+      "message": "No broken-extractor signature in 1883 outlet(s), 81943 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1881 outlet(s), 81779 review(s)"
+      "message": "No broken-extractor signature in 1883 outlet(s), 81943 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -64,7 +64,7 @@
     {
       "name": "Quality: expected critics missing",
       "status": "warn",
-      "message": "2 usual-critic review(s) the automatic search could not settle (12 more still being searched for automatically): Time Out London on Iphigenie en Tauride - English National Opera: no review on the site, and the automatic search has stopped running. WhatsOnStage on Iphigenie en Tauride - English National Opera: no review on the site, and the automatic search has stopped running."
+      "message": "2 usual-critic review(s) the automatic search could not settle (12 more still being searched for automatically): Time Out London on From The Heart: no review on the site, and the automatic search has stopped running. TheaterMania on The Steel Man: no review on the site, and the automatic search has not looked for it yet."
     },
     {
       "name": "Quality: coverageExpectation drift",
@@ -73,8 +73,8 @@
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
-      "status": "warn",
-      "message": "13 NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: telegraph/off-broadway, 3671d silent vs 482d threshold; 30 known/baselined)"
+      "status": "pass",
+      "message": "151 outlet×market rows checked, none NEW silent 2+ consecutive weeks (43 known/baselined, 5d ago)"
     },
     {
       "name": "Quality: outlet feed staleness",
