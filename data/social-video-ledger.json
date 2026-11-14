@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Social video lane: one entry per show video (scripts/social-autopost/video-run.js)",
-    "lastUpdated": "2026-11-14T16:08:38.528Z"
+    "lastUpdated": "2026-11-14T22:46:47.160Z"
   },
   "posts": [
     {
@@ -69,6 +69,11 @@
       "key": "score:wanted-2022",
       "at": "2026-11-14T16:08:20.540Z",
       "error": "voscript.js failed (1):   round 2 gpt: FAIL minor (\"Seen it? Does 60 sound right to you?\" feels a little stiff and promo-ish compared with the rest of the copy.) |   round 2 gemini: FAIL minor (The phrase \"Here it is in one number\" sounds a bit stiff and formal, not like a friend talking.) |   rule check: em or en dash | script check: has em or en dash"
+    },
+    {
+      "key": "score:a-few-good-men-2026",
+      "at": "2026-11-14T22:46:20.675Z",
+      "error": "render.js failed (1):     at Object..js (node:internal/modules/cjs/loader:1913:10) |     at Module.load (node:internal/modules/cjs/loader:1505:32) |     at Function._load (node:internal/modules/cjs/loader:1309:12) |     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)"
     }
   ]
 }
