@@ -219,6 +219,7 @@ test('capture-only driver + trusted compare: same pages identical, a recolour di
       });
       if (r.status !== 0) { assert.match(String(r.stderr) + String(r.stdout), /launch|Executable doesn't exist|playwright/i, 'driver crashed: ' + r.stderr); return null; }
       const manifest = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'), 'utf8'));
+      if (manifest.canary !== true) return null; // no usable browser here (same skip rule as the older end-to-end test)
       const { pairs, elementsFound } = await rec.comparePairs(dir, plan, manifest);
       const canaryOk = manifest.canary === true && (await require('./visual-identical.js').compareImages(path.join(dir, 'canary.a.png'), path.join(dir, 'canary.b.png'), vci.STRICT)).same === false;
       return vci.evaluate({ plan, pairs, canaryOk, elementsFound, widths: WIDTHS });
