@@ -33,7 +33,7 @@ import type { ArrivalView } from '@/lib/review-arrival';
 import { CallTheScoreHeroLink, PreOpeningReviewStatus } from './CallTheScore';
 import { foldVenueName } from '@/lib/venue-fold';
 import { isPreOpeningStatus } from '@/lib/pre-opening';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { FULL_CONFIDENCE_AUDIENCE_REVIEWS } from '@/lib/audience-grade-utils';
@@ -53,7 +53,10 @@ import StarRating from '@/components/user/StarRating';
 import { getMobileStarRowState } from '@/lib/mobile-star-row';
 import WatchlistPlanCard, { PlanRow, DateTile } from '@/components/user/WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
-import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
+import type { RatingEditorSaveData } from '@/components/user/RatingEditor';
+// Opens on tap only, so its chunk (editor + photo fields) stays out of the
+// show page's first-load JS (BRO-7486: /show/[slug] sat 9kB over the 330kB cap).
+const RatingEditor = lazy(() => import('@/components/user/RatingEditor'));
 import { diaryDetailText } from '@/lib/review-showtime';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -75,7 +78,6 @@ import { saveLocalRating } from '@/lib/local-ratings';
 import { useLocalRatings } from '@/hooks/useLocalRatings';
 import { LOCAL_RATINGS_MIGRATED_EVENT } from '@/components/user/LocalRatingsMigrator';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
-import { uploadReviewPhoto, emitReviewPhotosChanged } from '@/lib/review-photos';
 import { newPhotoId } from '@/lib/review-photo-model';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -96,7 +98,7 @@ import type { UserReview, PendingAction } from '@/types/user';
 import type { ShowRanks } from '@/lib/data-show-ranks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
-import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
+import { ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
 
@@ -478,6 +480,8 @@ function Inner({
       if (data.photos?.length) {
         const newReviewId = inserted?.id;
         let failed = 0;
+        // Loaded only when a photo was staged, so the upload pipeline stays out of first-load JS (BRO-7486).
+        const { uploadReviewPhoto, emitReviewPhotosChanged } = await import('@/lib/review-photos');
         for (const file of data.photos) {
           if (!newReviewId) { failed++; continue; }
           try { await uploadReviewPhoto({ userId: user.id, reviewId: newReviewId, photoId: newPhotoId(), file }); } catch { failed++; }
@@ -985,6 +989,7 @@ function Inner({
           non-edit save; a restored draft's own dateSeen (initialDateSeen) takes
           precedence inside the editor, so pendingDraft doesn't null it out. */}
       {userFeaturesEnabled && ratePanelOpen && (
+        <Suspense fallback={null}>
         <RatingEditor
           key={editingReview?.id ?? pendingDraft?.reviewId ?? 'new-viewing'}
           showTitle={show.title}
@@ -1006,6 +1011,7 @@ function Inner({
           onDelete={editingReview ? handleDeleteRating : undefined}
           analytics={{ source: 'show_page', showId: show.id }}
         />
+        </Suspense>
       )}
 
       {/* Tickets — primary CTA + lottery/rush pill (desktop only).

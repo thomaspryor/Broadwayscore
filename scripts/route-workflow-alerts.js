@@ -11,6 +11,8 @@
  *   opening-night-stage     auto + dispatchAtFiling (data-flow race)
  *   tony-ibdb-scraper       digest (needs a headed browser on the owner's Mac)
  *   gitlab-token-failed     auto + dispatchAtFiling (rotation step broke)
+ *   bundle-size-red         auto + dispatchAtFiling (BRO-7486: check-performance.yml sat red on main ~2 weeks, nobody was told)
+ *   ugc-tests-red           auto + dispatchAtFiling (BRO-7486: test-ugc.yml sat red on main ~2 weeks)
  *   gitlab-token-expired    human (a person must mint a new token; reaches the morning digest, not a page, since it is not in page-worthy-alerts.js)
  *
  * Usage: node scripts/route-workflow-alerts.js route|resolve <kind>
@@ -28,6 +30,8 @@ const KINDS = Object.freeze({
   'tony-ibdb-scraper': 'workflow-alert:tony-ibdb-scraper',
   'gitlab-token-failed': 'workflow-alert:gitlab-token-rotation-failed',
   'gitlab-token-expired': 'workflow-alert:gitlab-token-expired',
+  'bundle-size-red': 'workflow-alert:bundle-size-red-on-main',
+  'ugc-tests-red': 'workflow-alert:ugc-tests-red-on-main',
 });
 
 function runUrlFromEnv(env) {
@@ -97,6 +101,27 @@ function buildAlert(kind, env = {}, readFile = (f) => fs.readFileSync(f, 'utf8')
         description: 'GITLAB_MIRROR_TOKEN is expired or invalid; automatic rotation cannot help and the GitLab mirror is NOT syncing. Owner action: create a token at https://gitlab.com/-/user_settings/personal_access_tokens with api scope and 1 year expiry, and save it as the repository secret GITLAB_MIRROR_TOKEN.' + runLine,
         disposition: 'human',
         cardAction: 'Rotate token',
+      };
+    case 'bundle-size-red':
+      return {
+        ...base,
+        title: 'Bundle Size Check is red on main',
+        description: 'check-performance.yml (Bundle Size Check) failed on a main push: a page exceeded its first-load JS cap or an HTML/img budget (scripts/check-bundle-size.js, scripts/lib/page-weight.js). '
+          + 'Open the run log for the page and number, find the commit that grew it (git log on the shared component), then lazy-load / dynamic-import or trim the payload. Do not raise the cap without showing the growth is needed.' + runLine,
+        hint: 'Read the failing check-bundle-size.js lines in the run log.',
+        disposition: 'auto',
+        cardAction: 'Investigate',
+        dispatchAtFiling: true,
+      };
+    case 'ugc-tests-red':
+      return {
+        ...base,
+        title: 'UGC tests are red on main',
+        description: 'test-ugc.yml failed on a main push (tests/e2e UGC functional or visual-baseline specs). Download the ugc-test-report artifact: if *-diff.png shows an intended UI change, regenerate the Linux baselines (workflow_dispatch update_snapshots); if it is a real regression, fix the UI.' + runLine,
+        hint: 'Check the ugc-test-report artifact diffs first.',
+        disposition: 'auto',
+        cardAction: 'Investigate',
+        dispatchAtFiling: true,
       };
     default:
       throw new Error(`unknown alert kind "${kind}"`);

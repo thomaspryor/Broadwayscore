@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useMemo, useDeferredValue } from 'react';
 import type Fuse from 'fuse.js';
-import { mergeDiaryShows, tierSearchResults, type DiarySearchEntry } from '@/lib/show-import';
+import { mergeDiaryShows, tierSearchResults, type DiarySearchEntry } from '@/lib/diary-search-merge';
 
 interface SearchShow {
   id: string;

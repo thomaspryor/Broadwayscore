@@ -12,7 +12,7 @@ const loader = require('ts-node').register({
   skipProject: true,
   transpileOnly: true,
   compilerOptions: {
-    module: 'Node16', moduleResolution: 'Node16', target: 'ES2022',
+    module: 'CommonJS', moduleResolution: 'Node10', target: 'ES2022', esModuleInterop: true,
     jsx: 'react-jsx', allowJs: true,
   },
 });
@@ -135,6 +135,10 @@ test('Affluenza Rate it opens the real rating editor and Cancel closes it', asyn
     isWestEnd: true, isOffBroadway: false, ranks: null,
   }));
   await click([...doc.querySelectorAll('button')].find(b => b.textContent === 'Rate it'));
+  // The editor is a lazy chunk (BRO-7486), so it mounts a tick after the tap.
+  for (let i = 0; i < 100 && !doc.querySelector('[data-testid="rating-editor"]'); i++) {
+    await act(async () => { await new Promise(r => setTimeout(r, 20)); });
+  }
   assert.ok(doc.querySelector('[data-testid="rating-editor"]'));
   await click([...doc.querySelectorAll('button')].find(b => b.textContent === 'Cancel'));
   assert.equal(doc.querySelector('[data-testid="rating-editor"]'), null);

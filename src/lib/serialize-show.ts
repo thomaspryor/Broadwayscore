@@ -2,6 +2,7 @@ import { getAudienceBuzz, hasEnoughAudienceReviews, hasFullConfidenceAudienceRev
 import { getClosingExtensionCount, type ClosingExtension } from '@/lib/closing-label';
 import type { ShowCardShow } from '@/components/show-cards/types';
 import { getTourNowNextForShow, getTourTicketLinks } from '@/lib/data-tour-schedule';
+import { dropUndefinedFields } from '../../scripts/lib/drop-undefined';
 
 /**
  * Serialize a show for client components (ShowListCard, MiniShowCard).
@@ -98,9 +99,9 @@ export function serializeShowForClient(
     isOffWestEnd: overrides?.isOffWestEnd,
     performances: overrides?.performances,
   };
-  if (!overrides?.slim) return out;
-  // Undefined fields cost ~25 bytes each in the RSC payload ("$undefined"); drop them.
-  return Object.fromEntries(Object.entries(out).filter(([, v]) => v !== undefined)) as unknown as ShowCardShow;
+  // Undefined fields cost ~25 bytes each in the RSC payload ("$undefined"); drop them
+  // for every caller (BRO-7486: /browse/west-end-shows sent ~12 per show x 947 shows).
+  return dropUndefinedFields(out) as unknown as ShowCardShow;
 }
 
 /**

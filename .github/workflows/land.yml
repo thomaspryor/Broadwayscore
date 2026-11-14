@@ -325,6 +325,27 @@ jobs:
           [ -f scripts/check-registry-merge.js ] || { echo "check script not on this tree yet; skipping"; exit 0; }
           node scripts/check-registry-merge.js --ancestor="$MB" --ours="$TIP" --theirs="$BASE" --result=HEAD
 
+      - name: Check main is not red (advisory)
+        id: main_red
+        # BRO-7486: check-performance.yml and test-ugc.yml sat red on main ~2
+        # weeks because neither blocks a land. Secondary nudge only (the primary
+        # channel is the dispatched card those workflows now file). Advisory
+        # (CLAUDE.md §19): API errors are "unknown", never red. Kill switch: repo
+        # var LAND_MAIN_RED_CHECK_DISABLED=true. Uses the branch's copy of the
+        # script (it needs ./lib files); arm it from $BASE before it blocks.
+        if: vars.LAND_MAIN_RED_CHECK_DISABLED != 'true'
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [ -f scripts/check-main-red-workflows.js ] || { echo "main-red check not on this tree yet; skipping"; exit 0; }
+          node scripts/check-main-red-workflows.js > /tmp/main-red.txt
+          cat /tmp/main-red.txt
+          if grep -q '::warning::' /tmp/main-red.txt; then
+            { echo "### Main has a red workflow"; sed 's/^::warning:://' /tmp/main-red.txt; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Check coordinator card acknowledged (advisory)
         id: coordinator
         # BRO-6083: on 2026-10-22/23 a session landed opening-night code without

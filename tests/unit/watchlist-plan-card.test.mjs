@@ -20,7 +20,8 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (f) => readFileSync(join(ROOT, f), 'utf8');
-const CARD = read('src/components/user/WatchlistPlanCard.tsx');
+// The sheet lives in PlanSheet.tsx (split out for first-load JS, BRO-7486); it is last so the slice below still starts at it.
+const CARD = read('src/components/user/WatchlistPlanCard.tsx') + '\n' + read('src/components/user/PlanSheet.tsx');
 const HERO = read('src/components/show-page/ShowHeroRedesign.tsx');
 const BUTTON = read('src/components/user/ShowPageWatchlistButton.tsx');
 

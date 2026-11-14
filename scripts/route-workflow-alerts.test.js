@@ -45,3 +45,16 @@ test('run: a throwing router reports not-ok; resolve calls resolveCondition', as
   await run({ mode: 'resolve', kind: 'lighthouse-regression', env, router: r, log() {} });
   assert.deepStrictEqual(r.calls[0], { resolve: KINDS['lighthouse-regression'] });
 });
+
+test('BRO-7486: main-red kinds file auto dispatched cards and resolve by key', async () => {
+  for (const kind of ['bundle-size-red', 'ugc-tests-red']) {
+    const a = buildAlert(kind, env, () => '');
+    assert.strictEqual(a.disposition, 'auto');
+    assert.strictEqual(a.dispatchAtFiling, true);
+    assert.ok(a.description.includes('Run:') || !env.GITHUB_RUN_ID);
+    const r = fakeRouter({ action: 'filed', linearIdentifier: 'BRO-1', dispatchOk: true });
+    assert.strictEqual((await run({ mode: 'route', kind, env, router: r, log() {} })).ok, true);
+    await run({ mode: 'resolve', kind, env, router: r, log() {} });
+    assert.deepStrictEqual(r.calls[r.calls.length - 1], { resolve: KINDS[kind] });
+  }
+});
