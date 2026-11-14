@@ -549,23 +549,13 @@
     "a-thousand-natural-shocks-off-broadway-2026/zeffy--zeffy.json",
     "de-profundis-off-west-end-2026/uktw--unknown.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
-    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
-    "the-invention-of-love-off-broadway-2026/whatsonstage--miriam-sallon.json",
-    "man-to-man-west-end-2026/deadline--katie-campione.json",
-    "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
-    "man-to-man-west-end-2026/plays-to-see--tim-hochstrasser.json",
-    "a-month-in-the-country-off-west-end-2026/londonlivinglarge--london-living-large.json",
-    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
-    "cats-off-west-end-2026/times-uk--carol-midgley.json",
-    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
-    "twelfth-night-off-west-end-2026/london-box-office--stuart-king.json",
-    "ha-ha-ha-ha-ha-ha-ha-regional-2026/deadline--greg-evans.json",
-    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
-    "the-car-man-off-west-end-2026/thestage--dave-fargnoli.json",
-    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-    "the-oresteia-off-west-end-2026/thestage--dave-fargnoli.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json"
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -954,7 +944,7 @@
     ]
   },
   "startTime": "2026-11-13T19:51:30.116Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+  "lastProcessed": "msblackforpresident-off-broadway-2026/guardian--unknown.json",
   "log": [
     {
       "t": "2026-11-14T01:38:13.207Z",
@@ -1069,6 +1059,61 @@
       "event": "bb-session",
       "session": "bd2da0b5",
       "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-14T02:50:42.073Z",
+      "event": "bb-session",
+      "session": "71ded9af",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-14T02:50:43.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T02:51:16.090Z",
+      "event": "bb-session",
+      "session": "4502e03e",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T02:51:16.944Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-14T02:51:34.203Z",
+      "event": "bb-session",
+      "session": "bbb09d10",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T02:51:34.993Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-14T02:53:23.565Z",
+      "event": "bb-session",
+      "session": "ae655a5a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-14T02:53:24.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T02:57:41.685Z",
+      "event": "bb-session",
+      "session": "9a226c30",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-14T02:57:42.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
