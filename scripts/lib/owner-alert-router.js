@@ -189,16 +189,26 @@ const ESCALATION_NOTIFY_THRESHOLD = 14;
 // nobody reads, and urgent opening-night alerts must keep filing at once.
 // "Same incident" = seen again within INCIDENT_GAP_RESET_HOURS of the
 // previous sighting and not resolved in between (incidentOpenedAt resets on
-// either; firstSeen does not, which is why it cannot be the clock). The gap
-// tolerates one missed daily run.
+// either; ledger firstSeen does not). The gap tolerates one missed daily run.
+// BRO-7489: callers may supply the health snapshot firstSeen separately to
+// preserve filing age across flaps without changing incident identity.
 const DEFERRED_AUTO_FILE_AFTER_HOURS = 72;
 const INCIDENT_GAP_RESET_HOURS = 96;
+// Bound the extra filings when the shared clock releases a backlog at once.
+const SHARED_CLOCK_RELEASE_CAP = 3;
+let sharedClockReleases = 0;
 // BRO-5430: callers run once a day (health-check.js on a GitHub cron that
 // starts hours late, by a different amount each day), so a multi-day defer
 // compared strictly lands its due sighting a little under the mark about half
 // the time and files a day late. Slack under 24h keeps the previous daily
 // sighting held. Same rule as digest-autofix.js GATE_SLACK_HOURS.
 const DAILY_RUN_SLACK_HOURS = 12;
+
+function incidentContinues(existing, nowMs) {
+  if (!existing || existing.status !== 'open') return false;
+  const lastSeenMs = Date.parse(existing.lastSeen || '');
+  return Number.isFinite(lastSeenMs) && (nowMs - lastSeenMs) / 3600000 <= INCIDENT_GAP_RESET_HOURS;
+}
 
 /**
  * PURE. When did the CURRENT incident of this condition open? A condition
@@ -207,16 +217,18 @@ const DAILY_RUN_SLACK_HOURS = 12;
  */
 function currentIncidentOpenedAt(existing, nowMs) {
   const nowIso = new Date(nowMs).toISOString();
-  if (!existing || existing.status !== 'open') return nowIso;
-  const lastSeenMs = Date.parse(existing.lastSeen || '');
-  if (!Number.isFinite(lastSeenMs) || (nowMs - lastSeenMs) / 3600000 > INCIDENT_GAP_RESET_HOURS) return nowIso;
+  if (!incidentContinues(existing, nowMs)) return nowIso;
   return existing.incidentOpenedAt || existing.firstSeen || nowIso;
 }
 
 /** PURE. Has a deferred 'auto' incident been open long enough to file its card? */
-function deferredAutoIsDue(existing, nowMs, fileAfterHours = DEFERRED_AUTO_FILE_AFTER_HOURS) {
+function deferredAutoIsDue(existing, nowMs, fileAfterHours = DEFERRED_AUTO_FILE_AFTER_HOURS, firstSeen) {
   if (!existing || !existing.deferredAuto || existing.linearIdentifier) return false;
-  const opened = Date.parse(currentIncidentOpenedAt(existing, nowMs));
+  const incident = Date.parse(currentIncidentOpenedAt(existing, nowMs));
+  // This is the caller's health history clock, never the ledger's lifetime
+  // firstSeen. Reuse the digest validator to reject the legacy epoch seed.
+  const shared = firstSeen ? require('./digest-autofix').validFirstSeen(firstSeen, nowMs) : null;
+  const opened = shared ? Math.min(incident, Date.parse(shared)) : incident;
   const slack = fileAfterHours >= 48 ? DAILY_RUN_SLACK_HOURS : 0; // only multi-day defers ride the daily cadence
   return Number.isFinite(opened) && (nowMs - opened) / 3600000 >= fileAfterHours - slack;
 }
@@ -350,12 +362,12 @@ function hoursSince(iso) {
 // lastSurfacedAt only advances on a call that actually puts something in the
 // digest (a promote/resurface notice, or a plain pre-threshold line) — see
 // where routeAlert() sets result.lastSurfacedAt below.
-function decideDigestEscalation({ conditionKey, existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS, deferredAuto = false, fileAfterHours = DEFERRED_AUTO_FILE_AFTER_HOURS }) {
+function decideDigestEscalation({ conditionKey, existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS, deferredAuto = false, fileAfterHours = DEFERRED_AUTO_FILE_AFTER_HOURS, firstSeen }) {
   const alreadyTracked = !!(existing && existing.linearIdentifier);
   if (!alreadyTracked) {
     // BRO-4487: a deferred 'auto' condition files its card once the incident
     // has been open DEFERRED_AUTO_FILE_AFTER_HOURS, whatever the count.
-    if (deferredAuto && deferredAutoIsDue({ ...existing, deferredAuto: true }, now, fileAfterHours)) return { action: 'promote', reason: 'age' };
+    if (deferredAuto && deferredAutoIsDue({ ...existing, deferredAuto: true }, now, fileAfterHours, firstSeen)) return { action: 'promote', reason: 'age' };
     return { action: notifyCount > threshold ? 'promote' : 'normal' };
   }
   // BRO-3030 pre-mortem P0: paid-usage families are never silenced. They are
@@ -1029,6 +1041,7 @@ async function routeAlert(opts) {
     verify,
     dispatchAtFiling,
     deferFilingHours,
+    firstSeen,
     subjectLabel,
     workerFixable,
     testId,
@@ -1054,7 +1067,9 @@ async function routeAlert(opts) {
   // this a recurrence reads as "already tracked" and never gets a card
   // (ship-check P0). The old tracker may be closed or swept; if it is still
   // open, the duplicate check at filing time finds it again.
-  let staleTracker = deferAuto && !!(existing && existing.linearIdentifier) && incidentOpenedAt === now;
+  // A matching timestamp can also be a second call in the same millisecond.
+  // Test continuity directly so that call retains the tracker just filed.
+  let staleTracker = deferAuto && !!(existing && existing.linearIdentifier) && !incidentContinues(existing, nowMs);
   // BRO-5168: the same incident can outlive its tracker. A card closed while
   // the row stayed red (e.g. "Quality: corpus drift" -> a July card, row still
   // open in October) left linearIdentifier set, and deferredAutoIsDue() is
@@ -1068,7 +1083,11 @@ async function routeAlert(opts) {
   // A deferred incident that has reached its filing age must get past the
   // cooldown short-circuit below, or the default 168h cooldown would hold
   // the card back a full week (second-opinion blocker, BRO-4487).
-  const deferredDue = deferAuto && deferredAutoIsDue(existingForDecision, nowMs, fileAfterHours);
+  const deferredCondition = { ...existingForDecision, deferredAuto: true };
+  const incidentDue = deferAuto && deferredAutoIsDue(deferredCondition, nowMs, fileAfterHours);
+  const sharedClockDue = deferAuto && !incidentDue && sharedClockReleases < SHARED_CLOCK_RELEASE_CAP
+    && deferredAutoIsDue(deferredCondition, nowMs, fileAfterHours, firstSeen);
+  const deferredDue = incidentDue || sharedClockDue;
   if (existing && existing.status === 'open' && hoursSince(existing.lastNotifiedAt) < cooldownHours && !deferredDue) {
     existing.lastSeen = now;
     existing.incidentOpenedAt = incidentOpenedAt;
@@ -1118,10 +1137,14 @@ async function routeAlert(opts) {
     digestDecision = decideDigestEscalation({
       conditionKey, notifyCount: escalationCount, now: Date.now(), deferredAuto: deferAuto, fileAfterHours,
       existing: existingForDecision ? { ...existingForDecision, incidentOpenedAt } : existingForDecision,
+      firstSeen: sharedClockDue ? firstSeen : undefined,
     });
     if (digestDecision.action === 'promote') {
       effectiveDisposition = 'auto';
       promotedFromDigest = true;
+      // Reserve before any network await. Dedupe hits and failures consume a
+      // slot too, bounding attempts as well as successful extra filings.
+      if (sharedClockDue) sharedClockReleases++;
     }
   }
 

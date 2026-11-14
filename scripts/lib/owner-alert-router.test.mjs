@@ -2154,6 +2154,71 @@ test('currentIncidentOpenedAt / deferredAutoIsDue: incident clock resets on reso
   }
 });
 
+// BRO-7489: the health snapshot keeps a clock across short recoveries.
+test('BRO-7489: deferred filing uses the earlier valid snapshot clock without changing incident identity', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const now = Date.now();
+    const gap = { status: 'open', deferredAuto: true, firstSeen: isoAgo(500), incidentOpenedAt: isoAgo(200), lastSeen: isoAgo(100) };
+    assert.equal(router.deferredAutoIsDue(gap, now, 72, isoAgo(120)), true);
+    assert.equal(router.currentIncidentOpenedAt(gap, now), new Date(now).toISOString());
+    for (const firstSeen of [undefined, null, '', 'invalid', '1970-01-01T00:00:00Z', isoAgo(-24), isoAgo(24)]) {
+      assert.equal(router.deferredAutoIsDue(gap, now, 72, firstSeen), false, String(firstSeen));
+    }
+    const old = { ...gap, incidentOpenedAt: isoAgo(80), lastSeen: isoAgo(1) };
+    assert.equal(router.deferredAutoIsDue(old, now, 72, isoAgo(10)), true, 'younger snapshot cannot delay an old incident');
+    assert.equal(router.deferredAutoIsDue({ ...gap, linearIdentifier: 'BRO-1' }, now, 72, isoAgo(120)), false);
+    assert.equal(router.deferredAutoIsDue({ ...gap, deferredAuto: false }, now, 72, isoAgo(120)), false);
+  } finally { restore(); }
+});
+
+for (const scenario of ['gap', 'cooldown', 'resolved', 'missing']) {
+  test(`BRO-7489: routeAlert files once from snapshot age after ${scenario}`, async (t) => {
+    t.mock.timers.enable({ apis: ['Date'], now: Date.now() });
+    const { router, calls, restore } = loadRouterWithFakes();
+    try {
+      const opts = { conditionKey: `test:shared-${scenario}`, title: 'Persistent health row', ...DEFER };
+      if (scenario !== 'missing') {
+        await router.routeAlert(opts);
+        router.patchCondition(opts.conditionKey, {
+          incidentOpenedAt: isoAgo(5), lastSeen: isoAgo(scenario === 'gap' ? 100 : 1), lastNotifiedAt: isoAgo(2),
+        });
+        if (scenario === 'resolved') router.resolveCondition(opts.conditionKey);
+      }
+      const result = await router.routeAlert({ ...opts, firstSeen: isoAgo(120) });
+      assert.equal(result.action, 'auto');
+      assert.equal(calls.createLinearIssue.length, 1);
+      assert.equal((await router.routeAlert({ ...opts, firstSeen: isoAgo(120) })).action, 'silent');
+      assert.equal(calls.createLinearIssue.length, 1);
+      assert.ok(Date.now() - Date.parse(router.loadLedger().conditions[opts.conditionKey].incidentOpenedAt) < 6 * HOUR,
+        'shared timestamp is not persisted as incident identity');
+    } finally { restore(); }
+  });
+}
+
+test('BRO-7489: shared-clock releases are capped per run; normal incident filing still works', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    for (let i = 0; i < 5; i++) {
+      const result = await router.routeAlert({ conditionKey: `test:shared-cap-${i}`, title: `Row ${i}`, firstSeen: isoAgo(120), ...DEFER });
+      assert.equal(result.action, i < 3 ? 'auto' : 'digest');
+    }
+    assert.equal(calls.createLinearIssue.length, 3);
+    const opts = { conditionKey: 'test:incident-after-cap', title: 'Old incident', ...DEFER };
+    await router.routeAlert(opts);
+    router.patchCondition(opts.conditionKey, { incidentOpenedAt: isoAgo(80), lastSeen: isoAgo(1) });
+    assert.equal((await router.routeAlert(opts)).action, 'auto');
+    assert.equal(calls.createLinearIssue.length, 4);
+  } finally { restore(); }
+});
+
+test('BRO-7489: both health-check deferred callers pass the history clock used by the snapshot', () => {
+  const source = fs.readFileSync(new URL('../health-check.js', import.meta.url), 'utf8');
+  const calls = source.match(/await routeAlert\(\{[\s\S]*?\n          \}\);/g).filter(call => call.includes('deferFilingHours: 72'));
+  assert.equal(calls.length, 2);
+  for (const call of calls) assert.match(call, /firstSeen: \(history\.firstSeen \|\| \{\}\)\[r\.name\]/);
+});
+
 test('routeAlert: plain auto (no deferFilingHours) still files on the first call, as before', async () => {
   const { router, calls, restore } = loadRouterWithFakes();
   try {

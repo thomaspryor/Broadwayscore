@@ -5815,6 +5815,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
             // BRO-4487: a stable, daily-checked condition. File its card only
             // once it has persisted 3 days; most health rows clear sooner.
             deferFilingHours: 72,
+            firstSeen: (history.firstSeen || {})[r.name],
             // BRO-6471: an entry marked workerFixable is a worker's job, so its card files START-NOW, not parked.
             ...(entry.workerFixable ? { workerFixable: true } : {}),
             fields: [{ name: 'Check', value: r.name }],
@@ -5847,6 +5848,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
             severity: r.status === 'error' ? 'error' : 'warning',
             disposition: 'auto',
             deferFilingHours: 72,
+            firstSeen: (history.firstSeen || {})[r.name],
             workerFixable: true,
             fields: [{ name: 'Check', value: r.name }],
           });
