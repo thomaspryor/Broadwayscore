@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T00:07:58.510Z",
+  "generatedAt": "2026-11-14T00:33:52.516Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -111,6 +111,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "viewfromthegods",
+      "error": "Timeout fetching https://viewfromthegods.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -123,8 +127,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 845,
-  "matchedGaps": 7,
+  "itemsScanned": 832,
+  "matchedGaps": 6,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -153,15 +157,6 @@
       "url": "https://stageandcinema.com/2026/11/11/ms-blakk-for-president-vineyard-theatre-review/",
       "headline": "Off-Broadway Review: MS. BLAKK FOR PRESIDENT (Vineyard Theatre)",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
     },
     {
       "showId": "the-kings-critique-off-broadway-2026",
