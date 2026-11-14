@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-11-14T22:22:08.755Z",
+  "generatedAt": "2026-11-14T23:36:49.375Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 332,
-  "clean": 332,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 329,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "passing-strange-regional-2026",
+      "title": "Passing Strange",
+      "openingDate": "2026-11-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.11 vs local 81.58 (Δ3.47)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-14T23:36:43.631Z"
+    },
+    {
+      "showId": "roleplay-off-west-end-2026",
+      "title": "Roleplay",
+      "openingDate": "2026-10-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 60.37 vs local 60.5 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-11-14T23:36:43.631Z"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "title": "Oliver!",
+      "openingDate": "2025-01-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.72 vs local 84.53 (Δ0.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-14T23:36:43.631Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

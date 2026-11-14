@@ -575,18 +575,17 @@
     },
     "review-gap:blast-radius-refused": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "requestedDisposition": "human",
-      "title": "Review-gap audit refused to write — 25.9% of shows changed coverage state",
+      "title": "Review-gap audit refused to write — 14.3% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
       "incidentOpenedAt": "2026-11-07T16:40:54.348Z",
-      "lastSeen": "2026-11-13T08:37:09.424Z",
-      "lastNotifiedAt": "2026-11-13T04:59:30.223Z",
-      "lastSurfacedAt": "2026-11-09T07:55:47.811Z",
-      "notifyCount": 92,
+      "lastSeen": "2026-11-14T23:36:04.552Z",
+      "lastNotifiedAt": "2026-11-14T23:36:04.552Z",
+      "lastSurfacedAt": "2026-11-14T23:36:04.552Z",
+      "notifyCount": 93,
       "cardId": null,
-      "linearIdentifier": "BRO-5516",
-      "silentRefires": 3
+      "linearIdentifier": "BRO-7497"
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "resolved",
@@ -19489,7 +19488,7 @@
       "title": "Roundup gaps: 12 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-14T22:21:33.159Z",
+      "lastSeen": "2026-11-14T23:36:08.244Z",
       "lastNotifiedAt": "2026-11-14T14:52:45.362Z",
       "lastSurfacedAt": null,
       "notifyCount": 53,
@@ -19564,7 +19563,7 @@
         "hamlet-hail-to-the-thief-off-west-end-2026",
         "othello-bedlam-off-broadway-2026"
       ],
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38717,13 +38716,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-14T22:21:33.093Z",
+      "lastSeen": "2026-11-14T23:36:08.170Z",
       "lastNotifiedAt": "2026-11-14T14:52:45.284Z",
       "lastSurfacedAt": "2026-11-14T14:52:45.284Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -43487,8 +43486,20 @@
       "lastSurfacedAt": "2026-11-14T23:02:47.317Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-14T23:31:41.929Z"
+      "linearIdentifier": null
+    },
+    "gap:passing-strange-regional-2026/times-uk--clive-davis.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 silent gap on near-opening show: Passing Strange — times-uk",
+      "firstSeen": "2026-11-14T23:36:26.802Z",
+      "incidentOpenedAt": "2026-11-14T23:36:26.802Z",
+      "lastSeen": "2026-11-14T23:36:26.802Z",
+      "lastNotifiedAt": "2026-11-14T23:36:26.802Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7498"
     }
   }
 }
