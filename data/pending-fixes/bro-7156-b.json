@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7156-b",
   "planId": "698bcd04-e6ff-4bbd-947e-cb64070a399f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-14T00:18:13.734Z",
   "submitter": {
     "name": null,
@@ -73,5 +73,39 @@
         "description": "Official opening 26 Jan 2027 (TheaterMania announcement; TDF Show Finder lists the same first preview and opening)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-14T01:05:06.531Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired berlin-off-west-end-2027 (\"Berlin\" @ Kiln Theatre)"
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled berlin2027-off-west-end-2026: \"Berlin_2027\" -> \"Berlin\""
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired lumin-by-emma-gibson-regional-2027 (\"Lumin By Emma Gibson\" @ Moxie Theatre, San Diego, CA)"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired honor-an-artist-lecture-off-broadway-2027 (\"Honor, An Artist Lecture\" @ Polonsky Shakespeare Center)"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired ohio-greenwich-house-theater-off-broadway-2027 (\"Ohio / Greenwich House Theater\" @ Greenwich House Theater)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for ohio-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
