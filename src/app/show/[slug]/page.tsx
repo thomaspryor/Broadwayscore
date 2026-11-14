@@ -5,6 +5,7 @@ import { getReviewArrival } from '@/lib/data-review-arrival';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { cache, Suspense } from 'react';
+import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import { isCategoryEnabled } from '@/lib/markets';
 import { HIDDEN_LONDON_IDS } from '../../../../scripts/lib/page-name-sources';
 import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
@@ -915,8 +916,9 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             </div>
 
             {/* Watchlist + List buttons — right-aligned */}
-            <Suspense fallback={null}><ShowPageAddToListButton showId={show.id} /></Suspense>
-            <Suspense fallback={null}>
+            {/* LazyChunkBoundary: a failed chunk drops the button, not the page (BRO-7494). */}
+            <LazyChunkBoundary><Suspense fallback={null}><ShowPageAddToListButton showId={show.id} /></Suspense></LazyChunkBoundary>
+            <LazyChunkBoundary><Suspense fallback={null}>
               <ShowPageWatchlistButton
                 showId={show.id}
                 title={show.title}
@@ -926,7 +928,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 theaterAddress={show.theaterAddress}
                 runtime={show.runtime}
               />
-            </Suspense>
+            </Suspense></LazyChunkBoundary>
           </div>
 
           {/* The rating widget lives in ShowHeroRedesign; this legacy layout has none,

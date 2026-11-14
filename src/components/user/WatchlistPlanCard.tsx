@@ -63,7 +63,7 @@ export default function WatchlistPlanCard(props: WatchlistPlanCardProps) {
       {opened && (
         <LazyChunkBoundary onError={onSheetError}>
           {/* Fallback only while open: a closed-but-mounted sheet must not flash a skeleton. */}
-          <Suspense fallback={open ? <PlanSheetSkeleton /> : null}>
+          <Suspense fallback={open ? <PlanSheetSkeleton onClose={() => setOpen(false)} /> : null}>
             <PlanSheet {...props} isOpen={open} onClose={() => setOpen(false)} />
           </Suspense>
         </LazyChunkBoundary>
