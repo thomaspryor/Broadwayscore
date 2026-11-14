@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-14T10:33:24.036Z",
+  "timestamp": "2026-11-14T10:58:54.982Z",
   "stats": {
-    "totalReviews": 81984,
+    "totalReviews": 81986,
     "alreadyFlagged": 22378,
     "dateGuardCatches": 220,
     "directorMismatch": 3683,
-    "tvFilmSignals": 2313,
+    "tvFilmSignals": 2314,
     "londonSignals": 3744,
     "offBroadwaySignals": 749,
     "yearMismatch": 376,
@@ -28813,6 +28813,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "south-london--michael-holland.json",
+      "score": 78,
+      "publishDate": "2026-11-14",
+      "url": "https://southlondon.co.uk/lifestyle/review-hamlet-hail-to-the-thief-barbican/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
