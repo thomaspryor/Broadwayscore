@@ -34,6 +34,7 @@ import {
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useAuth } from '@/contexts/AuthContext';
+import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 
 const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal'), { ssr: false });
 
@@ -506,6 +507,8 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       }}
     >
       {children}
+      {/* Mounted on every page: a failed chunk must not take the page down (BRO-7494). */}
+      <LazyChunkBoundary>
       <EmailCaptureModal
         isOpen={modalOpen}
         onClose={handleModalClose}
@@ -514,6 +517,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
         blocking={modalBlocking}
         analyticsProps={gateFireMeta}
       />
+      </LazyChunkBoundary>
     </ProGateContext.Provider>
   );
 }
