@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T02:07:24.138Z",
+  "timestamp": "2026-11-14T03:06:10.633Z",
   "stats": {
-    "totalReviews": 81972,
+    "totalReviews": 81980,
     "alreadyFlagged": 22374,
     "dateGuardCatches": 220,
-    "directorMismatch": 3670,
+    "directorMismatch": 3674,
     "tvFilmSignals": 2310,
-    "londonSignals": 3745,
+    "londonSignals": 3746,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8461
+    "noPublishDate": 8462
   },
   "findings": [
     {
@@ -39677,6 +39677,24 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "metro-weekly--andre-hereford.json",
+      "publishDate": "2023-04-22",
+      "url": "https://www.metroweekly.com/2023/04/les-miserables-review-rebel-yell",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "new-city-stage--dennis-polkow.json",
       "score": 75,
       "publishDate": "2026-05-19",
@@ -49252,6 +49270,19 @@
       "score": 91,
       "publishDate": "2026-10-02",
       "url": "https://www.chicagoonstage.com/operation-mincemeat-is-totally-worth-all-its-hype/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "intermissionmagazine--alessandro-stracuzzi.json",
+      "publishDate": "2026-11-02",
+      "url": "https://www.intermissionmagazine.ca/reviews/operation-mincemeat",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -75658,6 +75689,19 @@
       "score": 86,
       "publishDate": "4/15/2026",
       "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-PHANTOM-OF-THE-OPERA-at-the-Eccles-Theater-is-Refreshed-with-Reverence-20260411",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "foodfamilytravel--christianne-klein.json",
+      "publishDate": "2026-10-27",
+      "url": "https://foodfamilytravel.com/post/review-the-phantom-of-the-opera-brings-broadway-magic-to-las-vegas/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -133720,6 +133764,20 @@
       "score": 46,
       "publishDate": null,
       "url": "https://www.whatsonstage.com/news/review-the-kid-stays-in-the-picture-royal-court_43191/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kings-critique-off-broadway-2026",
+      "file": "the-knockturnal--karen-snyder.json",
+      "score": null,
+      "publishDate": "2026-11-13",
+      "url": "https://theknockturnal.com/the-kings-critique-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
