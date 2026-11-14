@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { featureFlags } from '@/config/feature-flags';
@@ -354,7 +355,7 @@ export default function ShowPageBelowFold({
       <div id="box-office" className="scroll-mt-20" />
       {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
         featureFlags.commercial && featureFlags.boxOfficeV2 && boxOfficeFacts ? (
-          <BoxOfficeScorecard card={boxOfficeFacts} grosses={grosses} history={boxOfficeHistory} />
+          <LazyChunkBoundary><BoxOfficeScorecard card={boxOfficeFacts} grosses={grosses} history={boxOfficeHistory} /></LazyChunkBoundary>
         ) : grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
           <BoxOfficeStats grosses={grosses} weekEnding={weekEnding ?? ''} history={boxOfficeHistory} />
         ) : !preOpening && (show.status === 'previews' || show.status === 'upcoming') ? (

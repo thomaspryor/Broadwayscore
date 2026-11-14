@@ -52,6 +52,16 @@ const x = <><LazyChunkBoundary><Other /></LazyChunkBoundary><Tab /></>;`;
   assert.equal(findUnguardedLazyUses(src).length, 1);
 });
 
+test('flag-gated loaders and default-exported lazy components are tracked', () => {
+  const gated = `const Card = process.env.HELD === 'true'\n  ? dynamic(() => import('./Card'))\n  : () => null;\nconst x = <Card />;`;
+  assert.equal(findUnguardedLazyUses(gated).length, 1);
+  const lib = `const L = FLAG ? dynamic(() => import('./T')) : () => null;\nexport default L;`;
+  assert.deepEqual([...exportedLazyNames(lib)], ['default']);
+  const use = `import Tables from './TablesLazy';\nconst x = <Tables />;`;
+  const imported = namedImports(use)['./TablesLazy'].filter(n => n.orig === 'default').map(n => n.local);
+  assert.equal(findUnguardedLazyUses(use, { importedLazy: imported }).length, 1);
+});
+
 test('loaders with their own .catch fallback are exempt', () => {
   const src = `const ListsTab = dynamic(() => import('./ListsTab').catch(() => ({ default: () => null })));
 const x = <ListsTab />;`;

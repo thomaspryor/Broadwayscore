@@ -48,6 +48,13 @@ export class LazyChunkBoundary extends Component<
   static getDerivedStateFromError() { return { failed: true }; }
   componentDidCatch(error: unknown) {
     console.error('[lazy-chunk] panel failed to load', error);
+    // These used to surface as a page crash (src/app/error.tsx reports those);
+    // report them here so a real render bug inside a lazy panel isn't silenced.
+    try {
+      window.Sentry?.captureException?.(error, { tags: { error_boundary: 'lazy-chunk' } });
+    } catch {
+      // never throw from a boundary
+    }
     this.props.onError?.(error);
   }
   render() { return this.state.failed ? (this.props.fallback ?? null) : this.props.children; }

@@ -12,13 +12,14 @@
  * in the same file. Lazy components come from this file's own declarations and
  * from `importedLazy` (names other files export as lazy; see exportedLazyNames).
  * Exempt: loaders with their own `.catch(` fallback (the import can't reject).
- * Ternary loaders (`FLAG ? dynamic(...) : null`) are not matched.
+ * Flag-gated loaders (`const X = FLAG ? dynamic(...) : () => null`) count too:
+ * they render a real lazy chunk the day the flag turns on.
  */
 
 const BOUNDARY_TAGS = ['LazyChunkBoundary', 'ErrorBoundary', 'SheetBoundary', 'StatsErrorBoundary'];
 
 // const X = lazy|React.lazy|dynamic|dynamic<P>(() => import('...'))
-const DIRECT = /(export\s+)?const\s+(\w+)\s*=\s*(?:React\.lazy|lazy|dynamic)\s*(?:<[^>]*>)?\(\s*(?:async\s*)?\(\)\s*=>\s*import\(([^)]*)\)(\.catch\()?/g;
+const DIRECT = /(export\s+)?const\s+(\w+)\s*=\s*(?:(?:(?!\b(?:const|let|var|function)\b)[^;])*?\?\s*)?(?:React\.lazy|lazy|dynamic)\s*(?:<[^>]*>)?\(\s*(?:async\s*)?\(\)\s*=>\s*import\(([^)]*)\)(\.catch\()?/g;
 
 /** Block and line comments out, offsets kept (replaced by spaces, newlines kept). */
 function stripComments(source) {
@@ -52,7 +53,15 @@ function exportedLazyNames(source) {
   const out = new Set();
   let m;
   DIRECT.lastIndex = 0;
-  while ((m = DIRECT.exec(source))) if (m[1] && !m[4]) out.add(m[2]);
+  const lazy = new Set();
+  while ((m = DIRECT.exec(source))) {
+    if (m[4]) continue;
+    lazy.add(m[2]);
+    if (m[1]) out.add(m[2]);
+  }
+  // export default X, where X is lazy
+  const def = /export\s+default\s+(\w+)\s*;?/.exec(source);
+  if (def && lazy.has(def[1])) out.add('default');
   return out;
 }
 
@@ -67,6 +76,12 @@ function namedImports(source) {
       return { orig: orig.trim(), local: (local || orig).trim() };
     });
     (out[m[2]] = out[m[2]] || []).push(...names);
+  }
+  // import X from '...'  /  import X, { Y } from '...'
+  const def = /import\s+(\w+)\s*(?:,\s*\{[^}]*\})?\s*from\s*['"]([^'"]+)['"]/g;
+  while ((m = def.exec(source))) {
+    if (m[1] === 'type') continue;
+    (out[m[2]] = out[m[2]] || []).push({ orig: 'default', local: m[1] });
   }
   return out;
 }
