@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
   "openingDate": "2026-11-12",
-  "detectedAt": "2026-11-14T17:17:09.154Z",
+  "detectedAt": "2026-11-14T17:26:37.815Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "british-theatre--unknown.json",
-      "outletId": "british-theatre",
-      "criticName": "Unknown",
-      "url": "https://www.britishtheatreguide.info/reviews/hamlet-hail-to-barbican-theatr-26211",
-      "fullTextLen": 4344,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "london-box-office--shehrazade-zafar-arif.json",
       "outletId": "london-box-office",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-11-14T17:17:09.154Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
