@@ -154,4 +154,35 @@ test.describe('Homepage', () => {
     const showLinks = page.locator('a[href^="/show/"]').first();
     await expect(showLinks).toBeVisible({ timeout: 10000 });
   });
+
+  // BRO-7469: on a 375px phone the list card's info column was ~95px wide, so
+  // pills and dates stacked (202px cards), and later a portrait thumbnail in
+  // flow set the row height (178px with ~86px of text). Guard both: the
+  // thumbnail never makes a card taller than its text/score, and the text
+  // never runs under the score column.
+  test('list cards stay compact on a 375px phone (BRO-7469)', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('[data-testid="show-card"]').first()).toBeVisible({ timeout: 10000 });
+    const cards = await page.$$eval('[data-testid="show-card"]', (els) => els.slice(0, 12).map((card) => {
+      const kids = Array.from(card.children) as HTMLElement[];
+      const [thumb, ...rest] = kids;
+      const score = rest[rest.length - 1];
+      const info = card.querySelector('h3')?.parentElement as HTMLElement | null;
+      const img = thumb?.querySelector('img');
+      return {
+        title: card.querySelector('h3')?.textContent ?? '',
+        thumbH: thumb?.getBoundingClientRect().height ?? 0,
+        contentH: Math.max(96, info?.getBoundingClientRect().height ?? 0, score?.getBoundingClientRect().height ?? 0),
+        infoOverflow: info ? info.scrollWidth - info.clientWidth : 0,
+        imgLoaded: !!img && img.complete && img.naturalHeight > 0,
+      };
+    }));
+    expect(cards.length).toBeGreaterThan(0);
+    for (const c of cards) {
+      expect(c.thumbH, `${c.title}: thumbnail sets the card height`).toBeLessThanOrEqual(c.contentH + 2);
+      expect(c.infoOverflow, `${c.title}: text runs under the score`).toBeLessThanOrEqual(1);
+    }
+  });
 });
