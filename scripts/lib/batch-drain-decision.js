@@ -61,9 +61,20 @@ function decideBatchDrain({ unretrievableVendors, drainCount = 0, maxDrains = 3 
  *
  * @param {object} args
  * @param {'merged'|'abandoned'|'refused'|'in-flight'} args.outcome
+ * BRO-7490: "score everything else" must also hold in --batch mode. There is
+ * one batch state slot, so while a batch is in flight mayStartNewBatch() refuses
+ * every new submission; queueing new reviews behind it scores nothing. On
+ * 2026-11-13/14 one slow OpenAI leg left three scheduled runs scoring 0 reviews
+ * for ~20h. So an in-flight outcome tells the run to score new work
+ * synchronously (the BRO-5047 urgent-show path, same ensemble, full price),
+ * capped at SYNC_FALLBACK_MAX_REVIEWS per run: scheduled runs carry no
+ * --max-cost and no time budget, and start this after a 120-min poll.
+ *
  * @param {Array<{filePath?: string}>} [args.manifest] the in-flight batch's manifest
- * @returns {{holdPaths: string[], skipAllNewWork: boolean, keepState: boolean}}
+ * @returns {{holdPaths: string[], skipAllNewWork: boolean, keepState: boolean, scoreNewWorkSync: boolean}}
  */
+const SYNC_FALLBACK_MAX_REVIEWS = 60;
+
 function decideDrainFollowUp({ outcome, manifest = [] } = {}) {
   const paths = (Array.isArray(manifest) ? manifest : [])
     .map((m) => m && m.filePath)
@@ -73,18 +84,19 @@ function decideDrainFollowUp({ outcome, manifest = [] } = {}) {
     // Results are in (or unrecoverable and discarded). Nothing is locked.
     case 'merged':
     case 'abandoned':
-      return { holdPaths: [], skipAllNewWork: false, keepState: false };
+      return { holdPaths: [], skipAllNewWork: false, keepState: false, scoreNewWorkSync: false };
 
     // A paid vendor leg could not be retrieved. Merging would write a degraded
     // ensemble corpus-wide, so the run parks entirely and retries next time —
     // bounded by decideBatchDrain() above, so it cannot wedge forever. This is
     // the ONE outcome where stopping the whole run is correct.
     case 'refused':
-      return { holdPaths: paths, skipAllNewWork: true, keepState: true };
+      return { holdPaths: paths, skipAllNewWork: true, keepState: true, scoreNewWorkSync: false };
 
-    // Still in flight: hold only the batch's own files; score everything else.
+    // Still in flight: hold only the batch's own files; score everything else,
+    // synchronously, because the slot cannot take a second batch (BRO-7490).
     case 'in-flight':
-      return { holdPaths: paths, skipAllNewWork: false, keepState: true };
+      return { holdPaths: paths, skipAllNewWork: false, keepState: true, scoreNewWorkSync: true };
 
     default:
       throw new Error(`decideDrainFollowUp: unknown outcome "${outcome}"`);
@@ -112,4 +124,22 @@ function mayStartNewBatch(existingState) {
   return { allowed: true, reason: null };
 }
 
-module.exports = { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch };
+/**
+ * Should this review be queued for a batch, scored now, or left for the next
+ * run? (BRO-7490) Pure so the loop's branch is tested, not just its inputs.
+ *
+ * @param {object} a
+ * @param {boolean} a.batchMode run started with --batch
+ * @param {boolean} a.urgent show is in its opening-night window (BRO-5047: always sync)
+ * @param {boolean} a.slotBusy a batch from an earlier run is still in flight
+ * @param {number} a.syncFallbackUsed reviews already scored via the fallback this run
+ * @param {number} [a.cap] SYNC_FALLBACK_MAX_REVIEWS
+ * @returns {'queue'|'sync'|'defer'}
+ */
+function routeNewReview({ batchMode, urgent, slotBusy, syncFallbackUsed, cap = SYNC_FALLBACK_MAX_REVIEWS }) {
+  if (!batchMode || urgent) return 'sync';
+  if (!slotBusy) return 'queue';
+  return syncFallbackUsed < cap ? 'sync' : 'defer';
+}
+
+module.exports = { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch, routeNewReview, SYNC_FALLBACK_MAX_REVIEWS };

@@ -3312,6 +3312,8 @@ on:
       # here so a solo edit to any of these files triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/llm-scoring/batch-mode.test.mjs'
+      # BRO-7490: busy batch slot -> sync fallback; also in tests/unit-test-manifest.txt.
+      - 'scripts/llm-scoring/batch-slot-fallback.test.mjs'
       # BRO-3381: costUsd recording + cost-breach alarm. Colocated
       # cost-recording.test.mjs lives in scripts/llm-scoring/ (not
       # scripts/lib/), so same gap shape as batch-mode.test.mjs above —

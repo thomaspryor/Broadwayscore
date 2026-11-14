@@ -103,7 +103,7 @@ import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from '
 import { isScoreable } from './is-scoreable';
 const { detectPreOpeningInterviewFeature } = require('../lib/preopening-interview-signal');
 const { emitStage } = require('../lib/stage-latency');
-const { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch } = require('../lib/batch-drain-decision');
+const { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch, routeNewReview, SYNC_FALLBACK_MAX_REVIEWS } = require('../lib/batch-drain-decision');
 const { urgentScoringShowIds } = require('../lib/scoring-lane');
 const { loadReviewEvidence } = require('../lib/review-evidence');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
@@ -2050,6 +2050,12 @@ async function main(): Promise<void> {
   const pendingBatchItems: PendingBatchItem[] = [];
   const batchKeys = { anthropic: claudeApiKey!, openai: openaiApiKey!, gemini: geminiApiKey };
   let skipNewWork = false;
+  // BRO-7490: a batch from an earlier run still holds the single batch slot, so
+  // new work cannot be submitted this run; it is scored synchronously instead
+  // (capped per run, see routeNewReview).
+  let batchSlotBusy = false;
+  let syncFallbackUsed = 0;
+  let syncFallbackDeferred = 0;
   // Files locked by a batch that is still in flight. Re-scoring these
   // synchronously would double-pay the vendor and race the eventual merge, but
   // every OTHER file this run selected is fair game — see the "Still in flight"
@@ -2075,7 +2081,7 @@ async function main(): Promise<void> {
       process.exit(2);
     }
     if (maxCost > 0) {
-      console.log(`\n⚠️  --max-cost is inert in --batch mode: batch cost is committed at submission, not per call. A pre-submit estimate is printed instead.\n`);
+      console.log(`\n⚠️  --max-cost does not cap the batch in --batch mode (batch cost is committed at submission; a pre-submit estimate is printed instead). It still caps reviews scored synchronously (urgent shows, busy batch slot).\n`);
     }
     console.log(`\n📦 BATCH MODE — vendor Batch APIs (50% discount), submit → poll (≤${batchPollMinutes} min this run) → merge.\n`);
   }
@@ -2151,9 +2157,14 @@ async function main(): Promise<void> {
           const followUp = decideDrainFollowUp({ outcome: 'in-flight', manifest: existing.manifest });
           batchHeldPaths = new Set(followUp.holdPaths.map(manifestAbsPath));
           skipNewWork = followUp.skipAllNewWork; // false — this is the whole fix
+          // In --batch mode "score normally" used to mean "queue", and the
+          // queued work was then refused at submit (one slot): ~20h of scheduled
+          // runs scored nothing on 2026-11-13/14 (BRO-7490).
+          batchSlotBusy = batchMode && followUp.scoreNewWorkSync;
           console.log(
             `   ⏳ Still in flight (${poll.reason}). Keeping state; ` +
-              `${batchHeldPaths.size} file(s) held for the batch, other reviews score normally.\n`
+              `${batchHeldPaths.size} file(s) held for the batch, other reviews score normally` +
+              (batchSlotBusy ? ` — synchronously, at full price, up to ${SYNC_FALLBACK_MAX_REVIEWS} this run (the batch slot is busy).\n` : `.\n`)
           );
         }
       }
@@ -2205,9 +2216,10 @@ async function main(): Promise<void> {
     }
   }
 
-  // `!skipNewWork` short-circuits the whole loop when a resumed batch is
-  // still in flight — submitting a second batch on top of it would double
-  // the spend and race two manifests through one state slot.
+  // `!skipNewWork` short-circuits the whole loop only when a resumed batch's
+  // merge was REFUSED (unretrievable vendor leg). A batch merely still in flight
+  // holds its own files (batchHeldPaths) and new work is routed by
+  // routeNewReview (BRO-7490).
   for (let i = 0; !skipNewWork && i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
 
@@ -2395,7 +2407,18 @@ async function main(): Promise<void> {
     // BATCH: run stage 1 only, queue the item, and move on. The models are
     // called once for the whole run after this loop finishes. Reviews for
     // shows near opening night skip the batch and score now (BRO-5047).
-    if (batchMode && !urgentShowIds.has(reviewFile.showId)) {
+    const route = routeNewReview({
+      batchMode,
+      urgent: urgentShowIds.has(reviewFile.showId),
+      slotBusy: batchSlotBusy,
+      syncFallbackUsed,
+    });
+    if (route === 'defer') {
+      syncFallbackDeferred++;
+      continue;
+    }
+    if (route === 'sync' && batchSlotBusy && !urgentShowIds.has(reviewFile.showId)) syncFallbackUsed++;
+    if (route === 'queue') {
       const prepared = (scorer as EnsembleReviewScorer).prepareScoringInput(reviewFile);
       if (!prepared.ok || !prepared.prep) {
         const failure = prepared.failure || { success: false, error: 'prepare_scoring_input_failed' };
@@ -2501,6 +2524,10 @@ async function main(): Promise<void> {
   // --batch SUBMIT → POLL → MERGE (task #516)
   // ========================================
   if (batchMode && !skipNewWork) {
+    if (batchSlotBusy) {
+      console.log(`\n📦 Batch slot busy: scored ${syncFallbackUsed} review(s) synchronously instead of queueing${syncFallbackDeferred ? `; ${syncFallbackDeferred} left for the next run (cap ${SYNC_FALLBACK_MAX_REVIEWS})` : ''}.`);
+      if (syncFallbackDeferred) console.log(`::warning::Batch slot busy: ${syncFallbackDeferred} review(s) left unscored past the ${SYNC_FALLBACK_MAX_REVIEWS}-review sync cap.`);
+    }
     if (pendingBatchItems.length === 0) {
       console.log(`\n📦 Batch mode: nothing queued — no batch submitted.`);
     } else {
@@ -2657,7 +2684,7 @@ async function main(): Promise<void> {
     // batch:true applies BATCH_DISCOUNT_MULTIPLIER to the claude/openai/gemini
     // legs, so the printed figure is what the vendors actually bill for a
     // --batch run rather than the sync-rate equivalent.
-    console.log(`Estimated cost${batchMode ? ' (batch-discounted)' : ''}: $${breakdown.total.toFixed(4)} (${costParts.join(', ')})`);
+    console.log(`Estimated cost${batchMode ? (syncUsageInBatchRun ? ' (batch-discounted share + full-price sync share)' : ' (batch-discounted)') : ''}: $${breakdown.total.toFixed(4)} (${costParts.join(', ')})`);
     costUsd = breakdown.total;
   } else {
     // Single scorer
