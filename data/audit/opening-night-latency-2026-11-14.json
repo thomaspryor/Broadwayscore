@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-14T22:02:28.978Z",
+  "generatedAt": "2026-11-14T22:32:24.892Z",
   "date": "2026-11-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 242369,
+  "entryCount": 243447,
   "shows": [
     {
       "showId": "wicked-tour-2021",
-      "reviewCount": 54,
+      "reviewCount": 59,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 343884,
+        "scored-to-rebuilt": 759167,
         "rebuilt-to-deployed": 70513498
       },
       "reviews_over_15min": 0,
@@ -81,13 +81,13 @@
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 45,
+      "reviewCount": 47,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 557151,
+        "scored-to-rebuilt": 658157,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -828,8 +828,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 2318470,
+        "collected-to-scored": 26098386,
+        "scored-to-rebuilt": 931013,
         "rebuilt-to-deployed": 134106227
       },
       "reviews_over_15min": 0,
@@ -1783,7 +1783,7 @@
     },
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
-      "reviewCount": 34,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2014,7 +2014,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 931045,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2038,13 +2038,13 @@
     },
     {
       "showId": "the-notebook-tour-2025",
-      "reviewCount": 64,
+      "reviewCount": 65,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 931044,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3225,7 +3225,7 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "reviewCount": 34,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3285,13 +3285,13 @@
     },
     {
       "showId": "the-lion-king-tour-2021",
-      "reviewCount": 62,
+      "reviewCount": 66,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 343882,
+        "scored-to-rebuilt": 931039,
         "rebuilt-to-deployed": 70513501
       },
       "reviews_over_15min": 0,
@@ -4412,7 +4412,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 4936840,
+        "scored-to-rebuilt": 2888510,
         "rebuilt-to-deployed": 123914380
       },
       "reviews_over_15min": 0,
@@ -6518,7 +6518,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3625815,
+        "scored-to-rebuilt": 3620237,
         "rebuilt-to-deployed": 123914379
       },
       "reviews_over_15min": 0,
@@ -7247,13 +7247,13 @@
     },
     {
       "showId": "the-nap-2018",
-      "reviewCount": 44,
+      "reviewCount": 45,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2700833,
+        "scored-to-rebuilt": 2698681,
         "rebuilt-to-deployed": 120756926
       },
       "reviews_over_15min": 0,
@@ -7852,8 +7852,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 22840131,
+        "scored-to-rebuilt": 931021,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8182,8 +8182,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 21933130,
+        "scored-to-rebuilt": 931018,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -9377,13 +9377,13 @@
     },
     {
       "showId": "six-degrees-of-separation-2017",
-      "reviewCount": 49,
+      "reviewCount": 50,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 4789548,
+        "collected-to-scored": 84015492,
+        "scored-to-rebuilt": 931001,
         "rebuilt-to-deployed": 116154568
       },
       "reviews_over_15min": 0,
@@ -9962,13 +9962,13 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "reviewCount": 39,
+      "reviewCount": 46,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 557139,
+        "scored-to-rebuilt": 930997,
         "rebuilt-to-deployed": 116154567
       },
       "reviews_over_15min": 0,
@@ -11939,13 +11939,13 @@
     },
     {
       "showId": "the-real-thing-2014",
-      "reviewCount": 23,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3871765,
+        "scored-to-rebuilt": 2401374,
         "rebuilt-to-deployed": 111984810
       },
       "reviews_over_15min": 0,
@@ -12290,7 +12290,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3465772,
+        "scored-to-rebuilt": 930981,
         "rebuilt-to-deployed": 111984825
       },
       "reviews_over_15min": 0,
@@ -14420,7 +14420,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 324942,
+        "scored-to-rebuilt": 627959,
         "rebuilt-to-deployed": 111016557
       },
       "reviews_over_15min": 0,
@@ -14855,7 +14855,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2082854,
+        "scored-to-rebuilt": 1506937,
         "rebuilt-to-deployed": 107979222
       },
       "reviews_over_15min": 0,
@@ -15725,13 +15725,13 @@
     },
     {
       "showId": "the-whos-tommy-tour-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 8396209,
+        "scored-to-rebuilt": 4663635,
         "rebuilt-to-deployed": 62461214
       },
       "reviews_over_15min": 0,
@@ -15755,13 +15755,13 @@
     },
     {
       "showId": "jersey-boys-tour-2026",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 8396197,
+        "scored-to-rebuilt": 931046,
         "rebuilt-to-deployed": 62461221
       },
       "reviews_over_15min": 0,
@@ -15770,13 +15770,13 @@
     },
     {
       "showId": "mexodus-tour-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 8396197,
+        "scored-to-rebuilt": 4663621,
         "rebuilt-to-deployed": 62461220
       },
       "reviews_over_15min": 0,
@@ -15935,13 +15935,13 @@
     },
     {
       "showId": "les-miserables-tour-2022",
-      "reviewCount": 48,
+      "reviewCount": 50,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 8396111,
+        "scored-to-rebuilt": 4663561,
         "rebuilt-to-deployed": 62461220
       },
       "reviews_over_15min": 0,
@@ -16201,8 +16201,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 79887045,
+        "scored-to-rebuilt": 931042,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16577,13 +16577,13 @@
     },
     {
       "showId": "the-elephant-man-2014",
-      "reviewCount": 19,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3222893,
+        "scored-to-rebuilt": 930990,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16637,13 +16637,13 @@
     },
     {
       "showId": "stephen-sondheims-old-friends-2025",
-      "reviewCount": 25,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 557143,
+        "scored-to-rebuilt": 931018,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16652,13 +16652,13 @@
     },
     {
       "showId": "rain-2010",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 557132,
+        "scored-to-rebuilt": 930989,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16742,13 +16742,13 @@
     },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1264539,
+        "scored-to-rebuilt": 1262563,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16787,13 +16787,163 @@
     },
     {
       "showId": "passing-strange-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1446755,
+        "scored-to-rebuilt": 1443867,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "reviewCount": 22,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 931052,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "aladdin-2014",
+      "reviewCount": 40,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 931034,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "left-on-tenth-2024",
+      "reviewCount": 29,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 931016,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "selling-kabul-regional-2024",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 931016,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "peter-pan-goes-wrong-west-end-2023",
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 931015,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "call-me-izzy-2025",
+      "reviewCount": 32,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 930987,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "reviewCount": 36,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 930988,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "bring-it-on-the-musical-2012",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 930979,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "burn-the-floor-2009",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 930978,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "33-variations-2009",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 930976,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16809,6 +16959,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 916117,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "in-quietness-regional-2024",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 759157,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
