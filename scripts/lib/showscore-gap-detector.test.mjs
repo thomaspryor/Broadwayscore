@@ -75,3 +75,11 @@ test('London-page state goes loud again when the scraper stops confirming it', (
   assert.equal(findShowScoreGaps([show(old)], urls, tombStale, NOW).length, 1);
   assert.equal(findShowScoreGaps([show(old)], urls, tombOnly, NOW).length, 1);
 });
+
+test('BRO-7474: quiet while the scraper keeps confirming a live page with no ratings yet', () => {
+  const fresh = new Date(NOW - 2 * 86400000).toISOString();
+  const stale = new Date(NOW - 20 * 86400000).toISOString();
+  const open = show({ openingDate: '2026-09-01' });
+  assert.equal(findShowScoreGaps([open], urls, { a: { sources: {}, showScoreNoRatingsAt: fresh } }, NOW).length, 0);
+  assert.equal(findShowScoreGaps([open], urls, { a: { sources: {}, showScoreNoRatingsAt: stale } }, NOW).length, 1);
+});

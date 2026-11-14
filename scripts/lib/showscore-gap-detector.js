@@ -21,6 +21,14 @@ const CATEGORIES = new Set(['broadway', 'off-broadway']);
 const UK_WAIT_FRESH_MS = 9 * 24 * 60 * 60 * 1000;
 const UK_TOMBSTONE_FRESH_MS = 3 * 24 * 60 * 60 * 1000;
 
+// BRO-7474: the page is live and says "Be the first to review". Nothing to scrape until a
+// user rates it; the scraper refreshes showScoreNoRatingsAt every run, so quiet while fresh.
+const NO_RATINGS_FRESH_MS = 9 * 24 * 60 * 60 * 1000;
+function waitingOnFirstRating(rec, now) {
+  const t = Date.parse(rec && rec.showScoreNoRatingsAt);
+  return Number.isFinite(t) && now - t <= NO_RATINGS_FRESH_MS;
+}
+
 function waitingOnNycPage(rec, now) {
   if (!rec) return false;
   const fresh = (iso, ms) => { const t = Date.parse(iso); return Number.isFinite(t) && now - t <= ms; };
@@ -50,6 +58,7 @@ function findShowScoreGaps(shows, urls, buzz, now = Date.now()) {
     if (!url || url.includes('/off-off-broadway-shows/')) continue;
     if (buzz?.[s.id]?.sources?.showScore != null) continue;
     if (waitingOnNycPage(buzz?.[s.id], now)) continue;
+    if (waitingOnFirstRating(buzz?.[s.id], now)) continue;
     hits.push({ id: s.id, category: s.category, openingDate: s.openingDate, url });
   }
   return hits.sort((a, b) => a.openingDate.localeCompare(b.openingDate));

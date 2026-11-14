@@ -774,6 +774,8 @@ let showFetchFailed = false;
 // BRO-7023: set when the current show's cached page is London's (no NYC page yet). Stamped as
 // showScoreUkPageAt so the gap detector knows the scraper is watching, not stuck.
 let ukPageServed = false;
+// BRO-7474: set when the validated page is live but shows "Be the first to review" (zero ratings).
+let noRatingsYet = false;
 
 /**
  * A US show whose Show Score page turned out to be London's: clear any rating an earlier run attached
@@ -815,6 +817,7 @@ function dropWrongProductionShowScoreSource(show, url) {
 async function processShow(show, { rediscovered = false } = {}) {
   showFetchFailed = false;
   ukPageServed = false;
+  noRatingsYet = false;
   // Multi-production guard: older productions only processed if they have their own page
   if (!isMostRecentProduction(show)) {
     const myUrl = getCachedUrl(show.id);
@@ -912,6 +915,7 @@ async function processShow(show, { rediscovered = false } = {}) {
 
     const data = extractAudienceData(html, show.id);
     const metadata = extractMetadata(html);
+    noRatingsYet = !data.score && /Be the first to review/i.test(html);
 
     if (metadata.runtime) console.log(`  Runtime: ${metadata.runtime}`);
     if (metadata.synopsis) console.log(`  Synopsis: ${metadata.synopsis.slice(0, 80)}...`);
@@ -1305,6 +1309,15 @@ async function main() {
           saveAudienceBuzz(audienceBuzz);
         } else if (rec && rec.showScoreUkPageAt) {
           delete rec.showScoreUkPageAt;
+          saveAudienceBuzz(audienceBuzz);
+        }
+        // BRO-7474: live page, zero ratings yet. Marker keeps the gap detector quiet while the scraper keeps confirming it.
+        if (noRatingsYet) {
+          audienceBuzz.shows[show.id] = audienceBuzz.shows[show.id] || { sources: {} };
+          audienceBuzz.shows[show.id].showScoreNoRatingsAt = new Date().toISOString();
+          saveAudienceBuzz(audienceBuzz);
+        } else if (audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].showScoreNoRatingsAt) {
+          delete audienceBuzz.shows[show.id].showScoreNoRatingsAt;
           saveAudienceBuzz(audienceBuzz);
         }
       } else if (data && data.score && audienceBuzz.shows && audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].showScoreUkPageAt) {
