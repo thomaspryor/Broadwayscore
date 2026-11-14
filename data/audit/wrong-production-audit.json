@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-14T20:00:44.579Z",
+  "timestamp": "2026-11-14T20:19:20.565Z",
   "stats": {
-    "totalReviews": 82097,
+    "totalReviews": 82098,
     "alreadyFlagged": 22380,
     "dateGuardCatches": 220,
     "directorMismatch": 3691,
     "tvFilmSignals": 2313,
-    "londonSignals": 3751,
+    "londonSignals": 3752,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
     "noPublishDate": 8477
@@ -105470,6 +105470,20 @@
       "score": 95,
       "publishDate": "2026-11-12",
       "url": "https://therecs.co.uk/hamlet-hail-to-the-thief/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "theatreandtonic--penny-walshe.json",
+      "score": 78,
+      "publishDate": "2026-11-14",
+      "url": "https://theatreandtonic.co.uk/blog/hamlet-hail-to-the-thief-at-barbican-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
