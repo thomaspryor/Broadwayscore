@@ -32,6 +32,7 @@ import YourPredictions from '@/components/my-shows/YourPredictions';
 import { selectDeviceSavedShows } from '@/lib/device-saved-shows';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
+import { LazyChunkBoundary, LAZY_PANEL_ERROR_MESSAGE } from '@/components/ui/LazyChunk';
 import { AddShowCard, ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
@@ -44,6 +45,9 @@ const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
 }), {
   loading: () => <div className="text-center py-12 text-fg-muted">Loading lists...</div>,
 });
+
+// A failed tab chunk shows this instead of taking down /my-shows (BRO-7494).
+const TAB_LOAD_FAILED = <p className="text-center py-12 text-fg-muted">Couldn’t load this tab. Check your connection and refresh the page.</p>;
 
 const SharePlansModal = dynamic(() => import('@/components/user/SharePlansModal'), { ssr: false });
 const ShareDiaryModal = dynamic(() => import('@/components/user/ShareDiaryModal'), { ssr: false });
@@ -871,12 +875,14 @@ export default function MyShowsClient() {
           file upload without shifting the mock-page visual baselines. */}
       {(user || (isMockMode && searchParams.get('importer') === '1')) && (
         <div className="mb-4 sm:mb-6">
+          <LazyChunkBoundary>
           <ImportShows
             userId={user?.id ?? 'mock-user'}
             existingReviewShowIds={new Set(reviews.map(r => r.show_id))}
             existingWatchlistShowIds={new Set(watchlist.map(w => w.show_id))}
             onImportComplete={() => { getAllReviews(); getWatchlist(true); }}
           />
+          </LazyChunkBoundary>
         </div>
       )}
 
@@ -1296,13 +1302,17 @@ export default function MyShowsClient() {
 
       {activeTab === 'feed' && (
         <div id="panel-feed" role="tabpanel" aria-labelledby="view-feed">
+          <LazyChunkBoundary fallback={TAB_LOAD_FAILED}>
           <FeedTab reviews={reviews} showMap={showMap} userId={user?.id || null} isMockMode={isMockMode} />
+          </LazyChunkBoundary>
         </div>
       )}
 
       {activeTab === 'stats' && (
         <div id="panel-stats" role="tabpanel" aria-labelledby="view-stats">
+          <LazyChunkBoundary fallback={TAB_LOAD_FAILED}>
           <StatsTab reviews={reviews} showMap={showMap} isMockMode={isMockMode} />
+          </LazyChunkBoundary>
         </div>
       )}
 
@@ -1314,6 +1324,7 @@ export default function MyShowsClient() {
       )}
 
       {sharePlansOpen && (
+        <LazyChunkBoundary onError={() => { setSharePlansOpen(false); showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error'); }}>
         <SharePlansModal
           isOpen
           onClose={() => setSharePlansOpen(false)}
@@ -1323,8 +1334,10 @@ export default function MyShowsClient() {
           mock={isMockMode}
           showToast={showToast}
         />
+        </LazyChunkBoundary>
       )}
       {shareDiaryOpen && (
+        <LazyChunkBoundary onError={() => { setShareDiaryOpen(false); showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error'); }}>
         <ShareDiaryModal
           isOpen
           onClose={() => setShareDiaryOpen(false)}
@@ -1334,6 +1347,7 @@ export default function MyShowsClient() {
           mock={isMockMode}
           showToast={showToast}
         />
+        </LazyChunkBoundary>
       )}
     </div>
   );

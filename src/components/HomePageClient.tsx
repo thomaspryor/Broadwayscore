@@ -26,6 +26,7 @@ import ScrollRow from '@/components/ScrollRow';
 import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 import type { HomepageExtra } from '@/lib/homepage-extra';
+import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 
 export interface FeaturedRowData {
   title: string;
@@ -1047,15 +1048,19 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
       </LazySection>
 
       {/* Explainer shelf — lazy-loaded below fold */}
+      <LazyChunkBoundary>
       <Suspense fallback={null}>
         <HomepageExplainerShelf totalShows={totalShows} totalReviews={totalReviews} totalCritics={totalCritics} totalOutlets={totalOutlets} />
       </Suspense>
+      </LazyChunkBoundary>
 
       {/* Email Capture — lazy-loaded since it's below the fold */}
       <div id="subscribe" className="mt-8 max-w-md mx-auto">
+        <LazyChunkBoundary>
         <Suspense fallback={<div className="h-24" />}>
           <FooterEmailCapture inputId="inline-email" />
         </Suspense>
+        </LazyChunkBoundary>
       </div>
 
     </div>
