@@ -87,7 +87,13 @@ test('workflow: four batch runs, catch-up dispatches gated to urgent work, once-
 test('index.ts: urgent shows never batched; held files dropped before the limit; mixed-rate cost', () => {
   const src = fs.readFileSync(path.join(REPO, 'scripts/llm-scoring/index.ts'), 'utf8');
   assert.ok(src.includes("onlyUrgent: args.includes('--only-urgent')"));
-  assert.ok(src.includes('if (batchMode && !urgentShowIds.has(reviewFile.showId))'));
+  // BRO-7490: routing moved into routeNewReview; urgent must still be passed
+  // through, and the router must send urgent reviews to sync, never the batch.
+  assert.ok(src.includes('urgent: urgentShowIds.has(reviewFile.showId)'));
+  const { routeNewReview } = require(path.join(REPO, 'scripts/lib/batch-drain-decision.js'));
+  for (const slotBusy of [false, true]) {
+    assert.strictEqual(routeNewReview({ batchMode: true, urgent: true, slotBusy, syncFallbackUsed: 999 }).route, 'sync');
+  }
   const held = src.indexOf('heldBeforeSlice.has(f.path)');
   const slice = src.indexOf('shardedFiles.slice(0, options.limit)');
   assert.ok(held > 0 && slice > held, 'held batch files must be removed before the limit slice');
