@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-14T02:26:05.634Z",
+    "generatedAt": "2026-11-14T11:39:41.287Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,92 +9,51 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 5,
-    "coveredCount": 12,
-    "highChurnTracked": 17
+    "exemptCount": 1,
+    "coveredCount": 7,
+    "highChurnTracked": 8
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 90
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
       "churn": 44
-    },
-    {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/admin/locks.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 83,
+      "churn": 80,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 63,
+      "churn": 54,
       "mergeAttr": "union"
     },
     {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 45,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 44,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 43,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 43,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 43,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 43,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 33,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 32,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/orphan-unscored-hamlet-hail-to-the-thief-off-west-end-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 30,
+      "churn": 47,
       "mergeAttr": "ours"
     }
   ]
