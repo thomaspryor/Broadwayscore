@@ -28,6 +28,7 @@ export default defineConfig({
         '**/my-shows-mock*',
         '**/my-shows-functional*',
         '**/rating-editor*',
+        '**/lazy-panel-guard*',
         '**/ugc-interactive-qa*',
         '**/ugc-visual-regression*',
         '**/ugc-visual-baselines*',
