@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-13T09:46:07.998Z",
-  "bannerText": "117/133 Done(14d) verified on main · 6 FAILED · 0 vacuous · 9 stuck-but-done · 5 mis-armed, needs re-arming (BRO-7415, BRO-7387, BRO-7351, +2 more)",
+  "generatedAt": "2026-11-14T09:27:59.308Z",
+  "bannerText": "92/100 Done(14d) verified on main · 3 FAILED · 0 vacuous · 10 stuck-but-done · 3 mis-armed, needs re-arming (BRO-7415, BRO-7387, BRO-7327)",
   "items": [
     {
-      "title": "FAILED BRO-4372 — Cloud Stop hook: port remaining Mac finish-line gates (2 defer-question, 3 deferral, 7 absence-claim) + Mac verify-edits per-gate loop guard",
-      "detail": "TAP version 13",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4372/cloud-stop-hook-port-remaining-mac-finish-line-gates-2-defer-question"
-    },
-    {
-      "title": "FAILED BRO-7070 — BSC Daily: Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
-      "detail": "not ok: real data: no byte-identical art across unrelated, unlinked… | first failure: Expected values to be strictly deep-equal:",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7070/bsc-daily-live-data-test-failing-real-data-no-byte-identical-art"
-    },
-    {
       "title": "FAILED BRO-7041 — P1: The Unbelievers Time Out review rejected as wrong critic (BWW row credits Adam Feldman, page is by Billy McEntee)",
-      "detail": "gap audit generated 2026-11-13T08:37:08.910Z PASS the-unbelievers-off-broadway-2026: 15 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audi…",
+      "detail": "gap audit generated 2026-11-14T08:40:45.642Z FAIL the-unbelievers-off-broadway-2026: 16 live, 0 cited not live, 1 automated exclusion(s) to re-verify; info: 1 census candidate(s),…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7041/p1-the-unbelievers-time-out-review-rejected-as-wrong-critic-bww-row"
     },
     {
       "title": "FAILED BRO-7033 — P1: Opening night miss: The Verge (2026-11-05)",
-      "detail": "gap audit generated 2026-11-13T08:37:08.910Z PASS the-unbelievers-off-broadway-2026: 15 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audi…",
+      "detail": "gap audit generated 2026-11-14T08:40:45.642Z FAIL the-unbelievers-off-broadway-2026: 16 live, 0 cited not live, 1 automated exclusion(s) to re-verify; info: 1 census candidate(s),…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7033/p1-opening-night-miss-the-verge-2026-11-05"
     },
     {
       "title": "FAILED BRO-7031 — P1: Opening night miss: 2:22 - A Ghost Story (2026-11-05)",
-      "detail": "gap audit generated 2026-11-13T08:37:08.910Z PASS the-unbelievers-off-broadway-2026: 15 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audi…",
+      "detail": "gap audit generated 2026-11-14T08:40:45.642Z FAIL the-unbelievers-off-broadway-2026: 16 live, 0 cited not live, 1 automated exclusion(s) to re-verify; info: 1 census candidate(s),…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7031/p1-opening-night-miss-222-a-ghost-story-2026-11-05"
     },
     {
-      "title": "FAILED BRO-7008 — BSC Daily: Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
-      "detail": "not ok: no West End venue-complex has an unlinked bare-form/keyword… | first failure: unlinked West End candidate sub-venue slugs: {",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7008/bsc-daily-live-data-test-failing-no-off-broadway-venue-complex-has-an"
+      "title": "STUCK BRO-7268 — main test.yml red: E2E Tests / Run E2E tests — \"tests/e2e/visual-regression.spec.ts › Visual Regression › show hero layout\"",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7268/main-testyml-red-e2e-tests-run-e2e-tests-testse2evisual"
     },
     {
-      "title": "STUCK BRO-7411 — BSC Daily: Quality: outlet domain moves",
+      "title": "STUCK BRO-7213 — Aggregator yield: NYC Theatre and Playbill Verdict job timeouts, LBO West End drop, theatre.reviews dip, Stage backfill",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7411/bsc-daily-quality-outlet-domain-moves"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7213/aggregator-yield-nyc-theatre-and-playbill-verdict-job-timeouts-lbo"
     },
     {
-      "title": "STUCK BRO-7338 — Auto-fix: Opening Night Poller Failed",
+      "title": "STUCK BRO-7182 — Route the 5 remaining advisory --strict audits to worker cards (BRO-7181 cousins)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7338/auto-fix-opening-night-poller-failed"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7182/route-the-5-remaining-advisory-strict-audits-to-worker-cards-bro-7181"
+    },
+    {
+      "title": "STUCK BRO-6762 — Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6762/fix-gaps-at-the-source-reviews-regular-gathering-still-misses-and-only"
+    },
+    {
+      "title": "STUCK BRO-6625 — Main test.yml Data Validation red on Oct 30: girls-off-west-end-2026 the-recs auto-clear violation and Little Shop Guardian class-A cross-market leak",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6625/main-testyml-data-validation-red-on-oct-30-girls-off-west-end-2026-the"
     }
   ],
-  "moreCount": 7
+  "moreCount": 5
 }
