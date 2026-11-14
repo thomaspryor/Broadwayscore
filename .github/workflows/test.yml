@@ -294,6 +294,12 @@ on:
       - 'scripts/check-corpus-drift.js'
       # BRO-6241: cron lander, required by scripts/lib/visual-approval.test.mjs
       - 'scripts/visual-approval-land.js'
+      # BRO-7495: required by scripts/lib/visual-ci.test.mjs (the trusted recorder, the shadow report, and the arm script they sit beside)
+      - 'scripts/visual-ci.js'
+      - 'scripts/visual-shadow-report.js'
+      - 'scripts/visual-auto-ship-arm.js'
+      - '.github/workflows/visual-identical-ci.yml'
+      - '.github/workflows/visual-identical-record.yml'
       # tests/unit/serp-review-acceptance.test.mjs requires scan-serp-adoptions.js (BRO-4546)
       - 'scripts/scan-serp-adoptions.js'
       # BRO-4215: required by scripts/lib/check-attribution-gap-clear.test.mjs

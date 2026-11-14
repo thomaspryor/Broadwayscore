@@ -106,7 +106,8 @@ async function drive(baseHtml, headHtml, withState) {
 
 test('end to end: identical pages (including an opened panel) are identical; a panel colour change is caught', { timeout: 400000 }, async (t) => {
   const same = await drive(page('#fff'), page('#fff'), true);
-  if (!same.report) { t.skip(`driver could not run here: ${String(same.stderr).slice(0, 120)}`); return; }
+  // A crash in the driver's own code (a ReferenceError after an edit hid behind this skip, BRO-7495) must fail; only a missing browser may skip.
+  if (!same.report) { assert.match(String(same.stderr), /browserType\.launch|Executable doesn't exist|playwright/i, `driver crashed: ${String(same.stderr).slice(0, 300)}`); t.skip(`driver could not run here: ${String(same.stderr).slice(0, 120)}`); return; }
   if (['could-not-render', 'invalid'].includes(same.report.outcome)) { t.skip(`no browser here: ${same.report.reasons[0]}`); return; }
   assert.equal(same.report.outcome, 'identical');
   assert.equal(same.report.canaryOk, true);

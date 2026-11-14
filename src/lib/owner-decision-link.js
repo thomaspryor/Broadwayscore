@@ -286,9 +286,10 @@ const NEUTRALISE = [
   [/Acceptance criteria/gi, 'acceptance-criteria'],
   [/Decision (?:email )?ref\s*OD[AE]/gi, 'decision-ref'],
   [/Visual approval (?:ref|landed)\s*VQ[AL]/gi, 'visual-ref'],
+  [/Visual (?:CI result|auto-ship)\s*VQ[KM]/gi, 'visual-ref'],
   [/VISUAL-APPROVAL/gi, 'visual-approval'],
   [/\bOD[AE][0-9a-f]{8,}/gi, 'ref'],
-  [/\bVQ[AL][0-9a-f]{8,}/gi, 'ref'],
+  [/\bVQ[ALKM][0-9a-f]{8,}/gi, 'ref'],
   [/@/g, '(at)'],
 ];
 

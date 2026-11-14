@@ -214,6 +214,9 @@ const MARK = {
   stale: 'Visual approval stale VQS',
   unverified: 'Visual approval unverified VQU',
   approved: 'Visual approval ref VQA',
+  // BRO-7495: written by visual-identical-record.yml (a signed before/after result) and by the lander (an auto-ship). Neither is owner activity.
+  ciResult: 'Visual CI result VQK',
+  auto: 'Visual auto-ship VQM',
 };
 const STALE_APPROVAL_MS = 45 * 60 * 1000;
 
@@ -246,6 +249,7 @@ function classifyStatus(description, comments) {
   const current = askedAt ? all.filter((c) => !(new Date(c.createdAt).getTime() < askedAt)) : all;
   const texts = current.map((c) => link.unescapeMarkdown(c.body || ''));
   const has = (prefix) => texts.some((t) => t.includes(prefix));
+  if (has(MARK.auto)) return 'auto';
   if (has(MARK.landed)) return 'landed';
   if (has(MARK.expired)) return 'expired';
   if (has(MARK.approved)) {

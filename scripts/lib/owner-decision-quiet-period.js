@@ -24,6 +24,7 @@
  */
 
 const link = require('../../src/lib/owner-decision-link.js');
+const vci = require('./visual-ci.js');
 
 const QUIET_MS = 90 * 60 * 1000;
 // A busy card (bot or session comments every hour) cannot hold its email
@@ -38,7 +39,7 @@ const MAYBE_MAX_CHARS = 600;
 const MAYBE_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
 
 // Comments this pipeline writes itself (told markers, recorded answers, visual approvals).
-const OWN_MARKER_RE = /Decision (?:email )?ref\s*OD[AE]|Visual approval (?:ref|landed)\s*VQ[AL]|^\s*\**Owner decision\**/im;
+const OWN_MARKER_RE = /Decision (?:email )?ref\s*OD[AE]|Visual approval (?:ref|landed)\s*VQ[AL]|Visual (?:CI result|auto-ship)\s*VQ[KM]|^\s*\**Owner decision\**/im;
 // Receipts the dispatcher and watchdog post on a card (BRO-6357). They say a job started or ended, nothing
 // about a person or session working the card, so they never count as activity. "Claimed by" is NOT here:
 // a session claiming a card is the signal this quiet period exists to honour. A test pins these to the
@@ -129,6 +130,18 @@ function maybeAnswerComments(issue, now = Date.now()) {
   });
 }
 
+/** BRO-7495: while the before/after check can still clear a visual ask, wait for it (only when auto-ship is armed). */
+function ciHold(issue, secret, now, env) {
+  if (!vci.autoShipOn(env, now) || !secret) return null;
+  const v = link.parseVisualApproval(issue.description);
+  if (!v) return null;
+  const nodes = commentsOf(issue);
+  const emailed = nodes.some((c) => /Decision email ref\s*ODE/i.test(bodyOf(c)));
+  const asks = nodes.filter((c) => /^Asked the owner to look at/.test(bodyOf(c).trim())).map((c) => ms(c.createdAt)).filter((t) => t != null).sort((a, b) => b - a);
+  const ci = vci.findCiResult(nodes, secret, issue.identifier, v.patch, now);
+  return vci.ciHoldReason({ flagOn: true, hasVisualBlock: true, ci, askedAt: asks[0] != null ? asks[0] : null, now, emailed });
+}
+
 /**
  * Why not to ask the owner this decision right now, or null to ask.
  * @returns {null | {reason: 'answered'|'recent-activity'|'maybe-answered', detail: string}}
@@ -142,6 +155,8 @@ function holdReason(issue, decision, { secret, now = Date.now(), env = process.e
     // No quote: the emailer's log is public and card comments are private.
     return { reason: 'maybe-answered', detail: `a comment on ${String(c.createdAt).slice(0, 16)}Z may already answer it` };
   }
+  const ci = ciHold(issue, secret, now, env);
+  if (ci) return ci;
   const last = lastActivityAt(issue);
   if (last != null && now - last < QUIET_MS && now - activityStreakStart(issue) < MAX_QUIET_HOLD_MS) {
     return { reason: 'recent-activity', detail: `the card had a comment ${Math.round((now - last) / 60000)} min ago; waits until it has been quiet ${QUIET_MS / 60000} min` };

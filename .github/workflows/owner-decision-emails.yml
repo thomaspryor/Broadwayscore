@@ -63,6 +63,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          VISUAL_AUTO_SHIP: ${{ vars.VISUAL_AUTO_SHIP }}
           ONLY: ${{ github.event.inputs.only }}
           DRY_RUN: ${{ github.event.inputs.dry_run }}
           ROUNDUP: ${{ github.event.inputs.roundup }}

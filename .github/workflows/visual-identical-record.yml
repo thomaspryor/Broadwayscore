@@ -1,0 +1,52 @@
+name: Visual Identical CI (record)
+
+# hygiene-notify-ok: a failed record leaves no signed result, so the owner is asked as before.
+# BRO-7495 Phase 2. TRUSTED half: workflow_run always runs main's copy of this file and scripts, never the hold branch's.
+# It treats the uploaded artifact as data: the recorder recomputes the patch, the plan and every picture comparison itself,
+# then posts one signed "Visual CI result VQK" comment on the card. It never approves anything; the lander decides.
+on:
+  workflow_run:
+    workflows: ['Visual Identical CI (capture)']
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: visual-identical-record-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+jobs:
+  record:
+    name: Recompare and record the result
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: startsWith(github.event.workflow_run.head_branch, 'visual-hold/')
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          fetch-depth: 0 # hygiene-full-blobs-ok: patch-id and the ancestry check need full history
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Download the pictures
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: visual-shots
+          path: /tmp/visual-shots
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Record
+        env:
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          BASE_SHA=$(node -e "console.log(JSON.parse(require('fs').readFileSync('/tmp/visual-shots/meta.json','utf8')).baseSha)")
+          node scripts/visual-ci.js record --branch="$BRANCH" --head-sha="$HEAD_SHA" --base-sha="$BASE_SHA" --shots=/tmp/visual-shots

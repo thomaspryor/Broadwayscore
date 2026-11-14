@@ -1,0 +1,140 @@
+name: Visual Identical CI (capture)
+
+# hygiene-notify-ok: a failed or missing capture just leaves the owner asked as before; no alert needed.
+# BRO-7495 Phase 2. UNTRUSTED half: runs on a pushed visual-hold/** branch, so the workflow file itself is worker-authored.
+# It holds no signing secret and posts nothing. It photographs base (main) and head (the hold merged with main) and uploads
+# the pictures as plain data. visual-identical-record.yml (main's code, holds the secret) recompares them and signs the result.
+on:
+  push:
+    branches: ['visual-hold/**']
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'visual-hold/bro-N branch to check'
+        required: true
+
+concurrency:
+  group: visual-identical-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Photograph base and head
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      HOLD_BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
+      FEATURES: "criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts"
+    steps:
+      - name: Checkout main (base, and the trusted scripts)
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          fetch-depth: 0 # hygiene-full-blobs-ok: patch-id and the ancestry check need full history
+
+      - name: Checkout the held branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ env.HOLD_BRANCH }}
+          path: head
+          fetch-depth: 0 # hygiene-full-blobs-ok: patch-id and the ancestry check need full history
+
+      - name: Pin the base and merge main into head
+        id: pin
+        run: |
+          BASE_SHA=$(git rev-parse HEAD)
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          cd head
+          HEAD_SHA=$(git rev-parse HEAD)
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          git config user.name "visual-ci"
+          git config user.email "visual-ci@users.noreply.github.com"
+          git merge --no-edit "$BASE_SHA"
+
+      - name: Setup Node.js and install base dependencies
+        uses: ./.github/actions/setup-node
+
+      - name: Plan the capture (main's copy of the planner)
+        run: |
+          git fetch --quiet origin "+refs/heads/${HOLD_BRANCH}:refs/remotes/origin/${HOLD_BRANCH}" # hygiene-unbounded-clone-ok: single-branch fetch inside a 60-minute job
+          node scripts/visual-ci.js plan --branch="$HOLD_BRANCH" --out=/tmp/visual-plan.json
+          cat /tmp/visual-plan.json | head -40
+
+      - name: Stop when the plan is blocked (the recorder will report it)
+        id: gate
+        run: |
+          if node -e "process.exit(require('/tmp/visual-plan.json').blocked ? 0 : 1)"; then echo "run=false" >> "$GITHUB_OUTPUT"; else echo "run=true" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Checkout core data
+        if: steps.gate.outputs.run == 'true'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Share the core data with the head tree
+        if: steps.gate.outputs.run == 'true'
+        run: mkdir -p head/data && cp -rn data/. head/data/
+
+      - name: Install head dependencies
+        if: steps.gate.outputs.run == 'true'
+        run: cd head && npm ci
+
+      - name: Setup Playwright
+        if: steps.gate.outputs.run == 'true'
+        uses: ./.github/actions/setup-playwright
+
+      - name: Build base
+        if: steps.gate.outputs.run == 'true'
+        run: npm run build
+        env:
+          NEXT_PUBLIC_FEATURES: ${{ env.FEATURES }}
+          SKIP_HEAVY_PREBUILD: "true"
+          NEXT_PUBLIC_SANITY_DATASET: "production"
+          NEXT_PUBLIC_SANITY_PROJECT_ID: "fp1ft8k8"
+
+      - name: Build head
+        if: steps.gate.outputs.run == 'true'
+        working-directory: head
+        run: npm run build
+        env:
+          NEXT_PUBLIC_FEATURES: ${{ env.FEATURES }}
+          SKIP_HEAVY_PREBUILD: "true"
+          NEXT_PUBLIC_SANITY_DATASET: "production"
+          NEXT_PUBLIC_SANITY_PROJECT_ID: "fp1ft8k8"
+
+      - name: Start both servers
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          npx next start -p 3001 > /tmp/base-server.log 2>&1 &
+          (cd head && npx next start -p 3000 > /tmp/head-server.log 2>&1) &
+          for p in 3001 3000; do
+            for i in $(seq 1 40); do
+              curl -sf "http://localhost:$p/" > /dev/null && break
+              sleep 2
+            done
+            curl -sf "http://localhost:$p/" > /dev/null || { echo "server on $p did not start"; tail -20 /tmp/*-server.log; exit 1; }
+          done
+
+      - name: Capture (main's driver, capture only)
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          node scripts/visual-identical.mjs --base-url=http://localhost:3001 --head-url=http://localhost:3000 \
+            --plan=/tmp/visual-plan.json --capture-only --shots-dir=/tmp/visual-shots
+
+      - name: Describe the run for the recorder
+        if: always()
+        run: |
+          mkdir -p /tmp/visual-shots
+          node -e "require('fs').writeFileSync('/tmp/visual-shots/meta.json', JSON.stringify({branch: process.env.HOLD_BRANCH, headSha: '${{ steps.pin.outputs.head_sha }}', baseSha: '${{ steps.pin.outputs.base_sha }}'}))"
+
+      - name: Upload the pictures
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: visual-shots
+          path: /tmp/visual-shots/
+          retention-days: 7
+          if-no-files-found: warn

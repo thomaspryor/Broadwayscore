@@ -25,6 +25,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const va = require('./lib/visual-approval.js');
 const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 const link = require('../src/lib/owner-decision-link.js');
+const vci = require('./lib/visual-ci.js');
 
 const USAGE = 'Usage: node scripts/visual-approval-land.js [--dry-run]';
 const { MARK, STALE_APPROVAL_MS } = va;
@@ -38,6 +39,7 @@ const voidMarker = (mac, patch) => `${MARK.void}${mac.slice(0, 12)}${String(patc
 const unverifiedMarker = (mac, sha) => `${MARK.unverified}${mac.slice(0, 12)}${String(sha || 'none').slice(0, 12)}`;
 // Once per approval: the owner-visible nudge when a tapped change is still not shipping after STALE_APPROVAL_MS.
 const staleMarker = (mac) => `${MARK.stale}${mac.slice(0, 12)}`;
+const autoMarker = (mac) => `${MARK.auto}${mac.slice(0, 16)}`;
 
 /** When the owner's Approve was written (ms), from the signed comment itself. */
 function approvalTime(comments, marker) {
@@ -70,7 +72,7 @@ function askedSince(issue) {
 }
 
 /** What to do with one card. Pure: the CLI below does the git and Linear writes. */
-function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedSha = null) {
+function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedSha = null, autoOk = false) {
   const v = link.parseVisualApproval(issue.description);
   if (!v) return { action: 'skip', why: 'no visual approval line' };
   const mac = link.visualMac(secret, issue.identifier, v.patch, v.verdict);
@@ -81,6 +83,11 @@ function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedS
   // An owner Approve already on the card keeps the landing path below: their tap wins.
   const approvedNow = link.hasVisualApproval({ comments, secret, id: issue.identifier, patch: v.patch, verdict: v.verdict, now });
   if (shippedSha && !approvedNow && !/ANSWERED by the owner/.test(issue.description || '')) return { action: 'shipped', sha: shippedSha, v, mac };
+  // BRO-7495: a signed CI result that every before/after picture matched exactly counts as the approval (autoOk is decided by planAuto in main; the owner's own tap still wins).
+  if (autoOk && !approvedNow) {
+    if (currentPatch === null) return { action: 'land', v, mac, auto: true };
+    return currentPatch === v.patch ? { action: 'land', v, mac, auto: true } : { action: 'void', why: 'the held branch no longer matches the checked change', v, mac };
+  }
   if (approvedNow) {
     const approvedAt = approvalTime(comments, link.visualMarker(mac));
     if (currentPatch === null) return { action: 'land', v, mac, approvedAt };
@@ -207,6 +214,29 @@ async function restoreLostBlock(issue, secret, linear, dryRun, comment) {
   return true;
 }
 
+/**
+ * BRO-7495: may this card ship without asking the owner? Reads git for the facts planAuto needs.
+ * Every doubt (flag off, no signed CI result, a read failing) returns {auto:false}.
+ */
+function autoDecision(issue, secret, env = process.env, now = Date.now()) {
+  if (!vci.autoShipOn(env, now)) return { auto: false, why: 'auto-ship is off' };
+  const v = link.parseVisualApproval(issue.description);
+  if (!v) return { auto: false, why: 'no visual approval line' };
+  const nodes = (issue.comments && issue.comments.nodes) || [];
+  const ci = vci.findCiResult(nodes, secret, issue.identifier, v.patch, now);
+  if (!ci || ci.outcome !== 'identical') return vci.planAuto({ ci, flagOn: true, emailed: false, rejected: false, holdFiles: [], driftFiles: [] });
+  const emailed = nodes.some((c) => /Decision email ref\s*ODE/i.test(link.unescapeMarkdown(c.body || '')));
+  const rejected = /ANSWERED by the owner/.test(issue.description || '');
+  let holdFiles = null; let driftFiles = null;
+  try {
+    const hb = va.holdBranch(issue.identifier);
+    va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hb}:refs/remotes/origin/${hb}`]);
+    holdFiles = va.git(['diff', '--name-only', `origin/main...origin/${hb}`]).split('\n').filter(Boolean);
+    driftFiles = va.git(['diff', '--name-only', ci.base, 'origin/main']).split('\n').filter(Boolean);
+  } catch { /* planAuto treats unreadable git as not auto */ }
+  return vci.planAuto({ ci, flagOn: true, emailed, rejected, holdFiles: holdFiles || [], driftFiles });
+}
+
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const dryRun = argv.includes('--dry-run');
@@ -233,7 +263,9 @@ async function main(argv = process.argv.slice(2)) {
       try { va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hb}:refs/remotes/origin/${hb}`]); holdSettled = va.holdSettled({ fetchOk: true, patchIdValue: va.patchId('origin/main', `origin/${hb}`) }); } catch { holdSettled = va.holdSettled({ fetchOk: false }); }
     } catch { holdSettled = false; }
     try { if (holdSettled) shippedSha = shippedVisualCommit(va.git(['log', 'origin/main', `--since=@${Math.floor(askedSince(issue) / 1000)}`, '--format=%H%x09%s']), issue.identifier); } catch (e) { console.error(`[visual-land] ${issue.identifier}: could not read main history: ${e.message}`); }
-    const first = planCard(issue, secret, Date.now(), null, shippedSha);
+    const autoNow = autoDecision(issue, secret);
+    if (autoNow.auto) console.log(`[visual-land] ${issue.identifier}: auto-ship allowed (${autoNow.why})`);
+    const first = planCard(issue, secret, Date.now(), null, shippedSha, autoNow.auto);
     if (first.action === 'skip' || first.action === 'wait') { console.log(`[visual-land] ${issue.identifier}: ${first.action}${first.why ? ` (${first.why})` : ''}`); continue; }
     const { v, mac } = first;
     const hold = va.holdBranch(issue.identifier);
@@ -242,7 +274,7 @@ async function main(argv = process.argv.slice(2)) {
         if (v.hold !== hold) throw new Error(`hold branch ${v.hold} does not belong to ${issue.identifier}`);
         va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`]);
         const current = va.patchId('origin/main', `origin/${hold}`);
-        const plan = planCard(issue, secret, Date.now(), current);
+        const plan = planCard(issue, secret, Date.now(), current, null, first.auto === true);
         const stuck = async (why, marker) => {
           console.log(`[visual-land] ${issue.identifier}: not shipping (${why})`);
           const told = (issue.comments.nodes || []).some((c) => link.bodyHasMarker(c.body, marker));
@@ -270,7 +302,17 @@ async function main(argv = process.argv.slice(2)) {
         console.log(`[visual-land] ${issue.identifier}: approved, ${dryRun ? 'would push' : 'pushing'} origin/${hold} -> ${landRef}`);
         if (dryRun) continue;
         va.git(['push', 'origin', `refs/remotes/origin/${hold}:refs/heads/${landRef}`]);
-        await comment(issue, `Owner approved. Pushed the held change to ${landRef}; land.yml gates and ships it. Check the Land run and prod before closing this card.\n\n${landedMarker(mac)}`);
+        if (first.auto) {
+          // Auto path: the before/after check matched exactly. Record it, ship it, then close the ask so it is never emailed.
+          await comment(issue, `Auto-shipped (pixel-identical): every before/after picture matched exactly, so no owner approval was needed. Pushed the held change to ${landRef}; land.yml gates and ships it. Check the Land run and prod before closing this card.\n\n${autoMarker(mac)}\n${landedMarker(mac)}`);
+          const ask = link.markerLines(issue.description).find((m) => link.visualBindingFor(issue.description, m.question));
+          if (ask) {
+            const out = await link.recordAnswer({ graphql: linear.graphql, id: issue.identifier, hash: link.questionHash(ask.question), secret, choiceKey: 'void', allowVoid: true, via: 'the lander: the before/after check matched exactly', text: 'Auto-shipped because every before/after picture matched exactly; nothing left to ask.' });
+            console.log(`[visual-land] ${issue.identifier}: ask ${out.status}`);
+          }
+        } else {
+          await comment(issue, `Owner approved. Pushed the held change to ${landRef}; land.yml gates and ships it. Check the Land run and prod before closing this card.\n\n${landedMarker(mac)}`);
+        }
       } else if (first.action === 'shipped') {
         console.log(`[visual-land] ${issue.identifier}: shipped as VISUAL-OK ${first.sha.slice(0, 11)}, ${dryRun ? 'would void' : 'voiding'} the ask`);
         if (dryRun) continue;
@@ -301,4 +343,4 @@ async function main(argv = process.argv.slice(2)) {
 if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[visual-land] ${e.stack || e.message}`); process.exitCode = 3; });
 }
-module.exports = { planRecovery, askedHold, lostBlockAnswer, planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };
+module.exports = { autoDecision, autoMarker, planRecovery, askedHold, lostBlockAnswer, planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };

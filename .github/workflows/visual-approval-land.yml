@@ -56,6 +56,8 @@ jobs:
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          # BRO-7495: instant kill switch. Unset or anything but 'on' means every visual change is still asked as before.
+          VISUAL_AUTO_SHIP: ${{ vars.VISUAL_AUTO_SHIP }}
           DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
           args=""
