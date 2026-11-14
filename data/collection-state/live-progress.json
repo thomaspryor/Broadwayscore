@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-14T00:13:06.799Z",
-  "processed": 143,
-  "failed": 79,
-  "successRate": "64.4%",
+  "updatedAt": "2026-11-14T00:52:43.374Z",
+  "processed": 131,
+  "failed": 101,
+  "successRate": "56.5%",
   "tierBreakdown": {
-    "playwright": 92,
+    "playwright": 84,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 22,
-    "scrapingbee": 8,
-    "brightdata": 3,
+    "scrapingdog": 19,
+    "scrapingbee": 5,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 55
+    "archive": 24
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-11-13T20:31:45.000Z",
@@ -76,6 +76,61 @@
       "event": "bb-session",
       "session": "eab172e1",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-14T00:25:33.869Z",
+      "event": "bb-session",
+      "session": "b06145d6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466"
+    },
+    {
+      "t": "2026-11-14T00:25:34.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T00:26:44.371Z",
+      "event": "bb-session",
+      "session": "3295097d",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html"
+    },
+    {
+      "t": "2026-11-14T00:26:44.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T00:28:14.699Z",
+      "event": "bb-session",
+      "session": "f5c4201b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655430"
+    },
+    {
+      "t": "2026-11-14T00:28:15.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T00:30:13.863Z",
+      "event": "bb-session",
+      "session": "3493fa21",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655407"
+    },
+    {
+      "t": "2026-11-14T00:30:14.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T00:45:38.894Z",
+      "event": "bb-session",
+      "session": "47953c75",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-14T00:45:39.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
