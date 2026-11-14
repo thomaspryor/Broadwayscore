@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "showId": "potus-off-broadway-2026",
+  "night": "2026-11-13",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-14T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-14T02:30:04.328Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-14T04:55:12.886Z",
+    "lastOkSampleAt": "2026-11-14T04:55:12.886Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-14T04:00:09.160Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-14T05:00:28.423Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-14T05:00:28.508Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-14T05:00:31.563Z",
+    "files": [
+      {
+        "file": "manchester-journal--telly-halkias.json",
+        "outletId": "manchester-journal",
+        "outlet": "Manchester Journal",
+        "critic": "Telly Halkias",
+        "firstSeenAt": "2026-11-14T00:31:01.208Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-04",
+        "url": "manchesterjournal.com/arts-and-culture/dorset-players-high-octane-potus-is-a-landslide-wave/5055088",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-daily-gazette--patrick-white.json",
+        "outletId": "the-daily-gazette",
+        "outlet": "The Daily Gazette",
+        "critic": "Patrick White",
+        "firstSeenAt": "2026-11-13T02:00:49.231Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-05",
+        "url": "dailygazette.com/life_and_arts/potus-theatre-satire-dorset-playhouse-renee-wymer-interview/article_abbc9aab-0c1d-48df-b49d-2aaf4a1bea29.html",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
