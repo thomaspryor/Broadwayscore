@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback, type ReactNode } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, Suspense, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -32,7 +32,7 @@ import YourPredictions from '@/components/my-shows/YourPredictions';
 import { selectDeviceSavedShows } from '@/lib/device-saved-shows';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
-import { LazyChunkBoundary, LAZY_PANEL_ERROR_MESSAGE } from '@/components/ui/LazyChunk';
+import { createLazyChunk, LazyChunkBoundary, LAZY_PANEL_ERROR_MESSAGE } from '@/components/ui/LazyChunk';
 import { AddShowCard, ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
@@ -49,8 +49,9 @@ const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
 // A failed tab chunk shows this instead of taking down /my-shows (BRO-7494).
 const TAB_LOAD_FAILED = <p className="text-center py-12 text-fg-muted">Couldn’t load this tab. Check your connection and refresh the page.</p>;
 
-const SharePlansModal = dynamic(() => import('@/components/user/SharePlansModal'), { ssr: false });
-const ShareDiaryModal = dynamic(() => import('@/components/user/ShareDiaryModal'), { ssr: false });
+// createLazyChunk (not dynamic) so a failed download can be retried without a reload (BRO-7494).
+const sharePlansChunk = createLazyChunk(() => import('@/components/user/SharePlansModal'));
+const shareDiaryChunk = createLazyChunk(() => import('@/components/user/ShareDiaryModal'));
 
 function ShareIcon() {
   return (
@@ -194,6 +195,8 @@ export default function MyShowsClient() {
   // CRUD instance; hook instances don't share state, so this fetches the list
   // rows once per page view — cheap, and the badge works without visiting the tab).
   const { showToast } = useToastSafe();
+  const SharePlansModal = sharePlansChunk.get();
+  const ShareDiaryModal = shareDiaryChunk.get();
   // Shows saved in this browser while signed out (BRO-4616). The signed-out
   // view lists them above the sign-in pitch (BRO-4903); unknown ids are
   // dropped by selectDeviceSavedShows, so an empty result keeps the old view.
@@ -1324,7 +1327,8 @@ export default function MyShowsClient() {
       )}
 
       {sharePlansOpen && (
-        <LazyChunkBoundary onError={() => { setSharePlansOpen(false); showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error'); }}>
+        <LazyChunkBoundary onError={() => { sharePlansChunk.reset(); setSharePlansOpen(false); showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error'); }}>
+        <Suspense fallback={null}>
         <SharePlansModal
           isOpen
           onClose={() => setSharePlansOpen(false)}
@@ -1334,10 +1338,12 @@ export default function MyShowsClient() {
           mock={isMockMode}
           showToast={showToast}
         />
+        </Suspense>
         </LazyChunkBoundary>
       )}
       {shareDiaryOpen && (
-        <LazyChunkBoundary onError={() => { setShareDiaryOpen(false); showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error'); }}>
+        <LazyChunkBoundary onError={() => { shareDiaryChunk.reset(); setShareDiaryOpen(false); showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error'); }}>
+        <Suspense fallback={null}>
         <ShareDiaryModal
           isOpen
           onClose={() => setShareDiaryOpen(false)}
@@ -1347,6 +1353,7 @@ export default function MyShowsClient() {
           mock={isMockMode}
           showToast={showToast}
         />
+        </Suspense>
         </LazyChunkBoundary>
       )}
     </div>

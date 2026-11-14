@@ -58,6 +58,8 @@ test.describe('lazy rating editor guards (desktop)', () => {
 
     const skeleton = page.getByTestId('rating-editor-skeleton');
     await expect(skeleton).toBeVisible();
+    // The phone bottom-sheet placeholder (portaled to <body>) must stay hidden on desktop.
+    await expect(page.getByTestId('rating-editor-skeleton-sheet')).toBeHidden();
     const skeletonH = (await skeleton.boundingBox())!.height;
 
     await expect(page.getByTestId('rating-editor')).toBeVisible({ timeout: 15000 });
