@@ -64,7 +64,7 @@ async function uncardedDigestRowsResult({ snapshot, listOpenIssues, nowMs = Date
     name: ROW_NAME,
     status: 'warn',
     message: `${rows.length} digest row(s) listed ${UNCARDED_AFTER_DAYS}+ days with no card: ${list}${rows.length > 5 ? '; ...' : ''}`,
-    hint: 'Cards for digest rows are filed by the Mac pass (send-morning-digest.js --autofix-only) once a row passes the 72h hold; the hold now reads the snapshot firstSeen, so a row this old means that pass is not running, is failing to file, or the card was closed while the row stayed red. Check the Mac morning-digest job log and data/audit/digest-autofix-ledger.jsonl.',
+    hint: 'Cards for digest rows are filed by the Mac pass (send-morning-digest.js --autofix-only) once a row passes the 72h hold; the hold now reads the snapshot firstSeen, so a row this old means that pass is not running, is failing to file, or the card was closed while the row stayed red. Check the Mac morning-digest job log and data/audit/digest-autofix-ledger.jsonl. Blind spot: router-queued rows and rows the Mac adds itself carry no snapshot firstSeen, so this row cannot see them.',
   };
 }
 
