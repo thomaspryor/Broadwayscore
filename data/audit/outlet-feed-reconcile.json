@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T21:14:30.580Z",
+  "generatedAt": "2026-11-14T22:22:09.099Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -137,6 +137,10 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -155,21 +159,16 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "error": "Client network socket disconnected before secure TLS connection was established"
     }
   ],
-  "itemsScanned": 857,
-  "matchedGaps": 5,
+  "itemsScanned": 838,
+  "matchedGaps": 4,
   "possibleGaps": 4,
   "gaps": [
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
-      "publishDate": "2026-11-11"
-    },
     {
       "showId": "passing-strange-regional-2026",
       "title": "Passing Strange",
