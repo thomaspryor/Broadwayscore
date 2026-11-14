@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import Link from 'next/link';
 import type { ShowCommercial, RecoupmentTrend, ClosingOutlook } from '@/lib/data-types';
 import { formatMonthYear } from '@/lib/biz-format';
@@ -455,7 +456,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           )}
         </div>
 
-        {breakEvenCard && <BreakEvenSection card={breakEvenCard} />}
+        {breakEvenCard && <LazyChunkBoundary><BreakEvenSection card={breakEvenCard} /></LazyChunkBoundary>}
 
         {/* Recoupment record: neutral wording plus its source; the model is
             never quoted on these shows (Q1 sign-off) */}

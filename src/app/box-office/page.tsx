@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/lib/data-grosses';
 import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
@@ -138,10 +139,10 @@ export default function BoxOfficePage() {
             <PerSeatRanking perSeat={market.perSeat} />
             <Standouts page={market} />
             <PriceMapSection dots={market.priceMap.length}>
-              <PriceMapLazy dots={market.priceMap} groups={market.priceMapPhone} />
+              <LazyChunkBoundary><PriceMapLazy dots={market.priceMap} groups={market.priceMapPhone} /></LazyChunkBoundary>
             </PriceMapSection>
             <NewMusicalsChart cohort={market.cohort} />
-            <BoxOfficeV2Tables thisWeek={marketWeekRows} allTime={allTimeLeaders} extra={market.table} />
+            <LazyChunkBoundary><BoxOfficeV2Tables thisWeek={marketWeekRows} allTime={allTimeLeaders} extra={market.table} /></LazyChunkBoundary>
           </>
         ) : (
           <>
