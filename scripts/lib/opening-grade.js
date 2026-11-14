@@ -307,9 +307,9 @@ function gradeOpening({ show, files = [], publishedReviews = null, commits = [],
   // BRO-7147: "known" was the census candidateCount, which counts every URL any
   // source ever surfaced, other productions included (King Lear OB "2 of 10":
   // all 8 extra were a DC, a Sydney, a Chicago and a Texas staging). Known is now
-  // live plus the aggregator-cited reviews the gap audit still cannot collect,
-  // the same count the per-show alert uses (BRO-7116). The census count stays as
-  // censusCandidates for reference only.
+  // opening-week live plus the aggregator-cited reviews missing at that deadline.
+  // Late rescues are already in missingCited, so adding current live counts them
+  // twice. The census count stays as censusCandidates for reference only.
   const cv = gapResult && gapResult.censusVerdict;
   const censusCandidates = cv && Number.isInteger(cv.candidateCount) ? cv.candidateCount : null;
   // null when no gap audit row exists for the show (unknown, not zero).
@@ -319,7 +319,7 @@ function gradeOpening({ show, files = [], publishedReviews = null, commits = [],
   const auditAt = toMs(gapResult && gapResult.computedAt);
   const auditStale = gapResult != null && (auditAt == null || nowMs - auditAt > STALE_AUDIT_H * HOUR);
   const coverageUnknown = missing === null || auditStale;
-  const known = missing === null ? null : live + missing;
+  const known = missing === null ? null : openingWeekLive + missing;
   const windowClosed = nowMs > hi;
   let hoursToLive = null;
   if (pressNight && toMs(pressNight.embargoAt) != null && Array.isArray(pressNight.perReview)) {
@@ -473,9 +473,8 @@ function mergeMissHistory(prev, current, { nowMs = Date.now(), keepDays = MISS_H
 function gradeLine(g) {
   const head = `${g.title} (${MARKET_LABEL[g.category] || g.category}, opened ${fmtDate(g.openingDate)})`;
   const n = `${g.live} review${g.live === 1 ? '' : 's'} live`;
-  // BRO-7147: known = live + aggregator-cited reviews still missing, so it only
-  // differs from live when a cited review is missing. Older snapshots carried the
-  // census count here (other productions included); they age out in 14 days.
+  // The opening-week cited total may include reviews rescued since the deadline.
+  // Show a denominator only while it exceeds the current published count.
   const count = g.known != null && g.known > g.live ? `${n} of ${g.known} cited` : n;
   const sofar = g.windowClosed ? '' : ' so far';
   const late = g.lateLive > 0

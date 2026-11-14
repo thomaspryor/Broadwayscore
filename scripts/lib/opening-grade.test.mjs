@@ -128,8 +128,10 @@ test('F20: files first seen after opening week are late rescues, not part of the
   assert.equal(g.live, 3);
   assert.equal(g.openingWeekLive, 1);
   assert.equal(g.lateLive, 2);
+  assert.equal(g.known, 3, 'late rescues are already included in the opening-week missing count');
   assert.equal(g.verdict, 'incomplete', 'the week ended with cited reviews missing, whatever was rescued later');
   assert.match(og.gradeLine(g), /including 2 added after opening week/);
+  assert.doesNotMatch(og.gradeLine(g), /of 5 cited/, 'the owner line must not double-count late rescues');
   // Audit re-run after the rescue shows nothing missing: still not on-its-own.
   const rerun = og.gradeOpening({ show, files: files2, gapResult, missingCited: 0, nowMs: closed + 5 * 86400000 });
   assert.equal(rerun.verdict, 'incomplete');
