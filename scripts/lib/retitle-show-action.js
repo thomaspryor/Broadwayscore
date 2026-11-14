@@ -71,7 +71,7 @@ function oneLetterTypo(o, n) {
 }
 
 /** Why oldTitle -> newTitle is not a cosmetic repair, or null when it is. */
-function retitleProblem(oldTitle, newTitle, otherTitles = [], sameCityTitles = otherTitles) {
+function retitleProblem(oldTitle, newTitle, otherTitles = [], sameCityTitles = otherTitles, sameMarketTitles = otherTitles) {
   if (typeof newTitle !== 'string' || !newTitle.trim() || newTitle !== newTitle.trim()) return 'newTitle must be a non-empty trimmed string';
   if (newTitle.length > 200) return 'newTitle is longer than 200 characters';
   if (newTitle === oldTitle) return 'newTitle equals the current title';
@@ -85,7 +85,8 @@ function retitleProblem(oldTitle, newTitle, otherTitles = [], sameCityTitles = o
   if (genre && oldTitle.slice(0, genre.index).trim() === newTitle) return null;
   // BRO-7156: the same "_<year>" listing tail the normaliser strips ("Berlin_2027").
   const yearTail = LISTING_YEAR_SUFFIX_RE.exec(oldTitle);
-  if (yearTail && oldTitle.slice(0, yearTail.index).trim() === newTitle) return null;
+  // Another production of the same name in another market is fine; one in the same market is a duplicate row.
+  if (yearTail && oldTitle.slice(0, yearTail.index).trim() === newTitle && !sameMarketTitles.some(t => words(t) === n)) return null;
   // A slug counter is a single digit 2-9 ("King Lear 2") and only exists
   // because another row already had the bare title. A number that is part of
   // the name ("Cloud 9", "Room 101", "A Doll's House, Part 2") has no such
@@ -120,7 +121,8 @@ function applyRetitleShow(shows, action) {
   if (row.title !== a.expectTitle) return { ok: false, reason: `retitle-show ${a.id}: title is "${row.title}", plan expected "${a.expectTitle}" — refused` };
   const others = shows.filter(s => s && s.id !== row.id).map(s => s.title);
   const sameCity = row.city ? shows.filter(s => s && s.id !== row.id && s.city === row.city).map(s => s.title) : others;
-  const why = retitleProblem(row.title, a.newTitle, others, sameCity);
+  const sameMarket = shows.filter(s => s && s.id !== row.id && (s.market || null) === (row.market || null)).map(s => s.title);
+  const why = retitleProblem(row.title, a.newTitle, others, sameCity, sameMarket);
   if (why) return { ok: false, reason: `retitle-show ${a.id}: ${why}` };
   row.title = a.newTitle;
   return { ok: true, msg: `retitled ${a.id}: "${a.expectTitle}" -> "${a.newTitle}"` };

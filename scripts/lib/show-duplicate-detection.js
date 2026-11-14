@@ -89,6 +89,7 @@ function rawTitleTokens(show) {
 // house, the SAME first date, and the same closing date when both state one.
 // A 2026-11-13 dry run over shows.json: 45 same-house same-start pairs, 3 hits,
 // all three real duplicates.
+const PART_WORDS = new Set(['part', 'parts', 'chapter', 'act', 'vol', 'volume', 'book', 'episode', 'series', 'season', 'pt']);
 function orderedTitleWords(t) {
   return foldDiacritics(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
 }
@@ -104,7 +105,16 @@ function isSameRunLeadingTitle(a, b) {
   if (shorter.length === 0 || shorter.length === longer.length) return false;
   // "The" / "A" alone is not a title.
   if (shorter.join(' ').length < 4) return false;
-  return shorter.every((w, i) => longer[i] === w);
+  if (!shorter.every((w, i) => longer[i] === w)) return false;
+  // Parts of a cycle share a house and dates in repertory: "Henry VI" /
+  // "Henry VI, Part 2", "Angels in America" / "Angels in America: Perestroika".
+  const tail = longer.slice(shorter.length);
+  const longTitle = wa.length > wb.length ? a.title : b.title;
+  // ...except a feed's "_<year>" listing tail ("Berlin_2027"), which is not a part number.
+  const yearListing = tail.length === 1 && /_(?:19|20)\d{2}$/.test(longTitle);
+  if (!yearListing && (PART_WORDS.has(tail[0]) || /^(\d+|[ivx]+)$/.test(tail[0]))) return false;
+  if (/^[^:]*:/.test(longTitle) && longTitle.slice(0, longTitle.indexOf(':')).trim().split(/[^A-Za-z0-9]+/).filter(Boolean).length <= shorter.length) return false;
+  return true;
 }
 
 function titleKey(t) {

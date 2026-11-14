@@ -34,6 +34,9 @@ test('isSameRunLeadingTitle: a different start, closing, house, or a non-prefix 
   assert.equal(isSameRunLeadingTitle(honor, { ...honor, id: 'x', title: 'Honour' }), false, 'different word');
   assert.equal(isSameRunLeadingTitle(honor, { ...honor, id: 'x' }), false, 'identical title is not this rule');
   assert.equal(isSameRunLeadingTitle({ ...honor, title: 'The' }, { ...honorLong, title: 'The Honor' }), false, 'a bare article is not a title');
+  assert.equal(isSameRunLeadingTitle({ ...honor, title: 'Henry VI' }, { ...honorLong, title: 'Henry VI, Part 2' }), false, 'cycle part');
+  assert.equal(isSameRunLeadingTitle({ ...honor, title: 'Henry VI' }, { ...honorLong, title: 'Henry VI 2' }), false, 'cycle number');
+  assert.equal(isSameRunLeadingTitle({ ...honor, title: 'Angels in America' }, { ...honorLong, title: 'Angels in America: Perestroika' }), false, 'colon part');
   assert.equal(isSameRunLeadingTitle({ ...honor, previewsStartDate: null }, { ...honorLong, previewsStartDate: null }), false, 'undated');
 });
 
@@ -60,6 +63,8 @@ test('retitle-show drops a "_<year>" listing tail, and nothing else new', () => 
   assert.equal(shows[0].title, 'Berlin');
   const other = [{ ...structuredClone(berlinKept), title: 'Berlin_2027' }];
   assert.equal(applyRetitleShow(other, { id: berlinKept.id, expectTitle: 'Berlin_2027', newTitle: 'Berlin 2', reason: 'x' }).ok, false);
+  const taken = [{ ...structuredClone(berlinKept) }, { ...structuredClone(berlinKept), id: 'berlin-off-west-end-2027', title: 'Berlin' }];
+  assert.equal(applyRetitleShow(taken, { id: berlinKept.id, expectTitle: 'Berlin_2027', newTitle: 'Berlin', reason: 'x' }).ok, false, 'another row holds Berlin');
   const notYear = [{ ...structuredClone(berlinKept), title: 'Berlin_27' }];
   assert.equal(applyRetitleShow(notYear, { id: berlinKept.id, expectTitle: 'Berlin_27', newTitle: 'Berlin', reason: 'x' }).ok, false);
 });
