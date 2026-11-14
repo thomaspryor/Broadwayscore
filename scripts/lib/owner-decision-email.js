@@ -67,7 +67,7 @@ ${optionHtml}
 ${block.recommendation ? `<p style="margin:16px 0 6px;"><strong>My recommendation:</strong> ${esc(noDash(block.recommendation))}</p>` : ''}
 ${block.defaultText ? `<p style="margin:0 0 12px;"><strong>If you do not answer:</strong> ${esc(noDash(block.defaultText))}</p>` : ''}
 ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
-<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved. This link works for 14 days.${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''}</p>
+<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved. This link works for 14 days. If you already answered this in a Claude chat, tell that chat 'record my answer' and it will be saved here.${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''}</p>
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
