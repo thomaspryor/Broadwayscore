@@ -64,7 +64,7 @@ const {
  *   title: string,            // what the title SHOULD be (venue-suffix repairs only)
  *   changed: boolean,
  *   manualReview: boolean,    // shouted casing detected — a human owes us a source lookup
- *   steps: Array<{kind:'venue-suffix'|'genre-disambiguator'|'roman-numeral-case', from:string, to:string, oracle?:string}>
+ *   steps: Array<{kind:'venue-suffix'|'genre-disambiguator'|'listing-year-suffix'|'roman-numeral-case', from:string, to:string, oracle?:string}>
  * }}
  */
 function normalizeShowTitle(show, ctx = {}) {
@@ -102,6 +102,16 @@ function normalizeShowTitle(show, ctx = {}) {
     const to = title.slice(0, genre.index).trim();
     if (to) {
       steps.push({ kind: 'genre-disambiguator', from: title, to });
+      title = to;
+    }
+  }
+
+  // 1a'. BRO-7156: "Berlin_2027" -> "Berlin" (see LISTING_YEAR_SUFFIX_RE).
+  const yearTail = LISTING_YEAR_SUFFIX_RE.exec(title);
+  if (yearTail) {
+    const to = title.slice(0, yearTail.index).trim();
+    if (to) {
+      steps.push({ kind: 'listing-year-suffix', from: title, to });
       title = to;
     }
   }

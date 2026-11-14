@@ -23,7 +23,7 @@ const { VENUE_ALIASES } = require('./title-match');
 const { decodeHtmlEntities } = require('./text-cleaning');
 // transferOf/transferredTo half of isCrossLinked(); show-duplicate-detection
 // requires only ./title-match, so there is no cycle back into this module.
-const { isDeclaredTransferPair, canonicalVenue, sameVenueOrRoom } = require('./show-duplicate-detection');
+const { isDeclaredTransferPair, canonicalVenue, sameVenueOrRoom, isSameRunLeadingTitle } = require('./show-duplicate-detection');
 // Shared id-base rule for Check 3 (S5-T3) — market-slug has no requires of
 // its own, so no cycle. validate-shows-prebuild.js uses the same helper.
 const { stripIdSuffix: stripIdSuffixUncached } = require('./market-slug');
@@ -1209,6 +1209,18 @@ function checkForDuplicate(newShow, existingShows) {
           existingShow: existing
         };
       }
+    }
+
+    // Check 7d: Same house + same first date (+ same closing date) + one title is
+    // the other's leading words ("Honor" / "Honor, An Artist Lecture", "Lumin" /
+    // "Lumin By Emma Gibson"). Check 8's 50% length rule misses a short title
+    // with a long tail (BRO-7156). Cycle parts never match: see isSameRunLeadingTitle.
+    if (isSameRunLeadingTitle(newShow, existing) && !isMultiProduction(newShow, existing)) {
+      return {
+        isDuplicate: true,
+        reason: `Same venue + same run + leading-title match: "${newShow.title}" vs "${existing.title}"`,
+        existingShow: existing
+      };
     }
 
     // Check 8: One title contains the other (for titles > 4 chars)
