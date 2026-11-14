@@ -19,6 +19,7 @@
  *     in the insertion ("... Under the Sky") is a different title and refuses;
  *     that case belongs to the venue promoter's dated-listing completion.
  *   - or the old title is the new one plus a trailing " on Broadway" market tag (no other row has the bare title);
+ *   - or the old title is the new one plus a "_<year>" listing tail ("Berlin_2027", BRO-7156);
  *   - or the old title is the new one plus a bare genre disambiguator such as
  *     "(musical)" (BRO-6268, Theatricalia). The row's `type` keeps the genre;
  *     a shared bare title is allowed, as everywhere else in the corpus;
@@ -26,7 +27,7 @@
  */
 
 const { foldDiacritics } = require('./title-match');
-const { GENRE_DISAMBIGUATOR_RE } = require('./show-title-normalize');
+const { GENRE_DISAMBIGUATOR_RE, LISTING_YEAR_SUFFIX_RE } = require('./show-title-normalize');
 
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 
@@ -82,6 +83,9 @@ function retitleProblem(oldTitle, newTitle, otherTitles = [], sameCityTitles = o
   // canonical normaliser applies, so validate-data's expected title has a plan path.
   const genre = GENRE_DISAMBIGUATOR_RE.exec(oldTitle);
   if (genre && oldTitle.slice(0, genre.index).trim() === newTitle) return null;
+  // BRO-7156: the same "_<year>" listing tail the normaliser strips ("Berlin_2027").
+  const yearTail = LISTING_YEAR_SUFFIX_RE.exec(oldTitle);
+  if (yearTail && oldTitle.slice(0, yearTail.index).trim() === newTitle) return null;
   // A slug counter is a single digit 2-9 ("King Lear 2") and only exists
   // because another row already had the bare title. A number that is part of
   // the name ("Cloud 9", "Room 101", "A Doll's House, Part 2") has no such

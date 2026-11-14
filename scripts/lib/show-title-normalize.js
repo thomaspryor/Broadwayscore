@@ -47,6 +47,10 @@ const MAX_VENUE_STRIP_PASSES = 4;
 // "(musical)", "(play)", "(opera)" as the WHOLE trailing parenthetical only.
 // "Matilda The Musical" and "Rock of Ages (The Musical Comedy)" are untouched.
 const GENRE_DISAMBIGUATOR_RE = /\s*\((?:musical|play|opera)\)\s*$/i;
+// BRO-7156: a feed's internal listing name with the season glued on by an
+// underscore (TodayTix 47136 "Berlin_2027", Kiln Theatre). No real title ends
+// in "_<year>"; the id/slug carry the year.
+const LISTING_YEAR_SUFFIX_RE = /_(?:19|20)\d{2}$/;
 const {
   isShoutedTitle,
   isExemptFromTitleCase,
@@ -122,6 +126,7 @@ module.exports = {
   normalizeShowTitle,
   MAX_VENUE_STRIP_PASSES,
   GENRE_DISAMBIGUATOR_RE,
+  LISTING_YEAR_SUFFIX_RE,
   buildVenueVocabulary,
   isExemptFromTitleCase,
 };

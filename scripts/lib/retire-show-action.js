@@ -36,7 +36,7 @@
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const { normalizeVenueName } = require('./venue-classification');
 const { normalizeTitle } = require('./title-match');
-const { isStrictTitleSubset, findSharedTicketIdentityDupes } = require('./show-duplicate-detection');
+const { isStrictTitleSubset, isSameRunLeadingTitle, findSharedTicketIdentityDupes } = require('./show-duplicate-detection');
 
 // Same building: normalized names equal, or one is the other plus only a
 // generic building/room word ("Barbican" / "Barbican Centre"). Never a
@@ -147,7 +147,8 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
   // audit's own proof of one production, so a single-word prefix title is accepted too.
   const ticketDup = findSharedTicketIdentityDupes([kept, row]).length > 0;
   const evidenceDup = evidenceDuplicate(kept, row, evidenceUrl);
-  if (normalizeTitle(kept.title) !== normalizeTitle(row.title) && !isStrictTitleSubset(kept, row) && !ticketDup && !evidenceDup) return `title "${row.title}" does not match "${kept.title}"`;
+  // isSameRunLeadingTitle: "Honor" / "Honor, An Artist Lecture", same house, same dates (BRO-7156).
+  if (normalizeTitle(kept.title) !== normalizeTitle(row.title) && !isStrictTitleSubset(kept, row) && !isSameRunLeadingTitle(kept, row) && !ticketDup && !evidenceDup) return `title "${row.title}" does not match "${kept.title}"`;
   if (!sameHouse(kept.venue, row.venue)) return `venue "${row.venue}" is not the same house as "${kept.venue}"`;
   if ((kept.market || null) !== (row.market || null)) return `market ${row.market} differs from ${kept.market}`;
   if (!evidenceDup && !sameRun(kept, row, ticketDup) && !finderDriftRun(kept, row)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;

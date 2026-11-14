@@ -80,6 +80,33 @@ function rawTitleTokens(show) {
   );
 }
 
+// BRO-7156: one run listed twice under a longer and a shorter title, where the
+// shorter title is the longer one's leading words: a comma subtitle ("Honor" /
+// "Honor, An Artist Lecture"), a byline read into the title ("Lumin" / "Lumin By
+// Emma Gibson") or a listing counter ("Berlin" / "Berlin_2027"). The kept-title
+// checks above all miss a one-word title (isStrictTitleSubset needs 2+ words,
+// normalizeTitle strips only colon/dash tails). Tight by construction: same
+// house, the SAME first date, and the same closing date when both state one.
+// A 2026-11-13 dry run over shows.json: 45 same-house same-start pairs, 3 hits,
+// all three real duplicates.
+function orderedTitleWords(t) {
+  return foldDiacritics(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+}
+function isSameRunLeadingTitle(a, b) {
+  if (!a || !b) return false;
+  const start = runStart(a);
+  if (!start || start !== runStart(b)) return false;
+  if (a.closingDate && b.closingDate && a.closingDate !== b.closingDate) return false;
+  if (!sameVenueOrRoom(canonicalVenue(a), canonicalVenue(b))) return false;
+  const wa = orderedTitleWords(a.title);
+  const wb = orderedTitleWords(b.title);
+  const [shorter, longer] = wa.length <= wb.length ? [wa, wb] : [wb, wa];
+  if (shorter.length === 0 || shorter.length === longer.length) return false;
+  // "The" / "A" alone is not a title.
+  if (shorter.join(' ').length < 4) return false;
+  return shorter.every((w, i) => longer[i] === w);
+}
+
 function titleKey(t) {
   return foldDiacritics(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
@@ -378,5 +405,6 @@ module.exports = {
   sameVenueOrRoom,
   isColonSegmentTitle,
   isStrictTitleSubset,
+  isSameRunLeadingTitle,
   datesOverlap,
 };
