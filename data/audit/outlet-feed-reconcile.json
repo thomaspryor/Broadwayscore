@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T19:49:51.566Z",
+  "generatedAt": "2026-11-14T21:14:30.580Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -137,10 +137,6 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -161,18 +157,18 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 850,
+  "itemsScanned": 857,
   "matchedGaps": 5,
   "possibleGaps": 4,
   "gaps": [
     {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
       "level": "matched",
-      "outletId": "musical-theatre-review",
-      "url": "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre/",
-      "headline": "Hamlet Hail to the Thief – Barbican Theatre",
-      "publishDate": "2026-11-14"
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+      "headline": "We’ll See ****, Ms. Blakk for President ****",
+      "publishDate": "2026-11-11"
     },
     {
       "showId": "passing-strange-regional-2026",
