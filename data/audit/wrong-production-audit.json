@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T19:14:55.024Z",
+  "timestamp": "2026-11-14T19:28:35.953Z",
   "stats": {
-    "totalReviews": 82081,
+    "totalReviews": 82090,
     "alreadyFlagged": 22380,
     "dateGuardCatches": 220,
-    "directorMismatch": 3687,
+    "directorMismatch": 3691,
     "tvFilmSignals": 2313,
     "londonSignals": 3751,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8476
+    "noPublishDate": 8477
   },
   "findings": [
     {
@@ -6141,6 +6141,58 @@
       "score": 72,
       "publishDate": "2026-06-04",
       "url": "https://www.theatermirror.net/?p=11258",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/annie-7/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2026-11-13",
+      "url": "https://www.chicagotheatrereview.com/2026/11/the-sun-will-come-out-tomorrow/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2026-11-13",
+      "url": "https://www.letsplaytheatricalreview.com/blog/annie-1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-11-13",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/11/13/picksinsix-review-annie-drury-lane-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
