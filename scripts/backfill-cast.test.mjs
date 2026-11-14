@@ -75,3 +75,13 @@ test('backfill-cast.js default pass is wired to shouldRetryTombstone (BRO-7479 g
   const src = fs.readFileSync(new URL('./backfill-cast.js', import.meta.url), 'utf8');
   assert.match(src, /shouldRetryTombstone\(JSON\.parse/);
 });
+
+test('shouldRetryTombstone: bounded window, and no openingDate means no daily retry (BRO-7479 review)', () => {
+  const { shouldRetryTombstone } = require('./lib/cast-tombstone.js');
+  const old = { openingNightCast: [], scrapedAt: '2026-01-01T00:00:00Z' };
+  const now = Date.parse('2026-11-14T12:00:00Z');
+  assert.strictEqual(shouldRetryTombstone(old, { status: 'open', openingDate: '2026-11-10' }, now), true);
+  assert.strictEqual(shouldRetryTombstone(old, { status: 'open', openingDate: '2026-10-01' }, now), false);
+  assert.strictEqual(shouldRetryTombstone(old, { status: 'previews' }, now), false);
+  assert.strictEqual(shouldRetryTombstone(old, { status: 'open' }, now), false);
+});

@@ -109,19 +109,26 @@ function castFileMismatchReason(castData, show) {
 // listed the cast, then skipped by every default run until the weekly --force pass). The default
 // (non-force) pass retries such tombstones once they are RETRY_MS old, so a late IBDB listing is
 // picked up within a day instead of a week. Pre-opening previews keep the weekly cadence.
+const TOMBSTONE_RETRY_WINDOW_DAYS = 7;
 const TOMBSTONE_RETRY_MS = 20 * 60 * 60 * 1000;
 function shouldRetryTombstone(castFile, show, now = Date.now()) {
   if (!castFile || !show) return false;
   if (show.status !== 'open' && show.status !== 'previews') return false;
   if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return false;
+  // Bounded: only within TOMBSTONE_RETRY_WINDOW_DAYS after openingDate, so a show that is
+  // genuinely empty on IBDB is not re-scraped (and the daily job not woken) forever. No
+  // openingDate = weekly cadence only.
+  if (!show.openingDate) return false;
   const today = new Date(now).toISOString().slice(0, 10);
-  if (show.status === 'previews' && show.openingDate && show.openingDate > today) return false;
+  if (show.openingDate > today) return false;
+  const windowEnd = new Date(Date.parse(show.openingDate) + TOMBSTONE_RETRY_WINDOW_DAYS * 864e5).toISOString().slice(0, 10);
+  if (today > windowEnd) return false;
   const at = Date.parse(castFile.scrapedAt);
   return !Number.isFinite(at) || now - at >= TOMBSTONE_RETRY_MS;
 }
 
 module.exports = {
-  shouldRetryTombstone, TOMBSTONE_RETRY_MS,
+  shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
   shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, MAX_WRONG_PRODUCTION_PURGES, parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch,
   expectedOpeningYear, castFileMismatchReason,
 };
