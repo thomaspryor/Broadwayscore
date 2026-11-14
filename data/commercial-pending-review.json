@@ -235,10 +235,10 @@
       "researchedAt": "2026-11-14T22:53:00.645Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
-      "claimStripped": {
-        "at": "2026-11-14T22:53:00.645Z",
-        "reason": "source previously rejected: https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose"
-      }
+      "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
+      "autoApplyBlockedAt": "2026-11-12T10:00:41.261Z",
+      "verifyAttempts": 2,
+      "lastVerifyAttemptAt": "2026-11-14T23:08:22.729Z"
     },
     "billy-crystal-860-2026": {
       "title": "Billy Crystal 860",
@@ -2145,7 +2145,7 @@
       "researchedAt": "2026-11-14T22:25:28.187Z"
     }
   },
-  "lastUpdated": "2026-11-14T22:27:53.491Z",
+  "lastUpdated": "2026-11-14T23:08:22.729Z",
   "hardTruthFindings": {
     "collectedAt": "2026-10-11",
     "card": "BRO-5017",

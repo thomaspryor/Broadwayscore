@@ -1,25 +1,25 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-11-07T23:19:20.391Z",
+    "generatedAt": "2026-11-14T23:08:23.532Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
-    "totalEntries": 476,
-    "totalShowsInShowsJson": 5926,
+    "totalEntries": 479,
+    "totalShowsInShowsJson": 5998,
     "matchStats": {
-      "matchedBySlug": 476,
+      "matchedBySlug": 479,
       "matchedById": 0,
       "orphaned": 0
     },
     "designationDistribution": {
       "Miracle": 9,
-      "Recouped": 54,
+      "Recouped": 55,
       "Trickle": 8,
       "Wait & See": 1,
       "Flop": 183,
       "Fizzle": 44,
-      "TBD": 39,
+      "TBD": 41,
       "Nonprofit": 96,
       "Tour Stop": 2,
       "Easy Winner": 30,
@@ -27,12 +27,12 @@
       "Did Not Recoup": 8
     },
     "recoupmentStats": {
-      "recouped": 96,
-      "notRecouped": 227,
+      "recouped": 97,
+      "notRecouped": 229,
       "nullOrMissing": 153
     },
     "modelFalseNegatives": {
-      "count": 9,
+      "count": 10,
       "unexplained": 0,
       "baseline": 0,
       "shows": [
@@ -44,39 +44,40 @@
         "the-ferryman-2018",
         "sunday-in-the-park-with-george-2017",
         "next-to-normal-2009",
-        "memphis-2009"
+        "memphis-2009",
+        "legally-blonde-2007"
       ],
       "undiagnosedShows": [],
       "staleExplanations": []
     },
     "dataCompleteness": {
-      "hasCapitalization": 303,
-      "hasWeeklyRunningCost": 117,
-      "hasCostMethodology": 155,
-      "hasSources": 429,
+      "hasCapitalization": 304,
+      "hasWeeklyRunningCost": 118,
+      "hasCostMethodology": 158,
+      "hasSources": 430,
       "hasDeepResearch": 161
     },
     "openShowCoverage": {
-      "totalTrackedStatusShows": 62,
-      "withCommercialData": 62,
+      "totalTrackedStatusShows": 64,
+      "withCommercialData": 64,
       "withoutCommercialData": 0,
       "coveragePct": 100
     },
     "issuesSummary": {
-      "total": 281,
+      "total": 299,
       "bySeverity": {
         "high": 0,
         "medium": 0,
-        "low": 281
+        "low": 299
       },
       "byType": {
-        "source-quality": 216,
+        "source-quality": 233,
         "financial-sanity": 1,
         "methodology": 23,
         "stale-data": 4,
         "closed-show-tbd": 2,
         "nonprofit-classification": 26,
-        "model-false-negative": 9
+        "model-false-negative": 10
       }
     }
   },
@@ -648,6 +649,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "small-mouth-sounds",
+      "detail": "sources[9] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "grey-house",
       "detail": "sources[0] missing date."
     },
@@ -732,6 +739,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "other-desert-cities",
+      "detail": "sources[10] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "billy-crystal-860",
       "detail": "sources[0] missing date."
     },
@@ -756,6 +769,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "billy-crystal-860",
+      "detail": "sources[6] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "dolly-an-original-musical",
       "detail": "sources[2] missing date."
     },
@@ -768,8 +787,26 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "its-a-wonderful-life-a-live-radio-play",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "dirty-dancing",
       "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "dirty-dancing",
+      "detail": "sources[5] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "dirty-dancing",
+      "detail": "sources[6] missing date."
     },
     {
       "type": "source-quality",
@@ -918,6 +955,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "private-lives",
+      "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "10-things-i-hate-about-you-on-broadway",
       "detail": "sources[0] missing date."
     },
@@ -948,6 +991,18 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "warriors",
+      "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "warriors",
+      "detail": "sources[5] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "downstate",
       "detail": "sources[2] missing date."
     },
@@ -956,6 +1011,12 @@
       "severity": "low",
       "showId": "downstate",
       "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "downstate",
+      "detail": "sources[7] missing date."
     },
     {
       "type": "source-quality",
@@ -1020,6 +1081,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "blue-man-group-a-new-holiday-surprise",
+      "detail": "sources[6] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "wanted",
       "detail": "sources[0] missing date."
     },
@@ -1068,8 +1135,26 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "let-the-good-times-roll",
+      "detail": "sources[10] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "midnight-in-the-garden-of-good-and-evil",
       "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "midnight-in-the-garden-of-good-and-evil",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "midnight-in-the-garden-of-good-and-evil",
+      "detail": "sources[3] missing date."
     },
     {
       "type": "source-quality",
@@ -1100,6 +1185,18 @@
       "severity": "low",
       "showId": "much-ado-about-nothing",
       "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "much-ado-about-nothing",
+      "detail": "sources[6] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "much-ado-about-nothing",
+      "detail": "sources[7] missing date."
     },
     {
       "type": "source-quality",
@@ -1196,6 +1293,12 @@
       "severity": "low",
       "showId": "amazing-grace-2015",
       "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "cat-on-a-hot-tin-roof",
+      "detail": "sources[5] missing date."
     },
     {
       "type": "source-quality",
@@ -1525,37 +1628,37 @@
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (283 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (290 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "stranger-things",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (277 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (284 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (262 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (269 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (283 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (290 days ago)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "low",
       "showId": "parade-2023",
-      "detail": "Show is closed (closed 1189 days ago on 2023-08-06) and designated \"TBD\" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported."
+      "detail": "Show is closed (closed 1196 days ago on 2023-08-06) and designated \"TBD\" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported."
     },
     {
       "type": "closed-show-tbd",
       "severity": "low",
       "showId": "indecent-2017",
-      "detail": "Show is closed (closed 3380 days ago on 2017-08-06) and designated \"TBD\" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported."
+      "detail": "Show is closed (closed 3387 days ago on 2017-08-06) and designated \"TBD\" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported."
     },
     {
       "type": "nonprofit-classification",
@@ -1766,6 +1869,12 @@
       "severity": "low",
       "showId": "memphis-2009",
       "detail": "Announced recouped (2012-08) but modelRecouped=false (range -63.9–35.8–127%). Diagnosed: Musical with a type-default weekly cost (no reported cost anchor) over a 148-week run; range -64-127% straddles 100. Needs a sourced running cost."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "low",
+      "showId": "legally-blonde-2007",
+      "detail": "Announced recouped (2012) but modelRecouped=false (range -104.2–-58.7–-10%). Diagnosed: Post-closing income is outside the Broadway-only model. Hal Luftig reports roughly 60% returned on Broadway and profitable later tours (Freakonomics, Apr 18, 2025: https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/); that interview does not establish when the original investment recouped. The model applies a reported $650K weekly cost plus variable expenses and reserves to the Broadway run, producing -58.7% centrally. That magnitude also understates the reported Broadway return and still needs period-specific cost/distribution evidence; the diagnosis does not validate the estimated 2012 recoupment date."
     }
   ]
 }
