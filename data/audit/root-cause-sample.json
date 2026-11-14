@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-08T08:58:55.173Z",
+  "generatedAt": "2026-11-14T08:59:11.262Z",
   "grader": "gpt-5.4-mini (diff only, majority of 3)",
-  "poolSize": 150,
+  "poolSize": 138,
   "noDiff": 3,
-  "landingsWithoutId": 38,
+  "landingsWithoutId": 82,
   "graded": 8,
   "rootCause": 6,
   "spot": 2,
@@ -24,210 +24,175 @@
   ],
   "items": [
     {
-      "card": "BRO-6666",
-      "grade": "root-cause",
-      "confidence": 0.95,
-      "reason": "The change removes the bare leading dispatch string from the generated apply command and adds tests covering the card formatting/parser contract, preventing the audit from misreading any such card as a workflow dispatch.",
-      "guardFile": "tests/unit/schema-drift-card.test.mjs",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "1a1231c9d31d",
-      "truncated": false,
-      "files": [
-        ".github/workflows/verify-schema.yml",
-        "scripts/file-schema-drift-card.js",
-        "scripts/lib/schema-drift-card.js",
-        "tests/unit/schema-drift-card.test.mjs"
-      ]
-    },
-    {
-      "card": "BRO-7092",
-      "grade": "root-cause",
-      "confidence": 0.88,
-      "reason": "The new triage library and tests generalize stale-plan classification across op types and current data state, so the fix addresses the whole class of misclassified old fix-plan ops rather than a single instance.",
-      "guardFile": "scripts/lib/fix-plan-triage.test.mjs",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "bd53a975a324",
-      "truncated": true,
-      "files": [
-        "data/audit/claude-session-cost.jsonl",
-        "data/pending-fixes/bro-2851.json",
-        "data/pending-fixes/bro-3065.json",
-        "data/pending-fixes/bro-3919.json",
-        "data/pending-fixes/bro-4190-c.json",
-        "data/pending-fixes/bro-4190-g.json",
-        "data/pending-fixes/bro-4190-i.json",
-        "data/pending-fixes/bro-4190-j.json",
-        "data/pending-fixes/bro-4190.json",
-        "data/pending-fixes/bro-4251.json",
-        "data/pending-fixes/bro-4270.json",
-        "data/pending-fixes/bro-4301.json",
-        "data/pending-fixes/bro-4305.json",
-        "data/pending-fixes/bro-4317-b-02.json",
-        "data/pending-fixes/bro-4317-b-03.json",
-        "data/pending-fixes/bro-4317-b-04.json",
-        "data/pending-fixes/bro-4317-c-01.json",
-        "data/pending-fixes/bro-4317-c-02.json",
-        "data/pending-fixes/bro-4317-c-03.json",
-        "data/pending-fixes/bro-4317-c-04.json"
-      ]
-    },
-    {
-      "card": "BRO-7085",
-      "grade": "root-cause",
-      "confidence": 0.88,
-      "reason": "The change adds shared guards/tests that generalize the republish-marker handling and rebuild/sweep behavior so the earlier-run republish class is caught across cases, not just one instance.",
-      "guardFile": "scripts/lib/run-contamination.js",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "25e796544487",
-      "truncated": true,
-      "files": [
-        "scripts/clear-stale-wrong-production-flags.js",
-        "scripts/lib/run-contamination.js",
-        "scripts/rebuild-all-reviews.js",
-        "scripts/rebuild-all-reviews.test.mjs",
-        "tests/unit/timeout-evergreen-date.test.mjs"
-      ]
-    },
-    {
-      "card": "BRO-7018",
+      "card": "BRO-7221",
       "grade": "spot-fix",
       "confidence": 0.98,
-      "reason": "The change only whitelists one specific pending-fix file in .gitignore, so it addresses this single case rather than preventing the defect class.",
-      "guardFile": null,
+      "reason": "The change adds a Times-only multi-show-column path and tests for the specific glued-header case, but it does not make the broader class of glued-header defects impossible across all extractors or inputs.",
+      "guardFile": "scripts/lib/score-extractors-uk-multi-show.test.mjs",
       "votes": [
         "spot-fix",
         "spot-fix",
         "spot-fix"
       ],
-      "diffHash": "b7af56322848",
+      "diffHash": "9c5fef04dbc7",
       "truncated": false,
       "files": [
-        ".gitignore",
-        "data/pending-fixes/bro-7018.json"
+        "scripts/lib/score-extractors-uk-multi-show.test.mjs",
+        "scripts/lib/score-extractors.js"
       ]
     },
     {
-      "card": "BRO-7079",
+      "card": "BRO-7220",
+      "grade": "root-cause",
+      "confidence": 0.86,
+      "reason": "This adds a regression test that would fail if the replay ever loses the NYDN timing, raw-id handback, or Slant owner override behaviors, so it guards the defect class rather than patching one instance.",
+      "guardFile": "tests/unit/wanted-2026-11-08-replay.test.mjs",
+      "votes": [
+        "root-cause",
+        "spot-fix",
+        "root-cause"
+      ],
+      "diffHash": "9b0968fbb8d2",
+      "truncated": false,
+      "files": [
+        "tests/fixtures/bro-7220/wanted-2022-2026-11-08.json",
+        "tests/unit/wanted-2026-11-08-replay.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7372",
       "grade": "root-cause",
       "confidence": 0.95,
-      "reason": "The change generalizes the cookie alert router from T1-only auth expiry to all critical outlets and adds separate live-failure handling plus tests that cover the broader class, making the old T1-only gap impossible to miss in this path.",
-      "guardFile": "scripts/lib/cookie-expiry-alert.test.mjs",
+      "reason": "The diff adds a shared date parser plus tests covering ordinal publish dates, and it broadens the refresh selector to use that parser so the whole class of non-ISO publishDate parsing failures is prevented.",
+      "guardFile": "scripts/lib/show-score-refresh-window.test.mjs",
       "votes": [
         "root-cause",
         "root-cause",
         "root-cause"
       ],
-      "diffHash": "1acb6a31d5c6",
+      "diffHash": "4688f50e7e2b",
+      "truncated": true,
+      "files": [
+        ".github/workflows/refresh-show-score-opening-night.yml",
+        "data/audit/claude-session-cost.jsonl",
+        "scripts/lib/outlet-listing-compound-venue.test.mjs",
+        "scripts/lib/outlet-listing-helpers.js",
+        "scripts/lib/show-score-refresh-window.js",
+        "scripts/lib/show-score-refresh-window.test.mjs",
+        "scripts/outlet-listing-poller.js",
+        "tests/unit/outlet-page-confirm.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7304",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds a reusable CLI-help guard, registers the new tests in CI path triggers, and adds assertions covering the new URL hygiene and wipe-hold cases so the defect class is caught broadly rather than patched at one call site.",
+      "guardFile": ".github/workflows/test.yml",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "be8c1e6726d3",
       "truncated": true,
       "files": [
         ".github/workflows/test.yml",
-        "data/pending-fixes/bro-7079.json",
-        "scripts/audit-t1-silent-gaps.test.mjs",
-        "scripts/check-cookie-health.js",
-        "scripts/lib/cookie-expiry-alert.js",
-        "scripts/lib/cookie-expiry-alert.test.mjs",
-        "scripts/lib/cross-show-url.js",
-        "scripts/lib/cross-show-url.test.mjs",
-        "scripts/lib/manual-entry-merge.js",
-        "scripts/lib/manual-entry-merge.test.mjs",
-        "scripts/lib/non-review-url-patterns.js",
-        "scripts/lib/non-review-url-patterns.test.mjs",
         "scripts/lib/review-normalization.js",
-        "scripts/lib/show-matching.test.mjs",
-        "scripts/lib/stale-automated-text-verdict.test.mjs",
-        "scripts/lib/t1-silent-gap.test.mjs",
-        "scripts/lib/tb-direct-url.js",
-        "scripts/lib/tb-direct-url.test.mjs",
-        "scripts/manual-review-direct.js",
-        "tests/unit/cross-show-url-guard.test.mjs"
+        "scripts/lib/url-change-invariant.js",
+        "scripts/lib/url-wipe-hold.js",
+        "scripts/rebuild-all-reviews.js",
+        "scripts/test-url-hygiene-bro7304.js",
+        "scripts/test-url-wipe-hold.js"
       ]
     },
     {
-      "card": "BRO-6779",
+      "card": "BRO-7375",
       "grade": "root-cause",
       "confidence": 0.93,
-      "reason": "The change adds a regression test and a generalized extractor rule that prevents the whole class of false positives from matching lowercase article/keyword and run-date patterns, rather than patching a single instance.",
-      "guardFile": "scripts/lib/score-extractors.test.mjs",
+      "reason": "The change adds a lint exemption for the specific read-only audit input and rewrites the detector to derive those paths from a shared audit directory, preventing this class of false orphan-write reports for those inputs rather than patching one call site.",
+      "guardFile": "scripts/audit-orphaned-audit-writes.js",
       "votes": [
         "root-cause",
         "root-cause",
         "root-cause"
       ],
-      "diffHash": "58d1e4e1638d",
+      "diffHash": "8885b1a8d8af",
       "truncated": true,
       "files": [
-        "data/pending-fixes/bro-6779-b.json",
-        "data/pending-fixes/bro-6779.json",
-        "scripts/health-check.js",
-        "scripts/lib/score-extractors.js",
-        "scripts/lib/score-extractors.test.mjs",
-        "scripts/lib/star-score-mismatch.js",
-        "scripts/lib/star-score-mismatch.test.mjs"
+        "data/audit/recurrence-backtest.json",
+        "docs/recurrence-backtest.md",
+        "scripts/audit-orphaned-audit-writes.js",
+        "scripts/grade-openings.js",
+        "scripts/lib/opening-grade.js",
+        "scripts/lib/press-night-manual-actions.js",
+        "scripts/lib/recurrence-classes.js",
+        "scripts/lib/recurrence-classes.test.mjs",
+        "scripts/recurrence-detector.js"
       ]
     },
     {
-      "card": "BRO-7066",
+      "card": "BRO-7377",
+      "grade": "root-cause",
+      "confidence": 0.94,
+      "reason": "The change removes the sweep’s reliance on parsing restart reasons and instead uses an explicit neverStarted flag plus a checkInit guard, which prevents this whole stale-init-error requeue class rather than patching one case.",
+      "guardFile": "scripts/lib/child-idle-watch.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "4580d91af5f7",
+      "truncated": true,
+      "files": [
+        "docs/cloud-worker-session-runbook.md",
+        "scripts/lib/child-idle-watch.js",
+        "scripts/lib/child-idle-watch.test.mjs",
+        "scripts/lib/fixtures/bro-7377-init-failed/get-session.json",
+        "scripts/lib/stalled-session-sweep.js"
+      ]
+    },
+    {
+      "card": "BRO-7307",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds a dedicated detector, scopes it to main, and adds tests covering branch scoping and truncated-run handling, which prevents the whole class of invalid-workflow-file misses rather than patching one instance.",
+      "guardFile": "tests/unit/invalid-workflow-file-signature.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "e5d279947894",
+      "truncated": true,
+      "files": [
+        "scripts/health-check.js",
+        "scripts/lib/invalid-workflow-file-signature.js",
+        "scripts/lib/owner-alert-router.js",
+        "scripts/lib/page-worthy-alerts.js",
+        "tests/unit-test-manifest.txt",
+        "tests/unit/invalid-workflow-file-signature.test.mjs",
+        "tsconfig.json"
+      ]
+    },
+    {
+      "card": "BRO-7316",
       "grade": "spot-fix",
       "confidence": 0.98,
-      "reason": "The patch only replaces hardcoded timestamps with relative ones in this test fixture, fixing the failing case without adding a general guard against future TTL-related time drift.",
-      "guardFile": null,
+      "reason": "This change only adds a COUSINS requirement to the spot-fix path and updates the message/tests for that specific rule, rather than introducing a general guard that prevents the defect class everywhere.",
+      "guardFile": "scripts/lib/root-cause-close.test.mjs",
       "votes": [
         "spot-fix",
         "spot-fix",
         "spot-fix"
       ],
-      "diffHash": "b0c0e5976b65",
-      "truncated": false,
-      "files": [
-        "tests/unit/owner-decision-notify.test.mjs"
-      ]
-    },
-    {
-      "card": "BRO-7077",
-      "grade": "root-cause",
-      "confidence": 0.89,
-      "reason": "The change adds reusable routing/guard logic and tests that generalize the fix across the whole class of RSC-alias, visiting-company locator, and review-slug false positives rather than patching a single instance.",
-      "guardFile": "scripts/lib/market-routing.js",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "2019f8d03f03",
+      "diffHash": "9c1bf1c78d19",
       "truncated": true,
       "files": [
-        "data/pending-fixes/bro-7077.json",
-        "docs/triage-audit-scripts.md",
-        "scripts/audit-review-pair-anomalies.js",
-        "scripts/audit-shared-url-quote.js",
-        "scripts/check-corpus-drift.js",
-        "scripts/lib/audit-script-wiring-baseline.json",
-        "scripts/lib/byline-from-text.js",
-        "scripts/lib/different-city-production-signal.test.mjs",
-        "scripts/lib/joint-combined-copy.js",
-        "scripts/lib/market-routing.js",
-        "scripts/lib/playbill-verdict-discover.js",
-        "scripts/lib/review-guards-non-review-url.test.mjs",
-        "scripts/lib/review-guards.js",
-        "scripts/lib/review-normalization.js",
-        "scripts/lib/rss-discovery.js",
-        "scripts/lib/show-title-variants.js",
-        "scripts/lib/show-title-variants.test.mjs",
-        "scripts/lib/sibling-venue-routing.test.mjs",
-        "scripts/scrape-playbill-verdict.js",
-        "tests/unit/byline-sibling-tail-credit.test.mjs"
+        "scripts/lib/root-cause-close.js",
+        "scripts/lib/root-cause-close.test.mjs",
+        "scripts/lib/root-cause-stop.mjs",
+        "scripts/lib/root-cause-stop.test.mjs"
       ]
     }
   ]
