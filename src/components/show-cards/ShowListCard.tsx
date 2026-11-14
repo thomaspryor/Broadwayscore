@@ -269,7 +269,7 @@ const ShowListCard = memo(function ShowListCard({
       {showCategoryBadge && category === 'off-broadway' && showsMarketBadge(category, isOpera) && (
         <span className="inline-block mb-1 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded whitespace-nowrap">Off-Broadway</span>
       )}
-      <h3 className="font-bold text-white text-lg group-hover:text-brand transition-colors line-clamp-2">
+      <h3 className="font-bold text-white text-base leading-snug sm:text-lg sm:leading-normal group-hover:text-brand transition-colors line-clamp-2">
         {show.title}
       </h3>
       {showVenue && show.venue && (
@@ -279,11 +279,14 @@ const ShowListCard = memo(function ShowListCard({
         {isNonTheatricalGenre(show.genre)
           ? <GenrePill genre={show.genre} />
           : <FormatPill type={show.type} />}
-        <ProductionPill isRevival={isRevival} />
+        {/* Phones: "Original" is the default and its pill pushed the row to two
+            lines in a ~115px column, doubling the card height (owner, 2026-11-14).
+            Revival still shows; Browse already works this way. */}
+        {isRevival ? <ProductionPill isRevival={true} /> : <span className="hidden sm:inline-flex"><ProductionPill isRevival={false} /></span>}
         {show.isOffWestEnd && <CategoryBadge category="off-west-end" isOpera={isOpera} />}
         {!hideStatus && <StatusBadge status={show.status} />}
       </div>
-      {metaSlot ?? <p className="text-sm text-gray-400 mt-2.5 sm:truncate">
+      {metaSlot ?? <p className="text-xs sm:text-sm text-gray-400 mt-1.5 sm:mt-2.5 sm:truncate">
         {show.status === 'previews' || show.status === 'upcoming' ? (
           // Show BOTH dates when we have both — a previews start is real,
           // useful information, not a lesser substitute for opening night.
@@ -317,10 +320,12 @@ const ShowListCard = memo(function ShowListCard({
             {(() => {
               const duration = getRunAgeLabel(show.openingDate, category, undefined, durationSuffix);
               // Today-relative text: keep the server copy on hydration (BRO-5419).
-              return duration ? <span suppressHydrationWarning>{duration}</span> : null;
+              return duration ? <span className="whitespace-nowrap" suppressHydrationWarning>{duration}</span> : null;
             })()}
             {show.closingDate && (
-              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? ' · ' : ''}{formatClosingLabel(show, formatOpeningDate(show.closingDate))}</span>
+              // Separator outside the nowrap span so phones can break the line
+              // after "Just opened ·" instead of overflowing into the score.
+              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? ' · ' : ''}<span className="whitespace-nowrap">{formatClosingLabel(show, formatOpeningDate(show.closingDate))}</span></span>
             )}
           </>
         )}
@@ -439,7 +444,9 @@ const ShowListCard = memo(function ShowListCard({
   // hover-rate star strip. Upcoming shows keep poster-first source ordering only.
   const isUpcoming = show.status === 'previews' || show.status === 'upcoming';
   const preferPoster = isCompact && isUpcoming;
-  const thumbnailSize = 'w-24 h-24 sm:w-28 sm:h-28';
+  // Default variant on phones: the thumb fills the card's height instead of
+  // sitting as a small square in a taller card (owner, 2026-11-14).
+  const thumbnailSize = isCompact ? 'w-24 h-24 sm:w-28 sm:h-28' : 'w-24 min-h-24 self-stretch sm:w-28 sm:h-28 sm:min-h-0 sm:self-auto';
 
   const thumbnail = (
     <div className={`relative flex-shrink-0 ${thumbnailSize} rounded-lg overflow-hidden bg-surface-overlay`}>
@@ -532,7 +539,7 @@ const ShowListCard = memo(function ShowListCard({
       prefetch={false}
       role="listitem"
       data-testid="show-card"
-      className="group card-interactive flex items-center gap-4 px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+      className="group card-interactive flex items-center gap-3 px-3 sm:gap-4 sm:px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       style={{ animationDelay: `${index * 30}ms` }}
     >
       {thumbnail}
