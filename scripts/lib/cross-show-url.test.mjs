@@ -380,3 +380,21 @@ test('BRO-6599: a one-word SHORTENED title only flags from a strict title positi
     'https://example.com/theatre/august-osage-county-at-the-national/',
   ]) assert.equal(hedley(url)?.matchedShowId, 'august-osage-county-west-end-2026', url);
 });
+
+test('BRO-6599 ship-check: one-word shortened title next to "broadway-review" / "at-the-" still flags', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'beautiful-2014', title: 'Beautiful: The Carole King Musical' },
+    { id: 'august-osage-2007', title: 'August: Osage County' },
+    { id: 'hadestown-2019', title: 'Hadestown' },
+  ]);
+  for (const [url, want] of [
+    ['https://x.com/reviews/beautiful-broadway-review/', 'beautiful-2014'],
+    ['https://x.com/theater/august-broadway-review-2008/', 'august-osage-2007'],
+    ['https://x.com/reviews/beautiful-at-the-stephen-sondheim-theatre/', 'beautiful-2014'],
+  ]) {
+    const r = detectCrossShowUrlMismatch('hadestown-2019', url, { index: idx });
+    assert.ok(r && r.matchedShowId === want, `${url} should flag ${want}, got ${JSON.stringify(r)}`);
+  }
+  // opening prose segments stay unflagged
+  assert.equal(detectCrossShowUrlMismatch('hadestown-2019', 'https://x.com/reviews/beautiful-emotions-at-the-hadestown-premiere/', { index: idx }), null);
+});

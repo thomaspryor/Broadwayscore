@@ -110,7 +110,12 @@ function isTitlePositioned(urlPath, slug, { segmentOpen = true } = {}) {
   // A path segment that opens with the title is how most outlets slug a review
   // ("hadestown-broadway-review-1236", "hadestown-is-a-thrilling-revival").
   const segs = urlPath.replace(/\/+$/, '').split('/').map(x => x.replace(/\.[a-z0-9]+$/, ''));
-  return segs.some(x => x === slug || (segmentOpen && x.startsWith(`${slug}-`)));
+  if (segs.some(x => x === slug || (segmentOpen && x.startsWith(`${slug}-`)))) return true;
+  // Even without the open-segment rule, "<title>-broadway-review" and
+  // "<title>-at-the-<theatre>" are title positions: only market/genre words may
+  // sit between the title and "review" / "at the" (ship-check finding, BRO-6599).
+  const tail = new RegExp(`^${esc}(?:-(?:off-broadway|broadway|london|west-end|musical|play|theatre|theater))*-(?:reviews?(?:-|$)|at-the-)`);
+  return segs.some(x => tail.test(x));
 }
 
 // One significant word once a leading "the"/"a" is dropped.
