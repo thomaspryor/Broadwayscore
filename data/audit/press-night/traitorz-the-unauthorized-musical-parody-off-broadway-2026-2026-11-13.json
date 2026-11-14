@@ -7,12 +7,12 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-14T02:30:03.689Z",
-    "endedAt": null,
+    "endedAt": "2026-11-14T09:00:39.702Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 78,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-14T04:55:11.695Z",
-    "lastOkSampleAt": "2026-11-14T04:55:11.695Z"
+    "lastSampleAt": "2026-11-14T08:59:27.244Z",
+    "lastOkSampleAt": "2026-11-14T08:59:27.244Z"
   },
   "firstLiveAt": "2026-11-14T03:50:08.462Z",
   "firstLiveBaseline": false,
@@ -20,12 +20,12 @@
   "liveCount": 1,
   "liveCountAt": {
     "1h": 1,
-    "2h": null,
+    "2h": 1,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-14T04:00:08.779Z",
-    "2h": null,
+    "2h": "2026-11-14T05:04:18.991Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -45,7 +45,8 @@
       "firstLiveAt": "2026-11-14T03:50:08.462Z",
       "prevOkSampleAt": "2026-11-14T03:45:08.021Z",
       "baseline": false,
-      "liveNow": true
+      "liveNow": true,
+      "scoredAt": "2026-11-14T03:31:47.244Z"
     }
   ],
   "dropped": [],
@@ -60,6 +61,17 @@
       "liveCount": 1,
       "fetchedAt": "2026-11-14T05:00:27.967Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-14T09:00:30.930Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "manualActions": [],
@@ -72,11 +84,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "no live lane lease"
+      },
+      {
+        "at": "2026-11-14T09:00:31.021Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "no live lane lease"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-14T05:00:31.812Z",
+    "capturedAt": "2026-11-14T09:00:34.410Z",
     "files": [
       {
         "file": "nytg--austin-fimmano.json",
@@ -89,7 +107,8 @@
         "url": "newyorktheatreguide.com/reviews/traitorz-the-unauthorized-musical-parody-off-broadway-review",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "theatermania--linda-buchwald.json",
@@ -102,7 +121,8 @@
         "url": "theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629",
         "includable": false,
         "reason": "wrongProduction",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
       },
       {
         "file": "west-end-best-friend--unknown.json",
@@ -115,7 +135,514 @@
         "url": "westendbestfriend.co.uk/news/traitorz-the-unauthorized-musical-parody-off-broadway",
         "includable": false,
         "reason": "wrongProduction",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      }
+    ]
+  },
+  "pipelineRuns": {
+    "capturedAt": "2026-11-14T09:00:39.625Z",
+    "window": {
+      "from": "2026-11-14T01:00:00Z",
+      "to": "2026-11-14T06:00:00Z"
+    },
+    "complete": true,
+    "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-13T23:17:38Z",
+        "updatedAt": "2026-11-14T03:53:14Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-14T00:42:20Z",
+        "updatedAt": "2026-11-14T01:10:14Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-14T00:48:59Z",
+        "updatedAt": "2026-11-14T01:30:13Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T01:00:36Z",
+        "updatedAt": "2026-11-14T01:11:32Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-14T01:01:54Z",
+        "updatedAt": "2026-11-14T01:05:37Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-14T01:05:34Z",
+        "updatedAt": "2026-11-14T01:19:50Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "skipped",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T01:05:40Z",
+        "updatedAt": "2026-11-14T01:05:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T01:09:53Z",
+        "updatedAt": "2026-11-14T01:20:31Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-14T01:17:31Z",
+        "updatedAt": "2026-11-14T01:18:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T01:20:43Z",
+        "updatedAt": "2026-11-14T01:30:26Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-14T01:43:13Z",
+        "updatedAt": "2026-11-14T01:47:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T01:46:11Z",
+        "updatedAt": "2026-11-14T01:56:18Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-14T01:46:14Z",
+        "updatedAt": "2026-11-14T02:24:25Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-14T01:53:09Z",
+        "updatedAt": "2026-11-14T01:56:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T01:54:02Z",
+        "updatedAt": "2026-11-14T02:04:10Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-14T02:00:08Z",
+        "updatedAt": "2026-11-14T05:48:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-14T02:01:25Z",
+        "updatedAt": "2026-11-14T03:22:43Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — potus-off-broadway-2026",
+        "startedAt": "2026-11-14T02:01:34Z",
+        "updatedAt": "2026-11-14T02:29:30Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+        "startedAt": "2026-11-14T02:01:42Z",
+        "updatedAt": "2026-11-14T02:11:41Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-14T02:08:48Z",
+        "updatedAt": "2026-11-14T02:12:57Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T02:08:59Z",
+        "updatedAt": "2026-11-14T02:19:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T02:15:14Z",
+        "updatedAt": "2026-11-14T02:25:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T02:20:26Z",
+        "updatedAt": "2026-11-14T02:29:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T02:20:30Z",
+        "updatedAt": "2026-11-14T02:31:31Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-14T02:34:43Z",
+        "updatedAt": "2026-11-14T04:39:04Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-14T02:39:37Z",
+        "updatedAt": "2026-11-14T03:38:04Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T02:44:41Z",
+        "updatedAt": "2026-11-14T02:53:14Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — potus-off-broadway-2026",
+        "startedAt": "2026-11-14T02:45:10Z",
+        "updatedAt": "2026-11-14T03:05:56Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+        "startedAt": "2026-11-14T02:45:19Z",
+        "updatedAt": "2026-11-14T02:53:36Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-14T02:51:42Z",
+        "updatedAt": "2026-11-14T02:52:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T02:56:43Z",
+        "updatedAt": "2026-11-14T03:06:05Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-kings-critique-off-broadway-2026",
+        "startedAt": "2026-11-14T03:05:50Z",
+        "updatedAt": "2026-11-14T03:11:13Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T03:13:02Z",
+        "updatedAt": "2026-11-14T03:21:53Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — potus-off-broadway-2026",
+        "startedAt": "2026-11-14T03:21:29Z",
+        "updatedAt": "2026-11-14T03:47:45Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+        "startedAt": "2026-11-14T03:21:38Z",
+        "updatedAt": "2026-11-14T03:51:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T03:28:32Z",
+        "updatedAt": "2026-11-14T03:37:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T03:34:48Z",
+        "updatedAt": "2026-11-14T03:45:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T03:38:44Z",
+        "updatedAt": "2026-11-14T03:48:24Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-14T03:41:45Z",
+        "updatedAt": "2026-11-14T03:56:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T03:42:02Z",
+        "updatedAt": "2026-11-14T03:50:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T03:56:34Z",
+        "updatedAt": "2026-11-14T04:04:57Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-14T04:06:50Z",
+        "updatedAt": "2026-11-14T05:02:02Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — potus-off-broadway-2026",
+        "startedAt": "2026-11-14T04:06:59Z",
+        "updatedAt": "2026-11-14T04:36:45Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+        "startedAt": "2026-11-14T04:07:08Z",
+        "updatedAt": "2026-11-14T04:18:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T04:15:05Z",
+        "updatedAt": "2026-11-14T04:15:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T04:16:38Z",
+        "updatedAt": "2026-11-14T04:25:45Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-14T04:20:18Z",
+        "updatedAt": "2026-11-14T04:35:51Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-14T04:20:34Z",
+        "updatedAt": "2026-11-14T04:48:57Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T04:26:23Z",
+        "updatedAt": "2026-11-14T04:36:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T04:27:02Z",
+        "updatedAt": "2026-11-14T04:36:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T04:46:42Z",
+        "updatedAt": "2026-11-14T04:55:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T04:48:59Z",
+        "updatedAt": "2026-11-14T04:58:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T04:49:26Z",
+        "updatedAt": "2026-11-14T04:59:49Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T04:51:39Z",
+        "updatedAt": "2026-11-14T05:02:31Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — potus-off-broadway-2026",
+        "startedAt": "2026-11-14T04:52:14Z",
+        "updatedAt": "2026-11-14T05:17:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+        "startedAt": "2026-11-14T04:52:23Z",
+        "updatedAt": "2026-11-14T05:02:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T05:09:17Z",
+        "updatedAt": "2026-11-14T05:19:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T05:31:55Z",
+        "updatedAt": "2026-11-14T05:41:02Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-14T05:33:22Z",
+        "updatedAt": "2026-11-14T05:49:48Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — potus-off-broadway-2026",
+        "startedAt": "2026-11-14T05:33:31Z",
+        "updatedAt": "2026-11-14T05:49:06Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+        "startedAt": "2026-11-14T05:33:40Z",
+        "updatedAt": "2026-11-14T05:40:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-14T05:46:49Z",
+        "updatedAt": "2026-11-14T05:55:43Z"
       }
     ]
   }
