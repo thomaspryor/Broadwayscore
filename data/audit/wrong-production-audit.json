@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T20:19:20.565Z",
+  "timestamp": "2026-11-14T21:12:16.064Z",
   "stats": {
-    "totalReviews": 82098,
-    "alreadyFlagged": 22380,
+    "totalReviews": 82099,
+    "alreadyFlagged": 22384,
     "dateGuardCatches": 220,
-    "directorMismatch": 3691,
+    "directorMismatch": 3695,
     "tvFilmSignals": 2313,
-    "londonSignals": 3752,
+    "londonSignals": 3754,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8477
+    "noPublishDate": 8468
   },
   "findings": [
     {
@@ -84611,6 +84611,25 @@
     },
     {
       "showId": "west-side-story-2020",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2020-02-27",
+      "url": "https://dctheatrescene.com/2020/02/27/west-side-story-on-broadway-ivo-van-hoves-thrilling-homoerotic-incoherent-broadway-music-video/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
       "file": "deadline--greg-evans.json",
       "score": 90,
       "publishDate": "February 20, 2020",
@@ -84908,6 +84927,25 @@
       "score": 45,
       "publishDate": "February 20, 2020",
       "url": "https://www.nytimes.com/2020/02/20/theater/west-side-story-review-sharks-vs-jets-vs-video.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
+      "file": "people--dave-quinn.json",
+      "score": null,
+      "publishDate": "2020-02-20",
+      "url": "https://people.com/theater/west-side-story-broadway-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -105439,6 +105477,20 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "musical-theatre-review--ian-bowkett.json",
+      "score": 96,
+      "publishDate": "2026-11-14",
+      "url": "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "standard--luke-reevey.json",
       "score": null,
       "publishDate": "2026-11-14",
@@ -122126,6 +122178,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "publishDate": "2026-11-14",
+      "url": "https://monstagigz.com/2026/11/14/theatre-review-pride-the-musical-starring-samuel-barnett-at-the-bridge-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
