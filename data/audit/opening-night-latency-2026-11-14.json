@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-14T14:35:52.599Z",
+  "generatedAt": "2026-11-14T18:11:52.821Z",
   "date": "2026-11-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 219674,
+  "entryCount": 232702,
   "shows": [
     {
       "showId": "wicked-tour-2021",
@@ -81,13 +81,13 @@
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 43,
+      "reviewCount": 45,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 557151,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -292,7 +292,7 @@
     },
     {
       "showId": "a-few-good-men-2026",
-      "reviewCount": 36,
+      "reviewCount": 37,
       "median_e2e_ms": 97735830,
       "p90_e2e_ms": 97735830,
       "per_stage_median_ms": {
@@ -643,7 +643,7 @@
     },
     {
       "showId": "beetlejuice-tour-2022",
-      "reviewCount": 86,
+      "reviewCount": 87,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3034,13 +3034,13 @@
     },
     {
       "showId": "the-lehman-trilogy-2021",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2147226,
+        "scored-to-rebuilt": 1352184,
         "rebuilt-to-deployed": 129746333
       },
       "reviews_over_15min": 0,
@@ -3300,7 +3300,7 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 22,
       "median_e2e_ms": 98516836,
       "p90_e2e_ms": 128172090,
       "per_stage_median_ms": {
@@ -4796,13 +4796,13 @@
     },
     {
       "showId": "dogstar-off-west-end-2026",
-      "reviewCount": 21,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 484305,
+        "scored-to-rebuilt": 410225,
         "rebuilt-to-deployed": 114314511
       },
       "reviews_over_15min": 0,
@@ -5096,13 +5096,13 @@
     },
     {
       "showId": "from-the-heart-west-end-2026",
-      "reviewCount": 27,
+      "reviewCount": 28,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 81692991,
+        "scored-to-rebuilt": 557149,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7847,7 +7847,7 @@
     },
     {
       "showId": "sting-off-west-end-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9377,13 +9377,13 @@
     },
     {
       "showId": "six-degrees-of-separation-2017",
-      "reviewCount": 48,
+      "reviewCount": 49,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 4791686,
+        "scored-to-rebuilt": 4789548,
         "rebuilt-to-deployed": 116154568
       },
       "reviews_over_15min": 0,
@@ -9962,13 +9962,13 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "reviewCount": 37,
+      "reviewCount": 39,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3177037,
+        "scored-to-rebuilt": 557139,
         "rebuilt-to-deployed": 116154567
       },
       "reviews_over_15min": 0,
@@ -11765,7 +11765,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 4031354,
+        "scored-to-rebuilt": 4028502,
         "rebuilt-to-deployed": 111984814
       },
       "reviews_over_15min": 0,
@@ -14939,13 +14939,13 @@
     },
     {
       "showId": "here-there-are-blueberries-2026",
-      "reviewCount": 22,
+      "reviewCount": 23,
       "median_e2e_ms": 18261368,
       "p90_e2e_ms": 18261368,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 623465,
+        "scored-to-rebuilt": 621004,
         "rebuilt-to-deployed": 56383160
       },
       "reviews_over_15min": 1,
@@ -14960,13 +14960,13 @@
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 128664,
+        "scored-to-rebuilt": 265360,
         "rebuilt-to-deployed": 85192541
       },
       "reviews_over_15min": 0,
@@ -15011,13 +15011,13 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
-      "reviewCount": 30,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 412332,
-        "scored-to-rebuilt": 229033,
+        "scored-to-rebuilt": 78592,
         "rebuilt-to-deployed": 97410615
       },
       "reviews_over_15min": 0,
@@ -15094,6 +15094,21 @@
         "collected-to-scored": 994630,
         "scored-to-rebuilt": 90723,
         "rebuilt-to-deployed": 65837450
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "reviewCount": 18,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -15356,29 +15371,14 @@
     },
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 3039258,
-        "scored-to-rebuilt": 325127,
+        "scored-to-rebuilt": 327679,
         "rebuilt-to-deployed": 88653080
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "the-case-book-of-c-auguste-dupin-regional-2026",
-      "reviewCount": 3,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -16055,13 +16055,13 @@
     },
     {
       "showId": "wanted-2022",
-      "reviewCount": 25,
+      "reviewCount": 26,
       "median_e2e_ms": 18242976,
       "p90_e2e_ms": 18242976,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 918541,
+        "scored-to-rebuilt": 597292,
         "rebuilt-to-deployed": 39791526
       },
       "reviews_over_15min": 1,
@@ -16091,13 +16091,13 @@
     },
     {
       "showId": "a-body-of-water-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1062424,
+        "scored-to-rebuilt": 1060086,
         "rebuilt-to-deployed": 61049717
       },
       "reviews_over_15min": 0,
@@ -16136,13 +16136,13 @@
     },
     {
       "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
-      "reviewCount": 7,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 472099,
-        "scored-to-rebuilt": 1136356,
+        "collected-to-scored": 485737,
+        "scored-to-rebuilt": 499102,
         "rebuilt-to-deployed": 32834967
       },
       "reviews_over_15min": 0,
@@ -16517,13 +16517,13 @@
     },
     {
       "showId": "cranford-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 678534,
-        "scored-to-rebuilt": 656550,
+        "scored-to-rebuilt": 422640,
         "rebuilt-to-deployed": 16185691
       },
       "reviews_over_15min": 0,
@@ -16537,8 +16537,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 10037861,
+        "scored-to-rebuilt": 557140,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16562,7 +16562,127 @@
     },
     {
       "showId": "school-of-rock-the-musical-2015",
+      "reviewCount": 24,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 557135,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-elephant-man-2014",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 3222893,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-bands-visit-regional-2024",
+      "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 557146,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "white-rose-the-musical-off-broadway-2024",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 557147,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "legally-blonde-tour-2022",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 557143,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "reviewCount": 25,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 557143,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "rain-2010",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 557132,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "starstuff-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1370998,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16576,8 +16696,8 @@
       "slowest_reviews": []
     },
     {
-      "showId": "the-elephant-man-2014",
-      "reviewCount": 1,
+      "showId": "disruption-off-broadway-2026",
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
