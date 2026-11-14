@@ -1,43 +1,5 @@
 [
   {
-    "recordedAt": "2026-11-05T13:10:30.734Z",
-    "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "newFile": "theatres-leiter-side--samuel-l-leiter.json",
-    "ok": false,
-    "file": "theatres-leiter-side--samuel-l-leiter.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": null,
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "https://slleiter.blogspot.com/2018/04/215-2017-2018-review-harry-potter-and.html",
-      "incomingPublishDate": null
-    }
-  },
-  {
-    "recordedAt": "2026-11-05T13:12:04.872Z",
-    "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-    "newFile": "timeout-london--andrzej-lukowski.json",
-    "ok": false,
-    "file": "timeout-london--andrzej-lukowski.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.timeout.com/london/theatre/jesus-christ-superstar-review",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-09-01",
-      "incomingUrl": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-11-05T13:12:05.058Z",
     "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
     "newFile": "whatsonstage--unknown.json",
@@ -9329,6 +9291,36 @@
       "existingPublishDate": "2026-11-06",
       "incomingUrl": "https://variety.com/2026/legit/reviews/school-girls-or-the-african-mean-girls-play-broadway-review-1236877325/",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-11-14T13:20:31.944Z",
+    "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+    "newFile": "standard--nick-curtis.json",
+    "ok": false,
+    "file": "standard--nick-curtis.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-11-12",
+      "incomingPublishDate": "2025-05-08",
+      "diffDays": 553,
+      "existingUrl": "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-review-barbican-radiohead-b1304586.html",
+      "incomingUrl": "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-aviva-studios-manchester-review-b1226517.html"
+    }
+  },
+  {
+    "recordedAt": "2026-11-14T13:20:34.902Z",
+    "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+    "newFile": "timeout-london--andrzej-lukowski.json",
+    "ok": false,
+    "file": "timeout-london--andrzej-lukowski.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2026-11-12",
+      "incomingPublishDate": "2025-05-08",
+      "diffDays": 553,
+      "existingUrl": "https://www.timeout.com/london/news/hamlet-hail-to-the-thief-barbican-review-111226",
+      "incomingUrl": "https://www.timeout.com/uk/news/review-hamlet-hail-to-the-thief-at-factory-international-manchester-050825"
     }
   }
 ]
