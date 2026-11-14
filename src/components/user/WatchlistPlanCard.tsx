@@ -1,14 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
+import { Suspense, useCallback, useState } from 'react';
+import { createLazyChunk, LazyChunkBoundary, LAZY_PANEL_ERROR_MESSAGE } from '@/components/ui/LazyChunk';
+import { useToastSafe } from '@/components/ui/Toast';
+import { PlanSheetSkeleton } from './LazyPanelSkeleton';
 import { formatTime } from '@/lib/calendar/format';
 import type { PerformanceEvent } from '@/lib/calendar';
 import type { WatchlistEntry } from '@/types/user';
 
 export type TimeFields = Pick<WatchlistEntry, 'time_slot' | 'curtain_time'>;
 
-const PlanSheet = dynamic(() => import('./PlanSheet'), { ssr: false });
+// Loaded on first tap, preloaded on pointerdown/hover/focus of the row, with a
+// skeleton while it downloads and a local boundary so a failed chunk closes the
+// sheet with a toast instead of replacing the show page (BRO-7494).
+const planSheetChunk = createLazyChunk(() => import('./PlanSheet'));
 
 export interface WatchlistPlanCardProps {
   showId: string;
@@ -35,25 +40,43 @@ export default function WatchlistPlanCard(props: WatchlistPlanCardProps) {
   // Mount the sheet on first tap (its chunk loads then); keep it mounted after so close animates.
   const [opened, setOpened] = useState(false);
   const date = entry.planned_date;
+  const { showToast } = useToastSafe();
+  const PlanSheet = planSheetChunk.get();
+  const onSheetError = useCallback(() => {
+    planSheetChunk.reset();
+    setOpen(false);
+    setOpened(false);
+    showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error');
+  }, [showToast]);
 
   return (
     <>
       <PlanRow
         onClick={() => { setOpened(true); setOpen(true); }}
+        onPreload={planSheetChunk.preload}
         ariaLabel={date ? `Your plans: ${planTitle(date)}. Edit` : 'Add the date you are going'}
         tile={date ? <DateTile date={date} accent /> : <IconTile />}
         title={date ? `Seeing it ${planTitle(date)}` : 'When are you going?'}
         subtitle={date ? (showtimeLabel(entry) ?? 'Add a showtime') : 'Add a date and showtime'}
         testId="watchlist-plan-card"
       />
-      {opened && <PlanSheet {...props} isOpen={open} onClose={() => setOpen(false)} />}
+      {opened && (
+        <LazyChunkBoundary onError={onSheetError}>
+          {/* Fallback only while open: a closed-but-mounted sheet must not flash a skeleton. */}
+          <Suspense fallback={open ? <PlanSheetSkeleton /> : null}>
+            <PlanSheet {...props} isOpen={open} onClose={() => setOpen(false)} />
+          </Suspense>
+        </LazyChunkBoundary>
+      )}
     </>
   );
 }
 
 /** Shared row: tile + title + subtitle + chevron, one 44px+ tap target. */
-export function PlanRow({ onClick, ariaLabel, tile, title, subtitle, children, testId }: {
+export function PlanRow({ onClick, onPreload, ariaLabel, tile, title, subtitle, children, testId }: {
   onClick: () => void;
+  /** Warm a lazy chunk the click will need (pointerdown / hover / focus). */
+  onPreload?: () => void;
   /** Omit to let screen readers read the row's own text. */
   ariaLabel?: string;
   tile: React.ReactNode;
@@ -66,6 +89,9 @@ export function PlanRow({ onClick, ariaLabel, tile, title, subtitle, children, t
     <button
       type="button"
       onClick={onClick}
+      onPointerDown={onPreload}
+      onMouseEnter={onPreload}
+      onFocus={onPreload}
       aria-label={ariaLabel}
       data-testid={testId}
       className="card-interactive w-full flex items-center gap-3 p-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-brand"
