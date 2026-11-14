@@ -1,23 +1,9 @@
 {
-  "generatedAt": "2026-11-13T10:03:35.005Z",
+  "generatedAt": "2026-11-14T09:42:17.544Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 3,
+  "flaggedCount": 2,
   "flagged": [
-    {
-      "id": "julius-caesar-globe-off-west-end-2026",
-      "title": "Julius Caesar",
-      "venue": "Sam Wanamaker Playhouse",
-      "category": "off-west-end",
-      "status": "previews",
-      "previewsStartDate": "2026-11-06",
-      "openingDate": null,
-      "todaytixId": 47387,
-      "reasons": [
-        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
-      ],
-      "firstFlaggedAt": "2026-11-12T00:21:54.154Z"
-    },
     {
       "id": "the-apology-west-end-2027",
       "title": "The Apology",
@@ -47,7 +33,12 @@
       "firstFlaggedAt": "2026-11-12T00:21:54.154Z"
     }
   ],
-  "firstFlaggedHistory": {},
+  "firstFlaggedHistory": {
+    "julius-caesar-globe-off-west-end-2026": {
+      "firstFlaggedAt": "2026-11-12T00:21:54.154Z",
+      "lastSeenAt": "2026-11-13T10:03:35.005Z"
+    }
+  },
   "postponedCount": 0,
   "postponed": [],
   "orphanAckCount": 0,
