@@ -72,7 +72,8 @@ function ToastItem({ toast, onDismiss }: { toast: ToastMessage; onDismiss: (id: 
     ? 'bg-red-600/90'
     : 'bg-blue-600/90';
 
-  const icon = toast.type === 'success' ? '✓' : toast.type === 'error' ? '✕' : 'ℹ';
+  // Error uses "!" (not "✕"), so it can't be read as a second close button (BRO-7494).
+  const icon = toast.type === 'success' ? '✓' : toast.type === 'error' ? '!' : 'ℹ';
 
   return (
     <div
@@ -80,14 +81,21 @@ function ToastItem({ toast, onDismiss }: { toast: ToastMessage; onDismiss: (id: 
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
       }`}
     >
-      <span className="text-xs font-bold">{icon}</span>
+      <span
+        className={toast.type === 'error'
+          ? 'shrink-0 inline-flex items-center justify-center w-4 h-4 rounded-full border-[1.5px] border-white text-[10px] font-bold leading-none'
+          : 'shrink-0 text-xs font-bold'}
+        aria-hidden="true"
+      >
+        {icon}
+      </span>
       <span>{toast.message}</span>
       <button
         onClick={() => {
           setVisible(false);
           setTimeout(() => onDismiss(toast.id), 300);
         }}
-        className="ml-2 text-white/60 hover:text-white transition-colors text-xs"
+        className="ml-2 shrink-0 -m-1 p-1 text-white/90 hover:text-white transition-colors text-sm"
         aria-label="Dismiss"
       >
         ✕
