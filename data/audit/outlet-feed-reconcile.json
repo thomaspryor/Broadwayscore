@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T11:32:51.104Z",
+  "generatedAt": "2026-11-14T13:05:42.828Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,32 +103,12 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 852,
-  "matchedGaps": 5,
+  "itemsScanned": 880,
+  "matchedGaps": 7,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -150,6 +130,15 @@
       "publishDate": "2026-11-14"
     },
     {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "theartsdispatch",
+      "url": "https://www.theartsdispatch.com/p/dogstar-review-hampstead-theatre",
+      "headline": "Dogstar review - Hampstead Theatre, London ★★★☆☆",
+      "publishDate": "2026-11-13"
+    },
+    {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "title": "Hamlet Hail to the Thief",
       "level": "matched",
@@ -166,6 +155,15 @@
       "url": "https://stageandcinema.com/2026/11/11/ms-blakk-for-president-vineyard-theatre-review/",
       "headline": "Off-Broadway Review: MS. BLAKK FOR PRESIDENT (Vineyard Theatre)",
       "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+      "headline": "We’ll See ****, Ms. Blakk for President ****",
+      "publishDate": "2026-11-11"
     },
     {
       "showId": "the-visitors-off-broadway-2026",
