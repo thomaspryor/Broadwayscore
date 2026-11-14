@@ -26326,12 +26326,13 @@
       "firstSeen": "2026-10-24T13:07:31.042Z",
       "incidentOpenedAt": "2026-11-14T02:43:17.328Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-14T02:43:17.328Z",
+      "lastSeen": "2026-11-14T11:59:46.243Z",
       "lastNotifiedAt": "2026-11-14T02:43:17.328Z",
       "lastSurfacedAt": "2026-11-14T02:43:17.328Z",
       "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-6101-aggregator-repair": {
       "status": "resolved",
@@ -29503,12 +29504,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-14T02:43:17.350Z",
+      "lastSeen": "2026-11-14T11:59:46.264Z",
       "lastNotifiedAt": "2026-11-14T02:43:17.350Z",
       "lastSurfacedAt": "2026-11-14T02:43:17.350Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -39100,13 +39102,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-14T02:43:17.290Z",
+      "lastSeen": "2026-11-14T11:59:46.195Z",
       "lastNotifiedAt": "2026-11-13T12:39:35.182Z",
       "lastSurfacedAt": "2026-11-13T12:39:35.182Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -39234,20 +39236,18 @@
       "resolvedAt": "2026-11-08T10:15:43.140Z"
     },
     "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
       "firstSeen": "2026-11-08T11:49:18.462Z",
-      "incidentOpenedAt": "2026-11-12T12:48:20.041Z",
+      "incidentOpenedAt": "2026-11-14T11:59:46.171Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-12T12:48:20.041Z",
-      "lastNotifiedAt": "2026-11-12T12:48:20.041Z",
-      "lastSurfacedAt": "2026-11-12T12:48:20.041Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-11-14T11:59:46.171Z",
+      "lastNotifiedAt": "2026-11-14T11:59:46.171Z",
+      "lastSurfacedAt": "2026-11-14T11:59:46.171Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-12T17:31:14.625Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
       "status": "resolved",
@@ -43224,12 +43224,13 @@
       "firstSeen": "2026-11-14T02:43:17.309Z",
       "incidentOpenedAt": "2026-11-14T02:43:17.309Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-14T02:43:17.309Z",
+      "lastSeen": "2026-11-14T11:59:46.220Z",
       "lastNotifiedAt": "2026-11-14T02:43:17.309Z",
       "lastSurfacedAt": "2026-11-14T02:43:17.309Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "express-retry-still-thin:potus-off-broadway-2026": {
       "status": "open",
