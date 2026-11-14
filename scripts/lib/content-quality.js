@@ -3411,6 +3411,9 @@ function isValidAuthorName(name) {
   if (skipNames.some(s => trimmed.toLowerCase().includes(s))) return false;
   // A CMS account ("Sam - Admin") is the site, not the critic (BRO-5317).
   if (require('./byline-recovery').CMS_ADMIN_HANDLE_RE.test(trimmed)) return false;
+  // The Recs house signature ("The Recs IT", "The Recs RDC - Name") is never a
+  // name as-is; extractTheRecsByline takes the name out of it (BRO-7477).
+  if (/^the\s+recs\b/i.test(trimmed)) return false;
   return true;
 }
 
@@ -3574,6 +3577,31 @@ function isSiteWideAuthorSource({ url, outletId } = {}) {
   return false;
 }
 
+// "The Recs RDC - Randall David Cook" -> "Randall David Cook" (BRO-7477).
+// Returns { signed, name }: signed=true when the page carries a "The Recs ..."
+// house signature at all, so a bare "The Recs IT" yields no name instead of
+// falling through to the generic meta reader (which would accept it).
+const THE_RECS_SIGNED_RE = /^\s*the\s+recs\b/i;
+const THE_RECS_SIGNATURE_RE = /^\s*[Tt]he\s+[Rr]ecs\s+[A-Z]{1,4}\s*[-\u2013\u2014]\s*(.+?)\s*$/;
+function extractTheRecsByline(html) {
+  if (!html) return { signed: false, name: null };
+  const { decodeHtmlEntities } = require('./text-cleaning');
+  const candidates = [];
+  const meta = /<meta\b[^>]*\bname=["']author["'][^>]*>/i.exec(html);
+  const metaContent = meta && /\bcontent=(["'])(.*?)\1/i.exec(meta[0]);
+  if (metaContent) candidates.push(metaContent[2]);
+  const ld = /"author"\s*:\s*\{[^}]*?"name"\s*:\s*"((?:[^"\\]|\\.)+)"/.exec(html);
+  if (ld) { try { candidates.push(JSON.parse(`"${ld[1]}"`)); } catch { candidates.push(ld[1]); } }
+  let signed = false;
+  for (const raw of candidates) {
+    const value = decodeHtmlEntities(raw).replace(/\s+/g, ' ');
+    if (!THE_RECS_SIGNED_RE.test(value)) continue;
+    signed = true;
+    const m = THE_RECS_SIGNATURE_RE.exec(value);
+    if (m && isValidAuthorName(m[1])) return { signed, name: cleanAuthorName(m[1]) };
+  }
+  return { signed, name: null };
+}
 function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
   if (!html) return null;
 
@@ -3610,6 +3638,20 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
       const decoded = decodeHtmlEntities(tsTitle[1]).replace(/\s+/g, ' ').trim();
       if (isValidAuthorName(decoded)) return cleanAuthorName(decoded);
     }
+  }
+
+  // Outlet override: therecs.co.uk signs every post "The Recs <initials> -
+  // <Full Name>" in both <meta name="author"> and the JSON-LD author. The whole
+  // string fails isValidAuthorName, so every Recs review landed as "Unknown"
+  // (47 files, BRO-7477). Take the name after the initials; a bare
+  // "The Recs IT" (no name) stays unresolved.
+  // The signature is self-identifying, so this runs for every caller (some pass
+  // no url/outletId). A bare "The Recs IT" falls through, and isValidAuthorName
+  // refuses it in the generic readers, so the page's own "Reviewer:"/"By" line
+  // still wins.
+  {
+    const recs = extractTheRecsByline(html);
+    if (recs.name) return recs.name;
   }
 
   // Outlet override: theatermania.com's JSON-LD only references the author by
@@ -4283,7 +4325,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   };
 }
 
-module.exports = { isSiteWideAuthorSource, isSiteWideAuthorAccount,
+module.exports = { extractTheRecsByline, isSiteWideAuthorSource, isSiteWideAuthorAccount,
   PROMO_BOOKING_COPY_PATTERNS,
   PROMO_BOOKING_COPY_STRONG_PATTERNS,
   PROMO_BOOKING_COPY_WEAK_PATTERNS,
