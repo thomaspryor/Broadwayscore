@@ -1,0 +1,94 @@
+{
+  "issueNumber": "bro-4317-a-04",
+  "planId": "e875e6ab-375e-4f23-a9ad-4320b6450b00",
+  "status": "applied",
+  "createdAt": "2026-10-13T00:58:15.178Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 4/4: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete the-music-man-off-broadway-2026/theatrely--juan-a-ramirez.json",
+      "delete the-music-man-off-broadway-2026/thewrap--thom-geier.json",
+      "delete the-music-man-off-broadway-2026/timeout--adam-feldman.json",
+      "delete the-music-man-off-broadway-2026/vulture--helen-shaw.json",
+      "move the-notebook/theater-life--paulanne-simmons.json -> the-notebook-2024/theater-life--paulanne-simmons.json",
+      "delete the-other-place-2026/minneapolis-star-tribune--mark-kennedy.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/theatrely--juan-a-ramirez.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 6601 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/thewrap--thom-geier.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/thewrap--thom-geier.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 3713 chars vs this invalid 515."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/timeout--adam-feldman.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/timeout--adam-feldman.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 4506 chars vs this invalid 4993."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/vulture--helen-shaw.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/vulture--helen-shaw.json: same url, publishDate February 11, 2022 inside the-music-man-2022's run; the kept copy is complete 8364 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-notebook/theater-life--paulanne-simmons.json",
+        "destPath": "the-notebook-2024/theater-life--paulanne-simmons.json",
+        "description": "the-notebook/ is not a shows.json id, so rebuild skipped this review. publishDate 2024-03-22T14:13:54 falls only inside the-notebook-2024 (run 2024-03-14..2024-12-15); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-other-place-2026/minneapolis-star-tribune--mark-kennedy.json",
+        "description": "Orphan copy (the-other-place-2026/ is not a shows.json id) of the-other-place-2013/minneapolis-star-tribune--mark-kennedy.json: same url, publishDate January 10, 2013 inside the-other-place-2013's run; the kept copy is excerpt 0 chars vs this untiered 0."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T01:48:48.479Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/theatrely--juan-a-ramirez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/thewrap--thom-geier.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/vulture--helen-shaw.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-notebook/theater-life--paulanne-simmons.json → the-notebook-2024/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/minneapolis-star-tribune--mark-kennedy.json"
+    }
+  ]
+}

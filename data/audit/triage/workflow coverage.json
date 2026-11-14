@@ -1,0 +1,20 @@
+{
+  "system": "workflow coverage",
+  "status": "warn",
+  "lastChecked": "2026-11-14T09:07:36.586Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Workflow coverage: invalid files",
+      "status": "warn",
+      "message": "Run list was truncated (300-run cap or a failed page), so an invalid workflow file could be missed"
+    },
+    {
+      "name": "Workflow coverage: never-run",
+      "status": "pass",
+      "message": "No never-run workflows among 332 checked"
+    }
+  ]
+}

@@ -1,0 +1,519 @@
+{
+  "issueNumber": "bro-5089-g",
+  "planId": "183bad23-5e9f-4ef0-9e94-5b1185f428c5",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.561Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 7/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-life-1980/thumbnail.jpg",
+          "poster": "/images/shows/a-life-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-life-1980: poster and thumbnail cleared, wrong-show: The poster clearly reads 'Me and My Girl' and features billing for Robert Lindsay and 'Best Musical of the Year'—identifies a different show than 'A Life'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "42nd-street-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/42nd-street-1980/thumbnail.jpg",
+          "poster": "/images/shows/42nd-street-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "42nd-street-1980: poster and thumbnail cleared, other-production: Poster text at bottom reads 'Majestic Theatre', not 'Winter Garden Theatre' (different theatre than the listed production). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-gabriel-borkman-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/john-gabriel-borkman-1980/thumbnail.jpg",
+          "poster": "/images/shows/john-gabriel-borkman-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "john-gabriel-borkman-1980: poster and thumbnail cleared, other-production: Poster text reads 'Different Stages presents' and gives run dates 'June 24 to July 16' and lists venue 'The Vortex, 2307 Manor Rd' — different producing company, dates and theatre than the 1980 Circle in the Square run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charlie-and-algernon-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/charlie-and-algernon-1980/thumbnail.jpg",
+          "poster": "/images/shows/charlie-and-algernon-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "charlie-and-algernon-1980: poster and thumbnail cleared, other-production: The poster headline clearly reads 'Flowers For Algernon' and prominently names 'Michael Crawford,' which differs from the specified Broadway billing/title 'Charlie and Algernon' for the Helen Hayes Theatre run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "passionate-ladies-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/passionate-ladies-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "passionate-ladies-1981: poster and thumbnail cleared, wrong-show: The image text clearly reads 'CAMELOT' and 'SUMMER AT THE STATE THEATER', not the title 'Passionate Ladies' or any reference to the Bijou Theatre/1981 production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inacent-black-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/inacent-black-1981/thumbnail.jpg",
+          "poster": "/images/shows/inacent-black-1981/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "inacent-black-1981: poster and thumbnail cleared, wrong-show: The cover clearly shows the title 'BLACKSTONE!' (and Playbill/Majestic Theatre branding), not 'Inacent Black' or the Samuel J. Friedman/Biltmore Theatre production details. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "once-a-catholic-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/once-a-catholic-1979/thumbnail.jpg",
+          "poster": "/images/shows/once-a-catholic-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "once-a-catholic-1979: poster and thumbnail cleared, wrong-show: The Playbill cover clearly reads 'The Utter Glory of MORRISSEY HALL', which is a different title than 'Once a Catholic'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-survivor-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-survivor-1981/thumbnail.jpg",
+          "poster": "/images/shows/the-survivor-1981/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-survivor-1981: poster and thumbnail cleared, other-production: Image contains film-style billing with actor names 'Robert Powell' and 'David Hemmings' and the title 'Survivor' (French subtitle 'Le Survivant d'un Monde Parallèle') and sci-fi artwork — indicates a movie poster, not th (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "filumena-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/filumena-1980/thumbnail.jpg",
+          "poster": "/images/shows/filumena-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "filumena-1980: poster and thumbnail cleared, other-production: Poster text: stars Felicity Kendal and Matthew Kelly; ‘Bill Kenwright Ltd presents’; ‘Directed by Sean Mathias’ — credits and creative team do not match the 1980 St. James/Laurence Olivier production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "filumena-1980",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/9546/medium_1731422162-New_Project.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/9546/preview_1731422162-New_Project.jpg"
+        ],
+        "description": "filumena-1980: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charlotte-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/charlotte-1980/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "charlotte-1980: poster and thumbnail cleared, other-production: Cover clearly reads '2024-2025 Theatre Season' and shows 'O'Gorman High School' and 'Opening Night!' — indicates a 2024 school/theatre-season program, not the 1980 Belasco Broadway production of Charlotte. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "past-tense-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/past-tense-1980/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "past-tense-1980: poster and thumbnail cleared, wrong-show: The image clearly reads 'CRISPY AMBULANCE' and 'from the cradle to the grave' and shows a band photo/album-style poster — it does not match the play title 'Past Tense', Circle in the Square Theatre, or any Playbill/progr (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spokesong-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/spokesong-1979/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "spokesong-1979: poster and thumbnail cleared, wrong-show: The Playbill cover text reads 'Bedroom Farce', which identifies a different play than 'Spokesong'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spokesong-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/spokesong-circle-in-the-square-theatre-vault-0000003281"
+        ],
+        "description": "spokesong-1979: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nuts-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/nuts-1980/thumbnail.jpg",
+          "poster": "/images/shows/nuts-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "nuts-1980: poster and thumbnail cleared, other-production: The poster includes film-style billing and the visible line \"Music by Barbra Streisand,\" indicating the 1987 movie version rather than the 1980 Broadway production at the Samuel J. Friedman Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nuts-1980",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://open.spotify.com/album/6vZMh59WimkUJZAgF2fX8M",
+          "google-images:https://playbill.com/production/nuts-biltmore-theatre-vault-0000001538"
+        ],
+        "description": "nuts-1980: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wings-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wings-1979/thumbnail.jpg",
+          "poster": "/images/shows/wings-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "wings-1979: poster and thumbnail cleared, other-production: The image text reads 'WINGS BRIGHTON LIVE 1979', indicating a 1979 Brighton concert (the band Wings), not the Arthur Kopit play at the Lyceum Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wings-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://retronewser.com/2019/12/02/wings-perform-at-brighton-centre-in-brighton/",
+          "google-images:https://playbill.com/production/wings-lyceum-theatre-vault-0000007121"
+        ],
+        "description": "wings-1979: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-meeting-by-the-river-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-meeting-by-the-river-1979/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-meeting-by-the-river-1979: poster and thumbnail cleared, wrong-show: The clipped text mentions places like 'Wrexham' and 'Royal Opera' and contains no mention of the title 'A Meeting by the River', the theatre 'Palace Theatre', or the authors 'Christopher Isherwood' / 'Don Bachardy'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-of-la-mancha-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/man-of-la-mancha-1977/thumbnail.jpg",
+          "poster": "/images/shows/man-of-la-mancha-1977/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "man-of-la-mancha-1977: poster and thumbnail cleared, other-production: The poster text at the bottom reads 'ANTA WASHINGTON SQUARE THEATRE', indicating the Washington Square (ANTA) Theatre rather than the Palace Theatre for the 1977 Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-merchant-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-merchant-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-merchant-1977: poster and thumbnail cleared, other-production: The poster clearly reads 'ZERO MOSTEL' and 'THE MERCHANT' but the bottom of the image names the venue as 'IMPERIAL THEATRE' — a different theatre than the Gerald Schoenfeld/Plymouth Theatre listed for the queried run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-merchant-1977",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/productions/the-merchant-plymouth-theatre-vault-0000009578"
+        ],
+        "description": "the-merchant-1977: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-history-of-the-american-film-1978",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-history-of-the-american-film-1978/thumbnail.jpg",
+          "poster": "/images/shows/a-history-of-the-american-film-1978/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-history-of-the-american-film-1978: poster and thumbnail cleared, other-production: The Playbill cover clearly shows the title \"ESTRADA\" at the bottom, not \"A History of the American Film.\" (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-history-of-the-american-film-1978",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/a-history-of-the-american-film-anta-playhouse-vault-0000005258",
+          "google-images:https://www.historyforsale.com/buried-inside-extra-play-cast-show-bill-signed-co-signed-by-vincent-gardenia-hal-holbrook-linda-selman/dc313629"
+        ],
+        "description": "a-history-of-the-american-film-1978: never re-take this art source (BRO-5089)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:11:08.147Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-life-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for 42nd-street-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for john-gabriel-borkman-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for charlie-and-algernon-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for passionate-ladies-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for inacent-black-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for once-a-catholic-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-survivor-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for filumena-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for filumena-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for charlotte-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for past-tense-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for spokesong-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for spokesong-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for nuts-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for nuts-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for wings-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for wings-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-meeting-by-the-river-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for man-of-la-mancha-1977"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-merchant-1977"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-merchant-1977"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-history-of-the-american-film-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-history-of-the-american-film-1978"
+    }
+  ]
+}

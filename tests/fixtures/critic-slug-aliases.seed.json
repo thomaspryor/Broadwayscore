@@ -1,0 +1,6 @@
+{
+  "_note": "Template for critic-slug-aliases.json in the private core-data repo (thomaspryor/broadway-scorecard-data; lands at data/critic-slug-aliases.json here, gitignored). Format: {\"<old-critic-slug>\": \"<canonical-critic-slug>\"} — keys starting with _ are ignored; keys/values are trimmed and lowercased. Old slug = a /critics/<slug> URL that used to resolve (diacritic-mangled by slugify, or a merged spelling); canonical = the slug getCriticBySlug() resolves today. scripts/build-slug-redirects.js emits each as a 301 (src/middleware.ts) and getCriticBySlug() resolves it. Never map a slug to itself; chains (a->b, b->c) are flattened at build time; cycles are dropped with a warning. Seeds (2026-09-28): the three diacritic-mangled slugs whose ASCII spelling already has a canonical profile.",
+  "jose-sol-s": "jose-solis",
+  "juan-a-ram-rez": "juan-a-ramirez",
+  "rafer-guzm-n": "rafer-guzman"
+}

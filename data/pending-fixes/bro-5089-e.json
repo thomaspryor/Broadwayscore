@@ -1,0 +1,531 @@
+{
+  "issueNumber": "bro-5089-e",
+  "planId": "c0be5a00-cc00-4f5f-a029-4dbc8f091620",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.560Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 5/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "short-talks-on-the-universe-2002",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/short-talks-on-the-universe-2002/thumbnail.jpg",
+          "poster": "/images/shows/short-talks-on-the-universe-2002/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "short-talks-on-the-universe-2002: poster and thumbnail cleared, wrong-show: The image is a generic collage of unrelated performer photos and contains no title, production credits, theatre name, dates, or Dan Sullivan credit — it does not match a playbill/poster for 'Short Talks on the Universe'  (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-old-neighborhood-1997",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-old-neighborhood-1997/thumbnail.jpg",
+          "poster": "/images/shows/the-old-neighborhood-1997/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-old-neighborhood-1997: poster and thumbnail cleared, not-art: Photo of an SUV with automotive advertising copy and the Infiniti logo/branding at the bottom — clearly a car ad, not a Playbill/poster for The Old Neighborhood. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "honour-1998",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/honour-1998/thumbnail.jpg",
+          "poster": "/images/shows/honour-1998/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "honour-1998: poster and thumbnail cleared, other-production: The image shows a 'qtc' logo and 'Queensland Theatre Company' text (top-left), indicating a Queensland production rather than the Belasco Theatre Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ma-raineys-black-bottom-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ma-raineys-black-bottom-2003/thumbnail.jpg",
+          "poster": "/images/shows/ma-raineys-black-bottom-2003/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "ma-raineys-black-bottom-2003: poster and thumbnail cleared, other-production: Photographic, cinematic poster image of actors and trumpet with only the title text; lacks Playbill/theatre credits or Jacobs/Royale theatre ID and looks like film-style artwork rather than the 2003 Bernard B. Jacobs (Ro (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-society-1998",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/high-society-1998/hero.webp",
+          "thumbnail": "/images/shows/high-society-1998/thumbnail.webp",
+          "poster": "/images/shows/high-society-1998/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/high-society-1998/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "high-society-1998: poster and thumbnail cleared, other-production: Poster names Helen George and Felicity Kendal and text at bottom: 'Barbican | May 2026 | Limited Season' — dates, venue and casting do not match the 1998 St. James Theatre production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-society-1998",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5D7e6KpTS8SjbuAtsOwtdw/3bb56a5126bcf6c1eb20e8a5895f64ef/HS_TODAYTIX_ON_SALE_ASSETS_DEC25_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/hBtJRvKmdMzLnfzCav0YL/34c8186d4ee1017bdbab8adb1ac687df/HS_TODAYTIX_ON_SALE_ASSETS_DEC25_1080x1080.jpg?fm=webp&q=90"
+        ],
+        "description": "high-society-1998: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "something-unspoken-1995",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/something-unspoken-1995/thumbnail.jpg",
+          "poster": "/images/shows/something-unspoken-1995/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "something-unspoken-1995: poster and thumbnail cleared, other-production: Poster text reads 'BENCH THEATRE' and 'UNITED STATES? AN AMERICAN DOUBLE BILL' (includes 'The Zoo Story') — not Circle in the Square Theatre or the 1995 Broadway run of Something Unspoken. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-shadow-box-1994",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-shadow-box-1994/thumbnail.jpg",
+          "poster": "/images/shows/the-shadow-box-1994/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-shadow-box-1994: poster and thumbnail cleared, other-production: The Playbill cover clearly shows the title 'THE SHADOW BOX' but the header names 'MOROSCO THEATRE', which ties this to a different theatre than the Circle in the Square 1994 production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whats-wrong-with-this-picture-1994",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/whats-wrong-with-this-picture-1994/thumbnail.jpg",
+          "poster": "/images/shows/whats-wrong-with-this-picture-1994/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "whats-wrong-with-this-picture-1994: poster and thumbnail cleared, other-production: The Playbill header reads 'LYCEUM THEATRE' and the cover title at bottom says 'A KNIGHT OUT' — different theatre and different show title than 'What's Wrong With This Picture?' at Brooks Atkinson Theatre (1994). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-school-for-scandal-1995",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-school-for-scandal-1995/thumbnail.jpg",
+          "poster": "/images/shows/the-school-for-scandal-1995/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-school-for-scandal-1995: poster and thumbnail cleared, other-production: The image is a DVD cover that reads 'Starring Blair Brown, Patricia Conolly, Kenneth Welsh, Larry Gates' — billing for a filmed release, not the 1995 Lyceum Broadway production (different principal cast/format than the P (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-school-for-scandal-1995",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/815/medium_scandal.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/815/preview_scandal.jpg"
+        ],
+        "description": "the-school-for-scandal-1995: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-twilight-of-the-golds-1993",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-twilight-of-the-golds-1993/thumbnail.jpg",
+          "poster": "/images/shows/the-twilight-of-the-golds-1993/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-twilight-of-the-golds-1993: poster and thumbnail cleared, wrong-show: The poster clearly displays the title 'In the Summer House' (visible under the PLAYBILL header), not 'The Twilight of the Golds.' (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "smokey-joes-cafe-1995",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/smokey-joes-cafe-1995/hero.webp",
+          "thumbnail": "/images/shows/smokey-joes-cafe-1995/thumbnail.webp",
+          "poster": "/images/shows/smokey-joes-cafe-1995/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "smokey-joes-cafe-1995: poster, thumbnail and hero cleared, other-production: The poster lists 'Directed and Choreographed by JOSHUA BERGASSE' — the 1995–2000 August Wilson Theatre production was directed by Jerry Zaks, so this credit ties the image to a different staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "smokey-joes-cafe-1995",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1pF057Sp5BtrBLynjeil8v/cb332b147de16057e7d8e0941f8c1cd4/1527640339191_180523_SJC_TodayTix_Poster2_BL.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1pF057Sp5BtrBLynjeil8v/cb332b147de16057e7d8e0941f8c1cd4/1527640339191_180523_SJC_TodayTix_Poster2_BL.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "smokey-joes-cafe-1995: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-government-inspector-1994",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-government-inspector-1994/thumbnail.jpg",
+          "poster": "/images/shows/the-government-inspector-1994/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-government-inspector-1994: poster and thumbnail cleared, other-production: The poster clearly shows 'chichester festival theatre' and 'World Premiere 25 Apr - 24 May' plus actor name 'Tom Rosenthal' — indicating the Chichester production, not the Lyceum (1993–94) Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oba-oba-93-1992",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/oba-oba-93-1992/thumbnail.jpg",
+          "poster": "/images/shows/oba-oba-93-1992/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "oba-oba-93-1992: poster and thumbnail cleared, wrong-show: Poster prominently reads 'PRAZER, ZEZÉ!' with Portuguese dates '20 de março a 21 de abril' and Brazilian cast/credits — it does not say 'Oba Oba '93', Marquis Theatre, or the 1992 Broadway run details. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "abe-lincoln-in-illinois-1993",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/abe-lincoln-in-illinois-1993/thumbnail.jpg",
+          "poster": "/images/shows/abe-lincoln-in-illinois-1993/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "abe-lincoln-in-illinois-1993: poster and thumbnail cleared, other-production: The Playbill cover clearly reads 'FOR THE PLYMOUTH THEATRE' (visible 'PLYMOUTH THEATRE'), which ties it to a different theatre/staging rather than the Vivian Beaumont Theatre 1993 production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "someone-wholl-watch-over-me-1992",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/someone-wholl-watch-over-me-1992/thumbnail.jpg",
+          "poster": "/images/shows/someone-wholl-watch-over-me-1992/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "someone-wholl-watch-over-me-1992: poster and thumbnail cleared, other-production: Poster header reads 'SCCC Theatre Arts' and shows 'March 2026' with local performance dates/times — a different company and year than the Booth Theatre 1992–1993 Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pullman-car-hiawatha-1993",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/pullman-car-hiawatha-1993/thumbnail.jpg",
+          "poster": "/images/shows/pullman-car-hiawatha-1993/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "pullman-car-hiawatha-1993: poster and thumbnail cleared, wrong-show: The image text reads 'OUR TOWN and the COSMIC ONE-ACTS' and 'THORNTON WILDER' (book/Our Town cover), not 'Pullman Car Hiawatha' or Circle in the Square production details. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-long-christmas-dinner-1993",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-long-christmas-dinner-1993/thumbnail.jpg",
+          "poster": "/images/shows/the-long-christmas-dinner-1993/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-long-christmas-dinner-1993: poster and thumbnail cleared, other-production: Poster text shows 'directed by Jacqueline Stone' and references 'December 1-26, 2025' and 'The Bramble Loft' — different director, venue/date than the 1993 Circle in the Square (dir. Edward Berkeley). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blood-brothers-1993",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/blood-brothers-1993/thumbnail.jpg",
+          "poster": "/images/shows/blood-brothers-1993/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "blood-brothers-1993: poster and thumbnail cleared, other-production: The poster displays 'Royal Alexandra Theatre' at the top, tying it to a different venue/staging rather than the Music Box Theatre Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blood-brothers-1993",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/7001/medium_1641310526-Blood_Brothers2.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/7001/preview_1641310526-Blood_Brothers2.jpg"
+        ],
+        "description": "blood-brothers-1993: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-1993",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/company-1993/thumbnail.jpg",
+          "poster": "/images/shows/company-1993/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "company-1993: poster and thumbnail cleared, other-production: Poster lists cast names including 'Dean Jones' and 'Elaine Stritch' (and shows 'ALVIN THEATRE'), indicating the original/Alvin Theatre production rather than the 1993 Vivian Beaumont Theatre run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-happy-journey-to-trenton-and-camden-1993",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-happy-journey-to-trenton-and-camden-1993/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-happy-journey-to-trenton-and-camden-1993: poster and thumbnail cleared, wrong-show: Image text reads 'LANDSHARKS', 'Jimmy Buffett Tribute Concert', and shows 'Alabama Theatre' / 'North Myrtle Beach' — advertises a concert/venue, not Thornton Wilder's The Happy Journey to Trenton and Camden. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:04:14.826Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for short-talks-on-the-universe-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-old-neighborhood-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for honour-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for ma-raineys-black-bottom-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for high-society-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for high-society-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for something-unspoken-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-shadow-box-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for whats-wrong-with-this-picture-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-school-for-scandal-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-school-for-scandal-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-twilight-of-the-golds-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for smokey-joes-cafe-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for smokey-joes-cafe-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-government-inspector-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for oba-oba-93-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for abe-lincoln-in-illinois-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for someone-wholl-watch-over-me-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for pullman-car-hiawatha-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-long-christmas-dinner-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for blood-brothers-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for blood-brothers-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for company-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-happy-journey-to-trenton-and-camden-1993"
+    }
+  ]
+}

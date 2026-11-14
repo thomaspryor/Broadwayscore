@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-2255",
+  "planId": "626a1d7a-632d-4310-ab03-16bb62c631d3",
+  "status": "applied",
+  "createdAt": "2026-10-29T08:09:20.747Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2255 Playbill sweep batches 0-1 (96 shows): two corroborated corrections. Garry Starr: Classic Penguins is a U.S. premiere of a solo show previously staged in West End/Sydney/Edinburgh, not a revival (Playbill article 'Garry Starr: Classic Penguins Sets U.S. Premiere at Off-Broadway's Studio Seaview'; Playbill production page tag original). Bear Grease is a musical (TheaterMania: 'Canadian Indigenous musical Bear Grease will have New York premiere in June'; Playbill tag musical).",
+    "steps": [
+      "shows.json: garry-starr-classic-penguins-off-broadway-2026.isRevival",
+      "shows.json: bear-grease-off-broadway-2025.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "garry-starr-classic-penguins-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false,
+        "description": "shows.json: garry-starr-classic-penguins-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bear-grease-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: bear-grease-off-broadway-2025.type"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T11:04:14.760Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for garry-starr-classic-penguins-off-broadway-2026 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for bear-grease-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

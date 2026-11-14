@@ -1,0 +1,25 @@
+{
+  "card": "BRO-7257",
+  "date": "2026-11-10",
+  "method": "GPT-4.1 and Gemini 2.5 Flash judged each review blind to our record against the fetched article, and each show against the theatre page. Claude triaged: a problem counts only with quoted source evidence.",
+  "confirmed": [
+    {"item": "wonder-regional-2026 / Arts Fuse", "problem": "row credited to Robert Israel, dated 2025-12-29, score 40; article byline is Martin Copenhaver, published 2026-01-02, mildly positive", "evidence": "text 'By Martin Copenhaver'; both models flagged critic and date", "fix": "humanReviewScore 71 on the text file drops the stale manual row (same url)"},
+    {"item": "black-swan-regional-2026 / Theater Mirror", "problem": "same article counted twice (Michele Markarian ?p=11324 score 89 plus manual row 'Mike Hoban' score 90)", "evidence": "both urls return 'A Spectacular, Scary Black Swan Soars at A.R.T.' by Michele Markarian, 2026-06-13", "fix": "keep slug-url file with humanReviewScore 89, delete ?p= file, block the ?p= url"},
+    {"item": "come-from-away-north-regional-2026 / Berkshire On Stage", "problem": "review of the Sharon Playhouse (CT) production counted for North Shore Music Theatre (Beverly MA)", "evidence": "url slug and text 'Come From Away at the Sharon Playhouse', 2026-09-15", "fix": "wrongProduction true"},
+    {"item": "paranormal-activity-boston-regional-2026 / Boston.com", "problem": "manual score 68 from an excerpt; full text is largely enthusiastic", "evidence": "GPT 90, Gemini 85, pipeline ensemble 81; one limited reservation in text", "fix": "humanReviewScore 81"},
+    {"item": "grim-regional-2026", "problem": "status upcoming with opening 2026-11-27; the theatre page shows the run started Oct 27 (First Look previews), regular run from Nov 1 to Dec 13", "evidence": "lajollaplayhouse.org/show/grim: 'First Look (previews): Oct 27 - Nov 1 mat; Weeks 2-7: Nov 1 eve - Dec 13'", "fix": "openingDate 2026-11-01, status open"}
+  ],
+  "false_positives": [
+    "Score disagreements inside the same bucket (Eleanor, Purpose, Rock of Ages, Irma Vep, North by Northwest, Outsiders): the 3-model ensemble of record is unanimous on the bucket, the single-model implied scores differ by 10-20 points only.",
+    "Family Album / Behind The Encore 4.7/5 stars at score 90: 4.7/5 is 94%, outside the 5/5 band 91-100 only by rounding; models say 94 and 97. Left at 90, noted as a caveat.",
+    "Opening dates earlier than the first review date in 'census-earliest-review-date' shows: pages list first preview, ours is press-night proxy.",
+    "Venue wording differences (stage name versus company): The Robert Theatre in the Calderwood Pavilion, Mandell Weiss Theatre, etc. Same buildings.",
+    "Pull quotes not verbatim in stored text (17): editorial stitches joined by an em dash or ellipsis across sentences, wording otherwise from the article.",
+    "Unknown critic (68): outlets without bylines (Boston Globe wire, Sleepless Critic, Metro Magazine)."
+  ],
+  "caveats": [
+    "Scapin (ours closes 2026-08-23) and Arcadia (ours 2026-08-09) disagree with David Coddon's 'runs through Aug. 16'; each date was previously set by hand from other review text, sources conflict, shows closed months ago. Left.",
+    "21 hub review rows are hand-entered (manualEntry): Black Swan, Wonder, Paranormal Activity, Working Girl. Several differ from the full-text pipeline score (Black Swan Metro 66 vs 76, Working Girl Variety 54 vs 69, San Diego Union-Tribune 62 vs 74). Human scores outrank the pipeline by design; not changed without the owner's call.",
+    "Not checked: reviews missing from the cities' main outlets (coverage), and whether the app lists the same shows."
+  ]
+}

@@ -1,0 +1,113 @@
+name: WE Historical TR Probe
+
+# BRO-6097: measure what Theatre Record lists for 2016-2022 West End historical
+# shows against what we hold, and capture masked layout skeletons of the PDF
+# issues (lowercase letters -> x, so structure only, no prose) as parser
+# fixtures. Dry run: writes nothing but public data/audit files. The
+# extraction itself goes through review-refresh.yml's tr_show_filter path, which
+# also runs the WET stars/URLs merge and the drift guards. TR needs the
+# subscriber login, which only Actions holds.
+
+on:
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: 'Seasons by start year, comma-separated, e.g. 2017,2018 (used when shows is the word seasons)'
+        required: false
+        default: ''
+        type: string
+      shows:
+        description: 'Comma-separated show ids, or the word seasons to select by the seasons input. Probe 1-2 first.'
+        required: false
+        default: 'the-band-west-end-2018'
+        type: string
+      skeleton_max:
+        description: 'Max shows to save masked PDF skeletons for (each is a whole issue)'
+        required: false
+        default: '6'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: we-historical-tr-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      # ref: main, because the commit step pushes HEAD to main, so a branch
+      # dispatch must not carry the branch's commits there.
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # So the extractor can tell which listed reviews we already hold.
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Install PDF tools
+        run: sudo apt-get install -y poppler-utils
+
+      - name: Probe Theatre Record
+        env:
+          TR_EMAIL: ${{ secrets.TR_EMAIL }}
+          TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
+          SEASONS: ${{ inputs.seasons }}
+          SHOWS: ${{ inputs.shows }}
+          SKELETON_MAX: ${{ inputs.skeleton_max }}
+        run: |
+          if [ "$SHOWS" = "seasons" ]; then
+            SHOWS=$(node -e "
+              const want = new Set(process.env.SEASONS.split(',').filter(Boolean).map(x => x.slice(0, 4)));
+              const { WE_HISTORICAL_DISCOVERY_SOURCES } = require('./scripts/lib/we-historical-corroboration.js');
+              const d = require('./data/shows.json').shows;
+              console.log(d.filter(s => WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) && want.has(String(s.season).slice(0, 4))).map(s => s.id).join(','));
+            ")
+          fi
+          if [ -z "$SHOWS" ]; then echo "No shows selected (check seasons/shows inputs)"; exit 1; fi
+          echo "Probing: $SHOWS"
+          node scripts/extract-theatre-record.js --dry-run --shows="$SHOWS" \
+            --probe-out=data/audit/we-historical-tr-probe.json \
+            --skeleton-dir=data/audit/we-historical-tr-skeletons --skeleton-max="$SKELETON_MAX"
+
+      - name: Commit probe results
+        if: always()
+        run: |
+          [ -f data/audit/we-historical-tr-probe.json ] && git add data/audit/we-historical-tr-probe.json
+          [ -d data/audit/we-historical-tr-skeletons ] && git add data/audit/we-historical-tr-skeletons
+          true
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "audit: WE historical TR probe (BRO-6097) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'WE Historical TR Probe Failed'
+          severity: 'warning'

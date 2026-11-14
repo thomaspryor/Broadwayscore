@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5128",
+  "planId": "bb1e72d2-86ec-452a-8ab9-ffc633ee5d60",
+  "status": "applied",
+  "createdAt": "2026-10-12T06:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5128: the London Observer's review of The Story (observer.co.uk, 2026) is filed under David Cote, who is the New York Observer's critic. The page's own author metadata (meta author and JSON-LD author) names Ellen Peirson-Hagger, checked live 2026-10-12.",
+    "steps": [
+      "Set criticName on the-story-west-end-2026/observer--david-cote.json to Ellen Peirson-Hagger, the byline the observer.co.uk page itself carries."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/observer--david-cote.json",
+        "field": "criticName",
+        "oldValue": "David Cote",
+        "newValue": "Ellen Peirson-Hagger",
+        "description": "observer.co.uk/culture/theatre/article/the-story-review-the-truth-is-never-black-and-white: meta author and JSON-LD author are Ellen Peirson-Hagger; David Cote writes for observer.com (New York)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T08:28:41.496Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/observer--david-cote.json criticName: \"David Cote\" -> \"Ellen Peirson-Hagger\""
+    }
+  ]
+}

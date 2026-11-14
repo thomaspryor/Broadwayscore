@@ -1,0 +1,40 @@
+{
+  "system": "sync",
+  "status": "warn",
+  "lastChecked": "2026-11-14T09:07:36.579Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Sync: review-texts vs reviews.json",
+      "status": "pass",
+      "message": "82251 files, 50407 reviews (surplus: 31844)"
+    },
+    {
+      "name": "Sync: open show coverage",
+      "status": "pass",
+      "message": "32 open shows all have reviews and grosses"
+    },
+    {
+      "name": "Sync: phantom show detection",
+      "status": "pass",
+      "message": "No phantom show candidates found"
+    },
+    {
+      "name": "Sync: cast coverage",
+      "status": "warn",
+      "message": "1 empty cast: Wanted"
+    },
+    {
+      "name": "Sync: baseline drift",
+      "status": "pass",
+      "message": "5987 shows, 314 open, 50611 reviews (all at or above baseline)"
+    },
+    {
+      "name": "Sync: grosses weekEnding",
+      "status": "pass",
+      "message": "weekEnding 11/8/2026 (6d ago)"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-7256-e",
+  "planId": "403901eb-0107-4e4e-bd5d-22bec2ea2f33",
+  "status": "applied",
+  "createdAt": "2026-11-10T06:58:28.507Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retitle hangman-regional-2026 to Hangmen (review headlines spell HANGMEN)",
+    "steps": [
+      "Retitle the DC Hangman row to Hangmen"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retitle-show",
+        "id": "hangman-regional-2026",
+        "expectTitle": "Hangman",
+        "newTitle": "Hangmen",
+        "reason": "The Long Beach Playhouse review headline reads Review: HANGMEN; the play is Martin McDonagh Hangmen"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T07:41:51.754Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled hangman-regional-2026: \"Hangman\" -> \"Hangmen\""
+    }
+  ],
+  "executedIn": "ci"
+}

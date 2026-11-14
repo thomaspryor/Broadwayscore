@@ -1,0 +1,58 @@
+{
+  "showId": "a-delicate-balance-2014",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Barry Gordin",
+  "score": 48,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "high",
+  "keyPhrases": [
+    {
+      "text": "The cast is strong",
+      "sentiment": "positive"
+    },
+    {
+      "text": "Mia Katigbak plays Agnes with more elegant swagger",
+      "sentiment": "positive"
+    },
+    {
+      "text": "brings a great deal of insight",
+      "sentiment": "positive"
+    },
+    {
+      "text": "the actors become marionettes to his concept",
+      "sentiment": "negative"
+    },
+    {
+      "text": "the play lacks action",
+      "sentiment": "negative"
+    },
+    {
+      "text": "The pacing overall is slow, and by the end arduous",
+      "sentiment": "negative"
+    },
+    {
+      "text": "comedic elements that are not especially intrinsic",
+      "sentiment": "negative"
+    },
+    {
+      "text": "The overall sense of clownishness undermines the characters' sophistication",
+      "sentiment": "negative"
+    }
+  ],
+  "reasoning": "Review has more criticisms than praise. While acknowledging some positives like cast strength and directorial insight, it criticizes fundamental elements: slow/arduous pacing, lack of action, actors as 'marionettes,' and directorial choices that undermine the work. The tone suggests significant reservations outweigh the positives.",
+  "flags": [
+    {
+      "type": "original_rating_mismatch",
+      "originalRating": "5/5",
+      "expectedRange": "85-100",
+      "actualScore": 48
+    }
+  ],
+  "scoredAt": "2026-02-21T14:11:27.399Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": "2.5/5 stars",
+  "dtliThumb": null,
+  "bwwThumb": null
+}

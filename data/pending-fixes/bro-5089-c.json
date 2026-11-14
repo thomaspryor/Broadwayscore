@@ -1,0 +1,503 @@
+{
+  "issueNumber": "bro-5089-c",
+  "planId": "8ec6c546-046d-4807-b5f4-23baf6e1b4c1",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.560Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 3/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jesus-christ-superstar-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jesus-christ-superstar-2012/thumbnail.jpg",
+          "poster": "/images/shows/jesus-christ-superstar-2012/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "jesus-christ-superstar-2012: poster and thumbnail cleared, other-production: Poster text shows 'MARK HELLINGER THEATRE' at the bottom and credits director 'Tom O'Horgan', which ties it to a different staging than the Neil Simon Theatre / Des McAnuff 2012 production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gershwins-porgy-and-bess-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-gershwins-porgy-and-bess-2012/thumbnail.jpg",
+          "poster": "/images/shows/the-gershwins-porgy-and-bess-2012/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-gershwins-porgy-and-bess-2012: poster and thumbnail cleared, other-production: Playbill header under PLAYBILL reads 'URIS THEATRE' — a different theatre name than Richard Rodgers / 46th Street, indicating a different staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "follies-2011",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/follies-2011/thumbnail.jpg",
+          "poster": "/images/shows/follies-2011/poster.webp",
+          "hero": "/images/shows/follies-2011/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/follies-2011/hero.webp"
+        },
+        "description": "follies-2011: poster and thumbnail cleared, other-production: The poster prominently reads \"National Theatre Live\" and \"Symphony Space,\" indicating a recorded/broadcast screening rather than the Marquis Theatre Broadway production; these texts tie it to a different staging/presenta (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "follies-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1HY9eay4cjxCSguDalaG5V/8c365774d3b4c81bf2bfe6aba28ba1f1/TodayTix_NTLive_Follies_480x720__1_.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1HY9eay4cjxCSguDalaG5V/8c365774d3b4c81bf2bfe6aba28ba1f1/TodayTix_NTLive_Follies_480x720__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "follies-2011: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chinglish-2011",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/chinglish-2011/thumbnail.jpg",
+          "poster": "/images/shows/chinglish-2011/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "chinglish-2011: poster and thumbnail cleared, other-production: Poster credits 'Directed by Jeffrey Lo' (Broadway Longacre production was directed by Leigh Silverman) and the small print shows 'May 4 - June 20' and 'Playhouse', indicating a different regional theatre run, not the 201 (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hair-2011",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/hair-2011/hero.webp",
+          "thumbnail": "/images/shows/hair-2011/thumbnail.webp",
+          "poster": "/images/shows/hair-2011/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "hair-2011: poster, thumbnail and hero cleared, other-production: The poster shows 'THE PUBLIC' at the top, indicating The Public Theater rather than the St. James Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hair-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4v6LS1OG3TqQ6j6KPtNGJc/c551cac6853eb61f8350182f5a49fa11/1506466885702_Hair_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4v6LS1OG3TqQ6j6KPtNGJc/c551cac6853eb61f8350182f5a49fa11/1506466885702_Hair_Poster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4v6LS1OG3TqQ6j6KPtNGJc/c551cac6853eb61f8350182f5a49fa11/1506466885702_Hair_Poster.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "hair-2011: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rain-2010",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rain-2010/thumbnail.jpg",
+          "poster": "/images/shows/rain-2010/poster.webp",
+          "hero": "/images/shows/rain-2010/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/rain-2010/hero.webp"
+        },
+        "description": "rain-2010: poster and thumbnail cleared, wrong-show: The image text reads 'SYMPHONY SPACE' and 'Spring Training with Brian Lehrer' (Selected Shorts), not the Broadway show 'Rain' at the Neil Simon/Alvin Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rain-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1YXaEJV8nTVwYJDx3eD20s/bf1c25164145d5bc9cd671346b8d84de/Lehrer_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5I2VsoZsfDfq3xr6dnm5RI/185cda3c5012a1f2f19744c6157f9dcf/Lehrer_TodayTix_Name_1080x1080.png?fm=webp&q=90"
+        ],
+        "description": "rain-2010: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-2011",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-importance-of-being-earnest-2011/thumbnail.jpg",
+          "poster": "/images/shows/the-importance-of-being-earnest-2011/poster.webp",
+          "hero": "/images/shows/the-importance-of-being-earnest-2011/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/the-importance-of-being-earnest-2011/hero.webp"
+        },
+        "description": "the-importance-of-being-earnest-2011: poster and thumbnail cleared, other-production: Text on image: 'SYMPHONY SPACE', 'ON FILM', and 'NATIONAL THEATRE LIVE' — indicates a filmed NT Live screening at Symphony Space, not the Broadway Todd Haimes/American Airlines (2010–2011) stage production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6eZO5uWsY2wuDvvfVM0n2s/d5552dbe157c3a3f6872cc2c5ad8fc4e/Earnest_film_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6eZO5uWsY2wuDvvfVM0n2s/d5552dbe157c3a3f6872cc2c5ad8fc4e/Earnest_film_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "the-importance-of-being-earnest-2011: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-in-the-theatre-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-life-in-the-theatre-2010/hero.webp",
+          "thumbnail": "/images/shows/a-life-in-the-theatre-2010/thumbnail.webp",
+          "poster": "/images/shows/a-life-in-the-theatre-2010/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/a-life-in-the-theatre-2010/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-life-in-the-theatre-2010: poster and thumbnail cleared, other-production: The poster clearly says 'SYMPHONY SPACE' at the top and lists 'TUE, APR 29 | 7PM' with performers 'SANTINO FONTANA & BD WONG' — different venue/date than the Gerald Schoenfeld Theatre Broadway run (2010-09-21 to 2010-11- (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-in-the-theatre-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/WYj8jHBFjqGHML7oMxulv/b3bf9f992ee0c54e679cc7d38d13e124/LifeAtTheatre_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/WYj8jHBFjqGHML7oMxulv/b3bf9f992ee0c54e679cc7d38d13e124/LifeAtTheatre_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "a-life-in-the-theatre-2010: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mrs-warrens-profession-2010",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mrs-warrens-profession-2010/thumbnail.jpg",
+          "poster": "/images/shows/mrs-warrens-profession-2010/poster.webp",
+          "hero": "/images/shows/mrs-warrens-profession-2010/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/mrs-warrens-profession-2010/hero.webp"
+        },
+        "description": "mrs-warrens-profession-2010: poster and thumbnail cleared, other-production: Image text shows 'Symphony Space' and 'National Theatre Live', indicating a National Theatre Live screening/presentation at Symphony Space rather than the Todd Haimes/American Airlines/Selwyn Theatre Broadway production  (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mrs-warrens-profession-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5rdGMQ5EL9X7AMYKKsXvOk/5511d4ebc13b4a1db2bdf5356970bb45/Warren_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5rdGMQ5EL9X7AMYKKsXvOk/5511d4ebc13b4a1db2bdf5356970bb45/Warren_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "mrs-warrens-profession-2010: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "promises-promises-2010",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/promises-promises-2010/thumbnail.jpg",
+          "poster": "/images/shows/promises-promises-2010/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "promises-promises-2010: poster and thumbnail cleared, other-production: The poster clearly names the Shubert Theatre (bottom text) and has a vintage design/credit quote consistent with the original staging, not the 2010 Broadway Theatre production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "million-dollar-quartet-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/million-dollar-quartet-2010/hero.webp",
+          "thumbnail": "/images/shows/million-dollar-quartet-2010/thumbnail.webp",
+          "poster": "/images/shows/million-dollar-quartet-2010/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "million-dollar-quartet-2010: poster, thumbnail and hero cleared, other-production: The poster names 'Palladium Times Square' (and lists December 27, 28, 29 & 30 and Baker Concerts), tying it to a different venue/staging rather than the Nederlander Theatre Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "million-dollar-quartet-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3d0kEMkKs2QMeqzqjldBJE/e698b114138c86bf18bde39a1c28eb03/TTG_Million_Dollar_Quartet_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3d0kEMkKs2QMeqzqjldBJE/e698b114138c86bf18bde39a1c28eb03/TTG_Million_Dollar_Quartet_Poster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3d0kEMkKs2QMeqzqjldBJE/e698b114138c86bf18bde39a1c28eb03/TTG_Million_Dollar_Quartet_Poster.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "million-dollar-quartet-2010: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-about-me-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/all-about-me-2010/hero.webp",
+          "thumbnail": "/images/shows/all-about-me-2010/thumbnail.webp",
+          "poster": "/images/shows/all-about-me-2010/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/all-about-me-2010/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "all-about-me-2010: poster and thumbnail cleared, wrong-show: Poster title reads 'ALL OF ME' and credits 'by LAURA WINTERS' and 'directed by ASHLEY BROOKE MONROE' — different title and creative team than the Broadway 'All About Me' (Feinstein/Humphries; dir. Casey Nicholaw). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-about-me-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5JRVVFEIwwApdI8uOJTP6u/7aa5f449ddbb1ce5d3cabbd7ec3b000a/TNG-AOM-TodayTix_Pull_Quotes_Poster__1_.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5JRVVFEIwwApdI8uOJTP6u/7aa5f449ddbb1ce5d3cabbd7ec3b000a/TNG-AOM-TodayTix_Pull_Quotes_Poster__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "all-about-me-2010: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "race-2009",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/race-2009/thumbnail.jpg",
+          "poster": "/images/shows/race-2009/poster.webp",
+          "hero": "/images/shows/race-2009/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/race-2009/hero.webp"
+        },
+        "description": "race-2009: poster and thumbnail cleared, other-production: Text on image: 'SYMPHONY SPACE' and 'Lindy West Adult Braces' plus 'TUE, MAR 10 | 7PM' — this poster advertises a Lindy West event, not the play 'Race' at the Ethel Barrymore Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "race-2009",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7gxdkDm8dk1ZVJ6jbvZZ1W/45d053131efe721c9004164e3272e04a/West_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1BgNx5qcx796pqFIPMUC3d/efbdd5c0ea15a682c94c68d4aebe2c8a/West_TodayTix_1080x1080_carousel.png?fm=webp&q=90"
+        ],
+        "description": "race-2009: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-night-music-2009",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-little-night-music-2009/hero.webp",
+          "thumbnail": "/images/shows/a-little-night-music-2009/thumbnail.webp",
+          "poster": "/images/shows/a-little-night-music-2009/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/a-little-night-music-2009/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-little-night-music-2009: poster and thumbnail cleared, other-production: The poster text reads 'IN CONCERT Produced by Jeff Berger At the David Geffen Hall At Lincoln Center', indicating a concert at David Geffen Hall rather than the Walter Kerr Theatre run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-night-music-2009",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/52i7sI1md8hVn5gfoYoCNE/de70022408c81b858c23cdc92668cfc9/POSTER__Key_Art__480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/52i7sI1md8hVn5gfoYoCNE/de70022408c81b858c23cdc92668cfc9/POSTER__Key_Art__480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "a-little-night-music-2009: never re-take this art source (BRO-5089)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:57:53.946Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for jesus-christ-superstar-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-gershwins-porgy-and-bess-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for follies-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for follies-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for chinglish-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for hair-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for hair-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for rain-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for rain-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-importance-of-being-earnest-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-importance-of-being-earnest-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-life-in-the-theatre-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-life-in-the-theatre-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mrs-warrens-profession-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for mrs-warrens-profession-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for promises-promises-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for million-dollar-quartet-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for million-dollar-quartet-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for all-about-me-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for all-about-me-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for race-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for race-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-little-night-music-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-little-night-music-2009"
+    }
+  ]
+}

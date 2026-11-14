@@ -1,0 +1,47 @@
+{
+  "issueNumber": "bro-5064",
+  "planId": "2d457ced-55e3-4092-ba73-fd5a292e7025",
+  "status": "superseded",
+  "createdAt": "2026-10-12T23:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5064: clear the Show Score placeholder originalScore from london-theatre review files (an outlet that publishes no critic rating), the hard violation failing weekly-integrity's P0 score integrity check.",
+    "steps": [
+      "a-tupperware-of-ashes-west-end-2024/london-theatre--julia-rank.json: originalScore 80 -> null",
+      "downstate-west-end-2019/london-theatre--mark-shenton.json: originalScore 80 -> null",
+      "elektra-west-end-2025/london-theatre--olivia-rook.json: originalScore 60 -> null"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-tupperware-of-ashes-west-end-2024/london-theatre--julia-rank.json",
+        "field": "originalScore",
+        "oldValue": 80,
+        "newValue": null,
+        "description": "londontheatre.co.uk prints no critic rating (publishesNoCriticRating). This value is a Show Score placeholder written by gather-reviews createReviewFile (source show-score-playwright, no originalScoreSource); cleared so check-score-integrity (P0) passes. The writer is fixed in the same change (BRO-5064)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "downstate-west-end-2019/london-theatre--mark-shenton.json",
+        "field": "originalScore",
+        "oldValue": 80,
+        "newValue": null,
+        "description": "londontheatre.co.uk prints no critic rating (publishesNoCriticRating). This value is a Show Score placeholder written by gather-reviews createReviewFile (source show-score-playwright, no originalScoreSource); cleared so check-score-integrity (P0) passes. The writer is fixed in the same change (BRO-5064)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elektra-west-end-2025/london-theatre--olivia-rook.json",
+        "field": "originalScore",
+        "oldValue": 60,
+        "newValue": null,
+        "description": "londontheatre.co.uk prints no critic rating (publishesNoCriticRating). This value is a Show Score placeholder written by gather-reviews createReviewFile (source show-score-playwright, no originalScoreSource); cleared so check-score-integrity (P0) passes. The writer is fixed in the same change (BRO-5064)."
+      }
+    ]
+  },
+  "supersededReason": "Superseded in BRO-5935: all three targeted London Theatre originalScore values are now sourced star ratings with originalScoreSource londontheatre-page-json (4/5 stars, 4/5 stars, 3/5 stars). The obsolete numeric placeholders are gone. Clearing these ratings would discard newer source-backed data.",
+  "supersededAt": "2026-10-26T13:01:47.853Z"
+}

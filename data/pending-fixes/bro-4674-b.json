@@ -1,0 +1,102 @@
+{
+  "issueNumber": "bro-4674-b",
+  "planId": "527cf9ad-9eaf-4b5c-a260-1b6a6c09c9f0",
+  "status": "applied",
+  "createdAt": "2026-10-13T21:50:20.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "(part b of 2) BRO-4674: clear the 14 un-baselined audit-sibling-title-misroute --strict hits and the same-url double counts the audit now reports. Seven files filed under a later same-title production move to the production they review (Comedy About Spies 2026 -> 2025, Cruise 2022 -> 2021). Nine copies of a review whose correct production already holds the same url (or whose url names another venue) get wrongProduction with a reason. One britishtheatre.com ticket page under Titanique West End is marked isNonReview. Three ambiguous hits (For Black Boys 2024 x2, Inter Alia 2025) were false positives fixed in market-routing.js, not here.",
+    "steps": [
+      "flag leopoldstadt-west-end-2021/standard--nick-curtis.json wrongProduction (February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url)",
+      "flag leopoldstadt-west-end-2021/times-uk--clive-davis.json wrongProduction (February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url)",
+      "mark titanique-west-end-2024/britishtheatrecom--susan-novak.json isNonReview (britishtheatre.com ticket sales page (/shows/titanique-musical-tickets), not a review)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-west-end-2021/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-west-end-2021/standard--nick-curtis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-west-end-2021/times-uk--clive-davis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-west-end-2021/times-uk--clive-davis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-west-end-2024/britishtheatrecom--susan-novak.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: britishtheatre.com ticket sales page (/shows/titanique-musical-tickets), not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-west-end-2024/britishtheatrecom--susan-novak.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: britishtheatre.com ticket sales page (/shows/titanique-musical-tickets), not a review",
+        "description": "reason for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T23:40:33.801Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-west-end-2021/standard--nick-curtis.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-west-end-2021/standard--nick-curtis.json wrongProductionReason: null -> \"BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-west-end-2021/times-uk--clive-davis.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-west-end-2021/times-uk--clive-davis.json wrongProductionReason: null -> \"BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-west-end-2024/britishtheatrecom--susan-novak.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-west-end-2024/britishtheatrecom--susan-novak.json isNonReviewReason: null -> \"BRO-4674: britishtheatre.com ticket sales page (/shows/titanique-musical-tickets), not a review\""
+    }
+  ]
+}

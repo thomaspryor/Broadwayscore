@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-6909-dates",
+  "planId": "be4071c9-bfe4-49c5-93dd-ed148ddb7ebd",
+  "status": "applied",
+  "createdAt": "2026-11-03T21:56:00.114Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Opening dates: Dogstar press night 2026-11-09 (Theatre Weekly, WhatsOnStage; 10-31 was derived from a forum post); Ms. Blakk for President previews 2026-10-22, opening 2026-11-08 (TheaterMania 2026-09-29 after cast change)",
+    "steps": [
+      "shows.json: dogstar-off-west-end-2026.openingDate",
+      "shows.json: msblackforpresident-off-broadway-2026.openingDate",
+      "shows.json: msblackforpresident-off-broadway-2026.previewsStartDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dogstar-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-31",
+        "newValue": "2026-11-09",
+        "description": "shows.json: dogstar-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "msblackforpresident-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-01",
+        "newValue": "2026-11-08",
+        "description": "shows.json: msblackforpresident-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "msblackforpresident-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-10-15",
+        "newValue": "2026-10-22",
+        "description": "shows.json: msblackforpresident-off-broadway-2026.previewsStartDate"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T22:47:38.291Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dogstar-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for msblackforpresident-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for msblackforpresident-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

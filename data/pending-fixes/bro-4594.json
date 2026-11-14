@@ -1,0 +1,128 @@
+{
+  "issueNumber": "bro-4594",
+  "planId": "03e6e6e3-6657-4073-b902-ccbb0504cd24",
+  "status": "applied",
+  "createdAt": "2026-10-04T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Two-show review columns carried one score/pull quote onto both shows. Give each show a score and quote from its own section: Bloomberg Gerard (Born Yesterday vs House of Blue Leaves), Theatrely The Pass (pull quote was Hungry Women's). Interested Bystander (bug/two-strangers) already split into per-show sections, 74/74 is coincidence, no change.",
+    "steps": [
+      "Leaves: own pull quote",
+      "Born Yesterday: humanReviewScore 62",
+      "The Pass: humanReviewScore 74 + own pull quote"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-house-of-blue-leaves-2011/bloomberg--jeremy-gerard.json",
+        "field": "llmPullQuote",
+        "oldValue": "So go for Kanin’s savvy script and for one truly inspired comic performance.",
+        "newValue": "But it’s Edie Falco who will steal your heart as Bananas, a depressive who fries up Brillo pads for hamburgers",
+        "description": "Pull quote was copied from the Born Yesterday half of the Bloomberg column"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "born-yesterday-2011/bloomberg--jeremy-gerard.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4594: Bloomberg column reviews two shows. Born Yesterday section is rated **1/2 of 4 (Arianda raved, Belushi brutish, Leonard pallid); the 78 came from scoring the whole column including the Leaves praise. Scored on this section only.",
+        "description": "Record why"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "born-yesterday-2011/bloomberg--jeremy-gerard.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": false,
+        "description": "Final"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "born-yesterday-2011/bloomberg--jeremy-gerard.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 62,
+        "description": "Born Yesterday section is **1/2, not the 3-star Leaves rating"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4594: Theatrely column covers The Pass and Hungry Women. The Pass section is positive (magnetic lead, strong staging) with reservations (genre feels passe, over-compensatory bro-isms). Pull quote was from the Hungry Women section. Scored on The Pass section only.",
+        "description": "Record why"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": false,
+        "description": "Final"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 74,
+        "description": "Section-only score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "llmPullQuote",
+        "oldValue": "Daniella Caggiano’s production remains engaging and highly enjoyable.",
+        "newValue": "It’s a magnetic performance well-suited to Max Hunter’s staging, which opts for exclamation points over question marks and successfully brings the play into 2026.",
+        "description": "Pull quote was about Hungry Women"
+      }
+    ]
+  },
+  "executedAt": "2026-10-04T17:41:33.966Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-house-of-blue-leaves-2011/bloomberg--jeremy-gerard.json llmPullQuote: \"So go for Kanin’s savvy script and for one truly inspired comic performance.\" -> \"But it’s Edie Falco who will steal your heart as Bananas, a depressive who fries up Brillo pads for hamburgers\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "born-yesterday-2011/bloomberg--jeremy-gerard.json humanReviewNote: null -> \"BRO-4594: Bloomberg column reviews two shows. Born Yesterday section is rated **1/2 of 4 (Arianda raved, Belushi brutish, Leonard pallid); the 78 came from scoring the whole column including the Leaves praise. Scored on this section only.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "born-yesterday-2011/bloomberg--jeremy-gerard.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "born-yesterday-2011/bloomberg--jeremy-gerard.json humanReviewScore: null -> 62"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json humanReviewNote: null -> \"BRO-4594: Theatrely column covers The Pass and Hungry Women. The Pass section is positive (magnetic lead, strong staging) with reservations (genre feels passe, over-compensatory bro-isms). Pull quote was from the Hungry Women section. Scored on The Pass section only.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json humanReviewScore: null -> 74"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json llmPullQuote: \"Daniella Caggiano’s production remains engaging and highly enjoyable.\" -> \"It’s a magnetic performance well-suited to Max Hunter’s staging, which opts for exclamation points over question marks and successfully brings the play into 2026.\""
+    }
+  ]
+}

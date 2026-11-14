@@ -1,0 +1,493 @@
+{
+  "issueNumber": "bro-5089-h",
+  "planId": "ac8cb0dd-35ac-4cc1-b5a9-62c194a1c1b2",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.561Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 8/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mr-happiness-1978",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mr-happiness-1978/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "mr-happiness-1978: poster and thumbnail cleared, wrong-show: The poster title clearly reads 'THE WATER ENGINE' (center of image), not 'Mr. Happiness'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mr-happiness-1978",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/the-water-engine-mr-happinessbroadway-gerald-schoenfeld-theatre-1978"
+        ],
+        "description": "mr-happiness-1978: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lamppost-reunion-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/lamppost-reunion-1975/thumbnail.jpg",
+          "poster": "/images/shows/lamppost-reunion-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "lamppost-reunion-1975: poster and thumbnail cleared, wrong-show: The Playbill cover clearly shows the title text 'P.S. YOUR CAT IS DEAD!' (and Playbill header), indicating a different production than 'Lamppost Reunion'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-glass-menagerie-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-glass-menagerie-1975/thumbnail.jpg",
+          "poster": "/images/shows/the-glass-menagerie-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-glass-menagerie-1975: poster and thumbnail cleared, other-production: Image reads 'Masterworks Theater Company Presents', indicating a different producing company than the Circle in the Square Theatre (1975-76 Broadway run). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-glass-menagerie-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/277/medium_glass.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/277/preview_glass.jpg"
+        ],
+        "description": "the-glass-menagerie-1975: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "habeas-corpus-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/habeas-corpus-1975/thumbnail.jpg",
+          "poster": "/images/shows/habeas-corpus-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "habeas-corpus-1975: poster and thumbnail cleared, other-production: Poster explicitly lists 'Directed by Patrick Marber' and run dates 'Dec 3rd 2021 - Feb 27th 2022', which do not match the 1975–11–18 to 1976–02–15 Al Hirschfeld Theatre Broadway production directed by Frank Dunlop. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "habeas-corpus-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6093/medium_1642438736-M0F4xamU.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6093/preview_1642438736-M0F4xamU.jpg"
+        ],
+        "description": "habeas-corpus-1975: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-musical-jubilee-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-musical-jubilee-1975/thumbnail.jpg",
+          "poster": "/images/shows/a-musical-jubilee-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-musical-jubilee-1975: poster and thumbnail cleared, other-production: Poster text prominently reads 'Jerry Lewis Hellzapoppin' (star/title) and references a Colonial Theatre engagement — not 'A Musical Jubilee' at the St. James Theatre in 1975-1976. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-musical-jubilee-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.broadwayposters.com/products/a-musical-jubilee?srsltid=AU7gw4XU8aHUTNez5pK9LtzUhiRToa1DByNeYHbGIuXcFb9Tpx4HWRgP",
+          "google-images:https://www.worthpoint.com/worthopedia/1975-window-lobby-card-broadway-1924646171"
+        ],
+        "description": "a-musical-jubilee-1975: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "murder-among-friends-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/murder-among-friends-1975/thumbnail.jpg",
+          "poster": "/images/shows/murder-among-friends-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "murder-among-friends-1975: poster and thumbnail cleared, other-production: The poster clearly reads 'THE PLAYHOUSE THEATRE' at the top and prominently bills 'LANA TURNER' — this ties it to a Playhouse Theatre/Lana Turner presentation, not the Samuel J. Friedman (Biltmore) 1975 Broadway producti (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "murder-among-friends-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.lana-turner.com/1982-murder-among-friends/",
+          "google-images:https://www.octheatreguild.org/post/murder-among-friends-at-newport-theater-arts-center"
+        ],
+        "description": "murder-among-friends-1975: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-poison-tree-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-poison-tree-1976/thumbnail.jpg",
+          "poster": "/images/shows/the-poison-tree-1976/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-poison-tree-1976: poster and thumbnail cleared, wrong-show: Image clearly contains a J&B Rare Scotch advertisement (woman’s face and bottle) and newspaper text; no visible title 'The Poison Tree', no 'Ambassador Theatre', no dates (1976-01-07 to 1976-01-11), and no credits (Ronal (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-poison-tree-1976",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/the-poison-tree-ambassador-theatre-vault-0000000999",
+          "google-images:https://www.royalbooks.com/advSearchResults.php?action=browse&cat_conj=or&category_id=1520&orderBy=mostrecent&recordsLength=100&view=gallery&p=2"
+        ],
+        "description": "the-poison-tree-1976: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lady-from-the-sea-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-lady-from-the-sea-1976/thumbnail.jpg",
+          "poster": "/images/shows/the-lady-from-the-sea-1976/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-lady-from-the-sea-1976: poster and thumbnail cleared, other-production: The poster names contemporary actors 'ALICIA VIKANDER' and 'ANDREW LINCOLN', indicating a different production than the 1976 Circle in the Square Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lady-from-the-sea-1976",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/907284f828b68a34bdcb4d34f5dc8901_the%20lady%20from%20the%20sea%202025.jpg"
+        ],
+        "description": "the-lady-from-the-sea-1976: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whos-afraid-of-virginia-woolf-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/whos-afraid-of-virginia-woolf-1976/thumbnail.jpg",
+          "poster": "/images/shows/whos-afraid-of-virginia-woolf-1976/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "whos-afraid-of-virginia-woolf-1976: poster and thumbnail cleared, other-production: Poster lists contemporary cast names Laurie Metcalf and Rupert Everett and credits director Joe Mantello — the 1976 Music Box production was directed by Edward Albee, so this is a different staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whos-afraid-of-virginia-woolf-1976",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.broadway.com/shows/whos-afraid-of-virginia-woolf/",
+          "google-images:https://www.hollowsquarepress.com/blog/whos-afraid-of-virginia-woolf"
+        ],
+        "description": "whos-afraid-of-virginia-woolf-1976: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fame-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/fame-1974/thumbnail.jpg",
+          "poster": "/images/shows/fame-1974/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "fame-1974: poster and thumbnail cleared, wrong-show: The Playbill cover text reads 'Martha Graham Dance Company' (and shows a dancer silhouette), not 'Fame' or credits for Anthony J. Ingrassia. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fame-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/fame-john-golden-theatre-vault-0000008419"
+        ],
+        "description": "fame-1974: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sizwe-banzi-is-dead-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/sizwe-banzi-is-dead-1974/thumbnail.jpg",
+          "poster": "/images/shows/sizwe-banzi-is-dead-1974/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "sizwe-banzi-is-dead-1974: poster and thumbnail cleared, other-production: Poster text reads 'CROSSROADS THEATRE COMPANY presents' and credits a director (Ricardo Khan) different from the Edison Theatre 1974–75 production (director Athol Fugard), so this is a different staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sizwe-banzi-is-dead-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.broadwayworld.com/shows/Sizwe-Banzi-Is-Dead-321773/news",
+          "google-images:https://www.courttheatre.org/wp-content/uploads/2017/06/PG_SizweBanziIsDead.pdf"
+        ],
+        "description": "sizwe-banzi-is-dead-1974: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hashish-club-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-hashish-club-1975/thumbnail.jpg",
+          "poster": "/images/shows/the-hashish-club-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-hashish-club-1975: poster and thumbnail cleared, other-production: The Playbill cover plainly reads 'CLARENCE DARROW' and shows 'HELEN HAYES THEATRE' at top — not 'The Hashish Club' or the Bijou Theatre (1974–75). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hashish-club-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/the-hashish-club-bijou-theatre-vault-0000001386",
+          "google-images:http://slleiter.blogspot.com/2020/07/"
+        ],
+        "description": "the-hashish-club-1975: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-pirates-of-penzance-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-pirates-of-penzance-1976/thumbnail.jpg",
+          "poster": "/images/shows/the-pirates-of-penzance-1976/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-pirates-of-penzance-1976: poster and thumbnail cleared, other-production: Top billing shows Kevin Kline, Linda Ronstadt, Angela Lansbury, George Rose, Rex Smith — film/other-cast billing, not the 1976 Gershwin (Michael Heyland) production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:14:32.090Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mr-happiness-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for mr-happiness-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lamppost-reunion-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-glass-menagerie-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-glass-menagerie-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for habeas-corpus-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for habeas-corpus-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-musical-jubilee-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-musical-jubilee-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for murder-among-friends-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for murder-among-friends-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-poison-tree-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-poison-tree-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-lady-from-the-sea-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-lady-from-the-sea-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for whos-afraid-of-virginia-woolf-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for whos-afraid-of-virginia-woolf-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for fame-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for fame-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sizwe-banzi-is-dead-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for sizwe-banzi-is-dead-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-hashish-club-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-hashish-club-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-pirates-of-penzance-1976"
+    }
+  ]
+}

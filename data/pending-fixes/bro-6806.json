@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6806",
+  "planId": "51bf16b3-7fd1-44e5-97e2-0ada50c0d94e",
+  "status": "applied",
+  "createdAt": "2026-11-02T11:05:06.665Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove the stale duplicate relationship between the excluded 2025 Haymarket WhatsOnStage article and the 2022 Othello Theatre Record review. This prevents the rebuild from inheriting the wrong article URL while preserving all other duplicate URL inheritance and the 2022 score.",
+    "steps": [
+      "othello-west-end-2022/whatsonstage--unknown.json: duplicateClearReason",
+      "othello-west-end-2022/whatsonstage--unknown.json: duplicateOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "othello-west-end-2022/whatsonstage--unknown.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6806: the donor article is the 2025 Haymarket production, published 2025-11-04; the canonical Theatre Record review is the 2022 National Theatre production, published 2022-11-30. Matching critic names do not make these different productions duplicate articles. Keep the donor excluded as wrongProduction and prevent its URL from being inherited by the 2022 review.",
+        "description": "othello-west-end-2022/whatsonstage--unknown.json: duplicateClearReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-west-end-2022/whatsonstage--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": "whatsonstage--sarah-crompton.json",
+        "newValue": null,
+        "description": "othello-west-end-2022/whatsonstage--unknown.json: duplicateOf"
+      }
+    ]
+  },
+  "executedAt": "2026-11-02T12:04:47.269Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-west-end-2022/whatsonstage--unknown.json duplicateClearReason: null -> \"BRO-6806: the donor article is the 2025 Haymarket production, published 2025-11-04; the canonical Theatre Record review is the 2022 National Theatre production, published 2022-11-30. Matching critic names do not make these different productions duplicate articles. Keep the donor excluded as wrongProduction and prevent its URL from being inherited by the 2022 review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-west-end-2022/whatsonstage--unknown.json duplicateOf: \"whatsonstage--sarah-crompton.json\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

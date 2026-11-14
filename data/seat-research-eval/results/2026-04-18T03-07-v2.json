@@ -1,0 +1,103 @@
+{
+  "promptVersion": "v2",
+  "timestamp": "2026-04-18T03:07:16.526Z",
+  "score": {
+    "composite": 54.6,
+    "sectionScore": 42.4,
+    "claimScore": 32.2,
+    "warningPenalty": 20
+  },
+  "totals": {
+    "theaters_total": 3,
+    "theaters_with_errors": 0,
+    "sections_total": 17,
+    "sections_by_support": {
+      "STRONG": 11,
+      "MODERATE": 4,
+      "WEAK": 2,
+      "UNSUPPORTED": 0,
+      "ERROR": 0
+    },
+    "claims_total": 34,
+    "claims_by_support": {
+      "STRONG": 12,
+      "MODERATE": 12,
+      "WEAK": 5,
+      "UNSUPPORTED": 5
+    },
+    "warnings_total": 48,
+    "urls_fetched_total": 85,
+    "urls_failed_total": 0,
+    "unsupported_claims_examples": [
+      {
+        "theater": "Gershwin Theatre",
+        "section": "Orchestra Center Front (too close)",
+        "note": "No evidence mentions dragon or flying scenery hung above proscenium extending over rows BB-DD. One photo shows dragon visible from BB-111 but no obstruction claim. Evidence 3 mentions raised stage forcing upward gaze but not scenery obstruction."
+      },
+      {
+        "theater": "Majestic Theatre",
+        "section": "Orchestra Center",
+        "note": "No source mentions legroom issues in center orchestra rows F-L or anywhere in orchestra. Evidence discusses accessibility, wheelchair seating, and views, but legroom complaints are absent. The specific claim about 'M1 and aisle-adjacent seats' having tight legroom appears fabricated - no evidence mentions M1 or legroom problems."
+      },
+      {
+        "theater": "Majestic Theatre",
+        "section": "Boxes",
+        "note": "No evidence discusses Majestic Theatre box seats specifically. All sources focus on Orchestra and Mezzanine sections. The 'entire stage-left out of view' quote is not found in any provided evidence."
+      },
+      {
+        "theater": "Majestic Theatre",
+        "section": "Boxes",
+        "note": "The direct user quote 'the entire stage left was out of view' from a Majestic box is not present in any of the 5 evidence sources. Evidence 2 discusses obstructed views in Orchestra row Q under mezzanine overhang, not boxes."
+      },
+      {
+        "theater": "Majestic Theatre",
+        "section": "Boxes",
+        "note": "No evidence discusses box seats looking sideways at performers or side-angle viewing issues. Evidence mentions box seats exist (Evidence 4: 'a couple of box seats on either side') but provides no details about viewing angles or sightline problems."
+      }
+    ]
+  },
+  "perTheater": [
+    {
+      "theater": "Gershwin Theatre",
+      "sections_total": 6,
+      "sections_audited": 6,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 1,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 19,
+      "unsupported_claims": 1
+    },
+    {
+      "theater": "Majestic Theatre",
+      "sections_total": 6,
+      "sections_audited": 6,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 1,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 18,
+      "unsupported_claims": 4
+    },
+    {
+      "theater": "Music Box Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 3,
+        "MODERATE": 2,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 11,
+      "unsupported_claims": 0
+    }
+  ]
+}

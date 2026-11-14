@@ -1,0 +1,77 @@
+{
+  "issueNumber": "bro-5275-b",
+  "planId": "bfde6248-2a95-4f1b-8296-860a4b9f1f5e",
+  "status": "applied",
+  "createdAt": "2026-10-13T23:54:52.348542Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5275 (part 2 of 2): delete the last 5 junk-outletId review files; see bro-5275.json.",
+    "steps": [
+      "Delete each junk file; the submission guard now refuses these hosts so they cannot be re-created."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-lehman-trilogy-west-end-2023/nick-curtis--nick-curtis.json",
+        "description": "BRO-5275: nick-curtis is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-lehman-trilogy-west-end-2023/richard-maguire--richard-maguire.json",
+        "description": "BRO-5275: richard-maguire is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-shark-is-broken-west-end-2021/london-theatre-direct--kay-johal.json",
+        "description": "BRO-5275: london-theatre-direct is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "thelma-and-louise-a-new-musical-off-west-end-2026/tickets-available-from-the-theatre--unknown.json",
+        "description": "BRO-5275: tickets-available-from-the-theatre is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "wit-2012/her-voice-is-not-ideally-tuned--for-wit.json",
+        "description": "BRO-5275: her-voice-is-not-ideally-tuned is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T01:37:42.412Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-lehman-trilogy-west-end-2023/nick-curtis--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-lehman-trilogy-west-end-2023/richard-maguire--richard-maguire.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-shark-is-broken-west-end-2021/london-theatre-direct--kay-johal.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted thelma-and-louise-a-new-musical-off-west-end-2026/tickets-available-from-the-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted wit-2012/her-voice-is-not-ideally-tuned--for-wit.json"
+    }
+  ]
+}

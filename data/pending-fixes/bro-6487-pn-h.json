@@ -1,0 +1,367 @@
+{
+  "issueNumber": "bro-6487-pn-h",
+  "planId": "48e93533-41e8-4f55-9abf-159e58651700",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:36:46.744Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights, set h of 11 (2012-13..2015-16 opening rows)",
+    "steps": [
+      "shows.json: the-play-that-goes-wrong-west-end-2013.previewsStartDate",
+      "shows.json: the-play-that-goes-wrong-west-end-2013.openingDate",
+      "shows.json: the-play-that-goes-wrong-west-end-2013.openingDateSource",
+      "shows.json: chimerica-west-end-2013.openingDate",
+      "shows.json: chimerica-west-end-2013.openingDateSource",
+      "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.previewsStartDate",
+      "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.openingDate",
+      "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.openingDateSource",
+      "shows.json: blithe-spirit-west-end-2014.openingDate",
+      "shows.json: blithe-spirit-west-end-2014.openingDateSource",
+      "shows.json: 1984-west-end-2014.openingDate",
+      "shows.json: 1984-west-end-2014.openingDateSource",
+      "shows.json: shakespeare-in-love-west-end-2014.openingDate",
+      "shows.json: shakespeare-in-love-west-end-2014.openingDateSource",
+      "shows.json: evita-west-end-2014.openingDate",
+      "shows.json: evita-west-end-2014.openingDateSource",
+      "shows.json: the-ruling-class-west-end-2015.openingDate",
+      "shows.json: the-ruling-class-west-end-2015.openingDateSource",
+      "shows.json: light-shining-in-buckinghamshire-west-end-2015.openingDate",
+      "shows.json: light-shining-in-buckinghamshire-west-end-2015.openingDateSource",
+      "shows.json: the-importance-of-being-earnest-west-end-2015.previewsStartDate",
+      "shows.json: the-importance-of-being-earnest-west-end-2015.openingDate",
+      "shows.json: the-importance-of-being-earnest-west-end-2015.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-05-10",
+        "newValue": "2013-04-30",
+        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-05-10",
+        "newValue": "2013-05-03",
+        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-05-03 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chimerica-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-08-06",
+        "newValue": "2013-08-15",
+        "description": "shows.json: chimerica-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chimerica-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-08-15 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: chimerica-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jeeves-and-wooster-in-perfect-nonsense-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-11-12",
+        "newValue": "2013-10-30",
+        "description": "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jeeves-and-wooster-in-perfect-nonsense-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-11-12",
+        "newValue": "2013-11-12",
+        "description": "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jeeves-and-wooster-in-perfect-nonsense-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-11-12 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blithe-spirit-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-03-01",
+        "newValue": "2014-03-18",
+        "description": "shows.json: blithe-spirit-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blithe-spirit-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-03-18 (officiallondontheatre.com; BRO-6487)",
+        "description": "shows.json: blithe-spirit-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-04-28",
+        "newValue": "2014-05-08",
+        "description": "shows.json: 1984-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-05-08 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: 1984-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shakespeare-in-love-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-07-02",
+        "newValue": "2014-07-23",
+        "description": "shows.json: shakespeare-in-love-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shakespeare-in-love-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-07-23 (westendtheatre.com; BRO-6487)",
+        "description": "shows.json: shakespeare-in-love-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "evita-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-09-16",
+        "newValue": "2014-09-22",
+        "description": "shows.json: evita-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "evita-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-09-22 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: evita-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ruling-class-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-01-16",
+        "newValue": "2015-01-27",
+        "description": "shows.json: the-ruling-class-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ruling-class-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-01-27 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: the-ruling-class-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "light-shining-in-buckinghamshire-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-04-15",
+        "newValue": "2015-04-23",
+        "description": "shows.json: light-shining-in-buckinghamshire-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "light-shining-in-buckinghamshire-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-04-23 (nicholasatthetheatre.blogspot.com; BRO-6487)",
+        "description": "shows.json: light-shining-in-buckinghamshire-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-07-01",
+        "newValue": "2015-06-24",
+        "description": "shows.json: the-importance-of-being-earnest-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-07-01",
+        "newValue": "2015-07-01",
+        "description": "shows.json: the-importance-of-being-earnest-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-07-01 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: the-importance-of-being-earnest-west-end-2015.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T14:21:13.747Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-play-that-goes-wrong-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-play-that-goes-wrong-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-play-that-goes-wrong-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for chimerica-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for chimerica-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for jeeves-and-wooster-in-perfect-nonsense-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jeeves-and-wooster-in-perfect-nonsense-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for jeeves-and-wooster-in-perfect-nonsense-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for blithe-spirit-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for blithe-spirit-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for 1984-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for 1984-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for shakespeare-in-love-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for shakespeare-in-love-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for evita-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for evita-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-ruling-class-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-ruling-class-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for light-shining-in-buckinghamshire-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for light-shining-in-buckinghamshire-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-importance-of-being-earnest-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-importance-of-being-earnest-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-importance-of-being-earnest-west-end-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

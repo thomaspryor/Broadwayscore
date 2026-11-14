@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-4838-d",
+  "planId": "48a8e9d2-e69f-4dad-860f-76e377ed070a",
+  "status": "applied",
+  "createdAt": "2026-10-11T23:16:03.085Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4838 follow-up: bro-4838-c cleared the not-a-review verdict on From the Heart (Theatre News) but its rejectedAt was re-stamped by the scorer at 22:23 before the apply, so that one action was refused as stale. Clears the current stamp; the scorer now honors nonReviewManualClear (scripts/lib/human-cleared-rejection.js), so it will not be re-stamped.",
+    "steps": [
+      "Clear rejectedAt on from-the-heart-west-end-2026/theatre-news--unknown.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "from-the-heart-west-end-2026/theatre-news--unknown.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-11T22:23:14.056Z",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: Theatre News REVIEW by Marco Gandolfi, Garrick Theatre (same verdict, recorded by ensemble-scoreability-check)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T07:09:22.092Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/theatre-news--unknown.json rejectedAt: \"2026-10-11T22:23:14.056Z\" -> null"
+    }
+  ]
+}

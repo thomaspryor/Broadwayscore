@@ -1,0 +1,4024 @@
+{
+  "schemaVersion": 3,
+  "generatedAt": "2026-11-13T20:14:44.275Z",
+  "generator": "scripts/grade-openings.js (BRO-7082)",
+  "from": "2026-10-30",
+  "to": "2026-11-13",
+  "windowHours": {
+    "before": 72,
+    "after": 168
+  },
+  "historyFrom": "2026-10-19T20:26:37.000Z",
+  "commitsScanned": 2830,
+  "summary": {
+    "broadway": {
+      "openings": 3,
+      "onItsOwn": 2,
+      "neededHands": 1,
+      "neededHandsIngestOnly": 0,
+      "incomplete": 0,
+      "noReviews": 0,
+      "noReviewsClosed": 0,
+      "coverageUnknown": 0,
+      "notGradable": 0
+    },
+    "off-broadway": {
+      "openings": 29,
+      "onItsOwn": 10,
+      "neededHands": 9,
+      "neededHandsIngestOnly": 1,
+      "incomplete": 3,
+      "noReviews": 7,
+      "noReviewsClosed": 3,
+      "coverageUnknown": 0,
+      "notGradable": 0
+    },
+    "west-end": {
+      "openings": 3,
+      "onItsOwn": 1,
+      "neededHands": 2,
+      "neededHandsIngestOnly": 0,
+      "incomplete": 0,
+      "noReviews": 0,
+      "noReviewsClosed": 0,
+      "coverageUnknown": 0,
+      "notGradable": 0
+    },
+    "off-west-end": {
+      "openings": 11,
+      "onItsOwn": 3,
+      "neededHands": 6,
+      "neededHandsIngestOnly": 0,
+      "incomplete": 1,
+      "noReviews": 1,
+      "noReviewsClosed": 1,
+      "coverageUnknown": 0,
+      "notGradable": 0
+    }
+  },
+  "grades": [
+    {
+      "showId": "potus-off-broadway-2026",
+      "title": "POTUS",
+      "category": "off-broadway",
+      "openingDate": "2026-11-13",
+      "embargoAt": "2026-11-14T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-21T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 13,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+      "title": "Traitorz: The Unauthorized Musical Parody",
+      "category": "off-broadway",
+      "openingDate": "2026-11-13",
+      "embargoAt": "2026-11-14T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-21T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "first-and-last-off-broadway-2026",
+      "title": "First and Last",
+      "category": "off-broadway",
+      "openingDate": "2026-11-12",
+      "embargoAt": "2026-11-13T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-20T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "category": "off-west-end",
+      "openingDate": "2026-11-12",
+      "embargoAt": "2026-11-12T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-19T21:00:00.000Z",
+      "windowClosed": false,
+      "live": 18,
+      "lateLive": 0,
+      "known": 18,
+      "missing": 0,
+      "censusCandidates": 17,
+      "hoursToLive": 3.9,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-kings-critique-off-broadway-2026",
+      "title": "The King's Critique",
+      "category": "off-broadway",
+      "openingDate": "2026-11-12",
+      "embargoAt": "2026-11-13T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-20T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 4,
+      "lateLive": 0,
+      "known": 4,
+      "missing": 0,
+      "censusCandidates": 2,
+      "hoursToLive": 0.1,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "act-of-god-off-west-end-2026",
+      "title": "Act of God",
+      "category": "off-west-end",
+      "openingDate": "2026-11-11",
+      "embargoAt": "2026-11-11T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-18T21:00:00.000Z",
+      "windowClosed": false,
+      "live": 7,
+      "lateLive": 0,
+      "known": 7,
+      "missing": 0,
+      "censusCandidates": 11,
+      "hoursToLive": 1.2,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-12T06:48:04.000Z",
+          "outletId": "thestage",
+          "cause": "text-gap",
+          "source": "a873ceca feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "category": "broadway",
+      "openingDate": "2026-11-11",
+      "embargoAt": "2026-11-12T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-19T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 1,
+      "lateLive": 0,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 6,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "category": "west-end",
+      "openingDate": "2026-11-10",
+      "embargoAt": "2026-11-10T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-17T22:00:00.000Z",
+      "windowClosed": false,
+      "live": 30,
+      "lateLive": 0,
+      "known": 30,
+      "missing": 0,
+      "censusCandidates": 12,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T12:38:20.000Z",
+          "outletId": "thestage",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "ba84482a ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T10:45:44.000Z",
+          "outletId": "timeout-london",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "3b1b0561 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "category": "off-west-end",
+      "openingDate": "2026-11-09",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-16T21:00:00.000Z",
+      "windowClosed": false,
+      "live": 21,
+      "lateLive": 0,
+      "known": 21,
+      "missing": 0,
+      "censusCandidates": 27,
+      "hoursToLive": 4.2,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-10T06:39:05.000Z",
+          "outletId": "express-uk",
+          "cause": "text-gap",
+          "source": "0b291996 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T10:19:35.000Z",
+          "outletId": "the-morning-star",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "2db6e0cc ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T02:35:02.000Z",
+          "outletId": "islingtontribune",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "b70250c8 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T02:07:12.000Z",
+          "outletId": "cherylmarkosky",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "ee617cc8 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-12T18:11:42.000Z",
+          "outletId": "liamodell",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e96a2fad ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T12:04:45.000Z",
+          "outletId": "london-theatre",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T12:04:45.000Z",
+          "outletId": "the-recs",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "category": "broadway",
+      "openingDate": "2026-11-09",
+      "embargoAt": "2026-11-10T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-17T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 25,
+      "lateLive": 0,
+      "known": 25,
+      "missing": 0,
+      "censusCandidates": 24,
+      "hoursToLive": 0.3,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "kate-allie-and-the-86-mets-off-broadway-2026",
+      "title": "Kate, Allie and the '86 Mets",
+      "category": "off-broadway",
+      "openingDate": "2026-11-09",
+      "embargoAt": "2026-11-10T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-17T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 1,
+      "lateLive": 0,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 2,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-12T13:24:17.000Z",
+          "outletId": "openingnight",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "54caa884 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "category": "off-broadway",
+      "openingDate": "2026-11-09",
+      "embargoAt": "2026-11-10T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-17T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 7,
+      "lateLive": 0,
+      "known": 7,
+      "missing": 0,
+      "censusCandidates": 6,
+      "hoursToLive": 1.8,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-10T09:49:23.021Z",
+          "file": "the-visitors-off-broadway-2026/nytg--allison-considine.json",
+          "outletId": "nytg",
+          "cause": "date-guard",
+          "fields": [
+            "publishDate"
+          ]
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "category": "off-broadway",
+      "openingDate": "2026-11-08",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-16T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 16,
+      "lateLive": 0,
+      "known": 16,
+      "missing": 0,
+      "censusCandidates": 22,
+      "hoursToLive": -0.1,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-11T13:01:51.000Z",
+          "outletId": "guardian",
+          "cause": "text-gap",
+          "source": "539dcec2 ingest-urls: 1 review(s) for msblackforpresident-off-broadway-2026",
+          "fileChange": "modified"
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T14:41:27.000Z",
+          "outletId": "the-interested-bystander",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "97540c15 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T10:54:28.000Z",
+          "outletId": "nytimes",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "8bfa68e5 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T04:23:25.000Z",
+          "outletId": "lighting-and-sound-america",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "eb60a027 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T19:32:30.000Z",
+          "outletId": "new-york-notebook",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "c2bfdfc2 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-charioteer-off-broadway-2026",
+      "title": "The Charioteer",
+      "category": "off-broadway",
+      "openingDate": "2026-11-08",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-16T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 2,
+      "lateLive": 0,
+      "known": 2,
+      "missing": 0,
+      "censusCandidates": 3,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T07:23:27.000Z",
+          "outletId": "nytimes",
+          "cause": "text-gap",
+          "source": "11f18855 feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-steel-man-off-broadway-2026",
+      "title": "The Steel Man",
+      "category": "off-broadway",
+      "openingDate": "2026-11-08",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-16T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 4,
+      "lateLive": 0,
+      "known": 4,
+      "missing": 0,
+      "censusCandidates": 3,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "category": "broadway",
+      "openingDate": "2026-11-08",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-16T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 24,
+      "lateLive": 0,
+      "known": 24,
+      "missing": 0,
+      "censusCandidates": 27,
+      "hoursToLive": 0.3,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-09T04:18:11.000Z",
+          "outletId": "theatrely",
+          "cause": "discovery-gap",
+          "source": "adfc4da3 ingest-urls: 1 review(s) for wanted-2022",
+          "fileChange": "added"
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-09T04:15:59.298Z",
+          "file": "wanted-2022/cititour--brian-scott-lipton.json",
+          "outletId": "cititour",
+          "cause": "date-guard",
+          "fields": [
+            "publishDate"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-09T03:02:30.818Z",
+          "file": "wanted-2022/slantmagazine--dan-rubins.json",
+          "outletId": "slantmagazine",
+          "cause": "scoring-by-hand",
+          "steps": [
+            "humanReviewScore"
+          ]
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "broom-play-off-broadway-2026",
+      "title": "Broom Play",
+      "category": "off-broadway",
+      "openingDate": "2026-11-07",
+      "embargoAt": "2026-11-08T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-15T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 2,
+      "lateLive": 0,
+      "known": 2,
+      "missing": 0,
+      "censusCandidates": 4,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T12:38:20.000Z",
+          "outletId": "the-cap-times",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "ba84482a ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "curtains-off-broadway-2026",
+      "title": "Curtains",
+      "category": "off-broadway",
+      "openingDate": "2026-11-06",
+      "embargoAt": "2026-11-07T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-14T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 8,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-12T02:32:00.000Z",
+          "outletId": "theater-scene",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "373d5dc8 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "category": "west-end",
+      "openingDate": "2026-11-06",
+      "embargoAt": "2026-11-06T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T21:00:00.000Z",
+      "windowClosed": false,
+      "live": 16,
+      "lateLive": 0,
+      "known": 16,
+      "missing": 0,
+      "censusCandidates": 9,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-10T06:45:05.000Z",
+          "outletId": "bachtrack",
+          "cause": "text-gap",
+          "source": "5ab9cd21 feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-07T15:01:55.000Z",
+          "outletId": "all-that-dazzles-uk",
+          "cause": "discovery-gap",
+          "source": "5a9cabec ingest-urls: 2 review(s) for iphigenie-en-tauride-english-national-opera-west-end-2026",
+          "fileChange": "added"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-07T15:01:55.000Z",
+          "outletId": "theatre-weekly",
+          "cause": "discovery-gap",
+          "source": "5a9cabec ingest-urls: 2 review(s) for iphigenie-en-tauride-english-national-opera-west-end-2026",
+          "fileChange": "added"
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-13T13:06:21.000Z",
+          "outletId": "classical-source",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "5d53c4ed ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T13:45:29.000Z",
+          "outletId": "musicomh",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "66388f07 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "category": "off-west-end",
+      "openingDate": "2026-11-06",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-13T22:00:00.000Z",
+      "windowClosed": false,
+      "live": 2,
+      "lateLive": 0,
+      "known": 2,
+      "missing": 0,
+      "censusCandidates": 17,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-12T21:25:21.000Z",
+          "outletId": "therealchrisparkle",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a663f3a6 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-12T21:25:21.000Z",
+          "outletId": "warwickshireworld",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a663f3a6 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T18:52:27.000Z",
+          "outletId": "bestoftheatre",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "92091c46 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T18:52:27.000Z",
+          "outletId": "theatre-weekly",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "92091c46 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T12:04:45.000Z",
+          "outletId": "guardian",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T21:35:29.000Z",
+          "outletId": "london-theatre",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "177a1e52 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T16:40:58.000Z",
+          "outletId": "whatsonstage",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "b618cc10 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T15:27:00.000Z",
+          "outletId": "afridiziak-theatre-news",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a6272b14 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T04:51:01.000Z",
+          "outletId": "around-the-town-chicago",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "3e6f57a0 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T04:51:01.000Z",
+          "outletId": "sueterryvoices",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "3e6f57a0 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "category": "off-west-end",
+      "openingDate": "2026-11-06",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-13T22:00:00.000Z",
+      "windowClosed": false,
+      "live": 23,
+      "lateLive": 0,
+      "known": 23,
+      "missing": 0,
+      "censusCandidates": 28,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T03:51:16.000Z",
+          "outletId": "musical-theatre-review",
+          "cause": "text-gap",
+          "source": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T10:45:44.000Z",
+          "outletId": "standard",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "3b1b0561 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T12:04:45.000Z",
+          "outletId": "readaboutstuff",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T15:05:44.000Z",
+          "outletId": "london-theatre-reviews",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "045607dd ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T06:26:05.000Z",
+          "outletId": "musical-theatre-review",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "4227f117 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-08T22:57:16.000Z",
+          "outletId": "cineramafilm",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a868a00f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-08T13:35:30.000Z",
+          "outletId": "thereviewshub",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "0dd29dda ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 12,
+      "lateLive": 1,
+      "known": 12,
+      "missing": 0,
+      "censusCandidates": 19,
+      "hoursToLive": 1.6,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T07:51:26.000Z",
+          "outletId": "wsj",
+          "cause": "text-gap",
+          "source": "80656c4e feat: gap-recovery driver final - 1 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T17:12:09.000Z",
+          "outletId": "wsj",
+          "cause": "discovery-gap",
+          "source": "e2a2d3fd ingest-urls: 1 review(s) for the-unbelievers-off-broadway-2026",
+          "fileChange": "added"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T16:57:43.000Z",
+          "outletId": "new-york-sun",
+          "cause": "discovery-gap",
+          "source": "f515cff3 ingest-urls: 1 review(s) for 222-a-ghost-story-off-broadway-2026",
+          "fileChange": "added"
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-12T11:58:59.000Z",
+          "outletId": "theater-scene",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "599b46db ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T19:57:14.000Z",
+          "outletId": "consequence",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "cfcd70ad ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "heart-of-a-dog-off-broadway-2026",
+      "title": "Heart of a Dog",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 11,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-07T04:52:14.421Z",
+          "file": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json",
+          "outletId": "chicago-reader",
+          "cause": "wrong-label",
+          "fields": [
+            "wrongProduction"
+          ]
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-07T04:52:14.578Z",
+          "file": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+          "outletId": "new-city-stage",
+          "cause": "wrong-label",
+          "fields": [
+            "wrongProduction"
+          ]
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-12T11:58:59.000Z",
+          "outletId": "manchestertheatres",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "599b46db ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-08T10:24:59.000Z",
+          "outletId": "third-coast-review",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "dc9ba9d7 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "category": "off-west-end",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-12T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 35,
+      "lateLive": 3,
+      "known": 35,
+      "missing": 0,
+      "censusCandidates": 42,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T04:56:48.000Z",
+          "outletId": "adventuresintheatreland",
+          "cause": "text-gap",
+          "source": "99f27abd feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T03:51:16.000Z",
+          "outletId": "adventuresintheatreland",
+          "cause": "text-gap",
+          "source": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T03:51:16.000Z",
+          "outletId": "jonathan-baz",
+          "cause": "text-gap",
+          "source": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T03:51:16.000Z",
+          "outletId": "londonlivinglarge",
+          "cause": "text-gap",
+          "source": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T03:51:16.000Z",
+          "outletId": "theatre-vibe",
+          "cause": "text-gap",
+          "source": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-11T00:03:46.000Z",
+          "outletId": "uktheatrenetwork",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "f63a7c66 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T16:08:41.000Z",
+          "outletId": "london-box-office",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "7babdfbb ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T21:27:18.000Z",
+          "outletId": "theatre-weekly",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "d9bb437e ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T02:45:49.000Z",
+          "outletId": "jonathan-baz",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "0680f20b ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T02:45:49.000Z",
+          "outletId": "the-spy-in-the-stalls",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "0680f20b ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T17:07:55.000Z",
+          "outletId": "broadwayworld",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T17:07:55.000Z",
+          "outletId": "everything-theatre",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T17:07:55.000Z",
+          "outletId": "standard",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T17:07:55.000Z",
+          "outletId": "the-recs",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T17:07:55.000Z",
+          "outletId": "whatsonstage",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "tango-after-dark-off-west-end-2026",
+      "title": "Tango After Dark",
+      "category": "off-west-end",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-12T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 8,
+      "lateLive": 0,
+      "known": 8,
+      "missing": 0,
+      "censusCandidates": 14,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-08T16:43:24.873Z",
+          "file": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+          "outletId": "theatreandtonic",
+          "cause": "wrong-label",
+          "fields": [
+            "wrongProduction"
+          ]
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T02:40:48.000Z",
+          "outletId": "seeing-dance",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "1472f991 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-08T22:57:16.000Z",
+          "outletId": "gramilano",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a868a00f ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 16,
+      "lateLive": 0,
+      "known": 16,
+      "missing": 0,
+      "censusCandidates": 12,
+      "hoursToLive": 1.5,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T07:23:27.000Z",
+          "outletId": "nytimes",
+          "cause": "text-gap",
+          "source": "11f18855 feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-08T18:56:07.000Z",
+          "outletId": "nytimes",
+          "cause": "text-gap",
+          "source": "d6b21599 feat: NYT browser recovery - 16 reviews recovered (task #831)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-06T14:57:33.000Z",
+          "outletId": "timeout",
+          "cause": "attribution",
+          "source": "dc3961ec BRO-7041: clear ensemble rejection of the BWW excerpt on the re-credited Time Out row so it refetches",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-06T13:57:13.000Z",
+          "outletId": "timeout",
+          "cause": "attribution",
+          "source": "b1c2f86c BRO-7041: re-credit unbelievers Time Out review to Billy McEntee (page byline)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T17:12:09.000Z",
+          "outletId": "wsj",
+          "cause": "text-gap",
+          "source": "e2a2d3fd ingest-urls: 1 review(s) for the-unbelievers-off-broadway-2026",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T17:05:03.000Z",
+          "outletId": "theater-pizzazz",
+          "cause": "text-gap",
+          "source": "b3069eca ingest-urls: 2 review(s) for the-unbelievers-off-broadway-2026",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T17:05:03.000Z",
+          "outletId": "timeout",
+          "cause": "text-gap",
+          "source": "b3069eca ingest-urls: 2 review(s) for the-unbelievers-off-broadway-2026",
+          "fileChange": "modified"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 13,
+      "lateLive": 0,
+      "known": 13,
+      "missing": 0,
+      "censusCandidates": 10,
+      "hoursToLive": 1.5,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-13T00:46:32.000Z",
+          "outletId": "nytimes",
+          "cause": "other",
+          "source": "25103c73 data: re-trim NYT Verge+Rope joint column to each show's section (BRO-7389)",
+          "fileChange": "modified"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-08T18:56:07.000Z",
+          "outletId": "nytimes",
+          "cause": "text-gap",
+          "source": "d6b21599 feat: NYT browser recovery - 16 reviews recovered (task #831)",
+          "fileChange": "modified"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "category": "off-broadway",
+      "openingDate": "2026-11-04",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-12T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 8,
+      "lateLive": 0,
+      "known": 8,
+      "missing": 0,
+      "censusCandidates": 9,
+      "hoursToLive": 0.8,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T17:09:02.000Z",
+          "outletId": "theater-scene",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T17:09:02.000Z",
+          "outletId": "woman-around-town",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-05T09:01:49.000Z",
+          "outletId": "front-row-center",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "5d951d4a ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "category": "off-broadway",
+      "openingDate": "2026-11-04",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-12T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 8,
+      "lateLive": 1,
+      "known": 8,
+      "missing": 0,
+      "censusCandidates": 15,
+      "hoursToLive": null,
+      "verdict": "incomplete",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T02:48:58.000Z",
+          "outletId": "lighting-and-sound-america",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e9a73c1e ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-10T02:48:58.000Z",
+          "outletId": "theater-scene",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e9a73c1e ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T02:02:54.000Z",
+          "outletId": "nysr",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "d29fd1a5 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T17:09:02.000Z",
+          "outletId": "front-row-center",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T17:09:02.000Z",
+          "outletId": "nytg",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T13:28:01.000Z",
+          "outletId": "exeunt-magazine",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "56691d17 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-05T22:39:48.000Z",
+          "outletId": "oxfordshire-guardian",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "e86236b0 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "cranford-off-west-end-2026",
+      "title": "Cranford",
+      "category": "off-west-end",
+      "openingDate": "2026-11-03",
+      "embargoAt": "2026-11-03T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-10T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 4,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T10:35:09.000Z",
+          "outletId": "west-end-best-friend",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "175beafc ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T06:38:29.000Z",
+          "outletId": "theatre-weekly",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "6309458c ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "category": "off-broadway",
+      "openingDate": "2026-11-03",
+      "embargoAt": "2026-11-04T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-11T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 15,
+      "lateLive": 0,
+      "known": 15,
+      "missing": 0,
+      "censusCandidates": 14,
+      "hoursToLive": 2.1,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T08:59:36.000Z",
+          "outletId": "lighting-and-sound-america",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "7b935450 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T15:34:37.000Z",
+          "outletId": "new-york-notebook",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "73b65d89 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "category": "off-west-end",
+      "openingDate": "2026-11-03",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-10T21:00:00.000Z",
+      "windowClosed": true,
+      "live": 25,
+      "lateLive": 0,
+      "known": 25,
+      "missing": 0,
+      "censusCandidates": 28,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T07:03:03.000Z",
+          "outletId": "theatreandtonic",
+          "cause": "text-gap",
+          "source": "6ba6e62a feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)",
+          "fileChange": "modified"
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-07T17:09:02.000Z",
+          "outletId": "sierz-co-uk",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-05T14:47:31.000Z",
+          "outletId": "timeout-london",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "ad950c2d ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T19:31:41.000Z",
+          "outletId": "the-skinny",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "90423ee3 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T17:07:27.000Z",
+          "outletId": "londontheatre1",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "eb15d06f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T16:42:09.000Z",
+          "outletId": "cherylmarkosky",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "5a181dee ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T16:42:09.000Z",
+          "outletId": "susanelkin",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "5a181dee ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T07:52:32.000Z",
+          "outletId": "redbuslondinium",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "51feb3f3 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "category": "off-broadway",
+      "openingDate": "2026-11-03",
+      "embargoAt": "2026-11-04T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-11T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 15,
+      "lateLive": 1,
+      "known": 15,
+      "missing": 0,
+      "censusCandidates": 10,
+      "hoursToLive": 2.1,
+      "verdict": "incomplete",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-05T00:54:36.000Z",
+          "outletId": "vulture",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "0cef9436 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "category": "off-broadway",
+      "openingDate": "2026-11-02",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-10T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 15,
+      "lateLive": 1,
+      "known": 15,
+      "missing": 0,
+      "censusCandidates": 12,
+      "hoursToLive": 1.9,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-03T23:06:57.000Z",
+          "outletId": "cititour",
+          "cause": "discovery-gap",
+          "source": "40fdd1d5 ingest-urls: 2 review(s) for clifford-odets-waiting-for-lefty-off-broadway-2026",
+          "fileChange": "added"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-03T23:06:57.000Z",
+          "outletId": "theater-pizzazz",
+          "cause": "discovery-gap",
+          "source": "40fdd1d5 ingest-urls: 2 review(s) for clifford-odets-waiting-for-lefty-off-broadway-2026",
+          "fileChange": "added"
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-04T08:13:21.683Z",
+          "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+          "outletId": "theater-pizzazz",
+          "cause": "date-guard",
+          "fields": [
+            "publishDate"
+          ]
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-09T19:32:30.000Z",
+          "outletId": "adriandimanlig",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "c2bfdfc2 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T17:07:27.000Z",
+          "outletId": "front-row-center",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "eb15d06f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T17:07:27.000Z",
+          "outletId": "timeout",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "eb15d06f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-03T23:57:55.000Z",
+          "outletId": "nytimes",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "df764e2e ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-03T15:34:59.000Z",
+          "outletId": "nytimes",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "6033bfca ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "slanted-floors-off-broadway-2026",
+      "title": "Slanted Floors",
+      "category": "off-broadway",
+      "openingDate": "2026-11-02",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-10T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 3,
+      "lateLive": 0,
+      "known": 3,
+      "missing": 0,
+      "censusCandidates": 4,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T14:54:00.000Z",
+          "outletId": "nyt-theater",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "8e71754f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T01:35:19.000Z",
+          "outletId": "one-minute-critic",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "ec64f988 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-morbs-off-broadway-2026",
+      "title": "The Morbs",
+      "category": "off-broadway",
+      "openingDate": "2026-11-02",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-10T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 4,
+      "lateLive": 1,
+      "known": 4,
+      "missing": 0,
+      "censusCandidates": 4,
+      "hoursToLive": null,
+      "verdict": "incomplete",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T15:49:25.000Z",
+          "outletId": "off-off-online",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "d70580df ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T15:49:25.000Z",
+          "outletId": "theater-scene",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "d70580df ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "title": "The Blue Violinist Over West End Avenue",
+      "category": "off-broadway",
+      "openingDate": "2026-11-01",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-09T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 5,
+      "lateLive": 0,
+      "known": 5,
+      "missing": 0,
+      "censusCandidates": 4,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-06T14:48:35.000Z",
+          "outletId": "pages-on-stages",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "a50c2c71 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T00:04:22.000Z",
+          "outletId": "theatermania",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "0dc7886b ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "category": "off-broadway",
+      "openingDate": "2026-11-01",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-09T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 1,
+      "lateLive": 2,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 18,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-02T07:52:03.630Z",
+          "file": "tosca-off-broadway-2026/zeal-nyc--herman-spencer.json",
+          "outletId": "zeal-nyc",
+          "cause": "wrong-label",
+          "fields": [
+            "wrongProduction"
+          ]
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T12:02:20.000Z",
+          "outletId": "guardian",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "1f7584f9 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "violets-magic-glasses-off-broadway-2026",
+      "title": "Violet’s Magic Glasses",
+      "category": "off-broadway",
+      "openingDate": "2026-11-01",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-09T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "category": "off-broadway",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-31T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-07T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 5,
+      "lateLive": 0,
+      "known": 5,
+      "missing": 0,
+      "censusCandidates": 15,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "specimen-off-broadway-2026",
+      "title": "Specimen",
+      "category": "off-broadway",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-31T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-07T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 4,
+      "lateLive": 0,
+      "known": 4,
+      "missing": 0,
+      "censusCandidates": 5,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-10-31T10:22:02.000Z",
+          "outletId": "theatermania",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "bcf3ac3c ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-10-31T10:22:02.000Z",
+          "outletId": "theatrely",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "bcf3ac3c ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "stoker-wilde-off-west-end-2026",
+      "title": "Stoker Wilde",
+      "category": "off-west-end",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-30T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-06T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 2,
+      "lateLive": 0,
+      "known": 2,
+      "missing": 0,
+      "censusCandidates": 6,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-10-31T23:44:10.000Z",
+          "outletId": "theatreboard",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "53b9db5d ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "category": "off-west-end",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-06T21:00:00.000Z",
+      "windowClosed": true,
+      "live": 15,
+      "lateLive": 3,
+      "known": 15,
+      "missing": 0,
+      "censusCandidates": 25,
+      "hoursToLive": 3.3,
+      "verdict": "incomplete",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T22:31:26.000Z",
+          "outletId": "creative-reviews-uk",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "ffe7e9a0 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T18:15:56.000Z",
+          "outletId": "plays-to-see",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "53737653 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-03T12:41:00.000Z",
+          "outletId": "everything-theatre",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "cb23a56e ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-03T12:41:00.000Z",
+          "outletId": "reviewsgate",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "cb23a56e ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-02T10:13:00.000Z",
+          "outletId": "theartsdispatch",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "50ce38e3 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-02T03:05:21.000Z",
+          "outletId": "londontheatre1",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "4803b588 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-01T17:11:35.000Z",
+          "outletId": "firstnightmagazine",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "eb96e380 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-10-31T06:36:31.000Z",
+          "outletId": "viewfromthegods",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "89e71e1d ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "times-square-skywalk-off-broadway-2026",
+      "title": "Times Square Skywalk",
+      "category": "off-broadway",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-31T02:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-07T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 3,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "category": "west-end",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-30T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-06T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 17,
+      "lateLive": 5,
+      "known": 17,
+      "missing": 0,
+      "censusCandidates": 22,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-step",
+          "at": "2026-11-02T20:36:35.064Z",
+          "file": "tosca-english-national-opera-west-end-2026/a-youngish-perspective--unknown.json",
+          "outletId": "a-youngish-perspective",
+          "cause": "wrong-label",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-04T02:41:00.359Z",
+          "file": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+          "outletId": "guardian",
+          "cause": "wrong-label",
+          "fields": [
+            "wrongProduction"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T02:10:11.552Z",
+          "file": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+          "outletId": "london-theatre",
+          "cause": "wrong-label",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T02:11:18.236Z",
+          "file": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+          "outletId": "sunday-telegraph",
+          "cause": "wrong-label",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T17:00:29.802Z",
+          "file": "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
+          "outletId": "theatre-weekly",
+          "cause": "wrong-label",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T16:59:59.618Z",
+          "file": "tosca-english-national-opera-west-end-2026/thereviewshub--maryam-philpott.json",
+          "outletId": "thereviewshub",
+          "cause": "wrong-label",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-02T20:35:45.537Z",
+          "file": "tosca-english-national-opera-west-end-2026/thestage--george-hall.json",
+          "outletId": "thestage",
+          "cause": "wrong-label",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T17:45:55.242Z",
+          "file": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+          "outletId": "times-uk",
+          "cause": "wrong-label",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        }
+      ],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T07:52:32.000Z",
+          "outletId": "bestoftheatre",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "51feb3f3 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-04T04:19:48.000Z",
+          "outletId": "cherylmarkosky",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "fc41a8db ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-10-31T23:09:24.000Z",
+          "outletId": "cherylmarkosky",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "c2f00539 ingest: audit-aggregator-gap auto-ingested review-texts"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    }
+  ],
+  "firstPassMisses": [
+    {
+      "category": "west-end",
+      "outletId": "all-that-dazzles-uk",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T04:12:51.000Z",
+      "via": "fd8be0e7 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "artsdesk",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T02:40:28.000Z",
+      "via": "1bd477e2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "britishtheatrecom",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T06:38:29.000Z",
+      "via": "6309458c ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "broadwayworld",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T12:00:35.000Z",
+      "via": "f56f6c71 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "financialtimes",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T17:01:25.000Z",
+      "via": "869cb94f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "guardian",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T20:57:36.000Z",
+      "via": "830676ee ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "hollywood-reporter",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T22:31:26.000Z",
+      "via": "ffe7e9a0 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "london-theatre",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T04:12:51.000Z",
+      "via": "fd8be0e7 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "londontheatre1",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T20:39:54.000Z",
+      "via": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "nytimes",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T22:31:26.000Z",
+      "via": "ffe7e9a0 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "plays-international",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T20:39:54.000Z",
+      "via": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "shinylife",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T04:12:51.000Z",
+      "via": "fd8be0e7 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "theartsdispatch",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T20:39:54.000Z",
+      "via": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "theatreandtonic",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T20:39:54.000Z",
+      "via": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "thereviewshub",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-03T04:04:36.000Z",
+      "via": "ecdd72ca ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "thestage",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T12:00:35.000Z",
+      "via": "f56f6c71 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "timeout-london",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T06:38:29.000Z",
+      "via": "6309458c ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "west-end-best-friend",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T20:39:54.000Z",
+      "via": "8b7383d5 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "whatsonstage",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T12:00:35.000Z",
+      "via": "f56f6c71 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "broadwayworld",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T16:30:59.000Z",
+      "via": "06e68999 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "coffee-table-notes",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-01T03:54:03.000Z",
+      "via": "dba83277 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "everything-theatre",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T03:49:28.000Z",
+      "via": "b66904a6 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "london-theatre",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T13:50:27.000Z",
+      "via": "d9c536c4 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "musical-theatre-review",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T16:30:59.000Z",
+      "via": "06e68999 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "soundsandstage",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T04:12:51.000Z",
+      "via": "fd8be0e7 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "stagetopage",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T19:31:41.000Z",
+      "via": "90423ee3 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "thereviewshub",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T14:22:13.000Z",
+      "via": "b0c9ca41 ingest-urls: 1 review(s) for ceilidh-the-musical-off-west-end-2026"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theupcoming",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T22:17:26.000Z",
+      "via": "4881e487 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "whatsonstage",
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-30T14:00:20.000Z",
+      "via": "9e656f41 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "broadway",
+      "outletId": "globalnews2",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T02:59:28.000Z",
+      "via": "26db9e06 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "broadway",
+      "outletId": "hoodline",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T02:59:28.000Z",
+      "via": "26db9e06 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "broadway",
+      "outletId": "jks-theatre-scene",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T16:30:59.000Z",
+      "via": "06e68999 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "broadway",
+      "outletId": "new-york-sun",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-30T08:42:13.000Z",
+      "via": "17203104 ingest-urls: 1 review(s) for a-few-good-men-2026"
+    },
+    {
+      "category": "broadway",
+      "outletId": "thewrap",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-10-30T04:45:37.000Z",
+      "via": "d2aad044 ingest-urls: 1 review(s) for a-few-good-men-2026"
+    },
+    {
+      "category": "broadway",
+      "outletId": "times-square-chronicles",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-30T19:13:45.000Z",
+      "via": "77ee627b ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "broadway",
+      "outletId": "variety",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-30T23:33:28.000Z",
+      "via": "be8ab770 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "boothhistory",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-30T19:13:45.000Z",
+      "via": "77ee627b ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "musical-theatre-report",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-03T04:04:36.000Z",
+      "via": "ecdd72ca ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nytg",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-10-30T22:21:01.000Z",
+      "via": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nytimes",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-10-30T22:21:01.000Z",
+      "via": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "one-minute-critic",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-30T19:13:45.000Z",
+      "via": "77ee627b ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "stageandcinema",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-30T22:21:01.000Z",
+      "via": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "talkinbroadway",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-30T22:21:01.000Z",
+      "via": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theatermania",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-10-30T22:29:43.000Z",
+      "via": "790b6925 ingest-urls: 1 review(s) for the-heart-off-broadway-2026"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "creative-reviews-uk",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T22:31:26.000Z",
+      "via": "ffe7e9a0 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "everything-theatre",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-03T12:41:00.000Z",
+      "via": "cb23a56e ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "firstnightmagazine",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-01T17:11:35.000Z",
+      "via": "eb96e380 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "londontheatre1",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T03:05:21.000Z",
+      "via": "4803b588 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "plays-to-see",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T18:15:56.000Z",
+      "via": "53737653 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "reviewsgate",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-03T12:41:00.000Z",
+      "via": "cb23a56e ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theartsdispatch",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-02T10:13:00.000Z",
+      "via": "50ce38e3 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "viewfromthegods",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T06:36:31.000Z",
+      "via": "89e71e1d ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theatreboard",
+      "showId": "stoker-wilde-off-west-end-2026",
+      "title": "Stoker Wilde",
+      "embargoAt": "2026-10-30T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T23:44:10.000Z",
+      "via": "53b9db5d ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "bestoftheatre",
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "embargoAt": "2026-10-30T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T07:52:32.000Z",
+      "via": "51feb3f3 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "cherylmarkosky",
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "embargoAt": "2026-10-30T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T23:09:24.000Z",
+      "via": "c2f00539 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theatermania",
+      "showId": "specimen-off-broadway-2026",
+      "title": "Specimen",
+      "embargoAt": "2026-10-31T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T10:22:02.000Z",
+      "via": "bcf3ac3c ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theatrely",
+      "showId": "specimen-off-broadway-2026",
+      "title": "Specimen",
+      "embargoAt": "2026-10-31T02:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-10-31T10:22:02.000Z",
+      "via": "bcf3ac3c ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "pages-on-stages",
+      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "title": "The Blue Violinist Over West End Avenue",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T14:48:35.000Z",
+      "via": "a50c2c71 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theatermania",
+      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "title": "The Blue Violinist Over West End Avenue",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T00:04:22.000Z",
+      "via": "0dc7886b ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "guardian",
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T12:02:20.000Z",
+      "via": "1f7584f9 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "adriandimanlig",
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T19:32:30.000Z",
+      "via": "c2bfdfc2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "cititour",
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-03T23:06:57.000Z",
+      "via": "40fdd1d5 ingest-urls: 2 review(s) for clifford-odets-waiting-for-lefty-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "front-row-center",
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T17:07:27.000Z",
+      "via": "eb15d06f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nytimes",
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-03T15:34:59.000Z",
+      "via": "6033bfca ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theater-pizzazz",
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-03T23:06:57.000Z",
+      "via": "40fdd1d5 ingest-urls: 2 review(s) for clifford-odets-waiting-for-lefty-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "timeout",
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T17:07:27.000Z",
+      "via": "eb15d06f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nyt-theater",
+      "showId": "slanted-floors-off-broadway-2026",
+      "title": "Slanted Floors",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T14:54:00.000Z",
+      "via": "8e71754f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "one-minute-critic",
+      "showId": "slanted-floors-off-broadway-2026",
+      "title": "Slanted Floors",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T01:35:19.000Z",
+      "via": "ec64f988 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "off-off-online",
+      "showId": "the-morbs-off-broadway-2026",
+      "title": "The Morbs",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T15:49:25.000Z",
+      "via": "d70580df ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theater-scene",
+      "showId": "the-morbs-off-broadway-2026",
+      "title": "The Morbs",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T15:49:25.000Z",
+      "via": "d70580df ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "cherylmarkosky",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T16:42:09.000Z",
+      "via": "5a181dee ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "londontheatre1",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T17:07:27.000Z",
+      "via": "eb15d06f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "redbuslondinium",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T07:52:32.000Z",
+      "via": "51feb3f3 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "sierz-co-uk",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T17:09:02.000Z",
+      "via": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "susanelkin",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T16:42:09.000Z",
+      "via": "5a181dee ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "the-skinny",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T19:31:41.000Z",
+      "via": "90423ee3 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theatreandtonic",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-09T07:03:03.000Z",
+      "via": "6ba6e62a feat: gap-recovery driver checkpoint 5 - 5 accepted (card Stage 2)"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "timeout-london",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-05T14:47:31.000Z",
+      "via": "ad950c2d ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theatre-weekly",
+      "showId": "cranford-off-west-end-2026",
+      "title": "Cranford",
+      "embargoAt": "2026-11-03T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T06:38:29.000Z",
+      "via": "6309458c ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "west-end-best-friend",
+      "showId": "cranford-off-west-end-2026",
+      "title": "Cranford",
+      "embargoAt": "2026-11-03T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T10:35:09.000Z",
+      "via": "175beafc ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "lighting-and-sound-america",
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "embargoAt": "2026-11-04T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T08:59:36.000Z",
+      "via": "7b935450 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "new-york-notebook",
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "embargoAt": "2026-11-04T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-04T15:34:37.000Z",
+      "via": "73b65d89 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "vulture",
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "embargoAt": "2026-11-04T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-05T00:54:36.000Z",
+      "via": "0cef9436 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "front-row-center",
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-05T09:01:49.000Z",
+      "via": "5d951d4a ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theater-scene",
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T17:09:02.000Z",
+      "via": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "woman-around-town",
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T17:09:02.000Z",
+      "via": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "exeunt-magazine",
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T13:28:01.000Z",
+      "via": "56691d17 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "front-row-center",
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T17:09:02.000Z",
+      "via": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "lighting-and-sound-america",
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T02:48:58.000Z",
+      "via": "e9a73c1e ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nysr",
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T02:02:54.000Z",
+      "via": "d29fd1a5 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nytg",
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T17:09:02.000Z",
+      "via": "219cc9ca ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "oxfordshire-guardian",
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-05T22:39:48.000Z",
+      "via": "e86236b0 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theater-scene",
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T02:48:58.000Z",
+      "via": "e9a73c1e ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "adventuresintheatreland",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-09T03:51:16.000Z",
+      "via": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (card Stage 2)"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "broadwayworld",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T17:07:55.000Z",
+      "via": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "everything-theatre",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T17:07:55.000Z",
+      "via": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "jonathan-baz",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T02:45:49.000Z",
+      "via": "0680f20b ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "london-box-office",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T16:08:41.000Z",
+      "via": "7babdfbb ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "londonlivinglarge",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-09T03:51:16.000Z",
+      "via": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (card Stage 2)"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "standard",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T17:07:55.000Z",
+      "via": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "the-recs",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T17:07:55.000Z",
+      "via": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "the-spy-in-the-stalls",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T02:45:49.000Z",
+      "via": "0680f20b ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theatre-vibe",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-09T03:51:16.000Z",
+      "via": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (card Stage 2)"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theatre-weekly",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T21:27:18.000Z",
+      "via": "d9bb437e ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "uktheatrenetwork",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T00:03:46.000Z",
+      "via": "f63a7c66 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "whatsonstage",
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T17:07:55.000Z",
+      "via": "e82df80f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "gramilano",
+      "showId": "tango-after-dark-off-west-end-2026",
+      "title": "Tango After Dark",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-08T22:57:16.000Z",
+      "via": "a868a00f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "seeing-dance",
+      "showId": "tango-after-dark-off-west-end-2026",
+      "title": "Tango After Dark",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T02:40:48.000Z",
+      "via": "1472f991 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "consequence",
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T19:57:14.000Z",
+      "via": "cfcd70ad ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "new-york-sun",
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T16:57:43.000Z",
+      "via": "f515cff3 ingest-urls: 1 review(s) for 222-a-ghost-story-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theater-scene",
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T11:58:59.000Z",
+      "via": "599b46db ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "wsj",
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-06T17:12:09.000Z",
+      "via": "e2a2d3fd ingest-urls: 1 review(s) for the-unbelievers-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "manchestertheatres",
+      "showId": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T11:58:59.000Z",
+      "via": "599b46db ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "third-coast-review",
+      "showId": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-08T10:24:59.000Z",
+      "via": "dc9ba9d7 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nytimes",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-08T18:56:07.000Z",
+      "via": "d6b21599 feat: NYT browser recovery - 16 reviews recovered (task #831)"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theater-pizzazz",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-06T17:05:03.000Z",
+      "via": "b3069eca ingest-urls: 2 review(s) for the-unbelievers-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "timeout",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-06T17:05:03.000Z",
+      "via": "b3069eca ingest-urls: 2 review(s) for the-unbelievers-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "wsj",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-06T17:12:09.000Z",
+      "via": "e2a2d3fd ingest-urls: 1 review(s) for the-unbelievers-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nytimes",
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-08T18:56:07.000Z",
+      "via": "d6b21599 feat: NYT browser recovery - 16 reviews recovered (task #831)"
+    },
+    {
+      "category": "west-end",
+      "outletId": "all-that-dazzles-uk",
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "embargoAt": "2026-11-06T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T15:01:55.000Z",
+      "via": "5a9cabec ingest-urls: 2 review(s) for iphigenie-en-tauride-english-national-opera-west-end-2026"
+    },
+    {
+      "category": "west-end",
+      "outletId": "bachtrack",
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "embargoAt": "2026-11-06T21:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-10T06:45:05.000Z",
+      "via": "5ab9cd21 feat: gap-recovery driver checkpoint 2 - 2 accepted (card Stage 2)"
+    },
+    {
+      "category": "west-end",
+      "outletId": "classical-source",
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "embargoAt": "2026-11-06T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T13:06:21.000Z",
+      "via": "5d53c4ed ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "musicomh",
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "embargoAt": "2026-11-06T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T13:45:29.000Z",
+      "via": "66388f07 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "theatre-weekly",
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "embargoAt": "2026-11-06T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T15:01:55.000Z",
+      "via": "5a9cabec ingest-urls: 2 review(s) for iphigenie-en-tauride-english-national-opera-west-end-2026"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "afridiziak-theatre-news",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T15:27:00.000Z",
+      "via": "a6272b14 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "around-the-town-chicago",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T04:51:01.000Z",
+      "via": "3e6f57a0 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "bestoftheatre",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T18:52:27.000Z",
+      "via": "92091c46 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "guardian",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T12:04:45.000Z",
+      "via": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "london-theatre",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T21:35:29.000Z",
+      "via": "177a1e52 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "sueterryvoices",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T04:51:01.000Z",
+      "via": "3e6f57a0 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "theatre-weekly",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T18:52:27.000Z",
+      "via": "92091c46 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "therealchrisparkle",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T21:25:21.000Z",
+      "via": "a663f3a6 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "warwickshireworld",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T21:25:21.000Z",
+      "via": "a663f3a6 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "whatsonstage",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-07T16:40:58.000Z",
+      "via": "b618cc10 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "cineramafilm",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-08T22:57:16.000Z",
+      "via": "a868a00f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "london-theatre-reviews",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T15:05:44.000Z",
+      "via": "045607dd ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "musical-theatre-review",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T06:26:05.000Z",
+      "via": "4227f117 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "readaboutstuff",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T12:04:45.000Z",
+      "via": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "standard",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T10:45:44.000Z",
+      "via": "3b1b0561 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "thereviewshub",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "embargoAt": "2026-11-06T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-08T13:35:30.000Z",
+      "via": "0dd29dda ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "theater-scene",
+      "showId": "curtains-off-broadway-2026",
+      "title": "Curtains",
+      "embargoAt": "2026-11-07T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T02:32:00.000Z",
+      "via": "373d5dc8 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "the-cap-times",
+      "showId": "broom-play-off-broadway-2026",
+      "title": "Broom Play",
+      "embargoAt": "2026-11-08T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T12:38:20.000Z",
+      "via": "ba84482a ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "guardian",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-11T13:01:51.000Z",
+      "via": "539dcec2 ingest-urls: 1 review(s) for msblackforpresident-off-broadway-2026"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "lighting-and-sound-america",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T04:23:25.000Z",
+      "via": "eb60a027 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "new-york-notebook",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T19:32:30.000Z",
+      "via": "c2bfdfc2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nytimes",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T10:54:28.000Z",
+      "via": "8bfa68e5 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "the-interested-bystander",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T14:41:27.000Z",
+      "via": "97540c15 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "nytimes",
+      "showId": "the-charioteer-off-broadway-2026",
+      "title": "The Charioteer",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-09T07:23:27.000Z",
+      "via": "11f18855 feat: gap-recovery driver final - 4 accepted (card Stage 2)"
+    },
+    {
+      "category": "broadway",
+      "outletId": "theatrely",
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "embargoAt": "2026-11-09T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-09T04:18:11.000Z",
+      "via": "adfc4da3 ingest-urls: 1 review(s) for wanted-2022"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "cherylmarkosky",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T02:07:12.000Z",
+      "via": "ee617cc8 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "express-uk",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-10T06:39:05.000Z",
+      "via": "0b291996 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "islingtontribune",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T02:35:02.000Z",
+      "via": "b70250c8 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "liamodell",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T18:11:42.000Z",
+      "via": "e96a2fad ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "london-theatre",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T12:04:45.000Z",
+      "via": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "the-morning-star",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-13T10:19:35.000Z",
+      "via": "2db6e0cc ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "the-recs",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "embargoAt": "2026-11-09T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-10T12:04:45.000Z",
+      "via": "40db6bb2 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-broadway",
+      "outletId": "openingnight",
+      "showId": "kate-allie-and-the-86-mets-off-broadway-2026",
+      "title": "Kate, Allie and the '86 Mets",
+      "embargoAt": "2026-11-10T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T13:24:17.000Z",
+      "via": "54caa884 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "thestage",
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "embargoAt": "2026-11-10T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T12:38:20.000Z",
+      "via": "ba84482a ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "timeout-london",
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "embargoAt": "2026-11-10T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-11T10:45:44.000Z",
+      "via": "3b1b0561 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "thestage",
+      "showId": "act-of-god-off-west-end-2026",
+      "title": "Act of God",
+      "embargoAt": "2026-11-11T21:00:00.000Z",
+      "cause": "text-gap",
+      "at": "2026-11-12T06:48:04.000Z",
+      "via": "a873ceca feat: gap-recovery driver checkpoint 2 - 2 accepted (card Stage 2)"
+    },
+    {
+      "category": "west-end",
+      "outletId": "financialtimes",
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "embargoAt": "2026-11-11T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T13:51:47.000Z",
+      "via": "3adc4c6a ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "west-end",
+      "outletId": "readaboutstuff",
+      "showId": "cloud-9-national-west-end-2026",
+      "title": "Cloud 9 National",
+      "embargoAt": "2026-11-11T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-12T13:24:17.000Z",
+      "via": "54caa884 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    }
+  ]
+}

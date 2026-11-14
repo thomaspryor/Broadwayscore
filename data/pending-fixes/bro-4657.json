@@ -1,0 +1,76 @@
+{
+  "issueNumber": "bro-4657",
+  "planId": "fe15c94b-086d-4bb8-8b44-ef9ae2ca6f2c",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 11: remove the two id-keyed duplicate commercial records (the-balusters-2026, school-girls-or-the-african-mean-girls-play-2026) that make the weekly dedupe step and the --strict audit gate fail. The slug-keyed records are the fuller ones and stay; the duplicates' only extra content is two checked Wikipedia sources (copied over) and a stale note.",
+    "steps": [
+      "the-balusters gets the two Wikipedia sources from its duplicate (both pages checked: they name MTC and the Friedman). The duplicate's SEC link is an unrelated company and is dropped.",
+      "school-girls-or-the-african-mean-girls-play's note said the show was in previews and closed Nov 1; it opened Sep 28 and shows.json has Nov 15. The new note carries no dates so it can't go stale.",
+      "dedupe-commercial-id-keys.js --apply deletes both id-keyed records (they differ from the slug records only in notes, sources and firstAdded, which the plain --apply self-heal covers; --prefer-slug is not needed). The executor's commercial validation then checks the touched records because this plan also edits commercial.json. Dropped with the duplicates: school-girls' investmentbroadway, Friedman Theatre and ProPublica links (the slug record keeps its MTC, Broadway Direct and Broadway.com sources) and the-balusters' Friedman Theatre and investmentbroadway links (generic venue and tax-credit pages)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-balusters",
+        "showId": "the-balusters-2026",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/The_Balusters",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Manhattan_Theatre_Club",
+            "date": null
+          }
+        ],
+        "description": "the-balusters: sources (carried over from the id-keyed duplicate, minus an unrelated SEC filing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-girls-or-the-african-mean-girls-play",
+        "showId": "school-girls-or-the-african-mean-girls-play-2026",
+        "field": "notes",
+        "oldValue": "School Girls; Or, The African Mean Girls Play is a Manhattan Theatre Club production at the Samuel J. Friedman Theatre, MTC's Broadway home. MTC is a nonprofit organization, so this production operates under a subscriber-funded nonprofit model with no traditional investor recoupment structure. The show is currently in previews ahead of its September 28, 2026 opening, with a closing date of November 1, 2026, confirming a limited engagement. No capitalization, weekly running cost, or recoupment data was found in the evidence.",
+        "newValue": "A Manhattan Theatre Club production at the Samuel J. Friedman Theatre, MTC's Broadway home, in a limited engagement. MTC is a nonprofit, so the production runs on a subscriber-funded model with no investor recoupment. No capitalization, weekly running cost or recoupment figures have been published.",
+        "description": "school-girls-or-the-african-mean-girls-play: notes (stale previews/closing-date wording)"
+      },
+      {
+        "type": "run-script",
+        "script": "dedupe-commercial-id-keys.js",
+        "args": "--apply",
+        "description": "Delete the-balusters-2026 and school-girls-or-the-african-mean-girls-play-2026 (slug-keyed records kept)"
+      }
+    ],
+    "changes": []
+  },
+  "executedAt": "2026-10-05T02:43:06.875Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-balusters"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for school-girls-or-the-african-mean-girls-play"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran dedupe-commercial-id-keys.js successfully"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+name: Sync review-texts drift before rebuild
+description: >
+  Stale-checkout race guard, pre-rebuild half (BRO-3162). Re-fetches the
+  review-texts tip right before scripts/rebuild-all-reviews.js runs, syncs
+  files other jobs pushed since this job's checkout (never files this job
+  wrote itself), and writes the drifted show ids for the post-rebuild
+  check-rebuild-staleness.js step. Fail-open: never blocks the rebuild.
+  Requires ./.github/actions/checkout-review-texts earlier in the same job
+  (it records the checkout-time SHA) and Node on PATH.
+
+inputs:
+  checkout-sha:
+    description: Checkout-time review-texts SHA (default reads the one checkout-review-texts recorded)
+    required: false
+    default: ''
+  mode:
+    description: >
+      'sync' (default, right before the rebuild) or 'restore' (after the
+      post-rebuild check, with if: always(); puts synced files back so
+      push-review-texts never pushes them as stale diffs)
+    required: false
+    default: sync
+  shows-file:
+    description: Where to write drifted show ids (pass the same path to check-rebuild-staleness.js)
+    required: false
+    default: /tmp/stale-checkout-shows.txt
+
+runs:
+  using: composite
+  steps:
+    - name: Sync (or restore) drifted review-texts files
+      shell: bash
+      env:
+        CHECKOUT_SHA: ${{ inputs.checkout-sha }}
+        SHOWS_FILE: ${{ inputs.shows-file }}
+        MODE: ${{ inputs.mode }}
+      run: |
+        if [ "${MODE}" = "restore" ]; then
+          node "${GITHUB_WORKSPACE}/scripts/sync-review-texts-drift.js" --restore
+          exit $?
+        fi
+        ARGS=(--dir=data/review-texts "--shows-file=${SHOWS_FILE}")
+        if [ -n "${CHECKOUT_SHA}" ]; then ARGS+=("--checkout-sha=${CHECKOUT_SHA}"); fi
+        node "${GITHUB_WORKSPACE}/scripts/sync-review-texts-drift.js" "${ARGS[@]}"

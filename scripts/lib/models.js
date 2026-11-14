@@ -1,0 +1,81 @@
+/**
+ * Canonical LLM model identifiers — single source of truth.
+ *
+ * Import this instead of hardcoding model strings. A model retirement
+ * becomes a 1-line change here rather than a 50-file sed sweep.
+ *
+ * DO NOT add versioned evaluation pins here (e.g. claude-sonnet-4-5-20250929,
+ * claude-3-5-haiku-20241022). Those are intentionally frozen for eval
+ * reproducibility and live inline in scripts/llm-scoring/.
+ */
+module.exports = {
+  GEMINI_FLASH: 'gemini-2.5-flash',
+  // General-purpose aliases for DIRECT Messages-API callers (~38 scripts).
+  // Pinned to the 4.x generation on purpose (ship-check 2026-10-01): the 5.5
+  // models reject `temperature` (400), think by default, and return a thinking
+  // block first, so `content[0].text` reads come back empty. Those callers
+  // (content-verifier, classify-non-reviews, clear-stale-*-flags, scrape-*,
+  // update-commercial-data, ...) have to be migrated one by one (drop sampling
+  // params, read the first `text` block) before these move. NEVER use these for
+  // review scoring either (SCORING_* below).
+  CLAUDE_SONNET: 'claude-sonnet-4-6',
+  CLAUDE_HAIKU: 'claude-haiku-4-5-20251001',
+  CLAUDE_OPUS: 'claude-opus-4-7',
+  // Headless `claude` CLI dispatch (autonomous-budget.js, bsc-next-model.js):
+  // the CLI owns thinking and sampling, so the current generation is safe here
+  // and 2-2.5x cheaper per token than the 4.x pair above.
+  DISPATCH_SONNET: 'claude-sonnet-5-5',
+  DISPATCH_OPUS: 'claude-opus-5-5',
+  // Frozen caller-group pins (BRO-4497). Centralizing these must not upgrade
+  // models: migrations need their own before/after samples, and walkthrough
+  // token limits depend on its current model's thinking behavior.
+  COPY_SONNET: 'claude-sonnet-4-5-20250929',
+  ADJUDICATE_SONNET: 'claude-sonnet-4-5-20250929',
+  EXTRACTION_SONNET: 'claude-sonnet-4-5-20250929',
+  COPY_FALLBACK_SONNET: 'claude-3-5-sonnet-20241022',
+  REDDIT_SONNET: 'claude-sonnet-5-5',
+  WALKTHROUGH_SONNET: 'claude-sonnet-5',
+  TRIAGE_SONNET: 'claude-sonnet-5',
+  // Review-SCORING pins (CLAUDE.md §13): changing the scoring model shifts
+  // scores corpus-wide, so these move only after the A/B gate passes. Every
+  // call site that scores reviews uses these, never CLAUDE_SONNET/CLAUDE_OPUS
+  // (tests/unit/model-table-single-source.test.mjs enforces).
+  SCORING_SONNET: 'claude-sonnet-4-6',
+  SCORING_OPUS: 'claude-opus-4-7', // video-reviews/score-video-reviews.js
+  GPT4O: 'gpt-4o',
+  // Review-SCORING OpenAI pins (same rule as SCORING_SONNET above): the
+  // ensemble's OpenAI leg (ensemble-scorer.ts, index.ts) and the comparative
+  // within-band rescore. Each moves only after its own A/B (CLAUDE.md §13);
+  // the leg is the ONLY thing that changes, so flip and rollback are one line.
+  // OpenAI retires gpt-4o on 2027-01-14 (owner email 2026-10-14). The request
+  // shape per model lives in scripts/lib/llm-batch.js OPENAI_REQUEST_PROFILES.
+  SCORING_OPENAI: 'gpt-4o',
+  COMPARATIVE_OPENAI: 'gpt-4o',
+  GPT4O_MINI: 'gpt-4o-mini',
+  // Cheaper gpt-4o candidate evaluated in task #504 (2026-07-26) — API id
+  // confirmed live via GET /v1/models. NOT the ensemble default: its A/B
+  // (n=24 real reviews) failed the rule-13 gate (Mixed bucket 29%->0%, max
+  // shift 29.2pp). Wired for --openai-model= re-testing after prompt tuning.
+  // Requires max_completion_tokens (not max_tokens) in chat completion calls.
+  GPT54_MINI: 'gpt-5.4-mini',
+  // Social score posts (BRO-6959): Claude writes from the fact pool, GPT-5.5 fact-checks it.
+  SOCIAL_WRITER: 'claude-opus-5-5',
+  GPT55: 'gpt-5.5',
+  // Web-grounded OpenAI checker in the Gemini+OpenAI audit scripts
+  // (dual-model-client, audit-review-crossmodel, fact-check-historical-sample).
+  // BRO-7339: gpt-5-mini shuts down 2026-12-11; OpenAI names gpt-5.6-terra as the
+  // replacement. 10-show web-lookup bake-off (2026-11-11): terra matched
+  // gpt-5-mini's accuracy and answered "unknown" where gpt-5.6-luna made up a
+  // date and director, which is the failure an audit checker must not have.
+  // Rates for every id here live in research-cost.js RATES (one table).
+  AUDIT_OPENAI: 'gpt-5.6-terra',
+  // AEO visibility tracker (history.jsonl trend series). Its own pin, so a model
+  // change there is a deliberate trend break and never rides along with the audits.
+  // luna, not terra: it only counts mentions and tool-returned citations (no
+  // fabrication risk to a fact), and terra would take the weekly run from ~$2.5
+  // to ~$4.1, close to the $4.50 guard that skips the history write when hit.
+  AEO_OPENAI: 'gpt-5.6-luna',
+  // Deep-research dispatch choice replacing o3 (shuts down 2026-12-11).
+  DEEP_RESEARCH_OPENAI_PRO: 'gpt-5.6-sol',
+  KIMI: 'moonshotai/kimi-k2.5',
+};

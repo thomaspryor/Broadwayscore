@@ -1,0 +1,62 @@
+[
+  {
+    "timestamp": "2026-03-19T07:44:52.240Z",
+    "totalFailures": 76,
+    "criticalFiltered": 11,
+    "digestFailures": 65,
+    "workflows": {
+      "Test Suite": 29,
+      "Deploy Demo Site": 1,
+      "Auto-Maintain Show Data": 1,
+      "Rebuild Reviews Data": 8,
+      "Scrape DTLI & Show Score Pages": 1,
+      "Deep Research Commercial": 1,
+      "Sweep WE Aggregators": 2,
+      "Lighthouse Post-Deploy Audit": 1,
+      "LLM Ensemble Score Reviews": 12,
+      "Scrape The Stage Roundups": 1,
+      "Collect WE/OB Review Texts": 3,
+      "Update Cast Changes": 1,
+      "Update Shows": 2,
+      "Recover WSJ Reviews (Subscriber Cookies)": 1,
+      "Enrich IBDB Dates": 1
+    }
+  },
+  {
+    "timestamp": "2026-03-20T07:43:24.807Z",
+    "totalFailures": 35,
+    "criticalFiltered": 11,
+    "digestFailures": 24,
+    "workflows": {
+      "Test Suite": 5,
+      "Adjudicate Review Queue": 1,
+      "Deploy Demo Site": 1,
+      "Rebuild Reviews Data": 11,
+      "Collect WE/OB Review Texts": 3,
+      "Refresh Review Data": 1,
+      "Update Shows": 1,
+      "Recover WSJ Reviews (Subscriber Cookies)": 1
+    }
+  },
+  {
+    "timestamp": "2026-03-21T07:30:52.610Z",
+    "totalFailures": 64,
+    "criticalFiltered": 12,
+    "digestFailures": 52,
+    "workflows": {
+      "Rebuild Reviews Data": 22,
+      "Test Suite": 17,
+      "Update Reddit Sentiment": 1,
+      "Scrape BWW Reviews": 1,
+      "Scrape DTLI & Show Score Pages": 1,
+      "Test UGC Features": 3,
+      "Sweep WE Aggregators": 1,
+      "Deploy Demo Site": 1,
+      "Retry Wrong URLs": 1,
+      "LLM Ensemble Score Reviews": 1,
+      "Collect Review Texts": 1,
+      "Deep Research Commercial": 1,
+      "Recover WSJ Reviews (Subscriber Cookies)": 1
+    }
+  }
+]

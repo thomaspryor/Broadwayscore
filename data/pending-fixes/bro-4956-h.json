@@ -1,0 +1,104 @@
+{
+  "issueNumber": "bro-4956-h",
+  "planId": "2332a056-d6d8-484b-ad8b-5fde9230b940",
+  "status": "applied",
+  "createdAt": "2026-10-10T08:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956: four real reviews that Best of Theatre round-ups list were excluded by automated false positives (venue sub-house name, a preview misread from an opening paragraph, a stale tour-news slot, a Tony-nominations keyword on a starred review). Retire the bad slots and re-ingest. Code prevention in the same change: venue-aliases Bush/Holloway and Duke of York's/Tom Stoppard; a lead star rating vetoes the awards/obituary non-review heuristic. Tru (Liam O'Dell, showNotMentioned) is left to BRO-4971: neither flag is plan-editable and a re-ingest would re-stamp it.",
+    "steps": [
+      "Retire four bad slots",
+      "Re-ingest Darkling LTR, Man to Man ATD and Jane Eyre Plays International"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "darkling-off-west-end-2026/london-theatre-reviews--unknown.json",
+        "destPath": "_superseded-misattributed/darkling-off-west-end-2026--london-theatre-reviews--unknown--venue-false-positive-2026-10-10.json",
+        "description": "Flagged wrongProduction because it names the Holloway Theatre, which is the Bush Theatre main house; re-ingested below with the venue alias in the verifier prompt"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=darkling-off-west-end-2026 --url=\"https://www.londontheatrereviews.co.uk/post.cfm?p=29032\" --critic=\"Kay Johal\"",
+        "description": "London Theatre Reviews, Kay Johal (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "man-to-man-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+        "destPath": "_superseded-misattributed/man-to-man-west-end-2026--all-that-dazzles-uk--all-that-dazzles--preview-false-positive-2026-10-10.json",
+        "description": "Full 4-star review was quarantined as a preview (verifier saw only the opening paragraph); re-ingested below"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=man-to-man-west-end-2026 --url=\"https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court\" --critic=\"Daz Gale\"",
+        "description": "All That Dazzles, Daz Gale, 4 stars (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "million-dollar-quartet-off-west-end-2026/whatsonstage--andy-plaice.json",
+        "destPath": "_superseded-misattributed/million-dollar-quartet-off-west-end-2026--whatsonstage--andy-plaice--stale-tour-news-slot-2026-10-10.json",
+        "description": "Slot first held a tour-announcement article (previousUrl) and keeps its not-a-review flag; the same review is held, scored 59, in whatsonstage--hang-yuen.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "jane-eyre-off-west-end-2026/plays-international--unknown.json",
+        "destPath": "_superseded-misattributed/jane-eyre-off-west-end-2026--plays-international--unknown--nonreview-false-positive-2026-10-10.json",
+        "description": "4-star review flagged awards_coverage (heuristic+llm nonReviewFlag, not editable by plan) for mentioning the show's Tony nominations; re-ingested below"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jane-eyre-off-west-end-2026 --url=\"https://playsinternational.org.uk/jane-eyre-a-musical-southwark-playhouse-elephant/\" --critic=\"Louise Penn\"",
+        "description": "Plays International & Europe, Louise Penn, 4 stars (listed in the Best of Theatre round-up)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T08:16:04.109Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved darkling-off-west-end-2026/london-theatre-reviews--unknown.json → _superseded-misattributed/darkling-off-west-end-2026--london-theatre-reviews--unknown--venue-false-positive-2026-10-10.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved man-to-man-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json → _superseded-misattributed/man-to-man-west-end-2026--all-that-dazzles-uk--all-that-dazzles--preview-false-positive-2026-10-10.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved million-dollar-quartet-off-west-end-2026/whatsonstage--andy-plaice.json → _superseded-misattributed/million-dollar-quartet-off-west-end-2026--whatsonstage--andy-plaice--stale-tour-news-slot-2026-10-10.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved jane-eyre-off-west-end-2026/plays-international--unknown.json → _superseded-misattributed/jane-eyre-off-west-end-2026--plays-international--unknown--nonreview-false-positive-2026-10-10.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

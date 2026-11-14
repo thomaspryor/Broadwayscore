@@ -1,0 +1,556 @@
+{
+  "cohort": "uk-regional",
+  "label": "UK regional productions (/browse/beyond-london: regional category at a uk-regional-venues.json house)",
+  "seed": 6713,
+  "n": 120,
+  "population": 329,
+  "strata": {
+    "stratford-upon-avon-uk": {
+      "population": 31,
+      "sampled": 11
+    },
+    "edinburgh-uk": {
+      "population": 1,
+      "sampled": 1
+    },
+    "manchester-uk": {
+      "population": 44,
+      "sampled": 16
+    },
+    "chichester-uk": {
+      "population": 30,
+      "sampled": 11
+    },
+    "york-uk": {
+      "population": 12,
+      "sampled": 4
+    },
+    "bristol-uk": {
+      "population": 15,
+      "sampled": 5
+    },
+    "bath-uk": {
+      "population": 26,
+      "sampled": 9
+    },
+    "dundee-uk": {
+      "population": 10,
+      "sampled": 4
+    },
+    "glasgow-uk": {
+      "population": 58,
+      "sampled": 21
+    },
+    "hull-uk": {
+      "population": 7,
+      "sampled": 3
+    },
+    "leeds-uk": {
+      "population": 16,
+      "sampled": 6
+    },
+    "pitlochry-uk": {
+      "population": 20,
+      "sampled": 7
+    },
+    "scarborough-uk": {
+      "population": 8,
+      "sampled": 3
+    },
+    "sheffield-uk": {
+      "population": 27,
+      "sampled": 10
+    },
+    "liverpool-uk": {
+      "population": 8,
+      "sampled": 3
+    },
+    "birmingham-uk": {
+      "population": 16,
+      "sampled": 6
+    }
+  },
+  "ids": [
+    {
+      "id": "art-royal-bath-regional-2024",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "endgame-royal-bath-regional-2025",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "grace-pervades-royal-bath-regional-2025",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "jeeves-takes-charge-royal-bath-regional-2024",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "tristan-and-yseult-royal-bath-regional-2026",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "four-quartets-royal-bath-regional-2026",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "1984-royal-bath-regional-2024",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "small-hotel-royal-bath-regional-2025",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "the-little-prince-royal-bath-regional-2024",
+      "stratum": "bath-uk"
+    },
+    {
+      "id": "to-move-in-time-birmingham-rep-regional-2024",
+      "stratum": "birmingham-uk"
+    },
+    {
+      "id": "a-thousand-splendid-suns-birmingham-rep-regional-2025",
+      "stratum": "birmingham-uk"
+    },
+    {
+      "id": "the-snowflake-birmingham-rep-regional-2024",
+      "stratum": "birmingham-uk"
+    },
+    {
+      "id": "a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024",
+      "stratum": "birmingham-uk"
+    },
+    {
+      "id": "withnail-and-i-birmingham-rep-regional-2024",
+      "stratum": "birmingham-uk"
+    },
+    {
+      "id": "sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025",
+      "stratum": "birmingham-uk"
+    },
+    {
+      "id": "the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026",
+      "stratum": "bristol-uk"
+    },
+    {
+      "id": "macbeth-tobacco-factory-regional-2026",
+      "stratum": "bristol-uk"
+    },
+    {
+      "id": "nanny-bristol-old-vic-regional-2024",
+      "stratum": "bristol-uk"
+    },
+    {
+      "id": "play-on-bristol-old-vic-regional-2025",
+      "stratum": "bristol-uk"
+    },
+    {
+      "id": "reverberation-bristol-old-vic-regional-2024",
+      "stratum": "bristol-uk"
+    },
+    {
+      "id": "being-mr-wickham-chichester-festival-regional-2026",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "coram-boy-chichester-festival-regional-2024",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "atonement-chichester-festival-regional-2026",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "45-years-chichester-festival-regional-2026",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "the-other-boleyn-girl-chichester-festival-regional-2024",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "the-cat-and-the-canary-chichester-festival-regional-2024",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "it-walks-around-the-house-at-night-chichester-festival-regional-2026",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "eclipse-chichester-festival-regional-2026",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "atlantis-chichester-festival-regional-2026",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "cinderella-chichester-festival-regional-2024",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "top-hat-chichester-festival-regional-2025",
+      "stratum": "chichester-uk"
+    },
+    {
+      "id": "educating-rita-dundee-rep-regional-2026",
+      "stratum": "dundee-uk"
+    },
+    {
+      "id": "scots-the-musical-dundee-rep-regional-2026",
+      "stratum": "dundee-uk"
+    },
+    {
+      "id": "sunset-song-dundee-rep-regional-2024",
+      "stratum": "dundee-uk"
+    },
+    {
+      "id": "the-high-life-the-musical-dundee-rep-regional-2026",
+      "stratum": "dundee-uk"
+    },
+    {
+      "id": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "stratum": "edinburgh-uk"
+    },
+    {
+      "id": "maybe-tomorrow-oran-mor-regional-2025",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "escaped-alone-tron-regional-2024",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "ready-tae-drap-oran-mor-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "small-acts-of-love-citizens-regional-2025",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "dancing-shoes-oran-mor-regional-2025",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "cry-laugh-oran-mor-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "maggie-and-me-tron-regional-2024",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "the-glasgow-poisoner-oran-mor-regional-2025",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "whaurs-yer-wullie-shakespeare-noo-oran-mor-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "my-romantic-history-tron-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "black-hole-sign-tron-regional-2025",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "contact-oran-mor-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "the-long-drop-citizens-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "waiting-for-godot-citizens-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "mans-best-friend-tron-regional-2025",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "the-corinthian-oran-mor-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "armour-oran-mor-regional-2024",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "these-are-our-neighbours-citizens-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "the-legend-of-davie-mckenzie-oran-mor-regional-2026",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "the-kelton-hill-fair-tron-regional-2025",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "our-brother-oran-mor-regional-2025",
+      "stratum": "glasgow-uk"
+    },
+    {
+      "id": "the-grand-babylon-hotel-hull-truck-regional-2026",
+      "stratum": "hull-uk"
+    },
+    {
+      "id": "the-borrowers-hull-truck-regional-2024",
+      "stratum": "hull-uk"
+    },
+    {
+      "id": "macbeth-hull-truck-regional-2026",
+      "stratum": "hull-uk"
+    },
+    {
+      "id": "my-fair-lady-leeds-regional-2024",
+      "stratum": "leeds-uk"
+    },
+    {
+      "id": "brassed-off-leeds-regional-2026",
+      "stratum": "leeds-uk"
+    },
+    {
+      "id": "fences-leeds-regional-2026",
+      "stratum": "leeds-uk"
+    },
+    {
+      "id": "animal-farm-leeds-regional-2025",
+      "stratum": "leeds-uk"
+    },
+    {
+      "id": "the-lion-the-witch-and-the-wardrobe-leeds-regional-2024",
+      "stratum": "leeds-uk"
+    },
+    {
+      "id": "planet-omar-leeds-regional-2026",
+      "stratum": "leeds-uk"
+    },
+    {
+      "id": "the-lieutenant-of-inishmore-liverpool-everyman-regional-2024",
+      "stratum": "liverpool-uk"
+    },
+    {
+      "id": "takeaway-liverpool-everyman-regional-2025",
+      "stratum": "liverpool-uk"
+    },
+    {
+      "id": "the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024",
+      "stratum": "liverpool-uk"
+    },
+    {
+      "id": "east-is-east-octagon-regional-2026",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "shaun-the-sheeps-circus-show-aviva-studios-regional-2025",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "the-accountants-aviva-studios-regional-2024",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "bank-of-dave-the-musical-lowry-regional-2026",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "a-manchester-anthem-hope-mill-regional-2025",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "even-these-things-royal-exchange-regional-2026",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "a-single-man-aviva-studios-regional-2025",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "animal-farm-octagon-regional-2024",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "of-mice-and-men-octagon-regional-2025",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "the-long-shadow-of-alois-brunner-aviva-studios-regional-2024",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "the-jungle-book-octagon-regional-2024",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "mel-brooks-young-frankenstein-hope-mill-regional-2025",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "ideal-lowry-regional-2025",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "little-shop-of-horrors-hope-mill-regional-2026",
+      "stratum": "manchester-uk"
+    },
+    {
+      "id": "happy-days-pitlochry-festival-regional-2026",
+      "stratum": "pitlochry-uk"
+    },
+    {
+      "id": "a-toast-fae-the-lassies-pitlochry-festival-regional-2025",
+      "stratum": "pitlochry-uk"
+    },
+    {
+      "id": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
+      "stratum": "pitlochry-uk"
+    },
+    {
+      "id": "a-history-of-paper-pitlochry-festival-regional-2026",
+      "stratum": "pitlochry-uk"
+    },
+    {
+      "id": "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
+      "stratum": "pitlochry-uk"
+    },
+    {
+      "id": "the-great-gatsby-pitlochry-festival-regional-2025",
+      "stratum": "pitlochry-uk"
+    },
+    {
+      "id": "footloose-pitlochry-festival-regional-2024",
+      "stratum": "pitlochry-uk"
+    },
+    {
+      "id": "feel-me-stephen-joseph-regional-2024",
+      "stratum": "scarborough-uk"
+    },
+    {
+      "id": "calendar-girls-the-musical-stephen-joseph-regional-2026",
+      "stratum": "scarborough-uk"
+    },
+    {
+      "id": "noises-off-stephen-joseph-regional-2025",
+      "stratum": "scarborough-uk"
+    },
+    {
+      "id": "summer-holiday-crucible-regional-2026",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "living-sheffield-regional-2026",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "lines-crucible-regional-2024",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "bluebelle-crucible-regional-2025",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "pig-heart-boy-crucible-regional-2025",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "the-crucible-crucible-regional-2024",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "king-lear-crucible-regional-2026",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "dear-young-monster-sheffield-regional-2025",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "dancing-at-lughnasa-crucible-regional-2025",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "driftwood-sheffield-regional-2025",
+      "stratum": "sheffield-uk"
+    },
+    {
+      "id": "driftwood-royal-shakespeare-regional-2026",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "the-cherry-orchard-royal-shakespeare-regional-2026",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "middlemarch-rsc-regional-2026",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "hamlet-royal-shakespeare-regional-2025",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "loves-labours-lost-royal-shakespeare-regional-2024",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "ben-and-imo-royal-shakespeare-regional-2024",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "a-midsummer-nights-dream-royal-shakespeare-regional-2024",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "the-red-shoes-royal-shakespeare-regional-2024",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "the-merry-wives-of-windsor-royal-shakespeare-regional-2024",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "macbeth-royal-shakespeare-regional-2025",
+      "stratum": "stratford-upon-avon-uk"
+    },
+    {
+      "id": "north-by-northwest-york-royal-regional-2025",
+      "stratum": "york-uk"
+    },
+    {
+      "id": "the-penelopiad-york-royal-regional-2026",
+      "stratum": "york-uk"
+    },
+    {
+      "id": "the-psychic-york-royal-regional-2026",
+      "stratum": "york-uk"
+    },
+    {
+      "id": "little-women-york-royal-regional-2024",
+      "stratum": "york-uk"
+    }
+  ],
+  "drawnAt": "2026-10-31T13:25:42.190Z"
+}

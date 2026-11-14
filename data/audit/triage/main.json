@@ -1,0 +1,30 @@
+{
+  "system": "main",
+  "status": "pass",
+  "lastChecked": "2026-11-14T09:07:36.583Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Main: red streak",
+      "status": "pass",
+      "message": "Last run green"
+    },
+    {
+      "name": "Main: green rate",
+      "status": "pass",
+      "message": "rate 81.5% (green 352 / red 80, 434 runs, 2 cancelled, 18 hung (cancelled >= 10 min, counted red)), 7d trend from 47.8%, day 1 of 14 at ≥80% → PASS"
+    },
+    {
+      "name": "Main: mid-setup cancels",
+      "status": "pass",
+      "message": "0% of the last 20 test.yml main runs cancelled mid-setup (threshold 30%)"
+    },
+    {
+      "name": "Main: job time headroom",
+      "status": "pass",
+      "message": "every test.yml job's p90 is under 80% of its time limit (tightest: Unit Tests p90 11 of 30 min (38%, n=20))"
+    }
+  ]
+}

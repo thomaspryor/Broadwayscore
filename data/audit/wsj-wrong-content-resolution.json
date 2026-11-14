@@ -1,0 +1,227 @@
+{
+  "_meta": {
+    "card": "BRO-2360",
+    "source": "scripts/wsj-apply-index-decisions.js (task #841)",
+    "checkedAt": "2026-10-13",
+    "note": "How each of the WSJ wrong_content files decided in task #841 stands now, read from live review-texts."
+  },
+  "files": [
+    {
+      "file": "bug-2026/wsj--charles-isherwood.json",
+      "decision": "confirmed",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8f98eb22",
+      "checkedAt": "2026-10-13",
+      "status": "URL is WSJ's own indexed review; full text recovered (contentTier complete, 877 words)"
+    },
+    {
+      "file": "john-proctor-is-the-villain-2025/wsj--charles-isherwood.json",
+      "decision": "confirmed",
+      "url": "https://www.wsj.com/articles/john-proctor-is-the-villain-review-reconceiving-the-crucible-on-broadway-7f1bee37",
+      "checkedAt": "2026-10-13",
+      "status": "URL is WSJ's own indexed review; full text recovered (contentTier complete, 918 words)"
+    },
+    {
+      "file": "carmen-off-broadway-2025/wsj--heidi-waleson.json",
+      "decision": "confirmed",
+      "url": "https://www.wsj.com/arts-culture/theater/carmen-review-metropolitan-opera-bizet-carrie-cracknell-000779e2",
+      "checkedAt": "2026-10-13",
+      "status": "URL is WSJ's own indexed review; full text recovered (contentTier complete, 794 words)"
+    },
+    {
+      "file": "carmen-off-broadway-2025/wsj--justin-davidson.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/arts-culture/theater/carmen-review-metropolitan-opera-bizet-carrie-cracknell-000779e2",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "don-giovanni-off-broadway-2025/wsj--heidi-waleson.json",
+      "decision": "confirmed",
+      "url": "https://www.wsj.com/articles/don-giovanni-review-ivo-van-hoves-grim-mozart-at-the-met-80e69ff0",
+      "checkedAt": "2026-10-13",
+      "status": "URL is WSJ's own indexed review; full text recovered (contentTier complete, 999 words)"
+    },
+    {
+      "file": "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "decision": "future-show",
+      "url": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960",
+      "checkedAt": "2026-10-13",
+      "status": "show had not opened at crawl time; stamped noWsjReviewYet; file stays wrong_content so rediscover-review-urls.js retries it"
+    },
+    {
+      "file": "gloria-2026/wsj--terry-teachout.json",
+      "decision": "future-show",
+      "url": null,
+      "checkedAt": "2026-10-13",
+      "status": "file no longer exists in review-texts (removed by a later cleanup)"
+    },
+    {
+      "file": "miss-saigon-west-end-2026/wsj--terry-teachout.json",
+      "decision": "future-show",
+      "url": "https://www.wsj.com/articles/miss-saigon-review-hard-landing-1490315400",
+      "checkedAt": "2026-10-13",
+      "status": "show had not opened at crawl time; stamped noWsjReviewYet; file stays wrong_content so rediscover-review-urls.js retries it"
+    },
+    {
+      "file": "arcadia-west-end-2026/wsj--terry-teachout.json",
+      "decision": "wrong-attribution",
+      "url": "http://online.wsj.com/article/SB10001424052748703899704576204684164931012.html",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "beetlejuice-west-end-2026/wsj--edward-rothstein.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/articles/beetlejuice-review-better-off-dead-11556727155",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "building-the-wall-off-broadway-2026/wsj--terry-teachout.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/articles/building-the-wall-review-delusional-dystopia-1495744602",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "caroline-off-broadway-2026/wsj--anna-mundow.json",
+      "decision": "wrong-attribution",
+      "url": null,
+      "checkedAt": "2026-10-13",
+      "status": "file no longer exists in review-texts (removed by a later cleanup)"
+    },
+    {
+      "file": "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
+      "decision": "wrong-attribution",
+      "url": "http://online.wsj.com/article/SB10000872396390444799904578048520562125036.html",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "end-of-the-rainbow-west-end-2026/wsj--terry-teachout.json",
+      "decision": "wrong-attribution",
+      "url": "http://online.wsj.com/article/SB10001424052702303816504577319301583029494.html",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "glengarry-glen-ross-west-end-2026/wsj--unknown.json",
+      "decision": "wrong-attribution",
+      "url": null,
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "la-traviata-off-broadway-2026/wsj--charles-isherwood.json",
+      "decision": "wrong-attribution",
+      "url": null,
+      "checkedAt": "2026-10-13",
+      "status": "file no longer exists in review-texts (removed by a later cleanup)"
+    },
+    {
+      "file": "la-traviata-off-broadway-2026/wsj--heidi-waleson.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/articles/la-traviata-at-the-met-review-marvelous-musicality-1544042618",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "les-liaisons-dangereuses-west-end-2026/wsj--terry-teachout.json",
+      "decision": "wrong-attribution",
+      "url": "http://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-1478208524",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "mass-west-end-2026/wsj--anvee-bhutani.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/us-news/young-new-yorkers-have-a-new-hot-spot-sunday-mass-b96e1449",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "oh-mary-west-end-2025/wsj--charles-isherwood.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "porgy-and-bess-off-broadway-2025/wsj--heidi-waleson.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/articles/porgy-and-bess-review-a-community-of-indelible-individuals-11569360600",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "pride-west-end-2026/wsj--brian-p-kelly.json",
+      "decision": "wrong-attribution",
+      "url": null,
+      "checkedAt": "2026-10-13",
+      "status": "file no longer exists in review-texts (removed by a later cleanup)"
+    },
+    {
+      "file": "pride-west-end-2026/wsj--unknown.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/arts-culture/fine-art/folk-nation-crafting-patriotism-in-the-united-states-review-a-sketchy-view-of-national-pride-airdigital-5d891775",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "romeo-and-juliet-west-end-2026/wsj--terry-teachout.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/arts-culture/theater/romeo-juliet-suite-review-tragedy-reinterpreted-d6bcc704",
+      "checkedAt": "2026-10-13",
+      "status": "excluded (wrongProduction) without the wrongAttribution stamp"
+    },
+    {
+      "file": "romeo-and-juliet-west-end-2026/wsj--unknown.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespeare-in-the-park-c066ffdf",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "small-off-broadway-2026/wsj--charles-isherwood.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/articles/pay-the-writer-and-small-reviews-dramas-of-discontent-56f1154d",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "spamalot-off-broadway-2026/wsj--charles-isherwood.json",
+      "decision": "wrong-attribution",
+      "url": null,
+      "checkedAt": "2026-10-13",
+      "status": "file no longer exists in review-texts (removed by a later cleanup)"
+    },
+    {
+      "file": "sting-west-end-2026/wsj--unknown.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/livecoverage/stock-market-today-dow-sp-500-nasdaq-07-10-2026/card/Cm39BZogD8gsguEqLphD",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "the-potluck-off-broadway-2026/wsj--spencer-cox-and-eboo-patel.json",
+      "decision": "wrong-attribution",
+      "url": null,
+      "checkedAt": "2026-10-13",
+      "status": "file no longer exists in review-texts (removed by a later cleanup)"
+    },
+    {
+      "file": "the-price-off-west-end-2026/wsj--unknown.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/market-data/quotes/futures/UK/IFEU/DF28",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    },
+    {
+      "file": "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
+      "decision": "wrong-attribution",
+      "url": "https://www.wsj.com/articles/harper-lees-to-kill-a-mockingbird-a-new-play-by-aaron-sorkin-and-a-childs-christmas-in-wales-reviews-perils-and-perks-of-reworking-classics-11544751000",
+      "checkedAt": "2026-10-13",
+      "status": "no WSJ review of this production exists (WSJ Theater/Opera Review index); stamped wrongAttribution, excluded"
+    }
+  ]
+}

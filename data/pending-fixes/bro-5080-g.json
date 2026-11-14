@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-5080-g",
+  "planId": "e976deb5-57d6-40a0-930e-63ca4a55d140",
+  "status": "applied",
+  "createdAt": "2026-10-11T22:25:50.015Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 part 7 (apply after bro-5080): Summer and Smoke (Duke of York's 2018) press night 20 November 2018, a class row the review-date rule left unconfirmed (checked by the BRO-4884 session and confirmed here).",
+    "steps": [
+      "openingDate -> 2018-11-20",
+      "openingDateSource -> press-night-correction-bro-5080"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "summer-and-smoke-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-11-10",
+        "newValue": "2018-11-20",
+        "description": "summer-and-smoke-west-end-2018: openingDate -> 2018-11-20, press night Tuesday 20 November 2018 (https://www.broadwayworld.com/westend/article/Less-Than-Six-Weeks-Until-The-West-End-Transfer-Of-Tennessee-Williams-SUMMER-AND-SMOKE-20181003; soniafriedman.com); 10 November was the first preview"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "summer-and-smoke-west-end-2018",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "press-night-correction-bro-5080",
+        "description": "summer-and-smoke-west-end-2018: sourced press night"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:45:38.789Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for summer-and-smoke-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for summer-and-smoke-west-end-2018"
+    }
+  ]
+}

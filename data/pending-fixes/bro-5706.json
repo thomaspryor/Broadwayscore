@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-5706",
+  "planId": "07288979-d1ac-4d63-9e8f-9bc868ee4025",
+  "status": "applied",
+  "createdAt": "2026-10-22T01:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire the stray second listing of the English National Opera run at the London Coliseum. angels-bone-west-end-2026 is the real row (open, 10 reviews); angel-bones-english-national-opera-west-end-2026 is an undated announced stub with zero reviews and the same closing date.",
+    "steps": [
+      "Retire angel-bones-english-national-opera-west-end-2026 as a duplicate of angels-bone-west-end-2026 (id only), evidence: the TodayTix listing for the same ENO run at the London Coliseum closing 31 October 2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "angel-bones-english-national-opera-west-end-2026",
+        "expectTitle": "Angel Bones - English National Opera",
+        "duplicateOf": "angels-bone-west-end-2026",
+        "evidenceUrl": "https://www.todaytix.com/london/shows/46928-angel-bones",
+        "reason": "Stray listing of the same ENO run at the London Coliseum (closes 2026-10-31) as angels-bone-west-end-2026; undated stub with zero reviews (BRO-5706)",
+        "description": "Retire duplicate ENO Angel Bones stub"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T02:57:00.440Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired angel-bones-english-national-opera-west-end-2026 (\"Angel Bones - English National Opera\" @ London Coliseum)"
+    }
+  ],
+  "executedIn": "ci"
+}

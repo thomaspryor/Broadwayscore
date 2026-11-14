@@ -1,0 +1,512 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import fs, { mkdtempSync, writeFileSync, existsSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { spawnSync, execFileSync } from 'node:child_process';
+
+const require = createRequire(import.meta.url);
+const { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES } = require('./land-local-check.js');
+const { GATES, ADVISORY_GATES } = require('./land-gate-delta.js');
+const R = require('./codex-runner.js');
+
+test('parseArgs: default gates are real gauntlet gates; --all, --gates and bad input', () => {
+  for (const g of DEFAULT_GATES) assert.ok(GATES.includes(g), `${g} is a land-gate-delta gate`);
+  assert.deepEqual(parseArgs([]).gates, DEFAULT_GATES);
+  assert.deepEqual(parseArgs(['--all']).gates, GATES);
+  assert.deepEqual(parseArgs(['--gates', 'lint-workflows']).gates, ['lint-workflows']);
+  assert.equal(parseArgs(['--max-wait-minutes', '5']).maxWaitMs, 300_000);
+  assert.match(parseArgs(['--gates', 'nope']).error, /unknown gate/);
+  assert.match(parseArgs(['--gates', '']).error, /unknown gate/);
+  assert.match(parseArgs(['--bogus']).error, /unknown argument/);
+  assert.match(parseArgs(['--max-wait-minutes', 'x']).error, /positive/);
+});
+
+test('every gate land.yml blocks on runs by default or is skipped with a reason (BRO-5771)', () => {
+  const blocking = GATES.filter((g) => !(ADVISORY_GATES[g] && ADVISORY_GATES[g]()));
+  for (const g of blocking) {
+    assert.ok(DEFAULT_GATES.includes(g) || (LOCAL_SKIPPED_GATES[g] || '').length > 10,
+      `${g} blocks a land but is neither a default gate nor in LOCAL_SKIPPED_GATES with a reason`);
+  }
+  for (const g of ['unit-tests-tsx', 'tsc', 'next-lint']) assert.ok(DEFAULT_GATES.includes(g), `${g} runs by default`);
+  for (const g of Object.keys(LOCAL_SKIPPED_GATES)) assert.ok(GATES.includes(g), `${g} is a real gate`);
+});
+
+test('newFailureFiles: a tsx-gate failure is not re-run under plain node', () => {
+  const report = [
+    '#### unit-tests-tsx — NEW on the branch (blocking)',
+    '  - `tests/unit/commercial-unreleased.test.mjs::pages only load commercial data [testCodeFailure]`',
+  ].join('\n');
+  assert.equal(newFailureFiles(report), null);
+});
+
+test('withFileMutex: a throwing onWait gives up without taking or deleting the held lock', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'llc-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const p = join(dir, 'm.lock');
+  writeFileSync(p, String(process.ppid)); // a live holder that is not us
+  let ran = false;
+  assert.throws(() => R.withFileMutex(p, () => { ran = true; }, { pollMs: 10, onWait: () => { throw new Error('timeout'); } }), /timeout/);
+  assert.equal(ran, false);
+  assert.ok(existsSync(p), 'the holder keeps its lock');
+  assert.equal(R.withFileMutex(join(dir, 'free.lock'), () => 7), 7);
+  assert.ok(!existsSync(join(dir, 'free.lock')), 'released after fn');
+  assert.match(R.CONTAINER_LAND_MUTEX, /bsc-land-checks\.lock$/);
+});
+
+test('newFailureFiles: the NEW test files only; null when a new failure is not a test case', () => {
+  const report = [
+    '#### unit-tests-node — NEW on the branch (blocking)',
+    '  - `tests/unit/duplicate-of-url-mismatch.test.mjs::duplicateOf-cycle mismatches are excluded [testCodeFailure]`',
+    '',
+    '#### unit-tests-node — pre-existing on origin/main (not blocking; still real, file an issue)',
+    '  - `scripts/award-scores.test.mjs::computeSiteAwardScore [testCodeFailure]`',
+  ].join('\n');
+  assert.deepEqual(newFailureFiles(report), ['tests/unit/duplicate-of-url-mismatch.test.mjs']);
+  assert.equal(newFailureFiles('#### lint-workflows — NEW on the branch (blocking)\n  - `lint-workflows::actionlint`'), null);
+  assert.deepEqual(newFailureFiles('no lists at all'), []);
+  const table = (rows) => ['| gate | verdict | mode | new |', '|---|---|---|---|', ...rows].join('\n');
+  assert.deepEqual(newFailureFiles(table(['| unit-tests-node | **FAIL** | delta | 1 |']) + '\n' + report), ['tests/unit/duplicate-of-url-mismatch.test.mjs']);
+  assert.equal(newFailureFiles(table(['| unit-tests-node | **FAIL** | delta | 1 |', '| scripts-lib-tests | **FAIL** | strict | 0 |']) + '\n' + report), null,
+    'a gate that failed with no NEW list (crash, timeout) is never cleared by re-running another gate\'s files');
+});
+
+test('missingCoreData: a worktree without data/*.json is not ready (false "new failures", BRO-6037 session)', () => {
+  const { missingCoreData, CORE_DATA_FILES } = require('./land-local-check.js');
+  assert.ok(CORE_DATA_FILES.includes('data/shows.json'));
+  assert.deepEqual(missingCoreData('/r', () => true), []);
+  assert.deepEqual(missingCoreData('/r', () => false), CORE_DATA_FILES);
+  assert.deepEqual(missingCoreData('/r', (p) => !p.endsWith('reviews.json')), ['data/reviews.json']);
+  assert.deepEqual(missingCoreData('/r', (p) => !p.endsWith('cast-manifest.json') && !p.endsWith('actor-slugs.json')),
+    ['data/cast-manifest.json', 'data/actor-slugs.json']);
+});
+
+// Mock process boundaries, not the checker: run its real main(), file copies, readiness
+// check and return-to handling without checking out this checkout or running whole batches.
+function checkerWithRunner(t, spawn) {
+  t.mock.method(require('node:child_process'), 'spawnSync', spawn);
+  const filename = require.resolve('./land-local-check.js');
+  const cached = require.cache[filename];
+  delete require.cache[filename];
+  try { return require(filename); }
+  finally { require.cache[filename] = cached; }
+}
+
+test('generated manifests missing: main exits 3 with build commands before fetch or gates', (t) => {
+  const messages = [];
+  t.mock.method(console, 'error', (message) => messages.push(message));
+  t.mock.method(fs, 'existsSync', (p) => !/data\/(cast-manifest|actor-slugs)\.json$/.test(String(p)));
+  const checker = checkerWithRunner(t, (cmd, args) => {
+    assert.equal(cmd, 'git');
+    assert.equal(args[0], 'status', 'missing data must stop before fetch, mutex or gauntlet');
+    return { status: 0, stdout: '', stderr: '' };
+  });
+  assert.equal(checker.main([]), 3);
+  const message = messages.join('\n');
+  assert.match(message, /data\/cast-manifest\.json/);
+  assert.match(message, /data\/actor-slugs\.json/);
+  assert.match(message, /node scripts\/build-cast-manifest\.js/);
+  assert.match(message, /node scripts\/build-actor-slugs-manifest\.js/);
+});
+
+test('base comparison runs the staged gauntlet in a throwaway worktree, never checking out this tree', (t) => {
+  const head = 'a'.repeat(40);
+  const base = 'b'.repeat(40);
+  const gitCalls = [];
+  const messages = [];
+  let compared = false;
+  t.mock.method(console, 'log', (message) => messages.push(message));
+  t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
+  const exists = fs.existsSync;
+  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(String(p)) || exists(p));
+  const checker = checkerWithRunner(t, (cmd, args, opts) => {
+    const result = (stdout = '') => ({ status: 0, stdout, stderr: '' });
+    if (cmd === 'pgrep') return result();
+    if (cmd === 'git') {
+      gitCalls.push(args);
+      switch (args[0]) {
+        case 'status': case 'fetch': case 'ls-files': case 'worktree': return result();
+        case 'diff': return result(); // no package.json/lock change vs base (BRO-6114)
+        case 'rev-parse': return result(head);
+        case 'merge-base': return result(base);
+        case 'rev-list': return result('0');
+      }
+    }
+    if (cmd === 'bash' && args[0] === 'scripts/lib/land-gauntlet.sh') {
+      fs.mkdirSync(args[1], { recursive: true });
+      fs.writeFileSync(join(args[1], 'meta.json'), '{}');
+      fs.writeFileSync(join(args[1], 'tsc.exit'), '1');
+      fs.writeFileSync(join(args[1], 'tsc.log'), "src/example.ts(2,3): error TS2322: Type 'string' is not assignable to type 'number'.\n");
+      fs.writeFileSync(join(args[1], 'unit-tests-node.exit'), '1');
+      fs.writeFileSync(join(args[1], 'unit-tests-node.log'), 'TAP version 13\n# Subtest: staged output regression\nnot ok 1 - staged output regression\n  ---\n  location: tests/unit/example.test.mjs:3:1\n  failureType: testCodeFailure\n  ...\n');
+      t.after(() => rmSync(join(args[1], '..'), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+      return result();
+    }
+    if (cmd === 'bash') {
+      compared = true;
+      messages.push('base run started');
+      assert.equal(args.length, 2, 'no --checkout/--return-to: the tree under test is already the base');
+      assert.match(opts.cwd, /basewt$/, 'the base gates run inside the throwaway worktree');
+      for (const name of ['land-gauntlet.sh', 'tsc-node-options.sh']) {
+        assert.equal(fs.readFileSync(join(args[0], '..', name), 'utf8'),
+          fs.readFileSync(new URL(`./${name}`, import.meta.url), 'utf8'));
+      }
+      return result();
+    }
+    if (cmd === 'node' && args[1] === '--red-gates') return result('tsc,unit-tests-node');
+    if (cmd === 'node' && args[1] === '--base-dir') return result('no new failures');
+    assert.fail(`unexpected command: ${cmd} ${args.join(' ')}`);
+  });
+  assert.equal(checker.main(['--gates', 'tsc,unit-tests-node']), 0);
+  assert.ok(compared, 'the red gate was compared against the base');
+  const beforeBase = messages.slice(0, messages.indexOf('base run started'));
+  assert.ok(beforeBase.some((m) => /tsc.*tsc\.log/.test(m)), 'print the gate log path before the base run');
+  assert.ok(beforeBase.some((m) => m.includes('src/example.ts') && m.includes('TS2322')), 'print the tsc finding before the base run');
+  assert.ok(beforeBase.some((m) => /unit-tests-node.*unit-tests-node\.log/.test(m)), 'print the test gate log path');
+  assert.ok(beforeBase.some((m) => m.includes('staged output regression')), 'print failing test names before the base run');
+  assert.equal(gitCalls.filter((a) => a[0] === 'checkout').length, 0, 'this checkout is never switched');
+  const add = gitCalls.find((a) => a[0] === 'worktree' && a[1] === 'add');
+  assert.deepEqual([add[2], add[add.length - 1]], ['--detach', base]);
+  assert.ok(gitCalls.some((a) => a[0] === 'worktree' && a[1] === 'remove'), 'the worktree is removed afterwards');
+  assert.ok(messages.some((message) => message.includes('CLEAN, no new failures')));
+});
+
+test('pre-commit warns for staged prebuild outputs without generator changes', () => {
+  const root = mkdtempSync(join(tmpdir(), 'prebuild-warning-'));
+  const repo = new URL('../..', import.meta.url).pathname;
+  const sh = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' });
+  try {
+    sh('init', '-q');
+    fs.mkdirSync(join(root, 'scripts/lib'), { recursive: true });
+    const helper = join(repo, 'scripts/lib/prebuild-outputs.js');
+    if (existsSync(helper)) fs.copyFileSync(helper, join(root, 'scripts/lib/prebuild-outputs.js'));
+    const stage = (file) => {
+      fs.mkdirSync(join(root, file, '..'), { recursive: true });
+      writeFileSync(join(root, file), '{}\n');
+      sh('add', '--', file);
+    };
+    const hook = () => {
+      const r = spawnSync('bash', [join(repo, 'scripts/hooks/pre-commit')], { cwd: root, encoding: 'utf8' });
+      assert.equal(r.status, 0, r.stderr);
+      return r.stdout + r.stderr;
+    };
+    for (const file of ['data/gold-lists-computed.json', 'public/data/mobile-shows.json', 'src/config/outlet-logos-generated.json']) {
+      sh('read-tree', '--empty');
+      stage(file);
+      const output = hook();
+      assert.match(output, /WARNING: staged prebuild outputs/);
+      assert.ok(output.includes(file), file);
+    }
+    stage('docs/example.md');
+    assert.match(hook(), /WARNING: staged prebuild outputs/, 'docs do not suppress the warning');
+    stage('scripts/generate-mobile-data.js');
+    assert.doesNotMatch(hook(), /WARNING: staged prebuild outputs/, 'generator change explains the output');
+    sh('read-tree', '--empty');
+    stage('public/data/research/example.json');
+    assert.doesNotMatch(hook(), /WARNING: staged prebuild outputs/, 'unrelated datasets are not prebuild output');
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+// BRO-6252: the caller keeps committing while the ~20 min base run is in flight. Real git, no mocks.
+test('withBaseWorktree leaves the caller branch and HEAD alone when a commit lands mid-run', () => {
+  const { withBaseWorktree } = require('./land-local-check.js');
+  const sh = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
+  const root = fs.realpathSync(mkdtempSync(join(tmpdir(), 'wt-caller-')));
+  const scratch = mkdtempSync(join(tmpdir(), 'wt-scratch-'));
+  try {
+    sh(root, 'init', '-q', '-b', 'work');
+    sh(root, 'config', 'user.email', 't@example.com'); sh(root, 'config', 'user.name', 't');
+    writeFileSync(join(root, '.gitignore'), 'node_modules\ndata/secret.json\n.next/\n.claude/\n*.lock\ndata/my "odd" é.json\n');
+    fs.mkdirSync(join(root, 'data'));
+    writeFileSync(join(root, 'data/tracked.json'), '1');
+    writeFileSync(join(root, 'f.txt'), 'base\n');
+    sh(root, 'add', '-A'); sh(root, 'commit', '-qm', 'base');
+    const base = sh(root, 'rev-parse', 'HEAD');
+    writeFileSync(join(root, 'f.txt'), 'head\n');
+    sh(root, 'commit', '-qam', 'head');
+    fs.mkdirSync(join(root, 'node_modules/pkg'), { recursive: true });
+    writeFileSync(join(root, 'node_modules/pkg/i.js'), 'x');
+    writeFileSync(join(root, 'data/secret.json'), 'private');
+    fs.mkdirSync(join(root, '.next')); writeFileSync(join(root, '.next/b'), 'build');
+    fs.mkdirSync(join(root, '.claude')); writeFileSync(join(root, '.claude/state.jsonl'), 's');
+    fs.mkdirSync(join(root, 'data/job.lock')); writeFileSync(join(root, 'data/odd.lock'), 'l');
+    writeFileSync(join(root, 'data/my "odd" é.json'), 'odd');
+    const dir = join(scratch, 'basewt');
+    let seen;
+    const result = withBaseWorktree(root, base, dir, (wt) => {
+      seen = {
+        file: fs.readFileSync(join(wt, 'f.txt'), 'utf8'),
+        secret: fs.readFileSync(join(wt, 'data/secret.json'), 'utf8'),
+        nm: fs.existsSync(join(wt, 'node_modules/pkg/i.js')),
+        next: fs.existsSync(join(wt, '.next')),
+        live: [fs.existsSync(join(wt, '.claude')), fs.existsSync(join(wt, 'data/job.lock')), fs.existsSync(join(wt, 'data/odd.lock'))],
+        odd: fs.readFileSync(join(wt, 'data/my "odd" é.json'), 'utf8'),
+      };
+      // the session commits and edits meanwhile
+      writeFileSync(join(root, 'g.txt'), 'new\n');
+      sh(root, 'add', 'g.txt'); sh(root, 'commit', '-qm', 'mid-run commit');
+      writeFileSync(join(root, 'g.txt'), 'edited after\n');
+      return 'ok';
+    });
+    assert.equal(result, 'ok');
+    assert.deepEqual(seen, { file: 'base\n', secret: 'private', nm: true, next: false, live: [false, false, false], odd: 'odd' });
+    assert.equal(sh(root, 'symbolic-ref', '--short', 'HEAD'), 'work', 'still on the branch, not detached');
+    assert.equal(sh(root, 'log', '-1', '--format=%s'), 'mid-run commit', 'HEAD is the commit made mid-run');
+    assert.equal(fs.readFileSync(join(root, 'g.txt'), 'utf8'), 'edited after\n', 'edits made mid-run survive');
+    assert.equal(fs.readFileSync(join(root, 'f.txt'), 'utf8'), 'head\n');
+    assert.ok(fs.existsSync(join(root, 'node_modules/pkg/i.js')), 'removal did not follow the symlink into the caller data');
+    assert.equal(fs.readFileSync(join(root, 'data/secret.json'), 'utf8'), 'private');
+    assert.ok(!fs.existsSync(dir), 'worktree directory removed');
+    assert.equal(sh(root, 'worktree', 'list').split('\n').length, 1, 'worktree entry pruned');
+    // the worktree is also removed when fn throws
+    assert.throws(() => withBaseWorktree(root, base, dir, () => { throw new Error('boom'); }), /boom/);
+    assert.ok(!fs.existsSync(dir));
+    assert.equal(sh(root, 'worktree', 'list').split('\n').length, 1);
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('main exits 3 (not ready) when core data is missing, before any gate runs', () => {
+  const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  assert.ok(main.indexOf('missingCoreData(ROOT)') > 0 && main.indexOf('missingCoreData(ROOT)') < main.indexOf('mkdtempSync'));
+});
+
+test('BRO-7110: a checkout with no node_modules of its own is not ready, checked before any gate runs', () => {
+  const { hasOwnNodeModules } = require('./land-local-check.js');
+  assert.equal(hasOwnNodeModules('/r', (p) => p === '/r/node_modules'), true);
+  assert.equal(hasOwnNodeModules('/r', () => false), false, 'a parent checkout\'s node_modules does not count');
+  const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  const at = main.indexOf('hasOwnNodeModules(ROOT)');
+  assert.ok(at > 0 && at < main.indexOf('mkdtempSync'), 'checked before the base copy is built');
+  assert.match(main.slice(at, at + 600), /return 3;/);
+});
+
+// BRO-6152: the base run executes a COPY of land-gauntlet.sh outside the tree it checks out.
+// Every sibling it calls via $(dirname "${BASH_SOURCE[0]}")/<file> must be staged next to it,
+// by stageGauntletHarness (land-local-check, codex daily runner) and by land.yml's harness step.
+test('harness list covers every sibling the gauntlet calls, and land.yml stages all of them', () => {
+  const { HARNESS_FILES } = require('./land-local-check.js');
+  const g = fs.readFileSync(new URL('./land-gauntlet.sh', import.meta.url), 'utf8');
+  const siblings = [...g.matchAll(/\$\(dirname "\$\{BASH_SOURCE\[0\]\}"\)\/([\w.-]+)/g)].map((m) => m[1]);
+  assert.ok(siblings.includes('tsc-node-options.sh'), 'the sibling pattern still matches the tsc helper reference');
+  for (const s of siblings) assert.ok(HARNESS_FILES.includes(s), `${s} is in HARNESS_FILES`);
+  const yml = fs.readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
+  const step = yml.slice(yml.indexOf("name: Stage the branch's gauntlet harness"));
+  const run = step.slice(0, step.indexOf('\n      - ')).match(/run: (.*)/)[1];
+  for (const f of HARNESS_FILES) assert.ok(run.includes(`scripts/lib/${f}`), `land.yml stages ${f}: ${run}`);
+  assert.match(run, /"\$RUNNER_TEMP\/"$/, 'land.yml copies into $RUNNER_TEMP, where the base step runs land-gauntlet.sh');
+});
+
+test('stageGauntletHarness copies the gauntlet and its siblings; a helper absent from the source is skipped', () => {
+  const { stageGauntletHarness, HARNESS_FILES } = require('./land-local-check.js');
+  const root = new URL('../..', import.meta.url).pathname;
+  const dir = mkdtempSync(join(tmpdir(), 'stage-harness-'));
+  try {
+    const out = join(dir, 'h');
+    assert.equal(stageGauntletHarness(root, out), join(out, 'land-gauntlet.sh'));
+    for (const f of HARNESS_FILES) assert.equal(fs.readFileSync(join(out, f), 'utf8'), fs.readFileSync(join(root, 'scripts/lib', f), 'utf8'));
+    // The codex runner runs the copy as another user: a 0700 mkdtemp dir would be unreadable to it.
+    const private700 = mkdtempSync(join(tmpdir(), 'stage-harness-700-'));
+    try {
+      stageGauntletHarness(root, private700);
+      assert.equal(fs.statSync(private700).mode & 0o755, 0o755, 'harness dir readable and searchable by others, not writable');
+    } finally { rmSync(private700, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+    const old = join(dir, 'old');
+    fs.mkdirSync(join(old, 'scripts/lib'), { recursive: true });
+    writeFileSync(join(old, 'scripts/lib/land-gauntlet.sh'), '# old\n');
+    stageGauntletHarness(old, join(dir, 'h2'));
+    assert.ok(existsSync(join(dir, 'h2/land-gauntlet.sh')));
+    assert.ok(!existsSync(join(dir, 'h2/tsc-node-options.sh')));
+    assert.throws(() => stageGauntletHarness(join(dir, 'nowhere'), join(dir, 'h3')), /ENOENT/, 'a missing gauntlet is an error');
+  } finally { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('gauntlet copied alone resolves tsc NODE_OPTIONS quietly to the floor', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'lone-gauntlet-'));
+  try {
+    const g = fs.readFileSync(new URL('./land-gauntlet.sh', import.meta.url), 'utf8');
+    const start = g.indexOf('TSC_HELPER=');
+    const block = g.slice(start, g.indexOf('\n', g.indexOf('[ -n "$TSC_NODE_OPTIONS" ]')));
+    for (const [name, withHelper] of [['alone', false], ['staged', true]]) {
+      const d = join(dir, name); fs.mkdirSync(d);
+      writeFileSync(join(d, 'probe.sh'), `${block}\nprintf '%s' "$TSC_NODE_OPTIONS"\n`);
+      if (withHelper) fs.copyFileSync(new URL('./tsc-node-options.sh', import.meta.url), join(d, 'tsc-node-options.sh'));
+      const r = spawnSync('bash', [join(d, 'probe.sh')], { encoding: 'utf8', env: { ...process.env, NODE_OPTIONS: '' } });
+      assert.equal(r.stderr, '', `${name}: no stderr (BRO-6152 saw "No such file or directory")`);
+      assert.match(r.stdout, /--max-old-space-size=6144/, name);
+    }
+  } finally { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+// BRO-6114: the base worktree shares this checkout's node_modules, so a deps change must not be
+// judged against a base run (a dependency regression would read as "red on base too").
+test('depsChangedSince: true only when package.json or package-lock.json differ from the base', () => {
+  const { depsChangedSince } = require('./land-local-check.js');
+  const root = mkdtempSync(join(tmpdir(), 'deps-changed-'));
+  try {
+    const sh = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+    const git = (...args) => { const r = spawnSync('git', args, { cwd: root, encoding: 'utf8' }); return { code: r.status, stdout: r.stdout.trim(), stderr: r.stderr }; };
+    sh('init', '-q', '-b', 'main'); sh('config', 'user.email', 't@example.com'); sh('config', 'user.name', 't');
+    writeFileSync(join(root, 'package.json'), '{}\n'); writeFileSync(join(root, 'package-lock.json'), '{}\n'); writeFileSync(join(root, 'a.js'), '1\n');
+    sh('add', '.'); sh('commit', '-q', '-m', 'base'); const base = sh('rev-parse', 'HEAD');
+    writeFileSync(join(root, 'a.js'), '2\n'); sh('commit', '-q', '-am', 'code only'); const code = sh('rev-parse', 'HEAD');
+    assert.equal(depsChangedSince(git, base, code), false);
+    writeFileSync(join(root, 'package-lock.json'), '{"lockfileVersion":3}\n'); sh('commit', '-q', '-am', 'lock'); const lock = sh('rev-parse', 'HEAD');
+    assert.equal(depsChangedSince(git, base, lock), true);
+    assert.equal(depsChangedSince(git, code, lock), true);
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('main() skips the base run when deps changed, so red gates count as new', () => {
+  const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  assert.match(src, /const depsChanged = red && depsChangedSince\(git, base, head\);/);
+  assert.match(src, /if \(red && !depsChanged\) \{[\s\S]*?withBaseWorktree\(/, 'the base worktree run is gated on !depsChanged');
+});
+
+test('BRO-7110: restorePrebuildResidue puts back regenerated prebuild outputs only', () => {
+  const { restorePrebuildResidue } = require('./land-local-check.js');
+  const calls = [];
+  const git = (...a) => { calls.push(a); return { stdout: a[0] === 'diff' ? 'data/gold-lists-computed.json\nscripts/x.js\npublic/data/mobile-shows.json\n' : '' }; };
+  assert.deepEqual(restorePrebuildResidue('/r', git), ['data/gold-lists-computed.json', 'public/data/mobile-shows.json']);
+  assert.deepEqual(calls[1], ['checkout', '--', 'data/gold-lists-computed.json', 'public/data/mobile-shows.json'], 'a real edit (scripts/x.js) is never touched');
+  const quiet = [];
+  assert.deepEqual(restorePrebuildResidue('/r', (...a) => { quiet.push(a); return { stdout: '' }; }), []);
+  assert.equal(quiet.length, 1, 'nothing to restore: no checkout');
+  const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  assert.ok(main.indexOf('restorePrebuildResidue(ROOT)') > main.indexOf("'scripts/lib/land-gauntlet.sh', branchDir"), 'restored right after the branch run');
+});
+
+test('BRO-7110: the node_modules remedy links a worktree to the main checkout, and installs in the main checkout itself', () => {
+  const { nodeModulesRemedy } = require('./land-local-check.js');
+  assert.equal(nodeModulesRemedy('/repo/.claude/worktrees/x', '/repo/.git'), 'Link them first: ln -sfn /repo/node_modules node_modules');
+  assert.equal(nodeModulesRemedy('/repo', '.git'), 'Install them first: npm ci');
+  assert.equal(nodeModulesRemedy('/repo', ''), 'Install them first: npm ci');
+});
+
+test('BRO-7110: a tree dirty only with prebuild outputs names them and the restore command', () => {
+  const { dirtyTreeMessage } = require('./land-local-check.js');
+  const onlyGenerated = dirtyTreeMessage(' M data/gold-lists-computed.json\n');
+  assert.match(onlyGenerated, /commit or discard tracked changes first/);
+  assert.match(onlyGenerated, /git checkout HEAD -- data\/gold-lists-computed\.json$/, 'HEAD: a staged output goes back too');
+  const many = Array.from({ length: 40 }, (_, i) => ` M public/data/shows/show-${i}.json`).join('\n');
+  assert.match(dirtyTreeMessage(many), /\(40 file\(s\).*git checkout HEAD -- public\/data\/shows$/, 'many files: their directory, one line');
+  assert.match(dirtyTreeMessage('M data/gold-lists-computed.json'), /git checkout HEAD -- data\/gold-lists-computed\.json$/, 'trimmed status, as run() returns it');
+  const mixed = dirtyTreeMessage(' M data/gold-lists-computed.json\n M scripts/foo.js\n');
+  assert.doesNotMatch(mixed, /git checkout HEAD --/, 'a real edit in the mix gets no discard hint');
+});
+
+test('BRO-7110: declared packages are checked against the install owner (a worktree link resolves to main)', () => {
+  const { missingDeclaredPackages } = require('./declared-packages.js');
+  const present = new Set(['/main/node_modules/next/package.json', '/main/node_modules/@types/node/package.json']);
+  const reads = [];
+  const readPkg = (dir) => { reads.push(dir); return { dependencies: { next: '1' }, devDependencies: { '@types/node': '1', acorn: '8' } }; };
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: (p) => present.has(p), readPkg }), { owner: '/main', missing: ['acorn'] });
+  assert.deepEqual(reads, ['/main'], "the owner's package.json, which its npm ci installs");
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: () => true, readPkg }).missing, []);
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: null, exists: () => false, readPkg }), { owner: null, missing: [] }, 'no node_modules: nothing to judge');
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: () => false, readPkg: () => { throw new Error('none'); } }).missing, [], 'unreadable package.json: no opinion');
+});
+
+test('BRO-7110: main() refuses an incomplete install before fetching or running any gate', (t) => {
+  const { missingDeclaredPackages } = require('./declared-packages.js');
+  const real = missingDeclaredPackages(decodeURIComponent(new URL('../..', import.meta.url).pathname));
+  // A checkout with no node_modules anywhere up the tree (a fresh worktree) has no install to break.
+  if (!real.owner) { t.skip('no node_modules install above this checkout'); return; }
+  const declared = Object.keys(JSON.parse(fs.readFileSync(join(real.owner, 'package.json'), 'utf8')).devDependencies || {});
+  const gone = declared[0];
+  const errors = [];
+  t.mock.method(console, 'error', (m) => errors.push(String(m)));
+  const exists = fs.existsSync;
+  t.mock.method(fs, 'existsSync', (p) => {
+    const s = String(p);
+    if (s.endsWith(`/node_modules/${gone}/package.json`)) return false;
+    return /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(s) || exists(p);
+  });
+  const gitCalls = [];
+  const checker = checkerWithRunner(t, (cmd, args) => {
+    if (cmd === 'git') { gitCalls.push(args[0]); return { status: 0, stdout: args[0] === 'rev-parse' ? '.git' : '', stderr: '' }; }
+    assert.fail(`no command may run before the install check: ${cmd} ${args.join(' ')}`);
+  });
+  assert.equal(checker.main([]), 3);
+  assert.ok(errors.some((m) => m.includes('node_modules is incomplete') && m.includes(gone) && m.includes('npm ci')), errors.join('\n'));
+  assert.ok(!gitCalls.includes('fetch'), 'refused before git fetch');
+});
+
+// BRO-7186: false results from land tooling
+const { lowDiskMessage, looksLikeEnvFailure, landedOnMain, envFailureLogs, MIN_FREE_BYTES } = require('./land-check-resources.js');
+
+test('BRO-7186: under 4 GB free refuses; enough or unreadable does not', () => {
+  assert.match(lowDiskMessage(1024 ** 3), /1\.0 GB free before the run.*ENOSPC/s);
+  assert.equal(lowDiskMessage(MIN_FREE_BYTES), null);
+  assert.equal(lowDiskMessage(NaN), null);
+  assert.match(lowDiskMessage(0, { when: 'after the run' }), /after the run/);
+});
+
+test('BRO-7186: ENOSPC output is an environment failure', () => {
+  assert.ok(looksLikeEnvFailure('Error: ENOSPC: no space left on device, write'));
+  assert.ok(!looksLikeEnvFailure('AssertionError: expected 1'));
+});
+
+test('BRO-7315: a test NAMED after ENOSPC is not a disk failure; the same error in a test body still is', () => {
+  // The four real title pairs that made every run "not a valid verdict" (unit-tests-node.log, scripts-lib-tests.log).
+  const titles = [
+    '# Subtest: isDiskFailure: the system message counts on its own, a bare ENOSPC only while the disk is low',
+    'ok 7238 - isDiskFailure: the system message counts on its own, a bare ENOSPC only while the disk is low',
+    '    # Subtest: BRO-7186: ENOSPC output is an environment failure',
+    '    not ok 7403 - BRO-7186: ENOSPC output is an environment failure',
+  ].join('\n');
+  assert.ok(!looksLikeEnvFailure(titles));
+  assert.ok(looksLikeEnvFailure(`${titles}\n  ---\n  error: "ENOSPC: no space left on device, write"\n  ...`));
+  assert.ok(looksLikeEnvFailure('not ok 3 - writes the ledger\n  stack: |-\n    Error: ENOSPC\n'));
+  const d = mkdtempSync(join(tmpdir(), 'enospc-title-'));
+  writeFileSync(join(d, 'unit-tests-node.log'), `${titles}\n`);
+  assert.deepEqual(envFailureLogs([d]), []);
+  rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+test('BRO-7186: a gone ref counts as landed only via an exact-branch recent ledger row and no red run', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const ago = (h) => new Date(now - h * 3600_000).toISOString();
+  const ref = 'land/bro-7137-fallback-date';
+  const row = { branch: ref, sha: 'abc', tip: 't1', ts: ago(1) };
+  assert.deepEqual(landedOnMain({ ref, nowMs: now, ledgerRows: [row] }), { landed: true, sha: 'abc', tip: 't1', via: 'landings ledger' });
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [{ ...row, ts: ago(9) }] }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [{ ...row, ts: undefined }] }).landed, false);
+  assert.equal(landedOnMain({ ref: 'land/other', nowMs: now, ledgerRows: [row] }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion: 'failure' } }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion: 'success' } }).landed, true);
+});
+
+test('BRO-7186: envFailureLogs finds ENOSPC in raw gate logs, not in clean ones', () => {
+  const d = mkdtempSync(join(tmpdir(), 'enospc-'));
+  writeFileSync(join(d, 'a.log'), 'ok 1\n'); writeFileSync(join(d, 'b.log'), 'Error: ENOSPC: no space left');
+  const hits = envFailureLogs([d, join(d, 'missing')]);
+  assert.deepEqual(hits, [join(d, 'b.log')]);
+  rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+test('BRO-7186: parseMainLog reads git log rows', () => {
+  const { parseMainLog } = require('./land-check-resources.js');
+  assert.deepEqual(parseMainLog('abc\t2026-11-08T00:00:00Z\tfix(BRO-1): a\tb\n\n'), [{ sha: 'abc', ts: '2026-11-08T00:00:00Z', subject: 'fix(BRO-1): a\tb' }]);
+});
+
+test('BRO-7431: a stale .next/dev/types is removed before the gates run; a live next dev is reported', () => {
+  const { clearStaleDevTypes } = require('./land-local-check.js');
+  const root = mkdtempSync(join(tmpdir(), 'lcc-devtypes-'));
+  try {
+    fs.mkdirSync(join(root, '.next', 'dev', 'types'), { recursive: true });
+    writeFileSync(join(root, '.next', 'dev', 'types', 'routes.d.ts'), '');
+    fs.mkdirSync(join(root, '.next', 'types'), { recursive: true });
+    const r = clearStaleDevTypes(root, { pgrep: () => '123\n' });
+    assert.deepEqual(r, { removed: true, devAlive: true });
+    assert.equal(existsSync(join(root, '.next', 'dev')), false, 'stale dev types gone');
+    assert.equal(existsSync(join(root, '.next', 'types')), true, 'production types untouched');
+    assert.deepEqual(clearStaleDevTypes(root, { pgrep: () => '' }), { removed: false, devAlive: false });
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  assert.ok(main.indexOf('clearStaleDevTypes(ROOT)') > 0 && main.indexOf('clearStaleDevTypes(ROOT)') < main.indexOf('land-gauntlet.sh'), 'cleared before the gauntlet');
+});

@@ -1,0 +1,322 @@
+/**
+ * stale-announced-audit.js — decision logic for audit-stale-announced-shows.js
+ * (BRO-93). Extracted per CLAUDE.md §15 so scripts/audit-stale-announced-shows.test.mjs
+ * exercises the real predicate instead of a copy.
+ *
+ * Ack mechanism mirrors scripts/lib/t1-scoreboard.js's data/audit/t1-coverage-ack.json
+ * pattern: the audit script does NOT auto-flip status (previewsStartDate can
+ * legitimately slip and 'announced' can be pre-sale/unconfirmed), so a human who has
+ * actually looked at a flagged show records that triage as an ack — a reason the show
+ * is known-stale-for-a-good-reason — so the same show doesn't reappear in the report
+ * every run. An acked show is still 'announced' in shows.json; the ack only silences
+ * the audit, it does not change data.
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.join(__dirname, '..', '..');
+const ACK_PATH = path.join(ROOT, 'data', 'audit', 'stale-announced-shows-ack.json');
+
+/** @returns {Array<{id, ackedAt, note}>} */
+function loadAcks() {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(ACK_PATH, 'utf8'));
+    if (Array.isArray(parsed)) return parsed;
+  } catch { /* missing/corrupt — nothing acked */ }
+  return [];
+}
+
+function isAcked(showId, acks) {
+  return (acks || []).some((a) => a && a.id === showId);
+}
+
+/** Pure w.r.t. the input array — returns a new array (append, or refresh the note on re-ack). */
+function addAck(acks, id, note, nowIso) {
+  const kept = (acks || []).filter((a) => a && a.id !== id);
+  kept.push({ id, ackedAt: nowIso, note: note || '' });
+  return kept;
+}
+
+function saveAcks(acks) {
+  fs.mkdirSync(path.dirname(ACK_PATH), { recursive: true });
+  fs.writeFileSync(ACK_PATH, JSON.stringify(acks, null, 2) + '\n');
+}
+
+/**
+ * BRO-5263: an ack is only meaningful while its show is still 'announced'. Once
+ * the row is retired, closed or promoted the ack is dead weight, and a stale ack
+ * with a wrong note is how a 2-year-old announced row stayed out of the report.
+ * Pure: returns the acks whose show is missing or no longer 'announced'.
+ */
+function findOrphanAcks(shows, acks) {
+  const status = new Map((shows || []).map((s) => [s.id, s.status]));
+  return (acks || []).filter((a) => a && !isAuditedStatus(status.get(a.id)));
+}
+
+function daysSince(dateStr, now) {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return null;
+  return Math.floor((now.getTime() - d.getTime()) / (24 * 60 * 60 * 1000));
+}
+
+/**
+ * Is this 'announced' show stale? Three independent signals, any fires:
+ *  - previewsStartDate is set and > staleDays in the past
+ *  - openingDate is set and > staleDays in the past (mirrors the date-staleness
+ *    check announced-promotion.js's decideAnnouncedPromotion already does for
+ *    BOTH dates — a show can be announced with only an openingDate set and no
+ *    previewsStartDate, e.g. a straight-to-open transfer, and that case was
+ *    silently unflaggable before this)
+ *  - the show has a populated data/review-texts/{id}/ directory (hasReviews, injected
+ *    so this stays a pure function — the fs read is the caller's job)
+ *
+ * @param show shows.json entry
+ * @param opts { now: Date, staleDays: number, hasReviews: boolean, acks: array }
+ * @returns {string[]} reasons (empty = not flagged, including because it's acked)
+ */
+// BRO-7080: statuses the audit covers. 'announced' gets every signal below;
+// 'upcoming'/'previews' only the review-evidence one, and only with no
+// openingDate and no priorRuns. girls-chance-music-off-broadway-2024 sat in
+// 'upcoming' with no dates and 5 clean review files (May 2026): the rebuild
+// skips upcoming shows, openSignalFromDiscovery needs a previewsStartDate,
+// and this audit looked only at 'announced', so nothing could ever see it.
+// A previews show WITH a previewsStartDate is still flagged when in-run
+// reviews exist and openingDate is missing: the status flip needs an
+// openingDate, so nothing else fills it. A returning production's
+// earlier-run reviews (priorRuns) are not evidence the new run opened.
+const AUDITED_STATUSES = new Set(['announced', 'upcoming', 'previews']);
+function isAuditedStatus(status) { return AUDITED_STATUSES.has(status); }
+
+function evaluateAnnouncedShow(show, opts) {
+  const { now, staleDays, hasReviews, acks } = opts || {};
+  if (!show || !isAuditedStatus(show.status)) return [];
+  if (isAcked(show.id, acks)) return [];
+  if (show.status !== 'announced') {
+    const hasPriorRuns = Array.isArray(show.priorRuns) && show.priorRuns.length > 0;
+    if (show.openingDate || hasPriorRuns || !hasReviews) return [];
+    return [`status '${show.status}' with no openingDate, but data/review-texts/ has collected review file(s)`];
+  }
+
+  const reasons = [];
+  const previewsPastDays = show.previewsStartDate ? daysSince(show.previewsStartDate, now) : null;
+  if (previewsPastDays !== null && previewsPastDays > staleDays) {
+    reasons.push(`previewsStartDate ${show.previewsStartDate} is ${previewsPastDays}d in the past`);
+  }
+  const openingPastDays = show.openingDate ? daysSince(show.openingDate, now) : null;
+  if (openingPastDays !== null && openingPastDays > staleDays) {
+    reasons.push(`openingDate ${show.openingDate} is ${openingPastDays}d in the past`);
+  }
+  if (hasReviews) {
+    reasons.push('data/review-texts/ has collected review file(s)');
+  }
+  return reasons;
+}
+
+
+// Reviews already triaged as belonging to a DIFFERENT show, or to a different
+// production of it, are not evidence that THIS show has opened - they are
+// contamination a rebuild already drops. Counting them produced 19 of 43
+// stale-announced flags on shows whose every review file was flagged out
+// (measured 2026-08-31; e.g. private-lives-2025 had 23 files, all 23 flagged).
+//
+// Every OTHER exclusion reason still counts as evidence. A truncated,
+// paywalled or otherwise unscoreable review is still a real critic writing
+// about this production, which is exactly the signal this audit wants.
+//
+// Rule names come from review-guards.explainExclusion, the single
+// implementation of the includability decision. Never re-test the raw
+// wrongShow/wrongProduction flags here
+// (memory/feedback_includability_predicates_must_be_canonical.md).
+const NOT_EVIDENCE_OF_OPENING = new Set(['wrongShow', 'wrongProduction']);
+
+/**
+ * True when a parsed review-text record is evidence that its show has opened.
+ *
+ * @param {object} data parsed review-text JSON
+ * @param {(d: object) => (string|null)} explainExclusion review-guards'
+ *   canonical exclusion explainer, injected so this stays a pure function and
+ *   this lib keeps no heavy require.
+ * @returns {boolean}
+ */
+function isEvidenceOfOpening(data, explainExclusion, show) {
+  if (!data || typeof data !== 'object') return true;
+  // `show` is forwarded because explainExclusion's wrongShow/wrongProduction
+  // rules consult show metadata for their stale-flag recovery paths. Calling it
+  // with data alone would discount a review whose flag the guard itself would
+  // have cleared.
+  return !NOT_EVIDENCE_OF_OPENING.has(explainExclusion(data, show));
+}
+
+/**
+ * The review-texts signal: does this show have at least one collected review
+ * that is evidence it opened?
+ *
+ * This lives here, not in the audit script, because scripts/audit-stale-announced-shows.test.mjs
+ * used to inline its own copy of the rule (`readdirSync(dir).some(f => f.endsWith('.json'))`).
+ * That copy is why fixing the script alone left the acceptance test asserting
+ * the OLD behaviour and CI still red — the exact failure CLAUDE.md §15 exists
+ * to prevent. Script and test now both call this.
+ *
+ * @param {string} reviewTextsDir absolute path to data/review-texts
+ * @param {string} showId
+ * @param {(d: object, show?: object) => (string|null)} explainExclusion
+ * @param {object} [show] the show record, forwarded to explainExclusion
+ * @returns {boolean}
+ */
+function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show, opts) {
+  return describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show, opts).hasEvidence;
+}
+
+/**
+ * Same decision as hasEvidenceOfOpening, plus the counts behind it.
+ *
+ * A show whose review files ALL got discounted looks identical, from the
+ * flag list alone, to a show with no review files at all — and those are very
+ * different situations. The second is normal; the first means the only signal
+ * this show ever had was thrown away, and if those flags are false positives
+ * (the LLM wrongProduction FP rate is material) the show sits 'announced'
+ * forever with nothing pointing at it. Reporting the counts is what keeps the
+ * discount from being a silent hole.
+ *
+ * @returns {{hasEvidence: boolean, reviewFiles: number, excludedFiles: number}}
+ */
+/**
+ * Earliest publishDate a review may carry to count as evidence that an
+ * 'upcoming'/'previews' show opened (BRO-7080). Those statuses routinely hold
+ * an older production's reviews collected before the wrong-production flag
+ * lands (jackals-off-broadway-2026 held 2014/2017 Woyzeck reviews), so only
+ * reviews dated inside this run count: on/after previewsStartDate, or within
+ * the last year when the show has no dates at all. 'announced' keeps its
+ * original undated rule (null).
+ * @returns {string|null} YYYY-MM-DD
+ */
+function evidenceSinceFor(show, now) {
+  if (!show || show.status === 'announced') return null;
+  if (show.previewsStartDate) return String(show.previewsStartDate).slice(0, 10);
+  return new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+
+function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show, opts = {}) {
+  const since = opts.since || null;
+  const dir = path.join(reviewTextsDir, showId);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+  } catch {
+    return { hasEvidence: false, reviewFiles: 0, excludedFiles: 0 };
+  }
+  let excluded = 0;
+  let hasEvidence = false;
+  for (const f of files) {
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+    } catch {
+      // Unreadable file: something collected it, so treat it as evidence
+      // rather than silently weakening the signal. This audit's safe
+      // direction is to over-flag, never to go quiet.
+      hasEvidence = true;
+      continue;
+    }
+    const dated = typeof data.publishDate === 'string' ? data.publishDate.slice(0, 10) : '';
+    const inRun = !since || (/^\d{4}-\d{2}-\d{2}$/.test(dated) && dated >= since);
+    if (inRun && isEvidenceOfOpening(data, explainExclusion, show)) hasEvidence = true;
+    else excluded++;
+  }
+  return { hasEvidence, reviewFiles: files.length, excludedFiles: excluded };
+}
+
+// BRO-7277: the digest filed a new card (BRO-5448, 5522, 6815, 7216) the first
+// day ANY show was flagged, but most flags are lag that fixes itself: a
+// provisional venue-page show gets its reviews collected, then the next
+// update-show-status run flips it open/closed 1-4 days later (30-day snapshot
+// history: every flag but the ones that needed a data fix cleared in <= 4
+// daily snapshots). A warn per transient flag meant one card per lag window.
+// Only a flag that outlives the pipeline's own catch-up is worth a card.
+// 2 days, not longer: the owner-alert router already defers filing a card
+// until a warn has persisted 72h (deferFilingHours in health-check.js), and
+// the digest reads the previous day's snapshot, so the real delay is ~6 days.
+const GRACE_DAYS = 2;
+const HISTORY_DAYS = 7;
+
+/**
+ * Stamp each flagged row with `firstFlaggedAt`, carried over from the previous
+ * snapshot when the same show was flagged there (so the stamp survives daily
+ * re-runs and resets once a show drops out of the flagged set).
+ */
+function carryFirstFlagged(prevSnap, nowFlagged, nowIso) {
+  const prev = new Map(); // id -> { firstFlaggedAt, lastSeenAt }
+  const hist = (prevSnap && prevSnap.firstFlaggedHistory) || {};
+  for (const [id, v] of Object.entries(hist)) if (v && v.firstFlaggedAt) prev.set(id, v);
+  for (const f of Array.isArray(prevSnap && prevSnap.flagged) ? prevSnap.flagged : []) {
+    if (f && f.id && f.firstFlaggedAt) prev.set(f.id, { firstFlaggedAt: f.firstFlaggedAt, lastSeenAt: prevSnap.generatedAt || nowIso });
+  }
+  const flagged = (nowFlagged || []).map(f => ({ ...f, firstFlaggedAt: prev.get(f.id)?.firstFlaggedAt || nowIso }));
+  // A show can drop out of the flagged set without being fixed (a degraded or
+  // partial review-texts checkout, a wrong-production flag set then cleared,
+  // ack then unack). Keep its stamp for HISTORY_DAYS so the clock is not
+  // restarted by every blip.
+  const seenNow = new Set(flagged.map(f => f.id));
+  const history = {};
+  for (const [id, v] of prev) {
+    if (seenNow.has(id)) continue;
+    const last = Date.parse(v.lastSeenAt || nowIso);
+    if (Number.isFinite(last) && Date.parse(nowIso) - last <= HISTORY_DAYS * 86400000) history[id] = v;
+  }
+  return { flagged, history };
+}
+
+/** Split flagged rows into persistent (flagged >= graceDays) and settling. */
+function partitionByGrace(flagged, now, graceDays = GRACE_DAYS) {
+  const persistent = [];
+  const settling = [];
+  for (const f of flagged || []) {
+    // No stamp (snapshot from before BRO-7277) = age unknown: fail loud, not quiet.
+    const t = f && f.firstFlaggedAt ? Date.parse(f.firstFlaggedAt) : NaN;
+    const ageDays = Number.isFinite(t) ? (now.getTime() - t) / 86400000 : Infinity;
+    (ageDays >= graceDays ? persistent : settling).push(f);
+  }
+  return { persistent, settling };
+}
+
+const CHECK_NAME = 'Data quality: stale announced shows';
+
+/** Digest result for a fresh snapshot with flagged rows (age handling stays with the caller). */
+function staleAnnouncedFlagResult(snap, ageHours, now, graceDays = GRACE_DAYS) {
+  const name = CHECK_NAME;
+  const age = `${Math.round(ageHours)}h`; // short form; caller's formatAge is not importable here
+  const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
+  const { persistent, settling } = partitionByGrace(snap.flagged || [], now, graceDays);
+  if (persistent.length > 0) {
+    return { name, status: 'warn', message: `${persistent.length} show(s) stuck announced/upcoming/previews ${graceDays}+ days after apparently opening: ${persistent.map(f => f.id).join(', ')} (${settling.length} newer still settling, ${silencedNote}, ${age} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
+  }
+  if (settling.length > 0) {
+    return { name, status: 'pass', message: `${settling.length} show(s) flagged < ${graceDays}d, waiting on the status flip (${silencedNote}, ${age} ago)` };
+  }
+  return { name, status: 'pass', message: `No stale 'announced' shows (${silencedNote}, ${age} ago)` };
+}
+
+module.exports = {
+  staleAnnouncedFlagResult,
+  GRACE_DAYS,
+  carryFirstFlagged,
+  partitionByGrace,
+  ACK_PATH,
+  loadAcks,
+  isAcked,
+  addAck,
+  findOrphanAcks,
+  saveAcks,
+  daysSince,
+  evaluateAnnouncedShow,
+  isAuditedStatus,
+  AUDITED_STATUSES,
+  isEvidenceOfOpening,
+  hasEvidenceOfOpening,
+  describeOpeningEvidence,
+  evidenceSinceFor,
+  NOT_EVIDENCE_OF_OPENING,
+};

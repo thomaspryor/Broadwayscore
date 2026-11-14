@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-4849-f3",
+  "planId": "1a91a930-b676-4f98-9bf3-296187a28b7e",
+  "status": "applied",
+  "createdAt": "2026-10-12T14:06:09.559Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4849 class F (follow-up): clear a stored 5/5 that belongs to a different review in the same multi-show post. The published score (42, set by hand under BRO-4599) is unchanged.",
+    "steps": [
+      "Clear the stray 5/5 stored rating on one review"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "an-american-daughter-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": null,
+        "description": "Correct the stored rating: the post covers two shows and the 5/5 does not appear in this show's section, which reads negative; cleared (BRO-4599 note asked for this)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T14:58:51.459Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/the-interested-bystander--cary-wong.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    }
+  ]
+}

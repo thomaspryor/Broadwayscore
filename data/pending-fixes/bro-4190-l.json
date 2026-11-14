@@ -1,0 +1,74 @@
+{
+  "createdAt": "2026-10-13T06:46:42Z",
+  "issueNumber": "bro-4190-l",
+  "planId": "03139ee5-5a0a-4a25-9930-d9b5f01aaba8",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4915 / BRO-4790 follow-up. (1) bro-4190-j was refused by the ingest collision pre-check (prior-season new-york-classical-review--rick-perdian.json, wrongProduction) because no publish date was extracted; the review is Rick Perdian's, published 2026-10-10 (NYCR WordPress API + RSS pubDate). Re-ingest with --publish-date so the prior-production carve-out applies. (2) Islington Tribune's review of The Last Ship at Drury Lane is stored with publishDate 2024-10-02 (llm-scoring) and date-guard-flagged wrongProduction; the review covers Sting at Theatre Royal Drury Lane (2026 run only) and its og:image is filed under media/2026/10, so the year was misread. Correct to 2026-10-02; the rebuild's stale date-guard auto-clear releases the flag.",
+    "steps": [
+      "Ingest the NYCR alternate-cast review with critic and publish date",
+      "Correct the Islington Tribune publishDate year",
+      "Clear the date-guard wrongProduction flag with a manual-clear marker"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=la-boheme-off-broadway-2026 --url=https://newyorkclassicalreview.com/2026/10/alternate-cast-keeps-the-romance-and-comedy-alight-in-mets-boheme/ --critic=\"Rick Perdian\" --publish-date=2026-10-10 --stub-on-failure",
+        "description": "Current-run NYCR review, Rick Perdian, 2026-10-10"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/islingtontribune--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2024-10-02",
+        "newValue": "2026-10-02",
+        "description": "Year misread: Drury Lane 2026 run, og:image media/2026/10"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/islingtontribune--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human verdict: current Drury Lane 2026 review; the date-guard flag came from the misread 2024 year"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/islingtontribune--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the date-guard flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T07:44:46.321Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/islingtontribune--unknown.json publishDate: \"2024-10-02\" -> \"2026-10-02\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/islingtontribune--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/islingtontribune--unknown.json wrongProduction: true -> false"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-6018-b",
+  "planId": "5ac5c2bb-e365-4f1f-a86e-a418b712bdda",
+  "status": "applied",
+  "createdAt": "2026-10-22T20:25:56.413Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6018: correct 26 West End show dates and type after two-checker disagreement adjudication, each with a cited source (part 2 of 2)",
+    "steps": [
+      "shows.json: just-for-one-day-west-end-2024.openingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "just-for-one-day-west-end-2024",
+        "field": "openingDate",
+        "oldValue": "2024-02-02",
+        "newValue": "2024-02-13",
+        "description": "shows.json: just-for-one-day-west-end-2024.openingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T00:57:27.084Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for just-for-one-day-west-end-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

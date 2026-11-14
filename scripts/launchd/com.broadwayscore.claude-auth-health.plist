@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Local Claude OAuth token liveness probe (task #1076). Runs
+         scripts/check-claude-auth-health.js, which makes a REAL minimal
+         `claude -p` call (via preflightAuth() from scripts/lib/claude-cli.js)
+         and pages via routeAlert on failure — `claude auth status` is never
+         trusted for the pass/fail decision (see script header: it reported
+         loggedIn:true through the entire 2026-08-05 revoked-token outage).
+
+         MUST run on this Mac, not GitHub Actions — the OAuth token never
+         reaches CI. check-secrets-health.js (GitHub Actions, weekly) covers
+         API-key-based secrets; this covers the one credential CI can't see.
+
+         Was a single 09:00 ET daily run. Incident 2026-09-20: the macOS
+         Keychain's "Claude Code-credentials" item went missing entirely
+         sometime between the 09:01 healthy run and ~21:30 ET the same
+         evening — cmux couldn't restore ~13 interactive tabs and every new
+         `claude` process failed with loggedIn:false until the owner manually
+         re-ran `claude auth login`. The 24h gap meant this monitor would not
+         have paged until the FOLLOWING morning, long after the damage. Now
+         runs 4x/day (09:00, 13:00, 17:00, 21:00 ET) so a same-day credential
+         loss is caught within ~4h instead of ~24h, while still landing ahead
+         of both opening-night monitor windows (Broadway 17:00 ET, West End
+         17:00 UK ≈ 12-13:00 ET per scripts/lib/opening-night-windows.js
+         WINDOW_START_HOUR_LOCAL) so a revoked token is caught with time to
+         `claude auth login` again before curtain.
+
+         StartCalendarInterval Hour/Minute is LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock). An
+         array of dicts means "any one of these" (fires at each), not "all
+         must match" — see `man launchd.plist`.
+
+         Install:  cp scripts/launchd/com.broadwayscore.claude-auth-health.plist ~/Library/LaunchAgents/
+                   launchctl bootout gui/$(id -u)/com.broadwayscore.claude-auth-health 2>/dev/null
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.claude-auth-health.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.claude-auth-health
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.claude-auth-health
+         Manual check: node scripts/check-claude-auth-health.js -->
+    <key>Label</key>
+    <string>com.broadwayscore.claude-auth-health</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; exec node scripts/check-claude-auth-health.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict>
+            <key>Hour</key>
+            <integer>9</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>13</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>17</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>21</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+    </array>
+    <key>StandardOutPath</key>
+    <string>/tmp/claude-auth-health-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/claude-auth-health-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

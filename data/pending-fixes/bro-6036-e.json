@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6036-e",
+  "planId": "769e98dd-4948-4f57-a97a-ef60efb23f4c",
+  "status": "applied",
+  "createdAt": "2026-10-27T16:53:40.552Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6036 part e: date 24 more closed West End rows. 8 get a press night inferred from the review-publish-date cluster (inferred-from-reviews-mode), Shitheads and Dorian Gray get press nights from royalcourttheatre.com and theatreweekly.com (review clusters agree), 14 get the first performance (first-performance-no-press-night-found; run pages: venue sites, TodayTix, ATG, Kenwright). Ancient Grease stays undated (reviews 9 days after first performance, no cluster). (part 1 of 2)",
+    "steps": [
+      "shows.json: whodunnit-unrehearsed-4-off-west-end-2026.openingDate",
+      "shows.json: whodunnit-unrehearsed-4-off-west-end-2026.openingDateSource",
+      "shows.json: this-is-not-about-me-off-west-end-2026.openingDate",
+      "shows.json: this-is-not-about-me-off-west-end-2026.openingDateSource",
+      "shows.json: lander-23-off-west-end-2026.openingDate",
+      "shows.json: lander-23-off-west-end-2026.openingDateSource",
+      "shows.json: yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026.openingDate",
+      "shows.json: yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026.openingDateSource",
+      "shows.json: jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026.openingDate",
+      "shows.json: jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026.openingDateSource",
+      "shows.json: grease-the-immersive-movie-musical-off-west-end-2026.openingDate",
+      "shows.json: grease-the-immersive-movie-musical-off-west-end-2026.openingDateSource",
+      "shows.json: stage-kiss-off-west-end-2026.openingDate",
+      "shows.json: stage-kiss-off-west-end-2026.openingDateSource",
+      "shows.json: children-of-the-night-off-west-end-2026.openingDate",
+      "shows.json: children-of-the-night-off-west-end-2026.openingDateSource",
+      "shows.json: lost-atoms-off-west-end-2026.openingDate",
+      "shows.json: lost-atoms-off-west-end-2026.openingDateSource",
+      "shows.json: the-last-days-of-liz-truss-off-west-end-2026.openingDate",
+      "shows.json: the-last-days-of-liz-truss-off-west-end-2026.openingDateSource",
+      "shows.json: crybabies-the-scaring-off-west-end-2026.openingDate",
+      "shows.json: crybabies-the-scaring-off-west-end-2026.openingDateSource",
+      "shows.json: bitch-boxer-off-west-end-2026.openingDate",
+      "shows.json: bitch-boxer-off-west-end-2026.openingDateSource",
+      "shows.json: player-off-west-end-2026.openingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whodunnit-unrehearsed-4-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-11",
+        "description": "shows.json: whodunnit-unrehearsed-4-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whodunnit-unrehearsed-4-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: whodunnit-unrehearsed-4-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-not-about-me-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-30",
+        "description": "shows.json: this-is-not-about-me-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-not-about-me-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "inferred-from-reviews-mode",
+        "description": "shows.json: this-is-not-about-me-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lander-23-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-11-05",
+        "description": "shows.json: lander-23-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lander-23-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: lander-23-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-12",
+        "description": "shows.json: yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-18",
+        "description": "shows.json: jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grease-the-immersive-movie-musical-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-22",
+        "description": "shows.json: grease-the-immersive-movie-musical-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grease-the-immersive-movie-musical-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: grease-the-immersive-movie-musical-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stage-kiss-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-14",
+        "description": "shows.json: stage-kiss-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stage-kiss-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "inferred-from-reviews-mode",
+        "description": "shows.json: stage-kiss-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "children-of-the-night-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-11",
+        "description": "shows.json: children-of-the-night-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "children-of-the-night-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: children-of-the-night-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lost-atoms-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-02-03",
+        "description": "shows.json: lost-atoms-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lost-atoms-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "inferred-from-reviews-mode",
+        "description": "shows.json: lost-atoms-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-days-of-liz-truss-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-03",
+        "description": "shows.json: the-last-days-of-liz-truss-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-days-of-liz-truss-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: the-last-days-of-liz-truss-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "crybabies-the-scaring-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-09-03",
+        "description": "shows.json: crybabies-the-scaring-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "crybabies-the-scaring-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: crybabies-the-scaring-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bitch-boxer-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-02-25",
+        "description": "shows.json: bitch-boxer-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bitch-boxer-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "inferred-from-reviews-mode",
+        "description": "shows.json: bitch-boxer-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "player-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-11",
+        "description": "shows.json: player-off-west-end-2026.openingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-27T17:06:18.429Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for whodunnit-unrehearsed-4-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for whodunnit-unrehearsed-4-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for this-is-not-about-me-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for this-is-not-about-me-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for lander-23-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for lander-23-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for grease-the-immersive-movie-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for grease-the-immersive-movie-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for stage-kiss-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for stage-kiss-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for children-of-the-night-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for children-of-the-night-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for lost-atoms-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for lost-atoms-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-last-days-of-liz-truss-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-last-days-of-liz-truss-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for crybabies-the-scaring-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for crybabies-the-scaring-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for bitch-boxer-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for bitch-boxer-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for player-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

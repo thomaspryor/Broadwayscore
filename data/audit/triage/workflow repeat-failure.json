@@ -1,0 +1,20 @@
+{
+  "system": "workflow repeat-failure",
+  "status": "warn",
+  "lastChecked": "2026-11-14T09:07:36.586Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow repeat-failure: Test UGC Features / UGC Functional & Visual Tests / Run UGC tests",
+      "status": "warn",
+      "message": "Test UGC Features / UGC Functional & Visual Tests / Run UGC tests failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Performance Budget / Bundle Size Check / Build and check bundle sizes",
+      "status": "warn",
+      "message": "Check Performance Budget / Bundle Size Check / Build and check bundle sizes failed 2 times in the last 24h — likely broken, not transient."
+    }
+  ]
+}

@@ -1,0 +1,907 @@
+{
+  "outletId": "thereviewshub",
+  "market": "london",
+  "generatedAt": "2026-10-29T06:35:49.816Z",
+  "since": "2012-09-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 10330,
+    "inWindow": 10330,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "review-texts",
+  "summary": {
+    "counts": {
+      "not-review": 10025,
+      "held": 243,
+      "held-other-market": 20,
+      "held-unmatched": 31,
+      "gap": 1,
+      "misfile": 3,
+      "out-of-window": 3,
+      "held-alt-url": 2,
+      "catalog-gap": 1,
+      "other-market-review": 1
+    },
+    "viaTitleVariant": {
+      "held": 18,
+      "held-other-market": 1,
+      "gap": 1
+    },
+    "recall": 0.984,
+    "recallWithCatalog": 0.98
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 385,
+      "held": 71,
+      "held-other-market": 10,
+      "held-unmatched": 4
+    },
+    "2025-26": {
+      "not-review": 2213,
+      "held": 133,
+      "held-other-market": 9,
+      "held-unmatched": 8
+    },
+    "2024-25": {
+      "not-review": 2052,
+      "held-unmatched": 5,
+      "held": 13,
+      "gap": 1,
+      "misfile": 1,
+      "held-other-market": 1,
+      "out-of-window": 1
+    },
+    "2023-24": {
+      "not-review": 2122,
+      "held": 10,
+      "held-unmatched": 2
+    },
+    "2022-23": {
+      "not-review": 2150,
+      "held-alt-url": 2,
+      "held": 8,
+      "held-unmatched": 8,
+      "misfile": 2,
+      "out-of-window": 2,
+      "catalog-gap": 1
+    },
+    "2021-22": {
+      "not-review": 1103,
+      "other-market-review": 1,
+      "held-unmatched": 4,
+      "held": 8
+    }
+  },
+  "corpusSide": {
+    "rowsInWindow": 455,
+    "notEnumerated": 4,
+    "noUrl": 171,
+    "samples": [
+      {
+        "showId": "2-22-a-ghost-story-west-end-2023",
+        "url": null,
+        "publishDate": "2023-02-02",
+        "why": "no-url"
+      },
+      {
+        "showId": "a-good-house-west-end-2025",
+        "url": null,
+        "publishDate": "2025-01-19",
+        "why": "no-url"
+      },
+      {
+        "showId": "a-number-west-end-2022",
+        "url": null,
+        "publishDate": "2022-02-02",
+        "why": "no-url"
+      },
+      {
+        "showId": "a-tupperware-of-ashes-west-end-2024",
+        "url": null,
+        "publishDate": "2024-10-03",
+        "why": "no-url"
+      },
+      {
+        "showId": "a-view-from-the-bridge-west-end-2024",
+        "url": null,
+        "publishDate": "2024-06-05",
+        "why": "no-url"
+      },
+      {
+        "showId": "after-life-west-end-2021",
+        "url": null,
+        "publishDate": "2021-06-11",
+        "why": "no-url"
+      },
+      {
+        "showId": "after-the-act-west-end-2025",
+        "url": null,
+        "publishDate": "2025-05-24",
+        "why": "no-url"
+      },
+      {
+        "showId": "all-of-us-west-end-2022",
+        "url": null,
+        "publishDate": "2022-08-05",
+        "why": "no-url"
+      },
+      {
+        "showId": "america-the-beautiful-chapter-1-off-west-end-2026",
+        "url": null,
+        "publishDate": "2026-03-11",
+        "why": "no-url"
+      },
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "url": null,
+        "publishDate": "2024-02-22",
+        "why": "no-url"
+      },
+      {
+        "showId": "backstairs-billy-west-end-2023",
+        "url": null,
+        "publishDate": "2023-11-09",
+        "why": "no-url"
+      },
+      {
+        "showId": "bad-jews-west-end-2022",
+        "url": null,
+        "publishDate": "2022-07-27",
+        "why": "no-url"
+      },
+      {
+        "showId": "be-more-chill-west-end-2021",
+        "url": null,
+        "publishDate": "2021-07-07",
+        "why": "no-url"
+      },
+      {
+        "showId": "best-of-enemies-west-end-2022",
+        "url": null,
+        "publishDate": "2022-11-30",
+        "why": "no-url"
+      },
+      {
+        "showId": "black-superhero-west-end-2023",
+        "url": null,
+        "publishDate": "2023-03-22",
+        "why": "no-url"
+      },
+      {
+        "showId": "bleak-expectations-west-end-2023",
+        "url": null,
+        "publishDate": "2023-05-19",
+        "why": "no-url"
+      },
+      {
+        "showId": "blithe-spirit-west-end-2021",
+        "url": null,
+        "publishDate": "2021-09-22",
+        "why": "no-url"
+      },
+      {
+        "showId": "blue-mist-west-end-2023",
+        "url": null,
+        "publishDate": "2023-10-13",
+        "why": "no-url"
+      },
+      {
+        "showId": "blues-for-an-alabama-sky-west-end-2022",
+        "url": null,
+        "publishDate": "2022-10-05",
+        "why": "no-url"
+      },
+      {
+        "showId": "bonnie-and-clyde-west-end-2023",
+        "url": null,
+        "publishDate": "2023-03-10",
+        "why": "no-url"
+      },
+      {
+        "showId": "boys-from-the-blackstuff-west-end-2024",
+        "url": null,
+        "publishDate": "2024-05-30",
+        "why": "no-url"
+      },
+      {
+        "showId": "brace-brace-west-end-2024",
+        "url": null,
+        "publishDate": "2024-10-10",
+        "why": "no-url"
+      },
+      {
+        "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+        "url": null,
+        "publishDate": "2021-12-13",
+        "why": "no-url"
+      },
+      {
+        "showId": "clueless-west-end-2025",
+        "url": null,
+        "publishDate": "2025-03-14",
+        "why": "no-url"
+      },
+      {
+        "showId": "coriolanus-west-end-2024",
+        "url": null,
+        "publishDate": "2024-09-25",
+        "why": "no-url"
+      },
+      {
+        "showId": "cruise-west-end-2021",
+        "url": null,
+        "publishDate": "2021-05-24",
+        "why": "no-url"
+      },
+      {
+        "showId": "cruise-west-end-2022",
+        "url": null,
+        "publishDate": "2022-08-18",
+        "why": "no-url"
+      },
+      {
+        "showId": "dear-england-west-end-2023",
+        "url": null,
+        "publishDate": "2023-10-20",
+        "why": "no-url"
+      },
+      {
+        "showId": "dear-octopus-west-end-2024",
+        "url": null,
+        "publishDate": "2024-02-15",
+        "why": "no-url"
+      },
+      {
+        "showId": "death-of-england-closing-time-west-end-2023",
+        "url": null,
+        "publishDate": "2023-10-10",
+        "why": "no-url"
+      },
+      {
+        "showId": "dixon-and-daughters-west-end-2023",
+        "url": null,
+        "publishDate": "2023-04-26",
+        "why": "no-url"
+      },
+      {
+        "showId": "elektra-west-end-2025",
+        "url": null,
+        "publishDate": "2025-02-06",
+        "why": "no-url"
+      },
+      {
+        "showId": "expendable-west-end-2024",
+        "url": null,
+        "publishDate": "2024-11-28",
+        "why": "no-url"
+      },
+      {
+        "showId": "fawlty-towers-west-end-2024",
+        "url": null,
+        "publishDate": "2024-05-16",
+        "why": "no-url"
+      },
+      {
+        "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2023",
+        "url": null,
+        "publishDate": "2023-04-01",
+        "why": "no-url"
+      },
+      {
+        "showId": "frozen-west-end-2021",
+        "url": null,
+        "publishDate": "2021-09-09",
+        "why": "no-url"
+      },
+      {
+        "showId": "grace-pervades-west-end-2026",
+        "url": null,
+        "publishDate": "2026-05-01",
+        "why": "no-url"
+      },
+      {
+        "showId": "grease-west-end-2022",
+        "url": null,
+        "publishDate": "2022-05-18",
+        "why": "no-url"
+      },
+      {
+        "showId": "hairspray-the-musical-west-end-2021",
+        "url": null,
+        "publishDate": "2021-06-30",
+        "why": "no-url"
+      },
+      {
+        "showId": "hamlet-west-end-2025",
+        "url": null,
+        "publishDate": "2025-10-03",
+        "why": "no-url"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://www.thereviewshub.com/re-review-mj-the-musical-prince-edward-theatre-london/",
+      "headline": "Re-Review: MJ The Musical- Prince Edward Theatre, London",
+      "publishDate": "2025-02-05",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "mj-the-musical-west-end-2024"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.thereviewshub.com/re-review-jersey-boys-trafalgar-theatre-london/",
+      "headline": "Re-Review: Jersey Boys – Trafalgar Theatre, London",
+      "publishDate": "2023-08-01",
+      "matched": [
+        "jersey-boys-west-end-2021"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/re-review-life-of-pi-wyndhams-theatre-london/",
+      "headline": "Re-Review: Life of Pi – Wyndham’s Theatre, London",
+      "publishDate": "2022-10-12",
+      "matched": [
+        "life-of-pi-west-end-2021"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    }
+  ],
+  "misfiles": [
+    {
+      "url": "https://www.thereviewshub.com/24-a-christmas-carol-the-old-vic-london/",
+      "headline": "A Christmas Carol – The Old Vic, London",
+      "publishDate": "2024-11-22",
+      "via": "poller-matcher",
+      "held": [
+        "a-christmas-carol-west-end-2015"
+      ],
+      "matched": [
+        "a-christmas-carol-west-end-2024"
+      ],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2022",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/23-for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-apollo-theatre-london/",
+      "headline": "For Black Boys Who Have Considered Suicide When The Hue Gets Too Heavy – Apollo Theatre, London",
+      "publishDate": "2023-04-01",
+      "via": "poller-matcher",
+      "held": [
+        "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022"
+      ],
+      "matched": [
+        "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2023"
+      ],
+      "outOfWindow": [
+        "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024",
+        "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/a-christmas-carol-the-old-vic-theatre-london/",
+      "headline": "A Christmas Carol – The Old Vic Theatre. London",
+      "publishDate": "2022-11-24",
+      "via": "poller-matcher",
+      "held": [
+        "a-christmas-carol-west-end-2020"
+      ],
+      "matched": [
+        "a-christmas-carol-west-end-2022"
+      ],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2024",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
+      ]
+    }
+  ],
+  "heldUnmatched": [
+    {
+      "url": "https://www.thereviewshub.com/annie-edinburgh-playhouse-edinburgh-2/",
+      "headline": "Annie – Edinburgh Playhouse, Edinburgh",
+      "publishDate": "2026-09-16",
+      "via": null,
+      "held": [
+        "annie-west-end-2017"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thereviewshub.com/seven-deadly-sins-the-human-voice-charing-cross-theatre-london/",
+      "headline": "Seven Deadly Sins/ The Human Voice  – Charing Cross Theatre, London",
+      "publishDate": "2026-09-15",
+      "via": null,
+      "held": [
+        "the-human-voice-the-seven-deadly-sins-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-human-voice-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/burlesque-the-musical-kings-theatre-glasgow/",
+      "headline": "Burlesque The Musical – King’s Theatre, Glasgow",
+      "publishDate": "2026-09-09",
+      "via": null,
+      "held": [
+        "burlesque-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "burlesque-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/still-life-theatre-royal-drury-lane-theatre-london/",
+      "headline": "Still Life – Theatre Royal Drury Lane Theatre, London",
+      "publishDate": "2026-09-08",
+      "via": null,
+      "held": [
+        "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thereviewshub.com/jane-eyre-convention-bread-roses-theatre-london/",
+      "headline": "Jane Eyre Convention – Bread & Roses Theatre, London",
+      "publishDate": "2026-06-11",
+      "via": null,
+      "held": [
+        "jane-eyre-rose-kingston-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "jane-eyre-off-west-end-2026",
+        "jane-eyre-rose-kingston-off-west-end-2026",
+        "jane-eyre-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
+      "headline": "The Importance of Being Oscar – Theatre Royal Wakefield",
+      "publishDate": "2026-06-10",
+      "via": null,
+      "held": [
+        "the-importance-of-being-oscar-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-importance-of-being-oscar-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/222-a-ghost-story-lyceum-theatre-sheffield-2/",
+      "headline": "2:22 A Ghost Story – Lyceum Theatre, Sheffield",
+      "publishDate": "2026-06-02",
+      "via": null,
+      "held": [
+        "2-22-a-ghost-story-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-story-west-end-2026",
+        "2-22-a-ghost-story-west-end-2023",
+        "2-22-a-ghost-story-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/a-midsummers-night-dream-unicorn-theatre-london/",
+      "headline": "A Midsummer’s Night Dream – Unicorn Theatre, London",
+      "publishDate": "2026-04-02",
+      "via": null,
+      "held": [
+        "a-midsummer-nights-dream-unicorn-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/to-kill-a-mockingbird-the-lowry-salford-2/",
+      "headline": "To Kill A Mockingbird – The Lowry, Salford",
+      "publishDate": "2026-01-15",
+      "via": null,
+      "held": [
+        "to-kill-a-mockingbird-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "to-kill-a-mockingbird-west-end-2026",
+        "to-kill-a-mockingbird-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/the-enormous-crocodile-the-lowry-salford/",
+      "headline": "The Enormous Crocodile –  The Lowry, Salford",
+      "publishDate": "2025-12-15",
+      "via": null,
+      "held": [
+        "the-enormous-crocodile-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-enormous-crocodile-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/end-national-theatre-london/",
+      "headline": "End – National Theatre, London",
+      "publishDate": "2025-11-21",
+      "via": null,
+      "held": [
+        "end-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thereviewshub.com/twelfth-night-hen-chickens-theatre-london/",
+      "headline": "Twelfth Night – Hen & Chickens Theatre, London",
+      "publishDate": "2025-09-17",
+      "via": null,
+      "held": [
+        "twelfth-night-west-end-2017"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/edinburgh-fringe-2025-this-is-not-about-me-summerhall-edinburgh/",
+      "headline": "Edinburgh Fringe 2025: This is Not About Me – Summerhall, Edinburgh",
+      "publishDate": "2025-08-26",
+      "via": null,
+      "held": [
+        "this-is-not-about-me-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "this-is-not-about-me-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/scenes-with-girls-golden-goose-theatre-london/",
+      "headline": "Scenes with girls – Golden Goose Theatre, London",
+      "publishDate": "2025-04-25",
+      "via": null,
+      "held": [
+        "scenes-with-girls-west-end-2020"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "girls-off-west-end-2026",
+        "scenes-with-girls-west-end-2020",
+        "the-girls-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/burnt-up-love-finborough-theatre-london/",
+      "headline": "Burnt Up Love – Finborough Theatre, London",
+      "publishDate": "2024-11-01",
+      "via": null,
+      "held": [
+        "burnt-up-love-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "burnt-up-love-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/stories-the-tap-dance-sensation-peacock-theatre-london/",
+      "headline": "Stories: The Tap Dance Sensation – Peacock Theatre, London",
+      "publishDate": "2024-10-25",
+      "via": null,
+      "held": [
+        "stories-the-tap-dance-sensation-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "stories-the-tap-dance-sensation-west-end-2026",
+        "stories-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/the-band-back-together-arcola-theatre-london/",
+      "headline": "The Band Back Together – Arcola Theatre, London",
+      "publishDate": "2024-09-07",
+      "via": null,
+      "held": [
+        "the-band-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thereviewshub.com/come-from-away-lyceum-theatre-sheffield/",
+      "headline": "Come From Away – Lyceum Theatre, Sheffield",
+      "publishDate": "2024-07-10",
+      "via": null,
+      "held": [
+        "come-from-away-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "come-from-away-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/quiz-newcastle-theatre-royal/",
+      "headline": "Quiz – Newcastle Theatre Royal",
+      "publishDate": "2023-10-05",
+      "via": null,
+      "held": [
+        "quiz-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thereviewshub.com/labour-of-love-tower-theatre-london/",
+      "headline": "Labour of Love – Tower Theatre, London",
+      "publishDate": "2023-07-06",
+      "via": null,
+      "held": [
+        "labour-of-love-west-end-2017"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "labour-of-love-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/dear-england-national-theatre-london/",
+      "headline": "Dear England – National Theatre, London",
+      "publishDate": "2023-06-21",
+      "via": null,
+      "held": [
+        "dear-england-new-wimbledon-theatre-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "dear-england-new-wimbledon-theatre-west-end-2026",
+        "dear-england-west-end-2025",
+        "dear-england-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/romeo-and-juliet-almeida-theatre-london/",
+      "headline": "Romeo and Juliet – Almeida Theatre, London",
+      "publishDate": "2023-06-15",
+      "via": null,
+      "held": [
+        "romeo-and-juliet-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-west-end-2026",
+        "romeo-and-juliet-west-end-2027",
+        "romeo-and-juliet-west-end-2024",
+        "romeo-and-juliet-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/home-im-darling-theatre-royal-brighton/",
+      "headline": "Home, I’m Darling-Theatre Royal, Brighton",
+      "publishDate": "2023-04-13",
+      "via": null,
+      "held": [
+        "home-im-darling-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "home-im-darling-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/death-drop-back-in-the-habit-liverpool-playhouse/",
+      "headline": "Death Drop: Back in the Habit – Liverpool Playhouse",
+      "publishDate": "2023-02-08",
+      "via": null,
+      "held": [
+        "death-drop-west-end-2020"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "death-drop-west-end-2022",
+        "death-drop-west-end-2020"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/the-human-voice-charing-cross-theatre-london/",
+      "headline": "The Human Voice – Charing Cross Theatre, London",
+      "publishDate": "2022-12-24",
+      "via": null,
+      "held": [
+        "the-human-voice-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-human-voice-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/my-neighbour-totoro-barbican-london/",
+      "headline": "My Neighbour Totoro – Barbican, London",
+      "publishDate": "2022-10-20",
+      "via": null,
+      "held": [
+        "my-neighbour-totoro-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "my-neighbour-totoro-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/joseph-and-the-amazing-technicolor-dreamcoat-milton-keynes-theatre-2/",
+      "headline": "Joseph and the Amazing Technicolor Dreamcoat – Milton Keynes Theatre",
+      "publishDate": "2022-09-11",
+      "via": null,
+      "held": [
+        "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
+        "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/kinky-boots-the-musical-in-concert-theatre-royal-drury-lane-london/",
+      "headline": "Kinky Boots The Musical in Concert – Theatre Royal Drury Lane, London",
+      "publishDate": "2022-08-09",
+      "via": null,
+      "held": [
+        "kinky-boots-west-end-2015"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "kinky-boots-the-musical-west-end-2026",
+        "kinky-boots-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/billy-elliot-the-musical-curve-theatre-leicester/",
+      "headline": "Billy Elliot The Musical – Curve Theatre, Leicester",
+      "publishDate": "2022-07-21",
+      "via": null,
+      "held": [
+        "billy-elliot-the-musical-2008",
+        "billy-elliot-the-musical-west-end-2027"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "billy-elliot-the-musical-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/bat-out-of-hell-lyceum-theatre-sheffield/",
+      "headline": "Bat Out of Hell – Lyceum Theatre, Sheffield",
+      "publishDate": "2022-05-04",
+      "via": null,
+      "held": [
+        "bat-out-of-hell-west-end-2017"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "bat-out-of-hell-west-end-2018",
+        "bat-out-of-hell-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/disneys-beauty-and-the-beast-the-birmingham-hippodrome/",
+      "headline": "Disney’s Beauty and the Beast – The Birmingham Hippodrome",
+      "publishDate": "2022-03-10",
+      "via": null,
+      "held": [
+        "disneys-beauty-and-the-beast-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "disneys-beauty-and-the-beast-west-end-2022"
+      ]
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://www.thereviewshub.com/art-review-carolee-schneemann-body-politics-barbican-london/",
+      "headline": "ART REVIEW: Carolee Schneemann: Body Politics – Barbican, London",
+      "publishDate": "2022-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end",
+      "venueHint": "Carolee Schneemann: Body Politics"
+    }
+  ],
+  "otherMarketReviews": [
+    {
+      "url": "https://www.thereviewshub.com/edfringe-review-velvet-determination-online-streaming-greenside-venues-edinburgh/",
+      "headline": "EDFRINGE REVIEW:  Velvet Determination – Online Streaming & Greenside Venues, Edinburgh",
+      "publishDate": "2022-08-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "edinburgh",
+      "venueHint": "Velvet Determination"
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://www.thereviewshub.com/re-review-guys-dolls-bridge-theatre-london/",
+      "headline": "Re-Review: Guys & Dolls – Bridge Theatre, London",
+      "publishDate": "2024-09-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026",
+        "guys-and-dolls-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/2022-222-a-ghost-story-criterion-theatre-london/",
+      "headline": "Re-Review: 2.22 A Ghost Story – Criterion Theatre, London",
+      "publishDate": "2022-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-story-west-end-2026",
+        "2-22-a-ghost-story-west-end-2023",
+        "2-22-a-ghost-story-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/re-review-heathers-the-musical-the-other-palace-london/",
+      "headline": "Re-Review: Heathers The Musical – The Other Palace, London",
+      "publishDate": "2022-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "heathers-the-musical-off-west-end-2026",
+        "heathers-the-musical-west-end-2021"
+      ]
+    }
+  ]
+}
