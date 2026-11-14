@@ -383,20 +383,6 @@
     "queuedAt": "2026-11-13T15:57:42.654Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-13.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-13T17:29:47.086Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:othello-bedlam-off-broadway-2026",
     "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
     "description": "Othello (Bedlam) (othello-bedlam-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=othello-bedlam-off-broadway-2026 --checkpoint --ingest-missing",
@@ -683,5 +669,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-14T02:11:23.925Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-review-folders",
+    "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
+    "description": "check-corpus-drift.js audit \"orphan-review-folders\" (node scripts/report-orphan-review-folders.js --strict) has been drifting. Latest output:\n\nOrphan review-text folders: 1 (1 files)\n  no-date: 1\n  of which retired ids (stranded by a retirement): 1 folders, 1 files\n  RETIRED cloud-9-national-west-end-2026 (1) BRO-5489: duplicate stub minted by the lbo-sitemap roundup path for the National Theatre Cloud 9 alr\n  cloud-9-national-west-end-2026 (1)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T02:28:58.140Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-14.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-14T02:28:58.164Z"
   }
 ]
