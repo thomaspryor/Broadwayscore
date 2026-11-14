@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T16:42:52.887Z",
+  "timestamp": "2026-11-14T17:13:15.441Z",
   "stats": {
-    "totalReviews": 82040,
-    "alreadyFlagged": 22377,
+    "totalReviews": 82079,
+    "alreadyFlagged": 22378,
     "dateGuardCatches": 220,
-    "directorMismatch": 3686,
+    "directorMismatch": 3687,
     "tvFilmSignals": 2312,
-    "londonSignals": 3747,
+    "londonSignals": 3748,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8470
+    "noPublishDate": 8479
   },
   "findings": [
     {
@@ -86303,6 +86303,19 @@
     },
     {
       "showId": "wicked-tour-2021",
+      "file": "idaho-press--kate-noden.json",
+      "publishDate": "2025-04-08",
+      "url": "https://www.idahopress.com/boiseweekly/entertainment_events/wicked-ly-good/article_d5b377c6-cc21-41b3-8919-d10b5a7973aa.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
       "file": "indianapolisrecorder--chloe-mcgowan.json",
       "score": 91,
       "publishDate": "2025-06-23",
@@ -105220,6 +105233,19 @@
       "score": 82,
       "publishDate": "2026-11-13",
       "url": "https://www.allthatdazzles.co.uk/post/review-hamlet-hail-to-the-thief-barbican-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "publishDate": "2026-11-14",
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-hail-to-barbican-theatr-26211",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
