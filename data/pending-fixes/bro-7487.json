@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7487",
   "planId": "57bb642f-d45d-41fe-9bff-d70f83c238fc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-14T13:55:18.265Z",
   "submitter": {
     "name": null,
@@ -64,5 +64,34 @@
         "description": "shows.json: spend-spend-spend-royal-exchange-regional-2024.openingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-14T14:43:58.435Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-ripple-the-wave-that-carried-me-home-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-ripple-the-wave-that-carried-me-home-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-ripple-the-wave-that-carried-me-home-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for spend-spend-spend-royal-exchange-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for spend-spend-spend-royal-exchange-regional-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
