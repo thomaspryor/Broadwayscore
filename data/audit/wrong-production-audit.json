@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-14T21:41:38.911Z",
+  "timestamp": "2026-11-14T22:36:56.730Z",
   "stats": {
-    "totalReviews": 82099,
-    "alreadyFlagged": 22386,
+    "totalReviews": 82105,
+    "alreadyFlagged": 22394,
     "dateGuardCatches": 220,
-    "directorMismatch": 3695,
+    "directorMismatch": 3696,
     "tvFilmSignals": 2313,
     "londonSignals": 3754,
     "offBroadwaySignals": 750,
@@ -207,7 +207,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 81,
+      "score": 76,
       "publishDate": "2026-05-13",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb",
       "findings": [
@@ -6155,6 +6155,20 @@
       "score": 85,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/annie-7/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "file": "broadwayworld--tina-st-angelo.json",
+      "score": 88,
+      "publishDate": "2026-11-08",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-ANNIE-at-Drury-Lane-Theatre-Oakbrook-Terrace-IL-20261108",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22265,19 +22279,6 @@
     },
     {
       "showId": "fences-leeds-regional-2026",
-      "file": "east-midlands-theatre--unknown.json",
-      "publishDate": "2026-11-11",
-      "url": "https://eastmidlandstheatre.com/2026/11/11/review-fences-nottingham-playhouse/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel bailey\" from fences-off-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "fences-leeds-regional-2026",
       "file": "guardian--catherine-love.json",
       "score": 84,
       "publishDate": "2026-09-17",
@@ -33061,7 +33062,7 @@
     {
       "showId": "incident-at-vichy-off-broadway-2015",
       "file": "dctheatrescene--jonathan-mandell.json",
-      "score": null,
+      "score": 75,
       "publishDate": "2015-11-16",
       "url": "http://dctheatrescene.com/2015/11/16/arthur-miller-at-100-two-revivals-incident-at-vichy/",
       "findings": [
@@ -39721,6 +39722,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "metro-weekly--andre-hereford.json",
+      "score": 81,
       "publishDate": "2023-04-22",
       "url": "https://www.metroweekly.com/2023/04/les-miserables-review-rebel-yell",
       "findings": [
@@ -48363,6 +48365,19 @@
     },
     {
       "showId": "oh-mary-tour-2026",
+      "file": "splash-magazines--elaine-mura.json",
+      "publishDate": "2026-11-13",
+      "url": "https://splashmags.com/2026/11/oh-mary-a-totally-unauthorized-biography/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
       "file": "theatrely--juan-a-ramirez.json",
       "score": 72,
       "publishDate": "2026-09-18",
@@ -49352,6 +49367,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "intermissionmagazine--alessandro-stracuzzi.json",
+      "score": 93,
       "publishDate": "2026-11-02",
       "url": "https://www.intermissionmagazine.ca/reviews/operation-mincemeat",
       "findings": [
@@ -62511,7 +62527,7 @@
     {
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "cititour--brian-scott-lipton.json",
-      "score": null,
+      "score": 91,
       "publishDate": null,
       "url": "https://cititour.com/NYC_Broadway/Sunday-in-the-Park-With-George/190",
       "findings": [
@@ -62567,7 +62583,7 @@
     {
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "esquire--tyler-coates.json",
-      "score": null,
+      "score": 87,
       "publishDate": "February 24, 2017",
       "url": "http://www.esquire.com/entertainment/a53404/jake-gyllenhaal-sunday-in-the-park-with-george-review/",
       "findings": [
@@ -62707,7 +62723,7 @@
     {
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "paste-magazine--chris-kompanek.json",
-      "score": null,
+      "score": 89,
       "publishDate": null,
       "url": "https://www.pastemagazine.com/articles/2017/03/review-sunday-in-the-park-with-george.html",
       "findings": [
@@ -62763,7 +62779,7 @@
     {
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "theater-life--david-sheward.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2017-03-02",
       "url": "http://theaterlife.com/sunday-in-the-park-with-george-linda-12/",
       "findings": [
@@ -62824,7 +62840,7 @@
     {
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "theatlantic--sophie-gilbert.json",
-      "score": null,
+      "score": 91,
       "publishDate": "February 26, 2017",
       "url": "https://www.theatlantic.com/entertainment/archive/2017/02/sunday-in-the-park-with-george-jake-gyllenhaal-annaleigh-ashford-review/517647/",
       "findings": [
@@ -62880,7 +62896,7 @@
     {
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "towncountry--jesse-oxfeld.json",
-      "score": null,
+      "score": 89,
       "publishDate": "February 24, 2017",
       "url": "http://www.townandcountrymag.com/leisure/arts-and-culture/a9678/jake-gyllenhaal-sunday-in-the-park-with-george/",
       "findings": [
@@ -62936,7 +62952,7 @@
     {
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "washpost--peter-marks.json",
-      "score": null,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2017/02/23/jake-gyllenhaal-keeps-getting-better-you-only-have-to-see-him-in-sunday-in-the-park-with-george-to-know/?utm_term=.8b57552e8c35",
       "findings": [
@@ -68404,7 +68420,7 @@
     {
       "showId": "the-elephant-man-2014",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
+      "score": 66,
       "publishDate": "2014-12-07",
       "url": "https://newyorktheater.me/2014/12/07/the-elephant-man-review-bradley-cooper/",
       "findings": [
@@ -68437,7 +68453,7 @@
     {
       "showId": "the-elephant-man-2014",
       "file": "theater-life--david-sheward.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2015-02-11",
       "url": "https://theaterlife.com/the-elephant-man-and-a-delicate-balance/",
       "findings": [
@@ -75925,6 +75941,7 @@
     {
       "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "foodfamilytravel--christianne-klein.json",
+      "score": 78,
       "publishDate": "2026-10-27",
       "url": "https://foodfamilytravel.com/post/review-the-phantom-of-the-opera-brings-broadway-magic-to-las-vegas/",
       "findings": [
@@ -86412,6 +86429,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "idaho-press--kate-noden.json",
+      "score": 91,
       "publishDate": "2025-04-08",
       "url": "https://www.idahopress.com/boiseweekly/entertainment_events/wicked-ly-good/article_d5b377c6-cc21-41b3-8919-d10b5a7973aa.html",
       "findings": [
@@ -105478,7 +105496,7 @@
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "musical-theatre-review--ian-bowkett.json",
-      "score": 96,
+      "score": 92,
       "publishDate": "2026-11-14",
       "url": "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre/",
       "findings": [
@@ -119630,7 +119648,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 77,
+      "score": 81,
       "publishDate": "2025-01-19",
       "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
       "findings": [
@@ -119699,6 +119717,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "sunday-times--dominic-maxwell.json",
+      "score": 80,
       "publishDate": "2025-01-14",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
       "findings": [
@@ -119740,6 +119759,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "the-sun--dominic-maxwell.json",
+      "score": 83,
       "publishDate": "2025-01-19",
       "url": "https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f",
       "findings": [
@@ -126750,6 +126770,7 @@
     {
       "showId": "sting-off-west-end-2026",
       "file": "guardian--anya-ryan.json",
+      "score": 82,
       "publishDate": "2026-06-24",
       "url": "https://www.theguardian.com/stage/2026/jun/24/sting-review-young-vic-theatre-london",
       "findings": [

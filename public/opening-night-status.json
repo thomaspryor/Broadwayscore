@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T21:41:53.623Z",
+  "generatedAt": "2026-11-14T22:37:11.343Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1942,28 +1942,28 @@
       "status": "open",
       "slug": "annie-regional-2026-drury-lane-oakbrook",
       "thumbnail": "/images/shows/annie-regional-2026-drury-lane-oakbrook/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 90,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 3,
+      "siteScore": 89.21,
+      "liveScore": 89,
+      "scoreDrift": -0.20999999999999375,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 4,
-      "positive": 4,
+      "positive": 5,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/12 total",
+          "5/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:4/8"
+          "T2:1/3",
+          "hi-conf:5/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2049,10 +2049,6 @@
         {
           "name": "TheaterMania",
           "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -2316,6 +2312,18 @@
           "t2": 0,
           "t3": 4,
           "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-14T22:37:11.343Z",
+          "rc": 5,
+          "s": 89.21,
+          "t1": 0,
+          "t2": 1,
+          "t3": 4,
+          "p": 5,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -3123,9 +3131,9 @@
       "status": "open",
       "slug": "hamlet-hail-to-the-thief-off-west-end",
       "thumbnail": "/images/shows/hamlet-hail-to-the-thief-off-west-end-2026/thumbnail.webp",
-      "siteScore": 78.61,
+      "siteScore": 78.51,
       "liveScore": 79,
-      "scoreDrift": 0.39000000000000057,
+      "scoreDrift": 0.4899999999999949,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -3480,6 +3488,18 @@
           "t": "2026-11-14T21:41:53.623Z",
           "rc": 24,
           "s": 78.61,
+          "t1": 5,
+          "t2": 6,
+          "t3": 13,
+          "p": 20,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-14T22:37:11.343Z",
+          "rc": 24,
+          "s": 78.51,
           "t1": 5,
           "t2": 6,
           "t3": 13,
@@ -4896,28 +4916,28 @@
       "status": "open",
       "slug": "passing-strange-regional-2026",
       "thumbnail": "/images/shows/passing-strange-regional-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 77,
-      "scoreDrift": null,
+      "siteScore": 81.58,
+      "liveScore": 82,
+      "scoreDrift": 0.4200000000000017,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 2,
+      "total": 3,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 2,
-      "positive": 1,
+      "positive": 2,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/12 total",
+          "3/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:2/8"
+          "T2:1/3",
+          "hi-conf:3/8"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -5003,10 +5023,6 @@
         {
           "name": "TheaterMania",
           "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -5270,6 +5286,18 @@
           "t2": 0,
           "t3": 2,
           "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-14T22:37:11.343Z",
+          "rc": 3,
+          "s": 81.58,
+          "t1": 0,
+          "t2": 1,
+          "t3": 2,
+          "p": 2,
           "m": 1,
           "n": 0,
           "bc": "waiting"
