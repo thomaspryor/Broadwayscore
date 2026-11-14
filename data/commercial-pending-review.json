@@ -35,39 +35,6 @@
       "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
       "autoApplyBlockedAt": "2026-11-12T10:00:32.007Z"
     },
-    "parade-2023": {
-      "capitalization": 6500000,
-      "capitalizationSource": "Broadway Journal (Dec. 23, 2022): “At $6.5 million, the show's capitalization…” https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive",
-      "weeklyRunningCost": 659000,
-      "costMethodology": "trade-reported",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "notes": "Trade press reported a $6.5M capitalization, $5.7M production budget, and $659K weekly operating expenses before royalties. The production closed on Aug. 6, 2023, and I could not verify any public recoupment announcement.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive",
-          "date": "2022-12-23"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/broadways-parade-finishes-limited-run-august-6",
-          "date": "2023-08-06"
-        }
-      ],
-      "title": "Parade",
-      "slug": "parade-2023",
-      "openingDate": "2023-03-16",
-      "status": "closed",
-      "researchedAt": "2026-11-07T23:13:58.754Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog",
-      "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
-      "autoApplyBlockedAt": "2026-11-12T10:00:32.007Z"
-    },
     "the-rocky-horror-show-2026": {
       "title": "The Rocky Horror Show",
       "slug": "the-rocky-horror-show",
@@ -100,7 +67,10 @@
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-06-27T18:31:11.071Z"
+      "researchedAt": "2026-06-27T18:31:11.071Z",
+      "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
+      "autoApplyBlockedAt": "2026-11-12T10:00:32.007Z",
+      "lastRequeuedAt": "2026-11-14T22:27:53.491Z"
     },
     "death-of-a-salesman-2026": {
       "title": "Death of a Salesman",
@@ -129,7 +99,10 @@
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-08-06T14:49:24.793Z"
+      "researchedAt": "2026-08-06T14:49:24.793Z",
+      "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
+      "autoApplyBlockedAt": "2026-11-12T10:00:32.007Z",
+      "lastRequeuedAt": "2026-11-14T22:27:53.491Z"
     },
     "two-strangers-bway-2025": {
       "title": "Two Strangers (Carry a Cake Across New York)",
@@ -173,7 +146,10 @@
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-08-06T15:09:47.163Z"
+      "researchedAt": "2026-08-06T15:09:47.163Z",
+      "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
+      "autoApplyBlockedAt": "2026-11-12T10:00:32.007Z",
+      "lastRequeuedAt": "2026-11-14T22:27:53.491Z"
     },
     "ragtime-2025": {
       "title": "Ragtime",
@@ -198,45 +174,6 @@
       ],
       "confidence": "medium",
       "researchedAt": "2026-08-06T15:19:22.850Z"
-    },
-    "two-strangers": {
-      "capitalization": 8000000,
-      "capitalizationSource": "Forbes (Nov 17, 2025): \"the producers of Two Strangers raised only about $8 million to bring the musical to Broadway.\" https://tollbit.forbes.com/sites/marchershberg/2025/11/17/two-strangers-arrives-on-broadway-in-a-perfect-storm/",
-      "weeklyRunningCost": 480577,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": "Podcast Rex transcript: \"this show has not announced financial recoupment.\" https://podcastrex.com/shows/mickeyjotheatre/why-a-great-show-is-closing-on-broadway-thoughts-on-two-strangers-carry-a-cake-across-new-york/transcript",
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Forbes reported about $8 million in capitalization and $480,577 in fixed weekly operating costs. Broadway.com lists the show as closing November 29, 2026, so it is still open as of November 7, 2026. No public recoupment announcement was located.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://tollbit.forbes.com/sites/marchershberg/2025/11/17/two-strangers-arrives-on-broadway-in-a-perfect-storm/",
-          "date": "2025-11-17"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadway.com/shows/two-strangers-carry-a-cake-across-new-york/frequently-asked-questions/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://podcastrex.com/shows/mickeyjotheatre/why-a-great-show-is-closing-on-broadway-thoughts-on-two-strangers-carry-a-cake-across-new-york/transcript",
-          "date": null
-        }
-      ],
-      "title": "Two Strangers (Carry a Cake Across New York)",
-      "slug": "two-strangers",
-      "openingDate": "2025-11-20",
-      "status": "open",
-      "researchedAt": "2026-11-07T22:07:17.586Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "sweep-requeue-low-conf",
-      "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
-      "autoApplyBlockedAt": "2026-11-12T10:00:32.011Z"
     },
     "indecent-2017": {
       "capitalization": 3417500,
@@ -1438,7 +1375,7 @@
       "researchedAt": "2026-11-14T22:25:28.187Z"
     }
   },
-  "lastUpdated": "2026-11-14T02:18:02.476Z",
+  "lastUpdated": "2026-11-14T22:27:53.491Z",
   "hardTruthFindings": {
     "collectedAt": "2026-10-11",
     "card": "BRO-5017",
