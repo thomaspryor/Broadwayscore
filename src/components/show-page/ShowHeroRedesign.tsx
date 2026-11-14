@@ -33,7 +33,7 @@ import type { ArrivalView } from '@/lib/review-arrival';
 import { CallTheScoreHeroLink, PreOpeningReviewStatus } from './CallTheScore';
 import { foldVenueName } from '@/lib/venue-fold';
 import { isPreOpeningStatus } from '@/lib/pre-opening';
-import React, { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { FULL_CONFIDENCE_AUDIENCE_REVIEWS } from '@/lib/audience-grade-utils';
@@ -56,7 +56,13 @@ import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import type { RatingEditorSaveData } from '@/components/user/RatingEditor';
 // Opens on tap only, so its chunk (editor + photo fields) stays out of the
 // show page's first-load JS (BRO-7486: /show/[slug] sat 9kB over the 330kB cap).
-const RatingEditor = lazy(() => import('@/components/user/RatingEditor'));
+// Lazy + preloadable + retryable (BRO-7486 split it out; BRO-7494 added the
+// guard): preloaded on pointerdown/hover/focus of every control that opens it,
+// a skeleton the editor's height while it loads, and a local boundary so a failed
+// chunk closes the panel with a toast instead of taking down the show page.
+const ratingEditorChunk = createLazyChunk(() => import('@/components/user/RatingEditor'));
+const preloadRatingEditor = ratingEditorChunk.preload;
+const preloadHandlers = { onPointerDown: preloadRatingEditor, onMouseEnter: preloadRatingEditor, onFocus: preloadRatingEditor };
 import { diaryDetailText } from '@/lib/review-showtime';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -68,6 +74,8 @@ import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
+import { createLazyChunk, LazyChunkBoundary, LAZY_PANEL_ERROR_MESSAGE } from '@/components/ui/LazyChunk';
+import { RatingEditorSkeleton } from '@/components/user/LazyPanelSkeleton';
 import { savePendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { removeLocalShow } from '@/lib/local-watchlist';
@@ -207,6 +215,8 @@ function Inner({
   const { showToast } = useToastSafe();
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
+  // Read per render: reset() swaps in a fresh lazy wrapper after a failed load.
+  const RatingEditor = ratingEditorChunk.get();
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
   // Which signed-in user's ratings for this show have finished loading (null = none yet).
   const [reviewsLoadedFor, setReviewsLoadedFor] = useState<string | null>(null);
@@ -520,6 +530,14 @@ function Inner({
     refocusRateBtn();
   }, [setPendingDraft]);
 
+  // The editor's chunk failed to load (or it threw while rendering): close the
+  // panel, say so, and arm a fresh import so the next tap retries.
+  const handleRateEditorError = useCallback(() => {
+    ratingEditorChunk.reset();
+    handleCancelRate();
+    showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error');
+  }, [handleCancelRate, showToast]);
+
   const handleDeleteRating = useCallback(async () => {
     if (!editingReview) return;
     try {
@@ -600,7 +618,7 @@ function Inner({
         <div className={`flex-shrink-0 w-28 sm:w-36 lg:w-44 ${preOpening ? 'lg:absolute lg:left-5 lg:top-5' : ''}`}>
           <div className="group relative aspect-[2/3] rounded-xl overflow-visible shadow-2xl border border-white/10 bg-surface-raised">
             {userFeaturesEnabled && <ShowPageBookmark showId={show.id} size="compact" />}
-            <div className="absolute inset-0 rounded-xl overflow-hidden">
+            <div className="absolute inset-0 rounded-xl overflow-hidden" {...(userFeaturesEnabled ? preloadHandlers : {})}>
               {userFeaturesEnabled && (
                 <HoverRateStars showId={show.id} show={show} showHref={`/show/${show.slug}`} starSize="sm" onPick={handlePosterStarsPick} />
               )}
@@ -820,6 +838,7 @@ function Inner({
           // flash or layout jump while we learn whether this viewer already rated.
           className={`sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-1.5 text-center ${mobileStarState === 'pending' ? 'invisible' : ''}`}
           inert={mobileStarState === 'pending'}
+          {...preloadHandlers}
           aria-hidden={mobileStarState === 'pending' ? true : undefined}
         >
           {/* Same label style as the buttons below (14px / semibold / white / sentence case,
@@ -860,6 +879,7 @@ function Inner({
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
+            {...preloadHandlers}
             className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} ${hasRating ? 'col-span-2 order-last sm:col-span-1 sm:order-none' : ''} items-center justify-center gap-1.5 h-10 sm:h-12 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -992,7 +1012,8 @@ function Inner({
           non-edit save; a restored draft's own dateSeen (initialDateSeen) takes
           precedence inside the editor, so pendingDraft doesn't null it out. */}
       {userFeaturesEnabled && ratePanelOpen && (
-        <Suspense fallback={null}>
+        <LazyChunkBoundary onError={handleRateEditorError}>
+        <Suspense fallback={<RatingEditorSkeleton />}>
         <RatingEditor
           key={editingReview?.id ?? pendingDraft?.reviewId ?? 'new-viewing'}
           showTitle={show.title}
@@ -1015,6 +1036,7 @@ function Inner({
           analytics={{ source: 'show_page', showId: show.id }}
         />
         </Suspense>
+        </LazyChunkBoundary>
       )}
 
       {/* Tickets — primary CTA + lottery/rush pill (desktop only).
@@ -1133,7 +1155,7 @@ function YourRatingInline({
   // show and a planned show read as one design. The whole row opens the
   // editor, which also holds Delete (owner, 2026-10-03).
   return (
-    <div className="space-y-2" data-testid="your-rating">
+    <div className="space-y-2" data-testid="your-rating" onPointerDown={preloadRatingEditor} onMouseEnter={preloadRatingEditor} onFocus={preloadRatingEditor}>
       {reviews.map((review, i) => (
         <PlanRow
           key={review.id}
