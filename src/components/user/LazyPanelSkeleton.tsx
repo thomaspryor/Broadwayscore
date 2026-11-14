@@ -6,10 +6,12 @@
  * collapse then jump when the real panel arrives.
  *
  * Deliberately tiny and dependency-free: it ships in the show page's first-load
- * JS, so it must not pull in Modal or the editor itself. Heights match the real
- * panels' default (collapsed) state, measured in Playwright; keep them in sync
- * if RatingEditor / PlanSheet layout changes (scripts/test-lazy-panel-skeleton.js
- * checks the difference stays small).
+ * JS, so it must not pull in Modal or the editor itself. RatingEditor heights
+ * (419px inline card at 1280px, 507px sheet content at 390px) were measured in
+ * Playwright on a fresh, signed-out panel; tests/e2e/lazy-panel-guard.spec.ts
+ * fails if the desktop skeleton drifts more than 24px from the real editor.
+ * PlanSheet's 380px is estimated from its layout (the sheet needs a signed-in
+ * watchlist entry, which the e2e browser can't create).
  */
 
 function Bar({ className }: { className: string }) {
@@ -56,7 +58,7 @@ export function RatingEditorSkeleton() {
   return (
     <>
       <div
-        className="hidden sm:block mt-3 p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] min-h-[__DESKTOP_H__px]"
+        className="hidden sm:block mt-3 p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] min-h-[419px]"
         role="status"
         aria-label="Loading rating editor"
         data-testid="rating-editor-skeleton"
@@ -65,7 +67,7 @@ export function RatingEditorSkeleton() {
       </div>
       <div className="sm:hidden">
         <SheetShell maxWidth="sm:max-w-md" testId="rating-editor-skeleton-sheet" label="Loading rating editor" zIndex={60}>
-          <div className="p-4 min-h-[__MOBILE_H__px]"><EditorRows /></div>
+          <div className="p-4 min-h-[507px]"><EditorRows /></div>
         </SheetShell>
       </div>
     </>
@@ -76,7 +78,7 @@ export function RatingEditorSkeleton() {
 export function PlanSheetSkeleton() {
   return (
     <SheetShell maxWidth="sm:max-w-sm" testId="plan-sheet-skeleton" label="Loading your plans" zIndex={100}>
-      <div className="p-4 sm:p-5 min-h-[__PLAN_H__px] animate-pulse" aria-hidden="true">
+      <div className="p-4 sm:p-5 min-h-[380px] animate-pulse" aria-hidden="true">
         <Bar className="h-5 w-1/2 mb-5" />
         <Bar className="h-11 w-full mb-4" />
         <div className="grid grid-cols-3 gap-2 mb-4">
