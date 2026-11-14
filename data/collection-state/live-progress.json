@@ -1,75 +1,31 @@
 {
-  "updatedAt": "2026-11-14T18:56:19.446Z",
-  "processed": 5,
-  "failed": 12,
-  "successRate": "29.4%",
+  "updatedAt": "2026-11-14T18:58:50.872Z",
+  "processed": 14,
+  "failed": 9,
+  "successRate": "60.9%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingdog": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-11-14T18:50:20.322Z",
+      "t": "2026-11-14T18:51:14.606Z",
       "event": "bb-session",
-      "session": "a8ba62fb",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+      "session": "11b297f2",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
     },
     {
-      "t": "2026-11-14T18:50:20.589Z",
+      "t": "2026-11-14T18:51:15.354Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-14T18:50:36.503Z",
-      "event": "bb-session",
-      "session": "5aa42e33",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
-    },
-    {
-      "t": "2026-11-14T18:50:36.792Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-14T18:50:37.267Z",
-      "event": "bb-session",
-      "session": "2949c774",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
-    },
-    {
-      "t": "2026-11-14T18:50:37.552Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-14T18:53:06.415Z",
-      "event": "bb-session",
-      "session": "83da713f",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-14T18:53:06.717Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-14T18:55:52.005Z",
-      "event": "bb-session",
-      "session": "23a1081a",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-14T18:55:52.246Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "thetimes.com"
     }
   ]
 }
