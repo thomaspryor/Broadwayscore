@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-11-13T10:02:50.046Z",
-  "scanned": 4818,
+  "updatedAt": "2026-11-14T09:42:02.705Z",
+  "scanned": 4822,
   "showsWithViolations": 198,
-  "totalViolations": 227,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "totalViolations": 228,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "anything-goes-2011::http://www.nypost.com/p/entertainment/theater/he_ll_charm_your_pants_off_Z92DrptWT9Xu1MXg19Un6J"
+  ],
   "actionableViolations": 3,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
@@ -60,6 +62,7 @@
     "man-and-boy-2011::https://yonkerstribune.typepad.com/yonkers_tribune/2011/10/eye-on-theatre-actors-in-command-by-john-simon.html",
     "high-2011::https://scheckonthearts.com/blog2.php/2011/04/20/review-lighighl-ig",
     "war-horse-2011::https://scheckonthearts.com/blog2.php/2011/04/15/review-ligwar-horsel-ig",
+    "anything-goes-2011::http://www.nypost.com/p/entertainment/theater/he_ll_charm_your_pants_off_Z92DrptWT9Xu1MXg19Un6J",
     "anything-goes-2011::https://scheckonthearts.com/blog2.php/2011/04/08/review-liganything-goesl-ig",
     "how-to-succeed-in-business-without-really-trying-2011::https://www.nytheatre.com/showpage.aspx?s=howt10804",
     "ghetto-klown-2011::https://scheckonthearts.com/blog2.php/2011/03/23/review-john-leguizamo-s-ligghetto-klownl-ig",
@@ -845,8 +848,15 @@
       "showId": "anything-goes-2011",
       "title": "Anything Goes",
       "openingDate": "2011-04-07",
-      "message": "Review URL for scheckontheater/Frank Scheck does not mention show slug (checked: anything-goes-2011, anything-goes, anything, goes, anythinggoes): https://scheckonthearts.com/blog2.php/2011/04/08/review-liganything-goesl-ig",
+      "message": "Review URL for nypost/Frank Scheck does not mention show slug (checked: anything-goes-2011, anything-goes, anything, goes, anythinggoes): http://www.nypost.com/p/entertainment/theater/he_ll_charm_your_pants_off_Z92DrptWT9Xu1MXg19Un6J\nReview URL for scheckontheater/Frank Scheck does not mention show slug (checked: anything-goes-2011, anything-goes, anything, goes, anythinggoes): https://scheckonthearts.com/blog2.php/2011/04/08/review-liganything-goesl-ig",
       "violations": [
+        {
+          "outletId": "nypost",
+          "criticName": "Frank Scheck",
+          "url": "http://www.nypost.com/p/entertainment/theater/he_ll_charm_your_pants_off_Z92DrptWT9Xu1MXg19Un6J",
+          "urlSlug": "p entertainment theater he_ll_charm_your_pants_off_z 92 drpt wt 9 xu 1 m xg 19 un 6 j",
+          "namesOtherShow": null
+        },
         {
           "outletId": "scheckontheater",
           "criticName": "Frank Scheck",
@@ -3361,7 +3371,7 @@
     {
       "showId": "dial-m-for-murder-regional-2023",
       "title": "Dial M For Murder",
-      "openingDate": "2023-12-10",
+      "openingDate": "2023-12-09",
       "message": "Review URL for chicago-theatre-review/Colin Douglas does not mention show slug (checked: dial-m-for-murder-regional-2023, dial-m-for-murder, dial-m-for-murder-regional, dial, murder, dialmurder, dialmformurder): https://www.chicagotheatrereview.com/2023/12/teeming-with-twists-and-turns/",
       "violations": [
         {

@@ -1,12 +1,10 @@
 {
-  "updatedAt": "2026-11-13T10:02:59.088Z",
-  "scanned": 4818,
-  "showsWithViolations": 3,
-  "totalViolations": 3,
-  "newSinceLastRun": 1,
-  "newViolationKeys": [
-    "cloud-9-national-west-end-2026"
-  ],
+  "updatedAt": "2026-11-14T09:42:09.913Z",
+  "scanned": 4822,
+  "showsWithViolations": 2,
+  "totalViolations": 2,
+  "newSinceLastRun": 0,
+  "newViolationKeys": [],
   "actionableViolations": 0,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
@@ -15,19 +13,18 @@
   "actionableKeys": [],
   "violationKeys": [
     "cloud-9-west-end-2026",
-    "tristan-and-yseult-off-broadway-2026",
-    "cloud-9-national-west-end-2026"
+    "tristan-and-yseult-off-broadway-2026"
   ],
   "hits": [
     {
       "showId": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "openingDate": "2026-11-10",
-      "message": "cloud-9-west-end-2026 review text mentions \"revival\" 31x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "cloud-9-west-end-2026 review text mentions \"revival\" 41x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {
           "titleMatch": false,
-          "mentionCount": 31
+          "mentionCount": 41
         }
       ]
     },
@@ -40,18 +37,6 @@
         {
           "titleMatch": false,
           "mentionCount": 5
-        }
-      ]
-    },
-    {
-      "showId": "cloud-9-national-west-end-2026",
-      "title": "Cloud 9 National",
-      "openingDate": "2026-11-11",
-      "message": "cloud-9-national-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {
-          "titleMatch": false,
-          "mentionCount": 3
         }
       ]
     }

@@ -1,20 +1,18 @@
 {
-  "updatedAt": "2026-11-13T09:59:38.698Z",
-  "scanned": 4818,
+  "updatedAt": "2026-11-14T09:39:23.988Z",
+  "scanned": 4822,
   "showsWithViolations": 168,
   "totalViolations": 222,
-  "newSinceLastRun": 1,
+  "newSinceLastRun": 0,
   "handled": {
-    "temporal-override-low-confidence": 973,
+    "temporal-override-low-confidence": 968,
     "not-shipped": 57,
-    "duplicate-not-shipped": 56,
+    "duplicate-not-shipped": 57,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [
-    "julius-caesar-globe-off-west-end-2026::thestage--holly-omahony.json"
-  ],
+  "newViolationKeys": [],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "hells-kitchen-2024::chelsea-community-news--michael-musto.json",
@@ -2096,7 +2094,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This review evaluates the 2019 Chichester Festival Theatre production of Shadowlands, which is being revived at the Aldw — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre's 2019 production, not a review of the West End opening at Aldwych T — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -2105,10 +2103,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This review evaluates the 2019 Chichester Festival Theatre production of Shadowlands, which is being revived at the Aldw",
+          "cvReasoning": "This is a review of the Chichester Festival Theatre's 2019 production, not a review of the West End opening at Aldwych T",
           "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run opening 2026-02-12",
-            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — this is a review OF the Chichester production being revived, not a review of the West End opening"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End production opening 2026-02-12",
+            "Opening paragraph explicitly states: 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych for a limited run' — review was written about the Chichester run before transfer"
           ]
         }
       ]
@@ -3075,7 +3073,7 @@
     {
       "showId": "julius-caesar-globe-off-west-end-2026",
       "title": "Julius Caesar",
-      "openingDate": null,
+      "openingDate": "2026-11-06",
       "message": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While this is a valid review of Phyllida Lloyd's Julius Caesar revival, it evaluates the RSC First Encounters touring pr — https://thestage.co.uk/reviews/first-encounters-julius-caesar-review-other-place-stratford-upon-avon-royal-shakespeare-company-harriet-walter",
       "violations": [
         {

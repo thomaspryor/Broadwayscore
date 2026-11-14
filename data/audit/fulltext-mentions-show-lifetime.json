@@ -1,20 +1,11 @@
 {
-  "updatedAt": "2026-11-13T10:00:27.740Z",
-  "scanned": 4818,
-  "showsWithViolations": 566,
-  "totalViolations": 855,
-  "newSinceLastRun": 10,
+  "updatedAt": "2026-11-14T09:40:03.058Z",
+  "scanned": 4822,
+  "showsWithViolations": 565,
+  "totalViolations": 854,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "the-wiz-2024::culturesauce--thom-geier.json",
-    "between-riverside-and-crazy-2022::vulture--jackson-mchenry.json",
-    "west-side-story-2020::thestage--nicole-serratore.json",
-    "follies-2011::chicagotribune--chris-jones.json",
-    "les-miserables-tour-2022::broadwayworld--tracey-paleo.json",
-    "les-miserables-tour-2022::la-dance-chronicle--joanne-divito.json",
-    "les-miserables-tour-2022::oc-register--christopher-smith.json",
-    "les-miserables-tour-2022::stage-raw--socks-whitmore.json",
-    "les-miserables-tour-2022::variety--katcy-stephan.json",
-    "ben-and-imo-royal-shakespeare-regional-2024::british-theatre--colin-davison.json"
+    "revolution-days-citizens-regional-2026::herald--neil-cooper.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -109,11 +100,9 @@
     "wolf-hall-parts-one-and-two-2015::variety--marilyn-stasio.json",
     "the-heidi-chronicles-2015::northjerseycom--robert-feldberg.json",
     "on-the-twentieth-century-2015::broadway-showbiz--corine-cohen.json",
-    "the-audience-2015::hollywood-reporter--david-rooney.json",
     "constellations-2015::ny1--roma-torre.json",
     "a-delicate-balance-2014::ew--marc-snetiker.json",
     "disgraced-2014::ew--thom-geier.json",
-    "cabaret-2014::financialtimes--brendan-lemon.json",
     "casa-valentina-2014::ew--adam-markovitz.json",
     "the-velocity-of-autumn-2014::ew--stephan-lee.json",
     "of-mice-and-men-2014::northjerseycom--robert-feldberg.json",
@@ -775,6 +764,7 @@
     "cheapo-oran-mor-regional-2025::thestage--fergus-morgan.json",
     "contact-oran-mor-regional-2026::thestage--fergus-morgan.json",
     "maybe-tomorrow-oran-mor-regional-2025::thestage--fergus-morgan.json",
+    "revolution-days-citizens-regional-2026::herald--neil-cooper.json",
     "studio3-tron-regional-2025::thestage--david-pollock.json",
     "waiting-for-godot-citizens-regional-2026::guardian--mark-fisher.json",
     "what-im-here-for-tron-regional-2026::guardian--mark-fisher.json",
@@ -2494,7 +2484,7 @@
       "showId": "the-front-page-2016",
       "title": "The Front Page",
       "openingDate": "2016-10-20",
-      "message": "act-three-the-reviews/Doug Marino (act-three-the-reviews--doug-marino.json) SHIPPED but fullText never mentions 'The Front Page' (2412 chars, textIssues flag set): https://dougmarino.blogspot.com/2016/09/the-front-page.html\n⚠️  variety/Marilyn Stasio (variety--marilyn-stasio.json) also too short to assess (0 chars): http://variety.com/2016/legit/reviews/the-front-page-review-broadway-nathan-lane-1201896570/",
+      "message": "act-three-the-reviews/Doug Marino (act-three-the-reviews--doug-marino.json) SHIPPED but fullText never mentions 'The Front Page' (2412 chars, textIssues flag set): https://dougmarino.blogspot.com/2016/09/the-front-page.html",
       "violations": [
         {
           "filename": "act-three-the-reviews--doug-marino.json",
@@ -2859,30 +2849,6 @@
       ]
     },
     {
-      "showId": "the-audience-2015",
-      "title": "The Audience",
-      "openingDate": "2015-03-08",
-      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'The Audience' (303 chars): http://www.hollywoodreporter.com/review/helen-mirren-audience-theater-review-779996",
-      "violations": [
-        {
-          "filename": "hollywood-reporter--david-rooney.json",
-          "url": "http://www.hollywoodreporter.com/review/helen-mirren-audience-theater-review-779996",
-          "outletId": "hollywood-reporter",
-          "criticName": "David Rooney",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "constellations-2015",
       "title": "Constellations",
       "openingDate": "2015-01-13",
@@ -2941,30 +2907,6 @@
           "url": "http://www.ew.com/ew/article/0,,20364394_20865721,00.html",
           "outletId": "ew",
           "criticName": "Thom Geier",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-2014",
-      "title": "Cabaret",
-      "openingDate": "2014-04-24",
-      "message": "financialtimes/Brendan Lemon (financialtimes--brendan-lemon.json) SHIPPED but fullText never mentions 'Cabaret' (303 chars): https://www.ft.com/cms/s/2/d3d18e7a-cb91-11e3-8ccf-00144feabdc0.html#axzz2zthkXYwI",
-      "violations": [
-        {
-          "filename": "financialtimes--brendan-lemon.json",
-          "url": "https://www.ft.com/cms/s/2/d3d18e7a-cb91-11e3-8ccf-00144feabdc0.html#axzz2zthkXYwI",
-          "outletId": "financialtimes",
-          "criticName": "Brendan Lemon",
           "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
@@ -16932,6 +16874,30 @@
       ]
     },
     {
+      "showId": "revolution-days-citizens-regional-2026",
+      "title": "Revolution Days",
+      "openingDate": "2026-05-22",
+      "message": "herald/Neil Cooper (herald--neil-cooper.json) SHIPPED but fullText never mentions 'Revolution Days' (1657 chars): https://www.heraldscotland.com/life_style/26131435.review-revolution-days-citizens-theatre-glasgow-may-2026/",
+      "violations": [
+        {
+          "filename": "herald--neil-cooper.json",
+          "url": "https://www.heraldscotland.com/life_style/26131435.review-revolution-days-citizens-theatre-glasgow-may-2026/",
+          "outletId": "herald",
+          "criticName": "Neil Cooper",
+          "haystackLength": 1657,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "studio3-tron-regional-2025",
       "title": "Studio3",
       "openingDate": "2025-05-01",
@@ -19085,12 +19051,12 @@
     }
   ],
   "triage": {
-    "total": 855,
+    "total": 854,
     "counts": {
-      "excerpt": 189,
+      "excerpt": 187,
       "wrong-production": 9,
       "unresolved": 584,
-      "truncated": 73
+      "truncated": 74
     },
     "outletPlans": [
       {
@@ -20907,23 +20873,14 @@
       },
       {
         "outletId": "financialtimes",
-        "total": 14,
+        "total": 13,
         "counts": {
-          "excerpt": 5,
+          "excerpt": 4,
           "unresolved": 8,
           "truncated": 1
         },
         "requiresArticleReview": true,
         "candidates": [
-          {
-            "file": "cabaret-2014/financialtimes--brendan-lemon.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
           {
             "file": "evening-all-afternoon-off-west-end-2026/financialtimes--sarah-hemming.json",
             "bucket": "unresolved",
@@ -22430,12 +22387,22 @@
       },
       {
         "outletId": "herald",
-        "total": 1,
+        "total": 2,
         "counts": {
-          "excerpt": 1
+          "excerpt": 1,
+          "truncated": 1
         },
         "requiresArticleReview": true,
         "candidates": [
+          {
+            "file": "revolution-days-citizens-regional-2026/herald--neil-cooper.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
           {
             "file": "shrek-the-musical-west-end-2011/herald--william-russell.json",
             "bucket": "excerpt",
@@ -22449,10 +22416,10 @@
       },
       {
         "outletId": "hollywood-reporter",
-        "total": 12,
+        "total": 11,
         "counts": {
           "unresolved": 6,
-          "excerpt": 6
+          "excerpt": 5
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -22539,15 +22506,6 @@
           },
           {
             "file": "summer-2018/hollywood-reporter--david-rooney.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "the-audience-2015/hollywood-reporter--david-rooney.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
