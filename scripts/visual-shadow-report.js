@@ -11,6 +11,7 @@
  * Exit: 0 criteria met, 1 not met yet, 3 could not read Linear or no secret.
  */
 'use strict';
+require('./lib/cli-help').exitOnHelp(module);
 
 const va = require('./lib/visual-approval.js');
 const vci = require('./lib/visual-ci.js');

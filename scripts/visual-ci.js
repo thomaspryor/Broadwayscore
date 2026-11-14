@@ -12,6 +12,7 @@
  * Exit: 0 wrote a result or skipped a stale run, 1 could not finish (the run is red), 2 usage.
  */
 'use strict';
+require('./lib/cli-help').exitOnHelp(module);
 
 const fs = require('fs');
 const path = require('path');

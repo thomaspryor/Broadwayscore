@@ -8,6 +8,7 @@
  *   node scripts/visual-auto-ship-arm.js --disarm   # set it to off (the instant kill switch)
  */
 'use strict';
+require('./lib/cli-help').exitOnHelp(module);
 const { spawnSync } = require('child_process');
 const { main: report } = require('./visual-shadow-report.js');
 
