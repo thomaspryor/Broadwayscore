@@ -1,0 +1,589 @@
+{
+  "issueNumber": "bro-6096",
+  "planId": "43c02e4f-a919-4d7a-af4b-00cc2054187e",
+  "status": "applied",
+  "createdAt": "2026-10-24T03:46:11.450Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 14 London productions that theatre.reviews round-ups cover, fix the Burlesque venue and closing date, and declare the earlier runs of four transfers (BRO-6096)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "WhatsOnStage and the theatre.reviews round-up (burlesque-savoy-reviews) both place the 2025 run at the Savoy Theatre, not The Arts at Marble Arch.",
+      "Round-up: Burlesque can be seen at the Savoy Theatre until 6 September 2025.",
+      "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096).",
+      "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096).",
+      "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096).",
+      "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096).",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "gerry-and-sewell-west-end-2026",
+          "title": "Gerry & Sewell",
+          "slug": "gerry-and-sewell-west-end-2026",
+          "venue": "Aldwych Theatre",
+          "previewsStartDate": "2026-01-13",
+          "openingDate": "2026-01-15",
+          "closingDate": "2026-01-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/gerry-sewell-aldwych-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-last-laugh-west-end-2025",
+          "title": "The Last Laugh",
+          "slug": "the-last-laugh-west-end-2025",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2025-02-25",
+          "closingDate": "2025-03-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096 (first performance; no press night found)",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/the-last-laugh-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sister-act-west-end-2024",
+          "title": "Sister Act",
+          "slug": "sister-act-west-end-2024",
+          "venue": "Dominion Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2024-03-15",
+          "closingDate": "2024-08-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/sister-act-the-musical-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-lehman-trilogy-west-end-2024",
+          "title": "The Lehman Trilogy",
+          "slug": "the-lehman-trilogy-west-end-2024",
+          "venue": "Gillian Lynne Theatre",
+          "previewsStartDate": "2024-09-24",
+          "openingDate": "2024-10-09",
+          "closingDate": "2025-01-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/lehman-trilogy-2024-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-christmas-carol-west-end-2024",
+          "title": "A Christmas Carol",
+          "slug": "a-christmas-carol-west-end-2024",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2024-11-09",
+          "openingDate": "2024-11-20",
+          "closingDate": "2025-01-04",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/john-simm-christmas-carol-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-land-of-the-living-west-end-2025",
+          "title": "The Land of the Living",
+          "slug": "the-land-of-the-living-west-end-2025",
+          "venue": "Dorfman Theatre",
+          "previewsStartDate": "2025-09-09",
+          "openingDate": "2025-09-18",
+          "closingDate": "2025-11-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/the-land-of-the-living-national-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "your-lie-in-april-west-end-2024",
+          "title": "Your Lie in April",
+          "slug": "your-lie-in-april-west-end-2024",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2024-06-28",
+          "openingDate": "2024-07-05",
+          "closingDate": "2024-09-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/your-lie-in-april-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "shifters-west-end-2024",
+          "title": "Shifters",
+          "slug": "shifters-west-end-2024",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2024-08-12",
+          "openingDate": "2024-08-21",
+          "closingDate": "2024-10-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/shifters-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-constituent-west-end-2024",
+          "title": "The Constituent",
+          "slug": "the-constituent-west-end-2024",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2024-06-13",
+          "openingDate": "2024-06-25",
+          "closingDate": "2024-08-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/the-constituent-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-39-steps-west-end-2024",
+          "title": "The 39 Steps",
+          "slug": "the-39-steps-west-end-2024",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2024-08-16",
+          "closingDate": "2024-09-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096 (first performance; no press night found)",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/39-steps-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "death-of-england-closing-time-west-end-2024",
+          "title": "Death of England: Closing Time",
+          "slug": "death-of-england-closing-time-west-end-2024",
+          "venue": "Soho Place",
+          "previewsStartDate": null,
+          "openingDate": "2024-08-22",
+          "closingDate": "2024-09-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/death-of-england-closing-time-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ballet-shoes-west-end-2024",
+          "title": "Ballet Shoes",
+          "slug": "ballet-shoes-west-end-2024",
+          "venue": "National Theatre (Olivier)",
+          "previewsStartDate": null,
+          "openingDate": "2024-11-27",
+          "closingDate": "2025-02-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/ballet-shoes-national-reviews/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "yentl-west-end-2026",
+          "title": "Yentl",
+          "slug": "yentl-west-end-2026",
+          "venue": "Marylebone Theatre",
+          "previewsStartDate": "2026-03-06",
+          "openingDate": "2026-03-11",
+          "closingDate": "2026-04-12",
+          "status": "closed",
+          "category": "off-west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/yentl-marylebone-reviews/",
+            "https://theatreweekly.com/review-yentl-at-marylebone-theatre/",
+            "https://www.broadwayworld.com/westend/article/Review-YENTL-Marylebone-Theatre-20260312"
+          ]
+        }
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "burlesque-west-end-2026",
+        "field": "venue",
+        "oldValue": "The Arts at Marble Arch",
+        "newValue": "Savoy Theatre",
+        "description": "WhatsOnStage and the theatre.reviews round-up (burlesque-savoy-reviews) both place the 2025 run at the Savoy Theatre, not The Arts at Marble Arch."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "burlesque-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2025-09-06",
+        "description": "Round-up: Burlesque can be seen at the Savoy Theatre until 6 September 2025."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "punch-west-end-2025",
+        "field": "priorRuns",
+        "oldValue": null,
+        "newValue": [
+          {
+            "openingDate": "2025-03-06",
+            "closingDate": "2025-04-12",
+            "venue": "Young Vic",
+            "source": "theatre.reviews round-up punch-young-vic-reviews",
+            "note": "Young Vic run of the same production before the Apollo transfer."
+          }
+        ],
+        "description": "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dracula-west-end-2025",
+        "field": "priorRuns",
+        "oldValue": null,
+        "newValue": [
+          {
+            "openingDate": "2025-03-17",
+            "closingDate": "2025-05-03",
+            "venue": "Menier Chocolate Factory",
+            "source": "theatre.reviews round-up dracula-a-comedy-of-terrors-reviews",
+            "note": "Menier run of the same production before the Noël Coward transfer."
+          }
+        ],
+        "description": "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-producers-west-end-2025",
+        "field": "priorRuns",
+        "oldValue": null,
+        "newValue": [
+          {
+            "openingDate": "2024-12-09",
+            "closingDate": "2025-03-01",
+            "venue": "Menier Chocolate Factory",
+            "source": "theatre.reviews round-up the-producers-menier-garrick-reviews",
+            "note": "Menier run of the same production before the Garrick transfer."
+          }
+        ],
+        "description": "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-years-west-end-2025",
+        "field": "priorRuns",
+        "oldValue": null,
+        "newValue": [
+          {
+            "openingDate": "2024-07-27",
+            "closingDate": "2024-08-31",
+            "venue": "Almeida Theatre",
+            "source": "theatre.reviews round-up the-years-reviews",
+            "note": "Almeida run of the same production before the Harold Pinter transfer."
+          }
+        ],
+        "description": "Declare the earlier run so its theatre.reviews round-up attaches to this production (BRO-6096)."
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "death-of-england-michael-delroy-west-end-2024",
+          "title": "Death of England: Michael and Delroy",
+          "slug": "death-of-england-michael-delroy-west-end-2024",
+          "venue": "Soho Place",
+          "openingDate": "2024-07-23",
+          "closingDate": "2024-09-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "tr-roundup-bro-6096",
+          "closingDateSource": "tr-roundup-bro-6096",
+          "evidenceUrls": [
+            "https://theatre.reviews/reviews-roundup/death-of-england-michael-delroy-reviews/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T05:00:13.245Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added gerry-and-sewell-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-last-laugh-west-end-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sister-act-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-lehman-trilogy-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-christmas-carol-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-land-of-the-living-west-end-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added your-lie-in-april-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shifters-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-constituent-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-39-steps-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added death-of-england-closing-time-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ballet-shoes-west-end-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added yentl-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for burlesque-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for burlesque-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for punch-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for dracula-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for the-producers-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for the-years-west-end-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added death-of-england-michael-delroy-west-end-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

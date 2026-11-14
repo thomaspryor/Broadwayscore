@@ -1,0 +1,116 @@
+name: Codex PR lander
+
+# BRO-5646: the owner's only step for a Codex cloud change is pressing "Create PR" in Codex.
+# This lands it through the Codex card runner's own gates (scripts/codex/daily-runner.js --pr:
+# land unit batches, the independent Claude check, land preflight, land/codex-pr-N via
+# land.yml), then comments the result on the PR in plain English and closes it when landed.
+# A rejection stays open with the reason; Codex's "Update PR" pushes again and re-runs this.
+#
+# pull_request_target, not pull_request: the workflow and the runner always come from main,
+# so a PR that edits this file or the runner cannot run its own copy with the secrets. The
+# PR's head is only fetched as data into the runner's worktree, where its tests run with
+# R.scrubEnv (no tokens), exactly as a Codex card attempt does.
+#
+# Which PRs: scripts/lib/codex-runner.js codexCloudPr (codex/<slug> head on this repo, not a
+# codex/bro-N batch branch, base main, opened by the owner or the Codex app). The job-level
+# `if` is only a cheap prefilter.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: 'Pull request number to (re)judge'
+        required: true
+      extra:
+        description: 'Extra runner flags, e.g. --no-land or --dry-run'
+        default: ''
+
+# One run per PR at a time. Never cancelled mid-run: a run cancelled after its land/ push
+# would land without commenting. A queued run for an older head exits on --head-sha.
+concurrency:
+  group: codex-pr-lander-${{ github.event.pull_request.number || inputs.pr }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+jobs:
+  land:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.pull_request.head.ref, 'codex/')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          fetch-depth: 0
+          filter: blob:none
+          persist-credentials: false
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Same as codex-runner.yml: the PR's tests can read any file, so no token stays in a clone.
+      - name: Remove the token from the data clones
+        run: |
+          git -C data/review-texts remote set-url origin https://github.com/thomaspryor/broadway-review-texts.git
+          rm -rf /tmp/core-data-checkout
+          if grep -rqs 'x-access-token' data/review-texts/.git/config; then echo "::error::token still in data/review-texts"; exit 1; fi
+
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install
+        run: |
+          npm ci --no-audit --no-fund
+          npm i -g --no-audit --no-fund @anthropic-ai/claude-code@2.1.292
+
+      - name: Git identity and push credential
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config --global credential.https://github.com.helper \
+            '!f() { test "$1" = get || exit 0; test -n "$CODEX_RUNNER_PUSH_TOKEN" || exit 0; echo username=x-access-token; echo "password=$CODEX_RUNNER_PUSH_TOKEN"; }; f'
+
+      - name: Land the Codex PR
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # A PAT: a land/ push made with GITHUB_TOKEN would not start land.yml.
+          CODEX_RUNNER_PUSH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          EXTRA: ${{ inputs.extra }}
+          # The owner's one end-of-run email (discord-notify.js sendEmailAlert). Codex-written
+          # code never sees these: codex-sandbox.js runs it under env -i as a keyless user.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          args=(--pr "$PR")
+          if [ -n "$HEAD_SHA" ]; then args+=(--head-sha "$HEAD_SHA"); else args+=(--retry); fi
+          # shellcheck disable=SC2206 -- word-split the free-form flags on purpose
+          if [ -n "$EXTRA" ]; then args+=($EXTRA); fi
+          node scripts/codex/daily-runner.js "${args[@]}"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Codex PR lander failed'
+          description: 'The lander job itself failed (setup or a crash) on a Codex cloud PR. The PR has a comment if the runner got that far; re-run with workflow_dispatch pr=<number>.'
+          severity: 'warning'

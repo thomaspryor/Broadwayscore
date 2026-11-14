@@ -1,0 +1,469 @@
+{
+  "issueNumber": "bro-5527-b",
+  "planId": "851da530-acd0-4a35-89c3-57bd30ff669e",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:50:17.559Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5527: shows on the NY tax-credit lists had no capitalization, so /biz had no cost basis for them. Each gets the total offering amount from its production entity's SEC Form D (Regulation D notice), matched to the show by the filing's related persons (lead producers), its timing and, where the tax-credit payout list names the entity, that name. Filed figures, not estimates; notes that said no capitalization was reported are corrected. Model rerun on apply. (part 2 of 6: days-of-wine-and-roses, dead-outlaw-2025, elf-2024, heart-of-rock-and-roll, how-to-dance-in-ohio)",
+    "steps": [
+      "Filed figures: capitalization, a Form D citation, the estimate flag, and the filing in sources.",
+      "Notes that said no capitalization was reported now state the filed offering."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "days-of-wine-and-roses",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "days-of-wine-and-roses: the SEC Form D gives a $8 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "days-of-wine-and-roses",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Magic Time On Broadway Ltd Liability Co, CIK 0001994775, filed Oct 2, 2023): total offering amount $8,000,000. Matched to the show by its related persons Kevin McCollum (Alchemation) and Mark Cortale (Extraordinary Talent Productions), the lead producers. https://www.sec.gov/Archives/edgar/data/1994775/000199575223000001/xslFormDX01/primary_doc.xml",
+        "description": "days-of-wine-and-roses: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "days-of-wine-and-roses",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "days-of-wine-and-roses: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "days-of-wine-and-roses",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+            "date": "2024-06-17",
+            "excerpt": "(None of those productions have recouped.)"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+            "date": "2024-06-17",
+            "excerpt": "(None of those productions have recouped.)"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1994775/000199575223000001/xslFormDX01/primary_doc.xml",
+            "date": "2023-10-02"
+          }
+        ],
+        "description": "days-of-wine-and-roses: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dead-outlaw-2025",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 10000000,
+        "description": "dead-outlaw-2025: the SEC Form D/A gives a $10 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dead-outlaw-2025",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Up to the Stars Limited Partnership, CIK 0002049752, filed Apr 28, 2025): total offering amount $10,000,000, fully sold. Matched to the show by its related persons Sonia Friedman and Lia Vollack, whose companies were the lead producers. https://www.sec.gov/Archives/edgar/data/2049752/000204975225000002/xslFormDX01/primary_doc.xml",
+        "description": "dead-outlaw-2025: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dead-outlaw-2025",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "dead-outlaw-2025: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dead-outlaw-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1mifhzs/im_still_mad_dead_outlaw_closed_so_fast/",
+            "date": "2026-02-04"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1mifhzs/im_still_mad_dead_outlaw_closed_so_fast/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2049752/000204975225000002/xslFormDX01/primary_doc.xml",
+            "date": "2025-04-28"
+          }
+        ],
+        "description": "dead-outlaw-2025: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "elf-2024",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 10000000,
+        "description": "elf-2024: the SEC Form D gives a $10 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "elf-2024",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Buddy the Elf on Broadway Ltd Liability Co, CIK 0002041213, filed Oct 21, 2024): total offering amount $10,000,000. Matched to the show by its related person Temple Live Entertainment North America, the lead producer. https://www.sec.gov/Archives/edgar/data/2041213/000204121324000001/xslFormDX01/primary_doc.xml",
+        "description": "elf-2024: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "elf-2024",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "elf-2024: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "elf-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/12/elf-the-musical-record-marquis-broadway-box-office-week-31-2024-1236241878/",
+            "date": "2024-12-31"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/12/elf-the-musical-record-marquis-broadway-box-office-week-31-2024-1236241878/",
+            "date": "2024-12-31"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2041213/000204121324000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-10-21"
+          }
+        ],
+        "description": "elf-2024: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "elf-2024",
+        "field": "notes",
+        "oldValue": "Holiday limited run at the Marquis, Nov 17, 2024 to Jan 4, 2025; twice broke the house record and grossed about $13.5M over 56 performances. No capitalization reported and no recoupment announced.",
+        "newValue": "Holiday limited run at the Marquis, Nov 17, 2024 to Jan 4, 2025; twice broke the house record and grossed about $13.5M over 56 performances. Its SEC Form D (Oct 2024) offered $10 million; no recoupment announced.",
+        "description": "elf-2024: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heart-of-rock-and-roll",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 19000000,
+        "description": "heart-of-rock-and-roll: the SEC Form D/A gives a $19 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heart-of-rock-and-roll",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Heart of Rock & Roll Broadway Ltd Liability Co, CIK 0001768618, filed Dec 21, 2023): total offering amount $19,000,000 ($3,395,000 sold by then). Matched to the show by its related persons Tyler Mitchell and Hunter Arnold, the lead producers. https://www.sec.gov/Archives/edgar/data/1768618/000176861823000001/xslFormDX01/primary_doc.xml",
+        "description": "heart-of-rock-and-roll: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heart-of-rock-and-roll",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "heart-of-rock-and-roll: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heart-of-rock-and-roll",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1768618/000176861823000001/xslFormDX01/primary_doc.xml",
+            "date": "2023-12-21"
+          }
+        ],
+        "description": "heart-of-rock-and-roll: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 15500000,
+        "description": "how-to-dance-in-ohio: the SEC Form D/A gives a $15.5 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway Journal: under $15M (exact figure not reported)",
+        "newValue": "SEC Form D/A filing (Amigos on Broadway Ltd Liability Co, CIK 0001975810, filed Nov 3, 2023): total offering amount $15,500,000 ($9,230,000 sold by then). Matched to the show by its related persons Ben Holtzman, Sammy Lopez and Fiona Rudin (Fakston Productions), the lead producers. https://www.sec.gov/Archives/edgar/data/1975810/000197581023000002/xslFormDX01/primary_doc.xml",
+        "description": "how-to-dance-in-ohio: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "how-to-dance-in-ohio: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+            "date": "2025-01-06"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/18riyp3/sadly_it_looks_like_how_to_dance_in_ohio_is_not/",
+            "date": "2023-12-25"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/19chc3c/how_to_dance_in_ohio_closing_feb_11/",
+            "date": "2024-01-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+            "date": "2024-06-17",
+            "excerpt": "(None of those productions have recouped.)"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+            "date": "2025-01-06"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/18riyp3/sadly_it_looks_like_how_to_dance_in_ohio_is_not/",
+            "date": "2023-12-25"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/19chc3c/how_to_dance_in_ohio_closing_feb_11/",
+            "date": "2024-01-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+            "date": "2024-06-17",
+            "excerpt": "(None of those productions have recouped.)"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1975810/000197581023000002/xslFormDX01/primary_doc.xml",
+            "date": "2023-11-03"
+          }
+        ],
+        "description": "how-to-dance-in-ohio: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "field": "notes",
+        "oldValue": "Original musical that opened Dec 2023 and closed Feb 2024 after 72 performances. Broadway Journal listed it among the few new musicals of the 2023-24 season capitalized under about $15M; the exact figure was not reported. Averaged about 62% capacity at the Belasco. No recoupment announced.",
+        "newValue": "Original musical that opened Dec 2023 and closed Feb 2024 after 72 performances. Its SEC Form D/A (Nov 2023) put the offering at $15.5 million. Averaged about 62% capacity at the Belasco. No recoupment announced.",
+        "description": "how-to-dance-in-ohio: the notes said no capitalization was reported; it was filed."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T09:19:28.807Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for days-of-wine-and-roses"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for days-of-wine-and-roses"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for days-of-wine-and-roses"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for days-of-wine-and-roses"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for dead-outlaw-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for dead-outlaw-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for dead-outlaw-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dead-outlaw-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for elf-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for elf-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for elf-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for elf-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for elf-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for heart-of-rock-and-roll"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for heart-of-rock-and-roll"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for heart-of-rock-and-roll"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for heart-of-rock-and-roll"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for how-to-dance-in-ohio"
+    }
+  ]
+}

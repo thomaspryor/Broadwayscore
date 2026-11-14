@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-4275",
+  "planId": "b7032126-a4b6-4168-b9ef-25fe2b58c094",
+  "status": "applied",
+  "createdAt": "2026-09-29T09:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "School Girls (2026) corrections left after the full-text rescore: TheWrap's largely negative review (DTLI thumbs down) sits at 57 Mixed; TheaterMania's pull quote is career background, not the critic's verdict. Owner approved correcting scores through this route on 2026-09-29.",
+    "steps": [
+      "Lock TheWrap (Robert Hofler) at 50 with a human-review note",
+      "Replace TheaterMania (Hayley Levitt) pull quote with her closing verdict line"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Largely negative on the writing (juvenile, cringy, far less witty), praise limited to the cast and one number; DTLI thumbs down. Ensemble scored 57 (BRO-4275).",
+        "description": "Record why the score is overridden"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": false,
+        "description": "Make the override final so the rebuild honours it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 50,
+        "description": "TheWrap review is negative, not mixed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/theatermania--hayley-levitt.json",
+        "field": "llmPullQuote",
+        "oldValue": "Audiences fell in love with her sharp eye for behavior and even sharper ear for comedy, a combination that earned her a 2024 Tony nomination for Jaja’s African Hair Braiding.",
+        "newValue": "She just had the good fortune of figuring out a decade ago that hope looks silly on everyone, but teen girls wear it best.",
+        "description": "Use the critic's verdict line instead of background about the playwright"
+      }
+    ]
+  },
+  "executedAt": "2026-09-29T10:13:22.233Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json humanReviewNote: null -> \"Largely negative on the writing (juvenile, cringy, far less witty), praise limited to the cast and one number; DTLI thumbs down. Ensemble scored 57 (BRO-4275).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json humanReviewScore: null -> 50"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/theatermania--hayley-levitt.json llmPullQuote: \"Audiences fell in love with her sharp eye for behavior and even sharper ear for comedy, a combination that earned her a 2024 Tony nomination for Jaja’s African Hair Braiding.\" -> \"She just had the good fortune of figuring out a decade ago that hope looks silly on everyone, but teen girls wear it best.\""
+    }
+  ]
+}

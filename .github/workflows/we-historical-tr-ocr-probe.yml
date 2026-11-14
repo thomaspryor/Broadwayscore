@@ -1,0 +1,81 @@
+name: WE Historical TR OCR Probe
+
+# BRO-6268: Theatre Record issues before 2016 are scanned PDFs (no text layer).
+# This probe logs in (TR login lives only in Actions), prints the search form's
+# filters and the result shapes for a few queries, then OCRs a few pages of the
+# first scanned issue with tesseract and prints word count + confidence only.
+# It prints structure and numbers, never review prose. Writes nothing.
+# code_ref lets a branch's scripts run without landing first; the workflow file
+# itself is read from main.
+
+on:
+  workflow_dispatch:
+    inputs:
+      queries:
+        description: 'Comma-separated TR search titles'
+        required: false
+        default: 'Kinky Boots,Hangmen'
+        type: string
+      dpis:
+        description: 'Comma-separated OCR resolutions'
+        required: false
+        default: '200,300'
+        type: string
+      ocr_pages:
+        description: 'Pages to OCR per dpi'
+        required: false
+        default: '3'
+        type: string
+      first_page:
+        description: 'First page to OCR'
+        required: false
+        default: '5'
+        type: string
+      code_ref:
+        description: 'Branch or sha whose scripts/ to run (default main)'
+        required: false
+        default: 'main'
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: we-historical-tr-ocr-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ inputs.code_ref }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Install PDF and OCR tools
+        run: sudo apt-get install -y poppler-utils tesseract-ocr tesseract-ocr-eng
+
+      - name: Probe Theatre Record scanned issues
+        env:
+          TR_EMAIL: ${{ secrets.TR_EMAIL }}
+          TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
+          QUERIES: ${{ inputs.queries }}
+          DPIS: ${{ inputs.dpis }}
+          OCR_PAGES: ${{ inputs.ocr_pages }}
+          FIRST_PAGE: ${{ inputs.first_page }}
+        run: node scripts/probe-tr-scanned.js --queries="$QUERIES" --dpis="$DPIS" --ocr-pages="$OCR_PAGES" --first-page="$FIRST_PAGE"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'WE Historical TR OCR Probe Failed'
+          severity: 'warning'

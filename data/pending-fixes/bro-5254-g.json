@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-5254-g",
+  "planId": "49f993ec-b005-4172-86b9-39ac51b09df8",
+  "status": "applied",
+  "createdAt": "2026-10-14T08:01:52.529Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5254: the-lion-king-1997/vulture--john-simon.json (url nymag.com/listings/theater/the_lion_king/) holds Variety Greg Evans review text from a March 2026 misfetch: word-set Jaccard 1.000 against variety--greg-evans.json, which was refetched from its own variety.com URL. Simon did review the show for New York (Dec 1 1997 issue, pp.106-108) but that text is only in Google Books scans the fetch chain cannot read, so the row is published as Simon while scoring Variety prose. Mark it wrongAttribution so the rebuild excludes it and the real Variety row is the only copy.",
+    "steps": [
+      "Set wrongAttribution true and wrongAttributionReason on the-lion-king-1997/vulture--john-simon.json.",
+      "Then rebuild-reviews.yml."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-1997/vulture--john-simon.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "stored text is Variety (Greg Evans), Jaccard 1.000 vs variety--greg-evans.json; not Simon"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-1997/vulture--john-simon.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5254: fullText is Variety Greg Evans review (Jaccard 1.000 vs variety--greg-evans.json, March 2026 misfetch); Simon real text (New York, Dec 1 1997, pp.106-108) not recoverable through fetch chain",
+        "description": "breadcrumb for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T09:50:47.455Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-1997/vulture--john-simon.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-1997/vulture--john-simon.json wrongAttributionReason: null -> \"BRO-5254: fullText is Variety Greg Evans review (Jaccard 1.000 vs variety--greg-evans.json, March 2026 misfetch); Simon real text (New York, Dec 1 1997, pp.106-108) not recoverable through fetch chain\""
+    }
+  ]
+}

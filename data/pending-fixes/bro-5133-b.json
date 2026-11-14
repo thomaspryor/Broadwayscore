@@ -1,0 +1,111 @@
+{
+  "issueNumber": "bro-5133-b",
+  "planId": "19e1bff8-c7ba-41cf-8d3c-db1b29e000b1",
+  "status": "applied",
+  "createdAt": "2026-10-12T15:17:08.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5133 batch b: four venue show/event pages (SoHo Playhouse /see-a-show/, Soho Theatre /events/) were filed as includable unscored reviews through the admin ingest form, which wrote to review-texts without the writer's submissionNonReviewReason gate. Delete them and blocklist their urls on each show.",
+    "steps": [
+      "Delete the four venue-page files.",
+      "Block each url on its show."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+        "description": "BRO-5133: Soho Theatre event page, filed as a review by the admin ingest form (no non-review gate before this fix); unscored and includable."
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": "--show=elf-lyons-the-woman-on-the-edge-off-broadway-2026 --url=https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/ --reason=venue-production-page-not-a-review",
+        "description": "BRO-5133: keep the Soho Theatre event page out of future gathers and gap audits."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lost-in-del-valle-return-off-broadway-2026/sohoplayhouse--unknown.json",
+        "description": "BRO-5133: SoHo Playhouse show page, filed as a review by the admin ingest form (no non-review gate before this fix); unscored and includable."
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": "--show=lost-in-del-valle-return-off-broadway-2026 --url=https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle --reason=venue-production-page-not-a-review",
+        "description": "BRO-5133: keep the SoHo Playhouse show page out of future gathers and gap audits."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json",
+        "description": "BRO-5133: SoHo Playhouse show page, filed as a review by the admin ingest form (no non-review gate before this fix); unscored and includable."
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": "--show=hungry-women-off-broadway-2026 --url=https://www.sohoplayhouse.com/see-a-show/hungry-women --reason=venue-production-page-not-a-review",
+        "description": "BRO-5133: keep the SoHo Playhouse show page out of future gathers and gap audits."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "motherfucker-off-broadway-2026/sohoplayhouse--the-guardian.json",
+        "description": "BRO-5133: SoHo Playhouse show page (pull quote, not the Guardian review itself), filed as a review by the admin ingest form (no non-review gate before this fix); unscored and includable."
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": "--show=motherfucker-off-broadway-2026 --url=https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker --reason=venue-production-page-not-a-review",
+        "description": "BRO-5133: keep the SoHo Playhouse show page (pull quote, not the Guardian review itself) out of future gathers and gap audits."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T16:57:28.194Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lost-in-del-valle-return-off-broadway-2026/sohoplayhouse--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hungry-women-off-broadway-2026/sohoplayhouse--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted motherfucker-off-broadway-2026/sohoplayhouse--the-guardian.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "_note": "BRO-7086: undated rows whose URL names another venue but the review is of this production (transfer, prior run, passing mention). Keyed by showId + venue as the audit prints it. No review text here.",
+  "entries": [
+    {
+      "showId": "a-streetcar-named-desire-west-end-2023",
+      "venue": "Almeida Theatre",
+      "reason": "Same production ran at the Almeida first, then transferred to the Phoenix."
+    },
+    {
+      "showId": "beautiful-thing-west-end-2013",
+      "venue": "Theatre Royal Stratford East",
+      "reason": "2013 revival opened at Stratford East, then transferred to the Arts Theatre."
+    },
+    {
+      "showId": "boys-from-the-blackstuff-west-end-2024",
+      "venue": "Royal Court",
+      "reason": "Liverpool Royal Court run preceded the National Theatre Olivier run."
+    },
+    {
+      "showId": "caroline-or-change-west-end-2018",
+      "venue": "Hampstead Theatre",
+      "reason": "Hampstead Theatre run transferred to the Playhouse."
+    },
+    {
+      "showId": "lackawanna-blues-2021",
+      "venue": "Brooks Atkinson Theatre",
+      "reason": "WSJ double review (Lackawanna Blues plus Six at the Brooks Atkinson); the Lackawanna part is this production."
+    },
+    {
+      "showId": "matilda-the-musical-2013",
+      "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+      "reason": "Broadway review under /ny-theater/broadway/ naming the RSC origin in passing."
+    },
+    {
+      "showId": "next-to-normal-west-end-2024",
+      "venue": "Donmar Warehouse",
+      "reason": "Donmar run (2024) transferred to Wyndham's."
+    },
+    {
+      "showId": "when-we-are-married-west-end-2010",
+      "venue": "Donmar Warehouse",
+      "reason": "Donmar run transferred to the Garrick in 2010 with the same company."
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "venue": "Donmar Warehouse",
+      "reason": "Real Phantom review text under a wrong link (a When We Are Married Donmar URL). review-field-edit refuses to clear a valid-looking url, so no plan can fix it; text is correct for the show. Needs a corrected URL."
+    }
+  ]
+}

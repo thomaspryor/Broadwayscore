@@ -1,0 +1,219 @@
+{
+  "issueNumber": "bro-5386",
+  "planId": "eb84772b-844a-4db1-9aa6-e0f1f7d5c314",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5386: remove the RSC As You Like It reviews from the Globe show page (reported via Formspree) and re-home or delete 10 more files that the new sibling-venue-in-url rule and the sibling-title audit show sit under the wrong same-title production.",
+    "steps": [
+      "delete 9 misfiled copies/listing pages that the correct show already holds or that are not reviews",
+      "move 8 misfiled reviews to the production their URL names",
+      "dedupe the Comedy About Spies London Theatre review"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "as-you-like-it-globe-west-end-2026/thestage--dave-fargnoli.json",
+        "description": "BRO-5386: The Stage review of the RSC production (Royal Shakespeare Theatre, Stratford-upon-Avon, published 2026-10-07) filed under the Globe production. The identical file already exists under all-male-as-you-like-it-regional-2026. This is the review in the Formspree report."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "as-you-like-it-globe-west-end-2026/guardian--unknown.json",
+        "description": "BRO-5386: 0-char Guardian excerpt of the RSC review (url .../2026/oct/07/as-you-like-it-review-rsc). The full copy is all-male-as-you-like-it-regional-2026/guardian--arifa-akbar.json."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "as-you-like-it-globe-west-end-2026/nytimes--brenner-helen-shaw.json",
+        "description": "BRO-5386: Truncated BWW-roundup excerpt of the RSC NYT review, already flagged wrongProduction. all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json holds the real review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "as-you-like-it-globe-west-end-2026/stage-talk-magazine--philip-gooden.json",
+        "description": "BRO-5386: RSC review (BWW RSC roundup) already flagged wrongProduction under the Globe. The complete copy is under all-male-as-you-like-it-regional-2026."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "much-ado-about-nothing-west-end-2022/artsdesk--rachel-halliburton.json",
+        "description": "BRO-5386: 0-char excerpt of the 2025 Drury Lane Arts Desk review (url names theatre-royal-drury-lane) filed under the 2022 Lyttelton run. much-ado-about-nothing-west-end-2025 already holds the same url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "school-pictures-off-broadway-2026/theatermania--zachary-stewart.json",
+        "description": "BRO-5386: TheaterMania roundup article of three Off-Broadway shows from Nov 2023 (Playwrights Horizons run) filed under the 2026 Cherry Lane run. The 2023 show already holds this url (flagged wrongShow there: the article is mostly about a different play)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cruise-west-end-2022/standard--nick-curtis.json",
+        "destPath": "cruise-west-end-2021/standard--nick-curtis.json",
+        "description": "BRO-5386: Evening Standard review of Cruise at the Duchess Theatre (2021 run) filed under the 2022 Apollo run."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cruise-west-end-2022/telegraph--dominic-cavendish.json",
+        "destPath": "cruise-west-end-2021/telegraph--dominic-cavendish.json",
+        "description": "BRO-5386: Telegraph review of Cruise at the Duchess Theatre (2021 run) filed under the 2022 Apollo run."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2025/london-theatre--aliya-al-hassan.json",
+        "description": "BRO-5386: Replaced by the longer copy with a url (3364 chars, no url) moved in the next action. Same review (londontheatre.co.uk, 2025-05-13)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/london-theatre--aliya-al-hassan.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/london-theatre--aliya-al-hassan.json",
+        "description": "BRO-5386: London Theatre review of the 2025 Noel Coward run (url .../the-comedy-about-spies-review-noel-coward-theatre, 2025-05-13) filed under the 2026 Adelphi run. 4792 chars with url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/london-theatre--aliya-al-hussan.json",
+        "description": "BRO-5386: Misspelled duplicate of london-theatre--aliya-al-hassan.json (same url and text)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/broadwayworld--senior-franco-milazzo.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/broadwayworld--senior-franco-milazzo.json",
+        "description": "BRO-5386: BroadwayWorld review of the 2025 Noel Coward run (url ...-Noel-Coward-Theatre-20250513) filed under the 2026 Adelphi run."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/lovelondonloveculture--emma.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/lovelondonloveculture--emma.json",
+        "description": "BRO-5386: Love London Love Culture review dated 2025-05-21 of the Noel Coward run filed under the 2026 Adelphi run."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/thestage--unknown.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/thestage--unknown.json",
+        "description": "BRO-5386: The Stage review of the 2025 Noel Coward run (url ...-noel-coward-theatre-mischief-theatre) filed under the 2026 Adelphi run."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/writewatchwork--abbybathurst.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/writewatchwork--abbybathurst.json",
+        "description": "BRO-5386: Write Watch Work review dated 2025-06-18 of the 2025 Noel Coward run, filed under the 2026 Adelphi run."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/westendtheatre--west-end-theatre-editorial.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/westendtheatre--west-end-theatre-editorial.json",
+        "description": "BRO-5386: westendtheatre.com roundup article dated 2025-05-14 (reviews of the 2025 Noel Coward run), filed under the 2026 Adelphi run. Moves with its run; the roundup-article guard handles scoring."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json",
+        "description": "BRO-5386: truncated venue what's-on listing page (noelcowardtheatre.co.uk/whats-on/the-comedy-about-spies), not a review, filed under the 2026 Adelphi run."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T06:28:48.602Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/thestage--dave-fargnoli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/guardian--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/nytimes--brenner-helen-shaw.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/stage-talk-magazine--philip-gooden.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-west-end-2022/artsdesk--rachel-halliburton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted school-pictures-off-broadway-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: cruise-west-end-2022/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: cruise-west-end-2022/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2025/london-theatre--aliya-al-hassan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/london-theatre--aliya-al-hassan.json → the-comedy-about-spies-west-end-2025/london-theatre--aliya-al-hassan.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/london-theatre--aliya-al-hussan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/broadwayworld--senior-franco-milazzo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/lovelondonloveculture--emma.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/thestage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/writewatchwork--abbybathurst.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/westendtheatre--west-end-theatre-editorial.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json"
+    }
+  ]
+}

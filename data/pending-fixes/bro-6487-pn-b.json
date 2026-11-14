@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6487-pn-b",
+  "planId": "e601841c-fbc0-4673-9c9e-adf34f99f7ff",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:36:41.174Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights, set b of 11 (2012-13..2015-16 opening rows)",
+    "steps": [
+      "shows.json: white-christmas-west-end-2014.openingDate",
+      "shows.json: white-christmas-west-end-2014.openingDateSource",
+      "shows.json: how-to-hold-your-breath-west-end-2015.openingDate",
+      "shows.json: how-to-hold-your-breath-west-end-2015.openingDateSource",
+      "shows.json: the-elephant-man-west-end-2015.openingDateSource",
+      "shows.json: jane-eyre-west-end-2015.openingDate",
+      "shows.json: jane-eyre-west-end-2015.openingDateSource",
+      "shows.json: harlequinade-west-end-2015.openingDate",
+      "shows.json: harlequinade-west-end-2015.openingDateSource",
+      "shows.json: red-velvet-west-end-2016.openingDate",
+      "shows.json: red-velvet-west-end-2016.openingDateSource",
+      "shows.json: the-comedy-about-a-bank-robbery-west-end-2016.openingDate",
+      "shows.json: the-comedy-about-a-bank-robbery-west-end-2016.openingDateSource",
+      "shows.json: 1984-west-end-2016.previewsStartDate",
+      "shows.json: 1984-west-end-2016.openingDate",
+      "shows.json: 1984-west-end-2016.openingDateSource",
+      "shows.json: what-you-will-west-end-2012.openingDate",
+      "shows.json: what-you-will-west-end-2012.openingDateSource",
+      "shows.json: dreamboats-and-petticoats-west-end-2012.openingDateSource",
+      "shows.json: privates-on-parade-west-end-2012.openingDate",
+      "shows.json: privates-on-parade-west-end-2012.openingDateSource",
+      "shows.json: the-audience-west-end-2013.previewsStartDate",
+      "shows.json: the-audience-west-end-2013.openingDate",
+      "shows.json: the-audience-west-end-2013.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "white-christmas-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-11-08",
+        "newValue": "2014-11-12",
+        "description": "shows.json: white-christmas-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "white-christmas-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-11-12 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: white-christmas-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "how-to-hold-your-breath-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-02-04",
+        "newValue": "2015-02-10",
+        "description": "shows.json: how-to-hold-your-breath-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "how-to-hold-your-breath-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-02-10 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: how-to-hold-your-breath-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-elephant-man-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: the-elephant-man-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jane-eyre-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-09-08",
+        "newValue": "2015-09-17",
+        "description": "shows.json: jane-eyre-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jane-eyre-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-09-17 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: jane-eyre-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harlequinade-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-10-24",
+        "newValue": "2015-11-07",
+        "description": "shows.json: harlequinade-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harlequinade-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-11-07 (officiallondontheatre.com; BRO-6487)",
+        "description": "shows.json: harlequinade-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "red-velvet-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-01-23",
+        "newValue": "2016-02-01",
+        "description": "shows.json: red-velvet-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "red-velvet-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-02-01 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: red-velvet-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-comedy-about-a-bank-robbery-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-03-31",
+        "newValue": "2016-04-21",
+        "description": "shows.json: the-comedy-about-a-bank-robbery-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-comedy-about-a-bank-robbery-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-04-21 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: the-comedy-about-a-bank-robbery-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-west-end-2016",
+        "field": "previewsStartDate",
+        "oldValue": "2016-06-28",
+        "newValue": "2016-06-14",
+        "description": "shows.json: 1984-west-end-2016.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-06-28",
+        "newValue": "2016-06-28",
+        "description": "shows.json: 1984-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-06-28 (londontheatredirect.com; BRO-6487)",
+        "description": "shows.json: 1984-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "what-you-will-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-09-18",
+        "newValue": "2012-09-18",
+        "description": "shows.json: what-you-will-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "what-you-will-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-09-18 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: what-you-will-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreamboats-and-petticoats-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: dreamboats-and-petticoats-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "privates-on-parade-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-12-01",
+        "newValue": "2012-12-10",
+        "description": "shows.json: privates-on-parade-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "privates-on-parade-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-12-10 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: privates-on-parade-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-audience-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-03-05",
+        "newValue": "2013-02-15",
+        "description": "shows.json: the-audience-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-audience-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-03-05",
+        "newValue": "2013-03-05",
+        "description": "shows.json: the-audience-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-audience-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-03-05 (en.wikipedia.org; BRO-6487)",
+        "description": "shows.json: the-audience-west-end-2013.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T13:27:22.479Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for white-christmas-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for white-christmas-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for how-to-hold-your-breath-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for how-to-hold-your-breath-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-elephant-man-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jane-eyre-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for jane-eyre-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for harlequinade-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for harlequinade-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for red-velvet-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for red-velvet-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-comedy-about-a-bank-robbery-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-comedy-about-a-bank-robbery-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for 1984-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for 1984-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for 1984-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for what-you-will-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for what-you-will-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for dreamboats-and-petticoats-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for privates-on-parade-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for privates-on-parade-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-audience-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-audience-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-audience-west-end-2013"
+    }
+  ],
+  "executedIn": "ci"
+}

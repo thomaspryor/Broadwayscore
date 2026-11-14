@@ -1,0 +1,447 @@
+{
+  "issueNumber": "bro-5520",
+  "planId": "7979af4a-068d-4cf9-a661-7245d2f3d7f9",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:08:13.931Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5520: checked results from the owner’s Gemini and ChatGPT deep research runs (2026-27 season and long-running hits; 2025-26 season; nonprofit shows). Each figure below was opened at its source. New: Joe Turner’s Come and Gone $8M (producers’ investor Q&A), Here There Are Blueberries $7M max (SEC Form D), Paddington $31M, Purple Rain $29.5M and Galileo $23M (Broadway Journal, new records), Dolly $30M now cited to Broadway Journal, CATS: The Jellicle Ball’s running cost ~$1M (Playbill, replacing an $850K Reddit estimate), Little Bear Ridge Road’s $4.1M now cited to its SEC Form D ($4,095,000). Cleared: Dog Day Afternoon $9.5M and Damn Yankees $19M (no source; message-board guesses). Flagged as enhancements: A Few Good Men and School Girls (named commercial co-producers). Not applied (could not open the source from here): The Washington Post’s Oedipus $6.5M, The Lion King ~$20M (NYT 2003), Aladdin $12-15M projected (LA Times 2014), Variety’s Cats \"failed to recoup\", NYT’s Beaches investor losses, IBDB’s Jun 23 2026 Rocky Horror producer change. Rejected: Celebrity Autobiography \"recouped $2.3M\", All Out $31.5M, Beaches $12.5M recoupment, Rocky Horror \"fully recouped\". (part 1 of 2: joe-turners-come-and-gone, dog-day-afternoon, little-bear-ridge-road, here-there-are-blueberries, damn-yankees, dolly-an-original-musical)",
+    "steps": [
+      "Edits read every oldValue from live data; three add-commercial-entry actions create the new records as TBD.",
+      "productionType becomes plan-editable in the same change (scripts/lib/feedback-pipeline-fields.js); the record checks validate its values."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "joe-turners-come-and-gone: the producers put the capitalization at $8 million in their investor Q&A (The RainMakers Collective, Feb 7 2026)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "The RainMakers Collective (Feb 7, 2026), investor Q&A with lead producer Brian Anthony Moreland and co-producer Cody Lassen: \"A deep dive into the $8 million capitalization strategy.\" https://therainmakerscollective.com/Q&A/joe-turners-come-gone-qa-and-investment-memo/",
+        "description": "joe-turners-come-and-gone: cite the investor Q&A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "notes",
+        "oldValue": "Commercial revival (lead producer Brian Anthony Moreland), opened Apr 25, 2026 and closed Jul 26, 2026. No capitalization reported and no recoupment announced.",
+        "newValue": "Commercial revival (lead producer Brian Anthony Moreland), opened Apr 25, 2026 and closed Jul 26, 2026. Capitalized at $8 million (the producers’ investor Q&A, The RainMakers Collective, Feb 2026); no recoupment announced.",
+        "description": "joe-turners-come-and-gone: the note no longer says no capitalization was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/joe-turners-come-and-gone-broadway-ethel-barrymore-theatre-2026",
+            "date": "2026-07-26"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/joe-turners-come-and-gone-broadway-ethel-barrymore-theatre-2026",
+            "date": "2026-07-26"
+          },
+          {
+            "type": "manual",
+            "url": "https://therainmakerscollective.com/Q&A/joe-turners-come-gone-qa-and-investment-memo/",
+            "date": "2026-02-07"
+          }
+        ],
+        "description": "joe-turners-come-and-gone: add the investor Q&A to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "field": "capitalization",
+        "oldValue": 9500000,
+        "newValue": null,
+        "description": "dog-day-afternoon: the $9.5M had no source, the record’s own note says none was reported, and it equals Titanique’s Broadway Journal figure; Gemini, ChatGPT and a trade search found none. Shown as undisclosed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "dog-day-afternoon: the estimate flag goes with the figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "field": "capitalization",
+        "oldValue": 4100000,
+        "newValue": 4095000,
+        "description": "little-bear-ridge-road: the SEC Form D gives the exact offering, $4,095,000 (shown $4.1M, as before)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Little Bear Broadway Ltd Liability Co, CIK 0002091922, filed Oct 29, 2025): total offering amount $4,095,000. https://www.sec.gov/Archives/edgar/data/2091922/000209192225000001/xslFormDX01/primary_doc.xml",
+        "description": "little-bear-ridge-road: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "little-bear-ridge-road: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/film/news/scott-rudin-broadway-return-little-bear-ridge-road-1236448608/",
+            "date": "2025-07-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/little-bear-ridge-road-closing-date-1236647056/",
+            "date": "2025-12-12"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/film/news/scott-rudin-broadway-return-little-bear-ridge-road-1236448608/",
+            "date": "2025-07-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/little-bear-ridge-road-closing-date-1236647056/",
+            "date": "2025-12-12"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2091922/000209192225000001/xslFormDX01/primary_doc.xml",
+            "date": "2025-10-29"
+          }
+        ],
+        "description": "little-bear-ridge-road: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 7000000,
+        "description": "here-there-are-blueberries: SEC Form D maximum capitalization $7,000,000 (minimum $5,000,000), the Proof convention."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Blueberries Broadway Ltd Liability Co, CIK 0002154984, filed Sep 14, 2026): \"The maximum capitalization is $7,000,000. The minimum capitalization is $5,000,000.\" https://www.sec.gov/Archives/edgar/data/2154984/000215498426000001/xslFormDX01/primary_doc.xml",
+        "description": "here-there-are-blueberries: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "field": "notes",
+        "oldValue": "No public data found for production capitalization, weekly running cost, or recoupment; show is upcoming for a limited engagement starting Nov 9, 2026.",
+        "newValue": "Capitalized at up to $7 million (minimum $5 million) per its SEC Form D (Sep 14, 2026); no weekly running cost or recoupment reported; show is upcoming for a limited engagement starting Nov 9, 2026.",
+        "description": "here-there-are-blueberries: the note reports the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/the-pulitzer-prize-finalist-here-there-are-blueberries-to-open-on-broadway-this-fall/",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Here_There_Are_Blueberries",
+            "date": "2026-09-17"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/the-pulitzer-prize-finalist-here-there-are-blueberries-to-open-on-broadway-this-fall/",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Here_There_Are_Blueberries",
+            "date": "2026-09-17"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2154984/000215498426000001/xslFormDX01/primary_doc.xml",
+            "date": "2026-09-14"
+          }
+        ],
+        "description": "here-there-are-blueberries: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "capitalization",
+        "oldValue": 19000000,
+        "newValue": null,
+        "description": "damn-yankees: the $19M (\"Industry sources\") traces only to BroadwayWorld message-board guesses of $18-20M; Gemini and ChatGPT found no filing or trade report, and the SEC title search is empty. Shown as undisclosed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "capitalizationSource",
+        "oldValue": "Industry sources",
+        "newValue": null,
+        "description": "damn-yankees: no source left to print."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "damn-yankees: the estimate flag goes with the figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "notes",
+        "oldValue": "Capitalization about $19M.",
+        "newValue": "No capitalization reported.",
+        "description": "damn-yankees: the note no longer repeats the $19M."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "field": "capitalizationSource",
+        "oldValue": "Industry sources",
+        "newValue": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"The Dolly Parton musical Dolly ($30 million)\"; the figure includes its out-of-town tryout. https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+        "description": "dolly-an-original-musical: Broadway Journal reports the $30M, from the producers’ filings."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "dolly-an-original-musical: a reported figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.dollyparton.com/news/dolly-a-true-original-musical-comes-to-broadway-this-winter",
+            "date": "2026-07-07",
+            "excerpt": "produced by Dolly Parton, Danny Nozell, Adam Speers for ATG Productions, and Gavin Kalin"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.dollyparton.com/news/dolly-a-true-original-musical-comes-to-broadway-this-winter",
+            "date": "2026-07-07",
+            "excerpt": "produced by Dolly Parton, Danny Nozell, Adam Speers for ATG Productions, and Gavin Kalin"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+            "date": "2026-08-12"
+          }
+        ],
+        "description": "dolly-an-original-musical: add Broadway Journal to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "field": "notes",
+        "oldValue": "Capitalization about $30M.",
+        "newValue": "Capitalized at $30 million including its out-of-town tryout (Broadway Journal, Aug 2026).",
+        "description": "dolly-an-original-musical: the note cites the report."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T07:44:17.557Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for little-bear-ridge-road"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for little-bear-ridge-road"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for little-bear-ridge-road"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for little-bear-ridge-road"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for here-there-are-blueberries"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for here-there-are-blueberries"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for here-there-are-blueberries"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for here-there-are-blueberries"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dolly-an-original-musical"
+    }
+  ]
+}

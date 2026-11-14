@@ -1,0 +1,119 @@
+{
+ "city": "chicago-il",
+ "week": "2026-W46",
+ "today": "2026-11-10",
+ "findings": 6,
+ "byClass": {
+  "1": 0,
+  "2": 1,
+  "3": 1,
+  "4": 0,
+  "6": 4
+ },
+ "newFindings": 6,
+ "newByClass": {
+  "1": 0,
+  "2": 1,
+  "3": 1,
+  "4": 0,
+  "6": 4
+ },
+ "provenance": 0,
+ "plan": null,
+ "card": "BRO-7317",
+ "findingKeys": [
+  "review:1619-the-journey-of-a-people-regional-2024|https://buzznews.net/theatre/theatre-reviews/item/5571-review-1619-the-journey-of-a-people-by-ted-williams-iii-at-fleetwood-jourdain-theatre.html|sarz maxwell:wrong-production",
+  "review:25th-annual-putnam-county-spelling-bee-regional-2024|https://aroundthetownchicago.com/theatre-reviews/the-25th-annual-putnam-county-spelling-bee-reviewed-by-julia-w-rath|julia w rath:byline",
+  "show:42-balloons-regional-2025:opening-date",
+  "show:iceboy-regional-2026:opening-date",
+  "show:little-bear-ridge-road-regional-2024:opening-date",
+  "show:paranormal-activity-chicago-regional-2025:opening-date"
+ ],
+ "fresh": [
+  {
+   "key": "show:iceboy-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "code": "opening-date",
+   "detail": "ours 2026-06-29 / page 2026-06-20",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "show:little-bear-ridge-road-regional-2024:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "little-bear-ridge-road-regional-2024",
+   "label": "Little Bear Ridge Road",
+   "code": "opening-date",
+   "detail": "ours 2024-06-24 / page 2024-06-13",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "show:42-balloons-regional-2025:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "42-balloons-regional-2025",
+   "label": "42 Balloons",
+   "code": "opening-date",
+   "detail": "ours 2025-06-10 / page 2025-05-24",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "show:paranormal-activity-chicago-regional-2025:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "paranormal-activity-chicago-regional-2025",
+   "label": "Paranormal Activity",
+   "code": "opening-date",
+   "detail": "ours 2025-10-16 / page 2025-10-08",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "review:1619-the-journey-of-a-people-regional-2024|https://buzznews.net/theatre/theatre-reviews/item/5571-review-1619-the-journey-of-a-people-by-ted-williams-iii-at-fleetwood-jourdain-theatre.html|sarz maxwell:wrong-production",
+   "cls": 3,
+   "kind": "review",
+   "id": "1619-the-journey-of-a-people-regional-2024|https://buzznews.net/theatre/theatre-reviews/item/5571-review-1619-the-journey-of-a-people-by-ted-williams-iii-at-fleetwood-jourdain-theatre.html|sarz maxwell",
+   "label": "1619: The Journey of a People | Buzznews / Sarz Maxwell",
+   "code": "wrong-production",
+   "detail": "1619: THE JOURNEY OF A PEOPLE plays at the Fleetwood-Jourdain Theatre on Saturday evenings and Sunday afternoons through June 30. ... True, this is Evanston...",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "review:25th-annual-putnam-county-spelling-bee-regional-2024|https://aroundthetownchicago.com/theatre-reviews/the-25th-annual-putnam-county-spelling-bee-reviewed-by-julia-w-rath|julia w rath:byline",
+   "cls": 2,
+   "kind": "review",
+   "id": "25th-annual-putnam-county-spelling-bee-regional-2024|https://aroundthetownchicago.com/theatre-reviews/the-25th-annual-putnam-county-spelling-bee-reviewed-by-julia-w-rath|julia w rath",
+   "label": "25th Annual Putnam County Spelling Bee | Around the Town Chicago / Julia W. Rath",
+   "code": "byline",
+   "detail": "ours \"Julia W. Rath\" / article \"Alan Bresloff\"",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  }
+ ],
+ "provenanceRows": []
+}

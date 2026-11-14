@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5243-f",
+  "planId": "b6180777-d07a-48ae-b757-611af57da534",
+  "status": "applied",
+  "createdAt": "2026-10-14T09:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5325 follow-up: pin venus-in-fur-2011's WSJ capsule (scorer's body_too_short gate refuses it) at a hand-read 92.",
+    "steps": [
+      "humanReviewScore 92 + note"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "venus-in-fur-2011/wsj--terry-teachout.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 92,
+        "description": "BRO-5325: Teachout's Venus in Fur review is a 174-word capsule in his 2011-11-11 WSJ column (copied from godspell-2011, plan bro-5325-a/b). The scorer refuses it as input_validation_failed:body_too_short (run 38533523183), a gate meant for stubs, so it can never get an LLM score. Hand-read: 'dazzlingly serious two-person comedy', Ives 'at his smartest and wittiest', staging 'deliriously zany', 'the excellent Mr. Dancy', Arianda 'so hot that you could fry a carton of eggs on her': an unreserved rave, 92."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "venus-in-fur-2011/wsj--terry-teachout.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5325: hand-read 174-word capsule (unreserved rave); the scorer's body_too_short gate refuses capsules",
+        "description": "Why the score is pinned."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T09:28:36.761Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "venus-in-fur-2011/wsj--terry-teachout.json humanReviewScore: null -> 92"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "venus-in-fur-2011/wsj--terry-teachout.json humanReviewNote: null -> \"BRO-5325: hand-read 174-word capsule (unreserved rave); the scorer's body_too_short gate refuses capsules\""
+    }
+  ]
+}

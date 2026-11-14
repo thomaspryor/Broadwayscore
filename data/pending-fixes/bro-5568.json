@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-5568",
+  "planId": "6fc415a4-8840-4dfd-aa7f-24c7b90531ee",
+  "status": "applied",
+  "createdAt": "2026-10-20T20:28:32.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5568: eight recouped records have a recoupedDate their own recoupedSource calls our estimate (chicago 1997-03, the-phantom-of-the-opera-1988 1989, the-lion-king 1999, aladdin 2014, plaza-suite-2022 2022, the-lehman-trilogy-2021 2022, death-of-a-salesman 2026, appropriate 2024-06 dated by editorial judgment), but print as reported and Chicago drove a 17-week count. Mark each with isEstimate.recoupedDate so the card prints ~ and /biz counts no weeks.",
+    "steps": [
+      "Compare-and-set commercial.json isEstimate for chicago: absent -> {\"recoupedDate\": true}.",
+      "Compare-and-set commercial.json isEstimate for the-phantom-of-the-opera-1988: {\"recouped\": true} -> {\"recouped\": true, \"recoupedDate\": true}.",
+      "Compare-and-set commercial.json isEstimate for the-lion-king: absent -> {\"recoupedDate\": true}.",
+      "Compare-and-set commercial.json isEstimate for aladdin: {\"weeklyRunningCost\": true} -> {\"weeklyRunningCost\": true, \"recoupedDate\": true}.",
+      "Compare-and-set commercial.json isEstimate for plaza-suite-2022: {\"capitalization\": true} -> {\"capitalization\": true, \"recoupedDate\": true}.",
+      "Compare-and-set commercial.json isEstimate for the-lehman-trilogy-2021: absent -> {\"recoupedDate\": true}.",
+      "Compare-and-set commercial.json isEstimate for death-of-a-salesman: absent -> {\"recoupedDate\": true}.",
+      "Compare-and-set commercial.json isEstimate for appropriate: {\"recouped\": true} -> {\"recouped\": true, \"recoupedDate\": true}."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recoupedDate": true
+        },
+        "description": "chicago: recoupedDate 1997-03 is our estimate per its own source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-phantom-of-the-opera-1988",
+        "field": "isEstimate",
+        "oldValue": {
+          "recouped": true
+        },
+        "newValue": {
+          "recouped": true,
+          "recoupedDate": true
+        },
+        "description": "the-phantom-of-the-opera-1988: recoupedDate 1989 is our estimate per its own source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lion-king",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recoupedDate": true
+        },
+        "description": "the-lion-king: recoupedDate 1999 is our estimate per its own source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aladdin",
+        "field": "isEstimate",
+        "oldValue": {
+          "weeklyRunningCost": true
+        },
+        "newValue": {
+          "weeklyRunningCost": true,
+          "recoupedDate": true
+        },
+        "description": "aladdin: recoupedDate 2014 is our estimate per its own source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "plaza-suite-2022",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": true,
+          "recoupedDate": true
+        },
+        "description": "plaza-suite-2022: recoupedDate 2022 is our estimate per its own source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recoupedDate": true
+        },
+        "description": "the-lehman-trilogy-2021: recoupedDate 2022 is our estimate per its own source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recoupedDate": true
+        },
+        "description": "death-of-a-salesman: recoupedDate 2026 is our estimate per its own source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "isEstimate",
+        "oldValue": {
+          "recouped": true
+        },
+        "newValue": {
+          "recouped": true,
+          "recoupedDate": true
+        },
+        "description": "appropriate: recoupedDate 2024-06 is our estimate per its own source."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T21:28:56.686Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-phantom-of-the-opera-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-lion-king"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for aladdin"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for appropriate"
+    }
+  ],
+  "executedIn": "ci"
+}

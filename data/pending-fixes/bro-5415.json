@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-5415",
+  "planId": "52994f77-227b-43c8-8744-c35b165b0c67",
+  "status": "applied",
+  "createdAt": "2026-11-10T05:36:55.895Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5415: mark review files that carry another critic's review url and text as duplicates of the file that holds the real byline (page JSON-LD author confirms the kept critic; text identical or the duplicate holds no text). No score changes: the rebuild already credits the kept critic.",
+    "steps": [
+      "Same url and identical text as nysr--michael-sommers.json; the NYSR page JSON-LD author is Michael Sommers. Already flagged wrongProduction; reviews.json credits Sommers.",
+      "No text; holds the TheWrap review url whose JSON-LD author is Robert Hofler (thewrap--robert-hofler.json). Already flagged wrongProduction; reviews.json credits Hofler.",
+      "Same url and identical text as west-end-best-friend--nick-wayne.json; the page JSON-LD author is Nick Wayne. Already flagged wrongProduction; reviews.json credits Wayne.",
+      "Same Broadway url and near-identical text as variety--frank-rizzo.json; the Variety page JSON-LD author is Frank Rizzo. Already flagged wrongProduction; reviews.json credits Rizzo."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "antigone-this-play-i-read-in-high-school-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nysr--michael-sommers.json",
+        "description": "antigone-this-play-i-read-in-high-school-off-broadway-2026/nysr--melissa-rose-bernardo.json: duplicateOf. Same url and identical text as nysr--michael-sommers.json; the NYSR page JSON-LD author is Michael Sommers. Already flagged wrongProduction; reviews.json credits Sommers."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thewrap--robert-hofler.json",
+        "description": "cats-the-jellicle-ball-2026/thewrap--jason-clark.json: duplicateOf. No text; holds the TheWrap review url whose JSON-LD author is Robert Hofler (thewrap--robert-hofler.json). Already flagged wrongProduction; reviews.json credits Hofler."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "west-end-best-friend--nick-wayne.json",
+        "description": "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json: duplicateOf. Same url and identical text as west-end-best-friend--nick-wayne.json; the page JSON-LD author is Nick Wayne. Already flagged wrongProduction; reviews.json credits Wayne."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-2024/variety--david-benedict.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "stranger-things-2024/variety--david-benedict.json: duplicateOf. Same Broadway url and near-identical text as variety--frank-rizzo.json; the Variety page JSON-LD author is Frank Rizzo. Already flagged wrongProduction; reviews.json credits Rizzo."
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T06:42:53.009Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "antigone-this-play-i-read-in-high-school-off-broadway-2026/nysr--melissa-rose-bernardo.json duplicateOf: null -> \"nysr--michael-sommers.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-2026/thewrap--jason-clark.json duplicateOf: null -> \"thewrap--robert-hofler.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json duplicateOf: null -> \"west-end-best-friend--nick-wayne.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-2024/variety--david-benedict.json duplicateOf: null -> \"variety--frank-rizzo.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

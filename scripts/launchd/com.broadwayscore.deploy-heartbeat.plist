@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Deploy trigger latency backup (card #159): GitHub's 5-min vercel-deploy
+         cron is deprioritized on busy repos (157 scheduled workflows) and has
+         gone 50+ min with zero fires while the ~13-min build sat idle. This
+         checks every 10 min whether HEAD is live on production; if not, and
+         no deploy run is in_progress/queued, and the last scheduled fire was
+         >15 min ago, it dispatches one backup run. See scripts/deploy-heartbeat.sh
+         for the full rationale and memory/feedback_github_cron_delays.md for
+         the launchd-backup pattern.
+         Install:  cp scripts/launchd/com.broadwayscore.deploy-heartbeat.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.deploy-heartbeat.plist
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.deploy-heartbeat -->
+    <key>Label</key>
+    <string>com.broadwayscore.deploy-heartbeat</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/tompryor/Broadwayscore/scripts/deploy-heartbeat.sh</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>600</integer>
+    <key>StandardOutPath</key>
+    <string>/tmp/deploy-heartbeat-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/deploy-heartbeat-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

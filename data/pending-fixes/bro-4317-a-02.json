@@ -1,0 +1,327 @@
+{
+  "issueNumber": "bro-4317-a-02",
+  "planId": "daed6604-1458-4d35-9cce-ceac7892391d",
+  "status": "applied",
+  "createdAt": "2026-10-13T00:58:15.176Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 2/4: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "move once-upon-a-one-more-time/theater-life--david-sheward.json -> once-upon-a-one-more-time-2023/theater-life--david-sheward.json",
+      "delete our-sinatra-a-musical-celebration-off-broadway/theater-life--samuel-l-leiter.json",
+      "move our-town/theater-life--carol-rocamora.json -> our-town-2024/theater-life--carol-rocamora.json",
+      "move our-town/theater-life--isa-goldberg.json -> our-town-2024/theater-life--isa-goldberg.json",
+      "delete purpose/deadline--greg-evans.json",
+      "delete purpose/theatermania--zachary-stewart.json",
+      "delete queen-of-versailles/nysr--bob-verini.json",
+      "delete queen-of-versailles/nysr--david-finkle.json",
+      "move ragtime/theater-life--david-sheward.json -> ragtime-2025/theater-life--david-sheward.json",
+      "move ragtime/theater-life--isa-goldberg.json -> ragtime-2025/theater-life--isa-goldberg.json",
+      "move redwood/theater-life--patrick-christiano.json -> redwood-2025/theater-life--patrick-christiano.json",
+      "delete romeo-juliet/washpost--naveen-kumar.json",
+      "delete schmigadoon/nysr--michael-sommers.json",
+      "delete spamalot-off-broadway-2026/broadwaynews--brittani-samuel.json",
+      "delete spamalot-off-broadway-2026/dailybeast--tim-teeman.json",
+      "delete spamalot-off-broadway-2026/hartford-courant--christopher-arnott.json",
+      "delete spamalot-off-broadway-2026/nydailynews--chris-jones.json",
+      "delete spamalot-off-broadway-2026/nypost--johnny-oleksinski.json",
+      "delete spamalot-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+      "delete spamalot-off-broadway-2026/nysr--sandy-macdonald.json",
+      "delete spamalot-off-broadway-2026/nytg--gillian-russo.json",
+      "delete spamalot-off-broadway-2026/nytimes--jesse-green.json",
+      "delete spamalot-off-broadway-2026/oc-register--christopher-smith.json",
+      "delete spamalot-off-broadway-2026/roc-city-mag--david-andreatta.json",
+      "delete spamalot-off-broadway-2026/san-jose-mercury-news--jim-harrington.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "once-upon-a-one-more-time/theater-life--david-sheward.json",
+        "destPath": "once-upon-a-one-more-time-2023/theater-life--david-sheward.json",
+        "description": "once-upon-a-one-more-time/ is not a shows.json id, so rebuild skipped this review. publishDate 2023-06-22T21:00:00 falls only inside once-upon-a-one-more-time-2023 (run 2023-06-22..2023-09-03); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "our-sinatra-a-musical-celebration-off-broadway/theater-life--samuel-l-leiter.json",
+        "description": "Orphan copy (our-sinatra-a-musical-celebration-off-broadway/ is not a shows.json id) of our-sinatra-a-musical-celebration-off-broadway-2026/theater-life--samuel-l-leiter.json: same url, publishDate 2026-09-15T20:00:00 inside our-sinatra-a-musical-celebration-off-broadway-2026's run; the kept copy is complete 5597 chars vs this complete 5163."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "our-town/theater-life--carol-rocamora.json",
+        "destPath": "our-town-2024/theater-life--carol-rocamora.json",
+        "description": "our-town/ is not a shows.json id, so rebuild skipped this review. publishDate 2024-10-18T08:57:22 falls only inside our-town-2024 (run 2024-10-10..2025-01-19); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "our-town/theater-life--isa-goldberg.json",
+        "destPath": "our-town-2024/theater-life--isa-goldberg.json",
+        "description": "our-town/ is not a shows.json id, so rebuild skipped this review. publishDate 2024-10-18T13:07:29 falls only inside our-town-2024 (run 2024-10-10..2025-01-19); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "purpose/deadline--greg-evans.json",
+        "description": "Orphan copy (purpose/ is not a shows.json id) of purpose-2025/deadline--greg-evans.json: same url, publishDate March 17, 2025 inside purpose-2025's run; the kept copy is invalid 69844 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "purpose/theatermania--zachary-stewart.json",
+        "description": "Orphan copy (purpose/ is not a shows.json id) of purpose-2025/theatermania--zachary-stewart.json: same url, publishDate March 17, 2025 inside purpose-2025's run; the kept copy is invalid 6287 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "queen-of-versailles/nysr--bob-verini.json",
+        "description": "Orphan copy (queen-of-versailles/ is not a shows.json id) of queen-versailles-2025/nysr--bob-verini.json: same url, publishDate 2025-11-09T23:59:18 inside queen-versailles-2025's run; the kept copy is complete 5093 chars vs this complete 5093."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "queen-of-versailles/nysr--david-finkle.json",
+        "description": "Orphan copy (queen-of-versailles/ is not a shows.json id) of queen-versailles-2025/nysr--david-finkle.json: same url, publishDate 2025-11-09T23:58:05 inside queen-versailles-2025's run; the kept copy is complete 5473 chars vs this complete 5001."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "ragtime/theater-life--david-sheward.json",
+        "destPath": "ragtime-2025/theater-life--david-sheward.json",
+        "description": "ragtime/ is not a shows.json id, so rebuild skipped this review. publishDate 2025-10-16T23:00:00 falls only inside ragtime-2025 (run 2025-10-16..2026-08-16); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "ragtime/theater-life--isa-goldberg.json",
+        "destPath": "ragtime-2025/theater-life--isa-goldberg.json",
+        "description": "ragtime/ is not a shows.json id, so rebuild skipped this review. publishDate 2025-10-16T23:00:00 falls only inside ragtime-2025 (run 2025-10-16..2026-08-16); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "redwood/theater-life--patrick-christiano.json",
+        "destPath": "redwood-2025/theater-life--patrick-christiano.json",
+        "description": "redwood/ is not a shows.json id, so rebuild skipped this review. publishDate 2025-02-21T12:00:00 falls only inside redwood-2025 (run 2025-02-13..2025-05-18); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "romeo-juliet/washpost--naveen-kumar.json",
+        "description": "Orphan copy (romeo-juliet/ is not a shows.json id) of romeo-juliet-2024/washpost--naveen-kumar.json: same url, publishDate October 24, 2024 inside romeo-juliet-2024's run; the kept copy is complete 7951 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "schmigadoon/nysr--michael-sommers.json",
+        "description": "Orphan copy (schmigadoon/ is not a shows.json id) of schmigadoon-2026/nysr--michael-sommers.json: same url, publishDate 2026-04-20T21:59:43 inside schmigadoon-2026's run; the kept copy is complete 4223 chars vs this complete 4223."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/broadwaynews--brittani-samuel.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/broadwaynews--brittani-samuel.json: same url, publishDate November 17, 2023 inside spamalot-2023's run; the kept copy is complete 11382 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/dailybeast--tim-teeman.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/dailybeast--tim-teeman.json: same url, publishDate November 16, 2023 inside spamalot-2023's run; the kept copy is complete 6844 chars vs this invalid 7000."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/hartford-courant--christopher-arnott.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-tour-2025/hartford-courant--christopher-arnott.json: same url, publishDate 2025-12-11 inside spamalot-tour-2025's run; the kept copy is complete 8378 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/nydailynews--chris-jones.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/nydailynews--chris-jones.json: same url, publishDate November 16, 2023 inside spamalot-2023's run; the kept copy is complete 4807 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/nypost--johnny-oleksinski.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/nypost--johnny-oleksinski.json: same url, publishDate 2023-11-16 inside spamalot-2023's run; the kept copy is complete 3880 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/nysr--melissa-rose-bernardo.json: same url, publishDate 2023-11-16 inside spamalot-2023's run; the kept copy is complete 4290 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/nysr--sandy-macdonald.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/nysr--sandy-macdonald.json: same url, publishDate 2023-11-16 inside spamalot-2023's run; the kept copy is invalid 0 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/nytg--gillian-russo.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/nytg--gillian-russo.json: same url, publishDate November 16, 2023 inside spamalot-2023's run; the kept copy is complete 5290 chars vs this invalid 3661."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/nytimes--jesse-green.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/nytimes--jesse-green.json: same url, publishDate November 16, 2023 inside spamalot-2023's run; the kept copy is complete 6498 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/oc-register--christopher-smith.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-tour-2025/oc-register--christopher-smith.json: same url, publishDate 2026-02-18 inside spamalot-tour-2025's run; the kept copy is complete 9029 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/roc-city-mag--david-andreatta.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-tour-2025/roc-city-mag--david-andreatta.json: same url, publishDate 2026-01-14 inside spamalot-tour-2025's run; the kept copy is complete 4593 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/san-jose-mercury-news--jim-harrington.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-tour-2025/san-jose-mercury-news--jim-harrington.json: same url, publishDate 2026-03-07 inside spamalot-tour-2025's run; the kept copy is complete 5876 chars vs this invalid 0."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T01:48:49.662Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved once-upon-a-one-more-time/theater-life--david-sheward.json → once-upon-a-one-more-time-2023/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted our-sinatra-a-musical-celebration-off-broadway/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved our-town/theater-life--carol-rocamora.json → our-town-2024/theater-life--carol-rocamora.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved our-town/theater-life--isa-goldberg.json → our-town-2024/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted queen-of-versailles/nysr--bob-verini.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted queen-of-versailles/nysr--david-finkle.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved ragtime/theater-life--david-sheward.json → ragtime-2025/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved ragtime/theater-life--isa-goldberg.json → ragtime-2025/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved redwood/theater-life--patrick-christiano.json → redwood-2025/theater-life--patrick-christiano.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted romeo-juliet/washpost--naveen-kumar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted schmigadoon/nysr--michael-sommers.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/broadwaynews--brittani-samuel.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/dailybeast--tim-teeman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/hartford-courant--christopher-arnott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nydailynews--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nysr--melissa-rose-bernardo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nysr--sandy-macdonald.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nytg--gillian-russo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/oc-register--christopher-smith.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/roc-city-mag--david-andreatta.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/san-jose-mercury-news--jim-harrington.json"
+    }
+  ]
+}

@@ -1,0 +1,337 @@
+{
+  "issueNumber": "bro-6137-e",
+  "planId": "36367131-fb8f-4600-b1f3-875e1a17d4f1",
+  "status": "applied",
+  "createdAt": "2026-10-24T14:26:22.323Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137: Money Scorecard launch data cleanup. Drop orphan key 860, record 8 announced recoupments with citations, Did Not Recoup for silent closures per BRO-5645, Once On This Island capitalization. (part 5 of 5)",
+    "steps": [
+      "dames-at-sea-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "the-gin-game-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-gin-game-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "the-crucible-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-crucible-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "the-encounter-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-encounter-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "on-your-feet-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "on-your-feet-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "tuck-everlasting-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "tuck-everlasting-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "bright-star-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "bright-star-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "disaster-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "disaster-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "amazing-grace-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "amazing-grace-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "the-color-purple-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-color-purple-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dames-at-sea-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "dames-at-sea-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-gin-game-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-gin-game-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-gin-game-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-gin-game-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-crucible-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-crucible-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-crucible-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-crucible-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-encounter-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-encounter-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-encounter-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-encounter-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-your-feet-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "on-your-feet-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-your-feet-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "on-your-feet-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tuck-everlasting-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "tuck-everlasting-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tuck-everlasting-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "tuck-everlasting-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bright-star-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "bright-star-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bright-star-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "bright-star-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "disaster-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "disaster-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "disaster-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "disaster-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "amazing-grace-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "amazing-grace-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "amazing-grace-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "amazing-grace-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-color-purple-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-color-purple-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-color-purple-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-color-purple-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T14:57:02.799Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for dames-at-sea-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-gin-game-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-gin-game-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-crucible-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-crucible-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-encounter-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-encounter-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for on-your-feet-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for on-your-feet-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for tuck-everlasting-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for tuck-everlasting-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for bright-star-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for bright-star-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for disaster-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for disaster-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for amazing-grace-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for amazing-grace-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-color-purple-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-color-purple-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

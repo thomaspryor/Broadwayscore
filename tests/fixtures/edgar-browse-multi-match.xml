@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+  Synthetic fixture (2026-07-19) — a genuine multi-company-match example
+  wasn't found live against the 10 target shows during S3-T2's audit, so
+  this is hand-constructed to match SEC EDGAR's documented company-list
+  response shape (no <company-info> wrapper, no <content> filing details —
+  contrast with edgar-browse-single-match.xml, a REAL captured single-match
+  response for "Mamma Mia" which DOES have both).
+-->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <author>
+    <email>webmaster@sec.gov</email>
+    <name>Webmaster</name>
+  </author>
+  <entry>
+    <title>Broadway Productions LLC  (0001111111)</title>
+    <link href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001111111&amp;owner=include&amp;count=40" rel="alternate" type="text/html" />
+    <id>urn:tag:sec.gov,2008:company=0001111111</id>
+  </entry>
+  <entry>
+    <title>Broadway Theatrical Productions LLC  (0002222222)</title>
+    <link href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0002222222&amp;owner=include&amp;count=40" rel="alternate" type="text/html" />
+    <id>urn:tag:sec.gov,2008:company=0002222222</id>
+  </entry>
+  <id>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=Broadway+LLC&amp;type=D&amp;owner=include&amp;count=40</id>
+  <link href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=Broadway+LLC&amp;type=D&amp;owner=include&amp;start=0&amp;count=40" rel="alternate" type="text/html" />
+  <link href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;company=Broadway+LLC&amp;type=D&amp;owner=include&amp;start=0&amp;count=40&amp;output=atom" rel="self" type="application/atom+xml" />
+  <title>Company Search Results</title>
+  <updated>2026-07-19T20:30:00-04:00</updated>
+</feed>

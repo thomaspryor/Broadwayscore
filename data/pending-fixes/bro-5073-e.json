@@ -1,0 +1,119 @@
+{
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "issueNumber": "bro-5073-e",
+  "planId": "6c07b9f1-7628-4bd1-a9b3-ab65b9a186b3",
+  "createdAt": "2026-10-12T01:34:40Z",
+  "plan": {
+    "summary": "Redwood and Once Upon a Mattress (2024): add owner-approved estimated capitalizations, rounded to the nearest $1M",
+    "steps": [
+      "Set capitalization, an estimate source label, and the isEstimate flag"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 15000000,
+        "description": "Add an estimated capitalization, rounded to the nearest $1M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Estimate (rounded to the nearest $1M)",
+        "description": "Label it as an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "Flag the capitalization as an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 7000000,
+        "description": "Add an estimated capitalization, rounded to the nearest $1M (covers the Broadway run and a later Los Angeles engagement)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Estimate (rounded to the nearest $1M); includes a later Los Angeles engagement",
+        "description": "Label it as an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "isEstimate",
+        "oldValue": {
+          "weeklyRunningCost": true
+        },
+        "newValue": {
+          "weeklyRunningCost": true,
+          "capitalization": true
+        },
+        "description": "Flag the capitalization as an estimate too"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T02:39:00.855Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for once-upon-a-mattress-2024"
+    }
+  ]
+}

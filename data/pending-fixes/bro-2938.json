@@ -1,0 +1,347 @@
+{
+  "issueNumber": "bro-2938",
+  "planId": "8456fe53-196d-44fe-a226-e1d13ee6bf05",
+  "status": "applied",
+  "createdAt": "2026-10-26T18:17:45.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2938: rename 27 review-text files whose filename carries a URL where the critic slug belongs to outlet--stored-critic-slug (content unchanged; collisions and Unknown bylines handled separately) (part 1 of 2)",
+    "steps": [
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json",
+        "destPath": "beetlejuice-2025/observer--rex-reed.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "boop-2025/chicago-sun-times--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
+        "destPath": "boop-2025/chicago-sun-times--catey-sullivan.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "buena-vista-social-club-off-broadway-2023/observer--httpsobservercomauthordavid-cote.json",
+        "destPath": "buena-vista-social-club-off-broadway-2023/observer--david-cote.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "carmen-off-broadway-2025/broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json",
+        "destPath": "carmen-off-broadway-2025/broadwayworld--richard-sasanow.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "caroline-off-broadway-2026/observer--httpsobservercomauthordavid-cote.json",
+        "destPath": "caroline-off-broadway-2026/observer--david-cote.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cyrano-de-bergerac-west-end-2026/observer--httpsobservercomauthordavid-cote.json",
+        "destPath": "cyrano-de-bergerac-west-end-2026/observer--david-cote.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "days-of-wine-and-roses-2024/observer--httpsobservercomauthorrex-reed.json",
+        "destPath": "days-of-wine-and-roses-2024/observer--rex-reed.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
+        "destPath": "encores-la-cage-aux-folles-off-broadway-2026/nytimes--laura-collins-hughes.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "evita-west-end-2025/london-unattached--httpswwwfacebookcomlucyfoxell.json",
+        "destPath": "evita-west-end-2025/london-unattached--lucy-foxell.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "giant-2026/broadwayworld--httpswwwbroadwayworldcomauthorcindy-marcolina.json",
+        "destPath": "giant-2026/broadwayworld--cindy-marcolina.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hamlet-off-broadway-2026/observer--httpsobservercomauthordavid-cote.json",
+        "destPath": "hamlet-off-broadway-2026/observer--david-cote.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "heart-of-rock-and-roll-2024/latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+        "destPath": "heart-of-rock-and-roll-2024/latimes--charles-mcnulty.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-west-end-2025/latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+        "destPath": "into-the-woods-west-end-2025/latimes--charles-mcnulty.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "la-sonnambula-off-broadway-2025/broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json",
+        "destPath": "la-sonnambula-off-broadway-2025/broadwayworld--richard-sasanow.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "la-sonnambula-off-broadway-2025/nytimes--httpswwwnytimescombycorinna-da-fonseca-wollheim.json",
+        "destPath": "la-sonnambula-off-broadway-2025/nytimes--corinna-da-fonseca-wollheim.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "little-bear-ridge-road-2025/chicago-sun-times--httpschicagosuntimescomsteven-oxman.json",
+        "destPath": "little-bear-ridge-road-2025/chicago-sun-times--steven-oxman.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "marie-and-rosetta-west-end-2026/nytimes--httpwwwnytimescombycharles-isherwood.json",
+        "destPath": "marie-and-rosetta-west-end-2026/nytimes--charles-isherwood.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "porgy-and-bess-off-broadway-2025/observer--httpsobservercomauthorjames-jorden.json",
+        "destPath": "porgy-and-bess-off-broadway-2025/observer--james-jorden.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "schmigadoon-2026/observer--httpsobservercomauthorbrandon-katz.json",
+        "destPath": "schmigadoon-2026/observer--brandon-katz.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "swept-away-2024/broadwayworld--httpswwwbroadwayworldcomauthorjake-bridges.json",
+        "destPath": "swept-away-2024/broadwayworld--jake-bridges.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-devil-wears-prada-west-end-2024/chicago-sun-times--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
+        "destPath": "the-devil-wears-prada-west-end-2024/chicago-sun-times--catey-sullivan.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-great-gatsby-2024/broadwayworld--httpswwwbroadwayworldcomauthormarina-kennedy.json",
+        "destPath": "the-great-gatsby-2024/broadwayworld--marina-kennedy.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-lonely-few-off-broadway-2024/broadwayworld--httpswwwbroadwayworldcomauthorandrew-child.json",
+        "destPath": "the-lonely-few-off-broadway-2024/broadwayworld--andrew-child.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-lonely-few-off-broadway-2024/latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+        "destPath": "the-lonely-few-off-broadway-2024/latimes--charles-mcnulty.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-outsiders-2024/chicago-sun-times--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
+        "destPath": "the-outsiders-2024/chicago-sun-times--catey-sullivan.json"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T18:26:09.265Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json → beetlejuice-2025/observer--rex-reed.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved boop-2025/chicago-sun-times--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json → boop-2025/chicago-sun-times--catey-sullivan.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved buena-vista-social-club-off-broadway-2023/observer--httpsobservercomauthordavid-cote.json → buena-vista-social-club-off-broadway-2023/observer--david-cote.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved carmen-off-broadway-2025/broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json → carmen-off-broadway-2025/broadwayworld--richard-sasanow.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved caroline-off-broadway-2026/observer--httpsobservercomauthordavid-cote.json → caroline-off-broadway-2026/observer--david-cote.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved cyrano-de-bergerac-west-end-2026/observer--httpsobservercomauthordavid-cote.json → cyrano-de-bergerac-west-end-2026/observer--david-cote.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved days-of-wine-and-roses-2024/observer--httpsobservercomauthorrex-reed.json → days-of-wine-and-roses-2024/observer--rex-reed.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json → encores-la-cage-aux-folles-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved evita-west-end-2025/london-unattached--httpswwwfacebookcomlucyfoxell.json → evita-west-end-2025/london-unattached--lucy-foxell.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved giant-2026/broadwayworld--httpswwwbroadwayworldcomauthorcindy-marcolina.json → giant-2026/broadwayworld--cindy-marcolina.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hamlet-off-broadway-2026/observer--httpsobservercomauthordavid-cote.json → hamlet-off-broadway-2026/observer--david-cote.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved heart-of-rock-and-roll-2024/latimes--httpswwwlatimescompeoplecharles-mcnulty.json → heart-of-rock-and-roll-2024/latimes--charles-mcnulty.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-west-end-2025/latimes--httpswwwlatimescompeoplecharles-mcnulty.json → into-the-woods-west-end-2025/latimes--charles-mcnulty.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved la-sonnambula-off-broadway-2025/broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json → la-sonnambula-off-broadway-2025/broadwayworld--richard-sasanow.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved la-sonnambula-off-broadway-2025/nytimes--httpswwwnytimescombycorinna-da-fonseca-wollheim.json → la-sonnambula-off-broadway-2025/nytimes--corinna-da-fonseca-wollheim.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved little-bear-ridge-road-2025/chicago-sun-times--httpschicagosuntimescomsteven-oxman.json → little-bear-ridge-road-2025/chicago-sun-times--steven-oxman.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved marie-and-rosetta-west-end-2026/nytimes--httpwwwnytimescombycharles-isherwood.json → marie-and-rosetta-west-end-2026/nytimes--charles-isherwood.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved porgy-and-bess-off-broadway-2025/observer--httpsobservercomauthorjames-jorden.json → porgy-and-bess-off-broadway-2025/observer--james-jorden.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved schmigadoon-2026/observer--httpsobservercomauthorbrandon-katz.json → schmigadoon-2026/observer--brandon-katz.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved swept-away-2024/broadwayworld--httpswwwbroadwayworldcomauthorjake-bridges.json → swept-away-2024/broadwayworld--jake-bridges.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-devil-wears-prada-west-end-2024/chicago-sun-times--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json → the-devil-wears-prada-west-end-2024/chicago-sun-times--catey-sullivan.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-great-gatsby-2024/broadwayworld--httpswwwbroadwayworldcomauthormarina-kennedy.json → the-great-gatsby-2024/broadwayworld--marina-kennedy.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-lonely-few-off-broadway-2024/broadwayworld--httpswwwbroadwayworldcomauthorandrew-child.json → the-lonely-few-off-broadway-2024/broadwayworld--andrew-child.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-lonely-few-off-broadway-2024/latimes--httpswwwlatimescompeoplecharles-mcnulty.json → the-lonely-few-off-broadway-2024/latimes--charles-mcnulty.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-outsiders-2024/chicago-sun-times--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json → the-outsiders-2024/chicago-sun-times--catey-sullivan.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

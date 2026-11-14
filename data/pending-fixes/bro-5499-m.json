@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5499-m",
+  "planId": "f25c83ef-e73f-4bb7-ab2b-9077086e802e",
+  "status": "applied",
+  "createdAt": "2026-10-16T23:58:44.238Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (m): ANON (MCC) newly ingested reviews, dates verified against the pages.",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/off-off-online--colin-macdonald.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: page prints \"October 15, 2026\", byline Colin Macdonald"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/stagebuddy--unknown.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints \"October 15, 2026\", written by Elyse Trevers"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/stagebuddy--unknown.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: page prints \"October 15, 2026\", written by Elyse Trevers"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theater-pizzazz--unknown.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: page prints \"Oct 14, 2026 By Stuart Miller\""
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T00:44:20.674Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/off-off-online--colin-macdonald.json dateSource: \"llm-scoring\" -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/stagebuddy--unknown.json publishDate: null -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/stagebuddy--unknown.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theater-pizzazz--unknown.json dateSource: \"llm-scoring\" -> \"human-page-verified\""
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "issueNumber": "bro-6736",
+  "planId": "904b810d-e817-40e3-907a-3907669d303a",
+  "status": "applied",
+  "createdAt": "2026-11-04T18:26:49.598Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6736: (1) four joint reviews (one article, two shows) where the second show's row still held the whole article after the first show was split: cut each to its own section (held trim, copy-multishow-section.js); (2) block six reviews of The Heart (off-Broadway) that the gap audit cites for From The Heart (West End)",
+    "steps": [
+      "Held trim: Kenrex row still holds the whole Kenrex+Rheology Vulture review; rheology already holds its split section. Cut Kenrex to its own section (read in full)",
+      "Held trim: Meteor Shower row holds the whole Meteor Shower+Parisian Woman post; cut to its own section",
+      "Held trim: American Son row holds the whole King Kong+American Son New Yorker review, auto-flagged wrong show ('a review of King Kong'); cut to its own section, which retires that whole-article verdict",
+      "Held trim: Midnight in the Garden row holds the whole two-show chi-mt post (auto round-up flag); cut to its own section",
+      "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+      "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+      "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+      "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+      "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+      "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Held trim: Kenrex row still holds the whole Kenrex+Rheology Vulture review; rheology already holds its split section. Cut Kenrex to its own section (read in full)",
+        "script": "copy-multishow-section.js",
+        "args": "--from=kenrex-off-broadway-2026/vulture--jackson-mchenry.json --to-show=rheology-off-broadway-2026 --method=markers --expect-start=Rheology_begins_with_a --expect-end=Playwrights_Horizons_through_May_16 --own-start=Jack_Holden_and_John --own-end=I_wanted_to_know_the_same --apply"
+      },
+      {
+        "type": "run-script",
+        "description": "Held trim: Meteor Shower row holds the whole Meteor Shower+Parisian Woman post; cut to its own section",
+        "script": "copy-multishow-section.js",
+        "args": "--from=meteor-shower-2017/adriandimanlig--adrian-dimanlig.json --to-show=the-parisian-woman-2017 --method=markers --expect-start=Uma_Thurman_and_Blair_Brown --expect-end=minutes_without_an_intermission_Through_March_11 --own-start=This_week_two_Hollywood --own-end=Meteor_Shower_is_ultimately_a_dud --apply"
+      },
+      {
+        "type": "run-script",
+        "description": "Held trim: American Son row holds the whole King Kong+American Son New Yorker review, auto-flagged wrong show ('a review of King Kong'); cut to its own section, which retires that whole-article verdict",
+        "script": "copy-multishow-section.js",
+        "args": "--from=american-son-2018/newyorker--vinson-cunningham.json --to-show=king-kong-2018 --method=markers --expect-start=You_might_remember_a --expect-end=how_people_live_in_the_dark --own-start=It_s_also_hard_and_given --own-end=intent_What_a_shame --apply"
+      },
+      {
+        "type": "run-script",
+        "description": "Held trim: Midnight in the Garden row holds the whole two-show chi-mt post (auto round-up flag); cut to its own section",
+        "script": "copy-multishow-section.js",
+        "args": "--from=midnight-in-the-garden-of-good-and-evil-regional-2024/chi-mt--patrick-obrien.json --to-show=the-mad-ones-regional-2024 --method=markers --expect-start=It_s_practically_its_own_subgenre --expect-end=Blank_Theatre_Company_Patrick_O_Brien --own-start=Midnight_madness_Midnight_in --own-end=or_visit_goodmantheatre_com --apply"
+      },
+      {
+        "type": "run-script",
+        "description": "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+        "script": "block-review.js",
+        "args": "--show=from-the-heart-west-end-2026 --url=https://www.nytimes.com/2026/10/29/theater/the-heart-review-organ-transplant.html --reason=BRO-6736:review-of-the-heart-off-broadway-2026-not-From-The-Heart-West-End"
+      },
+      {
+        "type": "run-script",
+        "description": "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+        "script": "block-review.js",
+        "args": "--show=from-the-heart-west-end-2026 --url=https://nystagereview.com/2026/10/29/the-heart-a-bold-new-musical-chronicles-a-life-or-death-story/ --reason=BRO-6736:review-of-the-heart-off-broadway-2026-not-From-The-Heart-West-End"
+      },
+      {
+        "type": "run-script",
+        "description": "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+        "script": "block-review.js",
+        "args": "--show=from-the-heart-west-end-2026 --url=https://www.newyorktheatreguide.com/reviews/the-heart-off-broadway-review --reason=BRO-6736:review-of-the-heart-off-broadway-2026-not-From-The-Heart-West-End"
+      },
+      {
+        "type": "run-script",
+        "description": "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+        "script": "block-review.js",
+        "args": "--show=from-the-heart-west-end-2026 --url=https://culturesauce.com/the-heart-musical-off-broadway-review/ --reason=BRO-6736:review-of-the-heart-off-broadway-2026-not-From-The-Heart-West-End"
+      },
+      {
+        "type": "run-script",
+        "description": "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+        "script": "block-review.js",
+        "args": "--show=from-the-heart-west-end-2026 --url=https://theaterpizzazz.com/the-heart-pumping-life-into-a-medical-musical/ --reason=BRO-6736:review-of-the-heart-off-broadway-2026-not-From-The-Heart-West-End"
+      },
+      {
+        "type": "run-script",
+        "description": "Wrong-show citation: a review of The Heart (Roundabout, off-Broadway, opened 2026-10-29) cited for From The Heart (Garrick, West End); block so the gap audit stops counting it",
+        "script": "block-review.js",
+        "args": "--show=from-the-heart-west-end-2026 --url=https://1minutecritic.com/the-heart-musical-roundabout-review/ --reason=BRO-6736:review-of-the-heart-off-broadway-2026-not-From-The-Heart-West-End"
+      }
+    ]
+  },
+  "executedAt": "2026-11-04T20:54:21.897Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

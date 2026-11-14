@@ -1,0 +1,732 @@
+{
+  "generatedAt": "2026-10-11T21:40:18.802Z",
+  "missingCritic": [
+    "WE-014",
+    "WE-105",
+    "WE-114",
+    "WE-139",
+    "WE-145"
+  ],
+  "sampleSize": 300,
+  "perStratum": 150,
+  "population": {
+    "we-historical": {
+      "total": 4751,
+      "byTier": {
+        "1": 2157,
+        "2": 1657,
+        "3": 843,
+        "4": 94
+      }
+    },
+    "bw-historical": {
+      "total": 10588,
+      "byTier": {
+        "1": 3798,
+        "2": 4581,
+        "3": 1898,
+        "4": 311
+      }
+    }
+  },
+  "table": {
+    "isReview": {
+      "checked": 294,
+      "errors": 0,
+      "unverifiable": 6,
+      "pending": 0,
+      "byStratum": {
+        "we-historical": {
+          "checked": 149,
+          "errors": 0,
+          "wErr": 0,
+          "wAll": 146.3957415753103,
+          "rate": 0,
+          "ci": [
+            0,
+            0.025134518351024853
+          ],
+          "weightedRate": 0
+        },
+        "bw-historical": {
+          "checked": 145,
+          "errors": 0,
+          "wErr": 0,
+          "wAll": 141.17205188539043,
+          "rate": 0,
+          "ci": [
+            0,
+            0.02580998860533614
+          ],
+          "weightedRate": 0
+        }
+      },
+      "rate": 0,
+      "ci": [
+        0,
+        0.012898131087128192
+      ]
+    },
+    "thisProduction": {
+      "checked": 292,
+      "errors": 2,
+      "unverifiable": 8,
+      "pending": 0,
+      "byStratum": {
+        "we-historical": {
+          "checked": 149,
+          "errors": 1,
+          "wErr": 0.6364621712694032,
+          "wAll": 146.3957415753103,
+          "rate": 0.006711409395973154,
+          "ci": [
+            0.0011856820977550406,
+            0.037034278959967463
+          ],
+          "weightedRate": 0.0043475456623305415
+        },
+        "bw-historical": {
+          "checked": 143,
+          "errors": 1,
+          "wErr": 0.6256534382934608,
+          "wAll": 138.62699532857806,
+          "rate": 0.006993006993006993,
+          "ci": [
+            0.0012354740923871538,
+            0.03854616816702707
+          ],
+          "weightedRate": 0.004513215025764046
+        }
+      },
+      "rate": 0.00684931506849315,
+      "ci": [
+        0.0018803038555145375,
+        0.024625772369059693
+      ]
+    },
+    "outletMatches": {
+      "checked": 269,
+      "errors": 2,
+      "unverifiable": 31,
+      "pending": 0,
+      "byStratum": {
+        "we-historical": {
+          "checked": 131,
+          "errors": 2,
+          "wErr": 3.269706377604715,
+          "wAll": 132.94264045739496,
+          "rate": 0.015267175572519083,
+          "ci": [
+            0.004196756321735894,
+            0.05395740381875487
+          ],
+          "weightedRate": 0.02459486562291186
+        },
+        "bw-historical": {
+          "checked": 138,
+          "errors": 0,
+          "wErr": 0,
+          "wAll": 134.70287711819924,
+          "rate": 0,
+          "ci": [
+            0,
+            0.027083732840013083
+          ],
+          "weightedRate": 0
+        }
+      },
+      "rate": 0.007434944237918215,
+      "ci": [
+        0.0020412607015241543,
+        0.02669922462036224
+      ]
+    },
+    "criticMatches": {
+      "checked": 244,
+      "errors": 12,
+      "unverifiable": 56,
+      "pending": 0,
+      "byStratum": {
+        "we-historical": {
+          "checked": 113,
+          "errors": 1,
+          "wErr": 2.419586307188917,
+          "wAll": 118.49114832194682,
+          "rate": 0.008849557522123894,
+          "ci": [
+            0.0015638358136017966,
+            0.04843205606052523
+          ],
+          "weightedRate": 0.020419975174979073
+        },
+        "bw-historical": {
+          "checked": 131,
+          "errors": 11,
+          "wErr": 7.529062661340795,
+          "wAll": 126.29307783066989,
+          "rate": 0.08396946564885496,
+          "ci": [
+            0.047532584159918706,
+            0.1441115375354631
+          ],
+          "weightedRate": 0.05961579835306211
+        }
+      },
+      "rate": 0.04918032786885246,
+      "ci": [
+        0.0283536585806172,
+        0.08398260780888321
+      ]
+    },
+    "dateMatches": {
+      "checked": 226,
+      "errors": 5,
+      "unverifiable": 74,
+      "pending": 0,
+      "byStratum": {
+        "we-historical": {
+          "checked": 108,
+          "errors": 1,
+          "wErr": 1.6348531888023574,
+          "wAll": 115.30883746559982,
+          "rate": 0.009259259259259259,
+          "ci": [
+            0.0016363187318928635,
+            0.05059469369997506
+          ],
+          "weightedRate": 0.014178038949443788
+        },
+        "bw-historical": {
+          "checked": 118,
+          "errors": 4,
+          "wErr": 2.502613753173843,
+          "wAll": 112.83560823315433,
+          "rate": 0.03389830508474576,
+          "ci": [
+            0.01325961911756434,
+            0.08392886166404062
+          ],
+          "weightedRate": 0.022179290672166587
+        }
+      },
+      "rate": 0.022123893805309734,
+      "ci": [
+        0.009486017193248993,
+        0.050736327238742426
+      ]
+    },
+    "score": {
+      "checked": 297,
+      "errors": 7,
+      "unverifiable": 3,
+      "pending": 0,
+      "byStratum": {
+        "we-historical": {
+          "checked": 149,
+          "errors": 6,
+          "wErr": 6.813946080215281,
+          "wAll": 146.3957415753103,
+          "rate": 0.040268456375838924,
+          "ci": [
+            0.01858366455493629,
+            0.08506351003627448
+          ],
+          "weightedRate": 0.04654470141612682
+        },
+        "bw-historical": {
+          "checked": 148,
+          "errors": 1,
+          "wErr": 0.6256534382934608,
+          "wAll": 144.34276188049625,
+          "rate": 0.006756756756756757,
+          "ci": [
+            0.0011937001683413329,
+            0.03727797030931433
+          ],
+          "weightedRate": 0.00433449817741086
+        }
+      },
+      "rate": 0.02356902356902357,
+      "ci": [
+        0.011462598107223568,
+        0.047843029837847856
+      ]
+    }
+  },
+  "softScore": {
+    "bothModelsOtherBucket": 43,
+    "n": 285
+  },
+  "wrong": [
+    {
+      "sampleId": "WE-011",
+      "stratum": "we-historical",
+      "tier": 1,
+      "showId": "captain-corellis-mandolin-west-end-2019",
+      "outlet": "The Stage",
+      "criticName": "Dave Fargnoli",
+      "url": "https://www.thestage.co.uk/reviews/captain-corellis-mandolin-review-at-rose-theatre-kingston-upon-thames--feels-diminished",
+      "ourScore": 39,
+      "errors": [
+        {
+          "check": "thisProduction",
+          "note": "The Stage reviewed the pre-West End run at the Rose Theatre Kingston (April 2019), filed under the Harold Pinter Theatre run",
+          "sourceUrl": "https://www.thestage.co.uk/reviews/captain-corellis-mandolin-review-at-rose-theatre-kingston-upon-thames--feels-diminished"
+        }
+      ]
+    },
+    {
+      "sampleId": "WE-049",
+      "stratum": "we-historical",
+      "tier": 2,
+      "showId": "a-day-in-the-death-of-joe-egg-west-end-2019",
+      "outlet": "British Theatre Guide",
+      "criticName": "Julian Eaves",
+      "url": "https://www.britishtheatre.com/review-a-day-in-the-death-of-joe-egg-trafalgar-studios",
+      "ourScore": 80,
+      "errors": [
+        {
+          "check": "outletMatches",
+          "note": "page is BritishTheatre.com; we label it British Theatre Guide",
+          "sourceUrl": "https://www.britishtheatre.com/review-a-day-in-the-death-of-joe-egg-trafalgar-studios"
+        },
+        {
+          "check": "score",
+          "note": "BritishTheatre.com prints 3 Stars (band 51-70); we score 80 from aggregator excerpt",
+          "sourceUrl": "https://www.britishtheatre.com/review-a-day-in-the-death-of-joe-egg-trafalgar-studios",
+          "correctScore": 68
+        }
+      ]
+    },
+    {
+      "sampleId": "WE-056",
+      "stratum": "we-historical",
+      "tier": 1,
+      "showId": "more-life-west-end-2025",
+      "outlet": "Time Out London",
+      "criticName": "Andrzej Lukowski",
+      "url": "https://www.timeout.com/london/theatre/more-life-review",
+      "ourScore": 75,
+      "errors": [
+        {
+          "check": "score",
+          "note": "Time Out prints 3/5 (band 51-70); we score 75. The 3/5 sits on a duplicate file, the surviving Theatre Record file has no star",
+          "sourceUrl": "https://www.timeout.com/london/theatre/more-life-review",
+          "correctScore": 65
+        }
+      ]
+    },
+    {
+      "sampleId": "WE-065",
+      "stratum": "we-historical",
+      "tier": 3,
+      "showId": "here-we-are-west-end-2025",
+      "outlet": "Plays International",
+      "criticName": "Maryam Philpott",
+      "url": "https://playsinternational.org.uk/here-we-are-lyttelton-national-theatre/",
+      "ourScore": 62,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Maryam Philpott; page byline is Mark Shenton",
+          "sourceUrl": "https://playsinternational.org.uk/here-we-are-lyttelton-national-theatre/"
+        }
+      ]
+    },
+    {
+      "sampleId": "WE-075",
+      "stratum": "we-historical",
+      "tier": 2,
+      "showId": "hamlet-west-end-2025",
+      "outlet": "WhatsOnStage",
+      "criticName": "Sarah Crompton",
+      "url": null,
+      "ourScore": 78,
+      "errors": [
+        {
+          "check": "score",
+          "note": "WhatsOnStage page shows 3 of 5 stars (band 51-70); we score 78 from Theatre Record text",
+          "sourceUrl": "https://www.whatsonstage.com/news/hamlet-at-the-national-theatre-review-francesca-mills-provides-the-heart-in-an-insightful-production_1697140/",
+          "correctScore": 68
+        }
+      ]
+    },
+    {
+      "sampleId": "WE-095",
+      "stratum": "we-historical",
+      "tier": 1,
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "outlet": "Observer",
+      "criticName": "Susannah Clapp",
+      "url": null,
+      "ourScore": 44,
+      "errors": [
+        {
+          "check": "score",
+          "note": "Observer column prints To Kill a Mockingbird 3 stars (band 51-70); we score 44 from Theatre Record text with no stars",
+          "sourceUrl": "https://www.theguardian.com/stage/2022/apr/03/the-week-in-theatre-to-kill-a-mockingbird-the-mozart-question-clybourne-park-review",
+          "correctScore": 55
+        }
+      ]
+    },
+    {
+      "sampleId": "WE-118",
+      "stratum": "we-historical",
+      "tier": 2,
+      "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
+      "outlet": "British Theatre Guide",
+      "criticName": "Paul T. Davies",
+      "url": "https://britishtheatre.com/review-when-we-have-sufficiently-tortured-each-other-national-theatre/",
+      "ourScore": 57,
+      "errors": [
+        {
+          "check": "outletMatches",
+          "note": "page is BritishTheatre.com; we label it British Theatre Guide (outletId british-theatre merges britishtheatre.com and britishtheatreguide.info)",
+          "sourceUrl": "https://britishtheatre.com/review-when-we-have-sufficiently-tortured-each-other-national-theatre/"
+        },
+        {
+          "check": "dateMatches",
+          "note": "we show 2019-02-07; page says 2019-01-24",
+          "sourceUrl": "https://britishtheatre.com/review-when-we-have-sufficiently-tortured-each-other-national-theatre/"
+        },
+        {
+          "check": "score",
+          "note": "BritishTheatre.com prints 2 Stars (band 31-50); we score 57",
+          "sourceUrl": "https://britishtheatre.com/review-when-we-have-sufficiently-tortured-each-other-national-theatre/",
+          "correctScore": 45
+        }
+      ]
+    },
+    {
+      "sampleId": "WE-144",
+      "stratum": "we-historical",
+      "tier": 1,
+      "showId": "elektra-west-end-2025",
+      "outlet": "Observer",
+      "criticName": "Susannah Clapp",
+      "url": null,
+      "ourScore": 57,
+      "errors": [
+        {
+          "check": "score",
+          "note": "Observer column prints Elektra 2 stars (band 31-50); we score 57 from Theatre Record text",
+          "sourceUrl": "https://www.theguardian.com/stage/2025/feb/09/the-week-in-theatre-oedipus-old-vic-hofesh-shechter-matthew-warchus-indira-varma-rami-malek-review-elektra-duke-of-yorks-brie-larson-anne-carson-daniel-fish",
+          "correctScore": 45
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-014",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "sister-act-2011",
+      "outlet": "Vulture",
+      "criticName": "Jesse Green",
+      "url": "https://www.vulture.com/2011/04/theater_review_sister_acts_cha.html",
+      "ourScore": 61,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Jesse Green; page byline is Scott Brown",
+          "sourceUrl": "https://www.vulture.com/2011/04/theater_review_sister_acts_cha.html"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-015",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "what-the-constitution-means-to-me-2019",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me",
+      "ourScore": 86,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Adam Feldman; page byline is Helen Shaw",
+          "sourceUrl": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me-broadway-review-heidi-schreck"
+        },
+        {
+          "check": "dateMatches",
+          "note": "we show 2019-03-14; page says 2019-03-31",
+          "sourceUrl": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me-broadway-review-heidi-schreck"
+        },
+        {
+          "check": "score",
+          "note": "Time Out prints 5 out of 5 stars (band 91-100); our row scores 86 under a wrong critic (phantom file wins dedup)",
+          "sourceUrl": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me-broadway-review-heidi-schreck",
+          "correctScore": 95
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-017",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "company-2021",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "Angie Han",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/",
+      "ourScore": 78,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Angie Han; page byline is David Rooney",
+          "sourceUrl": "https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-018",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "fish-in-the-dark-2015",
+      "outlet": "The New York Times",
+      "criticName": "Charles Isherwood",
+      "url": "http://www.nytimes.com/2015/03/06/theater/review-fish-in-the-dark-larry-davids-antic-broadway-debut.html",
+      "ourScore": 41,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Charles Isherwood; page byline is Ben Brantley",
+          "sourceUrl": "http://www.nytimes.com/2015/03/06/theater/review-fish-in-the-dark-larry-davids-antic-broadway-debut.html"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-023",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "fully-committed-2016",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "url": "http://www.timeout.com/newyork/theater/fully-committed-1",
+      "ourScore": 78,
+      "errors": [
+        {
+          "check": "dateMatches",
+          "note": "we show 2016-05-03; page says 2016-04-25",
+          "sourceUrl": "http://www.timeout.com/newyork/theater/fully-committed-1"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-028",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "the-present-2017",
+      "outlet": "The Guardian",
+      "criticName": "Jesse Green",
+      "url": "https://www.theguardian.com/film/2017/jan/08/the-present-review-cate-blanchett-antov-chekhov",
+      "ourScore": 77,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Jesse Green; page byline is Alexis Soloski",
+          "sourceUrl": "https://www.theguardian.com/film/2017/jan/08/the-present-review-cate-blanchett-antov-chekhov"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-030",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "fully-committed-2016",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "url": "http://www.hollywoodreporter.com/review/jesse-tyler-ferguson-fully-committed-887213",
+      "ourScore": 50,
+      "errors": [
+        {
+          "check": "dateMatches",
+          "note": "we show 2016-05-26; page says 2016-04-25",
+          "sourceUrl": "http://www.hollywoodreporter.com/review/jesse-tyler-ferguson-fully-committed-887213"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-034",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "the-little-mermaid-2008",
+      "outlet": "The New York Times",
+      "criticName": "Noel Murray",
+      "url": "https://www.nytimes.com/2008/01/11/theater/reviews/11merm.html",
+      "ourScore": 19,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Noel Murray; page byline is Ben Brantley",
+          "sourceUrl": "https://www.nytimes.com/2008/01/11/theater/reviews/11merm.html"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-048",
+      "stratum": "bw-historical",
+      "tier": 2,
+      "showId": "clydes-2021",
+      "outlet": "The Daily Beast",
+      "criticName": "Leigh Howard",
+      "url": "https://www.thedailybeast.com/uzo-aduba-plays-the-devil-deliciously-in-clydes/",
+      "ourScore": 86,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Leigh Howard; page byline is Tim Teeman and Brooke Leigh Howard",
+          "sourceUrl": "https://www.thedailybeast.com/uzo-aduba-plays-the-devil-deliciously-in-clydes/"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-050",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "url": "https://www.hollywoodreporter.com/review/wolf-hall-parts-one-two-787581",
+      "ourScore": 78,
+      "errors": [
+        {
+          "check": "dateMatches",
+          "note": "we show 2015-03-20; page says 2015-04-09",
+          "sourceUrl": "https://www.hollywoodreporter.com/review/wolf-hall-parts-one-two-787581"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-079",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "les-liaisons-dangereuses-2016",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "url": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html",
+      "ourScore": 42,
+      "errors": [
+        {
+          "check": "thisProduction",
+          "note": "URL is the 2016 Broadway review, but the stored text (and so the score) is the NYT review of the 2015 London Donmar run",
+          "sourceUrl": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-098",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "in-transit-2016",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "url": "https://www.hollywoodreporter.com/news/general-news/transit-review-955048/",
+      "ourScore": 45,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show David Rooney; page byline is Frank Scheck",
+          "sourceUrl": "https://www.hollywoodreporter.com/news/general-news/transit-review-955048/"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-115",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "hand-to-god-2015",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "url": "https://www.nytimes.com/2015/04/08/theater/review-hand-to-god-features-a-foul-talking-puppet.html",
+      "ourScore": 91,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Ben Brantley; page byline is Charles Isherwood",
+          "sourceUrl": "https://www.nytimes.com/2015/04/08/theater/review-hand-to-god-features-a-foul-talking-puppet.html"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-123",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "hillary-and-clinton-2019",
+      "outlet": "The Guardian",
+      "criticName": "Adrian Horton",
+      "url": "https://www.theguardian.com/stage/2019/apr/18/hillary-and-clinton-review-laurie-metcalf-on-winning-form-in-solid-drama",
+      "ourScore": 59,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Adrian Horton; page byline is Alexis Soloski",
+          "sourceUrl": "https://www.theguardian.com/stage/2019/apr/18/hillary-and-clinton-review-laurie-metcalf-on-winning-form-in-solid-drama"
+        }
+      ]
+    },
+    {
+      "sampleId": "BW-129",
+      "stratum": "bw-historical",
+      "tier": 1,
+      "showId": "arcadia-2011",
+      "outlet": "Newsday",
+      "criticName": "Linda Winer",
+      "url": "https://www.newsday.com/news/new-york/theater-review-arcadia-3-5-stars-t20271",
+      "ourScore": 89,
+      "errors": [
+        {
+          "check": "criticMatches",
+          "note": "we show Linda Winer; page byline is Matt Windman",
+          "sourceUrl": "https://www.newsday.com/news/new-york/theater-review-arcadia-3-5-stars-t20271"
+        }
+      ]
+    }
+  ],
+  "impact": {
+    "captain-corellis-mandolin-west-end-2019": {
+      "published": 57,
+      "corrected": 62,
+      "delta": 4.9
+    },
+    "a-day-in-the-death-of-joe-egg-west-end-2019": {
+      "published": 74,
+      "corrected": 74,
+      "delta": -0.5
+    },
+    "more-life-west-end-2025": {
+      "published": 75,
+      "corrected": 73,
+      "delta": -1.4
+    },
+    "hamlet-west-end-2025": {
+      "published": 62,
+      "corrected": 62,
+      "delta": -0.5
+    },
+    "to-kill-a-mockingbird-west-end-2022": {
+      "published": 76,
+      "corrected": 77,
+      "delta": 0.9
+    },
+    "when-we-have-sufficiently-tortured-each-other-west-end-2019": {
+      "published": 49,
+      "corrected": 48,
+      "delta": -0.8
+    },
+    "elektra-west-end-2025": {
+      "published": 49,
+      "corrected": 48,
+      "delta": -0.9
+    },
+    "what-the-constitution-means-to-me-2019": {
+      "published": 85,
+      "corrected": 85,
+      "delta": 0.3
+    },
+    "les-liaisons-dangereuses-2016": {
+      "published": 61,
+      "corrected": 61,
+      "delta": 0.7
+    }
+  }
+}

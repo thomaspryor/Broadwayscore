@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-5499-h",
+  "planId": "c6951a77-e6e5-43d6-b3e2-1127a7939c95",
+  "status": "applied",
+  "createdAt": "2026-10-16T17:37:20.574Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (h): Attitude review of Midnight (3/5 stars) was flagged cross-market wrongProduction and LLM-scored 72; clear the flag and set the 3/5 band score.",
+    "steps": [
+      "clear",
+      "score"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/attitude--kyle-torrence.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: Attitude (UK) reviewed the NYC Off-Broadway production: page header reads \"Todrick Hall Midnight ... to the Off-Broadway stage\", dated 16 October 2026; the cross-market flag fires on every London outlet"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/attitude--kyle-torrence.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5499: cleared after the manual-clear marker (page text names the Off-Broadway staging)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/attitude--kyle-torrence.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 60,
+        "description": "BRO-5499: the page prints a 3.0 rating (3/5 stars) and the LLM scored 72, above the 51-70 band for 3/5; 60 matches the anchored 3/5 scores on the same show (Culture Sauce 60)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/attitude--kyle-torrence.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5499: 3/5 stars printed on the page; LLM 72 was outside the 3/5 band (51-70). Set to 60 like other anchored 3/5 reviews.",
+        "description": "BRO-5499: note for the score override"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T20:27:00.663Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/attitude--kyle-torrence.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/attitude--kyle-torrence.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/attitude--kyle-torrence.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/attitude--kyle-torrence.json humanReviewNote: null -> \"BRO-5499: 3/5 stars printed on the page; LLM 72 was outside the 3/5 band (51-70). Set to 60 like other anchored 3/5 reviews.\""
+    }
+  ]
+}

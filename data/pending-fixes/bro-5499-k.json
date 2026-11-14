@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5499-k",
+  "planId": "af9290e7-a8b6-4a16-bb32-93455d609eca",
+  "status": "applied",
+  "createdAt": "2026-10-16T21:57:33.142Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (k): let the Attitude review of Midnight through the rebuild cross-market guard (per-review allowCrossMarket).",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/attitude--kyle-torrence.json",
+        "field": "allowCrossMarket",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: Attitude (UK) sent a critic to the NYC Off-Broadway production (page: \"Todrick Hall Midnight ... to the Off-Broadway stage\", 16 October 2026); the rebuild cross-market guard drops every .co.uk outlet on a NYC show and the CV cannot override it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T22:46:55.051Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/attitude--kyle-torrence.json allowCrossMarket: null -> true"
+    }
+  ]
+}

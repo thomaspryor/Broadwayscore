@@ -1,0 +1,236 @@
+{
+  "issueNumber": "bro-5647-q",
+  "planId": "2b0d1cd7-86ba-4567-a31a-1fd10be7897e",
+  "status": "applied",
+  "createdAt": "2026-10-21T18:41:52.299Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From a read-only SEC EDGAR sweep of the 46 recent shows whose budget is only a filing maximum, each filing re-opened at sec.gov. Three hold an amount actually raised after the raise closed: Boop ($29M sold of $29M, so the figure is the full raise, not a ceiling), Paradise Square ($13.5M sold of $15M, D/A filed after opening) and Paranormal Activity ($7.91M sold of $8M, filed after opening). Partial raises filed before opening and filings that do not name the show (Evita, Other Desert Cities, Billy Crystal 860, Warriors) are left out. Old values from the private core data.",
+    "steps": [
+      "Boop, Paradise Square, Paranormal Activity: amount sold"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A (Broadwayboop LLC, Jul 9, 2025) raised the maximum to $29M; Variety and Deadline (Jun 2025) reported up to $26M.",
+        "newValue": "SEC Form D/A (Broadwayboop LLC, CIK 0001968496, signed Jul 8, 2025): $29,000,000 sold of a $29,000,000 offering, from 29 investors; \"Maximum capitalization was $26,000,000, however, per the terms of the Operating Agreement of the Company, the maximum capitalization was increased to $29,000,000.\" Variety and Deadline (Jun 2025) reported up to $26 million. https://www.sec.gov/Archives/edgar/data/1968496/000196849625000002/primary_doc.xml",
+        "description": "boop: the amended filing shows the full $29M was raised"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/legit/news/broadway-boop-musical-closing-date-1236440762/",
+            "date": "2025-06-25"
+          },
+          {
+            "type": "trade",
+            "url": "http://www.steveumberger.com/p/notes_12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.facebook.com/MusicalsDaily/posts/its-bleak-for-new-musicals-on-broadway-right-nownot-one-of-the-18-new-musicals-f/1413758824086742/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/06/boop-the-musical-broadway-closing-1236442740/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.boston.com/culture/arts/2025/09/23/the-broadway-musical-is-in-trouble/",
+            "date": "2025-09-22",
+            "excerpt": "All three lost their entire investments."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/legit/news/broadway-boop-musical-closing-date-1236440762/",
+            "date": "2025-06-25"
+          },
+          {
+            "type": "trade",
+            "url": "http://www.steveumberger.com/p/notes_12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.facebook.com/MusicalsDaily/posts/its-bleak-for-new-musicals-on-broadway-right-nownot-one-of-the-18-new-musicals-f/1413758824086742/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/06/boop-the-musical-broadway-closing-1236442740/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.boston.com/culture/arts/2025/09/23/the-broadway-musical-is-in-trouble/",
+            "date": "2025-09-22",
+            "excerpt": "All three lost their entire investments."
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1968496/000196849625000002/primary_doc.xml",
+            "date": "2025-07-08"
+          }
+        ],
+        "description": "boop: add the SEC filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "capitalization",
+        "oldValue": 15000000,
+        "newValue": 13500000,
+        "description": "paradise-square-2022: amount raised per the amended filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "capitalizationSource",
+        "oldValue": "The Hollywood Reporter (Jul 2022): capitalized for up to $15M",
+        "newValue": "SEC Form D/A (Paradise Square Broadway Limited Partnership, CIK 0001777391, signed May 6, 2022, after the Apr 3 opening): $13,500,000 sold of a $15,000,000 offering. The Hollywood Reporter (Jul 2022) reported it was capitalized for up to $15 million. https://www.sec.gov/Archives/edgar/data/1777391/000177739122000003/primary_doc.xml",
+        "description": "paradise-square-2022: quote the amended filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-paradise-square-to-close-after-tony-win-1235178082/",
+            "date": "2022-07-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/broadway/news/broadway-shockers-2022-garth-drabinsky-sues-equity_94683.html",
+            "date": "2022-12-22",
+            "excerpt": "failing to recoup the $15 million investment for which it was capitalized."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/tony-awards-boost-strange-loop-mj-ticket-sales",
+            "date": "2022-06-22"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-paradise-square-to-close-after-tony-win-1235178082/",
+            "date": "2022-07-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/broadway/news/broadway-shockers-2022-garth-drabinsky-sues-equity_94683.html",
+            "date": "2022-12-22",
+            "excerpt": "failing to recoup the $15 million investment for which it was capitalized."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/tony-awards-boost-strange-loop-mj-ticket-sales",
+            "date": "2022-06-22"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1777391/000177739122000003/primary_doc.xml",
+            "date": "2022-05-06"
+          }
+        ],
+        "description": "paradise-square-2022: add the SEC filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "capitalization",
+        "oldValue": 8000000,
+        "newValue": 7910000,
+        "description": "paranormal-activity: amount sold per the filing made after opening"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D (Paranormal Broadway Ltd Liability Co, filed Sep 15, 2026): total offering $8,000,000, $7,910,000 sold https://www.sec.gov/Archives/edgar/data/2153516/000215351626000001/primary_doc.xml",
+        "newValue": "SEC Form D (Paranormal Broadway Ltd Liability Co, CIK 0002153516, signed Sep 14, 2026, after the Aug 25 opening): $7,910,000 sold of an $8,000,000 offering, from 114 investors. https://www.sec.gov/Archives/edgar/data/2153516/000215351626000001/primary_doc.xml",
+        "description": "paranormal-activity: say the figure is the amount sold"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:49:03.629Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for paranormal-activity"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,227 @@
+{
+  "issueNumber": "bro-7245-b",
+  "planId": "6fb957ea-ec46-4889-8f72-3541bee64c97",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7245 follow-up: Legally Blonde (2007) Did Not Recoup -> Wait & See, using lead producer Hal Luftig's own figures (around 60% of an $11M capitalization returned on Broadway; $650K weekly running cost).",
+    "steps": [
+      "Freakonomics Radio (Apr 18, 2025): Luftig says the run 'made back only around 60 percent of its $11 million capitalization'; the US tour 'did recoup, and made a profit', London 'did make a small profit', the UK tour 'very profitable'.",
+      "BroadwayWorld (Feb 20, 2009), summarizing Variety: Luftig 'notes that Legally Blonde cost $650,000 a week to run'.",
+      "60% returned plus continuing tour and licensing income meets Wait & See (50%+ back, later money may still recoup). No source reports full recoupment for the Broadway investors, so not Recouped."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Wait & See",
+        "description": "commercial.json: legally-blonde-2007.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "capitalization",
+        "oldValue": 12800000,
+        "newValue": 11000000,
+        "description": "commercial.json: legally-blonde-2007.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "capitalizationSource",
+        "oldValue": "Wealth Manager (Sep 1, 2006), lead producer Hal Luftig: \"With 'Blonde,' my total budget is $12.8 million.\" https://jrliebermancpa.com/wp-content/uploads/2011/07/BROADWAY-BUSINESS-WEALTH-MANAGER-2006.pdf",
+        "newValue": "Freakonomics Radio (Apr 18, 2025), on lead producer Hal Luftig: \"as Luftig told us, it made back only around 60 percent of its $11 million capitalization.\" https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/",
+        "description": "commercial.json: legally-blonde-2007.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "recoupedSource",
+        "oldValue": "Daily Herald (May 6, 2009): \"The show closed in October 2008, failing to fully recoup its original investment of $13 million.\" https://www.dailyherald.com/20090506/lifestyle/creative-marketing-saved-chicago-bound-legally-blonde/",
+        "newValue": "Freakonomics Radio (Apr 18, 2025), on lead producer Hal Luftig: \"as Luftig told us, it made back only around 60 percent of its $11 million capitalization.\" https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/",
+        "description": "commercial.json: legally-blonde-2007.recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          60,
+          60
+        ],
+        "description": "commercial.json: legally-blonde-2007.estimatedRecoupmentPct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "Freakonomics Radio (Apr 18, 2025), on lead producer Hal Luftig: \"as Luftig told us, it made back only around 60 percent of its $11 million capitalization.\" https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/",
+        "description": "commercial.json: legally-blonde-2007.estimatedRecoupmentSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2025-04-18",
+        "description": "commercial.json: legally-blonde-2007.estimatedRecoupmentDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 650000,
+        "description": "commercial.json: legally-blonde-2007.weeklyRunningCost"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "BroadwayWorld (Feb 20, 2009), summarizing Variety's Gordon Cox: Hal Luftig notes that \"Legally Blonde cost $650,000 a week to run, while it was bringing in $550,000 a week.\" https://www.broadwayworld.com/article/Variety-Reports-on-New-Economys-Effect-on-Broadway-20090220",
+        "description": "commercial.json: legally-blonde-2007.weeklyRunningCostSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "trade-reported",
+        "description": "commercial.json: legally-blonde-2007.costMethodology"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "notes",
+        "oldValue": "Commercial musical at the Palace Theatre (opened Apr 29, 2007; closed Oct 19, 2008 after 595 performances). Lead producer Hal Luftig put the total budget at $12.8M, including about $1.5M for a San Francisco tryout. Grossed about $56M on Broadway and closed without recouping, after grosses fell in fall 2008. No published source says how much of the capitalization came back; a '75% by closing' figure that circulates online traces only to a January 2008 forum projection. The national tour, the West End production and licensing pay royalties to the Broadway company, but no source reports the investors being made whole.",
+        "newValue": "Commercial musical at the Palace Theatre (opened Apr 29, 2007; closed Oct 19, 2008 after 595 performances). Lead producer Hal Luftig says the Broadway run returned around 60% of its $11M capitalization (his 2006 pre-production budget was $12.8M, including a San Francisco tryout). It cost about $650K a week to run and grossed about $56M. Luftig says the several-year US tour recouped and made a profit, the London production made a small profit and the UK tour that followed was very profitable, and the show is licensed to hundreds of productions a year. Those productions pay royalties to the Broadway company, but no source yet reports the Broadway investors being paid back in full. A '75% by closing' figure that circulates online traces only to a January 2008 forum projection.",
+        "description": "commercial.json: legally-blonde-2007.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://jrliebermancpa.com/wp-content/uploads/2011/07/BROADWAY-BUSINESS-WEALTH-MANAGER-2006.pdf",
+            "date": "2006-09-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.dailyherald.com/20090506/lifestyle/creative-marketing-saved-chicago-bound-legally-blonde/",
+            "date": "2009-05-06"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://jrliebermancpa.com/wp-content/uploads/2011/07/BROADWAY-BUSINESS-WEALTH-MANAGER-2006.pdf",
+            "date": "2006-09-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.dailyherald.com/20090506/lifestyle/creative-marketing-saved-chicago-bound-legally-blonde/",
+            "date": "2009-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/",
+            "date": "2025-04-18"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Variety-Reports-on-New-Economys-Effect-on-Broadway-20090220",
+            "date": "2009-02-20"
+          }
+        ],
+        "description": "commercial.json: legally-blonde-2007.sources"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T21:38:05.561Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for legally-blonde-2007"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-7256-b",
+  "planId": "0c2c051d-7015-4bd4-9472-7abdc4585c41",
+  "status": "applied",
+  "createdAt": "2026-11-10T05:20:00.139Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7256 DC hub: point The Legend of Sleepy Hollow at its real key art (poster, thumbnail, hero)",
+    "steps": [
+      "shows.json: the-legend-of-sleepy-hollow-regional-2026.images"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-legend-of-sleepy-hollow-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-legend-of-sleepy-hollow-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-legend-of-sleepy-hollow-regional-2026/thumbnail.webp",
+          "poster": "/images/shows/the-legend-of-sleepy-hollow-regional-2026/poster.webp",
+          "hero": "/images/shows/the-legend-of-sleepy-hollow-regional-2026/hero.webp"
+        },
+        "description": "the-legend-of-sleepy-hollow-regional-2026: add poster and hero, thumbnail moves from the old jpg to the new webp (art from the TodayTix listing)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T06:50:36.380Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-legend-of-sleepy-hollow-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,459 @@
+{
+  "issueNumber": "bro-4623",
+  "planId": "1c93a413-586f-4f7c-aeba-634db5227ae8",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 1: fix three wrong recoupment outcomes in the commercial scorecard (Purpose recouped Jun 2026 but was labelled Fizzle; Every Brilliant Thing recouped May 2026 but was TBD with no capitalization; Ragtime was marked recouped with no report, Broadway Journal says about half repaid). Each corrected entry is locked with humanReviewedDesignation.",
+    "steps": [
+      "Purpose: Deadline/Broadway News/Playbill (Jun 2026) report recoupment of the $5.25M capitalization about nine months after closing, via operating profit plus the NY State Broadway tax credit.",
+      "Every Brilliant Thing: Deadline and Playbill (May 2026) report recoupment of the $5.75M capitalization in the week ending May 3, 2026; closed Aug 9, 2026 as a limited run.",
+      "Ragtime: no recoupment report exists; the quoted Playbill sentence is not in any Playbill Ragtime article. Broadway Journal (May 6, 2026) says it had repaid about half of backers' stakes. LCT production with enhancement money, so Nonprofit with recouped unknown. Its 2026 Best Revival of a Musical Tony and Aug 16 closing are from Broadway.com/Playbill (extension and closing coverage)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Trickle",
+        "description": "purpose-2025: designation (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": true,
+        "description": "purpose-2025: recouped (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2026-06",
+        "description": "purpose-2025: recoupedDate (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 267 days ago, no trade-press recoupment found",
+        "newValue": "Deadline, Broadway News, Playbill (Jun 2026): recouped its $5.25M capitalization about nine months after closing, from operating profit plus the NY State Broadway tax credit.",
+        "description": "purpose-2025: recoupedSource (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5250000,
+        "description": "purpose-2025: capitalization (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Deadline (Jun 2026)",
+        "description": "purpose-2025: capitalizationSource (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/purpose-broadway-helen-hayes-theatre-2025",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Purpose_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Branden-Jacobs-Jenkins-PURPOSE-Extends-on-Broadway-for-Eight-Weeks-20250529",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/08/branden-jacobs-jenkins-purpose-broadway-phylicia-rashad-directing-1236039528/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/purpose-broadway-helen-hayes-theatre-2025",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Purpose_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Branden-Jacobs-Jenkins-PURPOSE-Extends-on-Broadway-for-Eight-Weeks-20250529",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/08/branden-jacobs-jenkins-purpose-broadway-phylicia-rashad-directing-1236039528/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/06/purpose-broadway-recoupment-1236941347/",
+            "date": "2026-06-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/branden-jacobs-jenkins-purpose-recoups-its-capitalization/",
+            "date": "2026-06-04"
+          }
+        ],
+        "description": "purpose-2025: sources (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "notes",
+        "oldValue": "Commercial Broadway transfer (NOT a 2ST production despite Hayes venue — Wikipedia and Playbill explicitly state \"not part of Second Stage Theater's season\"; 2ST credited only \"in association with\" as Hayes landlord). Steppenwolf origin transferred by David Stone with heavyweight commercial cap stack: Stone + Debra Martin Chase + Marc Platt + LaChanze + Rashad V. Chambers + Aaron Glick + Universal Theatrical Group + Eastern Standard Time + Trate + Nancy Nagel Gibbs + James L. Nederlander + John Gore + ATG Entertainment + Shubert Organization + Steppenwolf (presenter). Branden Jacobs-Jenkins play directed by Phylicia Rashad. Won 2025 Tony Best Play + 2025 Pulitzer Prize for Drama. Extended twice (original close 2025-07-06 → 2025-08-31). $15.15M total gross over 23 weeks. Per outcome-driven policy (2026-05-24): designation=TBD pending hard recoupment citation. Indirect signals (Tony Best Play, Pulitzer, extensions, $15M gross) suggest recoupment likely but NO Playbill announcement located.",
+        "newValue": "Commercial Broadway transfer of the Steppenwolf production (lead producer David Stone) at the Helen Hayes, Feb 25 to Aug 31, 2025. Won the 2025 Tony for Best Play and the Pulitzer Prize. Recouped its $5.25M capitalization about nine months after closing, helped by the revived NY State Broadway tax credit (Deadline, Jun 2026).",
+        "description": "purpose-2025: notes (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "showId": "purpose-2025",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "purpose-2025: humanReviewedDesignation (recouped Jun 2026 per Deadline)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "every-brilliant-thing",
+        "showId": "every-brilliant-thing",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "every-brilliant-thing: designation (recouped May 2026 per Deadline/Playbill)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "every-brilliant-thing",
+        "showId": "every-brilliant-thing",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5750000,
+        "description": "every-brilliant-thing: capitalization (recouped May 2026 per Deadline/Playbill)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "every-brilliant-thing",
+        "showId": "every-brilliant-thing",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Deadline (May 2026)",
+        "description": "every-brilliant-thing: capitalizationSource (recouped May 2026 per Deadline/Playbill)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "every-brilliant-thing",
+        "showId": "every-brilliant-thing",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/every-brilliant-thing-recoups-on-broadway",
+            "date": "2026-05-06"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/every-brilliant-thing-recoups-on-broadway",
+            "date": "2026-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/05/every-brilliant-thing-broadway-recoups-1236882710/",
+            "date": "2026-05-06"
+          }
+        ],
+        "description": "every-brilliant-thing: sources (recouped May 2026 per Deadline/Playbill)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "every-brilliant-thing",
+        "showId": "every-brilliant-thing",
+        "field": "notes",
+        "oldValue": "Starring Daniel Radcliffe, currently in previews at Hudson Theatre. Passed $1M in grosses per trade press reports despite winter weather challenges.",
+        "newValue": "Daniel Radcliffe solo play at the Hudson Theatre (opened Mar 12, 2026; closed Aug 9, 2026). Recouped its $5.75M capitalization in the week ending May 3, 2026, less than two months after opening (Deadline, Playbill).",
+        "description": "every-brilliant-thing: notes (recouped May 2026 per Deadline/Playbill)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "every-brilliant-thing",
+        "showId": "every-brilliant-thing",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "every-brilliant-thing: humanReviewedDesignation (recouped May 2026 per Deadline/Playbill)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "Nonprofit",
+        "description": "ragtime: designation (no recoupment report; about half repaid per Broadway Journal)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "recouped",
+        "oldValue": true,
+        "newValue": null,
+        "description": "ragtime: recouped (no recoupment report; about half repaid per Broadway Journal)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "recoupedDate",
+        "oldValue": "2026",
+        "newValue": null,
+        "description": "ragtime: recoupedDate (no recoupment report; about half repaid per Broadway Journal)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "recoupedSource",
+        "oldValue": "Playbill (2026, extension announcement): \"recouped its Broadway investment earlier this year\". Enhancement deal — LCT shell + commercial co-producers (Tom Kirdahy, Kevin Ryan, Robert Greenblatt, Roy and Jill Furman, et al).",
+        "newValue": "No recoupment announced. Broadway Journal (May 6, 2026): 'has repaid about half of its backers' stakes.'",
+        "description": "ragtime: recoupedSource (no recoupment report; about half repaid per Broadway Journal)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadway.com/buzz/206862/ragtime-broadway-revival-extends-through-august-2026-with-original-cast/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/ragtime-revival-broadway-1236207704/",
+            "date": "2025-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/04/ragtime-broadway-tour-1236876090/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadway.com/buzz/206862/ragtime-broadway-revival-extends-through-august-2026-with-original-cast/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/ragtime-revival-broadway-1236207704/",
+            "date": "2025-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/04/ragtime-broadway-tour-1236876090/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+            "date": "2026-05-06"
+          }
+        ],
+        "description": "ragtime: sources (no recoupment report; about half repaid per Broadway Journal)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "notes",
+        "oldValue": "Lincoln Center Theater revival via enhancement deal (commercial co-producers including Tom Kirdahy, Kevin Ryan, Robert Greenblatt, Roy and Jill Furman). Recouped enhancement investment in early 2026 (Playbill). Extended through August 2026; tour announced April 2026. 100% capacity. 32-member cast, 28-piece orchestra.",
+        "newValue": "Lincoln Center Theater revival at the Vivian Beaumont with commercial enhancement investors (Tom Kirdahy, Kevin Ryan, Robert Greenblatt, Roy and Jill Furman, among others). Won the 2026 Tony for Best Revival of a Musical; closed Aug 16, 2026. As of May 2026 it had repaid about half of its backers' stakes (Broadway Journal); no recoupment has been announced.",
+        "description": "ragtime: notes (no recoupment report; about half repaid per Broadway Journal)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ragtime: humanReviewedDesignation (no recoupment report; about half repaid per Broadway Journal)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T00:47:08.840Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for every-brilliant-thing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for every-brilliant-thing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for every-brilliant-thing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for every-brilliant-thing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for every-brilliant-thing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for every-brilliant-thing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for ragtime"
+    }
+  ]
+}

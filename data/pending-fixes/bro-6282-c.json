@@ -1,0 +1,274 @@
+{
+  "issueNumber": "bro-6282-c",
+  "planId": "2def572c-e546-4004-bcd9-d8f76d70bb38",
+  "status": "applied",
+  "createdAt": "2026-10-26T02:52:43.480Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Fill in It's a Wonderful Life (2026) and Dirty Dancing (2027) from production budgets given by an industry source",
+    "steps": [
+      "commercial.json: its-a-wonderful-life-a-live-radio-play.capitalization",
+      "commercial.json: its-a-wonderful-life-a-live-radio-play.capitalizationSource",
+      "commercial.json: its-a-wonderful-life-a-live-radio-play.capitalizationBasis",
+      "commercial.json: its-a-wonderful-life-a-live-radio-play.weeklyRunningCost",
+      "commercial.json: its-a-wonderful-life-a-live-radio-play.weeklyRunningCostSource",
+      "commercial.json: its-a-wonderful-life-a-live-radio-play.weeklyRunningCostBasis",
+      "commercial.json: its-a-wonderful-life-a-live-radio-play.notes",
+      "commercial.json: its-a-wonderful-life-a-live-radio-play.sources",
+      "commercial.json: dirty-dancing.capitalization",
+      "commercial.json: dirty-dancing.capitalizationSource",
+      "commercial.json: dirty-dancing.capitalizationBasis",
+      "commercial.json: dirty-dancing.weeklyRunningCost",
+      "commercial.json: dirty-dancing.weeklyRunningCostSource",
+      "commercial.json: dirty-dancing.weeklyRunningCostBasis",
+      "commercial.json: dirty-dancing.notes",
+      "commercial.json: dirty-dancing.sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-a-wonderful-life-a-live-radio-play",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5500000,
+        "description": "commercial.json: its-a-wonderful-life-a-live-radio-play.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-a-wonderful-life-a-live-radio-play",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"TOTAL CAPITALIZATION $5,500,000.00\"",
+        "description": "commercial.json: its-a-wonderful-life-a-live-radio-play.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-a-wonderful-life-a-live-radio-play",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: its-a-wonderful-life-a-live-radio-play.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-a-wonderful-life-a-live-radio-play",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 698551,
+        "description": "commercial.json: its-a-wonderful-life-a-live-radio-play.weeklyRunningCost"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-a-wonderful-life-a-live-radio-play",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"TOTAL OPERATING EXPENSES $698,551.45\"",
+        "description": "commercial.json: its-a-wonderful-life-a-live-radio-play.weeklyRunningCostSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-a-wonderful-life-a-live-radio-play",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "commercial.json: its-a-wonderful-life-a-live-radio-play.weeklyRunningCostBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-a-wonderful-life-a-live-radio-play",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Holiday limited run at the Broadhurst (previews from Nov 4, 2026; scheduled through Jan 3, 2027). Budgeted at $5.5M capitalization and about $699K a week to run.",
+        "description": "commercial.json: its-a-wonderful-life-a-live-radio-play.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-a-wonderful-life-a-live-radio-play",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.broadway.com/shows/its-a-wonderful-life/",
+            "date": "2026-10-26"
+          }
+        ],
+        "description": "commercial.json: its-a-wonderful-life-a-live-radio-play.sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dirty-dancing",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5000000,
+        "description": "commercial.json: dirty-dancing.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dirty-dancing",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Draft Broadway engagement budget from an industry source (Oct 2026): \"TOTAL PRODUCTION EXPENSES: 5,000,000.00\"",
+        "description": "commercial.json: dirty-dancing.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dirty-dancing",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: dirty-dancing.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dirty-dancing",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 822500,
+        "description": "commercial.json: dirty-dancing.weeklyRunningCost"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dirty-dancing",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Draft Broadway engagement budget from an industry source (Oct 2026): \"TOTAL HARD WEEKLY OPERATING EXPENSES: 822,500.00\"",
+        "description": "commercial.json: dirty-dancing.weeklyRunningCostSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dirty-dancing",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "commercial.json: dirty-dancing.weeklyRunningCostBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dirty-dancing",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Broadway engagement of the 2026-27 national tour at the Lena Horne (from Feb 12, 2027; scheduled through Sep 5, 2027). The Broadway engagement has its own draft budget of $5M and about $823K a week; the tour is budgeted separately at $9M.",
+        "description": "commercial.json: dirty-dancing.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dirty-dancing",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://broadwaydirect.com/show/dirty-dancing/",
+            "date": "2026-10-26"
+          }
+        ],
+        "description": "commercial.json: dirty-dancing.sources"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T05:34:52.172Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dirty-dancing"
+    }
+  ],
+  "executedIn": "ci"
+}

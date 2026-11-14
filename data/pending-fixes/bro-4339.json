@@ -1,0 +1,343 @@
+{
+  "issueNumber": "bro-4339",
+  "planId": "060f0daa-633c-40d9-9320-928bad85c36e",
+  "status": "applied",
+  "createdAt": "2026-10-12T18:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4339 (1/2): cross-market review leaks flagged by audit-review-contamination class A. Comedy About Spies 2025 (Noel Coward) reviews sitting under the 2026 Adelphi run move to the-comedy-about-spies-west-end-2025 (duplicates already there are deleted); a Cititour news item on Oh, Mary! is flagged non-review.",
+    "steps": [
+      "Cititour news item (Bowen Yang extends run), not a review; the audit read it as a tour-stop leak because its date falls near the tour opening.",
+      "Reason for the non-review flag.",
+      "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-13 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-11 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review of the 2025 production (published May 15th, 2025); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted.",
+      "Review of the 2025 production (published 2025-05-18); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted.",
+      "Review published 2025-05-13 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-12 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published May 14th, 2025 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-13 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review of the 2025 production (published May 13th, 2025); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted.",
+      "Review of the 2025 production (published 2025-05-14); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted.",
+      "Review published 2025-05-13 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-15 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published May 13th, 2025 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published May 14th, 2025 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-16 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published May 13th, 2025 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review of the 2025 production (published 2025-05-14); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted.",
+      "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder.",
+      "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/cititour--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Cititour news item (Bowen Yang extends run), not a review; the audit read it as a tour-stop leak because its date falls near the tour opening."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/cititour--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "News article about a cast extension, not a review (BRO-4339).",
+        "description": "Reason for the non-review flag."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/1883magazine--nick-barr.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/1883magazine--nick-barr.json",
+        "description": "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json",
+        "description": "Review published 2025-05-13 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/amyleighchandler--amy.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/amyleighchandler--amy.json",
+        "description": "Review published 2025-05-11 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/artsdesk--veronica-lee.json",
+        "description": "Review of the 2025 production (published May 15th, 2025); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/british-theatre--robert-tanitch.json",
+        "description": "Review of the 2025 production (published 2025-05-18); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/broadwayworld--franco-milazzo.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/broadwayworld--franco-milazzo.json",
+        "description": "Review published 2025-05-13 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/elementaltheatre--thomas-levi.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/elementaltheatre--thomas-levi.json",
+        "description": "Review published 2025-05-12 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/guardian--ryan-gilbey.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/guardian--ryan-gilbey.json",
+        "description": "Review published May 14th, 2025 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/london-box-office--stuart-king.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/london-box-office--stuart-king.json",
+        "description": "Review published 2025-05-13 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/london-theatre--aliya-al-hassan.json",
+        "description": "Review of the 2025 production (published May 13th, 2025); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/londontheatre1--chris-omaweng.json",
+        "description": "Review of the 2025 production (published 2025-05-14); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/loureviews--louise-penn.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/loureviews--louise-penn.json",
+        "description": "Review published 2025-05-13 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/matineemouse--unknown.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/matineemouse--unknown.json",
+        "description": "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/micablackwell--unknown.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/micablackwell--unknown.json",
+        "description": "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/plays-international--maryam-philpott.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/plays-international--maryam-philpott.json",
+        "description": "Review published 2025-05-15 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/soundsandstage--tim-todd.json",
+        "description": "Review published May 13th, 2025 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/standard--nick-curtis.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/standard--nick-curtis.json",
+        "description": "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/telegraph--dominic-cavendish.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/telegraph--dominic-cavendish.json",
+        "description": "Review published May 14th, 2025 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/theatre-south-east--unknown.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/theatre-south-east--unknown.json",
+        "description": "Review published 2025-05-16 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/theatre-weekly--greg-stewart.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/theatre-weekly--greg-stewart.json",
+        "description": "Review published May 13th, 2025 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/theatrecat--libby-purves.json",
+        "description": "Review of the 2025 production (published 2025-05-14); the-comedy-about-spies-west-end-2025 already holds this critic's review, so the stray copy in the 2026 folder is deleted."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/thelivereview--tanya-howard.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/thelivereview--tanya-howard.json",
+        "description": "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/therealchrisparkle--therealchrisparkle.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/therealchrisparkle--therealchrisparkle.json",
+        "description": "Review published 2025-05-14 is of the 2025 production (the-comedy-about-spies-west-end-2025 opened 2025-05-06); moved out of the 2026 folder."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T22:00:47.198Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-2024/cititour--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-2024/cititour--unknown.json isNonReviewReason: null -> \"News article about a cast extension, not a review (BRO-4339).\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/1883magazine--nick-barr.json → the-comedy-about-spies-west-end-2025/1883magazine--nick-barr.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json → the-comedy-about-spies-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/amyleighchandler--amy.json → the-comedy-about-spies-west-end-2025/amyleighchandler--amy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/artsdesk--veronica-lee.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/british-theatre--robert-tanitch.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/broadwayworld--franco-milazzo.json → the-comedy-about-spies-west-end-2025/broadwayworld--franco-milazzo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/elementaltheatre--thomas-levi.json → the-comedy-about-spies-west-end-2025/elementaltheatre--thomas-levi.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/guardian--ryan-gilbey.json → the-comedy-about-spies-west-end-2025/guardian--ryan-gilbey.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/london-box-office--stuart-king.json → the-comedy-about-spies-west-end-2025/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/london-theatre--aliya-al-hassan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/londontheatre1--chris-omaweng.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/loureviews--louise-penn.json → the-comedy-about-spies-west-end-2025/loureviews--louise-penn.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/matineemouse--unknown.json → the-comedy-about-spies-west-end-2025/matineemouse--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/micablackwell--unknown.json → the-comedy-about-spies-west-end-2025/micablackwell--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/plays-international--maryam-philpott.json → the-comedy-about-spies-west-end-2025/plays-international--maryam-philpott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json → the-comedy-about-spies-west-end-2025/soundsandstage--tim-todd.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/standard--nick-curtis.json → the-comedy-about-spies-west-end-2025/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/telegraph--dominic-cavendish.json → the-comedy-about-spies-west-end-2025/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/theatre-south-east--unknown.json → the-comedy-about-spies-west-end-2025/theatre-south-east--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/theatre-weekly--greg-stewart.json → the-comedy-about-spies-west-end-2025/theatre-weekly--greg-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/theatrecat--libby-purves.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/thelivereview--tanya-howard.json → the-comedy-about-spies-west-end-2025/thelivereview--tanya-howard.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/therealchrisparkle--therealchrisparkle.json → the-comedy-about-spies-west-end-2025/therealchrisparkle--therealchrisparkle.json"
+    }
+  ]
+}

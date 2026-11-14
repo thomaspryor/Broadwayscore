@@ -1,0 +1,232 @@
+{
+  "issueNumber": "bro-6329",
+  "planId": "d50575e6-fe12-4500-8f85-3af310c9ab63",
+  "status": "applied",
+  "createdAt": "2026-10-30T18:59:37.598Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6329: vision sweep flagged 52 live shows with art of another work. After review, 5 still hold wrong art (blurry generic photo, wrong-show photo, other-run poster, Kickstarter screenshot): null images and mark noReliableArt. Files removed in the same land so the orphan auto-fix cannot re-attach them.",
+    "steps": [
+      "in-pieces-2-off-west-end-2026: null the wrong art (BRO-6329)",
+      "in-pieces-2-off-west-end-2026: no reliable art, sweeps skip until the row changes (BRO-6329)",
+      "boys-who-dance-off-west-end-2026: null the wrong art (BRO-6329)",
+      "boys-who-dance-off-west-end-2026: no reliable art, sweeps skip until the row changes (BRO-6329)",
+      "new-26-xl-bully-off-west-end-2026: null the wrong art (BRO-6329)",
+      "new-26-xl-bully-off-west-end-2026: no reliable art, sweeps skip until the row changes (BRO-6329)",
+      "miss-julie-off-broadway-2026: null the wrong art (BRO-6329)",
+      "miss-julie-off-broadway-2026: no reliable art, sweeps skip until the row changes (BRO-6329)",
+      "space-quest-off-broadway-2027: null the wrong art (BRO-6329)",
+      "space-quest-off-broadway-2027: no reliable art, sweeps skip until the row changes (BRO-6329)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-pieces-2-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/in-pieces-2-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "in-pieces-2-off-west-end-2026: null the wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-pieces-2-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-30",
+          "reason": "the held image is a blurry stock-like photo of two figures with no title or branding (BRO-6329 vision sweep, generic_image)",
+          "key": "in pieces 2|the other palace|"
+        },
+        "description": "in-pieces-2-off-west-end-2026: no reliable art, sweeps skip until the row changes (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "boys-who-dance-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/boys-who-dance-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "boys-who-dance-off-west-end-2026: null the wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "boys-who-dance-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-30",
+          "reason": "the held image is a dance photo captioned with another production title fragment (BRO-6329 vision sweep, wrong_show)",
+          "key": "boys who dance|the other palace|"
+        },
+        "description": "boys-who-dance-off-west-end-2026: no reliable art, sweeps skip until the row changes (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-xl-bully-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/new-26-xl-bully-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "new-26-xl-bully-off-west-end-2026: null the wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-xl-bully-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-30",
+          "reason": "the held image is a production photo of a different New Diorama show (BRO-6329 vision sweep, wrong_show)",
+          "key": "new 26 xl bully|new diorama theatre|"
+        },
+        "description": "new-26-xl-bully-off-west-end-2026: no reliable art, sweeps skip until the row changes (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-julie-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/miss-julie-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/miss-julie-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "miss-julie-off-broadway-2026: null the wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-julie-off-broadway-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-30",
+          "reason": "the held poster is for a different June 2026 Miss Julie run by the Gene Frankel Theatre (BRO-6329 vision sweep, wrong_show)",
+          "key": "miss julie|the space at irondale|"
+        },
+        "description": "miss-julie-off-broadway-2026: no reliable art, sweeps skip until the row changes (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "space-quest-off-broadway-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/space-quest-off-broadway-2027/thumbnail.jpg",
+          "poster": "/images/shows/space-quest-off-broadway-2027/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "space-quest-off-broadway-2027: null the wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "space-quest-off-broadway-2027",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-30",
+          "reason": "the held image is a Kickstarter campaign screenshot, not key art (BRO-6329 vision sweep, generic_image)",
+          "key": "space quest|the players theatre|"
+        },
+        "description": "space-quest-off-broadway-2027: no reliable art, sweeps skip until the row changes (BRO-6329)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T20:24:44.260Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for in-pieces-2-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for in-pieces-2-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for boys-who-dance-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for boys-who-dance-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for new-26-xl-bully-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for new-26-xl-bully-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for miss-julie-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for miss-julie-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for space-quest-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for space-quest-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

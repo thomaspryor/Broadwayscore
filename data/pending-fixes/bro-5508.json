@@ -1,0 +1,84 @@
+{
+  "issueNumber": "bro-5508",
+  "planId": "1941d28d-9154-4eac-afd8-652f9ec307f9",
+  "status": "applied",
+  "createdAt": "2026-10-16T21:25:19.254Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5508: record two nonprofit Broadway runs that switched to commercial runs. Ragtime (Lincoln Center Theater) played its first weeks under the LORT contract and became a commercial run the week of 2026-01-05; The Rocky Horror Show (Roundabout) turned into a commercial run in summer 2026 (date not yet reported). A converted run has investors, so both go from Nonprofit to TBD (outcome not announced; both keep humanReviewedDesignation). Appropriate (Hayes to a commercial run at the Belasco, 2024-03-25) is left for later: its record counts it recouped in 2024-03 by editorial judgment, which a same-month switch would contradict.",
+    "steps": [
+      "Designation edits come before the conversion edits: commercial-record-checks.js refuses a commercialConversion on a Nonprofit designation."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "field": "designation",
+        "oldValue": "Nonprofit",
+        "newValue": "TBD",
+        "description": "ragtime: Nonprofit -> TBD. A commercial run with investors since Jan 2026; no recoupment announced before it closed Aug 16, 2026."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "field": "commercialConversion",
+        "oldValue": null,
+        "newValue": {
+          "date": "2026-01-05",
+          "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1q5tsno/new_year_grosses_week_ending_january_4/"
+        },
+        "description": "ragtime: r/Broadway analyst, week ending Jan 4, 2026: 'This was also the final week under the LORT contract, show becomes a commercial run starting this week.' BroadwayWorld (Aug 27, 2026): it 'got to play by different rules for the first 16 weeks of their run'."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-rocky-horror-show",
+        "field": "designation",
+        "oldValue": "Nonprofit",
+        "newValue": "TBD",
+        "description": "the-rocky-horror-show: Nonprofit -> TBD. Running as a commercial run with investors (the analyst publishes an estimated % recouped)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-rocky-horror-show",
+        "field": "commercialConversion",
+        "oldValue": null,
+        "newValue": {
+          "date": null,
+          "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1vyc22q/grosses_analysis_week_ending_august_23/"
+        },
+        "description": "the-rocky-horror-show: r/Broadway analyst, week ending Aug 23, 2026: 'the best since the show turned into a commercial run'. Date not reported; the deep research prompts ask for it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T23:56:50.196Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: commercialConversion updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-rocky-horror-show"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: commercialConversion updated for the-rocky-horror-show"
+    }
+  ]
+}

@@ -1,0 +1,952 @@
+{
+  "generatedAt": "2026-11-09T21:40:42.711Z",
+  "naivePages": 2,
+  "settlingHours": 24,
+  "totals": {
+    "shows": 5,
+    "excluded": [],
+    "undatedCandidates": 5,
+    "truthUrls": 63,
+    "scopedUrls": 7,
+    "naiveUrls": 24,
+    "onDiskUrls": 48,
+    "newFromNaive": 13,
+    "perArm": {
+      "naive-p0": {
+        "found": 9,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.143
+      },
+      "naive-p1": {
+        "found": 15,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.238
+      },
+      "onDisk": {
+        "found": 48,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.762
+      },
+      "scoped-q0": {
+        "found": 7,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.111
+      },
+      "scoped-q1": {
+        "found": 1,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.016
+      }
+    },
+    "perFamily": {
+      "naive": {
+        "found": 24,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.381
+      },
+      "onDisk": {
+        "found": 48,
+        "arms": 1,
+        "failed": 0,
+        "recall": 0.762
+      },
+      "scoped": {
+        "found": 7,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.111
+      }
+    },
+    "byCategory": {
+      "off-broadway": {
+        "shows": 2,
+        "truthUrls": 17,
+        "families": {
+          "naive": {
+            "found": 11,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.647
+          },
+          "onDisk": {
+            "found": 7,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.412
+          },
+          "scoped": {
+            "found": 2,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.118
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 1,
+        "truthUrls": 30,
+        "families": {
+          "naive": {
+            "found": 10,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.333
+          },
+          "onDisk": {
+            "found": 28,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.933
+          },
+          "scoped": {
+            "found": 5,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.167
+          }
+        }
+      },
+      "tour": {
+        "shows": 1,
+        "truthUrls": 4,
+        "families": {
+          "naive": {
+            "found": 3,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.75
+          },
+          "onDisk": {
+            "found": 1,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.25
+          },
+          "scoped": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0
+          }
+        }
+      },
+      "west-end": {
+        "shows": 1,
+        "truthUrls": 12,
+        "families": {
+          "naive": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0
+          },
+          "onDisk": {
+            "found": 12,
+            "arms": 1,
+            "failed": 0,
+            "recall": 1
+          },
+          "scoped": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0
+          }
+        }
+      }
+    },
+    "scopedRecall": 0.111,
+    "naiveRecall": 0.381
+  },
+  "shows": [
+    {
+      "showId": "broom-play-off-broadway-2026",
+      "title": "Broom Play",
+      "market": "off-broadway",
+      "openingDate": "2026-11-07",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "Broom Play The Players Theatre review",
+      "counts": {
+        "truth": 3,
+        "scoped": 1,
+        "naive": 2,
+        "onDisk": 2
+      },
+      "recall": {
+        "scoped": 0.333,
+        "naive": 0.667,
+        "onDisk": 0.667,
+        "censusPlusDisk": 0.667
+      },
+      "newFromNaive": [
+        "https://emmareed.net/review-room-broom/"
+      ],
+      "missedByCensus": [
+        "https://emmareed.net/review-room-broom/",
+        "https://patch.com/new-york/new-york-city/calendar/event/20261105/2de75cb8-78ea-4f2c-b949-23e611d13b1b/broom-play"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Broom Play\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/11/broom-play/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Broom Play\" review players",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/11/broom-play/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Broom Play The Players Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/11/broom-play/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Broom Play The Players Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://emmareed.net/review-room-broom/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 2,
+          "accepted": 2,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/11/broom-play/",
+            "https://patch.com/new-york/new-york-city/calendar/event/20261105/2de75cb8-78ea-4f2c-b949-23e611d13b1b/broom-play"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+      "title": "Dr. Seuss' How the Grinch Stole Christmas!",
+      "market": "tour",
+      "openingDate": "2026-11-06",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "us",
+      "naiveQuery": "Dr. Seuss' How the Grinch Stole Christmas! North American Tour review",
+      "counts": {
+        "truth": 4,
+        "scoped": 0,
+        "naive": 3,
+        "onDisk": 1
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.75,
+        "onDisk": 0.25,
+        "censusPlusDisk": 0.25
+      },
+      "newFromNaive": [
+        "https://hotchka.com/how-the-grinch-stole-christmas-the-musical-tour-review-baltimore-hippodrome",
+        "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
+        "https://aroundthetownchicago.com/theatre-reviews/dr-seuss-how-the-grinch-stole-christmas-the-musical-reviewed-by-amy-menzel-milwaukee/"
+      ],
+      "missedByCensus": [
+        "https://hotchka.com/how-the-grinch-stole-christmas-the-musical-tour-review-baltimore-hippodrome",
+        "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
+        "https://aroundthetownchicago.com/theatre-reviews/dr-seuss-how-the-grinch-stole-christmas-the-musical-reviewed-by-amy-menzel-milwaukee/",
+        "https://www.vulture.com/article/how-the-grinch-stole-christmas-oral-history.html"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Dr. Seuss' How the Grinch Stole Christmas!\" Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Dr. Seuss' How the Grinch Stole Christmas!\" review american",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Dr. Seuss' How the Grinch Stole Christmas! North American Tour review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://hotchka.com/how-the-grinch-stole-christmas-the-musical-tour-review-baltimore-hippodrome"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Dr. Seuss' How the Grinch Stole Christmas! North American Tour review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
+            "https://aroundthetownchicago.com/theatre-reviews/dr-seuss-how-the-grinch-stole-christmas-the-musical-reviewed-by-amy-menzel-milwaukee/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 1,
+          "accepted": 1,
+          "urls": [
+            "https://www.vulture.com/article/how-the-grinch-stole-christmas-oral-history.html"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "market": "off-west-end",
+      "openingDate": "2026-11-06",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "Nero Southwark Playhouse review",
+      "counts": {
+        "truth": 30,
+        "scoped": 5,
+        "naive": 10,
+        "onDisk": 28
+      },
+      "recall": {
+        "scoped": 0.167,
+        "naive": 0.333,
+        "onDisk": 0.933,
+        "censusPlusDisk": 0.967
+      },
+      "newFromNaive": [
+        "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/"
+      ],
+      "missedByCensus": [
+        "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
+        "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
+        "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant/",
+        "https://www.thetimes.com/culture/theatre-dance/article/nero-review-what-were-the-makers-of-this-new-musical-thinking-g0t0ldf5g",
+        "https://www.thereviewshub.com/nero-southwark-playhouse-elephant-london/",
+        "https://everything-theatre.co.uk/2026/11/review-nero-southwark-playhouse-elephant/",
+        "https://www.timeout.com/london/theatre/nero-review",
+        "https://www.allthatdazzles.co.uk/post/review-nero-southwark-playhouse-elephant",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-nero",
+        "https://www.broadwayworld.com/westend/article/Review-NERO-Southwark-Playhouse-20261107",
+        "https://cineramafilm.com/2026/11/08/nero-review/",
+        "https://curtaincallbway.com/2026/07/21/nero-a-new-musical-from-steven-sater-and-duncan-sheik-to-open-at-southwark-playhouse-elephant/",
+        "http://www.curtainup.com/nero.html",
+        "https://firstnightmagazine.com/2026/11/09/review-of-nero-2026-southwark-playhouse-historical-musical-is-unlikely-to-make-history/",
+        "https://www.harrytheatrelife.co.uk/post/review-nero-a-new-musical-southwark-playhouse-theatre-elephant-london",
+        "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london",
+        "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant/",
+        "https://musicaltheatrereview.com/andrew-barth-feldman-to-star-in-steven-sater-and-duncan-sheiks-nero/",
+        "https://www.reviewsgate.co.uk/all-reviews/nero-book-amp-lyrics-steven-slater-music-by-duncan-sheik-southwark-playhouse-elephant-dante-place-london-se1-until-5-december-2026-review-by-william-russell",
+        "https://southlondon.co.uk/lifestyle/nero/",
+        "https://thespyinthestalls.com/2026/11/nero/",
+        "https://www.theupcoming.co.uk/2026/11/07/nero-at-southwark-playhouse-theatre-review/",
+        "https://westendwilma.com/nero-musical-southwark-playhouse-elephant-2026/",
+        "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
+        "https://www.whatsonstage.com/news/nero-musical-at-southwark-playhouse-elephant-review_1736407/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Nero\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 7,
+          "accepted": 5,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/nero-review-southwark-playhouse",
+            "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
+            "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+            "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
+            "https://www.londontheatrereviews.co.uk/post.cfm?p=29541"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Nero\" review southwark",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Nero Southwark Playhouse review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 6,
+          "accepted": 5,
+          "urls": [
+            "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
+            "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
+            "https://www.londontheatrereviews.co.uk/post.cfm?p=29541",
+            "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
+            "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Nero Southwark Playhouse review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://www.thetimes.com/culture/theatre-dance/article/nero-review-what-were-the-makers-of-this-new-musical-thinking-g0t0ldf5g",
+            "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+            "https://www.thereviewshub.com/nero-southwark-playhouse-elephant-london/",
+            "https://everything-theatre.co.uk/2026/11/review-nero-southwark-playhouse-elephant/",
+            "https://www.timeout.com/london/theatre/nero-review"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 28,
+          "accepted": 28,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-nero-southwark-playhouse-elephant",
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-nero",
+            "https://www.broadwayworld.com/westend/article/Review-NERO-Southwark-Playhouse-20261107",
+            "https://cineramafilm.com/2026/11/08/nero-review/",
+            "https://curtaincallbway.com/2026/07/21/nero-a-new-musical-from-steven-sater-and-duncan-sheik-to-open-at-southwark-playhouse-elephant/",
+            "http://www.curtainup.com/nero.html",
+            "https://everything-theatre.co.uk/2026/11/review-nero-southwark-playhouse-elephant/",
+            "https://firstnightmagazine.com/2026/11/09/review-of-nero-2026-southwark-playhouse-historical-musical-is-unlikely-to-make-history/",
+            "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+            "https://www.harrytheatrelife.co.uk/post/review-nero-a-new-musical-southwark-playhouse-theatre-elephant-london",
+            "https://www.londontheatre.co.uk/reviews/nero-review-southwark-playhouse",
+            "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london",
+            "https://www.londontheatrereviews.co.uk/post.cfm?p=29541",
+            "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant/",
+            "https://musicaltheatrereview.com/andrew-barth-feldman-to-star-in-steven-sater-and-duncan-sheiks-nero/",
+            "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant",
+            "https://www.reviewsgate.co.uk/all-reviews/nero-book-amp-lyrics-steven-slater-music-by-duncan-sheik-southwark-playhouse-elephant-dante-place-london-se1-until-5-december-2026-review-by-william-russell",
+            "https://southlondon.co.uk/lifestyle/nero/",
+            "https://thespyinthestalls.com/2026/11/nero/",
+            "https://theatreweekly.com/review-nero-at-southwark-playhouse-elephant/",
+            "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
+            "https://www.thereviewshub.com/nero-southwark-playhouse-elephant-london/",
+            "https://www.theupcoming.co.uk/2026/11/07/nero-at-southwark-playhouse-theatre-review/",
+            "https://www.timeout.com/london/theatre/nero-review",
+            "https://www.thetimes.com/culture/theatre-dance/article/nero-review-what-were-the-makers-of-this-new-musical-thinking-g0t0ldf5g",
+            "https://westendwilma.com/nero-musical-southwark-playhouse-elephant-2026/",
+            "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
+            "https://www.whatsonstage.com/news/nero-musical-at-southwark-playhouse-elephant-review_1736407/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "market": "west-end",
+      "openingDate": "2026-11-06",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "Iphigenie en Tauride - English National Opera London Coliseum review",
+      "counts": {
+        "truth": 12,
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 12
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://www.allthatdazzles.co.uk/post/review-iphigenie-en-tauride-london-coliseum",
+        "https://bachtrack.com/review-iphigenie-en-tauride-turner-bates-rice-imbrailo-english-national-opera-november-2026",
+        "https://www.britishtheatreguide.info/reviews/iphigenie-en-ta-london-coliseum-26189",
+        "https://cherylmarkosky.com/2026/11/09/london-theatre-review-iphigenie-en-tauride-english-national-opera-london-coliseum/",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/iphigenie-en-tauride-royal-opera-house-london-464256.html",
+        "https://www.londontheatre.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum",
+        "https://www.musicomh.com/classical/opera-reviews/iphigenie-en-tauride-review-english-national-opera-gluck-coliseum",
+        "https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2",
+        "https://www.telegraph.co.uk/opera/what-to-see/iphigenie-en-tauride-english-national-opera-review/",
+        "https://theartsdispatch.substack.com/p/iphigenie-en-tauride-review-london",
+        "https://theatreweekly.com/review-iphigenie-en-tauride-at-london-coliseum/",
+        "https://www.thereviewshub.com/eno-iphigenie-en-tauride-london-coliseum/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Iphigenie en Tauride - English National Opera\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Iphigenie en Tauride - English National Opera\" review london",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Iphigenie en Tauride - English National Opera London Coliseum review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Iphigenie en Tauride - English National Opera London Coliseum review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 12,
+          "accepted": 12,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-iphigenie-en-tauride-london-coliseum",
+            "https://bachtrack.com/review-iphigenie-en-tauride-turner-bates-rice-imbrailo-english-national-opera-november-2026",
+            "https://www.britishtheatreguide.info/reviews/iphigenie-en-ta-london-coliseum-26189",
+            "https://cherylmarkosky.com/2026/11/09/london-theatre-review-iphigenie-en-tauride-english-national-opera-london-coliseum/",
+            "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/iphigenie-en-tauride-royal-opera-house-london-464256.html",
+            "https://www.londontheatre.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum",
+            "https://www.musicomh.com/classical/opera-reviews/iphigenie-en-tauride-review-english-national-opera-gluck-coliseum",
+            "https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2",
+            "https://www.telegraph.co.uk/opera/what-to-see/iphigenie-en-tauride-english-national-opera-review/",
+            "https://theartsdispatch.substack.com/p/iphigenie-en-tauride-review-london",
+            "https://theatreweekly.com/review-iphigenie-en-tauride-at-london-coliseum/",
+            "https://www.thereviewshub.com/eno-iphigenie-en-tauride-london-coliseum/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "market": "off-broadway",
+      "openingDate": "2026-11-05",
+      "sampleState": "measured",
+      "sampleReason": "opened 4d ago",
+      "geo": "us",
+      "naiveQuery": "King Lear The Secret Theatre review",
+      "counts": {
+        "truth": 14,
+        "scoped": 1,
+        "naive": 9,
+        "onDisk": 5
+      },
+      "recall": {
+        "scoped": 0.071,
+        "naive": 0.643,
+        "onDisk": 0.357,
+        "censusPlusDisk": 0.429
+      },
+      "newFromNaive": [
+        "https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/",
+        "https://www.backstage.com/casting/king-lear-3206702/",
+        "https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review",
+        "https://www.newyorktheatreguide.com/reviews/king-lear",
+        "https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad",
+        "https://www.theaterscene.net/plays/offbway-plays/king-lear-2/tony-marinelli/",
+        "https://www.theartsreview.com/single-post/king-lear",
+        "https://stagebuddy.com/theater/theater-review/king-lear"
+      ],
+      "missedByCensus": [
+        "https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/",
+        "https://www.backstage.com/casting/king-lear-3206702/",
+        "https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review",
+        "https://www.newyorktheatreguide.com/reviews/king-lear",
+        "https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad",
+        "https://www.theaterscene.net/plays/offbway-plays/king-lear-2/tony-marinelli/",
+        "https://www.theartsreview.com/single-post/king-lear",
+        "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/",
+        "https://stagebuddy.com/theater/theater-review/king-lear",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/king-lear-babes-with-blades/",
+        "https://www.newcitystage.com/2026/10/30/thou-art-mad-to-miss-king-lear/",
+        "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
+        "https://thirdcoastreview.com/stages/2026/10/26/review-babes-with-blades-king-lear"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"King Lear\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 1,
+          "urls": [
+            "https://patch.com/connecticut/naugatuck/theater-review-king-lear-theatreworks-new-milford-nodx"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"King Lear\" review secret",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "King Lear The Secret Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/",
+            "https://www.backstage.com/casting/king-lear-3206702/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "King Lear The Secret Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 7,
+          "urls": [
+            "https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review",
+            "https://www.newyorktheatreguide.com/reviews/king-lear",
+            "https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad",
+            "https://www.theaterscene.net/plays/offbway-plays/king-lear-2/tony-marinelli/",
+            "https://www.theartsreview.com/single-post/king-lear",
+            "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/",
+            "https://stagebuddy.com/theater/theater-review/king-lear"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 5,
+          "accepted": 5,
+          "urls": [
+            "https://chicagoreader.com/performing-arts/theater/theater-review/king-lear-babes-with-blades/",
+            "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/",
+            "https://www.newcitystage.com/2026/10/30/thou-art-mad-to-miss-king-lear/",
+            "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
+            "https://thirdcoastreview.com/stages/2026/10/26/review-babes-with-blades-king-lear"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "providerOutage": false,
+  "onDiskUnavailable": false,
+  "trend": {
+    "entry": {
+      "date": "2026-11-09",
+      "generatedAt": "2026-11-09T21:40:42.711Z",
+      "naivePages": 2,
+      "shows": 5,
+      "informativeShows": 5,
+      "excluded": {
+        "settling": 7
+      },
+      "truthUrls": 63,
+      "onDiskUrls": 48,
+      "newFromNaive": 13,
+      "families": {
+        "naive": 0.381,
+        "onDisk": 0.762,
+        "scoped": 0.111
+      },
+      "arms": {
+        "naive-p0": 0.143,
+        "naive-p1": 0.238,
+        "onDisk": 0.762,
+        "scoped-q0": 0.111,
+        "scoped-q1": 0.016
+      },
+      "combinedRecall": 0.794,
+      "familyYield": {
+        "naive": 4.8,
+        "onDisk": 9.6,
+        "scoped": 1.4
+      },
+      "armYield": {
+        "naive-p0": 1.8,
+        "naive-p1": 3,
+        "onDisk": 9.6,
+        "scoped-q0": 1.4,
+        "scoped-q1": 0.2
+      },
+      "armsFailed": {
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 0,
+        "scoped-q0": 0,
+        "scoped-q1": 0
+      },
+      "unavailableArms": [],
+      "byCategory": {
+        "off-broadway": {
+          "shows": 2,
+          "truthUrls": 17,
+          "families": {
+            "naive": 0.647,
+            "onDisk": 0.412,
+            "scoped": 0.118
+          }
+        },
+        "off-west-end": {
+          "shows": 1,
+          "truthUrls": 30,
+          "families": {
+            "naive": 0.333,
+            "onDisk": 0.933,
+            "scoped": 0.167
+          }
+        },
+        "tour": {
+          "shows": 1,
+          "truthUrls": 4,
+          "families": {
+            "naive": 0.75,
+            "onDisk": 0.25,
+            "scoped": 0
+          }
+        },
+        "west-end": {
+          "shows": 1,
+          "truthUrls": 12,
+          "families": {
+            "naive": 0,
+            "onDisk": 1,
+            "scoped": 0
+          }
+        }
+      },
+      "sampleIds": [
+        "broom-play-off-broadway-2026",
+        "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+        "nero-off-west-end-2026",
+        "iphigenie-en-tauride-english-national-opera-west-end-2026",
+        "king-lear-off-broadway-2026"
+      ]
+    },
+    "judgement": {
+      "verdict": "regressed",
+      "reason": "scoped: recall 0.111 vs 0.267 median over 4 prior run(s) — down 0.156 (threshold 0.15), yield 1.4 vs 3.3 URLs/show",
+      "regressions": [
+        {
+          "level": "families",
+          "arm": "scoped",
+          "baseline": 0.267,
+          "current": 0.111,
+          "drop": 0.156,
+          "rule": "week-on-week",
+          "reason": "recall 0.111 vs 0.267 median over 4 prior run(s) — down 0.156 (threshold 0.15), yield 1.4 vs 3.3 URLs/show"
+        }
+      ],
+      "latest": {
+        "date": "2026-11-09",
+        "generatedAt": "2026-11-09T21:40:42.711Z",
+        "naivePages": 2,
+        "shows": 5,
+        "informativeShows": 5,
+        "excluded": {
+          "settling": 7
+        },
+        "truthUrls": 63,
+        "onDiskUrls": 48,
+        "newFromNaive": 13,
+        "families": {
+          "naive": 0.381,
+          "onDisk": 0.762,
+          "scoped": 0.111
+        },
+        "arms": {
+          "naive-p0": 0.143,
+          "naive-p1": 0.238,
+          "onDisk": 0.762,
+          "scoped-q0": 0.111,
+          "scoped-q1": 0.016
+        },
+        "combinedRecall": 0.794,
+        "familyYield": {
+          "naive": 4.8,
+          "onDisk": 9.6,
+          "scoped": 1.4
+        },
+        "armYield": {
+          "naive-p0": 1.8,
+          "naive-p1": 3,
+          "onDisk": 9.6,
+          "scoped-q0": 1.4,
+          "scoped-q1": 0.2
+        },
+        "armsFailed": {
+          "naive-p0": 0,
+          "naive-p1": 0,
+          "onDisk": 0,
+          "scoped-q0": 0,
+          "scoped-q1": 0
+        },
+        "unavailableArms": [],
+        "byCategory": {
+          "off-broadway": {
+            "shows": 2,
+            "truthUrls": 17,
+            "families": {
+              "naive": 0.647,
+              "onDisk": 0.412,
+              "scoped": 0.118
+            }
+          },
+          "off-west-end": {
+            "shows": 1,
+            "truthUrls": 30,
+            "families": {
+              "naive": 0.333,
+              "onDisk": 0.933,
+              "scoped": 0.167
+            }
+          },
+          "tour": {
+            "shows": 1,
+            "truthUrls": 4,
+            "families": {
+              "naive": 0.75,
+              "onDisk": 0.25,
+              "scoped": 0
+            }
+          },
+          "west-end": {
+            "shows": 1,
+            "truthUrls": 12,
+            "families": {
+              "naive": 0,
+              "onDisk": 1,
+              "scoped": 0
+            }
+          }
+        },
+        "sampleIds": [
+          "broom-play-off-broadway-2026",
+          "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+          "nero-off-west-end-2026",
+          "iphigenie-en-tauride-english-national-opera-west-end-2026",
+          "king-lear-off-broadway-2026"
+        ]
+      },
+      "comparedArms": 3,
+      "skipped": []
+    }
+  }
+}

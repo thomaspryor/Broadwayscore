@@ -1,0 +1,123 @@
+{
+  "card": "BRO-6582",
+  "checkedAt": "2026-10-31",
+  "summary": "All six stored types are correct. Each was checked against a producer or theatre page independent of TodayTix. No data correction or fix plan is needed.",
+  "scope": "This is a dated source-verification record, not a live TodayTix category audit. Categories below are the stored values in the supplied shows.json, not newly fetched TodayTix values. Evidence is paraphrased from page content; no classification is inferred from a URL.",
+  "writer": "scripts/discover-new-shows.js copies category.name into todayTixCategory at lines 590 and 625, uses that category for initial type detection at lines 3142-3153, and writes type at line 3416. These six source checks do not justify changing discovery or automatically replacing independently verified types with TodayTix categories.",
+  "records": [
+    {
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "venue": "Daryl Roth Theatre",
+      "observedType": "musical",
+      "storedTodayTixCategory": "Plays",
+      "verifiedType": "musical",
+      "decision": "keep",
+      "sources": [
+        {
+          "kind": "producer",
+          "name": "Midnight official production website",
+          "url": "https://www.midnightoffbway.com/",
+          "evidence": "The production homepage explicitly identifies Todrick Hall's show as an original new musical and links to the Daryl Roth Theatre."
+        }
+      ]
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "venue": "Park Theatre",
+      "observedType": "musical",
+      "storedTodayTixCategory": "Plays",
+      "verifiedType": "musical",
+      "decision": "keep",
+      "sources": [
+        {
+          "kind": "theatre",
+          "name": "Park Theatre production page",
+          "url": "https://parktheatre.co.uk/events/the-pianist/",
+          "evidence": "The venue's Show Details explicitly gives the genre as Musicals. The production description credits Szpilman's compositions with new lyrics and a cast of actor-musicians for the October-November 2026 engagement."
+        }
+      ]
+    },
+    {
+      "showId": "whats-eating-gilbert-grape-off-broadway-2026",
+      "title": "What's Eating Gilbert Grape",
+      "venue": "The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space",
+      "observedType": "musical",
+      "storedTodayTixCategory": "Plays",
+      "verifiedType": "musical",
+      "decision": "keep",
+      "sources": [
+        {
+          "kind": "theatre",
+          "name": "MCC Theater production page",
+          "url": "https://mcctheater.org/tix/wegg/",
+          "evidence": "MCC explicitly describes this production as the world premiere of a new musical, with Peter Hedges writing the book and Adrian Enscoe, Christopher Sears, Sydney Shepherd and Regina Strayhorn writing music and lyrics. The page lists the Newman Mills Theater and performances beginning June 2027; the stored 2026 ID does not determine genre."
+        }
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "venue": "Al Hirschfeld Theatre",
+      "observedType": "special",
+      "storedTodayTixCategory": "Plays",
+      "verifiedType": "special",
+      "decision": "keep",
+      "sources": [
+        {
+          "kind": "producer",
+          "name": "Now You See Me Live official production website",
+          "url": "https://nowyouseemelive.com/",
+          "evidence": "The producer describes a stage illusion spectacle performed by four illusionists, combining magic, stunts and high-tech illusions. The page lists the Al Hirschfeld Theatre engagement from November 11, 2026 to January 3, 2027. This supports special rather than play."
+        },
+        {
+          "kind": "registry",
+          "name": "IBDB production record",
+          "url": "https://www.ibdb.com/broadway-production/now-you-see-me-live-548067",
+          "evidence": "IBDB explicitly classifies the Al Hirschfeld Theatre production as a Special, Original, Broadway."
+        }
+      ]
+    },
+    {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "title": "Blue Man Group: A New Holiday Surprise",
+      "venue": "Lunt-Fontanne Theatre",
+      "observedType": "special",
+      "storedTodayTixCategory": "Plays",
+      "verifiedType": "special",
+      "decision": "keep",
+      "sources": [
+        {
+          "kind": "producer",
+          "name": "Blue Man Group official New York holiday production page",
+          "url": "https://prod.blueman.com/usa/new-york/holiday-tour/buy-tickets",
+          "evidence": "The producer's Broadway holiday page describes Blue Man Group's nonverbal performance combining art, music and comedy. This supports a performance special."
+        },
+        {
+          "kind": "registry",
+          "name": "IBDB production record",
+          "url": "https://www.ibdb.com/broadway-production/blue-man-group-a-new-holiday-surprise-548150",
+          "evidence": "IBDB explicitly classifies the Lunt-Fontanne Theatre holiday production as a Special, Original, Broadway, opening November 17, 2026."
+        }
+      ]
+    },
+    {
+      "showId": "a-kidman-carol-off-broadway-2026",
+      "title": "A Kidman Carol",
+      "venue": "New World Stages",
+      "observedType": "play",
+      "storedTodayTixCategory": "Musicals",
+      "verifiedType": "play",
+      "decision": "keep",
+      "sources": [
+        {
+          "kind": "producer",
+          "name": "A Kidman Carol official production website",
+          "url": "https://www.akidmancarol.com/",
+          "evidence": "The production homepage explicitly bills Kevin Zak's work as a new play, directed by Skylar Fox. It lists New World Stages / Stage 3 and performances beginning November 16, matching the 2026 production rather than relying on the 2025 developmental run."
+        }
+      ]
+    }
+  ]
+}

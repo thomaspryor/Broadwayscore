@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-4947",
+  "planId": "82905945-c22e-4eb1-8b33-db1db9cbd447",
+  "status": "applied",
+  "createdAt": "2026-10-10T12:33:15.051Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4947 stage 1: move review files to the right outlet id. 74 rows on dcmetrotheaterarts.com filed under dctheatrescene (a different site) move to dc-theater-arts, 18 dc-metro-theater-arts rows merge into dc-theater-arts, 42 gotham-playgoer rows merge into bobs-theater-blog, plus 1 Bob's Theater Blog row filed under dctheatrescene. Rules and conflict handling are code (scripts/lib/outlet-id-migrations.js): the same article under both ids keeps the better copy, a different url at an existing destination is left in place and reported.",
+    "steps": [
+      "Run scripts/migrate-outlet-ids.js --apply against the review-texts repo."
+    ],
+    "riskLevel": "Medium",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "migrate-outlet-ids.js",
+        "args": "--apply",
+        "description": "BRO-4947: rename and rewrite outletId/outlet on matching review files (dry run on the live corpus: 135 matched, 6 same-article duplicates resolved, 0 conflicts). Reversible by the inverse mapping; the registry edit lands in the same change."
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T13:21:20.155Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran migrate-outlet-ids.js successfully"
+    }
+  ]
+}

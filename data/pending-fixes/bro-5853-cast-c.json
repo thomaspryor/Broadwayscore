@@ -1,0 +1,359 @@
+{
+  "issueNumber": "bro-5853-cast-c",
+  "planId": "c684a85f-6fdb-44ee-b726-035d5cd7b099",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5853: replace shows.json cast lists that no review of the production names with the performers the reviews credit (found by scripts/audit-cast-vs-reviews.js), and add the director where the reviews credit one and the row has none. Every name was re-checked against the review text. Held back for a person: operation-mincemeat-2025, magic-mike-live-west-end-2021, chicago-1996, les-miserables-west-end-2021, the-play-that-goes-wrong-west-end-2021, the-mousetrap-west-end-2021, sticks-and-bones-1972 (their review sets belong to a different production or era than the row).",
+    "steps": [
+      "Replace cast, one data-edit per show",
+      "Add Director where missing"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loves-labours-lost-globe-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Joe Alessi",
+            "role": "Butcher / Dullfleet / Prosecution"
+          },
+          {
+            "name": "Janie Dee",
+            "role": "Betty Dullfleet / Bowl / O'Casey / Defence"
+          },
+          {
+            "name": "Mark Gatiss",
+            "role": "Arturo Ui"
+          },
+          {
+            "name": "Christopher Godwin",
+            "role": "Dogsborough / The Actor / The Priest"
+          },
+          {
+            "name": "Rebekah Hinds",
+            "role": "Flake / Dockdaisy / Trader #1 / Henchman"
+          },
+          {
+            "name": "Cameron Johnson",
+            "role": "Jimmy Greenwool / Mulberry / The Judge"
+          },
+          {
+            "name": "Kadiff Kirwan",
+            "role": "Roma"
+          },
+          {
+            "name": "LJ Parkinson",
+            "role": "Givola"
+          },
+          {
+            "name": "Mahesh Parmar",
+            "role": "Dogborough's Son / Fish / Inna / Ciceronian"
+          },
+          {
+            "name": "Rizwan",
+            "role": "The Barker / Giri Mawaan"
+          },
+          {
+            "name": "Santino Smith",
+            "role": "Sheet / Hook"
+          },
+          {
+            "name": "Amanda Wilkin",
+            "role": "Clark / Ragg / The Woman"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Norah Lopez Holden",
+            "role": "Princess (of Spain)"
+          },
+          {
+            "name": "Ned Costello",
+            "role": "King of Navarre"
+          },
+          {
+            "name": "Philip Arditti",
+            "role": "Berowne"
+          },
+          {
+            "name": "Andro Crespo",
+            "role": "Don Armado"
+          },
+          {
+            "name": "Bea Segura",
+            "role": "Rosaline"
+          },
+          {
+            "name": "Joshua Hill",
+            "role": "Costard"
+          },
+          {
+            "name": "Katy Stephens",
+            "role": "Holofernes"
+          },
+          {
+            "name": "Jax Guerrero",
+            "role": "Lord of Navarre's court"
+          },
+          {
+            "name": "Philip Labey",
+            "role": "Lord of Navarre's court"
+          },
+          {
+            "name": "Pablo Egea",
+            "role": "bull (bailaor)"
+          },
+          {
+            "name": "Anita La Maltesa",
+            "role": "flamenco dancer"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the loves-labours-lost-globe-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loves-labours-lost-globe-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Indiana Lown-Collins",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dracula-west-end-2025",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "James Daly",
+            "role": "Dracula"
+          },
+          {
+            "name": "Safeena Ladha",
+            "role": "Lucy Westfeldt"
+          },
+          {
+            "name": "Diane Pilkington",
+            "role": "Dr. Westfeldt"
+          },
+          {
+            "name": "Charlie Stemp",
+            "role": "Jonathan Harker"
+          },
+          {
+            "name": "Sebastien Torkia",
+            "role": "Mina Westfeldt and Van Helsing"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Cynthia Erivo",
+            "role": "All 23 roles incl. Jonathan Harker, Van Helsing, Lucy, Mina, Dr John Seward, Renfield, Quincey Morris"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the dracula-west-end-2025 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dracula-west-end-2025",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Hamilton Deane",
+            "role": "Book Writer"
+          },
+          {
+            "name": "John L. Balderston",
+            "role": "Book Writer"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Hamilton Deane",
+            "role": "Book Writer"
+          },
+          {
+            "name": "John L. Balderston",
+            "role": "Book Writer"
+          },
+          {
+            "name": "Kip Williams",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-note-the-musical-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Ellie Greenwich",
+            "role": "Ellie Greenwich (1980's)"
+          },
+          {
+            "name": "Patrick Cassidy",
+            "role": "Jeff Barry"
+          },
+          {
+            "name": "Dinah Manoff",
+            "role": "Young Ellie Greenwich (1960s)"
+          },
+          {
+            "name": "Dennis Bailey",
+            "role": "Gus Sharkey"
+          },
+          {
+            "name": "Shirley Black-Brown",
+            "role": "Dance Couple - Woman"
+          },
+          {
+            "name": "Pattie Darcy",
+            "role": "Lounge Singer"
+          },
+          {
+            "name": "Annie Golden",
+            "role": "Angel Moran"
+          },
+          {
+            "name": "Jasmine Guy",
+            "role": "Mickey"
+          },
+          {
+            "name": "Darlene Love",
+            "role": "Darlene Love"
+          },
+          {
+            "name": "Keith McDaniel",
+            "role": "Dance Couple - Man"
+          },
+          {
+            "name": "Peter Neptune",
+            "role": "D.J. Voice"
+          },
+          {
+            "name": "Zora Rasmussen",
+            "role": "Rosie"
+          },
+          {
+            "name": "Barbara Yeager",
+            "role": "Shelley"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Xander Pang",
+            "role": "Light (Yagami)"
+          },
+          {
+            "name": "Colin Ryan",
+            "role": "L"
+          },
+          {
+            "name": "Stephanie Zaharis",
+            "role": "Misa (Amane)"
+          },
+          {
+            "name": "Telly Leung",
+            "role": "Ryuk"
+          },
+          {
+            "name": "Grace Mouat",
+            "role": "Rem"
+          },
+          {
+            "name": "Paolo Montalban",
+            "role": "Soichiro"
+          },
+          {
+            "name": "Chloe Saracco",
+            "role": "Gelus"
+          },
+          {
+            "name": "Elsie Buckley",
+            "role": "Sayu / Ensemble"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the death-note-the-musical-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-note-the-musical-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Stephen Whitson",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:28:22.958Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for loves-labours-lost-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for loves-labours-lost-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for dracula-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for dracula-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for death-note-the-musical-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for death-note-the-musical-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

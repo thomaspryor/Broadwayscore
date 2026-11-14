@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6127",
+  "planId": "6303485b-0df7-4c08-9849-8e0ba5fe2b44",
+  "status": "applied",
+  "createdAt": "2026-10-24T14:11:39.584Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6127: re-apply the Mockingbird Telegraph move (a stale-checkout refresh race restored the 2026 copy and the ownership gate dropped the 2022 one).",
+    "steps": [
+      "Misfiled by the old production pick (took the 2026 Gielgud run); the Telegraph review is of the 2022 Gielgud production, per its Theatre Record issue"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "to-kill-a-mockingbird-west-end-2026/telegraph--dominic-cavendish.json",
+        "destPath": "to-kill-a-mockingbird-west-end-2022/telegraph--dominic-cavendish.json",
+        "description": "Misfiled by the old production pick (took the 2026 Gielgud run); the Telegraph review is of the 2022 Gielgud production, per its Theatre Record issue"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T16:37:03.864Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved to-kill-a-mockingbird-west-end-2026/telegraph--dominic-cavendish.json → to-kill-a-mockingbird-west-end-2022/telegraph--dominic-cavendish.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}
