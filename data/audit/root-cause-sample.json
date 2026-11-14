@@ -1,0 +1,199 @@
+{
+  "generatedAt": "2026-11-14T08:59:11.262Z",
+  "grader": "gpt-5.4-mini (diff only, majority of 3)",
+  "poolSize": 138,
+  "noDiff": 3,
+  "landingsWithoutId": 82,
+  "graded": 8,
+  "rootCause": 6,
+  "spot": 2,
+  "unclear": 0,
+  "share": 75,
+  "calibrationOk": true,
+  "calibration": [
+    {
+      "card": "BRO-7066",
+      "expect": "spot-fix",
+      "got": "spot-fix"
+    },
+    {
+      "card": "BRO-7098",
+      "expect": "root-cause",
+      "got": "root-cause"
+    }
+  ],
+  "items": [
+    {
+      "card": "BRO-7221",
+      "grade": "spot-fix",
+      "confidence": 0.98,
+      "reason": "The change adds a Times-only multi-show-column path and tests for the specific glued-header case, but it does not make the broader class of glued-header defects impossible across all extractors or inputs.",
+      "guardFile": "scripts/lib/score-extractors-uk-multi-show.test.mjs",
+      "votes": [
+        "spot-fix",
+        "spot-fix",
+        "spot-fix"
+      ],
+      "diffHash": "9c5fef04dbc7",
+      "truncated": false,
+      "files": [
+        "scripts/lib/score-extractors-uk-multi-show.test.mjs",
+        "scripts/lib/score-extractors.js"
+      ]
+    },
+    {
+      "card": "BRO-7220",
+      "grade": "root-cause",
+      "confidence": 0.86,
+      "reason": "This adds a regression test that would fail if the replay ever loses the NYDN timing, raw-id handback, or Slant owner override behaviors, so it guards the defect class rather than patching one instance.",
+      "guardFile": "tests/unit/wanted-2026-11-08-replay.test.mjs",
+      "votes": [
+        "root-cause",
+        "spot-fix",
+        "root-cause"
+      ],
+      "diffHash": "9b0968fbb8d2",
+      "truncated": false,
+      "files": [
+        "tests/fixtures/bro-7220/wanted-2022-2026-11-08.json",
+        "tests/unit/wanted-2026-11-08-replay.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7372",
+      "grade": "root-cause",
+      "confidence": 0.95,
+      "reason": "The diff adds a shared date parser plus tests covering ordinal publish dates, and it broadens the refresh selector to use that parser so the whole class of non-ISO publishDate parsing failures is prevented.",
+      "guardFile": "scripts/lib/show-score-refresh-window.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "4688f50e7e2b",
+      "truncated": true,
+      "files": [
+        ".github/workflows/refresh-show-score-opening-night.yml",
+        "data/audit/claude-session-cost.jsonl",
+        "scripts/lib/outlet-listing-compound-venue.test.mjs",
+        "scripts/lib/outlet-listing-helpers.js",
+        "scripts/lib/show-score-refresh-window.js",
+        "scripts/lib/show-score-refresh-window.test.mjs",
+        "scripts/outlet-listing-poller.js",
+        "tests/unit/outlet-page-confirm.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7304",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds a reusable CLI-help guard, registers the new tests in CI path triggers, and adds assertions covering the new URL hygiene and wipe-hold cases so the defect class is caught broadly rather than patched at one call site.",
+      "guardFile": ".github/workflows/test.yml",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "be8c1e6726d3",
+      "truncated": true,
+      "files": [
+        ".github/workflows/test.yml",
+        "scripts/lib/review-normalization.js",
+        "scripts/lib/url-change-invariant.js",
+        "scripts/lib/url-wipe-hold.js",
+        "scripts/rebuild-all-reviews.js",
+        "scripts/test-url-hygiene-bro7304.js",
+        "scripts/test-url-wipe-hold.js"
+      ]
+    },
+    {
+      "card": "BRO-7375",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds a lint exemption for the specific read-only audit input and rewrites the detector to derive those paths from a shared audit directory, preventing this class of false orphan-write reports for those inputs rather than patching one call site.",
+      "guardFile": "scripts/audit-orphaned-audit-writes.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "8885b1a8d8af",
+      "truncated": true,
+      "files": [
+        "data/audit/recurrence-backtest.json",
+        "docs/recurrence-backtest.md",
+        "scripts/audit-orphaned-audit-writes.js",
+        "scripts/grade-openings.js",
+        "scripts/lib/opening-grade.js",
+        "scripts/lib/press-night-manual-actions.js",
+        "scripts/lib/recurrence-classes.js",
+        "scripts/lib/recurrence-classes.test.mjs",
+        "scripts/recurrence-detector.js"
+      ]
+    },
+    {
+      "card": "BRO-7377",
+      "grade": "root-cause",
+      "confidence": 0.94,
+      "reason": "The change removes the sweep’s reliance on parsing restart reasons and instead uses an explicit neverStarted flag plus a checkInit guard, which prevents this whole stale-init-error requeue class rather than patching one case.",
+      "guardFile": "scripts/lib/child-idle-watch.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "4580d91af5f7",
+      "truncated": true,
+      "files": [
+        "docs/cloud-worker-session-runbook.md",
+        "scripts/lib/child-idle-watch.js",
+        "scripts/lib/child-idle-watch.test.mjs",
+        "scripts/lib/fixtures/bro-7377-init-failed/get-session.json",
+        "scripts/lib/stalled-session-sweep.js"
+      ]
+    },
+    {
+      "card": "BRO-7307",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds a dedicated detector, scopes it to main, and adds tests covering branch scoping and truncated-run handling, which prevents the whole class of invalid-workflow-file misses rather than patching one instance.",
+      "guardFile": "tests/unit/invalid-workflow-file-signature.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "e5d279947894",
+      "truncated": true,
+      "files": [
+        "scripts/health-check.js",
+        "scripts/lib/invalid-workflow-file-signature.js",
+        "scripts/lib/owner-alert-router.js",
+        "scripts/lib/page-worthy-alerts.js",
+        "tests/unit-test-manifest.txt",
+        "tests/unit/invalid-workflow-file-signature.test.mjs",
+        "tsconfig.json"
+      ]
+    },
+    {
+      "card": "BRO-7316",
+      "grade": "spot-fix",
+      "confidence": 0.98,
+      "reason": "This change only adds a COUSINS requirement to the spot-fix path and updates the message/tests for that specific rule, rather than introducing a general guard that prevents the defect class everywhere.",
+      "guardFile": "scripts/lib/root-cause-close.test.mjs",
+      "votes": [
+        "spot-fix",
+        "spot-fix",
+        "spot-fix"
+      ],
+      "diffHash": "9c1bf1c78d19",
+      "truncated": true,
+      "files": [
+        "scripts/lib/root-cause-close.js",
+        "scripts/lib/root-cause-close.test.mjs",
+        "scripts/lib/root-cause-stop.mjs",
+        "scripts/lib/root-cause-stop.test.mjs"
+      ]
+    }
+  ]
+}

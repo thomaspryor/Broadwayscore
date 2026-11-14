@@ -1,0 +1,351 @@
+{
+  "issueNumber": "bro-5562",
+  "planId": "98f8cf18-202c-4c35-88ad-7ae6072301ef",
+  "status": "applied",
+  "createdAt": "2026-10-17T23:07:00.759Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5562 (part a): verified ChatGPT findings. Company (2021) closed at a loss returning about a third of its $13M (Broadway Journal) -> Fizzle with a cited estimate; Mike Birbiglia: The Old Man & the Pool $2.5M and $348K average operating expenses (Broadway Journal, AG statement); Paradise Square’s $599K weekly breakeven now cited (ChatGPT had attributed it to A Strange Loop; the article is about Paradise Square).",
+    "steps": [
+      "Edits read every oldValue from live data; every quote was opened at its URL."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Aug 23, 2022): \"Buffeted by the Broadway shutdown, Covid-19 variants, pricey pandemic protocols and some mixed reviews, it will return about a third of its $13 million capitalization, lead producer Chris Harper told investors.\" https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+        "description": "company-2021: cite the $13M (it had no source and showed as an estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "company-2021: a reported figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "company-2021: the lead producer told investors the share returned."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "company-2021: closed at a loss with about a third returned (Broadway Journal): Fizzle is 30% or more returned."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "company-2021: hand-reviewed from a cited outcome; keep automated passes from overwriting it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          30,
+          35
+        ],
+        "description": "company-2021: about a third of the capitalization returned."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Aug 23, 2022): the revival \"closed at a loss\"; \"Buffeted by the Broadway shutdown, Covid-19 variants, pricey pandemic protocols and some mixed reviews, it will return about a third of its $13 million capitalization, lead producer Chris Harper told investors.\" https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+        "description": "company-2021: the cited outcome."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2022-08-23",
+        "description": "company-2021: date of the report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 2500000,
+        "description": "mike-birbiglia-the-old-man-and-the-pool-2022: Broadway Journal: produced for $2.5 million."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Aug 25, 2023): \"Mike Birbiglia: The Old Man & the Pool (produced last fall by Sue Wagner, John Johnson, Patrick Catullo and Greg Nobile for $2.5 million)\". https://www.broadwayjournal.com/p/solo-shows-deliver-as-aspiring-blockbusters-struggle",
+        "description": "mike-birbiglia-the-old-man-and-the-pool-2022: cite it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 348000,
+        "description": "mike-birbiglia-the-old-man-and-the-pool-2022: average weekly operating expenses from its Attorney General financial statement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Aug 25, 2023): \"Most weeks were profitable, with operating expenses at the Vivian Beaumont Theater averaging $348,000, according to a financial statement filed with the office of New York Attorney General Letitia James.\" https://www.broadwayjournal.com/p/solo-shows-deliver-as-aspiring-blockbusters-struggle",
+        "description": "mike-birbiglia-the-old-man-and-the-pool-2022: cite it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "all-in",
+        "description": "mike-birbiglia-the-old-man-and-the-pool-2022: an average weekly operating expense from a financial statement (royalties included)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "trade-reported",
+        "description": "mike-birbiglia-the-old-man-and-the-pool-2022: reported figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/mike-birbiglia-old-man-pool/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/mike-birbiglia-the-old-man-the-pool-announces-broadway-run",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/mike-birbiglia-old-man-pool/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/mike-birbiglia-the-old-man-the-pool-announces-broadway-run",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/solo-shows-deliver-as-aspiring-blockbusters-struggle",
+            "date": "2023-08-25"
+          }
+        ],
+        "description": "mike-birbiglia-the-old-man-and-the-pool-2022: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Jun 22, 2022): \"its $388,000 in sales was still below its weekly breakeven of $599,000, per an estimate in its 2019 operating agreement filed with New York state.\" https://www.broadwayjournal.com/p/tony-awards-boost-strange-loop-mj-ticket-sales",
+        "description": "paradise-square-2022: cite the $599K already on record (it had no source)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "breakeven",
+        "description": "paradise-square-2022: the figure is the weekly breakeven gross."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "field": "costMethodology",
+        "oldValue": "deep-research",
+        "newValue": "trade-reported",
+        "description": "paradise-square-2022: reported figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-paradise-square-to-close-after-tony-win-1235178082/",
+            "date": "2022-07-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/broadway/news/broadway-shockers-2022-garth-drabinsky-sues-equity_94683.html",
+            "date": "2022-12-22",
+            "excerpt": "failing to recoup the $15 million investment for which it was capitalized."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-paradise-square-to-close-after-tony-win-1235178082/",
+            "date": "2022-07-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/broadway/news/broadway-shockers-2022-garth-drabinsky-sues-equity_94683.html",
+            "date": "2022-12-22",
+            "excerpt": "failing to recoup the $15 million investment for which it was capitalized."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/tony-awards-boost-strange-loop-mj-ticket-sales",
+            "date": "2022-06-22"
+          }
+        ],
+        "description": "paradise-square-2022: add the cited article(s) to sources."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T00:25:23.558Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for paradise-square-2022"
+    }
+  ]
+}

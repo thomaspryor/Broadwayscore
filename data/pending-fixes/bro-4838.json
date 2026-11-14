@@ -1,0 +1,88 @@
+{
+  "issueNumber": "bro-4838",
+  "planId": "bcc16c31-2397-4f4a-8a6d-f02087fbe4b0",
+  "status": "applied",
+  "createdAt": "2026-10-07T15:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Affluenza coverage check (owner, 2026-10-07). (1) LondonTheatre1 / Chris Omaweng (/reviews/affluenza-riverside-studios-review/) is a genuine negative review that opens with background on the Ethan Couch case; a claude-haiku verification called it a preview and that verdict was promoted to isNonReview + rejectionReason not_a_review, while the newer OpenAI verification (high confidence) says articleType review. Restore it and lock the clear. (2) trustpilot--john-taggart is a Trustpilot customer review of a ticket seller, submitted through the review form; it is not a critic review. Exclude it (domain now blocked in domain-filters.js).",
+    "steps": [
+      "Clear isNonReview and rejectionReason on londontheatre1--chris-omaweng.json and set nonReviewManualClear so classify-non-reviews.js skips it",
+      "Mark trustpilot--john-taggart.json not_a_review"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Genuine review (evaluative throughout: 'difficult to root for anyone', 'one is left wondering what the point of it'); essay-style opening misread as a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Rejection came from the same preview misread"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/trustpilot--john-taggart.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Trustpilot customer review of a ticket seller, not a critic review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/trustpilot--john-taggart.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "not_a_review",
+        "description": "Exclude from scoring and the site"
+      }
+    ]
+  },
+  "executedAt": "2026-10-07T17:06:57.203Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/trustpilot--john-taggart.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/trustpilot--john-taggart.json rejectionReason: null -> \"not_a_review\""
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "issueNumber": "bro-5092-c",
+  "planId": "e5551a3f-0d29-4196-9cba-0cf70758b557",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5092: apply the owner designations the held release could not: Piano Lesson Easy Winner (recoupment cited by Broadway News, Mar 21 2024), five Flop and one Nonprofit verdicts that the policy-B classifier had labelled Fizzle after the owner reviewed them. Supersedes bro-5092 (entry already existed) and bro-5092-b (rolled back: torch-song-2018 kept its loss designationBasis; commercial-field-edit now drops it on a non-loss relabel).",
+    "steps": [
+      "Compare-and-set data-edits on designation, then humanReviewedDesignation=true so classify-stale-closures and auto-apply leave the owner verdict alone."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-piano-lesson-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "the-piano-lesson-2022: designation TBD -> Easy Winner (owner verdict, held-verdicts review page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-piano-lesson-2022",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-piano-lesson-2022: lock the owner-set designation against the classifier and auto-apply"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lyons-2012",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "the-lyons-2012: designation Fizzle -> Flop (owner verdict, held-verdicts review page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lyons-2012",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-lyons-2012: lock the owner-set designation against the classifier and auto-apply"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "grey-house: designation Fizzle -> Flop (owner verdict, held-verdicts review page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "grey-house: lock the owner-set designation against the classifier and auto-apply"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "left-on-tenth-2024: designation Fizzle -> Flop (owner verdict, held-verdicts review page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "left-on-tenth-2024: lock the owner-set designation against the classifier and auto-apply"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "the-last-five-years-2025: designation Fizzle -> Flop (owner verdict, held-verdicts review page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-last-five-years-2025: lock the owner-set designation against the classifier and auto-apply"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-shark-is-broken",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "the-shark-is-broken: designation Fizzle -> Flop (owner verdict, held-verdicts review page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-shark-is-broken",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-shark-is-broken: lock the owner-set designation against the classifier and auto-apply"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Nonprofit",
+        "description": "torch-song-2018: designation Fizzle -> Nonprofit (owner verdict, held-verdicts review page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "torch-song-2018: lock the owner-set designation against the classifier and auto-apply"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T02:28:46.773Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-piano-lesson-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-piano-lesson-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-lyons-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-lyons-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-shark-is-broken"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-shark-is-broken"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for torch-song-2018"
+    }
+  ]
+}

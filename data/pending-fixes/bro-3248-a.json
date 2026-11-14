@@ -1,0 +1,203 @@
+{
+  "issueNumber": "bro-3248-a",
+  "planId": "489b310a-fe06-4dd7-91a6-4a31a638e0b4",
+  "status": "applied",
+  "createdAt": "2026-10-13T10:51:56.983Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3248 part a: drop audience-buzz.json keys that are not shows.json ids (orphans of renamed/retired/test ids); one rename to its live id.",
+    "steps": [
+      "drop-orphan-key per key; each refuses a live id"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "little-shop-of-horrors-2019",
+        "reason": "stale duplicate: little-shop-of-horrors-off-broadway-2019 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key little-shop-of-horrors-2019"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "the-other-place-2026",
+        "reason": "stale duplicate: the-other-place-off-broadway-2026 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key the-other-place-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "the-25th-annual-putnam-county-spelling-bee-2025",
+        "reason": "stale duplicate: the-25th-annual-putnam-county-spelling-bee-off-broadway-2025 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key the-25th-annual-putnam-county-spelling-bee-2025"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "cats-the-jellicle-ball-2024",
+        "reason": "stale duplicate: cats-the-jellicle-ball-off-broadway-2024 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key cats-the-jellicle-ball-2024"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "stereophonic-2023",
+        "reason": "stale duplicate: stereophonic-2024,stereophonic-off-broadway-2023 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key stereophonic-2023"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "titanique-2022",
+        "reason": "stale duplicate: titanique-off-broadway-2022 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key titanique-2022"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "oh-mary-2024-off-broadway",
+        "reason": "no live show under this id (BRO-3248)",
+        "description": "Drop orphan key oh-mary-2024-off-broadway"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "buena-vista-social-club-2023",
+        "reason": "stale duplicate: buena-vista-social-club-off-broadway-2023 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key buena-vista-social-club-2023"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "the-play-that-goes-wrong-2019",
+        "reason": "stale duplicate: the-play-that-goes-wrong-off-broadway-2019 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key the-play-that-goes-wrong-2019"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "into-the-woods-off-west-end-2025",
+        "reason": "stale duplicate: into-the-woods-west-end-2025 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key into-the-woods-off-west-end-2025"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "the-phantom-of-the-opera-off-west-end-2021",
+        "reason": "superseded production; its live twin already holds an entry (BRO-3248)",
+        "description": "Drop orphan key the-phantom-of-the-opera-off-west-end-2021"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "into-the-woods-west-end-2026",
+        "reason": "stale duplicate: into-the-woods-west-end-2025 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key into-the-woods-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "harry-potter-and-the-cursed-child-2021",
+        "reason": "no live show under this id (BRO-3248)",
+        "description": "Drop orphan key harry-potter-and-the-cursed-child-2021"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "dracula-west-end-2026",
+        "reason": "stale duplicate: dracula-west-end-2025 already holds its own entry (BRO-3248)",
+        "description": "Drop orphan key dracula-west-end-2026"
+      },
+      {
+        "type": "drop-orphan-key",
+        "file": "audience-buzz.json",
+        "showId": "can-i-be-frank-off-broadway-2026",
+        "renameTo": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
+        "reason": "same production, id renamed by BRO-3237; live id has no audience-buzz entry",
+        "description": "Move can-i-be-frank-off-broadway-2026 to its live id"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:27:17.787Z",
+  "results": [
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key little-shop-of-horrors-2019"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-other-place-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-25th-annual-putnam-county-spelling-bee-2025"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key cats-the-jellicle-ball-2024"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key stereophonic-2023"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key titanique-2022"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key oh-mary-2024-off-broadway"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key buena-vista-social-club-2023"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-play-that-goes-wrong-2019"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key into-the-woods-off-west-end-2025"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key the-phantom-of-the-opera-off-west-end-2021"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key into-the-woods-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key harry-potter-and-the-cursed-child-2021"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: dropped orphan key dracula-west-end-2026"
+    },
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "audience-buzz.json: moved can-i-be-frank-off-broadway-2026 -> morgan-bassichis-can-i-be-frank-off-broadway-2026"
+    }
+  ]
+}

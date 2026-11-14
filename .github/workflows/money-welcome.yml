@@ -1,0 +1,59 @@
+name: Money Welcome
+
+# BRO-6309: welcome email for new Profitability Scorecard sign-ups, one transactional
+# email each (never a broadcast, CLAUDE.md §17). Logic: scripts/lib/money-welcome.js.
+# ON/OFF: scripts/config/money-welcome.json enabled=true (repo variable MONEY_WELCOME_ENABLED=false overrides to off); while it
+# is not, scheduled runs exit in seconds. Sign-ups from before launch are marked
+# welcomed by the migration and never get this. Manual modes: dry-run (read-only) or
+# send_to (one [PREVIEW] email to that address, no database).
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Read-only: show who would be emailed'
+        required: false
+        default: false
+        type: boolean
+      send_to:
+        description: 'Send one preview email to this address instead of a real pass'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: money-welcome
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+      - uses: ./.github/actions/setup-node
+      - name: Send welcome emails
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          MONEY_WELCOME_ENABLED: ${{ vars.MONEY_WELCOME_ENABLED }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          SEND_TO: ${{ inputs.send_to }}
+        run: |
+          if [ -n "$SEND_TO" ]; then node scripts/send-money-welcome.js "--send-to=$SEND_TO"
+          elif [ "$DRY_RUN" = "true" ]; then node scripts/send-money-welcome.js --dry-run
+          else node scripts/send-money-welcome.js; fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Money Welcome Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

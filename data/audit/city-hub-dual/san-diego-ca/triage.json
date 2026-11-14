@@ -1,0 +1,34 @@
+{
+ "items": {
+  "show:begin-again-regional-2026:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:begin-again-regional-2026:opening-date",
+   "reason": "The theatre page prints the run first performance (2026-09-06) as opening; our openingDate 2026-09-17 is the press opening (first reviews dated the same week) and previews start 2026-09-06. One fact seen two ways, not a wrong date. BRO-7319."
+  },
+  "show:seussical-regional-2026:venue": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:seussical-regional-2026:venue",
+   "reason": "SDMT Stage is the stage name inside San Diego Musical Theatre (our venue). Same building. BRO-7319."
+  },
+  "show:the-family-album-regional-2026:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:the-family-album-regional-2026:opening-date",
+   "reason": "Page date 2026-07-17 is the first performance/preview; our openingDate 2026-07-24 is the press opening (first reviews 2026-07-27). One fact seen two ways, same as begin-again (BRO-7319). BRO-7320."
+  },
+  "show:a-room-in-the-castle-regional-2026:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:a-room-in-the-castle-regional-2026:opening-date",
+   "reason": "Page date 2026-05-10 is the first performance/preview; our openingDate 2026-05-16 is the press opening (first reviews 2026-05-16). One fact seen two ways, same as begin-again (BRO-7319). BRO-7320."
+  },
+  "show:purpose-lajolla-regional-2026:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:purpose-lajolla-regional-2026:opening-date",
+   "reason": "Page date 2026-05-12 is the first performance/preview; our openingDate 2026-05-18 is the press opening (first review (Union-Tribune) 2026-05-18). One fact seen two ways, same as begin-again (BRO-7319). BRO-7320."
+  }
+ }
+}

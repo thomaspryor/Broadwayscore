@@ -1,0 +1,411 @@
+{
+  "issueNumber": "bro-5268-e",
+  "planId": "62886987-0f7a-4042-892b-e719a3d7da79",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5268: cite trade/producer reports for recoupment outcomes on allegiance-2015, a-night-with-janis-joplin-2013, tina-2019, the-whos-tommy, leap-of-faith-2012, sweeney-todd-2023, the-notebook, on-the-town-2014",
+    "steps": [
+      "Apply each commercial.json data-edit (compare-and-set on oldValue)",
+      "Each citation was read on the article page; excerpts are at most 15 quoted words"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "allegiance-2015",
+        "showId": "allegiance-2015",
+        "field": "recoupedSource",
+        "oldValue": "Producer statement that Allegiance lost investor money",
+        "newValue": "The New York Times ArtsBeat (Jan 6, 2016) reported the producers said the musical would close at a loss: \"it will close at a loss to its investors\" https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2016/01/06/allegiance-announces-broadway-closing-date/",
+        "description": "allegiance-2015: NYT: closing at a loss to investors"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "allegiance-2015",
+        "showId": "allegiance-2015",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wweek.com/arts/movies/2022/10/11/a-new-movie-featuring-the-music-of-storm-large-will-premiere-at-the-portland-film-festival/",
+            "date": "2022-10-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/joshuarogers/2016/05/31/invest-in-the-next-hamilton-broadways-odds-look-like-silicon-valleys/",
+            "date": "2016-05-31"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wweek.com/arts/movies/2022/10/11/a-new-movie-featuring-the-music-of-storm-large-will-premiere-at-the-portland-film-festival/",
+            "date": "2022-10-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/joshuarogers/2016/05/31/invest-in-the-next-hamilton-broadways-odds-look-like-silicon-valleys/",
+            "date": "2016-05-31"
+          },
+          {
+            "type": "trade",
+            "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2016/01/06/allegiance-announces-broadway-closing-date/",
+            "date": "2016-01-06",
+            "excerpt": "it will close at a loss to its investors"
+          }
+        ],
+        "description": "allegiance-2015: NYT: closing at a loss to investors"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-night-with-janis-joplin-2013",
+        "showId": "a-night-with-janis-joplin-2013",
+        "field": "recoupedSource",
+        "oldValue": "NY Times reported 'will not recoup its investment on Broadway'",
+        "newValue": "The New York Times ArtsBeat (Jan 21, 2014) reported the $4.4 million production would not recoup: \"production will not recoup its investment on Broadway\" https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/01/21/joplin-will-make-way-for-joneses-on-broadway/",
+        "description": "a-night-with-janis-joplin-2013: NYT: will not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "showId": "tina-2019",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "tina-2019: Broadway Journal: closed at a loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "showId": "tina-2019",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (May 8, 2023) reported the musical closed at a loss, naming: \"Tina: the Tina Turner Musical, which closed at a loss last summer\" https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+        "description": "tina-2019: Broadway Journal: closed at a loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "showId": "tina-2019",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+            "date": "2023-05-08",
+            "excerpt": "Tina: the Tina Turner Musical, which closed at a loss last summer"
+          }
+        ],
+        "description": "tina-2019: Broadway Journal: closed at a loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-whos-tommy",
+        "showId": "the-whos-tommy",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "The New York Times, as relayed by Rolling Stone (Jun 26, 2024), reported the revival had not recouped its capitalization when it announced its closing: \"Tommy was capitalized for $15.7 million and has not recouped those funds\" https://www.rollingstone.com/music/music-news/the-who-tommy-revival-closing-on-broadway-1235046907/",
+        "description": "the-whos-tommy: NYT (via Rolling Stone): had not recouped at its closing announcement"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "showId": "leap-of-faith-2012",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "leap-of-faith-2012: Playbill/NYT: producers lost the entire $14M investment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "showId": "leap-of-faith-2012",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after 20 performances (April 26 - May 13, 2012), insufficient time to recoup investment",
+        "newValue": "Playbill (May 13, 2012) reported the musical closed at a loss: \"The New York Times reported that the producers lost their entire $14 million investment.\" https://playbill.com/article/leap-of-faith-the-musical-pulls-down-its-broadway-tent-may-13-com-193495",
+        "description": "leap-of-faith-2012: Playbill/NYT: producers lost the entire $14M investment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "showId": "leap-of-faith-2012",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://grokipedia.com/page/Leap_of_Faith_(musical)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theglobeandmail.com/arts/behind-some-broadway-hits-your-grannie/article18141071/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://grokipedia.com/page/Leap_of_Faith_(musical)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theglobeandmail.com/arts/behind-some-broadway-hits-your-grannie/article18141071/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/leap-of-faith-the-musical-pulls-down-its-broadway-tent-may-13-com-193495",
+            "date": "2012-05-13",
+            "excerpt": "The New York Times reported that the producers lost their entire $14 million investment."
+          }
+        ],
+        "description": "leap-of-faith-2012: Playbill/NYT: producers lost the entire $14M investment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "showId": "sweeney-todd-2023",
+        "field": "recoupedDate",
+        "oldValue": "2023-12",
+        "newValue": "2023-11",
+        "description": "sweeney-todd-2023: BroadwayWorld: recouped its $14.5M capitalization in Nov 2023"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "showId": "sweeney-todd-2023",
+        "field": "recoupedSource",
+        "oldValue": "No producer announcement. Broadway Journal (Aug 25, 2023) projected recoupment by fall 2023, about 33 weeks into the run, on a $14.5M capitalization. Counted as recouped on that projection and the run's sustained $1M+ weekly grosses.",
+        "newValue": "BroadwayWorld (Aug 1, 2025, by Ben Waterhouse) reported the revival recouped: \"They recouped their $14.5 million capitalization in November, 2023.\" https://www.broadwayworld.com/article/The-Art-of-Recasting-20250801",
+        "description": "sweeney-todd-2023: BroadwayWorld: recouped its $14.5M capitalization in Nov 2023"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "showId": "sweeney-todd-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+            "date": "2023-03-01"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.picklestar.com/projects/sweeney-todd",
+            "date": "2024-01-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+            "date": "2023-03-01"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.picklestar.com/projects/sweeney-todd",
+            "date": "2024-01-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-Art-of-Recasting-20250801",
+            "date": "2025-08-01",
+            "excerpt": "They recouped their $14.5 million capitalization in November, 2023."
+          }
+        ],
+        "description": "sweeney-todd-2023: BroadwayWorld: recouped its $14.5M capitalization in Nov 2023"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "showId": "the-notebook",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "the-notebook: lead producer Kevin McCollum (WBEZ): did not recoup on Broadway"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "showId": "the-notebook",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Producer Kevin McCollum said in a WBEZ interview (Aug 13, 2026) that the musical did not recoup: \"McCollum said \\\"The Notebook\\\" did not recoup on Broadway\" https://www.wbez.org/theater-stages/2026/08/13/broadway-chicago-musical-life-cycle-the-notebook-kevin-mccollum",
+        "description": "the-notebook: lead producer Kevin McCollum (WBEZ): did not recoup on Broadway"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "showId": "on-the-town-2014",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "no-recoupment-announced",
+        "description": "on-the-town-2014: correct a misattributed loss: the Public Theater $14M loss was its 1998 On the Town, not this 2014 revival; no loss figure reported for the revival"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "showId": "on-the-town-2014",
+        "field": "recoupedSource",
+        "oldValue": "The Public Theater lost about $14 million on the musical 'On the Town'",
+        "newValue": "No loss figure has been reported for the 2014 revival. The \"about $14 million\" Public Theater loss Broadway Journal reported was combined across The Wild Party and the Public's 1998 On the Town, not this revival.",
+        "description": "on-the-town-2014: correct a misattributed loss: the Public Theater $14M loss was its 1998 On the Town, not this 2014 revival; no loss figure reported for the revival"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "showId": "on-the-town-2014",
+        "field": "notes",
+        "oldValue": "The Public Theater lost approximately $14 million on this revival of 'On the Town'. The show ran for less than a year (October 2014 to September 2015) and was a significant financial loss for the nonprofit theater.",
+        "newValue": "Revival at the Lyric Theatre (Oct 2014 to Sep 2015), with a projected $8.5 million capitalization raised partly online (Variety, Aug 13, 2014). Closed without a recoupment announcement; no loss figure reported.",
+        "description": "on-the-town-2014: correct a misattributed loss: the Public Theater $14M loss was its 1998 On the Town, not this 2014 revival; no loss figure reported for the revival"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "showId": "on-the-town-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/public-theater-gets-conservative-about-hamilton-millions",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2014/legit/news/broadway-crowdfunding-investment-on-the-town-1201282160/",
+            "date": "2014-08-13",
+            "excerpt": "projected $8.5 million capitalization for \"On the Town\""
+          }
+        ],
+        "description": "on-the-town-2014: correct a misattributed loss: the Public Theater $14M loss was its 1998 On the Town, not this 2014 revival; no loss figure reported for the revival"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T16:59:36.751Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for allegiance-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for allegiance-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for a-night-with-janis-joplin-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-whos-tommy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-notebook"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-notebook"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for on-the-town-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for on-the-town-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for on-the-town-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for on-the-town-2014"
+    }
+  ]
+}

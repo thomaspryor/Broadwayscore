@@ -1,0 +1,76 @@
+{
+  "issueNumber": "bro-6138",
+  "planId": "10474ac3-1c08-4a3d-8ac0-88f2bec0a0bb",
+  "status": "applied",
+  "createdAt": "2026-10-24T19:16:03.115Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6138 ramp: add commercial entries for Fun Home (2015) and Glory Days (2008), from the Bucknell 2008-2017 worklist.",
+    "steps": [
+      "add-commercial-entry",
+      "add-commercial-entry"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "fun-home-2015",
+        "entry": {
+          "designation": "Windfall",
+          "recouped": true,
+          "recoupedDate": "2015-12",
+          "recoupedSource": "Playbill (Dec 13, 2015): the producers announced it \"has recouped its entire $5.25 million investment in just eight months on Broadway.\"",
+          "capitalization": 5250000,
+          "capitalizationSource": "Playbill (Dec 13, 2015)",
+          "notes": "Commercial Broadway transfer of the Public Theater production at Circle in the Square (opened Apr 19, 2015; closed Sep 10, 2016). Recouped its $5.25M capitalization in about eight months; the first new musical of the 2014-15 season to pay off its investment.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/not-too-bad-if-they-say-so-themselves-fun-home-recoups-on-broadway-com-375415",
+              "date": "2015-12-13"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "glory-days-2008",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "designationBasis": "no-recoupment-announced",
+          "recouped": false,
+          "notes": "Circle in the Square transfer from Signature Theatre that opened and closed on May 6, 2008, after 17 previews and one official performance. Producers cited the overnight reviews and low advance sales when closing immediately. No source readable to us states its capitalization, so none is shown.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.newyorktheatreguide.com/theatre-news/news/glory-days-closed-last-performance-was-on-6-may-2008-the-musicals-opening-night",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/22-broadway-musicals-that-closed-on-opening-night",
+              "date": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T20:01:18.954Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added fun-home-2015 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added glory-days-2008 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
+}

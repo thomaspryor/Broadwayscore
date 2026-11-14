@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5859-site-nav",
+  "planId": "748ebb7f-58b7-499c-b627-019d1de9e5c1",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:23:30.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5859: strip site navigation menus (Stage and Cinema flat menu, breadcrumbs, Home/Menu lists) and the Stage and Cinema share/donate footer from stored review texts",
+    "steps": [
+      "Run strip-leading-site-nav.js --apply (dry run: 116 rows)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "strip-leading-site-nav.js",
+        "args": "--apply",
+        "description": "BRO-5859: cut site nav chrome from fullText; no verdict text is touched, pull quotes found only in the menu are cleared"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:58:54.939Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-leading-site-nav.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-10-26T11:33:26.259Z",
+  "season": "2015-2016",
+  "sources": [
+    "wos-listing",
+    "wos-review",
+    "olivier-2016",
+    "olivier-2017"
+  ],
+  "counts": {
+    "listings": 2,
+    "promotable": 0,
+    "notPromotable": {
+      "no review signal": 1,
+      "already in shows.json": 1
+    },
+    "unlistedReviews": 5
+  },
+  "candidates": [
+    {
+      "title": "Motown The Musical",
+      "venue": "Shaftesbury Theatre",
+      "previewsStartDate": "2016-02-11",
+      "openingDate": "2016-02-11",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2019-04-20",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/motown-the-musical_197565/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Harry Potter and the Cursed Child",
+      "venue": "Palace Theatre",
+      "previewsStartDate": "2016-06-07",
+      "openingDate": null,
+      "openingDateSource": null,
+      "closingDate": null,
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "wos-review",
+        "olivier-2017"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/harry-potter-and-the-cursed-child_199397/",
+        "wosReview": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/"
+      },
+      "inShowsJson": "Harry Potter And The Cursed Child: Both Parts",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: Harry Potter And The Cursed Child: Both Parts"
+      }
+    }
+  ],
+  "unlistedReviews": [
+    {
+      "title": "The Entertainer",
+      "venue": "Garrick Theatre",
+      "date": "2016-08-31",
+      "url": "https://www.whatsonstage.com/news/review-the-entertainer-garrick-theatre_41640/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Groundhog Day",
+      "venue": "Old Vic",
+      "date": "2016-08-16",
+      "url": "https://www.whatsonstage.com/news/review-groundhog-day-old-vic_41556/",
+      "rating": 5,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Breakfast at Tiffany's",
+      "venue": "Theatre Royal Haymarket",
+      "date": "2016-07-28",
+      "url": "https://www.whatsonstage.com/news/review-breakfast-at-tiffanys-theatre-royal-haymarket_41389/",
+      "rating": 2,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Pigs and Dogs",
+      "venue": "Royal Court",
+      "date": "2016-07-23",
+      "url": "https://www.whatsonstage.com/news/review-pigs-and-dogs-royal-court_41351/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "The Bodyguard",
+      "venue": "Dominion Theatre",
+      "date": "2016-07-22",
+      "url": "https://www.whatsonstage.com/news/review-the-bodyguard-dominion-theatre_41335/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    }
+  ]
+}

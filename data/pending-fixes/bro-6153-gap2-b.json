@@ -1,0 +1,53 @@
+{
+  "issueNumber": "bro-6153-gap2-b",
+  "planId": "758beac8-8895-49c9-ba9c-314aa29aa527",
+  "status": "applied",
+  "createdAt": "2026-10-25T13:04:57.582Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "OB historical backfill gap window, second pass with plan-ob-historical-cohort.js: revivals and & titles the first pass missed (BRO-6153) (part 2 of 2)",
+    "steps": [
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "duke-and-roya-off-broadway-2025",
+          "title": "Duke & Roya",
+          "slug": "duke-and-roya-off-broadway-2025",
+          "venue": "Lucille Lortel Theatre",
+          "previewsStartDate": "2025-06-10",
+          "openingDate": "2025-06-24",
+          "closingDate": "2025-08-02",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/duke-roya-off-broadway-lucille-lortel-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/duke-roya_1768402/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T13:15:15.127Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added duke-and-roya-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

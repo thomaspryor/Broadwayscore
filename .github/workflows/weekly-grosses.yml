@@ -1,0 +1,222 @@
+name: Weekly Broadway Grosses
+
+on:
+  # Run every Tuesday at 3pm UTC (10am ET) - after grosses are released
+  # Also retry on Wednesday if Tuesday failed
+  schedule:
+    - cron: '0 15 * * 2'  # Tuesday
+    - cron: '0 15 * * 3'  # Wednesday (retry)
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force update even if data exists for this week'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+# Serialize against scrape-alltime-grosses.yml — both write data/grosses.json. The shared
+# push-with-retry helper's rebase fallback uses -X ours and can silently drop the other
+# writer's edits if they collide. The shared group name (not per-workflow) is the point.
+concurrency:
+  group: data-grosses-writers
+  cancel-in-progress: false
+
+jobs:
+  update-grosses:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Check if update needed (for Wednesday retry)
+        id: check
+        run: |
+          # Get the current week ending date (last Sunday), unpadded M/D/YYYY
+          # like grosses.json's weekEnding ("9/27/2026"); zero-padded never
+          # matched a single-digit month or day, so the skip rarely fired.
+          CURRENT_WEEK=$(date -d "last sunday" +%-m/%-d/%Y 2>/dev/null || date -v-sun +%-m/%-d/%Y)
+          echo "current_week=$CURRENT_WEEK" >> $GITHUB_OUTPUT
+
+          # Check if we already have this week's data
+          if [ -f data/grosses.json ]; then
+            LAST_WEEK=$(jq -r '.weekEnding // "none"' data/grosses.json)
+            echo "last_week=$LAST_WEEK" >> $GITHUB_OUTPUT
+
+            if [ "$LAST_WEEK" = "$CURRENT_WEEK" ] && [ "${{ github.event.inputs.force }}" != "true" ]; then
+              echo "skip=true" >> $GITHUB_OUTPUT
+              echo "Data already updated for week ending $CURRENT_WEEK"
+            else
+              echo "skip=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Scrape weekly grosses (Playbill, BroadwayWorld fallback)
+        if: steps.check.outputs.skip != 'true'
+        run: npx tsx scripts/scrape-grosses.ts
+        env:
+          NODE_ENV: production
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+
+      - name: Scrape BroadwayWorld all-time stats
+        if: steps.check.outputs.skip != 'true'
+        run: npx tsx scripts/scrape-alltime.ts
+        env:
+          NODE_ENV: production
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        continue-on-error: true  # Don't fail the whole job if BWW cumulative page is unavailable
+
+      - name: Check for changes
+        if: always() && steps.check.outputs.skip != 'true'
+        id: changes
+        run: |
+          # BRO-5033: grosses*.json are gitignored core data, so `git diff` on
+          # them was always empty and every step below gated on has_changes
+          # never ran. Compare to the checkout-core-data snapshot instead.
+          # The scrapers stamp lastUpdated on every write, so this is true on
+          # any run that scraped (the skip above already drops no-new-week runs).
+          if node scripts/lib/core-data-changed.js grosses.json grosses-history.json; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      # Advisory (§19): these steps never ran before BRO-5033, so they report
+      # without gating the push. --dry-run keeps validate-data from writing the
+      # push-refusal sentinel, so an unrelated pre-existing error elsewhere in
+      # the data can't stop this week's grosses from being pushed.
+      - name: Validate data integrity
+        if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        continue-on-error: true
+        run: node scripts/validate-data.js --dry-run
+
+      # BRO-4988: integrity rules over the newest 9 weeks (this week plus the
+      # 8 the scraper may have backfilled): Sunday keys, missing weeks, rows vs
+      # the League "Week's Total", dropouts, copied grosses, capped capacity,
+      # zero-performance grosses, seatsOffered, week-over-week jumps
+      # (scripts/lib/grosses-integrity.js). Each broken rule files one card
+      # via routeAlert(disposition 'auto'); clean rules resolveCondition().
+      # Advisory per CLAUDE.md §19: never fails the job.
+      - name: Grosses integrity check
+        if: always() && steps.check.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/check-grosses-integrity.js --weeks=9 --alert
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Build site (verify no breaking changes)
+        if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        continue-on-error: true  # advisory (§19), see "Validate data integrity"
+        run: npm run build
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
+
+      # BRO-5033: the old "Commit and push changes" step here never `git add`ed
+      # anything (grosses*.json are gitignored; push-core-data below ships
+      # them), so it could only fail with "nothing to commit". Removed.
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from weekly-grosses'
+
+      # BRO-5033: the "Trigger deploy (core data changed)" step that sat here
+      # never ran (has_changes was always false) and, if revived, would skip
+      # itself anyway: vercel-deploy.yml's 5-minute cron always has a run newer
+      # than this one inside its 15-minute dedup window. should-deploy-gate.js
+      # only fingerprints reviews.json and shows.json, so a grosses-only change
+      # goes live on the gate's 6-hour staleness backstop, as it always has.
+
+      # The integrity check's routeAlert()/resolveCondition() state lives on
+      # this runner's disk; commit it or every run re-alerts from a blank
+      # ledger (alert-ledger-commit-check.js).
+      - name: Commit alert state
+        if: always() && steps.check.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No alert-state changes to commit."
+          else
+            git commit -m "chore: grosses integrity alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Grosses Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.check.outputs.skip }}" = "true" ]; then
+            echo "## Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "Data already updated for this week." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            echo "## Updated" >> $GITHUB_STEP_SUMMARY
+            SHOW_COUNT=$(jq '.shows | keys | length' data/grosses.json)
+            WEEK=$(jq -r '.weekEnding' data/grosses.json)
+            echo "Updated grosses data for **$SHOW_COUNT shows** (week ending $WEEK)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "Scrape completed but no new data found." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Record pipeline success
+        continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
+        if: success()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/weekly-grosses.last-success
+          git add data/audit/pipeline-health/
+          git diff --staged --quiet || git commit -m "health: Record weekly-grosses success"
+          bash scripts/lib/push-with-retry.sh

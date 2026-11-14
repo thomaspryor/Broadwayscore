@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6487-pn-e",
+  "planId": "c0d19b7f-552c-4658-b09c-407e1492327a",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:36:43.901Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights, set e of 11 (2012-13..2015-16 opening rows)",
+    "steps": [
+      "shows.json: fences-west-end-2013.openingDate",
+      "shows.json: fences-west-end-2013.openingDateSource",
+      "shows.json: barking-in-essex-west-end-2013.previewsStartDate",
+      "shows.json: barking-in-essex-west-end-2013.openingDate",
+      "shows.json: barking-in-essex-west-end-2013.openingDateSource",
+      "shows.json: the-weir-west-end-2014.previewsStartDate",
+      "shows.json: the-weir-west-end-2014.openingDate",
+      "shows.json: the-weir-west-end-2014.openingDateSource",
+      "shows.json: good-people-west-end-2014.openingDateSource",
+      "shows.json: great-britain-west-end-2014.openingDate",
+      "shows.json: great-britain-west-end-2014.openingDateSource",
+      "shows.json: medea-west-end-2014.openingDateSource",
+      "shows.json: women-on-the-verge-of-a-nervous-breakdown-west-end-2015.previewsStartDate",
+      "shows.json: women-on-the-verge-of-a-nervous-breakdown-west-end-2015.openingDate",
+      "shows.json: women-on-the-verge-of-a-nervous-breakdown-west-end-2015.openingDateSource",
+      "shows.json: beautiful-the-carole-king-musical-west-end-2015.previewsStartDate",
+      "shows.json: beautiful-the-carole-king-musical-west-end-2015.openingDate",
+      "shows.json: beautiful-the-carole-king-musical-west-end-2015.openingDateSource",
+      "shows.json: hang-west-end-2015.openingDateSource",
+      "shows.json: kinky-boots-west-end-2015.previewsStartDate",
+      "shows.json: kinky-boots-west-end-2015.openingDate",
+      "shows.json: kinky-boots-west-end-2015.openingDateSource",
+      "shows.json: lovesong-of-the-electric-bear-west-end-2015.openingDate",
+      "shows.json: lovesong-of-the-electric-bear-west-end-2015.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fences-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-06-19",
+        "newValue": "2013-06-26",
+        "description": "shows.json: fences-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fences-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-06-26 (officiallondontheatre.com; BRO-6487)",
+        "description": "shows.json: fences-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "barking-in-essex-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-09-16",
+        "newValue": "2013-09-06",
+        "description": "shows.json: barking-in-essex-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "barking-in-essex-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-09-16",
+        "newValue": "2013-09-16",
+        "description": "shows.json: barking-in-essex-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "barking-in-essex-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-09-16 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: barking-in-essex-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-weir-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-01-22",
+        "newValue": "2014-01-16",
+        "description": "shows.json: the-weir-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-weir-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-01-22",
+        "newValue": "2014-01-21",
+        "description": "shows.json: the-weir-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-weir-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-01-21 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: the-weir-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "good-people-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: good-people-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "great-britain-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-06-30",
+        "newValue": "2014-06-30",
+        "description": "shows.json: great-britain-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "great-britain-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-06-30 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: great-britain-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "medea-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: medea-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-01-12",
+        "newValue": "2014-12-20",
+        "description": "shows.json: women-on-the-verge-of-a-nervous-breakdown-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-01-12",
+        "newValue": "2015-01-12",
+        "description": "shows.json: women-on-the-verge-of-a-nervous-breakdown-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-01-12 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: women-on-the-verge-of-a-nervous-breakdown-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beautiful-the-carole-king-musical-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-02-24",
+        "newValue": "2015-02-10",
+        "description": "shows.json: beautiful-the-carole-king-musical-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beautiful-the-carole-king-musical-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-02-24",
+        "newValue": "2015-02-24",
+        "description": "shows.json: beautiful-the-carole-king-musical-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beautiful-the-carole-king-musical-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-02-24 (britishtheatre.com; BRO-6487)",
+        "description": "shows.json: beautiful-the-carole-king-musical-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hang-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: hang-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kinky-boots-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-09-15",
+        "newValue": "2015-08-21",
+        "description": "shows.json: kinky-boots-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kinky-boots-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-09-15",
+        "newValue": "2015-09-15",
+        "description": "shows.json: kinky-boots-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kinky-boots-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-09-15 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: kinky-boots-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lovesong-of-the-electric-bear-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-11-04",
+        "newValue": "2015-11-06",
+        "description": "shows.json: lovesong-of-the-electric-bear-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lovesong-of-the-electric-bear-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-11-06 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: lovesong-of-the-electric-bear-west-end-2015.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T14:14:02.916Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for fences-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for fences-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for barking-in-essex-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for barking-in-essex-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for barking-in-essex-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-weir-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-weir-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-weir-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for good-people-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for great-britain-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for great-britain-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for medea-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for women-on-the-verge-of-a-nervous-breakdown-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for women-on-the-verge-of-a-nervous-breakdown-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for women-on-the-verge-of-a-nervous-breakdown-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for beautiful-the-carole-king-musical-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for beautiful-the-carole-king-musical-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for beautiful-the-carole-king-musical-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for hang-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for kinky-boots-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for kinky-boots-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for kinky-boots-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for lovesong-of-the-electric-bear-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for lovesong-of-the-electric-bear-west-end-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

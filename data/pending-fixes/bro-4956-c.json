@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-4956-c",
+  "planId": "5d0c7d2e-8a41-4b6f-9e1a-3c2f7b9d4e61",
+  "status": "applied",
+  "createdAt": "2026-10-10T03:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956 follow-up 2 of 2 (run after bro-4956-b): re-ingest London Box Office's 2026 Blood of my Blood review (Stuart King, 4 stars) into a slot with no committed copy, so nothing from the retired Juniper Blood record can be restored onto it.",
+    "steps": [
+      "Ingest the London Box Office Blood of my Blood review"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=blood-of-my-blood-west-end-2026 --url=https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review --critic=\"Stuart King\"",
+        "description": "London Box Office, Stuart King (4 stars)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T03:47:25.922Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

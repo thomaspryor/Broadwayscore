@@ -1,0 +1,77 @@
+{
+  "issueNumber": "bro-2746",
+  "planId": "b71f7aca-5b54-45b8-955e-1c7a15e5c1fd",
+  "status": "applied",
+  "createdAt": "2026-10-14T15:01:24.579Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2746: audit-review-contamination --strict fails only on class F (5 empty --unknown junk files: no url, no text, no score, no aggregator excerpt; two already wrongShow+isNonReview). Delete them. Inspected 2026-10-14 via inspect-review-files.js (run 38584378880): each shows chars 0, url null, no score. Reversible with a review-file-op restore from review-texts history.",
+    "steps": [
+      "Delete the 5 empty --unknown junk files"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-taste-of-honey-west-end-2019/beyondthecurtain--unknown.json",
+        "description": "BRO-2746: empty --unknown junk (contamination class F): no url, no fullText, no score, no aggregator excerpt."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "franz-and-marie-west-end-2026/london-theatre-reviews--unknown.json",
+        "description": "BRO-2746: empty --unknown junk (contamination class F): no url, no fullText, no score, no aggregator excerpt."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "paranormal-activity-west-end-2025/london-theatre-reviews--unknown.json",
+        "description": "BRO-2746: empty --unknown junk (contamination class F): no url, no fullText, no score, no aggregator excerpt."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "primary-trust-off-broadway-2023/broadwayworld--unknown.json",
+        "description": "BRO-2746: empty --unknown junk (contamination class F): no url, no fullText, no score, no aggregator excerpt."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "stones-in-his-pockets-2001/broadwayworld--unknown.json",
+        "description": "BRO-2746: empty --unknown junk (contamination class F): no url, no fullText, no score, no aggregator excerpt."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T16:00:29.272Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-taste-of-honey-west-end-2019/beyondthecurtain--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted franz-and-marie-west-end-2026/london-theatre-reviews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-west-end-2025/london-theatre-reviews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted primary-trust-off-broadway-2023/broadwayworld--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted stones-in-his-pockets-2001/broadwayworld--unknown.json"
+    }
+  ]
+}

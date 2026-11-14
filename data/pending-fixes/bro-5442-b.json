@@ -1,0 +1,29 @@
+{
+  "issueNumber": "bro-5442-b",
+  "planId": "add385a3-70c4-42a5-85d4-6b2c18539dfd",
+  "status": "superseded",
+  "createdAt": "2026-10-16T08:50:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5442 (b): undo the isNonReviewReason plan a wrote on the Brighton Beach LA Times piece. Its isNonReview stays false: a 2026-08-15 nonReviewOverride judged it a review that discusses staging and performances alongside the closing, and the hand check found it mixed, so the earlier call stands.",
+    "steps": [
+      "revert"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "brighton-beach-memoirs-2009/latimes--james-c-taylor.json",
+        "field": "isNonReviewReason",
+        "oldValue": "BRO-5442: LA Times Culture Monster blog piece on why the revival closed after nine performances; news analysis, not a review.",
+        "newValue": null,
+        "description": "BRO-5442: keep the record consistent with isNonReview false (existing nonReviewOverride)."
+      }
+    ]
+  },
+  "supersededReason": "Superseded in BRO-5935: the Brighton Beach LA Times record now has a later manual non-review decision that explicitly overrules the 2026-08-15 review override. The stored reason differs from oldValue; preserve the newer decision rather than clearing its explanation.",
+  "supersededAt": "2026-10-26T13:01:47.853Z"
+}

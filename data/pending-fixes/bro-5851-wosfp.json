@@ -1,0 +1,337 @@
+{
+  "issueNumber": "bro-5851-wosfp",
+  "planId": "83ef636b-f643-4b4b-83d3-638d0c6ffe74",
+  "status": "applied",
+  "createdAt": "2026-10-22T08:06:39.051Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5851: 2018-23 West End historical rows still storing a WhatsOnStage first performance as openingDate. Set the sourced press night where one was found (9 rows); mark the 11 where a sourced search found none as first-performance-no-press-night-found.",
+    "steps": [
+      "shows.json: the-prisoner-west-end-2018.openingDate",
+      "shows.json: caroline-or-change-west-end-2018.openingDate",
+      "shows.json: the-fishermen-west-end-2019.openingDate",
+      "shows.json: ghost-stories-west-end-2019.openingDate",
+      "shows.json: my-brilliant-friend-part-1-part-2-west-end-2019.openingDate",
+      "shows.json: white-christmas-west-end-2019.openingDate",
+      "shows.json: girl-from-the-north-country-west-end-2019.openingDate",
+      "shows.json: a-christmas-carol-west-end-2020.openingDate",
+      "shows.json: amelie-west-end-2021.previewsStartDate",
+      "shows.json: amelie-west-end-2021.openingDate",
+      "shows.json: the-band-west-end-2018.openingDateSource",
+      "shows.json: still-no-idea-west-end-2018.openingDateSource",
+      "shows.json: war-horse-west-end-2018.openingDateSource",
+      "shows.json: mischief-movie-night-west-end-2020.openingDateSource",
+      "shows.json: love-letters-west-end-2021.openingDateSource",
+      "shows.json: east-is-east-west-end-2021.openingDateSource",
+      "shows.json: magic-goes-wrong-west-end-2021.openingDateSource",
+      "shows.json: 2-22-a-ghost-story-west-end-2021.openingDateSource",
+      "shows.json: a-streetcar-named-desire-west-end-2023.openingDateSource",
+      "shows.json: pretty-woman-the-musical-west-end-2021.openingDateSource",
+      "shows.json: leopoldstadt-west-end-2021.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-prisoner-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-09-12",
+        "newValue": "2018-09-17",
+        "description": "shows.json: the-prisoner-west-end-2018.openingDate 2018-09-12 -> 2018-09-17 (https://playbill.com/article/read-reviews-for-the-prisoner-at-the-national-theatre)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caroline-or-change-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-11-20",
+        "newValue": "2018-11-28",
+        "description": "shows.json: caroline-or-change-west-end-2018.openingDate 2018-11-20 -> 2018-11-28 (https://seatplan.com/london/caroline-or-change-tickets/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-fishermen-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-09-03",
+        "newValue": "2019-09-05",
+        "description": "shows.json: the-fishermen-west-end-2019.openingDate 2019-09-03 -> 2019-09-05 (https://www.theatre-news.com/news/UK/65758/New-Perspectives-The-Fishermen-casting-announcement)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ghost-stories-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-10-03",
+        "newValue": "2019-10-09",
+        "description": "shows.json: ghost-stories-west-end-2019.openingDate 2019-10-03 -> 2019-10-09 (https://www.londontheatre.co.uk/theatre-news/news/casting-announced-for-ghost-stories-west-end-transfer)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-brilliant-friend-part-1-part-2-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-11-12",
+        "newValue": "2019-11-26",
+        "description": "shows.json: my-brilliant-friend-part-1-part-2-west-end-2019.openingDate 2019-11-12 -> 2019-11-26 (https://www.theatre-news.com/news/UK/69942/Production-images-released-for-My-Brilliant-Friend-at-the-National-Theatre)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "white-christmas-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-11-15",
+        "newValue": "2019-11-26",
+        "description": "shows.json: white-christmas-west-end-2019.openingDate 2019-11-15 -> 2019-11-26 (https://www.whatsonstage.com/news/white-christmas-in-the-west-end-opening-night-at-the-dominion-theatre_50457/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "girl-from-the-north-country-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-12-10",
+        "newValue": "2019-12-16",
+        "description": "shows.json: girl-from-the-north-country-west-end-2019.openingDate 2019-12-10 -> 2019-12-16 (https://stagefaves.com/blog/girl-from-the-north-country-back-to-west-end-with-a-cast-featuring-katie-brayben)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2020",
+        "field": "openingDate",
+        "oldValue": "2020-12-07",
+        "newValue": "2020-12-14",
+        "description": "shows.json: a-christmas-carol-west-end-2020.openingDate 2020-12-07 -> 2020-12-14 (https://playbill.com/article/alan-menken-lynn-ahrens-and-mike-ockrents-a-christmas-carol-begins-in-the-west-end-december-7)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amelie-west-end-2021",
+        "field": "previewsStartDate",
+        "oldValue": "2021-06-17",
+        "newValue": "2021-05-20",
+        "description": "shows.json: amelie-west-end-2021.previewsStartDate 2021-06-17 -> 2021-05-20 (https://www.britishtheatre.com/posts/amelie-the-musical-transfers-to-criterion-theatre-london-on-20-may)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amelie-west-end-2021",
+        "field": "openingDate",
+        "oldValue": "2021-06-17",
+        "newValue": "2021-06-02",
+        "description": "shows.json: amelie-west-end-2021.openingDate 2021-06-17 -> 2021-06-02 (https://www.whatsonstage.com/london-theatre/news/amelie-musical-west-end-transfer-full-cast_53673.html)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-band-west-end-2018",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: the-band-west-end-2018.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; gala 4 or 5 Dec 2018 reported, no press night; broadwayworld.com/westend/article/THE-BAND-Announces-Gala-Night-In-Aid-Of-Elton-John-AIDS-Foundation-20181024)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "still-no-idea-west-end-2018",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: still-no-idea-west-end-2018.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; Royal Court lists 31 Oct to 17 Nov 2018 without a press night)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "war-horse-west-end-2018",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: war-horse-west-end-2018.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; 2018 NT return; no press night announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mischief-movie-night-west-end-2020",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: mischief-movie-night-west-end-2020.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; Vaudeville 9 Dec 2020, suspended 16 Dec)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "love-letters-west-end-2021",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: love-letters-west-end-2021.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; 2021 return; no press night announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "east-is-east-west-end-2021",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: east-is-east-west-end-2021.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; Birmingham Rep transfer, press-reviewed in Birmingham)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "magic-goes-wrong-west-end-2021",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: magic-goes-wrong-west-end-2021.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; 2021 return; no press night announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "2-22-a-ghost-story-west-end-2021",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: 2-22-a-ghost-story-west-end-2021.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; Gielgud recast transfer of the Aug 2021 premiere)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-streetcar-named-desire-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: a-streetcar-named-desire-west-end-2023.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; Almeida transfer, press-reviewed at the Almeida in Jan 2023)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pretty-woman-the-musical-west-end-2021",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: pretty-woman-the-musical-west-end-2021.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; 2021 reopening; press night was 2 Mar 2020 (whatsonstage.com/news/pretty-woman-with-aimie-atkinson-and-danny-mac-in-the-west-end-opening-night-photos_51071))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "leopoldstadt-west-end-2021",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: leopoldstadt-west-end-2021.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; 2021 reopening; press night was 12 Feb 2020 (whatsonstage.com/news/leopoldstadt-at-wyndhams-theatre-in-the-west-end-first-look-photos_50894))"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T11:03:58.048Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-prisoner-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for caroline-or-change-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-fishermen-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for ghost-stories-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for my-brilliant-friend-part-1-part-2-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for white-christmas-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for girl-from-the-north-country-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-christmas-carol-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for amelie-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for amelie-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-band-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for still-no-idea-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for war-horse-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for mischief-movie-night-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for love-letters-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for east-is-east-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for magic-goes-wrong-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for 2-22-a-ghost-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-streetcar-named-desire-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for pretty-woman-the-musical-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for leopoldstadt-west-end-2021"
+    }
+  ],
+  "executedIn": "ci"
+}

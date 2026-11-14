@@ -1,0 +1,426 @@
+{
+  "issueNumber": "bro-6332-b",
+  "planId": "815fdef9-fda0-4239-a5f5-d47c65a75f39",
+  "status": "applied",
+  "createdAt": "2026-10-26T14:33:55.181Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6332: fill four 2016-18 placeholder records with sourced outcomes.",
+    "steps": [
+      "significant-other-2017: capitalization",
+      "significant-other-2017: capitalizationSource",
+      "significant-other-2017: recouped",
+      "significant-other-2017: recoupedSource",
+      "significant-other-2017: sources",
+      "significant-other-2017: notes",
+      "significant-other-2017: needsLossEvidence",
+      "sweat-2017: recouped",
+      "sweat-2017: recoupedSource",
+      "sweat-2017: sources",
+      "sweat-2017: notes",
+      "sweat-2017: needsLossEvidence",
+      "miss-saigon-2017: recouped",
+      "miss-saigon-2017: recoupedSource",
+      "miss-saigon-2017: sources",
+      "miss-saigon-2017: notes",
+      "miss-saigon-2017: needsLossEvidence",
+      "the-parisian-woman-2017: capitalization",
+      "the-parisian-woman-2017: capitalizationSource",
+      "the-parisian-woman-2017: capitalizationBasis",
+      "the-parisian-woman-2017: recouped",
+      "the-parisian-woman-2017: recoupedSource",
+      "the-parisian-woman-2017: sources",
+      "the-parisian-woman-2017: notes",
+      "the-parisian-woman-2017: needsLossEvidence"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "significant-other-2017",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3400000,
+        "description": "significant-other-2017: capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "significant-other-2017",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "NYTix (2017 closing article): \"initial capitalization of $3.4 million\"",
+        "description": "significant-other-2017: capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "significant-other-2017",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "significant-other-2017: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "significant-other-2017",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "NYTix (2017 closing article): the show \"certainly did not make a dent in making any returns on its initial capitalization of $3.4 million.\"",
+        "description": "significant-other-2017: recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "significant-other-2017",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://web.archive.org/web/2017/https://www.nytix.com/news/significant-other-closes-due-to-poor-box-office",
+            "date": null
+          }
+        ],
+        "description": "significant-other-2017: sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "significant-other-2017",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Play that ran 79 performances including previews. The cited article puts the capitalization at $3.4 million and says the run did not make a dent in returning it.",
+        "description": "significant-other-2017: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "significant-other-2017",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "significant-other-2017: needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweat-2017",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "sweat-2017: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweat-2017",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "NYTix (2017 closing article): Sweat \"closed at a loss\" like Eclipsed before it.",
+        "description": "sweat-2017: recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweat-2017",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://web.archive.org/web/2019/http://www.nytix.com/news/15960/sweat-sunset-boulevard-close-june-25",
+            "date": null
+          }
+        ],
+        "description": "sweat-2017: sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweat-2017",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Lynn Nottage play (Broadway debut). No capitalization was published in the cited coverage.",
+        "description": "sweat-2017: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweat-2017",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "sweat-2017: needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "miss-saigon-2017",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "miss-saigon-2017: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "miss-saigon-2017",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "NYTix (2017): \"this revival will not enter profits before it shutters in January.\"",
+        "description": "miss-saigon-2017: recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "miss-saigon-2017",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://web.archive.org/web/2019/https://www.nytix.com/news/16038/cats-miss-saigon-revivals-sell-sluggishly",
+            "date": null
+          }
+        ],
+        "description": "miss-saigon-2017: sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "miss-saigon-2017",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Revival; no capitalization was published in the cited coverage.",
+        "description": "miss-saigon-2017: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "miss-saigon-2017",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "miss-saigon-2017: needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-parisian-woman-2017",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4200000,
+        "description": "the-parisian-woman-2017: capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-parisian-woman-2017",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A (Parisian Woman Broadway Ltd Liability Co, signed 2017-12-28): $4,200,000 sold to 12 investors, $0 remaining.",
+        "description": "the-parisian-woman-2017: capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-parisian-woman-2017",
+        "field": "capitalizationBasis",
+        "oldValue": "sold",
+        "newValue": "sold",
+        "description": "the-parisian-woman-2017: capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-parisian-woman-2017",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-parisian-woman-2017: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-parisian-woman-2017",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "NYTix (2018 closing article): \"upon closing, this play will certainly not have made any profits.\"",
+        "description": "the-parisian-woman-2017: recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-parisian-woman-2017",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1707718/000170771817000002/primary_doc.xml",
+            "date": "2017-12-28"
+          },
+          {
+            "type": "trade",
+            "url": "https://web.archive.org/web/2018/http://www.nytix.com/news/17247/uma-thurman-concludes-in-the-parisian-woman",
+            "date": null
+          }
+        ],
+        "description": "the-parisian-woman-2017: sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-parisian-woman-2017",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Capitalization is the amount sold on the SEC Form D/A, not a separately published budget.",
+        "description": "the-parisian-woman-2017: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-parisian-woman-2017",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-parisian-woman-2017: needsLossEvidence"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T14:49:23.836Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for significant-other-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for significant-other-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for significant-other-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for significant-other-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for significant-other-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for significant-other-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for significant-other-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for sweat-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for sweat-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for sweat-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for sweat-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for sweat-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for miss-saigon-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for miss-saigon-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for miss-saigon-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for miss-saigon-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for miss-saigon-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-parisian-woman-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-parisian-woman-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-parisian-woman-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-parisian-woman-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-parisian-woman-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-parisian-woman-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-parisian-woman-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for the-parisian-woman-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,82 @@
+{
+  "issueNumber": "bro-4919-c",
+  "planId": "6e75633e-62ff-4143-8635-c56342155625",
+  "status": "applied",
+  "createdAt": "2026-10-19T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4919 (Death of a Salesman 2026): drop five stale or misattributed copies from the 2026 folder. NYSR's April 9 2026 page carries one review, by Frank Scheck (JSON-LD author, 'By Frank Scheck'; Suskin appears only in the site nav), so the Steven Suskin file is Scheck's review under the wrong name. Variety's review is by Naveen Kumar alone (JSON-LD author), so the Payton Turkeltaub and 'rebecca-rubin' files are byline copies of variety--naveen-kumar.json. The Marilyn Stasio (2012 url) and Peter Marks (2022 url) files are stale copies of reviews that live in the 2012 and 2022 folders, holding Kumar's and Floyd's 2026 text. All five are already excluded from reviews.json, so no live score changes; the 2026 page keeps Scheck, Kumar and Floyd from their own files.",
+    "steps": [
+      "Scheck's NYSR review under Steven Suskin's name (same url and text as nysr--frank-scheck.json; the live page byline is Frank Scheck only).",
+      "Byline copy of Naveen Kumar's Variety review (same url; variety.com JSON-LD author is Naveen Kumar only).",
+      "Byline copy of Naveen Kumar's Variety review (file named rebecca-rubin, criticName already Naveen Kumar, same url).",
+      "Stale copy of Marilyn Stasio's 2012 Variety review url (death-of-a-salesman-2012/variety--marilyn-stasio.json holds it) carrying Kumar's 2026 text.",
+      "Stale copy of Peter Marks' 2022 WaPo review url (death-of-a-salesman-2022/washpost--peter-marks.json holds it) carrying Thomas Floyd's 2026 text (washpost--thomas-floyd.json holds it)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2026/nysr--steven-suskin.json",
+        "description": "Scheck's NYSR review under Steven Suskin's name (same url and text as nysr--frank-scheck.json; the live page byline is Frank Scheck only)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2026/variety--payton-turkeltaub.json",
+        "description": "Byline copy of Naveen Kumar's Variety review (same url; variety.com JSON-LD author is Naveen Kumar only)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2026/variety--rebecca-rubin.json",
+        "description": "Byline copy of Naveen Kumar's Variety review (file named rebecca-rubin, criticName already Naveen Kumar, same url)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+        "description": "Stale copy of Marilyn Stasio's 2012 Variety review url (death-of-a-salesman-2012/variety--marilyn-stasio.json holds it) carrying Kumar's 2026 text."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2026/washpost--peter-marks.json",
+        "description": "Stale copy of Peter Marks' 2022 WaPo review url (death-of-a-salesman-2022/washpost--peter-marks.json holds it) carrying Thomas Floyd's 2026 text."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T23:28:10.329Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/nysr--steven-suskin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/variety--payton-turkeltaub.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/variety--rebecca-rubin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/washpost--peter-marks.json"
+    }
+  ],
+  "executedIn": "ci"
+}

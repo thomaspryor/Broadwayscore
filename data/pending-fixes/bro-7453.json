@@ -1,0 +1,198 @@
+{
+  "issueNumber": "bro-7453",
+  "planId": "b91172c1-2c50-41d8-b2d4-3dbd40898e06",
+  "status": "pending",
+  "createdAt": "2026-11-14T19:05:02.631Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude 10 Broadway-production NYC Theatre excerpts misfiled under regional runs of The Cottage, Purpose and Paranormal Activity",
+    "steps": [
+      "the-cottage-regional-2026/cititour--unknown.json: wrongProduction",
+      "the-cottage-regional-2026/cititour--unknown.json: wrongProductionReason",
+      "the-cottage-regional-2026/ew--unknown.json: wrongProduction",
+      "the-cottage-regional-2026/ew--unknown.json: wrongProductionReason",
+      "the-cottage-regional-2026/nysr--unknown.json: wrongProduction",
+      "the-cottage-regional-2026/nysr--unknown.json: wrongProductionReason",
+      "the-cottage-regional-2026/nytg--unknown.json: wrongProduction",
+      "the-cottage-regional-2026/nytg--unknown.json: wrongProductionReason",
+      "purpose-regional-2026/broadwaynews--unknown.json: wrongProduction",
+      "purpose-regional-2026/broadwaynews--unknown.json: wrongProductionReason",
+      "purpose-regional-2026/nytg--unknown.json: wrongProduction",
+      "purpose-regional-2026/nytg--unknown.json: wrongProductionReason",
+      "purpose-regional-2026/theatermania--unknown.json: wrongProduction",
+      "purpose-regional-2026/theatermania--unknown.json: wrongProductionReason",
+      "purpose-regional-2026/thewrap--unknown.json: wrongProduction",
+      "purpose-regional-2026/thewrap--unknown.json: wrongProductionReason",
+      "purpose-regional-2026/timeout--unknown.json: wrongProduction",
+      "purpose-regional-2026/timeout--unknown.json: wrongProductionReason",
+      "paranormal-activity-boston-regional-2026/nysr--unknown.json: wrongProduction",
+      "paranormal-activity-boston-regional-2026/nysr--unknown.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/cititour--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-cottage-regional-2026/cititour--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/cititour--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2023 Broadway production (matches the-cottage-2023/cititour files), not the 2026 North Coast Repertory Theatre run. Same roundup as BRO-7340.",
+        "description": "the-cottage-regional-2026/cititour--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/ew--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-cottage-regional-2026/ew--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/ew--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2023 Broadway production (matches the-cottage-2023/ew files), not the 2026 North Coast Repertory Theatre run. Same roundup as BRO-7340.",
+        "description": "the-cottage-regional-2026/ew--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/nysr--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-cottage-regional-2026/nysr--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/nysr--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2023 Broadway production (matches the-cottage-2023/nysr files), not the 2026 North Coast Repertory Theatre run. Same roundup as BRO-7340.",
+        "description": "the-cottage-regional-2026/nysr--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/nytg--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-cottage-regional-2026/nytg--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/nytg--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2023 Broadway production (matches the-cottage-2023/nytg files), not the 2026 North Coast Repertory Theatre run. Same roundup as BRO-7340.",
+        "description": "the-cottage-regional-2026/nytg--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/broadwaynews--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "purpose-regional-2026/broadwaynews--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/broadwaynews--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2025 Broadway production (matches the purpose-2025/broadwaynews review), not the 2026 Huntington Theatre run.",
+        "description": "purpose-regional-2026/broadwaynews--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/nytg--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "purpose-regional-2026/nytg--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/nytg--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2025 Broadway production (matches the purpose-2025/nytg review), not the 2026 Huntington Theatre run.",
+        "description": "purpose-regional-2026/nytg--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/theatermania--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "purpose-regional-2026/theatermania--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/theatermania--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2025 Broadway production (matches the purpose-2025/theatermania review), not the 2026 Huntington Theatre run.",
+        "description": "purpose-regional-2026/theatermania--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/thewrap--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "purpose-regional-2026/thewrap--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/thewrap--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2025 Broadway production (matches the purpose-2025/thewrap review), not the 2026 Huntington Theatre run.",
+        "description": "purpose-regional-2026/thewrap--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/timeout--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "purpose-regional-2026/timeout--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/timeout--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt from the 2025 Broadway production (matches the purpose-2025/timeout review), not the 2026 Huntington Theatre run.",
+        "description": "purpose-regional-2026/timeout--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-boston-regional-2026/nysr--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "paranormal-activity-boston-regional-2026/nysr--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-boston-regional-2026/nysr--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7453: NYC Theatre roundup excerpt quoted in the Broadway Review Roundup (paranormal-activity-2026), not the Boston run; the Boston NYSR review is nysr--bob-verini.json.",
+        "description": "paranormal-activity-boston-regional-2026/nysr--unknown.json: wrongProductionReason"
+      }
+    ]
+  }
+}

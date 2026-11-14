@@ -1,0 +1,56 @@
+{
+  "issueNumber": "bro-5373-aa",
+  "planId": "66a643d0-76b8-450f-9198-3038dd70211b",
+  "status": "applied",
+  "createdAt": "2026-10-15T07:31:11.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (aa): add the director (and book writer) to the 2023 NT Standing at the Sky's Edge record so its reviews stop being excluded as belonging to the 2024 transfer.",
+    "steps": [
+      "shows.json creativeTeam"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "standing-at-the-skys-edge-west-end-2023",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Richard Hawley",
+            "role": "Composer",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Richard Hawley",
+            "role": "Composer",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Chris Bush",
+            "role": "Book"
+          },
+          {
+            "name": "Robert Hastie",
+            "role": "Director"
+          }
+        ],
+        "description": "BRO-5373: the 2023 National Theatre (Olivier) production of Standing at the Sky's Edge was directed by Robert Hastie, as was the 2024 Gillian Lynne transfer (whose record lists him). With no director on this record, the multi-production director guard (prior-run-sibling buildMultiProdDirectorGuard) read every 2023 review naming Hastie as belonging to the newer 2024 production: 13 of this show's 22 reviews were excluded as directorMismatch, including two the push ownership gate had lost and plan bro-5373-x restored."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T07:55:54.029Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for standing-at-the-skys-edge-west-end-2023"
+    }
+  ]
+}

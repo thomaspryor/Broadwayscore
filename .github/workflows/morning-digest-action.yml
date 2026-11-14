@@ -1,0 +1,206 @@
+name: Morning Digest
+
+# BRO-6764 (Mac-to-cloud Phase 2b): this Action is the owner's morning digest sender. It was a
+# dry run in BRO-6230. The Mac launchd job (com.broadwayscore.morning-digest) is NOT retired: from the
+# handoff date it keeps running but takes the --autofix-only path (autofix + canary, no email), so it
+# must stay out of config/mac-retired.json (the reconciler would boot out the job that runs autofix).
+#
+# ONE handoff date, config/morning-digest-handoff.json (handoffDate 2026-11-02), read by both
+# sides: the Mac sender no-ops for real owner sends from that ET day (scripts/lib/digest-handoff.js)
+# and this workflow's scheduled sends run only on or after it (the gate step below). So exactly one
+# owner email a day with no gap and no wait for the bootout. ROLLBACK: push handoffDate far out (the
+# Mac sends again, the Action stays quiet) or revert the commit.
+#
+# Sends: schedule, or workflow_dispatch with send=true. Both run send-morning-digest.js
+# --send-to-owner --no-autofix --skip-mac-local (--resend-sent-guard, or --test-send for a test dispatch): never a broadcast (rule 17),
+# one owner email a day (the guard refuses when Resend already shows today's digest; exit 3 =
+# already sent = green; any unreadable guard = red, never a send). Autofix and the canary are
+# NOT here: the Action rows are report-only, and the Mac's existing morning-digest job runs them
+# (--autofix-only path after the handoff date, no install step).
+#
+# CATCH-UP (handoff day 2026-11-02): GitHub started NONE of the three scheduled runs, and this repo
+# is known to drop most scheduled runs (BRO-4282, cron-redispatch.yml). Events are delivered reliably,
+# so the workflow also wakes on every finished Test Suite run on main AND every finished Deploy to Vercel
+# run on main (BRO-7016: on 2026-11-05 no Test Suite run finished between 07:35 and 09:24 ET, so the digest
+# went out at 09:26 ET; Deploy to Vercel finished every 10 to 20 minutes in that gap). Do not add Cron
+# re-dispatch: it is itself woken by Test Suite, so it adds no independence (a Test Suite gap is a Cron
+# re-dispatch gap). A fully quiet weekend morning could still give no wake, and the pager is the backstop.
+# Each wake goes
+# through the same gate (handoff date, 07:45 to 11:30 ET) and then scripts/digest-sent-precheck.js
+# (one Resend read; go only when no digest to the owner exists yet today), so a dropped cron costs
+# minutes, not the owner's morning email. Exactly one email a day still rests on the Resend
+# sent-today guard inside the send, and the concurrency group serialises the wakes. Note: a pending
+# manual dispatch can be replaced by a newer pending wake in that group (more likely now that Deploy to Vercel also wakes it); re-dispatch if a test-send does not appear.
+#
+# Scheduled runs go through scripts/lib/digest-enable-gate.js: nothing before handoffDate and
+# nothing before 07:45 ET (or after 11:30 ET). The cron lines
+# cover both DST offsets (07:50 EDT = 11:50Z, 07:50 EST = 12:50Z, plus a retry), so no seasonal
+# edit is needed. ROLLBACK: push handoffDate far out (see above) or delete the schedule block below.
+#
+# Dispatch without send=true is still the dry run + compare against the Mac's email (kept until
+# the first real scheduled send is verified, then scripts/morning-digest-compare.js goes).
+#
+# Public repo, public logs: the digest's own output goes to a file on the runner, the preview HTML
+# (it can hold signed dispatch links) is never uploaded, and the only public lines are counts and
+# fixed section headings. In dry-run mode pass pubkey_b64 (a one-time RSA public key, base64 PEM,
+# see scripts/lib/sealed-output.js) to get the line-level diff sealed between the run-script markers.
+on:
+  schedule:
+    - cron: '50 11 * * *'
+    - cron: '50 12 * * *'
+    - cron: '50 13 * * *'
+  workflow_run:
+    workflows: ['Test Suite', 'Deploy to Vercel']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      send:
+        description: 'Really send today''s digest to the owner (guarded: refuses if already sent today)'
+        required: false
+        type: boolean
+        default: false
+      test:
+        description: 'With send=true: a one-off "TEST: " email to the owner that skips the sent-today guards and writes no sent-state (for checking the Action by hand)'
+        required: false
+        type: boolean
+        default: false
+      pubkey_b64:
+        description: 'Dry-run only: one-time public key (base64 PEM) to seal the full diff + run output to'
+        required: false
+        default: ''
+
+concurrency:
+  group: morning-digest-action
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  statuses: read
+  actions: read  # login-sources reads workflow runs (gh run list)
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      # No npm ci: the digest's require graph is node built-ins and repo files
+      # only (pinned by tests/unit/morning-digest-action.test.mjs).
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Fetch today's Mac-sent digest from Resend
+        if: github.event_name == 'workflow_dispatch' && !inputs.send
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/morning-digest-compare.js --fetch-mac --out="$RUNNER_TEMP/mac"
+
+      - name: Pin snapshots to when the Mac sent
+        if: github.event_name == 'workflow_dispatch' && !inputs.send
+        run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          # created_at normalised to ISO in node: Resend's format is not one GNU date parses reliably.
+          read -r SENT SINCE < <(node -e "const m=require(process.argv[1]);const t=m.found&&Date.parse(m.created_at);if(t)process.stdout.write(new Date(t).toISOString()+' '+new Date(t-2*3600e3).toISOString())" "$RUNNER_TEMP/mac/mac-meta.json") || true
+          if [ -z "$SENT" ]; then echo "No Mac digest today; snapshots stay at main."; exit 0; fi
+          git_net 300 fetch --quiet --shallow-since="$SINCE" origin main
+          SHA=$(git rev-list -1 --before="$SENT" origin/main)
+          if [ -z "$SHA" ]; then echo "No main commit before $SENT in the fetched history; snapshots stay at main."; exit 0; fi
+          git checkout "$SHA" -- 'data/audit/*-snapshot.json' data/freshness-report.json
+          echo "Snapshots pinned to $SHA (main as of $SENT)."
+
+      - name: Build the digest (dry run, output kept off the public log)
+        if: github.event_name == 'workflow_dispatch' && !inputs.send
+        # lint-allow-swallow: not swallowed; '|| status=$?' keeps the exit code and the step ends with exit "$status"
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          status=0
+          node scripts/send-morning-digest.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \
+            > "$RUNNER_TEMP/digest.log" 2>&1 || status=$?
+          echo "digest dry-run exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, sealed below when a key is given)"
+          grep -E '^\[digest\] (Resend sent-today guard|DRY RUN)' "$RUNNER_TEMP/digest.log" | sed -E 's/\(subject: .*\)$/(subject withheld)/' || true
+          exit "$status"
+
+      - name: Compare with the Mac digest
+        if: always() && github.event_name == 'workflow_dispatch' && !inputs.send
+        env:
+          PUBKEY_B64: ${{ inputs.pubkey_b64 }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/morning-digest-compare.js --diff --mac="$RUNNER_TEMP/mac/mac.html" \
+            --action=data/audit/morning-digest-preview.html --log="$RUNNER_TEMP/digest.log" \
+            ${PUBKEY_B64:+--pubkey-b64="$PUBKEY_B64"}
+
+      - name: Scheduled-send gate (handoff date, 07:45 to 11:30 ET)
+        id: gate
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_run'
+        run: |
+          # Own line so a bad handoff file turns the step red (a failure inside "$(...)" in an argument is swallowed).
+          d=$(node -p "require('./scripts/lib/digest-handoff.js').handoffDate()")
+          node scripts/lib/digest-enable-gate.js "$d"
+
+      - name: Catch-up pre-check (is today's digest already out?)
+        id: precheck
+        if: github.event_name == 'workflow_run' && steps.gate.outputs.go == 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # the pre-check loads send-morning-digest.js (resendSentToday), whose module reads these too
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/digest-sent-precheck.js
+
+      # hygiene-cache-runid-ok: a rolling one-file snapshot (<1 KB) restored from the newest earlier entry; the key must be new each run because caches cannot be overwritten.
+      # "+N since yesterday" board deltas read data/audit/board-report-snapshot.json, which is gitignored
+      # and saved after a send; a fresh runner has none, so carry it between runs in the Actions cache.
+      - name: Restore yesterday's board snapshot
+        if: (github.event_name == 'schedule' && steps.gate.outputs.go == 'true') || (github.event_name == 'workflow_run' && steps.precheck.outputs.go == 'true') || (github.event_name == 'workflow_dispatch' && inputs.send)
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: data/audit/board-report-snapshot.json
+          key: digest-board-snapshot-${{ github.run_id }}
+          restore-keys: digest-board-snapshot-
+
+      - name: Send the digest to the owner
+        if: (github.event_name == 'schedule' && steps.gate.outputs.go == 'true') || (github.event_name == 'workflow_run' && steps.precheck.outputs.go == 'true') || (github.event_name == 'workflow_dispatch' && inputs.send)
+        # lint-allow-swallow: not swallowed; '|| status=$?' keeps the exit code, exit 3 (already sent today) is mapped to green below, everything else exits with it
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+          IS_TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.test && 'true' || 'false' }}
+        run: |
+          status=0
+          if [ "$IS_TEST" = "true" ]; then MODE="--test-send"; else MODE="--resend-sent-guard"; fi
+          node scripts/send-morning-digest.js --send-to-owner --no-autofix --skip-mac-local $MODE \
+            > "$RUNNER_TEMP/digest.log" 2>&1 || status=$?
+          echo "digest send exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, not published)"
+          grep -E '^\[digest\] (Resend sent-today guard|sent to|refusing)' "$RUNNER_TEMP/digest.log" | sed -E 's/\(subject: .*$/(subject withheld)/; s/sent to [^ ]+/sent to owner/' || true
+          if [ "$status" -eq 3 ]; then echo "Already sent today: nothing to do."; exit 0; fi
+          exit "$status"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Morning Digest (Action) Failed'
+          # Manual dry-runs warn; a scheduled or catch-up run that fails can mean no digest today.
+          severity: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_run') && 'critical' || 'warning' }}

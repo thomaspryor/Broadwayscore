@@ -1,0 +1,102 @@
+{
+  "issueNumber": "bro-6559-c",
+  "planId": "e65b69c2-2d69-4130-ba1d-d902931e01a7",
+  "status": "applied",
+  "createdAt": "2026-10-30T03:48:43.105Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Death of a Salesman: recouped with the NY tax credit (Squeaker), owner decision 2026-10-30 on a private industry tip",
+    "steps": [
+      "death-of-a-salesman: recouped (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)",
+      "death-of-a-salesman: recoupedDate (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)",
+      "death-of-a-salesman: recoupedSource (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)",
+      "death-of-a-salesman: designation (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)",
+      "death-of-a-salesman: notes (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "death-of-a-salesman",
+        "showSlug": "death-of-a-salesman",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "death-of-a-salesman: recouped (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "death-of-a-salesman",
+        "showSlug": "death-of-a-salesman",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2026",
+        "description": "death-of-a-salesman: recoupedDate (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "death-of-a-salesman",
+        "showSlug": "death-of-a-salesman",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Industry source (private, Oct 28, 2026): recouped once the NY State Broadway tax credit is counted; the producers are not expected to announce it. No public report; the year is our estimate.",
+        "description": "death-of-a-salesman: recoupedSource (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "death-of-a-salesman",
+        "showSlug": "death-of-a-salesman",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Squeaker",
+        "description": "death-of-a-salesman: designation (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "death-of-a-salesman",
+        "showSlug": "death-of-a-salesman",
+        "field": "notes",
+        "oldValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. Capitalized for $8 million, per The New York Times (Jun 8, 2026), against a Form D offering ceiling of $8.9 million. The Hollywood Reporter noted after closing that no recoupment had been announced (these producers typically do not announce one). A BroadwayWorld forum poster estimated in June that it was about three weeks from recouping; that is a guess, not a report. Its SEC Form D (Loman Broadway Ltd Liability Co, CIK 0002107826, signed Feb 3, 2026) offered $8,900,000 with $0 sold at filing, before the first sale: https://www.sec.gov/Archives/edgar/data/2107826/000210782626000001/xslFormDX01/primary_doc.xml",
+        "newValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. Capitalized for $8 million, per The New York Times (Jun 8, 2026), against a Form D offering ceiling of $8.9 million. The Hollywood Reporter noted after closing that no recoupment had been announced (these producers typically do not announce one). An industry source told us in Oct 2026 that it recouped once the NY State Broadway tax credit is counted; no announcement is expected. A BroadwayWorld forum poster estimated in June that it was about three weeks from recouping; that is a guess, not a report. Its SEC Form D (Loman Broadway Ltd Liability Co, CIK 0002107826, signed Feb 3, 2026) offered $8,900,000 with $0 sold at filing, before the first sale: https://www.sec.gov/Archives/edgar/data/2107826/000210782626000001/xslFormDX01/primary_doc.xml",
+        "description": "death-of-a-salesman: notes (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T04:10:36.952Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    }
+  ],
+  "executedIn": "ci"
+}

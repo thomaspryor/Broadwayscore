@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-5850",
+  "planId": "8d5a1750-79c3-472d-b557-58edab87a311",
+  "status": "applied",
+  "createdAt": "2026-10-23T02:02:28.711Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5850: date 42 closed West End rows from Theatre Record press-night headers (guarded: previews/closing agree, press night within 45d of previews) (part 1 of 2)",
+    "steps": [
+      "slaughterhouse-five-off-west-end-2026: openingDate null -> 2026-06-05 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/6/39284-slaughterhouse-five-or-the-children-039)",
+      "hole-off-west-end-2026: openingDate null -> 2026-07-17 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/7/40814-hole)",
+      "safe-haven-off-west-end-2026: openingDate null -> 2026-01-19 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/1/37994-safe-haven)",
+      "dear-jack-dear-louise-off-west-end-2026: openingDate null -> 2026-04-09 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/4/37999-dear-jack-dear-louise)",
+      "eggs-arent-that-easy-to-make-off-west-end-2026: openingDate null -> 2026-04-02 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/4/39182-eggs-aren-039-t-that-easy)",
+      "grindr-mom-off-west-end-2026: openingDate null -> 2026-02-20 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/2/38419-grindr-mom)",
+      "the-legends-of-them-west-end-2024: openingDate null -> 2024-12-10 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/12/24844-the-legends-of-them)",
+      "expendable-west-end-2024: openingDate null -> 2024-11-27 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/11/18809-expendable)",
+      "kyoto-west-end-2025: openingDate null -> 2025-01-17 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/1/23498-kyoto)",
+      "a-good-house-west-end-2025: openingDate null -> 2025-01-17 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/1/24835-a-good-house)",
+      "the-years-west-end-2025: openingDate null -> 2025-02-04 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/2/26191-the-years)",
+      "more-life-west-end-2025: openingDate null -> 2025-02-12 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/2/33339-more-life)",
+      "manhunt-west-end-2025: openingDate null -> 2025-04-08 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/4/33338-manhunt)",
+      "scenes-from-a-repatriation-west-end-2025: openingDate null -> 2025-04-30 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/4/33341-scenes-from-a-repatriation)",
+      "inter-alia-west-end-2025: openingDate null -> 2025-07-23 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/7/33336-inter-alia)",
+      "othello-west-end-2025: openingDate null -> 2025-11-04 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/11/34863-othello)",
+      "the-little-big-things-west-end-2023: openingDate null -> 2023-09-14 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/9/6959-the-little-big-things)",
+      "sunset-boulevard-west-end-2023: openingDate null -> 2023-10-12 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/10/5967-sunset-boulevard)",
+      "dear-england-west-end-2023: openingDate null -> 2023-10-19 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/10/8305-dear-england)",
+      "lyonesse-west-end-2023: openingDate null -> 2023-10-25 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/10/7591-lyonesse)",
+      "king-lear-west-end-2023: openingDate null -> 2023-10-31 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/10/7190-king-lear)",
+      "mates-in-chelsea-west-end-2023: openingDate null -> 2023-11-09 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/11/7592-mates-in-chelsea)",
+      "plaza-suite-west-end-2024: openingDate null -> 2024-01-28 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/1/7191-plaza-suite)",
+      "the-king-and-i-west-end-2024: openingDate null -> 2024-01-31 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/1/5427-the-king-and-i)",
+      "harry-clarke-west-end-2024: openingDate null -> 2024-03-13 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/3/17240-harry-clarke)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "slaughterhouse-five-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-05",
+        "description": "slaughterhouse-five-off-west-end-2026: openingDate null -> 2026-06-05 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/6/39284-slaughterhouse-five-or-the-children-039)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hole-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-17",
+        "description": "hole-off-west-end-2026: openingDate null -> 2026-07-17 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/7/40814-hole)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "safe-haven-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-01-19",
+        "description": "safe-haven-off-west-end-2026: openingDate null -> 2026-01-19 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/1/37994-safe-haven)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dear-jack-dear-louise-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-04-09",
+        "description": "dear-jack-dear-louise-off-west-end-2026: openingDate null -> 2026-04-09 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/4/37999-dear-jack-dear-louise)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eggs-arent-that-easy-to-make-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-04-02",
+        "description": "eggs-arent-that-easy-to-make-off-west-end-2026: openingDate null -> 2026-04-02 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/4/39182-eggs-aren-039-t-that-easy)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grindr-mom-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-02-20",
+        "description": "grindr-mom-off-west-end-2026: openingDate null -> 2026-02-20 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2026/2/38419-grindr-mom)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-legends-of-them-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-12-10",
+        "description": "the-legends-of-them-west-end-2024: openingDate null -> 2024-12-10 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/12/24844-the-legends-of-them)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "expendable-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-11-27",
+        "description": "expendable-west-end-2024: openingDate null -> 2024-11-27 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/11/18809-expendable)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kyoto-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-01-17",
+        "description": "kyoto-west-end-2025: openingDate null -> 2025-01-17 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/1/23498-kyoto)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-good-house-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-01-17",
+        "description": "a-good-house-west-end-2025: openingDate null -> 2025-01-17 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/1/24835-a-good-house)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-years-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-02-04",
+        "description": "the-years-west-end-2025: openingDate null -> 2025-02-04 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/2/26191-the-years)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "more-life-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-02-12",
+        "description": "more-life-west-end-2025: openingDate null -> 2025-02-12 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/2/33339-more-life)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "manhunt-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-04-08",
+        "description": "manhunt-west-end-2025: openingDate null -> 2025-04-08 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/4/33338-manhunt)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "scenes-from-a-repatriation-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-04-30",
+        "description": "scenes-from-a-repatriation-west-end-2025: openingDate null -> 2025-04-30 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/4/33341-scenes-from-a-repatriation)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inter-alia-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-07-23",
+        "description": "inter-alia-west-end-2025: openingDate null -> 2025-07-23 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/7/33336-inter-alia)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-11-04",
+        "description": "othello-west-end-2025: openingDate null -> 2025-11-04 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2025/11/34863-othello)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-big-things-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-09-14",
+        "description": "the-little-big-things-west-end-2023: openingDate null -> 2023-09-14 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/9/6959-the-little-big-things)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sunset-boulevard-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-10-12",
+        "description": "sunset-boulevard-west-end-2023: openingDate null -> 2023-10-12 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/10/5967-sunset-boulevard)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dear-england-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-10-19",
+        "description": "dear-england-west-end-2023: openingDate null -> 2023-10-19 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/10/8305-dear-england)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lyonesse-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-10-25",
+        "description": "lyonesse-west-end-2023: openingDate null -> 2023-10-25 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/10/7591-lyonesse)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-lear-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-10-31",
+        "description": "king-lear-west-end-2023: openingDate null -> 2023-10-31 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/10/7190-king-lear)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mates-in-chelsea-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-11-09",
+        "description": "mates-in-chelsea-west-end-2023: openingDate null -> 2023-11-09 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/11/7592-mates-in-chelsea)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "plaza-suite-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-01-28",
+        "description": "plaza-suite-west-end-2024: openingDate null -> 2024-01-28 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/1/7191-plaza-suite)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-king-and-i-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-01-31",
+        "description": "the-king-and-i-west-end-2024: openingDate null -> 2024-01-31 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/1/5427-the-king-and-i)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harry-clarke-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-03-13",
+        "description": "harry-clarke-west-end-2024: openingDate null -> 2024-03-13 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/3/17240-harry-clarke)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T03:26:44.790Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for slaughterhouse-five-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for hole-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for safe-haven-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dear-jack-dear-louise-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for eggs-arent-that-easy-to-make-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for grindr-mom-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-legends-of-them-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for expendable-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for kyoto-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-good-house-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-years-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for more-life-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for manhunt-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for scenes-from-a-repatriation-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for inter-alia-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for othello-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-little-big-things-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for sunset-boulevard-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dear-england-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for lyonesse-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for king-lear-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mates-in-chelsea-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for plaza-suite-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-king-and-i-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for harry-clarke-west-end-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

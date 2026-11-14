@@ -1,0 +1,914 @@
+{
+  "description": "Triage calibration corpus: 15 recently-Done + 15 backlog real card snapshots (2026-07-12) + 3 synthetic Tier-1-eligible cards. golden = hand labels. recorded = last calibration run (node scripts/autonomous-calibrate.js). Bars: size agreement ≥80%, absolute exclusions 100%.",
+  "builtAt": "2026-07-12T21:39:11.643Z",
+  "cards": [
+    {
+      "id": "39b637c5-416f-816a-987a-cb4aa1484b06",
+      "name": "Fix CI reds systematically: local pre-push mirror of write-routing lints",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Infra",
+      "tags": [
+        "ci",
+        "infra",
+        "hooks"
+      ],
+      "notes": "Reds triage 2026-07-12: Test Suite x24 (safeWriteReview lint, fixed by PR #423 18:37Z), UGC roundtrip x8 (self-resolved 14:59Z, DB migration window), poller x4 (stale-checkout race, other session). Systemic fix: core.hooksPath pointed at stale .git/hooks so versioned scripts/hooks/pre-push never ran; extract test.yml write-routing lints to scripts/lint-write-routing.sh shared by CI + pre-push; version pre-commit/commit-msg hooks; delegators in .git/hooks. Worktree: worktree-ci-lint-local-gate",
+      "golden": {
+        "size": "M",
+        "eligible": false,
+        "why": "git hooks + lint infra outside Tier-1 paths"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:15.957Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "L",
+        "eligible": false,
+        "failed": null,
+        "reason": "This requires editing CI workflow files (test.yml) and .git/hooks configuration, both explicitly outside Tier-1 scope and touching infra the loop cannot modify."
+      }
+    },
+    {
+      "id": "39a637c5-416f-8101-b9ee-d1dae0c1ebf7",
+      "name": "Actionable-only email alert policy: warning/info never email (owner request, 305-alert inbox)",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "email",
+        "infra",
+        "alerts"
+      ],
+      "notes": "## What changed\nscripts/lib/discord-notify.js: shouldEmailAlert(severity) — only critical/error may email, enforced INSIDE sendEmailAlert so direct callers can't bypass; suppression logs + appends to step summary and is distinguished from delivery failure (no false ::error::). 7 warning/info email call sites silenced centrally. Upgraded to error (still page): all 3 broadcast-block gates (checklist/drift/orphan-unscored in opening-night-broadcast.yml) + WE SERP burst tripwire (runaway credit burn). audit-show-review-gap.js records its dedup hash on policy suppression (was: infinite hourly re-attempts). Tests: alert-email-policy.test.mjs 4/4, registered in test.yml.\n## Why\nOwner (2026-07-11, inbox screenshot, 305 automated alerts): 'I only want ones that I need to action.' FYI signal lives in run logs/step summaries/BSC Daily; the daily drift workflow now runs --strict so real breaches red the run instead of warning silently (Springwood silent-strand class).\n## Verification\nE2E with real Resend keys: warning suppressed WITH keys present; error delivered (one-time test email). CI green (test.yml) on final commit. Ship-check: 2 adversarial reviewers, all P0/P1 fixed.\n## Gotchas\nsendAlert returns false for BOTH suppression and delivery failure — callers keying control flow on it must treat suppression as handled (see audit-show-review-gap fix). New alerts default severity warning; only claim error/critical for same-day-actionable conditions. Memory: feedback_actionable_only_email_",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "deny-tag email"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:15.958Z",
+        "preFilterEligible": false,
+        "preFilterReason": "deny-tag \"email\"",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "39a637c5-416f-81dc-9df0-e7d80ca650d5",
+      "name": "Sunday weekly newsletter audit: stale closings re-announced (closure addedDate re-stamp)",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": null,
+      "tags": [
+        "newsletter",
+        "cast-changes",
+        "data-integrity"
+      ],
+      "notes": "User asked: is the Sunday weekly roundup email ready? Audit found the 2026-07-06 draft (Resend dbf4b3e7) re-announced months-old closings (Moulin Rouge announced 2026-02-05, Ragtime 2026-05-05 + duplicate event, EBT known since 2026-05-18) and lede mentioned Titanique (featured in 06-15 issue) absent from body. Root cause: 2026-07-11 morning cast-changes article sweep (workflow_dispatch run 29144712933) re-extracted old Playbill articles; dedupeByPersonShow kept NEWEST addedDate on collapse (re-stamp); findClosureDupe matched by date only so pre-extension dates created twins. Fixed: data repaired in a19ff0f833 (restored addedDates, deduped Ragtime), draft regenerated via newsletter-draft.yml dispatch (verified clean in Resend), code fixes in worktree newsletter-closure-restamp-fix (dedupeByPersonShow pins earliest addedDate, findClosureDupe any-closure match, generate.mjs lede recentAnnouncedIds parity). Key files: scripts/lib/cast-changes-filters.js, src/lib/cast-changes-filters.ts, scripts/newsletter/generate.mjs, tests/unit/cast-changes-filters.test.mjs. Acceptance: node --test tests/unit/cast-changes-filters.test.mjs passes incl. 2 new regression tests; Resend draft has no Recently Announced Closings section and no Titanique in lede.",
+      "golden": {
+        "size": "M",
+        "eligible": false,
+        "why": "newsletter/data pipeline (Tier 2 territory)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:28.199Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "M",
+        "eligible": false,
+        "failed": null,
+        "reason": "Fix requires editing src/lib/cast-changes-filters.ts and scripts/lib/cast-changes-filters.js plus data repair, all outside Tier-1 paths."
+      }
+    },
+    {
+      "id": "399637c5-416f-8194-9ee6-dc59325c9f47",
+      "name": "Session 2026-07-09: verify dead-model fix + fix rating-editor E2E CI red",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "ci",
+        "scoring",
+        "e2e"
+      ],
+      "notes": "## Goal\\n1) Verify the EOL scoring model claude-sonnet-4-20250514 is fully replaced by claude-sonnet-4-6 across scoring pipeline (fix 404a7dbcae per Glengarry card outcome) and close P0 card 386637c5-416f-8147-b916-c4f3edb70e51 if confirmed. 2) Fix CI red on main: rating-editor E2E fixture timeouts (16 tests) since 2026-07-06, card 397637c5-416f-8184-a94f-d47af39cf7da.",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "deny-tag scoring"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:28.200Z",
+        "preFilterEligible": false,
+        "preFilterReason": "deny-tag \"scoring\"",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "38f637c5-416f-81b7-9598-dd96d606c288",
+      "name": "West End launch: post final draft to r/TheWestEnd (Wed)",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Marketing",
+      "tags": [
+        "west-end"
+      ],
+      "notes": "Due 2026-07-01 (Wed). Final r/TheWestEnd launch draft updated with real data via Claude Code. Live figures: 44 currently playing West End shows with CriticScores, 59 incl Off-West End. Tracking WE + major Off-WE since early March. Highlights: War Horse (back at the National) 91, Paddington 90, Cyrano de Bergerac just opened/top tier, Hercules tier 'Mixed' with warmer audiences, The Devil Wears Prada critics 60 vs audiences 84. Audience sources now include Reddit (Show-Score, Mezzanine, London Box Office, SeatPlan, London Theatre Direct, Reddit).\n\nOptimal slot: Wed 10-11 AM BST (UK lunch peak, secondary spike 11 PM BST). For Tom in South Africa (SAST, UTC+2) that is 11:30 AM-12 PM SAST. Wednesday tied with Tuesday as best day for r/TheWestEnd per Later for Reddit heatmap (497 posts). Personal account, signed Tom. Title under 80 chars, no emoji. Reply fast to early comments.\n\nMUST-FIX before posting: awards paragraph in CC draft says 'ahead of Tony noms' and 'Oliviers coming up soon', but Tonys (June 2026) and Oliviers (April 2026) have both already happened. Rewrite to non-time-bound 'building out an Awards Scorecard, Oliviers included' or cut. VERIFY against live site: 'Cyrano just opened' recency and 'Mixed' tier label wording. Consider trimming the stacked asks (5 currently) toward a single closing question; the 21-years-of-Broadway ask is the easiest to drop for a WE audience.\n\nFollow-up to paused card 369637c5-416f-8164-ba8f-d8afd1ff27cf.",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "human marketing action (Reddit post)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:28.200Z",
+        "preFilterEligible": false,
+        "preFilterReason": "category \"Marketing\" is human territory",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "386637c5-416f-8147-b916-c4f3edb70e51",
+      "name": "Scoring pipeline hardcodes DEAD model claude-sonnet-4-20250514 (EOL) — all new review scoring degraded corpus-wide",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "scoring",
+        "llm",
+        "models",
+        "ensemble"
+      ],
+      "notes": "## Problem (confirmed empirically 2026-06-21)\nThe LLM scoring ensemble hardcodes claude-sonnet-4-20250514 in ~15 places. That model reached EOL June 15 2026 and now returns not_found_error (verified via direct Anthropic API call this session; claude-sonnet-4-6 responds OK). Meanwhile scripts/lib/models.js ALREADY defines the correct CLAUDE_SONNET: 'claude-sonnet-4-6' — the scoring pipeline bypasses it and hardcodes the dead string.\n\nImpact: the Claude leg of the 3-model ensemble (Claude + GPT-4o + Gemini) fails on every scoring attempt since ~June 15. New reviews either degrade to 2-model or fail to score entirely. CONCRETE: Glengarry WE Guardian (Arifa Akbar) + WhatsOnStage (Sarah Crompton) were recovered with full text but could NOT be scored by two CI ensemble runs (27912191259, 27914020938) — both 'completed' but persisted no score — leaving them excluded from the live page (stuck at 17 instead of 19). This is corpus-wide, not Glengarry-specific.\n\n## Production-path hardcodes (must fix)\n- scripts/llm-scoring/index.ts:538 (production scoring entry)\n- scripts/llm-scoring/scorer.ts:160 (ReviewScorer default) + :23 (type union)\n- scripts/llm-scoring/ensemble-scorer.ts:62 (default) + :24 (type union)\n- scripts/llm-scoring/types.ts:470 (type union)\nPlus ~9 test/experiment files (lower priority): comprehensive-experiment, multi-model-critique, model-comparison-experiment, test-prompt-structural-ab, test-consistency, evaluate, test-helen-shaw-fixture, test-prompt-variations, comp",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "deny-tag scoring"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:28.200Z",
+        "preFilterEligible": false,
+        "preFilterReason": "deny-tag \"scoring\"",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "386637c5-416f-81df-8b26-dad417c9a3b1",
+      "name": "Glengarry Glen Ross (West End) — recover missing reviews + de-contaminate",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "review-recovery",
+        "west-end",
+        "opening-night"
+      ],
+      "notes": "## What\nUser reported Glengarry WE (Old Vic, all-female, opened 2026-06-17) showed only ~10-12 reviews vs expected 15-20. Investigated: collection (5 aggregators + SERP + outlet-poller) was working — 53 files pulled. Shortfall was downstream.\n\n## Fixed (committed locally in data/review-texts clone, commit 9e475cccec2; NOT yet pushed — github unreachable this session)\n- Guardian (Arifa Akbar): API slug-match had stored 2017 Slater body (wrongProduction). Re-ingested true 2026 Old Vic review (3805c), deleted 2 stale dup files, cleared duplicateOf.\n- Times (Clive Davis): empty/paywalled body → refetched via cookie auth (4502c).\n- WhatsOnStage (Crompton): stored URL was a behind-the-scenes feature → ingested real review URL (3450c).\n- Time Out (Lukowski): false-positive wrongShow cleared (LLM-confirmed), boilerplate stripped.\n- EW / NY Daily News / Yahoo: Broadway-2025 (Culkin/Odenkirk) contaminants flagged wrongProduction:true.\n\n## Remaining to ship (BLOCKED on github DNS this session)\n1. Push data/review-texts commit to broadway-review-texts repo.\n2. LLM-score the 5 recovered reviews (local scorer hung on EOL model claude-sonnet-4-20250514; use CI 'LLM Ensemble Score Reviews' -f show_id=glengarry-glen-ross-west-end-2026).\n3. Trigger 'Refresh Review Data' rebuild → reviews.json + public/data/shows.\n4. Verify count ~16-17, run verify-review-recovery.js --show --production.\n5. Confirm deploy live.\n\n## Spawned systemic backlog cards\nNYT extraction 386637c5-416f-8148-a0c0-c5191f5829",
+      "golden": {
+        "size": "M",
+        "eligible": false,
+        "why": "review recovery = data repo (Tier 2)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:33.571Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "M",
+        "eligible": false,
+        "failed": null,
+        "reason": "Requires pushing to external data repo, triggering CI scoring/rebuild workflows, and touching data/review-texts — all outside Tier-1 paths and needing network/infra access this loop cannot use."
+      }
+    },
+    {
+      "id": "386637c5-416f-8198-9503-e6ec10dd067e",
+      "name": "Fix CI red on main: cross-market + headline-critic data contamination",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Infra",
+      "tags": [
+        "ci",
+        "data-quality"
+      ],
+      "notes": "ROOT CAUSE: ingest-review-from-url.js (automated audit-aggregator-gap) + poll-loureviews.js called buildManualReviewFields WITHOUT operatorTrust:false, stamping the full operator override set (allowEarlyDate/allowCrossMarket/wrongProductionOverride/wrongProductionManualClear + manual-entry markers) onto machine-ingested aggregator URLs. Those overrides defeated the date + cross-market + wrong-production guards, and shouldAutoClearWrongProduction re-admitted them every rebuild — so reviews of a DIFFERENT production of the same title (West End run, out-of-town tryout, original Broadway run, the film) leaked onto the wrong show entry and counted toward its critic score.\n\nFIX (shipped): (1) operatorTrust option on buildManualReviewFields (default true; automated callers pass false → review stays subject to all guards). (2) ingest-review-from-url.js + poll-loureviews.js pass operatorTrust:false. (3) validate-data.js CHECK 0 backstop: errors on a scored review >180d before show earliest date, not in a priorRun, no humanReviewScore — ignores override fields so the class fails CI regardless. (4) regression test. (5) scripts/fix-aggregator-gap-override-contamination.js one-shot remediation: flagged 218 reviews across 159 shows wrongProduction with durable audit reason (date-proven >90d out of window).\n\nIMPACT: validate-data EXIT 0 (was 3 CI errors). scoring-delta: 86 reviews newly excluded across 57 shows, 28 T1 flips — all verified prior-production/cross-market contamination. Durabil",
+      "golden": {
+        "size": "M",
+        "eligible": false,
+        "why": "data contamination fix (Tier 2)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:50.080Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "L",
+        "eligible": false,
+        "failed": null,
+        "reason": "Fix touches ingestion/scoring/validate-data src infra and a data remediation script outside Tier-1 paths, and involves cross-subsystem override-semantics changes plus a one-shot data fix needing product judgment."
+      }
+    },
+    {
+      "id": "37c637c5-416f-81ac-a5c5-d9146c418bf8",
+      "name": "Beat-the-Critics 'Keep Going' button rage-clicked at step 6/6",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "fhash:fdec060b"
+      ],
+      "notes": "## Problem\nThe 'Keep Going → Next: Best Orchestrations (6 of 6)' button on /beat-the-critics received 3 rage clicks, indicating users are stuck or the button is unresponsive at the final step of the quiz. This is the last step before results, meaning frustrated users may be abandoning right before completion — directly impacting the 59% completion rate (83/141 users drop before results).\n\n## Suggested approach\n1. Reproduce the flow by navigating to step 6 of 6 (Best Orchestrations) and clicking 'Keep Going'. 2. Check for JS errors or async state issues that could cause the button to appear clickable but not advance. 3. Verify the step transition logic handles the final step correctly and doesn't deadlock. 4. Add logging around step advancement to capture failures in production.\n\n## Acceptance criteria\nNo rage clicks on the 'Keep Going' button at step 6/6 in the following week's data. Beat-the-Critics completion rate improves above 65%.\n\n## Evidence\n3 rage clicks on 'Keep Going → Next: Best Orchestrations (6of6)' on /beat-the-critics; funnel shows 41% drop-off (141 started → 83 reached results)",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "src/ UI (Tier 3)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:52.280Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "S",
+        "eligible": false,
+        "failed": null,
+        "reason": "This is a src/ UI button/state-handling fix on a live product surface, matching the rage-click anchor pattern but out of Tier-1 scope for this loop."
+      }
+    },
+    {
+      "id": "37c637c5-416f-8173-99af-ea8f15922744",
+      "name": "Rage clicks on Beat-the-Critics lock-in & nav buttons suggest broken interactions",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "fhash:7c926e2d"
+      ],
+      "notes": "## Problem\nMultiple rage click clusters on /beat-the-critics point to broken or unresponsive UI: 'Lock In: Death of a Salesman →' (2x), 'Lock In: Shoshana Bean →' (2x), 'Keep Going → Next: Best Orchestrations (6 of 6)' (3x), and '← Back' (2x). Users are repeatedly clicking these core flow buttons, suggesting they are either not responding, have a delayed response, or produce unexpected results. This directly impacts the 41% of users who already drop before reaching results.\n\n## Suggested approach\n1) Reproduce the lock-in and navigation button clicks in staging — check for JS errors, double-submission guards, or async state issues that could cause buttons to appear unresponsive. 2) Add loading/disabled states to lock-in buttons after first click to prevent confusion. 3) Verify the '← Back' button correctly restores prior state without resetting progress. 4) Check mobile tap targets — buttons may be too small, causing mis-taps that register as rage clicks.\n\n## Acceptance criteria\nRage clicks on lock-in and navigation buttons on /beat-the-critics drop to 0 in the following week's PostHog data. Beat-the-Critics completion rate improves from 59% toward 70%+.\n\n## Evidence\n7 total rage clicks on /beat-the-critics; specific clusters: 'Keep Going → Next: Best Orchestrations (6of6)' 3x, 'Lock In: Death of a Salesman →' 2x, 'Lock In: Shoshana Bean →' 2x, '← Back' 2x",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "src/ UI (Tier 3)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:54.433Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "S",
+        "eligible": false,
+        "failed": null,
+        "reason": "UI fix in src/beat-the-critics components requiring product/UX judgment and PostHog verification, outside Tier-1 edit scope and unverifiable by a runnable command."
+      }
+    },
+    {
+      "id": "37c637c5-416f-8184-a16b-c360e5f343d5",
+      "name": "Email gate converting at only 1.1% — 71% dismiss rate",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "fhash:4fa87279"
+      ],
+      "notes": "## Problem\nThe email gate modal was shown to 1,382 users this week but only 15 emails were captured — a 1.1% conversion rate. 71% of users actively dismissed the modal, indicating the value proposition or timing is not resonating. This is a critical acquisition channel that is nearly non-functional.\n\n## Suggested approach\n1) Audit the modal's trigger timing — if it fires too early (e.g. on page load), delay it until a user has shown intent (e.g. scrolled 50%, visited 2+ pages). 2) A/B test the copy to emphasize a concrete benefit (e.g. 'Get weekly Broadway score updates'). 3) Consider a softer inline capture instead of a blocking modal. 4) Check if the modal is being shown repeatedly to the same users, inflating the shown count and frustrating repeat visitors.\n\n## Acceptance criteria\nEmail capture conversion rate rises above 5% (from 1.1%) and dismiss rate drops below 50% within 2 weeks of changes going live.\n\n## Evidence\nGate modal shown to 1,382 users; 71% dismissed; only 15 emails captured (1.1% conversion rate)",
+      "golden": {
+        "size": "L",
+        "eligible": false,
+        "why": "conversion redesign needs product judgment + A/B — still open after multiple sessions (relabeled during calibration 2026-07-12)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:11:59.788Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "L",
+        "eligible": false,
+        "failed": null,
+        "reason": "Requires product/design decisions (A/B testing, copy, timing) and touches src/ UI code outside Tier-1 paths, so it cannot be done unattended."
+      }
+    },
+    {
+      "id": "37c637c5-416f-8173-a273-f767cd6ed8c0",
+      "name": "Beat-the-Critics 'Keep Going' final step rage clicks",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "fhash:fdec060b"
+      ],
+      "notes": "## Problem\nThe 'Keep Going → Next: Best Orchestrations (6 of 6)' button on /beat-the-critics is receiving 3 rage clicks, indicating users are tapping it repeatedly without a response. This is the final step before results, meaning frustrated users are abandoning right at the finish line. Combined with the overall 41% drop-off from start to results (141 started, only 83 reached results), broken navigation at step 6 of 6 is likely a significant contributor to incompletion.\n\n## Suggested approach\n1. Reproduce the flow by navigating to the final Beat-the-Critics category (Best Orchestrations, step 6 of 6) and clicking 'Keep Going'. 2. Check for JS errors or async state issues that may prevent the button from advancing. 3. Inspect whether the button becomes unresponsive after a lock-in selection is made or under specific browser/device conditions. 4. Add a loading/disabled state to the button to prevent double-tap confusion and provide visual feedback.\n\n## Acceptance criteria\nThe 'Keep Going' button on step 6 of 6 reliably advances the user to the results screen with no rage clicks observed in the following week's PostHog data. Completion rate from start to results improves above 65%.\n\n## Evidence\n3 rage clicks on 'Keep Going → Next: Best Orchestrations (6of6)' on /beat-the-critics; 41% drop-off from start (141) to results (83)",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "src/ UI (Tier 3)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:01.971Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "S",
+        "eligible": false,
+        "failed": null,
+        "reason": "This is a UI button/state fix in src/ (Beat-the-Critics component), which Tier-1 cannot touch and requires a PostHog-verified acceptance criterion, not a runnable command."
+      }
+    },
+    {
+      "id": "37c637c5-416f-81ce-8e67-ec30887eea85",
+      "name": "Beat-the-Critics 'Lock In: Death of a Salesman' rage clicks",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "fhash:2c9d31d0"
+      ],
+      "notes": "## Problem\nThe 'Lock In: Death of a Salesman →' button on /beat-the-critics is generating 2x rage clicks this week. This is a new entry not covered by existing open issues (which track Shoshana Bean). The pattern suggests the lock-in button UI is broken or unresponsive for multiple show options, not just one — indicating a systemic component-level bug rather than an isolated case.\n\n## Suggested approach\n1. Inspect the 'Lock In' button component for all show options in the Beat-the-Critics flow, not just Shoshana Bean. 2. Check if the click handler is correctly bound for dynamically rendered show options. 3. Verify there are no z-index or overlay issues blocking the tap target on mobile. 4. Review whether the issue is specific to certain show slugs or affects all lock-in buttons.\n\n## Acceptance criteria\nZero rage clicks on any 'Lock In: [Show]' button variant over a 7-day observation window after the fix is deployed.\n\n## Evidence\n2x rage clicks on 'Lock In: Death of a Salesman →' on /beat-the-critics (PostHog rage click log, last 7 days)",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "src/ UI (Tier 3)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:03.670Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "S",
+        "eligible": false,
+        "failed": null,
+        "reason": "Fixing a rage-click button requires editing src/ UI components, which is outside Tier-1 paths for this loop."
+      }
+    },
+    {
+      "id": "37c637c5-416f-8193-ae80-e27c2c1dacd3",
+      "name": "Beat-the-Critics 'Keep Going' final step rage clicks",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "fhash:117699da"
+      ],
+      "notes": "## Problem\nThe 'Keep Going → Next: Best Orchestrations (6 of 6)' button on /beat-the-critics is receiving 3 rage clicks, suggesting it is unresponsive or broken at the final step of the quiz. This is the last question before results, meaning users are hitting a wall right before completion — a critical drop-off point. The funnel already shows 41% of starters never reach results (141 started → 83 reached results), and a broken final-step button likely contributes directly to that gap.\n\n## Suggested approach\n1. Reproduce the issue by navigating to question 6 of 6 (Best Orchestrations) and clicking 'Keep Going'. 2. Check for JS errors or event handler failures on that specific step. 3. Verify that the button's click handler is correctly wired for the last question index and doesn't have an off-by-one error. 4. Confirm the transition to the results page fires correctly after step 6.\n\n## Acceptance criteria\nZero rage clicks on the 'Keep Going' button at step 6 of 6 in a subsequent week's data; funnel completion rate improves from 59% toward 70%+.\n\n## Evidence\n3x rage clicks on 'Keep Going → Next: Best Orchestrations (6of6)' on /beat-the-critics; Beat-the-Critics funnel shows 41% drop-off (141 started → 83 reached results)",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "src/ UI (Tier 3)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:05.886Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "S",
+        "eligible": false,
+        "failed": null,
+        "reason": "This is a UI button/handler fix in src/ (out of Tier-1 scope) even though it matches the rage-click anchor for a small, well-specified fix."
+      }
+    },
+    {
+      "id": "37c637c5-416f-81e4-9514-da3bfde8bdfe",
+      "name": "Email gate converting at only 1.1% — modal UX failing",
+      "status": "Done",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "fhash:2fd34df5"
+      ],
+      "notes": "## Problem\nThe email gate modal was shown to 1,383 users this week but captured only 15 emails — a 1.1% conversion rate. 71% of users dismissed it outright. This is a critical monetization and list-building failure: the vast majority of users are actively rejecting the gate rather than engaging with it.\n\n## Suggested approach\n1. Audit the modal's copy, timing, and trigger conditions — is it appearing too early (e.g. on first pageload) before users have seen value? 2. A/B test a softer value proposition ('Get weekly Broadway score updates') vs. a harder gate. 3. Review whether the dismiss action is too easy (e.g. large X button, clicking outside closes it). 4. Check if the modal is re-shown to returning users who already dismissed — if not, the 71% dismiss rate may be even worse than it appears for new users.\n\n## Acceptance criteria\nEmail gate conversion rate rises above 5% within 2 weeks of changes. Dismiss rate drops below 50%.\n\n## Evidence\nGate modal shown to 1,383 users; 71% dismissed; 15 emails captured (1.1% conversion rate)",
+      "golden": {
+        "size": "L",
+        "eligible": false,
+        "why": "conversion redesign needs product judgment + A/B — still open after multiple sessions (relabeled during calibration 2026-07-12)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "L",
+        "eligible": false,
+        "failed": null,
+        "reason": "Requires product/business judgment, A/B testing, and src/ UI changes with outcome measured by live user metrics, none of which the Tier-1 loop can do unattended."
+      }
+    },
+    {
+      "id": "340637c5-416f-8178-bcbb-f3a596180838",
+      "name": "Send trial projects to Sarah Jae",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Marketing",
+      "tags": [],
+      "notes": "TODAY urgency. Send trial social media projects to Sarah Jae Leiber (publicist, former BroadwayWorld editor, strongest candidate for managing BWSC social accounts). This is the P0 for today 4/12.",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "human action (send work to a person)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "category \"Marketing\" is human territory",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "33e637c5-416f-8189-bb18-d33d71e6a0bf",
+      "name": "LinkedIn launch post for Broadway Scorecard",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Marketing",
+      "tags": [],
+      "notes": "Builder narrative angle: AI stress-test side project, lessons on the 80/20 iceberg, solo builder learnings. Post Tue/Wed 8-10 AM ET. Draft ready for review. Inspired by Ido Gal's chromolume.io LinkedIn launch post.",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "marketing content, human voice"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "category \"Marketing\" is human territory",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "331637c5-416f-818e-9050-f8531924bd00",
+      "name": "Follow up with TodayTix on affiliate approval",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Partnerships",
+      "tags": [],
+      "notes": "Impact application pending since Feb 26. Caroline was asked to nudge previously. Check if approved; if not, follow up again.",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "human follow-up"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "category \"Partnerships\" is human territory",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "331637c5-416f-81ea-9b65-d7e81f88b8d1",
+      "name": "Send updated Beat The Critics prototype to Caroline",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Partnerships",
+      "tags": [],
+      "notes": "Tony nominations are late April. Send updated prototype with Dan Rubins confirmed as panelist. Need to align on co-branding, distribution plan, email list ownership, and prize details before Brian meeting on Apr 21. Caroline already called it 'a no brainer.' P1 priority.",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "human action (send)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "category \"Partnerships\" is human territory",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "330637c5-416f-8108-b2ca-e3d45f35dc15",
+      "name": "Reply to u/hcosmob (VP at AKA NYC)",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Partnerships",
+      "tags": [],
+      "notes": "Reddit DM from Mar 20. VP at AKA NYC (major Broadway ad agency). Said: 'I’ve been a business strategist on broadway for 10 years and I’m blown away by Broadway Scorecard. I’ve introduced the scorecard to my colleagues.' High-value industry contact.",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "human reply"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "category \"Partnerships\" is human territory",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "330637c5-416f-8148-9b70-fdbbee66ed31",
+      "name": "Recruit 2 more Beat the Critics™ critic panelists",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Marketing",
+      "tags": [],
+      "notes": "Dan Rubins confirmed. Need 2 more for panel of 3. DM r/Broadway power users who write thoughtful reviews. Do NOT post an open call — keeps concept under wraps. Odd number avoids ties.",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "human recruiting"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "category \"Marketing\" is human territory",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "330637c5-416f-81de-839b-dccf4a2ab15f",
+      "name": "Email volunteers",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Admin",
+      "tags": [],
+      "notes": "",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "human email action"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "title is a human action (\"Email volunteers\")",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "330637c5-416f-8163-bb1d-f5854f32e6bd",
+      "name": "Reconnect App Store Connect",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Admin",
+      "tags": [
+        "ios-app"
+      ],
+      "notes": "",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "deny-tag ios-app"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "title is a human action (\"Reconnect App Store Connect\")",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "330637c5-416f-81d2-ac81-d4143a5b859c",
+      "name": "Verify ticket referral tracking is working",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "commercial"
+      ],
+      "notes": "",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "deny-tag commercial"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:07.923Z",
+        "preFilterEligible": false,
+        "preFilterReason": "deny-tag \"commercial\"",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "330637c5-416f-813a-b829-fc39352d13ce",
+      "name": "Delete and re-gather Teeth 'n' Smiles reviews from scratch",
+      "status": "Not started",
+      "priority": "P0 Now",
+      "category": "Product",
+      "tags": [
+        "scraping",
+        "west-end",
+        "data-quality"
+      ],
+      "notes": "22 review files accumulated from pre-opening preview discovery are a mess (stale publishDates, phantom duplicates, conflicting flags). Only 1 of 9+ real reviews reaches reviews.json. Delete all files in broadway-review-texts/teeth-n-smiles-west-end-2026/, re-run poller with skip_serp. Fixed code on main (WET URL extraction, LBO sitemap, BWW skip, domain exemption) should create clean files. See handoff prompt in session.",
+      "golden": {
+        "size": "M",
+        "eligible": false,
+        "why": "data re-gather (Tier 2)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:17.453Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "M",
+        "eligible": false,
+        "failed": null,
+        "reason": "Deleting/re-gathering scraped review data and running the poller touches data/ and scraping infra outside Tier-1 paths, so it can't be done unattended by this loop."
+      }
+    },
+    {
+      "id": "39b637c5-416f-81b8-b48a-d0e5c207aff4",
+      "name": "Sweep for false-positive wrongProduction from misparsed publishDate + corroboration guard",
+      "status": "Not started",
+      "priority": "P1 Next",
+      "category": null,
+      "tags": [
+        "data-quality",
+        "reviews"
+      ],
+      "notes": "## Problem\nMisparsed publishDate causes flag-wrong-production-by-date to auto-flag CURRENT reviews as wrongProduction, silently suppressing legit T1 reviews. Incident 2026-07-11: care-west-end-2026/thestage--sam-marlowe.json stamped publishDate 2023-10-12 (actual 2026-05-20 per live page); auto-flagged at the 20:44 rebuild, reddened Data Validation, suppressed a 4/5-star Stage review. The file ITSELF contained contradicting evidence (theatreRecordUrl .../archive/2026/5/..., theatreReviewsStars from the current roundup) that the flagger ignored.\n\n## Evidence\nbroadway-review-texts commit ed6f662bf6 (the manual fix). Validation error text: 'review dated 2023-10-12 is 942d before the show's earliest date 2026-05-11'.\n\n## Suggested approach\n1. SWEEP: query review-texts for wrongProduction:true files where in-file corroboration contradicts the date — theatreRecordUrl year within the show's run window, or theatreReviewsExcerpt/theStageExcerpt/aggregatorStars present (current-run aggregators only cite current reviews). For each hit, verify live-page date, correct publishDate, clear with the FULL manual-clear field set (memory/feedback_manual_review_protection_fields.md — all 8 fields).\n2. PREVENT: teach flag-wrong-production-by-date (scripts/flag-wrong-production-by-date.js) to skip+warn when theatreRecordUrl year (or another current-run corroboration field) matches the current production window — misparse likely, human review instead of auto-flag.\n\n## Acceptance criteria\nSweep repor",
+      "golden": {
+        "size": "M",
+        "eligible": false,
+        "why": "review-data sweep (Tier 2)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:24.785Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "M",
+        "eligible": false,
+        "failed": null,
+        "reason": "Requires editing scoring infra (flag-wrong-production-by-date.js) and modifying review data files with live-page verification, both outside Tier-1 paths and requiring human judgment."
+      }
+    },
+    {
+      "id": "39a637c5-416f-8137-a105-f2c88ea166ee",
+      "name": "NYC rollout: anchored bands + V6 decompression (Hamilton 91→95)",
+      "status": "Not started",
+      "priority": "P1 Next",
+      "category": null,
+      "tags": [
+        "scoring",
+        "llm",
+        "calibration"
+      ],
+      "notes": "## Problem\nBroadway scores read too low at the top: only 67 of 12,318 pure-LLM Broadway reviews score 95+ (max 98) because Broadway still uses the pre-V6 compressed prompt; starred Broadway reviews use flat conversions instead of anchored bands. West End got both fixes 2026-05-16 (anchored raves reach 95-100, 16.7% of V6 scores are 95+). Phase A calibration (3c11ddd675, shelved flag-OFF per user, deleted dd9ad8313b in favor of V6) was the interim patch for exactly this — Broadway never received the successor.\n\n## Evidence\nFull plan + impact simulation: ~/Documents/claude-outputs/nyc-anchored-rollout-plan.md (+5 CSVs same folder). Combined simulation (anchored clamp + Phase A curve as V6 proxy, canonical computeCriticScore): open Broadway mean +1.6 — Hamilton 91→95, Book of Mormon 87→91, Chicago 86→90, Lion King 84→88, Oh Mary 85→89; Wicked stays 65; weak shows -1. Last season mean +0.7. Review-level: 2,107 anchored changes (mean -0.2) + 11,885 calibration-proxy changes (mean +0.9, 95+ count 67→~1,200).\n\n## Suggested approach\nPlan sequence in the doc: (1) freeze snapshot; (2) add broadway+off-broadway to ANCHORED_MARKETS (src/config/scoring.ts + scripts/lib/star-reliability.js mirror); (3) remove WE/OWE hard filter in flag-late-star-reanchor.js, dry-run expect ~2,580, apply; (4) drain via reason-scoped parallel dispatches; (5) Component 2: promptVersion-outdated rescore of ~12,300 pure-LLM BW reviews, sharded, built-in A/B gate, ~$430; (6) rebuild + scoring-delta vs snapshot +",
+      "golden": {
+        "size": null,
+        "eligible": false,
+        "why": "deny-tag scoring"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:24.785Z",
+        "preFilterEligible": false,
+        "preFilterReason": "deny-tag \"scoring\"",
+        "decision": "skip",
+        "size": null,
+        "eligible": false,
+        "failed": null,
+        "reason": null
+      }
+    },
+    {
+      "id": "39a637c5-416f-8111-96da-db1f995f2626",
+      "name": "Byline recovery: outlet--unknown entries in reviews.json where a named sibling file exists",
+      "status": "Not started",
+      "priority": "P1 Next",
+      "category": "Product",
+      "tags": [
+        "review-recovery",
+        "bylines"
+      ],
+      "notes": "## Problem\nreviews.json contains 'Unknown' critic entries where the show dir ALSO has a named-byline file for the same review (same/unwrapped URL) — rebuild picked the unknown-byline sibling. Live proof: jesus-christ-superstar-west-end-2026 shows 'artsdesk / Unknown' while artsdesk--rachel-halliburton.json (score 85, complete) sits unpicked (card 39a637c5-416f-813a). Site displays 'Unknown' where a real critic name exists — quality + credibility issue on live pages.\n\n## Suggested approach\nQuery: for every reviews.json entry with criticName Unknown, scan its show dir for a sibling whose unwrapped normalized URL matches and criticName != Unknown → candidate pairs. Count first (probe-before-scale). Then fix the rebuild pick: wherever the URL-cluster / fingerprint dedup tiebreaks between an --unknown file and a named file with matching fingerprint/URL, prefer the named one (rebuild-all-reviews.js dedup passes; INCLUSION WATCHLIST — must run scoring-delta.js + test-temporal-override-regression.js). Backfill: rebuild after fix; verify count-neutral (entries swap byline, not count).\n\n## Acceptance criteria\nCandidate-pair count reported; after fix, JCS artsdesk entry shows Rachel Halliburton; scoring-delta shows byline-only changes (no score flips); no new suppressions in daily drift run.",
+      "golden": {
+        "size": "M",
+        "eligible": false,
+        "why": "reviews.json data recovery (Tier 2)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:30.718Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "M",
+        "eligible": false,
+        "failed": null,
+        "reason": "Fixing rebuild dedup tiebreak logic and backfilling reviews.json requires editing src/ scoring/rebuild scripts and data/ files outside Tier-1 scope."
+      }
+    },
+    {
+      "id": "395637c5-416f-81cc-b213-e590fc12f2b0",
+      "name": "Missing show: Between Two Knees",
+      "status": "Not started",
+      "priority": "P1 Next",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "missing-show",
+        "fhash:28feb17f",
+        "auto-fix-attempted",
+        "auto-fix-skipped"
+      ],
+      "notes": "## Missing production (from zero-results search)\nUsers searched for **\"between two knees\"** 1x in the last 7 days and got zero results.\nLikely production: **Between Two Knees** (broadway).\n\n## Why flagged\nBetween Two Knees is a real production by the 1491s theatre company that played Off-Broadway and had a noted run; it is a legitimate production that the site may not yet cover.\n\n## Next step (manual — do NOT auto-add)\n1. Confirm the production exists and its venue/opening date via Playbill.\n2. Run `node scripts/validate-show-venue.js` before adding any shows.json entry (CLAUDE.md Rule 3).\n3. If valid, add the show and let discovery/scraping pick up reviews.\n\n## Evidence\nPostHog search_performed, has_results=false, query=\"between two knees\", 1 searches (7d).",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "shows.json data add (Tier 2)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:45.599Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "S",
+        "eligible": false,
+        "failed": null,
+        "reason": "Adding a new show requires editing data/shows.json and manual Playbill confirmation, which is outside Tier-1 scope and needs human judgment."
+      }
+    },
+    {
+      "id": "395637c5-416f-81ec-95ca-cf1f85cc06a3",
+      "name": "Rage clicks on Hamilton show page",
+      "status": "Not started",
+      "priority": "P1 Next",
+      "category": "Product",
+      "tags": [
+        "friction",
+        "fhash:a72fe137",
+        "auto-fix-attempted",
+        "auto-fix-skipped"
+      ],
+      "notes": "## Problem\nThe /show/hamilton page recorded 2 rage clicks this week. Hamilton is one of the top ticket-click shows (13 TodayTix clicks), meaning it attracts high-intent users. Frustrated interactions on a high-traffic, high-conversion show page risk losing users at the bottom of the funnel where they are closest to purchasing.\n\n## Suggested approach\nUse PostHog session recordings filtered to /show/hamilton to identify exactly which element is being rage-clicked. Common culprits on show pages include non-functional 'See all award scores' links (already a known issue on other show pages), broken image carousels, or unresponsive ticket buttons. Apply the same fix pattern used for other show page rage click resolutions.\n\n## Acceptance criteria\nSession recordings show zero rage click events on /show/hamilton for 7 consecutive days post-fix. The specific element is identified and either made functional or removed.\n\n## Evidence\n2 rage clicks recorded on /show/hamilton",
+      "golden": {
+        "size": "S",
+        "eligible": false,
+        "why": "src/ UI (Tier 3)"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:48.303Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "skip",
+        "size": "S",
+        "eligible": false,
+        "failed": null,
+        "reason": "Fixing a rage-click element requires editing src/ show-page components and PostHog investigation, which is outside Tier-1 scope for this loop."
+      }
+    },
+    {
+      "id": "synthetic-tier1-test-coverage",
+      "synthetic": true,
+      "name": "Add unit-test coverage for chunkText overflow boundaries",
+      "status": "Not started",
+      "priority": "P2 Later",
+      "category": "Product",
+      "tags": [
+        "tech-debt",
+        "tests"
+      ],
+      "notes": "## Problem\nchunkText (notion-brain page-body overflow) has no test for the hard-cut branch (no newline within size budget) or the exact-boundary case (text.length === size). A regression here silently truncates Notion card bodies.\n\n## Suggested approach\nNew tests/unit/notion-chunk-text.test.mjs exercising: text shorter than size, newline-boundary preference, hard-cut when no good break, empty string, exact boundary. Pure function — require() it per CLAUDE.md §15.\n\n## Acceptance criteria\nnode --test tests/unit/notion-chunk-text.test.mjs passes with ≥5 cases including the hard-cut branch.",
+      "golden": {
+        "size": "S",
+        "eligible": true,
+        "why": "tests/** only, pure function, runnable check"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:50.791Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "attempt",
+        "size": "S",
+        "eligible": true,
+        "failed": null,
+        "reason": "Adding a single pure-function unit test file under tests/ is mechanical and well-specified, fully within Tier-1 scope."
+      }
+    },
+    {
+      "id": "synthetic-tier1-runbook-doc",
+      "synthetic": true,
+      "name": "Write docs/triage-queue-format.md documenting autonomous-queue.json",
+      "status": "Not started",
+      "priority": "P2 Later",
+      "category": "Product",
+      "tags": [
+        "docs"
+      ],
+      "notes": "## Problem\ndata/audit/autonomous-queue.json has no format documentation; consumers must reverse-engineer the executor.\n\n## Suggested approach\nNew docs/triage-queue-format.md: top-level keys (generatedAt, mode, counts, plan, entries), per-entry decision values, worked example. Source of truth: scripts/lib/autonomous-triage-core.js.\n\n## Acceptance criteria\ndocs/triage-queue-format.md exists and names every top-level key present in a freshly generated queue file (spot-check with node -e against the doc).",
+      "golden": {
+        "size": "S",
+        "eligible": true,
+        "why": "docs/** only"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:52.345Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "attempt",
+        "size": "S",
+        "eligible": true,
+        "failed": null,
+        "reason": "Writing a new docs file describing an existing JSON schema is a mechanical, single-file documentation task within Tier-1 docs/ path."
+      }
+    },
+    {
+      "id": "synthetic-tier1-bsc-next-column",
+      "synthetic": true,
+      "name": "bsc-next --list: include priority column in output",
+      "status": "Not started",
+      "priority": "P2 Later",
+      "category": "Product",
+      "tags": [
+        "tooling",
+        "dx"
+      ],
+      "notes": "## Problem\n`bsc-next --list` prints task id/status/subject but not the Notion priority, so choosing --pick N requires guessing which items are P0.\n\n## Suggested approach\nIn scripts/bsc-next.js --list branch, prefix each line with the parsed priority (priorityRank already exists). Update scripts/bsc-next.test.mjs if it asserts on list formatting.\n\n## Acceptance criteria\nnode scripts/bsc-next.js --list shows a P-column; node --test scripts/bsc-next.test.mjs stays green.",
+      "golden": {
+        "size": "S",
+        "eligible": true,
+        "why": "enumerated tooling file scripts/bsc-next.js"
+      },
+      "recorded": {
+        "at": "2026-07-12T22:12:54.153Z",
+        "preFilterEligible": true,
+        "preFilterReason": null,
+        "decision": "attempt",
+        "size": "S",
+        "eligible": true,
+        "failed": null,
+        "reason": "Small mechanical change to one script's --list branch plus test update, fully within Tier-1 allowed paths."
+      }
+    }
+  ],
+  "lastCalibration": {
+    "at": "2026-07-12T22:12:54.153Z",
+    "sizeAgreement": {
+      "agree": 17,
+      "of": 19,
+      "pct": 89
+    },
+    "eligibilityAgreement": {
+      "agree": 33,
+      "of": 33,
+      "pct": 100
+    },
+    "absoluteExclusions": {
+      "violations": [],
+      "of": 13
+    },
+    "triageFailures": [],
+    "disagreements": {
+      "size": [
+        "Fix CI reds systematically: local pre-push mirror of write-routing lints: golden M vs recorded L",
+        "Fix CI red on main: cross-market + headline-critic data contamination: golden M vs recorded L"
+      ],
+      "eligibility": []
+    }
+  }
+}

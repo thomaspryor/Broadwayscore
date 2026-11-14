@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6487-pn-c",
+  "planId": "1ed0f0bd-191a-4352-a9b4-9f89a21e63f6",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:36:42.114Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights, set c of 11 (2012-13..2015-16 opening rows)",
+    "steps": [
+      "shows.json: doktor-glas-west-end-2013.previewsStartDate",
+      "shows.json: doktor-glas-west-end-2013.openingDate",
+      "shows.json: doktor-glas-west-end-2013.openingDateSource",
+      "shows.json: the-cripple-of-inishmaan-west-end-2013.openingDate",
+      "shows.json: the-cripple-of-inishmaan-west-end-2013.openingDateSource",
+      "shows.json: much-ado-about-nothing-west-end-2013.openingDate",
+      "shows.json: much-ado-about-nothing-west-end-2013.openingDateSource",
+      "shows.json: ghosts-west-end-2013.openingDate",
+      "shows.json: ghosts-west-end-2013.openingDateSource",
+      "shows.json: a-small-family-business-west-end-2014.previewsStartDate",
+      "shows.json: a-small-family-business-west-end-2014.openingDate",
+      "shows.json: a-small-family-business-west-end-2014.openingDateSource",
+      "shows.json: the-importance-of-being-earnest-west-end-2014.openingDate",
+      "shows.json: the-importance-of-being-earnest-west-end-2014.openingDateSource",
+      "shows.json: let-it-be-west-end-2014.previewsStartDate",
+      "shows.json: let-it-be-west-end-2014.openingDate",
+      "shows.json: let-it-be-west-end-2014.openingDateSource",
+      "shows.json: treasure-island-west-end-2014.previewsStartDate",
+      "shows.json: treasure-island-west-end-2014.openingDate",
+      "shows.json: treasure-island-west-end-2014.openingDateSource",
+      "shows.json: a-view-from-the-bridge-west-end-2015.previewsStartDate",
+      "shows.json: a-view-from-the-bridge-west-end-2015.openingDate",
+      "shows.json: a-view-from-the-bridge-west-end-2015.openingDateSource",
+      "shows.json: violence-and-son-west-end-2015.openingDate",
+      "shows.json: violence-and-son-west-end-2015.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doktor-glas-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-04-18",
+        "newValue": "2013-04-16",
+        "description": "shows.json: doktor-glas-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doktor-glas-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-04-18",
+        "newValue": "2013-04-18",
+        "description": "shows.json: doktor-glas-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doktor-glas-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-04-18 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: doktor-glas-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cripple-of-inishmaan-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-06-08",
+        "newValue": "2013-06-18",
+        "description": "shows.json: the-cripple-of-inishmaan-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cripple-of-inishmaan-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-06-18 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: the-cripple-of-inishmaan-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-09-07",
+        "newValue": "2013-09-19",
+        "description": "shows.json: much-ado-about-nothing-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-09-19 (officiallondontheatre.com; BRO-6487)",
+        "description": "shows.json: much-ado-about-nothing-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ghosts-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-12-17",
+        "newValue": "2014-01-14",
+        "description": "shows.json: ghosts-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ghosts-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-01-14 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: ghosts-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-small-family-business-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-04-08",
+        "newValue": "2014-04-01",
+        "description": "shows.json: a-small-family-business-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-small-family-business-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-04-08",
+        "newValue": "2014-04-08",
+        "description": "shows.json: a-small-family-business-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-small-family-business-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-04-08 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: a-small-family-business-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-06-27",
+        "newValue": "2014-07-17",
+        "description": "shows.json: the-importance-of-being-earnest-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-07-17 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: the-importance-of-being-earnest-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "let-it-be-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-07-10",
+        "newValue": "2014-07-09",
+        "description": "shows.json: let-it-be-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "let-it-be-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-07-10",
+        "newValue": "2014-07-10",
+        "description": "shows.json: let-it-be-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "let-it-be-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-07-10 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: let-it-be-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "treasure-island-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-12-01",
+        "newValue": "2014-12-03",
+        "description": "shows.json: treasure-island-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "treasure-island-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-12-01",
+        "newValue": "2014-12-10",
+        "description": "shows.json: treasure-island-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "treasure-island-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-12-10 (uktw.co.uk; BRO-6487)",
+        "description": "shows.json: treasure-island-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-view-from-the-bridge-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-02-10",
+        "newValue": "2015-02-11",
+        "description": "shows.json: a-view-from-the-bridge-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-view-from-the-bridge-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-02-10",
+        "newValue": "2015-02-16",
+        "description": "shows.json: a-view-from-the-bridge-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-view-from-the-bridge-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-02-16 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: a-view-from-the-bridge-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "violence-and-son-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-06-03",
+        "newValue": "2015-06-08",
+        "description": "shows.json: violence-and-son-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "violence-and-son-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-06-08 (royalcourttheatre.com; BRO-6487)",
+        "description": "shows.json: violence-and-son-west-end-2015.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T13:30:43.401Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for doktor-glas-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for doktor-glas-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for doktor-glas-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-cripple-of-inishmaan-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-cripple-of-inishmaan-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for much-ado-about-nothing-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for much-ado-about-nothing-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for ghosts-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for ghosts-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-small-family-business-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-small-family-business-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-small-family-business-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-importance-of-being-earnest-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-importance-of-being-earnest-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for let-it-be-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for let-it-be-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for let-it-be-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for treasure-island-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for treasure-island-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for treasure-island-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-view-from-the-bridge-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-view-from-the-bridge-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-view-from-the-bridge-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for violence-and-son-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for violence-and-son-west-end-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

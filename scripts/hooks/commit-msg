@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# commit-msg hook (version-controlled — active via core.hooksPath=scripts/hooks
+# or via the delegator in .git/hooks/commit-msg).
+#
+# Require VISUAL-OK-1440: prefix when UI files are staged.
+# Any staged .tsx file in src/app/ or src/components/ renders visible HTML
+# and MUST be verified at 1440px via Playwright before commit.
+# Bypass: add VISUAL-OK-1440: anywhere in the first line of the commit message.
+# Emergency bypass: SKIP-VISUAL-CHECK: (use only for non-rendering changes
+# like type-only edits, comment changes, etc.)
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Check if any staged file is a UI component
+UI_FILES=$(git diff --cached --name-only | grep -E "^src/(app|components)/.*\.tsx$" || true)
+
+if [ -z "$UI_FILES" ]; then
+  exit 0  # No UI files staged, no check needed
+fi
+
+# Check for the required acknowledgement tokens
+if echo "$COMMIT_MSG" | grep -qE "^(VISUAL-OK-1440:|SKIP-VISUAL-CHECK:|Merge )"; then
+  exit 0
+fi
+
+echo ""
+echo "ERROR: UI files staged but no visual verification token in commit message."
+echo ""
+echo "Staged UI files:"
+echo "$UI_FILES" | sed 's/^/  /'
+echo ""
+echo "Before committing UI changes you MUST:"
+echo "  1. browser_resize → width: 1440, height: 900"
+echo "  2. browser_navigate to the affected page on localhost:3099"
+echo "  3. browser_take_screenshot"
+echo "  4. Read the screenshot and confirm it looks correct"
+echo "  5. Prefix your commit message with: VISUAL-OK-1440:"
+echo ""
+echo "Example: VISUAL-OK-1440: fix column alignment in nominees page"
+echo ""
+echo "If this is truly a non-rendering change (types, comments only):"
+echo "  Prefix with: SKIP-VISUAL-CHECK: <reason>"
+echo ""
+exit 1

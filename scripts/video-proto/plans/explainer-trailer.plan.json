@@ -1,0 +1,74 @@
+{
+ "fmt": "duo",
+ "mode": "seq",
+ "key": "explainer-trailer",
+ "cue": {
+  "end": "Broadway Scorecard"
+ },
+ "shows": [
+  {
+   "id": "maybe-happy-ending-2024",
+   "say": "Maybe Happy Ending",
+   "count": true,
+   "quote": {
+    "o": "Time Out New York",
+    "s": 97,
+    "say": "Time Out",
+    "ex": "utterly enchanting"
+   }
+  },
+  {
+   "id": "the-great-gatsby-2024",
+   "say": "Great Gatsby",
+   "count": true,
+   "quote": {
+    "o": "Vulture",
+    "s": 42,
+    "say": "Vulture",
+    "ex": "Somewhere, Scott must be cackling."
+   }
+  }
+ ],
+ "prompt": "[excited] Two big Broadway shows. Critics loved one and shrugged at the other. Maybe Happy Ending: thirty-eight critics. Eighty-six, Critical Gold. Time Out called it \"utterly enchanting.\" The Great Gatsby: thirty-four critics. Fifty-seven, Mixed. [dryly] Vulture said, \"Somewhere, Scott must be cackling.\" That's Broadway Scorecard. We read all the reviews for you, so you see the great shows and skip the duds. Follow for new scores every week.",
+ "caption": "Critics loved one of these and shrugged at the other. Maybe Happy Ending scores 86 from 38 critics, Critical Gold. The Great Gatsby scores 57 from 34 critics, Mixed. Broadway Scorecard reads all the reviews for every Broadway and off-Broadway show, giving you one score, so you see the great shows and skip the duds. See every review at broadwayscorecard.com\n\nWhat's the best show you've seen this year?\n\n#Broadway #OffBroadway #MaybeHappyEnding #TheGreatGatsby #Theater #NYC",
+ "keep": {
+  "prompt": [
+   "Maybe Happy Ending",
+   "thirty-eight critics",
+   "eighty-six",
+   "Critical Gold",
+   "Time Out",
+   "utterly enchanting",
+   "Great Gatsby",
+   "thirty-four critics",
+   "fifty-seven",
+   "Mixed",
+   "Vulture",
+   "Somewhere, Scott must be cackling",
+   "Broadway Scorecard"
+  ],
+  "caption": [
+   "86",
+   "38 critics",
+   "Critical Gold",
+   "57",
+   "34 critics",
+   "Mixed"
+  ]
+ },
+ "review": {
+  "pass": true,
+  "notes": [
+   "gpt: VO line 'Critics loved one and shrugged at the other.' sounds a little stiff and ad-like rather than how a theater fan would naturally say it.",
+   "gpt: CAPTION line 'Broadway Scorecard reads all the reviews for every Broadway and off-Broadway show, giving you one score, so you see the great shows and skip the duds.' is serviceable but a bit promotional/robotic.",
+   "gpt: CAPTION question 'What's the best show you've seen this year?' feels generic and slightly social-media boilerplate."
+  ],
+  "of": "001999f56365",
+  "rounds": 2,
+  "by": [
+   "gpt",
+   "gemini"
+  ],
+  "at": "2026-10-26T03:18:18.491Z"
+ }
+}

@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-6518-city",
+  "planId": "1b7a3bfa-e91f-4aff-bd8d-e126d67ad507",
+  "status": "applied",
+  "createdAt": "2026-10-29T20:45:35.410Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6518: set city=chicago-il on the 6 E2E Chicago shows",
+    "steps": [
+      "hayward-regional-2026: set Chicago metro hub",
+      "come-from-away-regional-2026: set Chicago metro hub",
+      "detroit-67-regional-2026: set Chicago metro hub",
+      "dead-girls-quinceanera-regional-2026: set Chicago metro hub",
+      "a-midsummer-night-scream-regional-2026: set Chicago metro hub",
+      "what-the-constitution-means-to-me-regional-2026: set Chicago metro hub"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hayward-regional-2026",
+        "field": "city",
+        "oldValue": null,
+        "newValue": "chicago-il",
+        "description": "hayward-regional-2026: set Chicago metro hub"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-regional-2026",
+        "field": "city",
+        "oldValue": null,
+        "newValue": "chicago-il",
+        "description": "come-from-away-regional-2026: set Chicago metro hub"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "detroit-67-regional-2026",
+        "field": "city",
+        "oldValue": null,
+        "newValue": "chicago-il",
+        "description": "detroit-67-regional-2026: set Chicago metro hub"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dead-girls-quinceanera-regional-2026",
+        "field": "city",
+        "oldValue": null,
+        "newValue": "chicago-il",
+        "description": "dead-girls-quinceanera-regional-2026: set Chicago metro hub"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-night-scream-regional-2026",
+        "field": "city",
+        "oldValue": null,
+        "newValue": "chicago-il",
+        "description": "a-midsummer-night-scream-regional-2026: set Chicago metro hub"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "what-the-constitution-means-to-me-regional-2026",
+        "field": "city",
+        "oldValue": null,
+        "newValue": "chicago-il",
+        "description": "what-the-constitution-means-to-me-regional-2026: set Chicago metro hub"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T21:31:04.327Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for hayward-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for come-from-away-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for detroit-67-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for dead-girls-quinceanera-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for a-midsummer-night-scream-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for what-the-constitution-means-to-me-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

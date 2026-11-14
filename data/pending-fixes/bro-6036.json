@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6036",
+  "planId": "62448e30-1b5c-4247-8b30-96f23456708c",
+  "status": "applied",
+  "createdAt": "2026-10-23T10:30:23.665Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6036: sourced press nights for 11 closed West End rows plus first performance (source first-performance-no-press-night-found, no press night published) for 16 dance/one-off/short-run rows; Yamato, Whodunnit and Jack and the Beanstalk deliberately left undated (multi-week runs, press night likely) (bro-6036)",
+    "steps": [
+      "a-midsummer-nights-dream-unicorn-off-west-end-2026: openingDate null -> 2026-04-01 (BRO-6036: press night Wednesday 1 April 2026 (rsc.org.uk press release, RSC and Unicorn cast announcement))",
+      "a-midsummer-nights-dream-unicorn-off-west-end-2026: openingDateSource (BRO-6036)",
+      "the-fifth-step-west-end-2025: openingDate null -> 2025-05-19 (BRO-6036: press night 19 May 2025 (londontheatre.co.uk announcement: 'Press night is 19 May'))",
+      "the-fifth-step-west-end-2025: openingDateSource (BRO-6036)",
+      "aint-too-proud-west-end-2023: openingDate null -> 2023-04-20 (BRO-6036: press night 20 April 2023 (playbill.com: West End opening night set for April 20))",
+      "aint-too-proud-west-end-2023: openingDateSource (BRO-6036)",
+      "two-halves-of-guinness-off-west-end-2026: openingDate null -> 2026-04-22 (BRO-6036: press night 22 April 2026 (parktheatre.co.uk show page: preview and press dates))",
+      "two-halves-of-guinness-off-west-end-2026: openingDateSource (BRO-6036)",
+      "the-bounds-west-end-2024: openingDate null -> 2024-06-17 (BRO-6036: press night Monday 17 June 2024 (royalcourttheatre.com season announcement))",
+      "the-bounds-west-end-2024: openingDateSource (BRO-6036)",
+      "g-west-end-2024: openingDate null -> 2024-08-30 (BRO-6036: press night Friday 30 August 2024 (theatreweekly.com cast announcement))",
+      "g-west-end-2024: openingDateSource (BRO-6036)",
+      "just-for-one-day-the-live-aid-musical-west-end-2025: openingDate null -> 2025-06-11 (BRO-6036: opened 11 June 2025 (theatre-news.com review: premiered Wednesday 11 June 2025; whatsonstage.com 'now officially open'))",
+      "just-for-one-day-the-live-aid-musical-west-end-2025: openingDateSource (BRO-6036)",
+      "malory-towers-off-west-end-2026: openingDate null -> 2026-07-23 (BRO-6036: press night Thursday 23 July 2026 (theatre-news.com announcement))",
+      "malory-towers-off-west-end-2026: openingDateSource (BRO-6036)",
+      "romeo-and-juliet-west-end-2024: openingDate null -> 2024-05-23 (BRO-6036: press night 23 May 2024 (Digital Spy/Yahoo press-night coverage))",
+      "romeo-and-juliet-west-end-2024: openingDateSource (BRO-6036)",
+      "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024: openingDate null -> 2024-03-07 (BRO-6036: press night Thursday 7 March 2024 (royalcourttheatre.com announcement))",
+      "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024: openingDateSource (BRO-6036)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-unicorn-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-04-01",
+        "description": "a-midsummer-nights-dream-unicorn-off-west-end-2026: openingDate null -> 2026-04-01 (BRO-6036: press night Wednesday 1 April 2026 (rsc.org.uk press release, RSC and Unicorn cast announcement))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-unicorn-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Wednesday 1 April 2026 (rsc.org.uk press release, RSC and Unicorn cast announcement)",
+        "description": "a-midsummer-nights-dream-unicorn-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-fifth-step-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-05-19",
+        "description": "the-fifth-step-west-end-2025: openingDate null -> 2025-05-19 (BRO-6036: press night 19 May 2025 (londontheatre.co.uk announcement: 'Press night is 19 May'))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-fifth-step-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 19 May 2025 (londontheatre.co.uk announcement: 'Press night is 19 May')",
+        "description": "the-fifth-step-west-end-2025: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aint-too-proud-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-04-20",
+        "description": "aint-too-proud-west-end-2023: openingDate null -> 2023-04-20 (BRO-6036: press night 20 April 2023 (playbill.com: West End opening night set for April 20))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aint-too-proud-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 20 April 2023 (playbill.com: West End opening night set for April 20)",
+        "description": "aint-too-proud-west-end-2023: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "two-halves-of-guinness-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-04-22",
+        "description": "two-halves-of-guinness-off-west-end-2026: openingDate null -> 2026-04-22 (BRO-6036: press night 22 April 2026 (parktheatre.co.uk show page: preview and press dates))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "two-halves-of-guinness-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 22 April 2026 (parktheatre.co.uk show page: preview and press dates)",
+        "description": "two-halves-of-guinness-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bounds-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-06-17",
+        "description": "the-bounds-west-end-2024: openingDate null -> 2024-06-17 (BRO-6036: press night Monday 17 June 2024 (royalcourttheatre.com season announcement))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bounds-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Monday 17 June 2024 (royalcourttheatre.com season announcement)",
+        "description": "the-bounds-west-end-2024: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "g-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-08-30",
+        "description": "g-west-end-2024: openingDate null -> 2024-08-30 (BRO-6036: press night Friday 30 August 2024 (theatreweekly.com cast announcement))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "g-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Friday 30 August 2024 (theatreweekly.com cast announcement)",
+        "description": "g-west-end-2024: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "just-for-one-day-the-live-aid-musical-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-06-11",
+        "description": "just-for-one-day-the-live-aid-musical-west-end-2025: openingDate null -> 2025-06-11 (BRO-6036: opened 11 June 2025 (theatre-news.com review: premiered Wednesday 11 June 2025; whatsonstage.com 'now officially open'))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "just-for-one-day-the-live-aid-musical-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "opened 11 June 2025 (theatre-news.com review: premiered Wednesday 11 June 2025; whatsonstage.com 'now officially open')",
+        "description": "just-for-one-day-the-live-aid-musical-west-end-2025: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "malory-towers-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-23",
+        "description": "malory-towers-off-west-end-2026: openingDate null -> 2026-07-23 (BRO-6036: press night Thursday 23 July 2026 (theatre-news.com announcement))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "malory-towers-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Thursday 23 July 2026 (theatre-news.com announcement)",
+        "description": "malory-towers-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "romeo-and-juliet-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-05-23",
+        "description": "romeo-and-juliet-west-end-2024: openingDate null -> 2024-05-23 (BRO-6036: press night 23 May 2024 (Digital Spy/Yahoo press-night coverage))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "romeo-and-juliet-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 23 May 2024 (Digital Spy/Yahoo press-night coverage)",
+        "description": "romeo-and-juliet-west-end-2024: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-03-07",
+        "description": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024: openingDate null -> 2024-03-07 (BRO-6036: press night Thursday 7 March 2024 (royalcourttheatre.com announcement))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Thursday 7 March 2024 (royalcourttheatre.com announcement)",
+        "description": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024: openingDateSource (BRO-6036)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T10:39:28.849Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-midsummer-nights-dream-unicorn-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-midsummer-nights-dream-unicorn-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-fifth-step-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-fifth-step-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for aint-too-proud-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for aint-too-proud-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for two-halves-of-guinness-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for two-halves-of-guinness-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-bounds-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-bounds-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for g-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for g-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for just-for-one-day-the-live-aid-musical-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for just-for-one-day-the-live-aid-musical-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for malory-towers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for malory-towers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for romeo-and-juliet-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for romeo-and-juliet-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

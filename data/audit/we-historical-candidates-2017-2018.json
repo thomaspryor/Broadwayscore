@@ -1,0 +1,2273 @@
+{
+  "generatedAt": "2026-10-21T17:18:22.543Z",
+  "season": "2017-2018",
+  "sources": [
+    "wos-listing",
+    "wos-review",
+    "olivier-2018",
+    "olivier-2019"
+  ],
+  "counts": {
+    "listings": 62,
+    "promotable": 6,
+    "notPromotable": {
+      "already in shows.json": 1,
+      "non-theatre genre": 24,
+      "no review signal": 11,
+      "run of 0 days < 14": 14,
+      "run of 4 days < 14": 1,
+      "run of 2 days < 14": 1,
+      "run of 10 days < 14": 2,
+      "run of 12 days < 14": 1,
+      "run of 3 days < 14": 1
+    },
+    "unlistedReviews": 80
+  },
+  "candidates": [
+    {
+      "title": "Hamilton",
+      "venue": "Victoria Palace Theatre",
+      "previewsStartDate": "2017-12-06",
+      "openingDate": "2017-12-21",
+      "openingDateSource": "whatsonstage",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "wos-review",
+        "olivier-2018"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/hamilton_96247/",
+        "wosReview": "https://www.whatsonstage.com/news/review-hamilton-victoria-palace-theatre_45423/"
+      },
+      "inShowsJson": "hamilton-west-end-2021",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: hamilton-west-end-2021"
+      }
+    },
+    {
+      "title": "One Hand Tied Behind Us",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2018-03-11",
+      "openingDate": "2018-03-11",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-03-11",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/one-hand-tied-behind-us_161125/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Mousetrap Theatre Project’s 21st-Anniversary Gala",
+      "venue": "Prince of Wales Theatre",
+      "previewsStartDate": "2018-03-18",
+      "openingDate": "2018-03-18",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-03-18",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-mousetrap-theatre-projects-21st-anniversary-gala_160478/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "All or Nothing – The Mod Musical",
+      "venue": "The Ambassadors Theatre",
+      "previewsStartDate": "2018-03-28",
+      "openingDate": "2018-03-28",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-12",
+      "genres": [
+        "musical"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/all-or-nothing-the-mod-musical_160334/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Feeling",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": "2018-04-15",
+      "openingDate": "2018-04-15",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-04-15",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-feeling_162468/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Tina – The Tina Turner Musical",
+      "venue": "Aldwych Theatre",
+      "previewsStartDate": "2018-03-21",
+      "openingDate": "2018-04-17",
+      "openingDateSource": "whatsonstage",
+      "closingDate": "2025-09-13",
+      "genres": [
+        "musical"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tina-the-tina-turner-musical_145295/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Cirque Berserk",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2018-04-19",
+      "openingDate": "2018-04-19",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-07",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/cirque-berserk_161676/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Adam Kay – This is Going to Hurt",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": "2018-04-23",
+      "openingDate": "2018-04-23",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-04-23",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/adam-kay-this-is-going-to-hurt_166144/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Phoenix Jazz Night",
+      "venue": "Phoenix Theatre",
+      "previewsStartDate": "2018-04-28",
+      "openingDate": "2018-04-28",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-25",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/phoenix-jazz-night_162523/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Trial of Richard III",
+      "venue": "Novello Theatre",
+      "previewsStartDate": "2018-04-29",
+      "openingDate": "2018-04-29",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-04-29",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/trial-of-richard-iii_164811/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Prelude",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2018-05-04",
+      "openingDate": "2018-05-04",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-04",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/prelude_162498/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Uncensored: Banned and Censored Plays",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2018-05-10",
+      "openingDate": "2018-05-10",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-10",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/uncensored-banned-and-censored-plays_163768/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Bicentenary Variety Night Fundraiser",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2018-05-12",
+      "openingDate": "2018-05-12",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-12",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/bicentenary-variety-night-fundraiser_162946/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "3Women",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": "2018-05-15",
+      "openingDate": "2018-05-15",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-09",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/3women_162506/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Mindgame",
+      "venue": "The Ambassadors Theatre",
+      "previewsStartDate": "2018-05-15",
+      "openingDate": "2018-05-15",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-02",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/mindgame_166375/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Life and Fate",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2018-05-17",
+      "openingDate": "2018-05-17",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-17",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/life-and-fate_163743/",
+        "wosReview": "https://www.whatsonstage.com/news/review-life-and-fate-theatre-royal-haymarket_46515/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Consent",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2018-05-18",
+      "openingDate": "2018-05-18",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-11",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/consent_161883/",
+        "wosReview": "https://www.whatsonstage.com/news/review-consent-harold-pinter-theatre_46697/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Killer Joe",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": "2018-05-18",
+      "openingDate": "2018-05-18",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-18",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/killer-joe_163072/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "John Edward",
+      "venue": "Apollo Victoria Theatre",
+      "previewsStartDate": "2018-05-20",
+      "openingDate": "2018-05-20",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-20",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/john-edward_160161/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Austin Powers – with Live Orchestra",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2018-05-20",
+      "openingDate": "2018-05-20",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-20",
+      "genres": [
+        "film"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/austin-powers-with-live-orchestra_162315/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Comedy Gala – Ex Appeal",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": "2018-05-21",
+      "openingDate": "2018-05-21",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-21",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/comedy-gala-ex-appeal_162920/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Man Hours",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-21",
+      "openingDate": "2018-05-21",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/man-hours_165997/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Writers’ Group: North",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-21",
+      "openingDate": "2018-05-21",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-25",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/writers-group-north_166031/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 4 days < 14"
+      }
+    },
+    {
+      "title": "Translations",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": "2018-05-22",
+      "openingDate": "2018-05-22",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-11",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/translations_160338/",
+        "wosReview": "https://www.whatsonstage.com/news/review-translations-national-theatre_46713/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Paper Tiger",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-22",
+      "openingDate": "2018-05-22",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-22",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/paper-tiger_165955/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Cheer Up Slug",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-22",
+      "openingDate": "2018-05-22",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-22",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/cheer-up-slug_165992/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Gaz Coombes",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2018-05-23",
+      "openingDate": "2018-05-23",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-23",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/gaz-coombes_162959/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Bones",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-23",
+      "openingDate": "2018-05-23",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-23",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/bones_165932/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Braids",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-23",
+      "openingDate": "2018-05-23",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-23",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/braids_165984/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Island People",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-24",
+      "openingDate": "2018-05-24",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-24",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/island-people_166001/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Harsh Noise Wall",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-25",
+      "openingDate": "2018-05-25",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-25",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/harsh-noise-wall_165982/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Dear Pig",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-25",
+      "openingDate": "2018-05-25",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-25",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/dear-pig_166036/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Retracing Our Footsteps",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-30",
+      "openingDate": "2018-05-30",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-01",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/retracing-our-footsteps_165988/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 2 days < 14"
+      }
+    },
+    {
+      "title": "A Touch of Brightness",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-30",
+      "openingDate": "2018-05-30",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-30",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/a-touch-of-brightness_166022/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Borderline",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-05-31",
+      "openingDate": "2018-05-31",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-05-31",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/borderline_165961/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Blood",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-06-01",
+      "openingDate": "2018-06-01",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-01",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/blood_166029/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "An Evening with Margaret Atwood",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2018-06-03",
+      "openingDate": "2018-06-03",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-margaret-atwood_160698/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Pressure",
+      "venue": "The Ambassadors Theatre",
+      "previewsStartDate": "2018-06-06",
+      "openingDate": "2018-06-06",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-09-01",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "olivier-2019"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pressure_163809/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: olivier-2019"
+      }
+    },
+    {
+      "title": "Acis and Galatea",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2018-06-09",
+      "openingDate": "2018-06-09",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-16",
+      "genres": [
+        "opera"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/acis-and-galatea_165888/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "Lonely Planet",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": "2018-06-12",
+      "openingDate": "2018-06-12",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-07-07",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/lonely-planet_165010/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Notes from the Field",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-06-13",
+      "openingDate": "2018-06-13",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-23",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/notes-from-the-field_160914/",
+        "wosReview": "https://www.whatsonstage.com/news/review-notes-from-the-field-royal-court_46871/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 10 days < 14"
+      }
+    },
+    {
+      "title": "Imperium: The Cicero Plays, Part II Dictator",
+      "venue": "Gielgud Theatre",
+      "previewsStartDate": "2018-06-14",
+      "openingDate": "2018-06-14",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-09-08",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/imperium-the-cicero-plays-part-ii-dictator_161898/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Imperium: The Cicero Plays, Part I Conspirator",
+      "venue": "Gielgud Theatre",
+      "previewsStartDate": "2018-06-14",
+      "openingDate": "2018-06-14",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-09-08",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/imperium-the-cicero-plays-part-i-conspirator_161899/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Jungle",
+      "venue": "Playhouse Theatre",
+      "previewsStartDate": "2018-06-16",
+      "openingDate": "2018-06-16",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-11-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-jungle_161818/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-jungle-playhouse-theatre_47048/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Sea Wall",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2018-06-18",
+      "openingDate": "2018-06-18",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-30",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/sea-wall_167763/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 12 days < 14"
+      }
+    },
+    {
+      "title": "The Greatest Wealth – In Celebration of the NHS",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2018-06-25",
+      "openingDate": "2018-06-25",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-06-29",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-greatest-wealth-in-celebration-of-the-nhs_167213/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Tiger Who Came to Tea",
+      "venue": "Piccadilly Theatre",
+      "previewsStartDate": "2018-06-28",
+      "openingDate": "2018-06-28",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-09-09",
+      "genres": [
+        "children"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-tiger-who-came-to-tea_163193/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Knights of the Rose",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2018-06-29",
+      "openingDate": "2018-06-29",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-26",
+      "genres": [
+        "musical"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/knights-of-the-rose_162371/",
+        "wosReview": "https://www.whatsonstage.com/news/review-knights-of-the-rose-arts-theatre_47054/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Glenn Miller Story",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2018-07-06",
+      "openingDate": "2018-07-06",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-18",
+      "genres": [
+        "musical"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-glenn-miller-story_164916/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Two for the Seesaw",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": "2018-07-12",
+      "openingDate": "2018-07-12",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-04",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/two-for-the-seesaw_166819/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The O’Jays",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2018-07-15",
+      "openingDate": "2018-07-15",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-07-15",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-ojays_161746/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Monstrous Tales",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2018-07-28",
+      "openingDate": "2018-07-28",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-07-28",
+      "genres": [
+        "children"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/monstrous-tales_171951/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Broken Wings",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2018-08-01",
+      "openingDate": "2018-08-01",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-04",
+      "genres": [
+        "musical"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/broken-wings_164361/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 3 days < 14"
+      }
+    },
+    {
+      "title": "Broken Dreams",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2018-08-01",
+      "openingDate": "2018-08-01",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-11",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/broken-dreams_170365/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 10 days < 14"
+      }
+    },
+    {
+      "title": "The Star Seekers",
+      "venue": "Dorfman Theatre",
+      "previewsStartDate": "2018-08-08",
+      "openingDate": "2018-08-08",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-09-01",
+      "genres": [
+        "children"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-star-seekers_162540/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Silk Road (How to buy drugs online)",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": "2018-08-08",
+      "openingDate": "2018-08-08",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-09-01",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/silk-road-how-to-buy-drugs-online_169918/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Gangsta Granny",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2018-08-14",
+      "openingDate": "2018-08-14",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-26",
+      "genres": [
+        "children"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/gangsta-granny_165874/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Big Girls Don’t Cry",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": "2018-08-20",
+      "openingDate": "2018-08-20",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-20",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/big-girls-dont-cry_162926/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "F Off",
+      "venue": "Criterion Theatre",
+      "previewsStartDate": "2018-08-20",
+      "openingDate": "2018-08-20",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-20",
+      "genres": [
+        "play"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/f-off_171015/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Swan Lake",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2018-08-22",
+      "openingDate": "2018-08-22",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-09-02",
+      "genres": [
+        "dance"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/swan-lake_162155/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Matt Goss",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2018-08-26",
+      "openingDate": "2018-08-26",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-08-26",
+      "genres": [
+        "event"
+      ],
+      "season": "2017-2018",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/matt-goss_167148/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Six",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2018-08-30",
+      "openingDate": "2018-08-30",
+      "openingDateSource": "whatsonstage-first-performance",
+      "closingDate": "2018-10-14",
+      "genres": [
+        "musical"
+      ],
+      "season": "2017-2018",
+      "signals": [
+        "wos-review",
+        "olivier-2019"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/six_164784/",
+        "wosReview": "https://www.whatsonstage.com/news/review-six-arts-theatre_47499/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2019"
+      }
+    }
+  ],
+  "unlistedReviews": [
+    {
+      "title": "Pericles",
+      "venue": "National Theatre",
+      "date": "2018-08-27",
+      "url": "https://www.whatsonstage.com/news/review-pericles-national-theatre_47466/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "La Maladie de la Mort",
+      "venue": "Lyceum Theatre",
+      "date": "2018-08-17",
+      "url": "https://www.whatsonstage.com/news/review-la-maladie-de-la-mort-lyceum-theatre_47414/",
+      "rating": 4,
+      "market": []
+    },
+    {
+      "title": "Horrible Histories: Barmy Britain – Part Four",
+      "venue": "Apollo Theatre",
+      "date": "2018-08-08",
+      "url": "https://www.whatsonstage.com/news/review-horrible-histories-barmy-britain-part-four-apollo-theatre_47328/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "The Importance of Being Earnest",
+      "venue": "Vaudeville Theatre",
+      "date": "2018-08-03",
+      "url": "https://www.whatsonstage.com/news/review-the-importance-of-being-earnest-vaudeville-theatre_47273/",
+      "rating": 5,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Home, I'm Darling",
+      "venue": "National Theatre",
+      "date": "2018-08-01",
+      "url": "https://www.whatsonstage.com/news/review-home-im-darling-national-theatre_47251/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "King Lear",
+      "venue": "Duke of York's Theatre",
+      "date": "2018-07-27",
+      "url": "https://www.whatsonstage.com/news/review-king-lear-duke-of-yorks-theatre_47216/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Exit the King",
+      "venue": "National Theatre",
+      "date": "2018-07-26",
+      "url": "https://www.whatsonstage.com/news/review-exit-the-king-national-theatre_47208/",
+      "rating": 2,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Pity",
+      "venue": "Royal Court",
+      "date": "2018-07-20",
+      "url": "https://www.whatsonstage.com/news/review-pity-royal-court_47166/",
+      "rating": 3,
+      "market": [
+        83,
+        85
+      ]
+    },
+    {
+      "title": "A Monster Calls",
+      "venue": "Old Vic Theatre",
+      "date": "2018-07-18",
+      "url": "https://www.whatsonstage.com/news/review-a-monster-calls-old-vic-theatre_47141/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "The Lehman Trilogy",
+      "venue": "National Theatre",
+      "date": "2018-07-13",
+      "url": "https://www.whatsonstage.com/news/review-the-lehman-trilogy-national-theatre_47099/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "The King and I",
+      "venue": "London Palladium",
+      "date": "2018-07-04",
+      "url": "https://www.whatsonstage.com/news/review-the-king-and-i-london-palladium_47022/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Imperium, Parts I and II",
+      "venue": "Gielgud Theatre",
+      "date": "2018-07-02",
+      "url": "https://www.whatsonstage.com/news/review-imperium-parts-i-and-ii-gielgud-theatre_47000/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "One For Sorrow",
+      "venue": "Royal Court",
+      "date": "2018-06-28",
+      "url": "https://www.whatsonstage.com/news/review-one-for-sorrow-royal-court_46968/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "An Octoroon",
+      "venue": "National Theatre",
+      "date": "2018-06-15",
+      "url": "https://www.whatsonstage.com/news/review-an-octoroon-national-theatre_46866/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Julie",
+      "venue": "National Theatre",
+      "date": "2018-06-08",
+      "url": "https://www.whatsonstage.com/news/review-julie-national-theatre_46791/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Tartuffe",
+      "venue": "Theatre Royal Haymarket",
+      "date": "2018-05-30",
+      "url": "https://www.whatsonstage.com/news/review-tartuffe-theatre-royal-haymarket_46695/",
+      "rating": 2,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Red",
+      "venue": "Wyndham's Theatre",
+      "date": "2018-05-15",
+      "url": "https://www.whatsonstage.com/news/review-red-wyndhams-theatre_46574/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "An Ideal Husband",
+      "venue": "Vaudeville Theatre",
+      "date": "2018-05-04",
+      "url": "https://www.whatsonstage.com/news/review-an-ideal-husband-vaudeville-theatre_46488/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Mood Music",
+      "venue": "Old Vic Theatre",
+      "date": "2018-05-03",
+      "url": "https://www.whatsonstage.com/news/review-mood-music-old-vic-theatre_46472/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Chess",
+      "venue": "London Coliseum",
+      "date": "2018-05-01",
+      "url": "https://www.whatsonstage.com/news/review-chess-london-coliseum_46458/",
+      "rating": 4,
+      "market": [
+        98
+      ]
+    },
+    {
+      "title": "Nine Night",
+      "venue": "National Theatre",
+      "date": "2018-05-01",
+      "url": "https://www.whatsonstage.com/news/review-nine-night-national-theatre_46445/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Absolute Hell",
+      "venue": "National Theatre",
+      "date": "2018-04-26",
+      "url": "https://www.whatsonstage.com/news/review-absolute-hell-national-theatre_46403/",
+      "rating": 2,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "The Prudes",
+      "venue": "Royal Court",
+      "date": "2018-04-25",
+      "url": "https://www.whatsonstage.com/news/review-the-prudes-royal-court_46401/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Strictly Ballroom",
+      "venue": "Piccadilly Theatre",
+      "date": "2018-04-24",
+      "url": "https://www.whatsonstage.com/news/review-strictly-ballroom-piccadilly-theatre_46386/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Bat Out of Hell",
+      "venue": "Dominion",
+      "date": "2018-04-20",
+      "url": "https://www.whatsonstage.com/news/review-bat-out-of-hell-dominion_46354/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Tina the Musical",
+      "venue": "Aldwych Theatre",
+      "date": "2018-04-17",
+      "url": "https://www.whatsonstage.com/news/review-tina-the-musical-aldwych-theatre_46330/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Instructions for Correct Assembly",
+      "venue": "Royal Court",
+      "date": "2018-04-15",
+      "url": "https://www.whatsonstage.com/news/review-instructions-for-correct-assembly-royal-court_46307/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "The Moderate Soprano",
+      "venue": "Duke of York's Theatre",
+      "date": "2018-04-12",
+      "url": "https://www.whatsonstage.com/news/review-the-moderate-soprano-duke-of-yorks-theatre_46287/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Chicago",
+      "venue": "Phoenix Theatre",
+      "date": "2018-04-12",
+      "url": "https://www.whatsonstage.com/news/review-chicago-phoenix-theatre_46281/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Quiz",
+      "venue": "Noël Coward Theatre",
+      "date": "2018-04-11",
+      "url": "https://www.whatsonstage.com/news/review-quiz-noel-coward-theatre_46268/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Ruthless",
+      "venue": "Arts Theatre",
+      "date": "2018-03-28",
+      "url": "https://www.whatsonstage.com/news/review-ruthless-arts-theatre_46155/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "The Great Wave",
+      "venue": "National Theatre",
+      "date": "2018-03-20",
+      "url": "https://www.whatsonstage.com/news/review-the-great-wave-national-theatre_46073/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "La traviata",
+      "venue": "London Coliseum",
+      "date": "2018-03-18",
+      "url": "https://www.whatsonstage.com/news/review-la-traviata-london-coliseum_46057/",
+      "rating": 2,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Macbeth",
+      "venue": "National Theatre",
+      "date": "2018-03-07",
+      "url": "https://www.whatsonstage.com/news/review-macbeth-national-theatre_45965/",
+      "rating": 1,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "The Best Man",
+      "venue": "Playhouse Theatre",
+      "date": "2018-03-06",
+      "url": "https://www.whatsonstage.com/news/review-the-best-man-playhouse-theatre_45947/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "A Midsummer Night's Dream",
+      "venue": "London Coliseum",
+      "date": "2018-03-02",
+      "url": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-london-coliseum_45928/",
+      "rating": 5,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Fanny and Alexander",
+      "venue": "Old Vic",
+      "date": "2018-03-01",
+      "url": "https://www.whatsonstage.com/news/review-fanny-and-alexander-old-vic_45919/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Frozen",
+      "venue": "Theatre Royal Haymarket",
+      "date": "2018-02-21",
+      "url": "https://www.whatsonstage.com/news/review-frozen-theatre-royal-haymarket_45834/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Girls & Boys",
+      "venue": "Royal Court",
+      "date": "2018-02-15",
+      "url": "https://www.whatsonstage.com/news/review-girls-boys-royal-court_45801/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Iolanthe",
+      "venue": "London Coliseum",
+      "date": "2018-02-14",
+      "url": "https://www.whatsonstage.com/news/review-iolanthe-london-coliseum_45785/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "All Or Nothing: The Mod Musical",
+      "venue": "Arts Theatre",
+      "date": "2018-02-09",
+      "url": "https://www.whatsonstage.com/news/review-all-or-nothing-the-mod-musical-arts-theatre_45745/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Gundog",
+      "venue": "Royal Court",
+      "date": "2018-02-08",
+      "url": "https://www.whatsonstage.com/news/review-gundog-royal-court_45744/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Long Day's Journey Into Night",
+      "venue": "Wyndham's Theatre",
+      "date": "2018-02-07",
+      "url": "https://www.whatsonstage.com/news/review-long-days-journey-into-night-wyndhams-theatre_45729/",
+      "rating": 5,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Satyagraha",
+      "venue": "London Coliseum",
+      "date": "2018-02-02",
+      "url": "https://www.whatsonstage.com/news/review-satyagraha-london-coliseum_45697/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Mary Stuart",
+      "venue": "Duke of York's",
+      "date": "2018-01-26",
+      "url": "https://www.whatsonstage.com/news/review-mary-stuart-duke-of-yorks_45629/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Lady Windermere's Fan",
+      "venue": "Vaudeville Theatre",
+      "date": "2018-01-23",
+      "url": "https://www.whatsonstage.com/news/review-lady-windermeres-fan-vaudeville-theatre_45591/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "The Birthday Party",
+      "venue": "Harold Pinter Theatre",
+      "date": "2018-01-18",
+      "url": "https://www.whatsonstage.com/news/review-the-birthday-party-harold-pinter-theatre_45565/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Girl From the North Country",
+      "venue": "Noël Coward Theatre",
+      "date": "2018-01-12",
+      "url": "https://www.whatsonstage.com/news/review-girl-from-the-north-country-noel-coward-theatre_45507/",
+      "rating": 5,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Rita, Sue and Bob Too",
+      "venue": "Royal Court",
+      "date": "2018-01-12",
+      "url": "https://www.whatsonstage.com/news/review-rita-sue-and-bob-too-royal-court_45508/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "My Mum's A Tw*t",
+      "venue": "Royal Court",
+      "date": "2018-01-11",
+      "url": "https://www.whatsonstage.com/news/review-my-mums-a-twt-royal-court_45481/",
+      "rating": 3,
+      "market": [
+        83,
+        85
+      ]
+    },
+    {
+      "title": "De Profundis",
+      "venue": "Vaudeville Theatre",
+      "date": "2018-01-10",
+      "url": "https://www.whatsonstage.com/news/review-de-profundis-vaudeville-theatre_45466/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Wilde Creatures",
+      "venue": "Vaudeville Theatre",
+      "date": "2017-12-20",
+      "url": "https://www.whatsonstage.com/news/review-wilde-creatures-vaudeville-theatre_45411/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Pinocchio",
+      "venue": "National Theatre",
+      "date": "2017-12-14",
+      "url": "https://www.whatsonstage.com/news/review-pinocchio-national-theatre_45374/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Dick Whittington",
+      "venue": "London Palladium",
+      "date": "2017-12-14",
+      "url": "https://www.whatsonstage.com/news/review-dick-whittington-london-palladium_45361/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "La Soirée",
+      "venue": "Aldwych Theatre",
+      "date": "2017-12-04",
+      "url": "https://www.whatsonstage.com/news/review-la-soiree-aldwych-theatre_45268/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Goats",
+      "venue": "Royal Court",
+      "date": "2017-12-04",
+      "url": "https://www.whatsonstage.com/news/review-goats-royal-court_45267/",
+      "rating": 2,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "A Christmas Carol",
+      "venue": "Old Vic",
+      "date": "2017-11-30",
+      "url": "https://www.whatsonstage.com/news/review-a-christmas-carol-old-vic_45248/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Bad Roads",
+      "venue": "Royal Court",
+      "date": "2017-11-22",
+      "url": "https://www.whatsonstage.com/news/review-bad-roads-royal-court_45190/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Everybody's Talking About Jamie",
+      "venue": "Apollo Theatre",
+      "date": "2017-11-22",
+      "url": "https://www.whatsonstage.com/news/review-everybodys-talking-about-jamie-apollo-theatre_45194/",
+      "rating": 5,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Marnie",
+      "venue": "London Coliseum",
+      "date": "2017-11-20",
+      "url": "https://www.whatsonstage.com/news/review-marnie-london-coliseum_45169/",
+      "rating": 2,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Network",
+      "venue": "National Theatre",
+      "date": "2017-11-13",
+      "url": "https://www.whatsonstage.com/news/review-network-national-theatre_45130/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Glengarry Glen Ross",
+      "venue": "Playhouse Theatre",
+      "date": "2017-11-10",
+      "url": "https://www.whatsonstage.com/news/review-glengarry-glen-ross-playhouse-theatre_45105/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "The Exorcist",
+      "venue": "Phoenix Theatre",
+      "date": "2017-10-31",
+      "url": "https://www.whatsonstage.com/news/review-the-exorcist-phoenix-theatre_45017/",
+      "rating": 2,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Rodelinda",
+      "venue": "London Coliseum",
+      "date": "2017-10-27",
+      "url": "https://www.whatsonstage.com/news/review-rodelinda-london-coliseum_44990/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "The Lorax",
+      "venue": "Old Vic",
+      "date": "2017-10-25",
+      "url": "https://www.whatsonstage.com/news/review-the-lorax-the-old-vic_44961/",
+      "rating": 5,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Venus in Fur",
+      "venue": "Theatre Royal Haymarket",
+      "date": "2017-10-17",
+      "url": "https://www.whatsonstage.com/news/review-venus-in-fur-theatre-royal-haymarket_44906/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "A Woman of No Importance",
+      "venue": "Vaudeville Theatre",
+      "date": "2017-10-17",
+      "url": "https://www.whatsonstage.com/news/review-a-woman-of-no-importance-vaudeville-theatre_44896/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Jekyll and Hyde",
+      "venue": "Ambassadors Theatre",
+      "date": "2017-10-13",
+      "url": "https://www.whatsonstage.com/news/review-jekyll-and-hyde-ambassadors-theatre_44855/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Cockpit",
+      "venue": "Lyceum Theatre",
+      "date": "2017-10-11",
+      "url": "https://www.whatsonstage.com/news/review-cockpit-lyceum-theatre_44847/",
+      "rating": 2,
+      "market": []
+    },
+    {
+      "title": "Young Frankenstein",
+      "venue": "Garrick Theatre",
+      "date": "2017-10-10",
+      "url": "https://www.whatsonstage.com/news/review-young-frankenstein-garrick-theatre_44846/",
+      "rating": 5,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Victory Condition",
+      "venue": "Royal Court",
+      "date": "2017-10-10",
+      "url": "https://www.whatsonstage.com/news/review-victory-condition-royal-court_44835/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Heisenberg: The Uncertainty Principle",
+      "venue": "Wyndham's Theatre",
+      "date": "2017-10-09",
+      "url": "https://www.whatsonstage.com/news/review-heisenberg-the-uncertainty-principle-wyndhams-theatre_44832/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "The Barber of Seville",
+      "venue": "London Coliseum",
+      "date": "2017-10-06",
+      "url": "https://www.whatsonstage.com/news/review-the-barber-of-seville-london-coliseum_44812/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Labour of Love",
+      "venue": "Noel Coward Theatre",
+      "date": "2017-10-03",
+      "url": "https://www.whatsonstage.com/news/review-labour-of-love-noel-coward-theatre_44779/",
+      "rating": 5,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "B",
+      "venue": "Royal Court",
+      "date": "2017-10-02",
+      "url": "https://www.whatsonstage.com/news/review-b-royal-court_44772/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "The Fall",
+      "venue": "Royal Court",
+      "date": "2017-10-02",
+      "url": "https://www.whatsonstage.com/news/review-the-fall-royal-court_44763/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Aida",
+      "venue": "London Coliseum",
+      "date": "2017-09-29",
+      "url": "https://www.whatsonstage.com/news/review-aida-london-coliseum_44755/",
+      "rating": 3,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Oslo",
+      "venue": "National Theatre",
+      "date": "2017-09-18",
+      "url": "https://www.whatsonstage.com/news/review-oslo-national-theatre_44657/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Derren Brown: Underground",
+      "venue": "Playhouse Theatre",
+      "date": "2017-09-13",
+      "url": "https://www.whatsonstage.com/news/review-derren-brown-underground-playhouse-theatre_44609/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Waiting for Godot",
+      "venue": "Arts Theatre",
+      "date": "2017-09-08",
+      "url": "https://www.whatsonstage.com/news/review-waiting-for-godot-arts-theatre_44564/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    }
+  ]
+}

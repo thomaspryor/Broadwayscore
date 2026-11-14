@@ -1,0 +1,134 @@
+{
+  "issueNumber": "bro-7239-audit",
+  "planId": "b852aa8e-bc9b-4e2e-a869-6ba92ce89bfa",
+  "status": "applied",
+  "createdAt": "2026-11-09T18:32:37.282Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "SD/Boston review audit: fix 4 Theater Mirror critic misattributions (Mike Hoban -> Shelley A. Sackett), name 3 Makayla Hoppe + 1 Eva Trieger reviews",
+    "steps": [
+      "eureka-day-regional-2026/theater-mirror--mike-hoban.json: criticName",
+      "on-your-feet-regional-2026/theater-mirror--mike-hoban.json: criticName",
+      "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026/theater-mirror--mike-hoban.json: criticName",
+      "come-from-away-north-regional-2026/theater-mirror--mike-hoban.json: criticName",
+      "the-family-album-regional-2026/makaylahoppe--unknown.json: criticName",
+      "seussical-regional-2026/makaylahoppe--unknown.json: criticName",
+      "rent-regional-2026/makaylahoppe--unknown.json: criticName",
+      "ripcord-regional-2026/san-diego-jewish-world--unknown.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "eureka-day-regional-2026/theater-mirror--mike-hoban.json",
+        "field": "criticName",
+        "oldValue": "Mike Hoban",
+        "newValue": "Shelley A. Sackett",
+        "description": "eureka-day-regional-2026/theater-mirror--mike-hoban.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "on-your-feet-regional-2026/theater-mirror--mike-hoban.json",
+        "field": "criticName",
+        "oldValue": "Mike Hoban",
+        "newValue": "Shelley A. Sackett",
+        "description": "on-your-feet-regional-2026/theater-mirror--mike-hoban.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026/theater-mirror--mike-hoban.json",
+        "field": "criticName",
+        "oldValue": "Mike Hoban",
+        "newValue": "Shelley A. Sackett",
+        "description": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026/theater-mirror--mike-hoban.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-from-away-north-regional-2026/theater-mirror--mike-hoban.json",
+        "field": "criticName",
+        "oldValue": "Mike Hoban",
+        "newValue": "Shelley A. Sackett",
+        "description": "come-from-away-north-regional-2026/theater-mirror--mike-hoban.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-family-album-regional-2026/makaylahoppe--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Makayla Hoppe",
+        "description": "the-family-album-regional-2026/makaylahoppe--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "seussical-regional-2026/makaylahoppe--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Makayla Hoppe",
+        "description": "seussical-regional-2026/makaylahoppe--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-regional-2026/makaylahoppe--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Makayla Hoppe",
+        "description": "rent-regional-2026/makaylahoppe--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ripcord-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Eva Trieger",
+        "description": "ripcord-regional-2026/san-diego-jewish-world--unknown.json: criticName"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T20:32:10.490Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eureka-day-regional-2026/theater-mirror--mike-hoban.json criticName: \"Mike Hoban\" -> \"Shelley A. Sackett\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-your-feet-regional-2026/theater-mirror--mike-hoban.json criticName: \"Mike Hoban\" -> \"Shelley A. Sackett\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026/theater-mirror--mike-hoban.json criticName: \"Mike Hoban\" -> \"Shelley A. Sackett\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-north-regional-2026/theater-mirror--mike-hoban.json criticName: \"Mike Hoban\" -> \"Shelley A. Sackett\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-family-album-regional-2026/makaylahoppe--unknown.json criticName: \"Unknown\" -> \"Makayla Hoppe\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seussical-regional-2026/makaylahoppe--unknown.json criticName: \"Unknown\" -> \"Makayla Hoppe\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-regional-2026/makaylahoppe--unknown.json criticName: \"Unknown\" -> \"Makayla Hoppe\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ripcord-regional-2026/san-diego-jewish-world--unknown.json criticName: \"Unknown\" -> \"Eva Trieger\""
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-5942",
+  "planId": "71d73cdb-493d-4abf-818d-6d365daceb82",
+  "status": "applied",
+  "createdAt": "2026-10-22T15:28:13.053Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5942 batch 1: split five older critic articles that review two shows, so each reviewed show gets its own section scored on its own text (joint fan-out backfill, first five end to end).",
+    "steps": [
+      "Run the multi-show splitter with the joint strategy on each of the five parent files; each parent is trimmed to its own section and a child row is written for the sibling show",
+      "Scoring and rebuild then pick up the trimmed parents and the new child rows"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=burn-this-2019 --file=stage-left--robert-russo.json",
+        "description": "Stage Left Robert Russo: Burn This -> All My Sons section"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=head-over-heels-2018 --file=latimes--charles-mcnulty.json",
+        "description": "LA Times Charles McNulty: Head Over Heels -> Pretty Woman section"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=oslo-2017 --file=village-voice--michael-feingold.json",
+        "description": "Village Voice Michael Feingold: Oslo -> Present Laughter section"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-shark-is-broken-2023 --file=theater-life--david-sheward.json",
+        "description": "Theater Life David Sheward: The Shark Is Broken -> Back to the Future section"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=thoughts-of-a-colored-man-2021 --file=washpost--peter-marks.json",
+        "description": "Washington Post Peter Marks: Thoughts of a Colored Man -> Lackawanna Blues section"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T19:38:52.575Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,55 @@
+{
+  "issueNumber": "bro-5031-2019-20",
+  "planId": "8730b017-d913-4d4d-adff-42ca34b5d156",
+  "status": "applied",
+  "createdAt": "2026-10-11T13:03:22.712Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 1 closed West End production(s) for 2019-2020 found through Theatre Record (reviewed on WOS, never listed there; BRO-5031).",
+    "steps": [
+      "Append the-upstart-crow-west-end-2020 (Gielgud Theatre, 2020-02-07 to 2020-03-16)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-upstart-crow-west-end-2020",
+          "title": "The Upstart Crow",
+          "slug": "the-upstart-crow-west-end-2020",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2020-02-07",
+          "openingDate": "2020-02-17",
+          "closingDate": "2020-03-16",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2019-2020",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-11T13:03:22.662Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-upstart-crow-gielgud-theatre_50969/",
+            "https://www.theatrerecord.com/archive/volume/40/dest/04_upstart_crow"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T14:20:58.587Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-upstart-crow-west-end-2020"
+    }
+  ]
+}

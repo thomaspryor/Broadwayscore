@@ -1,0 +1,424 @@
+{
+  "issueNumber": "bro-5562-b",
+  "planId": "51d35da7-d415-4b20-9e32-5b255bb5d5db",
+  "status": "applied",
+  "createdAt": "2026-10-17T23:07:00.761Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5562 (part b): Chicago weekly expenses just under $600K (Broadway Journal, AG statement; ChatGPT had attributed it to Company); American Psycho $8.8M and roughly $500K weekly (The Spectator); The Last Ship about $625K weekly (NYT); Jerusalem ~$3.0M, midpoint of the $2.5-3.5M range the NYT reported.",
+    "steps": [
+      "Edits read every oldValue from live data; every quote was opened at its URL."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "weeklyRunningCost",
+        "oldValue": 500000,
+        "newValue": 600000,
+        "description": "chicago: Broadway Journal reports weekly expenses just under $600,000 (Attorney General financial statement), replacing a forum estimate of $500K."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "weeklyRunningCostSource",
+        "oldValue": "Estimate: no weekly cost has been reported. A BroadwayWorld forum estimate (Aug 2022) put it at $550-600K a week.",
+        "newValue": "Broadway Journal (Aug 23, 2022): \"In the beginning of 2020, its weekly expenses totaled just under $600,000, according to a Chicago financial statement filed with the office of New York Attorney General Letitia James.\" https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+        "description": "chicago: cite it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "all-in",
+        "description": "chicago: total weekly expenses from a financial statement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "costMethodology",
+        "oldValue": "industry-estimate",
+        "newValue": "trade-reported",
+        "description": "chicago: reported figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "isEstimate",
+        "oldValue": {
+          "recouped": true,
+          "weeklyRunningCost": true
+        },
+        "newValue": {},
+        "description": "chicago: the weekly cost is reported now, and New York Theatre Guide reports that it earned back its cost, so the card should not say the recoupment was never announced (only the March 1997 date is ours, and its recoupedSource says so)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/chicago-theatrical-records-how-the-trailblazing-musical-set-a-new-broadway-standard",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/chicago-theatrical-records-how-the-trailblazing-musical-set-a-new-broadway-standard",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+            "date": "2022-08-23"
+          }
+        ],
+        "description": "chicago: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "notes",
+        "oldValue": "Longest-running American musical in Broadway history. $700M+ Broadway gross. Low-cost concert staging was revolutionary. No weekly running cost has been reported; the ~$500K figure is an estimate for a union musical with a full onstage orchestra. Recouped. Whitney Leavitt's Feb-Mar 2026 run set highest grossing period in show's 29-year history ($1.46M week of 3/15/26).",
+        "newValue": "Longest-running American musical in Broadway history. $700M+ Broadway gross. Low-cost concert staging was revolutionary. Weekly expenses were just under $600,000 at the beginning of 2020, per its financial statement filed with the New York Attorney General (Broadway Journal). Recouped. Whitney Leavitt's Feb-Mar 2026 run set highest grossing period in show's 29-year history ($1.46M week of 3/15/26).",
+        "description": "chicago: the notes called the weekly cost an unreported estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-psycho-2016",
+        "field": "capitalizationSource",
+        "oldValue": "NYTix reported $8.8 million capitalization",
+        "newValue": "The Spectator (Nov 14, 2023): \"Insiders confirmed to me the Broadway show had a capitalization of $8.8 million (with Act 4 and Jeffrey Richards each controlling half of this), fixed weekly running costs of roughly $500,000, and a total gross of $5.63 million.\" https://spectator.com/article/the-birth-death-and-rebirth-of-american-psycho-the-musical/",
+        "description": "american-psycho-2016: a quotable source for the $8.8M (was a ticket site with no link)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-psycho-2016",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 500000,
+        "description": "american-psycho-2016: The Spectator: fixed weekly running costs of roughly $500,000."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-psycho-2016",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "The Spectator (Nov 14, 2023): \"fixed weekly running costs of roughly $500,000\". https://spectator.com/article/the-birth-death-and-rebirth-of-american-psycho-the-musical/",
+        "description": "american-psycho-2016: cite it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-psycho-2016",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "american-psycho-2016: fixed running costs, royalties extra."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-psycho-2016",
+        "field": "costMethodology",
+        "oldValue": "trade-reported",
+        "newValue": "trade-reported",
+        "description": "american-psycho-2016: reported figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-psycho-2016",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytix.com/news/american-psycho-closes-at-8-8-million-loss",
+            "date": "2016-06-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2016/05/american-psycho-sets-early-broadway-closing-1201763561/",
+            "date": "2016-05-27",
+            "excerpt": "Closing at a total loss of its capitalization"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytix.com/news/american-psycho-closes-at-8-8-million-loss",
+            "date": "2016-06-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2016/05/american-psycho-sets-early-broadway-closing-1201763561/",
+            "date": "2016-05-27",
+            "excerpt": "Closing at a total loss of its capitalization"
+          },
+          {
+            "type": "trade",
+            "url": "https://spectator.com/article/the-birth-death-and-rebirth-of-american-psycho-the-musical/",
+            "date": "2023-11-14"
+          }
+        ],
+        "description": "american-psycho-2016: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-ship-2014",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 625000,
+        "description": "the-last-ship-2014: NYT: weekly running costs about $625,000."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-ship-2014",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Dec 15, 2014): \"The show's weekly running costs are about $625,000, so the show had been losing money until Sting's arrival.\" https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/12/15/the-last-ship-rises-with-sting-in-the-cast/",
+        "description": "the-last-ship-2014: cite it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-ship-2014",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "the-last-ship-2014: running costs."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-ship-2014",
+        "field": "costMethodology",
+        "oldValue": "trade-reported",
+        "newValue": "trade-reported",
+        "description": "the-last-ship-2014: reported figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-ship-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2015/01/07/theater/producers-struggle-to-fathom-the-fall-of-stings-the-last-ship.html",
+            "date": "2015-01-07"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2015/01/07/theater/producers-struggle-to-fathom-the-fall-of-stings-the-last-ship.html",
+            "date": "2015-01-07"
+          },
+          {
+            "type": "trade",
+            "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/12/15/the-last-ship-rises-with-sting-in-the-cast/",
+            "date": "2014-12-15"
+          }
+        ],
+        "description": "the-last-ship-2014: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3000000,
+        "description": "jerusalem-2011: midpoint of the $2.5M-$3.5M range the NYT reported; flagged as an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Estimate: the midpoint of the range The New York Times reported (May 25, 2011), a capitalization \"believed to be between $2.5 million and $3.5 million\". https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2011/05/25/jerusalem-gets-four-week-extension-on-broadway/",
+        "description": "jerusalem-2011: cite the range behind the estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "jerusalem-2011: the figure is a midpoint."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytix.com/news/the-river-concludes-its-run",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2011/05/25/jerusalem-gets-four-week-extension-on-broadway/",
+            "date": "2011-05-25"
+          }
+        ],
+        "description": "jerusalem-2011: replace the only source, a nytix page about a different show (The River), with the NYT report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "notes",
+        "oldValue": "No financial information found for Jerusalem (2011). The evidence provided discusses The River, a different show starring Hugh Jackman.",
+        "newValue": "The New York Times reported its capitalization was believed to be between $2.5 million and $3.5 million (May 25, 2011); no recoupment was announced.",
+        "description": "jerusalem-2011: the old notes said no financial information existed and discussed another show."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T00:29:16.852Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for american-psycho-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for american-psycho-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for american-psycho-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for american-psycho-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for american-psycho-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for american-psycho-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for the-last-ship-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for the-last-ship-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for the-last-ship-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for the-last-ship-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-last-ship-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for jerusalem-2011"
+    }
+  ]
+}

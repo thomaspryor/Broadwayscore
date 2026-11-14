@@ -1,0 +1,358 @@
+{
+  "issueNumber": "bro-6759",
+  "planId": "b4d5eb42-fa48-4492-a7df-cb3f94002af0",
+  "status": "applied",
+  "createdAt": "2026-11-01T13:28:27.569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6759: verify genuine cross-outlet reprints, clear wrongly hidden different-critic reviews (incl. appropriate-2023 Deadline) (part 1 of 5)",
+    "steps": [
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/dctheatrescene--jonathan-mandell.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://dctheatrescene.com/2019/04/29/all-my-sons-review/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/dctheatrescene--jonathan-mandell.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/queerty--matthew-wexler.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: this file's text is on its own URL (https://www.queerty.com/unapologetically-big-black-beautiful-strange-loop-changed-face-broadway-20220426); the flagged primary rollingstone--brittani-samuel.json does not match its own URL, so this review is real and must not be hidden.",
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/queerty--matthew-wexler.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bitter-wheat-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/bitter-wheat-garrick-theatre/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bitter-wheat-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ceilidh-the-musical-off-west-end-2026/lsbo--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://www.lsbo.co.uk/musical/ceilidh), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ceilidh-the-musical-off-west-end-2026/lsbo--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "charlie-and-the-chocolate-factory-2017/simon-parris-man-in-chair--simon-parris.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: this file's text is on its own URL (https://simonparrismaninchair.com/2017/04/09/charlie-and-the-chocolate-factory-review-broadway-2017/); the flagged primary peconic-public-broadcasting--david-richardson.json does not match its own URL, so this review is real and must not be hidden.",
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "charlie-and-the-chocolate-factory-2017/simon-parris-man-in-chair--simon-parris.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/scribicide--aaron-botwick.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: this file's text is on its own URL (https://scribicide.com/2016/09/04/a-cat-is-not-a-dog/); the flagged primary off-script-with-dan-dwyer--dan-dwyer.json does not match its own URL, so this review is real and must not be hidden.",
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/scribicide--aaron-botwick.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dog-mom-off-west-end-2026/onin--caitlin-neal.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://onin.london/dog-mom-at-southwark-playhouse/?utm_source=rss&utm_medium=rss&utm_campaign=dog-mom-at-southwark-playhouse), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dog-mom-off-west-end-2026/onin--caitlin-neal.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-tour-2026/the-pitch--brynn-weiss.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://www.thepitchkc.com/teentix-reviews-beetlejuice-the-musical-at-starlight-theatre/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-tour-2026/the-pitch--brynn-weiss.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026/soz6--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://soz6.com/news/end-of-the-world-and-hard-boiled-wonderland-review-murakami-s-marvel-brilliantly-brought-to-life), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026/soz6--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "farinelli-and-the-king-2017/broadwayworld--michael-dale.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: this file's text is on its own URL (https://www.broadwayworld.com/article/BWW-Review-Mark-Rylance-Returns-To-Broadway-in-Unamplified-and-Candlelit-FARINELLI-AND-THE-KING-20171218); the flagged primary dctheatrescene--jonathan-mandell.json does not match its own URL, so this review is real and must not be hidden.",
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "farinelli-and-the-king-2017/broadwayworld--michael-dale.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gary-a-sequel-to-titus-andronicus-2019/dc-theater-arts--david-barbour.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: this file's text is on its own URL (https://dctheaterarts.org/2019/04/21/review-gary-a-sequel-to-titus-andronicus-at-the-booth-theatre/); the flagged primary dc-theater-arts--deb-miller.json does not match its own URL, so this review is real and must not be hidden.",
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gary-a-sequel-to-titus-andronicus-2019/dc-theater-arts--david-barbour.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grand-horizons-2020/broadwayworld--michael-dale.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: this file's text is on its own URL (https://www.broadwayworld.com/article/BWW-Review-Jane-Alexander-James-Cromwell-On-The-Rocky-Road-To-Divorce-in-Bess-Wohls-Very-Funny-GRAND-HORIZONS-20200124); the flagged primary dctheatrescene--jonathan-mandell.json does not match its own URL, so this review is real and must not be hidden.",
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grand-horizons-2020/broadwayworld--michael-dale.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear wrongly hidden review"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T15:33:26.398Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/dctheatrescene--jonathan-mandell.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://dctheatrescene.com/2019/04/29/all-my-sons-review/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/dctheatrescene--jonathan-mandell.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/queerty--matthew-wexler.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://www.queerty.com/unapologetically-big-black-beautiful-strange-loop-changed-face-broadway-20220426); the flagged primary rollingstone--brittani-samuel.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/queerty--matthew-wexler.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bitter-wheat-west-end-2019/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/bitter-wheat-garrick-theatre/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bitter-wheat-west-end-2019/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ceilidh-the-musical-off-west-end-2026/lsbo--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://www.lsbo.co.uk/musical/ceilidh), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ceilidh-the-musical-off-west-end-2026/lsbo--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "charlie-and-the-chocolate-factory-2017/simon-parris-man-in-chair--simon-parris.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://simonparrismaninchair.com/2017/04/09/charlie-and-the-chocolate-factory-review-broadway-2017/); the flagged primary peconic-public-broadcasting--david-richardson.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "charlie-and-the-chocolate-factory-2017/simon-parris-man-in-chair--simon-parris.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/scribicide--aaron-botwick.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://scribicide.com/2016/09/04/a-cat-is-not-a-dog/); the flagged primary off-script-with-dan-dwyer--dan-dwyer.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/scribicide--aaron-botwick.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dog-mom-off-west-end-2026/onin--caitlin-neal.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://onin.london/dog-mom-at-southwark-playhouse/?utm_source=rss&utm_medium=rss&utm_campaign=dog-mom-at-southwark-playhouse), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dog-mom-off-west-end-2026/onin--caitlin-neal.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-tour-2026/the-pitch--brynn-weiss.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://www.thepitchkc.com/teentix-reviews-beetlejuice-the-musical-at-starlight-theatre/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-tour-2026/the-pitch--brynn-weiss.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026/soz6--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://soz6.com/news/end-of-the-world-and-hard-boiled-wonderland-review-murakami-s-marvel-brilliantly-brought-to-life), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026/soz6--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "farinelli-and-the-king-2017/broadwayworld--michael-dale.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://www.broadwayworld.com/article/BWW-Review-Mark-Rylance-Returns-To-Broadway-in-Unamplified-and-Candlelit-FARINELLI-AND-THE-KING-20171218); the flagged primary dctheatrescene--jonathan-mandell.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "farinelli-and-the-king-2017/broadwayworld--michael-dale.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gary-a-sequel-to-titus-andronicus-2019/dc-theater-arts--david-barbour.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://dctheaterarts.org/2019/04/21/review-gary-a-sequel-to-titus-andronicus-at-the-booth-theatre/); the flagged primary dc-theater-arts--deb-miller.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gary-a-sequel-to-titus-andronicus-2019/dc-theater-arts--david-barbour.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grand-horizons-2020/broadwayworld--michael-dale.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://www.broadwayworld.com/article/BWW-Review-Jane-Alexander-James-Cromwell-On-The-Rocky-Road-To-Divorce-in-Bess-Wohls-Very-Funny-GRAND-HORIZONS-20200124); the flagged primary dctheatrescene--jonathan-mandell.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grand-horizons-2020/broadwayworld--michael-dale.json crossOutletDuplicate: true -> false"
+    }
+  ],
+  "executedIn": "ci"
+}

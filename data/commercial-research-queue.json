@@ -1,0 +1,23 @@
+{
+  "shows": [
+    "here-there-are-blueberries",
+    "now-you-see-me-live",
+    "lost-lear",
+    "the-odd-couple",
+    "downstate",
+    "the-rocky-horror-show",
+    "death-of-a-salesman",
+    "two-strangers"
+  ],
+  "triggers": {
+    "here-there-are-blueberries": "pre-opening",
+    "now-you-see-me-live": "pre-opening",
+    "lost-lear": "new-show",
+    "the-odd-couple": "new-show",
+    "downstate": "pre-opening",
+    "the-rocky-horror-show": "sweep-requeue-low-conf",
+    "death-of-a-salesman": "sweep-requeue-low-conf",
+    "two-strangers": "sweep-requeue-low-conf"
+  },
+  "updatedAt": "2026-11-14T22:27:53.491Z"
+}

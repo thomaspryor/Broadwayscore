@@ -1,0 +1,804 @@
+{
+  "issueNumber": "bro-6516-p-a",
+  "planId": "3cb8c9a2-7a5b-45fa-8bfc-b3b5cc610e5a",
+  "status": "applied",
+  "createdAt": "2026-10-29T15:13:32.375Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6516: add UK hub productions from the Guardian list (23 bath-uk,bristol-uk)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-man-for-all-seasons-royal-bath-regional-2025",
+          "title": "A Man for All Seasons",
+          "slug": "a-man-for-all-seasons-royal-bath-regional-2025",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-01-26",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:31.675Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/jan/26/a-man-for-all-seasons-theatre-royal-bath-review-robert-bolt-martin-shaw-thomas-more-jonathan-church"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
+          "title": "Alfred Hitchcock Presents: The Musical",
+          "slug": "alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-03-28",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:25.702Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/mar/28/alfred-hitchcock-presents-the-musical-review-no-frights-no-thrills-theatre-royal-bath"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "as-you-like-it-royal-bath-regional-2025",
+          "title": "As You Like It",
+          "slug": "as-you-like-it-royal-bath-regional-2025",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-08-22",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:09.536Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/aug/22/as-you-like-it-review-theatre-royal-bath"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "blue-beard-royal-bath-regional-2024",
+          "title": "Blue Beard",
+          "slug": "blue-beard-royal-bath-regional-2024",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2024-02-09",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:13:04.653Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/feb/09/blue-beard-review-emma-rices-fairytale-hits-home-with-horror-and-pizzazz"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "endgame-royal-bath-regional-2025",
+          "title": "Endgame",
+          "slug": "endgame-royal-bath-regional-2025",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-09-12",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:03.839Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/sep/12/endgame-review-mathew-horne-and-douglas-hodge-ustinov-bath"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "grace-pervades-royal-bath-regional-2025",
+          "title": "Grace Pervades",
+          "slug": "grace-pervades-royal-bath-regional-2025",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-07-04",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:15.533Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/jul/04/grace-pervades-review-ralph-fiennes-miranda-raison-david-hare"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hedda-royal-bath-regional-2025",
+          "title": "Hedda",
+          "slug": "hedda-royal-bath-regional-2025",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-08-14",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:09.552Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/aug/14/hedda-review-ustinov-studio-bath-lily-allen-ibsen"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "present-laughter-royal-bath-regional-2026",
+          "title": "Present Laughter",
+          "slug": "present-laughter-royal-bath-regional-2026",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2026-09-03",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:37.066Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/sep/03/present-laughter-review-gender-switched-coward-comedy-dazzles-in-70s-new-york"
+          ],
+          "statusSource": "guardian-review"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "small-hotel-royal-bath-regional-2025",
+          "title": "Small Hotel",
+          "slug": "small-hotel-royal-bath-regional-2025",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-10-10",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:01.933Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/oct/10/small-hotel-review-theatre-royal-bath"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "summer-1954-royal-bath-regional-2024",
+          "title": "Summer 1954",
+          "slug": "summer-1954-royal-bath-regional-2024",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2024-11-03",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:43.115Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/nov/03/summer-1954-review-rattigan-double-bill-packs-an-intellectual-and-emotional-punch"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-little-prince-royal-bath-regional-2024",
+          "title": "The Little Prince",
+          "slug": "the-little-prince-royal-bath-regional-2024",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2024-10-04",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:48.997Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/oct/04/the-little-prince-review-saint-exupery-egg-bath"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-lover-the-collection-royal-bath-regional-2024",
+          "title": "The Lover/The Collection",
+          "slug": "the-lover-the-collection-royal-bath-regional-2024",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2024-03-28",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:13:00.013Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/mar/28/the-loverthe-collection-review-pinter-plays-psychological-games"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-secret-garden-royal-bath-regional-2026",
+          "title": "The Secret Garden",
+          "slug": "the-secret-garden-royal-bath-regional-2026",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2026-07-16",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:10.353Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/jul/16/the-secret-garden-review-egg-theatre-bath"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "tristan-and-yseult-royal-bath-regional-2026",
+          "title": "Tristan & Yseult",
+          "slug": "tristan-and-yseult-royal-bath-regional-2026",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2026-09-19",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:37.055Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice"
+          ],
+          "statusSource": "guardian-review"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "how-to-win-against-history-bristol-old-vic-regional-2025",
+          "title": "How to Win Against History",
+          "slug": "how-to-win-against-history-bristol-old-vic-regional-2025",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2025-06-27",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:15.551Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/jun/27/how-to-win-against-history-review-bristol-old-vic-underbelly-edinburgh"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nanny-bristol-old-vic-regional-2024",
+          "title": "Nanny",
+          "slug": "nanny-bristol-old-vic-regional-2024",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2024-02-08",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:13:04.640Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/feb/08/nanny-review-bristol-old-vic"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "play-on-bristol-old-vic-regional-2025",
+          "title": "Play On!",
+          "slug": "play-on-bristol-old-vic-regional-2025",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2025-01-19",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:31.730Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/jan/19/play-on-review-bristol-old-vic-talawa-belgrade-theatre"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "reverberation-bristol-old-vic-regional-2024",
+          "title": "Reverberation",
+          "slug": "reverberation-bristol-old-vic-regional-2024",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2024-10-13",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:48.951Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/oct/13/reverberation-matthew-lopez-bristol-old-vic-european-premiere-review-matthew-lopez-a-romcom-rooted-in-violence-and-rejection-eleanor-tomlinson"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "starter-for-ten-bristol-old-vic-regional-2024",
+          "title": "Starter for Ten",
+          "slug": "starter-for-ten-bristol-old-vic-regional-2024",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2024-03-08",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:13:02.408Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/mar/08/starter-for-ten-review-bristol-old-vic-musical"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-beautiful-future-is-coming-bristol-old-vic-regional-2025",
+          "title": "The Beautiful Future Is Coming",
+          "slug": "the-beautiful-future-is-coming-bristol-old-vic-regional-2025",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2025-05-25",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:17.731Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/may/25/the-beautiful-future-is-coming-review-bristol-old-vic"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026",
+          "title": "The Complete Works of William Shakespeare (Abridged)",
+          "slug": "the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2026-03-28",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:43.289Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/mar/28/the-complete-works-of-william-shakespeare-abridged-review-bristol-old-vic"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-little-mermaid-bristol-old-vic-regional-2025",
+          "title": "The Little Mermaid",
+          "slug": "the-little-mermaid-bristol-old-vic-regional-2025",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2025-01-03",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:31.763Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/jan/03/the-little-mermaid-review-bristol-old-vic"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "treasure-island-bristol-old-vic-regional-2025",
+          "title": "Treasure Island",
+          "slug": "treasure-island-bristol-old-vic-regional-2025",
+          "venue": "Bristol Old Vic, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2025-12-11",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:56.289Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/dec/11/treasure-island-review-bristol-old-vic"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T17:14:06.189Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-man-for-all-seasons-royal-bath-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added alfred-hitchcock-presents-the-musical-royal-bath-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added as-you-like-it-royal-bath-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added blue-beard-royal-bath-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added endgame-royal-bath-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added grace-pervades-royal-bath-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hedda-royal-bath-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added present-laughter-royal-bath-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added small-hotel-royal-bath-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added summer-1954-royal-bath-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-little-prince-royal-bath-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-lover-the-collection-royal-bath-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-secret-garden-royal-bath-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added tristan-and-yseult-royal-bath-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added how-to-win-against-history-bristol-old-vic-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nanny-bristol-old-vic-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added play-on-bristol-old-vic-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added reverberation-bristol-old-vic-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added starter-for-ten-bristol-old-vic-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-beautiful-future-is-coming-bristol-old-vic-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-little-mermaid-bristol-old-vic-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added treasure-island-bristol-old-vic-regional-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

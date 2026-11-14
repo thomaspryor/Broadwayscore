@@ -1,0 +1,321 @@
+{
+  "issueNumber": "bro-5288-a",
+  "planId": "e1acefa4-97c1-4651-8691-6b5115f07987",
+  "status": "applied",
+  "createdAt": "2026-10-13T19:15:10.505Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "(part a of 2) BRO-5288: delete the rows the 2026-10-13 review refresh (broadway-review-texts c94cf8756) filed under show ids shows.json does not have, plus the earlier-production rows it quarantined to _pending/. Where the id is a DTLI page slug of a real show (purpose, romeo-juliet, tammy-faye, doubt-a-parable, harry-potter-*, moulin-rouge-the-musical-review, little-shop-of-horrors-2019, the-music-man-off-broadway-2026), the real show folder already holds a same-outlet row. The rest are reviews of earlier productions (2003-2017) of titles whose new id is not a show. Every file is restorable from c94cf8756 (review-file-op restore). The three rows bro-5232-p flags are left to that plan.",
+    "steps": [
+      "delete _pending/delirium-off-broadway-2026/nytimes--anita-gates.json (dtli, published August 10, 2015)",
+      "delete _pending/king-lear-royal-exchange-regional-2026/metro-uk--unknown.json (dtli, published January 24, 2014)",
+      "delete _pending/king-lear-royal-exchange-regional-2026/nytimes--ben-brantley.json (dtli, published January 26, 2014)",
+      "delete _pending/king-lear-royal-exchange-regional-2026/standard--henry-hitchings.json (dtli, published January 24, 2014)",
+      "delete _pending/king-lear-royal-exchange-regional-2026/telegraph--charles-spencer.json (dtli, published January 23, 2014)",
+      "delete _pending/king-lear-royal-exchange-regional-2026/timeout-london--andrzej-lukowski.json (dtli, published January 24, 2014)",
+      "delete _pending/la-gringa-off-broadway-2026/nytimes--d-j-r-bruckner.json (show-score, published March 7th, 1996)",
+      "delete _pending/the-hairy-ape-irish-repertory-theatre-off-broadway-2026/nytimes--ben-brantley.json (dtli, published March 31, 2017)",
+      "delete animal-wisdom-2022/nytimes--ben-brantley.json (dtli, published October 13, 2017)",
+      "delete doubt-a-parable/broadwaynews--brittani-samuel.json (dtli, published March 8, 2024)",
+      "delete doubt-a-parable/deadline--greg-evans.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/ew--dalton-ross.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/nypost--johnny-oleksinski.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/nytg--gillian-russo.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/nytimes--jesse-green.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/theatermania--zachary-stewart.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/theatrely--juan-a-ramirez.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/thewrap--jd-knapp.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/timeout--adam-feldman.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/vulture--sara-holdren.json (dtli, published March 7, 2024)",
+      "delete doubt-a-parable/wsj--charles-isherwood.json (dtli, published March 7, 2024)",
+      "delete harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json (dtli, published April 22, 2018)",
+      "delete harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json (dtli, published April 22, 2018)",
+      "delete harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json (dtli, published April 22, 2018)",
+      "delete harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json (dtli, published April 22, 2018)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/delirium-off-broadway-2026/nytimes--anita-gates.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/king-lear-royal-exchange-regional-2026/metro-uk--unknown.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/king-lear-royal-exchange-regional-2026/nytimes--ben-brantley.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/king-lear-royal-exchange-regional-2026/standard--henry-hitchings.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/king-lear-royal-exchange-regional-2026/telegraph--charles-spencer.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/king-lear-royal-exchange-regional-2026/timeout-london--andrzej-lukowski.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/la-gringa-off-broadway-2026/nytimes--d-j-r-bruckner.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/the-hairy-ape-irish-repertory-theatre-off-broadway-2026/nytimes--ben-brantley.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "animal-wisdom-2022/nytimes--ben-brantley.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/broadwaynews--brittani-samuel.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/deadline--greg-evans.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/ew--dalton-ross.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/nypost--johnny-oleksinski.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/nytg--gillian-russo.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/nytimes--jesse-green.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/theatermania--zachary-stewart.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/theatrely--juan-a-ramirez.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/thewrap--jd-knapp.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/timeout--adam-feldman.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/vulture--sara-holdren.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/wsj--charles-isherwood.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T20:53:18.897Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/delirium-off-broadway-2026/nytimes--anita-gates.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/king-lear-royal-exchange-regional-2026/metro-uk--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/king-lear-royal-exchange-regional-2026/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/king-lear-royal-exchange-regional-2026/standard--henry-hitchings.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/king-lear-royal-exchange-regional-2026/telegraph--charles-spencer.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/king-lear-royal-exchange-regional-2026/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/la-gringa-off-broadway-2026/nytimes--d-j-r-bruckner.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/the-hairy-ape-irish-repertory-theatre-off-broadway-2026/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted animal-wisdom-2022/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/broadwaynews--brittani-samuel.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/ew--dalton-ross.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/nytg--gillian-russo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/theatrely--juan-a-ramirez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/thewrap--jd-knapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/vulture--sara-holdren.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/wsj--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json"
+    }
+  ]
+}

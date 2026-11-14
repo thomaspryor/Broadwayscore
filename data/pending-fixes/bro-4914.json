@@ -1,0 +1,99 @@
+{
+  "issueNumber": "bro-4914",
+  "planId": "c01163c4-afc4-4eaf-b855-76d9cae90f0e",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4914 item 7: clear isRoundupArticle on 6 own-domain files that are single-show reviews of their show (stale auto-detector hits on other-show mentions or a show-title url). Read each text in full; the other 39 flagged files are genuine roundups, aggregator pages, other-show pieces, or already excluded for other reasons and are left alone.",
+    "steps": [
+      "Set isRoundupArticle false on each of the 6 files (clear-only; sticky against the CI setters)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-wiz-2024/front-row-center--sarah-downs.json",
+        "field": "isRoundupArticle",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Stale roundup flag: file is a single-show review (BRO-4914 item 7), checked against stored text and url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-wiz-2024/theater-life--david-sheward.json",
+        "field": "isRoundupArticle",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Stale roundup flag: file is a single-show review (BRO-4914 item 7), checked against stored text and url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-2024/front-row-center--brittany-crowell.json",
+        "field": "isRoundupArticle",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Stale roundup flag: file is a single-show review (BRO-4914 item 7), checked against stored text and url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/dctheatrescene--jonathan-mandell.json",
+        "field": "isRoundupArticle",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Stale roundup flag: file is a single-show review (BRO-4914 item 7), checked against stored text and url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-off-broadway-2026/thewrap--robert-hofler.json",
+        "field": "isRoundupArticle",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Stale roundup flag: file is a single-show review (BRO-4914 item 7), checked against stored text and url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-off-broadway-2026/vulture--jackson-mchenry.json",
+        "field": "isRoundupArticle",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Stale roundup flag: file is a single-show review (BRO-4914 item 7), checked against stored text and url"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T21:41:55.809Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-wiz-2024/front-row-center--sarah-downs.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-wiz-2024/theater-life--david-sheward.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-2024/front-row-center--brittany-crowell.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/dctheatrescene--jonathan-mandell.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-off-broadway-2026/thewrap--robert-hofler.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-off-broadway-2026/vulture--jackson-mchenry.json isRoundupArticle: true -> false"
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "issueNumber": "bro-5289",
+  "planId": "05b29c6f-a5c8-4e68-9ce4-8b98ed5b5f55",
+  "status": "applied",
+  "createdAt": "2026-10-25T22:39:24.687Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5289: recover the Associated Press's own review for of-mice-and-men-2014, pippin-2013 and the-glass-menagerie-2013. Each was filed as WSJ from an online.wsj.com/article/AP<id> wire page (flagged wrongAttribution in BRO-5243). Relabel the three files to outlet ap (Mark Kennedy) and file them as ap--mark-kennedy.json.",
+    "steps": [
+      "BRO-5289: relabelled to ap below, so the wrong-WSJ flag no longer applies.",
+      "BRO-5289: same.",
+      "BRO-5289: url is an online.wsj.com/article/AP<32 hex> wire page: the text is the Associated Press review.",
+      "BRO-5289: file it as the AP row (replaces the dead-url ap--mark-kennedy.json).",
+      "BRO-5289: excerpt duplicate (duplicateOf wsj--associated-press.json) of the same AP wire page.",
+      "BRO-5289: dead-url (thenewstribune 404) truncated copy of the same AP review; ap--mark-kennedy.json takes its place.",
+      "BRO-5289: the AP wire page is bylined Mark Kennedy (BRO-5243 read the stored text).",
+      "BRO-5289: relabelled to ap below, so the wrong-WSJ flag no longer applies.",
+      "BRO-5289: same.",
+      "BRO-5289: url is an online.wsj.com/article/AP<32 hex> wire page: the text is the Associated Press review.",
+      "BRO-5289: file it as the AP row (replaces the dead-url ap--mark-kennedy.json).",
+      "BRO-5289: the AP wire page is bylined Mark Kennedy (BRO-5243 read the stored text).",
+      "BRO-5289: relabelled to ap below, so the wrong-WSJ flag no longer applies.",
+      "BRO-5289: same.",
+      "BRO-5289: url is an online.wsj.com/article/AP<32 hex> wire page: the text is the Associated Press review.",
+      "BRO-5289: file it as the AP row (replaces the dead-url ap--mark-kennedy.json)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": "BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review",
+        "newValue": "superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review",
+        "description": "BRO-5289: relabelled to ap below, so the wrong-WSJ flag no longer applies."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/wsj--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5289: same."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/wsj--mark-kennedy.json",
+        "field": "outletId",
+        "oldValue": "wsj",
+        "newValue": "ap",
+        "description": "BRO-5289: url is an online.wsj.com/article/AP<32 hex> wire page: the text is the Associated Press review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "of-mice-and-men-2014/wsj--mark-kennedy.json",
+        "destPath": "of-mice-and-men-2014/ap--mark-kennedy.json",
+        "description": "BRO-5289: file it as the AP row (replaces the dead-url ap--mark-kennedy.json).",
+        "overwrite": true
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pippin-2013/wsj--mark-kennedy.json",
+        "description": "BRO-5289: excerpt duplicate (duplicateOf wsj--associated-press.json) of the same AP wire page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pippin-2013/ap--associated-press.json",
+        "description": "BRO-5289: dead-url (thenewstribune 404) truncated copy of the same AP review; ap--mark-kennedy.json takes its place."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/wsj--associated-press.json",
+        "field": "criticName",
+        "oldValue": "Associated Press",
+        "newValue": "Mark Kennedy",
+        "description": "BRO-5289: the AP wire page is bylined Mark Kennedy (BRO-5243 read the stored text)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/wsj--associated-press.json",
+        "field": "wrongAttributionReason",
+        "oldValue": "BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review",
+        "newValue": "superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review",
+        "description": "BRO-5289: relabelled to ap below, so the wrong-WSJ flag no longer applies."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/wsj--associated-press.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5289: same."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/wsj--associated-press.json",
+        "field": "outletId",
+        "oldValue": "wsj",
+        "newValue": "ap",
+        "description": "BRO-5289: url is an online.wsj.com/article/AP<32 hex> wire page: the text is the Associated Press review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "pippin-2013/wsj--associated-press.json",
+        "destPath": "pippin-2013/ap--mark-kennedy.json",
+        "description": "BRO-5289: file it as the AP row (replaces the dead-url ap--mark-kennedy.json).",
+        "overwrite": true
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/wsj--terry-teachout.json",
+        "field": "criticName",
+        "oldValue": "Terry Teachout",
+        "newValue": "Mark Kennedy",
+        "description": "BRO-5289: the AP wire page is bylined Mark Kennedy (BRO-5243 read the stored text)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/wsj--terry-teachout.json",
+        "field": "wrongAttributionReason",
+        "oldValue": "BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review",
+        "newValue": "superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review",
+        "description": "BRO-5289: relabelled to ap below, so the wrong-WSJ flag no longer applies."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/wsj--terry-teachout.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5289: same."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/wsj--terry-teachout.json",
+        "field": "outletId",
+        "oldValue": "wsj",
+        "newValue": "ap",
+        "description": "BRO-5289: url is an online.wsj.com/article/AP<32 hex> wire page: the text is the Associated Press review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-glass-menagerie-2013/wsj--terry-teachout.json",
+        "destPath": "the-glass-menagerie-2013/ap--mark-kennedy.json",
+        "description": "BRO-5289: file it as the AP row (replaces the dead-url ap--mark-kennedy.json).",
+        "overwrite": true
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T00:38:26.067Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/wsj--mark-kennedy.json wrongAttributionReason: \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\" -> \"superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/wsj--mark-kennedy.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/wsj--mark-kennedy.json outletId: \"wsj\" -> \"ap\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved of-mice-and-men-2014/wsj--mark-kennedy.json → of-mice-and-men-2014/ap--mark-kennedy.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pippin-2013/wsj--mark-kennedy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pippin-2013/ap--associated-press.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json criticName: \"Associated Press\" -> \"Mark Kennedy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json wrongAttributionReason: \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\" -> \"superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json outletId: \"wsj\" -> \"ap\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved pippin-2013/wsj--associated-press.json → pippin-2013/ap--mark-kennedy.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json criticName: \"Terry Teachout\" -> \"Mark Kennedy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json wrongAttributionReason: \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\" -> \"superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json outletId: \"wsj\" -> \"ap\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-glass-menagerie-2013/wsj--terry-teachout.json → the-glass-menagerie-2013/ap--mark-kennedy.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

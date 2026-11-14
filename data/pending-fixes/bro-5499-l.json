@@ -1,0 +1,152 @@
+{
+  "issueNumber": "bro-5499-l",
+  "planId": "ecef4212-2db9-46df-8b71-c3feb821ee89",
+  "status": "applied",
+  "createdAt": "2026-10-16T23:08:39.278Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (l): ANON (MCC) review dates and star ratings verified against the pages.",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-14",
+        "description": "BRO-5499: page prints \"Date: October 14, 2026\", 2 of 5 stars (the stored 57 sits outside the 31-50 band)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5",
+        "description": "BRO-5499: page prints \"Date: October 14, 2026\", 2 of 5 stars (the stored 57 sits outside the 31-50 band)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--frank-scheck.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-14",
+        "description": "BRO-5499: page prints \"October 14, 2026 9:00 pm\", 3 of 5 stars"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--frank-scheck.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-14",
+        "description": "BRO-5499: page prints \"October 14, 2026 8:59 pm\", 3 of 5 stars"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5",
+        "description": "BRO-5499: page prints \"October 14, 2026 8:59 pm\", 3 of 5 stars"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-14",
+        "description": "BRO-5499: page meta 2026-10-14T21:00:00-04:00 (New York local date; UTC says 15th)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T00:00:58.375Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json publishDate: null -> \"2026-10-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json originalScore: null -> \"2/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--frank-scheck.json publishDate: null -> \"2026-10-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--frank-scheck.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json publishDate: null -> \"2026-10-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json publishDate: null -> \"2026-10-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json dateSource: null -> \"human-page-verified\""
+    }
+  ]
+}

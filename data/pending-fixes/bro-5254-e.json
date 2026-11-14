@@ -1,0 +1,73 @@
+{
+  "issueNumber": "bro-5254-e",
+  "planId": "01cdb48e-cc29-451c-b821-f5be317f6c91",
+  "status": "applied",
+  "createdAt": "2026-10-14T03:30:08.884Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5254 reader check of the 36 rows whose pre-strip score was kept (plan bro-5254-d). The pre-strip scores came from older prompts, so a reader compared each kept score and its rescore against the review text. 20 keep the pre-strip score, 12 take the rescore (it fits the verdict better, e.g. the-columnist-2012: brilliant lead but an episodic, structureless play, rescore 68 vs kept 86), 1 fits neither (the-heidi-chronicles-2015: the review pans the production and supporting cast, kept 65 and rescore 70 both too high; human score 55), and 3 already carry a humanReviewScore that wins. Also drops 4 more repeated lead paragraphs found once straight and curly quotes compare equal (no rescore).",
+    "steps": [
+      "Run strip-variety-promo-bleed.js --use-rescore --files=<12 rows> --apply.",
+      "Set humanReviewScore 55 and a humanReviewNote on the-heidi-chronicles-2015 Variety.",
+      "Run strip-variety-promo-bleed.js --apply --limit=200 (lead-only rows; no rescore).",
+      "Then rebuild-reviews.yml."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--use-rescore --files=all-my-sons-2008/variety--david-rooney.json,art-2025/variety--daniel-daddario.json,bad-cinderella-2023/variety--naveen-kumar.json,frostnixon-2007/variety--charles-isherwood.json,frozen-2018/variety--marilyn-stasio.json,master-class-2011/variety--marilyn-stasio.json,mr-saturday-night-2022/variety--charles-isherwood.json,rocky-2014/variety--marilyn-stasio.json,the-anarchist-2012/variety--marilyn-stasio.json,the-columnist-2012/variety--marilyn-stasio.json,the-house-of-blue-leaves-2011/variety--marilyn-stasio.json,the-present-2017/variety--marilyn-stasio.json --apply",
+        "description": "BRO-5254: reader judged the rescore fits the text better than the kept pre-strip score on these 12 rows"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heidi-chronicles-2015/variety--marilyn-stasio.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 55,
+        "description": "BRO-5254 reader check: Stasio praises Moss but calls the production shoddy and the supporting cast an embarrassment; kept 65 and rescore 70 both read too high"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heidi-chronicles-2015/variety--marilyn-stasio.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5254 reader check 2026-10-14: Mixed-negative. Moss praised; production called shoddy and cheap, the girlfriends' portrayals an embarrassment. Pre-strip 65 and rescore 70 both too high.",
+        "description": "BRO-5254: provenance for the human score"
+      },
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--apply --limit=200",
+        "description": "BRO-5254: drop the repeated lead paragraph where the copies differ only in quote style (4 rows, no rescore)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T04:38:27.155Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heidi-chronicles-2015/variety--marilyn-stasio.json humanReviewScore: null -> 55"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heidi-chronicles-2015/variety--marilyn-stasio.json humanReviewNote: null -> \"BRO-5254 reader check 2026-10-14: Mixed-negative. Moss praised; production called shoddy and cheap, the girlfriends' portrayals an embarrassment. Pre-strip 65 and rescore 70 both too high.\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
+}

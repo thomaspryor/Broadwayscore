@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5617",
+  "planId": "63e4ca3b-e281-4dad-bd64-0424f86f7cf3",
+  "status": "applied",
+  "createdAt": "2026-10-24T13:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5617: delete the _pending nypost stub for midnight-off-broadway-2026. Its url (nypost.com/2026/10/14/scooter-braun-and-todrick-hall-join-forces-to-produce-star-studded-off-broadway-musical-midnight-to-rave-reviews/) returns 404 and the slug is a producer announcement, not a review; it has no text, no byline and was marked pendingUnrecoverable. The show opened 2026-10-15 and has no nypost review file.",
+    "steps": [
+      "Delete data/review-texts/_pending/midnight-off-broadway-2026/nypost--37bdc3ba.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/midnight-off-broadway-2026/nypost--37bdc3ba.json",
+        "description": "404 URL, producer news item, no text and no byline; not a review"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T13:59:23.029Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/midnight-off-broadway-2026/nypost--37bdc3ba.json"
+    }
+  ],
+  "executedIn": "ci"
+}

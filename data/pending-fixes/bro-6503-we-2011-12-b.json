@@ -1,0 +1,847 @@
+{
+  "issueNumber": "bro-6503-we-2011-12-b",
+  "planId": "fff58ebc-a444-4342-92a1-c3c3cdcfb28e",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:23:06.926Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 25 closed West End production(s) for 2011-2012 from the historical backfill (we-historical:theatricalia; BRO-6503).",
+    "steps": [
+      "Append all-new-people-west-end-2012 (Duke of York's Theatre, 2012-02-24 to 2012-04-28)",
+      "Append the-awkward-squad-west-end-2012 (Arts Theatre, 2012-03-06 to 2012-04-07)",
+      "Append sweeney-todd-west-end-2012 (Adelphi Theatre, 2012-03-10 to 2012-09-22)",
+      "Append the-kings-speech-west-end-2012 (Wyndham's Theatre, 2012-03-22 to 2012-05-12)",
+      "Append people-west-end-2012 (Lyttelton Theatre, 2012-03-31 to 2013-05-03)",
+      "Append long-days-journey-into-night-west-end-2012 (Apollo Theatre, 2012-04-02 to 2012-08-18)",
+      "Append south-downs-the-browning-version-west-end-2012 (Harold Pinter Theatre, 2012-04-19 to 2012-07-21)",
+      "Append written-on-the-heart-west-end-2012 (Duchess Theatre, 2012-04-19 to 2012-05-21)",
+      "Append love-love-love-west-end-2012 (Royal Court, 2012-04-27 to 2012-06-09)",
+      "Append collaborators-west-end-2012 (Olivier Theatre, 2012-05-03 to 2012-06-23)",
+      "Append top-hat-west-end-2012 (Aldwych Theatre, 2012-05-09 to 2013-10-26)",
+      "Append abigails-party-west-end-2012 (Wyndham's Theatre, 2012-05-15 to 2012-09-01)",
+      "Append what-the-butler-saw-west-end-2012 (Vaudeville Theatre, 2012-05-16 to 2012-07-28)",
+      "Append the-sunshine-boys-west-end-2012 (Savoy Theatre, 2012-05-17 to 2012-07-28)",
+      "Append posh-west-end-2012 (Duke of York's Theatre, 2012-05-23 to 2012-08-04)",
+      "Append singin-in-the-rain-west-end-2012 (Palace Theatre, 2012-06-01 to 2013-06-08)",
+      "Append gatz-west-end-2012 (Noël Coward Theatre, 2012-06-08 to 2012-07-15)",
+      "Append the-last-of-the-haussmans-west-end-2012 (Lyttelton Theatre, 2012-06-12 to 2012-10-10)",
+      "Append a-walk-on-part-west-end-2012 (Arts Theatre, 2012-06-19 to 2012-07-14)",
+      "Append chariots-of-fire-west-end-2012 (Gielgud Theatre, 2012-07-03 to 2013-01-05)",
+      "Append timon-of-athens-west-end-2012 (Olivier Theatre, 2012-07-10 to 2012-11-01)",
+      "Append spamalot-west-end-2012 (Harold Pinter Theatre, 2012-07-25 to 2012-09-09)",
+      "Append the-curious-incident-of-the-dog-in-the-night-time-west-end-2012 (Dorfman Theatre, 2012-07-30 to 2012-10-27)",
+      "Append london-road-west-end-2012 (Olivier Theatre, 2012-08-01 to 2012-09-06)",
+      "Append julius-caesar-west-end-2012 (Noël Coward Theatre, 2012-08-08 to 2012-09-15)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "all-new-people-west-end-2012",
+          "title": "All New People",
+          "slug": "all-new-people-west-end-2012",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2012-02-24",
+          "openingDate": "2012-02-24",
+          "closingDate": "2012-04-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.447Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7vy/all-new-people/production/14xq"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-awkward-squad-west-end-2012",
+          "title": "The Awkward Squad",
+          "slug": "the-awkward-squad-west-end-2012",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2012-03-06",
+          "openingDate": "2012-03-06",
+          "closingDate": "2012-04-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.465Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gj2/the-awkward-squad/production/12ff"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sweeney-todd-west-end-2012",
+          "title": "Sweeney Todd",
+          "slug": "sweeney-todd-west-end-2012",
+          "venue": "Adelphi Theatre",
+          "previewsStartDate": "2012-03-10",
+          "openingDate": "2012-03-10",
+          "closingDate": "2012-09-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.481Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5je/sweeney-todd/production/ztb"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-kings-speech-west-end-2012",
+          "title": "The King's Speech",
+          "slug": "the-kings-speech-west-end-2012",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2012-03-22",
+          "openingDate": "2012-03-22",
+          "closingDate": "2012-05-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.498Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/d2x/the-kings-speech/production/sn9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "people-west-end-2012",
+          "title": "People",
+          "slug": "people-west-end-2012",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2012-03-31",
+          "openingDate": "2012-03-31",
+          "closingDate": "2013-05-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.515Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/f8b/people/production/1hwq"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "long-days-journey-into-night-west-end-2012",
+          "title": "Long Day's Journey Into Night",
+          "slug": "long-days-journey-into-night-west-end-2012",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2012-04-02",
+          "openingDate": "2012-04-02",
+          "closingDate": "2012-08-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.529Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/49d/long-days-journey-into-night/production/13ed"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "south-downs-the-browning-version-west-end-2012",
+          "title": "South Downs / The Browning Version",
+          "slug": "south-downs-the-browning-version-west-end-2012",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2012-04-19",
+          "openingDate": "2012-04-19",
+          "closingDate": "2012-07-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.546Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gpp/south-downs-the-browning-version/production/12qq"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "written-on-the-heart-west-end-2012",
+          "title": "Written on the Heart",
+          "slug": "written-on-the-heart-west-end-2012",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2012-04-19",
+          "openingDate": "2012-04-19",
+          "closingDate": "2012-05-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.564Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gw7/written-on-the-heart/production/1336"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "love-love-love-west-end-2012",
+          "title": "Love, Love, Love",
+          "slug": "love-love-love-west-end-2012",
+          "venue": "Royal Court",
+          "previewsStartDate": "2012-04-27",
+          "openingDate": "2012-04-27",
+          "closingDate": "2012-06-09",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.580Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/f5n/love-love-love/production/zat"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "collaborators-west-end-2012",
+          "title": "Collaborators",
+          "slug": "collaborators-west-end-2012",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2012-05-03",
+          "openingDate": "2012-05-03",
+          "closingDate": "2012-06-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.595Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/d5c/collaborators/production/sv3"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "top-hat-west-end-2012",
+          "title": "Top Hat",
+          "slug": "top-hat-west-end-2012",
+          "venue": "Aldwych Theatre",
+          "previewsStartDate": "2012-05-09",
+          "openingDate": "2012-05-09",
+          "closingDate": "2013-10-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.610Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/f78/top-hat/production/15cg"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "abigails-party-west-end-2012",
+          "title": "Abigail's Party",
+          "slug": "abigails-party-west-end-2012",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2012-05-15",
+          "openingDate": "2012-05-15",
+          "closingDate": "2012-09-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.626Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/570/abigails-party/production/vyy"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "what-the-butler-saw-west-end-2012",
+          "title": "What the Butler Saw",
+          "slug": "what-the-butler-saw-west-end-2012",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2012-05-16",
+          "openingDate": "2012-05-16",
+          "closingDate": "2012-07-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.643Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/4sc/what-the-butler-saw/production/14s6"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-sunshine-boys-west-end-2012",
+          "title": "The Sunshine Boys",
+          "slug": "the-sunshine-boys-west-end-2012",
+          "venue": "Savoy Theatre",
+          "previewsStartDate": "2012-05-17",
+          "openingDate": "2012-05-17",
+          "closingDate": "2012-07-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.659Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/6fe/the-sunshine-boys/production/14nf"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "posh-west-end-2012",
+          "title": "Posh",
+          "slug": "posh-west-end-2012",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2012-05-23",
+          "openingDate": "2012-05-23",
+          "closingDate": "2012-08-04",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.675Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ey9/posh/production/14xx"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "singin-in-the-rain-west-end-2012",
+          "title": "Singin' in the Rain",
+          "slug": "singin-in-the-rain-west-end-2012",
+          "venue": "Palace Theatre",
+          "previewsStartDate": "2012-06-01",
+          "openingDate": "2012-06-01",
+          "closingDate": "2013-06-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.692Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5fd/singin-in-the-rain/production/v8m"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "gatz-west-end-2012",
+          "title": "Gatz",
+          "slug": "gatz-west-end-2012",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2012-06-08",
+          "openingDate": "2012-06-08",
+          "closingDate": "2012-07-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.711Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gng/gatz/production/12nr"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-last-of-the-haussmans-west-end-2012",
+          "title": "The Last of the Haussmans",
+          "slug": "the-last-of-the-haussmans-west-end-2012",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2012-06-12",
+          "openingDate": "2012-06-12",
+          "closingDate": "2012-10-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.728Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/j8m/the-last-of-the-haussmans/production/1aaw"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-walk-on-part-west-end-2012",
+          "title": "A Walk On Part",
+          "slug": "a-walk-on-part-west-end-2012",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2012-06-19",
+          "openingDate": "2012-06-19",
+          "closingDate": "2012-07-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.743Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gj1/a-walk-on-part/production/12fe"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "chariots-of-fire-west-end-2012",
+          "title": "Chariots Of Fire",
+          "slug": "chariots-of-fire-west-end-2012",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2012-07-03",
+          "openingDate": "2012-07-03",
+          "closingDate": "2013-01-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.759Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/8q3/chariots-of-fire/production/14b6"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "timon-of-athens-west-end-2012",
+          "title": "Timon of Athens",
+          "slug": "timon-of-athens-west-end-2012",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2012-07-10",
+          "openingDate": "2012-07-10",
+          "closingDate": "2012-11-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.775Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1q/timon-of-athens/production/t9b"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "spamalot-west-end-2012",
+          "title": "Spamalot",
+          "slug": "spamalot-west-end-2012",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2012-07-25",
+          "openingDate": "2012-07-25",
+          "closingDate": "2012-09-09",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.790Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/a40/spamalot/production/12qp"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2012",
+          "title": "The Curious Incident of the Dog in the Night-Time",
+          "slug": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2012",
+          "venue": "Dorfman Theatre",
+          "previewsStartDate": "2012-07-30",
+          "openingDate": "2012-07-30",
+          "closingDate": "2012-10-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.807Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/h0y/the-curious-incident-of-the-dog-in-the-night-time/production/16bf"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "london-road-west-end-2012",
+          "title": "London Road",
+          "slug": "london-road-west-end-2012",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2012-08-01",
+          "openingDate": "2012-08-01",
+          "closingDate": "2012-09-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.823Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/apt/london-road/production/p39"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "julius-caesar-west-end-2012",
+          "title": "Julius Caesar",
+          "slug": "julius-caesar-west-end-2012",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2012-08-08",
+          "openingDate": "2012-08-08",
+          "closingDate": "2012-09-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.838Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1g/julius-caesar/production/12np"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T07:48:40.701Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added all-new-people-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-awkward-squad-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sweeney-todd-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-kings-speech-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added people-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added long-days-journey-into-night-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added south-downs-the-browning-version-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added written-on-the-heart-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added love-love-love-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added collaborators-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added top-hat-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added abigails-party-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added what-the-butler-saw-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-sunshine-boys-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added posh-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added singin-in-the-rain-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added gatz-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-last-of-the-haussmans-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-walk-on-part-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added chariots-of-fire-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added timon-of-athens-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added spamalot-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-curious-incident-of-the-dog-in-the-night-time-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added london-road-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added julius-caesar-west-end-2012"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,253 @@
+{
+  "issueNumber": "bro-5647-j",
+  "planId": "d77f408e-d9ab-4f38-9b9c-1e70bd8226cf",
+  "status": "applied",
+  "createdAt": "2026-10-21T03:39:19.374750Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From Dots' audit of the Oct 20-21 Gemini/ChatGPT batch (634 records). Applies only findings Dots verified at the source, with their qualifications: Purlie Victorious (producer Leslie Odom Jr., LA Times: did not recoup) and Gettin' the Band Back Together (Forbes: complete loss) move from a silence basis to reported-loss; sources for Gettin' the Band's and Little Bear Ridge Road's weekly costs; CATS notes keep Forbes' $16M/$18M disagreement and the Form D range; Music Man notes record an unconfirmed public recoupment claim; Ragtime gets the $8.1M capitalization Jared Harbour reports from its recoupment chart, attributed (Dots: a reported lead, not an audited figure). Not applied: Call Me Izzy (WaPo quote not reachable), the CATS loss label (no post-closing statement), Holler's 0% (inferred). Old values from the private core data at 4a77c15.",
+    "steps": [
+      "Reported-loss bases for Purlie Victorious and Gettin' the Band",
+      "Weekly-cost sources",
+      "CATS and Music Man notes",
+      "Ragtime capitalization, attributed"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purlie-victorious",
+        "showId": "purlie-victorious",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Los Angeles Times (May 21, 2024), interview with producer and star Leslie Odom Jr.: \"Did this production recoup its full investment? No, it did not.\" https://www.latimes.com/entertainment-arts/story/2024-05-21/leslie-odom-jr-purlie-victorious-broadway-pbs-ossie-davis",
+        "description": "purlie-victorious: the producer said it did not recoup (Dots audit G210-010)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purlie-victorious",
+        "showId": "purlie-victorious",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "purlie-victorious: the label rests on the producer saying so, not on silence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gettin-the-band-back-together-2018",
+        "showId": "gettin-the-band-back-together-2018",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after only 5 weeks (August 13 - September 16, 2018), insufficient time to recoup $12M investment",
+        "newValue": "Forbes (Lee Seymour, Sep 20, 2018) reported the $12 million Broadway production closed as a complete loss. https://www.forbes.com/sites/leeseymour/2018/09/20/three-broadway-musicals-closed-last-week-what-happened/",
+        "description": "gettin-the-band-back-together-2018: Forbes reported a complete loss (Dots audit G209-008)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gettin-the-band-back-together-2018",
+        "showId": "gettin-the-band-back-together-2018",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "gettin-the-band-back-together-2018: the label rests on a reported loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gettin-the-band-back-together-2018",
+        "showId": "gettin-the-band-back-together-2018",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Forbes (Lee Seymour, Sep 20, 2018): weekly running costs of $530,000. https://www.forbes.com/sites/leeseymour/2018/09/20/three-broadway-musicals-closed-last-week-what-happened/",
+        "description": "gettin-the-band-back-together-2018: source for the $530K weekly cost (Dots audit G209-P08)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "showId": "little-bear-ridge-road",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Dec 12, 2025) reported weekly running costs of a little more than $500,000. https://www.nytimes.com/2025/12/12/theater/little-bear-ridge-broadway-closing.html",
+        "description": "little-bear-ridge-road: source for the ~$500K weekly cost (Dots audit G213-MULTI-092)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "notes",
+        "oldValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalized for up to $18M according to securities filings (The Hollywood Reporter, Jul 13, 2026).",
+        "newValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalized for up to $18M according to securities filings (The Hollywood Reporter, Jul 13, 2026). Forbes has published both $16 million and $18 million for its budget; the SEC filing allowed $15 million to $18 million and showed none sold when filed (Dec 9, 2025).",
+        "description": "cats-the-jellicle-ball: keep the $16M / $18M disagreement visible (Dots audit, CG18)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-music-man-2022",
+        "showId": "the-music-man-2022",
+        "field": "notes",
+        "oldValue": "Star-driven revival with Hugh Jackman and Sutton Foster that opened Feb 2022 and closed Jan 15, 2023. Capitalized at about $24M with about $1M weekly running costs. Grossed $2-3M a week ($187.8M over 374 performances), but no recoupment was announced before closing.",
+        "newValue": "Star-driven revival with Hugh Jackman and Sutton Foster that opened Feb 2022 and closed Jan 15, 2023. Capitalized at about $24M with about $1M weekly running costs. Grossed $2-3M a week ($187.8M over 374 performances), but no recoupment was announced before closing. A Forbes reporter suggested in a 2025 video interview that it recouped; no producer statement or figure confirms it.",
+        "description": "the-music-man-2022: a public claim of recoupment exists but is unconfirmed (Dots audit G203-SUPP-01)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8100000,
+        "description": "ragtime: reported in commentary citing the recoupment chart (Dots audit G201-001: a lead, attributed)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Jared Harbour (Substack, Sep 19, 2026), describing the production's recoupment chart: \"$3.5 million in outside capital divided by an $8.1 million capitalization = 43.2%.\" https://jharbour.substack.com/p/no-business-like-subsidized-business",
+        "description": "ragtime: attributed source for the $8.1M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "notes",
+        "oldValue": "Lincoln Center Theater revival at the Vivian Beaumont with commercial enhancement investors (Tom Kirdahy, Kevin Ryan, Robert Greenblatt, Roy and Jill Furman, among others). Won the 2026 Tony for Best Revival of a Musical; closed Aug 16, 2026. As of May 2026 it had repaid about half of its backers' stakes (Broadway Journal); no recoupment has been announced.",
+        "newValue": "Lincoln Center Theater revival at the Vivian Beaumont with commercial enhancement investors (Tom Kirdahy, Kevin Ryan, Robert Greenblatt, Roy and Jill Furman, among others). Won the 2026 Tony for Best Revival of a Musical; closed Aug 16, 2026. As of May 2026 it had repaid about half of its backers' stakes (Broadway Journal); no recoupment has been announced. Commentary citing its recoupment chart puts the capitalization at $8.1 million, $3.5 million of it from outside investors (Jared Harbour, Sep 2026).",
+        "description": "ragtime: notes name the outside share"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "showId": "ragtime",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadway.com/buzz/206862/ragtime-broadway-revival-extends-through-august-2026-with-original-cast/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/ragtime-revival-broadway-1236207704/",
+            "date": "2025-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/04/ragtime-broadway-tour-1236876090/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+            "date": "2026-05-06"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadway.com/buzz/206862/ragtime-broadway-revival-extends-through-august-2026-with-original-cast/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/ragtime-revival-broadway-1236207704/",
+            "date": "2025-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/04/ragtime-broadway-tour-1236876090/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+            "date": "2026-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://jharbour.substack.com/p/no-business-like-subsidized-business",
+            "date": "2026-09-19"
+          }
+        ],
+        "description": "ragtime: add the Harbour article"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T04:06:22.822Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for purlie-victorious"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for purlie-victorious"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for gettin-the-band-back-together-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for gettin-the-band-back-together-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for gettin-the-band-back-together-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for little-bear-ridge-road"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for ragtime"
+    }
+  ],
+  "executedIn": "ci"
+}

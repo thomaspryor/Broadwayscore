@@ -1,0 +1,374 @@
+{
+  "issueNumber": "bro-4853",
+  "planId": "ac2411d1-3635-4657-afd7-6e5537017c8d",
+  "status": "applied",
+  "createdAt": "2026-10-08T00:08:35.125Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 1 of 4. Synopsis sweep (BRO-4853, owner request 2026-10-07). Other Desert Cities carried a false Tony claim copied from Show Score; a site-wide audit (regex detectors plus a whole-corpus model sweep, every hit read by hand) found 70 more bad synopses: Fela! (1776 text), The Great Society (Great Comet text), 5 cookie-banner records, and 63 records holding another work's Wikipedia article, a person's biography, a disambiguation page, a song list or wiki markup.",
+    "steps": [
+      "Rewrite the Other Desert Cities (2026), Fela! and The Great Society synopses from sourced facts",
+      "Clear the 5 cookie-banner synopses",
+      "Clear the 63 wrong-article synopses so the production-verified enricher can refill them"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amys-view-1999",
+        "field": "synopsis",
+        "oldValue": "= Amy's View is a four-act play set over the course of sixteen years. Act One begins in 1979, in the living-room of Amy's mother's home, which is decorated with paintings done by her late father, an obscure artist. Amy and her then-boyfriend, Dominic, are waiting for Amy's mother, Esme, to return from her theater performance in London.",
+        "newValue": "Amy's View is a four-act play set over the course of sixteen years. Act One begins in 1979, in the living-room of Amy's mother's home, which is decorated with paintings done by her late father, an obscure artist. Amy and her then-boyfriend, Dominic, are waiting for Amy's mother, Esme, to return from her theater performance in London.",
+        "description": "Synopsis is correct but begins with a stray wiki-markup '= '; removed the marker only."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "other-desert-cities-2026",
+        "field": "synopsis",
+        "oldValue": "A Tony Award-winning family drama revival about memory, loyalty, and a memoir that threatens to expose the past. Other Desert Cities is set on Christmas Eve in a Palm Springs home, where the Wyeth family—politically connected and outwardly composed—is upended when a daughter returns with a memoir threatening to bring long-buried secrets into the open. What follows is a confrontation between memory, loyalty, and legacy, as old wounds resurface and the family is forced to reckon with competing claims over their shared history and who has the right to tell it. Written by Jon Robin Baitz, the play originally won the Tony Award for Best Play revival and returns to Broadway in a new production directed by John Benjamin Hickey. The cast is led by Julia Louis-Dreyfus (Veep, Seinfeld), Ed Harris...",
+        "newValue": "Jon Robin Baitz's family drama is set on Christmas Eve 2004 in the Palm Springs home of Polly and Lyman Wyeth, a politically connected couple. When their daughter Brooke returns after years away with a memoir that revisits a family tragedy, the Wyeths are forced to reckon with competing versions of their shared past. The 2011 Broadway production was a finalist for the Pulitzer Prize for Drama, earned five Tony nominations including Best Play, and won the Tony for Best Featured Actress in a Play. John Benjamin Hickey directs this revival at the Hudson Theatre.",
+        "description": "Show Score blurb said the play 'originally won the Tony Award for Best Play revival'. The 2011 production was a new play: 5 Tony nominations incl. Best Play, 1 win (Featured Actress), Pulitzer finalist (awards.json; Wikipedia 'Other Desert Cities')."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fela-2009",
+        "field": "synopsis",
+        "oldValue": "What will it take to get two dozen powerfully passionate, exceedingly complicated, and all-too-human individuals to settle their differences, while they hold the very future of a nation in their hands? This Tony Award-winning Best Musical is tuneful, witty, and constantly surprising, especially in this revolutionary new production from directors Jeffrey L. Page and Diane Paulus. You may never think about our country—who we are and why—the same way again.",
+        "newValue": "Fela! is a musical based on the life of Nigerian composer and activist Fela Anikulapo Kuti, with a book by Bill T. Jones and Jim Lewis. It portrays Kuti at his Lagos nightclub, The Shrine, as government soldiers move to end his public performances, and it is built on his Afrobeat music. The Broadway production at the Eugene O'Neill Theatre received eleven Tony nominations in 2010 and won for Best Choreography, Best Costume Design of a Musical and Best Sound Design of a Musical.",
+        "description": "Record held the 1776 revival's text ('two dozen ... individuals', 'Jeffrey L. Page and Diane Paulus') and called Fela! a 'Tony Award-winning Best Musical'. Replaced from Wikipedia 'Fela!' (Tonys: Choreography, Costume Design, Sound Design; no Best Musical win)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-great-society-2019",
+        "field": "synopsis",
+        "oldValue": "Natasha, Pierre & The Great Comet of 1812 (or simply The Great Comet) is a sung-through musical adaptation of a 70-page segment from Leo Tolstoy's 1869 novel War and Peace. The show was written by composer, lyricist, playwright, orchestrator Dave Malloy and originally directed by Rachel Chavkin.",
+        "newValue": "Robert Schenkkan's sequel to All the Way follows President Lyndon Baines Johnson through the years after his landslide election, as he drives the Great Society programs and the Voting Rights Act while the Vietnam War and the civil rights movement pull his presidency apart. Brian Cox stars as Johnson in Bill Rauch's production at Lincoln Center's Vivian Beaumont Theater.",
+        "description": "Record held the Wikipedia lede for Natasha, Pierre & The Great Comet of 1812 (wrong-article match). Replaced using Wikipedia (Schenkkan, Rauch: 'Schenkkan's All The Way sequel The Great Society') and the record's own cast/director/venue."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "magic-mike-live-west-end-2021",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wicked-west-end-2021",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alice-in-wonderland-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "linda-vista-2019",
+        "field": "synopsis",
+        "oldValue": "Buena Vista Social Club is a 2023 stage musical, with a book by Marco Ramirez and featuring the music recorded by the ensemble musician group Buena Vista Social Club.\nThe musical is set in Havana, Cuba and spans time from the 1950s to the 1990s, following the lives of four prominent musicians, the effect communism and the rise of Fidel Castro had on musicians at the time, and their eventual collaboration in 1997 on the landmark album Buena Vista Social Club.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Buena Vista Social Club (2023 musical). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-new-one-2018",
+        "field": "synopsis",
+        "oldValue": "Four Plays, or Moral Representations, in One is a Jacobean era stage play, one of the dramatic works in the canon of John Fletcher and his collaborators. Initially published in the first Beaumont and Fletcher folio of 1647, the play is notable both for its unusual form and for the question of its authorship.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Four Plays, or Moral Representations, in One (Jacobean play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-nap-2018",
+        "field": "synopsis",
+        "oldValue": "Bianca Leigh is an American actress. She appeared as Mary Ellen in the 2005 film Transamerica, and Karma Johnstone in the 2016 film Hurricane Bianca and the sequel Hurricane Bianca: From Russia with Hate.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Bianca Leigh (actress biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bernhardthamlet-2018",
+        "field": "synopsis",
+        "oldValue": "The Tragedy of Hamlet, Prince of Denmark, often shortened to Hamlet (), is a tragedy written by William Shakespeare sometime between 1599 and 1601. It is Shakespeare's longest play.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Hamlet (Shakespeare). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-terms-of-my-surrender-2017",
+        "field": "synopsis",
+        "oldValue": "Michael Francis Moore (born April 23, 1954) is an American film director, producer, screenwriter, and author. Moore's work frequently addresses various social, political, and economic topics. He first became publicly known for his award-winning debut documentary Roger & Me, a scathing look at the downfall of the automotive industry in 1980s Flint and Detroit.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Michael Moore (biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fully-committed-2016",
+        "field": "synopsis",
+        "oldValue": "Becky Mode is an American playwright, actress and television producer based in New York City. Raised in Washington D. , she studied theater and American history at Wesleyan University, graduating Phi Beta Kappa. Her major accomplishments include the play Fully Committed co-created with Mark Setlock which achieved a number four listing on Time magazine's \"Top Ten Plays of 2000\".",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Becky Mode (playwright biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-mothers-brief-affair-2016",
+        "field": "synopsis",
+        "oldValue": "Richard Greenberg (February 22, 1958 – July 4, 2025) was an American playwright and television writer known for his subversively humorous depictions of middle-class American life. He had more than 25 plays premiere on Broadway, off-Broadway, and off-off-Broadway in New York City and eight at the South Coast Repertory Theatre in Costa Mesa, California, including The Violet Hour, Everett Beekin, and Hurrah at Last.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Richard Greenberg (playwright biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-ship-2014",
+        "field": "synopsis",
+        "oldValue": "= The following is the list of musical numbers in the Broadway production. The musical uses a twelve-member orchestra consisting of keyboard, piano, guitar, bass, drums, Northumbrian smallpipe, flute, whistle, melodeon, fiddle, cello and percussion. Dees' Rant\" – Mrs. Dees' Rant\" – Mrs.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is list of musical numbers, not a synopsis. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-country-house-2014",
+        "field": "synopsis",
+        "oldValue": "Donald Margulies (born September 2, 1954) is an American playwright and academic. In 2000, he won the Pulitzer Prize for Drama for his play Dinner with Friends.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Donald Margulies (playwright biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-snow-geese-2013",
+        "field": "synopsis",
+        "oldValue": "Sharr White is an American playwright and screenwriter. He's known for his Broadway plays The Other Place (2011), The Snow Geese (2013), and Pictures From Home (2023).",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Sharr White (playwright biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-hotel-on-the-side-1992",
+        "field": "synopsis",
+        "oldValue": "Maryann Plunkett is an American actress and singer.\nPlunkett made her Broadway debut playing Sister Agnes in Agnes of God. In 1987, she won the Tony Award for Best Leading Actress in a Musical for her performance as Sally Smith in Me and My Girl.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Maryann Plunkett (actress biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cemetery-club-1990",
+        "field": "synopsis",
+        "oldValue": "Death Becomes Her is a musical, with a book by Marco Pennette and music and lyrics by Julia Mattison and Noel Carey. It is based on the 1992 film of the same name directed and produced by Robert Zemeckis.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Death Becomes Her (2024 musical). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-november-people-1978",
+        "field": "synopsis",
+        "oldValue": "Good People is a 2011 play by David Lindsay-Abaire. The world premiere was staged by the Manhattan Theatre Club in New York City. At the 65th Tony Awards, the production was nominated for Best Play and Best Lead Actress (Frances McDormand), with the latter winning.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Good People (2011 play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-history-of-the-american-film-1978",
+        "field": "synopsis",
+        "oldValue": "American Idiot is a sung-through rock musical based on the 2004 concept album  of the same name by rock band Green Day. After a run at the Berkeley Repertory Theatre in 2009, the show moved to the St.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is American Idiot (musical). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-supporting-cast-1981",
+        "field": "synopsis",
+        "oldValue": "Sam Rockwell (born November 5, 1968) is an American actor known for his quirky and charismatic character roles in independent films. He won the Academy Award for Best Supporting Actor for playing a troubled police officer in Three Billboards Outside Ebbing, Missouri (2017).",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Sam Rockwell (actor biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "home-2024",
+        "field": "synopsis",
+        "oldValue": "PlayStation Home was a virtual 3D social gaming platform developed by Sony Computer Entertainment's London Studio for the PlayStation 3 (PS3) on the PlayStation Network (PSN). It was accessible from the PS3's XrossMediaBar (XMB).",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is PlayStation Home (Sony virtual platform). Cleared so the production-verified Wikipedia enricher can refill it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-08T00:51:15.875Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for amys-view-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for other-desert-cities-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for fela-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for magic-mike-live-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for wicked-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for alice-in-wonderland-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for jasmines-demo-show-4-the-end-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for linda-vista-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-new-one-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-nap-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for bernhardthamlet-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-terms-of-my-surrender-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for fully-committed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for our-mothers-brief-affair-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-last-ship-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-country-house-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-snow-geese-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for a-little-hotel-on-the-side-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-cemetery-club-1990"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-november-people-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for a-history-of-the-american-film-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-supporting-cast-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for home-2024"
+    }
+  ]
+}

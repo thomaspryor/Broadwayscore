@@ -1,0 +1,1316 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-kings-critique-off-broadway-2026",
+  "night": "2026-11-12",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-13T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-13T02:30:04.090Z",
+    "endedAt": "2026-11-13T09:00:50.389Z",
+    "intervalMin": 5,
+    "samples": 78,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-13T08:59:15.746Z",
+    "lastOkSampleAt": "2026-11-13T08:59:15.746Z"
+  },
+  "firstLiveAt": "2026-11-13T02:50:05.562Z",
+  "firstLiveBaseline": false,
+  "lastLiveAt": "2026-11-13T06:54:07.621Z",
+  "liveCount": 4,
+  "liveCountAt": {
+    "1h": 3,
+    "2h": 3,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-13T04:00:14.873Z",
+    "2h": "2026-11-13T05:04:00.091Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-12",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T02:50:05.562Z",
+      "prevOkSampleAt": "2026-11-13T02:45:04.951Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T02:27:30.875Z"
+    },
+    {
+      "key": "new york theatre guide|austin fimmano",
+      "outlet": "New York Theatre Guide",
+      "critic": "Austin Fimmano",
+      "tier": 2,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T03:05:06.799Z",
+      "prevOkSampleAt": "2026-11-13T03:00:06.238Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T02:27:36.454Z"
+    },
+    {
+      "key": "theatermania|zachary stewart",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "tier": 2,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T03:05:06.799Z",
+      "prevOkSampleAt": "2026-11-13T03:00:06.238Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T02:29:13.296Z"
+    },
+    {
+      "key": "talkin' broadway|james wilson",
+      "outlet": "Talkin' Broadway",
+      "critic": "James Wilson",
+      "tier": 2,
+      "publishAt": "2026-11-12",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-13T06:54:07.621Z",
+      "prevOkSampleAt": "2026-11-13T06:49:07.207Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-13T06:28:28.583Z"
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 3,
+      "fetchedAt": "2026-11-13T05:00:30.399Z",
+      "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 4,
+      "fetchedAt": "2026-11-13T09:00:40.005Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-13T05:00:30.475Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      },
+      {
+        "at": "2026-11-13T09:00:40.058Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-13T09:00:42.638Z",
+    "files": [
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-13T02:12:48.177Z",
+        "scoredAt": "2026-11-13T02:27:30.875Z",
+        "publishDate": "2026-11-12",
+        "url": "culturesauce.com/the-kings-critique-musical-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "nytg--austin-fimmano.json",
+        "outletId": "nytg",
+        "outlet": "New York Theatre Guide",
+        "critic": "Austin Fimmano",
+        "firstSeenAt": "2026-11-13T02:12:47.668Z",
+        "scoredAt": "2026-11-13T02:27:36.454Z",
+        "publishDate": "2026-11-12",
+        "url": "newyorktheatreguide.com/reviews/the-kings-critique-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "stagebuddy--unknown.json",
+        "outletId": "stagebuddy",
+        "outlet": "Stage Buddy",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-04T18:33:10.217Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "stagebuddy.com/tag/the-kings-critique",
+        "includable": false,
+        "reason": "listingPageUrl",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "talkinbroadway--james-wilson.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "James Wilson",
+        "firstSeenAt": "2026-11-13T03:25:30.583Z",
+        "scoredAt": "2026-11-13T06:28:28.583Z",
+        "publishDate": "2026-11-12",
+        "url": "talkinbroadway.com/page/ob/11_12_26b.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "theatermania--zachary-stewart.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Zachary Stewart",
+        "firstSeenAt": "2026-11-13T02:12:47.258Z",
+        "scoredAt": "2026-11-13T02:29:13.296Z",
+        "publishDate": "2026-11-12",
+        "url": "theatermania.com/news/review-a-critical-queen-reviews-the-kings-critique_1859467",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      }
+    ]
+  },
+  "pipelineRuns": {
+    "capturedAt": "2026-11-13T09:00:50.335Z",
+    "window": {
+      "from": "2026-11-13T01:00:00Z",
+      "to": "2026-11-13T06:00:00Z"
+    },
+    "complete": true,
+    "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-12T23:15:08Z",
+        "updatedAt": "2026-11-13T03:34:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews (rescore chain, 6 left, limit 400, max-cost 15)",
+        "startedAt": "2026-11-12T23:58:25Z",
+        "updatedAt": "2026-11-13T01:02:57Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T00:39:21Z",
+        "updatedAt": "2026-11-13T01:25:06Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T00:39:30Z",
+        "updatedAt": "2026-11-13T01:06:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T00:56:13Z",
+        "updatedAt": "2026-11-13T01:06:33Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T01:00:43Z",
+        "updatedAt": "2026-11-13T01:10:21Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews (rescore chain, 5 left, limit 400, max-cost 15)",
+        "startedAt": "2026-11-13T01:02:55Z",
+        "updatedAt": "2026-11-13T02:16:42Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T01:09:37Z",
+        "updatedAt": "2026-11-13T01:24:25Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T01:12:09Z",
+        "updatedAt": "2026-11-13T01:22:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T01:15:01Z",
+        "updatedAt": "2026-11-13T01:25:19Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T01:23:22Z",
+        "updatedAt": "2026-11-13T01:49:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T01:26:29Z",
+        "updatedAt": "2026-11-13T01:35:11Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T01:28:03Z",
+        "updatedAt": "2026-11-13T01:36:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T01:33:29Z",
+        "updatedAt": "2026-11-13T01:43:59Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T01:36:56Z",
+        "updatedAt": "2026-11-13T01:47:39Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-13T01:40:21Z",
+        "updatedAt": "2026-11-13T06:24:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T01:40:39Z",
+        "updatedAt": "2026-11-13T01:51:06Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T01:41:22Z",
+        "updatedAt": "2026-11-13T02:20:51Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T01:41:30Z",
+        "updatedAt": "2026-11-13T02:19:31Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-13T02:00:04Z",
+        "updatedAt": "2026-11-13T06:17:01Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T02:01:11Z",
+        "updatedAt": "2026-11-13T02:51:35Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T02:01:19Z",
+        "updatedAt": "2026-11-13T02:08:34Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T02:01:27Z",
+        "updatedAt": "2026-11-13T02:07:47Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:02:01Z",
+        "updatedAt": "2026-11-13T02:10:44Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T02:04:52Z",
+        "updatedAt": "2026-11-13T03:06:07Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T02:05:00Z",
+        "updatedAt": "2026-11-13T02:46:41Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — ceilidh-the-musical-off-west-end-2026",
+        "startedAt": "2026-11-13T02:07:21Z",
+        "updatedAt": "2026-11-13T02:17:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — dogstar-off-west-end-2026",
+        "startedAt": "2026-11-13T02:07:23Z",
+        "updatedAt": "2026-11-13T02:22:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — peter-pan-goes-wrong-regional-2026",
+        "startedAt": "2026-11-13T02:07:24Z",
+        "updatedAt": "2026-11-13T02:21:22Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — relative-motion-off-west-end-2026",
+        "startedAt": "2026-11-13T02:07:25Z",
+        "updatedAt": "2026-11-13T02:19:28Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — speculations-off-west-end-2026",
+        "startedAt": "2026-11-13T02:07:26Z",
+        "updatedAt": "2026-11-13T02:18:40Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — ceilidh-the-musical-off-west-end-2026",
+        "startedAt": "2026-11-13T02:07:27Z",
+        "updatedAt": "2026-11-13T02:14:14Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — dogstar-off-west-end-2026",
+        "startedAt": "2026-11-13T02:07:28Z",
+        "updatedAt": "2026-11-13T02:14:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+        "startedAt": "2026-11-13T02:07:29Z",
+        "updatedAt": "2026-11-13T02:19:49Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T02:07:30Z",
+        "updatedAt": "2026-11-13T02:21:50Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — peter-pan-goes-wrong-regional-2026",
+        "startedAt": "2026-11-13T02:07:31Z",
+        "updatedAt": "2026-11-13T02:14:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:10:04Z",
+        "updatedAt": "2026-11-13T02:21:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:11:35Z",
+        "updatedAt": "2026-11-13T02:22:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:12:54Z",
+        "updatedAt": "2026-11-13T02:26:31Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — ceilidh-the-musical-off-west-end-2026",
+        "startedAt": "2026-11-13T02:14:12Z",
+        "updatedAt": "2026-11-13T02:23:33Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — dogstar-off-west-end-2026",
+        "startedAt": "2026-11-13T02:14:13Z",
+        "updatedAt": "2026-11-13T02:29:20Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — peter-pan-goes-wrong-regional-2026",
+        "startedAt": "2026-11-13T02:14:14Z",
+        "updatedAt": "2026-11-13T02:28:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — relative-motion-off-west-end-2026",
+        "startedAt": "2026-11-13T02:14:16Z",
+        "updatedAt": "2026-11-13T02:25:59Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — speculations-off-west-end-2026",
+        "startedAt": "2026-11-13T02:14:17Z",
+        "updatedAt": "2026-11-13T02:26:22Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews (rescore chain, 4 left, limit 400, max-cost 15)",
+        "startedAt": "2026-11-13T02:16:39Z",
+        "updatedAt": "2026-11-13T03:33:30Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:17:24Z",
+        "updatedAt": "2026-11-13T02:27:43Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:18:37Z",
+        "updatedAt": "2026-11-13T02:19:26Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:19:24Z",
+        "updatedAt": "2026-11-13T02:19:48Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:19:45Z",
+        "updatedAt": "2026-11-13T02:21:21Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:21:19Z",
+        "updatedAt": "2026-11-13T02:21:50Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:21:48Z",
+        "updatedAt": "2026-11-13T02:22:51Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:22:49Z",
+        "updatedAt": "2026-11-13T02:44:13Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T02:24:48Z",
+        "updatedAt": "2026-11-13T02:31:58Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — dogstar-off-west-end-2026",
+        "startedAt": "2026-11-13T02:24:52Z",
+        "updatedAt": "2026-11-13T02:40:18Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-kings-critique-off-broadway-2026",
+        "startedAt": "2026-11-13T02:24:54Z",
+        "updatedAt": "2026-11-13T02:35:05Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T02:24:56Z",
+        "updatedAt": "2026-11-13T02:31:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-kings-critique-off-broadway-2026",
+        "startedAt": "2026-11-13T02:26:13Z",
+        "updatedAt": "2026-11-13T02:41:56Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:26:58Z",
+        "updatedAt": "2026-11-13T02:37:18Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T02:27:05Z",
+        "updatedAt": "2026-11-13T03:50:30Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T02:27:13Z",
+        "updatedAt": "2026-11-13T03:17:24Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:29:17Z",
+        "updatedAt": "2026-11-13T02:35:04Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — potus-off-broadway-2026",
+        "startedAt": "2026-11-13T02:30:27Z",
+        "updatedAt": "2026-11-13T02:42:34Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:35:02Z",
+        "updatedAt": "2026-11-13T02:40:17Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+        "startedAt": "2026-11-13T02:35:13Z",
+        "updatedAt": "2026-11-13T02:46:18Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — speculations-off-west-end-2026",
+        "startedAt": "2026-11-13T02:35:14Z",
+        "updatedAt": "2026-11-13T02:48:22Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — dogstar-off-west-end-2026",
+        "startedAt": "2026-11-13T02:35:16Z",
+        "updatedAt": "2026-11-13T02:50:16Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "failure",
+        "displayTitle": "LLM Ensemble Score Reviews — dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+        "startedAt": "2026-11-13T02:35:17Z",
+        "updatedAt": "2026-11-13T02:57:59Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — speculations-off-west-end-2026",
+        "startedAt": "2026-11-13T02:35:18Z",
+        "updatedAt": "2026-11-13T02:55:01Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:37:13Z",
+        "updatedAt": "2026-11-13T02:47:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:38:54Z",
+        "updatedAt": "2026-11-13T02:48:14Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — broom-play-off-broadway-2026",
+        "startedAt": "2026-11-13T02:39:17Z",
+        "updatedAt": "2026-11-13T02:51:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — broom-play-off-broadway-2026",
+        "startedAt": "2026-11-13T02:40:02Z",
+        "updatedAt": "2026-11-13T02:42:17Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:40:14Z",
+        "updatedAt": "2026-11-13T02:42:33Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:40:31Z",
+        "updatedAt": "2026-11-13T02:51:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:41:13Z",
+        "updatedAt": "2026-11-13T02:50:59Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — broom-play-off-broadway-2026",
+        "startedAt": "2026-11-13T02:42:14Z",
+        "updatedAt": "2026-11-13T02:57:39Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "failure",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:42:31Z",
+        "updatedAt": "2026-11-13T02:57:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-13T02:45:30Z",
+        "updatedAt": "2026-11-13T03:33:28Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:46:15Z",
+        "updatedAt": "2026-11-13T02:48:20Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T02:48:08Z",
+        "updatedAt": "2026-11-13T02:55:31Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T02:48:17Z",
+        "updatedAt": "2026-11-13T02:56:42Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:48:18Z",
+        "updatedAt": "2026-11-13T02:50:16Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:50:13Z",
+        "updatedAt": "2026-11-13T02:51:11Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T02:50:17Z",
+        "updatedAt": "2026-11-13T03:47:15Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T02:51:08Z",
+        "updatedAt": "2026-11-13T03:07:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T02:56:34Z",
+        "updatedAt": "2026-11-13T03:05:23Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-13T03:05:42Z",
+        "updatedAt": "2026-11-13T03:06:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T03:08:41Z",
+        "updatedAt": "2026-11-13T03:17:05Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T03:12:51Z",
+        "updatedAt": "2026-11-13T04:37:56Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T03:12:59Z",
+        "updatedAt": "2026-11-13T03:19:11Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T03:13:08Z",
+        "updatedAt": "2026-11-13T03:19:58Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews (rescore chain, 3 left, limit 400, max-cost 15)",
+        "startedAt": "2026-11-13T03:33:26Z",
+        "updatedAt": "2026-11-13T04:45:26Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T03:33:27Z",
+        "updatedAt": "2026-11-13T04:12:47Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T03:36:13Z",
+        "updatedAt": "2026-11-13T03:42:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T03:36:22Z",
+        "updatedAt": "2026-11-13T03:43:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T03:38:09Z",
+        "updatedAt": "2026-11-13T03:47:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T03:40:55Z",
+        "updatedAt": "2026-11-13T03:49:54Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T03:59:31Z",
+        "updatedAt": "2026-11-13T04:06:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T03:59:39Z",
+        "updatedAt": "2026-11-13T04:06:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T04:03:42Z",
+        "updatedAt": "2026-11-13T04:14:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T04:17:41Z",
+        "updatedAt": "2026-11-13T04:28:15Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T04:18:21Z",
+        "updatedAt": "2026-11-13T05:06:25Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T04:22:45Z",
+        "updatedAt": "2026-11-13T04:29:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T04:22:53Z",
+        "updatedAt": "2026-11-13T04:30:37Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T04:28:36Z",
+        "updatedAt": "2026-11-13T04:37:01Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T04:30:16Z",
+        "updatedAt": "2026-11-13T04:39:27Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T04:35:11Z",
+        "updatedAt": "2026-11-13T04:48:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T04:42:07Z",
+        "updatedAt": "2026-11-13T04:52:40Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews (rescore chain, 2 left, limit 400, max-cost 15)",
+        "startedAt": "2026-11-13T04:45:23Z",
+        "updatedAt": "2026-11-13T05:55:55Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-13T04:46:20Z",
+        "updatedAt": "2026-11-13T04:52:13Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T04:46:40Z",
+        "updatedAt": "2026-11-13T05:51:06Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T04:46:48Z",
+        "updatedAt": "2026-11-13T04:53:31Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T04:46:56Z",
+        "updatedAt": "2026-11-13T04:51:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T04:47:25Z",
+        "updatedAt": "2026-11-13T04:58:18Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T04:57:11Z",
+        "updatedAt": "2026-11-13T05:06:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T04:57:21Z",
+        "updatedAt": "2026-11-13T05:06:11Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — i-became-we-off-broadway-2026",
+        "startedAt": "2026-11-13T04:59:46Z",
+        "updatedAt": "2026-11-13T05:11:20Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — tosca-english-national-opera-west-end-2026",
+        "startedAt": "2026-11-13T04:59:47Z",
+        "updatedAt": "2026-11-13T05:10:08Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — i-became-we-off-broadway-2026",
+        "startedAt": "2026-11-13T04:59:48Z",
+        "updatedAt": "2026-11-13T05:18:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — tosca-english-national-opera-west-end-2026",
+        "startedAt": "2026-11-13T04:59:50Z",
+        "updatedAt": "2026-11-13T05:15:42Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T05:09:36Z",
+        "updatedAt": "2026-11-13T05:17:17Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T05:09:44Z",
+        "updatedAt": "2026-11-13T05:14:11Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T05:10:05Z",
+        "updatedAt": "2026-11-13T05:21:22Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-13T05:11:17Z",
+        "updatedAt": "2026-11-13T05:36:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T05:12:35Z",
+        "updatedAt": "2026-11-13T05:22:34Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T05:22:49Z",
+        "updatedAt": "2026-11-13T06:09:04Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T05:23:58Z",
+        "updatedAt": "2026-11-13T05:34:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T05:29:46Z",
+        "updatedAt": "2026-11-13T05:40:46Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T05:32:39Z",
+        "updatedAt": "2026-11-13T05:38:51Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T05:32:48Z",
+        "updatedAt": "2026-11-13T05:37:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T05:41:17Z",
+        "updatedAt": "2026-11-13T05:49:05Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T05:52:20Z",
+        "updatedAt": "2026-11-13T06:01:48Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-13T05:54:05Z",
+        "updatedAt": "2026-11-13T06:46:57Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — first-and-last-off-broadway-2026",
+        "startedAt": "2026-11-13T05:54:13Z",
+        "updatedAt": "2026-11-13T06:01:22Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-good-thief-off-broadway-2026",
+        "startedAt": "2026-11-13T05:54:21Z",
+        "updatedAt": "2026-11-13T05:59:07Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews (rescore chain, 1 left, limit 400, max-cost 15)",
+        "startedAt": "2026-11-13T05:55:51Z",
+        "updatedAt": "2026-11-13T06:48:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-13T05:58:59Z",
+        "updatedAt": "2026-11-13T06:09:18Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+ "city": "boston-ma",
+ "week": "2026-W46",
+ "today": "2026-11-10",
+ "findings": 3,
+ "byClass": {
+  "1": 0,
+  "2": 0,
+  "3": 2,
+  "4": 0,
+  "6": 1
+ },
+ "newFindings": 3,
+ "newByClass": {
+  "1": 0,
+  "2": 0,
+  "3": 2,
+  "4": 0,
+  "6": 1
+ },
+ "provenance": 0,
+ "plan": null,
+ "card": "existing",
+ "findingKeys": [
+  "review:1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west:non-review:roundup",
+  "show:paranormal-activity-boston-regional-2026:opening-date",
+  "show:rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026:venue"
+ ],
+ "fresh": [
+  {
+   "key": "show:paranormal-activity-boston-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "code": "opening-date",
+   "detail": "ours 2026-07-15 / page 2026-07-11",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "show:rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026:venue",
+   "cls": 3,
+   "kind": "show",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "code": "venue",
+   "detail": "ours \"American Repertory Theater, Cambridge, MA\" / page \"Loeb Drama Center\"",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "review:1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west:non-review:roundup",
+   "cls": 3,
+   "kind": "review",
+   "id": "1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west",
+   "label": "1972 | Musical Theatre Report / Ben West",
+   "code": "non-review:roundup",
+   "detail": "The article reviews '1972' and mentions 'Wanted' as part of the report, but only provides detailed notes for '1972', which it judges as a 'very poor piece of theatre'.",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  }
+ ],
+ "provenanceRows": []
+}

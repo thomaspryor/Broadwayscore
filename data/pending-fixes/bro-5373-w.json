@@ -1,0 +1,88 @@
+{
+  "issueNumber": "bro-5373-w",
+  "planId": "9bed35ea-4bab-4385-ad5b-98b202a70422",
+  "status": "applied",
+  "createdAt": "2026-10-15T03:27:36.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (w): clear two stale verdicts that keep Apollo-run reviews off the Apollo show (King rejection, Cavendish not-a-review).",
+    "steps": [
+      "rejection clear",
+      "isNotReview clear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-5373: the 2026-09-30 ensemble 'wrong_production' rejection was made while this Apollo-run review (url .../christmas-carol-goes-wrong-apollo-theatre-review, 2025-12-16) sat under the Wyndham's 2026 show. Under the Apollo show it is the right production (its wrongProduction flag was cleared by plan bro-5373-s)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-5373: the 2026-09-30 ensemble 'wrong_production' rejection was made while this Apollo-run review (url .../christmas-carol-goes-wrong-apollo-theatre-review, 2025-12-16) sat under the Wyndham's 2026 show. Under the Apollo show it is the right production (its wrongProduction flag was cleared by plan bro-5373-s)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-09-30T05:06:23.127Z",
+        "newValue": null,
+        "description": "BRO-5373: the 2026-09-30 ensemble 'wrong_production' rejection was made while this Apollo-run review (url .../christmas-carol-goes-wrong-apollo-theatre-review, 2025-12-16) sat under the Wyndham's 2026 show. Under the Apollo show it is the right production (its wrongProduction flag was cleared by plan bro-5373-s)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "christmas-carol-goes-wrong-apollo-west-end-2025/telegraph--dominic-cavendish.json",
+        "field": "isNotReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5373: stale verdict. The 'not a review' flag (2026-08-17) described the London Box Office round-up page this file held under its old name telegraph--shehrazade-zafar-arif.json. The file now holds Dominic Cavendish's Telegraph review of the Apollo run (url .../christmas-carol-goes-wrong-mischief-review/, 3/5 stars, content verifier valid high)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "christmas-carol-goes-wrong-apollo-west-end-2025/telegraph--dominic-cavendish.json",
+        "field": "isNotReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5373: stale verdict. The 'not a review' flag (2026-08-17) described the London Box Office round-up page this file held under its old name telegraph--shehrazade-zafar-arif.json. The file now holds Dominic Cavendish's Telegraph review of the Apollo run (url .../christmas-carol-goes-wrong-mischief-review/, 3/5 stars, content verifier valid high)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T03:53:48.572Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json rejectedAt: \"2026-09-30T05:06:23.127Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/telegraph--dominic-cavendish.json isNotReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-apollo-west-end-2025/telegraph--dominic-cavendish.json isNotReview: true -> false"
+    }
+  ]
+}

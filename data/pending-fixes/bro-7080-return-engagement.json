@@ -1,0 +1,142 @@
+{
+  "issueNumber": "bro-7080-return-engagement",
+  "planId": "6d64b994-6aa2-4c8e-b3e3-9b9b1a5aa948",
+  "status": "applied",
+  "createdAt": "2026-11-09T10:53:16.032Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Return runs are not revivals: Degenerates Dec-Jan (Playwrights Horizons, 3 months after the Sep-Nov run) and Sacrilegious Apr-May 2027 (Riverside Studios, 4 months after the Dec-Jan run) were flagged isRevival by title cross-reference against their own earlier run (detector fixed in revival-cross-reference.js). Six genuine revivals carried a stale 'new' tag next to isRevival:true (Arias with a Twist: 'revive their 2008 cult hit'; Whoopi Monologues: revives the 1984 show; Much Ado About Nothing; The Full Monty 2027: productionNumber 2 of the-full-monty-2000; for colored girls and Chewing Gum Dreams: 'first UK revival'); re-asserting isRevival=true drops the 'new' tag via syncRevivalTags. New validate-data check flags this mismatch.",
+    "steps": [
+      "shows.json: degenerates-dec-jan-off-broadway-2026.isRevival",
+      "shows.json: sacrilegious-off-west-end-2027.isRevival",
+      "shows.json: arias-with-a-twist-off-broadway-2026.isRevival",
+      "shows.json: the-whoopi-monologues-off-broadway-2026.isRevival",
+      "shows.json: much-ado-about-nothing-2026.isRevival",
+      "shows.json: the-full-monty-2027.isRevival",
+      "shows.json: for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026.isRevival",
+      "shows.json: chewing-gum-dreams-off-west-end-2026.isRevival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "degenerates-dec-jan-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false,
+        "description": "shows.json: degenerates-dec-jan-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sacrilegious-off-west-end-2027",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false,
+        "description": "shows.json: sacrilegious-off-west-end-2027.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arias-with-a-twist-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": true,
+        "description": "shows.json: arias-with-a-twist-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-whoopi-monologues-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": true,
+        "description": "shows.json: the-whoopi-monologues-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": true,
+        "description": "shows.json: much-ado-about-nothing-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-full-monty-2027",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": true,
+        "description": "shows.json: the-full-monty-2027.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": true,
+        "description": "shows.json: for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chewing-gum-dreams-off-west-end-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": true,
+        "description": "shows.json: chewing-gum-dreams-off-west-end-2026.isRevival"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T12:00:55.041Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for degenerates-dec-jan-off-broadway-2026 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for sacrilegious-off-west-end-2027 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for arias-with-a-twist-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-whoopi-monologues-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for much-ado-about-nothing-2026 (tags: [\"lottery\",\"rush\",\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-full-monty-2027 (tags: [\"upcoming\",\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for chewing-gum-dreams-off-west-end-2026 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
+}
