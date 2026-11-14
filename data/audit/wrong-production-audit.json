@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-14T22:56:07.739Z",
+  "timestamp": "2026-11-14T23:57:16.573Z",
   "stats": {
-    "totalReviews": 82107,
-    "alreadyFlagged": 22394,
+    "totalReviews": 82114,
+    "alreadyFlagged": 22396,
     "dateGuardCatches": 220,
-    "directorMismatch": 3696,
+    "directorMismatch": 3697,
     "tvFilmSignals": 2313,
     "londonSignals": 3754,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8467
+    "noPublishDate": 8469
   },
   "findings": [
     {
@@ -51697,6 +51697,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from pass-over-2021"
+        }
+      ]
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "file": "latimes--james-c-taylor.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-11-05/passing-strange-premieres-in-la-at-pasadena-playhouse",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"annie dorsen\" from passing-strange-2008"
         }
       ]
     },
@@ -119648,7 +119661,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2025-01-19",
       "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
       "findings": [
@@ -119717,7 +119730,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "sunday-times--dominic-maxwell.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2025-01-14",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
       "findings": [
@@ -119759,7 +119772,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "the-sun--dominic-maxwell.json",
-      "score": 83,
+      "score": 88,
       "publishDate": "2025-01-19",
       "url": "https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f",
       "findings": [
