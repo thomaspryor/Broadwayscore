@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T00:33:52.516Z",
+  "generatedAt": "2026-11-14T01:36:09.273Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,16 +103,16 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "viewfromthegods",
-      "error": "Timeout fetching https://viewfromthegods.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -127,8 +127,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 832,
-  "matchedGaps": 6,
+  "itemsScanned": 838,
+  "matchedGaps": 5,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -157,15 +157,6 @@
       "url": "https://stageandcinema.com/2026/11/11/ms-blakk-for-president-vineyard-theatre-review/",
       "headline": "Off-Broadway Review: MS. BLAKK FOR PRESIDENT (Vineyard Theatre)",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "the-kings-critique-off-broadway-2026",
-      "title": "The King's Critique",
-      "level": "matched",
-      "outletId": "the-knockturnal",
-      "url": "https://theknockturnal.com/the-kings-critique-review/",
-      "headline": "&#8216;The King’s Critique&#8217;: Review",
-      "publishDate": "2026-11-13"
     },
     {
       "showId": "the-visitors-off-broadway-2026",

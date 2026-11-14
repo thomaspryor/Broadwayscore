@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-14T00:33:52.222Z",
+  "generatedAt": "2026-11-14T01:36:08.966Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 323,
-  "clean": 322,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.75 vs local 77.41 (Δ0.66)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-14T00:07:48.052Z"
-    }
-  ],
+  "clean": 323,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
