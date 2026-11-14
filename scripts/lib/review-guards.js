@@ -6378,7 +6378,13 @@ function hasIncludableSyndicationPrimary(data, show, filePath, { primaries, requ
   const prims = primaries || synd.getSyndicationPrimariesInDir(data.criticName, norm(data.outletId || data.outlet || ''), listDir, norm);
   if (!prims.length) return false;
   return synd.hasLiveSyndicationPrimary(require('path').dirname(filePath), prims, data.criticName, {
-    extraCheck: (p, pPath) => (!requireScore || hasValidScore(p)) && explainExclusion(p, show, pPath, opts) === null,
+    extraCheck: (p, pPath) => {
+      // BRO-7393: let the scorer populate the unique complete secondary's score.
+      // Publishing still keeps the stub until hasFullerSecondary can see a valid score.
+      if (opts && opts.forScoring && !hasValidScore(data)
+          && synd.findFullerSecondaryFile(require('path').dirname(filePath), require('path').basename(pPath), p, { forScoring: true }) === require('path').basename(filePath)) return false;
+      return (!requireScore || hasValidScore(p)) && explainExclusion(p, show, pPath, opts) === null;
+    },
   });
 }
 

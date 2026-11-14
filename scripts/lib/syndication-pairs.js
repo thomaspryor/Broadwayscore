@@ -404,14 +404,23 @@ const STUB_PRIMARY_TIERS = new Set(['truncated', 'excerpt', 'stub']);
  * @param {{fileNames?: string[]}} [opts]
  */
 function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames } = {}) {
-  if (!primaryData || !STUB_PRIMARY_TIERS.has(primaryData.contentTier) || primaryData.manualContentTier) return false;
+  return findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNames }) !== null;
+}
+
+/**
+ * The unique complete replacement for a stub primary, or null. BRO-7393:
+ * forScoring checks eligibility before a score exists; publishing callers keep
+ * requiring a valid score so a failed scoring attempt cannot drop the primary.
+ */
+function findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNames, forScoring = false } = {}) {
+  if (!primaryData || !STUB_PRIMARY_TIERS.has(primaryData.contentTier) || primaryData.manualContentTier) return null;
   const critic = primaryData.criticName;
   const config = getSyndicationConfig(critic);
-  if (!config || !isPrimaryFileFor(primaryFileName, [config.primary], critic)) return false;
+  if (!config || !isPrimaryFileFor(primaryFileName, [config.primary], critic)) return null;
   const fs = require('fs');
   const path = require('path');
   let names;
-  try { names = fileNames || fs.readdirSync(showDir); } catch { return false; }
+  try { names = fileNames || fs.readdirSync(showDir); } catch { return null; }
   // Conservative on purpose (BRO-7327 review): exactly ONE secondary file for this critic may exist
   // (two complete secondaries would both ship once the primary stands aside = double count), and it
   // must itself be includable by the full rebuild gate chain (else both copies would be dropped).
@@ -419,22 +428,22 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
   const slug = criticFileSlug(critic);
   const others = names.filter((f) => f.endsWith('.json') && (f.startsWith('') && new RegExp(`--${slug}(-\\d+)?\\.json$`).test(f)) && !isPrimaryFileFor(f, [config.primary], critic));
   const secFiles = others.filter((f) => isPrimaryFileFor(f, config.secondary, critic));
-  if (others.length !== 1 || secFiles.length !== 1) return false;
+  if (others.length !== 1 || secFiles.length !== 1) return null;
   const secPath = path.join(showDir, secFiles[0]);
-  if (_fullerInFlight.has(secPath)) return false; // explainExclusion(sec) -> hasLive... -> back here
+  if (_fullerInFlight.has(secPath)) return null; // explainExclusion(sec) -> hasLive... -> back here
   _fullerInFlight.add(secPath);
   try {
     const sec = JSON.parse(fs.readFileSync(secPath, 'utf8'));
-    if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return false;
-    if (!(sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec, secPath))) return false;
+    if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return null;
+    if (!(sec.contentTier === 'complete' && isLiveSyndicationPrimary(sec, secPath))) return null;
     const guards = require('./review-guards');
-    if (!guards.hasValidScore(sec)) return false; // a publishable score, not just any number
-    return guards.explainExclusion(sec, _showFor(sec.showId), secPath, { ignoreKnownSyndication: true }) === null;
-  } catch { return false; } finally { _fullerInFlight.delete(secPath); }
+    if (!forScoring && !(typeof sec.assignedScore === 'number' && guards.hasValidScore(sec))) return null;
+    return guards.explainExclusion(sec, _showFor(sec.showId), secPath, { ignoreKnownSyndication: true, forScoring }) === null ? secFiles[0] : null;
+  } catch { return null; } finally { _fullerInFlight.delete(secPath); }
 }
 
 module.exports = {
-  criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary,
+  criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary, findFullerSecondaryFile,
   isSelfSyndicationPointer, isSyndicatedDuplicateActive,
   KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, BYLINELESS_PORTAL_OUTLETS, isBylinelessPortalOutlet, portalRank, bylinelessPortalPrimaryFiles, hasLiveBylinelessPortalPrimary, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
