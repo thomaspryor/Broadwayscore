@@ -258,6 +258,11 @@ function visualBindingFor(description, question) {
   return tag && tag[1] === visualBinding(v.patch, v.verdict) ? v : null;
 }
 
+/** The question as the owner reads it: the visual binding tag "(ref <hash>)" stays in the stored question (the link token signs its hash, so old emails keep working) but is never shown. */
+function displayQuestion(question) {
+  return String(question == null ? '' : question).replace(/\s*\(ref [0-9a-f]{32}\)\s*$/, '').trim();
+}
+
 function visualMac(secret, id, patch, verdict) {
   return crypto.createHmac('sha256', secret).update(`${VISUAL_DOMAIN}${id}:${patch}:${verdict}`).digest('hex').slice(0, 32);
 }
@@ -642,7 +647,7 @@ module.exports = {
   TOKEN_TTL_MS, MAX_ANSWER_CHARS, MARKER_RE, ID_RE, AWAITING_OWNER_LABEL,
   stripCode, collapseSelfLinks, capQuestion, markerLines, questionHash, unescapeMarkdown,
   parseDecisionBlock, answerChoices, STEP_RE, TASK_CHOICES,
-  VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
+  VISUAL_TTL_MS, displayQuestion, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, ANSWER_REF_RE, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
   VOID_LABEL, ANSWERED_LINE, loadDecision, recordAnswer, reconcileAnswered, updateIssue, markerComments, unparkOwnerHolds,

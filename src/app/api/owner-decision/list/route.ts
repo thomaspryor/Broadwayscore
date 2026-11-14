@@ -11,6 +11,7 @@ import { esc, page, notice, linearGraphql, rateLimited, evidenceHtml } from '@/l
 
 type Graphql = (query: string, variables: Record<string, unknown>) => Promise<any>;
 const link = linkModule as unknown as {
+  displayQuestion: (q: string) => string;
   LIST_QUERY: string;
   verifyListToken: (token: string | null, secret: string, now?: number) => { ok: boolean; reason?: string; expires?: number };
   mintDecisionToken: (args: { id: string; hash: string; secret: string; listExpires?: number }) => string;
@@ -67,7 +68,7 @@ export async function GET(req: NextRequest) {
     const options = b.options.length >= 2
       ? b.options.map((o: any) => `<p class="opt">${esc(o.label)}: ${esc(o.name)}</p>${o.upside ? `<p class="up">Upside: ${esc(o.upside)}</p>` : ''}${o.downside ? `<p class="down">Downside: ${esc(o.downside)}</p>` : ''}<a class="btn" href="${base}&o=${encodeURIComponent(o.key)}">Choose ${esc(o.label)}</a>`).join('')
       : d.choices.map((c: any) => `<a class="btn" href="${base}&o=${encodeURIComponent(c.key)}">${esc(c.label)}</a>`).join('');
-    return `<section class="box"><p class="q">${esc(d.question)}</p>
+    return `<section class="box"><p class="q">${esc(link.displayQuestion(d.question))}</p>
 ${d.title && d.title !== d.question ? `<p class="small">About: ${esc(d.title)}</p>` : ''}
 ${evidenceHtml(b.evidence)}
 ${b.why ? `<p><strong>${b.task ? 'Why Claude cannot do this itself' : 'Why this is your call'}:</strong> ${esc(b.why)}</p>` : ''}

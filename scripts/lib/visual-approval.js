@@ -14,7 +14,13 @@ const link = require('../../src/lib/owner-decision-link.js');
 
 const REPO = 'thomaspryor/Broadwayscore';
 const MAX_OPEN = 8;
-const MAX_CROPS = 6;
+// The email shows 1 picture and at most 2 more links, so a card never needs more than 3 shots.
+const MAX_CROPS = 3;
+// Email thumbnails: Gmail's image proxy drops huge or oddly-typed images (BRO-7486: a 360 x 152,120 px, 13.7 MB PNG).
+const THUMB_MAX_BYTES = 300 * 1024;
+const THUMB_MAX_WIDTH = 600;
+const THUMB_MAX_HEIGHT = 1200;
+const THUMB_PREFIX = 'thumb_';
 const QUESTION_LABEL_MAX = 100;
 
 function git(args, opts = {}) {
@@ -80,12 +86,74 @@ function walkImages(dir) {
   return out;
 }
 
-/** Element crops first (tight to the change), else full-page shots; capped. */
+/** Element crops first (tight to the change), else full-page shots; capped. Phone-width shots lead (the owner reads on a phone). */
 function pickCrops(dir) {
   if (!fs.existsSync(dir)) return [];
   const all = walkImages(dir).sort();
   const crops = all.filter((f) => path.basename(f).includes('__'));
-  return (crops.length ? crops : all).slice(0, MAX_CROPS);
+  const list = crops.length ? crops : all;
+  const phone = (f) => (/(^|[^0-9])(414|390|375|360)([^0-9]|$)/.test(path.basename(f)) ? 0 : 1);
+  return [...list].sort((a, b) => phone(a) - phone(b)).slice(0, MAX_CROPS);
+}
+
+/**
+ * The owner must be shown the UI that changed. Element crops (names contain "__") are taken of the
+ * selectors the worker passed to visual-qa --elements; a request that only has whole-page shots shows
+ * the owner a page where the change may not even be on screen (BRO-7486: the evidence was
+ * /browse pages while the change lived in a panel that opens after a tap). Returns a reason string or null.
+ */
+function cropCoverageProblem(crops) {
+  const list = Array.isArray(crops) ? crops : [];
+  if (list.some((f) => path.basename(f).includes('__'))) return null;
+  return 'no element crop of the changed UI. All screenshots are whole pages, which may not show what changed (a panel that opens after a tap, a sheet, a modal). Re-run node scripts/visual-qa.mjs with --elements "<selector of the changed component>" (open the panel first if it needs a tap), or pass --page-shots-ok="<why whole pages show the change>" if the change really is page-wide.';
+}
+
+const JARGON_RE = /\b(code[- ]?split\w*|lazy[- ]?load\w*|dynamic import\w*|hydrat\w*|bundle\w*|refactor\w*|tree[- ]?shak\w*|memoiz\w*|ssr|ssg|rsc|prop[- ]drill\w*|css[- ]in[- ]js|z-index|regex|typescript|tsx|jsx|webpack|next\.?js|a11y)\b/i;
+
+/** --what becomes the owner's question ("Does the change to <what> look right?"): plain words describing what they will SEE, no jargon, one phrase. */
+function whatProblem(what) {
+  const w = String(what || '').trim();
+  const words = w.split(/\s+/).filter(Boolean);
+  if (words.length < 3) return 'too short. Say in a plain phrase what the owner will see, e.g. "the star rating panel on a show page".';
+  if (/[;:]/.test(w)) return 'contains a semicolon or colon. Use one plain phrase for what the owner will see, not a list of reasons.';
+  if (/\([^)]*\)|[\\`<>{}]|\bref\b/i.test(w)) return 'contains brackets, code characters or a ref. Plain words only.';
+  const j = JARGON_RE.exec(w);
+  if (j) return `uses a developer term ("${j[0]}"). Describe what the owner will see instead, e.g. "the rating panel that opens when you tap a show".`;
+  if (/\bno visual change\b/i.test(w)) return 'says there is no visual change. If nothing looks different, say so in the summary and do not ask; otherwise describe what looks different.';
+  return null;
+}
+
+/** Small JPEG for the email: top of the shot only (full-page shots can be 150,000 px tall), downscaled, under THUMB_MAX_BYTES. */
+async function makeEmailThumb(srcAbs, outAbs) {
+  const sharp = require('sharp');
+  const meta = await sharp(srcAbs, { limitInputPixels: false }).metadata();
+  const h = Math.min(meta.height, THUMB_MAX_HEIGHT);
+  let width = Math.min(meta.width, THUMB_MAX_WIDTH);
+  let buf;
+  const startWidth = width;
+  for (const q of [80, 70, 60, 50, 40]) {
+    width = startWidth;
+    for (; ; width = Math.round(width * 0.8)) {
+      buf = await sharp(srcAbs, { limitInputPixels: false })
+        .extract({ left: 0, top: 0, width: meta.width, height: h })
+        .resize({ width, withoutEnlargement: true })
+        .flatten({ background: '#ffffff' })
+        .jpeg({ quality: q, mozjpeg: true })
+        .toBuffer();
+      if (buf.length <= THUMB_MAX_BYTES || width <= 200) break;
+    }
+    if (buf.length <= THUMB_MAX_BYTES) break;
+  }
+  fs.writeFileSync(outAbs, buf);
+  return { bytes: buf.length, cropped: h < meta.height };
+}
+
+// thumb_<full file name>.jpg, so the full-size name is recoverable from the thumbnail URL without guessing the extension.
+const thumbName = (fullName) => `${THUMB_PREFIX}${fullName}.jpg`;
+/** The full-size screenshot a thumbnail URL stands for (the evidence commit holds both). Null when the URL is not a thumbnail. */
+function fullUrlForThumb(url) {
+  const m = /^(.*\/)thumb_(.+\.(?:png|jpe?g))\.jpg$/i.exec(String(url || ''));
+  return m ? `${m[1]}${m[2]}` : null;
 }
 
 /** What the session must do next, printed after a request: the owner reads the chat, not the card, so the crops go inline (SendUserFile, display render) in the same reply. */
@@ -95,11 +163,16 @@ function showInlineHint(crops, cwd = process.cwd()) {
 }
 
 function flatName(dir, file) {
-  return path.relative(dir, file).replace(/[\\/]+/g, '_').replace(/[^A-Za-z0-9._-]/g, '-').slice(0, 120);
+  return (() => {
+    const n = path.relative(dir, file).replace(/[\\/]+/g, '_').replace(/[^A-Za-z0-9._-]/g, '-');
+    const ext = (/\.(png|jpe?g)$/i.exec(n) || [''])[0];
+    // Keep the extension when cutting: the thumbnail URL has to map back to the full-size file.
+    return n.length > 110 ? n.slice(0, 110 - ext.length) + ext : n;
+  })();
 }
 
 function labelFor(name) {
-  return name.replace(/\.(png|jpe?g)$/i, '').replace(/__/g, ' ').replace(/[_-]+/g, ' ').replace(/\|/g, ' ').trim().slice(0, 80) || 'Screenshot';
+  return name.replace(/^thumb_/, '').replace(/\.(png|jpe?g)(\.jpg)?$/i, '').replace(/__/g, ' ').replace(/[_-]+/g, ' ').replace(/\|/g, ' ').trim().slice(0, 80) || 'Screenshot';
 }
 
 /** The email needs one picture, not five: prefer a phone-width shot (the owner reads on a phone), else the first. */
@@ -111,14 +184,15 @@ function pickEmailImage(evidence) {
 function buildBlock({ what, patch, verdict, hold, evidence, summary }) {
   const clean = String(what || 'the website').replace(/[\r\n|()]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, QUESTION_LABEL_MAX);
   const tag = link.visualBinding(patch, verdict);
+  const checked = String(summary || 'the automatic visual check passed at phone, tablet and desktop widths').replace(/[\r\n]+/g, ' ').slice(0, 160);
   return [
     `DECISION NEEDED: Does the change to ${clean} look right? (ref ${tag})`,
     'Why this is your call: It changes how the website looks, and only you can judge that. The automatic checks already ran.',
-    'Option A — Approve: the change goes live by itself within about 20 minutes / nothing else for you to do',
-    'Option B — Reject: the change is not shipped and goes back to be reworked / tell me what is wrong in your own words',
-    `My recommendation: Approve, because ${String(summary || 'the automatic visual checks passed').replace(/[\r\n]+/g, ' ').slice(0, 160)}.`,
+    'Option A — Approve: the change goes live by itself in about 20 minutes / if something looks off, it stays live until it is fixed',
+    'Option B — Reject: nothing changes on the site / the fix waits until the work is redone',
+    `My recommendation: Approve, because ${checked}.`,
     'Default: Nothing ships; the change waits.',
-    ...evidence.map((e) => `Evidence: ${e.label} | ${e.url}`),
+    ...evidence.slice(0, MAX_CROPS).map((e) => `Evidence: ${e.label} | ${e.url}`),
     `VISUAL-APPROVAL: patch=${patch} verdict=${verdict} hold=${hold}`,
   ].join('\n');
 }
@@ -189,4 +263,4 @@ function openVisualRequests(issues) {
   return issues.filter((i) => link.parseVisualApproval(i.description) && /DECISION NEEDED/i.test(i.description || '') && !/ANSWERED by the owner/.test(i.description || ''));
 }
 
-module.exports = { visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+module.exports = { visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };

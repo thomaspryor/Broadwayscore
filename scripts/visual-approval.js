@@ -21,7 +21,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const va = require('./lib/visual-approval.js');
 const link = require('../src/lib/owner-decision-link.js');
 
-const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run] [--shared-style-change]';
+const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run] [--shared-style-change] [--page-shots-ok="<why whole pages show the change>"]';
 
 function arg(argv, name) { const a = argv.find((x) => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : ''; }
 
@@ -30,6 +30,8 @@ async function request(argv) {
   const what = arg(argv, 'what');
   const dryRun = argv.includes('--dry-run');
   if (!/^BRO-\d+$/.test(issueId) || !what) { console.error(USAGE); return 2; }
+  const whatBad = va.whatProblem(what);
+  if (whatBad) { console.error(`Refused: --what ${whatBad} The owner reads it as the question "Does the change to <what> look right?".`); return 1; }
   const cwd = process.cwd();
   const branch = va.git(['branch', '--show-current'], { cwd }) || 'detached';
   const dir = arg(argv, 'dir') || path.join('.claude', 'visual-qa', branch);
@@ -53,6 +55,8 @@ async function request(argv) {
   if (!patch) { console.error('Refused: no difference from origin/main.'); return 1; }
   const crops = va.pickCrops(dir);
   if (!crops.length) { console.error(`Refused: no screenshots in ${dir}; the owner needs something to look at.`); return 1; }
+  const coverage = va.cropCoverageProblem(crops);
+  if (coverage && !arg(argv, 'page-shots-ok')) { console.error(`Refused: ${coverage}`); return 1; }
 
   const linear = require('./lib/linear-client.js');
   const open = va.openVisualRequests(await linear.listOpenIssuesWithDescriptions());
@@ -62,10 +66,22 @@ async function request(argv) {
   const hold = va.holdBranch(issueId);
   const evBranch = va.evidenceBranch(issueId);
   const files = crops.map((abs) => ({ abs, name: va.flatName(dir, abs) }));
+  // Each shot also gets a small email thumbnail (top of the shot, JPEG, under 300 KB). The card's Evidence
+  // line points at the thumbnail; the full-size file sits beside it in the same commit.
+  const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'va-thumbs-'));
+  const thumbs = [];
+  for (const f of files.slice()) {
+    const name = va.thumbName(f.name);
+    const abs = path.join(tmp, name);
+    await va.makeEmailThumb(f.abs, abs);
+    thumbs.push({ abs, name, full: f.name });
+  }
+  files.push(...thumbs);
+  process.on('exit', () => { try { fs.rmSync(tmp, { recursive: true, force: true }); } catch { /* best effort */ } });
   files.push({ abs: path.join(dir, 'verdict.json'), name: 'verdict.json' });
   // Screenshot URLs name the evidence COMMIT, not the branch: a branch can be force-pushed after the owner was emailed.
   const ev = va.buildEvidenceCommit(files, cwd, `Visual evidence for ${issueId}`);
-  const evidence = files.filter((f) => !f.name.endsWith('.json')).map((f) => ({ label: va.labelFor(f.name), url: va.rawUrl(ev, f.name) }));
+  const evidence = thumbs.map((t) => ({ label: va.labelFor(t.full), url: va.rawUrl(ev, t.name) }));
   const block = va.buildBlock({ what, patch, verdict: verdict.contentHash, hold, evidence, summary: arg(argv, 'summary') });
 
   if (dryRun) { console.log(`[dry-run] would push HEAD -> ${hold} and ${files.length} files -> ${evBranch}\n\n${block}`); return 0; }
@@ -83,7 +99,7 @@ async function request(argv) {
   const team = await linear.getTeam();
   const label = await linear.findOrCreateLabel(team.id, link.AWAITING_OWNER_LABEL);
   await linear.addLabelToIssue(issue.id, label.id);
-  await linear.createComment(issue.id, `Asked the owner to look at ${files.length - 1} screenshot(s). Held change: ${hold} (patch ${patch.slice(0, 12)}). It ships by itself after Approve; Reject returns the card with the owner's note.`);
+  await linear.createComment(issue.id, `Asked the owner to look at ${thumbs.length} screenshot(s). Held change: ${hold} (patch ${patch.slice(0, 12)}). It ships by itself after Approve; Reject returns the card with the owner's note.`);
   console.log(`Asked the owner on ${issueId}. Held on ${hold}; screenshots on ${evBranch}. The decision list and the next email will show it. Stop work on this card now: end the session, do not wait or poll for the answer (the lander ships it).`);
   console.log(va.showInlineHint(crops, cwd));
   return 0;

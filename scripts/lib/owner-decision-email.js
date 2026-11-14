@@ -6,8 +6,8 @@
  * owner-facing rules: plain English, no em dashes, no card ids in the text.
  */
 
-const { parseDecisionBlock, answerChoices, signToken, signListToken, questionHash, unescapeMarkdown, collapseSelfLinks } = require('../../src/lib/owner-decision-link.js');
-const { pickEmailImage } = require('./visual-approval.js');
+const { displayQuestion, parseDecisionBlock, answerChoices, signToken, signListToken, questionHash, unescapeMarkdown, collapseSelfLinks } = require('../../src/lib/owner-decision-link.js');
+const { pickEmailImage, fullUrlForThumb } = require('./visual-approval.js');
 
 const BASE_URL = 'https://broadwayscorecard.com';
 const SUBJECT_MAX = 90;
@@ -41,7 +41,7 @@ function buildDecisionEmail({ decision, description, secret, now = Date.now(), b
   const token = signToken({ id: decision.identifier, hash, secret, now });
   const block = parseDecisionBlock(description);
   const choices = answerChoices(description);
-  const question = noDash(decision.question || decision.title);
+  const question = noDash(displayQuestion(decision.question || decision.title));
   const subjectText = question.length > SUBJECT_MAX ? `${question.slice(0, SUBJECT_MAX - 1)}…` : question;
   // BRO-6654: Owner step lines make this a task the owner does by hand, then taps Done.
   const task = block.task;
@@ -67,22 +67,24 @@ ${optionHtml}
 ${block.recommendation ? `<p style="margin:16px 0 6px;"><strong>My recommendation:</strong> ${esc(noDash(block.recommendation))}</p>` : ''}
 ${block.defaultText ? `<p style="margin:0 0 12px;"><strong>If you do not answer:</strong> ${esc(noDash(block.defaultText))}</p>` : ''}
 ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
-<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button opens a page that asks you to confirm before anything is saved. You can also answer on the card by starting a comment with ANSWER:${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''} This link works for 14 days.</p>
-<p style="margin:8px 0 0;color:#666;font-size:13px;">If you already answered this in a Claude chat, tell that chat 'record my answer' and it will be saved here.</p>
+<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved. This link works for 14 days.${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''}</p>
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
 }
 
-// BRO-6876: one small picture (phone width) plus text links to the rest. Five full-width shots made a
-// quick yes/no look like a report. Tapping the picture or a link opens the full size.
+// BRO-6876 / BRO-7491: ONE small picture plus at most two text links. The card's Evidence URLs are
+// thumbnails (thumb_<shot>.jpg, under 300 KB: Gmail's image proxy drops huge or octet-stream files);
+// the picture and the links open the full-size shot sitting beside the thumbnail.
+const EMAIL_MAX_LINKS = 2;
 function evidenceHtml(evidence) {
   const list = Array.isArray(evidence) ? evidence : [];
   if (!list.length) return '';
   const first = pickEmailImage(list);
-  const rest = list.filter((e) => e !== first);
-  return `<p style="margin:0 0 10px;"><a href="${esc(first.url)}"><img src="${esc(first.url)}" alt="${esc(noDash(first.label))}" style="display:block;width:100%;max-width:280px;height:auto;border:1px solid #ddd;border-radius:8px;"></a><span style="font-size:13px;color:#666;">${esc(noDash(first.label))}</span></p>`
-    + (rest.length ? `<p style="margin:0 0 12px;font-size:13px;color:#666;">More screenshots: ${rest.map((e) => `<a href="${esc(e.url)}" style="color:#666;">${esc(noDash(e.label))}</a>`).join(', ')}</p>` : '');
+  const rest = list.filter((e) => e !== first).slice(0, EMAIL_MAX_LINKS);
+  const big = (e) => fullUrlForThumb(e.url) || e.url;
+  return `<p style="margin:0 0 10px;"><a href="${esc(big(first))}"><img src="${esc(first.url)}" alt="${esc(noDash(first.label))}" width="280" style="display:block;width:100%;max-width:280px;height:auto;border:1px solid #ddd;border-radius:8px;"></a><span style="font-size:13px;color:#666;">${esc(noDash(first.label))}. Tap to enlarge.</span></p>`
+    + (rest.length ? `<p style="margin:0 0 12px;font-size:13px;color:#666;">Also: ${rest.map((e) => `<a href="${esc(big(e))}" style="color:#666;">${esc(noDash(e.label))}</a>`).join(', ')}</p>` : '');
 }
 
 // The task body: why it needs the owner, the numbered steps, then Done /
@@ -114,7 +116,7 @@ function buildRoundupEmail({ decisions, secret, now = Date.now(), baseUrl = BASE
   const rows = decisions.map((d) => {
     const hash = questionHash(d.question || d.title);
     const token = signToken({ id: d.identifier, hash, secret, now });
-    return `<div style="margin:0 0 14px;"><div style="font-weight:600;">${esc(noDash(d.question || d.title))}</div>${button(answerUrl(token, 'none', baseUrl), 'Open and answer', true)}</div>`;
+    return `<div style="margin:0 0 14px;"><div style="font-weight:600;">${esc(noDash(displayQuestion(d.question || d.title)))}</div>${button(answerUrl(token, 'none', baseUrl), 'Open and answer', true)}</div>`;
   }).join('');
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:20px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5;color:#222;"><div style="max-width:520px;margin:0 auto;">
@@ -128,7 +130,7 @@ function buildRoundupEmail({ decisions, secret, now = Date.now(), baseUrl = BASE
 function buildBacklogEmail({ decisions, secret, now = Date.now(), baseUrl = BASE_URL }) {
   const n = decisions.length;
   const subject = `${n} ${n === 1 ? 'decision is' : 'decisions are'} waiting on you`;
-  const rows = decisions.slice(0, 25).map((d) => `<li style="margin:0 0 8px;">${esc(noDash(d.question || d.title))}</li>`).join('');
+  const rows = decisions.slice(0, 25).map((d) => `<li style="margin:0 0 8px;">${esc(noDash(displayQuestion(d.question || d.title)))}</li>`).join('');
   const more = n > 25 ? `<p style="margin:0 0 14px;color:#666;">And ${n - 25} more on the page.</p>` : '';
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:20px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5;color:#222;"><div style="max-width:520px;margin:0 auto;">

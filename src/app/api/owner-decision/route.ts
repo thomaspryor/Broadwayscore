@@ -7,6 +7,7 @@ import { esc, page, notice, linearGraphql, rateLimited, evidenceHtml } from '@/l
 // return shapes are typed here instead of inferred from every branch.
 type Graphql = (query: string, variables: Record<string, unknown>) => Promise<any>;
 const link = linkModule as unknown as {
+  displayQuestion: (q: string) => string;
   MAX_ANSWER_CHARS: number;
   verifyToken: (token: string | null, secret: string, now?: number) => any;
   loadDecision: (args: { graphql: Graphql; id: string; hash: string; secret: string }) => Promise<any>;
@@ -91,7 +92,7 @@ export async function GET(req: NextRequest) {
   // BRO-6654: a task card (Owner step lines) shows its steps, so the Done page reads on its own.
   const task = (open.block as { task?: boolean; steps?: string[] }).task === true;
   const steps = task ? `<ol>${((open.block as { steps?: string[] }).steps || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ol>` : '';
-  const head = `<h1>${task ? 'Your task' : 'Your decision'}</h1><p class="q">${esc(open.question)}</p>${steps}<p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
+  const head = `<h1>${task ? 'Your task' : 'Your decision'}</h1><p class="q">${esc(link.displayQuestion(open.question))}</p>${steps}<p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
 
   if (choice === 'own') {
     return page(task ? 'Your task' : 'Your decision', `${head}${form(`<input type="hidden" name="choice" value="own"><textarea name="text" maxlength="${MAX_ANSWER_CHARS}" required placeholder="Type your answer here" aria-label="Your answer"></textarea><button type="submit">Send my answer</button>`)}`);

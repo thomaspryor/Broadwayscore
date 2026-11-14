@@ -144,7 +144,9 @@ function planRecovery(issue, secret, facts) {
   if (!answer) return { skip: 'the owner has not answered yet' };
   // What the owner saw is what existed when they tapped: a hold or evidence branch pushed after the tap cannot ship on that tap.
   if (!(facts.holdTime <= found.at) || !(facts.evidenceTime <= found.at)) return { skip: 'the held branch or its screenshots changed after the owner answered' };
-  const evidence = (facts.files || []).filter((f) => /\.(png|jpe?g)$/i.test(f)).slice(0, 8)
+  // Thumbnails (thumb_*.jpg) are what the card shows; the full-size shots beside them are only for linking.
+  const shots = (facts.files || []).filter((f) => /\.(png|jpe?g)$/i.test(f));
+  const evidence = (shots.some((f) => /^thumb_/.test(f)) ? shots.filter((f) => /^thumb_/.test(f)) : shots).slice(0, va.MAX_CROPS)
     .map((f) => `Evidence: ${va.labelFor(f)} | https://raw.githubusercontent.com/${va.REPO}/${facts.evidenceSha}/${f}`);
   const lines = [...evidence, `VISUAL-APPROVAL: patch=${facts.patch} verdict=${verdict.contentHash} hold=${ask.hold}`];
   lines.unshift(link.ANSWERED_LINE);

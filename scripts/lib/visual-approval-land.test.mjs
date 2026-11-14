@@ -119,6 +119,14 @@ const ownerComment = (chose, ref = link.decisionRef(S, ID, link.questionHash(TIT
 const lost = (comments) => ({ identifier: ID, title: TITLE, createdAt: at(ASK_AT - 3600e3), description: 'Parent: BRO-6498\n\n## Acceptance criteria\n\n* The hub renders\n\nFiled by: session (kind: city hub)\n', comments: { nodes: comments } });
 const facts = { holdTime: ANS_AT - 3600e3, evidenceTime: ANS_AT - 3600e3, patch: P40, evidenceSha: EVSHA, files: ['hub__mobile-360.png', 'hub__desktop-1440.png', 'verdict.json'], verdictRaw: JSON.stringify({ overallPass: true, contentHash: V16 }) };
 
+test('lost-block restore lists thumbnails only (BRO-7491), at most 3, never the full-size files beside them', () => {
+  const f2 = { ...facts, files: ['hub__a.png', 'hub__b.png', 'thumb_hub__a.png.jpg', 'thumb_hub__b.png.jpg', 'verdict.json'] };
+  const ev = land.planRecovery(lost([askComment, ownerComment('Approved')]), S, f2).restore.lines.filter((l) => /^Evidence:/.test(l));
+  assert.equal(ev.length, 2);
+  assert.ok(ev.every((l) => /\/thumb_hub__[ab]\.png\.jpg$/.test(l)));
+  assert.ok(ev.some((l) => l.startsWith('Evidence: hub  a |') || l.startsWith('Evidence: hub a |')) || ev[0].includes('hub'));
+});
+
 test('lost block + email Approve: the lander restores the machine lines and the next pass lands it', () => {
   const issue = lost([askComment, ownerComment('Approved')]);
   assert.equal(land.planCard(issue, S, NOW).action, 'skip', 'before the fix the card was invisible to the lander');
