@@ -39,15 +39,19 @@ function EditorRows() {
 }
 
 /** Bottom-sheet shell matching Modal's bottomSheet look (phones), centred card from sm up. */
-function SheetShell({ children, maxWidth, testId, label, zIndex }: {
+function SheetShell({ children, maxWidth, testId, label, zIndex, className = '', onClose }: {
   children: React.ReactNode; maxWidth: string; testId: string; label: string; zIndex: number;
+  /** Classes on the portaled root. Wrapper classes don't reach a portal, so e.g. `sm:hidden` goes here. */
+  className?: string;
+  /** Backdrop tap closes it, so a hung download never traps the user under the overlay. */
+  onClose?: () => void;
 }) {
   // Portal to <body> like Modal: the show hero's .card sets `contain: layout`,
   // which would pin a position:fixed sheet to the card instead of the screen.
   if (typeof document === 'undefined') return null;
   return createPortal(
-    <div className="fixed inset-0 flex items-end sm:items-center justify-center" style={{ zIndex }} role="status" aria-label={label} data-testid={testId}>
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" aria-hidden="true" />
+    <div className={`fixed inset-0 flex items-end sm:items-center justify-center ${className}`} style={{ zIndex }} role="status" aria-label={label} data-testid={testId}>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" aria-hidden="true" onClick={onClose} />
       <div className={`relative w-full ${maxWidth} bg-surface-raised border border-white/10 rounded-t-2xl sm:rounded-2xl pb-[env(safe-area-inset-bottom)] sm:pb-0 shadow-2xl max-h-[85vh] overflow-hidden`}>
         {children}
       </div>
@@ -60,7 +64,7 @@ function SheetShell({ children, maxWidth, testId, label, zIndex }: {
  * RatingEditor fallback. RatingEditor is an inline card from 640px up and a
  * bottom sheet below, so render both and let CSS pick (no matchMedia flash).
  */
-export function RatingEditorSkeleton() {
+export function RatingEditorSkeleton({ onClose }: { onClose?: () => void } = {}) {
   return (
     <>
       <div
@@ -71,19 +75,17 @@ export function RatingEditorSkeleton() {
       >
         <EditorRows />
       </div>
-      <div className="sm:hidden">
-        <SheetShell maxWidth="sm:max-w-md" testId="rating-editor-skeleton-sheet" label="Loading rating editor" zIndex={60}>
-          <div className="p-4 min-h-[507px]"><EditorRows /></div>
-        </SheetShell>
-      </div>
+      <SheetShell className="sm:hidden" maxWidth="sm:max-w-md" testId="rating-editor-skeleton-sheet" label="Loading rating editor" zIndex={60} onClose={onClose}>
+        <div className="p-4 min-h-[507px]"><EditorRows /></div>
+      </SheetShell>
     </>
   );
 }
 
 /** PlanSheet fallback: date row, three showtime buttons, calendar + remove. */
-export function PlanSheetSkeleton() {
+export function PlanSheetSkeleton({ onClose }: { onClose?: () => void } = {}) {
   return (
-    <SheetShell maxWidth="sm:max-w-sm" testId="plan-sheet-skeleton" label="Loading your plans" zIndex={100}>
+    <SheetShell onClose={onClose} maxWidth="sm:max-w-sm" testId="plan-sheet-skeleton" label="Loading your plans" zIndex={100}>
       <div className="p-4 sm:p-5 min-h-[380px] animate-pulse" aria-hidden="true">
         <Bar className="h-5 w-1/2 mb-5" />
         <Bar className="h-11 w-full mb-4" />

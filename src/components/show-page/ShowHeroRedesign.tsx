@@ -532,11 +532,14 @@ function Inner({
 
   // The editor's chunk failed to load (or it threw while rendering): close the
   // panel, say so, and arm a fresh import so the next tap retries.
+  // Keep pendingDraft: a note resumed across sign-in must survive the retry.
   const handleRateEditorError = useCallback(() => {
     ratingEditorChunk.reset();
-    handleCancelRate();
+    setRatePanelOpen(false);
+    setEditingReview(null);
+    refocusRateBtn();
     showToast?.(LAZY_PANEL_ERROR_MESSAGE, 'error');
-  }, [handleCancelRate, showToast]);
+  }, [showToast]);
 
   const handleDeleteRating = useCallback(async () => {
     if (!editingReview) return;
@@ -893,7 +896,7 @@ function Inner({
           {/* Custom lists, signed-in only: for signed-out visitors it was a third
               control that led straight to a sign-in wall (owner, 2026-10-06).
               Reads "Add to list" on phones, "List" from sm up. */}
-          {isAuthenticated && <ShowPageAddToListButton showId={show.id} variant="hero" />}
+          {isAuthenticated && <LazyChunkBoundary><ShowPageAddToListButton showId={show.id} variant="hero" /></LazyChunkBoundary>}
         </div>
       )}
 
@@ -1013,7 +1016,7 @@ function Inner({
           precedence inside the editor, so pendingDraft doesn't null it out. */}
       {userFeaturesEnabled && ratePanelOpen && (
         <LazyChunkBoundary onError={handleRateEditorError}>
-        <Suspense fallback={<RatingEditorSkeleton />}>
+        <Suspense fallback={<RatingEditorSkeleton onClose={handleCancelRate} />}>
         <RatingEditor
           key={editingReview?.id ?? pendingDraft?.reviewId ?? 'new-viewing'}
           showTitle={show.title}
