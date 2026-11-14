@@ -26,7 +26,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 
 const { lookupIBDBCast, RATE_LIMIT_MS } = require('./lib/ibdb-cast');
-const { shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, expectedOpeningYear } = require('./lib/cast-tombstone');
+const { shouldRetryTombstone, shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, expectedOpeningYear } = require('./lib/cast-tombstone');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -142,7 +142,10 @@ async function main() {
   // Skip shows that already have cast files (unless --force)
   if (!force) {
     const before = shows.length;
-    shows = shows.filter(s => !castFileExists(s.id));
+    shows = shows.filter(s => {
+      if (!castFileExists(s.id)) return true;
+      try { return shouldRetryTombstone(JSON.parse(fs.readFileSync(path.join(CAST_DIR, `${s.id}.json`), 'utf8')), s); } catch { return false; }
+    });
     const skipped = before - shows.length;
     if (skipped > 0) {
       console.log(`Skipping ${skipped} shows with existing cast files`);

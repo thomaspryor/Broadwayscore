@@ -104,7 +104,24 @@ function castFileMismatchReason(castData, show) {
   return null;
 }
 
+// An empty tombstone on an open/previews show whose openingDate has passed is a coverage gap
+// the daily health check counts (BRO-7479: Wanted opened 2026-11-08, tombstoned 11-11 before IBDB
+// listed the cast, then skipped by every default run until the weekly --force pass). The default
+// (non-force) pass retries such tombstones once they are RETRY_MS old, so a late IBDB listing is
+// picked up within a day instead of a week. Pre-opening previews keep the weekly cadence.
+const TOMBSTONE_RETRY_MS = 20 * 60 * 60 * 1000;
+function shouldRetryTombstone(castFile, show, now = Date.now()) {
+  if (!castFile || !show) return false;
+  if (show.status !== 'open' && show.status !== 'previews') return false;
+  if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return false;
+  const today = new Date(now).toISOString().slice(0, 10);
+  if (show.status === 'previews' && show.openingDate && show.openingDate > today) return false;
+  const at = Date.parse(castFile.scrapedAt);
+  return !Number.isFinite(at) || now - at >= TOMBSTONE_RETRY_MS;
+}
+
 module.exports = {
+  shouldRetryTombstone, TOMBSTONE_RETRY_MS,
   shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, MAX_WRONG_PRODUCTION_PURGES, parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch,
   expectedOpeningYear, castFileMismatchReason,
 };

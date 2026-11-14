@@ -57,3 +57,21 @@ test('shouldAbortMassWipe: reproduces the task #712 incident shape (29-30 shows,
 test('shouldAbortMassWipe: a handful of genuine empties in a large run does not trip the breaker', () => {
   assert.strictEqual(shouldAbortMassWipe(200, 5), false);
 });
+
+test('shouldRetryTombstone: open show with day-old empty tombstone is retried (BRO-7479)', () => {
+  const { shouldRetryTombstone } = require('./lib/cast-tombstone.js');
+  const now = Date.parse('2026-11-14T12:00:00Z');
+  const open = { status: 'open', openingDate: '2026-11-08' };
+  const old = { openingNightCast: [], scrapedAt: '2026-11-11T13:43:34Z' };
+  assert.strictEqual(shouldRetryTombstone(old, open, now), true);
+  assert.strictEqual(shouldRetryTombstone({ ...old, scrapedAt: '2026-11-14T08:00:00Z' }, open, now), false);
+  assert.strictEqual(shouldRetryTombstone({ ...old, openingNightCast: [{ name: 'x' }] }, open, now), false);
+  assert.strictEqual(shouldRetryTombstone(old, { status: 'previews', openingDate: '2026-12-01' }, now), false);
+  assert.strictEqual(shouldRetryTombstone(old, { status: 'closed' }, now), false);
+});
+
+test('backfill-cast.js default pass is wired to shouldRetryTombstone (BRO-7479 guard)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./backfill-cast.js', import.meta.url), 'utf8');
+  assert.match(src, /shouldRetryTombstone\(JSON\.parse/);
+});
