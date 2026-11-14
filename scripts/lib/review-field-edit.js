@@ -301,7 +301,11 @@ const FIELD_VALUE_CHECKS = {
   // from the stored review text (whitespace/quote-mark insensitive).
   llmPullQuote: (v, record) => {
     if (v === null) return null;
-    if (typeof v !== 'string' || v.trim().length < 20) return 'llmPullQuote must be a string of 20+ chars';
+    // The rebuild only uses an llmPullQuote longer than MIN_QUOTE_LENGTH
+    // (rebuild-all-reviews.js `length > 30`); a shorter one applied green but
+    // never reached the site (BRO-7478: "It's a killer good time.").
+    const { MIN_QUOTE_LENGTH } = require('./pull-quote-guards');
+    if (typeof v !== 'string' || v.trim().length <= MIN_QUOTE_LENGTH) return `llmPullQuote must be a string longer than ${MIN_QUOTE_LENGTH} chars (the rebuild ignores shorter ones)`;
     const norm = (t) => String(t || '').replace(/[\u2018\u2019\u201c\u201d'"]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
     if (!record.fullText || !norm(record.fullText).includes(norm(v))) {
       return 'llmPullQuote must appear verbatim in the review fullText';
