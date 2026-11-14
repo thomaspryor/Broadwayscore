@@ -697,5 +697,50 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-14T02:28:58.164Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/lib/default-critic-home.live.test.mjs::allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS)",
+    "title": "Live-data test failing: allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) (scripts/lib/default-critic-home.live.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS)\" in scripts/lib/default-critic-home.live.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'the-sun|Dominic Maxwell'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/lib/default-critic-home.live.test.mjs::allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS)",
+    "fields": [],
+    "queuedAt": "2026-11-14T02:43:17.309Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)",
+    "title": "Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no class-A cross-market leaks (a show showing another production's reviews)\" in scripts/verify-contamination-gate.test.mjs is red against the live corpus.\n\n1 cross-market leak(s) — a user is being shown another production's reviews. Run `node scripts/audit-review-contamination.js --gate` and read the A_cross_market block.\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)",
+    "fields": [],
+    "queuedAt": "2026-11-14T02:43:17.328Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked West End candidate sub-venue slugs: {\n\"soho-theatre\": [\n{\n\"slug\": \"royal-court-theatre-upstairs\",\n\"rawStrings\": [\n\"Royal Court Theatre Upstairs\"\n],\n\"showCount\": 2\n}\n],\n\"royal-court\": [\n{\n\"slug\": \"royal-court-theatre-upstairs\",\n\"rawStrings\": [\n\"Royal Court Theatre Upstairs\"\n],\n\"showCount\": 2\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'royal-court': [\n+     {\n+       rawStrings: [\n+         'Royal Court Theatre Upstairs'\n+       ],\n+       showCount: 2,\n+       slug: 'royal-court-theatre-upstairs'\n+     }\n+   ],\n+   'soho-theatre': [\n+     {\n+       rawStrings: [\n+         'Royal Court Theatre Upstairs'\n+       ],\n+       showCount: 2,\n+       slug: 'royal-court-theatre-upstairs'\n+     }\n+   ]\n+ }\n- {}\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "fields": [],
+    "queuedAt": "2026-11-14T02:43:17.350Z"
   }
 ]
