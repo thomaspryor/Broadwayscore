@@ -46,6 +46,7 @@ test('checkDir: no node_modules or no lockfile is not drift', () => {
 test('checkDir + CLI exit code on real files', () => {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), 'idd-'));
   fs.writeFileSync(path.join(d, 'package-lock.json'), JSON.stringify(lock));
+  fs.mkdirSync(path.join(d, 'node_modules', '.bin'), { recursive: true });
   for (const [n, v] of [['next', '15.5.27'], ['react', '19.1.0'], ['typescript', '5.6.2']]) {
     fs.mkdirSync(path.join(d, 'node_modules', n), { recursive: true });
     fs.writeFileSync(path.join(d, 'node_modules', n, 'package.json'), JSON.stringify({ version: v }));
@@ -66,6 +67,7 @@ test('worktree-shaped dir: lockfile in child, node_modules in an ancestor', () =
   fs.writeFileSync(path.join(wt, 'package-lock.json'), JSON.stringify(lock));
   for (const [n, v] of [['next', '15.5.27'], ['react', '19.1.0'], ['typescript', '5.6.2']]) {
     fs.mkdirSync(path.join(root, 'node_modules', n), { recursive: true });
+    fs.mkdirSync(path.join(root, 'node_modules', '.bin'), { recursive: true });
     fs.writeFileSync(path.join(root, 'node_modules', n, 'package.json'), JSON.stringify({ version: v }));
   }
   assert.equal(checkDir(wt).drift[0].name, 'next');
@@ -74,4 +76,22 @@ test('worktree-shaped dir: lockfile in child, node_modules in an ancestor', () =
 test('installed package.json without a version is skipped, not "missing"', () => {
   const r = detectDrift(lock, (n) => (n === 'next' ? undefined : n === 'react' ? '19.1.0' : n === 'typescript' ? '5.6.2' : null));
   assert.equal(r.drift.length, 0);
+});
+
+test('a bare node_modules/.cache in the worktree does not shadow the real ancestor install', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'idd-'));
+  const wt = path.join(root, 'wt');
+  fs.mkdirSync(path.join(wt, 'node_modules', '.cache'), { recursive: true });
+  fs.mkdirSync(path.join(root, 'node_modules', '.bin'), { recursive: true });
+  fs.writeFileSync(path.join(wt, 'package-lock.json'), JSON.stringify(lock));
+  for (const [n, v] of [['next', '16.4.3'], ['react', '19.1.0'], ['typescript', '5.6.2']]) {
+    fs.mkdirSync(path.join(root, 'node_modules', n), { recursive: true });
+    fs.writeFileSync(path.join(root, 'node_modules', n, 'package.json'), JSON.stringify({ version: v }));
+  }
+  assert.equal(checkDir(wt).drift.length, 0);
+});
+
+test('devOptional deps absent (npm install --omit=dev) are not drift', () => {
+  const l = { packages: { '': { dependencies: { a: '1' } }, 'node_modules/a': { version: '1.0.0', devOptional: true } } };
+  assert.equal(detectDrift(l, () => null).drift.length, 0);
 });

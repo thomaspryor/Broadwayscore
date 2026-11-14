@@ -42,14 +42,14 @@ function detectDrift(lock, readInstalled) {
   for (const name of names) {
     const entry = pkgs['node_modules/' + name];
     if (!entry || !entry.version || entry.link) continue;
-    checked++;
     const installed = readInstalled(name);
     if (installed === undefined) continue; // present but versionless: cannot compare
     if (installed === null) {
       // Optional deps (platform binaries) are legitimately absent.
-      if (!optional.has(name) && !entry.optional) drift.push({ name, locked: entry.version, installed: null, kind: 'missing' });
+      if (!optional.has(name) && !entry.optional && !entry.devOptional) drift.push({ name, locked: entry.version, installed: null, kind: 'missing' });
       continue;
     }
+    checked++;
     if (installed === entry.version) continue;
     const kind = majorOf(installed) !== majorOf(entry.version) ? 'major' : 'version';
     drift.push({ name, locked: entry.version, installed, kind });
@@ -76,7 +76,8 @@ function formatMessage(result, repoDir) {
 function findNodeModules(dir) {
   for (let d = path.resolve(dir); ; d = path.dirname(d)) {
     const c = path.join(d, 'node_modules');
-    if (fs.existsSync(c)) return c;
+    // A real install has .package-lock.json or .bin; a bare node_modules/.cache (eslint, babel) must not shadow the ancestor install.
+    if (fs.existsSync(path.join(c, '.package-lock.json')) || fs.existsSync(path.join(c, '.bin'))) return c;
     if (path.dirname(d) === d) return null;
   }
 }
