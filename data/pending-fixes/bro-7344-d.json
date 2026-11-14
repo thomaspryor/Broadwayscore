@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7344-d",
   "planId": "65bcaa48-f5e0-4a63-b251-256d9e0b8374",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-14T02:54:18.633Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "on-the-evolutionary-function-of-shame-off-broadway-2025/theatermania--zachary-stewart.json: rejectionReason"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-14T03:40:56.430Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-evolutionary-function-of-shame-off-broadway-2025/theatermania--zachary-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-evolutionary-function-of-shame-off-broadway-2025/theatermania--zachary-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-evolutionary-function-of-shame-off-broadway-2025/theatermania--zachary-stewart.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
