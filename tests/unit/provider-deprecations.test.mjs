@@ -141,12 +141,15 @@ describe('CLI and workflow wiring (fails if either provider step is dropped)', (
       // The CLI refuses a page with fewer rows than the provider minimum (input-missing), so pad past it.
       const pad = ['gemini-x-a', 'gemini-x-b'].map((id) => `  ---\n  * \`${id}\`\n  * May 1, 2025\n  * June 1, 2027\n  * \`gemini-3.8-flash\``).join('\n');
       fs.writeFileSync(f, GEMINI.replace('{% /table %}\n## Gemini 2.5', '{% /table %}\n## Gemini 2.5').replace(/\{% \/table %\}$/, `${pad}\n{% /table %}`) + '\n');
-      // gemini-2.5-flash is referenced by repo code and unregistered in research-cost.js: seeded mismatch.
-      const bad = spawnSync('node', ['scripts/audit-provider-retirements.js', '--provider=gemini', `--html=${f}`, '--strict'], { cwd: root, encoding: 'utf8' });
+      // Seeded mismatch via the env seams: independent of what the repo references or registers today.
+      const env = { ...process.env, AUDIT_REFERENCED_IDS: 'gemini-2.5-flash', AUDIT_REGISTRY_JSON: '{}' };
+      const bad = spawnSync('node', ['scripts/audit-provider-retirements.js', '--provider=gemini', `--html=${f}`, '--strict'], { cwd: root, encoding: 'utf8', env });
       assert.equal(bad.status, 1, bad.stdout + bad.stderr);
       assert.match(bad.stdout, /UNREGISTERED\s+gemini-2\.5-flash /);
-      const none = spawnSync('node', ['scripts/audit-provider-retirements.js', '--provider=gemini', `--html=${f}`], { cwd: root, encoding: 'utf8' });
+      const none = spawnSync('node', ['scripts/audit-provider-retirements.js', '--provider=gemini', `--html=${f}`], { cwd: root, encoding: 'utf8', env });
       assert.equal(none.status, 0, 'advisory without --strict');
+      const clean = spawnSync('node', ['scripts/audit-provider-retirements.js', '--provider=gemini', `--html=${f}`, '--strict'], { cwd: root, encoding: 'utf8', env: { ...env, AUDIT_REGISTRY_JSON: '{"gemini-2.5-flash":"2026-12-01"}' } });
+      assert.equal(clean.status, 0, clean.stdout + clean.stderr);
     } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
   });
 });

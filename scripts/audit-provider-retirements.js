@@ -69,8 +69,11 @@ async function fetchPage() {
   const label = `audit-${provider}-retirements`;
   const today = new Date().toISOString().slice(0, 10);
   const { page, modelRows, inputMissing } = readProviderPage(provider, await fetchPage());
-  const referenced = repoReferencedIds();
-  const registry = { ...ACCEPTED_SHUTDOWNS, ...MODEL_SHUTDOWNS };
+  // Test seams (BRO-7342 review): a fixed id set and registry so the CLI test never depends on live repo state.
+  const referenced = process.env.AUDIT_REFERENCED_IDS != null
+    ? new Set(process.env.AUDIT_REFERENCED_IDS.split(',').filter(Boolean)) : repoReferencedIds();
+  const registry = process.env.AUDIT_REGISTRY_JSON != null
+    ? JSON.parse(process.env.AUDIT_REGISTRY_JSON) : { ...ACCEPTED_SHUTDOWNS, ...MODEL_SHUTDOWNS };
   const report = inputMissing ? { missing: [], dateDrift: [], soon: [] } : driftReport({ page, registry, referenced, today, baseIdFn: P.baseIdFn });
   const out = { generatedAt: new Date().toISOString(), provider, pageRows: page.length, referenced: referenced.size, inputMissing, ...report };
 
