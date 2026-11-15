@@ -61,26 +61,13 @@ test('cleanTitle — strips Disney\'s prefix and "the Musical" suffix', () => {
   assert.equal(cleanTitle('Hamilton'), 'Hamilton');
 });
 
-test('cleanTitle — KNOWN LIMITATION: does not normalize real smart-quote unicode', () => {
-  // The source regex is `/['']/g` — both characters inside the brackets are
-  // straight ASCII apostrophes (verified via hexdump), not the U+2018/U+2019
-  // smart quotes the comment above it claims to normalize. It's a no-op on
-  // real smart-quote input. Pinning as documented CURRENT behavior (not
-  // desired behavior), same as the OB sibling's known-limitation test —
-  // out of scope to fix in a test-coverage-only change to a script with live
-  // writes to shows.json (twice-weekly cron, Mon+Thu — see
-  // .github/workflows/enrich-west-end-dates.yml).
-  assert.equal(cleanTitle('Andy Warhol’s Frankenstein'), 'Andy Warhol’s Frankenstein');
+test('cleanTitle — normalizes real smart-quote unicode to ASCII (BRO-7514)', () => {
+  // The class was a flattened /['']/ (two ASCII apostrophes) and no-op'd on U+2018/U+2019; now escaped.
+  assert.equal(cleanTitle('Andy Warhol\u2019s Frankenstein'), "Andy Warhol's Frankenstein");
 });
 
-test('cleanTitle — KNOWN LIMITATION: smart-quote no-op breaks Disney\'s-prefix stripping', () => {
-  // Consequence of the above: cleanTitle's Disney's-prefix regex
-  // (`/^Disney's\s+/i`) only matches the ASCII apostrophe. A real Playbill/TM
-  // title using a smart-quote "Disney’s" (U+2019) is never normalized to
-  // ASCII first, so the prefix strip silently no-ops too. Flagged by Codex
-  // adversarial review (BRO-3527 ship-check) as a real interaction between
-  // the two known limitations, not just a cosmetic one — pinning both here.
-  assert.equal(cleanTitle('Disney’s The Lion King the Musical'), 'Disney’s The Lion King');
+test('cleanTitle — smart-quote Disney\u2019s prefix is stripped too (BRO-7514)', () => {
+  assert.equal(cleanTitle('Disney\u2019s The Lion King the Musical'), 'The Lion King');
 });
 
 test('titleToTmSlugs — generates base slug plus the/the-less variants', () => {
