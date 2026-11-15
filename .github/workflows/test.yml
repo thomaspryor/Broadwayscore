@@ -3323,8 +3323,7 @@ on:
       - 'scripts/llm-scoring/batch-mode.test.mjs'
       # BRO-7490: busy batch slot -> sync fallback; also in tests/unit-test-manifest.txt.
       - 'scripts/llm-scoring/batch-slot-fallback.test.mjs'
-      # BRO-7523: rescore drain + comparative-rescore take batch pricing; also in tests/unit-test-manifest.txt.
-      - 'scripts/tests/rescore-paths-use-batch.test.mjs'
+      # BRO-7523: rescore drain + comparative-rescore take batch pricing (its test is covered by the scripts/tests/** glob + the manifest).
       - 'scripts/lib/comparative-batch.js'
       - 'scripts/llm-scoring/comparative-batch.ts'
       # BRO-3381: costUsd recording + cost-breach alarm. Colocated

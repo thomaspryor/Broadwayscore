@@ -8,9 +8,10 @@
  * llm-batch.js's scoring builders, so these do not reuse those.
  */
 const { openaiChatBody } = require('./llm-batch');
+const { CLAUDE_SONNET } = require('./models');
 
 const COMPARATIVE_PARAMS = Object.freeze({
-  claudeModel: 'claude-sonnet-4-6',
+  claudeModel: CLAUDE_SONNET,
   geminiModel: 'gemini-2.5-flash',
   maxTokens: 2000,
   temperature: 0.3,
