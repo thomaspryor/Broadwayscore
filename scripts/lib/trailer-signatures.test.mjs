@@ -76,6 +76,26 @@ test('The Stage: a closing critic bio is a trailer; a cut-off review or a prose 
   assert.equal(T.stripStageCriticBio(cut), cut);
 });
 
+test('The Stage: subscription promo, newsletter line, run listing and bio peel off in any order; a cut-off review stays truncated (BRO-7569)', () => {
+  const promo = 'Invest in The Stage today with a subscription starting at just £7.99';
+  const news = 'For all the latest reviews from The Stage, sign up to our weekly reviews newsletter here';
+  const bio = "Dave is a playwright and critic. He was the winner of The Stage's Critic Search 2015";
+  // real endings (giant-west-end-2025, cyrano-de-bergerac-west-end-2026, arlington-tron-regional-2025, jeezus-off-west-end-2026)
+  for (const tail of [`\n\n${news}`, `  ${bio} ${promo}`, `\n\nGlasgow, then at Traverse Theatre , Edinburgh, November 6-8`, `\n\nDundee, then touring until March 29, 2025`, ` ${promo}`, `\n\nFor all the latest from the Edinburgh Fringe, sign up to The Stage’s Edinburgh newsletter`, `\n\n${news}\n\n${bio}`]) {
+    assert.equal(T.stripStagePageTail(BODY + tail), BODY, tail);
+    assert.equal(tier(BODY + tail, 'thestage').contentTier, 'complete', tail);
+  }
+  // only for The Stage
+  assert.notEqual(tier(`${BODY}\n\n${news}`, 'guardian').contentTier, 'complete');
+  // cut off mid-sentence in front of the trailer: stays truncated
+  const cut = `${BODY.slice(0, -1)} and the lead\n\n${news}`;
+  assert.equal(T.stripStagePageTail(cut), cut);
+  assert.notEqual(tier(cut, 'thestage').contentTier, 'complete');
+  // prose that merely mentions a newsletter is not stripped
+  const prose = `${BODY}  Hamlet is a production that couldn't be more timely and its themes of love`;
+  assert.equal(T.stripStagePageTail(prose), prose);
+});
+
 test('The Times: listing footer + promo line are a trailer; a cut-off review is not (BRO-7171 Stage 4)', () => {
   // real endings (times-uk / sunday-times files, 2026-11-09)
   const endings = [

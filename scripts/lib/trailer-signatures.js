@@ -188,6 +188,43 @@ function stripStageCriticBio(text) {
   return SENTENCE_END_RE.test(body) && body.length >= RELATED_MIN_REMAINING ? body : text;
 }
 
+
+// BRO-7569: the rest of The Stage's page tail. 27 of 31 still-"truncated" 2025-26
+// Stage reviews held the whole review (the authenticated page was byte-equal to
+// the stored text); their endings were, in some order after the last sentence:
+//   "... end of review. For all the latest reviews from The Stage, sign up to our weekly reviews newsletter here"
+//   "... For all the latest from the Edinburgh Fringe, sign up to The Stage’s Edinburgh newsletter"
+//   "... Glasgow, then at Traverse Theatre , Edinburgh, November 6-8"  (run listing, own line)
+//   "... Dave is a playwright and critic. He was the winner of ... 2015 Invest in The Stage today with a subscription starting at just £7.99"
+// Layers are peeled from the end (promo, newsletter, bio, run listing, in any
+// order) and the result is used only when what is left ends a sentence and is
+// review-length, so a review cut off mid-sentence in front of them stays truncated.
+const STAGE_PROMO_RE = /\s*Invest in The Stage today with a subscription[^\n]{0,60}$/;
+const STAGE_NEWSLETTER_RE = /\s*For all the latest [^\n]{0,80}?sign up to [^\n]{0,80}?newsletter(?: here)?\.?\s*$/i;
+const STAGE_RUN_LISTING_RE = /\n\s*[\p{Lu}][^\n.]{1,80}?,\s+then\s+[^\n.]{1,120}$/u;
+const STAGE_BIO_ANY_RE = /\s+([A-Z][\w'’-]+(?: [A-Z][\w'’-]+)? (?:is|was) (?:a|an|the) [^\n]{0,360}?)$/;
+
+function stripStagePageTail(text) {
+  if (!text || typeof text !== 'string') return text;
+  let t = text.replace(/\s+$/, '');
+  let peeled = false;
+  for (let i = 0; i < 6; i++) {
+    let n = t.replace(STAGE_PROMO_RE, '');
+    if (n === t) n = t.replace(STAGE_NEWSLETTER_RE, '');
+    if (n === t) n = t.replace(STAGE_RUN_LISTING_RE, '');
+    if (n === t) {
+      // bio: a short last sentence run that names a writing job and is not review prose
+      const m = STAGE_BIO_ANY_RE.exec(t);
+      if (m && STAGE_BIO_JOB_RE.test(m[1]) && !/[.!?]["'”’]?\s+[A-Z]/.test(m[1].replace(/^[^.]*\.\s+(?=(?:He|She|They)\b)/, ''))) n = t.slice(0, m.index);
+    }
+    if (n === t) break;
+    t = n.replace(/\s+$/, '');
+    peeled = true;
+  }
+  if (!peeled) return text;
+  return SENTENCE_END_RE.test(t) && t.length >= RELATED_MIN_REMAINING ? t : text;
+}
+
 // ---------------------------------------------------------------------------
 // The Times / Sunday Times: the review ends with a listing footer, then often a
 // promo line. Real endings (BRO-7171 Stage 4, times-uk live batch: 12 of 20
@@ -318,7 +355,7 @@ const OUTLET_TRAILER_STRIPPERS = Object.freeze({
   'sunday-times': stripTimesFooter,
   telegraph: stripTelegraphFooter,
   'sunday-telegraph': stripTelegraphFooter,
-  thestage: stripStageCriticBio,
+  thestage: stripStagePageTail,
   'one-minute-critic': stripRelatedPostHeadlines,
   thefourthwalsh: stripFourthWalshInfoBlock,
 });
@@ -361,6 +398,7 @@ module.exports = {
   stripFourthWalshInfoBlock,
   stripRelatedPostHeadlines,
   stripStageCriticBio,
+  stripStagePageTail,
   stripTimesFooter,
   stripTelegraphFooter,
   stripGuardianTopicsFooter,
