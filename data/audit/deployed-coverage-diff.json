@@ -1,13 +1,52 @@
 {
-  "generatedAt": "2026-11-15T10:36:58.306Z",
+  "generatedAt": "2026-11-15T11:48:22.816Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 332,
-  "clean": 332,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 330,
+  "defective": 2,
+  "byType": {
+    "missing-from-prod": 2
+  },
+  "shows": [
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-10-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: telegraph"
+        }
+      ],
+      "missingFromProd": [
+        "telegraph"
+      ],
+      "localCount": 32,
+      "deployedCount": 31,
+      "firstDefectAt": "2026-11-15T11:48:19.564Z"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "title": "The Great Gatsby",
+      "openingDate": "2024-04-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: theater-pizzazz"
+        }
+      ],
+      "missingFromProd": [
+        "theater-pizzazz"
+      ],
+      "localCount": 33,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-11-15T11:48:19.564Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
