@@ -1,46 +1,30 @@
 {
-  "generatedAt": "2026-11-15T22:38:54.687Z",
+  "generatedAt": "2026-11-15T23:34:07.966Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 325,
-  "clean": 323,
-  "defective": 2,
+  "clean": 324,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "and-juliet-tour-2024",
-      "title": "& Juliet",
-      "openingDate": "2024-09-22",
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "openingDate": "2026-11-12",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.23 vs local 82.32 (Δ0.09)"
+          "detail": "deployed cs 78.11 vs local 78.31 (Δ0.2)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 53,
-      "deployedCount": 53,
-      "firstDefectAt": "2026-11-15T22:38:51.168Z"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "title": "The Lion King",
-      "openingDate": "1997-11-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 86.51 vs local 86.58 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23,
-      "firstDefectAt": "2026-11-15T22:38:51.168Z"
+      "localCount": 26,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-15T23:34:00.816Z"
     }
   ],
   "persistentDefective": 0,
