@@ -11,6 +11,8 @@
  * that.
  */
 import '../lib/llm-usage-install.js'; // LLM spend meter: first import, so the lane (which loads this) meters its calls too (BRO-5043)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { COMPARATIVE_PARAMS } = require('../lib/comparative-batch');
 import * as fs from 'fs';
 import * as path from 'path';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -147,8 +149,8 @@ async function callOpenAI(prompt: string): Promise<string | null> {
       body: JSON.stringify(openaiChatBody({
         model: COMPARATIVE_OPENAI,
         messages: [{ role: 'user', content: prompt }],
-        maxTokens: 2000,
-        temperature: 0.3,
+        maxTokens: COMPARATIVE_PARAMS.maxTokens,
+        temperature: COMPARATIVE_PARAMS.temperature,
       })),
     });
     if (!res.ok) return null;
@@ -170,10 +172,10 @@ async function callGemini(prompt: string): Promise<string | null> {
   try {
     geminiClient = geminiClient || new GoogleGenerativeAI(key);
     const model = geminiClient.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+      model: COMPARATIVE_PARAMS.geminiModel,
       generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 2000,
+        temperature: COMPARATIVE_PARAMS.temperature,
+        maxOutputTokens: COMPARATIVE_PARAMS.maxTokens,
         thinkingConfig: { thinkingBudget: 0 },
       } as any,
     });
@@ -196,9 +198,9 @@ async function callClaude(prompt: string): Promise<string | null> {
   try {
     anthropicClient = anthropicClient || new Anthropic({ apiKey: key });
     const res = await anthropicClient.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 2000,
-      temperature: 0.3,
+      model: COMPARATIVE_PARAMS.claudeModel,
+      max_tokens: COMPARATIVE_PARAMS.maxTokens,
+      temperature: COMPARATIVE_PARAMS.temperature,
       messages: [{ role: 'user', content: prompt }],
     });
     if (res.usage) {
