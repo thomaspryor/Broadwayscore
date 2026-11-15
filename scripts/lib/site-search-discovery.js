@@ -27,7 +27,7 @@ const { namedNonReviewReason } = require('./non-review-url-patterns');
 const { hasNonMetOperaUrlMarker, operaHouseForVenue, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
 const { recordSbCall } = require('./provider-telemetry');
-const { buildWpSearchUrl, parseWpSearchResults, decideFreeSearch } = require('./free-first-fetch');
+const { buildWpSearchUrl, parseWpSearchResults, decideFreeSearch, isCurrentProductionPost, buildWpPostDateUrl } = require('./free-first-fetch');
 
 // Helper: parse JSON response, returning empty array if the body is HTML
 // (Cloudflare fallback can return HTML even after fetchSSR's challenge detection
@@ -1443,7 +1443,7 @@ async function fetchJsSearchHtml(config, url, deps = {}) {
  * Returns result rows when the search produced at least one real review
  * candidate, otherwise null so the caller runs the paid render as before.
  */
-async function tryFreeWpSearch(config, outletId, searchTitle, showTitle, deps = {}, verbose = false) {
+async function tryFreeWpSearch(config, outletId, searchTitle, showTitle, deps = {}, verbose = false, { openingDate = null, market = 'broadway' } = {}) {
   if (process.env.FREE_WP_SEARCH_DISABLED === '1') return null;
   try {
     const url = buildWpSearchUrl(config.freeWp.base, searchTitle);
@@ -1457,10 +1457,28 @@ async function tryFreeWpSearch(config, outletId, searchTitle, showTitle, deps = 
       showTitle,
       urlLooksLike: urlLooksLikeReview,
       nonReviewReason: namedNonReviewReason,
+      market,
     });
-    if (verbose) console.log(`    Site search [${config.name}]: free WP search ${decision.reason}${decision.use ? ` (${decision.urls.length})` : ', using paid render'}`);
-    if (!decision.use) return null;
-    return decision.urls.map(url => ({ url, outletId: config.outletIdOverride || outletId, outlet: config.name, source: 'site-search' }));
+    if (!decision.use) {
+      if (verbose) console.log(`    Site search [${config.name}]: free WP search ${decision.reason}, using paid render`);
+      return null;
+    }
+    // Current-production gate: a candidate only counts when its publish date is
+    // on/after the show's opening window. An old production's or film's review
+    // must never suppress the paid render. Unknown dates/ids => paid render.
+    const fetcher = (u) => (deps && deps.freeFetch ? deps.freeFetch(u) : _fetchSSRDirect(u, 10000));
+    const current = [];
+    for (const hit of decision.hits.slice(0, 3)) {
+      if (hit.id == null) continue;
+      try {
+        const r = await fetcher(buildWpPostDateUrl(config.freeWp.base, hit.id));
+        const date = r && r.status === 200 ? JSON.parse(r.body).date : null;
+        if (isCurrentProductionPost(date, openingDate)) current.push(hit.url);
+      } catch (_) { /* unknown date: not current */ }
+    }
+    if (verbose) console.log(`    Site search [${config.name}]: free WP search ${current.length ? `hit (${current.length} current)` : 'only stale/undated hits, using paid render'}`);
+    if (!current.length) return null;
+    return current.map(url => ({ url, outletId: config.outletIdOverride || outletId, outlet: config.name, source: 'site-search' }));
   } catch (err) {
     if (verbose) console.log(`    Site search [${config.name}]: free WP search failed (${String(err.message).slice(0, 60)}), using paid render`);
     return null;
@@ -1571,7 +1589,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       // BRO-7532: free WordPress REST search before the paid JS render. Only a
       // usable hit short-circuits; every other outcome falls through unchanged.
       const freeResults = config.freeWp && config.requiresJs
-        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose)
+        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose, { openingDate, market })
         : null;
 
       let html = '';

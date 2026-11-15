@@ -221,5 +221,15 @@ for (const [label, response] of [
 test('theatre.reviews non-round-up paths keep their existing route', async () => {
   global.fetch = async () => assert.fail('direct route is limited to /reviews-roundup/');
   paidHtml = trPage;
-  await scraper.fetchPage('https://theatre.reviews/category/reviews-roundup/', { skipVerify: true });
+  const result = await scraper.fetchPage('https://theatre.reviews/category/reviews-roundup/', { skipVerify: true });
+  assert.notEqual(result.source, 'direct');
+  assert.ok(calls.length > 0, 'paid chain ran');
+});
+
+test('theatre.reviews round-up redirected to another path falls through to the paid chain', async () => {
+  global.fetch = async () => { const r = new Response(trPage, { status: 200 }); Object.defineProperty(r, 'url', { value: 'https://theatre.reviews/login/' }); return r; };
+  paidHtml = trPage;
+  const result = await scraper.fetchPage(trUrl, { skipVerify: true });
+  assert.notEqual(result.source, 'direct');
+  assert.ok(calls.length > 0);
 });

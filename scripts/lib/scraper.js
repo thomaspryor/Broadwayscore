@@ -1643,7 +1643,10 @@ async function fetchPage(url, options = {}) {
     try {
       const response = await fetch(url, { headers: { 'User-Agent': DIRECT_USER_AGENT }, signal: AbortSignal.timeout(10000) });
       const content = await response.text();
-      if (!_isChallengeOrGarbage(content) &&
+      // A redirect off the requested host/path (login wall, parked page) is not the round-up.
+      let finalOk = true;
+      try { const fu = new URL(response.url || url); finalOk = fu.hostname === requestedUrl.hostname && fu.pathname === requestedUrl.pathname; } catch (_) {}
+      if (finalOk && !_isChallengeOrGarbage(content) &&
           require('./free-first-fetch').theatreReviewsDirectAcceptable(requestedUrl.pathname, response.status, content)) {
         const checked = _checkAndReturn({ content, format: 'html', source: 'direct' }, 'Direct');
         if (checked) return checked;
