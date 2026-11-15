@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T15:46:09.576Z",
+  "timestamp": "2026-11-15T16:18:40.773Z",
   "stats": {
-    "totalReviews": 82227,
-    "alreadyFlagged": 22416,
+    "totalReviews": 82229,
+    "alreadyFlagged": 22420,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
-    "tvFilmSignals": 2316,
+    "tvFilmSignals": 2319,
     "londonSignals": 3758,
-    "offBroadwaySignals": 748,
+    "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8509
+    "noPublishDate": 8462
   },
   "findings": [
     {
@@ -25506,6 +25506,20 @@
     },
     {
       "showId": "glengarry-glen-ross-2025",
+      "file": "latimes--robert-lloyd.json",
+      "score": null,
+      "publishDate": "2025-04-25",
+      "url": "https://www.latimes.com/entertainment-arts/tv/newsletter/2025-04-25/stranger-things-freaky-tales-good-night-and-good-luck-glengarry-glen-ross-snowy-owl",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-2025",
       "file": "one-minute-critic--matthew-wexler.json",
       "score": 80,
       "publishDate": "2025-04-13",
@@ -36611,6 +36625,20 @@
     },
     {
       "showId": "john-proctor-is-the-villain-2025",
+      "file": "latimes--charles-mcnulty.json",
+      "score": null,
+      "publishDate": "2025-05-21",
+      "url": "https://www.latimes.com/entertainment-arts/story/2025-05-21/kimberly-belflower-playwright-danya-taymor-director-john-proctor-is-the-villain-crucible",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 89,
       "publishDate": "2025-04-14",
@@ -44903,6 +44931,19 @@
       "file": "nytimes--laura-collins-hughes.json",
       "score": 74,
       "publishDate": "April 28, 2022",
+      "url": "https://www.nytimes.com/2022/04/27/theater/mr-saturday-night-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "mr-saturday-night-2022",
+      "file": "nytimes--unknown.json",
+      "publishDate": "2022-04-27",
       "url": "https://www.nytimes.com/2022/04/27/theater/mr-saturday-night-review.html",
       "findings": [
         {
@@ -112441,6 +112482,32 @@
       "score": 89,
       "publishDate": "November 15, 2017",
       "url": "http://deadline.com/2017/11/broadway-review-john-leguizamo-latin-history-for-morons-1202208717/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "latin-history-for-morons-2017",
+      "file": "newsday--barbara-schuler.json",
+      "publishDate": "2017-11-15",
+      "url": "https://www.newsday.com/entertainment/theater/latin-history-for-morons-review-1.14991144",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "latin-history-for-morons-2017",
+      "file": "nytimes--jesse-green.json",
+      "publishDate": "2017-11-15",
+      "url": "https://www.nytimes.com/2017/11/15/theater/latin-history-for-morons-review-john-leguizamo.html?mtrref=news.url.google.com&gwh=0F0377D0E1DF1596EDD1C33B00C5CFD0&gwt=pay",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
