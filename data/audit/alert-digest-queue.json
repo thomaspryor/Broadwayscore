@@ -140,20 +140,6 @@
     "queuedAt": "2026-11-15T11:47:45.569Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-15.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-15T12:14:59.039Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
     "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed cross-outlet suspects remain (first 5): [\n{\n\"file\": \"the-lion-king-1997/jasonraize--frank-scheck.json\",\n\"criticName\": \"Frank Scheck\",\n\"defaultCriticOf\": [\n\"scheckontheater\",\n\"reuters\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_spt112197.html\"\n},\n{\n\"file\": \"the-lion-king-1997/jasonraize--michael-sommers.json\",\n\"criticName\": \"Michael Sommers\",\n\"defaultCriticOf\": [\n\"the-kalamazoo-gazette\",\n\"journaltimes\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_njsl111497.html\"\n}\n]\n\n2 !== 0\n",
@@ -167,5 +153,19 @@
     "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
     "fields": [],
     "queuedAt": "2026-11-15T12:34:04.787Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-15.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-15T13:03:19.317Z"
   }
 ]
