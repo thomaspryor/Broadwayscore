@@ -63,7 +63,11 @@ test('creates a stub entry for a new slug and writes it to disk', () => {
     assert.ok(logs.some((l) => l.includes('Created stub entry for test-stub-zzz')));
 
     const written = JSON.parse(readFileSync(p, 'utf8'));
-    assert.deepEqual(written.shows['test-stub-zzz'], makeStub());
+    // The commercial write guard stamps break-even provenance on every save (BRO-7254).
+    const { breakEvenSource, breakEvenQuality, ...rest } = written.shows['test-stub-zzz'];
+    assert.deepEqual(rest, makeStub());
+    assert.equal(breakEvenQuality, 'unavailable');
+    assert.equal(typeof breakEvenSource, 'string');
     // modelLastRun / other top-level keys preserved
     assert.equal(written.modelLastRun, '2026-01-01');
   });

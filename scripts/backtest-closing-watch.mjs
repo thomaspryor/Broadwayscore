@@ -31,6 +31,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
+import { isMainModule } from './lib/is-main-module.mjs';
 const require = createRequire(import.meta.url);
 require('tsx/cjs');
 const cw = require('../src/lib/closing-watch.ts');
@@ -151,4 +152,4 @@ function main() {
   if (result.details) for (const d of result.details) console.log(`  ${d.inWindow ? 'IN ' : 'OUT'} ${d.slug} ${d.week} remaining=${d.weeksRemaining} window=${d.p25}-${d.p75} miss=${d.miss} be=${d.breakEven}`);
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
+if (isMainModule(import.meta.url)) main();
