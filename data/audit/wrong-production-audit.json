@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-15T16:40:35.998Z",
+  "timestamp": "2026-11-15T17:11:27.749Z",
   "stats": {
     "totalReviews": 82235,
-    "alreadyFlagged": 22423,
+    "alreadyFlagged": 22424,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
     "tvFilmSignals": 2319,
-    "londonSignals": 3758,
+    "londonSignals": 3759,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
     "noPublishDate": 8447
@@ -96743,7 +96743,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 74,
+      "score": 72,
       "publishDate": "2026-11-11",
       "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
       "findings": [
@@ -96757,7 +96757,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 74,
+      "score": 72,
       "publishDate": "2026-11-11",
       "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
       "findings": [
@@ -96813,7 +96813,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-11-11",
       "url": "https://www.ft.com/content/ef9eec04-6960-4997-a0ca-f974b7eddc9e?syn-25a6b1a6=1",
       "findings": [
@@ -97086,6 +97086,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 82,
+      "publishDate": "2026-11-14",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-caryl-churchill-should-be-as-celebrated-as-pinter-this-show-proves-it-cmx2q5tlz",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
