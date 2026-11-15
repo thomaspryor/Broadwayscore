@@ -957,6 +957,23 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
       && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {
     return { action: 'skipped', reason: 'empty-unknown: no URL, no text, unknown critic' };
   }
+  // --- Guard F3 (BRO-7569): an Unknown-critic row with no URL is a placeholder, not a second review ---
+  // The NYC Theatre roundup writes `<outlet>--unknown.json` (no url, no critic, excerpt only) for every
+  // outlet it lists, even when a named review of that show by that outlet is already stored. 95 of the
+  // 217 open 2025-26 full-text gaps were such placeholders beside a complete named review; each reads as
+  // a stub forever because it has nothing to fetch. Skip when this outlet already has a usable named
+  // file for the show (its own url, not flagged away): the placeholder adds no review.
+  if (criticName === 'Unknown' && !input.url && !fields.fullText && outletId && showId) {
+    try {
+      const dir = path.join(reviewTextsDir, showId);
+      const covered = fs.existsSync(dir) && fs.readdirSync(dir).some((f) => {
+        if (!f.startsWith(`${outletId}--`) || !f.endsWith('.json') || f === `${outletId}--unknown.json`) return false;
+        let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return false; }
+        return !!d.url && !d.wrongShow && !d.wrongProduction && !d.isRoundupArticle && !d.duplicateOf && !d.isNonReview;
+      });
+      if (covered) return { action: 'skipped', reason: 'unknown-no-url-outlet-already-covered: a named review by this outlet exists for the show' };
+    } catch { /* fail open: the guard only prevents a placeholder */ }
+  }
   // --- Guard F2: credited-person-as-critic rejection ---
   // A byline that is a CREATIVE TEAM member of this same show is not a review;
   // it is a mis-parsed roundup row. how-to-dance-in-ohio-2023 produced exactly
