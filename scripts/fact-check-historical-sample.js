@@ -53,6 +53,8 @@ const { perTokenUsd } = require('./lib/research-cost');
 const { parseMaxCost, createSpendGuard, createCallMemo, callKey } = require('./lib/experiment-guard');
 // BRO-7524: one cap for the whole run, checked before EVERY model call; identical calls run once.
 const callMemo = createCallMemo();
+// allSettled would turn BudgetExceeded into a saved error row that resume treats as done.
+const rethrowBudget = (settled) => { const b = settled.find((x) => x.status === 'rejected' && x.reason && x.reason.name === 'BudgetExceeded'); if (b) throw b.reason; return settled; };
 let guard = null;
 // USD. Gemini 2.5 Flash: $0.30/M in, $2.50/M out (thinking billed as output),
 // grounded prompt $0.035. OpenAI rates + the $0.01 search-call fee come from
@@ -248,10 +250,10 @@ async function checkShow(show, cohort) {
   const out = { id: show.id, checkedAt: new Date().toISOString(), facts: {}, synopsis: {}, poster: {} };
   const impl = cohortImpl(cohort);
   const prompt = impl.buildPrompt(show);
-  const runs = await Promise.allSettled([
+  const runs = rethrowBudget(await Promise.allSettled([
     askGemini([{ text: prompt }], { grounded: true }),
     askOpenAI([{ type: 'input_text', text: prompt }], { search: true }),
-  ]);
+  ]));
   for (const [i, name] of [[0, 'gemini'], [1, 'openai']]) {
     const r = runs[i];
     if (r.status !== 'fulfilled') { out.facts[name] = { error: String(r.reason && r.reason.message || r.reason).slice(0, 200) }; continue; }
@@ -262,10 +264,10 @@ async function checkShow(show, cohort) {
   if (show.synopsis && !impl.skip.has('synopsis')) {
     out.synopsis.rules = synopsisStoryProblems(show, nonStoryReason);
     const sp = synopsisPrompt(show, cohort);
-    const s = await Promise.allSettled([
+    const s = rethrowBudget(await Promise.allSettled([
       askGemini([{ text: sp }], { grounded: true }),
       askOpenAI([{ type: 'input_text', text: sp.replace(/^Use web search to learn/, 'From what you know, identify') }], { search: false }),
-    ]);
+    ]));
     out.synopsis.gemini = s[0].status === 'fulfilled' ? fc.parseJsonReply(s[0].value.text) : { error: String(s[0].reason).slice(0, 200) };
     out.synopsis.openai = s[1].status === 'fulfilled' ? fc.parseJsonReply(s[1].value.text) : { error: String(s[1].reason).slice(0, 200) };
   }
@@ -276,10 +278,10 @@ async function checkShow(show, cohort) {
     const mime = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
     const b64 = fs.readFileSync(pfile).toString('base64');
     out.poster.file = path.relative(ROOT, pfile);
-    const v = await Promise.allSettled([
+    const v = rethrowBudget(await Promise.allSettled([
       askGemini([{ inline_data: { mime_type: mime, data: b64 } }, { text: POSTER_PROMPT }], { grounded: false }),
       askOpenAI([{ type: 'input_image', image_url: `data:${mime};base64,${b64}` }, { type: 'input_text', text: POSTER_PROMPT }], { search: false }),
-    ]);
+    ]));
     out.poster.gemini = v[0].status === 'fulfilled' ? fc.parseJsonReply(v[0].value.text) : { error: String(v[0].reason).slice(0, 200) };
     out.poster.openai = v[1].status === 'fulfilled' ? fc.parseJsonReply(v[1].value.text) : { error: String(v[1].reason).slice(0, 200) };
   }

@@ -2692,8 +2692,8 @@ async function main(): Promise<void> {
     console.log(`Tokens used: ${singleUsage.total.toLocaleString()} (input: ${singleUsage.input.toLocaleString()}, output: ${singleUsage.output.toLocaleString()})`);
 
     // Estimate cost
-    const inputCostPer1M = options.model.includes('haiku') ? 0.80 : 3.00;
-    const outputCostPer1M = options.model.includes('haiku') ? 4.00 : 15.00;
+    const inputCostPer1M = options.model.includes('haiku') ? 1.00 : 3.00;
+    const outputCostPer1M = options.model.includes('haiku') ? 5.00 : 15.00;
     const estimatedCost = (singleUsage.input / 1_000_000) * inputCostPer1M +
                           (singleUsage.output / 1_000_000) * outputCostPer1M;
     console.log(`Estimated cost: $${estimatedCost.toFixed(4)}`);

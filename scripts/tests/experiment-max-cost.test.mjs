@@ -44,6 +44,7 @@ test('experiment scripts are wired to the guard (class guard: reverting the wiri
     assert.match(src, /assertRoom\(|exceeded\(/, `${name} must enforce the cap`);
   }
   assert.match(fc, /createCallMemo\(/);
+  assert.equal((fc.match(/rethrowBudget\(await Promise\.allSettled/g) || []).length, 3, 'every allSettled must rethrow BudgetExceeded');
   assert.match(sh, /allShardIds/);
 });
 
