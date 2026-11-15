@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T21:44:03.682Z",
+  "timestamp": "2026-11-15T22:32:52.002Z",
   "stats": {
-    "totalReviews": 82287,
-    "alreadyFlagged": 22437,
+    "totalReviews": 82273,
+    "alreadyFlagged": 22436,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
     "tvFilmSignals": 2318,
-    "londonSignals": 3766,
-    "offBroadwaySignals": 752,
+    "londonSignals": 3763,
+    "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8457
+    "noPublishDate": 8456
   },
   "findings": [
     {
@@ -96889,20 +96889,6 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
-      "file": "matineemouse--unknown.json",
-      "score": 87,
-      "publishDate": "2026-11-15",
-      "url": "https://matineemouse.substack.com/p/cloud-9-national-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": 89,
       "publishDate": "2026-11-12",
@@ -105773,20 +105759,6 @@
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "london-unattached--jeanne-horak.json",
-      "score": 92,
-      "publishDate": "2026-11-15",
-      "url": "https://www.london-unattached.com/hamlet-hail-thief-barbican-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "file": "london-unattached--unknown.json",
       "score": 92,
       "publishDate": "2026-11-15",
       "url": "https://www.london-unattached.com/hamlet-hail-thief-barbican-theatre/",
@@ -121449,24 +121421,6 @@
     {
       "showId": "passing-strange-regional-2026",
       "file": "variety--chris-willman.json",
-      "publishDate": "2026-11-08",
-      "url": "https://variety.com/2026/legit/news/passing-strange-pasadena-playhouse-stew-heidi-interview-1236942647/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "passing-strange-regional-2026",
-      "file": "variety--unknown.json",
       "publishDate": "2026-11-08",
       "url": "https://variety.com/2026/legit/news/passing-strange-pasadena-playhouse-stew-heidi-interview-1236942647/",
       "findings": [
