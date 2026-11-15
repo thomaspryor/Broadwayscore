@@ -200,7 +200,7 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
   const handed = new Set(handedOff);
   const routed = alreadyRouted(ledgerEntries, { now, coverKnown: !!coverIndex });
   const routes = liveRoutesByCard(ledgerEntries);
-  const skipped = { env: 0, handedOff: 0, routed: 0, coveredOpen: 0 };
+  const skipped = { env: 0, handedOff: 0, routed: 0, coveredOpen: 0, exhausted: 0, coveredBy: {} };
   const seen = new Set();
   const fails = [];
   for (const r of rows || []) {
@@ -210,7 +210,8 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
     seen.add(r.cardId);
     if (handed.has(r.cardId)) { skipped.handedOff++; continue; }
     if (routed.has(r.cardId)) { skipped.routed++; continue; }
-    if (coverIndex && coverIndex.has(r.cardId)) { skipped.coveredOpen++; continue; }
+    if (coverIndex && coverIndex.has(r.cardId)) { skipped.coveredOpen++; skipped.coveredBy[r.cardId] = coveredBy(r.cardId, { coverIndex }); continue; }
+    if ((routes.get(r.cardId) || []).length >= MAX_REROUTES) { skipped.exhausted++; continue; }
     fails.push(r);
   }
   const cards = fails.slice(0, MAX_ROUTED);

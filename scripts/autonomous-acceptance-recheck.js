@@ -240,7 +240,7 @@ function printRouteDryRun() {
   const sha = (rows.find((r) => r.sha) || {}).sha || null;
   const batch = buildRouteBatch({ rows, handedOff, sha, ledgerEntries: before });
   console.log(`Run ${lastRun.runId}: ${rows.length} rechecked; mode tonight: ${mode.mode} (${mode.why})`);
-  console.log(`Not routed: ${batch.skipped.env} could not run here, ${batch.skipped.handedOff} handed off, ${batch.skipped.routed} routed before`);
+  console.log(`Not routed: ${batch.skipped.env} could not run here, ${batch.skipped.handedOff} handed off, ${batch.skipped.routed} routed before, ${batch.skipped.coveredOpen} covered by an open card, ${batch.skipped.exhausted} retried the maximum times`);
   if (!batch.title) { console.log('Nothing to route.'); return; }
   console.log(`\nTITLE: ${batch.title}\n\n${batch.body}`);
 }
@@ -564,7 +564,7 @@ async function main(argv = process.argv.slice(2)) {
     if (checkout) removeCheckout(checkout);
   }
 
-  await routeRealFailures({ runId, results, handedOff, sha: (checkout && checkout.sha) || null, coverIndex, maxBatches: args.backlog ? 5 : 1 });
+  await routeRealFailures({ runId, results, handedOff, sha: (checkout && checkout.sha) || null, coverIndex, maxBatches: args.backlog ? 3 : 1 });
 
   const counts = summarize(results, { noCriteria: dropped.length });
   const couldNotRun = results.filter((x) => !x.skip && x.envCause).length;
