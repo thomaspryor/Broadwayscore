@@ -398,9 +398,11 @@ async function main() {
             const r = safeWriteReview(candidate.filePath, data);
             if (r.lockedSkipped) lockedSkipCount++;
             stats.applied++;
-          } else if (APPLY) {
-            // BRO-7535: low confidence, or a cleared/lane-bypassed file, is not
-            // flagged. Stamp it anyway so the next run does not re-ask the LLM.
+          } else if (APPLY && !(parsed.confidence === 'high' && laneBypasses(data, 'wrongProduction'))) {
+            // BRO-7535: low confidence, or a cleared file, is not flagged. Stamp it
+            // anyway so the next run does not re-ask the LLM. A high-confidence
+            // verdict held back only by an opening-night lane bypass stays unstamped:
+            // the lane can be revoked (trust-model.js laneRevoked) and must be re-judged.
             data.wsClassified = 'wrong_show_unapplied';
             data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
             const r = safeWriteReview(candidate.filePath, data);

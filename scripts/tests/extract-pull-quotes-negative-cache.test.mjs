@@ -91,6 +91,15 @@ test('NONE answers are remembered too', async () => {
   fs.rmSync(path.dirname(file), { recursive: true, force: true });
 });
 
+test('empty replies (safety/recitation blocks) are remembered', async () => {
+  reply = () => '';
+  const file = writeFixture(ROOT, 'neg-cache-empty-2026', 'synthetic-gazette--test-critic.json');
+  await runPass();
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).llmPullQuoteRejectReason, 'empty-reply');
+  assert.equal((await runPass()).calls, 0);
+  fs.rmSync(path.dirname(file), { recursive: true, force: true });
+});
+
 test('transient LLM failures are not stamped (retried next run)', async () => {
   reply = () => { throw new Error('HTTP 500'); };
   const file = writeFixture(ROOT, 'neg-cache-err-2026', 'synthetic-gazette--test-critic.json');

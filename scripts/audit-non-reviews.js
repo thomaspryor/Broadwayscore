@@ -263,9 +263,14 @@ async function main() {
           // audit stops re-sending the same file. A changed text is re-checked.
           if (!DRY_RUN) {
             try {
-              data.nonReviewAuditLlmClearedHash = fullTextHash(text);
-              data.nonReviewAuditLlmClearedAt = new Date().toISOString();
-              safeWriteReview(filePath, data);
+              // Re-read so a write made during the LLM call is not overwritten.
+              const fresh = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+              if (fresh.fullText === data.fullText) {
+                fresh.nonReviewAuditLlmClearedHash = fullTextHash(text);
+                fresh.nonReviewAuditLlmClearedAt = new Date().toISOString();
+                const res = safeWriteReview(filePath, fresh);
+                if (res && res.wrote === false && VERBOSE) console.log(`  clear stamp not written: ${res.skipped || 'locked'}`);
+              }
             } catch (e) {
               if (VERBOSE) console.log(`  clear stamp failed: ${e.message}`);
             }

@@ -73,7 +73,8 @@ const stats = {
   reservationRetried: 0,
   stamped: 0,
   priorRejectionSkipped: 0,
-  stampQuarantined: 0
+  stampQuarantined: 0,
+  emptyReplies: 0
 };
 
 // ============================================================
@@ -109,7 +110,17 @@ If the review has no suitable quotable sentence (e.g., it's all plot summary or 
 
 // BRO-7535: rejections are remembered per (fullText hash, prompt version).
 // Editing SYSTEM_PROMPT changes this, so every stamped review gets one fresh look.
-const PROMPT_VERSION = negCache.promptVersionFor(SYSTEM_PROMPT);
+// Everything besides the review that decides the outcome: the system prompt, the
+// user-prompt builders, the in-text check, the guard module and the model. A
+// change to any of them gives every stamped review one fresh look.
+const PROMPT_VERSION = negCache.promptVersionFor([
+  SYSTEM_PROMPT,
+  buildUserPrompt.toString(),
+  describeVerdict.toString(),
+  verifyInText.toString(),
+  fs.readFileSync(require.resolve('./lib/pull-quote-guards'), 'utf8'),
+  PROVIDER === 'openai' ? GPT4O_MINI : GEMINI_FLASH,
+].join('\n#--\n'));
 // Kill switch: PULL_QUOTE_NEGATIVE_CACHE_OFF=1 ignores rejection stamps (still writes them)
 // without --overwrite's side effect of re-extracting reviews that already have a quote.
 const NEG_CACHE_OFF = process.env.PULL_QUOTE_NEGATIVE_CACHE_OFF === '1';
@@ -458,7 +469,9 @@ async function processReview(entry) {
       return;
     }
 
-    if (!responseText) { stats.errors++; return; }
+    // A 200 with no text is Gemini's SAFETY/RECITATION block: the same text
+    // gets the same answer, so remember it like any other final rejection.
+    if (!responseText) { stats.errors++; stats.emptyReplies++; reject('empty-reply'); return; }
 
     quote = cleanResponse(responseText);
     if (!quote) {
