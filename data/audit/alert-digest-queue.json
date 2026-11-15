@@ -726,5 +726,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-15T20:58:28.964Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7531-cap-main-stage",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7531-cap-main-stage",
+    "description": "land.yml did not land land/bro-7531-cap-main-stage: the unit-tests-node gate went red at a23bb43caf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43763333257",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7531-cap-main-stage"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a23bb43caffecbb81276d4811c936ff6febe4747"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43763333257"
+      }
+    ],
+    "queuedAt": "2026-11-15T21:28:38.766Z"
   }
 ]
