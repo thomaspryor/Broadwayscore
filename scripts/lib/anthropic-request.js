@@ -14,6 +14,8 @@
  *
  * Bodies for models that already worked (Haiku 4.5, Sonnet 4.6, Opus 4.7) are
  * byte-identical to the hand-built ones they replace.
+ * (Sonnet 5.x callers now get the same between_tools thinking param the scorer
+ * sends, e.g. video-reviews/eval-prompts.js; that is the intended change.)
  */
 const { claudeSamplingParams } = require('./llm-batch');
 

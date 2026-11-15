@@ -56,7 +56,8 @@ test('no first-block reads in callers of thinking-by-default pins', () => {
   for (const f of files) {
     let s;
     try { s = fs.readFileSync(path.join(ROOT, f), 'utf8'); } catch { continue; }
-    if (!/api\.anthropic\.com/.test(s) || !FIRST.test(s)) continue;
+    // Raw HTTP and SDK callers alike (ship-check: SDK callers were missed).
+    if (!/api\.anthropic\.com|@anthropic-ai\/sdk|messages\.create\(/.test(s) || !FIRST.test(s)) continue;
     const used = pins.filter(p => new RegExp(`\\b${p}\\b`).test(s));
     if (used.length) bad.push(`${f} (${used.join(', ')})`);
   }
