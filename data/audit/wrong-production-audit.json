@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T16:18:40.773Z",
+  "timestamp": "2026-11-15T16:40:35.998Z",
   "stats": {
-    "totalReviews": 82229,
-    "alreadyFlagged": 22420,
+    "totalReviews": 82235,
+    "alreadyFlagged": 22423,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
     "tvFilmSignals": 2319,
     "londonSignals": 3758,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8462
+    "noPublishDate": 8447
   },
   "findings": [
     {
@@ -109260,7 +109260,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 45,
       "publishDate": "2018-10-10",
-      "url": null,
+      "url": "https://www.ft.com/content/003c155e-cc85-11e8-b276-b9069bde0956?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -112493,6 +112493,7 @@
     {
       "showId": "latin-history-for-morons-2017",
       "file": "newsday--barbara-schuler.json",
+      "score": null,
       "publishDate": "2017-11-15",
       "url": "https://www.newsday.com/entertainment/theater/latin-history-for-morons-review-1.14991144",
       "findings": [
@@ -112506,6 +112507,7 @@
     {
       "showId": "latin-history-for-morons-2017",
       "file": "nytimes--jesse-green.json",
+      "score": null,
       "publishDate": "2017-11-15",
       "url": "https://www.nytimes.com/2017/11/15/theater/latin-history-for-morons-review-john-leguizamo.html?mtrref=news.url.google.com&gwh=0F0377D0E1DF1596EDD1C33B00C5CFD0&gwt=pay",
       "findings": [
