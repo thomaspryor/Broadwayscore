@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/commercial.json, data/shows.json and data/grosses-history.json (bot-rewritten core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7254: break-even provenance (breakEvenSource / breakEvenQuality) and the
 // Closing Watch leave-one-show-out backtest. Real functions only (CLAUDE.md
 // rule 15). Data checks skip when the private data is not on disk.
