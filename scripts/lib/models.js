@@ -26,13 +26,15 @@ module.exports = {
   // and 2-2.5x cheaper per token than the 4.x pair above.
   DISPATCH_SONNET: 'claude-sonnet-5-5',
   DISPATCH_OPUS: 'claude-opus-5-5',
-  // Frozen caller-group pins (BRO-4497). Centralizing these must not upgrade
-  // models: migrations need their own before/after samples, and walkthrough
-  // token limits depend on its current model's thinking behavior.
-  COPY_SONNET: 'claude-sonnet-4-5-20250929',
-  ADJUDICATE_SONNET: 'claude-sonnet-4-5-20250929',
-  EXTRACTION_SONNET: 'claude-sonnet-4-5-20250929',
-  COPY_FALLBACK_SONNET: 'claude-3-5-sonnet-20241022',
+  // Caller-group pins (BRO-4497). claude-sonnet-4-5 shuts down 2026-11-30 and
+  // claude-3-5-sonnet is already retired (BRO-7527), so these moved to 4.6 with the
+  // same request shape (temperature accepted, no default
+  // thinking block), so no caller params change. Moving to 5.x needs the
+  // param/response-shape work described on CLAUDE_SONNET above.
+  COPY_SONNET: 'claude-sonnet-4-6',
+  ADJUDICATE_SONNET: 'claude-sonnet-4-6',
+  EXTRACTION_SONNET: 'claude-sonnet-4-6',
+  COPY_FALLBACK_SONNET: 'claude-sonnet-4-6',
   REDDIT_SONNET: 'claude-sonnet-5-5',
   WALKTHROUGH_SONNET: 'claude-sonnet-5',
   TRIAGE_SONNET: 'claude-sonnet-5',

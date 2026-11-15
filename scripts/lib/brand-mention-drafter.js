@@ -30,7 +30,7 @@ const https = require('https');
 const { VOICE_CHARACTERISTICS } = require('./voice-characteristics');
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = COPY_SONNET;  // Claude Sonnet 4.5, stable
+const MODEL = COPY_SONNET;  // Claude Sonnet 4.6 (4.5 retires 2026-11-30)
 const FALLBACK_MODEL = COPY_FALLBACK_SONNET;  // last-known-good fallback
 
 // Platform character/word limits

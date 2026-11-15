@@ -313,7 +313,7 @@ export interface LLMScore {
   bucket: SentimentBucket;
 
   // Model info
-  model: string;                  // e.g., "claude-3-haiku"
+  model: string;                  // e.g., "claude-haiku-5-5"
   promptVersion: string;          // Version of the prompt used
 
   // Metadata

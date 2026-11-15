@@ -59,12 +59,12 @@ describe('models.js is the single Claude model table', () => {
       `Import a named pin from scripts/lib/models.js:\n${violations.join('\n')}`);
   });
 
-  test('caller-group pins preserve the pre-centralization models', () => {
+  test('caller-group pins are off retired Sonnet 4.5 / 3.5 (BRO-7527)', () => {
     const pins = {
-      COPY_SONNET: 'claude-sonnet-4-5-20250929',
-      ADJUDICATE_SONNET: 'claude-sonnet-4-5-20250929',
-      EXTRACTION_SONNET: 'claude-sonnet-4-5-20250929',
-      COPY_FALLBACK_SONNET: 'claude-3-5-sonnet-20241022',
+      COPY_SONNET: 'claude-sonnet-4-6',
+      ADJUDICATE_SONNET: 'claude-sonnet-4-6',
+      EXTRACTION_SONNET: 'claude-sonnet-4-6',
+      COPY_FALLBACK_SONNET: 'claude-sonnet-4-6',
       REDDIT_SONNET: 'claude-sonnet-5-5',
       WALKTHROUGH_SONNET: 'claude-sonnet-5',
       TRIAGE_SONNET: 'claude-sonnet-5',
