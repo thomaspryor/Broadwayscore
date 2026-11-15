@@ -1,64 +1,31 @@
 {
-  "updatedAt": "2026-11-15T19:17:57.168Z",
-  "processed": 7,
-  "failed": 10,
-  "successRate": "41.2%",
+  "updatedAt": "2026-11-15T19:25:14.215Z",
+  "processed": 22,
+  "failed": 6,
+  "successRate": "78.6%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 15,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
+    "scrapingdog": 3,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 4
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-11-15T19:11:29.482Z",
+      "t": "2026-11-15T19:18:23.085Z",
       "event": "bb-session",
-      "session": "5fb6c066",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+      "session": "bf1e232f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
     },
     {
-      "t": "2026-11-15T19:11:30.261Z",
+      "t": "2026-11-15T19:18:23.459Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-15T19:12:02.446Z",
-      "event": "bb-session",
-      "session": "94643609",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
-    },
-    {
-      "t": "2026-11-15T19:12:03.169Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-15T19:14:13.793Z",
-      "event": "bb-session",
-      "session": "c04714ad",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-15T19:14:14.542Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-15T19:16:13.387Z",
-      "event": "bb-session",
-      "session": "2f78eb9f",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-15T19:16:14.187Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "thetimes.com"
     }
   ]
 }
