@@ -2,7 +2,11 @@
 /**
  * BRO-6872: an APPLIED fix plan whose review never became includable is reported loudly.
  *
- *   node scripts/audit-applied-fix-plans.js [--strict] [--counts=PATH] [--show=ID] [--quiet]
+ *   node scripts/audit-applied-fix-plans.js [--strict] [--counts=PATH] [--show=ID] [--quiet] [--alert]
+ *
+ * --alert (BRO-7182) files/refreshes one worker card via owner-alert-router and clears it when
+ * clean. Whole-corpus runs only; with no rebuild exclusion lists (nothing was really checked) or
+ * no plans it makes no decision, so a missing input never closes the card.
  *
  * Exit 0 on a completed scan (report-only monitor by default, like audit-star-band-drift.js);
  * with --strict, exit 1 when any applied plan's review has no row. Exit 2 on a setup error
@@ -61,7 +65,7 @@ function loadRebuildExclusions(auditDir) {
   return byShow;
 }
 
-function main() {
+async function main() {
   const repoDir = path.resolve(__dirname, '..');
   const plansDir = path.join(repoDir, 'data', 'pending-fixes');
   const reviewsPath = path.join(repoDir, 'data', 'reviews.json');
@@ -180,6 +184,13 @@ function main() {
     for (const r of absent) console.log(`  ABSENT  ${r.planFile} [${r.status}] cleared ${r.field} on ${r.file}${r.url ? ` (${r.url})` : ''}`);
     for (const r of unscored) console.log(`  NO-SCORE ${r.planFile} [${r.status}] cleared ${r.field} on ${r.file}${r.url ? ` (${r.url})` : ''}`);
   }
+  if (argv.includes('--alert') && !onlyShow) {
+    const { decideAppliedFixPlansAlert } = require('./lib/strict-audit-alerts');
+    const { routeAuditDecisions } = require('./lib/audit-alert');
+    const decisions = decideAppliedFixPlansAlert({ reported, plansRead, sawRebuild });
+    if (!decisions.length) console.log('audit-applied-fix-plans: --alert skipped: no rebuild exclusion lists or no plans read');
+    await routeAuditDecisions(decisions, 'audit-applied-fix-plans');
+  }
   if (!reported.length) { if (!quiet) console.log('OK: every applied fix plan reached an includable row.'); return 0; }
   const say = strict ? console.error : console.log;
   if (absent.length) {
@@ -193,4 +204,4 @@ function main() {
   return strict ? 1 : 0;
 }
 
-process.exitCode = main();
+main().then((code) => { process.exitCode = code; }, (err) => { console.error(err); process.exitCode = 2; });

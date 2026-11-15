@@ -15,6 +15,9 @@
  * Usage:
  *   node scripts/purge-uk-show-score-audience.js           # dry run
  *   node scripts/purge-uk-show-score-audience.js --apply   # write
+ *   --strict  exit 1 when any US show still carries UK Show Score data (dry run)
+ *   --alert   file/refresh one worker card via owner-alert-router, clear it when clean (BRO-7182, dry run only;
+ *             no shows, no audience-buzz rows or no archive makes no decision)
  */
 const fs = require('fs');
 const path = require('path');
@@ -68,7 +71,7 @@ function applyUkShowScoreRemoval(buzzShows, plan) {
   }
 }
 
-function main() {
+async function main() {
   require('./lib/cli-help').exitOnHelp(module);
   const apply = process.argv.includes('--apply');
   const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
@@ -81,6 +84,15 @@ function main() {
   const plan = planUkShowScoreRemoval(buzz.shows, shows, readArchive);
   console.log(`[purge-uk-show-score] ${plan.length} shows ${apply ? 'CLEANED' : '(dry run, use --apply)'}`);
   if (process.argv.includes('--strict') && !apply && plan.length > 0) process.exitCode = 1;
+  if (process.argv.includes('--alert') && !apply) {
+    const { decideUkShowScoreAlert } = require('./lib/strict-audit-alerts');
+    const { routeAuditDecisions } = require('./lib/audit-alert');
+    let archiveFiles = 0;
+    try { archiveFiles = fs.readdirSync(ARCHIVE_DIR).filter((f) => f.endsWith('.html')).length; } catch { archiveFiles = 0; }
+    const decisions = decideUkShowScoreAlert({ plan, showsCount: shows.length, buzzCount: Object.keys((buzz && buzz.shows) || {}).length, archiveFiles });
+    if (!decisions.length) console.log('[purge-uk-show-score] --alert skipped: shows, audience-buzz or the Show Score archive is missing');
+    await routeAuditDecisions(decisions, 'purge-uk-show-score-audience');
+  }
   for (const p of plan) console.log(`  ${p.id} showScore ${p.score}%/${p.rc} | combinedScore ${p.before} -> ${p.after}`);
   if (!apply || plan.length === 0) return;
   applyUkShowScoreRemoval(buzz.shows, plan);
@@ -90,4 +102,6 @@ function main() {
 }
 
 module.exports = { planUkShowScoreRemoval, applyUkShowScoreRemoval };
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch((err) => { console.error(err); process.exitCode = 3; });
+}

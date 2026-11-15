@@ -11,7 +11,10 @@
  * files with a human-verified dateSource, _locked records, and anything else. Writes
  * publishDate, dateSource 'permalink-corrected-utc-shift' and publishDateWas.
  *
- *   node scripts/fix-utc-shifted-publish-dates.js [--show=ID] [--since=YYYY-MM-DD] [--apply] [--strict]
+ *   node scripts/fix-utc-shifted-publish-dates.js [--show=ID] [--since=YYYY-MM-DD] [--apply] [--strict] [--alert]
+ *
+ * --alert files/refreshes one worker card via owner-alert-router and clears it when clean
+ * (BRO-7182; whole-corpus dry runs only, never with --show/--since/--apply).
  *
  * --since limits to files whose stored publishDate is on/after that date (default: all).
  */
@@ -47,13 +50,15 @@ function utcShiftCorrection(rec) {
   return `${url[1]}-${url[2]}-${url[3]}`;
 }
 
-function main() {
+async function main() {
   require('./lib/cli-help').exitOnHelp(module);
   const args = process.argv.slice(2);
   const apply = args.includes('--apply');
   const only = (args.find((a) => a.startsWith('--show=')) || '').slice(7) || null;
   const since = (args.find((a) => a.startsWith('--since=')) || '').slice(8) || null;
   let changed = 0;
+  let scanned = 0;
+  const found = [];
   const bySource = {};
   for (const sd of fs.readdirSync(RT)) {
     if (only && sd !== only) continue;
@@ -64,10 +69,12 @@ function main() {
       if (!f.endsWith('.json')) continue;
       const file = path.join(dir, f);
       let rec; try { rec = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { continue; }
+      scanned++;
       if (since && String(rec.publishDate || '') < since) continue;
       const fixed = utcShiftCorrection(rec);
       if (!fixed) continue;
       changed++;
+      found.push({ file: `${sd}/${f}`, publishDate: rec.publishDate, corrected: fixed, source: rec.source || '?' });
       bySource[rec.source || '?'] = (bySource[rec.source || '?'] || 0) + 1;
       if (!apply) continue;
       rec.publishDateWas = rec.publishDate;
@@ -79,8 +86,18 @@ function main() {
   console.log(`[fix-utc-shifted-publish-dates] ${changed} files ${apply ? 'CORRECTED' : '(dry run, use --apply)'}`);
   console.log(JSON.stringify(bySource));
   // --strict (CI audit): exit 1 while any file still carries a UTC-shifted date.
-  if (args.includes('--strict') && !apply && changed > 0) process.exit(1);
+  const failing = args.includes('--strict') && !apply && changed > 0;
+  if (args.includes('--alert') && !apply && !only && !since) {
+    const { decideUtcShiftAlert } = require('./lib/strict-audit-alerts');
+    const { routeAuditDecisions } = require('./lib/audit-alert');
+    const decisions = decideUtcShiftAlert({ scanned, found });
+    if (!decisions.length) console.log('[fix-utc-shifted-publish-dates] --alert skipped: no review files scanned');
+    await routeAuditDecisions(decisions, 'fix-utc-shifted-publish-dates');
+  }
+  if (failing) process.exitCode = 1;
 }
 
 module.exports = { utcShiftCorrection };
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch((err) => { console.error(err); process.exitCode = 3; });
+}

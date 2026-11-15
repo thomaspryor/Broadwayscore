@@ -16,6 +16,10 @@
  * Usage:
  *   node scripts/audit-commercial-contamination.js          # human-readable
  *   node scripts/audit-commercial-contamination.js --json   # machine-readable
+ *   node scripts/audit-commercial-contamination.js --strict --alert
+ *     --alert files/refreshes one worker card via owner-alert-router for the --strict
+ *     finding set (fail + warn) and clears it when clean (BRO-7182). An unreadable
+ *     shows.json or an empty commercial.json makes no decision.
  *
  * Signal severity:
  *   fail — count toward nonzero exit; ship-blocking
@@ -165,7 +169,7 @@ function audit() {
   });
 }
 
-function main() {
+async function main() {
   const issues = audit();
   const json = process.argv.includes('--json');
   const strict = process.argv.includes('--strict');
@@ -209,8 +213,20 @@ function main() {
   }
 
   if (fails > 0 || (strict && warns > 0)) process.exitCode = 1;
+
+  if (process.argv.includes('--alert')) {
+    const { decideCommercialContaminationAlert } = require('./lib/strict-audit-alerts');
+    const { routeAuditDecisions } = require('./lib/audit-alert');
+    let recordsCount = 0;
+    try { recordsCount = Object.keys(JSON.parse(fs.readFileSync(COMMERCIAL_FILE, 'utf-8')).shows || {}).length; } catch { recordsCount = 0; }
+    const decisions = decideCommercialContaminationAlert({ issues, recordsCount, showsLoaded: loadShows() !== null });
+    if (!decisions.length) console.log('[audit-commercial-contamination] --alert skipped: shows.json unreadable or commercial.json empty');
+    await routeAuditDecisions(decisions, 'audit-commercial-contamination');
+  }
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch((err) => { console.error(err); process.exitCode = 1; });
+}
 
 module.exports = { audit, FAIL_SIGNALS };

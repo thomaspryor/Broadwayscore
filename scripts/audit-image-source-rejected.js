@@ -12,8 +12,10 @@
  * Read-only.
  *
  * Usage:
- *   node scripts/audit-image-source-rejected.js [--json] [--strict]
+ *   node scripts/audit-image-source-rejected.js [--json] [--strict] [--alert]
  *     --strict   exit 1 when any row is found (default: always exit 0)
+ *     --alert    file/refresh one worker card via owner-alert-router, clear it when clean
+ *                (BRO-7182; empty shows.json or image-sources map makes no decision)
  */
 
 'use strict';
@@ -26,14 +28,23 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 
-function main(args) {
+async function main(args) {
   const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const shows = Array.isArray(raw) ? raw : (raw.shows || []);
-  const rows = findRejectedSourcesInUse(shows, loadImageSources());
+  const sources = loadImageSources();
+  const rows = findRejectedSourcesInUse(shows, sources);
   if (args.includes('--json')) console.log(JSON.stringify(rows, null, 2));
   else {
     console.log(`${rows.length} in-use image field(s) whose recorded source is a rejected URL`);
     for (const r of rows) console.log(`  ${r.id}.${r.format}: ${r.path} <- ${r.source}`);
+  }
+  if (args.includes('--alert')) {
+    const { decideImageSourceRejectedAlert } = require('./lib/strict-audit-alerts');
+    const { routeAuditDecisions } = require('./lib/audit-alert');
+    const sourcesCount = sources && typeof sources === 'object' ? Object.keys(sources).length : 0;
+    const decisions = decideImageSourceRejectedAlert({ rows, showsCount: shows.length, sourcesCount });
+    if (!decisions.length) console.log('[image-source-rejected] --alert skipped: shows.json or image-sources map is empty');
+    await routeAuditDecisions(decisions, 'audit-image-source-rejected');
   }
   return args.includes('--strict') && rows.length ? 1 : 0;
 }
@@ -41,8 +52,8 @@ function main(args) {
 if (require.main === module) {
   const args = process.argv.slice(2);
   if (hasHelpFlag(args)) {
-    console.log('Usage: node scripts/audit-image-source-rejected.js [--json] [--strict]');
+    console.log('Usage: node scripts/audit-image-source-rejected.js [--json] [--strict] [--alert]');
     process.exit(0);
   }
-  process.exit(main(args));
+  main(args).then((code) => { process.exitCode = code; }, (err) => { console.error(err); process.exitCode = 3; });
 }

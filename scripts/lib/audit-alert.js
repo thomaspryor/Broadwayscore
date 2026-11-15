@@ -18,6 +18,11 @@
  *
  * Missing input (no checkout, empty corpus) must produce NO decision for the
  * findings key: resolving there would close a real card during an outage.
+ *
+ * Contract (BRO-7182): a script calls routeAuditDecisions() only under its
+ * --alert flag. alert-ledger-commit-check.js relies on it: a workflow running
+ * such a script without --alert is not asked to commit the ledger or carry
+ * LINEAR_API_KEY.
  */
 
 const DEFAULT_MAX_ROWS = 25;
@@ -72,6 +77,22 @@ function buildAuditAlert({ conditionKey, rows, title, intro, hint, resolveReason
 }
 
 /**
+ * The real router, required lazily so pure callers and tests never load it.
+ * Written as plain `r.routeAlert(...)` / `r.resolveCondition(...)` calls on a
+ * require() binding so the AST walk in require-graph-ast.js sees every
+ * routeAuditDecisions() caller as a router caller, and
+ * alert-ledger-commit-check.js then demands the calling job stage the ledger
+ * (BRO-7182: the earlier `router = router || require(...)` form hid all of them).
+ */
+function defaultRouter() {
+  const r = require('./owner-alert-router.js');
+  return {
+    routeAlert: (alert) => r.routeAlert(alert),
+    resolveCondition: (key, opts) => r.resolveCondition(key, opts),
+  };
+}
+
+/**
  * Send one or more decisions. Never throws.
  * @param {Array|object} decisions
  * @param {string} label  script name for log lines
@@ -84,7 +105,7 @@ async function routeAuditDecisions(decisions, label, deps = {}) {
   let router = deps.router;
   for (const d of list) {
     try {
-      router = router || require('./owner-alert-router.js');
+      router = router || defaultRouter();
       if (d.action === 'resolve') {
         router.resolveCondition(d.conditionKey, { reason: d.reason });
         log(`alert: ${d.conditionKey} clear`);

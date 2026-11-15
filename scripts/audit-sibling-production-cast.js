@@ -6,7 +6,8 @@
  * the 2019 Gyllenhaal review, scored 88). Report-only: fixes go through a
  * data/pending-fixes review-field-edit plan (wrongProduction + reason).
  *
- *   node scripts/audit-sibling-production-cast.js [--show=ID] [--json] [--strict] [--casts]
+ *   node scripts/audit-sibling-production-cast.js [--show=ID] [--json] [--strict] [--casts] [--alert]
+ *   --alert  file/refresh one worker card via owner-alert-router, clear it when clean (BRO-7182; full runs only)
  *   --casts  report shows.json rows whose cast list was copied from a same-title sibling (not review files)
  *
  * Skips files already excluded (wrongProduction/wrongShow/invalid/rejected,
@@ -77,4 +78,12 @@ else {
   console.log(`scanned ${scanned} review files in same-title groups; ${hits.length} sibling-cast mismatches`);
   for (const h of hits) console.log(`  ${h.showId}/${h.file} score=${h.assignedScore} pub=${h.publishDate} -> ${h.siblingId}: ${h.siblingNamesFound.join(', ')}`);
 }
-if (strict && hits.some((h) => h.assignedScore != null)) process.exit(1);
+const failing = strict && hits.some((h) => h.assignedScore != null);
+// --alert: whole-corpus runs only. scanned 0 (no review-texts checkout) makes no decision, never a resolve.
+if (args.includes('--alert') && !only) {
+  const { decideSiblingCastAlert } = require('./lib/strict-audit-alerts');
+  const { routeAuditDecisions } = require('./lib/audit-alert');
+  const decisions = decideSiblingCastAlert({ scanned, hits });
+  if (!decisions.length) console.log('[sibling-production-cast] --alert skipped: no review files scanned');
+  routeAuditDecisions(decisions, 'audit-sibling-production-cast').then(() => { if (failing) process.exitCode = 1; });
+} else if (failing) process.exit(1);

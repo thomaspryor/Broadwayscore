@@ -132,3 +132,149 @@ test('rule (ad): flag-name boundaries, per-command --alert, quoted true, accurat
   const [h] = findStrictAdvisoryWithoutAlert(step('        continue-on-error: true\n        # note\n        run: node a.js --strict  # trailing'));
   assert.equal(h.lineNum, 8);
 });
+
+// ── BRO-7182: the six audits rule (ad) had exempted ─────────────────────
+const A = require('../../scripts/lib/strict-audit-alerts.js');
+
+function assertRoute(decisions, key, n) {
+  assert.equal(decisions.length, 1);
+  const [d] = decisions;
+  assert.equal(d.action, 'route');
+  assert.equal(d.alert.conditionKey, key);
+  assert.equal(d.alert.disposition, 'auto');
+  assert.equal(d.alert.severity, 'warning');
+  assert.equal(d.alert.cooldownHours, 20);
+  assert.equal((d.alert.description.match(/^- /gm) || []).length, n);
+  return d.alert;
+}
+function assertResolve(decisions, key) {
+  assert.deepEqual(decisions.map((d) => [d.action, d.conditionKey]), [['resolve', key]]);
+}
+
+test('every condition key is distinct', () => {
+  const keys = Object.values(A.KEYS);
+  assert.equal(new Set(keys).size, keys.length);
+});
+
+test('sibling cast: routes scored hits only, resolves when clean, no decision on 0 scanned', () => {
+  const hits = [
+    { showId: 'sea-wall-2026', file: 'nyt--a-b.json', assignedScore: 88, siblingId: 'sea-wall-2019' },
+    { showId: 'sea-wall-2026', file: 'blog--c.json', assignedScore: null, siblingId: 'sea-wall-2019' },
+  ];
+  const alert = assertRoute(A.decideSiblingCastAlert({ scanned: 40, hits }), A.KEYS.siblingCast, 1);
+  assert.match(alert.description, /sea-wall-2026\/nyt--a-b\.json: score 88/);
+  assert.match(alert.title, /^Wrong production: 1 scored review names/);
+  // An unscored hit alone does not fail --strict, so it resolves.
+  assertResolve(A.decideSiblingCastAlert({ scanned: 40, hits: [hits[1]] }), A.KEYS.siblingCast);
+  assert.deepEqual(A.decideSiblingCastAlert({ scanned: 0, hits: [] }), []);
+  assert.deepEqual(A.decideSiblingCastAlert(null), []);
+});
+
+test('UTC shift: routes found rows, resolves when clean, none on 0 scanned', () => {
+  const found = [{ file: 'x/y.json', publishDate: '2026-10-02', corrected: '2026-10-01', source: 'rss-discovery' }];
+  const alert = assertRoute(A.decideUtcShiftAlert({ scanned: 5, found }), A.KEYS.utcShift, 1);
+  assert.match(alert.description, /x\/y\.json: publishDate 2026-10-02 should be 2026-10-01/);
+  assertResolve(A.decideUtcShiftAlert({ scanned: 5, found: [] }), A.KEYS.utcShift);
+  assert.deepEqual(A.decideUtcShiftAlert({ scanned: 0, found: [] }), []);
+});
+
+test('UK Show Score: never resolves without shows, buzz rows and archive files', () => {
+  const ok = { showsCount: 10, buzzCount: 10, archiveFiles: 3 };
+  assertRoute(A.decideUkShowScoreAlert({ ...ok, plan: [{ id: 'midnight', score: 92, rc: 351 }] }), A.KEYS.ukShowScore, 1);
+  assertResolve(A.decideUkShowScoreAlert({ ...ok, plan: [] }), A.KEYS.ukShowScore);
+  for (const missing of ['showsCount', 'buzzCount', 'archiveFiles']) {
+    assert.deepEqual(A.decideUkShowScoreAlert({ ...ok, [missing]: 0, plan: [] }), [], missing);
+  }
+});
+
+test('commercial contamination: fail and warn rows route; unreadable inputs make no decision', () => {
+  const issues = [
+    { severity: 'fail', key: 'hamilton', resolvedId: 'hamilton-2015', flags: ['WEEKLY_GT_CAP'] },
+    { severity: 'warn', key: 'some-west-end-show', resolvedId: 'some-west-end-show', flags: ['OUT_OF_MARKET_SCOPE'] },
+  ];
+  const alert = assertRoute(A.decideCommercialContaminationAlert({ issues, recordsCount: 180, showsLoaded: true }), A.KEYS.commercialContamination, 2);
+  assert.match(alert.description, /\[fail\] hamilton \(hamilton-2015\): WEEKLY_GT_CAP/);
+  assert.match(alert.description, /\[warn\] some-west-end-show: OUT_OF_MARKET_SCOPE/);
+  assertResolve(A.decideCommercialContaminationAlert({ issues: [], recordsCount: 180, showsLoaded: true }), A.KEYS.commercialContamination);
+  assert.deepEqual(A.decideCommercialContaminationAlert({ issues: [], recordsCount: 180, showsLoaded: false }), []);
+  assert.deepEqual(A.decideCommercialContaminationAlert({ issues: [], recordsCount: 0, showsLoaded: true }), []);
+});
+
+test('image source rejected: empty shows or source map makes no decision', () => {
+  const rows = [{ id: 'fish', format: 'poster', path: '/images/shows/fish/poster.webp', source: 'https://example.com/a.jpg' }];
+  assertRoute(A.decideImageSourceRejectedAlert({ rows, showsCount: 900, sourcesCount: 500 }), A.KEYS.imageSourceRejected, 1);
+  assertResolve(A.decideImageSourceRejectedAlert({ rows: [], showsCount: 900, sourcesCount: 500 }), A.KEYS.imageSourceRejected);
+  assert.deepEqual(A.decideImageSourceRejectedAlert({ rows: [], showsCount: 0, sourcesCount: 500 }), []);
+  assert.deepEqual(A.decideImageSourceRejectedAlert({ rows: [], showsCount: 900, sourcesCount: 0 }), []);
+});
+
+test('applied fix plans: no rebuild lists means nothing was checked, so no decision', () => {
+  const reported = [{ planFile: 'bro-1.json', file: 'show/x.json', field: 'wrongProduction', reason: 'includable-but-absent' }];
+  const alert = assertRoute(A.decideAppliedFixPlansAlert({ reported, plansRead: 30, sawRebuild: true }), A.KEYS.appliedFixPlans, 1);
+  assert.match(alert.description, /bro-1\.json: cleared wrongProduction on show\/x\.json, includable-but-absent/);
+  assertResolve(A.decideAppliedFixPlansAlert({ reported: [], plansRead: 30, sawRebuild: true }), A.KEYS.appliedFixPlans);
+  assert.deepEqual(A.decideAppliedFixPlansAlert({ reported: [], plansRead: 30, sawRebuild: false }), []);
+  assert.deepEqual(A.decideAppliedFixPlansAlert({ reported: [], plansRead: 0, sawRebuild: true }), []);
+});
+
+test('rows never carry multi-line free text', () => {
+  const alert = assertRoute(A.decideUtcShiftAlert({ scanned: 1, found: [{ file: 'a\nb', publishDate: 'x', corrected: 'y', source: 's' }] }), A.KEYS.utcShift, 1);
+  assert.doesNotMatch(alert.description.split('\n\n')[1], /a\nb/);
+});
+
+test('decisions go through routeAuditDecisions: route calls routeAlert, resolve calls resolveCondition, [] calls nothing', async () => {
+  const calls = [];
+  const router = { routeAlert: async (a) => { calls.push(['route', a.conditionKey]); return { action: 'created' }; }, resolveCondition: (k) => calls.push(['resolve', k]) };
+  const quiet = { router, log: () => {}, error: () => {} };
+  await routeAuditDecisions(A.decideImageSourceRejectedAlert({ rows: [{ id: 'a', format: 'poster', path: 'p', source: 's' }], showsCount: 1, sourcesCount: 1 }), 't', quiet);
+  await routeAuditDecisions(A.decideImageSourceRejectedAlert({ rows: [], showsCount: 1, sourcesCount: 1 }), 't', quiet);
+  await routeAuditDecisions(A.decideImageSourceRejectedAlert({ rows: [], showsCount: 0, sourcesCount: 1 }), 't', quiet);
+  assert.deepEqual(calls, [['route', A.KEYS.imageSourceRejected], ['resolve', A.KEYS.imageSourceRejected]]);
+});
+
+test('audit-alert callers are visible to the alert-ledger lint (BRO-7182)', () => {
+  // routeAuditDecisions() used to reach the router through `router = router || require(...)`, which the
+  // require-graph AST walk cannot see, so no audit-alert caller was checked for staging the ledger.
+  const { findRouterCallerScripts } = require('../../scripts/lib/alert-ledger-commit-check.js');
+  const callers = findRouterCallerScripts(path.join(ROOT, 'scripts'));
+  for (const s of ['audit-star-band-drift.js', 'audit-syndicated-critic-pairs.js', 'audit-sibling-production-cast.js',
+    'fix-utc-shifted-publish-dates.js', 'purge-uk-show-score-audience.js', 'audit-commercial-contamination.js',
+    'audit-image-source-rejected.js', 'audit-applied-fix-plans.js']) {
+    assert.ok(callers.has(s), `${s} reaches routeAlert through audit-alert.js`);
+  }
+});
+
+test('alert-ledger lint: an audit-alert-only script routes only with --alert or a variable in its own args', () => {
+  const { invocationCanRoute, findMissingLedgerCommits } = require('../../scripts/lib/alert-ledger-commit-check.js');
+  const callers = new Set(['gated.js', 'direct.js']);
+  callers.alertGated = new Set(['gated.js']);
+  assert.equal(invocationCanRoute('gated.js', 'node scripts/gated.js --strict', callers), false);
+  assert.equal(invocationCanRoute('gated.js', 'node scripts/gated.js --gate | tee -a "$GITHUB_STEP_SUMMARY"', callers), false);
+  assert.equal(invocationCanRoute('gated.js', 'node scripts/gated.js --strict --alert', callers), true);
+  assert.equal(invocationCanRoute('gated.js', 'node scripts/gated.js $FLAGS', callers), true);
+  assert.equal(invocationCanRoute('gated.js', 'node scripts/gated.js --alert-only', callers), false);
+  assert.equal(invocationCanRoute('direct.js', 'node scripts/direct.js', callers), true, 'a direct router caller always counts');
+  assert.equal(invocationCanRoute('other.js', 'node scripts/other.js --alert', callers), false);
+  const wf = (cmd) => `jobs:\n  a:\n    runs-on: x\n    steps:\n      - run: ${cmd}\n`;
+  assert.equal(findMissingLedgerCommits(wf('node scripts/gated.js --strict'), callers).length, 0);
+  assert.equal(findMissingLedgerCommits(wf('node scripts/gated.js --strict --alert'), callers).length, 3);
+});
+
+test('BRO-7182 workflows run each audit with --alert and stage the router state in the same job', () => {
+  const read = (f) => fs.readFileSync(path.join(ROOT, '.github', 'workflows', f), 'utf8');
+  const { findMissingLedgerCommits, findRouterCallerScripts } = require('../../scripts/lib/alert-ledger-commit-check.js');
+  const callers = findRouterCallerScripts(path.join(ROOT, 'scripts'));
+  const want = {
+    'check-corpus-drift.yml': ['audit-sibling-production-cast.js', 'fix-utc-shifted-publish-dates.js', 'purge-uk-show-score-audience.js'],
+    'commercial-friday.yml': ['audit-commercial-contamination.js'],
+    'commercial-weekly.yml': ['audit-commercial-contamination.js'],
+    'fetch-all-image-formats.yml': ['audit-image-source-rejected.js'],
+    'rebuild-reviews.yml': ['audit-applied-fix-plans.js'],
+  };
+  for (const [f, scripts] of Object.entries(want)) {
+    const text = read(f);
+    for (const s of scripts) assert.match(text, new RegExp(`${s.replace('.', '\\.')} --strict --alert`), `${f}: ${s}`);
+    assert.deepEqual(findMissingLedgerCommits(text, callers), [], f);
+    assert.doesNotMatch(text, /strict-alert-exempt: BRO-/, f);
+  }
+});

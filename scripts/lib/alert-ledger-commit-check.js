@@ -219,14 +219,39 @@ function jobStagesFile(jobLines, fileName) {
  *
  * Empty array = clean (or no `jobs:` section / no such calls).
  */
+// BRO-7182: scripts that reach the router only through audit-alert.js
+// routeAuditDecisions() route only under --alert (that module's contract), so
+// an invocation counts as a router call only when its command line passes
+// --alert, or expands a shell variable that might ($FLAGS). Without this a
+// `--gate` or report-only run of the same script demanded a ledger commit and
+// LINEAR_API_KEY it can never use (test.yml, star-band-backfill.yml).
+const ALERT_FLAG_OR_VAR_RE = /--alert(?![\w-])|\$/;
+const AUDIT_ALERT_TARGETS = new Map([['audit-alert.js', new Set(['routeAuditDecisions'])]]);
+// `commandLine` starts at the `node scripts/<x>.js` match; only that command's
+// own arguments count (not `| tee "$GITHUB_STEP_SUMMARY"` after it).
+function invocationCanRoute(script, commandLine, callerScripts) {
+  if (!callerScripts || !callerScripts.has(script)) return false;
+  const gated = callerScripts.alertGated;
+  if (!gated || !gated.has(script)) return true;
+  return ALERT_FLAG_OR_VAR_RE.test(String(commandLine).split(/[|;&>]/)[0]);
+}
+
+// The router callers among `scripts` whose only reach is routeAuditDecisions()
+// are attached as `.alertGated`, so every existing caller keeps passing one Set.
+function withAlertGated(callers, scriptsDir) {
+  const viaAuditAlert = findTrackedCallerScripts(scriptsDir, AUDIT_ALERT_TARGETS, { referenceCountsAsReach: true });
+  callers.alertGated = new Set([...viaAuditAlert].filter((s) => callers.has(s)));
+  return callers;
+}
+
 function jobInvokesRouterCallerScript(jobLines, routerCallerScripts) {
   if (!routerCallerScripts || routerCallerScripts.size === 0) return false;
-  for (const line of jobLines) {
+  for (const line of joinBackslashContinuations(jobLines)) {
     if (COMMENT_LINE_RE.test(line)) continue;
     NODE_SCRIPT_INVOKE_RE.lastIndex = 0;
     let m;
     while ((m = NODE_SCRIPT_INVOKE_RE.exec(line))) {
-      if (routerCallerScripts.has(m[1])) return true;
+      if (invocationCanRoute(m[1], line.slice(m.index), routerCallerScripts)) return true;
     }
   }
   return false;
@@ -302,7 +327,7 @@ function findMissingLedgerCommits(workflowYamlText, routerCallerScripts = new Se
  * real, ticket-flagged caller entirely.
  */
 function findRouterCallerScripts(scriptsDir) {
-  return findTrackedCallerScripts(scriptsDir, ROUTER_TRACKED_TARGETS, { referenceCountsAsReach: true });
+  return withAlertGated(findTrackedCallerScripts(scriptsDir, ROUTER_TRACKED_TARGETS, { referenceCountsAsReach: true }), scriptsDir);
 }
 
 // BRO-5168: routeAlert() can open or update a Linear issue (an 'auto' alert
@@ -326,7 +351,7 @@ const LINEAR_KEY_STEP_EXEMPT_RE = /#\s*routealert-linear-key-ok:\s*\S/;
  * (the one that needs LINEAR_API_KEY). Fails open (empty set) without acorn.
  */
 function findRouteAlertCallerScripts(scriptsDir) {
-  return findTrackedCallerScripts(scriptsDir, ROUTE_ALERT_ONLY_TARGETS, { referenceCountsAsReach: true });
+  return withAlertGated(findTrackedCallerScripts(scriptsDir, ROUTE_ALERT_ONLY_TARGETS, { referenceCountsAsReach: true }), scriptsDir);
 }
 
 /**
@@ -357,10 +382,13 @@ function findMissingLinearKeySteps(workflowYamlText, routeAlertCallerScripts = n
       if (ROUTE_ALERT_ONLY_CALL_RE.test(code) && ROUTER_MODULE_MENTION_RE.test(code)) {
         reason = 'calls routeAlert() inline';
       } else if (routeAlertCallerScripts.size > 0) {
-        NODE_SCRIPT_INVOKE_RE.lastIndex = 0;
-        let m;
-        while ((m = NODE_SCRIPT_INVOKE_RE.exec(code))) {
-          if (routeAlertCallerScripts.has(m[1])) { reason = `runs scripts/${m[1]} (reaches routeAlert())`; break; }
+        for (const line of joinBackslashContinuations(code.split('\n'))) {
+          NODE_SCRIPT_INVOKE_RE.lastIndex = 0;
+          let m;
+          while (!reason && (m = NODE_SCRIPT_INVOKE_RE.exec(line))) {
+            if (invocationCanRoute(m[1], line.slice(m.index), routeAlertCallerScripts)) reason = `runs scripts/${m[1]} (reaches routeAlert())`;
+          }
+          if (reason) break;
         }
       }
       if (reason) {
@@ -380,5 +408,6 @@ module.exports = {
   findRouterCallerScripts,
   findRouteAlertCallerScripts,
   findMissingLinearKeySteps,
+  invocationCanRoute,
   ROUTE_ALERT_CALL_RE,
 };
