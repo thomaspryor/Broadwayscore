@@ -207,6 +207,12 @@ test('classifyReviewUrl: news-announcement slugs rejected; "first-look" reviews 
   assert.equal(classifyReviewUrl('https://frontmezzjunkies.com/2026/03/30/a-story-that-still-demands-to-be-heard-joe-turners-come-and-gone-begins-broadway-previews/').ok, true);
 });
 
+test('classifyReviewUrl: Independent modern /news/ articles rejected, archive /news/ reviews and arts pages pass (BRO-7034)', () => {
+  assert.deepEqual(classifyReviewUrl('https://www.independent.co.uk/news/uk/home-news/lion-king-west-end-london-evacuated-b2380995.html'), { ok: false, reason: 'news-article' });
+  assert.equal(classifyReviewUrl('https://www.independent.co.uk/news/uk/second-first-night-hope-dawns-for-sunset-boulevard-sunset-boulevard-adelphi-theatre-1371162.html').ok, true);
+  assert.equal(classifyReviewUrl('https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-lion-king-review-b2380995.html').ok, true);
+});
+
 test('classifyReviewUrl: myreviewer home-video (DVD/Blu-ray) reviews rejected, other sections pass', () => {
   const dvd = classifyReviewUrl('https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington');
   assert.deepEqual(dvd, { ok: false, reason: 'home-video-review' });

@@ -361,6 +361,13 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // news of later revivals; a westendtheatre-sourced Mousetrap stub) plus a
   // Disruption file holding an Edinburgh Fringe "travel disruption" news item.
   { host: /(^|\.)thestage\.co\.uk$/, path: /^\/news\//, reason: 'news-article' },
+  // BRO-7034: The Independent's modern /news/ section (article ids "-b<digits>.html")
+  // is hard news; its reviews live under /arts-entertainment/ or /independentpremium/.
+  // A Lion King "theatre evacuated" bomb-threat story was stored as Paul Taylor's 1999
+  // review url, and the url-repair validator could not prove it wrong. Pre-2010 archive
+  // pieces under /news/uk/<slug>-<7 digits>.html (a 1994 Sunset Boulevard review) carry
+  // no "b" id and stay allowed. Corpus 2026-11-15: 0 reviews.json rows match.
+  { host: /(^|\.)independent\.co\.uk$/, path: /^\/news\/(?:[^/]+\/)*[^/]*-b\d{6,}\.html$/i, reason: 'news-article' },
   // TheatreVibe files news and reviews under the same /YYYY/MM/DD/ path and
   // prefixes the slug: news-... vs review-... (BRO-4190: a news-... casting
   // post held the Last Ship 2026 review's slot).
