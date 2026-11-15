@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T01:37:38.835Z",
+  "generatedAt": "2026-11-15T02:52:00.534Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -122,12 +122,12 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "amny",
+      "error": "HTTP 403 for https://www.amny.com/category/entertainment/theater/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -146,7 +146,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 849,
+  "itemsScanned": 852,
   "matchedGaps": 3,
   "possibleGaps": 3,
   "gaps": [
