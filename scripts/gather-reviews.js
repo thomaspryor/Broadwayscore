@@ -200,6 +200,7 @@ try {
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const { gatherPurposeForShow, pressNightPurposeForShow, emptySerpAuthoritativeForGather } = require('./lib/spend-purpose');
+const { serpSecondOpinionForShow } = require('./lib/serp-second-opinion-policy');
 // A dispatch-level tag (gather-reviews.yml spend_purpose input) wins over the per-show one.
 const { createSerpUnavailableStrikes } = require('./lib/serp-unavailable-strikes');
 const _DISPATCH_SPEND_PURPOSE = process.env.SCRAPER_SPEND_PURPOSE || '';
@@ -660,6 +661,9 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     // yet", not "no reviews" — keep falling through to SB/BD (under the
     // per-show-night cap) and never cache the empty answer.
     emptyAuthoritative: emptySerpAuthoritativeForGather({ openingNight, show: _showsById().get(showId) }),
+    // BRO-7531: OB / off-West-End press nights keep "never cache an empty" but
+    // skip the ScrapingBee/Bright Data re-ask after a clean Scrapingdog empty.
+    secondOpinion: serpSecondOpinionForShow(_showsById().get(showId)),
   });
 
   if (result === '__SERP_UNAVAILABLE__') {

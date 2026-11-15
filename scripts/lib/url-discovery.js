@@ -911,6 +911,8 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
  */
 const _serpCache = require('./serp-cache');
 const _serpNegativeCache = require('./serp-negative-cache');
+const { isOffDomainOnlyAnswer, shouldReaskIgnoredSiteFilter, preferReaskAnswer } = require('./serp-site-filter');
+const { shouldSkipSecondOpinion, shouldReaskEmptyWithoutSecondOpinion, shouldEscalateOffDomainAnswer } = require('./serp-second-opinion-policy');
 
 /**
  * Pure decision function: ordered BD/SB provider names for the SERP chain.
@@ -964,8 +966,16 @@ let _serpQueryCapLogged = false;
 function getSerpQueryCount() { return _serpQueryCount; }
 function _resetSerpQueryCountForTests() { _serpQueryCount = 0; _serpQueryCapLogged = false; }
 
-async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true, negativeCacheTtlMs = null, page = 0) {
+async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true, negativeCacheTtlMs = null, page = 0, chainOpts = {}) {
   const _skips = _effectiveSerpSkips(skipProviders);
+  // BRO-7531: false = a clean Scrapingdog empty stands for this tick (still never
+  // cached 24h). Only meaningful with emptyAuthoritative:false. See
+  // serp-second-opinion-policy.js.
+  const secondOpinion = !(chainOpts && chainOpts.secondOpinion === false);
+  // BRO-7531: on emptyAuthoritative:false flows a `site:` answer with zero
+  // on-domain results is Google's "no exact match" filler, i.e. an empty in
+  // disguise. Never serve it from, or write it to, the 24h cache there.
+  const _offDomainOnly = (rs) => emptyAuthoritative === false && isOffDomainOnlyAnswer(query, rs, domainMatchesExpected);
   // 24h disk cache — same query within TTL returns cached results, no API call.
   // Cuts duplicate SERP spend across orchestrator iterations, poller dispatches,
   // gather-reviews runs targeting the same shows. See scripts/lib/serp-cache.js.
@@ -1000,7 +1010,8 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // was ALL tokens is a miss (asking live beats serving 24h of nothing).
   const _cachedClean = cached && Array.isArray(cached.results) ? dropUnresolvableSerpResults(cached.results) : null;
   const _cachedAllOpaque = !!_cachedClean && _cachedClean.dropped > 0 && _cachedClean.results.length === 0;
-  if (cached && !_cachedEmptyStale && !_cachedAllOpaque) {
+  const _cachedOffDomainStale = !!cached && _offDomainOnly(cached.results);
+  if (cached && !_cachedEmptyStale && !_cachedAllOpaque && !_cachedOffDomainStale) {
     log(`    📦 SERP cache hit: "${query.slice(0, 60)}..."`);
     return { results: _cachedClean ? _cachedClean.results : cached.results, provider: `${cached.provider}-cached` };
   }
@@ -1049,12 +1060,49 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // failure (null) it falls through to the existing BD/SB chain, which stays
   // as the safety net.
   let _fallbackFrom = null;
+  // A skip-truncated chain (SERP_NO_SB / skipProviders) must not park answers a
+  // normal run would have escalated: see the cache-poisoning note further down.
+  const _chainTruncated = _skips.size > 0;
+  let _sdFiller = null; // off-domain-only Scrapingdog answer that was escalated
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
-    const sdAttempt = {};
-    const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page, sdAttempt);
+    let sdAttempt = {};
+    let sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page, sdAttempt);
+    // BRO-7531: one same-vendor re-ask (5 credits, same yield as a first ask) in
+    // two cases. (1) Scrapingdog ignored the site: filter (roughly 1 ask in 3)
+    // and answered with unrelated domains. (2) A clean empty on a flow that has
+    // no ScrapingBee / Bright Data second opinion: its empties are wrong often
+    // enough that one must not stand alone. Only an answer with usable results
+    // replaces the first. Lives here, not in _serpViaScrapingdog, so image/other
+    // callers do not inherit it. Never more than one re-ask per query.
+    const _reaskIgnored = shouldReaskIgnoredSiteFilter(query, sdResults, domainMatchesExpected);
+    const _reaskEmpty = !_reaskIgnored && shouldReaskEmptyWithoutSecondOpinion(sdResults, emptyAuthoritative, secondOpinion, sdAttempt.opaque);
+    if (_reaskIgnored || _reaskEmpty) {
+      const why = _reaskIgnored ? 'site: filter was ignored (all results off-domain)' : '0 results and no second opinion for this market';
+      const reAttempt = {};
+      const again = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page, reAttempt);
+      if (preferReaskAnswer(query, again, domainMatchesExpected)) {
+        log(`    ↻ Scrapingdog SERP: ${why} — re-ask returned ${_reaskIgnored ? 'on-domain ' : ''}results`);
+        sdResults = again;
+        sdAttempt = reAttempt;
+      } else {
+        log(`    ↻ Scrapingdog SERP: ${why} — re-ask ${again === null ? 'failed' : again.length === 0 ? 'came back empty' : 'was off-domain again'}, keeping the first answer`);
+      }
+    }
     if (sdResults && sdResults.length > 0) {
-      _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
-      return { results: sdResults, provider: 'scrapingdog' };
+      if (!_offDomainOnly(sdResults)) {
+        _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
+        return { results: sdResults, provider: 'scrapingdog' };
+      }
+      if (!shouldEscalateOffDomainAnswer(true, emptyAuthoritative, secondOpinion)) {
+        log('    ↺ Scrapingdog SERP: no on-domain results for the site: query — not cached 24h (press-night flow)');
+        if (negativeCacheTtlMs && !_chainTruncated) _serpNegativeCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
+        return { results: sdResults, provider: 'scrapingdog' };
+      }
+      // Press night with a second opinion: off-domain filler is an empty in
+      // disguise, so it reaches ScrapingBee / Bright Data like a literal empty.
+      // If they find nothing either, the filler is returned as before (uncached).
+      log('    ↺ Scrapingdog SERP: no on-domain results for the site: query — asking the second-opinion providers');
+      _sdFiller = sdResults;
     }
     // Empty-authoritative mode (task #213): sdResults !== null means SD's own
     // request SUCCEEDED and found 0 organic results — that's an answer, not a
@@ -1070,6 +1118,14 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
       _serpCache.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty' });
       return { results: [], provider: 'scrapingdog-empty' };
     }
+    // BRO-7531: markets that opted out of the second opinion (OB / off-West-End
+    // press nights). The empty stands for this tick; it is NOT written to the
+    // 24h cache, so the next tick asks Scrapingdog again.
+    if (shouldSkipSecondOpinion(sdResults, emptyAuthoritative, secondOpinion, sdAttempt.opaque)) {
+      log('    ✓ Scrapingdog SERP: 0 organic results — final for this tick (no second opinion for this market), not cached');
+      if (negativeCacheTtlMs && !_chainTruncated) _serpNegativeCache.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty-uncached' });
+      return { results: [], provider: 'scrapingdog-empty-uncached' };
+    }
     // Reaching BD/SB after an SD request really went out: tag their ledger
     // rows (BRO-3344). A skipped SD (breaker/quota/cap) is not a fallback.
     // An all-opaque SD answer is tagged apart from an SD failure (provider-telemetry).
@@ -1082,6 +1138,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   };
   const _chain = serpChainOrder(preferSpeed, _skips).map(name => _entries[name]);
   if (_chain.length === 0) {
+    if (_sdFiller) return { results: _sdFiller, provider: 'scrapingdog' };
     log('    ⚠ All SERP providers skipped (skipProviders/SERP_NO_SB) — no results');
     return { results: null, provider: 'none' };
   }
@@ -1121,6 +1178,13 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     }
   }
 
+  // The second opinion found nothing (or was down): hand back Scrapingdog's
+  // off-domain answer as before. It is never cached 24h (see _resultsOffDomainOnly).
+  if (_sdFiller && (!results || results.length === 0)) {
+    results = _sdFiller;
+    provider = 'scrapingdog';
+  }
+
   // Cache successful results. Empty arrays ARE cached for routine flows because
   // "no organic results" is a stable answer. EXCEPTION: emptyAuthoritative:false
   // (opening-night-poller.js) — there, an empty array often means "review
@@ -1133,8 +1197,9 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // Never cache empty results from a skip-truncated chain: a backfill run with
   // SERP_NO_SB would otherwise cache "no results" and suppress a later normal
   // run's SB fallback for the cache TTL (cache poisoning across modes).
-  const _chainTruncated = _skips.size > 0;
+  const _resultsOffDomainOnly = results !== null && _offDomainOnly(results);
   const shouldCache = results !== null
+    && !_resultsOffDomainOnly
     && !(_tokensDropped > 0 && results.length === 0)
     && !(emptyAuthoritative === false && results.length === 0)
     && !(_chainTruncated && results.length === 0);
@@ -1143,7 +1208,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   } else if (
     negativeCacheTtlMs
     && results !== null
-    && results.length === 0
+    && (results.length === 0 || _resultsOffDomainOnly)
     && emptyAuthoritative === false
     && !_chainTruncated
   ) {
@@ -1175,6 +1240,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
  * @param {boolean} [options.forceHistorical] - If true, skip date filter entirely from the first query (best for pre-2005 shows where Google date metadata is unreliable).
  * @param {boolean} [options.emptyAuthoritative] - Default true. If false, a Scrapingdog SERP success with 0 results does NOT short-circuit the BD/SB fallback and is never cached — use for flows where "no results yet" may mean "not published yet" (e.g. opening-night-poller.js).
  * @param {number|null} [options.negativeCacheTtlMs] - Opt-in short negative-result cache for emptyAuthoritative:false callers (T11 — see scripts/lib/serp-negative-cache-policy.js). Default null (no negative caching, existing behavior).
+ * @param {boolean} [options.secondOpinion] - Default true. Set false (with emptyAuthoritative:false) to accept a clean Scrapingdog empty for this call without re-asking ScrapingBee/Bright Data; the empty is still never written to the 24h cache. Policy: scripts/lib/serp-second-opinion-policy.js (BRO-7531).
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
@@ -1208,6 +1274,8 @@ async function _discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const forceHistorical = options.forceHistorical || false;
   const emptyAuthoritative = options.emptyAuthoritative !== false;
   const negativeCacheTtlMs = options.negativeCacheTtlMs || null;
+  // BRO-7531: see serp-second-opinion-policy.js. Default keeps the second opinion.
+  const chainOpts = { secondOpinion: options.secondOpinion !== false };
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
@@ -1306,13 +1374,24 @@ async function _discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   log(`  [URL Discovery] Searching: ${query}`);
 
   // Provider chain: BD first (cheap) unless preferSpeed (opening night → SB first)
-  let { results, provider } = await _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs);
+  let { results, provider } = await _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs, 0, chainOpts);
 
   // Both providers down
   if (results === null) {
     log('    ✗ All SERP providers unavailable');
     return '__SERP_UNAVAILABLE__';
   }
+
+  // BRO-7531: an answer with no on-domain result is "nothing found" (the host
+  // gate below rejects every row), so let the fallback queries run on it too.
+  // They used to run only on a literally empty answer, which skipped the
+  // alternate-title / no-site / no-date retries whenever the filter was ignored.
+  const _dropOffDomainOnly = (q, rs) => {
+    if (!isOffDomainOnlyAnswer(q, rs, domainMatchesExpected)) return rs;
+    log('    ↺ No on-domain result for the site: query — treating as empty so the fallback searches run');
+    return [];
+  };
+  results = _dropOffDomainOnly(query, results);
 
   // oldDomain computed above (before the eligibility gate) — reused here.
   if (!results.length) {
@@ -1327,12 +1406,13 @@ async function _discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
         strippedQuery = `"${altTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
       }
       log(`    Retry with alternate title: ${strippedQuery}`);
-      ({ results, provider } = await _serpWithChain(strippedQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs));
+      ({ results, provider } = await _serpWithChain(strippedQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs, 0, chainOpts));
       provider = provider ? provider + '-stripped' : null;
       if (results === null) {
         log('    ✗ All SERP providers unavailable');
         return '__SERP_UNAVAILABLE__';
       }
+      results = _dropOffDomainOnly(strippedQuery, results);
     }
   }
 
@@ -1342,7 +1422,7 @@ async function _discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (criticName && (domain || oldDomain)) {
       const fallbackQuery = `"${serpTitle}" "${outletName}" "${criticName}" ${marketTerm}${yearClause}`;
       log(`    Fallback search (no site:): ${fallbackQuery}`);
-      ({ results, provider } = await _serpWithChain(fallbackQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs));
+      ({ results, provider } = await _serpWithChain(fallbackQuery, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs, 0, chainOpts));
       provider = provider ? provider + '-fallback' : null;
       if (results === null) {
         log('    ✗ All SERP providers unavailable');
@@ -1362,7 +1442,7 @@ async function _discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
           ? `${buildSiteClause(domain)} "${serpTitle}" ${marketTerm}${yearClause}${criticClause}`
           : `"${serpTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
         log(`    Fallback 3 (no date filter, historical show): ${noDateQuery}`);
-        ({ results, provider } = await _serpWithChain(noDateQuery, scrapingBeeKey, brightDataKey, log, null, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs));
+        ({ results, provider } = await _serpWithChain(noDateQuery, scrapingBeeKey, brightDataKey, log, null, preferSpeed, undefined, undefined, emptyAuthoritative, negativeCacheTtlMs, 0, chainOpts));
         provider = provider ? provider + '-historical' : null;
         if (results === null) {
           log('    ✗ All SERP providers unavailable');
@@ -1897,6 +1977,7 @@ function hasSerpProvider(opts = {}) {
  * @param {boolean} [options.preferSpeed] - If true, ScrapingBee first (for time-sensitive flows)
  * @param {boolean} [options.emptyAuthoritative] - Default true. Set false when "no results yet" may mean "not published yet" (see shouldAcceptEmptyScrapingdogSerp).
  * @param {number|null} [options.negativeCacheTtlMs] - Opt-in short negative-result cache for emptyAuthoritative:false callers (T11 — see scripts/lib/serp-negative-cache-policy.js). Default null (no negative caching, existing behavior).
+ * @param {boolean} [options.secondOpinion] - Default true. Set false (with emptyAuthoritative:false) to accept a clean Scrapingdog empty for this call without re-asking ScrapingBee/Bright Data; the empty is still never written to the 24h cache. Policy: scripts/lib/serp-second-opinion-policy.js (BRO-7531).
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if all providers unavailable
  */
 async function serpQuery(query, options = {}) {
@@ -1926,7 +2007,7 @@ async function serpQuery(query, options = {}) {
     return null;
   }
 
-  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo, skipProviders, emptyAuthoritative, negativeCacheTtlMs, page);
+  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo, skipProviders, emptyAuthoritative, negativeCacheTtlMs, page, { secondOpinion: options.secondOpinion !== false });
   if (!results) return null;
 
   return results.slice(0, nbResults);

@@ -62,6 +62,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS, hasSerpProvider } = require('./lib/u
 const { discoverNewReviews: discoverOMCReviews, OUTLET_NAME: OMC_OUTLET_NAME } = require('./lib/omc-discovery');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { serpNegativeCacheTtlMs } = require('./lib/serp-negative-cache-policy');
+const { isSlowTrickleMarket, serpSecondOpinionForShow } = require('./lib/serp-second-opinion-policy');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtractIfNeeded } = require('./lib/llm-extractor');
@@ -1446,8 +1447,8 @@ const SERP_BUDGET = 12;
  * @returns {boolean} true when BD should be used for this show
  */
 function isBrightDataAllowedForShow(show) {
-  const showCategory = (show && (show.category || show.market)) || '';
-  return showCategory !== 'off-broadway' && showCategory !== 'off-west-end';
+  // Shared with serpSecondOpinionForShow (BRO-7531) so the two OB/OWE gates cannot drift.
+  return !isSlowTrickleMarket(show);
 }
 
 /**
@@ -1523,6 +1524,11 @@ async function runSERPBackup(show, missingOutlets, knownUrls, stats = null) {
           // Broadway (serpNegativeCacheTtlMs returns null there) always re-asks
           // fresh next tick; see serp-negative-cache-policy.js for why.
           negativeCacheTtlMs: serpNegativeCacheTtlMs(show),
+          // BRO-7531: OB / off-West-End accept a clean Scrapingdog empty for
+          // this tick instead of re-asking ScrapingBee (25 credits, 0 finds in
+          // ~750 re-asks). Still never cached 24h; Scrapingdog failures still
+          // fail over. See serp-second-opinion-policy.js.
+          secondOpinion: serpSecondOpinionForShow(show),
           dateRange: openingNightDateRange,
         }
       );
