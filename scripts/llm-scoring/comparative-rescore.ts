@@ -58,8 +58,9 @@ async function main() {
   const limit = parseInt(args.find((a) => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
   const maxRescores = parseInt(args.find((a) => a.startsWith('--max-rescores='))?.split('=')[1] || '0', 10);
 
-  const batch = args.includes('--batch');
-  const batchPollMinutes = parseInt(args.find((a) => a.startsWith('--batch-poll-minutes='))?.split('=')[1] || '20', 10);
+  const batch = args.includes('--batch') && !dryRun; // a dry run must not buy paid batches
+  const pollRaw = parseInt(args.find((a) => a.startsWith('--batch-poll-minutes='))?.split('=')[1] || '20', 10);
+  const batchPollMinutes = Number.isFinite(pollRaw) && pollRaw >= 0 ? pollRaw : 20; // NaN would poll until the job timeout
 
   const models = availableModels();
   if (models.length < 2) {
@@ -108,8 +109,8 @@ async function main() {
       console.log('Nothing to rescore.');
       activeModels = batchedModels(models, {}); // never reach a sync call in batch mode
     } else {
-      const answers = await runComparativeBatches(models, sink, batchPollMinutes);
-      activeModels = batchedModels(models, answers);
+      const batchState = await runComparativeBatches(models, sink, batchPollMinutes);
+      activeModels = batchedModels(models, batchState);
     }
   }
 

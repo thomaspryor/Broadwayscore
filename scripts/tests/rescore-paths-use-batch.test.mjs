@@ -35,27 +35,42 @@ test('comparative-rescore invocations carry the batch flag on scheduled runs onl
   assert.match(s, /chain/);
 });
 
-test('resumableBatch: same prompts + <24h resumes; changed prompts or stale state does not', () => {
-  const h = cb.promptSetHash(['a', 'b']);
-  const now = Date.parse('2026-11-15T12:00:00Z');
-  const st = { claude: { id: 'msgbatch_1', hash: h, submittedAt: '2026-11-15T10:00:00Z' } };
-  assert.equal(cb.resumableBatch(st, 'claude', h, now), 'msgbatch_1');
-  assert.equal(cb.resumableBatch(st, 'claude', cb.promptSetHash(['a', 'c']), now), null);
-  assert.equal(cb.resumableBatch(st, 'claude', h, now + 25 * 3600e3), null);
-  assert.equal(cb.resumableBatch(st, 'openai', h, now), null);
+const NOW = Date.parse('2026-11-15T12:00:00Z');
+const iso = (ms) => new Date(ms).toISOString();
+
+test('missingKeys: answered or in-flight prompts are not re-submitted; stale ones are', () => {
+  const [ka, kb, kc] = ['a', 'b', 'c'].map(cb.promptKey);
+  const v = {
+    inflight: { id: 'b1', keys: [kb], submittedAt: iso(NOW - 3600e3) },
+    answers: { [ka]: { text: 'x', at: iso(NOW - 3600e3) } },
+  };
+  assert.deepEqual(cb.missingKeys(v, [ka, kb, kc], NOW), [kc]);
+  const stale = { answers: { [ka]: { text: 'x', at: iso(NOW - 25 * 3600e3) } } };
+  assert.deepEqual(cb.missingKeys(stale, [ka], NOW), [ka]);
+  assert.equal(cb.usableInflight({ inflight: { id: 'b1', keys: [], submittedAt: iso(NOW - 25 * 3600e3) } }, NOW), null);
 });
 
-test('allVendorsAnswered: a missing vendor answer blocks settling the group', () => {
-  const ans = { openai: new Map([['p', 'x']]), gemini: new Map() };
-  assert.equal(cb.allVendorsAnswered(ans, 'p'), false);
-  ans.gemini.set('p', 'y');
-  assert.equal(cb.allVendorsAnswered(ans, 'p'), true);
-  assert.equal(cb.allVendorsAnswered({}, 'p'), false);
+test('a vendor that finished first keeps its answers while a slower vendor is in flight', () => {
+  const k = cb.promptKey('p');
+  const done = cb.recordTerminal({}, [k], new Map([[k, 'answer']]), NOW);
+  const state = { openai: done, gemini: { inflight: { id: 'g', keys: [k], submittedAt: iso(NOW) } } };
+  assert.equal(cb.allVendorsRecorded(state, k, NOW), false); // defers the group
+  state.gemini = cb.recordTerminal(state.gemini, [k], new Map(), NOW); // ended without an answer
+  assert.equal(state.gemini.answers[k].text, '');
+  assert.equal(cb.allVendorsRecorded(state, k, NOW), true); // terminal failure no longer blocks (sync parity)
+  assert.equal(state.openai.answers[k].text, 'answer');
+});
+
+test('prompt-set change does not orphan: keys are content-based and pruneAnswers keeps wanted + fresh only', () => {
+  const [a, b] = ['a', 'b'].map(cb.promptKey);
+  const v = { answers: { [a]: { text: 'x', at: iso(NOW) }, [b]: { text: 'y', at: iso(NOW) } } };
+  assert.deepEqual(Object.keys(cb.pruneAnswers(v, [a], NOW).answers), [a]);
+  assert.equal(cb.promptKey('a'), a);
 });
 
 test('comparative-rescore never falls back to a sync call in batch mode', () => {
   const src = fs.readFileSync(new URL('../llm-scoring/comparative-rescore.ts', import.meta.url), 'utf8');
-  assert.match(src, /activeModels = batchedModels\(models, answers\)/);
+  assert.match(src, /activeModels = batchedModels\(models, batchState\)/);
   assert.match(src, /activeModels = batchedModels\(models, \{\}\)/);
 });
 
@@ -80,8 +95,8 @@ test('sync callers read the shared params (no drift from the batch path)', () =>
   assert.doesNotMatch(core, /maxOutputTokens: 2000/);
 });
 
-test('resultsByPrompt maps by custom id and drops failures', () => {
-  const m = cb.resultsByPrompt(['p0', 'p1', 'p2'], [
+test('resultsByKey maps by custom id and drops failures', () => {
+  const m = cb.resultsByKey(['p0', 'p1', 'p2'], [
     { customId: 'cmp-0', success: true, text: 'a' },
     { customId: 'cmp-1', success: false, error: 'x' },
     { customId: 'cmp-2', success: true, text: 'c' },

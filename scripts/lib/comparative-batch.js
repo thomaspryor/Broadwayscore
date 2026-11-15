@@ -62,43 +62,76 @@ function buildGeminiRequest(i, prompt) {
   };
 }
 
-/** Map vendor results ({customId, success, text}) back to prompt -> text. */
-function resultsByPrompt(prompts, results) {
+const crypto = require('crypto');
+const STATE_MAX_AGE_MS = 24 * 3600 * 1000;
+
+/** Key a prompt by content: answers and in-flight batches survive a changed prompt set. */
+function promptKey(prompt) {
+  return crypto.createHash('sha256').update(prompt).digest('hex').slice(0, 20);
+}
+
+/** Map vendor results (custom id = index into `keys`) to key -> text; failures are omitted. */
+function resultsByKey(keys, results) {
   const out = new Map();
   for (const r of results || []) {
     const i = indexOfCustomId(r.customId);
-    if (i >= 0 && i < prompts.length && r.success && r.text) out.set(prompts[i], r.text);
+    if (i >= 0 && i < keys.length && r.success && r.text) out.set(keys[i], r.text);
   }
   return out;
 }
 
-const crypto = require('crypto');
-const STATE_MAX_AGE_MS = 24 * 3600 * 1000;
+const fresh = (at, now) => {
+  const age = now - Date.parse(at || '');
+  return Number.isFinite(age) && age >= 0 && age < STATE_MAX_AGE_MS;
+};
 
-/** Stable id for a prompt set: a persisted batch is only resumed for the same prompts. */
-function promptSetHash(prompts) {
-  return crypto.createHash('sha256').update(JSON.stringify(prompts)).digest('hex').slice(0, 16);
+/**
+ * Per-vendor state: { inflight?: {id, keys[], submittedAt}, answers: {key: {text, at}} }.
+ * `text` is '' when the vendor's batch ended without a usable answer for that prompt
+ * (a TERMINAL failure: that vendor stops blocking the group, as in the sync path).
+ */
+function usableInflight(v, now = Date.now()) {
+  return v && v.inflight && v.inflight.id && fresh(v.inflight.submittedAt, now) ? v.inflight : null;
 }
 
-/** Return the persisted in-flight batch id for (vendor, prompts), or null. */
-function resumableBatch(state, vendor, hash, now = Date.now()) {
-  const e = state && state[vendor];
-  if (!e || e.hash !== hash || !e.id) return null;
-  const age = now - Date.parse(e.submittedAt || '');
-  return Number.isFinite(age) && age >= 0 && age < STATE_MAX_AGE_MS ? e.id : null;
+/** Prompt keys with no fresh recorded answer (and not covered by a usable in-flight batch). */
+function missingKeys(v, keys, now = Date.now()) {
+  const inflight = usableInflight(v, now);
+  const covered = new Set(inflight ? inflight.keys : []);
+  return keys.filter((k) => !(v && v.answers && v.answers[k] && fresh(v.answers[k].at, now)) && !covered.has(k));
+}
+
+/** Record a terminal batch: every requested key gets its text or '' (terminal failure). Returns new vendor state. */
+function recordTerminal(v, inflightKeys, textsByKey, now = Date.now()) {
+  const answers = { ...((v && v.answers) || {}) };
+  for (const k of inflightKeys) answers[k] = { text: textsByKey.get(k) || '', at: new Date(now).toISOString() };
+  return { answers };
+}
+
+/** Drop expired answers and ones for prompts no longer wanted. */
+function pruneAnswers(v, wantedKeys, now = Date.now()) {
+  const want = new Set(wantedKeys);
+  const answers = {};
+  for (const [k, a] of Object.entries((v && v.answers) || {})) if (want.has(k) && fresh(a.at, now)) answers[k] = a;
+  return { ...(v || {}), answers };
 }
 
 /**
- * A group is only settled when EVERY batched vendor answered its prompt;
- * otherwise a slow/failed vendor would silently shrink the ensemble for good.
+ * A group is only scored when EVERY vendor has a terminal answer record for its
+ * prompt (text or terminal failure). A vendor still in flight defers the group;
+ * one that ended without an answer does not block it (sync-path parity).
  */
-function allVendorsAnswered(answersByVendor, prompt) {
-  const vendors = Object.keys(answersByVendor || {});
-  return vendors.length > 0 && vendors.every((v) => answersByVendor[v].has(prompt));
+function allVendorsRecorded(stateByVendor, key, now = Date.now()) {
+  const vendors = Object.keys(stateByVendor || {});
+  return vendors.length > 0 && vendors.every((n) => {
+    const a = stateByVendor[n] && stateByVendor[n].answers && stateByVendor[n].answers[key];
+    return !!a && fresh(a.at, now);
+  });
 }
 
 module.exports = {
   COMPARATIVE_PARAMS, customId, indexOfCustomId,
   buildAnthropicRequest, buildOpenAIRequest, buildGeminiRequest,
-  resultsByPrompt, promptSetHash, resumableBatch, allVendorsAnswered, STATE_MAX_AGE_MS,
+  promptKey, resultsByKey, usableInflight, missingKeys, recordTerminal, pruneAnswers,
+  allVendorsRecorded, STATE_MAX_AGE_MS,
 };
