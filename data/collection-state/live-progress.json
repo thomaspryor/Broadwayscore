@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-15T02:39:17.543Z",
+  "updatedAt": "2026-11-15T02:40:10.095Z",
   "processed": 550,
   "failed": 307,
   "successRate": "64.2%",
@@ -14,8 +14,24 @@
     "archiveToday": 0,
     "archive": 204
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-11-14T19:58:59.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-14T19:59:09.864Z",
+      "event": "bb-session",
+      "session": "f0bbd815",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-14T19:59:10.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-11-14T20:01:17.500Z",
       "event": "bb-session",
@@ -110,23 +126,6 @@
       "event": "bb-session",
       "session": "c5cd5217",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
-    },
-    {
-      "t": "2026-11-15T02:05:19.425Z",
-      "event": "bb-session",
-      "session": "d3cb87e1",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
-    },
-    {
-      "t": "2026-11-15T02:05:19.760Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-11-15T02:10:53.348Z",
-      "event": "bb-session",
-      "session": "cd1f3239",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
