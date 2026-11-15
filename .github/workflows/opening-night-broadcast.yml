@@ -922,7 +922,9 @@ jobs:
           [ "$FAILED" -eq 0 ]
 
       - name: Create broadcast draft (owner sends manually from Resend)
-        if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        # BRO-7386: !cancelled() so a failed draft update (it runs first and ends red
+        # on failure) cannot cancel tonight's new draft.
+        if: (!cancelled()) && steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
         id: broadcast
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -1076,7 +1078,7 @@ jobs:
         # BRO-2816: checklist/drift blocks no longer fail the job, so skip here
         # explicitly as before. Those blocks have no self-heal budget, and a
         # gather dispatch re-triggers this workflow (~2h loop, paid scraping).
-        if: steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
+        if: (!cancelled()) && steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

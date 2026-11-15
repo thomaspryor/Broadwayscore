@@ -88,6 +88,15 @@ function isUnsentDraft(r) {
 
 // Draft records keyed by broadcastKey (`<market>:<id+id>`), skipping the
 // per-show mirrors (they carry `broadcastKey`).
+// BRO-7386: an abandoned draft (never sent, never reconciled) must not be
+// refreshed, gated and emailed about forever: stop following it after 30 days.
+const REFRESH_MAX_AGE_MS = 30 * 24 * 3600 * 1000;
+function draftIsRefreshable(record, now = Date.now()) {
+  const stamp = record && (record.draftCreatedAt || record.sentAt);
+  const t = stamp ? Date.parse(stamp) : NaN;
+  return !Number.isFinite(t) || now - t <= REFRESH_MAX_AGE_MS;
+}
+
 function unsentDraftRecords(sentShows) {
   const out = [];
   for (const [key, r] of Object.entries(sentShows || {})) {
@@ -159,9 +168,10 @@ function draftsNeedingRefresh(sentShows, readNumbers, onlyIds = null) {
  * @returns {{broadway: string[], 'west-end': string[], shows: string[], moved: object[]}}
  *   per market, one comma-joined id list per draft (a combo is updated whole)
  */
-function refreshPlanByMarket(sentShows, readNumbers) {
+function refreshPlanByMarket(sentShows, readNumbers, now = Date.now()) {
   const plan = { broadway: [], 'west-end': [], shows: [], moved: [] };
-  for (const r of draftsNeedingRefresh(sentShows, readNumbers)) {
+  const young = new Set(unsentDraftRecords(sentShows).filter(e => draftIsRefreshable(e.record, now)).map(e => e.broadcastKey));
+  for (const r of draftsNeedingRefresh(sentShows, readNumbers).filter(r => !r.broadcastKey || young.has(r.broadcastKey))) {
     (plan[r.market] || (plan[r.market] = [])).push(r.ids.join(','));
     for (const id of r.ids) if (!plan.shows.includes(id)) plan.shows.push(id);
     plan.moved.push(r);
@@ -181,13 +191,13 @@ function refreshPlanByMarket(sentShows, readNumbers) {
  * @param {Iterable<string>|null} [allowedIds] --shows allow-list
  * @returns {object[]} shows.json rows, in draft order, each once
  */
-function unsentDraftShowsForUpdate(sentShows, showsList, market, allowedIds = null) {
+function unsentDraftShowsForUpdate(sentShows, showsList, market, allowedIds = null, now = Date.now()) {
   const allow = allowedIds ? new Set(allowedIds) : null;
   const byId = new Map((showsList || []).map(s => [s.id || s.slug, s]));
   const seen = new Set();
   const out = [];
   for (const e of unsentDraftRecords(sentShows)) {
-    if (e.market !== market) continue;
+    if (e.market !== market || !draftIsRefreshable(e.record, now)) continue;
     for (const id of e.ids) {
       if (seen.has(id) || (allow && !allow.has(id))) continue;
       const show = byId.get(id);

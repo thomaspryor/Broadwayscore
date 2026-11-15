@@ -98,3 +98,15 @@ test('the normal draft path keeps its lookback and allow-list; update targets ar
   sentDraft[KEY].sentAt = new Date().toISOString();
   assert.deepEqual(unsentDraftShowsForUpdate(sentDraft, [cloud9], 'west-end'), [], 'a sent draft is never a target');
 });
+
+test('an abandoned draft older than 30 days is no longer followed; a failed update cannot cancel the new draft', () => {
+  const old = cloud9Tracker();
+  old[KEY].draftCreatedAt = new Date(Date.now() - 45 * 86_400_000).toISOString();
+  assert.deepEqual(unsentDraftShowsForUpdate(old, [cloud9], 'west-end'), [], 'a 45-day-old draft is not a target');
+  assert.equal(refreshPlanByMarket(old, () => null).shows.length, 0);
+  for (const name of ['Create broadcast draft (owner sends manually from Resend)', 'Gather more reviews if not ready']) {
+    const i = WORKFLOW.indexOf(`      - name: ${name}\n`);
+    assert.ok(i !== -1, `${name} missing`);
+    assert.match(WORKFLOW.slice(i).match(/\n\s+if: (.*)\n/)[1], /^\(!cancelled\(\)\)/, `${name} must not be skipped by a red update step`);
+  }
+});
