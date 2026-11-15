@@ -42,6 +42,7 @@ function summarize(rows, { fromMs = -Infinity, toMs = Infinity } = {}) {
   return { providers, callers: [...callers.values()].sort((a, b) => b.usd - a.usd) };
 }
 
+const PROVIDER_LABEL = { openai: 'OpenAI', gemini: 'Gemini', anthropic: 'Claude' };
 const money = (n) => `$${n.toFixed(2)}`;
 
 /** One digest line for a UTC day (YYYY-MM-DD), or null when nothing was metered. */
@@ -57,7 +58,7 @@ function digestTitle(rows, day, { top = 3 } = {}) {
       a.dupCalls ? `${a.dupCalls} repeats` : '',
       a.unknownCalls ? `${a.unknownCalls} unpriced` : '',
     ].filter(Boolean).join(', ');
-    return `${p === 'openai' ? 'OpenAI' : 'Gemini'} est ${money(a.usd)} (${a.calls} calls${extra ? `; ${extra}` : ''})`;
+    return `${PROVIDER_LABEL[p] || p} est ${money(a.usd)} (${a.calls} calls${extra ? `; ${extra}` : ''})`;
   });
   const topText = s.callers.slice(0, top).filter((c) => c.usd > 0).map((c) => `${c.script} [${c.workflow}] ${money(c.usd)}`).join('; ');
   return `${day} · LLM APIs (metered estimate, not the full bill): ${parts.join(' · ')}${topText ? ` · top: ${topText}` : ''}`;

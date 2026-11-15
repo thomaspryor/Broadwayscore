@@ -44,3 +44,29 @@ test('the runner records every check and keeps the measured-safe caps', () => {
   assert.match(src, /arg\('check-max-usd', 2\)/);
   assert.match(src, /arg\('check-budget-usd', 10\)/);
 });
+
+// The scratch file crosses an artifact boundary: only allowlisted, bounded anthropic rows get in.
+const M = require('../codex/merge-check-usage.js');
+test('merge keeps real rows and drops forged or oversized ones', () => {
+  const good = JSON.stringify(L.buildClaudeCheckRow({ model: 'opus', costUsd: 0.31, card: 'BRO-7', auth: 'api-key', runId: '12' }));
+  const lines = [
+    good,
+    'not json',
+    JSON.stringify({ provider: 'openai', ts: new Date().toISOString(), model: 'x', costUsd: 1 }),
+    JSON.stringify({ provider: 'anthropic', ts: new Date().toISOString(), model: 'opus', costUsd: 9999 }),
+    JSON.stringify({ provider: 'anthropic', ts: new Date().toISOString(), model: '../../etc', costUsd: 1 }),
+    JSON.stringify({ provider: 'anthropic', ts: new Date().toISOString(), model: 'opus', costUsd: 1, evil: 'x', card: 'bad card' }),
+  ].join('\n');
+  const rows = M.sanitizeFile(lines);
+  assert.equal(rows.length, 2);
+  assert.equal(rows[0].costUsd, 0.31);
+  assert.equal(rows[1].card, undefined);
+  assert.equal(rows[1].evil, undefined);
+});
+
+test('the workflow commits the ledger from a separate contents:write job, not the runner job', () => {
+  const y = fs.readFileSync(new URL('../../.github/workflows/codex-runner.yml', import.meta.url), 'utf8');
+  assert.match(y, /^permissions:\n {2}contents: read/m);
+  assert.match(y, /usage-ledger:[\s\S]*permissions:\n {6}contents: write[\s\S]*merge-check-usage\.js/);
+  assert.match(y, /GEMINI_USAGE_LEDGER_PATH: \$\{\{ runner\.temp \}\}\/codex-check-usage\.jsonl/);
+});

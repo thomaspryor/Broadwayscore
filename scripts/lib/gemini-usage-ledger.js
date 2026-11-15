@@ -259,6 +259,42 @@ function flush() {
   } catch { return []; }
 }
 
+/**
+ * BRO-7522: one row for a `claude -p` check the Codex runner ran. costUsd is the CLI's own
+ * total_cost_usd (a real figure, not a list-price estimate). auth says what it billed:
+ * 'api-key' (pay-as-you-go ANTHROPIC_API_KEY) or 'oauth' (subscription token). Pure.
+ */
+function buildClaudeCheckRow({ model, costUsd, error = null, card = null, auth, now = new Date(), workflow, runId, script = 'scripts/codex/daily-runner.js' }) {
+  return {
+    ts: now.toISOString(),
+    provider: 'anthropic',
+    workflow: workflow || process.env.GITHUB_WORKFLOW || 'local',
+    runId: runId || process.env.GITHUB_RUN_ID || null,
+    script,
+    model: String(model || 'unknown'),
+    calls: 1,
+    unknownCalls: 0,
+    inputTokens: null,
+    outputTokens: null,
+    costUsd: Number.isFinite(costUsd) ? costUsd : null,
+    auth: auth || (process.env.ANTHROPIC_API_KEY ? 'api-key' : 'oauth'),
+    ...(card ? { card } : {}),
+    ...(error ? { error: String(error) } : {}),
+  };
+}
+
+/** Append one claude-check row. Never throws (telemetry must not fail a card). -> the row, or null. */
+function recordClaudeCheck(fields) {
+  try {
+    if (process.env.GEMINI_USAGE_DISABLED === '1') return null;
+    const row = buildClaudeCheckRow(fields);
+    const p = _ledgerPath();
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.appendFileSync(p, JSON.stringify(row) + '\n');
+    return row;
+  } catch { return null; }
+}
+
 /** Which metered endpoint a URL is, or null. */
 function classifyUrl(url) {
   const u = String(url || '');
@@ -359,6 +395,8 @@ module.exports = {
   recordUsage,
   recordGeminiUsage,
   buildRows,
+  buildClaudeCheckRow,
+  recordClaudeCheck,
   flush,
   settle,
   install,

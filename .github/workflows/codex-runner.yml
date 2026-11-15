@@ -110,6 +110,12 @@ jobs:
           # Opens the stored Codex login: the cloud env's OpenAI key, which differs from
           # the OPENAI_API_KEY secret above (scripts/codex/auth-store.js keyMaterial).
           CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
+          # BRO-7522: pay-as-you-go. Measured 2026-11-01..15: $17.28 over 89 checks (~$1.15/day).
+          # To bill the subscription instead (owner step: `claude setup-token` on the Mac, store the
+          # output as secret CLAUDE_CODE_OAUTH_TOKEN), swap this line for
+          # CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}. The runner already passes it
+          # to the reviewer (R.reviewerSandboxAuth) and the ledger rows then read auth=oauth.
+          # Remove ANTHROPIC_API_KEY when swapping: an API key outranks the token.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CODEX_RUNNER_PUSH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_TOKEN: ${{ github.token }}
@@ -126,6 +132,8 @@ jobs:
           # BRO-6303: the trust ladder's rollback reaches the runner too (baseline access), not only the evaluator.
           # The cloud lane has no repo vars: the owner file's killSwitch (read from origin/main) covers every lane.
           CODEX_TRUST_LADDER_DISABLED: ${{ vars.CODEX_LADDER_DISABLED }}
+          # BRO-7522: the runner appends each Claude check's cost here; the usage-ledger job below commits it.
+          GEMINI_USAGE_LEDGER_PATH: ${{ runner.temp }}/codex-check-usage.jsonl
         run: |
           # Until the owner adds the CODEX_AUTH_KEY secret the login cannot be opened here;
           # skip instead of failing five times a day. Adding the secret starts the runner.
@@ -143,6 +151,15 @@ jobs:
           if [ -n "$EXTRA" ]; then args+=($EXTRA); fi
           node scripts/codex/daily-runner.js "${args[@]}"
 
+      - name: Upload Claude check usage
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: codex-check-usage
+          path: ${{ runner.temp }}/codex-check-usage.jsonl
+          retention-days: 3
+          if-no-files-found: ignore
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
@@ -150,3 +167,34 @@ jobs:
           title: 'Codex card runner failed'
           description: 'The runner job itself failed (setup, login or a crash). Cards it held are named on the codex-runner-lock branch and the next run adopts them.'
           severity: 'warning'
+
+  # BRO-7522: records what the runner's metered `claude -p` checks cost (provider=anthropic rows in
+  # data/audit/gemini-usage-ledger.jsonl). A separate job so the runner job, which executes
+  # Codex-authored code, never holds contents: write. Rows are re-validated from an allowlist.
+  usage-ledger:
+    needs: run
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Download Claude check usage
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        continue-on-error: true
+        with:
+          name: codex-check-usage
+          path: ${{ runner.temp }}/usage
+
+      - name: Merge into usage ledger
+        run: node scripts/codex/merge-check-usage.js "$RUNNER_TEMP/usage/codex-check-usage.jsonl"
+
+      - name: Commit usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: codex-runner
