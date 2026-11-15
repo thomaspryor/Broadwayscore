@@ -1,54 +1,5 @@
 [
   {
-    "startedAt": "2026-11-13T05:50:42.808Z",
-    "completedAt": "2026-11-13T05:54:49.857Z",
-    "totalReviews": 101,
-    "processed": 101,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 269694,
-      "output": 23110,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 292804
-    },
-    "costUsd": 0.7522455000000001,
-    "runId": "43367557325",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-13T06:00:44.020Z",
-    "completedAt": "2026-11-13T06:42:27.411Z",
-    "totalReviews": 82119,
-    "processed": 379,
-    "skipped": 81549,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 2294289,
-      "output": 122322,
-      "cacheRead": 1421590,
-      "cacheWrite": 120341,
-      "total": 5877785
-    },
-    "costUsd": 9.18450945,
-    "runId": "43375212929",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "the-real-thing-2014",
-        "outletId": "front-row-center",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-snow-geese-2013",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-11-13T07:16:54.570Z",
     "completedAt": "2026-11-13T07:37:01.232Z",
     "totalReviews": 82120,
@@ -418093,6 +418044,25 @@
     },
     "costUsd": 0,
     "runId": "43723011709",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-15T14:31:42.557Z",
+    "completedAt": "2026-11-15T14:31:42.559Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "43724270615",
     "source": "comparative-rescore",
     "errorDetails": []
   }
