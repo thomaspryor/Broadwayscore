@@ -293,33 +293,33 @@ const SCORE_KEYS = ['assignedScore', 'llmScore', 'originalScore'];
 // Verdict fields (contentVerification(+Promoted), archivePath, verdict incompleteReason) are NOT here: they are compared like any other field.
 const RESCUE_IGNORE_KEYS = new Set([...BOOKKEEPING_KEYS, 'contentTier', 'contentTierReason', 'fullText']);
 function settleConflict(mainRaw, rescuedRaw) {
-  const m = reviewFacts(mainRaw);
-  const r = reviewFacts(rescuedRaw);
-  if (m.kind !== 'object' || r.kind !== 'object') return { decision: 'wait', reasons: ['a side is absent or not a JSON object'] };
-  const a = r.j; const b = m.j;
+  const mainF = reviewFacts(mainRaw);
+  const rescF = reviewFacts(rescuedRaw);
+  if (mainF.kind !== 'object' || rescF.kind !== 'object') return { decision: 'wait', reasons: ['a side is absent or not a JSON object'] };
+  const rescJ = rescF.j; const mainJ = mainF.j;
   const wait = [];
   const mainBetter = [];
   const rescuedBetter = [];
-  if (m.flags.slice().sort().join() !== r.flags.slice().sort().join()) wait.push('exclusion flags differ');
-  const mt = isEmpty(b.fullText) ? '' : String(b.fullText);
-  const rt = isEmpty(a.fullText) ? '' : String(a.fullText);
+  if (mainF.flags.slice().sort().join() !== rescF.flags.slice().sort().join()) wait.push('exclusion flags differ');
+  const mt = isEmpty(mainJ.fullText) ? '' : String(mainJ.fullText);
+  const rt = isEmpty(rescJ.fullText) ? '' : String(rescJ.fullText);
   if (rt && rt !== mt) { if (!mt || rt.length > mt.length) rescuedBetter.push('rescued has text main lacks or a longer text'); else wait.push('texts differ'); }
   else if (mt && !rt) mainBetter.push('main has text, rescued has none');
-  const mr = TIER_RANK[b.contentTier]; const rr = TIER_RANK[a.contentTier];
-  if (mr === undefined || rr === undefined) { if (canon(b.contentTier) !== canon(a.contentTier)) wait.push('tier unknown'); }
+  const mr = TIER_RANK[mainJ.contentTier]; const rr = TIER_RANK[rescJ.contentTier];
+  if (mr === undefined || rr === undefined) { if (canon(mainJ.contentTier) !== canon(rescJ.contentTier)) wait.push('tier unknown'); }
   else if (rr > mr) rescuedBetter.push('rescued tier higher'); else if (mr > rr) mainBetter.push('main tier higher');
   for (const k of SCORE_KEYS) {
-    const hm = !isEmpty(b[k]); const hr = !isEmpty(a[k]);
-    if (hm && hr && canon(a[k]) !== canon(b[k])) wait.push(`${k} differs on both sides`);
+    const hm = !isEmpty(mainJ[k]); const hr = !isEmpty(rescJ[k]);
+    if (hm && hr && canon(rescJ[k]) !== canon(mainJ[k])) wait.push(`${k} differs on both sides`);
     else if (hr && !hm) rescuedBetter.push(`${k} only on rescued`); else if (hm && !hr) mainBetter.push(`${k} only on main`);
   }
-  for (const k of Object.keys(a)) {
-    if (isEmpty(a[k]) || RESCUE_IGNORE_KEYS.has(k) || SCORE_KEYS.includes(k)) continue;
-    if ((k === 'incompleteReason' || k === 'incompleteDetail') && isFetchStateOnly(a)) continue;
-    if (k === 'url') { if (normUrl(a[k]) !== normUrl(b[k])) wait.push('url differs'); continue; }
-    if (k === 'criticName' && UNKNOWN_CRITIC.test(String(a[k]))) continue;
-    if (isEmpty(b[k])) wait.push(`${k} only on rescued`);
-    else if (canon(a[k]) !== canon(b[k]) && !/At$/.test(k)) wait.push(`${k} differs`); // machine timestamps (*At) may differ; main's is kept
+  for (const k of Object.keys(rescJ)) {
+    if (isEmpty(rescJ[k]) || RESCUE_IGNORE_KEYS.has(k) || SCORE_KEYS.includes(k)) continue;
+    if ((k === 'incompleteReason' || k === 'incompleteDetail') && isFetchStateOnly(rescJ)) continue;
+    if (k === 'url') { if (normUrl(rescJ[k]) !== normUrl(mainJ[k])) wait.push('url differs'); continue; }
+    if (k === 'criticName' && UNKNOWN_CRITIC.test(String(rescJ[k]))) continue;
+    if (isEmpty(mainJ[k])) wait.push(`${k} only on rescued`);
+    else if (canon(rescJ[k]) !== canon(mainJ[k]) && !/At$/.test(k)) wait.push(`${k} differs`); // machine timestamps (*At) may differ; main's is kept
   }
   if (wait.length) return { decision: 'wait', reasons: wait };
   if (rescuedBetter.length && !mainBetter.length) return { decision: 'rescued', reasons: rescuedBetter };
