@@ -34,13 +34,9 @@ on:
           - gpt-4o
           - none
       shadow_claude_model:
-        description: 'openai-leg-shadow: Claude shadow leg (blank = none). Sonnet 5.5 runs without temperature (API rejects it), see BRO-7529'
+        description: 'openai-leg-shadow: Claude shadow leg, e.g. claude-sonnet-5-5 (blank = none). Sonnet 5.5 runs without temperature (API rejects it), see BRO-7529'
         required: false
         default: ''
-        type: choice
-        options:
-          - ''
-          - claude-sonnet-5-5
       max_cost_usd:
         description: 'openai-leg-shadow: TOTAL spend cap in USD across the 4 shards (each gets a quarter; resumed runs count prior spend). Owner hard cap is 80.'
         required: false
