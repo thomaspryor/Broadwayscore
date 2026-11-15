@@ -72,16 +72,33 @@ function resultsByPrompt(prompts, results) {
   return out;
 }
 
+const crypto = require('crypto');
+const STATE_MAX_AGE_MS = 24 * 3600 * 1000;
+
+/** Stable id for a prompt set: a persisted batch is only resumed for the same prompts. */
+function promptSetHash(prompts) {
+  return crypto.createHash('sha256').update(JSON.stringify(prompts)).digest('hex').slice(0, 16);
+}
+
+/** Return the persisted in-flight batch id for (vendor, prompts), or null. */
+function resumableBatch(state, vendor, hash, now = Date.now()) {
+  const e = state && state[vendor];
+  if (!e || e.hash !== hash || !e.id) return null;
+  const age = now - Date.parse(e.submittedAt || '');
+  return Number.isFinite(age) && age >= 0 && age < STATE_MAX_AGE_MS ? e.id : null;
+}
+
 /**
- * Batch only the scheduled, non-urgent run. Any manual dispatch (a per-show
- * opening-night rescore) stays sync; DISABLE_BATCH_SCORING=1 forces sync.
+ * A group is only settled when EVERY batched vendor answered its prompt;
+ * otherwise a slow/failed vendor would silently shrink the ensemble for good.
  */
-function shouldBatchComparative({ eventName, chain, disabled }) {
-  return eventName === 'schedule' && chain !== 'true' && disabled !== '1';
+function allVendorsAnswered(answersByVendor, prompt) {
+  const vendors = Object.keys(answersByVendor || {});
+  return vendors.length > 0 && vendors.every((v) => answersByVendor[v].has(prompt));
 }
 
 module.exports = {
   COMPARATIVE_PARAMS, customId, indexOfCustomId,
   buildAnthropicRequest, buildOpenAIRequest, buildGeminiRequest,
-  resultsByPrompt, shouldBatchComparative,
+  resultsByPrompt, promptSetHash, resumableBatch, allVendorsAnswered, STATE_MAX_AGE_MS,
 };

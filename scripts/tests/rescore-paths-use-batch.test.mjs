@@ -35,11 +35,28 @@ test('comparative-rescore invocations carry the batch flag on scheduled runs onl
   assert.match(s, /chain/);
 });
 
-test('shouldBatchComparative: scheduled yes; dispatch, chain, kill switch no', () => {
-  assert.equal(cb.shouldBatchComparative({ eventName: 'schedule', chain: '', disabled: '' }), true);
-  assert.equal(cb.shouldBatchComparative({ eventName: 'workflow_dispatch', chain: '', disabled: '' }), false);
-  assert.equal(cb.shouldBatchComparative({ eventName: 'schedule', chain: 'true', disabled: '' }), false);
-  assert.equal(cb.shouldBatchComparative({ eventName: 'schedule', chain: '', disabled: '1' }), false);
+test('resumableBatch: same prompts + <24h resumes; changed prompts or stale state does not', () => {
+  const h = cb.promptSetHash(['a', 'b']);
+  const now = Date.parse('2026-11-15T12:00:00Z');
+  const st = { claude: { id: 'msgbatch_1', hash: h, submittedAt: '2026-11-15T10:00:00Z' } };
+  assert.equal(cb.resumableBatch(st, 'claude', h, now), 'msgbatch_1');
+  assert.equal(cb.resumableBatch(st, 'claude', cb.promptSetHash(['a', 'c']), now), null);
+  assert.equal(cb.resumableBatch(st, 'claude', h, now + 25 * 3600e3), null);
+  assert.equal(cb.resumableBatch(st, 'openai', h, now), null);
+});
+
+test('allVendorsAnswered: a missing vendor answer blocks settling the group', () => {
+  const ans = { openai: new Map([['p', 'x']]), gemini: new Map() };
+  assert.equal(cb.allVendorsAnswered(ans, 'p'), false);
+  ans.gemini.set('p', 'y');
+  assert.equal(cb.allVendorsAnswered(ans, 'p'), true);
+  assert.equal(cb.allVendorsAnswered({}, 'p'), false);
+});
+
+test('comparative-rescore never falls back to a sync call in batch mode', () => {
+  const src = fs.readFileSync(new URL('../llm-scoring/comparative-rescore.ts', import.meta.url), 'utf8');
+  assert.match(src, /activeModels = batchedModels\(models, answers\)/);
+  assert.match(src, /activeModels = batchedModels\(models, \{\}\)/);
 });
 
 test('batch requests carry the same model/prompt/params as the sync callers', () => {

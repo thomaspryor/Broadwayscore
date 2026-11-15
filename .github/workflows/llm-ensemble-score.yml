@@ -672,7 +672,7 @@ jobs:
           # through opening-night-poller.yml / workflow_dispatch, which stay sync).
           # --max-cost does not cap a batch, --limit=200 does (~$0.012/review batched).
           # DISABLE_BATCH_SCORING=1 forces sync, same kill switch as the main pass.
-          DRAIN_BATCH="--batch --batch-poll-minutes=60"
+          DRAIN_BATCH="--batch --batch-poll-minutes=20"
           if [ "${{ vars.DISABLE_BATCH_SCORING }}" == "1" ]; then DRAIN_BATCH=""; fi
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=200 --max-cost=6 $DRAIN_BATCH --verbose
 
@@ -717,7 +717,7 @@ jobs:
           # job well under timeout-minutes: 350.
           CMP_BATCH=""
           if [ "${{ github.event_name }}" == "schedule" ] && [ "${{ github.event.inputs.chain }}" != "true" ] && [ "${{ vars.DISABLE_BATCH_SCORING }}" != "1" ]; then
-            CMP_BATCH="--batch --batch-poll-minutes=60"
+            CMP_BATCH="--batch --batch-poll-minutes=20"
           fi
           if [ -n "${INPUT_SHOW_ID}" ]; then
             # --show= takes one id; a comma list goes through --shows= (comparative-rescore.ts:387-388).

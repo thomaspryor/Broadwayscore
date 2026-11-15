@@ -42,6 +42,7 @@ import { recorderModels, batchedModels, runComparativeBatches } from './comparat
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
 const { COMPARATIVE_OPENAI } = require('../lib/models');
+const { COMPARATIVE_PARAMS } = require('../lib/comparative-batch');
 
 // The pass itself lives in comparative-core.ts, shared with the opening-night lane (BRO-7283).
 
@@ -58,7 +59,7 @@ async function main() {
   const maxRescores = parseInt(args.find((a) => a.startsWith('--max-rescores='))?.split('=')[1] || '0', 10);
 
   const batch = args.includes('--batch');
-  const batchPollMinutes = parseInt(args.find((a) => a.startsWith('--batch-poll-minutes='))?.split('=')[1] || '60', 10);
+  const batchPollMinutes = parseInt(args.find((a) => a.startsWith('--batch-poll-minutes='))?.split('=')[1] || '20', 10);
 
   const models = availableModels();
   if (models.length < 2) {
@@ -152,7 +153,7 @@ async function main() {
     claude: usageTotals.claude,
     openai: usageTotals.openai,
     gemini: usageTotals.gemini,
-  }, { claudeModelName: 'claude-sonnet-4-6', openaiModelName: COMPARATIVE_OPENAI, batch });
+  }, { claudeModelName: COMPARATIVE_PARAMS.claudeModel, openaiModelName: COMPARATIVE_OPENAI, batch });
   const costUsd = breakdown.total;
   console.log(
     `Estimated cost: $${costUsd.toFixed(4)} (Claude: $${breakdown.claude.toFixed(4)}, OpenAI: $${breakdown.openai.toFixed(4)}, Gemini: $${breakdown.gemini.toFixed(4)})`
