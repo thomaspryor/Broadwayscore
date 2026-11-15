@@ -355,7 +355,7 @@ const briefQuotaNeed = (listed, targets) => listed + 3 * targets + BRIEF_QUOTA_M
  * `entry` holds the type-specific ledger fields (type, id, pair, approval...).
  */
 async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', maxDelayDays = null, ungated = false, entry: extra, markers = compareMarkers(newer, olderLabel), fields = {} }) {
-  const targets = briefChannels(channels, newer, { ungated });
+  const targets = briefChannels(channels, newer, { ungated, slim: ctx.slim }); // ctx.slim: the numbers selection used (undefined: read the public files)
   if (!targets.length) throw new Error(`${label}: no usable channel for ${newer.category}`);
   const notValidated = unvalidated(ctx.ledger, targets);
   if (notValidated.length) throw new Error(`${label}: ${notValidated.map(c => c.key).join(', ')} never passed the Buffer self-test; run the workflow with self_test first`);

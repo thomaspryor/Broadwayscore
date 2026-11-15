@@ -1835,3 +1835,76 @@ test('plan limit: listChannels carries each org plan, and falls back to no plan 
     }
   }
 });
+
+// BRO-7417: an owner-approved brief skips the BRO-7413 notability gate; every automatic lane keeps it.
+// These turn the gate on (this file runs with it off, line 16) and drive postCompare through the fake Buffer.
+const withNotableGate = async fn => {
+  const NO = require('./social-autopost/config.js').NOTABLE_ONLY;
+  const was = NO.enabled;
+  NO.enabled = true;
+  try { await fn(); } finally { NO.enabled = was; }
+};
+const tinyOb = show({ id: 'tiny-ob-7417-2026', slug: 'tiny-ob-7417', title: 'Tiny', category: 'off-broadway', venue: 'A Basement', openingDate: '2026-10-15' });
+const tinySlim = { [tinyOb.id]: { cs: 70, rc: 3, rv: [{ t: 3 }, { t: 3 }, { t: 2 }], au: { sources: {} } } }; // 0 tier-1, no audience: not notable
+const gatePost = async ({ newer, slim, ungated, type }) => {
+  const run = require('./social-autopost/run.js');
+  await bufferLib.listChannels().catch(() => {});
+  const ledger = { _meta: { bufferValidatedChannels: lcChannels.map(c => c.id) }, posts: [] };
+  const caps = Object.fromEntries(['twitter', 'bluesky', 'threads', 'instagram', 'facebook'].map(n => [n, `${newer.title} brief`]));
+  await run.postCompare({
+    label: `${type}:${newer.id}`, shows: [newer], newer, olderLabel: '', captions: { ...caps, altText: 'x' }, imageUrl: 'https://img.example/x.jpg',
+    ctx: { ledger, slim, ledgerFile: path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'gate-ledger-')), 'ledger.json') }, buffer: bufferLib, channels: lcChannels,
+    now: FRI, earliest: FRI, summary: [], problems: [], ungated, markers: [/(?!)/],
+    entry: { type, id: `${type}:${newer.id}`, showId: newer.id },
+  });
+  return ledger;
+};
+
+test('BRO-7417: an owner-approved brief for a non-notable Off-Broadway show posts to the Broadway accounts', async () => {
+  await withNotableGate(async () => {
+    assert.ok(!require('./social-autopost/notable.js').socialNotable(tinyOb, tinySlim), 'fixture is not notable');
+    await withFakeBuffer(240, [], async seen => {
+      const ledger = await gatePost({ newer: tinyOb, slim: tinySlim, ungated: true, type: 'brief' });
+      assert.equal(seen.created.length, 5, 'brief goes out on all five Broadway networks');
+      assert.ok(seen.created.every(i => lcChannels.some(c => c.id === i.channelId && c.set === 'broadway')));
+      assert.ok(ledger.posts.find(p => p.type === 'brief'));
+    });
+  });
+});
+
+test('BRO-7417: the automatic lanes stay gated for the same non-notable show (score post, compare tail)', async () => {
+  await withNotableGate(async () => {
+    // Score post: the show is not eligible, so no score event is ever built for it.
+    assert.deepEqual(require('./social-autopost/routing.js').targetSets(tinyOb, [], require('./social-autopost/config.js').CHANNEL_SETS, null, tinySlim), []);
+    assert.equal(sel.isEligibleShow(tinyOb, { slim: tinySlim }), false);
+    assert.equal(sel.findScoreEvents({ shows: [tinyOb], ledger: { posts: [] }, now: FRI, slim: tinySlim, getOutletTier, reviewsByShow: { [tinyOb.id]: reviews(0, 3, 0) } }).length, 0);
+    // The shared post tail without ungated (closing-soon, roundup, london-compare) finds no channel.
+    await withFakeBuffer(240, [], async seen => {
+      await assert.rejects(gatePost({ newer: tinyOb, slim: tinySlim, ungated: false, type: 'closing-soon' }), /no usable channel/);
+      assert.equal(seen.created.length, 0);
+    });
+  });
+});
+
+test('BRO-7417: london-compare with the gate on posts when its New York show is notable, and never when it is not', async () => {
+  await withNotableGate(async () => {
+    // Notable (Broadway) NYC side: selected and posted on all five networks.
+    assert.equal(lcFind({ posts: [scorePost()] }, at('2026-10-21T14:05:00Z')).length, 1);
+    const ledger = lcLedger();
+    await withFakeBuffer(240, [{ id: 'p1', text: `Lc https://broadwayscorecard.com/show/${lc.ny.slug}?utm_source=twitter`, status: 'sent', dueAt: '2026-10-20T14:00:00.000Z' }], async seen => {
+      await lcPost(ledger);
+      assert.equal(seen.created.length, 5);
+    });
+    // Non-notable Off-Broadway NYC side: never selected, and the post tail refuses it too.
+    const obNy = { ...lc.ny, id: 'lc-ob-2026', category: 'off-broadway', venue: 'A Basement' };
+    const obSlim = { [obNy.id]: { cs: 80, rc: 3, rv: [{ t: 3 }], au: { sources: {} } }, [lc.we.id]: lcSlim[lc.we.id] };
+    const d = sel.londonCompareDecision(obNy, { shows: [obNy, lc.we], ledger: { posts: [scorePost({ showId: obNy.id })] }, now: at('2026-10-21T14:05:00Z'), slim: obSlim, done: new Set() });
+    assert.equal(d.why, 'ineligible');
+    const built = briefs.buildCompare({ descA: desc(lc.we, 84, 30), descB: desc(obNy, 80, 3), hook: '', now: FRI });
+    assert.equal(built.newer.show.id, obNy.id, 'the New York show is the newer side the gate checks');
+    await withFakeBuffer(240, [], async seen => {
+      await assert.rejects(gatePost({ newer: obNy, slim: obSlim, ungated: false, type: 'london-compare' }), /no usable channel/);
+      assert.equal(seen.created.length, 0);
+    });
+  });
+});
