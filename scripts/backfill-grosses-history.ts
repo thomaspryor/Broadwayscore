@@ -29,9 +29,10 @@
  * a gross and 0 performances (the old backfill dropped Previews) and patches
  * only performances, plus seatsOffered where missing, from the matching slug
  * whose gross agrees. --max-weeks N caps one run (fixed weeks drop out of the
- * next run's list), so a 675-week repair fits several CI runs (BRO-4987).
+ * next run's list), so a 675-week repair fits several CI runs; it prints RESUME_AFTER=<week> after each
+ * finished week, so a timed-out run's last line is the next run's --after (BRO-4987).
  *
- * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--refill-gaps] [--recheck-totals] [--refill-preview-perfs [--max-weeks 150]] [--dry-run]
+ * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--refill-gaps] [--recheck-totals] [--refill-preview-perfs [--max-weeks 150] [--after YYYY-MM-DD]] [--dry-run]
  */
 
 import * as fs from 'fs';
@@ -227,7 +228,6 @@ async function backfillHistory(): Promise<void> {
     // the last week the previous one reached (--after) instead of retrying it.
     weeksToDo = (findPreviewPerfWeeks(history) as string[]).filter(w => w > afterWeek).slice(0, maxWeeks);
     console.log(`Refetching ${weeksToDo.length} stored weeks that hold a gross with 0 performances${afterWeek ? ` after ${afterWeek}` : ''}...${dryRun ? ' (DRY RUN)' : ''}`);
-    console.log(`NEXT_AFTER=${weeksToDo.length ? weeksToDo[weeksToDo.length - 1] : 'done'}`);
   } else if (recheckTotals) {
     // Gross findings only: a week merely short a show is --refill-gaps' job.
     // Fetched by Sunday; reconcile finds a BWW-era Monday key itself.
@@ -276,6 +276,8 @@ async function backfillHistory(): Promise<void> {
         if (refillPreviewPerfs) {
           const patched: string[] = patchPreviewPerformances(history.weeks[weekDate], snapshot);
           console.log(`  ✓ ${weekDate}: patched ${patched.length} rows${patched.length ? ` (${patched.join(', ')})` : ''}`);
+          if (patched.length === 0) console.warn(`::warning::backfill-grosses-history: week ${weekDate}: Playbill gave no matching perf count for its 0-performance rows; left as stored.`);
+          console.log(`RESUME_AFTER=${weekDate}`);
           successCount++;
           succeeded = true;
           if (successCount % 3 === 0) save();
