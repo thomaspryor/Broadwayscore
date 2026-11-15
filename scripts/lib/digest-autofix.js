@@ -1667,17 +1667,19 @@ function runCloudFile({
   now = new Date(), budgetMs = CLOUD_FILE_BUDGET_MS, nowMsFn = Date.now,
 } = {}) {
   if (!Array.isArray(plan) || !plan.length) return plan || [];
-  const { hold } = computePersistenceGate(plan, {}, now.getTime(), { openTitles: openLinearTitles });
-  const held = new Set(hold);
+  // BRO-7520 follow-up (owner 2026-11-15: no 3-day wait): visitor-facing rows, warnings included, file
+  // on their first morning. The persistence gate stays the Mac pass's for every other row. now and
+  // openLinearTitles are kept for callers; a row already carded reattaches through fileCard's dedup.
+  void now; void openLinearTitles;
   const startMs = nowMsFn();
   let filed = 0;
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
-    if (held.has(row)) { row.state = 'watching'; continue; }
-    // computePersistenceGate also releases non-visitor rows on the shared clock; those stay the Mac pass's.
+    // Non-visitor rows stay the Mac pass's.
     if (!isVisitorFacingRow(row)) continue;
-    if (filed >= cap) { log(`[digest-autofix] cloud-file cap ${cap} reached; "${row.title}" left for the next run`); continue; }
-    if (nowMsFn() - startMs > budgetMs) { log(`[digest-autofix] cloud-file budget ${budgetMs}ms spent; "${row.title}" left for the next run`); continue; }
+    // Past the cap or budget the row is filed by the next run: it reads 'queued', never "no automatic fix confirmed".
+    if (filed >= cap) { row.state = 'queued'; log(`[digest-autofix] cloud-file cap ${cap} reached; "${row.title}" left for the next run`); continue; }
+    if (nowMsFn() - startMs > budgetMs) { row.state = 'queued'; log(`[digest-autofix] cloud-file budget ${budgetMs}ms spent; "${row.title}" left for the next run`); continue; }
     const res = fileCardFn(row.title, buildCardNotes(row), {
       log, refreshNotesOnReattach: Array.isArray(row.affected), startNow: true, cloudFiled: true, ignoreNumbers: true,
       testId: Array.isArray(row.affected) ? null : (row.testId || null),

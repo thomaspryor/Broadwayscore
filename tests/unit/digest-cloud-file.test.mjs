@@ -35,14 +35,15 @@ test('without the filing step the same fresh row reads "no automatic fix confirm
   assert.equal(ownerFixStatus({ name: 'Test UGC Features' }, plan), NONE);
 });
 
-test('a visitor warning waits for the 60h shared clock; a young one reads watching, not "no automatic fix confirmed"', () => {
+test('visitor warnings file on their first morning, young, old or with an unreadable firstSeen (no 3-day wait)', () => {
   const plan = planFor([], [
-    { name: 'Check Performance Budget', message: 'slow', firstSeen: ago(1) },
+    { name: 'Check Performance Budget', message: 'slow', firstSeen: ago(0) },
     { name: 'Check Old Thing', message: 'x', firstSeen: ago(5) },
+    { name: 'Data quality: stale announced shows', message: 'x', firstSeen: '1970-01-01T00:00:00.000Z' },
   ]);
   const f = fakeFile();
   runCloudFile({ plan, fileCardFn: f.fn, now: NOW });
-  assert.deepEqual(plan.map((r) => r.state), ['watching', 'card-filed']);
+  assert.deepEqual(plan.map((r) => r.state), ['card-filed', 'card-filed', 'card-filed']);
   for (const r of plan) assert.notEqual(ownerFixStatus({ name: r.name }, plan), NONE);
 });
 
@@ -61,7 +62,8 @@ test('cap: at most DISPATCH_CAP new cards a run, the rest stay needs-card', () =
   runCloudFile({ plan, fileCardFn: f.fn, now: NOW });
   assert.equal(f.calls.length, DISPATCH_CAP);
   assert.equal(plan.filter((r) => r.state === 'card-filed').length, DISPATCH_CAP);
-  assert.equal(plan.filter((r) => r.state === 'needs-card').length, 2);
+  assert.equal(plan.filter((r) => r.state === 'queued').length, 2);
+  for (const r of plan) assert.notEqual(ownerFixStatus({ name: r.name }, plan), NONE);
 });
 
 test('budget: rows past the time budget are not filed', () => {
@@ -70,7 +72,7 @@ test('budget: rows past the time budget are not filed', () => {
   const f = fakeFile();
   runCloudFile({ plan, fileCardFn: (...a) => { t += 200000; return f.fn(...a); }, now: NOW, nowMsFn: () => t, budgetMs: 150000 });
   assert.equal(f.calls.length, 1);
-  assert.equal(plan[1].state, 'needs-card');
+  assert.equal(plan[1].state, 'queued');
 });
 
 test('dedup: a reattached card that is already being worked reads tracked and spends no cap slot', () => {
