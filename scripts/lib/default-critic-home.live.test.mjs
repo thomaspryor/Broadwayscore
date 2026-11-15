@@ -4,7 +4,7 @@
 // audit-cross-outlet-attributions.js mint false suspects (BRO-7038: Mark Kennedy at
 // news-tribune). Adding a NEW one fails this test in check-corpus-drift.yml (daily
 // + after every rebuild; non-blocking live-data lane, the corpus is not in test.yml),
-// instead of surfacing as a digest warning on individual rows weeks later. The 6 below pre-date the guard (checked
+// instead of surfacing as a digest warning on individual rows weeks later. The entries below pre-date the guard (checked
 // 2026-11-11, each already carries a multiAuthorNote or sole-source rationale);
 // shrink this list, never grow it. To add one deliberately, prove the critic
 // writes for that outlet and put the evidence in the registry row's note.
@@ -22,11 +22,12 @@ const { reviews } = JSON.parse(readFileSync(path.join(root, 'data', 'reviews.jso
 
 const KNOWN_HOMELESS = new Set([
   'boston-herald|Marilyn Stasio',
+  // BRO-7571: pre-existing default; BRO-7208 (2026-11-15) documented it with a multiAuthorNote (1 of 4 named bylines in review texts; reviews.json has 0 named rows there).
+  'broadstreetreview|Carol Rocamora',
   'cbsnews|Shania Russell',
   'journaltimes|Michael Sommers',
   'lets-go-to-the-theater|Karen Nowosad',
   'sfgate|Lily Janiak',
-  'the-sun|Dominic Maxwell',
 ]);
 
 test('no new registry defaultCritic that the outlet has never published under', () => {
