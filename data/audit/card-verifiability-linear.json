@@ -1,23 +1,13 @@
 {
-  "generatedAt": "2026-11-14T12:29:05.303Z",
-  "total": 379,
-  "armedCount": 354,
-  "refusedCount": 25,
+  "generatedAt": "2026-11-15T12:56:06.430Z",
+  "total": 385,
+  "armedCount": 365,
+  "refusedCount": 20,
   "byKind": {
-    "no-section": 2,
-    "shape": 21,
-    "no-command": 1,
+    "shape": 19,
     "basename": 1
   },
   "refused": [
-    {
-      "id": "BRO-7478",
-      "name": "Opening-night audit 2026-11-14",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7478/opening-night-audit-2026-11-14",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
     {
       "id": "BRO-7477",
       "name": "The Recs bylines land as Unknown: extractor rejects 'The Recs RDC - Name' author meta",
@@ -27,35 +17,11 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-7466",
-      "name": "Recheck: nightly forecast sync step after lo50/hi50 RPC change (BRO-7430)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7466/recheck-nightly-forecast-sync-step-after-lo50hi50-rpc-change-bro-7430",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-7464",
-      "name": "Owner step from BRO-7276: Root cause: \"Stuck pipeline items\" keeps coming back (5 cards in 30 da",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7464/owner-step-from-bro-7276-root-cause-stuck-pipeline-items-keeps-coming",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
       "id": "BRO-7463",
       "name": "Weekly Friday Predict the Score count email, runs in GitHub Actions",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7463/weekly-friday-predict-the-score-count-email-runs-in-github-actions",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/predict-the-score-weekly.test.mjs)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7458",
-      "name": "Orphaned git index-pack fills the container disk (14 GB of tmp_pack_*), crashing the Codex lane",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7458/orphaned-git-index-pack-fills-the-container-disk-14-gb-of-tmp-pack",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/<guard>.test.mjs)",
       "kind": "shape"
     },
     {
@@ -88,14 +54,6 @@
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7381/off-broadway-cast-backfill-is-unscheduled-46-of-130-nyc-previewopen",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -q 'schedule:' .github/workflows/backfill-cast-web.yml)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7376",
-      "name": "Design: opening-night 'reviews still arriving' status on the show page (some reviews in, more expected)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7376/design-opening-night-reviews-still-arriving-status-on-the-show-page",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/review-arrival.test.ts). `node --test tests/unit/review-arrival.test.ts` cannot run under plain node (it cannot resolve this repo's TS imports); use: npx tsx --test tests/unit/review-arrival.test.ts",
       "kind": "shape"
     },
     {
@@ -212,12 +170,30 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 262,
-    "checked": 262,
+    "total": 268,
+    "checked": 268,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-7466",
+      "name": "Recheck: nightly forecast sync step after lo50/hi50 RPC change (BRO-7430)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7466/recheck-nightly-forecast-sync-step-after-lo50hi50-rpc-change-bro-7430",
+      "cmd": "node --test scripts/lib/score-call-forecasts.test.mjs",
+      "missingPaths": [
+        "scripts/lib/score-call-forecasts.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7464",
+      "name": "Owner step from BRO-7276: Root cause: \"Stuck pipeline items\" keeps coming back (5 cards in 30 da",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7464/owner-step-from-bro-7276-root-cause-stuck-pipeline-items-keeps-coming",
+      "cmd": "test -f scripts/check-health-row-absent.test.mjs",
+      "missingPaths": [
+        "scripts/check-health-row-absent.test.mjs"
+      ]
+    },
     {
       "id": "BRO-7459",
       "name": "Orphaned git index-pack fills the container disk, crashing the Codex lane",
@@ -225,15 +201,6 @@
       "cmd": "node --test tests/unit/git-temp-pack-reap.test.mjs",
       "missingPaths": [
         "tests/unit/git-temp-pack-reap.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7342",
-      "name": "Extend the model-retirement audit to Anthropic and Gemini pins (same drift gap OpenAI had)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7342/extend-the-model-retirement-audit-to-anthropic-and-gemini-pins-same",
-      "cmd": "node --test tests/unit/provider-deprecations.test.mjs",
-      "missingPaths": [
-        "tests/unit/provider-deprecations.test.mjs"
       ]
     },
     {
@@ -270,15 +237,6 @@
       "cmd": "node --test tests/unit/validate-data-ibdb-blocking.test.mjs",
       "missingPaths": [
         "tests/unit/validate-data-ibdb-blocking.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7254",
-      "name": "Closing Watch: better break-even estimates for shows with no published running cost",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7254/closing-watch-better-break-even-estimates-for-shows-with-no-published",
-      "cmd": "node --test scripts/closing-watch-breakeven.test.mjs",
-      "missingPaths": [
-        "scripts/closing-watch-breakeven.test.mjs"
       ]
     },
     {
