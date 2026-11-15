@@ -563,5 +563,19 @@
       }
     ],
     "queuedAt": "2026-11-15T18:21:10.793Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 7 review(s) flagged for anchored re-score (still open — BRO-6121)",
+    "description": "Still firing after 31 notifications since it was filed. Tracked at BRO-6121.\n\n{\"unanchored\":7} across the whole corpus, by market {\"broadway\":96,\"west-end\":131,\"regional\":36,\"tour\":8}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] the-thanksgiving-play-2023/nyt-theater--jonathan-mandell.json A band 89-94\n- [unanchored] once-on-this-island-2017/bobs-theater-blog--robert-sholiton.json B+ band 77-82\n- [unanchored] m-butterfly-2017/bobs-theater-blog--robert-sholiton.json C+ band 59-64\n- [unanchored] desire-under-the-elms-off-west-end-2026/rolandcat--roviews.json 3/5 stars band 51-70\n- [unanchored] mlimas-tale-off-broadway-2018/bobs-theater-blog--robert-sholiton.json B- band 65-70\n- [unanchored] everybody-off-broadway-2017/bobs-theater-blog--robert-sholiton.json C- band 47-52\n- [unanchored] henry-iv-off-broadway-2015/huffpost--michael-giltz.json A band 89-94",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6121",
+    "fields": [],
+    "queuedAt": "2026-11-15T19:12:49.313Z"
   }
 ]
