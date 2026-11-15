@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-08T18:42:59.346Z",
-  "totalFindings": 65,
+  "generatedAt": "2026-11-15T19:37:04.493Z",
+  "totalFindings": 67,
   "findings": [
     {
       "currentShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
@@ -557,6 +557,20 @@
       "signals": [
         "publish-date-mismatch",
         "days-from-own:1424",
+        "days-from-closer:93",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/my-sons-a-queer-but-what-can-you-do-west-end-2026/gay-times--chris-selman.json",
+      "url": "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-t",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "suggestedShowId": "my-sons-a-queer-but-what-can-you-do-west-end-2023",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1424",
         "days-from-closer:93"
       ],
       "reviewFile": "data/review-texts/my-sons-a-queer-but-what-can-you-do-west-end-2026/london-theatre--matt-wolf.json",
@@ -667,6 +681,19 @@
       ],
       "reviewFile": "data/review-texts/operation-mincemeat-west-end-2024/the-recs--unknown.json",
       "url": "https://therecs.co.uk/operation-mincemeat-touring/",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "operation-mincemeat-west-end-2024",
+      "suggestedShowId": "operation-mincemeat-tour-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1282",
+        "days-from-closer:52"
+      ],
+      "reviewFile": "data/review-texts/operation-mincemeat-west-end-2024/thereviewshub--lauren-humphreys.json",
+      "url": "https://www.thereviewshub.com/operation-mincemeat-theatre-royal-glasgow/",
       "reason": "publish-date"
     },
     {

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-08T18:47:56.440Z",
-  "totalScanned": 80580,
+  "generatedAt": "2026-11-15T19:43:31.768Z",
+  "totalScanned": 82269,
   "findings": [
     {
       "from": "1984-2017",
@@ -2980,7 +2980,7 @@
         "title": "Cinderella",
         "venue": "Lyric Hammersmith Theatre",
         "openingDate": "2026-11-21",
-        "status": "upcoming",
+        "status": "previews",
         "category": "off-west-end"
       },
       "toShow": {
@@ -3013,7 +3013,7 @@
         "title": "Cinderella",
         "venue": "Lyric Hammersmith Theatre",
         "openingDate": "2026-11-21",
-        "status": "upcoming",
+        "status": "previews",
         "category": "off-west-end"
       },
       "toShow": {
@@ -5829,6 +5829,37 @@
       "confirm": false
     },
     {
+      "from": "othello-bedlam-off-broadway-2026",
+      "to": "othello-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "slug": "Review-Roundup-Four-Person-OTHELLO-Opens-at-Bedlam-20260508",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Four-Person-OTHELLO-Opens-at-Bedlam-20260508",
+      "fromTokens": "othello|bedlam",
+      "toTokens": "othello",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Othello (Bedlam)",
+        "venue": "West End Theatre",
+        "openingDate": "2026-11-07",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Othello",
+        "venue": "Richard Rodgers Amphitheater",
+        "openingDate": "2026-07-05",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
       "from": "other-desert-cities-2026",
       "to": "other-off-broadway-2025",
       "file": "amny--matt-windman.json",
@@ -8308,6 +8339,39 @@
       "slug": "Review-Roundup-TINA--THE-TINA-TURNER-MUSICAL-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20191107",
       "source": "bww",
       "url": "https://www.nytimes.com/2019/11/07/theater/tina-turner-musical-review.html",
+      "fromTokens": "tina",
+      "toTokens": "tina|turner",
+      "articleYear": 2019,
+      "toYearGap": 1,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Tina",
+        "venue": "Lunt-Fontanne Theatre",
+        "openingDate": "2019-11-07",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Tina: The Tina Turner Musical",
+        "venue": "Aldwych Theatre",
+        "openingDate": "2018-04-17",
+        "status": "closed",
+        "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "tina-2019",
+      "to": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "observer--david-cote.json",
+      "slug": "Review-Roundup-TINA--THE-TINA-TURNER-MUSICAL-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20191107",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-TINA--THE-TINA-TURNER-MUSICAL-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20191107",
       "fromTokens": "tina",
       "toTokens": "tina|turner",
       "articleYear": 2019,
