@@ -186,6 +186,7 @@ function checkDailyCostBreach(runs, { now = new Date(), thresholdUsd } = {}) {
 /** Shared by both scoring writers and the daily spend check. Injection keeps tests offline. */
 async function reportRollingCostAlerts(runs, {
   now = new Date(), thresholdUsd = loadCostThresholdUsd(undefined, 'llmScoringDailyUsd'),
+  runThresholdUsd = loadCostThresholdUsd(),
   dryRun = false, routeAlert, resolveCondition,
 } = {}) {
   const daily = checkDailyCostBreach(runs, { now, thresholdUsd });
@@ -219,6 +220,28 @@ async function reportRollingCostAlerts(runs, {
       });
     } catch (err) {
       console.error(`[llm-scoring] ${daily.conditionKey} resolution failed (non-fatal): ${err.message}`);
+    }
+  }
+  // BRO-7395: the per-run alarm shares one condition across GitHub runs.
+  // A cheap invocation alone cannot clear it. Require a full 24h of retained
+  // history, fresh summaries, and no cumulative breach among runs active in
+  // that window. Include their older invocations so a late drain cannot hide
+  // earlier spend. Unknown costs/IDs cannot establish recovery.
+  if (!dryRun && recoveryEvidence && Number.isFinite(runThresholdUsd) && runThresholdUsd > 0
+      && runs.some(r => Date.parse(r.completedAt) <= end - DAY_MS)) {
+    const runIds = new Set(recent.map(r => r.runId));
+    const complete = [...runIds].every(id => typeof id === 'string' && id.trim())
+      && runs.filter(r => runIds.has(r.runId)).every(r => Number.isFinite(r.costUsd) && r.costUsd >= 0);
+    const totals = [...runIds].map(id => sumCostUsdForRun(runs, id));
+    const maxUsd = Math.max(...totals);
+    if (complete && maxUsd <= runThresholdUsd) {
+      try {
+        await (resolveCondition || require('./owner-alert-router').resolveCondition)(COST_BREACH_CONDITION_KEY, {
+          reason: `All ${runIds.size} GitHub runs active in the last 24h are at or below the $${runThresholdUsd.toFixed(2)} per-run alarm line (largest cumulative cost $${maxUsd.toFixed(2)}).`,
+        });
+      } catch (err) {
+        console.error(`[llm-scoring] ${COST_BREACH_CONDITION_KEY} resolution failed (non-fatal): ${err.message}`);
+      }
     }
   }
   for (const alert of alerts) {

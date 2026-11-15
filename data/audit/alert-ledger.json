@@ -12917,7 +12917,7 @@
       "resolveReason": "absent"
     },
     "llm-scoring:cost-breach": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "LLM scoring spend over budget",
       "firstSeen": "2026-10-07T13:20:33.805Z",
@@ -12928,7 +12928,9 @@
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-7395",
-      "silentRefires": 14
+      "silentRefires": 14,
+      "resolvedAt": "2026-11-15T02:57:36.187Z",
+      "resolveReason": "All 27 GitHub runs active in the last 24h are at or below the $6.00 per-run alarm line (largest cumulative cost $1.57)."
     },
     "mezzanine:session-token-expired": {
       "status": "resolved",
