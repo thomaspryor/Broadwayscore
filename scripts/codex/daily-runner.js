@@ -8,7 +8,7 @@
  *
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
  *        [--max-minutes 105] [--max-weekly-pct 60] [--no-land] [--dry-run]
- *        [--check-max-usd 2] [--check-budget-usd 10] [--card-max-minutes 120]
+ *        [--check-max-usd 4] [--check-budget-usd 10] [--card-max-minutes 120]
  *        [--hard-stop-minutes 112] [--slots 3] [--lane cloud|gha]
  *   node scripts/codex/daily-runner.js --lock-status [--lane cloud|gha|all]   (exit 0 free, 3 a live run holds it, 4 unreadable)
  *   node scripts/codex/daily-runner.js --pr N [--head-sha SHA] [--no-land] [--retry]
@@ -110,7 +110,7 @@ const OPTS = {
   dryRun: process.argv.includes('--dry-run'),
   // The Claude check bills per review when run outside a subscription session (Actions):
   // each review stops at --check-max-usd, the run stops picking cards at --check-budget-usd.
-  checkMaxUsd: Number(arg('check-max-usd', 2)),
+  checkMaxUsd: Number(arg('check-max-usd', 4)),
   // auto: Sonnet for a small low-risk diff, Opus otherwise (R.checkModel, BRO-5384); opus|sonnet forces one.
   checkModel: ['opus', 'sonnet'].includes(arg('check-model', 'auto')) ? arg('check-model', 'auto') : 'auto',
   checkBudgetUsd: Number(arg('check-budget-usd', 10)),

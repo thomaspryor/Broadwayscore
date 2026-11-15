@@ -133,7 +133,7 @@ jobs:
           # The cloud lane has no repo vars: the owner file's killSwitch (read from origin/main) covers every lane.
           CODEX_TRUST_LADDER_DISABLED: ${{ vars.CODEX_LADDER_DISABLED }}
           # BRO-7522: the runner appends each Claude check's cost here; the usage-ledger job below commits it.
-          GEMINI_USAGE_LEDGER_PATH: ${{ runner.temp }}/codex-check-usage.jsonl
+          CODEX_CHECK_USAGE_AUTH_PATH: ${{ runner.temp }}/codex-check-usage.jsonl
         run: |
           # Until the owner adds the CODEX_AUTH_KEY secret the login cannot be opened here;
           # skip instead of failing five times a day. Adding the secret starts the runner.
@@ -181,6 +181,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
 
       - name: Download Claude check usage
         uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5

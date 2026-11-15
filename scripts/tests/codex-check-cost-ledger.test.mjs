@@ -41,7 +41,7 @@ test('an unreadable cost is null, never zero', () => {
 test('the runner records every check and keeps the measured-safe caps', () => {
   const src = fs.readFileSync(new URL('../codex/daily-runner.js', import.meta.url), 'utf8');
   assert.match(src, /recordClaudeCheck\(\{ model, costUsd: out\.costUsd/);
-  assert.match(src, /arg\('check-max-usd', 2\)/);
+  assert.match(src, /arg\('check-max-usd', 4\)/);
   assert.match(src, /arg\('check-budget-usd', 10\)/);
 });
 
@@ -68,5 +68,30 @@ test('the workflow commits the ledger from a separate contents:write job, not th
   const y = fs.readFileSync(new URL('../../.github/workflows/codex-runner.yml', import.meta.url), 'utf8');
   assert.match(y, /^permissions:\n {2}contents: read/m);
   assert.match(y, /usage-ledger:[\s\S]*permissions:\n {6}contents: write[\s\S]*merge-check-usage\.js/);
-  assert.match(y, /GEMINI_USAGE_LEDGER_PATH: \$\{\{ runner\.temp \}\}\/codex-check-usage\.jsonl/);
+  assert.match(y, /CODEX_CHECK_USAGE_AUTH_PATH: \$\{\{ runner\.temp \}\}\/codex-check-usage\.jsonl/);
+  assert.match(y, /usage-ledger:[\s\S]*ref: main/);
+});
+
+test('forged rows: old timestamps, other run ids and inflated totals are bounded; a re-run is not double counted', () => {
+  const now = Date.now();
+  const mk = (o) => JSON.stringify({ provider: 'anthropic', ts: new Date(now).toISOString(), model: 'opus', costUsd: 1, runId: '1', ...o });
+  const old = mk({ ts: new Date(now - 30 * 3600_000).toISOString() });
+  assert.equal(M.sanitizeRow(old, { nowMs: now, runId: '77' }), null);
+  assert.equal(M.sanitizeRow(mk({}), { nowMs: now, runId: '77' }).runId, '77');
+  const many = Array.from({ length: 100 }, () => mk({ costUsd: 20 })).join('\n');
+  assert.ok(M.sanitizeFile(many, { runId: '77' }).length <= 2); // $40 total cap
+  const ledger = JSON.stringify(M.sanitizeRow(mk({}), { nowMs: now, runId: '77' }));
+  assert.equal(M.alreadyMerged(ledger, '77'), true);
+  assert.equal(M.alreadyMerged(ledger, '78'), false);
+});
+
+test('the scratch path var is scrubbed from Codex and reviewer shells', () => {
+  assert.equal(R.keepEnvVar('CODEX_CHECK_USAGE_AUTH_PATH'), false);
+  assert.equal(R.keepEnvVar('CODEX_CHECK_USAGE_AUTH_PATH', { reviewer: true }), false);
+});
+
+test('a row with object-valued fields is dropped, not a crash', () => {
+  const bad = '{"provider":"anthropic","ts":{"toString":null},"model":"opus","costUsd":{"valueOf":null}}';
+  assert.equal(M.sanitizeRow(bad, { runId: '1' }), null);
+  assert.deepEqual(M.sanitizeFile(bad + '\n' + bad, { runId: '1' }), []);
 });
