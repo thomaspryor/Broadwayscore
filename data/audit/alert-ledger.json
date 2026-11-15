@@ -21951,12 +21951,13 @@
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
       "incidentOpenedAt": "2026-11-06T18:45:30.510Z",
-      "lastSeen": "2026-11-15T18:21:10.793Z",
+      "lastSeen": "2026-11-15T20:54:07.739Z",
       "lastNotifiedAt": "2026-11-15T18:21:10.793Z",
       "lastSurfacedAt": "2026-11-15T18:21:10.793Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-fulltext-mentions-show:short:triumph-off-west-end-2026": {
       "status": "resolved",
@@ -24666,7 +24667,7 @@
       "resolveReason": "latest run no longer failing"
     },
     "cron-health-failed:Update Lottery/Rush": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
       "firstSeen": "2026-10-22T16:27:21.287Z",
@@ -24676,7 +24677,9 @@
       "lastSurfacedAt": "2026-11-11T19:07:08.629Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-15T20:54:07.770Z",
+      "resolveReason": "latest run no longer failing"
     },
     "land:land/bro-5951-crossmodel-audit": {
       "status": "resolved",
@@ -35467,7 +35470,7 @@
       "resolveReason": "latest run no longer failing"
     },
     "cron-health:Replay Push Rescue": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Replay Push Rescue",
@@ -35478,7 +35481,8 @@
       "lastSurfacedAt": "2026-11-13T19:02:35.559Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-15T20:54:08.033Z"
     },
     "land:land/bro-6743-gather-unreported-shards": {
       "status": "resolved",
@@ -36145,7 +36149,7 @@
       "resolveReason": "absent"
     },
     "cron-health-chronic:Replay Push Rescue": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Replay Push Rescue",
       "firstSeen": "2026-11-02T21:15:33.632Z",
@@ -36156,7 +36160,8 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-7493",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-15T20:54:08.060Z"
     },
     "land:land/bro-6857": {
       "status": "resolved",
@@ -37898,7 +37903,7 @@
       "resolvedAt": "2026-11-05T18:50:18.196Z"
     },
     "cron-health-failed:Enrich Off-Broadway Dates": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Enrich Off-Broadway Dates",
       "firstSeen": "2026-11-05T19:19:28.467Z",
@@ -37908,7 +37913,9 @@
       "lastSurfacedAt": "2026-11-11T19:07:08.599Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-15T20:54:07.770Z",
+      "resolveReason": "latest run no longer failing"
     },
     "opening-night-cv-wrongproduction-unhandled-king-lear-off-broadway-2026": {
       "status": "resolved",
