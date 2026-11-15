@@ -109,8 +109,36 @@ jobs:
           # BRO-6132: the bucket lock refuses overwrites for 90 days, so every run and
           # re-run attempt writes to its own folder and nothing writes a fixed key.
           PREFIX="weekly/${STAMP}/run-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          # BRO-7541: run 43720364363 uploaded the 1.4G texts bundle fully, then died on
+          # AWS_ERROR_HTTP_RESPONSE_FIRST_BYTE_TIMEOUT waiting for R2's final reply, with no retry.
+          # Finite read timeout + up to 3 attempts per file. Before retrying, head-object the key:
+          # if R2 already holds it at the right size the earlier attempt landed, so never rewrite
+          # (the lock refuses overwrites). Only adds data; nothing is deleted.
           for f in *.bundle.gpg MANIFEST.sha256; do
-            aws s3 cp "$f" "s3://${R2_BUCKET}/${PREFIX}/$f" --endpoint-url "$R2_ENDPOINT"
+            KEY="${PREFIX}/$f"
+            WANT=$(stat -c %s "$f")
+            for attempt in 1 2 3; do
+              if aws s3 cp "$f" "s3://${R2_BUCKET}/${KEY}" --endpoint-url "$R2_ENDPOINT" \
+                   --cli-read-timeout 900 --cli-connect-timeout 60; then
+                break
+              fi
+              HAVE=$(aws s3api head-object --bucket "$R2_BUCKET" --key "$KEY" --endpoint-url "$R2_ENDPOINT" \
+                       --query ContentLength --output text 2>/dev/null || echo none)
+              if [ "$HAVE" = "$WANT" ]; then
+                echo "::notice::$f already in R2 at the expected size ($WANT bytes) after attempt $attempt; not rewriting"
+                break
+              fi
+              if [ "$HAVE" != "none" ]; then
+                echo "::error::$f exists in R2 with size $HAVE, expected $WANT; refusing to overwrite the locked key"
+                exit 1
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "::error::upload of $f failed after 3 attempts"
+                exit 1
+              fi
+              echo "::warning::upload of $f failed (attempt $attempt); retrying in 30s"
+              sleep 30
+            done
           done
           echo "Uploaded to s3://${R2_BUCKET}/${PREFIX}/"
 

@@ -13,6 +13,25 @@
 const FAILED_PREFIX = 'cron-health-failed:';
 const QUERY_FAILED_KEY = 'cron-health:query-failed';
 
+// BRO-7541: a backup whose latest run failed is not "a cron warning". R2 Cold Backup failed
+// for 7 days and only reached the digest (severity warning), and Replay Push Rescue sat as a
+// P3 backlog card. A backup that quietly stops is how you discover it at restore time, so a
+// failed run of any of these files a tracked card (severity error, disposition auto).
+// Names must match the `name` field of the CRITICAL_CRONS entries in check-cron-health.yml;
+// tests/unit/cron-health-backup-escalation.test.mjs fails if a backup workflow is missing here.
+const BACKUP_CRON_NAMES = ['R2 Cold Backup', 'Supabase Backup to R2', 'Backup Restore Drill'];
+const BACKUP_FAILED_PREFIX = 'cron-health-backup-failed:';
+
+function backupFailureEscalations(warningsText, names = BACKUP_CRON_NAMES) {
+  const wanted = new Set(names);
+  return parseCronWarnings(warningsText)
+    .filter((c) => c.conditionKey.startsWith(FAILED_PREFIX) && wanted.has(c.conditionKey.slice(FAILED_PREFIX.length)))
+    .map((c) => {
+      const name = c.conditionKey.slice(FAILED_PREFIX.length);
+      return { conditionKey: `${BACKUP_FAILED_PREFIX}${name}`, name, title: `Backup failed: ${name}`, description: c.description };
+    });
+}
+
 function parseCronWarnings(text) {
   const out = [];
   const seen = new Set();
@@ -44,8 +63,8 @@ function parseCronWarnings(text) {
 function recoveredFailureKeys(ledgerConditions, currentKeys) {
   const current = new Set(currentKeys || []);
   return Object.entries(ledgerConditions || {})
-    .filter(([key, c]) => (key.startsWith(FAILED_PREFIX) || key === QUERY_FAILED_KEY) && c && c.status === 'open' && !current.has(key))
+    .filter(([key, c]) => (key.startsWith(FAILED_PREFIX) || key.startsWith(BACKUP_FAILED_PREFIX) || key === QUERY_FAILED_KEY) && c && c.status === 'open' && !current.has(key))
     .map(([key]) => key);
 }
 
-module.exports = { parseCronWarnings, recoveredFailureKeys, FAILED_PREFIX, QUERY_FAILED_KEY };
+module.exports = { parseCronWarnings, recoveredFailureKeys, backupFailureEscalations, BACKUP_CRON_NAMES, FAILED_PREFIX, BACKUP_FAILED_PREFIX, QUERY_FAILED_KEY };

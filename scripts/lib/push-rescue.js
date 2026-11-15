@@ -240,6 +240,23 @@ function gitOk(args, opts) {
   if (r.status !== 0) throw new Error(`git ${args.join(' ')} failed: ${(r.stderr || '').trim().slice(0, 400)}`);
   return r.stdout;
 }
+// BRO-7541: `git fetch` into a shallow clone fails with "shallow file has changed since we
+// read it" when a background gc/maintenance rewrites .git/shallow mid-fetch. That sank the
+// 2026-11-12..15 replay runs and made prune refuse every branch. Retry transient failures.
+const TRANSIENT_GIT_RE = /shallow file has changed|could not read from remote|unable to access|early EOF|RPC failed|Connection (reset|timed out)|remote end hung up|HTTP (429|500|502|503|504)/i;
+const isTransientGitError = (msg) => TRANSIENT_GIT_RE.test(String(msg || ''));
+function retryFetch(args, opts, { attempts = 3, backoffMs = 2000, run = gitOk, sleep = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms) } = {}) {
+  let lastErr;
+  for (let i = 1; i <= attempts; i++) {
+    try { return run(['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', 'fetch', ...args], opts); }
+    catch (e) {
+      lastErr = e;
+      if (i === attempts || !isTransientGitError(e.message)) throw e;
+      sleep(backoffMs * i);
+    }
+  }
+  throw lastErr;
+}
 const netTimeoutMs = () => (Number(process.env.GIT_NET_TIMEOUT_SEC) || 60) * 1000;
 const annotate = (s) => String(s).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
 
@@ -279,11 +296,11 @@ function blobAt(rev, p) {
 }
 
 function replayOne({ sha, ref, info }, claimed, mainWins = false) {
-  gitOk(['fetch', '--no-tags', '--depth=1', 'origin', sha, info.base], { timeout: netTimeoutMs() * 2 });
+  retryFetch(['--no-tags', '--depth=1', 'origin', sha, info.base], { timeout: netTimeoutMs() * 2 });
   const baseTime = Number(gitOk(['show', '-s', '--format=%ct', info.base]).trim());
   // Main's history since the rescue's base, so a path a later commit
   // drained or moved is seen as touched instead of absent.
-  gitOk(['fetch', '--no-tags', `--shallow-since=${new Date((baseTime - 3600) * 1000).toISOString()}`, 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 3 });
+  retryFetch(['--no-tags', `--shallow-since=${new Date((baseTime - 3600) * 1000).toISOString()}`, 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 3 });
   const rows = parseNameStatusZ(gitOk(['diff', '--name-status', '-z', '--no-renames', info.base, sha]));
   const adds = recoverableAdds(rows);
   const modified = rows.filter((r) => !(r.status === 'A' && isRecoverablePath(r.path))).map((r) => r.path);
@@ -369,7 +386,7 @@ function prunable(manifest, blobOnMain) {
 function cliPrune(args) {
   const manifestPath = (args.find((a) => a.startsWith('--manifest=')) || '').slice('--manifest='.length);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  gitOk(['fetch', '--no-tags', '--depth=1', 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 2 });
+  retryFetch(['--no-tags', '--depth=1', 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 2 });
   const ok = prunable(manifest, (p) => blobAt('origin/main', p));
   for (const r of ok) {
     // Delete only the tip this replay read (a branch that moved since is kept for the next run).
@@ -410,7 +427,7 @@ function cliPrune(args) {
   }
 }
 
-module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY };
+module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY, retryFetch, isTransientGitError };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);
