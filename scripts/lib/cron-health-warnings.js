@@ -22,16 +22,6 @@ const QUERY_FAILED_KEY = 'cron-health:query-failed';
 const BACKUP_CRON_NAMES = ['R2 Cold Backup', 'Supabase Backup to R2', 'Backup Restore Drill'];
 const BACKUP_FAILED_PREFIX = 'cron-health-backup-failed:';
 
-function backupFailureEscalations(warningsText, names = BACKUP_CRON_NAMES) {
-  const wanted = new Set(names);
-  return parseCronWarnings(warningsText)
-    .filter((c) => c.conditionKey.startsWith(FAILED_PREFIX) && wanted.has(c.conditionKey.slice(FAILED_PREFIX.length)))
-    .map((c) => {
-      const name = c.conditionKey.slice(FAILED_PREFIX.length);
-      return { conditionKey: `${BACKUP_FAILED_PREFIX}${name}`, name, title: `Backup failed: ${name}`, description: c.description };
-    });
-}
-
 function parseCronWarnings(text) {
   const out = [];
   const seen = new Set();
@@ -52,6 +42,27 @@ function parseCronWarnings(text) {
     if (seen.has(conditionKey)) continue;
     seen.add(conditionKey);
     out.push({ conditionKey, title, description: line });
+  }
+  return out;
+}
+
+function backupFailureEscalations(warningsText, names = BACKUP_CRON_NAMES) {
+  const wanted = new Set(names);
+  const out = [];
+  const seen = new Set();
+  const push = (name, description) => {
+    if (!wanted.has(name) || seen.has(name)) return;
+    seen.add(name);
+    out.push({ conditionKey: `${BACKUP_FAILED_PREFIX}${name}`, name, title: `Backup failed: ${name}`, description });
+  };
+  for (const c of parseCronWarnings(warningsText)) {
+    if (c.conditionKey.startsWith(FAILED_PREFIX)) push(c.conditionKey.slice(FAILED_PREFIX.length), c.description);
+  }
+  // Stale backups use a distinct line so the digest does not call them "not yet stale".
+  for (const raw of String(warningsText || '').split('\n')) {
+    const line = raw.replace(/^\s*⚠️\s*/u, '').trim();
+    const m = line.match(/^(.+?): Stale backup, latest run /);
+    if (m) push(m[1].trim(), line);
   }
   return out;
 }

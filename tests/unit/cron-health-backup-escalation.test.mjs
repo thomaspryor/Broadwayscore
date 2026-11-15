@@ -35,6 +35,10 @@ test('recovery resolves backup keys, and still-failing ones are not treated as r
   assert.deepEqual(recoveredFailureKeys(ledger, [`${BACKUP_FAILED_PREFIX}R2 Cold Backup`]), []);
 });
 
-test('a stale backup whose latest run failed still emits the failure line (no false recovery)', () => {
-  assert.match(wf, /LATEST_ANY" = "failure" \] && printf '%s' "\$name" \| grep -qi backup/);
+test('stale-backup marker escalates the card but is NOT routed by the digest as "not yet stale"', () => {
+  const { parseCronWarnings } = require('../../scripts/lib/cron-health-warnings.js');
+  const w = '⚠️ R2 Cold Backup: Stale backup, latest run cancelled (last success 200h ago)';
+  assert.deepEqual(backupFailureEscalations(w).map((c) => c.name), ['R2 Cold Backup']);
+  assert.equal(parseCronWarnings(w).length, 0);
+  assert.match(wf, /\^\(failure\|cancelled\|timed_out\)\$/);
 });
