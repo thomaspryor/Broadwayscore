@@ -16,9 +16,10 @@ function findFlattenedApostropheClasses(src) {
   String(src).split('\n').forEach((l, i) => {
     const t = l.trim();
     if (t.startsWith('//') || t.startsWith('*') || t.startsWith('/*')) return;
+    const code = l.replace(/\s\/\/.*$/, ''); // drop a trailing // comment
     const re = /\/\[((?:\\.|[^\]\\\n])*)\]/g;
     let m;
-    while ((m = re.exec(l))) {
+    while ((m = re.exec(code))) {
       if (/''/.test(m[1]) && !CURLY.test(m[1])) hits.push({ line: i + 1, text: t.slice(0, 160) });
     }
   });

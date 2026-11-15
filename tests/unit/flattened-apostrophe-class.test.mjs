@@ -19,6 +19,7 @@ test('detector: flattened classes flagged, curly or escaped classes and comments
   assert.equal(find(".replace(/['’]/g, '')").length, 0);
   assert.equal(find(".replace(/['\\u2018\\u2019]/g, '')").length, 0);
   assert.equal(find("// the old regex was /['']/g").length, 0);
+  assert.equal(find("foo(); // was /['']/g").length, 0);
   assert.equal(find(".replace(/[^a-z']/g, '')").length, 0);
 });
 
@@ -27,9 +28,11 @@ test('Show Score title match: curly and straight apostrophes match (It’s A Won
   assert.equal(M.normalizeTitle('It’s'), M.normalizeTitle("It's"));
   assert.equal(M.slugifyTitle('It’s A Wonderful Life'), 'it-s-a-wonderful-life');
   assert.equal(M.titlesMatch('Hamilton', 'Wicked'), false);
+  assert.equal(M.slugifyTitle("Doll's House"), 'doll-s-house');
+  assert.equal(M.normalizeTitle('\u201CHello\u201D'), 'hello');
 });
 
-test('repo scan: no file has more flattened apostrophe classes than its baseline', () => {
+test('repo scan: each file has exactly its baseline count (new sites fail; fixed sites must shrink the baseline)', () => {
   const files = execFileSync('git', ['ls-files', 'scripts/*.js', 'scripts/*.mjs', 'scripts/*.ts', 'src/*.ts', 'src/*.tsx', 'src/*.js'], { cwd: ROOT, encoding: 'utf8' }).trim().split('\n');
   const over = [];
   for (const f of files) {
@@ -37,6 +40,7 @@ test('repo scan: no file has more flattened apostrophe classes than its baseline
     if (!fs.existsSync(p)) continue;
     const hits = find(fs.readFileSync(p, 'utf8'));
     if (hits.length > (BASE[f] || 0)) over.push(`${f}: ${hits.length} (baseline ${BASE[f] || 0}) e.g. line ${hits[0].line}: ${hits[0].text}`);
+    else if (hits.length < (BASE[f] || 0)) over.push(`${f}: ${hits.length} but baseline says ${BASE[f]}; lower it in scripts/lib/flattened-apostrophe-class-baseline.json`);
   }
   assert.deepEqual(over, [], `write curly apostrophes as \\u2018\\u2019 escapes:\n${over.join('\n')}`);
 });

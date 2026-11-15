@@ -3,11 +3,11 @@
  * (CLAUDE.md §15). BRO-7357: the apostrophe classes used to read /['']/ (two ASCII quotes, the curly one lost
  * to an editor), so "It’s A Wonderful Life" never matched Show Score's "It's a Wonderful Life" and the page
  * was rejected as a title mismatch. Curly quotes are written as \u escapes so they cannot be flattened again;
- * scripts/audit-flattened-apostrophe-class.js fails CI on any new /['']/-style class.
+ * tests/unit/flattened-apostrophe-class.test.mjs fails CI on any new /['']/-style class.
  */
 'use strict';
 
-const APOS = /['‘’ʼ]/g;
+const APOS = /['\u2018\u2019\u02BC]/g;
 
 /** Slugify a show title for Show Score URL patterns. */
 function slugifyTitle(title) {
@@ -30,7 +30,7 @@ function normalizeTitle(title) {
     .replace(/\s*\(west end\)\s*/i, '')      // Strip "(West End)"
     .replace(/\s*\(.*?\)\s*$/, '')           // Strip trailing parenthetical
     .replace(APOS, '')                        // Strip apostrophes, straight or curly
-    .replace(/["“”:,.!?]/g, '')    // Strip other punctuation
+    .replace(/["\u201C\u201D:,.!?]/g, '')    // Strip other punctuation
     .replace(/\s+/g, ' ')
     .trim();
 }
