@@ -345,10 +345,19 @@ function extractTimesBody(html) {
   const endM = html.slice(startM.index).match(/data-testid="article-comments"/);
   const region = html.slice(startM.index, startM.index + (endM ? endM.index : 60000));
   const uuidId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  const paras = [...region.matchAll(/<p[^>]*\bid="([^"]*)"[^>]*>([\s\S]*?)<\/p>/g)]
+  const clean = (t) => t.length > 40 && /[a-z]/i.test(t);
+  let paras = [...region.matchAll(/<p[^>]*\bid="([^"]*)"[^>]*>([\s\S]*?)<\/p>/g)]
     .filter((m) => uuidId.test(m[1]))
     .map((m) => stripHtml(m[2]))
-    .filter((t) => t.length > 40 && /[a-z]/i.test(t));
+    .filter(clean);
+  // BRO-7569: the 2026 WordPress template drops the uuid ids and marks the body
+  // `<p class="wp-block-paragraph">`. Every new Times review read "likely logged out"
+  // (the extractor returned null), which is why 36 Times UK reviews stayed excerpts.
+  if (!paras.length) {
+    paras = [...region.matchAll(/<p[^>]*\bclass="[^"]*\bwp-block-paragraph\b[^"]*"[^>]*>([\s\S]*?)<\/p>/g)]
+      .map((m) => stripHtml(m[1]))
+      .filter(clean);
+  }
   const body = paras.join('\n\n');
   return body.length >= 300 ? body : null;
 }
