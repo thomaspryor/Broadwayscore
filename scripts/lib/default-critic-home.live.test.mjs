@@ -6,7 +6,7 @@
 // + after every rebuild; non-blocking live-data lane, the corpus is not in test.yml),
 // instead of surfacing as a digest warning on individual rows weeks later. The entries below pre-date the guard (checked
 // 2026-11-11, each already carries a multiAuthorNote or sole-source rationale);
-// shrink this list, never grow it. To add one deliberately, prove the critic
+// shrink this list; grow it only for a documented exception (see BRO-7571). To add one deliberately, prove the critic
 // writes for that outlet and put the evidence in the registry row's note.
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -22,7 +22,7 @@ const { reviews } = JSON.parse(readFileSync(path.join(root, 'data', 'reviews.jso
 
 const KNOWN_HOMELESS = new Set([
   'boston-herald|Marilyn Stasio',
-  // BRO-7571: pre-existing default; BRO-7208 (2026-11-15) documented it with a multiAuthorNote (1 of 4 named bylines in review texts; reviews.json has 0 named rows there).
+  // BRO-7571 (documented exception to shrink-only): BRO-7208 (2026-11-15) marked the outlet multiAuthor, so critic-fill-rules.js stopped filling blank bylines with this default; reviews.json now has 0 Rocamora rows here (1 of 4 named bylines per the registry multiAuthorNote). Kept for audit-multiauthor-attributions.js.
   'broadstreetreview|Carol Rocamora',
   'cbsnews|Shania Russell',
   'journaltimes|Michael Sommers',
