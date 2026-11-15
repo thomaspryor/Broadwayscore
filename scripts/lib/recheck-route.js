@@ -141,6 +141,8 @@ function selectRewatchTargets({ ledgerEntries, now = Date.now(), limit = MAX_REW
   const latest = new Map();
   for (const e of ledgerEntries || []) {
     if (!e || e.event !== 'recheck' || !e.cardId || e.skip) continue;
+    // An env-cause row (could not run here) says nothing about the card, so it must not hide an earlier real fail.
+    if (recheckVerdict(e, { tsxTests }).envCause) continue;
     latest.set(e.cardId, e); // ledger is append-ordered: last wins, even outside the look-back
   }
   const routed = alreadyRouted(ledgerEntries, { now, coverKnown: !!coverIndex });
