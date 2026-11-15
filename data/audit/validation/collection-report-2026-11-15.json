@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-15T07:43:50.466Z",
+  "runDate": "2026-11-15T07:55:21.633Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 52,
+    "failed": 51,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -44,18 +44,18 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 52,
+    "totalFailed": 51,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 52,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 51,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
     "processed": 0,
-    "failed": 52,
+    "failed": 51,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
@@ -77,7 +77,6 @@
       "macbeth-2008",
       "mary-jane-2024",
       "motown-the-musical-2013",
-      "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
       "picnic-2013",
       "ragtime-2009",
@@ -119,7 +118,6 @@
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "suffs-2024/guardian--adrian-horton.json",
     "tuck-everlasting-2016/usatoday--elysa-gardner.json",
-    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
     "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
     "indecent-2017/usatoday--elysa-gardner.json",
     "escape-to-margaritaville-2018/vulture--jesse-green.json",
@@ -152,10 +150,10 @@
     "hamlet-2009/usatoday--elysa-gardner.json",
     "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
     "mary-jane-2024/ew--joey-nolfi.json",
     "the-wiz-2024/indiewire--sarah-shachat.json",
-    "grey-house-2023/stageandcinema--simi-horwitz.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "waitress-2021/vulture--helen-shaw.json",
@@ -244,11 +242,5 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/ohio-state-murders-broadway-review-1235267066/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/audra-mcdonald-ohio-state-murders-closing-broadway-january-1235291746/"
-    }
-  ]
+  "urlDiscoveries": []
 }
