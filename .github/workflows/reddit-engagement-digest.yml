@@ -36,7 +36,7 @@ on:
 # group) and drop that day's digest snapshot. The draft jobs also share a
 # job-level group, so an hourly and a daily drafter never overlap.
 concurrency:
-  group: reddit-engagement-digest-${{ (github.event.schedule == '41 * * * *' || inputs.due_check == true) && 'hourly' || 'daily' }}
+  group: reddit-engagement-digest-${{ (inputs.due_check == true) && 'hourly' || 'daily' }}
   cancel-in-progress: false
 
 permissions:
@@ -159,7 +159,7 @@ jobs:
   # script's own candidate rule (selectCandidates) over the current data.
   due:
     # BRO-6987: a due_check dispatch (from the opening-night poller) runs the same gate.
-    if: ${{ (github.event.schedule == '41 * * * *' || inputs.due_check == true) }}
+    if: ${{ (inputs.due_check == true) }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -184,7 +184,7 @@ jobs:
   draft-opening-posts:
     needs: due
     # Daily run and dispatches always; the hourly run only when a draft is due.
-    if: ${{ !cancelled() && (!(github.event.schedule == '41 * * * *' || inputs.due_check == true) || needs.due.outputs.due == 'true') }}
+    if: ${{ !cancelled() && (!(inputs.due_check == true) || needs.due.outputs.due == 'true') }}
     runs-on: ubuntu-latest
     concurrency:
       group: reddit-opening-posts
@@ -290,7 +290,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           # Hourly runs report only (BRO-6634): an apply there would push review-texts
           # and start a rebuild every hour during an opening.
-          REVIEW_CHECK_MODE: ${{ (inputs.dry_run == true || (github.event.schedule == '41 * * * *' || inputs.due_check == true)) && 'report-only' || inputs.review_check || 'apply' }}
+          REVIEW_CHECK_MODE: ${{ (inputs.dry_run == true || (inputs.due_check == true)) && 'report-only' || inputs.review_check || 'apply' }}
           RESEND_SHOWS: ${{ inputs.resend_shows }}
         run: |
           ARGS="--mode=$REVIEW_CHECK_MODE"

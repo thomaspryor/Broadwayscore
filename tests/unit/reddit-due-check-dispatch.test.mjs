@@ -16,7 +16,7 @@ const load = f => yaml.load(fs.readFileSync(path.join(root, '.github', 'workflow
 
 const digest = load('reddit-engagement-digest.yml');
 const poller = load('opening-night-poller.yml');
-const HOURLY = "(github.event.schedule == '41 * * * *' || inputs.due_check == true)";
+const HOURLY = '(inputs.due_check == true)';
 
 test('digest workflow takes a boolean due_check dispatch input, default off', () => {
   const input = digest.on.workflow_dispatch.inputs.due_check;
@@ -32,7 +32,7 @@ test('a due_check dispatch selects the hourly path everywhere the cron does', ()
   assert.ok(reviewStep.env.REVIEW_CHECK_MODE.includes(HOURLY), 'review check is report-only on the hourly path');
   // No other step may still key on the bare cron string.
   const raw = fs.readFileSync(path.join(root, '.github', 'workflows', 'reddit-engagement-digest.yml'), 'utf8');
-  const bare = raw.split('\n').filter(l => l.includes("schedule == '41 * * * *'") && !l.includes(HOURLY));
+  const bare = raw.split('\n').filter(l => l.includes("schedule == '41 * * * *'"));
   assert.deepEqual(bare, [], 'every hourly check also accepts due_check');
 });
 
