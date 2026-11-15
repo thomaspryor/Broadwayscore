@@ -712,5 +712,19 @@
       }
     ],
     "queuedAt": "2026-11-15T19:43:31.899Z"
+  },
+  {
+    "conditionKey": "cloud-parity-drift",
+    "title": "Cloud parity drift: 12 repo copies differ from ~/.claude",
+    "description": "These repo files differ from their ~/.claude masters. Cloud sessions run only the repo copy:\n- .claude/commands/plan-review.md\n- .claude/commands/right-problem.md\n- .claude/commands/ship-check.md\n- .claude/commands/what-else.md\n- .claude/commands/wrap-up.md\n- .claude/hooks/infra-post-write-audit.sh\n- .claude/hooks/pre-merge-review-gate.sh\n- .claude/hooks/pre-push-review-gate.sh\n- .claude/hooks/pre-push-visual-gate.sh\n- .claude/hooks/session-start.sh\n- .claude/hooks/verify-edits.sh\n- .claude/hooks/worktree-enforce.sh\n\nMerge best-of-both, make both sides identical, commit the repo side and claude-sync push.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-15T20:58:28.964Z"
   }
 ]
