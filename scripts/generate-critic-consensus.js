@@ -326,7 +326,9 @@ async function main() {
         // BRO-7558: the take is current by this generator's inputs, so record the
         // audit's unfiltered fingerprint too; the drift audit then compares like
         // with like and only fires when this generator stops evaluating the show.
-        Object.assign(existing, auditInputFingerprint(showId, liveOutlets, { show, shows: showsData.shows }));
+        // Not when the live-outlet filter tripped off (liveOutlets null): the audit
+        // still filters, so an unfiltered stamp would itself read as drift.
+        if (liveOutlets) Object.assign(existing, auditInputFingerprint(showId, liveOutlets, { show, shows: showsData.shows }));
         console.log(`  ⏭️  Skipped - no significant changes`);
         skippedCount++;
         continue;
@@ -456,7 +458,7 @@ Write only the concise consensus (max 280 chars), nothing else.`;
         lastUpdated: new Date().toISOString(),
         ...fingerprint,
         // BRO-7558: what the write-free contamination audit rebuilds, stored so it compares like with like.
-        ...auditInputFingerprint(showId, liveOutlets, { show, shows: showsData.shows }),
+        ...(liveOutlets ? auditInputFingerprint(showId, liveOutlets, { show, shows: showsData.shows }) : {}),
       };
 
       console.log(`  ✅ Generated: "${(consensusData.shows[showId].text).slice(0, 80)}..."`);
