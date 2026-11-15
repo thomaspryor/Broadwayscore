@@ -146,7 +146,11 @@ function classifyCastCoverage(show, castFile, now = Date.now()) {
   if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return 'ok';
   const eligible = show.openingDate && show.openingDate <= today &&
     today <= new Date(Date.parse(show.openingDate) + TOMBSTONE_RETRY_WINDOW_DAYS * 864e5).toISOString().slice(0, 10);
-  return eligible && (show.status === 'open' || show.status === 'previews') ? 'retrying' : 'exhausted';
+  if (!(eligible && (show.status === 'open' || show.status === 'previews'))) return 'exhausted';
+  // Grace only while the daily job is demonstrably retrying: a tombstone older than 48h that is
+  // still empty means the job is failing/disabled or IBDB still has nothing, so report it.
+  const at = Date.parse(castFile.scrapedAt);
+  return Number.isFinite(at) && now - at > 48 * 3600e3 ? 'exhausted' : 'retrying';
 }
 
 module.exports = {

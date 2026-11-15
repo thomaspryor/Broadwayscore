@@ -101,13 +101,16 @@ test('classifyCastCoverage agrees with backfill default-pass selection (BRO-7504
     { status: 'previews', openingDate: '2026-11-10' },
   ];
   for (const show of shows) {
-    const file = empty('2026-11-01T00:00:00Z');
+    const file = empty('2026-11-13T00:00:00Z'); // >20h old so the backfill 20h gate is open
     const state = classifyCastCoverage(show, file, now);
     // retrying <=> backfill will pick it up; exhausted <=> it will not (and the row must fire)
     assert.strictEqual(state === 'retrying', shouldRetryTombstone(file, show, now), JSON.stringify(show));
     if (state === 'pre-opening') continue;
     assert.ok(['retrying', 'exhausted'].includes(state));
   }
+  // Fresh tombstone: in flight. 48h+ stale tombstone inside the window: the daily job is not fixing it, report.
+  assert.strictEqual(classifyCastCoverage(shows[0], empty('2026-11-14T08:00:00Z'), now), 'retrying');
+  assert.strictEqual(classifyCastCoverage(shows[0], empty('2026-11-11T13:43:34Z'), now), 'exhausted');
   assert.strictEqual(classifyCastCoverage(shows[0], null, now), 'missing');
   assert.strictEqual(classifyCastCoverage(shows[0], { openingNightCast: [{ name: 'x' }] }, now), 'ok');
   assert.strictEqual(classifyCastCoverage(shows[3], null, now), 'pre-opening');
