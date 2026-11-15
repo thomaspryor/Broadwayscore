@@ -43,3 +43,21 @@ test('BRO-5516: isRiskyGapChange tolerates a 1-candidate SERP-variance drop on 4
   assert.equal(isRiskyGapChange('incomplete:1:3', 'incomplete:1:2'), true);  // small census stays strict
   assert.equal(isRiskyGapChange('incomplete:5:9', 'incomplete:4:9'), true);  // live loss always risky
 });
+
+test('BRO-7561: candidate drops against baselines older than 7 days are discounted (2026-11-15 five-show shape)', () => {
+  const { riskStateMap, isRiskyGapChange } = require('./gap-audit-merge.js');
+  const mk = (live, cand, computedAt) => ({ showId: 's', computedAt, censusVerdict: { verdict: 'incomplete', liveCount: live, candidateCount: cand, censusSchema: require('./gap-audit-merge.js').CENSUS_SCHEMA, candidates: [] } });
+  const now = '2026-11-15T05:09:00Z';
+  const old = '2026-10-31T05:00:00Z', fresh = '2026-11-14T05:00:00Z';
+  const prevOf = (live, cand, at) => riskStateMap([mk(live, cand, at)], { now }).s;
+  // 2- and 4-candidate shows from 2026-10-31: zero tolerance before, candidate-only drop now fine
+  assert.equal(isRiskyGapChange(prevOf(1, 2, old), 'incomplete:1:1'), false);
+  assert.equal(isRiskyGapChange(prevOf(2, 4, old), 'incomplete:2:2'), false);
+  // same drop against a fresh baseline stays risky
+  assert.equal(isRiskyGapChange(prevOf(1, 2, fresh), 'incomplete:1:1'), true);
+  // live loss against an old baseline stays risky; dead census too
+  assert.equal(isRiskyGapChange(prevOf(2, 4, old), 'incomplete:1:4'), true);
+  assert.equal(isRiskyGapChange(prevOf(3, 3, old), 'no-census-yet:0:0'), true);
+  // missing computedAt is never aged
+  assert.equal(isRiskyGapChange(prevOf(1, 2, undefined), 'incomplete:1:1'), true);
+});

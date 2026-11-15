@@ -3455,7 +3455,7 @@ async function main(argv = process.argv.slice(2)) {
       // — accept it as baseline (see confirmQuarantinedStates).
       const nextRisk = only(nextRiskAll);
       const { prevStates, confirmed } = confirmQuarantinedStates(
-        only(riskStateMap(prevAudit && prevAudit.results)), nextRisk, prevAudit && prevAudit.results);
+        only(riskStateMap(prevAudit && prevAudit.results, { now: audit.generatedAt })), nextRisk, prevAudit && prevAudit.results);
       if (confirmed.length) console.log(`  ✓ ${confirmed.length} quarantined show(s) reproduced their quarantined state — accepted as baseline: ${confirmed.slice(0, 20).join(', ')}`);
       return blastRadiusCheck(prevStates, nextRisk, { label: 'review-gap', isRiskyChange: isRiskyGapChange });
     })();

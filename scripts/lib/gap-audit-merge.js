@@ -255,8 +255,10 @@ function stateMap(results) {
  * SAME complete → incomplete verdict transition as the benign case). See
  * isRiskyGapChange below and coverage-gate.js's isRiskyChange rationale.
  */
-function riskStateMap(results) {
+function riskStateMap(results, opts = {}) {
   const out = {};
+  const nowMs = opts.now ? new Date(opts.now).getTime() : Date.now();
+  const maxAgeMs = (opts.baselineMaxAgeDays ?? BASELINE_MAX_AGE_DAYS) * 86400000;
   for (const r of results || []) {
     if (!r || !r.showId) continue;
     // Prefer the ALREADY-STAMPED censusVerdict (mergeGapAudit computed it once
@@ -280,7 +282,12 @@ function riskStateMap(results) {
     // recompute above re-applies only the URL gate, not auditShow's own
     // drops (SERP other-production, BWW dates), so its candidateCount is
     // not comparable and only a liveCount drop is risky (BRO-4190).
-    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}${usable || !stored ? '' : ':prior-schema'}`;
+    // BRO-7561: `:aged` marks a baseline whose row's computedAt is older than
+    // BASELINE_MAX_AGE_DAYS. Only meaningful on the PREVIOUS-file side; see
+    // isRiskyGapChange. A missing/unparseable computedAt is NOT aged (fail strict).
+    const at = r.computedAt ? new Date(r.computedAt).getTime() : NaN;
+    const aged = Number.isFinite(at) && Number.isFinite(nowMs) && nowMs - at > maxAgeMs;
+    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}${usable || !stored ? '' : ':prior-schema'}${aged ? ':aged' : ''}`;
   }
   return out;
 }
@@ -330,7 +337,8 @@ function isRiskyGapChange(prevState, nextState) {
   const counts = (s) => String(s).split(':').slice(1, 3).map(Number);
   const [prevLive, prevCandidates] = counts(prevState);
   const [nextLive, nextCandidates] = counts(nextState);
-  if (String(prevState).endsWith(':prior-schema')) return nextLive < prevLive;
+  const aged = String(prevState).endsWith(':aged');
+  if (String(prevState).replace(/:aged$/, '').endsWith(':prior-schema')) return nextLive < prevLive;
   const tol = candidateDropTolerance(prevCandidates);
   const liveDrop = prevLive - nextLive;
   const candDrop = prevCandidates - nextCandidates;
@@ -340,8 +348,16 @@ function isRiskyGapChange(prevState, nextState) {
   // the live loss is fully explained by the tolerated candidate loss; a live drop with
   // no matching candidate drop is a review file going missing (partial checkout) = risky.
   if (liveDrop > 0 && !(liveDrop <= tol && candDrop >= liveDrop)) return true;
+  // BRO-7561: against a baseline older than BASELINE_MAX_AGE_DAYS the SERP/aggregator
+  // census has drifted on its own (BRO-5516 class: baselines from 2026-10-31 with 2 or 4
+  // candidates, zero tolerance, refused the write 2026-11-15). Candidate-only drops are
+  // discounted; any live loss was already handled above and stays risky.
+  if (aged) return false;
   return candDrop > tol;
 }
+
+/** Baselines older than this many days get candidate drops discounted (BRO-7561). */
+const BASELINE_MAX_AGE_DAYS = 7;
 
 /**
  * A SERP census pass is not deterministic: re-running it can return one fewer
@@ -653,4 +669,4 @@ function blastRadiusClearedKeys(blast, { dryRun = false } = {}) {
 
 module.exports = {
   BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys,
-  priorCensusUrls, seedPriorCensusUrls, mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };
+  priorCensusUrls, seedPriorCensusUrls, mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, BASELINE_MAX_AGE_DAYS, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };
