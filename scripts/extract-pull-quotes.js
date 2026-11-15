@@ -72,7 +72,8 @@ const stats = {
   reservationRejected: 0,
   reservationRetried: 0,
   stamped: 0,
-  priorRejectionSkipped: 0
+  priorRejectionSkipped: 0,
+  stampQuarantined: 0
 };
 
 // ============================================================
@@ -109,6 +110,9 @@ If the review has no suitable quotable sentence (e.g., it's all plot summary or 
 // BRO-7535: rejections are remembered per (fullText hash, prompt version).
 // Editing SYSTEM_PROMPT changes this, so every stamped review gets one fresh look.
 const PROMPT_VERSION = negCache.promptVersionFor(SYSTEM_PROMPT);
+// Kill switch: PULL_QUOTE_NEGATIVE_CACHE_OFF=1 ignores rejection stamps (still writes them)
+// without --overwrite's side effect of re-extracting reviews that already have a quote.
+const NEG_CACHE_OFF = process.env.PULL_QUOTE_NEGATIVE_CACHE_OFF === '1';
 
 function describeVerdict(score) {
   if (score == null || typeof score !== 'number' || Number.isNaN(score)) {
@@ -359,7 +363,7 @@ function scanReviewFiles() {
         if (hasUsableLlmQuote(data) && !OVERWRITE) { stats.skipped++; continue; }
 
         // BRO-7535: already judged and rejected on this exact text and prompt.
-        if (negCache.shouldSkipForPriorRejection(data, { promptVersion: PROMPT_VERSION, overwrite: OVERWRITE })) {
+        if (negCache.shouldSkipForPriorRejection(data, { promptVersion: PROMPT_VERSION, overwrite: OVERWRITE || NEG_CACHE_OFF })) {
           stats.skipped++; stats.priorRejectionSkipped++; continue;
         }
 
@@ -405,6 +409,7 @@ function stampRejection(filePath, judgedText, judgedScore, reason) {
     Object.assign(current, negCache.buildRejectionStamp({ fullText: judgedText, score: judgedScore, reason, promptVersion: PROMPT_VERSION }));
     const result = safeWriteReview(filePath, current);
     if (result && result.wrote === false) {
+      stats.stampQuarantined++;
       if (VERBOSE) console.log(`  Rejection stamp quarantined (${result.skipped || 'unknown'}): ${path.basename(filePath)}`);
       return;
     }
@@ -725,6 +730,7 @@ async function main() {
   console.log(`Errors: ${stats.errors}`);
   console.log(`Written: ${stats.written}`);
   console.log(`Rejections stamped (skipped next run): ${stats.stamped}`);
+  if (stats.stampQuarantined) console.log(`::warning::Rejection stamps quarantined by safeWriteReview (will be re-asked next run): ${stats.stampQuarantined}`);
   console.log(`Skipped as already rejected (same text + prompt ${PROMPT_VERSION}): ${stats.priorRejectionSkipped}`);
   if (stats.upgraded) console.log(`Upgraded (replaced existing): ${stats.upgraded}`);
   if (stats.reservationRetried) console.log(`Hedge-opener retries: ${stats.reservationRetried}`);
