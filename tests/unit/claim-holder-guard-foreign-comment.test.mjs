@@ -84,3 +84,20 @@ test('session reports carry the poster\'s marker; ledger evidence matches by car
   assert.equal(ledgerEvidence('BRO-7523', H7523, () => [{ taskId: 'linear:BRO-7523-x', event: 'job-done', ts: iso(NOW - 900) }]).jobEndedMs, NOW - 900);
   assert.equal(ledgerEvidence('BRO-7523', H7523, () => [{ taskId: 'linear:BRO-7523-x', event: 'job-done', ts: iso(NOW - 900) }, { taskId: 'linear:BRO-7523-x', event: 'job-spawned', ts: iso(NOW - 100) }]).jobEndedMs, null);
 });
+
+test('ledger rows of a longer card number (BRO-75230) are not this card\'s', () => {
+  assert.equal(ledgerEvidence('BRO-7523', H7523, () => [{ taskId: 'linear:BRO-75230-x', event: 'job-done', ts: iso(NOW - 900) }]).lastLedgerMs, null);
+});
+
+test('a blocked report carrying another session\'s marker does not free the holder; cancelled Land runs do not either', () => {
+  const t0 = NOW - 5 * 3600e3;
+  const foreign = { body: `**Session report (blocked)**\nx\n\n${buildSessionMarker(CHILD)}`, createdAt: iso(t0 + 3600e3) };
+  assert.equal(decide([claim(H7523, t0), foreign], null).action, 'refuse');
+  assert.equal(decide([claim(H7523, t0)], { landing: { conclusion: 'cancelled', atMs: t0 + 600e3 } }).action, 'refuse');
+});
+
+test('claim 48h+ old with a recent push but no marker comment is judged live once the caller supplies the push (idle-takeover re-check)', () => {
+  const t0 = NOW - 60 * 3600e3;
+  assert.equal(decide([claim(H7523, t0)], null).action, 'takeover');
+  assert.equal(decide([claim(H7523, t0)], { lastPushMs: NOW - 600e3 }).action, 'refuse');
+});

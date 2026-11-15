@@ -85,8 +85,10 @@ function holderLiveness({ comments, claim, holder, evidence, nowMs }) {
   // A blocked report newer than anything the holder did: it said it cannot continue (dispatch-time blocks excluded).
   const claimMs = Date.parse(claim.createdAt);
   const after = comments.filter((c) => Date.parse(c.createdAt) >= claimMs);
-  if (latestSessionReportStatus(after) === 'blocked') {
-    const reportMs = Math.max(...after.filter((c) => /^\*\*Session report \(blocked\)/.test(String(c.body).trim())).map((c) => Date.parse(c.createdAt)));
+  // A report carrying another session's marker is not the holder's word (unmarked older reports are assumed the holder's).
+  const holderVoice = after.filter((c) => { const m = sessionMarkerRefs(c.body); return !m.length || m.includes(holder); });
+  if (latestSessionReportStatus(holderVoice) === 'blocked') {
+    const reportMs = Math.max(...holderVoice.filter((c) => /^\*\*Session report \(blocked\)/.test(String(c.body).trim())).map((c) => Date.parse(c.createdAt)));
     if (Number.isFinite(reportMs) && lastOwnMs <= reportMs + 60e3) return { live: false, reason: 'holder reported blocked and has done nothing since' };
   }
   // The holder's headless job finished (dispatch ledger) with the card still In Progress and nothing from the
@@ -95,7 +97,7 @@ function holderLiveness({ comments, claim, holder, evidence, nowMs }) {
     return { live: false, reason: `holder's job ended ${Math.floor((nowMs - ev.jobEndedMs) / 60e3)}m ago and it has not pushed or commented since` };
   }
   const landing = ev.landing;
-  if (landing && /^(failure|cancelled|timed_out|startup_failure)$/.test(String(landing.conclusion)) && Number.isFinite(landing.atMs)) {
+  if (landing && /^(failure|timed_out|startup_failure)$/.test(String(landing.conclusion)) && Number.isFinite(landing.atMs)) {
     const lastMs = Math.max(landing.atMs, lastOwnMs);
     // lastOwnMs includes the claim, so require the holder be silent since the failed run.
     if (lastOwnMs <= landing.atMs + 60e3 && nowMs - lastMs >= LANDING_FAILED_QUIET_MS) {

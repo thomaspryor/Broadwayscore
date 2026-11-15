@@ -45,7 +45,7 @@ function ledgerEvidence(identifier, holderRef, readEntries = () => require('./di
   let last = null;
   let lastRow = null;
   for (const r of readEntries()) {
-    if (!String(r.taskId || '').startsWith(`linear:${identifier}`) && !(id && String(r.sessionId || '').toLowerCase() === id.toLowerCase())) continue;
+    if (!new RegExp(`^linear:${identifier}(?:-|$)`).test(String(r.taskId || '')) && !(id && String(r.sessionId || '').toLowerCase() === id.toLowerCase())) continue;
     const t = Date.parse(r.ts);
     if (Number.isFinite(t) && (last === null || t >= last)) { last = t; lastRow = r; }
   }

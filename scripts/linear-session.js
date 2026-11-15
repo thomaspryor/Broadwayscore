@@ -247,7 +247,8 @@ async function cmdClaim(args) {
     }
     let decision = chg.claimHolderDecision({ issue: full, selfRef: ref, force: typeof force === 'string' });
     // BRO-7553: only a would-be refusal pays for the GitHub/ledger reads (a claim stays one cheap read otherwise).
-    if (decision.action === 'refuse') {
+    // Also re-check an idle-based takeover: a holder that pushes or runs jobs but never comments must not lose the card.
+    if ((decision.action === 'refuse' || (decision.action === 'takeover' && /^holder idle \d+h/.test(decision.reason))) && process.env.CLAIM_HOLDER_EVIDENCE_DISABLED !== '1') {
       const evidence = require('./lib/claim-holder-evidence.js').gatherHolderEvidence({ identifier: issue.identifier, holderRef: decision.holder });
       decision = chg.claimHolderDecision({ issue: full, selfRef: ref, evidence });
     }

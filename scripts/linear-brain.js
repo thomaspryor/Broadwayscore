@@ -710,7 +710,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             args.comment = note.text;
             console.error(`PRESS-NIGHT: ${note.notPassing.length} record(s) not PASS for this audit; the comment now says so.`);
           }
-          await createCommentFn(issue.id, args.comment);
+          // BRO-7553: the claim guard counts a comment as holder activity only when it carries the poster's session marker.
+          const lsrM = require('./lib/linear-session-reporting.js');
+          const sref = lsrM.claimSessionRef();
+          await createCommentFn(issue.id, lsrM.isSessionSpecificRef(sref) ? `${args.comment}\n\n${lsrM.buildSessionMarker(sref)}` : args.comment);
           commented = true;
           landed.push('comment posted');
         }
