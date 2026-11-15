@@ -23,8 +23,14 @@ if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).filter((x) => x.incl
   console.log('FILE', f, JSON.stringify(Object.fromEntries(Object.entries(d).map(([k, v]) => [k, typeof v === 'string' ? v.length : v]))).slice(0, 700));
 }
 const live = liveOutletKeys(reviews);
-const inputs = loadReviewTexts(showId, live, { show, shows });
-console.log('INPUTS', inputs.reviews ? inputs.reviews.length : inputs.length);
-for (const i of (inputs.reviews || inputs).filter((x) => JSON.stringify(x).toLowerCase().includes(needle || '\u0000'))) {
+// BRO-7558: the generator filters with the scorer predicate + within-show dedup;
+// the write-free audit cannot. Print both so a drift report can be read.
+const { isScoreable } = require('./lib/is-scoreable');
+const { createWithinShowDedup } = require('./lib/within-show-dedup');
+const { normalizeOutlet } = require('./lib/review-normalization');
+const inputs = loadReviewTexts(showId, live, { show, shows, normalizeOutlet, isScoreable, createDedup: createWithinShowDedup });
+const auditView = loadReviewTexts(showId, live, { show, shows });
+console.log('INPUTS (generator)', inputs.length, 'AUDIT VIEW (unfiltered)', auditView.length);
+for (const i of inputs.filter((x) => JSON.stringify(x).toLowerCase().includes(needle || '\u0000'))) {
   console.log('INPUT', JSON.stringify(i).slice(0, 400));
 }

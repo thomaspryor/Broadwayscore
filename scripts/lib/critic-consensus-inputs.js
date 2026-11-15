@@ -231,6 +231,28 @@ function consensusFingerprint(reviews) {
 }
 
 /**
+ * BRO-7558: the fingerprint of the unfiltered, write-free input view the
+ * contamination audit can rebuild (no isScoreable, no within-show dedup, no
+ * outlet normalizer: those pull review-guards into the audit's require graph,
+ * which must stay write-free). Since BRO-6226 the generator stores the
+ * FILTERED fingerprint in reviewCount/meanScore, so comparing those to the
+ * audit's unfiltered rebuild drifted by 12-27 rows on shows the generator
+ * itself judged current (Spies 24 vs 36, Jesus Christ Superstar 12 vs 39).
+ * The generator stores this alongside, and consensusDriftFlags compares like
+ * with like. Both callers go through this one function.
+ * @param {string} showId
+ * @param {Set<string>|null} liveOutlets
+ * @param {{reviewTextsDir?: string, show?: object, shows?: object[]}} [opts]
+ * @returns {{auditReviewCount: number, auditMeanScore: number|null}}
+ */
+function auditInputFingerprint(showId, liveOutlets, opts = {}) {
+  const fp = consensusFingerprint(loadReviewTexts(showId, liveOutlets, {
+    reviewTextsDir: opts.reviewTextsDir, show: opts.show, shows: opts.shows,
+  }));
+  return { auditReviewCount: fp.reviewCount, auditMeanScore: fp.meanScore };
+}
+
+/**
  * Determine if a show's consensus should be regenerated.
  * Returns { should: boolean, reason: string }
  */
@@ -311,16 +333,19 @@ const MEANSCORE_DRIFT_THRESHOLD = 15;
 function consensusDriftFlags(stored, current) {
   const flags = [];
   if (!stored || !current) return flags;
-  const storedCount = stored.reviewCount || 0;
+  // BRO-7558: a record stamped with the audit's own unfiltered fingerprint is
+  // compared with that; an older record falls back to the generator's count.
+  const storedCount = typeof stored.auditReviewCount === 'number' ? stored.auditReviewCount : (stored.reviewCount || 0);
   const rcDiff = Math.abs(storedCount - current.reviewCount);
   if (rcDiff >= REVIEWCOUNT_DRIFT_THRESHOLD) {
     flags.push(`REVIEWCOUNT_DRIFT:consensus=${storedCount},actual=${current.reviewCount},diff=${rcDiff}`);
   }
   // No stored or current mean = nothing to drift from (generator's own guard).
-  if (stored.meanScore != null && current.meanScore != null) {
-    const msDiff = Math.abs(stored.meanScore - current.meanScore);
+  const storedMean = 'auditMeanScore' in stored ? stored.auditMeanScore : stored.meanScore;
+  if (storedMean != null && current.meanScore != null) {
+    const msDiff = Math.abs(storedMean - current.meanScore);
     if (msDiff >= MEANSCORE_DRIFT_THRESHOLD) {
-      flags.push(`MEANSCORE_DRIFT:consensus=${stored.meanScore},actual=${Math.round(current.meanScore)},diff=${Math.round(msDiff)}`);
+      flags.push(`MEANSCORE_DRIFT:consensus=${storedMean},actual=${Math.round(current.meanScore)},diff=${Math.round(msDiff)}`);
     }
   }
   return flags;
@@ -336,6 +361,7 @@ module.exports = {
   loadReviewTexts,
   bucketOf,
   consensusFingerprint,
+  auditInputFingerprint,
   shouldRegenerate,
   consensusDriftFlags,
 };

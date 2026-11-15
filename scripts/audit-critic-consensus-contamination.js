@@ -55,9 +55,8 @@ const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus
 const path = require('path');
 const { MIN_SCORED_REVIEWS, isConsensusEligible, liveOutletKeys } = require('./lib/critic-consensus-eligibility');
 const {
-  loadReviewTexts,
-  consensusFingerprint,
   consensusDriftFlags,
+  auditInputFingerprint,
   DEFAULT_REVIEW_TEXTS_DIR,
   REVIEWCOUNT_DRIFT_THRESHOLD,
   MEANSCORE_DRIFT_THRESHOLD,
@@ -161,8 +160,9 @@ function audit(opts = {}) {
       // Drift: the stored fingerprint vs the one a regeneration would write
       // today, built from the same inputs (BRO-4869).
       if (reviews && haveTexts) {
-        const current = consensusFingerprint(loadReviewTexts(id, reviewsData.liveOutlets, { reviewTextsDir: textsDir, show: showsById && showsById.get(id), shows: showsById && [...showsById.values()] }));
-        flags.push(...consensusDriftFlags(c, current));
+        // BRO-7558: the same call the generator stamps auditReviewCount/auditMeanScore with.
+        const a = auditInputFingerprint(id, reviewsData.liveOutlets, { reviewTextsDir: textsDir, show: showsById && showsById.get(id), shows: showsById && [...showsById.values()] });
+        flags.push(...consensusDriftFlags(c, { reviewCount: a.auditReviewCount, meanScore: a.auditMeanScore }));
       }
     }
 

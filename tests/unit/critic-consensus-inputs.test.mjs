@@ -140,7 +140,7 @@ describe('generator and audit share the module', () => {
     assert.match(gen, /consensusFingerprint\(reviews\)/);
     assert.match(gen, /\.\.\.fingerprint/);
     assert.match(audit, /require\('\.\/lib\/critic-consensus-inputs'\)/);
-    assert.match(audit, /consensusDriftFlags\(c, current\)/);
+    assert.match(audit, /consensusDriftFlags\(c, /);
   });
 });
 

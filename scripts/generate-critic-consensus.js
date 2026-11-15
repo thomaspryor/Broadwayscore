@@ -17,7 +17,7 @@ import Anthropic from '@anthropic-ai/sdk';
 // demand a consensus this script is coded to refuse (task #389).
 import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, pruneConsensusEntries, liveOutletKeys } from './lib/critic-consensus-eligibility.js';
 import { finalResponseText, describeResponse } from './lib/anthropic-response-text.js';
-import { loadReviewTexts as loadConsensusInputs, consensusFingerprint, shouldRegenerate } from './lib/critic-consensus-inputs.js';
+import { loadReviewTexts as loadConsensusInputs, consensusFingerprint, auditInputFingerprint, shouldRegenerate } from './lib/critic-consensus-inputs.js';
 import { isScoreable } from './lib/is-scoreable.js';
 import { createWithinShowDedup } from './lib/within-show-dedup.js';
 import { requestWithRefusalRetry, REFUSAL_RETRY_EXCERPT_CHARS } from './lib/critic-consensus-refusal.js';
@@ -323,6 +323,10 @@ async function main() {
     if (existing && !force) {
       const result = shouldRegenerate(existing, reviews);
       if (!result.should) {
+        // BRO-7558: the take is current by this generator's inputs, so record the
+        // audit's unfiltered fingerprint too; the drift audit then compares like
+        // with like and only fires when this generator stops evaluating the show.
+        Object.assign(existing, auditInputFingerprint(showId, liveOutlets, { show, shows: showsData.shows }));
         console.log(`  ⏭️  Skipped - no significant changes`);
         skippedCount++;
         continue;
@@ -451,6 +455,8 @@ Write only the concise consensus (max 280 chars), nothing else.`;
         text: finalText,
         lastUpdated: new Date().toISOString(),
         ...fingerprint,
+        // BRO-7558: what the write-free contamination audit rebuilds, stored so it compares like with like.
+        ...auditInputFingerprint(showId, liveOutlets, { show, shows: showsData.shows }),
       };
 
       console.log(`  ✅ Generated: "${(consensusData.shows[showId].text).slice(0, 80)}..."`);
