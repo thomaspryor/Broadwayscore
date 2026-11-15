@@ -497,9 +497,11 @@ async function main() {
         }
 
         // Write persistent marker so future runs skip this review (avoids daily re-classification)
-        // Only write for non-WRONG verdicts; WRONG gets marked during --apply
-        if (parsed.verdict !== 'WRONG_PRODUCTION') {
-          reviewData.wpClassified = parsed.verdict.toLowerCase();
+        // High-confidence WRONG gets marked during --apply. Medium/low WRONG is never
+        // applied, so without a marker it was re-sent to the LLM every run (BRO-7535).
+        const wrongUnapplied = parsed.verdict === 'WRONG_PRODUCTION' && parsed.confidence !== 'high';
+        if (parsed.verdict !== 'WRONG_PRODUCTION' || wrongUnapplied) {
+          reviewData.wpClassified = wrongUnapplied ? 'wrong_production_unapplied' : parsed.verdict.toLowerCase();
           reviewData.wpClassifiedDate = new Date().toISOString().slice(0, 10);
           try {
             const r = safeWriteReview(filePath, reviewData);

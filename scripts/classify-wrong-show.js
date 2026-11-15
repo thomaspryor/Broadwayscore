@@ -398,6 +398,13 @@ async function main() {
             const r = safeWriteReview(candidate.filePath, data);
             if (r.lockedSkipped) lockedSkipCount++;
             stats.applied++;
+          } else if (APPLY) {
+            // BRO-7535: low confidence, or a cleared/lane-bypassed file, is not
+            // flagged. Stamp it anyway so the next run does not re-ask the LLM.
+            data.wsClassified = 'wrong_show_unapplied';
+            data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
+            const r = safeWriteReview(candidate.filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
           }
         } else if (parsed.verdict === 'CORRECT') {
           stats.correct++;

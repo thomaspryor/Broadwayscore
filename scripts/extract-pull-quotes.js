@@ -13,7 +13,8 @@
  *   --dry-run          Log what would change without writing files
  *   --limit=N          Process at most N reviews (default: all)
  *   --show=SLUG        Only process reviews from this show
- *   --overwrite        Re-extract even if llmPullQuote already exists
+ *   --overwrite        Re-extract even if llmPullQuote already exists, and retry
+ *                      reviews stamped as rejected (BRO-7535 failure memory)
  *   --concurrency=N    Parallel LLM calls (default: 10)
  *   --provider=NAME    gemini (default) | openai
  *   --verbose          Extra logging
@@ -31,6 +32,7 @@ const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInS
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
+const negCache = require('./lib/pull-quote-negative-cache');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -68,7 +70,9 @@ const stats = {
   notInText: 0,
   upgraded: 0,
   reservationRejected: 0,
-  reservationRetried: 0
+  reservationRetried: 0,
+  stamped: 0,
+  priorRejectionSkipped: 0
 };
 
 // ============================================================
@@ -101,6 +105,10 @@ AVOID:
 
 Return ONLY the extracted sentence. Nothing else — no quotes, no attribution, no explanation.
 If the review has no suitable quotable sentence (e.g., it's all plot summary or too fragmented), return exactly: NONE`;
+
+// BRO-7535: rejections are remembered per (fullText hash, prompt version).
+// Editing SYSTEM_PROMPT changes this, so every stamped review gets one fresh look.
+const PROMPT_VERSION = negCache.promptVersionFor(SYSTEM_PROMPT);
 
 function describeVerdict(score) {
   if (score == null || typeof score !== 'number' || Number.isNaN(score)) {
@@ -222,7 +230,9 @@ function callOpenAI(systemPrompt, userPrompt) {
   });
 }
 
+let llmOverride = null; // test seam (scripts/tests/extract-pull-quotes-negative-cache.test.mjs)
 async function callLLM(systemPrompt, userPrompt, provider) {
+  if (llmOverride) return llmOverride(systemPrompt, userPrompt);
   const p = provider || PROVIDER;
   if (p === 'openai') return callOpenAI(systemPrompt, userPrompt);
   return callGemini(systemPrompt, userPrompt);
@@ -348,6 +358,11 @@ function scanReviewFiles() {
         // Skip if already has llmPullQuote (unless --overwrite)
         if (hasUsableLlmQuote(data) && !OVERWRITE) { stats.skipped++; continue; }
 
+        // BRO-7535: already judged and rejected on this exact text and prompt.
+        if (negCache.shouldSkipForPriorRejection(data, { promptVersion: PROMPT_VERSION, overwrite: OVERWRITE })) {
+          stats.skipped++; stats.priorRejectionSkipped++; continue;
+        }
+
         // Skip garbage / wrong show / roundup articles
         if (data.wrongProduction || data.wrongShow || data.wrongAttribution || data.duplicateOf ||
             data.isRoundupArticle || data.rejectionReason || data.contentTier === 'invalid') { stats.skipped++; continue; }
@@ -380,6 +395,25 @@ function markContextChecked(filePath) {
   }
 }
 
+// BRO-7535: remember a final rejection so later runs do not re-ask the LLM
+// about the same text. judgedText is the fullText the LLM saw: if the file's
+// text changed meanwhile, the hash will not match and the review is retried.
+function stampRejection(filePath, judgedText, judgedScore, reason) {
+  if (DRY_RUN) return;
+  try {
+    const current = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    Object.assign(current, negCache.buildRejectionStamp({ fullText: judgedText, score: judgedScore, reason, promptVersion: PROMPT_VERSION }));
+    const result = safeWriteReview(filePath, current);
+    if (result && result.wrote === false) {
+      if (VERBOSE) console.log(`  Rejection stamp quarantined (${result.skipped || 'unknown'}): ${path.basename(filePath)}`);
+      return;
+    }
+    stats.stamped++;
+  } catch (e) {
+    if (VERBOSE) console.log(`  Rejection stamp failed for ${path.basename(filePath)}: ${e.message}`);
+  }
+}
+
 // ============================================================
 // Main processing
 // ============================================================
@@ -392,6 +426,9 @@ async function processReview(entry) {
   // paragraph reservations were getting picked for positive reviews.
   const score = typeof data.assignedScore === 'number' ? data.assignedScore : null;
   const hadPrevious = !!data.llmPullQuote;
+  // Final rejections are stamped so the next run skips this text (BRO-7535).
+  // Transient failures (API error, rate limit) are not stamped.
+  const reject = (reason) => stampRejection(filePath, data.fullText, score, reason);
 
   // Try up to 2 times. Attempt 1's response can fail for three independent
   // reasons — a promo-teaser standfirst, a hedge-opener on a positive review,
@@ -422,6 +459,7 @@ async function processReview(entry) {
     if (!quote) {
       stats.notFound++;
       if (VERBOSE) console.log(`  No quote: ${path.basename(filePath)} — response: "${(responseText || '').slice(0, 80)}"`);
+      reject('none');
       return;
     }
 
@@ -439,6 +477,7 @@ async function processReview(entry) {
       }
       stats.promoTeaserRejected = (stats.promoTeaserRejected || 0) + 1;
       if (VERBOSE) console.log(`  PROMO-TEASER rejected after retry: ${path.basename(filePath)}`);
+      reject('promo-teaser');
       return;
     }
 
@@ -453,6 +492,7 @@ async function processReview(entry) {
       }
       stats.serviceSectionRejected = (stats.serviceSectionRejected || 0) + 1;
       if (VERBOSE) console.log(`  SERVICE-SECTION rejected after retry: ${path.basename(filePath)}`);
+      reject('service-section');
       return;
     }
 
@@ -472,6 +512,7 @@ async function processReview(entry) {
       if (VERBOSE) {
         console.log(`  HEDGE (rejected after retry): "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
       }
+      reject('hedge');
       return;
     }
 
@@ -491,6 +532,7 @@ async function processReview(entry) {
       // Record that this review was tried, so hasUsableLlmQuote stops
       // re-queueing the same stored quote (2 LLM calls) on every run.
       if (!DRY_RUN) markContextChecked(filePath);
+      reject('context-dependent');
       return;
     }
 
@@ -521,6 +563,7 @@ async function processReview(entry) {
         stats.tooLong++;
         if (VERBOSE) console.log(`  Too long (rejected after retry, ${quote.length}): "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
       }
+      reject(quote.length < MIN_QUOTE_LENGTH ? 'too-short' : 'too-long');
       return;
     }
 
@@ -555,6 +598,7 @@ async function processReview(entry) {
   if (!verifyInText(quote, data.fullText)) {
     stats.notInText++;
     if (VERBOSE) console.log(`  NOT IN TEXT: "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
+    reject('not-in-text');
     return;
   }
 
@@ -563,6 +607,7 @@ async function processReview(entry) {
   if (hardReject) {
     stats.hardRejected = (stats.hardRejected || 0) + 1;
     if (VERBOSE) console.log(`  ${hardReject.toUpperCase()}: "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
+    reject(`hard-reject:${hardReject}`);
     return;
   }
 
@@ -679,6 +724,8 @@ async function main() {
   console.log(`No quote found: ${stats.notFound}`);
   console.log(`Errors: ${stats.errors}`);
   console.log(`Written: ${stats.written}`);
+  console.log(`Rejections stamped (skipped next run): ${stats.stamped}`);
+  console.log(`Skipped as already rejected (same text + prompt ${PROMPT_VERSION}): ${stats.priorRejectionSkipped}`);
   if (stats.upgraded) console.log(`Upgraded (replaced existing): ${stats.upgraded}`);
   if (stats.reservationRetried) console.log(`Hedge-opener retries: ${stats.reservationRetried}`);
   if (stats.reservationRejected) console.log(`Hedge-opener rejects (after retry): ${stats.reservationRejected}`);
@@ -690,6 +737,34 @@ async function main() {
   if (DRY_RUN) {
     console.log('\n(DRY RUN — no files were modified)');
   }
+
+  // BRO-7535 tripwire: a run that pays for many calls and persists nothing is
+  // the re-ask loop coming back. Dry runs persist nothing by design.
+  const trip = DRY_RUN ? null : negCache.wastedRunTripwire(stats);
+  if (trip) {
+    console.log(`::error title=Pull-quote extractor wasted run::${trip}`);
+    process.exitCode = 2;
+  }
+
+  // extract-pull-quotes.yml reads these to decide whether chaining another run
+  // is worth it (no chain when nothing was processed or the tripwire fired).
+  if (process.env.GITHUB_OUTPUT) {
+    try {
+      fs.appendFileSync(process.env.GITHUB_OUTPUT,
+        `to_process=${files.length}\nllm_calls=${stats.llmCalls}\nwritten=${stats.written}\nstamped=${stats.stamped}\ntripped=${trip ? 1 : 0}\n`);
+    } catch (e) { /* advisory */ }
+  }
+  return stats;
 }
 
-main().catch(e => { console.error('Fatal:', e); process.exit(1); });
+module.exports = {
+  scanReviewFiles,
+  processReview,
+  stats,
+  PROMPT_VERSION,
+  _setLLMForTest(fn) { llmOverride = fn; },
+};
+
+if (require.main === module) {
+  main().catch(e => { console.error('Fatal:', e); process.exit(1); });
+}

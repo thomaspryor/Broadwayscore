@@ -59,6 +59,8 @@ const { NON_REVIEW_PATTERNS, REVIEW_INDICATORS, heuristicClassify } = require('.
 const { GEMINI_FLASH } = require('./lib/models');
 const { assertCorpusScanned, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { fullTextHash } = require('./lib/pull-quote-negative-cache');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 // ============================================================
 // LLM Classification (Layer 2 — Gemini Flash)
@@ -232,6 +234,12 @@ async function main() {
       if (heuristic && heuristic.confidence === 'medium' && !SKIP_LLM) {
         stats.heuristicMedium++;
 
+        // BRO-7535: the LLM already cleared this exact text; don't pay to ask again.
+        if (!FORCE && data.nonReviewAuditLlmClearedHash === fullTextHash(text)) {
+          stats.llmClearCached = (stats.llmClearCached || 0) + 1;
+          continue;
+        }
+
         // Layer 2: LLM confirmation
         const showTitle = data.showId ? data.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : showId;
         const llmResult = await llmClassify(text, showTitle, data.outlet || '');
@@ -251,6 +259,17 @@ async function main() {
         } else if (llmResult && !llmResult.isNonReview) {
           stats.llmCleared++;
           if (VERBOSE) console.log(`  ✓ LLM cleared: ${showId}/${file} — ${llmResult.reasoning.substring(0, 80)}`);
+          // BRO-7535: remember the clear (keyed on the text judged) so the weekly
+          // audit stops re-sending the same file. A changed text is re-checked.
+          if (!DRY_RUN) {
+            try {
+              data.nonReviewAuditLlmClearedHash = fullTextHash(text);
+              data.nonReviewAuditLlmClearedAt = new Date().toISOString();
+              safeWriteReview(filePath, data);
+            } catch (e) {
+              if (VERBOSE) console.log(`  clear stamp failed: ${e.message}`);
+            }
+          }
         } else {
           stats.llmFailed++;
           // Heuristic medium + LLM failed → flag with medium confidence
@@ -277,6 +296,7 @@ async function main() {
   console.log(`Heuristic high-confidence: ${stats.heuristicHigh}`);
   console.log(`Heuristic medium → LLM confirmed: ${stats.llmConfirmed}`);
   console.log(`Heuristic medium → LLM cleared: ${stats.llmCleared}`);
+  console.log(`Heuristic medium → skipped, LLM cleared same text before: ${stats.llmClearCached || 0}`);
   console.log(`Heuristic medium → LLM failed: ${stats.llmFailed}`);
   console.log(`Total flagged: ${flagged.length}`);
 
