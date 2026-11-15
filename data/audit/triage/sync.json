@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "warn",
-  "lastChecked": "2026-11-14T09:07:36.579Z",
+  "status": "pass",
+  "lastChecked": "2026-11-15T09:26:50.135Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "82251 files, 50407 reviews (surplus: 31844)"
+      "message": "82419 files, 50739 reviews (surplus: 31680)"
     },
     {
       "name": "Sync: open show coverage",
@@ -23,18 +23,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "warn",
-      "message": "1 empty cast: Wanted"
+      "status": "pass",
+      "message": "39 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "5987 shows, 314 open, 50611 reviews (all at or above baseline)"
+      "message": "5998 shows, 321 open, 50739 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 11/8/2026 (6d ago)"
+      "message": "weekEnding 11/8/2026 (7d ago)"
     }
   ]
 }

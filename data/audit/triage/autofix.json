@@ -1,7 +1,7 @@
 {
   "system": "autofix",
-  "status": "pass",
-  "lastChecked": "2026-11-14T09:07:36.585Z",
+  "status": "warn",
+  "lastChecked": "2026-11-15T09:26:50.137Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -10,6 +10,11 @@
       "name": "Autofix: persistent visitor rows with no open card",
       "status": "pass",
       "message": "Every visitor-facing row red for 96h+ has an open card"
+    },
+    {
+      "name": "Autofix: digest rows listed 4+ days with no card",
+      "status": "warn",
+      "message": "3 digest row(s) listed 4+ days with no card: Test UGC Features (5d); Check Performance Budget (5d); Workflow coverage: invalid files (4d)"
     }
   ]
 }

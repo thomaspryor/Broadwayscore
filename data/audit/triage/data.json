@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-14T09:07:36.579Z",
+  "lastChecked": "2026-11-15T09:26:50.135Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -84,32 +84,32 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "27 of 388 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7444 Opening-night audit 2026-11-13"
+      "message": "25 of 379 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7478 Opening-night audit 2026-11-14"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-13"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-14"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "94 review(s) with no usable text, 63 rejected although verified as a review, 32 never scored, 36 with a blocked URL (0 published on the site), across 673 current shows"
+      "message": "97 review(s) with no usable text, 66 rejected although verified as a review, 34 never scored, 36 with a blocked URL (0 published on the site), across 678 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (0 more already queued for rescore), of 48588 checked"
+      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (0 more already queued for rescore), of 48686 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "13 early publish date(s) awaiting recheck (limit 40); 208 already attempted and not yet confirmed"
+      "message": "2 early publish date(s) awaiting recheck (limit 40); 209 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3443 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 3442 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -127,14 +127,9 @@
       "message": "No aggregator-reviewed show is missing from the catalogue"
     },
     {
-      "name": "Data: T1/T2 silent review gaps",
-      "status": "warn",
-      "message": "1 discovered review(s) not reaching the composite score (0 T1). Oldest: rope-off-broadway-2026 — talkinbroadway (empty-body)"
-    },
-    {
       "name": "Data: BWW roundup discovery misses near opening",
       "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: now-you-see-me-live-2026 (33 misses, last 2026-11-14T02:17:04.906Z)."
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: now-you-see-me-live-2026 (12 misses, last 2026-11-15T02:17:47.968Z)."
     }
   ]
 }

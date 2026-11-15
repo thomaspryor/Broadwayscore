@@ -1,7 +1,7 @@
 {
   "system": "infra",
   "status": "pass",
-  "lastChecked": "2026-11-14T09:07:36.586Z",
+  "lastChecked": "2026-11-15T09:26:50.137Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Infra: disk space",
       "status": "ok",
-      "message": "78GB free (46% used)"
+      "message": "82GB free (43% used)"
     },
     {
       "name": "Infra: notion-schedule-coupling audit",
       "status": "pass",
-      "message": "No live schedules coupled to the frozen Notion mirror (23h ago) — GitHub workflow schedules only; Mac launchd agents not scanned on this host"
+      "message": "No live schedules coupled to the frozen Notion mirror (24h ago) — GitHub workflow schedules only; Mac launchd agents not scanned on this host"
     }
   ]
 }
