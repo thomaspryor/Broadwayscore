@@ -48,7 +48,7 @@ function normalizeUrl(url) {
  */
 function normalizeShowName(name) {
   return foldDiacritics(name).toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
@@ -84,7 +84,7 @@ function buildTelechargeUrl(showTitle) {
   }
   const slug = showTitle
     .replace(/&/g, 'And')
-    .replace(/[''!,.:;?"()]/g, '')
+    .replace(/['\u2018\u2019!,.:;?"()]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');

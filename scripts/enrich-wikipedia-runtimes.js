@@ -106,7 +106,7 @@ function parseRuntime(text) {
   t = t.replace(/<ref[^>]*\/>/gi, '');
   t = t.replace(/\{\{[^}]*\}\}/g, '');
   t = t.replace(/<!--.*?-->/gs, '');
-  t = t.replace(/['']+/g, '');
+  t = t.replace(/['\u2018\u2019]+/g, '');
   t = t.trim().toLowerCase();
 
   if (!t || t === 'n/a' || t === 'tbd' || t === 'tba' || t === 'varies') return null;

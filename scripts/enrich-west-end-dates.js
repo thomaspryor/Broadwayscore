@@ -129,7 +129,7 @@ async function fetchPage(url) {
  */
 function cleanTitle(title) {
   return title
-    .replace(/['']/g, "'")          // normalize smart quotes to ASCII
+    .replace(/['\u2018\u2019]/g, "'")          // normalize smart quotes to ASCII
     .replace(/^Disney's\s+/i, '')
     .replace(/\s+the Musical$/i, '')
     .trim();
@@ -208,7 +208,7 @@ function extractTheatremonkeyDates(html) {
 function titleToTmSlugs(show) {
   const title = (show.title || '').toLowerCase().trim();
   const base = title
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
@@ -226,7 +226,7 @@ function titleToTmSlugs(show) {
   // Try with venue appended (TM sometimes uses "show-venue" slugs)
   if (show.venue) {
     const venueSlug = show.venue.toLowerCase()
-      .replace(/['']/g, '')
+      .replace(/['\u2018\u2019]/g, '')
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-');
     slugs.push(base + '-' + venueSlug);

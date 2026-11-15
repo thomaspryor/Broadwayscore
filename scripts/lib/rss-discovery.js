@@ -501,7 +501,7 @@ async function checkRSSFeeds(showTitle, options = {}) {
         // Reject non-review content: interviews, box office, cast news, photos, prep essays, roundups.
         // Normalize curly apostrophes (U+2019) → straight so "Critic's Picks" (curly) matches
         // the straight-apostrophe pattern below. Substack + NYT titles routinely use U+2019.
-        const titleLower = item.title.toLowerCase().replace(/['']/g, "'");
+        const titleLower = item.title.toLowerCase().replace(/['\u2018\u2019]/g, "'");
         const nonReviewPatterns = ['interview', 'box office', 'grosses', 'begins previews',
           'first look', 'cast announced', 'full cast', 'meet the cast', 'photos:',
           'tickets on sale', 'lottery', 'rush policy',

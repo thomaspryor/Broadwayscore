@@ -205,7 +205,7 @@ shows.forEach(show => {
 function normalizeTitle(title) {
   return title
     .toLowerCase()
-    .replace(/['']/g, "'")
+    .replace(/['\u2018\u2019]/g, "'")
     .replace(/[""]/g, '"')
     .replace(/,/g, '')  // Remove commas for better matching
     .replace(/:/g, '')  // Remove colons for better matching

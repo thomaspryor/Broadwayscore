@@ -42,7 +42,7 @@ const PINNED_IMAGES = new Set([
 function normalizeTitle(title) {
   return title
     .toLowerCase()
-    .replace(/[''""":!?,.\-–—()&]/g, '')
+    .replace(/['\u2018\u2019"\u201c\u201d:!?,.\-–—()&]/g, '')
     .replace(/\bon broadway\b/g, '')
     .replace(/\bthe musical\b/g, '')
     .replace(/\s+/g, ' ')

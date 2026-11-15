@@ -34,7 +34,7 @@ interface ShowData {
 function normalizeTitle(title: string): string {
   return title
     .toLowerCase()
-    .replace(/['']/g, "'")
+    .replace(/['\u2018\u2019]/g, "'")
     .replace(/[""]/g, '"')
     .replace(/&amp;/g, '&')
     .replace(/\s+/g, ' ')

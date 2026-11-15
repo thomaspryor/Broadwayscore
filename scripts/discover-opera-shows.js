@@ -138,7 +138,7 @@ function slugify(title) {
     .toLowerCase()
     .normalize('NFKD').replace(/[̀-ͯ]/g, '')
     .replace(/[&]/g, 'and')
-    .replace(/['']/g, '')       // strip apostrophes (e.g. "L'elisir" → "lelisir")
+    .replace(/['\u2018\u2019]/g, '')       // strip apostrophes (e.g. "L'elisir" → "lelisir")
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/^-+|-+$/g, '')

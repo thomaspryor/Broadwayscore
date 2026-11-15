@@ -22,7 +22,7 @@
 export function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/['']/g, '')           // Remove apostrophes
+    .replace(/['\u2018\u2019]/g, '')           // Remove apostrophes
     .replace(/[^a-z0-9]+/g, '-')    // Replace non-alphanumeric with dashes
     .replace(/(^-|-$)/g, '');       // Remove leading/trailing dashes
 }

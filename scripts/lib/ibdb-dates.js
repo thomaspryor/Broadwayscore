@@ -448,8 +448,8 @@ function normalizeForTitleMatch(title) {
     .replace(/\s*\|.*$/, '')           // Remove "| IBDB" SERP suffix
     .replace(/\s*[-–]\s*broadway\s+production\b/i, '') // Remove "- Broadway Production"
     .replace(/\s*\(.*?\)/g, '')        // Remove parentheticals
-    .replace(/[''']s\b/g, 's')        // Possessive 's → s (before punctuation strip)
-    .replace(/['''`]/g, '')            // Remove apostrophes (keep contractions: ain't → aint)
+    .replace(/['\u2018\u2019]s\b/g, 's')        // Possessive 's → s (before punctuation strip)
+    .replace(/['\u2018\u2019`]/g, '')            // Remove apostrophes (keep contractions: ain't → aint)
     .replace(/\s*&\s*/g, ' and ')       // "Romeo & Juliet" matches IBDB's "romeo-and-juliet" slug (BRO-5975)
     .replace(/[.:!?,/]/g, ' ')         // Other punctuation → spaces (preserves compound words)
     .replace(/^(the|a|an)\s+/i, '')    // Remove leading articles

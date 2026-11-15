@@ -352,7 +352,7 @@ function normalizeVenueName(name) {
     // Remove "The" prefix
     .replace(/^the\s+/, '')
     // Remove possessive apostrophes
-    .replace(/['']s?\s*/g, ' ')
+    .replace(/['\u2018\u2019]s?\s*/g, ' ')
     // Remove punctuation
     .replace(/[.,'"]/g, '')
     // Normalize spaces

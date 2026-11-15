@@ -776,7 +776,7 @@ async function sweepTheatreReviews(show) {
   // the url-guess-hit-rate audit shows we can delete it (CLAUDE.md §14
   // item 8 — same deletion pattern DTLI URL guessing followed).
   const titleSlug = show.title.toLowerCase()
-    .replace(/['']/g, '').replace(/[&]/g, 'and')
+    .replace(/['\u2018\u2019]/g, '').replace(/[&]/g, 'and')
     .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
     .replace(/^-|-$/g, '');
   const titleSlugNoThe = titleSlug.replace(/^the-/, '');

@@ -209,7 +209,7 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
   // Generate URL slug from title
   const baseSlug = show.title
     .toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[!?.,&:]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
@@ -498,7 +498,7 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
   // Fall back to URL guessing for unmapped shows
   const baseSlug = show.title
     .toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[!?.,]/g, '')
     .replace(/&/g, 'and')
     .replace(/\s+/g, '-')

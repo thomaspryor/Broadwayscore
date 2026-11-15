@@ -35,7 +35,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 function slugify(text) {
   return text
     .toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/&/g, 'and')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');

@@ -21,7 +21,7 @@ const dryRun = process.argv.includes('--dry-run');
 function slugify(name) {
   return name
     .toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }

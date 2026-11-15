@@ -76,7 +76,7 @@ function sleep(ms) {
 
 function slugify(text) {
   return text.toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }

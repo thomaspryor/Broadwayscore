@@ -286,7 +286,7 @@ function constructBwwReviewsSlugs(show) {
 
   // Primary: basic title → dashes
   const base = title
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^\w\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
@@ -297,7 +297,7 @@ function constructBwwReviewsSlugs(show) {
   const noSubtitle = title.replace(/[:–—]\s+.+$/, '').trim();
   if (noSubtitle !== title) {
     const noSubSlug = noSubtitle
-      .replace(/['']/g, '')
+      .replace(/['\u2018\u2019]/g, '')
       .replace(/[^\w\s-]/g, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
@@ -309,7 +309,7 @@ function constructBwwReviewsSlugs(show) {
   if (title.match(/^The\s+/i)) {
     const noThe = title.replace(/^The\s+/i, '');
     const noTheSlug = noThe
-      .replace(/['']/g, '')
+      .replace(/['\u2018\u2019]/g, '')
       .replace(/[^\w\s-]/g, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')

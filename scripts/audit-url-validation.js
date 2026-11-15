@@ -69,7 +69,7 @@ function urlPathContainsTitleWords(url, showTitle) {
   // Extract meaningful words from show title
   const titleWords = showTitle
     .toLowerCase()
-    .replace(/['']/g, '')       // Remove apostrophes
+    .replace(/['\u2018\u2019]/g, '')       // Remove apostrophes
     .replace(/[^a-z0-9\s]/g, ' ')  // Non-alphanumeric to spaces
     .split(/\s+/)
     .filter(w => w.length > 2 && !STOP_WORDS.has(w));

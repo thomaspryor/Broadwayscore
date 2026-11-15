@@ -47,7 +47,7 @@ function slugify(text) {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // strip diacritics
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[&]/g, 'and')
     // "/" is a word separator, not punctuation to drop (BRO-3191 cousin —
     // see scripts/lib/deduplication.js#slugify for the incident this

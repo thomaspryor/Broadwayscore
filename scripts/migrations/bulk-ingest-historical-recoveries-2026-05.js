@@ -220,7 +220,7 @@ function urlContainsShowSlug(u, showId) {
 function normTitle(s) {
   return (s || '')
     .toLowerCase()
-    .replace(/['']/g, "'")
+    .replace(/['\u2018\u2019]/g, "'")
     .replace(/[^a-z0-9 ]/g, '')
     .replace(/\b(the|a|an|review|broadway|off-broadway|theater|theatre|musical|play)\b/g, '')
     .replace(/\s+/g, ' ')
@@ -263,7 +263,7 @@ function pickClosestByYear(matches, urlYearHint) {
 }
 
 function matchTitleToShow(rawTitle, titleMap, urlYearHint) {
-  let t = (rawTitle || '').replace(/[''""']/g, "'");
+  let t = (rawTitle || '').replace(/['\u2018\u2019"\u201c\u201d]/g, "'");
   let m = t.match(/^['"]?(.+?)['"]?\s+review/i);
   let candidate = m ? m[1] : t.split(/[—–:|,]/)[0];
   candidate = normTitle(candidate);

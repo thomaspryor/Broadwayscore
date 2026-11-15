@@ -190,7 +190,7 @@ async function main() {
 
       // Generate candidate slugs from show title
       const titleSlug = show.title.toLowerCase()
-        .replace(/['']/g, '')
+        .replace(/['\u2018\u2019]/g, '')
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '');
 
@@ -237,7 +237,7 @@ async function main() {
         console.log(`Show ${wanted} is a ${show.category} show — skipping (Broadway.com lists Broadway only)`);
       } else if (show) {
         const titleSlug = show.title.toLowerCase()
-          .replace(/['']/g, '')
+          .replace(/['\u2018\u2019]/g, '')
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-|-$/g, '');
         toProcess.push({

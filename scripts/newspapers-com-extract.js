@@ -494,7 +494,7 @@ async function searchForReview(page, showTitle, paperConfig, dateStart, dateEnd,
   // - Clean special characters
   let searchTitle = showTitle
     .replace(/\s*\(\d{4}\)\s*$/, '')
-    .replace(/['']/g, "'")
+    .replace(/['\u2018\u2019]/g, "'")
     .replace(/[""]/g, '"');
 
   // For titles with colons/subtitles, use just the main title (before colon)

@@ -56,7 +56,7 @@ async function discoverStubhubUrl(showTitle, market = 'broadway') {
   const cleanTitle = showTitle
     .replace(/\s*\([^)]{5,}\)\s*$/, '')   // strip parenthetical venue
     .replace(/\s*[-–—]\s*(?:Globe|Donmar|Almeida)$/i, '') // strip venue suffix
-    .replace(/['']/g, "'");
+    .replace(/['\u2018\u2019]/g, "'");
   const query = `site:stubhub.com "${cleanTitle}" ${marketTerm} tickets`;
   const results = await serpQuery(query);
 

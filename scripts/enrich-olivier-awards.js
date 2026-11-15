@@ -169,7 +169,7 @@ function parsePersonCategoryPage(content, categoryName) {
 function normalizeTitle(title) {
   return title
     .toLowerCase()
-    .replace(/[''`]/g, "'")
+    .replace(/['\u2018\u2019`]/g, "'")
     .replace(/[""]/g, '"')
     .replace(/&amp;/g, '&')
     .replace(/\s*:\s*the musical$/i, '')

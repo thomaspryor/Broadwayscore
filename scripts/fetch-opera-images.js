@@ -94,7 +94,7 @@ function slugifyTitle(title) {
     .toLowerCase()
     .normalize('NFKD').replace(/[̀-ͯ]/g, '')
     .replace(/[&]/g, 'and')
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/^-+|-+$/g, '')

@@ -109,7 +109,7 @@ function httpGet(url, timeoutMs = 15000) {
 
 function slugify(text) {
   return text.toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }

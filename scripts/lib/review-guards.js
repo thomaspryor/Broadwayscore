@@ -3547,7 +3547,7 @@ function isUrlTitleMismatch(url, showTitle) {
 
   // Normalize show title to URL-slug form for comparison
   const titleSlug = showTitle.toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 

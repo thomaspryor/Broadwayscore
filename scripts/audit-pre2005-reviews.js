@@ -51,7 +51,7 @@ const showById = new Map(shows.map(s => [s.id, s]));
 // Build title → production families (all markets)
 const titleFamilies = new Map();
 shows.forEach(s => {
-  const baseTitle = s.title.toLowerCase().replace(/['']/g, "'").trim();
+  const baseTitle = s.title.toLowerCase().replace(/['\u2018\u2019]/g, "'").trim();
   if (!titleFamilies.has(baseTitle)) titleFamilies.set(baseTitle, []);
   titleFamilies.get(baseTitle).push(s);
 });
@@ -240,7 +240,7 @@ function findYearsInText(text) {
 
 // For a pre-2005 show, find all revivals in the database
 function findRevivals(show) {
-  const baseTitle = show.title.toLowerCase().replace(/['']/g, "'").trim();
+  const baseTitle = show.title.toLowerCase().replace(/['\u2018\u2019]/g, "'").trim();
   const family = titleFamilies.get(baseTitle) || [];
   return family
     .filter(s => s.id !== show.id && s.openingDate)

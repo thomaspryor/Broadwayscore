@@ -849,8 +849,8 @@ async function main() {
 
     // Quoted search with apostrophes/special chars often returns 0 results on TR
     // Retry without quotes if needed
-    if (results.length === 0 && /[''"'']/.test(title)) {
-      const cleanTitle = title.replace(/[''"'']/g, ' ').replace(/\s+/g, ' ').trim();
+    if (results.length === 0 && /['\u2018\u2019"\u201c\u201d]/.test(title)) {
+      const cleanTitle = title.replace(/['\u2018\u2019"\u201c\u201d]/g, ' ').replace(/\s+/g, ' ').trim();
       const retryUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent(cleanTitle)}&title=on&order=newest`;
       await page.goto(retryUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
       await page.waitForTimeout(1000);

@@ -41,7 +41,7 @@ const LIMIT = limitArg ? parseInt(limitArg, 10) : Infinity;
 function slugify(name) {
   return name
     .toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }

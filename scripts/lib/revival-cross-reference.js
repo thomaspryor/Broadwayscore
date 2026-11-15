@@ -15,7 +15,7 @@ const { canonicalVenue, sameVenueOrRoom } = require('./show-duplicate-detection'
 function normalizeRevivalTitle(t) {
   return foldDiacritics(t || '').toLowerCase()
     .replace(/^(the|a|an)\s+/i, '')
-    .replace(/['']/g, "'")
+    .replace(/['\u2018\u2019]/g, "'")
     .replace(/[^a-z0-9' ]/g, '')
     .replace(/\s+/g, ' ')
     .trim();

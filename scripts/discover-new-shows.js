@@ -1816,12 +1816,12 @@ function searchTodayTixByTitle(title, location = 1) {
 
           // Normalize for matching
           const normTitle = title.toLowerCase()
-            .replace(/['']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+            .replace(/['\u2018\u2019]/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
 
           // Exact match first
           const exact = json.data.find(s => {
             const n = (s.displayName || s.name || '').toLowerCase()
-              .replace(/['']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+              .replace(/['\u2018\u2019]/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
             return n === normTitle;
           });
           if (exact) { resolve(exact); return; }
@@ -1831,7 +1831,7 @@ function searchTodayTixByTitle(title, location = 1) {
           const ourWords = normTitle.split(' ').filter(w => w.length > 2);
           for (const show of json.data) {
             const apiName = (show.displayName || show.name || '').toLowerCase()
-              .replace(/['']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+              .replace(/['\u2018\u2019]/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
             const ourInTheirs = ourWords.filter(w => apiName.includes(w)).length;
             const ourRatio = ourWords.length > 0 ? ourInTheirs / ourWords.length : 0;
             if (ourRatio < 0.6) continue;

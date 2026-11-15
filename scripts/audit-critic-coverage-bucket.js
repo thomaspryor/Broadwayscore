@@ -22,7 +22,7 @@ const showList = shows.shows || shows;
 
 function normTitle(s) {
   return (s||'').toLowerCase()
-    .replace(/['']/g, "'")
+    .replace(/['\u2018\u2019]/g, "'")
     .replace(/[^a-z0-9 ]/g, '')
     .replace(/\b(the|a|an|review|broadway|off-broadway|theater|theatre|musical|play)\b/g, '')
     .replace(/\s+/g, ' ').trim();

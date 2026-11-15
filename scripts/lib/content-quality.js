@@ -3212,12 +3212,12 @@ function verifyFullTextContent(fullText, showMetadata) {
     if (!titleFound) {
       const titleWords = title
         .replace(/^(the|a|an)\s+/, '')
-        .replace(/['']/g, '') // Strip apostrophes so "doll's" → "dolls", matches text "dolls"
+        .replace(/['\u2018\u2019]/g, '') // Strip apostrophes so "doll's" → "dolls", matches text "dolls"
         .split(/[\s:,\-–—]+/)
         .filter(w => w.length > 3 && !['the', 'and', 'for', 'with', 'from', 'that', 'this', 'into', 'part', 'musical'].includes(w));
 
       // Also search in apostrophe-stripped text
-      const textNoApostrophe = text.replace(/['']/g, '');
+      const textNoApostrophe = text.replace(/['\u2018\u2019]/g, '');
 
       if (titleWords.length > 0) {
         const matchedWords = titleWords.filter(w => text.includes(w) || textNoApostrophe.includes(w));

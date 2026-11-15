@@ -79,7 +79,7 @@ const showById = new Map(showsData.shows.map(s => [s.id, s]));
 // Build title families for revival lookup — all markets, not just Broadway
 const titleFamilies = new Map();
 showsData.shows.forEach(s => {
-  const baseTitle = s.title.toLowerCase().replace(/['']/g, "'").trim();
+  const baseTitle = s.title.toLowerCase().replace(/['\u2018\u2019]/g, "'").trim();
   if (!titleFamilies.has(baseTitle)) titleFamilies.set(baseTitle, []);
   titleFamilies.get(baseTitle).push(s);
 });
@@ -422,7 +422,7 @@ async function main() {
 
       // Find revivals for context
       const show = showById.get(item.showId);
-      const baseTitle = (show?.title || item.showTitle || '').toLowerCase().replace(/['']/g, "'").trim();
+      const baseTitle = (show?.title || item.showTitle || '').toLowerCase().replace(/['\u2018\u2019]/g, "'").trim();
       const family = titleFamilies.get(baseTitle) || [];
       const revivals = family.filter(s => s.id !== item.showId && s.openingDate)
         .sort((a, b) => a.openingDate.localeCompare(b.openingDate));

@@ -96,7 +96,7 @@ function normalizeShowName(name) {
   // fragments that can never match ("Les Misérables" -> "les mis rables"
   // instead of "les miserables") — see task #648.
   return foldDiacritics(name).toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['\u2018\u2019]/g, '')
     .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
