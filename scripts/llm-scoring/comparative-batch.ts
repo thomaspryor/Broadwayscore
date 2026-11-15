@@ -29,7 +29,7 @@ const cb = require('../lib/comparative-batch');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { COMPARATIVE_OPENAI } = require('../lib/models');
 
-type VendorState = { inflight?: { id: string; keys: string[]; submittedAt: string }; answers?: Record<string, { text: string; at: string }> };
+type VendorState = { inflight?: { id: string; keys: string[]; submittedAt: string }; answers?: Record<string, { text: string; at: string }>; submitFailures?: number };
 export type BatchState = Record<string, VendorState>;
 
 const STATE_PATH = path.join(__dirname, '../../data/collection-state/comparative-batch-state.json');
@@ -147,9 +147,22 @@ async function runVendor(name: string, prompts: string[], pollMs: number, deadli
     // 2) submit only the prompts nobody has answered or is answering.
     const missing = cb.missingKeys(state[name], wanted);
     if (missing.length) {
-      const id = await ad.submit(missing.map((k) => keyOf.get(k)!));
+      let id: string;
+      try {
+        id = await ad.submit(missing.map((k) => keyOf.get(k)!));
+      } catch (e: any) {
+        // A vendor that can never submit would hold every group open and make the healthy
+        // vendors' answers expire and get re-billed. After MAX_SUBMIT_FAILURES runs its missing
+        // prompts become terminal failures, so groups settle on the other models (sync parity).
+        const fails = (state[name]?.submitFailures || 0) + 1;
+        state[name] = fails >= cb.MAX_SUBMIT_FAILURES
+          ? cb.recordTerminal(state[name], missing, new Map())
+          : { ...state[name], submitFailures: fails };
+        saveState(state);
+        throw new Error(`submit failed (${fails}/${cb.MAX_SUBMIT_FAILURES}): ${e.message}`);
+      }
       inflight = { id, keys: missing, submittedAt: new Date().toISOString() };
-      state[name] = { ...state[name], inflight };
+      state[name] = { ...state[name], inflight, submitFailures: 0 };
       saveState(state);
       console.log(`  ${name} batch ${id} submitted (${missing.length} prompts)`);
       if (!(await poll(id))) throw new Error('poll budget exhausted');

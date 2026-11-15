@@ -52,13 +52,14 @@ test('missingKeys: answered or in-flight prompts are not re-submitted; stale one
 
 test('a vendor that finished first keeps its answers while a slower vendor is in flight', () => {
   const k = cb.promptKey('p');
-  const done = cb.recordTerminal({}, [k], new Map([[k, 'answer']]), NOW);
+  const reply = '[{"id":"r1","score":70,"warmthRank":1}]';
+  const done = cb.recordTerminal({}, [k], new Map([[k, reply]]), NOW);
   const state = { openai: done, gemini: { inflight: { id: 'g', keys: [k], submittedAt: iso(NOW) } } };
   assert.equal(cb.allVendorsRecorded(state, k, NOW), false); // defers the group
   state.gemini = cb.recordTerminal(state.gemini, [k], new Map(), NOW); // ended without an answer
   assert.equal(state.gemini.answers[k].text, '');
   assert.equal(cb.allVendorsRecorded(state, k, NOW), true); // terminal failure no longer blocks (sync parity)
-  assert.equal(state.openai.answers[k].text, 'answer');
+  assert.equal(state.openai.answers[k].text, reply);
 });
 
 test('prompt-set change does not orphan: keys are content-based and pruneAnswers keeps wanted + fresh only', () => {
@@ -103,4 +104,23 @@ test('resultsByKey maps by custom id and drops failures', () => {
     { customId: 'bogus', success: true, text: 'z' },
   ]);
   assert.deepEqual([...m.entries()], [['p0', 'a'], ['p2', 'c']]);
+});
+
+test('stored batch answers keep scores only: no model reasoning reaches the committed state file', () => {
+  const { parseComparativeResponse } = require('../lib/comparative-band.js');
+  const raw = '```json\n[{"id":"r1","score":72,"warmthRank":1,"reasoning":"quotes \\"a dazzling revival\\""},{"id":"r2","score":55,"warmthRank":2,"reasoning":"cooler"}]\n```';
+  const v = cb.recordTerminal(undefined, ['k1', 'k2'], new Map([['k1', raw], ['k2', 'not json at all']]));
+  assert.ok(!v.answers.k1.text.includes('reasoning') && !v.answers.k1.text.includes('dazzling'));
+  assert.deepStrictEqual(parseComparativeResponse(v.answers.k1.text, ['r1', 'r2']), {
+    r1: { score: 72, warmthRank: 1, reasoning: '' }, r2: { score: 55, warmthRank: 2, reasoning: '' },
+  });
+  assert.strictEqual(v.answers.k2.text, '', 'unparseable reply is a terminal failure, not stored raw');
+});
+
+test('a vendor that keeps failing to submit stops blocking groups after MAX_SUBMIT_FAILURES runs', () => {
+  const src = fs.readFileSync(new URL('../llm-scoring/comparative-batch.ts', import.meta.url), 'utf8');
+  assert.ok(cb.MAX_SUBMIT_FAILURES >= 1);
+  assert.match(src, /fails >= cb\.MAX_SUBMIT_FAILURES\s*\?\s*cb\.recordTerminal\(state\[name\], missing, new Map\(\)\)/);
+  const v = cb.recordTerminal({ answers: {}, submitFailures: 2 }, ['k1'], new Map());
+  assert.ok(cb.allVendorsRecorded({ a: v }, 'k1'), 'terminal empty answer lets the group settle on the other vendors');
 });

@@ -9,6 +9,7 @@
  */
 const { openaiChatBody } = require('./llm-batch');
 const { CLAUDE_SONNET } = require('./models');
+const { parseComparativeResponse } = require('./comparative-band');
 
 const COMPARATIVE_PARAMS = Object.freeze({
   claudeModel: CLAUDE_SONNET,
@@ -102,12 +103,26 @@ function missingKeys(v, keys, now = Date.now()) {
   return keys.filter((k) => !(v && v.answers && v.answers[k] && fresh(v.answers[k].at, now)) && !covered.has(k));
 }
 
-/** Record a terminal batch: every requested key gets its text or '' (terminal failure). Returns new vendor state. */
+/**
+ * What is stored for an answer: only the ids, scores and warmth ranks the scorer reads.
+ * The state file is committed to the public repo, and a model's free-text `reasoning`
+ * can quote review text, so it is dropped here. Unparseable replies become '' (terminal).
+ */
+function storableAnswer(text) {
+  const parsed = parseComparativeResponse(text || '', []);
+  const rows = Object.entries(parsed).map(([id, o]) => ({ id, score: o.score, warmthRank: o.warmthRank }));
+  return rows.length ? JSON.stringify(rows) : '';
+}
+
+/** Record a terminal batch: every requested key gets its answer or '' (terminal failure). Returns new vendor state. */
 function recordTerminal(v, inflightKeys, textsByKey, now = Date.now()) {
   const answers = { ...((v && v.answers) || {}) };
-  for (const k of inflightKeys) answers[k] = { text: textsByKey.get(k) || '', at: new Date(now).toISOString() };
+  for (const k of inflightKeys) answers[k] = { text: storableAnswer(textsByKey.get(k)), at: new Date(now).toISOString() };
   return { answers };
 }
+
+/** Consecutive runs a vendor may fail to SUBMIT before its missing prompts are recorded as terminal failures. */
+const MAX_SUBMIT_FAILURES = 3;
 
 /** Drop expired answers and ones for prompts no longer wanted. */
 function pruneAnswers(v, wantedKeys, now = Date.now()) {
@@ -134,5 +149,5 @@ module.exports = {
   COMPARATIVE_PARAMS, customId, indexOfCustomId,
   buildAnthropicRequest, buildOpenAIRequest, buildGeminiRequest,
   promptKey, resultsByKey, usableInflight, missingKeys, recordTerminal, pruneAnswers,
-  allVendorsRecorded, STATE_MAX_AGE_MS,
+  allVendorsRecorded, STATE_MAX_AGE_MS, storableAnswer, MAX_SUBMIT_FAILURES,
 };
