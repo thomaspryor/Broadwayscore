@@ -1,49 +1,5 @@
 [
   {
-    "startedAt": "2026-11-13T02:24:35.205Z",
-    "completedAt": "2026-11-13T03:23:17.384Z",
-    "totalReviews": 82080,
-    "processed": 382,
-    "skipped": 80365,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 2166168,
-      "output": 124592,
-      "cacheRead": 1363473,
-      "cacheWrite": 142966,
-      "total": 5675590
-    },
-    "costUsd": 8.9025601,
-    "runId": "43350993139",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "the-underlying-chris-off-broadway-2019",
-        "outletId": "newyorker",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-13T03:28:14.600Z",
-    "completedAt": "2026-11-13T03:31:53.450Z",
-    "totalReviews": 101,
-    "processed": 101,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 262174,
-      "output": 22352,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 284526
-    },
-    "costUsd": 0.7262168000000001,
-    "runId": "43350993139",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-13T03:41:09.965Z",
     "completedAt": "2026-11-13T04:34:52.616Z",
     "totalReviews": 82117,
@@ -414435,6 +414391,44 @@
     },
     "costUsd": 0,
     "runId": "43700078203",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-15T10:37:21.087Z",
+    "completedAt": "2026-11-15T10:37:30.431Z",
+    "totalReviews": 35,
+    "processed": 2,
+    "skipped": 33,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 10666,
+      "output": 654,
+      "cacheRead": 0,
+      "cacheWrite": 7524,
+      "total": 28008
+    },
+    "costUsd": 0.0677906,
+    "runId": "43704729253",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-15T10:42:27.757Z",
+    "completedAt": "2026-11-15T10:42:48.892Z",
+    "totalReviews": 9,
+    "processed": 9,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 24955,
+      "output": 2199,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 27154
+    },
+    "costUsd": 0.06939780000000001,
+    "runId": "43704729253",
     "source": "comparative-rescore",
     "errorDetails": []
   }
