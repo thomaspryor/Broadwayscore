@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T18:39:03.890Z",
+  "timestamp": "2026-11-15T19:15:09.360Z",
   "stats": {
-    "totalReviews": 82263,
-    "alreadyFlagged": 22428,
+    "totalReviews": 82268,
+    "alreadyFlagged": 22427,
     "dateGuardCatches": 221,
     "directorMismatch": 3708,
     "tvFilmSignals": 2318,
-    "londonSignals": 3764,
+    "londonSignals": 3765,
     "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8455
+    "noPublishDate": 8456
   },
   "findings": [
     {
@@ -107111,6 +107111,20 @@
       "score": 97,
       "publishDate": "2017-01-03",
       "url": "https://www.londonboxoffice.co.uk/news/post/hedda-gabler-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hedda-gabler-west-end-2016",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 15,
+      "publishDate": "2017-01-07",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
