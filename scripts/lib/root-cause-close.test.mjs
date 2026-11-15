@@ -360,3 +360,21 @@ test('EFFECT-only gaps block on their own later date, with their own notice (BRO
   const bare = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: ['nothing'] });
   assert.equal(rcc.rootCauseCloseBlocking(rootDay, {}, bare), true, 'missing ROOT-CAUSE still blocks on its date');
 });
+
+// BRO-7552: "EFFECT: ... ledger numbers pending" (BRO-7532, 2026-11-15) has digits but measures nothing.
+test('BRO-7552: an EFFECT that defers the measurement is not an effect, even with digits in it', () => {
+  const base = FULL.split('\n').filter((l) => !l.startsWith('EFFECT:'));
+  const pend = rcc.checkRootCauseClose({ title: 'Fix free search fallthrough', texts: [...base, 'EFFECT: live check 5/5 known reviews found free; ledger numbers pending'] });
+  assert.ok(pend.missing.includes('EFFECT'), `pending EFFECT must be missing, got ${JSON.stringify(pend)}`);
+  const ok = rcc.checkRootCauseClose({ title: 'Fix free search fallthrough', texts: [...base, 'EFFECT: paid renders for the two hosts 24 an hour before, 4 an hour after'] });
+  assert.ok(!ok.missing.includes('EFFECT'));
+  assert.ok(rcc.isPendingEffect('not observable yet'));
+  assert.ok(rcc.isPendingEffect('TBD after the recheck'));
+  assert.ok(!rcc.isPendingEffect('24 an hour before, 4 an hour after'));
+});
+
+test('ship-check BRO-7552: pending detection ignores "pending-review" compounds and "no longer pending", catches deferral wordings', async () => {
+  const { isPendingEffect } = await import('./root-cause-close.js').then((m) => m.default || m);
+  for (const t of ['24->3/h; pending-review queue 40->0', 'no longer pending: 24->3/h']) assert.equal(isPendingEffect(t), false, t);
+  for (const t of ['ledger numbers pending', 'awaiting ledger rows', 'numbers tomorrow', 'will confirm after the next cron run', 'not yet observed', 'TBC']) assert.equal(isPendingEffect(t), true, t);
+});

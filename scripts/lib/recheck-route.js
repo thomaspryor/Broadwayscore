@@ -27,6 +27,14 @@ const { ExitTrap } = require('./recheck-autoclose.js');
 const DEFAULT_ROUTE_FROM = '2026-11-15';
 const MAX_ROUTED = 10;
 const DEDUP_DAYS = 30;
+// BRO-7557: a live-routed card used to be skipped for DEDUP_DAYS and, because a Done card is
+// rechecked on one night only, never looked at again. Now it is re-run (rewatch) and, if it
+// still fails, routed again once the retry window has passed AND no open card mentions it.
+const ROUTE_RETRY_NIGHTS = 3;
+// After this many live routes of one card, stop rewatching it: the VERIFY or the fix needs a
+// human, and a fourth identical card would be noise.
+const MAX_REROUTES = 3;
+const MAX_REWATCH = 5;
 // An alert-absent check fails while the alert fired inside the router's quiet
 // window (up to 168h), so it keeps "failing" for days after the alert stopped.
 // Replay of 110 nights (2026-11-08): 8 cards failed 61-138h after the last fire.
@@ -59,8 +67,11 @@ function routeMode({ env = process.env, now = Date.now() } = {}) {
 }
 
 /** Card ids a LIVE route already filed within DEDUP_DAYS (shadow rows do not count). */
-function alreadyRouted(ledgerEntries, { now = Date.now() } = {}) {
-  const since = now - DEDUP_DAYS * 86400000;
+function alreadyRouted(ledgerEntries, { now = Date.now(), coverKnown = false } = {}) {
+  // With a live open-card index the open-card check carries the long-term dedupe, so the ledger
+  // window shrinks to the retry window. Without one (Linear fetch failed) keep the long window:
+  // never route twice because a lookup failed.
+  const since = now - (coverKnown ? ROUTE_RETRY_NIGHTS : DEDUP_DAYS) * 86400000;
   const ids = new Set();
   for (const e of ledgerEntries || []) {
     // maybeFiled: the create timed out, so a card may exist; never risk a second one.
@@ -72,6 +83,114 @@ function alreadyRouted(ledgerEntries, { now = Date.now() } = {}) {
   return ids;
 }
 
+
+/** PURE. Live route rows (filed or maybeFiled) per card, oldest first: [{ts, identifier}]. */
+function liveRoutesByCard(ledgerEntries) {
+  const m = new Map();
+  for (const e of ledgerEntries || []) {
+    if (!e || e.event !== 'recheck-route' || e.mode !== 'live' || !(e.filed || e.maybeFiled)) continue;
+    for (const id of e.cardIds || []) {
+      if (!m.has(id)) m.set(id, []);
+      m.get(id).push({ ts: e.ts, identifier: e.identifier || null });
+    }
+  }
+  for (const list of m.values()) list.sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+  return m;
+}
+
+/**
+ * PURE. Map of card id -> identifiers of OPEN Linear cards whose title or description names it
+ * (word-boundary: BRO-12 never matches BRO-123). A card is never covered by itself.
+ * Returns null when issues is not an array (fetch failed): callers must then fall back to the
+ * long ledger window, never treat "unknown" as "uncovered".
+ */
+function buildCoverIndex(openIssues) {
+  if (!Array.isArray(openIssues)) return null;
+  const idx = new Map();
+  for (const issue of openIssues) {
+    if (!issue || !issue.identifier) continue;
+    const text = `${issue.title || ''}\n${issue.description || ''}`;
+    for (const m of text.matchAll(/(?<![A-Za-z0-9-])BRO-(\d+)(?!\d)/g)) {
+      const id = `BRO-${m[1]}`;
+      if (id === issue.identifier) continue;
+      if (!idx.has(id)) idx.set(id, new Set());
+      idx.get(id).add(issue.identifier);
+    }
+  }
+  return idx;
+}
+
+/**
+ * PURE. THE one "is this failing card already someone's work" predicate, used by both the
+ * batch builder and the rewatch selector: an open card names it, or a live route filed it
+ * inside the retry window (long window when the open-card index is unknown).
+ */
+function coveredBy(cardId, { coverIndex = null, routed = new Set() } = {}) {
+  if (coverIndex && coverIndex.has(cardId)) return [...coverIndex.get(cardId)][0];
+  if (routed.has(cardId)) return 'recent-route';
+  return null;
+}
+
+/**
+ * PURE. Cards whose LATEST recheck is a real fail and that nobody covers: the shadow-era
+ * failures (never routed live) and persistent failures past the retry window. Oldest check
+ * first so one card cannot starve the rest. Cards already live-routed MAX_REROUTES times stop.
+ * @returns {{targets:object[], exhausted:string[]}}
+ */
+function selectRewatchTargets({ ledgerEntries, now = Date.now(), limit = MAX_REWATCH, since = null, exclude = [], coverIndex = null, tsxTests, minAgeHours = 20 } = {}) {
+  const latest = new Map();
+  for (const e of ledgerEntries || []) {
+    if (!e || e.event !== 'recheck' || !e.cardId || e.skip) continue;
+    // An env-cause row (could not run here) says nothing about the card, so it must not hide an earlier real fail.
+    if (recheckVerdict(e, { tsxTests }).envCause) continue;
+    latest.set(e.cardId, e); // ledger is append-ordered: last wins, even outside the look-back
+  }
+  const routed = alreadyRouted(ledgerEntries, { now, coverKnown: !!coverIndex });
+  const routes = liveRoutesByCard(ledgerEntries);
+  const skip = new Set(exclude);
+  const cands = [];
+  const exhausted = [];
+  for (const r of latest.values()) {
+    if (skip.has(r.cardId) || !r.verifyCmd) continue;
+    if (since && String(r.ts) < since) continue; // latest row is older than the look-back
+    const age = now - Date.parse(r.ts);
+    if (!(age >= minAgeHours * 3600000)) continue; // rechecked tonight already, or unparseable ts
+    if (recheckVerdict(r, { tsxTests }).status !== 'fail') continue;
+    if (coveredBy(r.cardId, { coverIndex, routed })) continue;
+    const prior = routes.get(r.cardId) || [];
+    if (prior.length >= MAX_REROUTES) { exhausted.push(r.cardId); continue; }
+    cands.push({ cardId: r.cardId, name: r.name, verifyCmd: r.verifyCmd, reason: null, skip: null, rewatch: true, priorRoutes: prior, lastTs: r.ts });
+  }
+  cands.sort((a, b) => String(a.lastTs).localeCompare(String(b.lastTs)));
+  return { targets: cands.slice(0, limit), exhausted };
+}
+
+/**
+ * Re-reads each rewatch candidate's CARD, so the command is the one the card carries NOW
+ * (a worker that rewrote a stale VERIFY in a comment must not be re-failed on the old one,
+ * BRO-3446 comment corrections) and so only Done cards are re-run (an open card already has
+ * an owner and a normal recheck path). A card that cannot be read, is not completed, or has
+ * retracted its VERIFY is dropped and counted, never guessed at.
+ * @param {object[]} targets selectRewatchTargets output
+ * @param {{getIssue:Function, toCard:Function, gateFor:Function}} deps injected: linear-client getIssue, linear-recheck-source mapIssueToCard, autonomous-recheck-core verifiabilityForCard
+ * @returns {Promise<{targets:object[], dropped:{cardId:string, why:string}[]}>}
+ */
+async function refreshRewatchTargets(targets, { getIssue, toCard, gateFor } = {}) {
+  const out = [];
+  const dropped = [];
+  for (const t of targets || []) {
+    let issue = null;
+    try { issue = await getIssue(t.cardId); } catch (err) { dropped.push({ cardId: t.cardId, why: `card unreadable: ${String((err && err.message) || err).slice(0, 80)}` }); continue; }
+    const card = toCard(issue);
+    if (!card) { dropped.push({ cardId: t.cardId, why: 'card not found' }); continue; }
+    if (card.stateType !== 'completed') { dropped.push({ cardId: t.cardId, why: `card is ${card.status}, not Done` }); continue; }
+    const gate = gateFor(card);
+    if (gate && gate.kind === 'retracted') { dropped.push({ cardId: t.cardId, why: 'VERIFY retracted on the card' }); continue; }
+    out.push({ ...t, name: card.name || t.name, verifyCmd: (gate && gate.cmd) || t.verifyCmd, ...(gate && gate.cmd && gate.cmd !== t.verifyCmd ? { cmdChanged: true } : {}) });
+  }
+  return { targets: out, dropped };
+}
+
 /**
  * The night's routable failures, as one card's title and body.
  * @param {{rows:object[], handedOff?:string[], ledgerEntries?:object[], now?:number, tsxTests?:Set<string>, sha?:string}} o
@@ -79,10 +198,11 @@ function alreadyRouted(ledgerEntries, { now = Date.now() } = {}) {
  *   sha: the fresh-main commit the checks ran on (each entry names it)
  * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, routed:number}}}
  */
-function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.now(), tsxTests, sha = null } = {}) {
+function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.now(), tsxTests, sha = null, coverIndex = null } = {}) {
   const handed = new Set(handedOff);
-  const routed = alreadyRouted(ledgerEntries, { now });
-  const skipped = { env: 0, handedOff: 0, routed: 0 };
+  const routed = alreadyRouted(ledgerEntries, { now, coverKnown: !!coverIndex });
+  const routes = liveRoutesByCard(ledgerEntries);
+  const skipped = { env: 0, handedOff: 0, routed: 0, coveredOpen: 0, exhausted: 0, coveredBy: {} };
   const seen = new Set();
   const fails = [];
   for (const r of rows || []) {
@@ -92,6 +212,8 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
     seen.add(r.cardId);
     if (handed.has(r.cardId)) { skipped.handedOff++; continue; }
     if (routed.has(r.cardId)) { skipped.routed++; continue; }
+    if (coverIndex && coverIndex.has(r.cardId)) { skipped.coveredOpen++; skipped.coveredBy[r.cardId] = coveredBy(r.cardId, { coverIndex }); continue; }
+    if ((routes.get(r.cardId) || []).length >= MAX_REROUTES) { skipped.exhausted++; continue; }
     fails.push(r);
   }
   const cards = fails.slice(0, MAX_ROUTED);
@@ -107,13 +229,20 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
     const h = quietAlertHours(c);
     return h === null ? '' : `\n  - note: the alert last fired ${Math.round(h)}h ago and the check still counts it until its quiet window ends. Look at data/audit/alert-ledger.json first. If it has not fired since the card closed, confirm the condition itself is gone (quiet alone proves nothing for weekly or throttled alerts) before saying on the original card that the fix holds.`;
   };
+  const priorNote = (c) => {
+    const p = routes.get(c.cardId) || [];
+    if (!p.length) return '';
+    const last = p[p.length - 1];
+    const nights = Math.max(1, Math.round((now - Date.parse(last.ts)) / 86400000));
+    return `\n  - note: routed before (${p.map((x) => x.identifier || 'a card filed ' + String(x.ts).slice(0, 10)).join(', ')}) and still failing ${nights} night${nights === 1 ? '' : 's'} later. If that card is Done, its fix did not hold or its VERIFY is stale: say which on the original card.`;
+  };
   const commit = sha ? String(sha).slice(0, 12) : 'unknown';
   const body = [
     `The nightly acceptance recheck (BRO-7138) re-ran each card's own VERIFY command on fresh main and it FAILED. These were closed as done; the effect did not hold.`,
     '',
     'For each card below: reproduce on main, then either fix the regression, or (if the VERIFY itself went stale) rewrite it into a real check and say why in a comment on the original card. Do not reopen the original cards; do the work here.',
     '',
-    ...cards.map((c) => `- ${c.cardId} ${oneLine(c.name)}\n  - check: \`${c.verifyCmd}\`\n  - failed on main at ${commit}, output tail: ${tail(c.detail || c.note) || '(no output kept)'}${quietNote(c)}`),
+    ...cards.map((c) => `- ${c.cardId} ${oneLine(c.name)}\n  - check: \`${c.verifyCmd}\`\n  - failed on main at ${commit}, output tail: ${tail(c.detail || c.note) || '(no output kept)'}${quietNote(c)}${priorNote(c)}`),
     ...(overflow > 0 ? ['', `${overflow} more failed tonight and will be routed on a later night once these are cleared (cap ${MAX_ROUTED} per batch).`] : []),
     '',
     '## Acceptance criteria',
@@ -163,4 +292,4 @@ async function fileRouteBatch({ title, body, linearBrainMain, timeoutMs = 60000 
   }
 }
 
-module.exports = { DEFAULT_ROUTE_FROM, MAX_ROUTED, QUIET_ALERT_NOTE_H, quietAlertHours, routeMode, alreadyRouted, buildRouteBatch, fileRouteBatch };
+module.exports = { DEFAULT_ROUTE_FROM, MAX_ROUTED, ROUTE_RETRY_NIGHTS, MAX_REROUTES, MAX_REWATCH, liveRoutesByCard, buildCoverIndex, coveredBy, selectRewatchTargets, refreshRewatchTargets, QUIET_ALERT_NOTE_H, quietAlertHours, routeMode, alreadyRouted, buildRouteBatch, fileRouteBatch };

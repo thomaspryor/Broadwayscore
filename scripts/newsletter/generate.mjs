@@ -3304,8 +3304,7 @@ function buildSubjectFacts() {
     const when = s.openingDate ? `${inWeek(s.openingDate) ? 'opened this week' : 'opened recently'}, on ${DAY(s.openingDate)}` : 'opened recently';
     if (_editorialOverrides.some(o => o.waiveFreshRunGate && o.showId === s.id)) {
       // Moved production (owner-approved override): never an "opening" to the writer.
-      const from = (s.priorRuns || []).map(x => x && x.venue).find(v => v && v !== s.venue);
-      lines.push(`Transfer, not a new opening: ${s.title} moved${from ? ` from the ${from}` : ''} to ${s.venue || 'a new venue'}. Do not call it an opening and do not lead with it. The email adds its own sentence about the move, so do not repeat its score.`);
+      lines.push(`Transfer, not a new opening: ${s.title} is a transferred production. Do not call it an opening, do not lead with it, and do not name its theatres. The email adds its own sentence about the transfer, so do not repeat its score.`);
       continue;
     }
     lines.push(`Opening: ${s.title}, ${where}${s.type ? `, ${s.type}` : ''}${s.venue ? ` at ${s.venue}` : ''}, ${when}. ${scoreBit(s, a)}.${s.closingDate && s.closingDate <= horizon7Str ? ` Final performance ${DAY(s.closingDate)}.` : ''}`);
@@ -3323,7 +3322,7 @@ function buildSubjectFacts() {
     for (const [kind, x] of [['Rave of the week', rave], ['Pan of the week', pan]]) {
       if (!x || !x.show || !inBody(x.show.title)) continue;
       use(x.show);
-      lines.push(`${kind}: ${x.review.criticName || 'a critic'}${x.review.outlet ? ` (${x.review.outlet})` : ''} gave ${x.show.title} ${x.review.assignedScore} out of 100.`);
+      lines.push(`${kind}: our score for ${x.review.criticName || 'a critic'}${x.review.outlet ? ` (${x.review.outlet})` : ''}'s review of ${x.show.title} is ${x.review.assignedScore} out of 100.`);
     }
   }
   if (upcoming && _upcomingLede && inBody(_upcomingLede.title)) {
@@ -3351,7 +3350,12 @@ function buildSubjectFacts() {
   // This week's openings in this edition's own market: the roundup's lead story.
   const leadTitles = [...seen].map(id => shows.find(x => x.id === id))
     .filter(s => s && primaryCats.includes(s.category) && !isOperaShow(s) && inWeek(s.openingDate)).map(s => s.title);
-  return { edition: EDITION, lines, titles: [...titles.values()], knownTitles, leadTitles };
+  // The edition's main market (Broadway / West End) outranks its off market:
+  // when any of those opened, the lede leads with one (owner, 2026-11-15).
+  const mainCat = IS_WE ? 'west-end' : 'broadway';
+  const topLeadTitles = [...seen].map(id => shows.find(x => x.id === id))
+    .filter(s => s && s.category === mainCat && !isOperaShow(s) && inWeek(s.openingDate) && !waivesFreshRunGate(_editorialOverrides, s.id)).map(s => s.title);
+  return { edition: EDITION, lines, titles: [...titles.values()], knownTitles, leadTitles, topLeadTitles };
 }
 
 // The subject on this issue's Resend draft when it differs from the one this

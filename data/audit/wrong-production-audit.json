@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T23:13:49.840Z",
+  "timestamp": "2026-11-15T23:44:28.387Z",
   "stats": {
-    "totalReviews": 82278,
-    "alreadyFlagged": 22436,
+    "totalReviews": 82038,
+    "alreadyFlagged": 22445,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
-    "tvFilmSignals": 2319,
-    "londonSignals": 3765,
+    "tvFilmSignals": 2320,
+    "londonSignals": 3768,
     "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8458
+    "noPublishDate": 8203
   },
   "findings": [
     {
@@ -13955,6 +13955,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "times-uk--susannah-butter.json",
+      "score": null,
+      "publishDate": "2026-10-17",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-interview-cloud-9-ghosts-0xbvk5cd9",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -99401,7 +99420,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "rolandcat--roviews.json",
-      "score": 56,
+      "score": 59,
       "publishDate": "2026-11-14",
       "url": "https://rolandcat.substack.com/p/review-desire-under-the-elms-almeida",
       "findings": [
@@ -99415,6 +99434,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "rolandcat--unknown.json",
+      "score": 59,
       "publishDate": "2026-11-14",
       "url": "https://rolandcat.substack.com/review-desire-under-the-elms-almeida",
       "findings": [
@@ -105757,7 +105777,7 @@
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-11-13",
       "url": "https://www.londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-barbican-theatre-review",
       "findings": [
@@ -105827,6 +105847,7 @@
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "plays-international--unknown.json",
+      "score": 83,
       "publishDate": "2026-11-15",
       "url": "https://playsinternational.org.uk/hamlet-hail-to-the-thief-barbican-theatre/",
       "findings": [
@@ -140320,6 +140341,33 @@
       "file": "timeout-london--andrjez-lukowski.json",
       "publishDate": null,
       "url": "https://www.timeout.com/london/theatre/the-years-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "February 10th, 2025",
+      "url": "https://www.thetimes.com/article/b924b786-7679-4a35-9c28-8743f2b7d059",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-years-review-harold-pinter-theatreannie-ernaux-memoir-acting-masterclass-sqlsw22m7",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

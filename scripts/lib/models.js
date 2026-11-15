@@ -38,6 +38,14 @@ module.exports = {
   REDDIT_SONNET: 'claude-sonnet-5-5',
   WALKTHROUGH_SONNET: 'claude-sonnet-5',
   TRIAGE_SONNET: 'claude-sonnet-5',
+  // BRO-7527 per-job Haiku pins. Each job moves from CLAUDE_HAIKU (4.5) to Haiku 5.5
+  // only after its own old-vs-new spot check (scripts/evals/haiku-swap-spotcheck.js,
+  // results in data/audit/haiku-swap-spotcheck-2026-11.json). Callers build the
+  // request with scripts/lib/anthropic-request.js so the 5.5 shape (no temperature,
+  // thinking off, text-block read) is applied by the pin value alone. Rollback = the line.
+  CLAUDE_HAIKU_5: 'claude-haiku-5-5',
+  VERIFIER_HAIKU: 'claude-haiku-4-5-20251001', // lib/content-verifier.js primary provider
+  VIDEO_TITLES_HAIKU: 'claude-haiku-4-5-20251001', // video-reviews/pre-classify-titles.js
   // Review-SCORING pins (CLAUDE.md §13): changing the scoring model shifts
   // scores corpus-wide, so these move only after the A/B gate passes. Every
   // call site that scores reviews uses these, never CLAUDE_SONNET/CLAUDE_OPUS

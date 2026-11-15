@@ -48,14 +48,13 @@ export function displayTitleFor(active, showId, fallback) {
 export function movedNote(show, agg, name, reviews = {}) {
   const from = (show.priorRuns || []).map(r => r && r.venue).find(v => v && v !== show.venue);
   if (!from || !show.venue) return null;
-  let score = '';
-  if (agg && Number.isFinite(agg.avg) && agg.count) {
-    const base = `Its ${Math.round(agg.avg)}/100 from ${agg.count} critics`;
-    const mostlyOld = Number.isFinite(reviews.fresh) && reviews.total > 0 && reviews.fresh * 2 < reviews.total;
-    const mixed = Number.isFinite(reviews.fresh) && reviews.fresh > 0 && reviews.fresh < reviews.total;
-    score = mostlyOld
-      ? ` ${base} comes mostly from reviews of the earlier run, so it may move as the new notices arrive.`
-      : mixed ? ` ${base} draws on reviews of both runs.` : ` ${base}.`;
-  }
-  return `${name} has moved from the ${from} to the ${show.venue}.${score}`;
+  // Owner (2026-11-15): the cards show the theatre and the review count, so the
+  // note says only that the show transferred and what that does to its score.
+  if (!(agg && Number.isFinite(agg.avg) && agg.count)) return `${name} has transferred.`;
+  const n = Math.round(agg.avg);
+  const mostlyOld = Number.isFinite(reviews.fresh) && reviews.total > 0 && reviews.fresh * 2 < reviews.total;
+  const mixed = Number.isFinite(reviews.fresh) && reviews.fresh > 0 && reviews.fresh < reviews.total;
+  if (mostlyOld) return `${name} has transferred, so its ${n}/100 mostly reflects reviews of the earlier run and may move as new notices arrive.`;
+  if (mixed) return `${name} has transferred, and its ${n}/100 draws on reviews of both runs.`;
+  return `${name} has transferred, and sits at ${n}/100.`;
 }

@@ -842,6 +842,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // BRO-7554: a cloud container cannot host a detached job (it is reclaimed when the turn or session ends, and cmux
+  // does not exist there), so a "(headless)" receipt from here is a job nobody watches. Previews above stay free.
+  const cloudRefusal = ld.cloudDispatchRefusal(process.env, identifier);
+  if (cloudRefusal) {
+    console.error(cloudRefusal);
+    process.exit(1);
+  }
+
   // Mirror-staleness dispatch claim (task #1898, parity with bsc-next.js's
   // task #1896 fix — see that file's own claim block for the full race
   // analysis and dispatchClaimGuard's header in dispatch-guards.js). Placed

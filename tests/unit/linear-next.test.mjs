@@ -63,6 +63,9 @@ import {
 import { createRequire } from 'node:module';
 import { parseArgs, ledgerTaskId, envMs, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
 
+// BRO-7554: linear-next refuses a cloud container; these tests drive the dispatcher itself (and real subprocesses), so opt out.
+process.env.LINEAR_NEXT_ALLOW_CLOUD = '1';
+
 // REPO root for the subprocess regression test below — spawned from a fixed
 // cwd so scripts/linear-next.js's own require('./bsc-next.js') etc. resolve
 // normally, same as running the CLI for real.

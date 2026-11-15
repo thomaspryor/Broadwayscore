@@ -23,24 +23,27 @@ require('../lib/llm-usage-install'); // LLM spend meter, before any client is bu
 
 const fs = require('fs');
 const path = require('path');
-const { CLAUDE_HAIKU } = require('../lib/models');
+const { VIDEO_TITLES_HAIKU } = require('../lib/models');
+const { buildMessagesBody } = require('../lib/anthropic-request');
+const { finalResponseText } = require('../lib/anthropic-response-text');
 
 const DISCOVERY_DIR = path.join(__dirname, '../../data/video-reviews-discovery');
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
 const creatorsById = new Map(JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators.map(c => [c.id.toLowerCase(), c]));
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-if (!ANTHROPIC_API_KEY) { console.error('Missing ANTHROPIC_API_KEY'); process.exit(1); }
+if (require.main === module && !ANTHROPIC_API_KEY) { console.error('Missing ANTHROPIC_API_KEY'); process.exit(1); }
 
-async function classifyTitleBatch(titles, creatorName, platform) {
+// Returns { indices, usage }. model defaults to the job pin (BRO-7527 spot check passes others).
+async function classifyTitleBatchWithUsage(titles, creatorName, platform, model = VIDEO_TITLES_HAIKU) {
   const list = titles.map((t, i) => `${i + 1}. [${t.duration || '?'}] ${t.title}`).join('\n');
 
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     signal: AbortSignal.timeout(300000),
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({
-      model: CLAUDE_HAIKU,
-      max_tokens: 2048,
+    headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify(buildMessagesBody({
+      model,
+      maxTokens: 2048,
       messages: [{
         role: 'user',
         content: `You are classifying video titles from ${creatorName}, a ${platform} theater critic/creator.
@@ -57,15 +60,18 @@ If none are reviews, output: []
 Videos:
 ${list}`
       }]
-    })
+    }))
   });
 
   if (!resp.ok) throw new Error(`API error ${resp.status}`);
   const data = await resp.json();
-  const text = data.content[0].text;
+  const text = finalResponseText(data.content);
   const match = text.match(/\[[\d,\s]*\]/);
-  if (!match) return [];
-  return JSON.parse(match[0]);
+  return { indices: match ? JSON.parse(match[0]) : [], usage: data.usage || null };
+}
+
+async function classifyTitleBatch(titles, creatorName, platform) {
+  return (await classifyTitleBatchWithUsage(titles, creatorName, platform)).indices;
 }
 
 async function main() {
@@ -136,4 +142,6 @@ async function main() {
   console.log(`\n=== Pre-classification complete: ${totalFlagged} new review candidates flagged ===`);
 }
 
-main().catch(console.error);
+if (require.main === module) main().catch(console.error);
+
+module.exports = { classifyTitleBatch, classifyTitleBatchWithUsage, DISCOVERY_DIR, creatorsById };

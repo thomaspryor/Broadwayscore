@@ -106,6 +106,8 @@ const MODEL_PRICES = Object.freeze([
   Object.freeze({ re: /sonnet-5-5/i, inUSD: 2, outUSD: 10 }),
   Object.freeze({ re: /opus/i, inUSD: 5, outUSD: 25 }),
   Object.freeze({ re: /sonnet/i, inUSD: 3, outUSD: 15 }),
+  // BRO-7527: Haiku 5.5 list price (prompts up to 100K tokens; ours are a few K).
+  Object.freeze({ re: /haiku-5/i, inUSD: 0.1, outUSD: 0.5 }),
   Object.freeze({ re: /haiku/i, inUSD: 1, outUSD: 5 }),
 ]);
 

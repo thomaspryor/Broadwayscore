@@ -107,6 +107,11 @@ fi
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${ROOT_CAUSE_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" ] && command -v node >/dev/null 2>&1; then
   _rcs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:ROOTCAUSE]\n' "$_rcs_err" >&2; exit 2; fi; _ve_pre_died root-cause-stop.mjs $_ve_s
 fi
+# BRO-7552: no "verified" over a pending EFFECT, and a landed fetch/SERP change needs a spend-effect-check run (effect-pending-stop.mjs:
+# cloud only, fails open, one nudge per chunk until its blocking date, kill EFFECT_PENDING_STOP_DISABLE=1).
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${EFFECT_PENDING_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/effect-pending-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+  _eps_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/effect-pending-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:EFFECTPENDING]\n' "$_eps_err" >&2; exit 2; fi; _ve_pre_died effect-pending-stop.mjs $_ve_s
+fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
 

@@ -119,6 +119,14 @@ function parseRootCauseBlock(texts) {
   return { fields: { ...alias, ...explicit }, noRootCause, noEffectCheck };
 }
 
+// BRO-7552: an EFFECT line that defers the measurement is not a measurement. The 2026-11-15 spend
+// change carried "EFFECT: ... ledger numbers pending" and was relayed as verified.
+const PENDING_EFFECT_RE = /(?<!no longer )(?<!not )\bpending\b(?!-)|\bnot (?:yet )?(?:observable|observed|measured|measurable|proven|known)\b|\bnot observable yet\b|\b(?:tbd|tba|tbc)\b|\bto be (?:measured|determined|confirmed)\b|\bunmeasured\b|\bmeasure(?:d)? later\b|\bafter the recheck\b|\bawaiting (?:the )?(?:ledger|numbers|rows|data|results?)\b|\b(?:numbers|results|figures|ledger rows?) (?:to follow|tomorrow|later)\b|\bwill (?:confirm|measure|check|verify)\b/i;
+/** PURE. Does this EFFECT value defer the measurement instead of reporting it? */
+function isPendingEffect(value) {
+  return PENDING_EFFECT_RE.test(String(value || ''));
+}
+
 /**
  * PURE (BRO-7138). Did the close show the change had its effect on real data?
  * Returns { ok, notes }. A measurement names a number; a bare "it works" does not.
@@ -127,6 +135,8 @@ function checkEffect({ fields, noEffectCheck }) {
   if (noEffectCheck !== null && noEffectCheck !== undefined && noEffectCheck.length >= MIN_FIELD_CHARS) return { ok: true, notes: [] };
   const v = fields && fields.EFFECT;
   if (!(v && v.length >= MIN_FIELD_CHARS)) return { ok: false, notes: [] };
+  // BRO-7552: "ledger numbers pending (2026-11-16)" has a digit but measures nothing.
+  if (isPendingEffect(v)) return { ok: false, notes: ['EFFECT says the numbers are pending: measure it now (spend: node scripts/spend-effect-check.js), or state plainly "live, not yet proven until <date>"'] };
   if (!/\d/.test(v)) return { ok: false, notes: ['EFFECT should name the measurement on real data, before and after (numbers)'] };
   return { ok: true, notes: [] };
 }
@@ -376,6 +386,8 @@ module.exports = {
   FIX_RE,
   isFixCard,
   parseRootCauseBlock,
+  isPendingEffect,
+  FIELD_RE,
   COUSINS_TAIL_RE,
   guardPaths,
   checkRootCauseClose,

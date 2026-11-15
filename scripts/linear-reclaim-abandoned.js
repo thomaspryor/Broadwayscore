@@ -18,6 +18,13 @@
  *       whose card has no dispatch-ledger row in 26h go back to Todo (Backlog after repeated reclaims).
  *       Rules: localStallAction in scripts/lib/stalled-session-sweep.js. Same kill switch.
  *
+ * Silent headless dispatches and unseen failed Land runs (BRO-7554, hourly from the same workflow):
+ *   --silent-dispatch-sweep [--requeue] [--dry-run]   cards whose newest "(headless)" Dispatched comment is 4h+ old with no
+ *       report, claim, human comment, land/ push or landed commit since get a SILENT-DISPATCH note; with --requeue, ones
+ *       26h+ old go back to Todo (Backlog after repeated reclaims) for a cloud worker. Also posts one LAND-FAILED-UNSEEN
+ *       note when a land/ ref's latest Land run failed and the card never names the run. Rules: scripts/lib/silent-dispatch-sweep.js.
+ *       Kill switch: SILENT_DISPATCH_SWEEP_DISABLE=1. Cloud-capable: no Mac state is read.
+ *
  * Fails closed: if the land/ refs can't be read, it exits 1 before any write.
  * Kill switch: LINEAR_RECLAIM_KILL_SWITCH=1 (repo variable).
  */
@@ -27,7 +34,7 @@
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = 'usage: node scripts/linear-reclaim-abandoned.js [--dry-run] [--max=N] | --stalled-sessions [--threshold-hours=12] | --stall-act --from-json=<file> [--threshold-hours=12] [--dry-run] | --mac-stall-sweep [--threshold-hours=12] [--dry-run]';
+const USAGE = 'usage: node scripts/linear-reclaim-abandoned.js [--dry-run] [--max=N] | --stalled-sessions [--threshold-hours=12] | --stall-act --from-json=<file> [--threshold-hours=12] [--dry-run] | --mac-stall-sweep [--threshold-hours=12] [--dry-run] | --silent-dispatch-sweep [--requeue] [--dry-run]';
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log(USAGE);
   process.exit(0);
@@ -202,6 +209,97 @@ async function macStallSweep() {
   console.log(JSON.stringify(results, null, 1));
 }
 
+/** Latest land.yml run per land/ ref, as {runId, conclusion, url}; null when unreadable. */
+function latestLandRun(ref) {
+  try {
+    const run = (gh([`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(ref)}&per_page=1`]).workflow_runs || [])[0];
+    return run ? { runId: run.id, conclusion: run.conclusion, url: run.html_url } : null;
+  } catch { return null; }
+}
+
+/** Main commits since a date, paginated once (newest first; 10 pages = 1000 commits): land.yml deletes the ref on success, so a landed card shows no ref. null when unreadable. */
+function mainCommits(sinceIso) {
+  const out = [];
+  try {
+    for (let page = 1; page <= 10; page += 1) {
+      const rows = gh([`repos/${repo}/commits?since=${encodeURIComponent(sinceIso)}&per_page=100&page=${page}`]);
+      out.push(...rows.map((c) => ({ at: Date.parse(c.commit && c.commit.committer && c.commit.committer.date), msg: String(c.commit && c.commit.message || '') })));
+      if (rows.length < 100) return out;
+    }
+    return null; // more than 1000 commits since the window start: cannot prove nothing landed
+  } catch { return null; }
+}
+
+async function silentDispatchSweep() {
+  const linear = require('./lib/linear-client.js');
+  const S = require('./lib/silent-dispatch-sweep.js');
+  const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
+  const requeue = process.argv.includes('--requeue');
+  const nowMs = Date.now();
+  const sinceIso = new Date(nowMs - 3 * 24 * 3600000).toISOString();
+  const receipts = await linear.listRecentCommentsContaining({ sinceIso, text: '(headless)', max: 500 });
+  const cards = new Set(receipts.filter((c) => /^Dispatched\b/.test(String(c.body).trim())).map((c) => c.issue.identifier));
+  const refs = landRefs();
+  const refCards = new Set(refs.map((r) => landRefCardNumber(r.ref)).filter((n) => n != null).map((n) => `BRO-${n}`));
+  for (const c of refCards) cards.add(c);
+  const team = (await linear.getTeam()).states.nodes;
+  const stateId = (name) => { const st = team.find((x) => x.name === name); if (!st) throw new Error(`no "${name}" state`); return st.id; };
+  const commits = mainCommits(sinceIso);
+  const results = [];
+  let requeues = 0;
+  let landNotes = 0;
+  for (const card of cards) {
+    try {
+      const { issue } = await linear.graphql(ISSUE_QUERY, { id: card }, { timeoutMs: 15000, maxAttempts: 2 });
+      if (!issue || !issue.state || issue.state.type === 'completed' || issue.state.type === 'canceled') { results.push({ card, action: 'skip', reason: 'closed' }); continue; }
+      const comments = issue.comments.nodes;
+      if (comments.length >= 250) { results.push({ card, action: 'skip', reason: 'comments-truncated' }); continue; }
+      const n = Number(String(issue.identifier).split('-')[1]);
+      const named = refs.filter((r) => landRefCardNumber(r.ref) === n);
+      // 1. A failed Land run the card never mentions.
+      const runs = named.map((r) => ({ ref: r.ref, ...(latestLandRun(r.ref) || {}) })).filter((r) => r.runId);
+      const unseen = S.unseenFailedLandRuns({ runs, comments });
+      if (unseen.length && landNotes < S.MAX_LAND_NOTES_PER_RUN) {
+        landNotes += 1;
+        if (!dry) await linear.createComment(issue.id, S.buildLandFailedComment(unseen));
+        results.push({ card, action: 'land-failed-note', runs: unseen.map((u) => u.runId) });
+      }
+      // 2. A headless dispatch that went silent.
+      const acts = named.map((r) => Date.parse(lastActivityAt(r)));
+      const pushUnknown = acts.some((t) => !Number.isFinite(t));
+      const lastPushMs = acts.filter(Number.isFinite).length ? Math.max(...acts.filter(Number.isFinite)) : null;
+      const disp = comments.filter((c) => /^Dispatched\b.*\(headless\)\s*$/.test(String(c.body).trim())).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
+      let landedSince = false;
+      if (disp && nowMs - Date.parse(disp.createdAt) >= S.DISPATCH_SILENT_MS) {
+        if (commits === null) { results.push({ card, action: 'skip', reason: 'main commits unreadable' }); continue; }
+        const idRe = new RegExp(`\\b${issue.identifier}\\b`);
+        landedSince = commits.some((c) => c.at >= Date.parse(disp.createdAt) && idRe.test(c.msg));
+      }
+      const d = S.silentDispatchDecision({ issue, comments, lastPushMs, pushUnknown, landedSince, requeueEnabled: requeue, nowMs });
+      if (d.action === 'skip') { if (d.reason !== 'no-headless-dispatch') results.push({ card, action: 'skip', reason: d.reason }); continue; }
+      if (d.action !== 'flag') {
+        if (requeues >= S.MAX_REQUEUES_PER_RUN) { results.push({ card, action: 'skip', reason: 'requeue cap for this run' }); continue; }
+        requeues += 1;
+        if (!dry) {
+          // Move first, then comment: the comment carries the reclaim marker (same order as main()).
+          await linear.updateIssue(issue.id, { stateId: stateId(d.action === 'backlog' ? 'Backlog' : 'Todo') });
+          await linear.createComment(issue.id, S.buildSilentRequeueComment(d, nowMs));
+        }
+      } else if (!dry) {
+        await linear.createComment(issue.id, S.buildSilentDispatchComment(d, nowMs));
+      }
+      results.push({ card, action: d.action, silentHours: d.silentHours, was: d.priorState });
+    } catch (err) {
+      results.push({ card, action: 'error', reason: String(err.message).split('\n')[0] });
+    }
+  }
+  const tally = {};
+  for (const r of results) tally[r.action] = (tally[r.action] || 0) + 1;
+  console.error(`silent-dispatch-sweep: ${cards.size} cards checked; ${JSON.stringify(tally)}${dry ? ' (dry-run: nothing written)' : ''}${requeue ? '' : ' (flag only: pass --requeue to move cards)'}`);
+  console.log(JSON.stringify(results, null, 1));
+  if (results.some((r) => r.action === 'error')) process.exitCode = 1;
+}
+
 function stallIdleMs() {
   const { STALL_IDLE_MS } = require('./lib/stalled-session-sweep.js');
   const hours = Number(flagValue('--threshold-hours'));
@@ -289,7 +387,7 @@ async function stallAct() {
 
 // Unknown flags are refused: before BRO-7195 an unrecognised mode fell through to the ordinary 48h
 // reclaim, so a reverted mode left on a launchd job would have moved every abandoned card.
-const KNOWN_FLAGS = /^--(?:dry-run|max=\d+|stalled-sessions|stall-act|from-json(?:=.*)?|threshold-hours(?:=.*)?|mac-stall-sweep|help)$|^-h$/;
+const KNOWN_FLAGS = /^--(?:dry-run|max=\d+|stalled-sessions|stall-act|from-json(?:=.*)?|threshold-hours(?:=.*)?|mac-stall-sweep|silent-dispatch-sweep|requeue|help)$|^-h$/;
 async function main() {
   const args = process.argv.slice(2);
   const unknown = args.filter((a, i) => a.startsWith('-') && !KNOWN_FLAGS.test(a) && !(i > 0 && /^--(?:from-json|threshold-hours)$/.test(args[i - 1])));
@@ -299,6 +397,11 @@ async function main() {
     if (!process.env.LINEAR_API_KEY) throw new Error('LINEAR_API_KEY not set');
     if (process.argv.includes('--mac-stall-sweep')) return macStallSweep();
     return process.argv.includes('--stall-act') ? stallAct() : stalledList();
+  }
+  if (process.argv.includes('--silent-dispatch-sweep')) {
+    if (/^(1|true)$/i.test(process.env.SILENT_DISPATCH_SWEEP_DISABLE || '') || /^(1|true)$/i.test(process.env.LINEAR_RECLAIM_KILL_SWITCH || '')) { console.error('silent-dispatch sweep disabled by its kill switch'); console.log('[]'); return; }
+    if (!process.env.LINEAR_API_KEY) throw new Error('LINEAR_API_KEY not set');
+    return silentDispatchSweep();
   }
   if (/^(1|true)$/i.test(process.env.LINEAR_RECLAIM_KILL_SWITCH || '')) { console.log('LINEAR_RECLAIM_KILL_SWITCH set: reclaim disabled'); return; }
   if (!process.env.LINEAR_API_KEY) throw new Error('LINEAR_API_KEY not set');

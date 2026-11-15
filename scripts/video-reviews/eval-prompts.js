@@ -13,6 +13,8 @@ require('../lib/llm-usage-install'); // LLM spend meter, before any client is bu
 const fs = require('fs');
 const path = require('path');
 const { CLAUDE_SONNET, SCORING_SONNET } = require('../lib/models');
+const { buildMessagesBody } = require('../lib/anthropic-request');
+const { finalResponseText } = require('../lib/anthropic-response-text');
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 if (!ANTHROPIC_API_KEY) { console.error('Missing ANTHROPIC_API_KEY'); process.exit(1); }
@@ -84,11 +86,12 @@ async function callClaude(prompt, model) {
     signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model, max_tokens: 2048, messages: [{ role: 'user', content: prompt }] })
+    // BRO-7527: SCORING_SONNET is 5.5 (thinks by default): per-model shape + text-block read.
+    body: JSON.stringify(buildMessagesBody({ model, maxTokens: 2048, prompt }))
   });
   if (!resp.ok) throw new Error(`API ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
   const data = await resp.json();
-  return data.content[0].text;
+  return finalResponseText(data.content);
 }
 
 async function classifyOne(transcript, showList) {

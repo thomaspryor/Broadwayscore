@@ -111,6 +111,8 @@ on:
       - 'scripts/route-cost-report-alerts.js'
       - 'scripts/route-workflow-alerts.js'
       - 'scripts/route-workflow-alerts.test.js'
+      - 'scripts/spend-effect-check.test.js'
+      - 'scripts/spend-effect-check.js'
       - 'scripts/aeo-visibility.test.js'
       # BRO-5542: scripts/lib/owner-copy-no-claude.test.mjs requires it (fix-card text check).
       - 'scripts/file-ugc-fix-card.js'

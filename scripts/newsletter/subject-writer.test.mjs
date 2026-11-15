@@ -172,7 +172,7 @@ const goodWe = {
   angle: 'best reviewed',
   subject: 'Cloud 9 lands at a solid 77/100 from 33 critics',
   preheader: 'Dogstar, at Hampstead, scores 64/100 from 26 critics.',
-  lede: 'Cloud 9 lands at a solid 77/100 from 33 critics, the best of a quiet week. Off West End, Dogstar trails at 64/100.',
+  lede: 'Cloud 9 lands at a solid 77/100, the best of a quiet week. Off West End, Dogstar trails at 64/100.',
 };
 
 test('the owner\'s score-first subject passes', () => {
@@ -185,7 +185,7 @@ test('tier labels and "recommended" are rejected in subject, preheader and lede'
     { subject: 'Dogstar gets a Mixed 64 at Hampstead Theatre' },
     { lede: 'Cloud 9 (77) opened at the Lyttelton Theatre on Tuesday, and is Recommended from 33 reviews. Dogstar opened on Monday.' },
     { preheader: 'Cloud 9 is Worth Seeing and Dogstar is Mixed at 64' },
-    { lede: 'Cloud 9 opened on Tuesday with a Critical Gold score of 77 from 33 critics. Dogstar (64) opened Monday.' },
+    { lede: 'Cloud 9 opened on Tuesday with a Critical Gold score of 77. Dogstar (64) opened Monday.' },
   ]) {
     assert.ok(checkCandidate({ ...goodWe, ...bad }, wePool).some(p => /tier label|recommend/.test(p)), JSON.stringify(bad));
   }
@@ -196,7 +196,7 @@ test('a show named in the subject must carry its Critic Score; a title with a la
   // group subjects that name no show are exempt
   assert.ok(!checkCandidate({ ...goodWe, subject: 'Two London openings, one standout score' }, wePool).some(p => /Critic Score number/.test(p)));
   const mixed = buildPool({ ...weFacts, lines: ['Opening: Mixed Feelings, West End. Critic Score 70/100 from 12 critics.'], titles: [{ id: 'm', slug: 'm', title: 'Mixed Feelings' }], leadTitles: [], knownTitles: [] });
-  assert.deepEqual(checkCandidate({ angle: 'x', subject: 'Mixed Feelings scores 70/100 from 12 critics', preheader: 'Critics were warm on the opening night at the theatre.', lede: 'Mixed Feelings scores 70/100 from 12 critics, and the notices were warm across the board for a small show.' }, mixed), []);
+  assert.deepEqual(checkCandidate({ angle: 'x', subject: 'Mixed Feelings scores 70/100 from 12 critics', preheader: 'Critics were warm on the opening night at the theatre.', lede: 'Mixed Feelings scores 70/100, and the notices were warm across the board for a small show.' }, mixed), []);
 });
 
 test('the opening paragraph\'s first sentence gives the lead show\'s score', () => {
@@ -213,11 +213,11 @@ test('the fact sheet gives scores as N/100 and the writer is told the score is t
 });
 
 test('an abbreviation in the first sentence does not cut it before the Critic Score (ship-check, 2026-11-15)', () => {
-  const lede = "The Bridge opened at St. Ann's Warehouse on Tuesday and scores 76/100 from 25 critics. The Revlon Girl (83) closes Saturday.";
-  assert.equal(firstSentence(lede), "The Bridge opened at St. Ann's Warehouse on Tuesday and scores 76/100 from 25 critics.");
+  const lede = "The Bridge opened at St. Ann's Warehouse on Tuesday and scores 76/100. The Revlon Girl (83) closes Saturday.";
+  assert.equal(firstSentence(lede), "The Bridge opened at St. Ann's Warehouse on Tuesday and scores 76/100.");
   assert.equal(firstSentence('Ms. Blakk for President opens at 70/100. More.'), 'Ms. Blakk for President opens at 70/100.');
   assert.equal(firstSentence('Cloud 9 opened Tuesday. It scores 77/100.'), 'Cloud 9 opened Tuesday.');
-  assert.deepEqual(checkCandidate({ ...good, lede: "The Bridge scores 76/100 from 25 critics at St. Ann's, and The Revlon Girl (83) closes Saturday." }, pool), []);
+  assert.deepEqual(checkCandidate({ ...good, lede: "The Bridge scores 76/100 at St. Ann's, and The Revlon Girl (83) closes Saturday." }, pool), []);
 });
 
 test('tier-label and "recommend" bans cover the inflected and lowercase forms', () => {
@@ -240,11 +240,14 @@ test('plain English about mixed reviews or worth seeing is not a banned tier lab
 
 test('the lede does not repeat what the cards show: venue, opening date, critic quote (owner, 2026-11-15)', () => {
   const bad = 'Here There Are Blueberries opened at the Ethel Barrymore Theatre on Monday and scores 82/100 from 24 critics. Frank Scheck of New York Stage Review gave it 98 out of 100.';
-  assert.equal(cardDetailRepeats(bad).length, 3);
-  assert.deepEqual(cardDetailRepeats('Cloud 9 lands at a solid 77/100 from 33 critics, the best of a quiet week. Dogstar trails at 64.'), []);
+  assert.equal(cardDetailRepeats(bad).length, 4);
+  assert.match(cardDetailRepeats(bad).join(), /review or critic count/);
+  assert.match(cardDetailRepeats('Nero scores 13/100, which a critic gave 13 out of 100.').join(), /critics do not give one/);
+  assert.match(cardDetailRepeats('Cloud 9 lands at 77/100 from 36 critics.').join(), /review or critic count/);
+  assert.deepEqual(cardDetailRepeats('Cloud 9 lands at a solid 77/100, the best of a quiet week. Dogstar trails at 64.'), []);
   // closings and previews may still name a weekday; only an opening's venue/date is banned
   assert.deepEqual(cardDetailRepeats('The Revlon Girl (83) closes Saturday.'), []);
-  const withDetail = { ...goodWe, lede: 'Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics. Off West End, Dogstar trails at 64/100.' };
+  const withDetail = { ...goodWe, lede: 'Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100. Off West End, Dogstar trails at 64/100.' };
   assert.match(checkCandidate(withDetail, wePool).join(), /lede says where or when a show opened/);
   assert.match(writerPrompt(wePool), /NEVER repeat venues, opening dates/);
 });
@@ -253,11 +256,31 @@ test('cardDetailRepeats: score and upcoming phrasing are not card detail; facts-
   const f = { edition: 'broadway', titles: [{ id: 'd', slug: 'd', title: 'Dogstar' }], knownTitles: [], lines: [
     'Opening: Dogstar, Off West End, play at Hampstead Theatre, opened this week, on Monday, Nov 9. Critic Score 64/100 from 26 critics.',
     'Opening: Cats, Broadway, musical at Winter Garden, opened this week, on Tuesday, Nov 10. Critic Score 80/100 from 20 critics.',
-    'Rave of the week: Mike Wells (The Reviews Hub) gave Dogstar 99 out of 100.'] };
+    "Rave of the week: our score for Mike Wells (The Reviews Hub)'s review of Dogstar is 99 out of 100."] };
   const p = buildPool(f);
   assert.deepEqual(p.venueNames, ['Hampstead Theatre', 'Winter Garden']);
   assert.deepEqual(p.criticNames, ['Mike Wells', 'The Reviews Hub']);
   const n = (l) => cardDetailRepeats(l, { venues: p.venueNames, critics: p.criticNames }).length;
-  for (const ok of ['Cats opens at 70/100 from 20 critics.', 'The Fantasticks opens on Monday.', 'Cloud 9 lands at 77/100 from 33 critics.', 'Cats closes Saturday.']) assert.equal(n(ok), 0, ok);
+  for (const ok of ['Cats opens at 70/100.', 'The Fantasticks opens on Monday.', 'Cloud 9 lands at 77/100.', 'Cats closes Saturday.']) assert.equal(n(ok), 0, ok);
   for (const bad of ['Dogstar opened at Hampstead Theatre.', 'Cats opened to praise at the Winter Garden.', 'Dogstar opened Nov 9 at Hampstead.', 'Mike Wells gave Dogstar 99 out of 100.', 'Dogstar opened Tues.', 'Dogstar was praised by The Reviews Hub.']) assert.ok(n(bad) > 0, bad);
+});
+
+test('the lede and subject lead with a West End opening, never an off-market one (owner, 2026-11-15)', () => {
+  const pool = { ...wePool, topLeadTitles: ['Cloud 9'] };
+  const offFirst = { ...goodWe, subject: 'Dogstar scores 64/100, the week\'s low', lede: 'Dogstar scores 64/100, the lowest of the week. Cloud 9 did better at 77/100.' };
+  const r = checkCandidate(offFirst, pool).join();
+  assert.match(r, /must lead with a West End opening/);
+  assert.match(r, /subject that names an opening must name a West End one/);
+  assert.deepEqual(checkCandidate(goodWe, pool), []);
+  // no main-market opening this week: an off-market lead is fine
+  assert.deepEqual(checkCandidate(offFirst, { ...wePool, topLeadTitles: [] }).filter(x => /West End opening/.test(x)), []);
+});
+
+test('the "gave a score" guard does not reject our own wording or critic praise (ship-check, BRO-7570)', () => {
+  const n = (l) => cardDetailRepeats(l).filter(x => /critics do not give one/.test(x)).length;
+  for (const ok of ['Cloud 9 rates a solid 77/100.', 'The top-rated Cloud 9 lands at 77/100.', 'Critics gave Cloud 9 a warm welcome.', 'Critics rated the cast highly.']) assert.equal(n(ok), 0, ok);
+  for (const bad of ['Nero, which a critic gave 13 out of 100.', 'Critics rated it 64.', 'One reviewer awarded it 98/100.']) assert.equal(n(bad), 1, bad);
+  // a missing critic name must not turn "a critic" into a banned phrase
+  const p = buildPool({ ...weFacts, lines: [...weFacts.lines, "Rave of the week: our score for a critic (The Stage)'s review of Dogstar is 99 out of 100."] });
+  assert.ok(!p.criticNames.includes('a critic'));
 });

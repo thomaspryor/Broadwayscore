@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T22:38:37.977Z",
+  "generatedAt": "2026-11-15T23:30:44.261Z",
   "windowDays": 45,
   "showsScanned": 244,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 159.60777583333333,
+      "fileAgeHours": 160.47607722222222,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 137.05935472222222,
+      "nonTerminalAgeHours": 137.92776694444444,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 7,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 128.8396561111111,
+      "fileAgeHours": 129.70802555555557,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 127.69490972222222,
+      "nonTerminalAgeHours": 128.56332194444445,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 145.39979305555556,
+      "fileAgeHours": 146.2682027777778,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 144.9869077777778,
+      "nonTerminalAgeHours": 145.85532,
       "needsManualRecovery": false
     },
     {
@@ -78,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 23.896074166666665,
+      "fileAgeHours": 24.76448638888889,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 22.6298975,
+      "nonTerminalAgeHours": 23.49830972222222,
       "needsManualRecovery": false
     }
   ],

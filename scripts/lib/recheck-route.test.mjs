@@ -132,3 +132,124 @@ test('quiet-alert note recognises the message the real check writes', () => {
   const recent = decide([{ ...ledgers[0], conditions: { ...ledgers[0].conditions, [key]: { status: 'open', lastSeen: iso(5) } } }], key, now);
   assert.equal(quietAlertHold({ ...row, detail: `[check-alert-condition-absent] ${recent.message}` }), null);
 });
+
+// BRO-7557: failures from the report-only weeks never became work, and a card that kept failing was
+// skipped forever. Rewatch re-runs still-failing, uncovered Done cards; one predicate covers both
+// the batch builder and the selector.
+const R = require('./recheck-route.js');
+const fail = (id, ts, extra = {}) => ({ event: 'recheck', cardId: id, name: `n ${id}`, ts, status: 'fail', verifyCmd: 'node --test a.test.mjs', detail: 'AssertionError: x', ...extra });
+const live = (ts, ids, identifier = 'BRO-9000') => ({ event: 'recheck-route', ts, mode: 'live', filed: true, identifier, cardIds: ids });
+const NOW2 = Date.parse('2026-11-16T08:00:00Z');
+const TS0 = new Set(['x']);
+
+test('buildCoverIndex: word-boundary mention in an open card, never self, null when the fetch failed', () => {
+  const idx = R.buildCoverIndex([
+    { identifier: 'BRO-1', title: 'Fix BRO-12', description: 'also BRO-5\\n' },
+    { identifier: 'BRO-2', title: 'x', description: 'see BRO-123 and (BRO-5), BRO-2' },
+  ]);
+  assert.deepEqual([...idx.get('BRO-12')], ['BRO-1'], 'BRO-12 is not BRO-123');
+  assert.deepEqual([...idx.get('BRO-123')], ['BRO-2']);
+  assert.deepEqual([...idx.get('BRO-5')].sort(), ['BRO-1', 'BRO-2']);
+  assert.ok(!idx.has('BRO-2'), 'a card never covers itself');
+  assert.equal(R.buildCoverIndex(undefined), null);
+});
+
+test('selectRewatchTargets: shadow-era fail is picked; covered, recently routed, passing, env and fresh rows are not', () => {
+  const rows = [
+    fail('BRO-10', '2026-11-03T07:00:00Z'),                       // shadow era, never routed
+    fail('BRO-11', '2026-11-04T07:00:00Z'),                       // an open card names it
+    fail('BRO-12', '2026-11-05T07:00:00Z'), live('2026-11-15T07:00:00Z', ['BRO-12']),   // routed 25h ago
+    fail('BRO-13', '2026-11-06T07:00:00Z'), live('2026-11-10T07:00:00Z', ['BRO-13']),   // routed 6 nights ago, still failing
+    fail('BRO-14', '2026-11-07T07:00:00Z'), { ...fail('BRO-14', '2026-11-08T07:00:00Z'), status: 'pass', detail: null }, // passes now
+    fail('BRO-15', '2026-11-16T01:00:00Z'),                       // rechecked 7h ago
+    { ...fail('BRO-16', '2026-11-08T07:00:00Z'), status: 'unverifiable' },
+  ];
+  const cover = R.buildCoverIndex([{ identifier: 'BRO-99', title: 't', description: 'handles BRO-11' }]);
+  const { targets } = R.selectRewatchTargets({ ledgerEntries: rows, now: NOW2, coverIndex: cover, tsxTests: TS0 });
+  assert.deepEqual(targets.map((t) => t.cardId), ['BRO-10', 'BRO-13'], 'oldest check first');
+  assert.ok(targets.every((t) => t.rewatch === true));
+  assert.equal(targets[1].priorRoutes.length, 1);
+});
+
+test('selectRewatchTargets: stops after MAX_REROUTES, honours limit, since and exclude', () => {
+  const routes = [1, 2, 3].map((i) => live(`2026-11-0${i}T07:00:00Z`, ['BRO-20'], `BRO-90${i}`));
+  const rows = [fail('BRO-20', '2026-11-05T07:00:00Z'), ...routes, fail('BRO-21', '2026-09-01T07:00:00Z'), fail('BRO-22', '2026-11-05T08:00:00Z'), fail('BRO-23', '2026-11-05T09:00:00Z'), fail('BRO-24', '2026-11-05T10:00:00Z')];
+  const r = R.selectRewatchTargets({ ledgerEntries: rows, now: NOW2, since: '2026-10-15', limit: 1, exclude: ['BRO-23'], coverIndex: new Map() });
+  assert.deepEqual(r.exhausted, ['BRO-20']);
+  assert.deepEqual(r.targets.map((t) => t.cardId), ['BRO-22'], 'BRO-21 is before since, BRO-23 excluded, limit 1');
+});
+
+test('alreadyRouted: the window shrinks to the retry window only when the open-card index is known', () => {
+  const e = [live('2026-11-10T07:00:00Z', ['BRO-1'])]; // 6 nights ago
+  assert.ok(R.alreadyRouted(e, { now: NOW2 }).has('BRO-1'), 'index unknown: long window, never route twice on a failed lookup');
+  assert.ok(!R.alreadyRouted(e, { now: NOW2, coverKnown: true }).has('BRO-1'));
+  assert.ok(R.alreadyRouted([live('2026-11-15T07:00:00Z', ['BRO-1'])], { now: NOW2, coverKnown: true }).has('BRO-1'));
+});
+
+test('buildRouteBatch: an open card that names a failing card skips it; a re-route says it was routed before', () => {
+  const rows = [
+    { cardId: 'BRO-1', name: 'a', status: 'fail', detail: 'x', verifyCmd: 'node --test a.test.mjs' },
+    { cardId: 'BRO-2', name: 'b', status: 'fail', detail: 'y', verifyCmd: 'node --test b.test.mjs' },
+  ];
+  const cover = R.buildCoverIndex([{ identifier: 'BRO-50', title: 'owner', description: 'BRO-1' }]);
+  const b = buildRouteBatch({ rows, ledgerEntries: [live('2026-11-05T07:00:00Z', ['BRO-2'], 'BRO-7512')], now: NOW2, tsxTests: new Set(), coverIndex: cover });
+  assert.deepEqual(b.cards.map((c) => c.cardId), ['BRO-2']);
+  assert.equal(b.skipped.coveredOpen, 1);
+  assert.match(b.body, /routed before \(BRO-7512\) and still failing 11 nights later/);
+  const again = buildRouteBatch({ rows, handedOff: ['BRO-2'], now: NOW2, tsxTests: new Set(), coverIndex: new Map() });
+  assert.deepEqual(again.cards.map((c) => c.cardId), ['BRO-1'], 'a filed batch joins handedOff so the next batch is the rest');
+});
+
+test('refreshRewatchTargets: uses the card\'s current VERIFY; unreadable, open and retracted cards are dropped', async () => {
+  const card = (stateType, extra = {}) => ({ id: 'x', name: 'fresh name', stateType, status: stateType === 'completed' ? 'Done' : 'In Progress', ...extra });
+  const issues = { 'BRO-1': card('completed'), 'BRO-2': card('started'), 'BRO-3': card('completed'), 'BRO-4': null };
+  const gates = { 'BRO-1': { cmd: 'node --test new.test.mjs' }, 'BRO-3': { kind: 'retracted', cmd: null } };
+  let cur = null;
+  const out = await R.refreshRewatchTargets(['BRO-1', 'BRO-2', 'BRO-3', 'BRO-4', 'BRO-5'].map((cardId) => ({ cardId, name: 'old', verifyCmd: 'node --test old.test.mjs', rewatch: true })), {
+    getIssue: async (id) => { if (id === 'BRO-5') throw new Error('boom'); cur = id; return issues[id]; },
+    toCard: (i) => i,
+    gateFor: () => gates[cur],
+  });
+  assert.deepEqual(out.targets.map((t) => [t.cardId, t.verifyCmd, t.cmdChanged]), [['BRO-1', 'node --test new.test.mjs', true]]);
+  assert.deepEqual(out.dropped.map((d) => d.cardId), ['BRO-2', 'BRO-3', 'BRO-4', 'BRO-5']);
+});
+
+test('real ledger replay: the shadow-era fails come back as rewatch targets', () => {
+  // Frozen snapshot (latest failing row per card, 2026-11-15): the live CI ledger moves every night.
+  const entries = fs.readFileSync(path.join(here, '..', '..', 'tests', 'fixtures', 'recheck-ledger-latest-fails-2026-11-15.jsonl'), 'utf8').trim().split('\n').map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+  const { targets } = R.selectRewatchTargets({ ledgerEntries: entries, now: Date.parse('2026-11-16T08:00:00Z'), since: '2026-10-15', limit: 500, coverIndex: new Map() });
+  assert.ok(targets.length >= 20, `expected the shadow-era backlog, got ${targets.length}`);
+  assert.ok(targets.every((t) => t.verifyCmd && t.rewatch));
+});
+
+test('selectRewatchTargets: a newer pass outside the look-back hides an older fail, and bad timestamps never qualify', () => {
+  const NOW = Date.parse('2026-11-15T12:00:00Z');
+  const fail = (ts, cardId = 'BRO-1') => ({ event: 'recheck', cardId, ts, verifyCmd: 'node x.js', exit: 1, ok: false, status: 'fail' });
+  const pass = (ts) => ({ event: 'recheck', cardId: 'BRO-1', ts, verifyCmd: 'node x.js', exit: 0, ok: true, status: 'pass' });
+  const rows = [fail('2026-10-01T00:00:00Z'), pass('2026-10-10T00:00:00Z')];
+  assert.equal(R.selectRewatchTargets({ ledgerEntries: rows, now: NOW, since: '2026-10-15' }).targets.length, 0);
+  const bad = [fail('not-a-date', 'BRO-2')];
+  assert.equal(R.selectRewatchTargets({ ledgerEntries: bad, now: NOW }).targets.length, 0);
+});
+
+test('buildRouteBatch: a card already routed MAX_REROUTES times is not routed again, and the covering card is named', () => {
+  const NOW = Date.parse('2026-11-15T12:00:00Z');
+  const row = (id) => ({ event: 'recheck', cardId: id, name: 'n', ts: '2026-11-14T00:00:00Z', verifyCmd: 'node x.js', exit: 1, ok: false, status: 'fail', detail: 'boom' });
+  const route = (id, d) => ({ event: 'recheck-route', mode: 'live', filed: true, cardIds: [id], ts: `2026-10-${d}T00:00:00Z`, identifier: `BRO-9${d}` });
+  const led = [route('BRO-1', '01'), route('BRO-1', '05'), route('BRO-1', '09')];
+  const cover = new Map([['BRO-2', new Set(['BRO-777'])]]);
+  const out = R.buildRouteBatch({ rows: [row('BRO-1'), row('BRO-2'), row('BRO-3')], ledgerEntries: led, now: NOW, coverIndex: cover });
+  assert.deepEqual(out.cards.map((c) => c.cardId), ['BRO-3']);
+  assert.equal(out.skipped.exhausted, 1);
+  assert.deepEqual(out.skipped.coveredBy, { 'BRO-2': 'BRO-777' });
+});
+
+test('selectRewatchTargets: a later env-cause row does not hide an earlier real fail', () => {
+  const NOW = Date.parse('2026-11-15T12:00:00Z');
+  const base = { event: 'recheck', cardId: 'BRO-1', verifyCmd: 'node x.js' };
+  const rows = [
+    { ...base, ts: '2026-11-10T00:00:00Z', exit: 1, ok: false, status: 'fail' },
+    { ...base, ts: '2026-11-13T00:00:00Z', exit: 1, ok: false, status: 'unverifiable', envCause: 'missing-secret' },
+  ];
+  assert.deepEqual(R.selectRewatchTargets({ ledgerEntries: rows, now: NOW }).targets.map((t) => t.cardId), ['BRO-1']);
+});
