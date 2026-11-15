@@ -406,22 +406,23 @@ function statusComment(newIds, closed, kind = null) {
 }
 
 /**
- * PURE. The ids of a class that are real new cases since the last run: not in
- * the previous snapshot's instance list AND (for card ids) created after the
- * previous snapshot was written. A card can join a class without being new:
- * the files-touched merge (mergeByFiles) or a key change can absorb an older,
- * already-closed card. Reporting that as "still coming back" re-dispatched
- * BRO-7116 for BRO-6733, a 10-31 card absorbed on 11-15 (BRO-7116).
+ * PURE. The ids of a class that are real new cases: not in the previous
+ * snapshot's instance list AND (for card ids) filed after the root card was.
+ * A card can join a class without being new: the files-touched merge
+ * (mergeByFiles) or a key change can absorb an older card. Reporting that as
+ * "still coming back" re-dispatched BRO-7116 for BRO-6733, a 10-31 card
+ * absorbed on 11-15. The cutoff is the root card's creation, not the last run:
+ * the files merge only joins a card once its fix lands (days after filing), so
+ * a run-time cutoff would hide a real repeat for good (ship-check).
  * Ids with no known createdAt (miss-class show ids) keep the old rule.
  */
-function freshCaseIds(instances, prevInstances, createdAtById, prevGeneratedAt) {
+function freshCaseIds(instances, prevInstances, createdAtById, rootCreatedAt) {
   const seen = new Set(prevInstances || []);
-  const cutoff = Date.parse(prevGeneratedAt || '');
-  const get = (id) => (createdAtById instanceof Map ? createdAtById.get(id) : (createdAtById || {})[id]);
+  const cutoff = Date.parse(rootCreatedAt || '');
   return (instances || []).filter((id) => {
     if (seen.has(id)) return false;
-    const at = Date.parse(get(id) || '');
-    return !(Number.isFinite(cutoff) && Number.isFinite(at) && at <= cutoff);
+    const at = Date.parse((createdAtById && createdAtById.get(id)) || '');
+    return !(Number.isFinite(cutoff) && Number.isFinite(at) && at < cutoff);
   });
 }
 
@@ -494,7 +495,7 @@ async function apply(snapshot, prevSnapshot, cards = []) {
     }
     const prev = prevById.get(cls.key);
     if (!prev || prev.rootCause !== cls.rootCause) continue; // first sight of this root: its own text lists the cases
-    const fresh = freshCaseIds(cls.instances, prev.instances, createdAtById, prevSnapshot && prevSnapshot.generatedAt);
+    const fresh = freshCaseIds(cls.instances, prev.instances, createdAtById, cls.rootCauseCreatedAt || prev.rootCauseCreatedAt);
     if (!fresh.length) continue;
     const g = byRoot.get(cls.rootCause) || { fresh: new Set(), closed: false, kind: cls.kind || null };
     fresh.forEach((id) => g.fresh.add(id));
