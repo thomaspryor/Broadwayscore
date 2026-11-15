@@ -31,10 +31,14 @@ const require = createRequire(import.meta.url);
 const axios = require('axios');
 const calls = [];
 let sdOrganic = [];
+let sbOrganic = [];
+let bdData = null; // null: Bright Data returns an unparsed page (the old default)
 const stub = async (url) => {
-  calls.push(String(url));
-  const isSd = String(url).includes('scrapingdog');
-  return { status: 200, data: { organic_results: isSd ? sdOrganic : [], organic_data: isSd ? sdOrganic : [] } };
+  const u = String(url);
+  calls.push(u);
+  if (u.includes('brightdata') && bdData) return { status: 200, data: bdData };
+  const organic = u.includes('scrapingdog') ? sdOrganic : u.includes('scrapingbee') ? sbOrganic : [];
+  return { status: 200, data: { organic_results: organic, organic_data: organic } };
 };
 axios.get = stub;
 axios.post = stub;
@@ -42,7 +46,10 @@ axios.post = stub;
 const { _serpWithChainForTests: chain } = require('./url-discovery.js');
 const { domainMatchesExpected } = require('./scraper.js');
 const { positiveSiteDomains, isOffDomainOnlyAnswer } = require('./serp-site-filter.js');
-const { isSlowTrickleMarket, serpSecondOpinionForShow, shouldSkipSecondOpinion } = require('./serp-second-opinion-policy.js');
+const {
+  isSlowTrickleMarket, serpSecondOpinionForShow, shouldSkipSecondOpinion,
+  shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer,
+} = require('./serp-second-opinion-policy.js');
 
 const log = () => {};
 let q = 0;
@@ -55,7 +62,11 @@ const JUNK = [
 const run = (query, emptyAuthoritative, chainOpts, negTtl = null) =>
   chain(query, 'sb-key', 'bd-key', log, null, false, undefined, undefined, emptyAuthoritative, negTtl, 0, chainOpts);
 
-beforeEach(() => { calls.length = 0; sdOrganic = []; });
+beforeEach(() => {
+  calls.length = 0; sdOrganic = []; sbOrganic = []; bdData = null;
+  process.env.SERP_THIRD_OPINION_AUDIT_RATE = '0';
+  delete process.env.SERP_THIRD_OPINION;
+});
 after(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
 test('positiveSiteDomains: groups, paths, www and negated clauses', () => {
@@ -171,4 +182,96 @@ test('routine flow: an on-domain answer is cached 24h exactly as before', async 
   const again = await run(query, false, undefined);
   assert.equal(calls.length, before);
   assert.equal(again.provider, 'scrapingdog-cached');
+});
+
+// ---- BRO-7531: ScrapingBee as a third vendor on press nights ----
+const BD_EMPTY = { general: { query: 'x' }, organic: [] };
+const asked = (name) => hosts().filter((h) => h.includes(name)).length;
+const runSpeed = (query) => chain(query, 'sb-key', 'bd-key', log, null, true, undefined, undefined, false, null, 0, undefined);
+
+test('shouldAskOtherSecondOpinion: only a real Bright Data empty after a readable Scrapingdog answer on a press night skips', () => {
+  const skip = { primaryName: 'brightdata', primaryResults: [], primaryStructured: true, tokensDropped: 0, sdClean: true, emptyAuthoritative: false, env: {} };
+  assert.equal(shouldAskOtherSecondOpinion(skip), false);
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, primaryResults: null }), true, 'Bright Data failed');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, primaryStructured: false }), true, 'short / unparsed Bright Data page');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, tokensDropped: 2 }), true, 'unreadable links dropped');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, sdClean: false }), true, 'Scrapingdog failed or was all-opaque');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, emptyAuthoritative: true }), true, 'routine flow');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, emptyAuthoritative: undefined }), true, 'routine flow (default)');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, primaryName: 'scrapingbee' }), true, 'ScrapingBee asked first');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, env: { SERP_THIRD_OPINION: '1' } }), true, 'kill switch');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, primaryResults: [{ url: 'https://a.com/x' }] }), false, 'primary found something');
+  assert.equal(shouldAskOtherSecondOpinion(), true, 'no context: ask');
+});
+
+test('shouldAuditThirdOpinion: 5% by default, env override, bad values fall back', () => {
+  assert.equal(shouldAuditThirdOpinion(() => 0.04, {}), true);
+  assert.equal(shouldAuditThirdOpinion(() => 0.06, {}), false);
+  assert.equal(shouldAuditThirdOpinion(() => 0.5, { SERP_THIRD_OPINION_AUDIT_RATE: '1' }), true);
+  assert.equal(shouldAuditThirdOpinion(() => 0, { SERP_THIRD_OPINION_AUDIT_RATE: '0' }), false);
+  assert.equal(shouldAuditThirdOpinion(() => 0.04, { SERP_THIRD_OPINION_AUDIT_RATE: 'abc' }), true);
+  assert.equal(shouldAuditThirdOpinion(() => 0.04, { SERP_THIRD_OPINION_AUDIT_RATE: '7' }), true);
+});
+
+test('Broadway press night: a real Bright Data empty after a clean Scrapingdog empty does not reach ScrapingBee, and nothing is cached', async () => {
+  bdData = BD_EMPTY;
+  const query = `site:example-outlet.com "BW Third" Broadway review ${q++}`;
+  const r = await run(query, false, undefined);
+  assert.deepEqual(r.results, []);
+  assert.ok(asked('brightdata') > 0, 'Bright Data must still be asked');
+  assert.equal(asked('scrapingbee'), 0, `ScrapingBee asked: ${hosts().join(',')}`);
+  const first = calls.length;
+  await run(query, false, undefined);
+  assert.ok(calls.length > first, 'next pass must ask again (empty was not cached)');
+});
+
+test('Broadway press night: off-domain Scrapingdog filler plus a real Bright Data empty returns the filler without ScrapingBee', async () => {
+  bdData = BD_EMPTY;
+  sdOrganic = JUNK;
+  const r = await run(`site:example-outlet.com "BW Filler" Broadway review ${q++}`, false, undefined);
+  assert.equal(r.provider, 'scrapingdog');
+  assert.ok(asked('brightdata') > 0);
+  assert.equal(asked('scrapingbee'), 0);
+});
+
+test('Broadway press night: an unparsed Bright Data page is not an answer, ScrapingBee is still asked', async () => {
+  bdData = null;
+  await run(`site:example-outlet.com "BW Short" Broadway review ${q++}`, false, undefined);
+  assert.ok(asked('brightdata') > 0);
+  assert.ok(asked('scrapingbee') > 0, 'ScrapingBee must be asked after a Bright Data non-answer');
+});
+
+test('Broadway press night: an organic list without the parsed-page block is not an answer, ScrapingBee is still asked', async () => {
+  bdData = { organic: [] };
+  assert.equal(isParsedSerpAnswer(bdData), false);
+  assert.equal(isParsedSerpAnswer(BD_EMPTY), true);
+  assert.equal(isParsedSerpAnswer('<html></html>'), false);
+  assert.equal(isParsedSerpAnswer(null), false);
+  await run(`site:example-outlet.com "BW Bare" Broadway review ${q++}`, false, undefined);
+  assert.ok(asked('scrapingbee') > 0);
+});
+
+test('Broadway press night: kill switch SERP_THIRD_OPINION=1 asks ScrapingBee after a real Bright Data empty', async () => {
+  bdData = BD_EMPTY;
+  process.env.SERP_THIRD_OPINION = '1';
+  await run(`site:example-outlet.com "BW Kill" Broadway review ${q++}`, false, undefined);
+  assert.ok(asked('scrapingbee') > 0);
+});
+
+test('Broadway press night: the audit sample still asks ScrapingBee and its find is returned', async () => {
+  bdData = BD_EMPTY;
+  process.env.SERP_THIRD_OPINION_AUDIT_RATE = '1';
+  const hit = { title: 'BW Audit review', url: 'https://example-outlet.com/2026/11/bw-audit-review/', link: 'https://example-outlet.com/2026/11/bw-audit-review/', snippet: '' };
+  sbOrganic = [hit];
+  const r = await run(`site:example-outlet.com "BW Audit" Broadway review ${q++}`, false, undefined);
+  assert.ok(asked('scrapingbee') > 0);
+  assert.equal(r.provider, 'scrapingbee');
+  assert.equal(r.results.length, 1);
+});
+
+test('press night with ScrapingBee asked first (preferSpeed): Bright Data is still asked after a ScrapingBee empty', async () => {
+  bdData = BD_EMPTY;
+  await runSpeed(`site:example-outlet.com "BW Speed" Broadway review ${q++}`);
+  assert.ok(asked('scrapingbee') > 0);
+  assert.ok(asked('brightdata') > 0, 'the unmeasured order keeps both vendors');
 });

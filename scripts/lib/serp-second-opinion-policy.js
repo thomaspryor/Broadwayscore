@@ -69,7 +69,59 @@ function shouldEscalateOffDomainAnswer(offDomainOnly, emptyAuthoritative, second
   return offDomainOnly === true && emptyAuthoritative === false && secondOpinion !== false;
 }
 
+/**
+ * BRO-7531: after the first second-opinion vendor came back with nothing, should
+ * the other one be asked too? Yes in every case but one. On a press-night flow
+ * (emptyAuthoritative === false), when Scrapingdog gave a readable answer and
+ * Bright Data, asked first, really answered (a parsed answer with an organic
+ * list, zero results, no unreadable links dropped), ScrapingBee is not asked on
+ * this pass. Nothing is cached 24h on that path, so the next pass asks again.
+ *
+ * Measured 2026-11-15 (three-pass replay of a Broadway press night): 16 of 23
+ * ScrapingBee asks followed such a Bright Data empty and found nothing, at 25
+ * credits each. Bright Data found reviews Scrapingdog missed, so it stays.
+ * Not applied when ScrapingBee is asked first (preferSpeed): that order was not
+ * measured. A Bright Data fetch that failed or came back as a short / unparsed
+ * page is not an answer, and neither is an all-opaque Scrapingdog reply.
+ * Kill switch: SERP_THIRD_OPINION=1 always asks.
+ */
+function shouldAskOtherSecondOpinion({
+  primaryName, primaryResults, primaryStructured = false, tokensDropped = 0,
+  sdClean = false, emptyAuthoritative, env = process.env,
+} = {}) {
+  if (primaryResults && primaryResults.length > 0) return false; // primary found something
+  if (env && env.SERP_THIRD_OPINION === '1') return true;
+  if (!Array.isArray(primaryResults)) return true; // primary failed
+  if (tokensDropped > 0) return true; // unreadable, not empty
+  if (emptyAuthoritative !== false) return true; // routine flows: unchanged
+  if (sdClean !== true) return true; // Scrapingdog gave no opinion
+  if (primaryName !== 'brightdata' || primaryStructured !== true) return true;
+  return false;
+}
+
+/**
+ * A Bright Data reply counts as a real answer only when it is the parsed search
+ * page: an organic list plus the "general" block that carries the query it ran.
+ * Anything else (raw HTML, a short page, a bare object) is not an answer.
+ */
+function isParsedSerpAnswer(data) {
+  return !!data && typeof data === 'object' && Array.isArray(data.organic)
+    && !!data.general && typeof data.general === 'object';
+}
+
+/**
+ * Audit sample for the skip above: this share of skipped asks goes out anyway.
+ * Default 5%. Env SERP_THIRD_OPINION_AUDIT_RATE (0..1) overrides.
+ */
+function shouldAuditThirdOpinion(rand = Math.random, env = process.env) {
+  const raw = env && env.SERP_THIRD_OPINION_AUDIT_RATE;
+  const parsed = raw === undefined || raw === '' ? NaN : Number(raw);
+  const rate = Number.isFinite(parsed) && parsed >= 0 && parsed <= 1 ? parsed : 0.05;
+  return rand() < rate;
+}
+
 module.exports = {
   isSlowTrickleMarket, serpSecondOpinionForShow, shouldSkipSecondOpinion,
   shouldReaskEmptyWithoutSecondOpinion, shouldEscalateOffDomainAnswer,
+  shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer,
 };

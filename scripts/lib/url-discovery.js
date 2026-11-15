@@ -663,7 +663,7 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange, page = 0) {
  * @param {{ dateMin: Date, dateMax: Date }} [dateRange] - Optional date range filter
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
-async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) {
+async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0, attempt = null) {
   if (!apiKey) return null;
 
   // Half-open breaker (BRO-2939, mirrors the Scrapingdog fix above — see
@@ -707,7 +707,7 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
   const fullQuery = query + dateQuery;
 
   // Try synchronous SERP API first (fastest, returns structured JSON directly)
-  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo, page, _bdBreakerVerdict.halfOpen);
+  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo, page, _bdBreakerVerdict.halfOpen, attempt);
   if (syncResult !== null) return syncResult;
 
   // BRO-6482: the async SERP API fallback is off by default. Ledger
@@ -728,7 +728,7 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
   }
 
   // Fallback: async SERP API (polling-based, slower but more reliable)
-  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo, page, _bdBreakerVerdict.halfOpen);
+  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo, page, _bdBreakerVerdict.halfOpen, attempt);
 }
 
 /**
@@ -744,7 +744,7 @@ function bdSerpAsyncFallbackEnabled(env = process.env) {
 const _BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
 const _BD_SERP_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
 
-async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page = 0, isProbe = false) {
+async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page = 0, isProbe = false, attempt = null) {
   try {
     // Use Google UK for West End queries, Google US for Broadway/OB
     // (explicit override wins — see _resolveGeo for UK-only slug-discovery callers)
@@ -794,6 +794,9 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
       }
       const data = await pollRes.json();
       if (data.organic) {
+        // BRO-7531: a parsed answer with an organic list is the only Bright Data
+        // reply that counts as "really answered" (see shouldAskOtherSecondOpinion).
+        if (attempt) attempt.structured = isParsedSerpAnswer(data);
         _noteBdSuccess();
         recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 200, breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
         return data.organic.slice(0, 10).map(r => ({
@@ -819,7 +822,7 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
   }
 }
 
-async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, page = 0, isProbe = false) {
+async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, page = 0, isProbe = false, attempt = null) {
   const axios = require('axios');
   // Use SERP zone — Web Unlocker (mcp_unlocker) can't access Google Search
   const geo = _resolveGeo(query, geoOverride);
@@ -843,6 +846,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
 
     // Structured JSON response (unlikely from Web Unlocker but handle it)
     if (data && typeof data === 'object' && Array.isArray(data.organic)) {
+      if (attempt) attempt.structured = isParsedSerpAnswer(data); // BRO-7531, see shouldAskOtherSecondOpinion
       _noteBdSuccess();
       recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
       return data.organic.slice(0, 10).map(r => ({
@@ -912,7 +916,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
 const _serpCache = require('./serp-cache');
 const _serpNegativeCache = require('./serp-negative-cache');
 const { isOffDomainOnlyAnswer, shouldReaskIgnoredSiteFilter, preferReaskAnswer } = require('./serp-site-filter');
-const { shouldSkipSecondOpinion, shouldReaskEmptyWithoutSecondOpinion, shouldEscalateOffDomainAnswer } = require('./serp-second-opinion-policy');
+const { shouldSkipSecondOpinion, shouldReaskEmptyWithoutSecondOpinion, shouldEscalateOffDomainAnswer, shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer } = require('./serp-second-opinion-policy');
 
 /**
  * Pure decision function: ordered BD/SB provider names for the SERP chain.
@@ -1064,6 +1068,9 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // normal run would have escalated: see the cache-poisoning note further down.
   const _chainTruncated = _skips.size > 0;
   let _sdFiller = null; // off-domain-only Scrapingdog answer that was escalated
+  // BRO-7531: Scrapingdog's request went out and came back readable (an array,
+  // no opaque tokens dropped). A failure or an all-opaque answer is no opinion.
+  let _sdClean = false;
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
     let sdAttempt = {};
     let sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page, sdAttempt);
@@ -1130,6 +1137,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     // rows (BRO-3344). A skipped SD (breaker/quota/cap) is not a fallback.
     // An all-opaque SD answer is tagged apart from an SD failure (provider-telemetry).
     if (sdAttempt.ran) _fallbackFrom = sdAttempt.opaque > 0 && Array.isArray(sdResults) ? 'scrapingdog-opaque' : 'scrapingdog';
+    _sdClean = !!sdAttempt.ran && Array.isArray(sdResults) && !(sdAttempt.opaque > 0);
   }
 
   const _entries = {
@@ -1150,8 +1158,9 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // own proxy pool, not by a request param). Pass undefined to SB to keep the
   // existing behavior.
   const bdGeo = geoOverride;
+  const _bdAttempt = {};
   const _withGeo = (fn) => (q, k, l, dr) => (fn === _serpViaBrightData
-    ? fn(q, k, l, dr, bdGeo, page)
+    ? fn(q, k, l, dr, bdGeo, page, _bdAttempt)
     : fn(q, k, l, dr, page));
 
   // BRO-7171 Stage 2b: Bright Data / ScrapingBee return Google's relative
@@ -1168,14 +1177,32 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   };
   let results = _readable(await withSpendFallback(_fallbackFrom, () => _withGeo(primary.fn)(query, primary.key, log, dateRange)));
   let provider = primary.name;
-  if (fallback && (!results || results.length === 0)) {
+  // BRO-7531: on a press-night flow, when Scrapingdog gave a readable answer and
+  // Bright Data (asked first) then really answered with nothing, ScrapingBee is
+  // not asked as a third vendor on this pass: nothing is cached 24h on this
+  // path, so the next pass asks all of them again. A small audit sample still
+  // asks, so a review only ScrapingBee would have found shows up in the logs
+  // (THIRD-OPINION-HIT). Every other case asks the other vendor as before.
+  const _primaryEmpty = !results || results.length === 0;
+  const _thirdCtx = {
+    primaryName: primary.name, primaryResults: results, primaryStructured: _bdAttempt.structured === true,
+    tokensDropped: _tokensDropped, sdClean: _sdClean, emptyAuthoritative,
+  };
+  const _skipThird = _primaryEmpty && !shouldAskOtherSecondOpinion(_thirdCtx);
+  const _auditThird = _skipThird && shouldAuditThirdOpinion();
+  if (fallback && _primaryEmpty && (!_skipThird || _auditThird)) {
     const fbResults = _readable(await withSpendFallback(primary.key ? primary.name : _fallbackFrom, () => _withGeo(fallback.fn)(query, fallback.key, log, dateRange)));
     if (fbResults && fbResults.length > 0) {
+      if (_auditThird && !_offDomainOnly(fbResults)) {
+        console.warn(`THIRD-OPINION-HIT [${fallback.name}] found ${fbResults.length} result(s) after Scrapingdog and ${primary.name} answered with nothing: ${query}`);
+      }
       results = fbResults;
       provider = fallback.name;
     } else if (!results && !fbResults) {
       results = null; // Both providers down
     }
+  } else if (fallback && _skipThird) {
+    log(`    ↷ ${fallback.name} not asked: Scrapingdog and ${primary.name} both answered with nothing (press-night flow, asked again next pass)`);
   }
 
   // The second opinion found nothing (or was down): hand back Scrapingdog's
