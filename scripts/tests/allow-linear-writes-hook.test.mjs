@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { fileURLToPath } from 'node:url';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -12,7 +12,7 @@ const HOOK = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..',
 const UUID = '0b2f7a3c-1d4e-4f56-8a9b-123456789abc';
 
 function decide(tool, env = {}, toolInput = {}) {
-  const r = spawnSync('bash', [HOOK], {
+  const r = spawnSyncStdinFile('bash', [HOOK], {
     input: JSON.stringify({ hook_event_name: 'PreToolUse', tool_name: tool, tool_input: toolInput }),
     encoding: 'utf8',
     env: { ...process.env, HOME: '/nonexistent-home', ...env },
@@ -65,7 +65,7 @@ test('settings.json wires the hook for all three connector prefixes', () => {
 });
 
 test('unparseable input fails open with no decision', () => {
-  const r = spawnSync('bash', [HOOK], { input: 'not json', encoding: 'utf8', env: { ...process.env, HOME: '/nonexistent-home' } });
+  const r = spawnSyncStdinFile('bash', [HOOK], { input: 'not json', encoding: 'utf8', env: { ...process.env, HOME: '/nonexistent-home' } });
   assert.equal(r.status, 0);
   assert.equal(r.stdout.trim(), '');
 });
