@@ -48,7 +48,9 @@ function loadState(): State { try { return JSON.parse(fs.readFileSync(STATE_PATH
 function saveState(s: State) {
   if (Object.keys(s).length === 0) { try { fs.unlinkSync(STATE_PATH); } catch { /* absent */ } return; }
   fs.mkdirSync(path.dirname(STATE_PATH), { recursive: true });
-  fs.writeFileSync(STATE_PATH, JSON.stringify(s, null, 2) + '\n');
+  const tmp = `${STATE_PATH}.${process.pid}.tmp`; // atomic: a torn file would parse as {} and re-submit (double billing)
+  fs.writeFileSync(tmp, JSON.stringify(s, null, 2) + '\n');
+  fs.renameSync(tmp, STATE_PATH);
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
