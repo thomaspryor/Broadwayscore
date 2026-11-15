@@ -32,6 +32,19 @@ on:
           - gpt-5.6-luna
           - gpt-5.6-sol
           - gpt-4o
+          - none
+      shadow_claude_model:
+        description: 'openai-leg-shadow: Claude shadow leg (blank = none). Sonnet 5.5 runs without temperature (API rejects it), see BRO-7529'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - claude-sonnet-5-5
+      max_cost_usd:
+        description: 'openai-leg-shadow: TOTAL spend cap in USD across the 4 shards (each gets a quarter; resumed runs count prior spend). Owner hard cap is 80.'
+        required: false
+        default: '75'
       open_shows:
         description: 'openai-leg-shadow: score EVERY review of N open shows instead of a corpus sample (blank = sample)'
         required: false
@@ -161,17 +174,25 @@ jobs:
           # runs are told apart by file prefix.
           case "$INPUT_LABEL" in ''|*[!a-z0-9-]*) [ -z "$INPUT_LABEL" ] || { echo "::error::label must be [a-z0-9-]"; exit 1; } ;; esac
           echo "file=data/audit/openai-leg-ab/${INPUT_LABEL:+$INPUT_LABEL-}shard-${{ matrix.shard }}.jsonl" >> "$GITHUB_OUTPUT"
+          echo "cost=data/audit/openai-leg-ab/${INPUT_LABEL:+$INPUT_LABEL-}shard-${{ matrix.shard }}.cost.json" >> "$GITHUB_OUTPUT"
       - name: Score shard ${{ matrix.shard }} (control gpt-4o vs shadow ${{ github.event.inputs.shadow_model || 'gpt-5.4-mini' }})
         env:
           INPUT_SAMPLE: ${{ github.event.inputs.sample }}
           INPUT_LIMIT: ${{ github.event.inputs.limit }}
           INPUT_SHADOW: ${{ github.event.inputs.shadow_model }}
           INPUT_OPEN_SHOWS: ${{ github.event.inputs.open_shows }}
+          INPUT_CLAUDE: ${{ github.event.inputs.shadow_claude_model }}
+          INPUT_MAXCOST: ${{ github.event.inputs.max_cost_usd }}
           OUT_FILE: ${{ steps.dir.outputs.file }}
         run: |
           EXTRA=""
           if [ -n "$INPUT_LIMIT" ]; then EXTRA="$EXTRA --limit=$INPUT_LIMIT --shuffle"; fi
           if [ -n "$INPUT_OPEN_SHOWS" ]; then EXTRA="$EXTRA --open-shows=$INPUT_OPEN_SHOWS"; fi
+          if [ -n "$INPUT_CLAUDE" ]; then EXTRA="$EXTRA --shadow-claude-model=$INPUT_CLAUDE"; fi
+          CAP="${INPUT_MAXCOST:-75}"
+          node -e 'const c=Number(process.argv[1]);if(!(c>0&&c<=80)){console.error("::error::max_cost_usd must be a number in (0, 80]");process.exit(1)}' "$CAP"
+          SHARD_CAP=$(node -e 'console.log((Number(process.argv[1])/4).toFixed(2))' "$CAP")
+          EXTRA="$EXTRA --max-cost-usd=$SHARD_CAP"
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/openai-leg-shadow.ts \
             --sample="${INPUT_SAMPLE:-1000}" --seed=20261109 --shard=${{ matrix.shard }} --shards=4 \
             --concurrency=4 --shadow-model="${INPUT_SHADOW:-gpt-5.4-mini}" \
@@ -181,7 +202,9 @@ jobs:
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: openai-leg-ab${{ github.event.inputs.label && format('-{0}', github.event.inputs.label) || '' }}-shard-${{ matrix.shard }}
-          path: ${{ steps.dir.outputs.file }}
+          path: |
+            ${{ steps.dir.outputs.file }}
+            ${{ steps.dir.outputs.cost }}
           if-no-files-found: warn
       - name: Commit shard
         if: always()
@@ -189,10 +212,12 @@ jobs:
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
           OUT_FILE: ${{ steps.dir.outputs.file }}
+          COST_FILE: ${{ steps.dir.outputs.cost }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           [ -n "$OUT_FILE" ] && git add "$OUT_FILE" 2>/dev/null || true
+          [ -n "$COST_FILE" ] && git add "$COST_FILE" 2>/dev/null || true
           git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           if git diff --staged --quiet; then
             echo "No changes to commit"

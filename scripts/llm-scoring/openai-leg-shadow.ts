@@ -151,7 +151,7 @@ function armOf(e: any) {
 // List prices, $ per 1M tokens: [input, output, cacheRead, cacheWrite].
 // Sonnet 5.5 $2/$10 (cache read $0.10), Sonnet 4.6 $3/$15, gpt-4o $2.50/$10, gpt-5.6-luna $0.20/$1.20,
 // Gemini 2.5-flash $0.30/$2.50 (scripts/llm-scoring/cost.ts, scripts/lib/research-cost.js).
-const CLAUDE_RATES: Record<string, number[]> = { 'claude-sonnet-4-6': [3, 15, 0.3, 3.75], 'claude-sonnet-5-5': [2, 10, 0.1, 2.5] };
+const CLAUDE_RATES: Record<string, number[]> = { 'claude-sonnet-4-6': [3, 15, 0.3, 3.75], 'claude-sonnet-5-5': [3, 15, 0.3, 3.75] /* cap prices 5.5 at 4.6 list rates (no repo price source); real bill is lower or equal */ };
 const OPENAI_RATES_PM: Record<string, number[]> = { 'gpt-4o': [2.5, 10], 'gpt-5.6-luna': [0.2, 1.2], 'gpt-6-luna': [0.2, 1.2], 'gpt-5.4-mini': [0.75, 4.5], 'gpt-5.6-sol': [5, 30] };
 const GEMINI_RATES = [0.3, 2.5];
 function legCost(u: any, sh: any, shadowOpenai: string, shadowClaude?: string) {
@@ -171,6 +171,7 @@ function legCost(u: any, sh: any, shadowOpenai: string, shadowClaude?: string) {
 async function runShard() {
   // --shadow-model=none runs a Claude-leg-only A/B (BRO-7529); --shadow-claude-model adds a Claude shadow arm.
   const shadowModel = flag('shadow-model', 'gpt-5.4-mini')!;
+  if (flag('max-cost-usd') && !(Number(flag('max-cost-usd')) > 0)) throw new Error('--max-cost-usd must be a positive number');
   if (shadowModel !== 'none' && !openaiScoringModels().includes(shadowModel)) throw new Error(`unknown --shadow-model ${shadowModel}`);
   const shadowClaudeModel = flag('shadow-claude-model');
   if (shadowClaudeModel && !['claude-sonnet-4-6', 'claude-sonnet-5-5'].includes(shadowClaudeModel)) throw new Error(`unknown --shadow-claude-model ${shadowClaudeModel}`);
@@ -227,11 +228,21 @@ async function runShard() {
   // own token counts at list rates (sync pricing, no batch discount, so an upper bound).
   const maxCost = flag('max-cost-usd') ? Number(flag('max-cost-usd')) : Infinity;
   const spent = () => legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel).total;
+  const costPath = outPath.replace(/\.jsonl$/, '.cost.json');
+  let priorSpend = 0;
+  try { priorSpend = Number(JSON.parse(fs.readFileSync(costPath, 'utf8')).total) || 0; } catch { /* first run */ }
+  if (priorSpend) console.log(`resuming: prior est spend $${priorSpend.toFixed(2)} counts toward --max-cost-usd`);
+  const spentTotal = () => priorSpend + spent();
+  const writeCost = () => {
+    const c = legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel);
+    fs.writeFileSync(costPath, JSON.stringify({ records: finished, capHit, maxCostUsd: Number.isFinite(maxCost) ? maxCost : null, priorSpend, ...c, total: priorSpend + c.total }, null, 2) + '\n');
+    return priorSpend + c.total;
+  };
   let capHit = false;
   let next = 0; let finished = 0;
   async function worker() {
     while (next < mine.length) {
-      if (spent() >= maxCost) { capHit = true; break; }
+      if (spentTotal() >= maxCost) { capHit = true; break; }
       const c = mine[next++];
       let rec: any = { id: c.id, showId: c.showId, stratum: c.stratum, weight: c.weight, controlModel: SCORING_OPENAI, shadowModel, controlClaudeModel: 'claude-sonnet-4-6', shadowClaudeModel: shadowClaudeModel || null };
       try {
@@ -245,17 +256,16 @@ async function runShard() {
         if (shadowClaudeModel) rec.shadowClaude = e && e.shadowClaude ? armOf(e.shadowClaude) : { success: false, error: 'no_shadow_claude' };
       } catch (err: any) {
         rec.control = { success: false, error: String(err && err.message || err).slice(0, 200) };
-        rec.shadow = { success: false, error: 'control_threw' };
+        if (shadowModel !== 'none') rec.shadow = { success: false, error: 'control_threw' };
       }
       fs.appendFileSync(outPath, JSON.stringify(rec) + '\n');
       finished++;
-      if (finished % 25 === 0) console.log(`  ${finished}/${mine.length}`);
+      if (finished % 25 === 0) console.log(`  ${finished}/${mine.length} est spend $${writeCost().toFixed(2)}`);
     }
   }
   await Promise.all(Array.from({ length: concurrency }, worker));
-  const cost = legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel);
-  fs.writeFileSync(outPath.replace(/\.jsonl$/, '.cost.json'), JSON.stringify({ records: finished, capHit, maxCostUsd: Number.isFinite(maxCost) ? maxCost : null, ...cost }, null, 2) + '\n');
-  console.log(`shard ${shard} done: ${finished} records -> ${path.relative(ROOT, outPath)}; est spend $${cost.total.toFixed(2)}${capHit ? ' (STOPPED at --max-cost-usd)' : ''}`);
+  const totalSpend = writeCost();
+  console.log(`shard ${shard} done: ${finished} records -> ${path.relative(ROOT, outPath)}; est spend $${totalSpend.toFixed(2)}${capHit ? ' (STOPPED at --max-cost-usd)' : ''}`);
 }
 
 function runReport() {
