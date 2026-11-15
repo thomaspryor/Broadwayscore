@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T14:25:41.849Z",
+  "timestamp": "2026-11-15T15:00:07.120Z",
   "stats": {
-    "totalReviews": 82157,
-    "alreadyFlagged": 22419,
-    "dateGuardCatches": 221,
-    "directorMismatch": 3709,
+    "totalReviews": 82159,
+    "alreadyFlagged": 22420,
+    "dateGuardCatches": 220,
+    "directorMismatch": 3708,
     "tvFilmSignals": 2316,
-    "londonSignals": 3759,
+    "londonSignals": 3758,
     "offBroadwaySignals": 751,
     "yearMismatch": 376,
-    "noPublishDate": 8440
+    "noPublishDate": 8441
   },
   "findings": [
     {
@@ -2093,30 +2093,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 90,
-      "publishDate": "2025-11-26",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 351d before show (2025-11-26 vs 2026-11-12)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
