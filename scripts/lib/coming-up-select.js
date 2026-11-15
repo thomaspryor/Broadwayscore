@@ -10,6 +10,8 @@
  * and are never cut. Everything else fills the card up to `cap` rows in date
  * order. The result is always date-sorted.
  */
+const { isBroadwayCategory } = require('./venue-classification');
+
 function addDays(dateStr, n) {
   const d = new Date(dateStr + 'T12:00:00Z');
   d.setUTCDate(d.getUTCDate() + n);
@@ -24,7 +26,7 @@ function selectComingUp(items, { weekEndStr, cap = 4 }) {
   const horizon = addDays(weekEndStr, 7);
   const byDate = [...items].sort((a, b) => a.eventDate.localeCompare(b.eventDate));
   const mandatory = new Set(byDate.filter(it =>
-    it.show.category === 'broadway' && !it.isPreview && it.eventDate > weekEndStr && it.eventDate <= horizon));
+    isBroadwayCategory(it.show) && !it.isPreview && it.eventDate > weekEndStr && it.eventDate <= horizon));
   const picked = new Set(mandatory);
   for (const it of byDate) {
     if (picked.size >= cap) break;
