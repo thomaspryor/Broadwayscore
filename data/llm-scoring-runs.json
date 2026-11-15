@@ -1,30 +1,5 @@
 [
   {
-    "startedAt": "2026-11-13T07:16:54.570Z",
-    "completedAt": "2026-11-13T07:37:01.232Z",
-    "totalReviews": 82120,
-    "processed": 158,
-    "skipped": 81935,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 1058947,
-      "output": 52405,
-      "cacheRead": 657343,
-      "cacheWrite": 56459,
-      "total": 2711561
-    },
-    "costUsd": 4.1844686499999995,
-    "runId": "43384028567",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "stranger-things-2024",
-        "outletId": "broadwaynews",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-11-13T07:41:58.198Z",
     "completedAt": "2026-11-13T07:46:00.313Z",
     "totalReviews": 109,
@@ -418063,6 +418038,44 @@
     },
     "costUsd": 0,
     "runId": "43724270615",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-15T16:32:18.004Z",
+    "completedAt": "2026-11-15T16:32:22.475Z",
+    "totalReviews": 41,
+    "processed": 1,
+    "skipped": 40,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4608,
+      "output": 302,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 12996
+    },
+    "costUsd": 0.03155215,
+    "runId": "43735709330",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-15T16:37:20.042Z",
+    "completedAt": "2026-11-15T16:37:20.104Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "43735709330",
     "source": "comparative-rescore",
     "errorDetails": []
   }
