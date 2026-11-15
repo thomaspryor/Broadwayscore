@@ -254,6 +254,15 @@ const EXEMPT_LEDGERS = [
       'appended to by any script, so merge=union protects nothing and could ' +
       'mask a conflicting fixture edit.',
   },
+  {
+    file: 'tests/fixtures/recheck-ledger-latest-fails-2026-11-15.jsonl',
+    reason:
+      '2026-11-15 (BRO-7557): static snapshot of the latest failing recheck row ' +
+      'per card, read by the recheck-route replay test so it does not depend on ' +
+      'the nightly-moving CI ledger. Captured once, never appended to by any ' +
+      'script, so merge=union protects nothing and could mask a conflicting ' +
+      'fixture edit.',
+  },
 ];
 
 // BRO-7256: city-hub dual-model audit caches. the city-hub dual-model audit script keeps the LAST row per key on read and
