@@ -22,7 +22,7 @@ test('busy Broadway week (Apr 20): count in subject, packed opener, tie and the 
   ] });
   assert.equal(v.subject, 'Schmigadoon! and 5 other shows open on Broadway this week');
   assert.equal(plain(v.sentences.join(' ')),
-    "A packed week on Broadway, with six openings. Schmigadoon! opens to strong reviews, tied at 79 with Joe Turner's Come and Gone and The Balusters. Beaches lands at 44.");
+    "A packed week on Broadway, with six openings. Schmigadoon! opens at 79/100, tied with Joe Turner's Come and Gone and The Balusters. Beaches lands at 44.");
   assert.deepEqual(v.showRefs.map(r => r.title), ['Schmigadoon!', "Joe Turner's Come and Gone", 'The Balusters', 'Beaches']);
 });
 
@@ -41,7 +41,7 @@ test('slow week (Aug 24): quiet-week subject, both markets named', () => {
   });
   assert.equal(v.subject, 'Paranormal Activity opens on Broadway in a quiet week');
   assert.equal(plain(v.sentences.join(' ')),
-    'A slow week in New York, with just two openings. Paranormal Activity opens on Broadway to strong reviews (78). Off Broadway, The Real Ivanov lands at 53.');
+    'A slow week in New York, with just two openings. Paranormal Activity opens on Broadway at 78/100. Off Broadway, The Real Ivanov lands at 53.');
 });
 
 test('a long lead title falls back to a shorter subject instead of cutting mid-word', () => {
@@ -53,7 +53,7 @@ test('a long lead title falls back to a shorter subject instead of cutting mid-w
   assert.ok(v.subject.length <= 80);
   assert.match(plain(v.sentences[0]), /^A busy week in New York, with six openings\.$/);
   // Owner, 2026-11-02: the OB sentence names its highlights, not just the lead.
-  assert.match(plain(v.sentences.at(-1)), /^Off Broadway, five shows opened\. OB 1 opens to strong reviews \(79\)\. OB 2 earned the strongest reviews \(78\)\.$/);
+  assert.match(plain(v.sentences.at(-1)), /^Off Broadway, five shows opened\. OB 1 opens at 79\/100\. OB 2 earned the strongest reviews at 78\/100\.$/);
 });
 
 test('calendar counts keep "slow week" / "N other shows" true when some openings are too thinly reviewed to name', () => {
@@ -150,7 +150,7 @@ test('Oct 26: already-announced Broadway opening never leads the subject or lede
   assert.equal(v.subject, '9 off-Broadway shows + A Few Good Men opened this week');
   assert.ok(!/^A Few Good Men/.test(v.subject));
   assert.equal(plain(v.sentences.join(' ')),
-    'A busy week Off Broadway, with nine openings. The Heart opens to strong reviews (77). I Became We earned the strongest reviews (81) and the In the Heights revival scored 75. On Broadway, A Few Good Men opened to mixed reviews (61).');
+    'A busy week Off Broadway, with nine openings. The Heart opens at 77/100. I Became We earned the strongest reviews at 81/100 and the In the Heights revival scored 75/100. On Broadway, A Few Good Men opened at 61/100.');
   assert.equal(v.lead.title, 'The Heart');
   assert.deepEqual(v.showRefs.map(r => r.title).sort(), ['A Few Good Men', 'I Became We', 'In the Heights', 'The Heart']);
 });
@@ -159,7 +159,7 @@ test('Oct 26: a Broadway opening NOT yet announced still leads, with the three O
   const v = composeWeekVoice({ ...oct26(), announcedIds: new Set() });
   assert.match(v.subject, /^A Few Good Men opens on Broadway/);
   const lede = plain(v.sentences.join(' '));
-  assert.match(lede, /Off Broadway, nine shows opened\. The Heart opens to strong reviews \(77\)\. I Became We earned the strongest reviews \(81\) and the In the Heights revival scored 75\./);
+  assert.match(lede, /Off Broadway, nine shows opened\. The Heart opens at 77\/100\. I Became We earned the strongest reviews at 81\/100 and the In the Heights revival scored 75\/100\./);
   assert.ok(!lede.includes('Hospital Hour'));
 });
 

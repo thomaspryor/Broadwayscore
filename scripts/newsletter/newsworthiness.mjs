@@ -117,6 +117,15 @@ export const VERDICT_VARIANTS = {
   rough:  ['rough reviews', 'mostly-pans', 'a chilly reception'],
 };
 
+// Score-first phrasing (owner, 2026-11-15): the Critic Score is our product, so a
+// headline says "opens at 77/100 from 33 critics", never a verdict word like
+// "strong reviews". `agg` is aggregateScore(id): { avg, count }.
+function scorePhrase(agg) {
+  const n = Math.round(agg.avg);
+  const c = Number.isFinite(agg.count) && agg.count > 0 ? ` from ${agg.count} ${agg.count === 1 ? 'critic' : 'critics'}` : '';
+  return `at ${n}/100${c}`;
+}
+
 function reviewVerdict(score, category, variantIndex = 0) {
   const tier = reviewVerdictTier(score, category);
   if (!tier) return null;
@@ -162,7 +171,8 @@ export function scoreCandidates(input) {
   for (const item of (input.bwOpenings || [])) {
     const s = item.show || item; // backward compat if a bare show is passed
     const isReopen = !!item.isReopening;
-    const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
+    const agg = input.aggregateScore ? input.aggregateScore(s.id) : null;
+    const score = agg?.avg ?? null;
     const tier = reviewVerdictTier(score, s.category);
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     const isWeEdition = (input.edition || 'broadway') === 'west-end';
@@ -174,10 +184,10 @@ export function scoreCandidates(input) {
     // weGoldOpenings block below drops "in London" only for the WE edition.
     const loc = isWeEdition ? ' on Broadway' : '';
     const headline = verdict
-      ? `${s.title} ${verb}${loc} to ${verdict}`
+      ? `${s.title} ${verb}${loc} ${scorePhrase(agg)}`
       : `${s.title} ${verb} on Broadway`;
     out.push({ kind: isReopen ? 'bw-reopening' : 'bw-opening', weight, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title} ${verb}${loc} to `, openingVenue: 'Broadway' });
+      verdictTier: tier, score: Math.round(score), openingVenue: 'Broadway' });
   }
 
   // 1b. West End and Off West End openings. The caller selects the feed
@@ -196,7 +206,8 @@ export function scoreCandidates(input) {
   let weOpeningStoriesCap = Infinity;
   for (const item of (input.weGoldOpenings || [])) {
     const s = item.show || item;
-    const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
+    const agg = input.aggregateScore ? input.aggregateScore(s.id) : null;
+    const score = agg?.avg ?? null;
     const tier = reviewVerdictTier(score, s.category);
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     // Edition-aware weight: PRIMARY in the West End edition (leads like a
@@ -228,13 +239,13 @@ export function scoreCandidates(input) {
     // late) did NOT open this week — never word it as "opens".
     const catchUp = !!item.isCatchUp;
     const headline = verdict
-      ? `${s.title}${venueSuffix} ${catchUp ? 'recently opened' : 'opens'}${loc} to ${verdict}`
+      ? `${s.title}${venueSuffix} ${catchUp ? 'recently opened' : 'opens'}${loc} ${scorePhrase(agg)}`
       : `${s.title}${venueSuffix} ${catchUp ? 'recently opened' : 'opens'}${loc}`;
     // Catch-ups carry no verdictTier: that keeps them out of the 3+ opening
     // fold (which would imply they opened alongside this week's shows) and
     // out of the verdict-variant swap.
     out.push({ kind: 'we-opening', weight: weWeight, headline, show: s, slug: s.slug, isCatchUp: catchUp,
-      ...(catchUp ? {} : { verdictTier: tier, verdictPrefix: `${s.title}${venueSuffix} opens${loc} to ` }),
+      ...(catchUp ? {} : { verdictTier: tier, score: Math.round(score) }),
       openingVenue: isWeEdition ? (isWestEndVenue ? 'the West End' : 'Off West End') : 'London' });
   }
 
@@ -242,7 +253,8 @@ export function scoreCandidates(input) {
   for (const item of (input.obOpenings || [])) {
     const s = item.show || item;
     const isReopen = !!item.isReopening;
-    const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
+    const agg = input.aggregateScore ? input.aggregateScore(s.id) : null;
+    const score = agg?.avg ?? null;
     const tier = reviewVerdictTier(score, s.category);
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.OB_OPENING_GOLD_BUMP : 0;
@@ -256,10 +268,10 @@ export function scoreCandidates(input) {
     const isShakespeareInThePark = showHasFestivalVenue(s);
     const loc = isShakespeareInThePark ? 'at Free Shakespeare in the Park' : 'off-Broadway';
     const headline = verdict
-      ? `${s.title} ${verb} ${loc} to ${verdict}`
+      ? `${s.title} ${verb} ${loc} ${scorePhrase(agg)}`
       : `${s.title} ${verb} ${loc}`;
     out.push({ kind: isReopen ? 'ob-reopening' : 'ob-opening', weight: WEIGHTS.OB_OPENING_BASE + goldBump, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title} ${verb} ${loc} to `, openingVenue: isShakespeareInThePark ? 'Free Shakespeare in the Park' : 'off-Broadway' });
+      verdictTier: tier, score: Math.round(score), openingVenue: isShakespeareInThePark ? 'Free Shakespeare in the Park' : 'off-Broadway' });
   }
 
   // 3. Recoupment announcements (rarest biz news — high weight)
@@ -451,9 +463,8 @@ export function trimToWordBoundary(s, limit) {
 
 // Editorial lede — 2-3 sentence narrative from the top candidates.
 // Stronger than the subject because it can use full prose. Deduped by kind so
-// we don't get three "X recoups" sentences in a row. Also rotates verdict
-// phrasing — two openings in the same week with the same tier shouldn't both
-// say "opens to decent reviews"; the second uses the next pool variant.
+// we don't get three "X recoups" sentences in a row. Opening headlines are
+// score-first ("opens at 77/100"), so there is no verdict phrasing to rotate.
 export function buildLedeFromCandidates(candidates, maxSentences = 3) {
   const r = buildLedeSentences(candidates, maxSentences);
   return r ? r.sentences.join(' ') : null;
@@ -468,19 +479,7 @@ export function buildLedeFromCandidates(candidates, maxSentences = 3) {
 export function buildLedeSentences(candidates, maxSentences = 3) {
   if (!candidates.length) return null;
   const unique = dedupeByKind(candidates).slice(0, maxSentences);
-  // Per-tier counter so the Nth occurrence picks variantIndex N.
-  const tierSeen = {};
-  const withHeadline = unique.map((c) => {
-    let headline = c.headline;
-    if (c.verdictTier && c.verdictPrefix) {
-      const i = (tierSeen[c.verdictTier] = (tierSeen[c.verdictTier] || 0) + 1) - 1;
-      const pool = VERDICT_VARIANTS[c.verdictTier];
-      if (pool && i > 0 && pool[i]) {
-        headline = c.verdictPrefix + pool[i];
-      }
-    }
-    return { ...c, headline };
-  });
+  const withHeadline = unique;
   // BRO-2589: 3+ opening-kind candidates back to back all use the same
   // "[Title] opens [market] to [adjective] reviews." template shape — reads
   // monotonous even though the text isn't literally duplicated (owner report
@@ -554,7 +553,7 @@ function buildCompressedOpeningClause(rest) {
   for (const [venue, shows] of groups) {
     const named = shows.map((c) => {
       const label = openingSubjectPhrase(c);
-      return c.verdictTier ? `${label} (${c.verdictTier})` : label;
+      return c.verdictTier && Number.isFinite(c.score) ? `${label} (${c.score})` : label;
     });
     venuePhrases.push(venue ? `${venue}'s ${joinWithAnd(named)}` : joinWithAnd(named));
   }

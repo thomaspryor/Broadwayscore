@@ -23,6 +23,8 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 import { createRequire } from 'node:module';
 
+import { WIDTHS, evaluateLayout, measureLayout } from './mobile-layout-check.mjs';
+
 const MAX_WIDTH = 420;
 const VIEWPORT = 375;
 
@@ -77,6 +79,28 @@ try {
   }
 
   console.log(`✓ Mobile overflow check OK for week ${weekStart}: ${docWidth}px at ${VIEWPORT}px viewport (limit ${MAX_WIDTH}px).`);
+
+  // Multi-width pass (owner, 2026-11-15): overflow at 375 alone missed a card
+  // squeezed to a ~90px info column on a smaller phone. Render every common
+  // phone width and fail on overflow, a squished info column, a wrapped pill or
+  // a tall card. Kill switch for a hand-run only: MOBILE_LAYOUT_CHECK=off.
+  if (process.env.MOBILE_LAYOUT_CHECK !== 'off') {
+    const problems = [];
+    for (const w of WIDTHS) {
+      const pg = await browser.newPage({ viewport: { width: w, height: 900 } });
+      await pg.goto('file://' + htmlPath);
+      problems.push(...evaluateLayout(w, await pg.evaluate(measureLayout)));
+      await pg.close();
+    }
+    if (problems.length) {
+      console.error(`\n🛑 Newsletter layout is squished on small phones (week ${weekStart}):`);
+      for (const p of problems.slice(0, 12)) console.error('   - ' + p);
+      if (problems.length > 12) console.error(`   ... and ${problems.length - 12} more`);
+      console.error('');
+      process.exit(1);
+    }
+    console.log(`✓ Mobile layout check OK at ${WIDTHS.join('/')}px.`);
+  }
 } finally {
   await browser.close();
 }

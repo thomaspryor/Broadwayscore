@@ -36,7 +36,7 @@ const { getScoreTierId, SCORE_TIER_LABELS } = cjsRequire('../lib/score-tiers.js'
 const { buildUnsubscribeUrl, resolveNewsletterEdition, buildAccountCtaHtml } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
-const { showCardHtml, criticsTakeHtml } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-show-card'));
+const { showCardHtml, criticsTakeHtml, POSTER_W, POSTER_H, SCORE_COL_W, SCORE_BADGE } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-show-card'));
 const { announcedShowIds, loadSentShows, isNotableRevival } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-announced'));
 const { upcomingLinks } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-upcoming-links'));
 const { classifyOpeningEvent } = cjsRequire(path.join(repo, 'scripts/lib/opening-events-for-week'));
@@ -378,7 +378,7 @@ function audienceChip(showId) {
   const g = getAudienceGrade(buzz.combinedScore);
   // 12% alpha bg + solid text color, 10px leading-none
   const bg = g.color + '20';
-  return `<div style="display:inline-flex;align-items:center;gap:3px;padding:3px 7px;background:${bg};color:${g.color};border-radius:999px;font-size:10px;font-weight:700;line-height:1;margin-top:8px;">
+  return `<div style="display:inline-flex;align-items:center;gap:3px;padding:3px 5px;background:${bg};color:${g.color};border-radius:999px;font-size:9px;white-space:nowrap;font-weight:700;line-height:1;margin-top:8px;">
     <span style="opacity:0.6;">Audience:&nbsp;</span><span>${g.grade}</span>
   </div>`;
 }
@@ -608,11 +608,13 @@ function marketPill(category) {
     : category === 'west-end' ? 'WEST END'
     : category === 'off-west-end' ? 'OFF WEST END'
     : (marketLabel(category) || '').toUpperCase());
-  return `<span class="mp" style="background:${bg};color:${color}">${label}</span>`;
+  // nowrap: "OFF WEST END" wrapped to three lines in a ~90px info column on a
+  // small iPhone (owner, 2026-11-15). The pill is allowed to sit on its own line.
+  return `<span class="mp" style="background:${bg};color:${color};white-space:nowrap">${label}</span>`;
 }
 
 function pill(label, color = '#c084fc', bg = 'rgba(168,85,247,0.15)') {
-  return `<span class="gp" style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;line-height:1.5;vertical-align:middle;margin-right:4px;background:${bg};color:${color}">${label}</span>`;
+  return `<span class="gp" style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;line-height:1.5;vertical-align:middle;margin-right:4px;white-space:nowrap;background:${bg};color:${color}">${label}</span>`;
 }
 
 function thumb(show, size = 64) {
@@ -720,26 +722,26 @@ function showRow(show, opts = {}) {
   const metaVenue = opts.metaVenue ?? venue;
   const audChip = audienceChip(show.id);
   const scoreCol = score != null
-    ? `<td valign="middle" width="92" style="padding:12px 16px 12px 4px;text-align:center;">
+    ? `<td valign="middle" width="${SCORE_COL_W}" style="padding:12px 10px 12px 0;text-align:center;">
         ${tierLabel(score, show.category)}
-        ${badgeHtml(score, 64, show.category)}
+        ${badgeHtml(score, SCORE_BADGE, show.category)}
         <div style="font-size:10px;color:#9ca3af;margin-top:6px;">${a.count} reviews</div>
         ${audChip}
       </td>`
-    : `<td valign="middle" width="92" style="padding:12px 16px 12px 4px;text-align:center;">
+    : `<td valign="middle" width="${SCORE_COL_W}" style="padding:12px 10px 12px 0;text-align:center;">
         <div style="font-size:9px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Pending</div>
-        ${badgeHtml(null, 64)}
+        ${badgeHtml(null, SCORE_BADGE)}
         <div style="font-size:10px;color:#9ca3af;margin-top:6px;">${a ? a.count + ' rev' : '0 reviews'}</div>
         ${audChip}
       </td>`;
   const take = (opts.noConsensus || score == null) ? null : clampTake(criticsTake(show.id));
   const takeHtml = criticsTakeHtml(take, show.slug ? showHref(show) : null);
   return showCardHtml({
-    posterHtml: posterOrThumb(show, 80, 120),
+    posterHtml: posterOrThumb(show, POSTER_W, POSTER_H),
     infoHtml: `
-        <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, show.title)}</div>
-        <div style="margin-top:6px;">${marketTag}${formatPill}${revivalPill}${reopenPill}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:6px;line-height:1.35;">${metaDate}</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, show.title)}</div>
+        <div style="margin-top:5px;line-height:1.75;">${marketTag}${formatPill}${revivalPill}${reopenPill}</div>
+        <div style="font-size:13px;color:#9ca3af;margin-top:4px;line-height:1.35;">${metaDate}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:1px;line-height:1.35;">${metaVenue}</div>`,
     scoreColHtml: scoreCol,
     takeHtml,
@@ -1191,23 +1193,23 @@ function biggestMoverSection() {
   }
   function audGradeBox(g) {
     const c = audGradeColor(g);
-    return `<div style="box-sizing:border-box;display:inline-block;width:48px;height:48px;border-radius:8px;background:${c};color:#fff;font-size:17px;font-weight:700;line-height:48px;text-align:center;box-shadow:0 2px 6px ${c}40;">${g}</div>`;
+    return `<div style="box-sizing:border-box;display:inline-block;width:40px;height:40px;border-radius:8px;background:${c};color:#fff;font-size:15px;font-weight:700;line-height:40px;text-align:center;box-shadow:0 2px 6px ${c}40;">${g}</div>`;
   }
   const audRows = audMovers.map((m, i, arr) => {
     const isLast = i === arr.length - 1 && moverList.length === 0; // simpler: always show border between, drop on absolute last
     const dirColor = m.dir === 'up' ? '#22c55e' : '#ef4444';
     const dirArrow = m.dir === 'up' ? '▲' : '▼';
     return `<tr>
-      <td valign="middle" width="80" style="padding:14px 0 14px 16px;border-bottom:1px solid rgba(255,255,255,0.05);">${thumb(m.show, 56)}</td>
-      <td valign="middle" style="padding:14px 8px 14px 14px;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <td valign="middle" width="48" style="padding:12px 0 12px 12px;border-bottom:1px solid rgba(255,255,255,0.05);">${thumb(m.show, 48)}</td>
+      <td valign="middle" style="padding:12px 6px 12px 10px;overflow-wrap:anywhere;word-break:break-word;border-bottom:1px solid rgba(255,255,255,0.05);">
         <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)} ${marketPill(m.show.category)}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:6px;">${m.reviewDelta > 0 ? '+' : ''}${m.reviewDelta} audience ${pluralNoun(Math.abs(m.reviewDelta), 'review')}</div>
       </td>
-      <td valign="middle" width="120" align="center" style="padding:14px 16px 14px 4px;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <td valign="middle" width="96" align="center" style="padding:12px 10px 12px 4px;border-bottom:1px solid rgba(255,255,255,0.05);">
         <div style="font-size:10px;letter-spacing:0.08em;color:#9ca3af;font-weight:700;text-transform:uppercase;margin-bottom:5px;">Audience Grade</div>
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;"><tr>
           <td align="center" valign="middle">${audGradeBox(m.beforeGrade)}</td>
-          <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
+          <td valign="middle" style="padding:0 3px;color:#6b7280;font-size:14px;">→</td>
           <td align="center" valign="middle">${audGradeBox(m.afterGrade)}</td>
         </tr></table>
         <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${m.dir} ${pluralize(m.gradeCount, 'grade')}</div>
@@ -1223,16 +1225,16 @@ function biggestMoverSection() {
     // Always emit border-bottom; the strip-final-border block below removes
     // it from whichever row ends up last in the combined list.
     return `<tr>
-      <td valign="middle" width="80" style="padding:14px 0 14px 16px;border-bottom:1px solid rgba(255,255,255,0.05);">${thumb(m.show, 56)}</td>
-      <td valign="middle" style="padding:14px 8px 14px 14px;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <td valign="middle" width="48" style="padding:12px 0 12px 12px;border-bottom:1px solid rgba(255,255,255,0.05);">${thumb(m.show, 48)}</td>
+      <td valign="middle" style="padding:12px 6px 12px 10px;overflow-wrap:anywhere;word-break:break-word;border-bottom:1px solid rgba(255,255,255,0.05);">
         <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)} ${marketPill(m.show.category)}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:6px;">+${m.newCount} review${m.newCount!==1?'s':''}</div>
       </td>
-      <td valign="middle" width="120" align="center" style="padding:14px 16px 14px 4px;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <td valign="middle" width="96" align="center" style="padding:12px 10px 12px 4px;border-bottom:1px solid rgba(255,255,255,0.05);">
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;"><tr>
-          <td align="center" valign="middle">${smallBadge(m.before, 48, m.show.category)}</td>
-          <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
-          <td align="center" valign="middle">${smallBadge(m.after, 48, m.show.category)}</td>
+          <td align="center" valign="middle">${smallBadge(m.before, 40, m.show.category)}</td>
+          <td valign="middle" style="padding:0 3px;color:#6b7280;font-size:14px;">→</td>
+          <td align="center" valign="middle">${smallBadge(m.after, 40, m.show.category)}</td>
         </tr></table>
         <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${dirWord} ${pluralize(ptsRounded, 'pt')}</div>
       </td>
@@ -1339,7 +1341,7 @@ function awardScoreMoversSection(market) {
     const dirWord = m.delta > 0 ? 'up' : 'down';
     const pts = Math.abs(m.delta);
     return `<tr>
-      <td valign="middle" width="68" style="padding:10px 10px 10px 0;${border}">${thumb(m.show, 56)}</td>
+      <td valign="middle" width="68" style="padding:10px 10px 10px 0;${border}">${thumb(m.show, 48)}</td>
       <td valign="middle" style="padding:10px 0;${border}">
         <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:2px;">Award Score</div>
@@ -1347,7 +1349,7 @@ function awardScoreMoversSection(market) {
       <td valign="middle" width="120" align="center" style="padding:10px 16px 10px 4px;${border}">
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;"><tr>
           <td align="center" valign="middle">${awardBadgeBox(m.before, m.beforeBadge)}</td>
-          <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
+          <td valign="middle" style="padding:0 3px;color:#6b7280;font-size:14px;">→</td>
           <td align="center" valign="middle">${awardBadgeBox(m.after, m.afterBadge)}</td>
         </tr></table>
         <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${dirWord} ${pluralize(pts, 'pt')}</div>
@@ -2861,7 +2863,7 @@ bwEvents = IS_WE
 // >= 75), not gold-only — a marquee WE opening like Jesus Christ Superstar
 // (75, Palladium, 19 reviews) is genuinely the week's biggest story and the
 // reader should see it (user, 2026-07-12). The scorer phrases by score, so a
-// 75 reads "strong reviews", a 90 "near-universal praise". On a quiet
+// 75 reads "opens at 75/100". On a quiet
 // Broadway week ONLY, every scored London opening enters the pool regardless
 // of tier — normal weeks are unaffected (bwEvents/obEvents non-empty keeps
 // quietBroadwayWeek false, so the >=75 gate is unchanged).
@@ -3259,7 +3261,10 @@ function buildSubjectFacts() {
   const MKT = { 'broadway': 'Broadway', 'off-broadway': 'Off-Broadway', 'west-end': 'West End', 'off-west-end': 'Off West End' };
   const lines = [], titles = new Map();
   const use = (s) => { titles.set(s.id, { id: s.id, slug: s.slug, title: s.title }); };
-  const scoreBit = (s, a) => `Critic Score ${Math.round(a.raw ?? a.avg)} (${scoreTier(a.avg, s.category)?.label || 'scored'}) from ${a.count} reviews`;
+  // Score first, no tier label (owner, 2026-11-15): the writer echoed "(Recommended)"
+  // into the opening paragraph ("is Recommended from 33 reviews"). The Critic
+  // Score is the product; the label is a UI band and stays out of the facts.
+  const scoreBit = (s, a) => `Critic Score ${Math.round(a.raw ?? a.avg)}/100 from ${a.count} critics`;
   lines.push(`The email covers the week of ${DAY(weekStartStr)} to ${DAY(weekEndStr)}.`);
   lines.push(IS_WE
     ? 'Editorial: this is the London edition. Lead with this week\'s London openings (West End and Off West End). Opera and Broadway have their own sections lower down and should not lead.'
@@ -3432,7 +3437,7 @@ const html = `<!DOCTYPE html>
      on Gmail clipping in newsletter-drafts. */
   /* Unified pill box model — market (.mp) and format/production (.gp) pills
      render at identical height so REVIVAL never sits taller than OFF-BWAY. */
-  .mp,.gp{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;line-height:1.5;vertical-align:middle;margin-right:4px}
+  .mp,.gp{display:inline-block;white-space:nowrap;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;line-height:1.5;vertical-align:middle;margin-right:4px}
   .tdec{text-decoration:none;display:inline-block}
   .cardbg{background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,.05)}
   .showttl{margin:0;font-size:16px;font-weight:600;color:#fff;letter-spacing:-.01em}
@@ -3448,7 +3453,7 @@ const html = `<!DOCTYPE html>
      rendered email body. The empty span padding shoves any trailing "Broadway
      Scorecard"/header text out of the preview slot in Gmail/iOS. -->
 <div style="display:none !important;max-height:0;overflow:hidden;visibility:hidden;mso-hide:all;font-size:1px;line-height:1px;color:transparent;opacity:0;">${ledePlain || 'This week on Broadway and beyond.'}<span style="display:none !important;color:transparent;">${'&zwnj; &nbsp; '.repeat(40)}</span></div>
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0f0f14" class="gmail-dark-bg"><tr><td align="center" bgcolor="#0f0f14" style="padding:24px 16px;background-color:#0f0f14;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0f0f14" class="gmail-dark-bg"><tr><td align="center" bgcolor="#0f0f14" style="padding:24px 10px;background-color:#0f0f14;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;">
 <tr><td align="center" style="padding:0 4px 4px;">
   <a href="${SITE}${BRAND.primaryPath}" style="text-decoration:none;color:inherit;display:inline-block;"><span style="font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em;">${BRAND.prefix}</span><span style="font-size:22px;font-weight:700;background:${BRAND.accentGrad};-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:${BRAND.accentSolid};letter-spacing:-0.02em;">Scorecard</span><span style="font-size:9px;color:#6b7280;font-weight:400;vertical-align:super;margin-left:1px;">™</span></a>

@@ -23,7 +23,7 @@
 //
 // Pure: no I/O, no globals. generate.mjs decides when to use it.
 import { createRequire } from 'node:module';
-import { reviewVerdictTier, VERDICT_VARIANTS, trimToWordBoundary } from './newsworthiness.mjs';
+import { trimToWordBoundary } from './newsworthiness.mjs';
 const { showHasFestivalVenue } = createRequire(import.meta.url)('../lib/review-guards.js');
 
 const SUBJECT_MAX = 80;
@@ -161,7 +161,6 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
   // name Shakespeare in the Park (the market name would be wrong for it).
   const nyWide = n < 5 && (total <= 2 || otherN > 0);
   const loc = (nyWide || isSitp(lead.show, M)) ? ` ${leadWhere}` : '';
-  const verdict = VERDICT_VARIANTS[reviewVerdictTier(S, M.category)][0];
   const others = list.slice(1);
   if (others.length && S < 65) {
     // Never "draws the most reviews": review count is only the lead sort key,
@@ -178,15 +177,15 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
     const ties = others.filter(o => scoreOf(o) === S);
     if (ties.length) {
       ties.forEach(o => named.add(o.show.id));
-      sentences.push(`${L} ${verb}${loc} to ${verdict}, tied at ${S} with ${joinWithAnd(ties.map(o => o.show.title))}.`);
+      sentences.push(`${L} ${verb}${loc} at ${S}/100, tied with ${joinWithAnd(ties.map(o => o.show.title))}.`);
     } else {
-      sentences.push(`${L} ${verb}${loc} to ${verdict} (${S}).`);
+      sentences.push(`${L} ${verb}${loc} at ${S}/100.`);
     }
     const best = others.filter(o => !named.has(o.show.id) && scoreOf(o) >= 75 && scoreOf(o) > S)
       .sort((a, b) => scoreOf(b) - scoreOf(a))[0];
     if (best) {
       named.add(best.show.id);
-      sentences.push(`The best reviews went to ${best.show.title} (${scoreOf(best)}).`);
+      sentences.push(`The best reviews went to ${best.show.title} at ${scoreOf(best)}/100.`);
     }
   }
   // A busy week's clear miss is news too ("Beaches lands at 44").
@@ -204,7 +203,7 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
     const os = scoreOf(o);
     named.add(o.show.id);
     const oVerb = o.isReopening ? 'reopens' : 'opens';
-    const phrase = os < 65 ? `lands at ${os}` : `${oVerb} to ${VERDICT_VARIANTS[reviewVerdictTier(os, OM.category)][0]} (${os})`;
+    const phrase = os < 65 ? `lands at ${os}` : `${oVerb} at ${os}/100`;
     const place = isSitp(o.show, OM) ? 'At Free Shakespeare in the Park' : OM.the.charAt(0).toUpperCase() + OM.the.slice(1);
     if (otherN > 1 && otherKey === 'off-broadway') {
       const hl = obHighlights(other, notableIds);
@@ -248,18 +247,18 @@ export function obHighlights(list, notableIds = new Set()) {
   const fs = scoreOf(first);
   const parts = [fs < 65
     ? `${first.show.title} lands at ${fs}`
-    : `${first.show.title} opens to ${VERDICT_VARIANTS[reviewVerdictTier(fs, M.category)][0]} (${fs})`];
+    : `${first.show.title} opens at ${fs}/100`];
   const best = scored
     .filter(o => !ids.includes(o.show.id) && countOf(o) >= BEST_REVIEWED_MIN_REVIEWS && scoreOf(o) >= 75)
     .sort((a, b) => scoreOf(b) - scoreOf(a) || countOf(b) - countOf(a))[0];
   if (best) {
     ids.push(best.show.id);
-    parts.push(`${best.show.title} earned the strongest reviews (${scoreOf(best)})`);
+    parts.push(`${best.show.title} earned the strongest reviews at ${scoreOf(best)}/100`);
   }
   const notable = scored.find(o => !ids.includes(o.show.id) && notableIds.has(o.show.id));
   if (notable) {
     ids.push(notable.show.id);
-    parts.push(`the ${notable.show.title} revival scored ${scoreOf(notable)}`);
+    parts.push(`the ${notable.show.title} revival scored ${scoreOf(notable)}/100`);
   }
   const text = parts.length === 1
     ? `${parts[0]}.`
@@ -294,7 +293,7 @@ function composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds
     ? (() => {
       const o = bwScored[0]; const sc = scoreOf(o);
       const v = o.isReopening ? 'reopened' : 'opened';
-      return `On Broadway, ${o.show.title} ${v} to ${VERDICT_VARIANTS[reviewVerdictTier(sc, 'broadway')][0]} (${sc}).`;
+      return `On Broadway, ${o.show.title} ${v} at ${sc}/100.`;
     })()
     : `On Broadway, ${joinWithAnd(bwScored.map(o => `${o.show.title} (${scoreOf(o)})`))} opened.`;
   sentences.push(bwSentence);

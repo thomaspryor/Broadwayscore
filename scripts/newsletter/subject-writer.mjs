@@ -38,8 +38,15 @@ const DEADLINE_MS = 4 * 60 * 1000;  // whole pass; the draft job has 25 minutes
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+// First sentence of a lede. Does not split after an abbreviation ("St. Ann's
+// Warehouse", "Ms. Blakk for President"), which would cut the sentence before
+// its Critic Score and reject a good lede (ship-check, 2026-11-15).
+export function firstSentence(text) {
+  return String(text || '').split(/(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+/)[0] || '';
+}
+
 // Phrasing the template used, plus AI tells. Any hit rejects the candidate.
-export const BANNED = [
+const BANNED = [
   [/[–—]|\s-\s|--/, 'a dash used as punctuation'],
   [/\p{Extended_Pictographic}/u, 'an emoji'],
   [/["“”]/, 'a quotation mark'],
@@ -51,6 +58,11 @@ export const BANNED = [
   [/\b(?:you won'?t believe|must[- ]see|don'?t miss|act now|hurry|breaking)\b/i, 'clickbait'],
   [/\b(?:delve|robust|leverage|unlock|tapestry|realm|landscape|navigate|deep dive|buckle up|game[- ]changer|truly|genuinely|moreover|furthermore|additionally)\b/i, 'an AI-sounding word'],
   [/\bit'?s not\b[^.]{0,60}\bit'?s\b|\bnot (?:just )?\w+(?: \w+)?, but\b/i, 'the "not X, but Y" construction'],
+  // The Critic Score is the product, not our tier label (owner, 2026-11-15:
+  // "Cloud 9 (77) is Recommended from 33 reviews" and "Dogstar gets a Mixed 64").
+  // Titles are stripped before this runs, so a show called "Mixed Feelings" is safe.
+  [/\b(?:Recommended|Critical Gold|Critical Miss|Worth Seeing)\b|\bMixed\s*\(?\d|\bmixed\s+\d{2,3}\b/, 'one of our tier labels (Recommended, Worth Seeing, Mixed, Critical Gold or Miss); state the Critic Score number instead'],
+  [/\brecommend(?:s|ed|ing|ation|ations)?\b/i, 'the word "recommend" standing in for the score; state the Critic Score number instead'],
   [/!/, 'an exclamation mark'],
   // The send day moves (late owner sends, recovery runs): name the weekday.
   [/\b(?:today|tonight|tomorrow|yesterday|this weekend|next weekend|this morning|this evening)\b/i, 'a relative date (name the weekday instead)'],
@@ -118,6 +130,9 @@ export function buildPool(facts) {
   return {
     sheet,
     numbers: new Set(numbersIn(bare)),
+    // Critic Scores the facts state ("Critic Score 77/100"): a subject that
+    // names a show must carry one of them.
+    scoreNumbers: new Set([...facts.lines.join('\n').matchAll(/Critic Score (\d{1,3})\/100/g)].map(m => String(Number(m[1])))),
     dates: new Set(datesIn(bare)),
     weekdays: new Set(weekdaysIn(stripTitles(showLines, titleNames))),
     titles: facts.titles,
@@ -164,8 +179,22 @@ export function checkCandidate(c, pool, recent = []) {
     if (!namesLead(subject) && !/\b(?:open(?:s|ed|ing|ings)?|premieres?|debuts?|new shows?)\b/i.test(subject)) {
       p.push("subject must be about this week's openings (name one, or say how the openings went); closings and other news go in the preview text or later in the paragraph");
     }
-    const first = lede.split(/(?<=[.!?])\s+/)[0] || '';
+    const first = firstSentence(lede);
     if (!namesLead(first)) p.push("the opening paragraph's first sentence must name one of this week's openings");
+  }
+  // Score first: a subject that names a show leads with its Critic Score
+  // ("Cloud 9 lands at a solid 77/100 from 33 critics"). Group subjects that
+  // name no show ("Four London openings, one standout") are exempt.
+  if (pool.scoreNumbers && pool.scoreNumbers.size && (pool.titleNames || []).some(t => mentions(subject, t))) {
+    const subjNums = numbersIn(stripTitles(subject, pool.titleNames || []));
+    if (!subjNums.some(n => pool.scoreNumbers.has(n))) p.push("a subject that names a show must state that show's Critic Score number (e.g. 77/100)");
+  }
+  if (lede.length >= 80) {
+    const first = firstSentence(lede);
+    if (pool.scoreNumbers && pool.scoreNumbers.size && (pool.titleNames || []).some(t => mentions(first, t))
+      && !numbersIn(stripTitles(first, pool.titleNames || [])).some(n => pool.scoreNumbers.has(n))) {
+      p.push("the opening paragraph's first sentence names a show, so it must give that show's Critic Score number");
+    }
   }
   if (jaccard(subject, pre) > 0.5) p.push('preheader repeats the subject; it should add the next thing a reader wants to know');
   for (const r of recent) {
@@ -187,10 +216,11 @@ Write ${count} candidates, each from a DIFFERENT angle on the openings: the best
 Rules:
 1. Every claim, number, name and day must come from the facts below. Don't round, don't embellish, don't add context the facts don't give. Opinions belong to critics ("critics loved it"), never to us.
 2. Subject: 30 to 50 characters is best, never over ${SUBJECT_MAX}. One story. Sound like a friend who reads every review, not a database. Specific beats clever. Name a show when it helps.
+   THE CRITIC SCORE IS THE STAR. It is our own number, 0 to 100, built from every critic's review. Lead with it as "77/100 from 33 critics". Never use our tier labels (Recommended, Worth Seeing, Mixed, Critical Gold, Critical Miss) and never write "recommended" or "recommend": the label is not the news, the number is. You may add ONE plain word that fits the number (solid for the 70s, strong for the 80s, exceptional for 90+, middling for the 60s, weak below 55). A subject that names a show must carry that show's score. Good: "Cloud 9 lands at a solid 77/100 from 33 critics". "Hamlet Hail to the Thief hits 78/100 from 26 critics". Bad: "Critics recommend Cloud 9", "Dogstar gets a Mixed 64", "Cloud 9 (77) is Recommended from 33 reviews".
 3. Preview text (shown after the subject in the inbox): 40 to ${PREHEADER_MAX} characters. It adds the next thing a reader wants to know; never repeat the subject.
-4. Opening paragraph: 2 to 4 short sentences that tell the story the subject promised, then mention the other notable news. Use the Critic Score number in parentheses after a show the first time you cite its score, e.g. The Bridge (76).
+4. Opening paragraph: 2 to 4 short sentences that tell the story the subject promised, then mention the other notable news. The first sentence gives the lead show's Critic Score as a number out of 100 and the number of critics behind it, e.g. "Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics, the most of any London opening this week." Later mentions can use parentheses, e.g. The Bridge (76). Do not describe a score with a tier label.
 5. Never use: "opens to X reviews", "with critics", "big/busy/packed week", "scoring 75 or higher", "the reviews are in", dashes as punctuation, quotation marks, exclamation marks, emoji, clickbait, "not X, but Y".
-6. Vary the shape between candidates: a statement, a verdict, a recommendation, a question only if it is specific.
+6. Vary the shape between candidates: a statement, a verdict, a score-first line, a question only if it is specific.
 ${recent.length ? `\nRecent subject lines. Do not resemble these in wording, shape or opening words:\n${recent.map(r => `- ${r}`).join('\n')}\n` : ''}
 FACTS:
 ${pool.sheet}
@@ -199,7 +229,7 @@ Reply with only a JSON object: {"candidates": [{"angle": "<short angle name>", "
 }
 
 export function checkerPrompt(pool, c) {
-  return `You fact-check a newsletter's subject line, preview text and opening paragraph against the facts they were written from. The facts are correct by definition. Flag any claim, number, name, day, ranking or comparison the facts do not support, including small embellishments ("sold out", "every critic", "the best of the year", "closes tomorrow" when the facts give a weekday). Flag an opinion stated as the newsletter's own rather than the critics'. Do not flag style, tone or omissions.
+  return `You fact-check a newsletter's subject line, preview text and opening paragraph against the facts they were written from. The facts are correct by definition. Flag any claim, number, name, day, ranking or comparison the facts do not support, including small embellishments ("sold out", "every critic", "the best of the year", "closes tomorrow" when the facts give a weekday). Flag an opinion stated as the newsletter's own rather than the critics'. One plain word describing a Critic Score is allowed (solid for the 70s, strong for the 80s, exceptional for 90+, middling for the 60s, weak below 55). "From N critics" is the same fact as "from N reviews". Do not flag style, tone or omissions.
 
 FACTS:
 ${pool.sheet}

@@ -11,7 +11,28 @@
  * its poster. Spanning all three columns gives the take the full card width
  * in every client (no media query needed, so Gmail iOS behaves the same as
  * Apple Mail).
+ *
+ * Second report (owner, 2026-11-15, small iPhone, West End weekly): the fixed
+ * 96px poster column and 92px score column still left the info column ~90px
+ * wide at 320-375px. "OFF WEST END" wrapped to three lines, titles to four and
+ * the date/venue to four more, so cards ran 250-346px tall. The side columns
+ * are now POSTER_COL_W / SCORE_COL_W (64px poster, 74px score content) and every pill
+ * is nowrap. The multi-width gate (scripts/newsletter/mobile-layout-check.mjs)
+ * renders the real email at 320/360/375/390/430px and fails on a squished
+ * info column or a tall card, so this cannot regress silently.
  */
+
+// Shared with generate.mjs (showRow) so the poster image and the columns that
+// frame it cannot drift apart. Poster is 2:3.
+const POSTER_W = 64;
+const POSTER_H = 96;
+// Column widths are CONTENT widths: a td's width attribute excludes its padding,
+// so the poster column renders POSTER_W + 12 (left padding) and the score column
+// SCORE_COL_W + 10 (right padding). (Sized as 76 + 76 first, they rendered 88 and
+// 86 and squeezed the info column: ship-check, 2026-11-15.)
+const POSTER_COL_W = POSTER_W;
+const SCORE_COL_W = 74;  // fits the 9px "Audience: A+" chip (~73px) so the cell never grows past it
+const SCORE_BADGE = 56;
 
 const CARD_STYLE = 'background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);box-shadow:0 2px 8px -2px rgba(0,0,0,0.5);margin-bottom:10px;';
 
@@ -38,20 +59,20 @@ function showCardHtml({ posterHtml, infoHtml, scoreColHtml, takeHtml = '' }) {
   const takeRow = takeHtml
     ? `
     <tr>
-      <td colspan="3" style="padding:0 16px 14px 16px;">
+      <td colspan="3" style="padding:0 12px 12px 12px;">
         <div style="font-size:13px;color:#c7cbd4;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.45;">${takeHtml}</div>
       </td>
     </tr>`
     : '';
   return `
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="${CARD_STYLE}">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" data-show-card="1" style="${CARD_STYLE}">
     <tr>
-      <td valign="top" width="96" style="padding:12px 0 12px 16px;">${posterHtml}</td>
-      <td valign="top" style="padding:12px 8px 12px 12px;">${infoHtml}
+      <td valign="top" width="${POSTER_COL_W}" style="padding:12px 0 12px 12px;">${posterHtml}</td>
+      <td valign="top" style="padding:12px 6px 12px 10px;overflow-wrap:anywhere;word-break:break-word;">${infoHtml}
       </td>
       ${scoreColHtml}
     </tr>${takeRow}
   </table>`;
 }
 
-module.exports = { showCardHtml, criticsTakeHtml };
+module.exports = { showCardHtml, criticsTakeHtml, POSTER_W, POSTER_H, POSTER_COL_W, SCORE_COL_W, SCORE_BADGE };

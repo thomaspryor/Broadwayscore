@@ -269,7 +269,7 @@ function buildSocialRowHtml(market) {
   const brandColor = isWE ? '#f472b6' : '#d4a574';
   const links = SOCIAL_ACCOUNTS_EMAIL.map(
     (a) => `<a href="${escapeHtml(a.url)}" style="color:${brandColor};text-decoration:none;font-weight:600;" target="_blank" rel="noopener">${escapeHtml(a.label)}</a>`
-  ).join(`<span style="color:rgba(255,255,255,0.2);padding:0 8px;">&middot;</span>`);
+  ).join(` <span style="color:rgba(255,255,255,0.2);padding:0 4px;">&middot;</span> `);
   return `<tr><td align="center" style="padding:16px 0 24px;">
     <p style="margin:0 0 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.2px;font-family:${FONT};">Follow Broadway Scorecard</p>
     <p style="margin:0;font-size:13px;line-height:1.6;font-family:${FONT};">${links}</p>

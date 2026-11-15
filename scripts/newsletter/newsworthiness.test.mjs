@@ -228,7 +228,7 @@ test('3 same-week openings fill the lede cap; a same-week closing does not displ
 // isn't literally duplicated. dedupeByKind correctly keeps all three (that's
 // intentional, PER_SHOW_KINDS) — buildLedeSentences must vary the STRUCTURE
 // when a run gets that long.
-test('3 opening-kind candidates in one week: the opens-to-reviews template appears at most twice, not stacked three times', () => {
+test('3 opening-kind candidates in one week: the score-first opening template is folded into one sentence, not stacked three times', () => {
   const scores = { paranormal: 78, negro: 68, ivanov: 45 }; // strong / decent / rough
   const candidates = scoreCandidates({
     bwOpenings: [{ show: { id: 'paranormal', slug: 'paranormal', title: 'Paranormal Activity', category: 'broadway' } }],
@@ -255,7 +255,7 @@ test('3 opening-kind candidates in one week: the opens-to-reviews template appea
   assert.equal(sentences.length, 1);
   assert.equal(
     sentences[0],
-    "<em>Paranormal Activity</em> opens to strong reviews, alongside off-Broadway's <em>The House of the Negro Insane</em> (decent) and <em>The Real Ivanov</em> (rough)."
+    "<em>Paranormal Activity</em> opens at 78/100, alongside off-Broadway's <em>The House of the Negro Insane</em> (68) and <em>The Real Ivanov</em> (45)."
   );
 });
 
@@ -354,7 +354,7 @@ test('Broadway reopening uses reopens in the primary edition headline, subject a
     });
     const headline = avg === null
       ? 'Big Broadway Hit reopens on Broadway'
-      : 'Big Broadway Hit reopens to strong reviews';
+      : 'Big Broadway Hit reopens at 80/100';
     assert.equal(candidates[0].kind, 'bw-reopening');
     assert.equal(candidates[0].headline, headline);
     assert.equal(buildSubjectFromCandidates(candidates).subject, `${headline}.`);
@@ -448,7 +448,7 @@ test('in-week WE opening still says "opens" (BRO-7126)', () => {
     weGoldOpenings: [{ show: { id: 'now', slug: 'now', title: 'Now Show', category: 'west-end' }, isCatchUp: false }],
     aggregateScore: () => ({ avg: 80 }),
   });
-  assert.equal(candidates[0].headline, 'Now Show opens to strong reviews');
+  assert.equal(candidates[0].headline, 'Now Show opens at 80/100');
 });
 
 test('catch-up in a 3+ WE opening run is never folded as opening alongside this week (BRO-7126)', () => {
