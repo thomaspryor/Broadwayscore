@@ -24,7 +24,7 @@ async function linearCorpus(limit) {
   if (!key) return { skipped: 'LINEAR_API_KEY not set' };
   const q = `query($n:Int!){issues(first:$n,orderBy:updatedAt){nodes{identifier title state{name} comments(first:60){nodes{body createdAt}}}}}`;
   let res;
-  try { res = await fetch('https://api.linear.app/graphql', { method: 'POST', headers: { 'content-type': 'application/json', authorization: key }, body: JSON.stringify({ query: q, variables: { n: Math.min(limit, 100) } }) }); } catch (e) { return { skipped: `fetch failed: ${e.message}` }; }
+  try { res = await fetch('https://api.linear.app/graphql', { method: 'POST', headers: { 'content-type': 'application/json', authorization: key }, body: JSON.stringify({ query: q, variables: { n: Math.min(limit, 100) } }), signal: AbortSignal.timeout(30000) }); } catch (e) { return { skipped: `fetch failed: ${e.message}` }; }
   const j = await res.json().catch(() => ({}));
   const nodes = j?.data?.issues?.nodes;
   if (!nodes) return { skipped: `no data: ${JSON.stringify(j).slice(0, 200)}` };
