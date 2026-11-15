@@ -298,7 +298,7 @@
       "confidence": "low",
       "researchedAt": "2026-06-27T18:30:29.814Z",
       "pendingKey": "joe-turners-come-and-gone-2026",
-      "archivedAt": "2026-11-03T09:41:03.453Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Trickle\"; a research row does not overwrite it"
     },
@@ -310,28 +310,33 @@
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
+      "costMethodology": "trade-reported",
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
-      "designation": "Flop",
-      "notes": "Death Becomes Her is explicitly described in the broadwayscorecard.com methodology page as 'later reported as a total loss,' meaning it returned less than 30% of its capitalization. Capitalization and weekly running costs are not publicly reported in the evidence. The show ran from November 2024 to June 2026 and did not recoup.",
+      "designation": "TBD",
+      "notes": "Death Becomes Her ran at the Lunt-Fontanne Theatre from November 21, 2024 through June 28, 2026, winning Tony Awards during its run. Forbes flagged its budget as unusually high in October 2024, but the actual capitalization figure is behind a paywall and not accessible in the evidence. No recoupment status, return multiple, or weekly running cost is explicitly stated in any of the gathered sources. Insufficient financial data to assign a designation.",
       "sources": [
         {
           "type": "trade",
-          "url": "https://broadwayscorecard.com/methodology",
+          "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+          "date": "2024-10-24"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/death-becomes-her-broadway-closing-date-1236914353",
           "date": null
         },
         {
           "type": "trade",
-          "url": "https://broadwayscorecard.com/biz",
-          "date": null
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/death-becomes-her-to-close-on-broadway",
+          "date": "2026-05-18"
         }
       ],
-      "confidence": "medium",
-      "researchedAt": "2026-11-07T21:27:56.015Z",
+      "confidence": "low",
+      "researchedAt": "2026-11-14T22:01:38.478Z",
       "pendingKey": "death-becomes-her-2024",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Flop\"; a research row does not overwrite it"
     },
@@ -348,13 +353,8 @@
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "TBD",
-      "notes": "Aladdin (2014) is a long-running Disney musical at the New Amsterdam Theatre, still open as of the evidence provided. The evidence gathered contains no explicit financial figures for capitalization, weekly running costs, or recoupment. The show is referenced anecdotally as a successful production with familiar IP, but no financial specifics are confirmed. Insufficient data to assign a more precise designation.",
+      "notes": "Aladdin opened at the New Amsterdam Theatre on March 20, 2014 and is a long-running Disney musical that has surpassed 1,000 performances (as of August 2016) and resumed after COVID-19 interruptions. The evidence gathered does not explicitly state capitalization, weekly running costs, or recoupment status, so no financial figures can be confirmed. The show has run well over a decade, but without explicit recoupment confirmation or return multiples from a source, a Miracle or other designation cannot be assigned.",
       "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
-          "date": "2025-01-06"
-        },
         {
           "type": "trade",
           "url": "https://thehustle.co/the-economics-of-broadway-shows",
@@ -362,14 +362,29 @@
         },
         {
           "type": "trade",
-          "url": "https://www.facebook.com/CBSNewYork/posts/aladdin-ticketholders-were-turned-away-at-the-door-on-oct-1-after-the-show-was-c/10159025933074024/",
+          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc",
           "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/broadway-aladdin-and-les-miserables-to-play-1-000th-performances",
+          "date": "2016-08-05"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2021/09/broadway-aladdin-cancelation-performance-covid-1234847058/",
+          "date": "2021-09-01"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/broadways-aladdin-cancels-may-26-performance",
+          "date": "2022-05-26"
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-11-07T21:38:35.899Z",
+      "researchedAt": "2026-11-14T22:20:45.148Z",
       "pendingKey": "aladdin-2014",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Miracle\"; a research row does not overwrite it"
     },
@@ -890,8 +905,8 @@
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
     "unverified:galileo": {
-      "capitalization": 23000000,
-      "capitalizationSource": "Broadway Journal (Aug 12, 2026): \"Galileo ($23 million)\". https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+      "capitalization": 20000000,
+      "capitalizationSource": "SEC Form D (Jun. 30, 2025): \"Total Offering Amount $20000000.\" https://www.sec.gov/Archives/edgar/data/2074445/000207444525000001/xslFormDX08/primary_doc.xml",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -899,29 +914,34 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Publicly verified capitalization is $23 million. I could not verify a Galileo-specific weekly running cost from the sources checked. Because the production opens December 6, 2026, recoupment is not yet determinable.",
+      "notes": "Verified capitalization is $20 million. The production is still in previews, so recoupment is not yet publicly knowable; no verified weekly running cost was found.",
       "confidence": "medium",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
-          "date": "2026-08-12"
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2074445/000207444525000001/xslFormDX08/primary_doc.xml",
+          "date": "2025-06-30"
         },
         {
-          "type": "manual",
-          "url": "https://shubert.nyc/press/galileo-a-new-musical-will-premiere-on-broadway-at-the-shubert-theatre/",
-          "date": "2026-02-10"
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/equity-audition/GALILEO--Broadway--Map-the-Sky-LLC-2026-50041",
+          "date": "2026-03-11"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/galileo-starring-raul-esparza-and-joy-woods-completes-broadway-cast/",
+          "date": "2026-09-14"
         }
       ],
       "title": "Galileo",
       "slug": "galileo",
       "openingDate": "2026-12-06",
-      "status": "upcoming",
-      "researchedAt": "2026-11-07T22:44:21.065Z",
+      "status": "previews",
+      "researchedAt": "2026-11-14T22:38:40.854Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "galileo",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -1103,7 +1123,7 @@
     },
     "unverified:purple-rain": {
       "capitalization": 29500000,
-      "capitalizationSource": "Broadway Journal (Aug 12, 2026): \"Purple Rain ($29.5 million)\"; the article says the figures for Purple Rain include out-of-town tryout costs. https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+      "capitalizationSource": "New York Times (Jul 27, 2026): \"It will cost up to $29.5 million to bring Purple Rain to Broadway.\" https://monorepo-sample2.nyt.net/2026/07/27/theater/prince-purple-rain-broadway.html",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -1111,13 +1131,18 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Verified public capitalization is $29.5 million. The show is still upcoming, and I could not verify a weekly running cost or any recoupment status from public sources.",
-      "confidence": "medium",
+      "notes": "Public sources verify $29.5M capitalization; no show-specific weekly nut was found; Broadway opening is scheduled for Apr. 12, 2027, so recoupment is not yet determinable. ([sec.gov](https://www.sec.gov/Archives/edgar/data/2037632/000203763224000001/primary_doc.xml?utm_source=openai))",
+      "confidence": "high",
       "sources": [
         {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2037632/000203763224000001/primary_doc.xml",
+          "date": "2024-09-18"
+        },
+        {
           "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
-          "date": "2026-08-12"
+          "url": "https://monorepo-sample2.nyt.net/2026/07/27/theater/prince-purple-rain-broadway.html",
+          "date": "2026-07-27"
         },
         {
           "type": "trade",
@@ -1129,11 +1154,11 @@
       "slug": "purple-rain",
       "openingDate": "2027-04-12",
       "status": "upcoming",
-      "researchedAt": "2026-11-07T22:33:59.708Z",
+      "researchedAt": "2026-11-14T22:51:05.407Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "purple-rain",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -1288,7 +1313,7 @@
     },
     "unverified:paddington-the-musical": {
       "capitalization": 31000000,
-      "capitalizationSource": "Broadway Journal (Aug 12, 2026): \"Already announced for Broadway are Paddington ($31 million)\". https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+      "capitalizationSource": "The Express Gazette (Jul 22, 2026): \"Paddington alone has a capitalization of $31 million.\" https://www.express-gazette.com/culture-entertainment/broadway-s-next-blockbusters-dolly-parton-and-paddington-bear-musicals-face-high-stakes-75857",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -1296,29 +1321,34 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Upcoming Broadway transfer at the Al Hirschfeld Theatre; capitalization is publicly reported, but I could not verify a show-specific weekly nut or any recoupment status from public sources.",
+      "notes": "Broadway transfer is scheduled for the Al Hirschfeld Theatre with previews on 2027-03-30 and opening on 2027-04-18. I found a verified $31M capitalization, but no public weekly nut or recoupment status.",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
-          "date": "2026-08-12"
+          "url": "https://www.express-gazette.com/culture-entertainment/broadway-s-next-blockbusters-dolly-parton-and-paddington-bear-musicals-face-high-stakes-75857",
+          "date": "2026-07-22"
+        },
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2130739/000213073926000001/primary_doc.xml",
+          "date": null
         },
         {
           "type": "trade",
-          "url": "https://licensinginternational.org/news/the-olivier-award-winning-record-breaking-sensation-paddington-the-musical-will-open-on-broadway-in-spring-2027/",
-          "date": "2026-06-16"
+          "url": "https://www.playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows",
+          "date": null
         }
       ],
       "title": "Paddington The Musical",
       "slug": "paddington-the-musical",
       "openingDate": "2027-04-18",
       "status": "upcoming",
-      "researchedAt": "2026-11-07T22:42:18.369Z",
+      "researchedAt": "2026-11-14T22:59:00.540Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "paddington-the-musical",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -1469,7 +1499,7 @@
       "confidence": "high",
       "researchedAt": "2026-08-06T14:40:47.428Z",
       "pendingKey": "fallen-angels-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Nonprofit\"; a research row does not overwrite it"
     },
@@ -1497,7 +1527,7 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T14:43:25.829Z",
       "pendingKey": "proof-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Fizzle\"; a research row does not overwrite it"
     },
@@ -1530,7 +1560,7 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T14:45:27.503Z",
       "pendingKey": "the-fear-of-13-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Flop\"; a research row does not overwrite it"
     },
@@ -1568,7 +1598,7 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T14:47:18.195Z",
       "pendingKey": "titanique-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Flop\"; a research row does not overwrite it"
     },
@@ -1639,7 +1669,7 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T14:52:08.094Z",
       "pendingKey": "cats-the-jellicle-ball-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Flop\"; a research row does not overwrite it"
     },
@@ -1672,7 +1702,7 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T14:57:29.338Z",
       "pendingKey": "dog-day-afternoon-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Fizzle\"; a research row does not overwrite it"
     },
@@ -1710,7 +1740,7 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T15:06:49.600Z",
       "pendingKey": "all-out-2025",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Fizzle\"; a research row does not overwrite it"
     },
@@ -1738,7 +1768,7 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T15:13:59.164Z",
       "pendingKey": "chess-2025",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Fizzle\"; a research row does not overwrite it"
     },
@@ -1771,7 +1801,7 @@
       "confidence": "low",
       "researchedAt": "2026-08-06T15:17:50.155Z",
       "pendingKey": "oedipus-2025",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Fizzle\"; a research row does not overwrite it"
     },
@@ -1809,7 +1839,7 @@
       "confidence": "medium",
       "researchedAt": "2026-08-06T15:26:32.906Z",
       "pendingKey": "operation-mincemeat-2025",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -4080,14 +4110,14 @@
       "openingDate": "2024-11-12",
       "status": "open",
       "capitalization": 16000000,
-      "capitalizationSource": "SEC EDGAR Form D (CIK: 0002021672) states offering capitalized at $16,000,000; total offering amount $18,250,000",
+      "capitalizationSource": "SEC EDGAR Form D filing (CIK: 0002021672) states offering capitalized at $16,000,000; total offering amount $18,250,000",
       "weeklyRunningCost": null,
       "costMethodology": "sec-filing",
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "TBD",
-      "notes": "Maybe Happy Ending is an original musical (no major stars, genre-bending robot love story) that opened November 12, 2024 at the Belasco Theatre and is still running. Capitalization confirmed at $16M via SEC Form D. No recoupment has been reported. A Broadway World forum post speculates recoupment is unlikely without sustained box office momentum, but this is opinion, not confirmed data. Show is still open and no return multiple has been reported.",
+      "notes": "Maybe Happy Ending opened November 12, 2024 at the Belasco Theatre and is still running. Capitalization is confirmed at $16,000,000 via SEC Form D. A Facebook post references a $1.4 million weekly gross but the page content was not fully rendered and no recoupment or return multiple has been reported. Too early to designate.",
       "sources": [
         {
           "type": "trade",
@@ -4095,15 +4125,15 @@
           "date": null
         },
         {
-          "type": "reddit",
-          "url": "https://forum.broadwayworld.com/thread/None-of-This-Year-s-Best-Musical-Nominees-Are-Likely-to-Recoup",
+          "type": "trade",
+          "url": "https://www.facebook.com/MusicalsDaily/posts/maybe-happy-ending-just-pulled-in-14-million-at-the-box-office-for-its-latest-ru/1368939085235383/",
           "date": null
         }
       ],
       "confidence": "medium",
-      "researchedAt": "2026-11-07T21:29:01.824Z",
+      "researchedAt": "2026-11-14T22:02:35.528Z",
       "pendingKey": "maybe-happy-ending-2024",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -4347,7 +4377,7 @@
     },
     "unverified:inter-alia": {
       "capitalization": 7000000,
-      "capitalizationSource": "SEC Form D (May 4, 2026): Total Offering Amount: $7,000,000. https://www.sec.gov/Archives/edgar/data/2133084/000213308426000001/xslFormDX01/primary_doc.xml",
+      "capitalizationSource": "SEC Form D (May 4, 2026): “Total Offering Amount | $7,000,000”; the filing also reports $425,000 sold. https://www.sec.gov/Archives/edgar/data/2133084/000213308426000001/xslFormDX01/primary_doc.xml",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -4355,35 +4385,35 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Official site lists Inter Alia as a strictly limited Broadway engagement running Nov. 10, 2026-Feb. 21, 2027. The only public money figure I could verify is the SEC Form D offering amount; I did not find a public weekly running cost or any recoupment result.",
+      "notes": "Public SEC filing shows a $7M offering amount, but I found no public weekly running cost or recoupment announcement. The production is still in previews, so recoupment is too early to tell.",
       "confidence": "medium",
       "sources": [
-        {
-          "type": "manual",
-          "url": "https://interaliabroadway.com/",
-          "date": null
-        },
         {
           "type": "sec",
           "url": "https://www.sec.gov/Archives/edgar/data/2133084/000213308426000001/xslFormDX01/primary_doc.xml",
           "date": "2026-05-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://news.frombroadway.com/post/inter-alia-broadway-first-preview-moves-november-11",
+          "date": "2026-11-11"
         }
       ],
       "title": "Inter Alia",
       "slug": "inter-alia",
       "openingDate": "2026-12-01",
-      "status": "upcoming",
-      "researchedAt": "2026-11-07T23:05:50.236Z",
+      "status": "previews",
+      "researchedAt": "2026-11-14T23:00:29.810Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "inter-alia",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
     "unverified:midnight-in-the-garden-of-good-and-evil": {
       "capitalization": 25000000,
-      "capitalizationSource": "Broadway Journal reported the show was scheduled to open later in 2025 at a capitalization of up to $25 million, and SEC Form D for Midnight on Broadway Ltd Liability Co lists a $25,000,000 total offering. ([broadwayjournal.com](https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle))",
+      "capitalizationSource": "Broadway Journal (Mar. 10, 2025): scheduled to open later that year at a capitalization of up to $25 million; SEC Form D (Feb. 24, 2025) lists a total offering amount of $25,000,000. ([broadwayjournal.com](https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle))",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -4391,14 +4421,9 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Verified capitalization is $25 million. I could not verify a public weekly running cost. The show remains announced/in development, so recoupment is not publicly reported yet. ([midnightbroadway.com](https://midnightbroadway.com/))",
+      "notes": "Broadway News identified Hal Luftig, Craig Haffner, and Sherry Wright as the producers of Midnight in the Garden of Good and Evil; the SEC Form D for Midnight on Broadway Ltd Liability Co lists those same people as related persons and shows a $25 million offering with $0 sold as of Feb. 24, 2025. I did not find a verified public weekly nut or any recoupment announcement. ([broadwaynews.com](https://www.broadwaynews.com/broadway-will-welcome-jason-robert-browns-midnight-in-the-garden-of-good-and-evil-in-2025/))",
       "confidence": "medium",
       "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle",
-          "date": "2025-03-10"
-        },
         {
           "type": "sec",
           "url": "https://www.sec.gov/Archives/edgar/data/2055457/000205545725000001/xslFormDX01/primary_doc.xml",
@@ -4406,29 +4431,24 @@
         },
         {
           "type": "trade",
-          "url": "https://www.broadwaynews.com/broadway-will-welcome-jason-robert-browns-midnight-in-the-garden-of-good-and-evil-in-2025/",
-          "date": "2024-09-30"
-        },
-        {
-          "type": "manual",
-          "url": "https://midnightbroadway.com/",
-          "date": null
+          "url": "https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle",
+          "date": "2025-03-10"
         },
         {
           "type": "trade",
-          "url": "https://playbill.com/article/jason-robert-brown-says-midnight-in-the-garden-of-good-and-evil-is-still-waiting-for-a-broadway-theatre",
-          "date": null
+          "url": "https://www.broadwaynews.com/broadway-will-welcome-jason-robert-browns-midnight-in-the-garden-of-good-and-evil-in-2025/",
+          "date": "2024-09-30"
         }
       ],
       "title": "Midnight in the Garden of Good and Evil",
       "slug": "midnight-in-the-garden-of-good-and-evil",
       "openingDate": null,
       "status": "announced",
-      "researchedAt": "2026-10-31T22:20:58.193Z",
+      "researchedAt": "2026-11-14T22:42:10.582Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "midnight-in-the-garden-of-good-and-evil",
-      "archivedAt": "2026-11-01T09:23:39.522Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -6739,7 +6759,7 @@
     },
     "unverified:evita": {
       "capitalization": 16000000,
-      "capitalizationSource": "BroadwayWorld (Sep. 12, 2026): Star Quality NY Limited Partnership is identified as Evita's fundraising vehicle; SEC Form D (Jun. 26, 2026): 'The maximum capitalization is $16,000,000' (minimum $13,000,000). https://www.broadwayworld.com/article/When-Broadway-Finance-Becomes-Public-Record-How-SEC-Filings-Reveal-Multi-Mullion-Dollar-Fundraising-Moves ; https://www.sec.gov/Archives/edgar/data/2139502/000213950226000001/primary_doc.xml",
+      "capitalizationSource": "SEC Form D (Jun 26, 2026): \"The maximum capitalization is $16,000,000. The minimum capitalization is $13,000,000.\" https://www.sec.gov/Archives/edgar/data/2139502/000213950226000001/primary_doc.xml",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -6747,49 +6767,39 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Verified public data shows a disclosed capitalization range of $13M-$16M for the upcoming Evita transfer; I used $16M as the capitalization figure. I found no verified weekly running cost. Because the production has not opened yet, recoupment is too early to judge; the NYC tax-credit cutoff also makes a subsidy unlikely.",
+      "notes": "Public filings identify Star Quality NY Limited Partnership as the EVITA Broadway entity and set the show's public capitalization at up to $16 million (minimum $13 million). No show-specific weekly running cost or recoupment data was publicly verifiable from the sources checked, and the production has not opened yet.",
       "confidence": "medium",
       "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/evita-547026",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.broadwayleague.com/press/opening-night/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/When-Broadway-Finance-Becomes-Public-Record-How-SEC-Filings-Reveal-Multi-Mullion-Dollar-Fundraising-Moves",
-          "date": "2026-09-12"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/equity-audition/EVITA-Star-Quality-NY-Limited-Partnership--2026-50800",
-          "date": "2026-05-04"
-        },
         {
           "type": "sec",
           "url": "https://www.sec.gov/Archives/edgar/data/2139502/000213950226000001/primary_doc.xml",
           "date": "2026-06-26"
         },
         {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
+          "type": "trade",
+          "url": "https://www.playbill.com/article/jamie-lloyd-directed-evita-will-transfer-to-broadway-with-rachel-zegler-in-2027",
+          "date": "2026-04-29"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/evita-broadway-winter-garden-theatre-2027",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/equity-audition/EVITA-Star-Quality-NY-Limited-Partnership--2026-50798",
+          "date": "2026-05-04"
         }
       ],
       "title": "Evita",
       "slug": "evita",
       "openingDate": "2027-03-25",
       "status": "upcoming",
-      "researchedAt": "2026-11-07T22:46:09.513Z",
+      "researchedAt": "2026-11-14T23:01:38.136Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "evita",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -6841,7 +6851,7 @@
     },
     "unverified:10-things-i-hate-about-you-on-broadway": {
       "capitalization": 18000000,
-      "capitalizationSource": "SEC EDGAR (Oct. 30, 2026): total offering amount $18,000,000; \"The minimum capitalization is $16,000,000. The maximum capitalization is $18,000,000.\" https://www.sec.gov/Archives/edgar/data/2161511/000216151126000001/0002161511-26-000001.txt",
+      "capitalizationSource": "SEC Form D (Oct 30, 2026): \"The minimum capitalization is $16,000,000. The maximum capitalization is $18,000,000.\" https://www.sec.gov/Archives/edgar/data/2161511/000216151126000001/xslFormDX01/primary_doc.xml",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -6849,34 +6859,29 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Upcoming Broadway musical. Verified capital raise is the SEC-filed $18M offering for Padua High LLC; no public weekly nut or recoupment data verified yet.",
+      "notes": "Verified public financing disclosure shows an $18M offering and a $16M-$18M capitalization range. I found no verified public weekly running cost, and the production has not opened yet.",
       "confidence": "medium",
       "sources": [
         {
           "type": "sec",
-          "url": "https://www.sec.gov/Archives/edgar/data/2161511/000216151126000001/0002161511-26-000001.txt",
+          "url": "https://www.sec.gov/Archives/edgar/data/2161511/000216151126000001/xslFormDX01/primary_doc.xml",
           "date": "2026-10-30"
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/equity-audition/10-THINGS-I-HATE-ABOUT-YOU-Padua-High-LLC-2026-51389",
-          "date": "2026-06-24"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/10-things-i-hate-about-you-musical-sets-2027-broadway-premiere-date/",
-          "date": "2026-08-17"
+          "url": "https://au.variety.com/2026/more/news/10-things-i-hate-about-you-musical-broadway-date-lena-dunham-39469/",
+          "date": "2026-08-18"
         }
       ],
       "title": "10 Things I Hate About You",
       "slug": "10-things-i-hate-about-you-on-broadway",
       "openingDate": null,
       "status": "upcoming",
-      "researchedAt": "2026-11-07T22:37:49.005Z",
+      "researchedAt": "2026-11-14T23:04:14.530Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "10-things-i-hate-about-you-on-broadway",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -6909,7 +6914,7 @@
       "confidence": "low",
       "researchedAt": "2026-06-27T18:31:55.468Z",
       "pendingKey": "beaches-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Flop\"; a research row does not overwrite it"
     },
@@ -6952,7 +6957,7 @@
       "confidence": "low",
       "researchedAt": "2026-06-27T18:32:47.115Z",
       "pendingKey": "the-balusters-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Nonprofit\"; a research row does not overwrite it"
     },
@@ -6990,7 +6995,7 @@
       "confidence": "high",
       "researchedAt": "2026-08-06T14:54:16.592Z",
       "pendingKey": "becky-shaw-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Nonprofit\"; a research row does not overwrite it"
     },
@@ -7033,7 +7038,7 @@
       "confidence": "high",
       "researchedAt": "2026-08-06T15:08:32.615Z",
       "pendingKey": "marjorie-prime-2025",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Nonprofit\"; a research row does not overwrite it"
     },
@@ -7045,23 +7050,33 @@
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
+      "costMethodology": "trade-reported",
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "TBD",
-      "notes": "No show-specific financial data for MJ The Musical was found in the evidence provided. The source page (broadwayscorecard.com/biz) contains only aggregate Broadway statistics and general industry cost ranges, with no explicit capitalization, weekly running cost, or recoupment figures cited for this production. The show is listed as still open, making a final designation premature without confirmed financial data.",
+      "notes": "MJ The Musical opened February 1, 2022 at the Neil Simon Theatre and is still running as of its 4-year anniversary in February 2026, having won 4 Tony Awards. The Broadway Journal reported the Jackson estate stands to benefit from outsized profits, suggesting strong commercial performance, but no explicit capitalization figure, weekly running cost, or confirmed recoupment has been extracted from the available evidence. The BroadwayWorld '$30 Million Musical Trend' article may reference MJ's capitalization but its substantive content was not captured. Insufficient explicit financial data to assign a final designation.",
       "sources": [
         {
           "type": "trade",
-          "url": "https://broadwayscorecard.com/biz",
-          "date": null
+          "url": "https://www.broadwayjournal.com/p/jackson-estate-will-be-there-for-outsized-mj-profits-exclusive",
+          "date": "2022-02-16"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+          "date": "2025-01-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.mjvibe.com/mj-the-musical-celebrates-4-years-on-broadway-with-big-cake/",
+          "date": "2026-02-04"
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-11-07T21:33:57.094Z",
+      "researchedAt": "2026-11-14T22:09:29.244Z",
       "pendingKey": "mj-2022",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Recouped\"; a research row does not overwrite it"
     },
@@ -7132,43 +7147,43 @@
       "confidence": "medium",
       "researchedAt": "2026-08-06T14:37:59.057Z",
       "pendingKey": "schmigadoon-2026",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
     "unverified:much-ado-about-nothing": {
       "capitalization": 7500000,
-      "capitalizationSource": "SEC Form D (May 27, 2026): \"The maximum capitalization is $7,500,000; the minimum capitalization is $6,000,000.\" https://www.sec.gov/Archives/edgar/data/2133246/000213324626000001/xslFormDX01/primary_doc.xml",
+      "capitalizationSource": "SEC Form D (May 4, 2026): \"The maximum capitalization is $7,500,000; the minimum capitalization is $6,000,000.\" https://www.sec.gov/Archives/edgar/data/2133246/000213324626000001/xslFormDX01/primary_doc.xml",
       "weeklyRunningCost": null,
-      "costMethodology": "sec-filing",
+      "costMethodology": null,
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Public SEC Form D shows a $7.5M maximum capitalization and $6.0M minimum capitalization. Weekly running cost wasn't publicly verified; the show is still in previews, so recoupment is too early to judge.",
+      "notes": "Public filings show a $6.0M-$7.5M capitalization range; the revival is still in previews (first preview Oct. 31, 2026, opening Nov. 19, 2026), and I did not find a verified public weekly nut or any recoupment announcement.",
       "confidence": "medium",
       "sources": [
         {
           "type": "sec",
           "url": "https://www.sec.gov/Archives/edgar/data/2133246/000213324626000001/xslFormDX01/primary_doc.xml",
-          "date": "2026-05-27"
+          "date": "2026-05-04"
         },
         {
-          "type": "manual",
-          "url": "https://omdkc.com/much-ado-about-nothing-starring-tom-hiddleston-hayley-atwell-announces-complete-casting-creative-team-theater-production-dates-ticketing-details/",
-          "date": "2026-05-12"
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/MUCH-ADO-ABOUT-NOTHING",
+          "date": "2026-11-10"
         }
       ],
       "title": "Much Ado About Nothing",
       "slug": "much-ado-about-nothing",
       "openingDate": "2026-11-19",
       "status": "previews",
-      "researchedAt": "2026-11-07T22:12:28.730Z",
+      "researchedAt": "2026-11-14T22:48:09.442Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "much-ado-about-nothing",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -7621,7 +7636,7 @@
     },
     "unverified:the-amish-project": {
       "capitalization": 6000000,
-      "capitalizationSource": "SEC Form D (Nov 2, 2026): “The maximum capitalization is $6,000,000.” https://www.sec.gov/Archives/edgar/data/2158877/000215887726000001/primary_doc.xml",
+      "capitalizationSource": "SEC Form D (Nov 2, 2026): 'The maximum capitalization is $6,000,000. The minimum capitalization is $4,500,000.' https://www.sec.gov/Archives/edgar/data/2158877/000215887726000001/primary_doc.xml",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -7629,7 +7644,7 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Queen Oberon Ltd Liability Co filed a Form D for a $6.0M offering, and the official show site’s SMS terms are issued by Queen Oberon LLC, so I treat this as the production entity on a best-available public basis. No verified weekly nut or recoupment information was found, and the show is still upcoming.",
+      "notes": "Public materials identify the show as upcoming at the Broadhurst Theatre. The only public financing figure I found is the Form D maximum capitalization of $6,000,000 (with a $4,500,000 minimum); no public weekly running cost was disclosed.",
       "confidence": "medium",
       "sources": [
         {
@@ -7639,12 +7654,17 @@
         },
         {
           "type": "manual",
-          "url": "https://amishprojectbroadway.com/sms-terms",
+          "url": "https://amishprojectbroadway.com/gdpr",
           "date": null
         },
         {
-          "type": "manual",
-          "url": "https://amishprojectbroadway.com/",
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/the-amish-project-548608",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadway.org/shows/the-amish-project?l=1",
           "date": null
         }
       ],
@@ -7652,11 +7672,11 @@
       "slug": "the-amish-project",
       "openingDate": null,
       "status": "upcoming",
-      "researchedAt": "2026-11-07T23:04:31.824Z",
+      "researchedAt": "2026-11-14T23:02:57.132Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "pendingKey": "the-amish-project",
-      "archivedAt": "2026-11-12T10:01:11.457Z",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
     },
@@ -7804,7 +7824,40 @@
       "archivedAt": "2026-11-12T10:01:11.457Z",
       "archivedReason": "record-already-designated",
       "archivedDetail": "the record already carries the designation \"Nonprofit\"; a research row does not overwrite it"
+    },
+    "superseded:hadestown-2019": {
+      "title": "Hadestown",
+      "slug": "hadestown",
+      "openingDate": "2019-04-17",
+      "status": "open",
+      "capitalization": 11500000,
+      "capitalizationSource": "SEC EDGAR Form D filing, CIK 0001701707, total offering amount $11,500,000",
+      "weeklyRunningCost": null,
+      "costMethodology": "sec-filing",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "designation": "TBD",
+      "notes": "Hadestown opened April 17, 2019 at the Walter Kerr Theatre and is still running. The SEC Form D establishes a capitalization ceiling of $11.5 million. The IndieWire Facebook post headline references topping $20 million at the box office, but the full article is not accessible and no explicit recoupment confirmation, return multiple, or weekly running cost figure is stated in the available evidence. The show has been running for over 6 years and is a multiple Tony winner, but without explicit sourced confirmation of recoupment or return multiple, a definitive designation beyond TBD cannot be assigned from this evidence alone.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.facebook.com/indiewire/posts/how-hadestown-the-musical-topped-20-million-at-the-box-office-and-became-one-of-/1414814200510485/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investingbroadway.com/broadway-investing-definitions",
+          "date": null
+        }
+      ],
+      "confidence": "low",
+      "researchedAt": "2026-11-14T22:14:40.556Z",
+      "pendingKey": "hadestown-2019",
+      "archivedAt": "2026-11-15T09:28:14.893Z",
+      "archivedReason": "record-already-designated",
+      "archivedDetail": "the record already carries the designation \"Recouped\"; a research row does not overwrite it"
     }
   },
-  "lastUpdated": "2026-11-12T10:01:11.457Z"
+  "lastUpdated": "2026-11-15T09:28:14.893Z"
 }
