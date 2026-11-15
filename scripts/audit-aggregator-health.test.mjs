@@ -31,6 +31,21 @@ test('loadArchiveSteps flags a workflow without the archive steps (temp dir)', (
   assert.deepEqual(H.archivePersistence(sources, steps).map(f => f.kind), ['archive-not-persisted']);
 });
 
+test('real registry: every West End source judges category west-end only (BRO-7213)', () => {
+  const we = H.SOURCES.filter(s => s.market === 'west-end');
+  assert.ok(we.length >= 5);
+  for (const s of we) assert.equal(s.category, 'west-end', `${s.id} must filter category west-end`);
+  // Off-West-End expansion must not move a West End source's coverage.
+  const now = new Date('2026-11-15T00:00:00Z');
+  const shows = [];
+  for (let i = 0; i < 10; i++) shows.push({ id: `we${i}`, market: 'west-end', category: 'west-end', openingDate: '2026-05-01' });
+  for (let i = 0; i < 40; i++) shows.push({ id: `owe${i}`, market: 'west-end', category: 'off-west-end', openingDate: '2026-05-01' });
+  const archived = new Set(['we0', 'we1', 'we2', 'we3', 'we4', 'we5']);
+  const lbo = we.find(s => s.id === 'lbo-roundups');
+  const series = H.coverageSeries(shows, archived, { market: lbo.market, category: lbo.category, now });
+  assert.deepEqual(series.map(r => [r.quarter, r.covered, r.total, r.pct]), [['2026Q2', 6, 10, 60]]);
+});
+
 test('real registry: no schedule drift', () => {
   assert.deepEqual(H.retiredConsistency(H.SOURCES, loadScheduled(H.SOURCES)), []);
 });

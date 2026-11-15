@@ -43,3 +43,18 @@ test('closed regional show with unparseable closingDate → eligible (fails safe
 test('missing show → treated as eligible (fail open, matches prior behavior for malformed input)', () => {
   assert.equal(isClosedShowEligibleForBatchDiscovery(null, NOW), true);
 });
+
+// BRO-7213: budget-capped batch scrapers defer the oldest shows, not new openings.
+test('newestOpeningFirst: newest opening first, ties stable, undated last, input untouched', () => {
+  const { newestOpeningFirst } = require('./discovery-eligibility.js');
+  const input = [
+    { id: 'a', openingDate: '2023-03-01' },
+    { id: 'none' },
+    { id: 'b', openingDate: '2026-10-01' },
+    { id: 'c', openingDate: '2025-01-01' },
+    { id: 'd', openingDate: '2026-10-01' },
+  ];
+  assert.deepEqual(newestOpeningFirst(input).map((s) => s.id), ['b', 'd', 'c', 'a', 'none']);
+  assert.equal(input[0].id, 'a');
+  assert.deepEqual(newestOpeningFirst(null), []);
+});

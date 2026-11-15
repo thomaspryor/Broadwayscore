@@ -26,4 +26,23 @@ function isClosedShowEligibleForBatchDiscovery(show, now = Date.now()) {
   return daysSinceClose <= REGIONAL_RETRY_WINDOW_DAYS;
 }
 
-module.exports = { isClosedShowEligibleForBatchDiscovery, REGIONAL_RETRY_WINDOW_DAYS };
+/**
+ * BRO-7213: order a batch-discovery list newest opening first (stable for ties,
+ * undated shows last). The NYC Theatre and Playbill Verdict scrapers walk ~650-750
+ * shows one SERP call at a time; under a --time-budget-min cap the shows left
+ * unsearched should be the oldest, whose round-ups were found long ago or never
+ * existed, not the new openings that can still gain one.
+ */
+function newestOpeningFirst(shows) {
+  const key = (s) => (s && typeof s.openingDate === 'string' ? s.openingDate : '');
+  return (shows || [])
+    .map((s, i) => [s, i])
+    .sort(([a, ia], [b, ib]) => {
+      const ka = key(a); const kb = key(b);
+      if (ka !== kb) return ka < kb ? 1 : -1;
+      return ia - ib;
+    })
+    .map(([s]) => s);
+}
+
+module.exports = { isClosedShowEligibleForBatchDiscovery, newestOpeningFirst, REGIONAL_RETRY_WINDOW_DAYS };

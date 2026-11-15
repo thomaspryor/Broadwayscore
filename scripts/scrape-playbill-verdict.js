@@ -28,7 +28,8 @@ const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
-const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+const { isClosedShowEligibleForBatchDiscovery, newestOpeningFirst } = require('./lib/discovery-eligibility');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { VERDICT_SITEMAP_URL, extractArticlesFromSitemap, accumulateSitemapArticles, loadSitemapAccumulator, saveSitemapAccumulator, createFallbackTracker } = require('./lib/playbill-verdict-discover');
 const cheerio = require('cheerio');
 
@@ -75,6 +76,9 @@ const USAGE = `scrape-playbill-verdict.js — Playbill Verdict Scraper.
 
 Usage:
   node scripts/scrape-playbill-verdict.js [options]
+    --shows=a,b              targeted run (Google search per show)
+    --skip-google-fallback   skip Step 4 (daily cron)
+    --time-budget-min=N      stop starting Step-4 searches once N minutes of the run are used (BRO-7213)
   node scripts/scrape-playbill-verdict.js --help, -h    print this usage and exit
 `;
 
@@ -637,6 +641,10 @@ async function scrapePlaybillVerdict() {
   // the daily cron skip Step 4. Targeted runs (--shows=) are unaffected —
   // they go straight to Google by design and ignore this flag.
   const skipGoogleFallback = args.includes('--skip-google-fallback');
+  // BRO-7213: the Sunday deep run's Step 4 (748 searches at ~7.5s) took 94 of the
+  // job's 100 minutes on 2026-11-08, so the job hit its limit before the archive
+  // and review-text pushes ran. The budget covers the whole run (Steps 1-3 too).
+  const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
   if (targetShowIds) {
     console.log(`Targeted mode: ${targetShowIds.length} show(s): ${targetShowIds.join(', ')}`);
@@ -967,7 +975,7 @@ async function scrapePlaybillVerdict() {
     return opening >= new Date('2023-01-01');
   });
 
-  const showsNeedingSearch = recentShows.filter(s => {
+  const showsNeedingSearch = newestOpeningFirst(recentShows).filter(s => {
     const showId = s.id;
     const ap = path.join(archiveDir, `${showId}.html`);
     if (!fallbackTracker.needsFallback(showId)) return false;
@@ -977,7 +985,15 @@ async function scrapePlaybillVerdict() {
 
   console.log(`Shows needing Google search: ${showsNeedingSearch.length}`);
 
-  for (const show of showsNeedingSearch) {
+  // Reserve one worst-case show before starting it: a SERP call (~1 min) plus up
+  // to two Verdict article fetches through the fetchPage chain (~2.5 min each,
+  // run-budget.js) = ~6 min.
+  const MIN_REMAINING_MS_TO_START = 6 * 60_000;
+  for (const [idx, show] of showsNeedingSearch.entries()) {
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
+      console.log(`\n⏱ Time budget (${timeBudget.minutes}min) nearly used after ${timeBudget.elapsedMin()}min — deferring ${showsNeedingSearch.length - idx} show(s) (oldest openings) to the next deep run`);
+      break;
+    }
     const showId = show.id;
     await processShowViaGoogle(show, showId, shows);
   }

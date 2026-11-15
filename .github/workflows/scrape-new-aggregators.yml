@@ -106,6 +106,9 @@ jobs:
         run: npm ci
 
       - name: Scrape Playbill Verdict
+        # BRO-7213: backstop under the script's --time-budget-min=60. The 2026-11-08
+        # deep run's scrape took 94 of 100 min and the pushes below never ran.
+        timeout-minutes: 80
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -133,7 +136,17 @@ jobs:
           else
             echo "Daily run: per-show Google fallback skipped (category-page discovery only)"
           fi
-          node scripts/scrape-playbill-verdict.js $SHOWS_FLAG $SKIP_FLAG
+          node scripts/scrape-playbill-verdict.js $SHOWS_FLAG $SKIP_FLAG --time-budget-min=60
+
+      # BRO-7213: persist the PV archive before the ~13 min of regional steps, so a
+      # job timeout in those steps cannot lose it. The push further down still
+      # carries anything written later.
+      - name: Push aggregator-archive to private repo (PV, after scrape)
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Playbill Verdict aggregator archive (post-scrape)"
 
       # ── Regional auto-promotion chain (daily, single owner) ──────────────
       # A PV Verdict / BWW Review Roundup page at a Broadway-feeder regional
@@ -601,6 +614,10 @@ jobs:
         run: npm ci
 
       - name: Scrape NYC Theatre roundups
+        # BRO-7213: the script stops starting shows at --time-budget-min=45; this
+        # backstop leaves the pushes below inside the 60-min job (every run from
+        # 2026-11-07 to 11-14 hit the job limit mid-scrape).
+        timeout-minutes: 52
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -615,7 +632,7 @@ jobs:
             SHOWS_FLAG="--shows=${INPUT_SHOWS}"
             echo "Targeted mode: ${INPUT_SHOWS}"
           fi
-          node scripts/scrape-nyc-theatre-roundups.js $SHOWS_FLAG
+          node scripts/scrape-nyc-theatre-roundups.js $SHOWS_FLAG --time-budget-min=45
 
       - name: Push review-texts to private repo (NYC)
         if: always()

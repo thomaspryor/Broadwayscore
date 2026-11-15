@@ -24,23 +24,27 @@
  * retiredConsistency() fails if a retired source's workflow is still scheduled,
  * and if an active source's workflow has lost its schedule (a quiet removal).
  */
+// West End sources judge category 'west-end' only (BRO-7213): Off-West-End
+// tracking began 2026-01-01 and added 32-64 shows a quarter (vs 1-5 before), so a
+// market-wide denominator read as a collapse for every West End aggregator. Same
+// reason the New York sources filter category 'broadway'.
 const SOURCES = Object.freeze([
-  { id: 'thestage-roundups', label: 'The Stage roundups', market: 'west-end',
+  { id: 'thestage-roundups', label: 'The Stage roundups', market: 'west-end', category: 'west-end',
     workflows: { 'scrape-thestage-roundups.yml': 7, 'sweep-we-aggregators.yml': 7 } },
-  { id: 'stagedoor', label: 'Stagedoor', market: 'west-end',
+  { id: 'stagedoor', label: 'Stagedoor', market: 'west-end', category: 'west-end',
     workflows: { 'scrape-stagedoor.yml': 7 },
     retired: { on: '2026-06-25', reason: 'stagedoor.com shut down and 302-redirects to londontheatredirect.com; no critic pages exist to scrape' } },
-  { id: 'lbo-roundups', label: 'London Box Office roundups', market: 'west-end',
+  { id: 'lbo-roundups', label: 'London Box Office roundups', market: 'west-end', category: 'west-end',
     workflows: { 'scrape-new-aggregators.yml': 1 } },
-  { id: 'bww-roundups', label: 'BroadwayWorld roundups (London)', market: 'west-end',
+  { id: 'bww-roundups', label: 'BroadwayWorld roundups (London)', market: 'west-end', category: 'west-end',
     workflows: { 'scrape-new-aggregators.yml': 1, 'scrape-bww-reviews.yml': 7 } },
-  { id: 'westendtheatre', label: 'westendtheatre.com', market: 'west-end',
+  { id: 'westendtheatre', label: 'westendtheatre.com', market: 'west-end', category: 'west-end',
     workflows: { 'scrape-westendtheatre.yml': 7, 'sweep-we-aggregators.yml': 7 } },
   { id: 'nyc-theatre', label: 'NYC Theatre roundups', market: 'broadway', category: 'broadway',
     workflows: { 'scrape-new-aggregators.yml': 1 } },
   { id: 'playbill-verdict', label: 'Playbill Verdict', market: 'broadway', category: 'broadway',
     workflows: { 'scrape-new-aggregators.yml': 1 } },
-  { id: 'theatre-reviews', label: 'theatre.reviews', market: 'west-end',
+  { id: 'theatre-reviews', label: 'theatre.reviews', market: 'west-end', category: 'west-end',
     workflows: { 'scrape-theatre-reviews.yml': 7, 'sweep-we-aggregators.yml': 7 } },
   { id: 'dtli', label: 'Did They Like It?', market: 'broadway', category: 'broadway',
     workflows: { 'scrape-dtli-show-score.yml': 7 } },

@@ -30,7 +30,7 @@ const { isJunkOutlet } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
-const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+const { isClosedShowEligibleForBatchDiscovery, newestOpeningFirst } = require('./lib/discovery-eligibility');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -467,16 +467,22 @@ async function scrapeNYCTheatreRoundups() {
   const { kept, tours, regional } = require('./lib/tour-family').nycTheatreTargets(recentShows);
   if (tours.length) console.log(`Skipping ${tours.length} national tour(s): NYC Theatre reviews New York productions only (${tours.map(s => s.id).join(', ')})`);
   if (regional.length) console.log(`Skipping ${regional.length} regional show(s): NYC Theatre reviews New York productions only (${regional.slice(0, 10).map(s => s.id).join(', ')}${regional.length > 10 ? ', ...' : ''})`);
-  recentShows = kept;
+  // BRO-7213: newest openings first, so a budget-capped run defers the oldest shows.
+  recentShows = newestOpeningFirst(kept);
 
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);
 
   // BRO-4146: a 22-show historical backfill spent 17 min here and pushed the
   // gather-reviews scrape-aggregators job past its timeout before its pushes
   // ran. Stop starting new shows once --time-budget-min is used up.
+  // BRO-7213: the daily batch (~640 SERP searches at ~5s) ran past the 60-min
+  // job limit every day from 2026-11-07. Reserve one worst-case show before
+  // starting it: a SERP call with BD/SB fallback (~1 min) plus fetchHtml's
+  // Scrapingdog -> fetchPage chain (~2.5 min, run-budget.js) = ~3.5 min, so 4.
+  const MIN_REMAINING_MS_TO_START = 4 * 60_000;
   const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
   for (const [idx, show] of recentShows.entries()) {
-    if (timeBudget.exceeded()) {
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       console.log(`\n⏱ Time budget (${timeBudget.minutes}min) used after ${timeBudget.elapsedMin()}min — deferring ${recentShows.length - idx} show(s) to the next run`);
       break;
     }
