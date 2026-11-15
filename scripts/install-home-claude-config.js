@@ -134,17 +134,25 @@ function plan(target, adoptHookless = false) {
   for (const key of [...SPEND_KEYS, SPEND_RECORD_KEY]) delete merged[key]; // fixed key order: re-runs write nothing
   Object.assign(merged, mergeSpend(repoSpend, owner));
   if (Object.keys(repoSpend).length) merged[SPEND_RECORD_KEY] = repoSpend;
-  // The repo's allow rules ahead of the owner's own; the owner's are whatever we did not record.
-  // permissions and the record are rebuilt at a fixed spot so re-runs write nothing.
+  // The repo's allow rules ahead of the owner's own. Ours are the repo rules the owner did not
+  // already have (an owner rule that matches a repo rule stays theirs through uninstall); the record
+  // is what a later run and --uninstall take back. permissions and the record are rebuilt at a fixed
+  // spot so re-runs write nothing. A malformed owner allow (not an array) is left untouched.
+  const ownerPerms = preserve && existing.permissions && typeof existing.permissions === 'object' && !Array.isArray(existing.permissions) ? existing.permissions : null;
+  const perms = ownerPerms ? { ...ownerPerms } : {};
+  const malformed = !!ownerPerms && ownerPerms.allow !== undefined && !Array.isArray(ownerPerms.allow);
   const recorded = new Set(preserve && Array.isArray(existing[ALLOW_RECORD_KEY]) ? existing[ALLOW_RECORD_KEY] : []);
-  const ownerAllow = (preserve ? allowOf(existing) : []).filter((x) => !recorded.has(x) && !repoAllow.includes(x));
-  const perms = preserve && existing.permissions && typeof existing.permissions === 'object' && !Array.isArray(existing.permissions) ? { ...existing.permissions } : {};
-  const allowList = [...repoAllow, ...ownerAllow];
-  if (allowList.length) perms.allow = allowList; else delete perms.allow;
+  const had = new Set(preserve ? allowOf(existing) : []);
+  const ours = malformed ? [] : repoAllow.filter((x) => recorded.has(x) || !had.has(x));
+  if (!malformed) {
+    const ownerAllow = [...had].filter((x) => !recorded.has(x) && !repoAllow.includes(x));
+    const allowList = [...repoAllow, ...ownerAllow];
+    if (allowList.length) perms.allow = allowList; else delete perms.allow;
+  }
   delete merged.permissions;
   delete merged[ALLOW_RECORD_KEY];
   if (Object.keys(perms).length) merged.permissions = perms;
-  if (repoAllow.length) merged[ALLOW_RECORD_KEY] = repoAllow;
+  if (ours.length) merged[ALLOW_RECORD_KEY] = ours;
   return { settingsPath, settings: merged, wired, links, mayAdopt, repoSpend };
 }
 

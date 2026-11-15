@@ -354,6 +354,30 @@ test('repo permissions.allow reaches multi-repo sessions, beside the owner\'s ow
   assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { permissions: { allow: ['Bash(ls:*)'], deny: ['Bash(rm:*)'] } });
 });
 
+test('an owner rule equal to a repo rule survives uninstall; a malformed allow is left alone (BRO-7526)', () => {
+  const real = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
+  const { target } = makeTarget('t-allow-owner');
+  const file = path.join(target, '.claude', 'settings.json');
+  fs.mkdirSync(path.dirname(file));
+  const original = { permissions: { allow: ['mcp__Linear', 'Bash(ls:*)'] } };
+  fs.writeFileSync(file, JSON.stringify(original));
+  assert.equal(run(['--target', target, '--adopt-hookless-settings']).status, 0);
+  run(['--target', target]);
+  const s = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.deepEqual([...s.permissions.allow].sort(), [...new Set([...real.permissions.allow, 'Bash(ls:*)'])].sort());
+  assert.ok(!s._installedAllow.includes('mcp__Linear'), 'the owner rule is not recorded as ours');
+  assert.equal(run(['--target', target, '--check']).status, 0);
+  run(['--target', target, '--uninstall']);
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), original);
+
+  const bad = makeTarget('t-allow-malformed').target;
+  const badFile = path.join(bad, '.claude', 'settings.json');
+  fs.mkdirSync(path.dirname(badFile));
+  fs.writeFileSync(badFile, JSON.stringify({ permissions: { allow: 'mcp__Linear' } }));
+  assert.equal(run(['--target', bad, '--adopt-hookless-settings']).status, 0);
+  assert.equal(JSON.parse(fs.readFileSync(badFile, 'utf8')).permissions.allow, 'mcp__Linear');
+});
+
 test('a repo without allow rules writes no permissions block (BRO-7526)', () => {
   const { settings, allow } = buildSettings({ hooks: {} }, '/home/user');
   assert.deepEqual(allow, []);
