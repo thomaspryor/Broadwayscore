@@ -2,6 +2,8 @@
 // BRO-7569: delete contentless `<outlet>--unknown.json` placeholders (no url, no text, no score, no excerpt)
 // that sit beside a usable named review by the same outlet for the same show. Dry run by default.
 // Usage: node scripts/cleanup-unknown-placeholders.js [--apply] [--recent-only]
+const { hasHelpFlag } = require('./lib/cli-help');
+if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/cleanup-unknown-placeholders.js [--apply] [--recent-only]  (dry run unless --apply)'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const base = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');

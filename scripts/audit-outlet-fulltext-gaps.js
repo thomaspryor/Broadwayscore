@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // BRO-7569: full-text rate per major outlet for 2025/2026-production reviews.
 // Usage: node scripts/audit-outlet-fulltext-gaps.js [--json] [outlet ...]  (outlets => list gap files)
+const { hasHelpFlag } = require('./lib/cli-help');
+if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/audit-outlet-fulltext-gaps.js [--json] [outlet ...]  (read-only; REVIEW_TEXTS_DIR overrides the corpus path)'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const root = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
