@@ -1,19 +1,120 @@
 {
-  "updatedAt": "2026-11-15T16:37:36.877Z",
-  "processed": 64,
-  "failed": 46,
-  "successRate": "58.2%",
+  "updatedAt": "2026-11-15T16:31:18.276Z",
+  "processed": 95,
+  "failed": 24,
+  "successRate": "79.8%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 42,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingdog": 10,
+    "browserbase": 11,
+    "directCookies": 2,
+    "scrapingdog": 5,
     "scrapingbee": 5,
-    "brightdata": 0,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 16
+    "archive": 33
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-15T15:29:43.140Z",
+      "event": "bb-session",
+      "session": "df3d6b71",
+      "url": "http://www.hollywoodreporter.com/review/peter-starcatcher-theater-review-smash-3"
+    },
+    {
+      "t": "2026-11-15T15:31:45.618Z",
+      "event": "bb-session",
+      "session": "ee829535",
+      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-22-lombardi22_ST_N.htm?csp="
+    },
+    {
+      "t": "2026-11-15T15:31:46.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-11-15T15:36:00.727Z",
+      "event": "bb-session",
+      "session": "75938746",
+      "url": "http://www.variety.com/review/VE1117943921.html?categoryid=33&cs=1&nid=2562&utm_"
+    },
+    {
+      "t": "2026-11-15T15:36:01.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-15T15:36:26.529Z",
+      "event": "bb-session",
+      "session": "9ee33e59",
+      "url": "http://www.hollywoodreporter.com/review/marvins-room-theater-review-1017924"
+    },
+    {
+      "t": "2026-11-15T15:37:03.984Z",
+      "event": "bb-session",
+      "session": "1b43ef71",
+      "url": "https://www.nytimes.com/2017/11/15/theater/latin-history-for-morons-review-john-"
+    },
+    {
+      "t": "2026-11-15T15:37:04.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-15T15:38:55.069Z",
+      "event": "bb-session",
+      "session": "e1298efd",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/mr-saturday-night-05-16-2"
+    },
+    {
+      "t": "2026-11-15T15:38:55.681Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-11-15T15:39:18.955Z",
+      "event": "bb-session",
+      "session": "129f4671",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/mr-saturday-night-05-16-2"
+    },
+    {
+      "t": "2026-11-15T15:39:19.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-11-15T15:39:51.110Z",
+      "event": "bb-session",
+      "session": "5dc636b6",
+      "url": "https://www.nytimes.com/2022/04/27/theater/mr-saturday-night-review.html"
+    },
+    {
+      "t": "2026-11-15T15:39:51.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-15T15:58:09.599Z",
+      "event": "bb-session",
+      "session": "33fdd5a2",
+      "url": "http://online.wsj.com/article/SB10001424127887323296504578398541288363144.html"
+    },
+    {
+      "t": "2026-11-15T15:58:10.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-15T16:25:58.267Z",
+      "event": "bb-session",
+      "session": "31835592",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-15T16:25:59.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
