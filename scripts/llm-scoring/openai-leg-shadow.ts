@@ -27,6 +27,7 @@ const { isReviewTextFile } = require('../lib/review-text-sidecars');
 const { openaiScoringModels } = require('../lib/llm-batch.js');
 const { SCORING_OPENAI } = require('../lib/models');
 const { computeReport } = require('../lib/openai-leg-ab-metrics.js');
+const { parseMaxCost } = require('../lib/experiment-guard');
 
 const ROOT = path.join(__dirname, '../..');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data/review-texts');
@@ -171,7 +172,8 @@ function legCost(u: any, sh: any, shadowOpenai: string, shadowClaude?: string) {
 async function runShard() {
   // --shadow-model=none runs a Claude-leg-only A/B (BRO-7529); --shadow-claude-model adds a Claude shadow arm.
   const shadowModel = flag('shadow-model', 'gpt-5.4-mini')!;
-  if (flag('max-cost-usd') && !(Number(flag('max-cost-usd')) > 0)) throw new Error('--max-cost-usd must be a positive number');
+  // BRO-7524: the cap is always on (default $10 per shard); --max-cost is an alias; 0/junk/unlimited is refused.
+  parseMaxCost(args.map((a) => (a.startsWith('--max-cost-usd=') ? a.replace('--max-cost-usd=', '--max-cost=') : a)), 10);
   if (shadowModel !== 'none' && !openaiScoringModels().includes(shadowModel)) throw new Error(`unknown --shadow-model ${shadowModel}`);
   const shadowClaudeModel = flag('shadow-claude-model');
   if (shadowClaudeModel && !['claude-sonnet-4-6', 'claude-sonnet-5-5'].includes(shadowClaudeModel)) throw new Error(`unknown --shadow-claude-model ${shadowClaudeModel}`);
@@ -230,7 +232,7 @@ async function runShard() {
 
   // Spend guard (BRO-7529, owner cap): --max-cost-usd is THIS shard's budget, priced from the scorers'
   // own token counts at list rates (sync pricing, no batch discount, so an upper bound).
-  const maxCost = flag('max-cost-usd') ? Number(flag('max-cost-usd')) : Infinity;
+  const maxCost = parseMaxCost(args.map((a) => (a.startsWith('--max-cost-usd=') ? a.replace('--max-cost-usd=', '--max-cost=') : a)), 10);
   const spent = () => legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel).total;
   const costPath = outPath.replace(/\.jsonl$/, '.cost.json');
   let priorSpend = 0;

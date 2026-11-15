@@ -41,11 +41,12 @@ test('experiment scripts are wired to the guard (class guard: reverting the wiri
   for (const [name, src] of [['fact-check', fc], ['shadow', sh]]) {
     assert.match(src, /experiment-guard/, `${name} must require experiment-guard`);
     assert.match(src, /parseMaxCost\(/, `${name} must parse --max-cost`);
-    assert.match(src, /assertRoom\(|exceeded\(/, `${name} must enforce the cap`);
+    assert.match(src, /assertRoom\(|exceeded\(|spentTotal\(\) >= maxCost/, `${name} must enforce the cap`);
   }
   assert.match(fc, /createCallMemo\(/);
   assert.equal((fc.match(/rethrowBudget\(await Promise\.allSettled/g) || []).length, 3, 'every allSettled must rethrow BudgetExceeded');
-  assert.match(sh, /allShardIds/);
+  assert.match(sh, /capHit/);
+  assert.doesNotMatch(sh, /maxCost = [^;]*Infinity/, 'shadow cap must never default to unlimited');
 });
 
 test('cost.ts prices: haiku 4.5 and gpt-5.6-sol match vendor list', () => {
