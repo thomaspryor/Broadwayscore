@@ -89,7 +89,9 @@
       "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json"
@@ -110,7 +112,7 @@
     ]
   },
   "startTime": "2026-11-15T06:40:35.474Z",
-  "lastProcessed": "is-he-dead-2007/nypost--clive-barnes.json",
+  "lastProcessed": "msblackforpresident-off-broadway-2026/guardian--unknown.json",
   "log": [
     {
       "t": "2026-11-15T07:49:10.199Z",
@@ -164,6 +166,61 @@
     },
     {
       "t": "2026-11-15T07:54:51.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T10:04:03.689Z",
+      "event": "bb-session",
+      "session": "f1aeb687",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-15T10:04:04.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T10:04:11.098Z",
+      "event": "bb-session",
+      "session": "923c01fc",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-15T10:04:11.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-15T10:04:29.251Z",
+      "event": "bb-session",
+      "session": "815e946c",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-15T10:04:30.041Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-15T10:06:40.270Z",
+      "event": "bb-session",
+      "session": "dcefcf4b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-15T10:06:41.088Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T10:09:58.047Z",
+      "event": "bb-session",
+      "session": "6f3f87dc",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-15T10:09:58.929Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
