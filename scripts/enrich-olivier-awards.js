@@ -170,7 +170,7 @@ function normalizeTitle(title) {
   return title
     .toLowerCase()
     .replace(/['\u2018\u2019`]/g, "'")
-    .replace(/[""]/g, '"')
+    .replace(/["\u201c\u201d]/g, '"')
     .replace(/&amp;/g, '&')
     .replace(/\s*:\s*the musical$/i, '')
     .replace(/\s*-\s*the musical$/i, '')

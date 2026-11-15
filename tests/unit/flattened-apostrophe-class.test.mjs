@@ -22,6 +22,11 @@ test('detector: flattened classes flagged, curly or escaped classes and comments
   assert.equal(find("foo(); // was /['']/g").length, 0);
   assert.equal(find(".replace(/^['']/, '')").length, 1);
   assert.equal(find(".replace(/[^a-z']/g, '')").length, 0);
+  // BRO-7514 review: mid-regex classes and flattened double-quote classes
+  assert.equal(find("const r = /critic['']?s['']?\\s*pick/i;").length, 2);
+  assert.equal(find("x.replace(/[\"\"]/g, '\"')").length, 1);
+  assert.equal(find("x.replace(/[\"\\u201c\\u201d]/g, '\"')").length, 0);
+  assert.equal(find("const a = ['', 'x']; const b = by[''];").length, 0);
 });
 
 test('Show Score title match: curly and straight apostrophes match (It’s A Wonderful Life regression)', () => {

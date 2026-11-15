@@ -162,7 +162,7 @@ const TRAILING_JUNK_PATTERNS = [
   /^Our newsletter hand-delivers the best bits[^\n]*\n?\s*/i,
   /^Sign up to unlock our digital magazines[^\n]*\n?\s*/i,
   /^Sign up to our newsletter[^\n]*\n?\s*/i,
-  /^An email you['']ll actually love\s*/i,
+  /^An email you['\u2018\u2019]ll actually love\s*/i,
   /^Broadway review by [A-Z][a-z]+ [A-Z][a-z]+\s*/,
   // Time Out show metadata lines (ratings, categories, venue info)
   /^\d+ out of \d+ stars\s*/,
@@ -181,7 +181,7 @@ const TRAILING_JUNK_PATTERNS = [
   /\s*Discover Time Out original video.*$/is,
   /\s*Back to Top\s*Close\s*Get us in your inbox.*$/is,
   /\s*tiktokfacebooktwitteryoutube\s*About us.*$/is,
-  /\s*An email you['']ll actually love.*$/is,
+  /\s*An email you['\u2018\u2019]ll actually love.*$/is,
 
   // === Chicago Tribune: social sharing junk ===
   /^Things To Do Theater (?:Review|Critic's Notebook): /,
@@ -202,7 +202,7 @@ const TRAILING_JUNK_PATTERNS = [
   /\s*[Pp]lease click confirm to resume now.*$/is,
 
   // === Financial Times: footer terms ===
-  /\s*['']Financial Times[''].*?trademarks.*$/is,
+  /\s*['\u2018\u2019]Financial Times['\u2018\u2019].*?trademarks.*$/is,
   /\s*Privacy policy\s*\|\s*Terms\s*\|\s*Copyright.*$/is,
 
   // === NY Sun: newsletter CTA ===

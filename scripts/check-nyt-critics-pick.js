@@ -80,12 +80,12 @@ function fetchPage(url) {
 function checkForCriticsPick(html) {
   // NYT Critics' Pick indicators to look for
   const indicators = [
-    /critic['']?s['']?\s*pick/i,
+    /critic['\u2018\u2019]?s['\u2018\u2019]?\s*pick/i,
     /criticsPick/i,
     /class="[^"]*critic[s]?-pick[^"]*"/i,
     /data-testid="[^"]*critics-pick[^"]*"/i,
     /"criticsPick"\s*:\s*true/i,
-    /NYT\s+Critic['']?s\s+Pick/i,
+    /NYT\s+Critic['\u2018\u2019]?s\s+Pick/i,
   ];
 
   for (const pattern of indicators) {

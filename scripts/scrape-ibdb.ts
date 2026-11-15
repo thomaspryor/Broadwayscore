@@ -35,7 +35,7 @@ function normalizeTitle(title: string): string {
   return title
     .toLowerCase()
     .replace(/['\u2018\u2019]/g, "'")
-    .replace(/[""]/g, '"')
+    .replace(/["\u201c\u201d]/g, '"')
     .replace(/&amp;/g, '&')
     .replace(/\s+/g, ' ')
     .replace(/^the\s+/, '') // Remove leading "The"

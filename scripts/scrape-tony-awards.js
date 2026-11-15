@@ -206,7 +206,7 @@ function normalizeTitle(title) {
   return title
     .toLowerCase()
     .replace(/['\u2018\u2019]/g, "'")
-    .replace(/[""]/g, '"')
+    .replace(/["\u201c\u201d]/g, '"')
     .replace(/,/g, '')  // Remove commas for better matching
     .replace(/:/g, '')  // Remove colons for better matching
     .replace(/&/g, 'and')  // Normalize ampersand to "and"

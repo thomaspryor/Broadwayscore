@@ -475,7 +475,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         )}
         {review.summary && !review.quote && (
           <p className="text-sm sm:text-base text-gray-400 leading-snug mb-0.5">
-            {review.summary}{/[.!?'""\u2019]$/.test(review.summary.trim()) ? '' : '.'}{attribution}
+            {review.summary}{/[.!?'\u2018\u2019"\u201c\u201d\u2019]$/.test(review.summary.trim()) ? '' : '.'}{attribution}
           </p>
         )}
         {review.pullQuote && !review.quote && !review.summary && (

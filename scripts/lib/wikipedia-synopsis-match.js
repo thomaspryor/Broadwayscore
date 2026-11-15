@@ -131,7 +131,7 @@ function extractPlotSection(content) {
 
     if (cleaned.length < 20) continue;
     if (hasWikiMarkup(cleaned)) continue;
-    if (/^Act [12I]/i.test(cleaned) || /^[""]/.test(cleaned)) continue;
+    if (/^Act [12I]/i.test(cleaned) || /^["\u201c\u201d]/.test(cleaned)) continue;
 
     return cleaned;
   }

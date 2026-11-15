@@ -2249,7 +2249,7 @@ function extractNYTCriticsPick(html, text) {
 
   // The actual badge text as a standalone label (not in a sentence)
   // Requires apostrophe to avoid matching "critics pick up on..."
-  if (html && />\s*Critic['']s\s+Pick\s*</i.test(html)) return 'Critics_Pick';
+  if (html && />\s*Critic['\u2018\u2019]s\s+Pick\s*</i.test(html)) return 'Critics_Pick';
 
   // Fallback: check text content (BWW roundup excerpts, review body)
   // Matches "Critic's Pick" as a standalone designation phrase

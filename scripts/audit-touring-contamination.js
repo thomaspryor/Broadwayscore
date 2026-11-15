@@ -202,7 +202,7 @@ const MARKET_CONFIG = {
       [/\bcurran theat(?:re|er),? san francisco\b/i, 'sf'],
       [/\bgolden gate theat(?:re|er),? san francisco\b/i, 'sf'],
       [/\borpheum theat(?:re|er),? san francisco\b/i, 'sf'],
-      [/\bsan francisco['']s? (?:curran|orpheum|golden gate)\b/i, 'sf'],
+      [/\bsan francisco['\u2018\u2019]s? (?:curran|orpheum|golden gate)\b/i, 'sf'],
       // Los Angeles
       [/\bahmanson theat(?:re|er)\b/i, 'la'],
       [/\bpantages theat(?:re|er)\b/i, 'la'],
@@ -321,10 +321,10 @@ const MARKET_CONFIG = {
       [/\boxford playhouse\b/i, 'oxford'],
       // Scotland + Wales + NI
       [/\bfestival theat(?:re|er),? edinburgh\b/i, 'edinburgh'],
-      [/\bking['']s theat(?:re|er),? edinburgh\b/i, 'edinburgh'],
+      [/\bking['\u2018\u2019]s theat(?:re|er),? edinburgh\b/i, 'edinburgh'],
       [/\broyal lyceum,? edinburgh\b/i, 'edinburgh'],
       [/\btraverse theat(?:re|er)\b/i, 'edinburgh'],
-      [/\bking['']s theat(?:re|er),? glasgow\b/i, 'glasgow'],
+      [/\bking['\u2018\u2019]s theat(?:re|er),? glasgow\b/i, 'glasgow'],
       [/\btheatre royal,? glasgow\b/i, 'glasgow'],
       [/\bcitizens theat(?:re|er),? glasgow\b/i, 'glasgow'],
       [/\btron theat(?:re|er),? glasgow\b/i, 'glasgow'],
@@ -351,9 +351,9 @@ const MARKET_CONFIG = {
       [/\bbridge theat(?:re|er)\b/i, 'off-west-end'],
       [/\barcola theat(?:re|er)\b/i, 'off-west-end'],
       [/\bbush theat(?:re|er)\b/i, 'off-west-end'],
-      [/\bprinces?['']? theat(?:re|er),? london\b/i, 'off-west-end'],
+      [/\bprinces?['\u2018\u2019]? theat(?:re|er),? london\b/i, 'off-west-end'],
       // Broadway (same-title cross-market)
-      [/\b(?:broadway|new york)(?:['']s)?\s+(?:shubert|imperial|marquis|winter garden|booth|walter kerr|music box|august wilson|hudson|nederlander|broadhurst|belasco|eugene o['']neill|lyceum|gerald schoenfeld|bernard b\.? jacobs|john golden|lyric|majestic|minskoff|neil simon|new amsterdam|palace|richard rodgers|vivian beaumont|circle in the square|gershwin|american airlines|todd haimes|st\.? james|helen hayes|hayes theat|stephen sondheim|james earl jones|lena horne|ethel barrymore|al hirschfeld|samuel j\.? friedman|studio 54)\b/i, 'broadway'],
+      [/\b(?:broadway|new york)(?:['\u2018\u2019]s)?\s+(?:shubert|imperial|marquis|winter garden|booth|walter kerr|music box|august wilson|hudson|nederlander|broadhurst|belasco|eugene o['\u2018\u2019]neill|lyceum|gerald schoenfeld|bernard b\.? jacobs|john golden|lyric|majestic|minskoff|neil simon|new amsterdam|palace|richard rodgers|vivian beaumont|circle in the square|gershwin|american airlines|todd haimes|st\.? james|helen hayes|hayes theat|stephen sondheim|james earl jones|lena horne|ethel barrymore|al hirschfeld|samuel j\.? friedman|studio 54)\b/i, 'broadway'],
     ],
 
     // West End home cities

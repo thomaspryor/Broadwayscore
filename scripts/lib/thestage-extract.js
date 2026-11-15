@@ -80,7 +80,7 @@ function extractReviews(html, showId) {
       // Handles: "writes Alice Saville (", "for Tim Bano (", "Dominic Cavendish ("
       // Use a non-capturing prefix to skip common prose words (for, and, but, etc.)
       const criticMatch = beforeText.match(
-        /(?:^|[,;:]\s*|\.\s+|[""]\s*|[a-z]\s+)([A-Z][a-zé]+(?:['’]?[A-Za-z]*)?(?:\s+(?:de\s+|van\s+|von\s+)?[A-Z][a-zé]+(?:-[A-Z][a-zé]+)?){1,3})\s*\(\s*$/
+        /(?:^|[,;:]\s*|\.\s+|["\u201c\u201d]\s*|[a-z]\s+)([A-Z][a-zé]+(?:['’]?[A-Za-z]*)?(?:\s+(?:de\s+|van\s+|von\s+)?[A-Z][a-zé]+(?:-[A-Z][a-zé]+)?){1,3})\s*\(\s*$/
       );
       if (criticMatch) {
         critic = criticMatch[1].trim();

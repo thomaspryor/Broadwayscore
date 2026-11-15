@@ -495,7 +495,7 @@ async function searchForReview(page, showTitle, paperConfig, dateStart, dateEnd,
   let searchTitle = showTitle
     .replace(/\s*\(\d{4}\)\s*$/, '')
     .replace(/['\u2018\u2019]/g, "'")
-    .replace(/[""]/g, '"');
+    .replace(/["\u201c\u201d]/g, '"');
 
   // For titles with colons/subtitles, use just the main title (before colon)
   // "Pretty Woman: The Musical" → "Pretty Woman"

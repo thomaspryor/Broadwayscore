@@ -490,7 +490,7 @@ function extractExcerptFromFullText(fullText, showTitle) {
   for (let i = 0; i < Math.min(lines.length, 10); i++) {
     const line = lines[i];
     // Skip: dates, bylines, categories, photo credits, "Theater review", metadata
-    if (/^(By|Photo|Posted in|Author:|Date:|Published|Reviews?\s+['''""]|Theater review|Read our review|Category:|Tags:)/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^(By|Photo|Posted in|Author:|Date:|Published|Reviews?\s+['\u2018\u2019"\u201c\u201d]|Theater review|Read our review|Category:|Tags:)/i.test(line)) { startIdx = i + 1; continue; }
     if (/^(Broadway|Off-Broadway|Theater Reviews?|Musical|Play)\s*[,|]/i.test(line)) { startIdx = i + 1; continue; }
     // Skip navigation skip links, newspaper mottos, quiz widgets, WaPo boilerplate
     if (/^Skip to (content|main)/i.test(line)) { startIdx = i + 1; continue; }
@@ -548,7 +548,7 @@ function extractExcerptFromFullText(fullText, showTitle) {
 
   // Strip concatenated page title + metadata blobs (common on One-Minute Critic, CultureSauce, etc.)
   // Pattern: "Reviews 'Title' <headline> <Author> <Date> <number> <Cast> in "Title"." Photo by X. Share this: By Author <actual review>"
-  text = text.replace(/^Reviews?\s+[''""'][^''"'""]+[''""'][^.]*\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b[^.]*\.\s*(?:Photo\s+by\b[^.]*\.\s*)?(?:Share\s+this:[^.]*\.\s*)?(?:By\s+[A-Z][a-z]+\s+[A-Z][a-z]+\s+)?/i, '');
+  text = text.replace(/^Reviews?\s+['\u2018\u2019"\u201c\u201d][^'\u2018\u2019"\u201c\u201d]+['\u2018\u2019"\u201c\u201d][^.]*\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b[^.]*\.\s*(?:Photo\s+by\b[^.]*\.\s*)?(?:Share\s+this:[^.]*\.\s*)?(?:By\s+[A-Z][a-z]+\s+[A-Z][a-z]+\s+)?/i, '');
 
   // Strip "Share this:" / "Share on:" social sharing prompts at start of text
   text = text.replace(/^Share\s+(this|on|via)\s*:\s*/i, '');
@@ -575,11 +575,11 @@ function extractExcerptFromFullText(fullText, showTitle) {
     if (/\b(Published Date|Leave a Comment|Posted in)\b/i.test(sentence)) continue;
     if (/^Read (more|our review|the full)/i.test(sentence)) continue;
     if (/^[★☆⭐✩✪❤\s]{3,}/.test(sentence)) continue;
-    if (/^Reviews?\s+['''""]/i.test(sentence)) continue;
+    if (/^Reviews?\s+['\u2018\u2019"\u201c\u201d]/i.test(sentence)) continue;
     if (/^Share\s+(this|on|via)\b/i.test(sentence)) continue;
     if (/\bPhoto\s+(by|credit|courtesy)\b/i.test(sentence)) continue;
     if (/\|\s*Photo\s*:/i.test(sentence)) continue;
-    if (/\bin\s+[""][^""]+[""]\s*\.\s*$/i.test(sentence) && sentence.length < 120) continue;
+    if (/\bin\s+["\u201c\u201d][^"\u201c\u201d]+["\u201c\u201d]\s*\.\s*$/i.test(sentence) && sentence.length < 120) continue;
     if (/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\s+\d+\s+/i.test(sentence) && sentence.indexOf('Photo') !== -1) continue;
     if (/^Home\s*[>|]/i.test(sentence)) continue;
     if (/By clicking submit/i.test(sentence)) continue;

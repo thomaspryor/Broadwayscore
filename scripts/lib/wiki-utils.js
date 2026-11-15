@@ -146,7 +146,7 @@ function stripLeadingJunk(text) {
     // "as Name in Title (year) ," — shorter caption without "production of"
     .replace(/^as\s+[A-Z][a-z]+\s+(?:in\s+)?[^(]{0,100}?\(\d{4}\)\s*,?\s*/i, '')
     // "as Name in "Song Title"" (e.g., 'as Ariel in "Part of Your World"')
-    .replace(/^as\s+[A-Z][a-z]+\s+in\s+[""][^""]+[""]\s*/i, '')
+    .replace(/^as\s+[A-Z][a-z]+\s+in\s+["\u201c\u201d][^"\u201c\u201d]+["\u201c\u201d]\s*/i, '')
     // "by Artist Name, year" (painting credits)
     .replace(/^by\s+[A-Z][a-z]+\s+[A-Z][a-z]+,?\s*\d{0,4}\s*/, '')
     // Leading comma fragments: ", in 2010) ...", ", Name and Name as...", ", 1818 ..."

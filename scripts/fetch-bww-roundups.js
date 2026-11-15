@@ -70,19 +70,19 @@ function extractReviewExcerpts(html) {
 
   // Look for patterns like "The New York Times:" or "Variety:" followed by text
   const patterns = [
-    /(?:The\s+)?New\s+York\s+Times[:\s]+[""]?([^""]+)[""]?/gi,
-    /Variety[:\s]+[""]?([^""]+)[""]?/gi,
-    /Hollywood\s+Reporter[:\s]+[""]?([^""]+)[""]?/gi,
-    /Vulture[:\s]+[""]?([^""]+)[""]?/gi,
-    /Time\s+Out[:\s]+[""]?([^""]+)[""]?/gi,
-    /Daily\s+News[:\s]+[""]?([^""]+)[""]?/gi,
-    /New\s+York\s+Post[:\s]+[""]?([^""]+)[""]?/gi,
-    /Washington\s+Post[:\s]+[""]?([^""]+)[""]?/gi,
-    /Entertainment\s+Weekly[:\s]+[""]?([^""]+)[""]?/gi,
-    /Associated\s+Press[:\s]+[""]?([^""]+)[""]?/gi,
-    /TheaterMania[:\s]+[""]?([^""]+)[""]?/gi,
-    /The\s+Wrap[:\s]+[""]?([^""]+)[""]?/gi,
-    /Deadline[:\s]+[""]?([^""]+)[""]?/gi,
+    /(?:The\s+)?New\s+York\s+Times[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Variety[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Hollywood\s+Reporter[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Vulture[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Time\s+Out[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Daily\s+News[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /New\s+York\s+Post[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Washington\s+Post[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Entertainment\s+Weekly[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Associated\s+Press[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /TheaterMania[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /The\s+Wrap[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
+    /Deadline[:\s]+["\u201c\u201d]?([^"\u201c\u201d]+)["\u201c\u201d]?/gi,
   ];
 
   // Clean HTML first

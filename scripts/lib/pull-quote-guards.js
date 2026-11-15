@@ -1026,7 +1026,7 @@ function isNarrativeLine(line) {
   if (!line) return false;
   const trimmed = line.trim();
   const wordCount = trimmed.split(/\s+/).length;
-  const endsSentence = /[.!?][""'""]?\s*$/.test(trimmed);
+  const endsSentence = /[.!?]["\u201c\u201d'\u2018\u2019]?\s*$/.test(trimmed);
   if (wordCount >= 5 && endsSentence) return true;
   if (NARRATIVE_STARTER_RE.test(trimmed)) return true;
   return false;

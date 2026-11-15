@@ -49,7 +49,7 @@ const BANNED_SUMMARY_PATTERNS = [
 // The prompt says "not about any specific show" but GPT sometimes drifts.
 const SHOW_REFERENCE_PATTERNS = [
   { pattern: /\bcurrently (playing|running|showing)\b/i, reason: 'references current production, not the venue' },
-  { pattern: /\bthis season['']?s\b/i,                   reason: 'season-specific reference' },
+  { pattern: /\bthis season['\u2018\u2019]?s\b/i,                   reason: 'season-specific reference' },
   { pattern: /\bfor [A-Z][a-z]+ (and [A-Z][a-z]+)? specifically\b/, reason: 'show-specific reference' },
 ];
 
