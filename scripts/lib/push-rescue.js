@@ -239,24 +239,24 @@ function describeReviewFile(raw) {
   if (!text) return 'absent';
   let j;
   try { j = JSON.parse(text); } catch { return `bytes=${Buffer.byteLength(text)} unparseable-json`; }
-  if (!j || typeof j !== 'object') return `bytes=${Buffer.byteLength(text)} non-object`;
+  if (!j || typeof j !== 'object' || Array.isArray(j)) return `bytes=${Buffer.byteLength(text)} non-object`;
   const has = (k) => (j[k] !== undefined && j[k] !== null && j[k] !== '' ? 'yes' : 'no');
   const flags = ['wrongShow', 'wrongProduction', 'isRoundupArticle'].filter((k) => j[k]);
   let newest = null;
   for (const [k, v] of Object.entries(j)) {
     if (typeof v !== 'string' || !/(At|Date|Time|date|time)$/.test(k)) continue;
     const t = Date.parse(v);
-    if (!Number.isNaN(t) && (newest === null || t > newest.t)) newest = { k, t, v };
+    if (!Number.isNaN(t) && /^\d{4}-\d{2}-\d{2}/.test(v) && (newest === null || t > newest.t)) newest = { k: k.replace(/[^A-Za-z]/g, '').slice(0, 30), t };
   }
   return [
     `bytes=${Buffer.byteLength(text)}`,
     `fullTextLen=${typeof j.fullText === 'string' ? j.fullText.length : 0}`,
-    `contentTier=${j.contentTier || 'none'}`,
+    `contentTier=${/^[a-z_-]{1,20}$/.test(String(j.contentTier || '')) ? j.contentTier : (j.contentTier ? 'other' : 'none')}`,
     `assignedScore=${has('assignedScore')}`,
     `llmScore=${has('llmScore')}`,
     `criticName=${j.criticName ? 'present' : 'null'}`,
     `flags=${flags.length ? flags.join('+') : 'none'}`,
-    `newest=${newest ? `${newest.k}:${newest.v}` : 'none'}`,
+    `newest=${newest ? `${newest.k}:${new Date(newest.t).toISOString()}` : 'none'}`,
   ].join(' ');
 }
 

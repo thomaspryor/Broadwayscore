@@ -34,8 +34,16 @@ import { describeReviewFile } from '../lib/push-rescue.js';
 test('describeReviewFile reports metadata only, never text', () => {
   const secret = 'SECRET REVIEW BODY';
   const d = describeReviewFile(JSON.stringify({ fullText: secret, contentTier: 'truncated', criticName: null, llmScore: 70, wrongShow: true, scoredAt: '2026-11-11T10:00:00Z', publishDate: '2026-11-01' }));
-  assert.match(d, /fullTextLen=18 contentTier=truncated assignedScore=no llmScore=yes criticName=null flags=wrongShow newest=scoredAt:2026-11-11T10:00:00Z/);
+  assert.match(d, /fullTextLen=18 contentTier=truncated assignedScore=no llmScore=yes criticName=null flags=wrongShow newest=scoredAt:2026-11-11T10:00:00.000Z/);
   assert.ok(!d.includes(secret));
   assert.equal(describeReviewFile(''), 'absent');
   assert.match(describeReviewFile('{oops'), /unparseable-json/);
+});
+
+test('describeReviewFile does not echo free-form field values', () => {
+  const d = describeReviewFile(JSON.stringify({ contentTier: 'SECRET\nINJECT', scoredAt: 'SECRET not a date', publishDate: '2026-11-11' }));
+  assert.ok(!/SECRET|INJECT/.test(d));
+  assert.match(d, /contentTier=other/);
+  assert.match(d, /newest=publishDate:2026-11-11T00:00:00.000Z/);
+  assert.match(describeReviewFile('[1,2]'), /non-object/);
 });
