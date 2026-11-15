@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-15T11:31:39.664Z",
+    "generatedAt": "2026-11-15T16:04:52.529Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 375,
+  "totalGaps": 376,
   "errorSeverity": 262,
-  "warningSeverity": 113,
+  "warningSeverity": 114,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1635,6 +1635,15 @@
       "gap": 9,
       "ratio": 0.47,
       "severity": "error"
+    },
+    {
+      "showId": "marvins-room-2017",
+      "category": "broadway",
+      "expected": 49,
+      "extracted": 48,
+      "gap": 1,
+      "ratio": 0.98,
+      "severity": "warning"
     },
     {
       "showId": "mary-jane-2024",
