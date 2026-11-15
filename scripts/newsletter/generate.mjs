@@ -40,6 +40,8 @@ const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/openin
 const { showCardHtml, criticsTakeHtml, POSTER_W, POSTER_H, SCORE_COL_W, SCORE_BADGE } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-show-card'));
 const { announcedShowIds, loadSentShows, isNotableRevival } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-announced'));
 const { upcomingLinks } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-upcoming-links'));
+const { selectComingUp } = cjsRequire(path.join(repo, 'scripts/lib/coming-up-select'));
+const { moverBaseline, publishedScoreFor } = cjsRequire(path.join(repo, 'scripts/lib/mover-baseline'));
 const { classifyOpeningEvent } = cjsRequire(path.join(repo, 'scripts/lib/opening-events-for-week'));
 const { isBroadwayCategory } = cjsRequire(path.join(repo, 'scripts/lib/venue-classification'));
 const { classifyEntry } = await import('./section-credential-guard.mjs');
@@ -967,8 +969,10 @@ function upcomingOpeningsSection() {
     if (!isPrimaryMarket(s)) continue;
     if (isOperaShow(s)) continue;
     // Dance/concert one-offs (type 'special', e.g. City Center programs) read
-    // as non-theater in a theater digest — user call 2026-07-11.
-    if (s.type === 'special') continue;
+    // as non-theater in a theater digest — user call 2026-07-11. A Broadway
+    // special (Blue Man Group at the Lunt-Fontanne) IS a Broadway opening, and the
+    // owner wants every Broadway opening of the week listed (2026-11-15).
+    if (s.type === 'special' && s.category !== 'broadway') continue;
     const opensSoon = s.openingDate && s.openingDate > today && s.openingDate <= horizon14;
     const previewsSoon = s.previewsStartDate && s.previewsStartDate > today && s.previewsStartDate <= horizon7
       && (!s.openingDate || s.openingDate > today);
@@ -981,8 +985,9 @@ function upcomingOpeningsSection() {
     items.push({ show: s, eventDate, eventLabel, isPreview: !opensSoon });
   }
   if (!items.length) return null;
-  items.sort((a, b) => a.eventDate.localeCompare(b.eventDate));
-  const top = items.slice(0, 4); // cap card height — surface the closest 4
+  // Every Broadway opening of the coming week is always listed (owner rule
+  // 2026-11-15); the rest of the card fills to 4 with the nearest rows.
+  const top = selectComingUp(items, { weekEndStr, cap: 4 });
   _upcomingLede = { title: top[0].show.title, id: top[0].show.id, slug: top[0].show.slug, eventLabel: top[0].eventLabel, eventDate: top[0].eventDate, count: items.length };
   const remaining = items.length - top.length;
   // Placement signal: when Coming Up has a Broadway entry it earns a slot near
@@ -1029,6 +1034,14 @@ function upcomingOpeningsSection() {
 // subject can advertise a show that no card surfaces (Can I Be Frank case).
 // Memoized so neither caller pays for the recomputation.
 let _topMoversCache = null;
+let _sentShowsCache;
+function _sentShows() {
+  if (_sentShowsCache === undefined) {
+    try { _sentShowsCache = JSON.parse(fs.readFileSync(path.join(repo, 'data/opening-night-sent.json'), 'utf8')).shows || null; }
+    catch { _sentShowsCache = null; }
+  }
+  return _sentShowsCache;
+}
 function findRenderableCriticMovers() {
   if (_topMoversCache) return _topMoversCache;
   const movers = {};
@@ -1075,7 +1088,13 @@ function findRenderableCriticMovers() {
     // 2026-05-24. Both gates use the same week window helper.
     if (inWeek(show.openingDate)) continue;
     if (inWeek(show.reopeningDate)) continue;
-    candidates.push({ show, before: Math.round(beforeAvg), after: Math.round(allAvg), delta, newCount: x.thisWeek.length });
+    // Judge the move from the score readers were actually told, not from a
+    // number recomputed off the reviews dated before this week (Wanted, 2026-11-09:
+    // "66 -> 59" when the published score was 60). Shows still inside their
+    // opening-review window are settling, not moving. scripts/lib/mover-baseline.js
+    const base = moverBaseline({ show, weekStartStr, weekEndStr, before: beforeAvg, after: allAvg, publishedScore: publishedScoreFor(_sentShows(), id) });
+    if (base.suppress) continue;
+    candidates.push({ show, before: base.before, after: Math.round(allAvg), delta: allAvg - base.before, newCount: x.thisWeek.length });
   }
   candidates.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
   // Newsworthiness gate: rounded delta ≥ 3 pts, full stop. Tightened 2026-06-14
