@@ -601,5 +601,36 @@
     "tracked": "BRO-7497",
     "fields": [],
     "queuedAt": "2026-11-14T23:36:08.014Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7494-lazy-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7494-lazy-guard",
+    "description": "land.yml did not land land/bro-7494-lazy-guard: the unit-tests-node gate went red at a2f87d8bc9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43655756666",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7494-lazy-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a2f87d8bc9fada286fc6264111d631e5b9890c7f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43655756666"
+      }
+    ],
+    "queuedAt": "2026-11-15T00:19:50.521Z"
   }
 ]
