@@ -315,20 +315,6 @@
     "queuedAt": "2026-11-15T16:01:40.849Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-15.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-15T16:01:40.932Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-7521-mwhx5dpa",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7521-mwhx5dpa",
     "description": "land.yml did not land land/job/linear-BRO-7521-mwhx5dpa: the unit-tests-node gate went red at d256293477. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43728274134",
@@ -819,6 +805,20 @@
       }
     ],
     "queuedAt": "2026-11-15T21:31:59.468Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-15.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-15T22:03:34.377Z"
   },
   {
     "conditionKey": "land:land/bro-7552-effect-gate",
