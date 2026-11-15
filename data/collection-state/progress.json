@@ -400,7 +400,8 @@
     "crime-and-punishment-regional-2026/broadwayworld--emily-werner.json",
     "always-patsy-cline-regional-2026/peopleandplaces--cate-hessel.json",
     "the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026/thereviewshub--phil-goodwin.json",
-    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -467,7 +468,6 @@
     "in-the-heights-off-broadway-2026/talkinbroadway--unknown.json",
     "i-became-we-off-broadway-2026/theater-life--paulanne-simmons.json",
     "memoriam-off-west-end-2026/ground--unknown.json",
-    "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
     "billy-crystal-860-2026/theater-life--paulanne-simmons.json",
@@ -642,7 +642,9 @@
     "1536-west-end-2026/standard--nick-curtis.json",
     "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
     "hamlet-off-broadway-2026/here--unknown.json",
-    "hamlet-off-broadway-2026/washpost--peter-marks.json"
+    "hamlet-off-broadway-2026/washpost--peter-marks.json",
+    "girls-off-west-end-2026/plays-to-see--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -880,7 +882,8 @@
       "jersey-boys-2005/nytimes--unknown.json",
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json"
+      "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/nytimes--unknown.json",
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1081,7 +1084,7 @@
     ]
   },
   "startTime": "2026-11-14T17:58:24.327Z",
-  "lastProcessed": "hamlet-off-broadway-2026/washpost--peter-marks.json",
+  "lastProcessed": "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
   "log": [
     {
       "t": "2026-11-14T18:51:14.606Z",
@@ -1187,9 +1190,33 @@
       "t": "2026-11-14T22:16:51.955Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-15T00:18:29.615Z",
+      "event": "bb-session",
+      "session": "96a16985",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-15T00:18:29.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-15T00:24:17.525Z",
+      "event": "bb-session",
+      "session": "9c4c11f8",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-15T00:25:55.035Z",
+      "event": "bb-session",
+      "session": "ff1a6208",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ],
   "recoveredAfterFailure": [
-    "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
+    "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
   ]
 }
