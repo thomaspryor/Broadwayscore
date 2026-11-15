@@ -13,13 +13,15 @@ const require_ = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const { buildSlugIndex, parseShowsText, fixRefusal } = require_('./newsletter-sent-reconcile.js');
 
+// Markers built at runtime so the repo's conflict-marker audit doesn't trip on the fixture.
+const [LT, EQ, GT] = ['<', '=', '>'].map((c) => c.repeat(7));
 const CONFLICTED = `{
   "_meta": {
-<<<<<<< Updated upstream
+${LT} Updated upstream
     "lastUpdated": "2026-11-15T13:36:35.016Z",
-=======
+${EQ}
     "lastUpdated": "2026-11-15T09:29:41.393Z",
->>>>>>> Stashed changes
+${GT} Stashed changes
   },
   "shows": [{ "id": "hamilton-2015", "slug": "hamilton" }]
 }`;
