@@ -187,6 +187,22 @@ jobs:
         # going so verified additions still commit; fail the job afterwards.
         run: node scripts/audit-critic-coverage.js --discover-author-pages --time-budget-min=15 || echo "failed=1" >> "$GITHUB_OUTPUT"
 
+      # BRO-7519: "Quality: coverageExpectation drift" fired every 14 days per outlet
+      # for a mechanical re-probe (decayed "reviews" claim, measured coverage still
+      # well above the floor). Refresh those here daily; anything contradicted or
+      # with a "no review expected" claim still waits for a human.
+      - name: Refresh decayed coverageExpectation claims
+        continue-on-error: true
+        run: |
+          node scripts/audit-standing-coverage.js --coverage-expectation --auto-refresh
+          if ! git diff --quiet -- data/outlet-registry.json; then
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            git add data/outlet-registry.json
+            git commit -m "data: refresh decayed coverageExpectation claims (BRO-7519)"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
       - name: Commit and push author-page overrides
         run: |
           if git diff --quiet -- data/critic-author-pages.json; then

@@ -62,4 +62,24 @@ function applyCoverageExpectationRedecide(registry, action, { shows, reviews, no
   return { ok: true, changed: true, msg: `${outletId}: coverageExpectationDecidedAt ${row.decidedAt} -> ${day} (measured ${pct}%)` };
 }
 
-module.exports = { applyCoverageExpectationRedecide };
+/**
+ * BRO-7519: the mechanical case, automated. Every outlet whose "reviews" claim
+ * has decayed (status decayed, measured >= MIN_REVIEWS_CLAIM_RATE) is refreshed
+ * through applyCoverageExpectationRedecide, so the 14-day decay never reaches the
+ * digest. Contradicted, no-evidence and "no review expected" claims are left for
+ * a human (the apply function refuses them).
+ * @returns {{refreshed: string[], skipped: {outletId: string, reason: string}[]}}
+ */
+function autoRefreshDecayedClaims(registry, { shows, reviews, nowMs = Date.now() }) {
+  const refreshed = [];
+  const skipped = [];
+  const { rows } = evaluateCoverageExpectationDrift(shows, reviews, registry.outlets, nowMs);
+  for (const row of rows.filter((r) => r.status === 'decayed')) {
+    const res = applyCoverageExpectationRedecide(registry, { outletId: row.outletId, reason: 'scheduled mechanical re-probe (audit-standing-coverage --auto-refresh)' }, { shows, reviews, nowMs });
+    if (res.ok && res.changed) refreshed.push(row.outletId);
+    else if (!res.ok) skipped.push({ outletId: row.outletId, reason: res.reason });
+  }
+  return { refreshed, skipped };
+}
+
+module.exports = { applyCoverageExpectationRedecide, autoRefreshDecayedClaims };

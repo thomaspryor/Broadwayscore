@@ -332,6 +332,17 @@ function main() {
   const reviews = readJson('data/reviews.json').reviews;
   const outlets = readJson('data/outlet-registry.json').outlets;
 
+  if (coverageExpectationMode && args.includes('--auto-refresh')) {
+    // BRO-7519: refresh decayed "reviews" claims in place; the workflow commits the file.
+    const file = path.join(REPO_ROOT, 'data/outlet-registry.json');
+    const registry = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const { autoRefreshDecayedClaims } = require('./lib/coverage-expectation-redecide-action');
+    const { refreshed, skipped } = autoRefreshDecayedClaims(registry, { shows, reviews });
+    if (refreshed.length) fs.writeFileSync(file, JSON.stringify(registry, null, 2));
+    console.log(`auto-refresh: refreshed [${refreshed.join(', ')}]`);
+    for (const k of skipped) console.log(`  left for a human: ${k.outletId}: ${k.reason}`);
+    process.exit(0);
+  }
   if (coverageExpectationMode) {
     const result = evaluateCoverageExpectationDrift(shows, reviews, outlets, Date.now());
     if (jsonOut) {

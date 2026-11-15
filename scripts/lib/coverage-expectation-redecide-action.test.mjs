@@ -96,3 +96,20 @@ test('refuses below the coverage floor and replaces its own previous note instea
   assert.equal((reg.outlets.full.coverageEvidence.match(/Re-probed/g) || []).length, 1);
   assert.match(reg.outlets.full.coverageEvidence, /^old\./);
 });
+
+// BRO-7519 class guard: a decayed "reviews" claim is refreshed by the scheduled auto-refresh, not left for the digest.
+{
+  const { autoRefreshDecayedClaims } = require('./coverage-expectation-redecide-action.js');
+  test('autoRefreshDecayedClaims refreshes decayed reviews claims and leaves the rest', () => {
+    const { shows, reviews } = fixture();
+    const reg = registry();
+    const before = evaluateCoverageExpectationDrift(shows, reviews, reg.outlets, NOW).needsReprobe;
+    assert.ok(before.includes('full'), 'fixture must start with a decayed reviews claim');
+    const { refreshed } = autoRefreshDecayedClaims(reg, { shows, reviews, nowMs: NOW });
+    assert.ok(refreshed.includes('full'));
+    assert.ok(!refreshed.includes('gone'), 'a "no review expected" claim is never auto-refreshed');
+    assert.equal(reg.outlets.full.coverageExpectationDecidedAt, '2026-10-24');
+    const after = evaluateCoverageExpectationDrift(shows, reviews, reg.outlets, NOW).needsReprobe;
+    assert.ok(!after.includes('full'), 'drift row must clear after the auto-refresh');
+  });
+}
