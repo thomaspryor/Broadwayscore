@@ -58,7 +58,7 @@ test('owner-money rows are left to the Mac pass, never filed here', () => {
   assert.equal(plan[0].state, 'needs-card');
 });
 
-test('cap: at most DISPATCH_CAP new cards a run, the rest stay needs-card', () => {
+test('cap: at most DISPATCH_CAP new cards a run, the rest read file-next-run', () => {
   const errors = ['A one', 'B two', 'C three', 'D four', 'E five'].map((name) => ({ name, message: 'm', firstSeen: ago(0) }));
   const plan = planFor(errors);
   const f = fakeFile();
@@ -120,4 +120,28 @@ test('cloud-mode email header says what the Action did, not "only reports"', () 
 test('health-check passes this run\'s results to the uncarded-rows check (ordering guard)', () => {
   const src = fs.readFileSync(path.join(ROOT, 'scripts/health-check.js'), 'utf8');
   assert.match(src, /results\.push\(\.\.\.\(await checkUncardedDigestRows\(results\)\)\)/);
+});
+
+test('a folded visitor row with a seed-dated member files at once, even when another member is young', () => {
+  const plan = planFor([], [
+    { name: 'Missing poster on Hamilton', message: 'm', firstSeen: '1970-01-01T00:00:00.000Z' },
+    { name: 'Missing poster on Wicked', message: 'm', firstSeen: ago(0.1) },
+  ]);
+  const folded = plan.filter((r) => Array.isArray(r.affected));
+  assert.equal(folded.length, 1);
+  assert.equal(folded[0].affected.length, 2);
+  const f = fakeFile();
+  runCloudFile({ plan, fileCardFn: f.fn, now: NOW });
+  assert.equal(folded[0].state, 'card-filed');
+});
+
+test('a folded visitor row whose members are all young waits like the email does', () => {
+  const plan = planFor([], [
+    { name: 'Missing poster on Hamilton', message: 'm', firstSeen: ago(0.2) },
+    { name: 'Missing poster on Wicked', message: 'm', firstSeen: ago(0.1) },
+  ]);
+  const f = fakeFile();
+  runCloudFile({ plan, fileCardFn: f.fn, now: NOW });
+  assert.equal(f.calls.length, 0);
+  assert.ok(plan.every((r) => r.state === 'watching'));
 });

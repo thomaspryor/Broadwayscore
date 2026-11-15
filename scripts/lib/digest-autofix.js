@@ -630,6 +630,9 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const open = openAnchor.get(key);
     if (open && open.row.affected.length < MAX_FOLD_PER_CONDITION) {
       open.row.firstSeen = earlierFirstSeen(open.row.firstSeen, r.firstSeen);
+      // ship-check: an untrusted member date (1970 seed, missing) means "shown now" in the email,
+      // so the folded row must not read as young just because another member is.
+      if (!validFirstSeen(r.firstSeen)) open.row.ageUnknown = true;
       open.row.affected.push({ name: r.name, message: String(r.message || '').slice(0, 400), ...(r.conditionKey ? { conditionKey: r.conditionKey } : {}) });
       // BRO-3427 ship-check finding: isRowAcknowledged only ever runs on the
       // ANCHOR (inside buildPlanRow) — a later-joining member here never
@@ -663,6 +666,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const titleOverride = `${BSC_DAILY_TITLE_PREFIX}${split.condition}${batch > 1 ? ` (batch ${batch})` : ''}`;
     const row = buildPlanRow(r, { tasks, today, titleOverride });
     row.firstSeen = validFirstSeen(r.firstSeen);
+    if (!row.firstSeen) row.ageUnknown = true;
     if (fromHealth.has(r)) row.fromHealth = true;
     if (healthErrors.has(r)) row.healthError = true;
     row.affected = [{ name: r.name, message: String(r.message || '').slice(0, 400), ...(r.conditionKey ? { conditionKey: r.conditionKey } : {}) }];
@@ -1667,6 +1671,7 @@ function runAutofix({
 // (check-health-row-absent.js); the resolved-alert sweep only covers router
 // cards. Mutates and returns `plan`. Fail-soft per row.
 const CLOUD_FILE_BUDGET_MS = 150000;
+const SETTLE_LOOKAHEAD_MS = 30 * 60 * 1000;
 function runCloudFile({
   plan, cap = DISPATCH_CAP, log = () => {}, fileCardFn = fileCard, openLinearTitles = null,
   now = new Date(), budgetMs = CLOUD_FILE_BUDGET_MS, nowMsFn = Date.now,
@@ -1681,7 +1686,9 @@ function runCloudFile({
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
     if (!isVisitorFacingRow(row)) { if (held.has(row)) row.state = 'watching'; continue; }
-    if (isSettling(row, row.healthError ? 'error' : 'warn', now.getTime())) { row.state = 'watching'; continue; }
+    // Settling is judged a little ahead (the email renders minutes after this runs), and a row with any
+    // untrusted member date is shown at once by the email, so it files at once too.
+    if (!row.ageUnknown && isSettling(row, row.healthError ? 'error' : 'warn', now.getTime() + SETTLE_LOOKAHEAD_MS)) { row.state = 'watching'; continue; }
     // No card yet; the next run files it. Never 'queued' (that state means a card exists).
     if (filed >= cap) { row.state = 'file-next-run'; log(`[digest-autofix] cloud-file cap ${cap} reached; "${row.title}" left for the next run`); continue; }
     if (nowMsFn() - startMs > budgetMs) { row.state = 'file-next-run'; log(`[digest-autofix] cloud-file budget ${budgetMs}ms spent; "${row.title}" left for the next run`); continue; }

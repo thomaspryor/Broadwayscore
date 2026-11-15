@@ -37,7 +37,8 @@ function findUncardedDigestRows(snapshot, openIssues, nowMs, { minDays = UNCARDE
   const covered = coveredRowTitles(issues);
   const out = [];
   for (const row of plan) {
-    if (row.state !== 'needs-card' || !row.firstSeen) continue;
+    // file-next-run rows have no card yet either (cap or budget hit), so a stuck one is caught here too.
+    if ((row.state !== 'needs-card' && row.state !== 'file-next-run') || !row.firstSeen) continue;
     const days = (nowMs - Date.parse(row.firstSeen)) / 86400000;
     if (!(days >= minDays)) continue;
     // BRO-7520: the snapshot is the PREVIOUS run's, so a row whose check passes in this run still listed

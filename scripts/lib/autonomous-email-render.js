@@ -433,7 +433,7 @@ const AUTOFIX_STATE_LABEL = {
   'queued': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
   'card-filed': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
   // BRO-7520: over the cloud filer's daily cap; no card yet, the next run files it.
-  'file-next-run': ['\u23f3', 'fix card is filed on the next automated run (daily cap reached)'],
+  'file-next-run': ['\u23f3', 'fix card is filed on the next automated run (this run\u2019s filing limit was reached)'],
   'card-failed': ['\u26a0\ufe0f', 'tracker filing FAILED \u2014 nothing is working on this yet; retries tomorrow'],
   'acknowledged': ['\u2139\ufe0f', 'already tracked with a known resolve-by date \u2014 no new card needed'],
   // BRO-5099: router notice for a condition that already has a Linear card.

@@ -754,7 +754,7 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
     // BRO-7520: the Action files the cards itself; say only what it did (count real card-filed rows).
     const filedNow = (autofixRows || []).filter((r) => r.state === 'card-filed').length;
     const filedTxt = filedNow
-      ? `${filedNow} visitor-facing ${filedNow === 1 ? 'one' : 'ones'} got a fix card this morning and a cloud worker takes ${filedNow === 1 ? 'it' : 'them'}; the rest are tracked or being watched`
+      ? `${filedNow} visitor-facing ${filedNow === 1 ? 'one' : 'ones'} got a fix card this morning and a cloud worker takes ${filedNow === 1 ? 'it' : 'them'}; the rest are tracked, being watched, or filed on the next run`
       : 'No new fix card was filed this morning; each row below says whether it is tracked or being watched';
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. ${filedTxt}. Details below.</p>`);
   } else if (fixing && reportOnly) {
