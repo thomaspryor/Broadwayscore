@@ -243,7 +243,7 @@ function gitOk(args, opts) {
 // BRO-7541: `git fetch` into a shallow clone fails with "shallow file has changed since we
 // read it" when a background gc/maintenance rewrites .git/shallow mid-fetch. That sank the
 // 2026-11-12..15 replay runs and made prune refuse every branch. Retry transient failures.
-const TRANSIENT_GIT_RE = /shallow file has changed|could not read from remote|unable to access|early EOF|RPC failed|Connection (reset|timed out)|remote end hung up|HTTP (429|500|502|503|504)/i;
+const TRANSIENT_GIT_RE = /shallow file has changed|early EOF|RPC failed|Connection (reset|timed out)|remote end hung up|HTTP (429|500|502|503|504)/i;
 const isTransientGitError = (msg) => TRANSIENT_GIT_RE.test(String(msg || ''));
 function retryFetch(args, opts, { attempts = 3, backoffMs = 2000, run = gitOk, sleep = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms) } = {}) {
   let lastErr;

@@ -34,3 +34,7 @@ test('recovery resolves backup keys, and still-failing ones are not treated as r
   assert.deepEqual(recoveredFailureKeys(ledger, []), [`${BACKUP_FAILED_PREFIX}R2 Cold Backup`]);
   assert.deepEqual(recoveredFailureKeys(ledger, [`${BACKUP_FAILED_PREFIX}R2 Cold Backup`]), []);
 });
+
+test('a stale backup whose latest run failed still emits the failure line (no false recovery)', () => {
+  assert.match(wf, /LATEST_ANY" = "failure" \] && printf '%s' "\$name" \| grep -qi backup/);
+});

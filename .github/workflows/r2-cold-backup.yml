@@ -114,6 +114,9 @@ jobs:
           # Finite read timeout + up to 3 attempts per file. Before retrying, head-object the key:
           # if R2 already holds it at the right size the earlier attempt landed, so never rewrite
           # (the lock refuses overwrites). Only adds data; nothing is deleted.
+          # The timeout error above is a CRT-client error and CRT ignores --cli-*-timeout, so pin
+          # the classic client, which honours them; the retry loop is the backstop either way.
+          aws configure set default.s3.preferred_transfer_client classic
           for f in *.bundle.gpg MANIFEST.sha256; do
             KEY="${PREFIX}/$f"
             WANT=$(stat -c %s "$f")
