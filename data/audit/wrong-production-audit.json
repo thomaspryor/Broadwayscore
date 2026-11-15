@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T22:57:26.293Z",
+  "timestamp": "2026-11-15T23:13:49.840Z",
   "stats": {
-    "totalReviews": 82276,
+    "totalReviews": 82278,
     "alreadyFlagged": 22436,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
     "tvFilmSignals": 2319,
-    "londonSignals": 3763,
+    "londonSignals": 3765,
     "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8459
+    "noPublishDate": 8458
   },
   "findings": [
     {
@@ -99414,6 +99414,19 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "rolandcat--unknown.json",
+      "publishDate": "2026-11-14",
+      "url": "https://rolandcat.substack.com/review-desire-under-the-elms-almeida",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "west-end-wilma--westendwilma.json",
       "publishDate": "2026-11-09",
       "url": "https://westendwilma.com/shows-desire-under-the-elms-almeida-theatre/",
@@ -105808,6 +105821,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2026-11-15",
+      "url": "https://playsinternational.org.uk/hamlet-hail-to-the-thief-barbican-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
