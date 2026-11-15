@@ -97,6 +97,8 @@ function linearReadText(content) {
  * grep, cat, node and test fixtures is never read (BRO-7349: quoted text is not the session's answer).
  * -> [{ source, value, pending }]
  */
+// <cross-session-message from-session="X">body</...> or <agent-message from="X">body</...> (the harness's peer envelopes).
+const PEER_ENVELOPE_RE = /<(cross-session-message|agent-message)\b[^>]*?\bfrom(?:-session)?="([^"]*)"[^>]*>([\s\S]*?)<\/\1>/g;
 export function effectSources(events, from, lastMessage) {
   const chunk = events.slice(from + 1);
   const out = new Map();
@@ -111,6 +113,23 @@ export function effectSources(events, from, lastMessage) {
     if (!v) continue;
     const u = uses.get(e.tool_use_id);
     out.set(`card:${u.input?.issueId || u.input?.id || e.tool_use_id}`, v);
+  }
+  // A child's REPORT-BACK reaches a parent as an inbound peer turn (not its own text, not a card read): the 2026-11-15
+  // pending EFFECT arrived that way. Only text inside a peer envelope counts, never the owner's own typed message.
+  const PEER_USE_RE = /claude-code-remote__(?:get_event|list_events|get_session)$/;
+  for (const e of chunk) {
+    if (e.kind === 'assistant_tool_use' && PEER_USE_RE.test(e.name || '')) uses.set(e.id, e);
+    const raw = e.kind === 'user_text' ? e.text : e.kind === 'tool_result' && !e.isError ? e.content : null;
+    if (!raw) continue;
+    const t = typeof raw === 'string' ? raw : JSON.stringify(raw);
+    for (const m of t.matchAll(PEER_ENVELOPE_RE)) {
+      const v = lastEffectLine(m[3]);
+      if (v) out.set(`peer:${m[2] || m[1] || 'session'}`, v);
+    }
+    if (e.kind === 'tool_result' && uses.has(e.tool_use_id) && PEER_USE_RE.test(uses.get(e.tool_use_id).name || '')) {
+      const v = lastEffectLine(t.replace(/\\n/g, '\n'));
+      if (v) out.set(`peer:${uses.get(e.tool_use_id).input?.session_id || 'session'}`, v);
+    }
   }
   return [...out].map(([source, value]) => ({ source, value, pending: isPendingEffect(value) }));
 }
@@ -189,7 +208,7 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (lastRun && lastRun.verdict === 'pending') sources.push({ source: 'spend-effect-check', value: 'tool verdict: pending', pending: true });
 
   if (claim) {
-    for (const s of sources.filter((x) => x.pending)) problems.push(`the closing message says verified, but the latest EFFECT line of ${s.source === 'self' ? 'this session' : s.source === 'spend-effect-check' ? 'the spend-effect-check run' : `a card it read (${s.source.slice(5)})`} defers the measurement: "${s.value.slice(0, 140)}"`);
+    for (const s of sources.filter((x) => x.pending)) problems.push(`the closing message says verified, but the latest EFFECT line of ${s.source === 'self' ? 'this session' : s.source === 'spend-effect-check' ? 'the spend-effect-check run' : (s.source.startsWith('peer:') ? `a report from another session (${s.source.slice(5)})` : `a card it read (${s.source.slice(5)})`)} defers the measurement: "${s.value.slice(0, 140)}"`);
     if (lastRun && (lastRun.verdict === 'WORSE' || lastRun.verdict === 'NO CHANGE')) problems.push(`the last spend-effect-check run printed OVERALL VERDICT: ${lastRun.verdict}, so the change did not save money on every flow it serves`);
   }
   if (landed.length && edits.length && !runs.length && !bypass) {

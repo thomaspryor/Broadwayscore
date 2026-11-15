@@ -197,3 +197,33 @@ test('ship-check BRO-7552: "live and confirmed" and "savings confirmed" count as
   assert.equal(claimsVerified('Savings confirmed in the ledger.'), true);
   assert.equal(claimsVerified('Live, not yet proven until 2026-11-18.'), false);
 });
+
+// Parent-session finding (BRO-7552 follow-up): a child's REPORT-BACK arrives as an inbound peer turn, not as a card read.
+const REPORT_BACK = '<cross-session-message from-session="session_01CHILD">\nREPORT-BACK BRO-7532: landed. EFFECT: live check 5/5 on deadline.com; ledger numbers pending (RECHECK-AFTER 2026-11-18)\n</cross-session-message>';
+test('peer report-back: a pending EFFECT in an inbound cross-session turn blocks a "verified" closing (the 2026-11-15 shape)', () => {
+  const events = [{ kind: 'user_text', text: REPORT_BACK, synthetic: true }];
+  const d = stopHookDecision({ lastMessage: CLOSE, events, env: ENV });
+  assert.equal(d.decision, 'block');
+  assert.match(d.reason, /another session \(session_01CHILD\)/);
+});
+
+test('peer report-back read through ReadNotifications (tool result) and an agent-message hand-back are sources too', () => {
+  const [u, r] = use('ReadNotifications', {});
+  const viaTool = [u, r(`--- Notification 1 of 1 ---\n${REPORT_BACK}`)];
+  assert.equal(stopHookDecision({ lastMessage: CLOSE, events: viaTool, env: ENV }).decision, 'block');
+  const handBack = [{ kind: 'user_text', text: 'Another Claude session sent a message:\n<agent-message from="a99b">[Subagent hand-back] EFFECT: not yet observed</agent-message>' }];
+  assert.equal(stopHookDecision({ lastMessage: CLOSE, events: handBack, env: ENV }).decision, 'block');
+});
+
+test('peer report-back with a measured EFFECT allows; the owner typing "EFFECT: pending" in plain text is not a peer source', () => {
+  const measured = [{ kind: 'user_text', text: REPORT_BACK.replace(/EFFECT:[^\n]*/, 'EFFECT: deadline.com paid renders 24/h before, 3/h after'), synthetic: true }];
+  assert.equal(stopHookDecision({ lastMessage: CLOSE, events: measured, env: ENV }).decision, 'allow');
+  const owner = [{ kind: 'user_text', text: 'Is the EFFECT: pending on BRO-7532 still true?' }];
+  assert.equal(stopHookDecision({ lastMessage: CLOSE, events: owner, env: ENV }).decision, 'allow');
+});
+
+test('newest EFFECT per peer wins', () => {
+  const later = REPORT_BACK.replace(/EFFECT:[^\n]*/, 'EFFECT: 24/h before, 3/h after');
+  const events = [{ kind: 'user_text', text: REPORT_BACK, synthetic: true }, { kind: 'user_text', text: later, synthetic: true }];
+  assert.equal(stopHookDecision({ lastMessage: CLOSE, events, env: ENV }).decision, 'allow');
+});
