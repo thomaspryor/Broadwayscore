@@ -1,22 +1,17 @@
 {
-  "generatedAt": "2026-11-14T23:36:49.734Z",
+  "generatedAt": "2026-11-15T00:01:13.250Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
-    {
-      "id": "wanted-2022",
-      "title": "Wanted",
-      "openingDate": "2026-11-08"
-    },
     {
       "id": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "openingDate": "2026-11-10"
     },
     {
-      "id": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "openingDate": "2026-11-08"
+      "id": "the-fantasticks-2026",
+      "title": "The Fantasticks",
+      "openingDate": "2026-11-16"
     },
     {
       "id": "the-visitors-off-broadway-2026",
@@ -54,11 +49,6 @@
       "openingDate": "2026-11-11"
     },
     {
-      "id": "the-steel-man-off-broadway-2026",
-      "title": "The Steel Man",
-      "openingDate": "2026-11-08"
-    },
-    {
       "id": "act-of-god-off-west-end-2026",
       "title": "Act of God",
       "openingDate": "2026-11-11"
@@ -77,11 +67,6 @@
       "id": "potus-off-broadway-2026",
       "title": "POTUS",
       "openingDate": "2026-11-13"
-    },
-    {
-      "id": "the-charioteer-off-broadway-2026",
-      "title": "The Charioteer",
-      "openingDate": "2026-11-08"
     },
     {
       "id": "hamlet-hail-to-the-thief-off-west-end-2026",
@@ -137,16 +122,16 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -161,13 +146,13 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "fringereview",
-      "error": "HTTP 500 for https://fringereview.co.uk/feed/"
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 846,
+  "itemsScanned": 842,
   "matchedGaps": 4,
-  "possibleGaps": 4,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "passing-strange-regional-2026",
@@ -231,15 +216,6 @@
       "url": "https://www.westendbestfriend.co.uk/news/review-thursford-christmas-spectacular-2026",
       "headline": "Review: THURSFORD CHRISTMAS SPECTACULAR 2026",
       "publishDate": "2026-11-13"
-    },
-    {
-      "showId": "wanted-2022",
-      "title": "Wanted",
-      "level": "possible",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/wanted-on-broadway-extraordinary-voices-what-could-have-been-a-powerful-story-and-a-few-unfortunate-detours/",
-      "headline": "Wanted on Broadway: Extraordinary Voices, What Could Have Been a Powerful Story, and a Few Unfortunate Detours",
-      "publishDate": "2026-11-12"
     }
   ]
 }
