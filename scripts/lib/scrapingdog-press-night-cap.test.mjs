@@ -384,8 +384,10 @@ test('emptySerpAuthoritativeForGather: GATHER_EMPTY_SERP_RETRY_DISABLED=1 restor
 test('base cap by category: broadway and west-end get the main-stage cap, everything else the lower cap', () => {
   assert.equal(caps.PRESS_NIGHT_CAP_MAIN_STAGE_USD, 4.0);
   for (const category of ['broadway', 'west-end']) assert.equal(caps.pressNightBaseCapUsd({ category }), 4.0, category);
+  // A LISTED show with no category is Broadway by the repo's one predicate (isBroadwayCategory, #1471).
+  for (const show of [{ id: 'listed-no-category' }, { id: 'x', category: null }]) assert.equal(caps.pressNightBaseCapUsd(show), 4.0, JSON.stringify(show));
   for (const show of [{ category: 'off-broadway', market: 'broadway' }, { category: 'off-west-end', market: 'west-end' },
-    { category: 'regional' }, { category: 'tour' }, { market: 'broadway' }, {}, null, undefined]) {
+    { category: 'regional' }, { category: 'tour' }, null, undefined]) {
     assert.equal(caps.pressNightBaseCapUsd(show), caps.PRESS_NIGHT_CAP_USD, JSON.stringify(show));
   }
 });

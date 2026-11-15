@@ -39,6 +39,7 @@ const { utcDay, isExemptCaller, DEFAULT_EXEMPT_SCRIPTS } = require('./brightdata
 const { isNextUtcDay } = require('./provider-spend-core');
 const { parsePressNightPurpose } = require('./spend-purpose');
 const { isMemoSkip } = require('./provider-telemetry'); // BRO-6898
+const { isBroadwayCategory } = require('./venue-classification');
 
 /**
  * LEGACY daily credit ceiling — since BRO-2943 (2026-09-07) this is only the
@@ -342,10 +343,14 @@ const PRESS_NIGHT_CAP_USD = 2.0;
 const PRESS_NIGHT_CAP_MAIN_STAGE_USD = 4.0;
 const PRESS_NIGHT_WARN_FRACTION = 0.8;
 
-/** Pure: the base cap for a show. Exact category match; unknown show = lower cap. */
+/**
+ * Pure: the base cap for a show. Broadway (the repo's one predicate, isBroadwayCategory: a listed
+ * show with no category counts as Broadway, #1471) and West End get the main-stage cap. A show
+ * that is not in the show list at all (null) gets the lower cap.
+ */
 function pressNightBaseCapUsd(show) {
-  const category = show && show.category;
-  return category === 'broadway' || category === 'west-end' ? PRESS_NIGHT_CAP_MAIN_STAGE_USD : PRESS_NIGHT_CAP_USD;
+  if (!show) return PRESS_NIGHT_CAP_USD;
+  return isBroadwayCategory(show) || show.category === 'west-end' ? PRESS_NIGHT_CAP_MAIN_STAGE_USD : PRESS_NIGHT_CAP_USD;
 }
 
 const DEFAULT_SHOWS_PATH = require('path').join(__dirname, '..', '..', 'data', 'shows.json');
