@@ -37,7 +37,8 @@ const opts = (extra) => ({ showId: 'downstate-2026', night: '2026-11-15', label:
 
 test('lane run: none yet before the kick warns, after the kick FAILS', () => {
   assert.equal(L.laneRunVerdict([], opts()).status, 'warn');
-  assert.equal(L.laneRunVerdict([], opts({ kickAtMs: NOW - 1 })).status, 'fail');
+  assert.equal(L.laneRunVerdict([], opts({ kickAtMs: NOW - 5 * 60000 })).status, 'warn', 'inside the 20 min dispatch grace');
+  assert.equal(L.laneRunVerdict([], opts({ kickAtMs: NOW - 21 * 60000 })).status, 'fail');
 });
 
 test('lane run: other shows or nights do not count', () => {
@@ -66,14 +67,15 @@ test('lane run: waiting/queued/in-progress passes; green passes; failed with not
 test('changes: none passes; changes with armed lane pass and are listed; changes with disarmed lane FAIL', () => {
   assert.equal(L.changesVerdict([], { armed: true, windowHours: 48 }).status, 'pass');
   const commits = [
-    { sha: 'aaaaaaaa1111', subject: 'fix scorer\nbody', at: '2026-11-14T10:00:00Z' },
-    { sha: 'bbbbbbbb2222', subject: 'serp tweak', at: '2026-11-15T10:00:00Z' },
+    { sha: 'aaaaaaaa1111', subject: 'fix scorer\nbody', at: '2026-11-14T10:00:00Z', paths: ['scripts/llm-scoring'] },
+    { sha: 'bbbbbbbb2222', subject: 'serp tweak', at: '2026-11-15T10:00:00Z', paths: ['scripts/lib/url-discovery.js'] },
   ];
   const ok = L.changesVerdict(commits, { armed: true, windowHours: 48 });
   assert.equal(ok.status, 'pass');
   assert.ok(ok.detail.indexOf('bbbbbbbb') < ok.detail.indexOf('aaaaaaaa'), 'newest first');
   assert.equal(L.changesVerdict(commits, { armed: false, windowHours: 48 }).status, 'fail');
-  assert.equal(L.changesVerdict(commits, { armed: null, windowHours: 48 }).status, 'pass');
+  assert.equal(L.changesVerdict(commits, { armed: null, windowHours: 48 }).status, 'warn');
+  assert.equal(L.changesVerdict([], { armed: null, windowHours: 48 }).status, 'pass');
 });
 
 test('mergeCommitResponses dedupes by sha across per-path responses and tolerates junk', () => {
@@ -104,4 +106,67 @@ test('check-opening-night-readiness.js is wired to the lane checks', () => {
   for (const needle of ["require('./lib/readiness-lane')", 'RL.armVerdict', 'RL.laneRunVerdict', 'RL.changesVerdict', 'RL.embargoVerdict', 'opening-night-lane-live.yml', 'opening-night-lane-watchdog.yml', '--arm-check']) {
     assert.ok(src.includes(needle), `missing ${needle}`);
   }
+});
+
+test('lane run: a shadow or smoke run for the same show and night does not count as the production night run', () => {
+  const runs = [
+    { displayTitle: 'Opening-night lane shadow downstate-2026 2026-11-15', status: 'in_progress', createdAt: '2026-11-15T16:00:00Z' },
+    { displayTitle: 'Opening-night lane smoke downstate-2026 2026-11-15', status: 'in_progress', createdAt: '2026-11-15T16:00:00Z' },
+  ];
+  assert.equal(L.laneRunVerdict(runs, opts({ mode: 'night' })).status, 'warn');
+  assert.equal(L.laneRunVerdict(runs, opts({ mode: 'night', kickAtMs: NOW - 30 * 60000 })).status, 'fail');
+  runs.push({ displayTitle: 'Opening-night lane night downstate-2026 2026-11-15', status: 'waiting', createdAt: '2026-11-15T16:00:00Z' });
+  assert.equal(L.laneRunVerdict(runs, opts({ mode: 'night' })).status, 'pass');
+  assert.equal(L.laneRunVerdict([{ displayTitle: 'Opening-night lane watchdog downstate-2026 2026-11-15', status: 'in_progress', createdAt: 'x' }], opts({ mode: 'watchdog' })).status, 'pass');
+});
+
+test('lane run: stuck in queued for over 30 min warns', () => {
+  const t = 'Opening-night lane night downstate-2026 2026-11-15';
+  const old = new Date(NOW - 45 * 60000).toISOString();
+  const fresh = new Date(NOW - 5 * 60000).toISOString();
+  assert.equal(L.laneRunVerdict([{ displayTitle: t, status: 'queued', createdAt: old }], opts({ mode: 'night' })).status, 'warn');
+  assert.equal(L.laneRunVerdict([{ displayTitle: t, status: 'queued', createdAt: fresh }], opts({ mode: 'night' })).status, 'pass');
+});
+
+test('lane run: a longer show id that starts with this one does not match', () => {
+  const runs = [{ displayTitle: 'Opening-night lane night downstate-2026-revival 2026-11-15', status: 'in_progress', createdAt: 'x' }];
+  assert.equal(L.laneRunVerdict(runs, opts({ mode: 'night' })).status, 'warn');
+});
+
+test('changes: workflow/poller commits are not covered by the arm proof, even when armed', () => {
+  const wf = [{ sha: 'cccccccc3333', subject: 'orchestrator tweak', at: '2026-11-15T09:00:00Z', paths: ['.github/workflows/opening-night-orchestrator.yml'] }];
+  const v = L.changesVerdict(wf, { armed: true, windowHours: 48 });
+  assert.equal(v.status, 'warn');
+  assert.match(v.detail, /cccccccc/);
+  const mixed = wf.concat([{ sha: 'dddddddd4444', subject: 'lane fix', at: '2026-11-15T08:00:00Z', paths: ['scripts/lib/opening-night-lane'] }]);
+  assert.equal(L.changesVerdict(mixed, { armed: true, windowHours: 48 }).status, 'warn');
+  assert.equal(L.changesVerdict([{ sha: 'e', subject: 'no paths known', at: 'x' }], { armed: true, windowHours: 48 }).status, 'warn');
+});
+
+test('mergeCommitResponses records which watched paths each commit touched', () => {
+  const c = (sha) => ({ sha, commit: { message: 'm', committer: { date: 'd' } } });
+  const m = L.mergeCommitResponses([[c('1')], [c('1'), c('2')]], ['scripts/llm-scoring', '.github/workflows/press-night-clock.yml']);
+  assert.deepEqual(m.find((x) => x.sha === '1').paths, ['scripts/llm-scoring', '.github/workflows/press-night-clock.yml']);
+  assert.deepEqual(m.find((x) => x.sha === '2').paths, ['.github/workflows/press-night-clock.yml']);
+});
+
+test('replayLaneVars follows the lane-switch ledger (set, set-var, delete-var; dry runs and failures ignored)', () => {
+  const rows = [
+    { mode: 'live', ok: true, changes: [{ variable: 'LANE_ONLY_MARKETS', op: 'set', to: 'broadway' }] },
+    { mode: 'live', ok: true, changes: [{ variable: 'LANE_STANDDOWN', op: 'set', to: 'all' }] },
+    { mode: 'dry-run', ok: true, changes: [{ variable: 'LANE_STANDDOWN', op: 'clear', to: '' }] },
+    { mode: 'live', ok: false, changes: [{ variable: 'LANE_STANDDOWN', op: 'clear', to: '' }] },
+  ];
+  assert.deepEqual(L.replayLaneVars(rows), { onlyMarkets: 'broadway', standdown: 'all' });
+  rows.push({ mode: 'live', ok: true, changes: [{ variable: 'LANE_STANDDOWN', op: 'delete-var', from: 'all', to: '' }] });
+  assert.deepEqual(L.replayLaneVars(rows), { onlyMarkets: 'broadway', standdown: '' });
+  assert.deepEqual(L.replayLaneVars([]), { onlyMarkets: '', standdown: '' });
+});
+
+test('laneAppliesTo: only covered, non-stood-down shows; West End and off-Broadway stay out when only broadway is set', () => {
+  const vars = { onlyMarkets: 'broadway', standdown: '' };
+  assert.equal(L.laneAppliesTo(vars, { category: 'broadway' }).applies, true);
+  assert.equal(L.laneAppliesTo(vars, { category: 'west-end', market: 'west-end' }).applies, false);
+  assert.equal(L.laneAppliesTo({ onlyMarkets: '', standdown: '' }, { category: 'broadway' }).applies, false);
+  assert.equal(L.laneAppliesTo({ onlyMarkets: 'broadway', standdown: 'all' }, { category: 'broadway' }).applies, false);
 });

@@ -527,9 +527,25 @@ async function runChecks() {
   const night = show.openingDate;
   emit('Embargo (reviews open)', RL.embargoVerdict(show, nowMs));
 
+  // The lane only publishes shows LANE_ONLY_MARKETS covers; for any other show a disarmed lane or a missing night run
+  // is not a risk and must not exit 1 (West End, off-Broadway). Read from the lane-switch ledger (cloud gets 403 on
+  // repo variables).
+  let laneVars = { onlyMarkets: '', standdown: '' };
+  try {
+    const rows = fs.readFileSync(path.join(DATA_DIR, 'data', 'audit', 'lane-switch.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+    laneVars = RL.replayLaneVars(rows);
+  } catch { /* no ledger = nothing ever set = lane covers nothing */ }
+  const applies = RL.laneAppliesTo(laneVars, show);
+  if (!applies.applies) {
+    report(SKIP, 'Opening-night lane', `${applies.reason} (per data/audit/lane-switch.jsonl)`);
+    printSummary();
+    return;
+  }
+  report(PASS, 'Lane publishes this show', `${applies.reason} (per data/audit/lane-switch.jsonl)`);
+
   let armed = null;
   try {
-    const r = spawnSync('node', [path.join(__dirname, 'opening-night-lane-rehearse.js'), '--arm-check'], { encoding: 'utf8', timeout: 60000 });
+    const r = spawnSync(process.execPath, [path.join(__dirname, 'opening-night-lane-rehearse.js'), '--arm-check'], { encoding: 'utf8', timeout: 60000 });
     const line = String(r.stdout || '').split('\n').reverse().find((l) => l.trim().startsWith('{'));
     const armJson = line ? JSON.parse(line) : null;
     if (armJson && typeof armJson.arm === 'boolean') armed = armJson.arm;
@@ -550,11 +566,11 @@ async function runChecks() {
     const toRuns = (resp) => ((resp && resp.workflow_runs) || []).map((r) => ({
       displayTitle: r.display_title || r.name || '', status: r.status, conclusion: r.conclusion, createdAt: r.created_at,
     }));
-    for (const [wf, label] of [['opening-night-lane-live.yml', 'Lane night run'], ['opening-night-lane-watchdog.yml', 'Lane watchdog']]) {
-      const noun = label.toLowerCase();
+    const createdFrom = encodeURIComponent(new Date(emb.kickAtMs - 24 * 3600000).toISOString());
+    for (const [wf, label, mode] of [['opening-night-lane-live.yml', 'Lane night run', 'night'], ['opening-night-lane-watchdog.yml', 'Lane watchdog', 'watchdog']]) {
       try {
-        const resp = await ghGet(`https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/${wf}/runs?per_page=30`);
-        emit(label, RL.laneRunVerdict(toRuns(resp), { showId: SHOW_ID, night, label: noun, kickAtMs: emb.kickAtMs, nowMs }));
+        const resp = await ghGet(`https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/${wf}/runs?per_page=100&created=%3E%3D${createdFrom}`);
+        emit(label, RL.laneRunVerdict(toRuns(resp), { showId: SHOW_ID, night, label: label.toLowerCase(), mode, kickAtMs: emb.kickAtMs, nowMs }));
       } catch (e) {
         report(WARN, label, `GitHub API error (${e.status || e.message}); could not look for the ${label.toLowerCase()}.`);
       }
@@ -564,9 +580,9 @@ async function runChecks() {
     try {
       const responses = [];
       for (const p of RL.PIPELINE_PATHS) {
-        responses.push(await ghGet(`https://api.github.com/repos/thomaspryor/Broadwayscore/commits?sha=main&since=${encodeURIComponent(since)}&per_page=20&path=${encodeURIComponent(p)}`));
+        responses.push(await ghGet(`https://api.github.com/repos/thomaspryor/Broadwayscore/commits?sha=main&since=${encodeURIComponent(since)}&per_page=50&path=${encodeURIComponent(p)}`));
       }
-      emit('Pipeline changes (last 48h)', RL.changesVerdict(RL.mergeCommitResponses(responses), { armed, windowHours: WINDOW_H }));
+      emit('Pipeline changes (last 48h)', RL.changesVerdict(RL.mergeCommitResponses(responses, RL.PIPELINE_PATHS), { armed, windowHours: WINDOW_H }));
     } catch (e) {
       report(WARN, 'Pipeline changes (last 48h)', `GitHub API error (${e.status || e.message}); could not list recent pipeline commits.`);
     }
