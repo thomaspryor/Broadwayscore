@@ -307,6 +307,30 @@ function excerptWorkload({ verbose = false, enforce = false } = {}) {
   return JSON.parse(child.stdout);
 }
 
+// BRO-7523: importing this file must stay cheap. The BRO-7296 grandfather set was built at import time,
+// above the require.main guard, by reading the whole reviews.json (~43MB) and display-normalising every
+// critic. That cost ~7s per import and made the BRO-5428 subprocesses time out under CI load. Checked by
+// what the import reads, not how long it takes, so a slow host cannot make this flaky either way.
+test('BRO-7523: requiring rebuild-all-reviews does not read the reviews corpus', () => {
+  const child = spawnSync(process.execPath, ['-e', `
+    const fs = require('fs');
+    const reads = [];
+    for (const fn of ['readFileSync', 'readdirSync', 'openSync']) { // reads and walks; existence probes are cheap
+      const orig = fs[fn];
+      fs[fn] = function (p, ...rest) { if (typeof p === 'string') reads.push(p); return orig.call(this, p, ...rest); };
+    }
+    require('./scripts/rebuild-all-reviews');
+    process.stdout.write(JSON.stringify(reads));
+  `], {
+    cwd: path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'),
+    encoding: 'utf8',
+    timeout: 30000,
+  });
+  assert.equal(child.status, 0, child.stderr || child.error?.message);
+  const corpus = JSON.parse(child.stdout).filter((p) => /(^|[\\/])data[\\/](reviews\.json$|review-texts([\\/]|$))/.test(p));
+  assert.deepEqual(corpus, [], 'import-time reads of the reviews corpus belong below the require.main guard');
+});
+
 test('BRO-5428: default fast-path processing skips diagnostic cross-show scans and per-review guard logs', () => {
   const result = excerptWorkload();
   assert.equal(result.crossChecks, 0, 'dry-run title scans must not run on the default rebuild path');

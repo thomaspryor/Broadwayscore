@@ -407,17 +407,6 @@ const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 const cvWpBuildGate = require('./lib/cv-wrongproduction-build-gate');
 // Same normalisers the row writer uses, so a live row and its review-texts file produce the same key.
 const cvWpNorm = () => ({ url: (u) => (u ? normalizeUrlForDedup(u) : ''), outlet: (o) => (o ? normalizeOutletCanonical(o) : ''), critic: (c) => (c ? normalizeCriticName(c) : '') });
-const CV_WP_BUILD_GATE_MODE = (process.env.CV_WP_BUILD_GATE || 'enforce').toLowerCase();
-let cvWpGrandfather = null;
-if (CV_WP_BUILD_GATE_MODE !== 'off') {
-  try {
-    cvWpGrandfather = cvWpBuildGate.buildGrandfatherSet(JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews, cvWpNorm());
-    if (cvWpGrandfather.size === 0) cvWpGrandfather = null;
-    // Dry-run only (scripts/dryrun-cv-wp-build-gate.js): pretend nothing is live, to count the whole lifetime backlog.
-    if (cvWpGrandfather && process.env.CV_WP_BUILD_GATE_GRANDFATHER === 'off') cvWpGrandfather = new Set();
-  } catch (e) { cvWpGrandfather = null; }
-  if (!cvWpGrandfather) console.warn('⚠️  CV wrongProduction build gate (BRO-7296): no previous reviews.json rows to grandfather against, gate is OFF this run');
-}
 
 // --show=<id>: scope this run to one show and print its per-file exclusion
 // reasons, then exit before any AGGREGATE write (reviews.json, watermark,
@@ -1392,6 +1381,21 @@ module.exports = {
   stats,
 };
 if (require.main !== module) return;
+
+// BRO-7296 grandfather set: built here, below the require guard, so importing this file for its
+// helpers stays cheap (BRO-7523: building it at import cost ~7s and timed out the BRO-5428 tests).
+// Still runs before anything in the pipeline rewrites reviews.json.
+const CV_WP_BUILD_GATE_MODE = (process.env.CV_WP_BUILD_GATE || 'enforce').toLowerCase();
+let cvWpGrandfather = null;
+if (CV_WP_BUILD_GATE_MODE !== 'off') {
+  try {
+    cvWpGrandfather = cvWpBuildGate.buildGrandfatherSet(JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews, cvWpNorm());
+    if (cvWpGrandfather.size === 0) cvWpGrandfather = null;
+    // Dry-run only (scripts/dryrun-cv-wp-build-gate.js): pretend nothing is live, to count the whole lifetime backlog.
+    if (cvWpGrandfather && process.env.CV_WP_BUILD_GATE_GRANDFATHER === 'off') cvWpGrandfather = new Set();
+  } catch (e) { cvWpGrandfather = null; }
+  if (!cvWpGrandfather) console.warn('⚠️  CV wrongProduction build gate (BRO-7296): no previous reviews.json rows to grandfather against, gate is OFF this run');
+}
 
 // Main execution
 console.log('=== REBUILDING ALL REVIEWS ===\n');

@@ -38,9 +38,11 @@ import * as path from 'path';
 import { scoreToBucket } from './config';
 import { PipelineRunSummary } from './types';
 import { availableModels, settleShow, usageTotals } from './comparative-core';
+import { recorderModels, batchedModels, runComparativeBatches } from './comparative-batch';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
 const { COMPARATIVE_OPENAI } = require('../lib/models');
+const { COMPARATIVE_PARAMS } = require('../lib/comparative-batch');
 
 // The pass itself lives in comparative-core.ts, shared with the opening-night lane (BRO-7283).
 
@@ -55,6 +57,10 @@ async function main() {
   const showArg = args.find((a) => a.startsWith('--show='))?.split('=')[1];
   const limit = parseInt(args.find((a) => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
   const maxRescores = parseInt(args.find((a) => a.startsWith('--max-rescores='))?.split('=')[1] || '0', 10);
+
+  const batch = args.includes('--batch') && !dryRun; // a dry run must not buy paid batches
+  const pollRaw = parseInt(args.find((a) => a.startsWith('--batch-poll-minutes='))?.split('=')[1] || '20', 10);
+  const batchPollMinutes = Number.isFinite(pollRaw) && pollRaw >= 0 ? pollRaw : 20; // NaN would poll until the job timeout
 
   const models = availableModels();
   if (models.length < 2) {
@@ -83,6 +89,31 @@ async function main() {
   let rescoresDone = 0;
   const examples: string[] = [];
 
+  // BRO-7523: --batch sends every prompt through the vendor Batch APIs (50%).
+  // Record pass (dryRun, recorder models) collects the prompts settleShow would
+  // send; then the real loop below reads the batch answers. No sync fallback.
+  let activeModels = models;
+  if (batch) {
+    const sink = new Set<string>();
+    let left0 = maxRescores;
+    for (const show of shows) {
+      if (maxRescores > 0 && left0 <= 0) break;
+      const st = await settleShow(show, {
+        reviewTextsDir: REVIEW_TEXTS_DIR, models: recorderModels(models, sink), dryRun: true,
+        maxRescores: left0, log: () => {},
+      });
+      if (maxRescores > 0) left0 -= st.rescoresDone;
+    }
+    console.log(`📦 BATCH MODE: ${sink.size} comparative prompt(s) x ${models.length} models, poll budget ${batchPollMinutes} min`);
+    if (sink.size === 0) {
+      console.log('Nothing to rescore.');
+      activeModels = batchedModels(models, {}); // never reach a sync call in batch mode
+    } else {
+      const batchState = await runComparativeBatches(models, sink, batchPollMinutes);
+      activeModels = batchedModels(models, batchState);
+    }
+  }
+
   for (const show of shows) {
     const left = maxRescores > 0 ? maxRescores - rescoresDone : 0;
     if (maxRescores > 0 && left <= 0) {
@@ -90,7 +121,7 @@ async function main() {
       break;
     }
     const st = await settleShow(show, {
-      reviewTextsDir: REVIEW_TEXTS_DIR, models, dryRun, maxRescores: left, log: (l) => console.log(l),
+      reviewTextsDir: REVIEW_TEXTS_DIR, models: activeModels, dryRun, maxRescores: left, log: (l) => console.log(l),
     });
     totalReviews += st.totalReviews; changed += st.changed; bucketShifts += st.bucketShifts;
     sumDelta += st.sumDelta; sumAbsDelta += st.sumAbsDelta; rescoresDone += st.rescoresDone;
@@ -123,7 +154,7 @@ async function main() {
     claude: usageTotals.claude,
     openai: usageTotals.openai,
     gemini: usageTotals.gemini,
-  }, { claudeModelName: 'claude-sonnet-4-6', openaiModelName: COMPARATIVE_OPENAI });
+  }, { claudeModelName: COMPARATIVE_PARAMS.claudeModel, openaiModelName: COMPARATIVE_OPENAI, batch });
   const costUsd = breakdown.total;
   console.log(
     `Estimated cost: $${costUsd.toFixed(4)} (Claude: $${breakdown.claude.toFixed(4)}, OpenAI: $${breakdown.openai.toFixed(4)}, Gemini: $${breakdown.gemini.toFixed(4)})`

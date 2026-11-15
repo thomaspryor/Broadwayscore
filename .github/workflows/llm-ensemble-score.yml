@@ -667,7 +667,14 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
-          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=200 --max-cost=6 --verbose
+          # BRO-7523: non-urgent, so it takes the 50% Batch API price like the main
+          # scheduled pass (this step is schedule-only; opening-night rescores go
+          # through opening-night-poller.yml / workflow_dispatch, which stay sync).
+          # --max-cost does not cap a batch, --limit=200 does (~$0.012/review batched).
+          # DISABLE_BATCH_SCORING=1 forces sync, same kill switch as the main pass.
+          DRAIN_BATCH="--batch --batch-poll-minutes=20"
+          if [ "${{ vars.DISABLE_BATCH_SCORING }}" == "1" ]; then DRAIN_BATCH=""; fi
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=200 --max-cost=6 $DRAIN_BATCH --verbose
 
       # Comparative within-band re-scoring (BRO-37, 2026-08-26). anchored-v6
       # scores each review in ISOLATION, so genuine strong-rave 5-star reviews
@@ -704,12 +711,20 @@ jobs:
           # rewritten (BRO-7283: this is what moved Blueberries 81 -> 80 after
           # the opening-night lane had published the isolated scores). The
           # lane now runs the same pass (comparative-core.ts) at score time.
+          # BRO-7523: the scheduled run is non-urgent, so it batches (50%). A manual
+          # dispatch (per-show opening-night rescore) stays sync. Kill switch
+          # DISABLE_BATCH_SCORING=1 (same as the main pass). Poll budget keeps the
+          # job well under timeout-minutes: 350.
+          CMP_BATCH=""
+          if [ "${{ github.event_name }}" == "schedule" ] && [ "${{ github.event.inputs.chain }}" != "true" ] && [ "${{ vars.DISABLE_BATCH_SCORING }}" != "1" ]; then
+            CMP_BATCH="--batch --batch-poll-minutes=20"
+          fi
           if [ -n "${INPUT_SHOW_ID}" ]; then
             # --show= takes one id; a comma list goes through --shows= (comparative-rescore.ts:387-388).
             SHOW_FLAG="--show"; case "${INPUT_SHOW_ID}" in *,*) SHOW_FLAG="--shows" ;; esac
-            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts "${SHOW_FLAG}=${INPUT_SHOW_ID}" --max-rescores=30
+            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts "${SHOW_FLAG}=${INPUT_SHOW_ID}" --max-rescores=30 $CMP_BATCH
           else
-            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --all-we --max-rescores=30
+            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --all-we --max-rescores=30 $CMP_BATCH
           fi
 
       # Liveness snapshot (task #597): the drain step above only tells you it
