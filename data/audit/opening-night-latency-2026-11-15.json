@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-15T11:02:52.802Z",
+  "generatedAt": "2026-11-15T14:19:36.191Z",
   "date": "2026-11-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 274399,
+  "entryCount": 283166,
   "shows": [
     {
       "showId": "wicked-tour-2021",
@@ -1158,8 +1158,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 1785861,
+        "collected-to-scored": 84922535,
+        "scored-to-rebuilt": 1248215,
         "rebuilt-to-deployed": 203179229
       },
       "reviews_over_15min": 0,
@@ -1918,13 +1918,13 @@
     },
     {
       "showId": "beetlejuice-tour-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 878122,
+        "scored-to-rebuilt": 1387377,
         "rebuilt-to-deployed": 154265547
       },
       "reviews_over_15min": 0,
@@ -1948,13 +1948,13 @@
     },
     {
       "showId": "the-music-man-tour-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 686231,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2128,13 +2128,13 @@
     },
     {
       "showId": "and-juliet-tour-2024",
-      "reviewCount": 64,
+      "reviewCount": 67,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 686227,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2158,7 +2158,7 @@
     },
     {
       "showId": "the-great-gatsby-2024",
-      "reviewCount": 35,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2304,8 +2304,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 4766244,
-        "scored-to-rebuilt": 2728955,
+        "collected-to-scored": 31200779,
+        "scored-to-rebuilt": 1207525,
         "rebuilt-to-deployed": 195903356
       },
       "reviews_over_15min": 0,
@@ -3034,13 +3034,13 @@
     },
     {
       "showId": "the-lehman-trilogy-2021",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1352184,
+        "scored-to-rebuilt": 686212,
         "rebuilt-to-deployed": 133569764
       },
       "reviews_over_15min": 0,
@@ -3255,13 +3255,13 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
-      "reviewCount": 40,
+      "reviewCount": 43,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 686225,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3285,7 +3285,7 @@
     },
     {
       "showId": "the-lion-king-tour-2021",
-      "reviewCount": 66,
+      "reviewCount": 67,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4421,13 +4421,13 @@
     },
     {
       "showId": "the-rose-tattoo-2019",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2888510,
+        "scored-to-rebuilt": 930987,
         "rebuilt-to-deployed": 116901640
       },
       "reviews_over_15min": 0,
@@ -6757,8 +6757,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 1154058,
+        "collected-to-scored": 45833084,
+        "scored-to-rebuilt": 1150959,
         "rebuilt-to-deployed": 192987394
       },
       "reviews_over_15min": 0,
@@ -7207,8 +7207,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 53842334,
-        "scored-to-rebuilt": 343855,
+        "collected-to-scored": 53918208,
+        "scored-to-rebuilt": 345788,
         "rebuilt-to-deployed": 192248900
       },
       "reviews_over_15min": 0,
@@ -7642,8 +7642,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 2369456,
+        "collected-to-scored": 79414196,
+        "scored-to-rebuilt": 2367040,
         "rebuilt-to-deployed": 189829924
       },
       "reviews_over_15min": 0,
@@ -8198,7 +8198,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 21933130,
-        "scored-to-rebuilt": 931018,
+        "scored-to-rebuilt": 858748,
         "rebuilt-to-deployed": 40815902
       },
       "reviews_over_15min": 0,
@@ -11954,13 +11954,13 @@
     },
     {
       "showId": "the-real-thing-2014",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2401374,
+        "scored-to-rebuilt": 686212,
         "rebuilt-to-deployed": 110936855
       },
       "reviews_over_15min": 0,
@@ -12044,13 +12044,13 @@
     },
     {
       "showId": "on-the-town-2014",
-      "reviewCount": 25,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 3743704,
+        "collected-to-scored": 15151428,
+        "scored-to-rebuilt": 3741422,
         "rebuilt-to-deployed": 181057814
       },
       "reviews_over_15min": 0,
@@ -12299,13 +12299,13 @@
     },
     {
       "showId": "act-one-2014",
-      "reviewCount": 21,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 930981,
+        "scored-to-rebuilt": 930980,
         "rebuilt-to-deployed": 40815902
       },
       "reviews_over_15min": 0,
@@ -13654,8 +13654,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 109827,
+        "collected-to-scored": 51029818,
+        "scored-to-rebuilt": 348031,
         "rebuilt-to-deployed": 181057810
       },
       "reviews_over_15min": 0,
@@ -14269,8 +14269,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 2073600,
+        "collected-to-scored": 17336068,
+        "scored-to-rebuilt": 2071247,
         "rebuilt-to-deployed": 178519122
       },
       "reviews_over_15min": 0,
@@ -15950,13 +15950,13 @@
     },
     {
       "showId": "les-miserables-tour-2022",
-      "reviewCount": 50,
+      "reviewCount": 52,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 4663561,
+        "scored-to-rebuilt": 931010,
         "rebuilt-to-deployed": 86175061
       },
       "reviews_over_15min": 0,
@@ -15965,13 +15965,13 @@
     },
     {
       "showId": "jagged-little-pill-tour-2022",
-      "reviewCount": 24,
+      "reviewCount": 28,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 8396108,
+        "scored-to-rebuilt": 8396104,
         "rebuilt-to-deployed": 131534221
       },
       "reviews_over_15min": 0,
@@ -16268,7 +16268,7 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
-      "reviewCount": 40,
+      "reviewCount": 41,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16588,8 +16588,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 557135,
+        "collected-to-scored": 16295406,
+        "scored-to-rebuilt": 630351,
         "rebuilt-to-deployed": 68320196
       },
       "reviews_over_15min": 0,
@@ -16643,13 +16643,13 @@
     },
     {
       "showId": "legally-blonde-tour-2022",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 557143,
+        "scored-to-rebuilt": 686217,
         "rebuilt-to-deployed": 68320196
       },
       "reviews_over_15min": 0,
@@ -16808,14 +16808,14 @@
     },
     {
       "showId": "passing-strange-regional-2026",
-      "reviewCount": 5,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 886577,
-        "rebuilt-to-deployed": 40815900
+        "scored-to-rebuilt": 1165222,
+        "rebuilt-to-deployed": 44432081
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -16823,13 +16823,13 @@
     },
     {
       "showId": "water-for-elephants-2024",
-      "reviewCount": 36,
+      "reviewCount": 38,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 4188606,
-        "scored-to-rebuilt": 930988,
+        "collected-to-scored": 21709096,
+        "scored-to-rebuilt": 686222,
         "rebuilt-to-deployed": 40815899
       },
       "reviews_over_15min": 0,
@@ -16943,13 +16943,13 @@
     },
     {
       "showId": "call-me-izzy-2025",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 930987,
+        "collected-to-scored": 34582853,
+        "scored-to-rebuilt": 808604,
         "rebuilt-to-deployed": 40815901
       },
       "reviews_over_15min": 0,
@@ -16958,7 +16958,7 @@
     },
     {
       "showId": "bring-it-on-the-musical-2012",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16979,7 +16979,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 930978,
+        "scored-to-rebuilt": 930977,
         "rebuilt-to-deployed": 40815901
       },
       "reviews_over_15min": 0,
@@ -17048,7 +17048,7 @@
     },
     {
       "showId": "bug-2026",
-      "reviewCount": 39,
+      "reviewCount": 40,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17108,7 +17108,7 @@
     },
     {
       "showId": "downstate-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17608,8 +17608,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 21684377,
+        "scored-to-rebuilt": 686219,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -17623,8 +17623,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 21101257,
+        "scored-to-rebuilt": 686209,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -17633,28 +17633,13 @@
     },
     {
       "showId": "spring-awakening-2006",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "the-history-boys-2006",
-      "reviewCount": 2,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 21079067,
+        "scored-to-rebuilt": 686208,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -17671,6 +17656,81 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 778239,
         "rebuilt-to-deployed": 1738246
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "gang-of-three-off-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1896626,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "reviewCount": 32,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1896620,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-harder-they-come-off-broadway-2023",
+      "reviewCount": 20,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1896625,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "angels-in-america-perestroika-1993",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1896600,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "orphans-off-west-end-2026",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1998818,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
