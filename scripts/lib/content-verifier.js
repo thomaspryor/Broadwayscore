@@ -16,7 +16,9 @@
 const https = require('https');
 require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usage ledger
 const crypto = require('crypto');
-const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./models');
+const { GEMINI_FLASH, GPT4O_MINI, VERIFIER_HAIKU, CLAUDE_SONNET } = require('./models');
+const { buildMessagesBody } = require('./anthropic-request');
+const { finalResponseText } = require('./anthropic-response-text');
 const { foldDiacritics } = require('./title-match');
 const { isLondonMarket, isSpecialEngagementVenue } = require('./venue-classification');
 const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
@@ -276,17 +278,15 @@ function callOpenAI(prompt) {
 // opts.timeoutMs (BRO-4603): abort the request (no late reply, no socket left
 // open) after that long. Unset = no timeout, the behaviour every existing
 // caller relies on.
-function callAnthropic(model, { timeoutMs } = {}) {
+// opts.onUsage(usage, model) (BRO-7527): sees each 200 reply's token usage, for evals that cap spend.
+function callAnthropic(model, { timeoutMs, onUsage } = {}) {
   return function (prompt) {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
 
     return new Promise((resolve, reject) => {
-      const body = JSON.stringify({
-        model,
-        max_tokens: 400,
-        messages: [{ role: 'user', content: prompt }],
-      });
+      // BRO-7527: per-model shape (Haiku 5.5: thinking off, no sampling params).
+      const body = JSON.stringify(buildMessagesBody({ model, maxTokens: 400, prompt }));
 
       const req = https.request('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -302,7 +302,8 @@ function callAnthropic(model, { timeoutMs } = {}) {
           if (res.statusCode === 200) {
             try {
               const json = JSON.parse(data);
-              resolve(json.content?.[0]?.text || '');
+              if (onUsage) onUsage(json.usage || null, model);
+              resolve(finalResponseText(json.content));
             } catch (e) {
               reject(new Error(`Anthropic parse error: ${e.message}`));
             }
@@ -319,7 +320,7 @@ function callAnthropic(model, { timeoutMs } = {}) {
   };
 }
 
-const callClaudeHaiku = callAnthropic(CLAUDE_HAIKU);
+const callClaudeHaiku = callAnthropic(VERIFIER_HAIKU);
 const callClaudeSonnet = callAnthropic(CLAUDE_SONNET);
 
 // ============================================================
@@ -342,7 +343,8 @@ const callClaudeSonnet = callAnthropic(CLAUDE_SONNET);
 function getProviderChain() {
   const providers = [];
   if (process.env.ANTHROPIC_API_KEY) {
-    providers.push({ name: 'claude-haiku', call: callClaudeHaiku });
+    // Name carries the generation so verifiedBy tells 4.5 and 5.5 verdicts apart (BRO-7527).
+    providers.push({ name: /^claude-haiku-5/.test(VERIFIER_HAIKU) ? 'claude-haiku-v5' : 'claude-haiku', call: callClaudeHaiku });
   }
   if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
   if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });

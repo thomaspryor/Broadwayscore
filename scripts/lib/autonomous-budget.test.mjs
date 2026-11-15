@@ -247,6 +247,9 @@ test('estimateUSD prices by model family and never crashes on junk', () => {
   assert.equal(estimateUSD('claude-opus-5-5', 1_000_000, 1_000_000), 24);
   assert.equal(estimateUSD('claude-sonnet-4-6', 1_000_000, 1_000_000), 18);
   assert.equal(estimateUSD('claude-opus-4-7', 1_000_000, 1_000_000), 30);
+  // BRO-7527: Haiku 5.5 $0.10/$0.50, a tenth of Haiku 4.5 (row above /haiku/)
+  assert.equal(estimateUSD('claude-haiku-5-5', 1_000_000, 1_000_000), 0.6);
+  assert.equal(estimateUSD('claude-haiku-4-5-20251001', 1_000_000, 1_000_000), 6);
   // unknown family / junk inputs → 0, never NaN or throw
   assert.equal(estimateUSD('gpt-4o', 100_000, 100_000), 0);
   assert.equal(estimateUSD(null, undefined, NaN), 0);

@@ -48,8 +48,12 @@ function parseCustomIdIndex(customId) {
 // Per-model sampling/thinking params (BRO-7537). Shared by the sync scorer and
 // the batch builder so a pinned model never gets params its API 400s on:
 // claude-sonnet-5-5 rejects temperature and disabled thinking.
+// BRO-7527: claude-haiku-5-5 rejects temperature too and thinks by default;
+// disabled thinking keeps its short classifier answers in the first text block
+// and inside the 4.5-era max_tokens caps (scripts/lib/anthropic-request.js).
 function claudeSamplingParams(model, temperature = 0.3) {
   if (/^claude-sonnet-5/.test(String(model))) return { thinking: { type: 'between_tools' } };
+  if (/^claude-haiku-5/.test(String(model))) return { thinking: { type: 'disabled' } };
   return temperature === null ? {} : { temperature }; // null = legacy caller that never set temperature
 }
 
