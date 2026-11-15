@@ -23,6 +23,10 @@ commit step being present. Those calls ran Oct 30 01:32:12 through 06:51:50 UTC:
 414 Scrapingdog calls (842 credits), 367 Bright Data calls and three ScrapingBee
 calls (three credits), totaling $0.626577 at the configured rates.
 
+(Update 2026-11-15, BRO-7531: the owner raised the cap to $4.00 for Broadway and
+West End shows only, `PRESS_NIGHT_CAP_MAIN_STAGE_USD`; all other categories stay
+at $2.00. The text below is the 2026-10-30 finding.)
+
 Retain `PRESS_NIGHT_CAP_USD = 2.00` and the owner's Option A for the lane, poller
 and collector. Even assigning **all** recorded shadow cost to the most expensive
 tagged night gives $1.419840, below the $1.60 warning threshold and $2 ceiling.

@@ -30,9 +30,11 @@ function rows(list) {
 function row(purpose, provider, credits) {
   return { ts: '2026-10-29T20:00:00Z', provider, fn: 'serp', success: true, credits, purpose };
 }
-function status(tag, extraEnv = {}) {
-  return caps.pressNightCapStatus({ env: { ...extraEnv }, purpose: tag, ledgerPath: ledger });
+function status(tag, extraEnv = {}, show = null) {
+  // lookupShow is injected so no test parses the real data/shows.json.
+  return caps.pressNightCapStatus({ env: { ...extraEnv }, purpose: tag, ledgerPath: ledger, lookupShow: () => show });
 }
+const bd = (tag, count) => Array.from({ length: count }, () => row(tag, 'brightdata', null)); // $0.0015 each
 
 beforeEach(() => {
   ledger = path.join(dir, `ledger-${n++}.jsonl`);
@@ -368,4 +370,58 @@ test('emptySerpAuthoritativeForGather: GATHER_EMPTY_SERP_RETRY_DISABLED=1 restor
     delete process.env.GATHER_EMPTY_SERP_RETRY_DISABLED;
   }
   assert.equal(sp.emptySerpAuthoritativeForGather({ openingNight: true, show, nowMs: t }), false);
+});
+
+// BRO-7531 (owner decision 2026-11-15): $4 for Broadway and West End only.
+test('base cap by category: broadway and west-end get the main-stage cap, everything else the lower cap', () => {
+  assert.equal(caps.PRESS_NIGHT_CAP_MAIN_STAGE_USD, 4.0);
+  for (const category of ['broadway', 'west-end']) assert.equal(caps.pressNightBaseCapUsd({ category }), 4.0, category);
+  for (const show of [{ category: 'off-broadway', market: 'broadway' }, { category: 'off-west-end', market: 'west-end' },
+    { category: 'regional' }, { category: 'tour' }, { market: 'broadway' }, {}, null, undefined]) {
+    assert.equal(caps.pressNightBaseCapUsd(show), caps.PRESS_NIGHT_CAP_USD, JSON.stringify(show));
+  }
+});
+
+test('a Broadway show is not stopped at $2.50 and is stopped at $4', () => {
+  const broadway = { id: 'show-a-2026', category: 'broadway', market: 'broadway' };
+  rows(bd(TAG_A, 1667)); // $2.50
+  const mid = status(TAG_A, {}, broadway);
+  assert.deepEqual([mid.exceeded, mid.capUsd], [false, 4.0]);
+  caps._resetForTests();
+  rows(bd(TAG_A, 2700)); // $4.05
+  const over = status(TAG_A, {}, broadway);
+  assert.deepEqual([over.exceeded, over.reason, over.capUsd], [true, 'press-night-cap', 4.0]);
+});
+
+test('off-Broadway, off-West-End and unknown shows are still stopped at $2', () => {
+  for (const show of [{ category: 'off-broadway', market: 'broadway' }, { category: 'off-west-end', market: 'west-end' }, null]) {
+    caps._resetForTests();
+    rows(bd(TAG_A, 1400)); // $2.10
+    const r = status(TAG_A, {}, show);
+    assert.deepEqual([r.exceeded, r.capUsd], [true, caps.PRESS_NIGHT_CAP_USD], JSON.stringify(show));
+  }
+});
+
+test('a show lookup that throws falls back to the lower cap', () => {
+  rows(bd(TAG_A, 1400));
+  const r = caps.pressNightCapStatus({ env: {}, purpose: TAG_A, ledgerPath: ledger, lookupShow: () => { throw new Error('boom'); } });
+  assert.deepEqual([r.exceeded, r.capUsd], [true, caps.PRESS_NIGHT_CAP_USD]);
+});
+
+test('SD_PRESS_NIGHT_CAP_USD lowers a Broadway cap and can never raise it', () => {
+  const broadway = { category: 'broadway' };
+  rows(bd(TAG_A, 10));
+  assert.equal(status(TAG_A, { SD_PRESS_NIGHT_CAP_USD: '3' }, broadway).capUsd, 3);
+  caps._resetForTests();
+  assert.equal(status(TAG_A, { SD_PRESS_NIGHT_CAP_USD: '10' }, broadway).capUsd, 4.0);
+  caps._resetForTests();
+  assert.equal(status(TAG_A, { SD_PRESS_NIGHT_CAP_USD: '3' }, { category: 'off-broadway' }).capUsd, caps.PRESS_NIGHT_CAP_USD);
+});
+
+test('default lookup reads the real shows file: a real Broadway show gets $4, an unknown id gets $2', () => {
+  rows(bd(sp.pressNightPurpose('downstate-2026', '2026-11-15'), 10));
+  const real = caps.pressNightCapStatus({ env: {}, purpose: sp.pressNightPurpose('downstate-2026', '2026-11-15'), ledgerPath: ledger });
+  assert.equal(real.capUsd, 4.0);
+  const unknown = caps.pressNightCapStatus({ env: {}, purpose: sp.pressNightPurpose('no-such-show-0000', '2026-11-15'), ledgerPath: ledger });
+  assert.equal(unknown.capUsd, caps.PRESS_NIGHT_CAP_USD);
 });

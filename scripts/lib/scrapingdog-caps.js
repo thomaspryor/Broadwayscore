@@ -330,18 +330,46 @@ function isBreakerActive(state, day) {
  * SERP phase (url-discovery.js returns null -> '__SERP_UNAVAILABLE__'), so it
  * must sit well above a normal night. Recalibrate from the ledger after the
  * Oct 29 openings.
+ *
+ * BRO-7531 (owner decision 2026-11-15): Broadway and West End shows get $4.00.
+ * After the same-day search changes (site: re-ask, press-night empties no longer
+ * cached) a busy Broadway night is estimated near $1.40, too close to $2.00 for
+ * a guard whose trip ends the hunt for reviews. Every other category
+ * (off-Broadway, off-West-End, regional, tour) and any show that cannot be
+ * looked up stays at $2.00.
  */
 const PRESS_NIGHT_CAP_USD = 2.0;
+const PRESS_NIGHT_CAP_MAIN_STAGE_USD = 4.0;
 const PRESS_NIGHT_WARN_FRACTION = 0.8;
 
-/** Cap in USD. SD_PRESS_NIGHT_CAP_USD may only LOWER it, never raise it. */
-function resolvePressNightCapUsd(env = process.env) {
+/** Pure: the base cap for a show. Exact category match; unknown show = lower cap. */
+function pressNightBaseCapUsd(show) {
+  const category = show && show.category;
+  return category === 'broadway' || category === 'west-end' ? PRESS_NIGHT_CAP_MAIN_STAGE_USD : PRESS_NIGHT_CAP_USD;
+}
+
+let _showsByIdCache = null;
+/** Default show lookup: data/shows.json by id, read once. Any failure = null (lower cap). */
+function _lookupShowById(showId) {
+  if (_showsByIdCache === null) {
+    _showsByIdCache = new Map();
+    try {
+      const path = require('path');
+      const d = JSON.parse(require('fs').readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+      for (const s of (d.shows || d)) if (s && s.id) _showsByIdCache.set(s.id, s);
+    } catch (_e) { /* unreadable: every show gets the lower cap */ }
+  }
+  return _showsByIdCache.get(showId) || null;
+}
+
+/** Cap in USD. SD_PRESS_NIGHT_CAP_USD may only LOWER it (below the show's base cap), never raise it. */
+function resolvePressNightCapUsd(env = process.env, baseCapUsd = PRESS_NIGHT_CAP_USD) {
   const raw = Number(env.SD_PRESS_NIGHT_CAP_USD);
   if (env.SD_PRESS_NIGHT_CAP_USD != null && String(env.SD_PRESS_NIGHT_CAP_USD).trim() !== ''
-      && Number.isFinite(raw) && raw > 0 && raw < PRESS_NIGHT_CAP_USD) {
+      && Number.isFinite(raw) && raw > 0 && raw < baseCapUsd) {
     return raw;
   }
-  return PRESS_NIGHT_CAP_USD;
+  return baseCapUsd;
 }
 
 const _pressNightWarned = new Set();
@@ -475,7 +503,7 @@ function _stillMatches(fd, entry) {
  *
  * @returns {{applies: boolean, exceeded: boolean, reason?: string, spentUsd?: number, capUsd?: number}}
  */
-function pressNightCapStatus({ env = process.env, purpose, ledgerPath, table } = {}) {
+function pressNightCapStatus({ env = process.env, purpose, ledgerPath, table, lookupShow = _lookupShowById } = {}) {
   if (env.SD_PRESS_NIGHT_CAP_DISABLED === '1') return { applies: false, exceeded: false, reason: 'cap-disabled' };
   const tag = purpose !== undefined ? purpose : env.SCRAPER_SPEND_PURPOSE;
   const parsed = parsePressNightPurpose(tag);
@@ -493,7 +521,10 @@ function pressNightCapStatus({ env = process.env, purpose, ledgerPath, table } =
     return { applies: true, exceeded: true, ...details };
   };
   if (parsed === 'malformed') return overLimit({ reason: 'malformed-tag' });
-  const capUsd = resolvePressNightCapUsd(env);
+  // Only reached with a valid press-night tag, so off-night calls stay I/O-free.
+  let show = null;
+  try { show = lookupShow(parsed.showId); } catch (_e) { show = null; }
+  const capUsd = resolvePressNightCapUsd(env, pressNightBaseCapUsd(show));
   let spentUsd;
   try {
     const telemetry = require('./provider-telemetry');
@@ -624,6 +655,7 @@ function _resetForTests() {
   _loggedPressNightBlocks.clear();
   _pressNightWarned.clear();
   _spentCache.clear();
+  _showsByIdCache = null;
   _stateCache = { at: 0, value: null };
   _loggedBlock = false;
 }
@@ -644,6 +676,8 @@ module.exports = {
   isBreakerActive,
   readBreakerState,
   PRESS_NIGHT_CAP_USD,
+  PRESS_NIGHT_CAP_MAIN_STAGE_USD,
+  pressNightBaseCapUsd,
   resolvePressNightCapUsd,
   pressNightSpentUsd,
   pressNightCapStatus,
