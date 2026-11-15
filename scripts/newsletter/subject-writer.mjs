@@ -148,6 +148,10 @@ export function buildPool(facts) {
     // the opening paragraph must be about them.
     leadTitles: (facts.leadTitles || []).flatMap(t => titleForms(t)),
     edition: facts.edition,
+    // Venues, critics and outlets the facts name: the cards already show the
+    // venue, and the lede is not the place for a critic (owner, 2026-11-15).
+    venueNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:^|[ ,])at ([A-Z][^,.]*?)(?:, opened|\. |\.$|, [a-z])/g)].flatMap(m => m[1].split('/')).map(v => v.trim()).filter(v => v.length >= 5)))],
+    criticNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:Rave|Pan) of the week: (.+?) \((.+?)\) gave /g)].flatMap(m => [m[1], m[2]])))],
   };
 }
 
@@ -157,13 +161,19 @@ export function buildPool(facts) {
  * lede is the voice: a score, a verdict, a point of view. Returns the reasons a
  * lede repeats card detail; empty means it does not.
  */
-export function cardDetailRepeats(lede) {
+export function cardDetailRepeats(lede, { venues = [], critics = [] } = {}) {
   const t = String(lede || '');
   const why = [];
-  if (/\b(?:opened|opens|premiered|premieres)\s+(?:at|on|in)\b/i.test(t)) why.push('says where or when a show opened; the cards show that');
-  if (/\bopened\s+(?:(?:this|last)\s+)?(?:Mon|Tues?|Wednes|Thurs?|Fri|Satur|Sun)day\b/i.test(t)) why.push('gives the day a show opened; the cards show that');
+  // "opened at <Place>" / "opened on <day>" / "opened Nov 9", past tense only: "opens at 77/100"
+  // is a score, and "opens Monday" is an upcoming show, neither is card detail.
+  if (/\b(?:opened|premiered)\s+(?:at|in)\s+(?:the\s+)?[A-Z]/.test(t) || /\b(?:opened|premiered)\s+(?:on\s+)?(?:(?:this|last)\s+)?(?:Mon|Tues?|Wednes|Thurs?|Fri|Satur|Sun)(?:day)?\b/i.test(t)
+    || /\b(?:opened|premiered)\s+(?:on\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2}\b/.test(t)) why.push('says where or when a show opened; the cards show that');
   if (/\bat (?:the )?[A-Z][\w'.&-]*(?: [A-Z][\w'.&-]*)* (?:Theatre|Theater|Playhouse|Horizons|Center|Centre|Hall|House|Rep)\b/.test(t)) why.push('names a theatre; the cards show that');
-  if (/\bgave (?:it )?\d{1,3} out of 100\b/i.test(t)) why.push("quotes one critic's score; keep to our Critic Score");
+  const v = venues.find(x => x && t.includes(x));
+  if (v) why.push(`names a venue (${v}); the cards show that`);
+  if (/\bgave\b[^.]{0,60}?\b\d{1,3}(?: out of 100|\/100)/i.test(t)) why.push("quotes one critic's score; keep to our Critic Score");
+  const c = critics.find(x => x && t.includes(x));
+  if (c) why.push(`names a critic or outlet (${c}); keep to our Critic Score`);
   return why;
 }
 
@@ -189,7 +199,7 @@ export function checkCandidate(c, pool, recent = []) {
     const days = weekdaysIn(body).filter(d => !pool.weekdays.has(d));
     if (days.length) p.push(`${field} names a day the facts do not: ${days.join(', ')}`);
   }
-  for (const why of cardDetailRepeats(lede)) p.push(`lede ${why}`);
+  for (const why of cardDetailRepeats(lede, { venues: pool.venueNames, critics: pool.criticNames })) p.push(`lede ${why}`);
   const leads = pool.leadTitles || [];
   if (leads.length) {
     const namesLead = (t) => leads.some(l => mentions(t, l));

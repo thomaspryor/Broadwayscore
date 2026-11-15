@@ -248,3 +248,16 @@ test('the lede does not repeat what the cards show: venue, opening date, critic 
   assert.match(checkCandidate(withDetail, wePool).join(), /lede says where or when a show opened/);
   assert.match(writerPrompt(wePool), /NEVER repeat venues, opening dates/);
 });
+
+test('cardDetailRepeats: score and upcoming phrasing are not card detail; facts-named venues and critics are (ship-check review, 2026-11-15)', () => {
+  const f = { edition: 'broadway', titles: [{ id: 'd', slug: 'd', title: 'Dogstar' }], knownTitles: [], lines: [
+    'Opening: Dogstar, Off West End, play at Hampstead Theatre, opened this week, on Monday, Nov 9. Critic Score 64/100 from 26 critics.',
+    'Opening: Cats, Broadway, musical at Winter Garden, opened this week, on Tuesday, Nov 10. Critic Score 80/100 from 20 critics.',
+    'Rave of the week: Mike Wells (The Reviews Hub) gave Dogstar 99 out of 100.'] };
+  const p = buildPool(f);
+  assert.deepEqual(p.venueNames, ['Hampstead Theatre', 'Winter Garden']);
+  assert.deepEqual(p.criticNames, ['Mike Wells', 'The Reviews Hub']);
+  const n = (l) => cardDetailRepeats(l, { venues: p.venueNames, critics: p.criticNames }).length;
+  for (const ok of ['Cats opens at 70/100 from 20 critics.', 'The Fantasticks opens on Monday.', 'Cloud 9 lands at 77/100 from 33 critics.', 'Cats closes Saturday.']) assert.equal(n(ok), 0, ok);
+  for (const bad of ['Dogstar opened at Hampstead Theatre.', 'Cats opened to praise at the Winter Garden.', 'Dogstar opened Nov 9 at Hampstead.', 'Mike Wells gave Dogstar 99 out of 100.', 'Dogstar opened Tues.', 'Dogstar was praised by The Reviews Hub.']) assert.ok(n(bad) > 0, bad);
+});
