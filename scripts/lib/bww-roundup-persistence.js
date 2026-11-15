@@ -142,6 +142,13 @@ function isInRoundupMissCooldown(show, lastMiss, now = Date.now()) {
 // edge of the window is still visible the next time the digest runs.
 const MISS_SUMMARY_WINDOW_HOURS = 48;
 
+// BRO-7519: BWW only publishes a Review Roundup once several outlets have
+// reviewed. now-you-see-me-live-2026 had ONE review (a blog, published the
+// day after its first performance) and 12 "misses" over three days: a roundup
+// that did not exist yet, not a discovery bug. A show needs a body of reviews
+// before a miss means anything.
+const MIN_REVIEWS_FOR_ROUNDUP_MISS = 3;
+
 /**
  * Pure decision: which shows have 2+ BWW-roundup discovery misses in the
  * trailing MISS_SUMMARY_WINDOW_HOURS AND are currently inside their
@@ -165,7 +172,10 @@ const MISS_SUMMARY_WINDOW_HOURS = 48;
  */
 function summarizeBwwRoundupMisses(entries, shows, now = Date.now(), reviews = []) {
   const showsById = new Map((shows || []).filter(s => s && s.id).map(s => [s.id, s]));
-  const reviewedShowIds = new Set((reviews || []).filter(r => r && r.showId).map(r => r.showId));
+  const reviewCounts = new Map();
+  for (const r of reviews || []) {
+    if (r && r.showId) reviewCounts.set(r.showId, (reviewCounts.get(r.showId) || 0) + 1);
+  }
   const cutoff = now - MISS_SUMMARY_WINDOW_HOURS * 60 * 60 * 1000;
   const byShow = new Map();
   for (const e of entries || []) {
@@ -178,7 +188,7 @@ function summarizeBwwRoundupMisses(entries, shows, now = Date.now(), reviews = [
   const results = [];
   for (const [showId, allTimestamps] of byShow) {
     if (allTimestamps.length < 2) continue;
-    if (!reviewedShowIds.has(showId)) continue; // unpublished roundups are expected
+    if ((reviewCounts.get(showId) || 0) < MIN_REVIEWS_FOR_ROUNDUP_MISS) continue; // unpublished roundups are expected
     const show = showsById.get(showId);
     if (show && show.bwwRoundupUrl) continue; // discovery already succeeded
     const openingMs = show && show.openingDate ? new Date(show.openingDate).getTime() : NaN;
@@ -206,6 +216,7 @@ module.exports = {
   MISS_COOLDOWN_MS,
   OPENING_WINDOW_DAYS,
   MISS_SUMMARY_WINDOW_HOURS,
+  MIN_REVIEWS_FOR_ROUNDUP_MISS,
   persistBwwRoundupUrlIfMissing,
   clearStaleBwwRoundupUrl,
   recordRoundupMiss,

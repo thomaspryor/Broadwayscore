@@ -11,11 +11,11 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { summarizeBwwRoundupMisses, OPENING_WINDOW_DAYS, MISS_SUMMARY_WINDOW_HOURS } = require('../../scripts/lib/bww-roundup-persistence.js');
+const { summarizeBwwRoundupMisses, OPENING_WINDOW_DAYS, MISS_SUMMARY_WINDOW_HOURS, MIN_REVIEWS_FOR_ROUNDUP_MISS } = require('../../scripts/lib/bww-roundup-persistence.js');
 const { bwwRoundupMissBacklogResults } = require('../../scripts/health-check.js');
 
 const NOW = new Date('2026-08-01T00:00:00.000Z').getTime();
-const REVIEWS = [{ showId: 'a' }, { showId: 'b' }];
+const REVIEWS = ['a', 'b'].flatMap(showId => [1, 2, 3].map(() => ({ showId })));
 
 test('summarizeBwwRoundupMisses: no entries, no shows, or empty inputs yield nothing', () => {
   assert.deepEqual(summarizeBwwRoundupMisses([], [], NOW, REVIEWS), []);
@@ -220,4 +220,16 @@ test('bwwRoundupMissBacklogResults: a miss 21+ days old escalates to error', () 
   ];
   assert.equal(bwwRoundupMissBacklogResults(summary, new Date('2026-08-21T00:00:00.000Z'))[0].status, 'warn');
   assert.equal(bwwRoundupMissBacklogResults(summary, new Date('2026-08-23T00:00:00.000Z'))[0].status, 'error');
+});
+
+test('summarizeBwwRoundupMisses: a show with fewer than the minimum reviews is not a discovery miss (BRO-7519)', () => {
+  const shows = [{ id: 'a', openingDate: '2026-07-30' }];
+  const entries = [
+    { showId: 'a', ts: '2026-07-31T18:00:00.000Z' },
+    { showId: 'a', ts: '2026-07-31T20:00:00.000Z' },
+  ];
+  const few = Array.from({ length: MIN_REVIEWS_FOR_ROUNDUP_MISS - 1 }, () => ({ showId: 'a' }));
+  const enough = Array.from({ length: MIN_REVIEWS_FOR_ROUNDUP_MISS }, () => ({ showId: 'a' }));
+  assert.deepEqual(summarizeBwwRoundupMisses(entries, shows, NOW, few), []);
+  assert.equal(summarizeBwwRoundupMisses(entries, shows, NOW, enough).length, 1);
 });

@@ -189,12 +189,15 @@ function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show, op
  * an older production's reviews collected before the wrong-production flag
  * lands (jackals-off-broadway-2026 held 2014/2017 Woyzeck reviews), so only
  * reviews dated inside this run count: on/after previewsStartDate, or within
- * the last year when the show has no dates at all. 'announced' keeps its
- * original undated rule (null).
+ * the last year when the show has no dates at all. Applies to 'announced' too (BRO-7519).
  * @returns {string|null} YYYY-MM-DD
  */
 function evidenceSinceFor(show, now) {
-  if (!show || show.status === 'announced') return null;
+  if (!show) return null;
+  // BRO-7519: 'announced' used to skip this window, so the-humans-west-end-2027
+  // (no dates, announced for 2027) was flagged as "apparently opened" by a 2016
+  // London Box Office review of an earlier production. A review older than the
+  // run cannot show the run opened, whatever the status.
   if (show.previewsStartDate) return String(show.previewsStartDate).slice(0, 10);
   return new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 }

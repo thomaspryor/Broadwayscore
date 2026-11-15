@@ -174,10 +174,10 @@ test('upcoming/previews with no openingDate and collected reviews are flagged (B
   assert.deepEqual(findOrphanAcks([gcm], [{ id: gcm.id }]), []);
 });
 
-test('evidenceSinceFor: upcoming/previews count only in-run reviews; announced keeps undated rule (BRO-7080)', async () => {
+test('evidenceSinceFor: upcoming/previews count only in-run reviews; so does announced (BRO-7080, BRO-7519)', async () => {
   const { evidenceSinceFor, describeOpeningEvidence } = require('./lib/stale-announced-audit.js');
   const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
-  assert.equal(evidenceSinceFor({ status: 'announced' }, NOW), null);
+  assert.equal(evidenceSinceFor({ status: 'announced' }, NOW), '2025-08-20');
   assert.equal(evidenceSinceFor({ status: 'previews', previewsStartDate: '2026-11-04' }, NOW), '2026-11-04');
   assert.equal(evidenceSinceFor({ status: 'upcoming' }, NOW), '2025-08-20');
   // Replay: jackals-off-broadway-2026 held 2014/2017 Woyzeck reviews; an
@@ -193,5 +193,19 @@ test('evidenceSinceFor: upcoming/previews count only in-run reviews; announced k
   assert.equal(describeOpeningEvidence(dir, 'jackals', explain, show).hasEvidence, true);
   w('c.json', { publishDate: '2026-05-28', url: 'https://nystagereview.com/2026/05/28/jackals' });
   assert.equal(describeOpeningEvidence(dir, 'jackals', explain, show, { since: evidenceSinceFor(show, NOW) }).hasEvidence, true);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('announced show: a review of an earlier production is not evidence it opened (BRO-7519)', async () => {
+  const { evidenceSinceFor, describeOpeningEvidence } = require('./lib/stale-announced-audit.js');
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7519-'));
+  fs.mkdirSync(path.join(dir, 'humans'));
+  // the-humans-west-end-2027: announced, no dates, one 2016 London Box Office review
+  fs.writeFileSync(path.join(dir, 'humans', 'lbo.json'), JSON.stringify({ publishDate: '2016-08-25', url: 'https://www.londonboxoffice.co.uk/news/post/review-the-humans' }));
+  const show = { id: 'humans', status: 'announced' };
+  assert.equal(describeOpeningEvidence(dir, 'humans', () => null, show, { since: evidenceSinceFor(show, NOW) }).hasEvidence, false);
+  fs.writeFileSync(path.join(dir, 'humans', 'new.json'), JSON.stringify({ publishDate: '2026-05-28', url: 'https://example.com/humans-2026' }));
+  assert.equal(describeOpeningEvidence(dir, 'humans', () => null, show, { since: evidenceSinceFor(show, NOW) }).hasEvidence, true);
   fs.rmSync(dir, { recursive: true, force: true });
 });
