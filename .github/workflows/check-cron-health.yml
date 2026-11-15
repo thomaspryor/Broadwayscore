@@ -747,7 +747,7 @@ jobs:
         run: |
           node -e '
             const { routeAlert, loadLedger, resolveQuietConditions } = require("./scripts/lib/owner-alert-router.js");
-            const { parseCronWarnings, recoveredFailureKeys } = require("./scripts/lib/cron-health-warnings.js");
+            const { parseCronWarnings, recoveredFailureKeys, backupFailureEscalations } = require("./scripts/lib/cron-health-warnings.js");
             const runUrl = process.env.RUN_URL;
             (async () => {
               const conditions = parseCronWarnings(process.env.WARNINGS || "");
@@ -764,10 +764,43 @@ jobs:
                 });
                 console.log(`[cron-health] ${c.conditionKey}: ${result.action}`);
               }
-              const quiet = recoveredFailureKeys(loadLedger().conditions, conditions.map((c) => c.conditionKey));
+              const quiet = recoveredFailureKeys(loadLedger().conditions, [...conditions, ...backupFailureEscalations(process.env.WARNINGS || "")].map((c) => c.conditionKey));
               const resolved = resolveQuietConditions(quiet, { reason: "latest run no longer failing" });
               if (resolved.length) console.log(`[cron-health] resolved: ${resolved.join(", ")}`);
             })().catch((e) => console.error("::warning::cron warning routing failed:", e.message));
+          '
+
+      # BRO-7541: a failed backup run escalates to a tracked card, not just the digest.
+      # R2 Cold Backup failed 7 days (and Replay Push Rescue 4) with only warnings. Advisory
+      # first (CLAUDE.md s19): continue-on-error, so a routing problem cannot fail the health check.
+      # Recovery: the digest step above resolves cron-health-backup-failed:* when the run is green.
+      - name: Escalate failed backups to a tracked card (advisory)
+        if: always() && steps.check.outcome != 'skipped' && steps.check.outputs.warnings != ''
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          WARNINGS: ${{ steps.check.outputs.warnings }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node -e '
+            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
+            const { backupFailureEscalations } = require("./scripts/lib/cron-health-warnings.js");
+            const runUrl = process.env.RUN_URL;
+            (async () => {
+              for (const c of backupFailureEscalations(process.env.WARNINGS || "")) {
+                const result = await routeAlert({
+                  conditionKey: c.conditionKey,
+                  title: c.title,
+                  description: `${c.description}. A backup that keeps failing is only found out at restore time; diagnose from the failing run log.`,
+                  severity: "error",
+                  disposition: "auto",
+                  cooldownHours: 144,
+                  url: runUrl,
+                  fields: [{ name: "Run", value: `[View logs](${runUrl})` }],
+                });
+                console.log(`[cron-health-backup] ${c.conditionKey}: ${result.action}`);
+              }
+            })().catch((e) => { console.error("::warning::backup escalation failed:", e.message); });
           '
 
       # State-diff dispatch: pages only when self-heal failed (redispatch errored,
