@@ -43,6 +43,8 @@ module.exports = {
   // results in data/audit/haiku-swap-spotcheck-2026-11.json). Callers build the
   // request with scripts/lib/anthropic-request.js so the 5.5 shape (no temperature,
   // thinking off, text-block read) is applied by the pin value alone. Rollback = the line.
+  // 2026-11-15 check: both jobs FAILED (verifier agreed with 4.5 on 75% vs 97% run-to-run;
+  // titles kept 78-80% of 4.5's flags), so both stay on 4.5. Re-run the script before any flip.
   CLAUDE_HAIKU_5: 'claude-haiku-5-5',
   VERIFIER_HAIKU: 'claude-haiku-4-5-20251001', // lib/content-verifier.js primary provider
   VIDEO_TITLES_HAIKU: 'claude-haiku-4-5-20251001', // video-reviews/pre-classify-titles.js
