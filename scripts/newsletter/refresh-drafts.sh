@@ -70,6 +70,16 @@ DATA_REPO=$(node -e "console.log(require('path').dirname(require('fs').realpathS
 # --autostash: local sessions and background jobs leave churn in the data
 # clone; without it this pull hard-fails on any unstaged change.
 git -C "$DATA_REPO" pull --rebase --autostash --quiet
+# git exits 0 when the pull succeeds but re-applying the autostash conflicts,
+# leaving <<<<<<< markers in shows.json (2026-11-15: generate.mjs crashed and
+# verify-sent-vs-state wiped the de-dup state). Stop here instead; the local
+# edits are kept in the stash.
+DATA_CONFLICTS="$(git -C "$DATA_REPO" diff --name-only --diff-filter=U)"
+if [ -n "$DATA_CONFLICTS" ]; then
+  echo "ERROR: core-data pull left unresolved conflicts in $DATA_REPO: $DATA_CONFLICTS" >&2
+  echo "  Local edits are in that repo's top stash. If upstream already has them: git -C \"$DATA_REPO\" checkout HEAD -- $DATA_CONFLICTS ; then re-run." >&2
+  exit 1
+fi
 # BRO-2254: guarded, so a conflicting local commit has its rebase aborted
 # instead of leaving the shared clone stuck mid-rebase for every later sync.
 # Still non-fatal here: this script only reads review-texts.

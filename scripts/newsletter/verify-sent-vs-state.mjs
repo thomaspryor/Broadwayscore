@@ -27,6 +27,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const { parseShowsText, fixRefusal } = createRequire(import.meta.url)('../lib/newsletter-sent-reconcile.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
@@ -67,8 +70,9 @@ function extractSentSlugs(html) {
 }
 
 async function main() {
-  const { shows } = loadJson(SHOWS_PATH, { shows: [] });
-  const slugToId = new Map(shows.filter((s) => s && s.slug).map((s) => [s.slug, s.id]));
+  // Never fall back to an empty list here (2026-11-15): an unreadable
+  // shows.json mapped 0 sent slugs and --fix wiped featuredShowIds.
+  const slugToId = parseShowsText(fs.readFileSync(SHOWS_PATH, 'utf8'), SHOWS_PATH);
 
   const state = loadJson(STATE_PATH, { issues: [] });
   let anyDrift = false;
@@ -116,6 +120,13 @@ async function main() {
     if (missing.length) console.log(`  missing from state.json (sent but not recorded — will re-air next issue): ${missing.join(', ')}`);
     if (extra.length) console.log(`  in state.json but never sent (phantom suppression): ${extra.join(', ')}`);
     if (unmappedSlugs.length) console.log(`  note: ${unmappedSlugs.length} /show/ slug(s) in the HTML had no shows.json match: ${unmappedSlugs.join(', ')}`);
+
+    const refusal = fixRefusal({ sentSlugCount: sentSlugs.size, mappedCount: sentIds.size });
+    if (doFix && refusal) {
+      console.error(`  REFUSED (${edition} ${weekStart}): ${refusal}`);
+      process.exitCode = 1;
+      continue;
+    }
 
     if (doFix) {
       const corrected = [...sentIds];
