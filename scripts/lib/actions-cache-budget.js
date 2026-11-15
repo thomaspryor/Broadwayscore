@@ -81,10 +81,12 @@ module.exports = { auditCacheEntries, keyPrefix, DEFAULTS, LIMIT_BYTES };
 const HEAL_TARGET_BYTES = 6 * GIB;
 const EVICTABLE_PREFIXES = ['nextjs-cache-', 'node-cache-', 'playwright-'];
 const MAX_EVICTIONS_PER_RUN = 50;
+// Refs whose newest entry per family is what real builds restore (main deploys, staging previews).
+const KEEP_REFS = ['refs/heads/main', 'refs/heads/staging'];
 
 function selectEntriesToEvict(
   entries,
-  { totalBytes, targetBytes = HEAL_TARGET_BYTES, defaultRef = 'refs/heads/main', maxEvictions = MAX_EVICTIONS_PER_RUN } = {},
+  { totalBytes, targetBytes = HEAL_TARGET_BYTES, keepRefs = KEEP_REFS, maxEvictions = MAX_EVICTIONS_PER_RUN } = {},
 ) {
   const rows = Array.isArray(entries) ? entries : [];
   const size = (e) => Number(e.sizeInBytes) || 0;
@@ -102,11 +104,11 @@ function selectEntriesToEvict(
   }
   const candidates = rows
     .filter((e) => EVICTABLE_PREFIXES.some((p) => String(e.key || '').startsWith(p)))
-    // the newest entry of each family on the default ref is what deploys restore
-    .filter((e) => !(e.ref === defaultRef && newestPerFamily.get(family(e)) === e))
+    // the newest entry of each family on the kept refs is what builds restore
+    .filter((e) => !(keepRefs.includes(e.ref) && newestPerFamily.get(family(e)) === e))
     .sort((a, b) => {
-      const ao = a.ref === defaultRef ? 1 : 0;
-      const bo = b.ref === defaultRef ? 1 : 0;
+      const ao = keepRefs.includes(a.ref) ? 1 : 0;
+      const bo = keepRefs.includes(b.ref) ? 1 : 0;
       if (ao !== bo) return ao - bo; // orphans on land/* and PR refs first
       if (ts(a) !== ts(b)) return ts(a) - ts(b);
       return size(b) - size(a);

@@ -43,3 +43,11 @@ test('daily health check and the pre-probe step both run --heal', () => {
   assert.ok(heal > 0 && heal < y.indexOf('name: Live-data assertions'), 'heal must precede the live-data probe');
   assert.match(y, /actions: write/);
 });
+
+test('the newest staging-ref entry per family is kept like main (preview builds restore it)', () => {
+  const r = [
+    { id: 1, key: 'nextjs-cache-Linux-cccccccccccccccc', ref: 'refs/heads/staging', sizeInBytes: 2 * GIB, createdAt: '2026-11-01' },
+    { id: 2, key: 'node-cache-Linux-dddddddddddddddd', ref: 'refs/heads/land/z', sizeInBytes: 5 * GIB, createdAt: '2026-11-01' },
+  ];
+  assert.deepEqual(selectEntriesToEvict(r, { totalBytes: 9 * GIB }).map((e) => e.id), [2]);
+});

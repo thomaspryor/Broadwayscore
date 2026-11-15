@@ -29,18 +29,19 @@ function main() {
     console.log(`- error: gh cache list failed: ${e.message.split('\n')[0]}`);
     process.exit(args.includes('--strict') ? 2 : 0);
   }
-  const { totalBytes: listedBytes, violations } = auditCacheEntries(entries);
+  let { totalBytes: listedBytes, violations } = auditCacheEntries(entries);
   // The listing is capped at 1000 rows; the usage endpoint is what the probe reads.
   let totalBytes = listedBytes;
   try {
     const u = JSON.parse(execFileSync('gh', ['api', `repos/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions/cache/usage`], { encoding: 'utf8' }));
     if (Number.isFinite(Number(u.active_caches_size_in_bytes))) totalBytes = Number(u.active_caches_size_in_bytes);
-  } catch { /* fall back to the listed total */ }
+  } catch { console.error('heal: usage endpoint unavailable, using the listed total'); }
   // BRO-7506: --heal evicts rebuildable caches down to the target so GitHub never
   // LRU-wipes the SERP cache. Output lines avoid the leading "- " the workflow warns on.
   if (args.includes('--heal')) {
     const dry = args.includes('--dry-run');
     const evict = selectEntriesToEvict(entries, { totalBytes });
+    const failed = new Set();
     for (const e of evict) {
       console.log(`heal: ${dry ? 'would evict' : 'evicting'} ${e.key} (${e.ref}, ${(e.sizeInBytes / 1024 ** 2).toFixed(0)} MiB)`);
       if (dry) continue;
@@ -48,7 +49,16 @@ function main() {
         execFileSync('gh', ['cache', 'delete', String(e.id)], { encoding: 'utf8' });
       } catch (err) {
         console.log(`::warning::could not delete cache ${e.id}: ${err.message.split('\n')[0]}`);
+        failed.add(e.id);
       }
+    }
+    if (!dry) {
+      // Report the post-heal state so a healed run does not warn about the pre-heal total.
+      const gone = new Set(evict.map((e) => e.id).filter((id) => !failed.has(id)));
+      const left = entries.filter((e) => !gone.has(e.id));
+      const after = auditCacheEntries(left);
+      totalBytes = Math.max(0, totalBytes - evict.filter((e) => gone.has(e.id)).reduce((n, e) => n + e.sizeInBytes, 0));
+      violations = after.violations.filter((v) => v.kind !== 'total' || totalBytes > 8 * 1024 ** 3);
     }
   }
   if (args.includes('--json')) {

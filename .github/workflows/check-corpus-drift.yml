@@ -39,7 +39,7 @@ on:
 
 permissions:
   contents: write
-  # actions: read — the Live-data step's BRO-3887 probe reads the repo's
+  # actions: write (BRO-7506; was read) — the Live-data step's BRO-3887 probe reads the repo's
   # Actions cache usage (BRO-447); notify-failure's listWorkflowRuns needs it too.
   # BRO-7506: write so the pre-probe heal step can evict rebuildable caches.
   actions: write
@@ -466,7 +466,7 @@ jobs:
       # BRO-5798: + review-pullquotes-live-data (recoverable excerpt left unused in review-texts).
       # BRO-447: the bro3887 probe now asserts repo Actions cache usage (< 8 GiB,
       # the cause of SERP-cache eviction) via the GitHub API instead of a fixed
-      # credits/day ceiling, hence GH_TOKEN here and actions: read above.
+      # credits/day ceiling, hence GH_TOKEN here and actions: write above (the heal step needs it).
       # BRO-7506: evict rebuildable caches (never the SERP cache) before the
       # BRO-3887 probe reads usage, so a spike since the daily heal cannot redden it.
       - name: Heal Actions cache budget
