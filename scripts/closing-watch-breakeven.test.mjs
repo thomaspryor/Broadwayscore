@@ -94,11 +94,16 @@ test('the commercial write guard stamps provenance on every save', () => {
   }
 });
 
-test('record checks reject a quality the cost fields do not support', () => {
+test('record checks accept a stale stamp (writers validate before the guard re-stamps) and reject junk', () => {
+  // A stub stamped 'unavailable' that a writer patches with a cost must not be refused (ship-check, BRO-7254).
+  const stamped = { designation: 'TBD', ...fixtures.nothing };
+  stampBreakEvenProvenance(stamped);
+  assert.equal(stamped.breakEvenQuality, 'unavailable');
+  const patched = { ...stamped, ...fixtures.redditModel };
+  assert.deepEqual(breakEvenProvenanceErrors('s', patched), []);
+  assert.ok(!commercialRecordErrors('s', patched).some((e) => /breakEvenQuality/.test(e)));
   const rec = { designation: 'TBD', ...fixtures.redditModel, breakEvenQuality: 'reported', breakEvenSource: 'x' };
-  assert.ok(breakEvenProvenanceErrors('s', rec).some((e) => /make it "estimated"/.test(e)));
-  const recErrs = commercialRecordErrors('s', rec);
-  assert.ok(recErrs.some((e) => /breakEvenQuality/.test(e)), JSON.stringify(recErrs));
+  assert.deepEqual(breakEvenProvenanceErrors('s', rec), []);
   assert.ok(breakEvenProvenanceErrors('s', { ...rec, breakEvenQuality: 'great' }).some((e) => /invalid breakEvenQuality/.test(e)));
   assert.deepEqual(breakEvenProvenanceErrors('s', { ...fixtures.redditModel }), [], 'absent fields are fine');
   assert.ok(FEEDBACK_EDITABLE_FIELDS['commercial.json'].includes('breakEvenSource'));

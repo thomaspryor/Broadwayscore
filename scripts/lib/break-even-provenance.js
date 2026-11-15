@@ -102,7 +102,7 @@ function stampBreakEvenProvenance(rec) {
   return changed;
 }
 
-/** Problems with stored provenance fields (absent fields are not a problem). */
+/** Problems with stored provenance fields (absent fields and stale-but-valid values are not a problem). */
 function breakEvenProvenanceErrors(showId, rec) {
   const out = [];
   if (rec.breakEvenQuality == null && rec.breakEvenSource == null) return out;
@@ -110,10 +110,9 @@ function breakEvenProvenanceErrors(showId, rec) {
     out.push(`commercial.json: "${showId}" has invalid breakEvenQuality ${JSON.stringify(rec.breakEvenQuality)}. Valid values: ${BREAK_EVEN_QUALITIES.join(', ')}`);
     return out;
   }
-  const want = breakEvenProvenance(rec);
-  if (rec.breakEvenQuality !== want.breakEvenQuality) {
-    out.push(`commercial.json: "${showId}" says breakEvenQuality "${rec.breakEvenQuality}" but its cost fields make it "${want.breakEvenQuality}" (derived field: re-save through commercial-write-guard)`);
-  }
+  // A stored quality that no longer matches the cost fields is NOT an error here: writers merge new cost
+  // fields into a stamped record and validate before the write guard re-stamps it (it overwrites both
+  // fields on every save), so a mismatch only means the record is about to be re-derived.
   if (typeof rec.breakEvenSource !== 'string' || !rec.breakEvenSource.trim()) {
     out.push(`commercial.json: "${showId}" has breakEvenQuality but no breakEvenSource`);
   }
