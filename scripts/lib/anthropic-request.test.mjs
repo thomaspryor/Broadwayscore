@@ -65,8 +65,8 @@ test('no first-block reads in callers of thinking-by-default pins', () => {
 });
 
 test('spot-check meter prices every model at the Haiku 4.5 rate for the cap', () => {
-  const { createMeter } = require('../evals/haiku-swap-spotcheck.js');
-  const m = createMeter(1);
+  const { createMeter } = require('./capped-spend-meter.js');
+  const m = createMeter(1, { capModel: models.CLAUDE_HAIKU, concurrency: 4 });
   assert.equal(m.canSpend(), true); // 0 + 4 x $0.05 reserve < $1
   m.record({ input_tokens: 10_000, output_tokens: 0 }, models.CLAUDE_HAIKU_5);
   assert.ok(Math.abs(m.totals.capPricedUsd - 0.01) < 1e-9); // priced at the 4.5 rate

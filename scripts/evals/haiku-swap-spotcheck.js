@@ -43,7 +43,7 @@
 const fs = require('fs');
 const path = require('path');
 const { CLAUDE_HAIKU, CLAUDE_HAIKU_5 } = require('../lib/models');
-const { estimateUSD } = require('../lib/autonomous-budget');
+const { createMeter: createCappedMeter } = require('../lib/capped-spend-meter');
 
 const arg = (name, dflt) => {
   const a = process.argv.find(x => x.startsWith(`--${name}=`));
@@ -60,26 +60,8 @@ const NEW = CLAUDE_HAIKU_5;
 const CONCURRENCY = 4;
 const FIXTURE = path.join(__dirname, '..', '..', 'tests', 'fixtures', 'content-verifier-golden', 'real-world-fixtures.json');
 
-// ---- spend meter (pure, exported for the unit test) ----
-function createMeter(capUsd) {
-  const t = { capUsd, capPricedUsd: 0, listUsd: 0, calls: 0, maxCallUsd: 0.05, byModel: {} };
-  return {
-    totals: t,
-    // Reserve room for every call that may already be in flight.
-    canSpend: () => t.capPricedUsd + CONCURRENCY * t.maxCallUsd < capUsd,
-    record(usage, model) {
-      const inT = (usage && (usage.input_tokens || 0) + (usage.cache_creation_input_tokens || 0) + (usage.cache_read_input_tokens || 0)) || 0;
-      const outT = (usage && usage.output_tokens) || 0;
-      t.calls += 1;
-      const callUsd = estimateUSD(OLD, inT, outT); // 4.5 rate for every model: never under-counts
-      t.capPricedUsd += callUsd;
-      if (callUsd > t.maxCallUsd) t.maxCallUsd = callUsd;
-      t.listUsd += estimateUSD(model, inT, outT);
-      const m = (t.byModel[model] ||= { calls: 0, inputTokens: 0, outputTokens: 0 });
-      m.calls += 1; m.inputTokens += inT; m.outputTokens += outT;
-    },
-  };
-}
+// Spend meter: scripts/lib/capped-spend-meter.js (every call priced at the 4.5 rate).
+const createMeter = cap => createCappedMeter(cap, { capModel: OLD, concurrency: CONCURRENCY });
 
 async function pool(items, n, fn) {
   const out = new Array(items.length);
