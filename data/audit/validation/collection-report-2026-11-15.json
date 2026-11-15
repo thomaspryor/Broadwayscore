@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-15T06:28:55.095Z",
+  "runDate": "2026-11-15T06:41:54.020Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 20,
-    "failed": 61,
+    "processed": 0,
+    "failed": 53,
     "skipped": 0,
-    "successRate": "24.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 287,
@@ -28,42 +28,38 @@
     "archive": 204
   },
   "statistics": {
-    "tier1Attempts": 19,
-    "tier1Success": 12,
-    "ampAttempts": 2,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 8,
-    "tier1_9Success": 4,
-    "tier2Attempts": 6,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 9,
-    "tier3Success": 3,
-    "tier3_6Attempts": 4,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 10,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 61,
+    "totalFailed": 53,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.8,
-    "urlDiscoveryAttempts": 57,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 53,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 20,
-    "failed": 61,
+    "processed": 0,
+    "failed": 53,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
-      "annie-regional-2026-drury-lane-oakbrook",
       "appropriate-2023",
-      "billy-elliot-the-musical-2008",
-      "bring-it-on-the-musical-2012",
-      "burn-the-floor-2009",
       "clybourne-park-2012",
       "come-back-little-sheba-2008",
       "eclipsed-2016",
@@ -76,42 +72,29 @@
       "hedwig-and-the-angry-inch-2014",
       "indecent-2017",
       "inherit-the-wind-2007",
-      "into-the-woods-2022",
       "is-he-dead-2007",
       "jesus-christ-superstar-2012",
-      "king-lear-2004",
       "kiss-me-kate-2019",
       "macbeth-2008",
       "mary-jane-2024",
       "motown-the-musical-2013",
-      "noises-off-1983",
       "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
-      "on-the-twentieth-century-2015",
       "picnic-2013",
-      "present-laughter-1996",
-      "prima-facie-2023",
       "ragtime-2009",
-      "rain-2010",
       "red-2010",
       "rodgers-hammersteins-cinderella-2013",
       "sea-wall-a-life-2019",
       "shrek-the-musical-2008",
-      "six-degrees-of-separation-2017",
-      "spring-awakening-2006",
       "suffs-2024",
-      "sunday-in-the-park-with-george-2017",
       "tammy-faye-2024",
-      "the-cherry-orchard-1997",
       "the-collaboration-2022",
       "the-hills-of-california-2024",
-      "the-history-boys-2006",
       "the-inheritance-2019",
       "the-lieutenant-of-inishmore-2006",
       "the-little-mermaid-2008",
       "the-nap-2018",
       "the-norman-conquests-2009",
-      "the-seafarer-2007",
       "the-shark-is-broken-2023",
       "the-waverly-gallery-2018",
       "the-whos-tommy-2024",
@@ -119,39 +102,16 @@
       "topdog-underdog-2022",
       "tuck-everlasting-2016",
       "waitress-2021",
-      "walking-with-ghosts-2022",
-      "water-for-elephants-2024",
       "what-the-constitution-means-to-me-2019",
       "yellow-face-2024"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 550,
-      "failed": 311
+      "processed": 570,
+      "failed": 372
     }
   },
-  "processed": [
-    "water-for-elephants-2024/artsfuse--bob-abelman.json",
-    "water-for-elephants-2024/exeunt-magazine--unknown.json",
-    "prima-facie-2023/guardian--emma-brockes.json",
-    "prima-facie-2023/chicagotribune--unknown.json",
-    "walking-with-ghosts-2022/whatsonstage--unknown.json",
-    "into-the-woods-2022/thestage--fergus-morgan.json",
-    "six-degrees-of-separation-2017/nytimes--elisabeth-vincentelli.json",
-    "sunday-in-the-park-with-george-2017/musical-theatre-review--ron-cohen.json",
-    "burn-the-floor-2009/whatsonstage--unknown.json",
-    "billy-elliot-the-musical-2008/musical-theatre-review--unknown.json",
-    "billy-elliot-the-musical-2008/dctheatrescene--brad-hathaway.json",
-    "the-seafarer-2007/ew--melissa-rose-bernardo.json",
-    "spring-awakening-2006/ap--michael-kuchwara.json",
-    "spring-awakening-2006/the-globe-and-mail--kelly-nestruck.json",
-    "the-history-boys-2006/npr--andrea-shea.json",
-    "king-lear-2004/independent--paul-taylor.json",
-    "king-lear-2004/the-globe-and-mail--kelly-nestruck.json",
-    "present-laughter-1996/talkinbroadway--matthew-murray.json",
-    "noises-off-1983/theatermania--unknown.json",
-    "noises-off-1983/talkinbroadway--matthew-murray.json"
-  ],
+  "processed": [],
   "failed": [
     "all-my-sons-2008/usatoday--elysa-gardner.json",
     "appropriate-2023/timeout--adam-feldman.json",
@@ -193,7 +153,6 @@
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
     "hamlet-2009/usatoday--elysa-gardner.json",
     "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
-    "annie-regional-2026-drury-lane-oakbrook/broadwayworld--broadway-world.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
     "mary-jane-2024/ew--joey-nolfi.json",
     "the-wiz-2024/indiewire--sarah-shachat.json",
@@ -203,17 +162,10 @@
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "waitress-2021/vulture--helen-shaw.json",
     "the-inheritance-2019/usatoday--charles-isherwood.json",
-    "sunday-in-the-park-with-george-2017/off-script-with-dan-dwyer--dan-dwyer.json",
-    "on-the-twentieth-century-2015/abc-news--jennifer-farrar.json",
-    "bring-it-on-the-musical-2012/philadelphia-inquirer--howard-shapiro.json",
     "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
-    "rain-2010/variety--steven-suskin.json",
     "shrek-the-musical-2008/usatoday--elysa-gardner.json",
     "macbeth-2008/usatoday--elysa-gardner.json",
-    "the-seafarer-2007/nytimes--unknown.json",
-    "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "king-lear-2004/whatsonstage--unknown.json",
-    "the-cherry-orchard-1997/vulture--helen-shaw.json"
+    "inherit-the-wind-2007/nypost--clive-barnes.json"
   ],
   "cumulativeResumedState": {
     "processed": [
@@ -1769,42 +1721,6 @@
       "just-for-one-day-the-live-aid-musical-west-end-2025/east-midlands-theatre--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "Off Script with Dan Dwyer": {
-      "count": 1,
-      "domain": "dandwyeroffscript.tumblr.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "ABC News": {
-      "count": 1,
-      "domain": "abcnews.go.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Philadelphia Inquirer": {
-      "count": 1,
-      "domain": "philly.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The New York Times": {
-      "count": 1,
-      "domain": "nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
