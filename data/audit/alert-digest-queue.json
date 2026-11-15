@@ -418,5 +418,36 @@
       }
     ],
     "queuedAt": "2026-11-15T17:02:35.495Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7534-linear-allow-hook",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7534-linear-allow-hook",
+    "description": "land.yml did not land land/bro-7534-linear-allow-hook: the unit-tests-node gate went red at 7c227caaa3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43736632559",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7534-linear-allow-hook"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7c227caaa392349903b9bb2af02d167fb270a079"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43736632559"
+      }
+    ],
+    "queuedAt": "2026-11-15T17:06:03.360Z"
   }
 ]
