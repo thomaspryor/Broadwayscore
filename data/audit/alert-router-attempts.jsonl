@@ -1,11 +1,3 @@
-{"ts":"2026-10-16T06:23:53.156Z","conditionKey":"test-yml:red:Unit Tests:eb30639a","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every emitted critic alias resolves: canonical exists, and the old slug resolves to it unless the old slug is still a live profile (exact match wins)\"","ok":true,"error":null}
-{"ts":"2026-10-16T07:11:30.972Z","conditionKey":"health-check:Quality: outlet-heartbeat red flags","title":"BSC Daily: Quality: outlet-heartbeat red flags","ok":true,"error":null}
-{"ts":"2026-10-16T07:11:37.072Z","conditionKey":"health-check:Data: T1/T2 silent review gaps","title":"BSC Daily: Data: T1/T2 silent review gaps","ok":true,"error":null}
-{"ts":"2026-10-16T07:11:40.903Z","conditionKey":"health-check:Data quality: cv-wrongproduction lifetime sweep","title":"BSC Daily: Data quality: cv-wrongproduction lifetime sweep","ok":true,"error":null}
-{"ts":"2026-10-16T07:11:46.922Z","conditionKey":"health-check:Data quality: slug-mismatch lifetime sweep","title":"BSC Daily: Data quality: slug-mismatch lifetime sweep","ok":true,"error":null}
-{"ts":"2026-10-16T07:11:50.555Z","conditionKey":"health-check:Data quality: revival-unverified lifetime sweep","title":"BSC Daily: Data quality: revival-unverified lifetime sweep","ok":true,"error":null}
-{"ts":"2026-10-16T07:12:08.999Z","conditionKey":"e2e-canary:main","title":"[E2E Canary] alert chain check 2026-10-16T07:12:06.984Z","ok":true,"error":null}
-{"ts":"2026-10-16T07:12:11.098Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-10-16T07:12:09.398Z","ok":true,"error":null}
 {"ts":"2026-10-16T10:22:08.308Z","conditionKey":"gap:stuffed-off-west-end-2026/sunday-times--unknown.json","title":"T1/T2 silent gap on near-opening show: Stuffed — sunday-times","ok":true,"error":null}
 {"ts":"2026-10-16T13:38:01.229Z","conditionKey":"corpus-drift:sibling-title-misroute","title":"Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)","ok":true,"error":null}
 {"ts":"2026-10-16T15:28:52.880Z","conditionKey":"tour-page-audit:poster-missing","title":"National tour pages show wrong information: 8 page problem(s) (poster-missing)","ok":true,"error":null}
@@ -513,3 +505,4 @@
 {"ts":"2026-11-15T00:33:14.822Z","conditionKey":"live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags","title":"Live-data test failing: BRO-93 acceptance: current shows.json produces zero stale announced flags (scripts/audit-stale-announced-shows.test.mjs)","ok":true,"error":null}
 {"ts":"2026-11-15T01:05:46.461Z","conditionKey":"test-yml:data-validation-red:audit-review-contamination","title":"Data audit failing: Audit review contamination","ok":true,"error":null}
 {"ts":"2026-11-15T05:10:09.837Z","conditionKey":"gap:cloud-9-west-end-2026/times-uk--dominic-maxwell.json","title":"T1/T2 silent gap on near-opening show: Cloud 9 — times-uk","ok":true,"error":null}
+{"ts":"2026-11-15T07:38:13.927Z","conditionKey":"live-data-test:tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug","title":"Live-data test failing: no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)","ok":true,"error":null}
