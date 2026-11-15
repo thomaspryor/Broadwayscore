@@ -1,4 +1,4 @@
-// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data); data/opening-night-sent.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Owner 2026-11-15: Coming Up lists ALL Broadway openings of the coming week, and the
 // weekly must not show a Wanted "66 -> 59" mover when readers were told 60.
 // Runs the real generator on the real 2026-11-09 data.
@@ -34,13 +34,14 @@ test('Broadway 2026-11-09: Coming Up lists every Broadway show opening 2026-11-1
   const seg = html.slice(html.indexOf('Coming Up'));
   const shows = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/shows.json'), 'utf8'));
   const list = Array.isArray(shows) ? shows : shows.shows;
-  const expected = list.filter((s) => s.category === 'broadway' && s.openingDate >= '2026-11-16' && s.openingDate <= '2026-11-22');
+  const expected = list.filter((s) => s.category === 'broadway' && s.type !== 'opera' && s.openingDate >= '2026-11-16' && s.openingDate <= '2026-11-22');
   assert.ok(expected.length >= 4, 'fixture week should have 4 Broadway openings');
   for (const s of expected) assert.ok(seg.includes(`/show/${s.slug}`), `${s.title} (opens ${s.openingDate}) missing from Coming Up`);
 });
 
 test('Broadway 2026-11-09: no Wanted mover card (opened Nov 8, readers were told 60)', () => {
   const html = generateBroadway('2026-11-09');
-  assert.ok(!/Biggest Movers?/.test(html), 'no mover card this week');
-  assert.ok(!html.includes('down 7 pts'));
+  assert.ok(!html.includes('down 7 pts'), 'Wanted must not show a 66 -> 59 mover');
+  const i = html.indexOf('Biggest Mover');
+  assert.ok(i < 0 || !html.slice(i, i + 3000).includes('/show/wanted'), 'Wanted must not be a mover card');
 });

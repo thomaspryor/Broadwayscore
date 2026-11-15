@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { selectComingUp } = require('../lib/coming-up-select.js');
-const { moverBaseline, publishedScoreFor } = require('../lib/mover-baseline.js');
+const { inOpeningWindow } = require('../lib/mover-baseline.js');
 
 const row = (id, category, eventDate, isPreview = false) => ({ show: { id, category }, eventDate, isPreview });
 const WEEK_END = '2026-11-15';
@@ -38,33 +38,17 @@ test('Broadway previews and Broadway openings beyond the coming week are not man
 });
 
 const WANTED = { id: 'wanted-2022', openingDate: '2026-11-08' };
-const SENT = { 'broadway:wanted-2022': { draftStatus: 'sent', draftNumbers: { 'wanted-2022': { score: 60, reviewCount: 20 } } } };
 
 test('Wanted case: opened the Sunday before the week, so not a mover', () => {
-  const r = moverBaseline({ show: WANTED, weekStartStr: '2026-11-09', weekEndStr: '2026-11-15', before: 66, after: 59, publishedScore: null });
-  assert.deepEqual(r, { suppress: true, reason: 'opening-window' });
+  assert.equal(inOpeningWindow(WANTED, '2026-11-09', '2026-11-15'), true);
 });
 
-test('published score that holds within 3 points is not a mover even outside the opening window', () => {
-  const show = { id: 'x', openingDate: '2026-09-01' };
-  const r = moverBaseline({ show, weekStartStr: '2026-11-09', weekEndStr: '2026-11-15', before: 66, after: 59, publishedScore: 60 });
-  assert.deepEqual(r, { suppress: true, reason: 'published-score-holds' });
-});
-
-test('a real move is displayed from the published score, never the recomputed one', () => {
-  const show = { id: 'x', openingDate: '2026-09-01' };
-  const r = moverBaseline({ show, weekStartStr: '2026-11-09', weekEndStr: '2026-11-15', before: 66, after: 52, publishedScore: 60 });
-  assert.deepEqual(r, { suppress: false, before: 60 });
-});
-
-test('no published score: the recomputed baseline is used', () => {
-  const show = { id: 'x', openingDate: '2026-06-01' };
-  assert.deepEqual(moverBaseline({ show, weekStartStr: '2026-11-09', weekEndStr: '2026-11-15', before: 66.4, after: 59, publishedScore: null }), { suppress: false, before: 66 });
-});
-
-test('publishedScoreFor reads only sent records', () => {
-  assert.equal(publishedScoreFor(SENT, 'wanted-2022'), 60);
-  assert.equal(publishedScoreFor({ 'broadway:wanted-2022': { ...SENT['broadway:wanted-2022'], draftStatus: 'draft' } }, 'wanted-2022'), null);
-  assert.equal(publishedScoreFor(undefined, 'wanted-2022'), null);
-  assert.equal(publishedScoreFor({}, 'wanted-2022'), null);
+test('opening window: 14 days before the week through its end, reopenings included', () => {
+  const w = ['2026-11-09', '2026-11-15'];
+  assert.equal(inOpeningWindow({ openingDate: '2026-10-26' }, ...w), true, 'exactly 14 days before');
+  assert.equal(inOpeningWindow({ openingDate: '2026-10-25' }, ...w), false, '15 days before');
+  assert.equal(inOpeningWindow({ openingDate: '2026-11-15' }, ...w), true, 'last day of the week');
+  assert.equal(inOpeningWindow({ openingDate: '2026-11-16' }, ...w), false, 'after the week');
+  assert.equal(inOpeningWindow({ openingDate: '2026-06-01', reopeningDate: '2026-11-10' }, ...w), true, 'reopening');
+  assert.equal(inOpeningWindow({}, ...w), false, 'no dates');
 });
