@@ -17,3 +17,20 @@ test('every launchd job has a needs-Mac / cloud-capable verdict in scripts/launc
   }
   assert.deepEqual(missing, [], `add a verdict row for: ${missing.join(', ')}`);
 });
+
+test('a "moved" row has no plist and a real workflow; no row names a deleted plist (BRO-7573)', () => {
+  const rows = doc.split('\n').filter((l) => /^\| com\.(broadwayscore|bwsc)\./.test(l));
+  const bad = [];
+  for (const row of rows) {
+    const name = row.split('|')[1].trim();
+    const verdict = row.split('|')[2].trim();
+    if (verdict === 'moved') {
+      const wf = path.join(root, '.github', 'workflows', `${name.replace(/^com\.(broadwayscore|bwsc)\./, '')}.yml`);
+      if (plists.includes(name)) bad.push(`${name}: moved but plist still present`);
+      if (!fs.existsSync(wf)) bad.push(`${name}: moved but ${path.basename(wf)} missing`);
+    } else if (!plists.includes(name)) {
+      bad.push(`${name}: row has no plist (deleted? remove the row or mark moved)`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});
