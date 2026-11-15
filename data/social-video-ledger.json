@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Social video lane: one entry per show video (scripts/social-autopost/video-run.js)",
-    "lastUpdated": "2026-11-15T07:11:35.126Z"
+    "lastUpdated": "2026-11-15T16:38:01.986Z"
   },
   "posts": [
     {
@@ -79,6 +79,11 @@
       "key": "score:wanted-2022",
       "at": "2026-11-15T07:11:12.057Z",
       "error": "render.js failed (1):     at Object..js (node:internal/modules/cjs/loader:1913:10) |     at Module.load (node:internal/modules/cjs/loader:1505:32) |     at Function._load (node:internal/modules/cjs/loader:1309:12) |     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)"
+    },
+    {
+      "key": "score:wanted-2022",
+      "at": "2026-11-15T16:37:39.539Z",
+      "error": "voscript.js failed (1):   round 2 gpt: pass |   round 2 gemini: FAIL minor (The phrase \"One score.\" is a bit abrupt and repetitive right after \"Twenty-six critics have reviewed it.\" and before \"Fifty-nine! Mixed.\"; The phrase \"One score, on Broadway Scorecard.\" at the end feels a little stiff and less like natural conversation.) |   rule check: em or en dash | script check: has em or en dash"
     }
   ]
 }
