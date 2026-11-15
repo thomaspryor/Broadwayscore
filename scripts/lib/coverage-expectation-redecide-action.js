@@ -64,17 +64,21 @@ function applyCoverageExpectationRedecide(registry, action, { shows, reviews, no
 
 /**
  * BRO-7519: the mechanical case, automated. Every outlet whose "reviews" claim
- * has decayed (status decayed, measured >= MIN_REVIEWS_CLAIM_RATE) is refreshed
+ * has decayed (status decayed, measured >= AUTO_REFRESH_MIN_RATE) is refreshed
  * through applyCoverageExpectationRedecide, so the 14-day decay never reaches the
  * digest. Contradicted, no-evidence and "no review expected" claims are left for
  * a human (the apply function refuses them).
  * @returns {{refreshed: string[], skipped: {outletId: string, reason: string}[]}}
  */
-function autoRefreshDecayedClaims(registry, { shows, reviews, nowMs = Date.now() }) {
+// The scheduled refresh stamps only claims still clearly selective; a slide toward the 2% floor goes to a human.
+const AUTO_REFRESH_MIN_RATE = 0.10;
+
+function autoRefreshDecayedClaims(registry, { shows, reviews, nowMs = Date.now() }, { minRate = AUTO_REFRESH_MIN_RATE } = {}) {
   const refreshed = [];
   const skipped = [];
   const { rows } = evaluateCoverageExpectationDrift(shows, reviews, registry.outlets, nowMs);
   for (const row of rows.filter((r) => r.status === 'decayed')) {
+    if (row.overall < minRate) { skipped.push({ outletId: row.outletId, reason: `measured ${(row.overall * 100).toFixed(1)}% is below the ${minRate * 100}% auto-refresh floor, human re-decision` }); continue; }
     const res = applyCoverageExpectationRedecide(registry, { outletId: row.outletId, reason: 'scheduled mechanical re-probe (audit-standing-coverage --auto-refresh)' }, { shows, reviews, nowMs });
     if (res.ok && res.changed) refreshed.push(row.outletId);
     else if (!res.ok) skipped.push({ outletId: row.outletId, reason: res.reason });
@@ -82,4 +86,4 @@ function autoRefreshDecayedClaims(registry, { shows, reviews, nowMs = Date.now()
   return { refreshed, skipped };
 }
 
-module.exports = { applyCoverageExpectationRedecide, autoRefreshDecayedClaims };
+module.exports = { applyCoverageExpectationRedecide, autoRefreshDecayedClaims, AUTO_REFRESH_MIN_RATE };

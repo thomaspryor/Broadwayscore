@@ -189,10 +189,13 @@ jobs:
 
       # BRO-7519: "Quality: coverageExpectation drift" fired every 14 days per outlet
       # for a mechanical re-probe (decayed "reviews" claim, measured coverage still
-      # well above the floor). Refresh those here daily; anything contradicted or
+      # at or above the 10% auto-refresh floor). Refresh those here daily; anything contradicted or
       # with a "no review expected" claim still waits for a human.
       - name: Refresh decayed coverageExpectation claims
         continue-on-error: true
+        env:
+          # outlet-registry.json is union-merged (check-corpus-drift.yml sets the same).
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           node scripts/audit-standing-coverage.js --coverage-expectation --auto-refresh
           if ! git diff --quiet -- data/outlet-registry.json; then

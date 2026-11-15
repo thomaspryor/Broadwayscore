@@ -112,4 +112,12 @@ test('refuses below the coverage floor and replaces its own previous note instea
     const after = evaluateCoverageExpectationDrift(shows, reviews, reg.outlets, NOW).needsReprobe;
     assert.ok(!after.includes('full'), 'drift row must clear after the auto-refresh');
   });
+  test('autoRefreshDecayedClaims skips a decayed claim below the auto floor (BRO-7519)', () => {
+    const { shows, reviews } = fixture();
+    const reg = registry();
+    const { refreshed, skipped } = autoRefreshDecayedClaims(reg, { shows, reviews, nowMs: NOW }, { minRate: 1.5 });
+    assert.ok(!refreshed.includes('full'));
+    assert.ok(skipped.some((x) => x.outletId === 'full' && /auto-refresh floor/.test(x.reason)));
+    assert.notEqual(reg.outlets.full.coverageExpectationDecidedAt, '2026-10-24');
+  });
 }
