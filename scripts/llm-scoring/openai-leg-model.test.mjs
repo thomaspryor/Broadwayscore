@@ -27,8 +27,8 @@ const { openaiChatBody, openaiScoringModels, buildOpenAIBatchLine } = require('.
 const MSGS = [{ role: 'system', content: 's' }, { role: 'user', content: 'u' }];
 
 describe('OpenAI scoring pins', () => {
-  test('the ensemble leg and the comparative rescore stay on gpt-4o until their A/B passes', () => {
-    assert.equal(models.SCORING_OPENAI, 'gpt-4o', 'flip SCORING_OPENAI only with a passing rule-13 A/B (cite its data/audit file here)');
+  test('the ensemble leg is gpt-5.6-luna (BRO-7537, A/B data/audit/scoring-ab-2026-11-cheaper-legs.json); the comparative rescore stays on gpt-4o until its own A/B passes', () => {
+    assert.equal(models.SCORING_OPENAI, 'gpt-5.6-luna', 'flip SCORING_OPENAI only with a passing rule-13 A/B (cite its data/audit file here)');
     assert.equal(models.COMPARATIVE_OPENAI, 'gpt-4o', 'comparative-rescore rewrites published scores: it moves only after its own check');
   });
 

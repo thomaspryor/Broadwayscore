@@ -13,7 +13,7 @@ import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, Ense
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
 import { buildScoringInput, ReviewInputData, ScoringInput } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
-const { SCORING_OPENAI } = require('../lib/models');
+const { SCORING_OPENAI, SCORING_SONNET } = require('../lib/models');
 const { detectBandFromReviewFile, shouldUseAnchoredMode } = require('../lib/star-reliability');
 import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 
@@ -22,7 +22,7 @@ import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 // ========================================
 
 export interface EnsembleScoringOptions {
-  claudeModel: 'claude-sonnet-4-6' | 'claude-3-5-haiku-20241022';
+  claudeModel: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-3-5-haiku-20241022';
   openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
   geminiModel: 'gemini-2.5-flash' | 'gemini-2.5-flash' | 'gemini-1.5-flash';
   kimiModel: string;
@@ -183,8 +183,8 @@ export class EnsembleReviewScorer {
     options: Partial<EnsembleScoringOptions> = {}
   ) {
     this.options = {
-      claudeModel: options.claudeModel || 'claude-sonnet-4-6',
-      // The scoring pin SCORING_OPENAI (models.js), still gpt-4o. Task #504's
+      claudeModel: options.claudeModel || SCORING_SONNET,
+      // The scoring pin SCORING_OPENAI (models.js). Task #504's
       // A/B (n=24, 2026-07-26) of gpt-5.4-mini failed the rule-13 gate (Mixed
       // bucket 29%->0%, max shift 29.2pp); a full-pipeline re-test on ~1,000
       // past reviews is planned before gpt-4o retires on 2027-01-14. The pin

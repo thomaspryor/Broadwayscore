@@ -72,8 +72,8 @@ describe('models.js is the single Claude model table', () => {
     for (const [name, id] of Object.entries(pins)) assert.equal(models[name], id, name);
   });
 
-  test('SCORING_SONNET stays pinned to claude-sonnet-4-6 (§13 A/B gate)', () => {
-    assert.equal(models.SCORING_SONNET, 'claude-sonnet-4-6');
+  test('SCORING_SONNET pinned to claude-sonnet-5-5 (BRO-7537; A/B: data/audit/scoring-ab-2026-11-cheaper-legs.json)', () => {
+    assert.equal(models.SCORING_SONNET, 'claude-sonnet-5-5');
   });
 
   // Ship-check 2026-10-01: the 5.5 generation rejects `temperature` and returns a
