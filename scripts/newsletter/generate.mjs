@@ -7,7 +7,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { badgeImg, rankBadgeImg, awardBadgeImg } from './badge-render.mjs';
-import { hasFreshRunReview } from './fresh-run-reviews.mjs';
+import { hasFreshRunReview, freshCutoffFor } from './fresh-run-reviews.mjs';
+import { loadOverrides, activeOverrides, waivesFreshRunGate, displayTitleFor, movedNote } from './editorial-overrides.mjs';
 import { createCompositeScoreLoader } from './composite-score.mjs';
 
 // Path setup: `repo` resolves to the repo root via __dirname so the generator
@@ -93,6 +94,12 @@ const horizon7Str = horizon7Date.toISOString().slice(0, 10);
 const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // throws on typos — 'westend' must not silently build the Broadway edition
 const IS_WE = EDITION === 'west-end';
 const PRIMARY = IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway'];
+// Owner-approved one-week exceptions (BRO-7547): scoped to this weekStart + edition.
+const _editorialOverrides = activeOverrides(loadOverrides(), { weekStart: weekStartStr, edition: EDITION });
+// Display title applies in memory only (shows.json is never written here) so the
+// card, alt text, lede, subject facts and meta all agree on one name.
+for (const sh of shows) sh.title = displayTitleFor(_editorialOverrides, sh.id, sh.title);
+const cardTitle = (show) => show.title;
 const isPrimaryMarket = (s) => s && PRIMARY.includes(s.category);
 // Branding: gold "Broadway Scorecard" vs pink "West End Scorecard". Same domain
 // (broadwayscorecard.com), but the WE edition's primary CTA is /west-end.
@@ -528,6 +535,7 @@ function reviewsForShow(showId) {
 
 function hasFreshRunCoverage(show) {
   if (!show || !show.id) return true;
+  if (waivesFreshRunGate(_editorialOverrides, show.id)) return true; // owner decision, editorial-overrides.json
   const tiers = loadOutletTierMap();
   // An unreadable/empty outlet-registry.json makes loadOutletTierMap() return
   // an empty Map (its parse is wrapped in a bare `catch {}`), which would make
@@ -737,9 +745,9 @@ function showRow(show, opts = {}) {
   const take = (opts.noConsensus || score == null) ? null : clampTake(criticsTake(show.id));
   const takeHtml = criticsTakeHtml(take, show.slug ? showHref(show) : null);
   return showCardHtml({
-    posterHtml: posterOrThumb(show, POSTER_W, POSTER_H),
+    posterHtml: posterOrThumb({ ...show, title: cardTitle(show) }, POSTER_W, POSTER_H),
     infoHtml: `
-        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, show.title)}</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, cardTitle(show))}</div>
         <div style="margin-top:5px;line-height:1.75;">${marketTag}${formatPill}${revivalPill}${reopenPill}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:4px;line-height:1.35;">${metaDate}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:1px;line-height:1.35;">${metaVenue}</div>`,
@@ -3249,6 +3257,20 @@ if (_ai) {
   // Drop strip items the new opening already tells.
   const _named = new Set(_ai.showRefs.map(r => r.id));
   ledeBullets = ledeBullets.filter(b => !(b.showRef && _named.has(b.showRef.id)));
+}
+
+// Editorial note for an owner-approved returning show (BRO-7547): one plain
+// sentence after the opening, whatever wrote the opening (template, week
+// voice or AI). Only when the show is actually rendered as a card.
+for (const o of _editorialOverrides.filter(x => x.waiveFreshRunGate)) {
+  const sh = shows.find(x => x.id === o.showId);
+  if (!sh || !sectionOrder.join('').includes(cardTitle(sh))) continue;
+  const _cut = freshCutoffFor(sh);
+  const _rs = reviewsForShow(sh.id);
+  const note = movedNote(sh, aggregateScore(sh.id), `*${cardTitle(sh)}*`, { fresh: _cut ? _rs.filter(r => (r.publishDate || '') >= _cut).length : null, total: _rs.length });
+  if (!note || !ledeText || ledeText.includes(note)) continue;
+  ledeText = `${ledeText} ${note}`;
+  if (!ledeShowRefs.some(r => r && r.id === sh.id)) ledeShowRefs = ledeShowRefs.concat([{ id: sh.id, slug: sh.slug, title: sh.title }]);
 }
 
 // Facts for the subject writer: only what this email renders, as plain true
