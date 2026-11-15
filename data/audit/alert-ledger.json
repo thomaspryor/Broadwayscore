@@ -26333,7 +26333,7 @@
       "resolveReason": "job-green"
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
       "firstSeen": "2026-10-24T13:07:31.042Z",
@@ -26345,7 +26345,9 @@
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-15T16:18:25.094Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-6101-aggregator-repair": {
       "status": "resolved",
@@ -29517,13 +29519,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-15T13:21:27.051Z",
+      "lastSeen": "2026-11-15T16:18:25.071Z",
       "lastNotifiedAt": "2026-11-15T07:37:10.094Z",
       "lastSurfacedAt": "2026-11-15T07:37:10.094Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-7503",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -39140,13 +39142,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-15T13:21:26.688Z",
+      "lastSeen": "2026-11-15T16:18:24.799Z",
       "lastNotifiedAt": "2026-11-15T00:33:12.642Z",
       "lastSurfacedAt": "2026-11-15T00:33:12.642Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-7499",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -43274,13 +43276,13 @@
       "firstSeen": "2026-11-14T02:43:17.309Z",
       "incidentOpenedAt": "2026-11-14T02:43:17.309Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-15T13:21:26.996Z",
+      "lastSeen": "2026-11-15T16:18:25.023Z",
       "lastNotifiedAt": "2026-11-15T07:37:10.045Z",
       "lastSurfacedAt": "2026-11-15T07:37:10.045Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "express-retry-still-thin:potus-off-broadway-2026": {
       "status": "open",
@@ -43672,6 +43674,20 @@
       "lastSeen": "2026-11-15T15:42:54.212Z",
       "lastNotifiedAt": "2026-11-15T15:42:54.212Z",
       "lastSurfacedAt": "2026-11-15T15:42:54.212Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: daily synopsis passes reach every flagged open show within a month (tests/unit/enrichment-target-reach-live.test.mjs)",
+      "firstSeen": "2026-11-15T16:18:25.047Z",
+      "incidentOpenedAt": "2026-11-15T16:18:25.047Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-15T16:18:25.047Z",
+      "lastNotifiedAt": "2026-11-15T16:18:25.047Z",
+      "lastSurfacedAt": "2026-11-15T16:18:25.047Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

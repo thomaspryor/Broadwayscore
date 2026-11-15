@@ -358,5 +358,20 @@
       }
     ],
     "queuedAt": "2026-11-15T15:42:54.213Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
+    "title": "Live-data test failing: daily synopsis passes reach every flagged open show within a month (tests/unit/enrichment-target-reach-live.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"daily synopsis passes reach every flagged open show within a month\" in tests/unit/enrichment-target-reach-live.test.mjs is red against the live corpus.\n\nthe daily synopsis enricher never reaches 2 of 39 flagged show(s) on any day of the month (BRO-7437: a bare slice() of a file-ordered, mostly-closed candidate list starves exactly the rows the health check reddens over, so the gap count can never fall and the card is refiled forever)\n+ actual - expected\n\n+ [\n+   'double-bill-tell-me-straight-and-aggy-off-west-end-2026',\n+   'vladimir-regional-2026'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
+    "fields": [],
+    "queuedAt": "2026-11-15T16:18:25.047Z"
   }
 ]
