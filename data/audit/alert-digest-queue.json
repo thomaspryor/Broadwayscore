@@ -181,5 +181,33 @@
     "tracked": "BRO-7516",
     "fields": [],
     "queuedAt": "2026-11-15T13:21:37.434Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
+    "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--48004f36.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/adam-driver-whether-he-will-reprise-role-girls-revival/6569210/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-15T13:57:59.874Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:speculations-off-west-end-2026",
+    "title": "1 review(s) for speculations-off-west-end-2026 stuck in _pending with no text and no byline — escalated after 15 notifications",
+    "description": "Filed BRO-7518 for owner triage after 15 repeats with no tracker.\n\nreplay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--2b0f3c6f.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7518",
+    "fields": [],
+    "queuedAt": "2026-11-15T14:00:23.716Z"
   }
 ]
