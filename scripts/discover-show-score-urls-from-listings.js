@@ -184,7 +184,7 @@ function normalizeTitle(title) {
     .replace(/\s*\([^)]*\)\s*$/g, '')  // Strip trailing parenthetical (venue, etc.)
     .replace(/^encores!\s*/i, '')  // Strip "Encores!" prefix for City Center shows
     .replace(/\*+/g, '')  // Strip censoring asterisks (s**tshow → shtshow)
-    .replace(/[''""":,.!?–—-]/g, '')
+    .replace(/['\u2018\u2019\u02BC"\u201C\u201D:,.!?–—-]/g, '') // BRO-7357: curly quotes as escapes (were flattened to '')
     .replace(/\s+/g, ' ')
     .trim();
 }

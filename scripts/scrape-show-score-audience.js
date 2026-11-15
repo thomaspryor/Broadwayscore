@@ -37,6 +37,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage } = require('./lib/scraper');
+const { slugifyTitle, titlesMatch } = require('./lib/show-score-title-match'); // BRO-7357: curly-apostrophe-safe
 const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction, isProductionMismatch, recordProductionMismatch } = require('./lib/show-score-url-map');
 const { fetchWithBrightDataViaFetchPage } = require('./lib/audience-page-fetch');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
@@ -255,19 +256,6 @@ async function fetchWithFallback(url) {
   throw new Error('All scraping methods failed for ' + url);
 }
 
-/**
- * Slugify a show title for Show Score URL patterns
- */
-function slugifyTitle(title) {
-  return title
-    .toLowerCase()
-    .replace(/&/g, '')           // Drop ampersand
-    .replace(/['']/g, '-')       // Apostrophes → hyphen
-    .replace(/[:.!?,()]/g, '')   // Drop punctuation
-    .replace(/\s+/g, '-')        // Spaces → hyphens
-    .replace(/-+/g, '-')         // Collapse multiple hyphens
-    .replace(/^-|-$/g, '');      // Trim leading/trailing hyphens
-}
 
 /**
  * Generate candidate Show Score URLs for a show
@@ -364,39 +352,6 @@ function generateCandidateUrls(show) {
   return [...new Set(candidates)].map(slug => `${base}/${slug}`);
 }
 
-/**
- * Normalize a title for fuzzy comparison (strip parenthetical suffixes, punctuation, etc.)
- */
-function normalizeTitle(title) {
-  return (title || '')
-    .toLowerCase()
-    .replace(/\s*\(broadway\)\s*/i, '')      // Strip "(Broadway)"
-    .replace(/\s*\(london\)\s*/i, '')        // Strip "(London)"
-    .replace(/\s*\(west end\)\s*/i, '')      // Strip "(West End)"
-    .replace(/\s*\(.*?\)\s*$/, '')           // Strip trailing parenthetical
-    .replace(/[''":,.!?]/g, '')              // Strip punctuation
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/**
- * Check if a JSON-LD page title matches the show we're looking for.
- * Prevents listings-page contamination (where Hamilton appears as first result).
- */
-function titlesMatch(jsonLdName, showTitle) {
-  const a = normalizeTitle(jsonLdName);
-  const b = normalizeTitle(showTitle);
-  if (!a || !b) return false;
-  // Exact match after normalization
-  if (a === b) return true;
-  // One contains the other (handles subtitles like "Sweeney Todd: The Demon Barber...")
-  if (a.includes(b) || b.includes(a)) return true;
-  // Check first significant word match (handles "The" prefix variations)
-  const aWords = a.replace(/^the /, '').split(' ');
-  const bWords = b.replace(/^the /, '').split(' ');
-  if (aWords[0] === bWords[0] && aWords[0].length > 3) return true;
-  return false;
-}
 
 /**
  * Extract JSON-LD name from HTML
