@@ -138,5 +138,5 @@
 - [Recoupment RSS poller](feedback_recoupment_rss_poller_architecture.md) — hourly Variety+Deadline; shared classify lib; trackRecoupment flag
 
 ## 📚 Reference & repo layout
-- [Paywall subs status](reference_paywall_subscriptions_status.md) — cancelled Jul 2026; check before cookie/Browserbase advice; TR = paid UK archive ([[reference_theatre_record.md]])
+- [Paywall subs status](reference_paywall_subscriptions_status.md) — costs/renewals/login modes as of Nov 2026; check before cookie/Browserbase advice; TR = paid UK archive ([[reference_theatre_record.md]])
 - [Repo layout](repo_layout.md) — three repos (web, iOS, data) w/ GitHub names + paths; ~/.claude is private repo via claude-sync ([[reference_claude_config_sync.md]])

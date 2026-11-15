@@ -686,7 +686,7 @@ reference_claude_seo_toolkit.md | reference | claude-seo skill suite installed 2
 reference_claudeai_connectors_auth_gated.md | reference | claude.ai connectors (Gmail/GCal/etc) — RESOLVED 2026-07-11; if tools are missing, check the mcp-logs cache and suggest a session restart or /mcp reconnect; do NOT re-diagnose auth/cmux
 reference_f5bot_self_exclusion.md | reference | F5Bot keyword syntax to exclude the owner's own Reddit posts from alerts; F5Bot login creds are not accessible to Claude (not in GH secrets or .env)
 reference_mac_studio_tcp_tuning.md | reference | Mac Studio has non-standard TCP sysctls + a TIME_WAIT monitor after the 2026-07-08 ephemeral port exhaustion incident
-reference_paywall_subscriptions_status.md | reference | Which outlet subscriptions the owner pays for vs cancelled (Bloomberg/Telegraph/newspapers.com cancelled July 2026) — check before advising on paywall recovery or prompting re-login
+reference_paywall_subscriptions_status.md | reference | Which outlet subscriptions the owner pays for (cost, renewal, login renewal mode) vs cancelled/free, as of 2026-11-14 — check before advising on paywall recovery, cookie re-login, or subscriptions
 reference_resend_broadcast_scheduling.md | reference | Resend dashboard has NO schedule option for broadcasts (only slide-to-send); scheduling exists solely via API scheduled_at on the send call, which rule-17 hooks block without explicit per-turn user authorization
 reference_theatre_record.md | reference | Paid UK review archive £53/yr; extraction script; wired into refresh pipeline.
 reference_vercel_billing_api.md | reference | How to pull Vercel invoices/usage via API + 2026-07 cost-driver findings (deploy frequency drives ~$67/mo of usage); also covers the Vercel DNS records API
