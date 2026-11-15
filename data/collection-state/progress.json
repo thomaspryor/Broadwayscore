@@ -4,7 +4,8 @@
     "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
     "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
     "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
-    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "downstate-2026/broadwaynews--unknown.json"
   ],
   "failed": [
     "king-lear-off-broadway-2026/patch--lauren-traut.json",
@@ -69,7 +70,8 @@
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
     "all-my-sons-2008/usatoday--elysa-gardner.json",
     "the-little-mermaid-2008/nypost--clive-barnes.json",
-    "is-he-dead-2007/nypost--clive-barnes.json"
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -86,7 +88,8 @@
       "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+      "downstate-2026/broadwaynews--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -95,7 +98,7 @@
     ]
   },
   "startTime": "2026-11-15T11:09:37.289Z",
-  "lastProcessed": "is-he-dead-2007/nypost--clive-barnes.json",
+  "lastProcessed": "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-15T11:13:06.343Z",
@@ -138,6 +141,61 @@
     },
     {
       "t": "2026-11-15T11:18:22.790Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T12:25:00.827Z",
+      "event": "bb-session",
+      "session": "a4eaaa44",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-15T12:25:01.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-15T12:25:17.135Z",
+      "event": "bb-session",
+      "session": "668c2332",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-15T12:25:17.301Z",
+      "event": "bb-session",
+      "session": "6a7bbee4",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-15T12:25:17.478Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T12:25:17.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-15T12:27:53.959Z",
+      "event": "bb-session",
+      "session": "cedd88a1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-15T12:27:54.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T12:30:39.885Z",
+      "event": "bb-session",
+      "session": "9b3f25f8",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-15T12:30:40.303Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
