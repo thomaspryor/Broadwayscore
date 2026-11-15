@@ -110,5 +110,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-15T10:40:26.389Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:blue-man-group-a-new-holiday-surprise-2026",
+    "title": "Auto-remediation gave up on blue-man-group-a-new-holiday-surprise-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast.yml {\"show_filter\":\"blue-man-group-a-new-holiday-surprise-2026\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-15T11:02:51.805Z"
   }
 ]
