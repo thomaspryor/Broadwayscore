@@ -1,25 +1,25 @@
 {
-  "timestamp": "2026-11-08T10:07:08.337Z",
+  "timestamp": "2026-11-15T10:40:50.362Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-11-15",
+    "totalReviews": 82110,
+    "unknownOutlets": 59,
+    "duplicates": 25,
+    "syncDelta": 31370
+  },
+  "previous": {
     "date": "2026-11-08",
     "totalReviews": 80478,
     "unknownOutlets": 46,
     "duplicates": 24,
     "syncDelta": 30772
   },
-  "previous": {
-    "date": "2026-11-01",
-    "totalReviews": 78206,
-    "unknownOutlets": 64,
-    "duplicates": 24,
-    "syncDelta": 33123
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "critical",
-      "message": "46 reviews have unknown outlets",
+      "message": "59 reviews have unknown outlets",
       "examples": [
         {
           "file": "data/review-texts/a-few-good-men-2026/globalnews2--unknown.json",
@@ -52,35 +52,35 @@
           "outlet": "stagedoor"
         },
         {
+          "file": "data/review-texts/beetlejuice-tour-2022/gaydesertguide--stephen-radosh.json",
+          "outletId": "gaydesertguide",
+          "outlet": "gaydesertguide"
+        },
+        {
+          "file": "data/review-texts/beetlejuice-tour-2022/guide4moms--mandipie4u.json",
+          "outletId": "guide4moms",
+          "outlet": "guide4moms"
+        },
+        {
           "file": "data/review-texts/beetlejuice-tour-2022/inthespotlightinc--jarice-hanson.json",
           "outletId": "inthespotlightinc",
           "outlet": "inthespotlightinc"
         },
         {
-          "file": "data/review-texts/billy-crystal-860-2026/theglobalcelebritymeter--steve-smith.json",
-          "outletId": "theglobalcelebritymeter",
-          "outlet": "theglobalcelebritymeter"
-        },
-        {
-          "file": "data/review-texts/copperfield-the-new-musical-off-broadway-2026/frombroadway--pete-hempstead.json",
-          "outletId": "frombroadway",
-          "outlet": "frombroadway"
-        },
-        {
-          "file": "data/review-texts/double-bill-tell-me-straight-and-aggy-off-west-end-2026/nearbuzz--unknown.json",
-          "outletId": "nearbuzz",
-          "outlet": "nearbuzz"
+          "file": "data/review-texts/beetlejuice-tour-2022/sdstageandscreen--jean-lowerison.json",
+          "outletId": "sdstageandscreen",
+          "outlet": "sdstageandscreen"
         }
       ]
     },
     {
       "type": "duplicates",
       "severity": "critical",
-      "message": "24 duplicate reviews detected",
+      "message": "25 duplicate reviews detected",
       "examples": [
         {
           "file": "data/review-texts/affluenza-off-west-end-2026/londontheatredirect--sarah-armer.json",
-          "key": "affluenza-off-west-end-2026|londontheatredirect|lepeltier arthur"
+          "key": "affluenza-off-west-end-2026|londontheatredirect|katie devlin"
         },
         {
           "file": "data/review-texts/aladdin-2014/theatermania--zachary-stewart.json",
@@ -95,16 +95,16 @@
           "key": "camp-siegfried-west-end-2021|whatsonstage|alex wood"
         },
         {
+          "file": "data/review-texts/carousel-west-end-2017/observer--susannah-clapp.json",
+          "key": "carousel-west-end-2017|observer|susannah clapp"
+        },
+        {
           "file": "data/review-texts/cruise-west-end-2021/whatsonstage--sarah-crompton.json",
           "key": "cruise-west-end-2021|whatsonstage|sarah crompton"
         },
         {
           "file": "data/review-texts/endgame-west-end-2020/times-uk--unknown.json",
           "key": "endgame-west-end-2020|times-uk|clive davis"
-        },
-        {
-          "file": "data/review-texts/ghost-the-musical-2012/nytimes--charles-isherwood.json",
-          "key": "ghost-the-musical-2012|nytimes|charles isherwood"
         },
         {
           "file": "data/review-texts/good-time-charlie-off-broadway-2026/cititour--brian-scott.json",
@@ -123,13 +123,18 @@
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (80478) and reviews.json (49706) are out of sync by 30772 reviews"
+      "message": "review-texts (82110) and reviews.json (50740) are out of sync by 31370 reviews"
+    },
+    {
+      "type": "unknown_outlets_degradation",
+      "severity": "warning",
+      "message": "Unknown outlets increased from 46 to 59"
     }
   ],
   "summary": {
-    "totalReviews": 80478,
-    "unknownOutlets": 46,
-    "duplicates": 24,
-    "syncDelta": 30772
+    "totalReviews": 82110,
+    "unknownOutlets": 59,
+    "duplicates": 25,
+    "syncDelta": 31370
   }
 }
