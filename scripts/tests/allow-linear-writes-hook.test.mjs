@@ -74,13 +74,20 @@ test('in cloud, a NEW comment or issue is redirected to linear-brain.js (deny); 
   const cloud = { CLAUDE_CODE_REMOTE: 'true' };
   const c = decide(`mcp__${UUID}__save_comment`, cloud, { issue: 'BRO-1', body: 'x' });
   assert.equal(c.permissionDecision, 'deny');
-  assert.match(c.permissionDecisionReason, /linear-brain\.js update BRO-N --comment/);
+  assert.match(c.permissionDecisionReason, /linear-brain\.js" update BRO-N --comment/);
   const i = decide('mcp__Linear__save_issue', cloud, { title: 't', team: 'BRO' });
   assert.equal(i.permissionDecision, 'deny');
-  assert.match(i.permissionDecisionReason, /linear-brain\.js create/);
+  assert.match(i.permissionDecisionReason, /linear-brain\.js" create/);
   assert.equal(decide('mcp__Linear__save_comment', cloud, { id: 'abc', body: 'edit' }).permissionDecision, 'allow');
   assert.equal(decide('mcp__Linear__save_issue', cloud, { id: 'BRO-1', priority: 1 }).permissionDecision, 'allow');
   assert.equal(decide('mcp__Linear__save_comment', {}, { issue: 'BRO-1', body: 'x' }).permissionDecision, 'allow');
   assert.equal(decide('mcp__Linear__save_comment', { ...cloud, ALLOW_LINEAR_WRITES_NO_REDIRECT: '1' }, { issue: 'BRO-1', body: 'x' }).permissionDecision, 'allow');
   assert.equal(decide('mcp__Linear__save_issue', cloud, { state: 'Done' }), null);
+});
+
+test('in cloud, a create the script cannot do (parentId, labels) is not redirected; the steering text is safe to paste', () => {
+  const cloud = { CLAUDE_CODE_REMOTE: 'true' };
+  assert.equal(decide('mcp__Linear__save_comment', cloud, { issue: 'BRO-1', body: 'x', parentId: 'p' }).permissionDecision, 'allow');
+  assert.equal(decide('mcp__Linear__save_issue', cloud, { title: 't', team: 'BRO', labels: ['a'] }).permissionDecision, 'allow');
+  assert.match(decide('mcp__Linear__save_comment', cloud, { issue: 'BRO-1', body: 'x' }).permissionDecisionReason, /cat <<'EOF'/);
 });
