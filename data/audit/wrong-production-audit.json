@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-15T01:41:31.440Z",
+  "timestamp": "2026-11-15T01:53:15.781Z",
   "stats": {
     "totalReviews": 82118,
-    "alreadyFlagged": 22399,
-    "dateGuardCatches": 222,
+    "alreadyFlagged": 22400,
+    "dateGuardCatches": 221,
     "directorMismatch": 3697,
-    "tvFilmSignals": 2313,
+    "tvFilmSignals": 2314,
     "londonSignals": 3756,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
@@ -3322,6 +3322,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "act-one-2014",
+      "file": "newsday--linda-winer.json",
+      "score": 42,
+      "publishDate": "2014-04-16",
+      "url": "http://www.newsday.com/entertainment/theater/act-one-review-hart-but-not-much-drama-1.7728116",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -99546,19 +99560,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "downstate-2026",
-      "file": "theatermania--david-gordon.json",
-      "publishDate": "2026-09-08",
-      "url": "https://www.theatermania.com/news/bruce-norriss-downstate-sets-broadway-premiere-with-k-todd-freeman-and-francis-guinan_1852625/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 44d before show (2026-09-08 vs 2026-10-22)"
         }
       ]
     },
