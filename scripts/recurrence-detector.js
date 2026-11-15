@@ -405,6 +405,26 @@ function statusComment(newIds, closed, kind = null) {
       'The problem is still coming back, so the prevention is not in place yet (BRO-7103).';
 }
 
+/**
+ * PURE. The ids of a class that are real new cases since the last run: not in
+ * the previous snapshot's instance list AND (for card ids) created after the
+ * previous snapshot was written. A card can join a class without being new:
+ * the files-touched merge (mergeByFiles) or a key change can absorb an older,
+ * already-closed card. Reporting that as "still coming back" re-dispatched
+ * BRO-7116 for BRO-6733, a 10-31 card absorbed on 11-15 (BRO-7116).
+ * Ids with no known createdAt (miss-class show ids) keep the old rule.
+ */
+function freshCaseIds(instances, prevInstances, createdAtById, prevGeneratedAt) {
+  const seen = new Set(prevInstances || []);
+  const cutoff = Date.parse(prevGeneratedAt || '');
+  const get = (id) => (createdAtById instanceof Map ? createdAtById.get(id) : (createdAtById || {})[id]);
+  return (instances || []).filter((id) => {
+    if (seen.has(id)) return false;
+    const at = Date.parse(get(id) || '');
+    return !(Number.isFinite(cutoff) && Number.isFinite(at) && at <= cutoff);
+  });
+}
+
 /** PURE. Card ids already named on a root card by earlier detector comments. */
 function alreadyNoted(comments) {
   const seen = new Set();
@@ -420,10 +440,11 @@ function alreadyNoted(comments) {
 
 // ---------- apply ----------
 
-async function apply(snapshot, prevSnapshot) {
+async function apply(snapshot, prevSnapshot, cards = []) {
   const lc = require('./lib/linear-client.js');
   const { createLinearIssue } = require('./lib/linear-issue-create.js');
   const prevById = new Map(((prevSnapshot && prevSnapshot.classes) || []).map((c) => [c.key, c]));
+  const createdAtById = new Map((cards || []).map((c) => [c.identifier, c.createdAt]));
   const filed = [];
   const commented = [];
   const byRoot = new Map(); // root card -> new cases from every class it owns
@@ -473,8 +494,7 @@ async function apply(snapshot, prevSnapshot) {
     }
     const prev = prevById.get(cls.key);
     if (!prev || prev.rootCause !== cls.rootCause) continue; // first sight of this root: its own text lists the cases
-    const seen = new Set(prev.instances);
-    const fresh = cls.instances.filter((id) => !seen.has(id));
+    const fresh = freshCaseIds(cls.instances, prev.instances, createdAtById, prevSnapshot && prevSnapshot.generatedAt);
     if (!fresh.length) continue;
     const g = byRoot.get(cls.rootCause) || { fresh: new Set(), closed: false, kind: cls.kind || null };
     fresh.forEach((id) => g.fresh.add(id));
@@ -807,7 +827,7 @@ async function main() {
   if (has('--apply')) {
     if (!complete) { console.error('[recurrence] Linear read was partial; refusing to file (would risk a duplicate root card)'); process.exitCode = 1; }
     else {
-      const r = await apply(snap, prev);
+      const r = await apply(snap, prev, cards);
       console.log(`apply: filed ${r.filed.length} root-cause card(s)${r.filed.length ? ` (${r.filed.map((f) => f.card).join(', ')})` : ''}, commented on ${r.commented.length}, ${r.pending} waiting behind the cap`);
     }
   } else {
@@ -828,4 +848,4 @@ if (require.main === module) {
 
 module.exports = {
   applyRefusal, fetchCards, fetchRootCards, loadFilesById, fixCardFiles, ROOT_LOOKUP_SINCE,
-  sample, alreadyNoted, statusComment, buildSnapshot, missesFromGrades, missCardTitle, missCardDescription, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };
+  sample, alreadyNoted, freshCaseIds, statusComment, buildSnapshot, missesFromGrades, missCardTitle, missCardDescription, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };

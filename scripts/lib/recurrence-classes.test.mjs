@@ -288,6 +288,25 @@ test('status comments name their cases on line one, so a rerun never repeats the
   assert.deepEqual([...seen].sort(), ['BRO-11', 'BRO-12']);
 });
 
+test('an old card absorbed into a class is not reported as a new case (BRO-7116)', () => {
+  // Real case: BRO-6733 (filed 2026-10-31) joined "review gap missing cited"
+  // through the files-touched merge on 2026-11-15; the detector told BRO-7116
+  // the problem was "still coming back" and the card was re-dispatched.
+  const created = { 'BRO-6733': '2026-10-31T18:38:13.572Z', 'BRO-7200': '2026-11-14T20:00:00.000Z', 'BRO-7095': '2026-11-07T21:27:15.426Z' };
+  const prevAt = '2026-11-14T09:03:25.043Z';
+  assert.deepEqual(det.freshCaseIds(['BRO-7095', 'BRO-6733'], ['BRO-7095'], created, prevAt), []);
+  // A card filed after the last run is still a new case.
+  assert.deepEqual(det.freshCaseIds(['BRO-7095', 'BRO-6733', 'BRO-7200'], ['BRO-7095'], new Map(Object.entries(created)), prevAt), ['BRO-7200']);
+  // Miss-class show ids (no createdAt) and a snapshot with no date keep the old rule.
+  assert.deepEqual(det.freshCaseIds(['a-show', 'b-show'], ['a-show'], created, prevAt), ['b-show']);
+  assert.deepEqual(det.freshCaseIds(['BRO-6733'], [], created, null), ['BRO-6733']);
+  // apply() must go through it, not a bare "not in the previous list" filter.
+  const src = require('fs').readFileSync(new URL('../recurrence-detector.js', import.meta.url), 'utf8');
+  const body = src.slice(src.indexOf('async function apply('), src.indexOf('// ---------- weekly independent sample'));
+  assert.match(body, /freshCaseIds\(cls\.instances/);
+  assert.match(src, /await apply\(snap, prev, cards\)/);
+});
+
 test('a root card In Progress for more than 14 days stops holding its cases back', () => {
   const started = (d) => ({ ...SNAP, classes: [{ ...SNAP.classes[0], rootCauseState: 'started', rootCauseStartedAt: iso(d) }] });
   assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 3 }, started(3), NOW), 'routed-to-root-cause');
