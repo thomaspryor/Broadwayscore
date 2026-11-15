@@ -17,7 +17,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { loadReviewTexts, consensusFingerprint } = require('../../scripts/lib/critic-consensus-inputs.js');
+const { loadReviewTexts, consensusFingerprint, shouldRegenerate } = require('../../scripts/lib/critic-consensus-inputs.js');
 const { liveOutletKeys, isConsensusEligible } = require('../../scripts/lib/critic-consensus-eligibility.js');
 const { createWithinShowDedup } = require('../../scripts/lib/within-show-dedup.js');
 const { run: criticsTakePresent } = require('../../scripts/lib/opening-night-checks/critics-take-present.check.js');
@@ -135,4 +135,40 @@ describe('wiring: every caller of loadReviewTexts passes the show list', () => {
       assert.ok(fs.readFileSync(new URL(`../../${file}`, import.meta.url), 'utf-8').includes(needle));
     });
   }
+});
+
+// Second half of BRO-7539: a transfer's first own reviews replace carried ones
+// outlet by outlet, so count, mean and buckets can stay flat. The Take must still
+// regenerate when a review of THIS run arrives.
+describe('transfer Take regenerates when a review of the new run arrives', () => {
+  const carried = (n, score = 90) => ({ score, hasFullText: true, carried: true, outlet: `o${n}` });
+  const own = (n, score = 90) => ({ score, hasFullText: true, outlet: `own${n}` });
+
+  it('fingerprint counts only rows from the show\'s own folder', () => {
+    const fp = consensusFingerprint([carried(1), carried(2), own(1)]);
+    assert.equal(fp.reviewCount, 3);
+    assert.equal(fp.ownReviewCount, 1);
+  });
+
+  it('one own review replacing a carried one (flat count, mean, buckets) triggers a regenerate', () => {
+    const before = [carried(1), carried(2), carried(3), own(0)];
+    const stored = { ...consensusFingerprint(before) };
+    const after = [carried(1), carried(2), own(1), own(0)]; // same count, same scores
+    const r = shouldRegenerate(stored, after);
+    assert.equal(r.should, true);
+    assert.match(r.reason, /new review\(s\) of this run/);
+  });
+
+  it('no change at all does not regenerate; a Take stored before this field existed is left alone', () => {
+    const rows = [carried(1), carried(2), own(1)];
+    assert.equal(shouldRegenerate(consensusFingerprint(rows), rows).should, false);
+    const legacy = consensusFingerprint(rows); delete legacy.ownReviewCount;
+    assert.equal(shouldRegenerate(legacy, rows).should, false);
+  });
+
+  it('the generator imports the shared decision, it does not keep its own copy', () => {
+    const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'scripts', 'generate-critic-consensus.js'), 'utf8');
+    assert.match(src, /shouldRegenerate \} from '\.\/lib\/critic-consensus-inputs\.js'/);
+    assert.doesNotMatch(src, /function shouldRegenerate/);
+  });
 });

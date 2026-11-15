@@ -17,7 +17,7 @@ import Anthropic from '@anthropic-ai/sdk';
 // demand a consensus this script is coded to refuse (task #389).
 import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, pruneConsensusEntries, liveOutletKeys } from './lib/critic-consensus-eligibility.js';
 import { finalResponseText, describeResponse } from './lib/anthropic-response-text.js';
-import { loadReviewTexts as loadConsensusInputs, consensusFingerprint } from './lib/critic-consensus-inputs.js';
+import { loadReviewTexts as loadConsensusInputs, consensusFingerprint, shouldRegenerate } from './lib/critic-consensus-inputs.js';
 import { isScoreable } from './lib/is-scoreable.js';
 import { createWithinShowDedup } from './lib/within-show-dedup.js';
 import { requestWithRefusalRetry, REFUSAL_RETRY_EXCERPT_CHARS } from './lib/critic-consensus-refusal.js';
@@ -138,63 +138,6 @@ Write only the concise consensus (max 280 chars), nothing else.`;
   return result;
 }
 
-/**
- * Determine if a show's consensus should be regenerated.
- * Returns { should: boolean, reason: string }
- */
-function shouldRegenerate(existing, reviews) {
-  if (!existing) return { should: true, reason: 'new show (no existing consensus)' };
-
-  const currentReviewCount = reviews.length;
-  const currentFullTextCount = reviews.filter(r => r.hasFullText).length;
-  const scoredReviews = reviews.filter(r => r.score != null);
-  const currentMeanScore = scoredReviews.length > 0
-    ? Math.round(scoredReviews.reduce((a, r) => a + r.score, 0) / scoredReviews.length)
-    : null;
-
-  // Trigger 1: New reviews added (existing behavior)
-  const reviewCountDiff = currentReviewCount - (existing.reviewCount || 0);
-  if (reviewCountDiff >= 3) {
-    return { should: true, reason: `${reviewCountDiff} new reviews` };
-  }
-
-  // Trigger 2: Full text upgrades (excerpt → full text)
-  if (existing.fullTextCount != null) {
-    const fullTextGain = currentFullTextCount - existing.fullTextCount;
-    if (fullTextGain >= 3) {
-      return { should: true, reason: `${fullTextGain} reviews upgraded to full text` };
-    }
-  }
-
-  // Trigger 3: Reviews removed (wrongProduction flags, etc.)
-  if (reviewCountDiff <= -2) {
-    return { should: true, reason: `${Math.abs(reviewCountDiff)} reviews removed` };
-  }
-
-  // Trigger 4: Mean score drift (rescoring, rave calibration)
-  if (existing.meanScore != null && currentMeanScore != null) {
-    const scoreDrift = Math.abs(currentMeanScore - existing.meanScore);
-    if (scoreDrift >= 8) {
-      return { should: true, reason: `mean score shifted ${scoreDrift}pts (${existing.meanScore} → ${currentMeanScore})` };
-    }
-  }
-
-  // Trigger 5: Bucket breakdown changed (e.g., review rescored from Mixed to Positive)
-  if (existing.bucketBreakdown) {
-    const currentBuckets = { positive: 0, mixed: 0, negative: 0 };
-    for (const r of scoredReviews) {
-      if (r.score >= 61) currentBuckets.positive++;
-      else if (r.score >= 40) currentBuckets.mixed++;
-      else currentBuckets.negative++;
-    }
-    const prev = existing.bucketBreakdown;
-    if (prev.positive !== currentBuckets.positive || prev.mixed !== currentBuckets.mixed || prev.negative !== currentBuckets.negative) {
-      return { should: true, reason: `bucket breakdown changed (P:${prev.positive}/M:${prev.mixed}/N:${prev.negative} → P:${currentBuckets.positive}/M:${currentBuckets.mixed}/N:${currentBuckets.negative})` };
-    }
-  }
-
-  return { should: false };
-}
 
 /**
  * Main execution

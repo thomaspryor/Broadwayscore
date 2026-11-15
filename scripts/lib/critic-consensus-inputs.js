@@ -114,7 +114,12 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
       if (passesExclusions(data, ctx)) dedup.add(data);
     }
     const row = reviewTextInput(data, showId, liveOutlets, opts.normalizeOutlet || null, ctx);
-    if (row) reviews.push(row);
+    if (row) {
+      // BRO-7539: tag rows read from an earlier run's folder, so the fingerprint can
+      // tell "a review of THIS run arrived" from "carried rows only".
+      if (ctx.carried) row.carried = true;
+      reviews.push(row);
+    }
   };
 
   const dir = path.join(root, showId);
@@ -137,7 +142,7 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
   // Own files go first, so the dedup above drops a carried twin (same URL, same
   // outlet+critic) exactly as inheritPriorRunReviews drops it.
   for (const d of carriedTextFiles(opts.show, opts.shows, root, opts)) {
-    take(d, { show: d._ctxShow, filePath: d._srcPath, isScoreable: opts.isScoreable });
+    take(d, { show: d._ctxShow, filePath: d._srcPath, isScoreable: opts.isScoreable, carried: true });
   }
   return reviews;
 }
@@ -217,9 +222,78 @@ function consensusFingerprint(reviews) {
   return {
     reviewCount: rows.length,
     fullTextCount: rows.filter(r => r.hasFullText).length,
+    // BRO-7539: rows from the show's own folder (not carried via priorRuns). A transfer's
+    // first reviews replace carried ones outlet by outlet, so the total can stay flat.
+    ownReviewCount: rows.filter(r => !r.carried).length,
     meanScore: scored.length ? Math.round(scored.reduce((a, r) => a + r.score, 0) / scored.length) : null,
     bucketBreakdown,
   };
+}
+
+/**
+ * Determine if a show's consensus should be regenerated.
+ * Returns { should: boolean, reason: string }
+ */
+function shouldRegenerate(existing, reviews) {
+  if (!existing) return { should: true, reason: 'new show (no existing consensus)' };
+
+  const currentReviewCount = reviews.length;
+  const currentFullTextCount = reviews.filter(r => r.hasFullText).length;
+  const scoredReviews = reviews.filter(r => r.score != null);
+  const currentMeanScore = scoredReviews.length > 0
+    ? Math.round(scoredReviews.reduce((a, r) => a + r.score, 0) / scoredReviews.length)
+    : null;
+
+  // Trigger 1: New reviews added (existing behavior)
+  const reviewCountDiff = currentReviewCount - (existing.reviewCount || 0);
+  if (reviewCountDiff >= 3) {
+    return { should: true, reason: `${reviewCountDiff} new reviews` };
+  }
+
+  // Trigger 2: Full text upgrades (excerpt → full text)
+  if (existing.fullTextCount != null) {
+    const fullTextGain = currentFullTextCount - existing.fullTextCount;
+    if (fullTextGain >= 3) {
+      return { should: true, reason: `${fullTextGain} reviews upgraded to full text` };
+    }
+  }
+
+  // Trigger 2b (BRO-7539): a review of this run itself arrived. On a transfer the
+  // carried reviews are replaced outlet by outlet, so the count, the mean and the
+  // buckets can all stay put while the Take is still about the earlier run.
+  const currentOwn = reviews.filter(r => !r.carried).length;
+  if (existing.ownReviewCount != null && currentOwn > existing.ownReviewCount) {
+    return { should: true, reason: `${currentOwn - existing.ownReviewCount} new review(s) of this run` };
+  }
+
+  // Trigger 3: Reviews removed (wrongProduction flags, etc.)
+  if (reviewCountDiff <= -2) {
+    return { should: true, reason: `${Math.abs(reviewCountDiff)} reviews removed` };
+  }
+
+  // Trigger 4: Mean score drift (rescoring, rave calibration)
+  if (existing.meanScore != null && currentMeanScore != null) {
+    const scoreDrift = Math.abs(currentMeanScore - existing.meanScore);
+    if (scoreDrift >= 8) {
+      return { should: true, reason: `mean score shifted ${scoreDrift}pts (${existing.meanScore} → ${currentMeanScore})` };
+    }
+  }
+
+  // Trigger 5: Bucket breakdown changed (e.g., review rescored from Mixed to Positive)
+  if (existing.bucketBreakdown) {
+    const currentBuckets = { positive: 0, mixed: 0, negative: 0 };
+    for (const r of scoredReviews) {
+      if (r.score >= 61) currentBuckets.positive++;
+      else if (r.score >= 40) currentBuckets.mixed++;
+      else currentBuckets.negative++;
+    }
+    const prev = existing.bucketBreakdown;
+    if (prev.positive !== currentBuckets.positive || prev.mixed !== currentBuckets.mixed || prev.negative !== currentBuckets.negative) {
+      return { should: true, reason: `bucket breakdown changed (P:${prev.positive}/M:${prev.mixed}/N:${prev.negative} → P:${currentBuckets.positive}/M:${currentBuckets.mixed}/N:${currentBuckets.negative})` };
+    }
+  }
+
+  return { should: false };
 }
 
 const REVIEWCOUNT_DRIFT_THRESHOLD = 10;
@@ -262,5 +336,6 @@ module.exports = {
   loadReviewTexts,
   bucketOf,
   consensusFingerprint,
+  shouldRegenerate,
   consensusDriftFlags,
 };

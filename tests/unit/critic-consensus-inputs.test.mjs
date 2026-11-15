@@ -57,6 +57,7 @@ describe('consensusFingerprint', () => {
     assert.deepEqual(fp, {
       reviewCount: 5,
       fullTextCount: 3,
+      ownReviewCount: 5,
       meanScore: Math.round((90 + 61 + 40 + 39) / 4),
       bucketBreakdown: { positive: 2, mixed: 1, negative: 1 },
     });
