@@ -125,8 +125,11 @@ jobs:
                    --cli-read-timeout 900 --cli-connect-timeout 60; then
                 break
               fi
-              HAVE=$(aws s3api head-object --bucket "$R2_BUCKET" --key "$KEY" --endpoint-url "$R2_ENDPOINT" \
-                       --query ContentLength --output text 2>/dev/null || echo none)
+              HEAD_OUT=$(aws s3api head-object --bucket "$R2_BUCKET" --key "$KEY" --endpoint-url "$R2_ENDPOINT" \
+                       --query ContentLength --output text 2>&1) && HAVE="$HEAD_OUT" || {
+                if printf '%s' "$HEAD_OUT" | grep -Eq '404|Not Found|NoSuchKey'; then HAVE=none
+                else HAVE=none; echo "::warning::head-object on $f gave an unexpected error (token may lack read access): ${HEAD_OUT:0:200}"; fi
+              }
               if [ "$HAVE" = "$WANT" ]; then
                 echo "::notice::$f already in R2 at the expected size ($WANT bytes) after attempt $attempt; not rewriting"
                 break
