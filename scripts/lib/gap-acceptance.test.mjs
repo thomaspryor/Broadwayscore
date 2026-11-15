@@ -619,3 +619,13 @@ test('recoverReviewText: real text replacing a saved error page voids the verdic
   const keep = candidateFile({ fullText: USAT_404, contentTier: 'invalid', wrongProduction: true, wrongProductionNote: 'Cross-market: US outlet reviewing London show' });
   assert.equal(acceptRecoveredText(JSON.parse(fs.readFileSync(keep.filePath, 'utf8')), { rawText: GOOD }, ctx).code, 'excluded_record');
 });
+
+test('Times: a body that never names the show is accepted on a "... review" headline that does; a feature headline is refused (BRO-7569)', () => {
+  const body = 'The company sings well and the second act moves quickly, though the book sags in places and the staging never earns its final image. '.repeat(12);
+  const ex = { showId: 'equus-off-west-end-2026', outletId: 'times-uk', criticName: 'Clive Davis', url: 'https://www.thetimes.com/culture/theatre-dance/article/equus-review-x', fullText: 'Short excerpt.', contentTier: 'excerpt' };
+  const c = { showId: 'equus-off-west-end-2026' };
+  assert.equal(acceptRecoveredText(ex, { rawText: body, headline: 'Equus review — a thrilling revival' }, c).accept, true);
+  const f = acceptRecoveredText(ex, { rawText: body, headline: 'Equus: how the horses were made' }, c);
+  assert.equal(f.accept, false);
+  assert.equal(f.code, 'show_not_mentioned');
+});

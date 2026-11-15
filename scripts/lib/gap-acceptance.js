@@ -174,7 +174,11 @@ function proveIdentity(existing, cleaned, newUrl, ctx) {
  * of Peter Shaffer's equine psychodrama ...") while the h1 reads "Equus review
  * at the Menier Chocolate Factory, London".
  */
-const HEADLINE_IDENTITY_OUTLETS = new Set(['thestage']);
+// BRO-7569: The Times' reviews often never print the title in the body ("the show"); the headline
+// ("High Society review — ...") does. Unlike The Stage (whose /reviews/ section is all reviews) the Times
+// also runs features about the same show, so its headline must say "review" as well as name the show.
+const HEADLINE_IDENTITY_OUTLETS = new Set(['thestage', 'times-uk', 'sunday-times']);
+const HEADLINE_NEEDS_REVIEW_WORD = new Set(['times-uk', 'sunday-times']);
 
 /** The page's own author credit (reviewer line, JSON-LD, meta, byline markup), or null. */
 function pageByline(html, outletId) {
@@ -255,6 +259,7 @@ function headlineIdentity({ outletId, headline, show, showTitle }) {
   const forms = [...new Set([headline, String(headline).replace(/[()[\]]/g, ' ')].map((x) => ` ${normalizeTitle(x)} `))];
   const named = titles.some((t) => { const n = normalizeTitle(t); return n.length >= 3 && forms.some((h) => h.includes(` ${n} `)); });
   if (!named) return { ok: false, why: `"${String(headline).slice(0, 80)}" does not name the show` };
+  if (HEADLINE_NEEDS_REVIEW_WORD.has(outletId) && !/\breview\b/i.test(headline)) return { ok: false, why: `"${String(headline).slice(0, 80)}" names the show but is not headed as a review` };
   if (show) {
     const g = require('./generic-title-matching').checkGenericTitleCandidate({ show, candidate: { title: headline } });
     if (!g.ok) return { ok: false, why: g.reason };
