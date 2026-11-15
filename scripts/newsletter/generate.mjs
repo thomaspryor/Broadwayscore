@@ -3264,11 +3264,12 @@ if (_ai) {
 // voice or AI). Only when the show is actually rendered as a card.
 for (const o of _editorialOverrides.filter(x => x.waiveFreshRunGate)) {
   const sh = shows.find(x => x.id === o.showId);
-  if (!sh || !sectionOrder.join('').includes(cardTitle(sh))) continue;
+  if (!sh || !sectionOrder.join('').includes(`/show/${sh.slug}`)) continue; // rendered as a card (unique href, not a title substring)
   const _cut = freshCutoffFor(sh);
   const _rs = reviewsForShow(sh.id);
   const note = movedNote(sh, aggregateScore(sh.id), `*${cardTitle(sh)}*`, { fresh: _cut ? _rs.filter(r => (r.publishDate || '') >= _cut).length : null, total: _rs.length });
-  if (!note || !ledeText || ledeText.includes(note)) continue;
+  if (!note) { process.stderr.write(`[newsletter] WARNING: override for ${sh.id} is rendered but has no moved note (no priorRuns venue differing from ${sh.venue})\n`); continue; }
+  if (!ledeText || ledeText.includes(note)) continue;
   ledeText = `${ledeText} ${note}`;
   if (!ledeShowRefs.some(r => r && r.id === sh.id)) ledeShowRefs = ledeShowRefs.concat([{ id: sh.id, slug: sh.slug, title: sh.title }]);
 }
