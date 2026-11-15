@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T23:44:28.387Z",
+  "timestamp": "2026-11-15T23:59:10.154Z",
   "stats": {
-    "totalReviews": 82038,
+    "totalReviews": 82041,
     "alreadyFlagged": 22445,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
     "tvFilmSignals": 2320,
-    "londonSignals": 3768,
+    "londonSignals": 3769,
     "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8203
+    "noPublishDate": 8206
   },
   "findings": [
     {
@@ -108024,6 +108024,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 95,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/high-society-review-join-the-swell-party-for-this-cole-porter-revival-wtpdr659h",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
