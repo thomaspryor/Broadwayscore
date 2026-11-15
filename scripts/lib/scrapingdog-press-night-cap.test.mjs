@@ -20,7 +20,14 @@ const { loadProviderPricing } = require('./provider-pricing.js');
 const TAG_A = sp.pressNightPurpose('show-a-2026', '2026-10-29');
 const TAG_B = sp.pressNightPurpose('show-b-2026', '2026-10-29');
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pn-cap-'));
-after(() => fs.rmSync(dir, { recursive: true, force: true }));
+after(() => { caps._setShowsPathForTests(null); fs.rmSync(dir, { recursive: true, force: true }); });
+// Fixture show list: no test reads the real data/shows.json.
+const showsFixture = path.join(dir, 'shows-fixture.json');
+fs.writeFileSync(showsFixture, JSON.stringify({ shows: [
+  { id: 'bw-fixture-2026', category: 'broadway', market: 'broadway' },
+  { id: 'we-fixture-2026', category: 'west-end', market: 'west-end' },
+  { id: 'ob-fixture-2026', category: 'off-broadway', market: 'broadway' },
+] }));
 let ledger;
 let n = 0;
 
@@ -39,6 +46,7 @@ const bd = (tag, count) => Array.from({ length: count }, () => row(tag, 'brightd
 beforeEach(() => {
   ledger = path.join(dir, `ledger-${n++}.jsonl`);
   caps._resetForTests();
+  caps._setShowsPathForTests(showsFixture);
 });
 
 test('untagged and non-press-night purposes: cap does not apply, no file read', () => {
@@ -418,10 +426,20 @@ test('SD_PRESS_NIGHT_CAP_USD lowers a Broadway cap and can never raise it', () =
   assert.equal(status(TAG_A, { SD_PRESS_NIGHT_CAP_USD: '3' }, { category: 'off-broadway' }).capUsd, caps.PRESS_NIGHT_CAP_USD);
 });
 
-test('default lookup reads the real shows file: a real Broadway show gets $4, an unknown id gets $2', () => {
-  rows(bd(sp.pressNightPurpose('downstate-2026', '2026-11-15'), 10));
-  const real = caps.pressNightCapStatus({ env: {}, purpose: sp.pressNightPurpose('downstate-2026', '2026-11-15'), ledgerPath: ledger });
-  assert.equal(real.capUsd, 4.0);
-  const unknown = caps.pressNightCapStatus({ env: {}, purpose: sp.pressNightPurpose('no-such-show-0000', '2026-11-15'), ledgerPath: ledger });
-  assert.equal(unknown.capUsd, caps.PRESS_NIGHT_CAP_USD);
+test('default lookup (no injection): fixture Broadway and West End shows get $4, off-Broadway and unknown ids get $2', () => {
+  const cap = (id) => caps.pressNightCapStatus({ env: {}, purpose: sp.pressNightPurpose(id, '2026-11-15'), ledgerPath: ledger }).capUsd;
+  rows([row(sp.pressNightPurpose('bw-fixture-2026', '2026-11-15'), 'scrapingdog', 5)]);
+  assert.deepEqual([cap('bw-fixture-2026'), cap('we-fixture-2026'), cap('ob-fixture-2026'), cap('no-such-show-0000')], [4.0, 4.0, 2.0, 2.0]);
+});
+
+test('default lookup: a missing or malformed show list gives every show the lower cap', () => {
+  rows([row(sp.pressNightPurpose('bw-fixture-2026', '2026-11-15'), 'scrapingdog', 5)]);
+  const cap = () => caps.pressNightCapStatus({ env: {}, purpose: sp.pressNightPurpose('bw-fixture-2026', '2026-11-15'), ledgerPath: ledger }).capUsd;
+  caps._setShowsPathForTests(path.join(dir, 'no-such-shows-file.json'));
+  assert.equal(cap(), caps.PRESS_NIGHT_CAP_USD);
+  const bad = path.join(dir, 'bad-shows.json');
+  fs.writeFileSync(bad, '{"shows": [');
+  caps._resetForTests();
+  caps._setShowsPathForTests(bad);
+  assert.equal(cap(), caps.PRESS_NIGHT_CAP_USD);
 });

@@ -348,18 +348,30 @@ function pressNightBaseCapUsd(show) {
   return category === 'broadway' || category === 'west-end' ? PRESS_NIGHT_CAP_MAIN_STAGE_USD : PRESS_NIGHT_CAP_USD;
 }
 
-let _showsByIdCache = null;
-/** Default show lookup: data/shows.json by id, read once. Any failure = null (lower cap). */
+const DEFAULT_SHOWS_PATH = require('path').join(__dirname, '..', '..', 'data', 'shows.json');
+let _showsPath = DEFAULT_SHOWS_PATH;
+let _showCategoryById = null;
+/**
+ * Default show lookup: id -> category from the shows file, read once per process
+ * (only the category is kept). An unreadable file is logged once and every show
+ * then uses the lower cap.
+ */
 function _lookupShowById(showId) {
-  if (_showsByIdCache === null) {
-    _showsByIdCache = new Map();
+  if (_showCategoryById === null) {
+    _showCategoryById = new Map();
     try {
-      const path = require('path');
-      const d = JSON.parse(require('fs').readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
-      for (const s of (d.shows || d)) if (s && s.id) _showsByIdCache.set(s.id, s);
-    } catch (_e) { /* unreadable: every show gets the lower cap */ }
+      const d = JSON.parse(require('fs').readFileSync(_showsPath, 'utf8'));
+      for (const sh of (d.shows || d)) if (sh && sh.id) _showCategoryById.set(sh.id, sh.category || null);
+    } catch (e) {
+      console.warn(`  Press-night cap: show list unreadable (${e && e.message}); every show uses the $${PRESS_NIGHT_CAP_USD.toFixed(2)} cap`);
+    }
   }
-  return _showsByIdCache.get(showId) || null;
+  return _showCategoryById.has(showId) ? { id: showId, category: _showCategoryById.get(showId) } : null;
+}
+/** Test-only: point the default lookup at a fixture (null restores the real file). */
+function _setShowsPathForTests(p) {
+  _showsPath = p || DEFAULT_SHOWS_PATH;
+  _showCategoryById = null;
 }
 
 /** Cap in USD. SD_PRESS_NIGHT_CAP_USD may only LOWER it (below the show's base cap), never raise it. */
@@ -655,7 +667,7 @@ function _resetForTests() {
   _loggedPressNightBlocks.clear();
   _pressNightWarned.clear();
   _spentCache.clear();
-  _showsByIdCache = null;
+  _showCategoryById = null;
   _stateCache = { at: 0, value: null };
   _loggedBlock = false;
 }
@@ -678,6 +690,7 @@ module.exports = {
   PRESS_NIGHT_CAP_USD,
   PRESS_NIGHT_CAP_MAIN_STAGE_USD,
   pressNightBaseCapUsd,
+  _setShowsPathForTests,
   resolvePressNightCapUsd,
   pressNightSpentUsd,
   pressNightCapStatus,
