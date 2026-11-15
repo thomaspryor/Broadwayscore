@@ -42,9 +42,9 @@ test('idle just under the window still refuses (same threshold as the reclaim sw
   assert.equal(claimHolderDecision({ issue: card([claim(MAC, t)], t), selfRef: CLOUD, nowMs: NOW }).action, 'refuse');
 });
 
-test('a recent comment keeps an old claim live even when updatedAt is old', () => {
+test('a recent comment from the holder itself (session marker) keeps an old claim live even when updatedAt is old', () => {
   const old = NOW - RECLAIM_IDLE_MS - 86400e3;
-  const comments = [claim(MAC, old), { body: 'progress note', createdAt: iso(NOW - 3600e3) }];
+  const comments = [claim(MAC, old), { body: `progress note\n\n<!-- session: ${MAC} -->`, createdAt: iso(NOW - 3600e3) }];
   assert.equal(claimHolderDecision({ issue: card(comments, old), selfRef: CLOUD, nowMs: NOW }).action, 'refuse');
 });
 

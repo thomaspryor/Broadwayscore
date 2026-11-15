@@ -245,7 +245,12 @@ async function cmdClaim(args) {
     if (force === true || (typeof force === 'string' && force.trim().length < 10)) {
       throw new Error('--force needs a reason of at least 10 characters (why the holder is dead).');
     }
-    const decision = chg.claimHolderDecision({ issue: full, selfRef: ref, force: typeof force === 'string' });
+    let decision = chg.claimHolderDecision({ issue: full, selfRef: ref, force: typeof force === 'string' });
+    // BRO-7553: only a would-be refusal pays for the GitHub/ledger reads (a claim stays one cheap read otherwise).
+    if (decision.action === 'refuse') {
+      const evidence = require('./lib/claim-holder-evidence.js').gatherHolderEvidence({ identifier: issue.identifier, holderRef: decision.holder });
+      decision = chg.claimHolderDecision({ issue: full, selfRef: ref, evidence });
+    }
     if (decision.action === 'refuse') {
       console.error(`\n❌ ${chg.refusalMessage(issue.identifier, decision)}\n`);
       process.exit(8);
@@ -358,6 +363,7 @@ async function cmdReport(args, deps = {}) {
     keyFiles: splitKeyFiles(args['key-files']),
     verification: args.verification,
     status: args.status,
+    sessionRef: lsr.claimSessionRef(),
   });
   if (pause.wouldRefuse) body += `\n\n${PAUSE_GUARD_MARKER}`;
   // BRO-4241: a Done-gate bypass is recorded in this outcome comment (the

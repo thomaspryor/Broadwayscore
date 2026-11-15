@@ -214,7 +214,7 @@ function buildReclaimComment({ action, reclaims, staleRefs, idleHours, priorStat
 }
 
 module.exports = {
-  RECLAIM_IDLE_MS, LIVE_LAND_REF_MS, MAX_RECLAIMS, STALE_BLOCKED_MS, MAX_PER_RUN, COMMENT_CAP, RECLAIM_MARKER,
+  latestSessionReportStatus, RECLAIM_IDLE_MS, LIVE_LAND_REF_MS, MAX_RECLAIMS, STALE_BLOCKED_MS, MAX_PER_RUN, COMMENT_CAP, RECLAIM_MARKER,
   DISPATCH_BLOCKED_WINDOW_MS, OWNER_CARD_RE, NO_RECLAIM_RE, isDispatchTimeBlocked,
   reclaimListSkipReason, findReclaimCandidates, reclaimDecision, buildReclaimComment,
 };

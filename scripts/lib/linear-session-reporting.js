@@ -231,7 +231,7 @@ function parseSessionReportStatus(body) {
  * fields (CLAUDE.md §6), collapsed into one comment since Linear issues
  * don't have equivalent structured fields.
  */
-function buildOutcomeCommentBody({ summary, keyFiles, verification, status }) {
+function buildOutcomeCommentBody({ summary, keyFiles, verification, status, sessionRef }) {
   if (!summary) throw new Error('buildOutcomeCommentBody: summary is required');
   const lines = [`${SESSION_REPORT_PREFIX} (${status || 'unknown'})**`, '', summary.trim()];
 
@@ -244,6 +244,8 @@ function buildOutcomeCommentBody({ summary, keyFiles, verification, status }) {
     lines.push('', '**Verification:**', verification.trim());
   }
 
+  // BRO-7553: the claim guard counts only the holder's own comments as proof it is alive.
+  if (sessionRef && isSessionSpecificRef(sessionRef)) lines.push('', buildSessionMarker(sessionRef));
   return lines.join('\n');
 }
 
@@ -355,6 +357,12 @@ function isSessionSpecificRef(ref) {
 const WORKER_MODELS = ['sonnet', 'opus', 'codex'];
 const WORKER_MODEL_RE = /^Worker model: (sonnet|opus|codex)\b/m;
 
+/** BRO-7553: invisible marker a session appends to its own non-claim comments (claims already name the ref). */
+const SESSION_MARKER_RE = /<!-- session: (.+?) -->/g;
+function buildSessionMarker(sessionRef) { return `<!-- session: ${sessionRef} -->`; }
+/** Refs named by session markers in a comment body. */
+function sessionMarkerRefs(body) { return [...String(body || '').matchAll(SESSION_MARKER_RE)].map((m) => m[1]); }
+
 function buildClaimComment({ sessionRef, ts, workerModel = null }) {
   return `Claimed by ${sessionRef} at ${ts}${WORKER_MODELS.includes(workerModel) ? `\nWorker model: ${workerModel}` : ''}`;
 }
@@ -380,6 +388,8 @@ module.exports = {
   parseWorkerModel,
   WORKER_MODELS,
   isSessionSpecificRef,
+  buildSessionMarker,
+  sessionMarkerRefs,
   latestHolderComment,
   HOLDER_COMMENT_RE,
   CLAIM_STATE_NAME,
