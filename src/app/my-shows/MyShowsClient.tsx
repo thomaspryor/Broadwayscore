@@ -35,8 +35,9 @@ import dynamic from 'next/dynamic';
 import { createLazyChunk, LazyChunkBoundary, LAZY_PANEL_ERROR_MESSAGE } from '@/components/ui/LazyChunk';
 import { AddShowCard, ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
-const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
 import { TitleTabs, DiarySegmented } from '@/components/my-shows/MyShowsNav';
+
+const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
 const FeedTab = dynamic(() => import('@/components/my-shows/feed/FeedTab'), { ssr: false });
 const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 

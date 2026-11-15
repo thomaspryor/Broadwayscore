@@ -122,3 +122,19 @@ test('no unguarded lazy component anywhere under src/', () => {
   }
   assert.deepEqual(offenders, [], `Wrap these in <LazyChunkBoundary> (src/components/ui/LazyChunk.tsx):\n${offenders.join('\n')}`);
 });
+
+// Land run refusal 2026-11-15: a createLazyChunk(...) const placed between import
+// lines ran before its own import under CommonJS (ts-node in unit tests), giving
+// "Cannot access 'LazyChunk_1' before initialization". Module-level lazy loaders
+// must come after the last import.
+test('module-level lazy loaders sit after every import line', () => {
+  const bad = [];
+  for (const f of walk(path.join(ROOT, 'src'))) {
+    const lines = fs.readFileSync(f, 'utf8').split('\n');
+    const lastImport = lines.reduce((m, l, i) => (/^import\s/.test(l) ? i : m), -1);
+    lines.forEach((l, i) => {
+      if (i < lastImport && /^(?:export\s+)?const\s+\w+\s*=\s*(?:createLazyChunk|lazy|dynamic)\(/.test(l)) bad.push(`${path.relative(ROOT, f)}:${i + 1}`);
+    });
+  }
+  assert.deepEqual(bad, [], 'move these below the last import');
+});
