@@ -11,9 +11,6 @@ import { SCORE_TIERS, getScoreTierRange, ToggleBar, ScoreToggle, ShowListCard, M
 import FeaturedSpot from '@/components/FeaturedSpot';
 import MarketFilterBar from '@/components/MarketFilterBar';
 
-// Lazy-load below-fold email capture to reduce initial hydration cost
-const FooterEmailCapture = lazy(() => import('@/components/FooterEmailCapture'));
-const HomepageExplainerShelf = lazy(() => import('@/components/HomepageExplainerShelf'));
 import type { ScoreModeParam } from '@/components/show-cards';
 import type { AwardWinnerSets } from '@/lib/data-awards';
 import { FilterButton } from '@/components/filters/FilterButton';
@@ -27,6 +24,10 @@ import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 import type { HomepageExtra } from '@/lib/homepage-extra';
 import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
+
+// Lazy-load below-fold email capture to reduce initial hydration cost
+const FooterEmailCapture = lazy(() => import('@/components/FooterEmailCapture'));
+const HomepageExplainerShelf = lazy(() => import('@/components/HomepageExplainerShelf'));
 
 export interface FeaturedRowData {
   title: string;

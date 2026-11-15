@@ -54,15 +54,6 @@ import { getMobileStarRowState } from '@/lib/mobile-star-row';
 import WatchlistPlanCard, { PlanRow, DateTile } from '@/components/user/WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import type { RatingEditorSaveData } from '@/components/user/RatingEditor';
-// Opens on tap only, so its chunk (editor + photo fields) stays out of the
-// show page's first-load JS (BRO-7486: /show/[slug] sat 9kB over the 330kB cap).
-// Lazy + preloadable + retryable (BRO-7486 split it out; BRO-7494 added the
-// guard): preloaded on pointerdown/hover/focus of every control that opens it,
-// a skeleton the editor's height while it loads, and a local boundary so a failed
-// chunk closes the panel with a toast instead of taking down the show page.
-const ratingEditorChunk = createLazyChunk(() => import('@/components/user/RatingEditor'));
-const preloadRatingEditor = ratingEditorChunk.preload;
-const preloadHandlers = { onPointerDown: preloadRatingEditor, onMouseEnter: preloadRatingEditor, onFocus: preloadRatingEditor };
 import { diaryDetailText } from '@/lib/review-showtime';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -109,6 +100,16 @@ import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
 import { ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
+
+// Opens on tap only, so its chunk (editor + photo fields) stays out of the
+// show page's first-load JS (BRO-7486: /show/[slug] sat 9kB over the 330kB cap).
+// Lazy + preloadable + retryable (BRO-7486 split it out; BRO-7494 added the
+// guard): preloaded on pointerdown/hover/focus of every control that opens it,
+// a skeleton the editor's height while it loads, and a local boundary so a failed
+// chunk closes the panel with a toast instead of taking down the show page.
+const ratingEditorChunk = createLazyChunk(() => import('@/components/user/RatingEditor'));
+const preloadRatingEditor = ratingEditorChunk.preload;
+const preloadHandlers = { onPointerDown: preloadRatingEditor, onMouseEnter: preloadRatingEditor, onFocus: preloadRatingEditor };
 
 // ─── Props ───────────────────────────────────────────────────────────────
 
