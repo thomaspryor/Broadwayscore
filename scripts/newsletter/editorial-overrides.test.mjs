@@ -41,3 +41,12 @@ test('the committed overrides file is well formed and every row names its week, 
   }
   assert.deepEqual(loadOverrides('/nonexistent/file.json'), [], 'missing file is empty, not a crash');
 });
+
+test('movedNote never claims "both runs" unless old and new reviews are both present', () => {
+  const show = { venue: 'Bridge Theatre', priorRuns: [{ venue: 'Dorfman Theatre' }] };
+  const agg = { avg: 80, count: 10 };
+  assert.match(movedNote(show, agg, 'X', { fresh: 5, total: 10 }), /both runs/);
+  assert.doesNotMatch(movedNote(show, agg, 'X', { fresh: null, total: 10 }), /both runs|earlier run/);
+  assert.doesNotMatch(movedNote(show, agg, 'X', { fresh: 10, total: 10 }), /both runs|earlier run/);
+  assert.match(movedNote(show, agg, 'X', { fresh: 1, total: 10 }), /mostly from reviews of the earlier run/);
+});

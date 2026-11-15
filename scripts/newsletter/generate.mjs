@@ -3302,6 +3302,12 @@ function buildSubjectFacts() {
     seen.add(s.id); use(s);
     const where = isOperaShow(s) ? 'opera (secondary section)' : (IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway']).includes(s.category) ? MKT[s.category] : `${MKT[s.category] || s.category} (secondary section)`;
     const when = s.openingDate ? `${inWeek(s.openingDate) ? 'opened this week' : 'opened recently'}, on ${DAY(s.openingDate)}` : 'opened recently';
+    if (_editorialOverrides.some(o => o.waiveFreshRunGate && o.showId === s.id)) {
+      // Moved production (owner-approved override): never an "opening" to the writer.
+      const from = (s.priorRuns || []).map(x => x && x.venue).find(v => v && v !== s.venue);
+      lines.push(`Transfer, not a new opening: ${s.title} moved${from ? ` from the ${from}` : ''} to ${s.venue || 'a new venue'}. Do not call it an opening and do not lead with it. The email adds its own sentence about the move, so do not repeat its score.`);
+      continue;
+    }
     lines.push(`Opening: ${s.title}, ${where}${s.type ? `, ${s.type}` : ''}${s.venue ? ` at ${s.venue}` : ''}, ${when}. ${scoreBit(s, a)}.${s.closingDate && s.closingDate <= horizon7Str ? ` Final performance ${DAY(s.closingDate)}.` : ''}`);
   }
   const closing = shows.filter(s => isPrimaryMarket(s) && !isOperaShow(s) && s.status === 'open' && s.closingDate && s.closingDate >= weekEndStr && s.closingDate <= horizon7Str && !seen.has(s.id))
@@ -3329,7 +3335,7 @@ function buildSubjectFacts() {
   // Count only the in-week openings this email shows, so the count matches
   // the cards the reader sees (review, 2026-11-08: sheet said 9, body had 7).
   const nNow = [...seen].map(id => shows.find(x => x.id === id))
-    .filter(s => s && primaryCats.includes(s.category) && !isOperaShow(s) && inWeek(s.openingDate)).length;
+    .filter(s => s && primaryCats.includes(s.category) && !isOperaShow(s) && inWeek(s.openingDate) && !waivesFreshRunGate(_editorialOverrides, s.id)).length;
   const typical = _typicalWeekly(s => primaryCats.includes(s.category) && scored(s));
   if (typical > 0) lines.push(`Week size: ${nNow} new ${IS_WE ? 'London' : 'New York'} productions opened this week with enough reviews for a Critic Score; a typical recent week has about ${Math.round(typical)}.`);
   if (!IS_WE && box) {

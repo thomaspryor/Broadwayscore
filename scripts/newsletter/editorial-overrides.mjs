@@ -52,9 +52,10 @@ export function movedNote(show, agg, name, reviews = {}) {
   if (agg && Number.isFinite(agg.avg) && agg.count) {
     const base = `Its ${Math.round(agg.avg)}/100 from ${agg.count} critics`;
     const mostlyOld = Number.isFinite(reviews.fresh) && reviews.total > 0 && reviews.fresh * 2 < reviews.total;
+    const mixed = Number.isFinite(reviews.fresh) && reviews.fresh > 0 && reviews.fresh < reviews.total;
     score = mostlyOld
       ? ` ${base} comes mostly from reviews of the earlier run, so it may move as the new notices arrive.`
-      : ` ${base} draws on reviews of both runs.`;
+      : mixed ? ` ${base} draws on reviews of both runs.` : ` ${base}.`;
   }
   return `${name} has moved from the ${from} to the ${show.venue}.${score}`;
 }
