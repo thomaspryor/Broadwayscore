@@ -139,7 +139,7 @@ describe('CLI and workflow wiring (fails if either provider step is dropped)', (
     try {
       const f = path.join(tmp, 'gemini.md');
       // The CLI refuses a page with fewer rows than the provider minimum (input-missing), so pad past it.
-      const pad = ['gemini-x-a', 'gemini-x-b'].map((id) => `  ---\n  * \`${id}\`\n  * May 1, 2025\n  * June 1, 2027\n  * \`gemini-3.8-flash\``).join('\n');
+      const pad = Array.from({ length: 30 }, (_, i) => `gemini-x-${i}`).map((id) => `  ---\n  * \`${id}\`\n  * May 1, 2025\n  * June 1, 2027\n  * \`gemini-3.8-flash\``).join('\n');
       fs.writeFileSync(f, GEMINI.replace('{% /table %}\n## Gemini 2.5', '{% /table %}\n## Gemini 2.5').replace(/\{% \/table %\}$/, `${pad}\n{% /table %}`) + '\n');
       // Seeded mismatch via the env seams: independent of what the repo references or registers today.
       const env = { ...process.env, AUDIT_REFERENCED_IDS: 'gemini-2.5-flash', AUDIT_REGISTRY_JSON: '{}' };

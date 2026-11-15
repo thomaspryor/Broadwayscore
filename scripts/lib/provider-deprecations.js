@@ -138,7 +138,7 @@ const PROVIDERS = {
     count: countAnthropicModelRows,
     referenced: referencedAnthropicIds,
     baseIdFn: anthropicBaseId,
-    minRows: 10,
+    minRows: 14,
   },
   gemini: {
     name: 'Gemini',
@@ -147,7 +147,7 @@ const PROVIDERS = {
     count: countGeminiModelRows,
     referenced: referencedGeminiIds,
     baseIdFn: geminiBaseId,
-    minRows: 3,
+    minRows: 30,
   },
 };
 
