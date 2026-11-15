@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7344-e",
   "planId": "e2175959-2253-49f7-954a-a1a26c50bad0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-15T17:00:03.688Z",
   "submitter": {
     "name": null,
@@ -122,5 +122,69 @@
         "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-15T17:32:07.601Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
