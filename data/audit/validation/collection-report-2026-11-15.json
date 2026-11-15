@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-15T06:55:33.123Z",
+  "runDate": "2026-11-15T07:07:03.753Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 53,
+    "processed": 0,
+    "failed": 52,
     "skipped": 0,
-    "successRate": "1.9%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -28,8 +28,8 @@
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -42,24 +42,23 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 53,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 52,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 53,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 52,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 53,
+    "processed": 0,
+    "failed": 52,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
-      "appropriate-2023",
       "clybourne-park-2012",
       "come-back-little-sheba-2008",
       "eclipsed-2016",
@@ -73,7 +72,6 @@
       "indecent-2017",
       "inherit-the-wind-2007",
       "is-he-dead-2007",
-      "jersey-boys-2005",
       "jesus-christ-superstar-2012",
       "kiss-me-kate-2019",
       "macbeth-2008",
@@ -108,16 +106,13 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 1,
-      "failed": 2
+      "processed": 2,
+      "failed": 55
     }
   },
-  "processed": [
-    "jersey-boys-2005/nytimes--unknown.json"
-  ],
+  "processed": [],
   "failed": [
     "all-my-sons-2008/usatoday--elysa-gardner.json",
-    "appropriate-2023/timeout--adam-feldman.json",
     "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
     "the-nap-2018/nypost--johnny-oleksinski.json",
     "eclipsed-2016/observer--rex-reed.json",
@@ -155,16 +150,16 @@
     "motown-the-musical-2013/observer--rex-reed.json",
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
     "hamlet-2009/usatoday--elysa-gardner.json",
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
     "mary-jane-2024/ew--joey-nolfi.json",
     "the-wiz-2024/indiewire--sarah-shachat.json",
-    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
     "grey-house-2023/stageandcinema--simi-horwitz.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "waitress-2021/vulture--helen-shaw.json",
     "the-inheritance-2019/usatoday--charles-isherwood.json",
-    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
     "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
     "shrek-the-musical-2008/usatoday--elysa-gardner.json",
     "macbeth-2008/usatoday--elysa-gardner.json",
@@ -249,11 +244,5 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "appropriate-2023/timeout--adam-feldman.json",
-      "oldUrl": "https://www.timeout.com/newyork/theater/appropriate-review",
-      "newUrl": "https://www.timeout.com/newyork/theater/appropriate-1"
-    }
-  ]
+  "urlDiscoveries": []
 }
