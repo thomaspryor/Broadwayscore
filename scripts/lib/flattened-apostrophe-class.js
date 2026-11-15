@@ -4,6 +4,8 @@
  * by an editor or paste, so titles typed with ’ (It’s A Wonderful Life) silently fail to match. It cost the
  * review-forecast v2 shadow its Show Score input for It’s A Wonderful Life (the scraper rejected the page).
  * Fix: write curly quotes as ‘ ’ escapes, which cannot be flattened.
+ * Text scan, not a parser: a regex-shaped string literal is counted and new RegExp("['']") is missed (both rare);
+ * the per-file baseline absorbs the former.
  * Pure: takes source text, returns hits. tests/unit/flattened-apostrophe-class.test.mjs scans the repo.
  */
 'use strict';
@@ -17,7 +19,7 @@ function findFlattenedApostropheClasses(src) {
     const t = l.trim();
     if (t.startsWith('//') || t.startsWith('*') || t.startsWith('/*')) return;
     const code = l.replace(/\s\/\/.*$/, ''); // drop a trailing // comment
-    const re = /\/\[((?:\\.|[^\]\\\n])*)\]/g;
+    const re = /\/\^?\[((?:\\.|[^\]\\\n])*)\]/g; // /[...] or anchored /^[...]
     let m;
     while ((m = re.exec(code))) {
       if (/''/.test(m[1]) && !CURLY.test(m[1])) hits.push({ line: i + 1, text: t.slice(0, 160) });
