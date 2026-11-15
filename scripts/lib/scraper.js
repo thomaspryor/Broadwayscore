@@ -1632,6 +1632,29 @@ async function fetchPage(url, options = {}) {
     }
   }
 
+  // BRO-7532: theatre.reviews round-ups are static pages that answer a plain GET.
+  // One free direct attempt before the paid chain; anything but a real round-up
+  // (403, 404, interstitial, no star marker, error) falls through unchanged.
+  if (!preferPlaywright && requestedUrl && requestedUrl.protocol === 'https:' &&
+      process.env.TR_DIRECT_FIRST_DISABLED !== '1' &&
+      require('./free-first-fetch').isTheatreReviewsHost(requestedUrl.hostname) &&
+      /^\/reviews-roundup\//.test(requestedUrl.pathname)) {
+    console.log('  → Trying direct theatre.reviews fetch...');
+    try {
+      const response = await fetch(url, { headers: { 'User-Agent': DIRECT_USER_AGENT }, signal: AbortSignal.timeout(10000) });
+      const content = await response.text();
+      if (!_isChallengeOrGarbage(content) &&
+          require('./free-first-fetch').theatreReviewsDirectAcceptable(requestedUrl.pathname, response.status, content)) {
+        const checked = _checkAndReturn({ content, format: 'html', source: 'direct' }, 'Direct');
+        if (checked) return checked;
+      } else {
+        console.log(`  ⚠️  Direct theatre.reviews fetch not usable (HTTP ${response.status}), trying provider chain...`);
+      }
+    } catch (error) {
+      console.log(`  ⚠️  Direct theatre.reviews fetch failed: ${error.message}`);
+    }
+  }
+
   // Live re-check at chain-build time — matches the original code's gate
   // conditions exactly, reproduced again (unchanged) inside the scrapingdog/
   // scrapingbee tier functions below. Scrapingdog/ScrapingBee gate on

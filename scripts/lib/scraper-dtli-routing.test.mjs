@@ -190,3 +190,36 @@ for (const url of [
       new URL(url).hostname.replace(/^www\./, '') === 'didtheylikeit.com' ? 'brightdata' : 'scrapingdog');
   });
 }
+
+// BRO-7532: theatre.reviews round-ups try one direct GET first, then the unchanged paid chain.
+const trUrl = 'https://theatre.reviews/reviews-roundup/cleansed-reviews/';
+const trPage = `<html><head><title>Cleansed reviews</title></head><body><h1>Cleansed reviews</h1>${'<p>⭑⭑⭑⭑ Invented critic quote about the production that is long enough to look like a real round-up page body.</p>'.repeat(12)}</body></html>`;
+
+test('theatre.reviews round-up: real direct 200 makes no paid call', async () => {
+  global.fetch = async () => new Response(trPage, { status: 200 });
+  const result = await scraper.fetchPage(trUrl, { skipVerify: true });
+  assert.equal(result.source, 'direct');
+  assert.equal(result.content, trPage);
+  assert.equal(calls.length, 0);
+});
+
+for (const [label, response] of [
+  ['HTTP 403', () => new Response('Forbidden', { status: 403 })],
+  ['HTTP 404', () => new Response(trPage, { status: 404 })],
+  ['200 without a star marker (interstitial)', () => new Response('<html>cleantalk apbct check</html>', { status: 200 })],
+  ['network failure', () => { throw new Error('connection reset'); }],
+]) {
+  test(`theatre.reviews ${label} falls through to the paid chain`, async () => {
+    global.fetch = async () => response();
+    paidHtml = trPage;
+    const result = await scraper.fetchPage(trUrl, { skipVerify: true });
+    assert.notEqual(result.source, 'direct');
+    assert.ok(calls.length > 0, 'paid chain ran');
+  });
+}
+
+test('theatre.reviews non-round-up paths keep their existing route', async () => {
+  global.fetch = async () => assert.fail('direct route is limited to /reviews-roundup/');
+  paidHtml = trPage;
+  await scraper.fetchPage('https://theatre.reviews/category/reviews-roundup/', { skipVerify: true });
+});

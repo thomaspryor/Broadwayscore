@@ -27,6 +27,7 @@ const { namedNonReviewReason } = require('./non-review-url-patterns');
 const { hasNonMetOperaUrlMarker, operaHouseForVenue, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
 const { recordSbCall } = require('./provider-telemetry');
+const { buildWpSearchUrl, parseWpSearchResults, decideFreeSearch } = require('./free-first-fetch');
 
 // Helper: parse JSON response, returning empty array if the body is HTML
 // (Cloudflare fallback can return HTML even after fetchSSR's challenge detection
@@ -331,6 +332,8 @@ const SITE_SEARCH_ENDPOINTS = {
     // as the 2026 Broadway review (BRO-6585). /tv/ holds a real 2012 review.
     linkPattern: /href="(https:\/\/www\.hollywoodreporter\.com\/(?!movies\/)[^"]*review[^"]*)"/gi,
     requiresJs: true,
+    // BRO-7532: free WordPress REST search first; the paid render stays the fallback.
+    freeWp: { base: 'https://www.hollywoodreporter.com' },
   },
   'deadline': {
     name: 'Deadline',
@@ -338,6 +341,7 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'deadline.com',
     linkPattern: /href="(https:\/\/deadline\.com\/\d{4}\/\d{2}\/[^"]*)"/gi,
     requiresJs: true,
+    freeWp: { base: 'https://deadline.com' },
   },
   'timeout': {
     name: 'Time Out',
@@ -1433,6 +1437,36 @@ async function fetchJsSearchHtml(config, url, deps = {}) {
   return sbFetch(url);
 }
 
+/**
+ * BRO-7532: free WordPress REST search for requiresJs outlets that expose it.
+ * Plain direct GET only (never fetchSSR, which falls back to paid BD/SB).
+ * Returns result rows when the search produced at least one real review
+ * candidate, otherwise null so the caller runs the paid render as before.
+ */
+async function tryFreeWpSearch(config, outletId, searchTitle, showTitle, deps = {}, verbose = false) {
+  if (process.env.FREE_WP_SEARCH_DISABLED === '1') return null;
+  try {
+    const url = buildWpSearchUrl(config.freeWp.base, searchTitle);
+    const res = await (deps && deps.freeFetch ? deps.freeFetch(url) : _fetchSSRDirect(url, 10000));
+    if (!res || res.status !== 200) {
+      if (verbose) console.log(`    Site search [${config.name}]: free WP search HTTP ${res && res.status}, using paid render`);
+      return null;
+    }
+    const decision = decideFreeSearch(parseWpSearchResults(res.body), {
+      linkPattern: config.linkPattern,
+      showTitle,
+      urlLooksLike: urlLooksLikeReview,
+      nonReviewReason: namedNonReviewReason,
+    });
+    if (verbose) console.log(`    Site search [${config.name}]: free WP search ${decision.reason}${decision.use ? ` (${decision.urls.length})` : ', using paid render'}`);
+    if (!decision.use) return null;
+    return decision.urls.map(url => ({ url, outletId: config.outletIdOverride || outletId, outlet: config.name, source: 'site-search' }));
+  } catch (err) {
+    if (verbose) console.log(`    Site search [${config.name}]: free WP search failed (${String(err.message).slice(0, 60)}), using paid render`);
+    return null;
+  }
+}
+
 // urlLooksLikeReview imported from ./review-guards (pure function, tested in test-opening-night-fixes.js)
 
 /**
@@ -1534,18 +1568,26 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
         .replace('{TITLE}', encodeURIComponent(searchTitle))
         .replace('{MARKET_KEYWORD}', marketKeyword);
 
-      let html;
-      if (config.requiresJs) {
-        html = await fetchJsSearchHtml(config, searchUrl);
+      // BRO-7532: free WordPress REST search before the paid JS render. Only a
+      // usable hit short-circuits; every other outcome falls through unchanged.
+      const freeResults = config.freeWp && config.requiresJs
+        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose)
+        : null;
+
+      let html = '';
+      if (freeResults) {
+        // results come from the free search; skip the paid render
+      } else if (config.requiresJs) {
+        html = await fetchJsSearchHtml(config, searchUrl, options._deps && options._deps.sbFetch ? { sbFetch: options._deps.sbFetch } : {});
       } else {
         html = await fetchSSR(searchUrl);
       }
 
-      results = [];
+      results = freeResults ? freeResults.slice() : [];
       const seen = new Set();
       let match;
       config.linkPattern.lastIndex = 0;
-      while ((match = config.linkPattern.exec(html)) !== null) {
+      while (!freeResults && (match = config.linkPattern.exec(html)) !== null) {
         const url = config.normalizeUrl ? config.normalizeUrl(match[1]) : match[1];
         if (!seen.has(url) && urlLooksLikeReview(url, showTitle)) {
           seen.add(url);
@@ -1670,6 +1712,7 @@ module.exports = {
   selectApplicableSiteSearchOutlets,
   SITE_SEARCH_ENDPOINTS,
   fetchJsSearchHtml,
+  tryFreeWpSearch,
   extractVultureTheaterArticleUrls,
   extractGuardianRssReviewUrls,
   extractSectionLinks,

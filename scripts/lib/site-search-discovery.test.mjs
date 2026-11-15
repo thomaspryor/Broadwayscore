@@ -232,3 +232,48 @@ test('ew Scrapingdog page needs the query echoed, and SCRAPER_USE_SCRAPINGDOG=0 
   assert.equal(await fetchJsSearchHtml(ew, url, { sdFetch: async () => { sdCalled = true; return { content: real }; }, sbFetch: sb }), 'SB-HTML');
   assert.equal(sdCalled, false);
 });
+
+test('BRO-7532: free WP search hit skips the paid render; empty, blocked, junk and throws fall back to it', async (t) => {
+  const { searchOutletSite } = require('./site-search-discovery.js');
+  const review = 'https://deadline.com/2025/10/ragtime-broadway-review-1236583715/';
+  const paidReview = 'https://deadline.com/2025/10/ragtime-paid-render-review-1/';
+  const paidHtml = `<a href="${paidReview}">x</a>`;
+  const run = async (freeFetch) => {
+    let paid = 0;
+    const urls = (await searchOutletSite('deadline', 'Ragtime', {
+      _deps: { freeFetch, sbFetch: async () => { paid++; return paidHtml; } },
+    })).map(r => r.url);
+    return { urls, paid };
+  };
+  const ok = (body, status = 200) => async () => ({ status, body });
+
+  let r = await run(ok(JSON.stringify([{ url: review, title: 'Ragtime Review' }])));
+  assert.deepEqual(r, { urls: [review], paid: 0 });
+
+  for (const [label, ff] of [
+    ['empty array', ok('[]')],
+    ['no review-shaped hit', ok(JSON.stringify([{ url: 'https://deadline.com/2025/10/something-else-1/' }]))],
+    ['403', ok('Forbidden', 403)],
+    ['HTML body', ok('<html>blocked</html>')],
+    ['network error', async () => { throw new Error('ECONNRESET'); }],
+  ]) {
+    r = await run(ff);
+    assert.deepEqual(r, { urls: [paidReview], paid: 1 }, `${label} must use today's paid render`);
+  }
+
+  process.env.FREE_WP_SEARCH_DISABLED = '1';
+  t.after(() => { delete process.env.FREE_WP_SEARCH_DISABLED; });
+  r = await run(ok(JSON.stringify([{ url: review }])));
+  assert.equal(r.paid, 1, 'kill switch restores the paid-only behaviour');
+});
+
+test('BRO-7532: only deadline and hollywood-reporter carry freeWp, each with a paid-render config intact', () => {
+  for (const [id, cfg] of Object.entries(SITE_SEARCH_ENDPOINTS)) {
+    if (cfg.freeWp) {
+      assert.ok(['deadline', 'hollywood-reporter'].includes(id));
+      assert.equal(cfg.requiresJs, true);
+      assert.ok(cfg.linkPattern && cfg.url);
+    }
+  }
+  assert.ok(SITE_SEARCH_ENDPOINTS.deadline.freeWp && SITE_SEARCH_ENDPOINTS['hollywood-reporter'].freeWp);
+});
