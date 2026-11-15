@@ -824,8 +824,9 @@ function landRefCardNumber(ref) {
 /**
  * Open P0/P1 cards (and P2 with includeP2, P3 with includeP3: the fallback
  * tiers' landings, which the Codex runner leaves In Progress for this resume) someone holds (started,
- * not In Review): the only ones a land ref can resume. In Review already has an owner, the stuck-card closer, which
- * runs the card's check and closes it or bounces it back to Todo.
+ * including In Review, BRO-7566): the only ones a land ref can resume. In Review's
+ * owner, the stuck-card closer, only looks after 3 idle days, so a refused landing
+ * (a land ref whose latest Land run failed) is resumed here instead.
  */
 function resumableCardsByNumber(issues, { includeP2 = false, includeP3 = false } = {}) {
   const { issueNumber } = require('./linear-drain-parked.js');
@@ -833,7 +834,11 @@ function resumableCardsByNumber(issues, { includeP2 = false, includeP3 = false }
   for (const iss of Array.isArray(issues) ? issues : []) {
     const p = Number(iss && iss.priority);
     if (!iss || !iss.identifier || !(PRIORITIES.has(p) || (includeP2 && p === P2_PRIORITY) || (includeP3 && p === P3_PRIORITY))) continue;
-    if (!iss.state || iss.state.type !== 'started' || /review/i.test(iss.state.name || '')) continue;
+    // In Review is included (BRO-7566): a refused landing on an In Review card is
+    // invisible to the stuck-card closer for 3 days. findResumeCandidates only
+    // returns a card with a land ref whose latest Land run completed non-success
+    // (Land deletes the ref on success), so a healthy In Review card never matches.
+    if (!iss.state || iss.state.type !== 'started') continue;
     const n = issueNumber(iss.identifier);
     if (Number.isFinite(n)) byNum.set(n, iss);
   }

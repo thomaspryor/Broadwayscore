@@ -258,7 +258,7 @@ test('no resume for successful, ancient, unstarted, P2, or unrelated refs', () =
   none([landRef({ lastRun: null })]);
   none([landRef()], [issue()]); // Todo: the normal pick handles it
   none([landRef()], [startedCard({ priority: 3 })]);
-  none([landRef()], [startedCard({ state: { name: 'In Review', type: 'started' } })]); // the closer owns it
+  none([landRef({}, { conclusion: 'success' })], [startedCard({ state: { name: 'In Review', type: 'started' } })]);
   none([landRef({ ref: 'land/bro-999-other' })]);
   none([landRef({ ref: 'land/audit-x' })]);
 });
@@ -387,6 +387,16 @@ test('any pause younger than RECENT_PAUSE_MS skips the card; older ones and othe
   assert.equal(pausedHistorySkipReason(undefined, NOW), null);
   // Quoting a report mid-comment is not a report.
   assert.equal(pausedHistorySkipReason([{ body: 'see **Session report (paused)** above', createdAt: at(1000) }], NOW), null);
+});
+
+test('BRO-7566: a refused landing on an In Review card is resumed, still honoring idle and run caps', () => {
+  const { MAX_LAND_RUNS } = require('./cloud-worker-pick.js');
+  const review = { name: 'In Review', type: 'started' };
+  const card = (over = {}) => startedCard({ state: review, ...over });
+  const got = findResumeCard([card()], [landRef()], { nowMs: NOW });
+  assert.equal(got && got.kind, 'refused');
+  assert.equal(findResumeCard([card({ updatedAt: ago(IDLE_MS - 60_000) })], [landRef()], { nowMs: NOW }), null);
+  assert.equal(findResumeCard([card()], [landRef({}, { attempts: MAX_LAND_RUNS })], { nowMs: NOW }), null);
 });
 
 test('findResumeCandidates lists every resumable card, best first; findResumeCard is its head', () => {
@@ -639,7 +649,7 @@ test('P2 fallback: comments are read for P2 Todo and resumable P2 cards, never p
   assert.equal(needsComments(issue({ priority: 2 }), NOW), true);
   assert.equal(needsComments(issue({ priority: 3, description: '## Acceptance criteria\nLooks right.' }), NOW), true);
   assert.equal(needsComments(startedCard({ priority: 3 }), NOW), true);
-  assert.equal(needsComments(issue({ priority: 3, state: { name: 'In Review', type: 'started' } }), NOW), false);
+  assert.equal(needsComments(issue({ priority: 3, state: { name: 'In Review', type: 'started' } }), NOW), true); // resumable on a refused landing (BRO-7566)
   assert.equal(needsComments(issue({ priority: 3, state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` }), NOW), false);
   // A paused Backlog P2 card (no PARKED line) needs its pause history read (BRO-5360).
   assert.equal(needsComments(issue({ priority: 3, state: { name: 'Backlog', type: 'backlog' } }), NOW), true);
@@ -774,11 +784,11 @@ test('P3 fallback: buildPickQueue orders P0/P1, P2, P3 (resumes first in each ti
   assert.deepEqual(buildPickQueue([], {}), []);
 });
 
-test('P3 fallback: comments are read for P3 Todo and resumable P3 cards, never parked or In Review P3', () => {
+test('P3 fallback: comments are read for P3 Todo and resumable P3 cards, never parked P3', () => {
   const { needsComments } = require('./cloud-worker-pick.js');
   assert.equal(needsComments(issue({ priority: 4, description: '## Acceptance criteria\nLooks right.' }), NOW), true);
   assert.equal(needsComments(startedCard({ priority: 4 }), NOW), true);
-  assert.equal(needsComments(issue({ priority: 4, state: { name: 'In Review', type: 'started' } }), NOW), false);
+  assert.equal(needsComments(issue({ priority: 4, state: { name: 'In Review', type: 'started' } }), NOW), true); // resumable on a refused landing (BRO-7566)
   assert.equal(needsComments(issue({ priority: 4, state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` }), NOW), false);
   assert.equal(needsComments(issue({ priority: 4, state: { name: 'Backlog', type: 'backlog' } }), NOW), true);
   assert.equal(needsComments(issue({ priority: undefined }), NOW), false);
