@@ -82,5 +82,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-15T10:12:33.706Z"
+  },
+  {
+    "conditionKey": "tier-skip-drift",
+    "title": "domain-tier-skip.json drift: 1 domain+tier verdict(s) need review",
+    "description": "didtheylikeit.com / scrapingdog (recovery): skip:true but recovery probe succeeded 5/5 (100%) — consider flipping to skip:false",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-15T10:40:26.389Z"
   }
 ]
