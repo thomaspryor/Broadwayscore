@@ -127,8 +127,30 @@ function shouldRetryTombstone(castFile, show, now = Date.now()) {
   return !Number.isFinite(at) || now - at >= TOMBSTONE_RETRY_MS;
 }
 
+// Single definition of "cast coverage state" for an open/previews Broadway show, shared by the
+// health check ("Sync: cast coverage") and tested against backfill-cast.js's default-pass
+// selection (BRO-7504: three cards, BRO-5819/7473/7479, each the health row counting a state the
+// repair job had not yet reached or never would). States:
+//   ok          cast populated
+//   pre-opening no cast expected yet (IBDB lags) - never a gap
+//   missing     no file; the daily missing-file pass repairs it
+//   retrying    empty tombstone inside the retry window; the daily pass is still repairing it,
+//               so it is NOT reported (automation in flight, same rule as BRO-7472)
+//   exhausted   empty tombstone the default pass will no longer retry; only a human or the
+//               weekly --force pass can fix it, so it is the real gap
+function classifyCastCoverage(show, castFile, now = Date.now()) {
+  const today = new Date(now).toISOString().slice(0, 10);
+  const preOpening = show.status === 'previews' && show.openingDate && show.openingDate > today;
+  if (preOpening) return 'pre-opening';
+  if (castFile === null || castFile === undefined) return 'missing';
+  if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return 'ok';
+  const eligible = show.openingDate && show.openingDate <= today &&
+    today <= new Date(Date.parse(show.openingDate) + TOMBSTONE_RETRY_WINDOW_DAYS * 864e5).toISOString().slice(0, 10);
+  return eligible && (show.status === 'open' || show.status === 'previews') ? 'retrying' : 'exhausted';
+}
+
 module.exports = {
-  shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
+  classifyCastCoverage, shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
   shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, MAX_WRONG_PRODUCTION_PURGES, parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch,
   expectedOpeningYear, castFileMismatchReason,
 };

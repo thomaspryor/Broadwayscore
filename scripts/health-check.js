@@ -1025,26 +1025,17 @@ function checkSync() {
 
     const missing = [];
     const empty = [];
+    const { classifyCastCoverage } = require('./lib/cast-tombstone');
     for (const show of activeShows) {
       const castFile = path.join(castDir, `${show.id}.json`);
-      // Pre-opening previews: IBDB often has no page yet, so neither a missing
-      // file nor an empty tombstone is a coverage gap until openingDate passes
-      // (BRO-6837: Here There Are Blueberries flagged on its first preview day).
-      const preOpening = show.status === 'previews' && show.openingDate && show.openingDate > new Date().toISOString().slice(0, 10);
-      if (!fs.existsSync(castFile)) {
-        if (!preOpening) missing.push(show.title);
-      } else {
-        try {
-          const cast = readJSON(castFile);
-          if (!cast.openingNightCast || cast.openingNightCast.length === 0) {
-            // Pre-opening previews shows are often not on IBDB yet (or only
-            // under an earlier production's page, which the backfill rejects) —
-            // a confirmed-empty tombstone there is expected, not a coverage gap.
-            // Re-checked weekly by the backfill; counted once openingDate passes.
-            if (!preOpening) empty.push(show.title);
-          }
-        } catch {}
+      let cast = null;
+      if (fs.existsSync(castFile)) {
+        try { cast = readJSON(castFile); } catch { continue; }
       }
+      // Shared classifier (BRO-7504): states the daily backfill is still repairing are not gaps.
+      const state = classifyCastCoverage(show, cast);
+      if (state === 'missing') missing.push(show.title);
+      else if (state === 'exhausted') empty.push(show.title);
     }
 
     const total = missing.length + empty.length;

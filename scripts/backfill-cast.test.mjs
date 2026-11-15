@@ -85,3 +85,36 @@ test('shouldRetryTombstone: bounded window, and no openingDate means no daily re
   assert.strictEqual(shouldRetryTombstone(old, { status: 'previews' }, now), false);
   assert.strictEqual(shouldRetryTombstone(old, { status: 'open' }, now), false);
 });
+
+// BRO-7504 class guard: the health row ("Sync: cast coverage") and the backfill's default pass
+// must agree. Any state the classifier calls a gap-in-flight must be selected by the backfill,
+// and the health check must use the shared classifier (not its own copy of the rules).
+test('classifyCastCoverage agrees with backfill default-pass selection (BRO-7504)', async () => {
+  const { classifyCastCoverage, shouldRetryTombstone } = await import('./lib/cast-tombstone.js').then(m => m.default || m);
+  const now = Date.parse('2026-11-14T12:00:00Z');
+  const empty = (at) => ({ openingNightCast: [], scrapedAt: at });
+  const shows = [
+    { status: 'open', openingDate: '2026-11-08' },
+    { status: 'open', openingDate: '2026-09-01' },
+    { status: 'open' },
+    { status: 'previews', openingDate: '2026-12-01' },
+    { status: 'previews', openingDate: '2026-11-10' },
+  ];
+  for (const show of shows) {
+    const file = empty('2026-11-01T00:00:00Z');
+    const state = classifyCastCoverage(show, file, now);
+    // retrying <=> backfill will pick it up; exhausted <=> it will not (and the row must fire)
+    assert.strictEqual(state === 'retrying', shouldRetryTombstone(file, show, now), JSON.stringify(show));
+    if (state === 'pre-opening') continue;
+    assert.ok(['retrying', 'exhausted'].includes(state));
+  }
+  assert.strictEqual(classifyCastCoverage(shows[0], null, now), 'missing');
+  assert.strictEqual(classifyCastCoverage(shows[0], { openingNightCast: [{ name: 'x' }] }, now), 'ok');
+  assert.strictEqual(classifyCastCoverage(shows[3], null, now), 'pre-opening');
+});
+
+test('health-check cast coverage uses the shared classifier (BRO-7504 guard)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./health-check.js', import.meta.url), 'utf8');
+  assert.match(src, /classifyCastCoverage\(show, cast\)/);
+});
