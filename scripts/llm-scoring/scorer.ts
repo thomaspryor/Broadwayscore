@@ -21,7 +21,7 @@ const { getBestTextForScoring } = require('../lib/text-quality');
 // ========================================
 
 interface ScoringOptions {
-  model: 'claude-sonnet-4-6' | 'claude-3-5-haiku-20241022' | 'claude-haiku-4-5-20251001';
+  model: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-3-5-haiku-20241022' | 'claude-haiku-4-5-20251001';
   maxRetries: number;
   verbose: boolean;
 }
@@ -32,6 +32,17 @@ interface ScoringOutcome {
   error?: string;
   inputTokens: number;
   outputTokens: number;
+}
+
+/**
+ * Per-model sampling/thinking params. Pinned models keep temperature 0.3, so
+ * production requests are byte-identical. Sonnet 5.5 rejects temperature/top_p
+ * and disabled thinking (API 400), so it omits temperature and sends
+ * thinking:{type:'between_tools'}. Exported for the unit test.
+ */
+export function claudeSamplingParams(model: string): Record<string, unknown> {
+  if (model.startsWith('claude-sonnet-5')) return { thinking: { type: 'between_tools' } };
+  return { temperature: 0.3 };
 }
 
 // ========================================
@@ -373,7 +384,12 @@ export class ReviewScorer {
           // review with the same prompt produces non-zero drift, contaminating
           // the rule-13 A/B baseline (ship-check P0, Claude reviewer 2026-04-27).
           // Matches OpenAI/Gemini defaults of 0.3 for ensemble consistency.
-          temperature: 0.3,
+          // claude-sonnet-5-5 (BRO-7529 A/B only) 400s on a non-default
+          // temperature and on thinking:{type:'disabled'}; it runs adaptive
+          // thinking when thinking is omitted, which would eat max_tokens=500.
+          // So that model gets thinking:{type:'between_tools'} (the thinking-off
+          // form it accepts) and the default sampling temperature instead.
+          ...claudeSamplingParams(this.options.model),
           // Prompt caching: the system prompt repeats across every review in a
           // run (V5 is fully static; V6 varies only by (band, starsRaw), a
           // small set), so mark it as a cache breakpoint. A single text block

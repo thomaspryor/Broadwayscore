@@ -141,12 +141,39 @@ function armOf(e: any) {
     needsReview: !!e.needsReview,
     openaiScore: e.modelResults?.openai?.score ?? null,
     openaiBucket: e.modelResults?.openai?.bucket ?? null,
+    claudeLegOk: e.claudeLeg ? e.claudeLeg.ok : null,
+    claudeLegRejected: e.claudeLeg ? e.claudeLeg.rejected : null,
+    claudeLegError: e.claudeLeg ? e.claudeLeg.error || null : null,
+    claudeScore: e.modelResults?.claude?.score ?? null,
   };
 }
 
+// List prices, $ per 1M tokens: [input, output, cacheRead, cacheWrite].
+// Sonnet 5.5 $2/$10 (cache read $0.10), Sonnet 4.6 $3/$15, gpt-4o $2.50/$10, gpt-5.6-luna $0.20/$1.20,
+// Gemini 2.5-flash $0.30/$2.50 (scripts/llm-scoring/cost.ts, scripts/lib/research-cost.js).
+const CLAUDE_RATES: Record<string, number[]> = { 'claude-sonnet-4-6': [3, 15, 0.3, 3.75], 'claude-sonnet-5-5': [2, 10, 0.1, 2.5] };
+const OPENAI_RATES_PM: Record<string, number[]> = { 'gpt-4o': [2.5, 10], 'gpt-5.6-luna': [0.2, 1.2], 'gpt-6-luna': [0.2, 1.2], 'gpt-5.4-mini': [0.75, 4.5], 'gpt-5.6-sol': [5, 30] };
+const GEMINI_RATES = [0.3, 2.5];
+function legCost(u: any, sh: any, shadowOpenai: string, shadowClaude?: string) {
+  const claudeC = (t: any, m: string) => { const r = CLAUDE_RATES[m]; return t ? (t.input * r[0] + t.output * r[1] + (t.cacheRead || 0) * r[2] + (t.cacheWrite || 0) * r[3]) / 1e6 : 0; };
+  const openaiC = (t: any, m: string) => { const r = OPENAI_RATES_PM[m] || [5, 30]; return t ? (t.input * r[0] + t.output * r[1]) / 1e6 : 0; };
+  const out = {
+    claudeControl: claudeC(u.claude, 'claude-sonnet-4-6'),
+    openaiControl: openaiC(u.openai, 'gpt-4o'),
+    gemini: u.gemini ? (u.gemini.input * GEMINI_RATES[0] + u.gemini.output * GEMINI_RATES[1]) / 1e6 : 0,
+    claudeShadow: shadowClaude ? claudeC(sh.claude, shadowClaude) : 0,
+    openaiShadow: shadowOpenai !== 'none' ? openaiC(sh.openai, shadowOpenai) : 0,
+  };
+  const total = out.claudeControl + out.openaiControl + out.gemini + out.claudeShadow + out.openaiShadow;
+  return { ...out, total, tokens: { claudeControl: u.claude, openaiControl: u.openai, gemini: u.gemini, claudeShadow: sh.claude, openaiShadow: sh.openai } };
+}
+
 async function runShard() {
+  // --shadow-model=none runs a Claude-leg-only A/B (BRO-7529); --shadow-claude-model adds a Claude shadow arm.
   const shadowModel = flag('shadow-model', 'gpt-5.4-mini')!;
-  if (!openaiScoringModels().includes(shadowModel)) throw new Error(`unknown --shadow-model ${shadowModel}`);
+  if (shadowModel !== 'none' && !openaiScoringModels().includes(shadowModel)) throw new Error(`unknown --shadow-model ${shadowModel}`);
+  const shadowClaudeModel = flag('shadow-claude-model');
+  if (shadowClaudeModel && !['claude-sonnet-4-6', 'claude-sonnet-5-5'].includes(shadowClaudeModel)) throw new Error(`unknown --shadow-claude-model ${shadowClaudeModel}`);
   const sampleN = Number(flag('sample', '1000'));
   const seed = Number(flag('seed', '20261109'));
   const shard = Number(flag('shard', '0'));
@@ -171,19 +198,42 @@ async function runShard() {
   // --shuffle: seeded shuffle before --limit, so a bounded run is a random slice, not the alphabetically first shows (BRO-7341).
   const ordered = !args.includes('--shuffle') ? sample
     : (() => { const r = rng(seed ^ 0x9e3779b9); return sample.map((c) => ({ c, k: r() })).sort((x, y) => x.k - y.k).map((x) => x.c); })();
-  const mine = ordered.filter((_, i) => i % shards === shard).filter((c) => !done.has(c.id)).slice(0, limit);
-  console.log(`population ${pop.length}, sample ${sample.length}, shard ${shard}/${shards}: ${mine.length} to score (${done.size} already done), control ${SCORING_OPENAI} vs shadow ${shadowModel}`);
+  // Dedupe BEFORE sharding (BRO-7529): the prior shadow run billed 581 duplicate calls because the
+  // sample holds syndicated copies of one review (same prepared input and band). Every shard computes
+  // the same deduped list, so shards stay disjoint. Local only, no API call.
+  const dedupeScorer = new EnsembleReviewScorer('', '', undefined, undefined, { verbose: false });
+  const seenInput = new Set<string>();
+  let dupDropped = 0;
+  const deduped = ordered.filter((c) => {
+    try {
+      const prep = dedupeScorer.prepareScoringInput(JSON.parse(fs.readFileSync(c.filePath, 'utf8')));
+      if (!prep.ok || !prep.prep) return true;
+      const key = JSON.stringify([prep.prep.scoringInput, prep.prep.band || null]);
+      if (seenInput.has(key)) { dupDropped++; return false; }
+      seenInput.add(key);
+    } catch { /* unreadable: keep it, the run records the error */ }
+    return true;
+  });
+  if (dupDropped) console.log(`dedupe: dropped ${dupDropped} reviews whose prepared scoring input duplicates an earlier one`);
+  const mine = deduped.filter((_, i) => i % shards === shard).filter((c) => !done.has(c.id)).slice(0, limit);
+  console.log(`population ${pop.length}, sample ${sample.length}, shard ${shard}/${shards}: ${mine.length} to score (${done.size} already done), control ${SCORING_OPENAI} vs shadow ${shadowModel}${shadowClaudeModel ? `, claude shadow ${shadowClaudeModel}` : ''}`);
 
   const scorer = new EnsembleReviewScorer(
     process.env.ANTHROPIC_API_KEY || '', process.env.OPENAI_API_KEY || '', process.env.GEMINI_API_KEY, undefined,
-    { verbose: false, shadowOpenaiModel: shadowModel as any },
+    { verbose: false, shadowOpenaiModel: shadowModel === 'none' ? undefined : shadowModel as any, shadowClaudeModel: shadowClaudeModel as any },
   );
 
+  // Spend guard (BRO-7529, owner cap): --max-cost-usd is THIS shard's budget, priced from the scorers'
+  // own token counts at list rates (sync pricing, no batch discount, so an upper bound).
+  const maxCost = flag('max-cost-usd') ? Number(flag('max-cost-usd')) : Infinity;
+  const spent = () => legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel).total;
+  let capHit = false;
   let next = 0; let finished = 0;
   async function worker() {
     while (next < mine.length) {
+      if (spent() >= maxCost) { capHit = true; break; }
       const c = mine[next++];
-      let rec: any = { id: c.id, showId: c.showId, stratum: c.stratum, weight: c.weight, controlModel: SCORING_OPENAI, shadowModel };
+      let rec: any = { id: c.id, showId: c.showId, stratum: c.stratum, weight: c.weight, controlModel: SCORING_OPENAI, shadowModel, controlClaudeModel: 'claude-sonnet-4-6', shadowClaudeModel: shadowClaudeModel || null };
       try {
         const reviewFile = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
         const prepared = scorer.prepareScoringInput(reviewFile);
@@ -191,7 +241,8 @@ async function runShard() {
         const result = await scorer.scoreReviewFile(reviewFile);
         const e: any = result.ensembleResult;
         rec.control = e ? armOf(e) : { success: false, error: result.error || 'no_result' };
-        rec.shadow = e && e.shadow ? armOf(e.shadow) : { success: false, error: 'no_shadow' };
+        rec.shadow = shadowModel === 'none' ? undefined : (e && e.shadow ? armOf(e.shadow) : { success: false, error: 'no_shadow' });
+        if (shadowClaudeModel) rec.shadowClaude = e && e.shadowClaude ? armOf(e.shadowClaude) : { success: false, error: 'no_shadow_claude' };
       } catch (err: any) {
         rec.control = { success: false, error: String(err && err.message || err).slice(0, 200) };
         rec.shadow = { success: false, error: 'control_threw' };
@@ -202,7 +253,9 @@ async function runShard() {
     }
   }
   await Promise.all(Array.from({ length: concurrency }, worker));
-  console.log(`shard ${shard} done: ${finished} records -> ${path.relative(ROOT, outPath)}`);
+  const cost = legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel);
+  fs.writeFileSync(outPath.replace(/\.jsonl$/, '.cost.json'), JSON.stringify({ records: finished, capHit, maxCostUsd: Number.isFinite(maxCost) ? maxCost : null, ...cost }, null, 2) + '\n');
+  console.log(`shard ${shard} done: ${finished} records -> ${path.relative(ROOT, outPath)}; est spend $${cost.total.toFixed(2)}${capHit ? ' (STOPPED at --max-cost-usd)' : ''}`);
 }
 
 function runReport() {
@@ -221,7 +274,10 @@ function runReport() {
   let dupes = 0;
   for (const r of records) { if (byId.has(r.id)) dupes++; byId.set(r.id, r); }
   if (dupes) console.warn(`::warning::${dupes} duplicate review record(s) across shards; kept the latest of each`);
-  const report = { generatedAt: new Date().toISOString(), ...computeReport([...byId.values()]) };
+  // --leg=claude: compare control vs the shadowClaude arm (BRO-7529); default compares the OpenAI shadow arm.
+  const leg = flag('leg');
+  const recs = [...byId.values()].map((r: any) => (leg === 'claude' ? { ...r, shadow: r.shadowClaude } : r));
+  const report = { generatedAt: new Date().toISOString(), leg: leg || 'openai', ...computeReport(recs, { leg }) };
   const write = flag('write');
   if (write) fs.writeFileSync(path.isAbsolute(write) ? write : path.join(ROOT, write), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report, null, 2));
