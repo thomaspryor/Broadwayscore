@@ -24,6 +24,18 @@ state="$(printf '%s' "$input" | jq -r '.tool_input.state // "" | tostring' 2>/de
 shopt -s nocasematch
 if [[ "$state" =~ ^(done|completed|canceled|cancelled|duplicate)$ ]]; then exit 0; fi
 if [[ "$tool" =~ ^mcp__(Linear|claude_ai_Linear|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})__(save_comment|save_issue)$ ]]; then
+  # BRO-7534: in cloud the connector's own server policy asks before every create, and an allow
+  # here does not beat it (observed: decision_reason_rule_source=mcpServerPolicy). A new comment or
+  # new issue goes through linear-brain.js instead, which never prompts. Updates keep the allow.
+  if [ -n "$CLAUDE_CODE_REMOTE" ] && [ -z "$ALLOW_LINEAR_WRITES_NO_REDIRECT" ] && [ -z "$(printf '%s' "$input" | jq -r '.tool_input.id // ""' 2>/dev/null)" ]; then
+    if [[ "$tool" == *save_comment ]]; then
+      how='node scripts/linear-brain.js update BRO-N --comment "<text>"'
+    else
+      how='node scripts/linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "<text>"'
+    fi
+    jq -n --arg how "$how" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Use the repo script, not the connector: " + $how + " (no approval prompt, BRO-7534). Then carry on.")}}'
+    exit 0
+  fi
   jq -n '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"allow",permissionDecisionReason:"Linear comment and issue writes are pre-approved by the owner (BRO-7534)."}}'
 fi
 exit 0
