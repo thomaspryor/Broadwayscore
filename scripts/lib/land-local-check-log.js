@@ -76,7 +76,7 @@ function latestVerdict({ sha, tree, file }) {
   }
 }
 
-/** Recorded verdict for `ref` (a rev) in the checkout `cwd`: {status, sha}; status is the verdict, 'none' (no record) or 'unknown' (cannot resolve/read). Shared by the land push hook's advisory and visual-approval request (BRO-7501). */
+/** Recorded verdict for `ref` (a rev) in the checkout `cwd`: {status, sha}; status is the verdict, 'none' (no record) or 'unknown' (cannot resolve/read). Used by visual-approval request (BRO-7501); land-preflight.mjs localCheckWarning does the same lookup inline. */
 function verdictForRef(cwd, ref = 'HEAD') {
   const sha = gitOut(cwd, ['rev-parse', '--verify', '--quiet', `${ref}^{commit}`]);
   if (!sha) return { status: 'unknown', sha: '' };

@@ -272,7 +272,7 @@ function openVisualRequests(issues) {
  * through land.yml; BRO-7494's approved change was refused there (unit-tests-node) because nobody ran the
  * check on the hold tip. Pushes to visual-hold/* never reach the land push hook, so this is the only place.
  * Pure: status is the recorded verdict (clean | new-failures | not-ready | skipped | none | unknown).
- * Advisory by default (CLAUDE.md 19); VISUAL_APPROVAL_LAND_CHECK=strict refuses on none/new-failures/not-ready
+ * Advisory by default (CLAUDE.md 19); VISUAL_APPROVAL_LAND_CHECK=strict refuses on none/new-failures/not-ready/skipped
  * unless a non-empty reason is given. -> { action: 'ok'|'warn'|'refuse', message, reason }
  */
 const LAND_CHECK_CMD = 'node scripts/lib/land-local-check.js | tail -15';
@@ -286,14 +286,14 @@ function landCheckGate({ status, sha = '', env = {}, okReason = '' }) {
     skipped: `land-local-check gave up waiting for the land-check mutex on the held tip ${short}.`,
     unknown: `could not read a land-local-check verdict for the held tip ${short}.`,
   }[status] || `unrecognised land-local-check status "${status}".`;
-  const fix = `Run \`${LAND_CHECK_CMD}\` (~20 min, background it) until it exits 0, then re-run request. An approved change that fails its land costs a ~30 min cycle (BRO-7494).`;
+  const fix = `Run \`${LAND_CHECK_CMD}\` (~20 min, background it) until the log records clean (the pipe to tail hides its exit code; check the output says clean), then re-run request. An approved change that fails its land costs a ~30 min cycle (BRO-7494).`;
   const strict = String(env.VISUAL_APPROVAL_LAND_CHECK || '').toLowerCase() === 'strict';
-  const blocking = ['none', 'new-failures', 'not-ready'].includes(status);
+  const blocking = ['none', 'new-failures', 'not-ready', 'skipped'].includes(status); // skipped may hide an earlier new-failures record for the same sha
   if (strict && blocking) {
     if (String(okReason).trim()) return { action: 'warn', message: `WARNING (override: ${String(okReason).trim()}): ${text} ${fix}`, reason: String(okReason).trim() };
     return { action: 'refuse', message: `Refused: ${text} ${fix} Or pass --land-check-ok="<why the check cannot apply>".`, reason: null };
   }
-  return { action: 'warn', message: `WARNING: ${text} ${fix}`, reason: null };
+  return { action: 'warn', message: `WARNING: ${text} ${fix}`, reason: String(okReason).trim() || null };
 }
 
 module.exports = { landCheckGate, LAND_CHECK_CMD, visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };

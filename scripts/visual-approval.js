@@ -49,12 +49,14 @@ async function request(argv) {
   }
   // BRO-7501: the held tip must have passed land-local-check, or the approved change can fail its land.
   let landCheckNote = '';
+  const heldSha = va.git(['rev-parse', 'HEAD'], { cwd }); // the one commit checked, judged and pushed (a concurrent commit must not slip in)
   {
-    const lc = require('./lib/land-local-check-log.js').verdictForRef(cwd, 'HEAD');
+    const lc = require('./lib/land-local-check-log.js').verdictForRef(cwd, heldSha);
     const gate = va.landCheckGate({ status: lc.status, sha: lc.sha, env: process.env, okReason: arg(argv, 'land-check-ok') });
     if (gate.message) console.error(`[visual-approval] ${gate.message}`);
     if (gate.action === 'refuse') return 1;
     if (gate.reason) landCheckNote = ` land-local-check override: ${gate.reason}.`;
+    else if (gate.action === 'warn') landCheckNote = ` land-local-check verdict for this tip: ${lc.status} (not clean).`;
   }
   let verdict;
   try { verdict = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch { console.error(`Refused: no verdict.json in ${dir}. Run node scripts/visual-qa.mjs first.`); return 1; }
@@ -97,7 +99,7 @@ async function request(argv) {
 
   if (dryRun) { console.log(`[dry-run] would push HEAD -> ${hold} and ${files.length} files -> ${evBranch}\n\n${block}`); return 0; }
 
-  va.git(['push', '--force', 'origin', `HEAD:refs/heads/${hold}`], { cwd });
+  va.git(['push', '--force', 'origin', `${heldSha}:refs/heads/${hold}`], { cwd });
   va.git(['push', '--force', 'origin', `${ev}:refs/heads/${evBranch}`], { cwd });
 
   const issue = await linear.getIssue(issueId);

@@ -247,9 +247,9 @@ test('landCheckGate: clean passes silently; everything else warns by default (ad
   }
 });
 
-test('landCheckGate strict: refuses none/new-failures/not-ready, only warns for skipped/unknown, reason overrides', () => {
+test('landCheckGate strict: refuses none/new-failures/not-ready, only warns for unknown, reason overrides', () => {
   const env = { VISUAL_APPROVAL_LAND_CHECK: 'strict' };
-  for (const status of ['none', 'new-failures', 'not-ready']) {
+  for (const status of ['none', 'new-failures', 'not-ready', 'skipped']) {
     const g = va.landCheckGate({ status, sha: 'b'.repeat(40), env });
     assert.equal(g.action, 'refuse', status);
     assert.match(g.message, /^Refused: .*--land-check-ok=/);
@@ -258,7 +258,7 @@ test('landCheckGate strict: refuses none/new-failures/not-ready, only warns for 
     assert.equal(o.action, 'warn');
     assert.equal(o.reason, 'docs only');
   }
-  for (const status of ['skipped', 'unknown']) assert.equal(va.landCheckGate({ status, sha: 'b'.repeat(40), env }).action, 'warn', status);
+  assert.equal(va.landCheckGate({ status: 'unknown', sha: 'b'.repeat(40), env }).action, 'warn');
   assert.equal(va.landCheckGate({ status: 'clean', env }).action, 'ok');
 });
 
