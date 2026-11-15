@@ -11,7 +11,8 @@ const apply = process.argv.includes('--apply');
 const recentOnly = process.argv.includes('--recent-only');
 const EXCERPT_KEYS = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt', 'stagedoorExcerpt', 'lboRoundupExcerpt', 'excerpt', 'pullQuote'];
 const SCORE_KEYS = ['originalScore', 'assignedScore', 'aggregatorStars', 'westEndTheatreScore', 'humanReviewScore', 'llmScore', 'dtliThumb', 'bwwThumb'];
-const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+const { foldDiacritics } = require('./lib/title-match');
+const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
 // every excerpt the placeholder carries is quoted inside this complete sibling's text
 function excerptsQuotedIn(r, sib) {
   const t = norm(sib.fullText);
