@@ -100,3 +100,9 @@ test('isCurrentProductionPost: needs a post date inside the opening window', () 
 test('buildWpPostDateUrl', () => {
   assert.equal(f.buildWpPostDateUrl('https://deadline.com/', 5), 'https://deadline.com/wp-json/wp/v2/posts/5?_fields=id,date');
 });
+
+test('decideFreeSearch needs "review" as a whole slug word ("preview" is not a review)', () => {
+  const mk = u => f.decideFreeSearch([{ url: u, id: 1 }], { linkPattern: /(https:\/\/deadline\.com\/[^"]+)/, showTitle: 'Ragtime', urlLooksLike: () => true, nonReviewReason: () => null });
+  assert.equal(mk('https://deadline.com/2025/10/ragtime-broadway-preview-1/').use, false);
+  assert.equal(mk('https://deadline.com/2025/10/ragtime-broadway-review-1/').use, true);
+});

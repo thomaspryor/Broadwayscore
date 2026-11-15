@@ -83,7 +83,7 @@ function decideFreeSearch(posts, { linkPattern, showTitle, urlLooksLike, nonRevi
     if (!urlMatchesLinkPattern(url, linkPattern)) continue;
     // Real Deadline/THR review slugs say "review"; news about the show (closing dates,
     // box office) must not count as a free hit and suppress the paid render (BRO-7532 live test).
-    if (!/review/i.test(String(url).replace(/^https?:\/\/[^/]+/, ''))) continue;
+    if (!/(?:^|[\/-])reviews?(?:$|[\/-])/i.test(String(url).replace(/^https?:\/\/[^/]+/, ''))) continue;
     if (urlLooksLike && !urlLooksLike(url, showTitle)) continue;
     if (nonReviewReason && nonReviewReason(url)) continue;
     if (!looksLikeStageReview(url, market)) continue;
