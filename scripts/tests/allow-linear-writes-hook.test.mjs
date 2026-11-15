@@ -15,7 +15,7 @@ function decide(tool, env = {}, toolInput = {}) {
   const r = spawnSyncStdinFile('bash', [HOOK], {
     input: JSON.stringify({ hook_event_name: 'PreToolUse', tool_name: tool, tool_input: toolInput }),
     encoding: 'utf8',
-    env: { ...process.env, HOME: '/nonexistent-home', ...env },
+    env: { ...process.env, HOME: '/nonexistent-home', CLAUDE_CODE_REMOTE: '', ...env },
   });
   assert.equal(r.status, 0, r.stderr);
   return r.stdout.trim() ? JSON.parse(r.stdout).hookSpecificOutput : null;
@@ -68,4 +68,19 @@ test('unparseable input fails open with no decision', () => {
   const r = spawnSyncStdinFile('bash', [HOOK], { input: 'not json', encoding: 'utf8', env: { ...process.env, HOME: '/nonexistent-home' } });
   assert.equal(r.status, 0);
   assert.equal(r.stdout.trim(), '');
+});
+
+test('in cloud, a NEW comment or issue is redirected to linear-brain.js (deny); updates and non-cloud stay allowed', () => {
+  const cloud = { CLAUDE_CODE_REMOTE: 'true' };
+  const c = decide(`mcp__${UUID}__save_comment`, cloud, { issue: 'BRO-1', body: 'x' });
+  assert.equal(c.permissionDecision, 'deny');
+  assert.match(c.permissionDecisionReason, /linear-brain\.js update BRO-N --comment/);
+  const i = decide('mcp__Linear__save_issue', cloud, { title: 't', team: 'BRO' });
+  assert.equal(i.permissionDecision, 'deny');
+  assert.match(i.permissionDecisionReason, /linear-brain\.js create/);
+  assert.equal(decide('mcp__Linear__save_comment', cloud, { id: 'abc', body: 'edit' }).permissionDecision, 'allow');
+  assert.equal(decide('mcp__Linear__save_issue', cloud, { id: 'BRO-1', priority: 1 }).permissionDecision, 'allow');
+  assert.equal(decide('mcp__Linear__save_comment', {}, { issue: 'BRO-1', body: 'x' }).permissionDecision, 'allow');
+  assert.equal(decide('mcp__Linear__save_comment', { ...cloud, ALLOW_LINEAR_WRITES_NO_REDIRECT: '1' }, { issue: 'BRO-1', body: 'x' }).permissionDecision, 'allow');
+  assert.equal(decide('mcp__Linear__save_issue', cloud, { state: 'Done' }), null);
 });
