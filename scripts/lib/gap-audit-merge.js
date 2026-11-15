@@ -286,7 +286,8 @@ function riskStateMap(results, opts = {}) {
     // BASELINE_MAX_AGE_DAYS. Only meaningful on the PREVIOUS-file side; see
     // isRiskyGapChange. A missing/unparseable computedAt is NOT aged (fail strict).
     const at = r.computedAt ? new Date(r.computedAt).getTime() : NaN;
-    const aged = Number.isFinite(at) && Number.isFinite(nowMs) && nowMs - at > maxAgeMs;
+    // A quarantined row's computedAt predates its hold, so it must not age itself clean.
+    const aged = !r.quarantine && Number.isFinite(at) && Number.isFinite(nowMs) && nowMs - at > maxAgeMs;
     out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}${usable || !stored ? '' : ':prior-schema'}${aged ? ':aged' : ''}`;
   }
   return out;
@@ -351,8 +352,13 @@ function isRiskyGapChange(prevState, nextState) {
   // BRO-7561: against a baseline older than BASELINE_MAX_AGE_DAYS the SERP/aggregator
   // census has drifted on its own (BRO-5516 class: baselines from 2026-10-31 with 2 or 4
   // candidates, zero tolerance, refused the write 2026-11-15). Candidate-only drops are
-  // discounted; any live loss was already handled above and stays risky.
-  if (aged) return false;
+  // discounted up to a bound; any live loss was already handled above and stays risky.
+  // Bounded (review finding): a dead SERP provider drops gap candidates while live holds, so
+  // the discount is at most max(1, 25%) of the baseline and never to zero candidates.
+  if (aged) {
+    if (prevCandidates > 0 && nextCandidates === 0) return true;
+    return candDrop > Math.max(1, Math.floor(prevCandidates * 0.25));
+  }
   return candDrop > tol;
 }
 

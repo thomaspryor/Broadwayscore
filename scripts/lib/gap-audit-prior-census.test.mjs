@@ -60,4 +60,9 @@ test('BRO-7561: candidate drops against baselines older than 7 days are discount
   assert.equal(isRiskyGapChange(prevOf(3, 3, old), 'no-census-yet:0:0'), true);
   // missing computedAt is never aged
   assert.equal(isRiskyGapChange(prevOf(1, 2, undefined), 'incomplete:1:1'), true);
+  // bounded: dead-provider shapes on aged baselines stay risky
+  assert.equal(isRiskyGapChange(prevOf(2, 9, old), 'complete:2:2'), true);
+  assert.equal(isRiskyGapChange(prevOf(0, 5, old), 'no-census-yet:0:0'), true);
+  const q = { ...mk(1, 2, old), quarantine: { nextState: 'x' } };
+  assert.equal(isRiskyGapChange(riskStateMap([q], { now }).s, 'incomplete:1:1'), true);
 });
