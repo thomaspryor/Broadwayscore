@@ -206,9 +206,9 @@ not the break-even inputs.
 citations or amounts) and `breakEvenQuality` (`reported` only on a cited
 press, SEC or producer cost; otherwise `estimated`; `unavailable` when no
 break-even shows). The commercial write guard stamps both on every save, the
-merge re-derives them, record checks refuse a quality the cost fields do not
-support, and plan `data/pending-fixes/bro-7254.json` writes the four named
-shows (all `estimated`: their costs are analyst or industry estimates; Wanted's
+merge re-derives them, record checks refuse only an invalid quality (a stale one is
+re-derived on the next save), and the next guarded save stamps every record,
+the four named shows included (all `estimated`: their costs are analyst or industry estimates; Wanted's
 "trade-reported" label sits on a forum citation). On the snapshot, the 39
 running Broadway records come out 8 reported, 14 estimated, 17 unavailable.
 
