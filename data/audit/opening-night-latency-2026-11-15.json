@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-15T17:47:57.708Z",
+  "generatedAt": "2026-11-15T20:57:19.139Z",
   "date": "2026-11-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 154459,
+  "entryCount": 165676,
   "shows": [
     {
       "showId": "the-whos-tommy-tour-2026",
@@ -437,9 +437,9 @@
       "p90_e2e_ms": 50024142,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 702842,
+        "collected-to-scored": 2435812,
         "scored-to-rebuilt": 280102,
-        "rebuilt-to-deployed": 56656620
+        "rebuilt-to-deployed": 57954260
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
@@ -528,13 +528,13 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
-      "reviewCount": 35,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 3010369,
-        "scored-to-rebuilt": 295910,
+        "scored-to-rebuilt": 404688,
         "rebuilt-to-deployed": 58262808
       },
       "reviews_over_15min": 0,
@@ -563,8 +563,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 707567,
+        "scored-to-rebuilt": 147855,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -870,13 +870,13 @@
     },
     {
       "showId": "here-there-are-blueberries-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": 87334368,
       "p90_e2e_ms": 87334368,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 621004,
+        "scored-to-rebuilt": 481026,
         "rebuilt-to-deployed": 105439707
       },
       "reviews_over_15min": 1,
@@ -951,13 +951,13 @@
     },
     {
       "showId": "the-heart-off-broadway-2026",
-      "reviewCount": 22,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 1389263,
-        "scored-to-rebuilt": 1248281,
+        "scored-to-rebuilt": 350667,
         "rebuilt-to-deployed": 122244193
       },
       "reviews_over_15min": 0,
@@ -5038,13 +5038,13 @@
     },
     {
       "showId": "cranford-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 678534,
-        "scored-to-rebuilt": 486097,
+        "scored-to-rebuilt": 719970,
         "rebuilt-to-deployed": 56656621
       },
       "reviews_over_15min": 0,
@@ -5680,13 +5680,13 @@
     },
     {
       "showId": "passing-strange-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1165222,
+        "scored-to-rebuilt": 886577,
         "rebuilt-to-deployed": 44432081
       },
       "reviews_over_15min": 0,
@@ -7142,6 +7142,36 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1017028,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 543805,
+        "scored-to-rebuilt": 418516,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hedda-gabler-west-end-2016",
+      "reviewCount": 17,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1113700,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
