@@ -38,7 +38,7 @@ function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
   return applyUtm(html, { source: 'opening-night', campaign, listLink: true });
 }
 const { checkPreviewDedup } = require('./lib/preview-dedup');
-const { numbersFromEmailRows, isUnsentDraft, unsentDraftUpdatePlan, stampDraftUpdate } = require('./lib/broadcast-refresh');
+const { numbersFromEmailRows, isUnsentDraft, unsentDraftUpdatePlan, stampDraftUpdate, unsentDraftShowsForUpdate } = require('./lib/broadcast-refresh');
 const { getShowConsensusText } = require('./lib/critic-consensus-lookup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 const { upsertBroadcastDraft, makeResendRequest, RESEND_BROADCASTS_URL } = require('./lib/resend-draft-upsert');
@@ -199,6 +199,36 @@ function refreshTrackerUnderLock(sentData) {
   const merged = mergeTrackerEntries(fresh, sentData);
   sentData.shows = merged.shows;
   return sentData;
+}
+
+/**
+ * Shows a run works on (BRO-7386).
+ * - --update-unsent-draft: the shows of the market's unsent drafts in the
+ *   tracker, narrowed by --shows. No opening-date lookback: the draft exists,
+ *   so it follows the numbers for as long as it sits unsent.
+ * - otherwise: shows opened within the lookback, narrowed by --shows (the
+ *   workflow passes its readiness-gated set there).
+ * @returns {{shows: object[], emptyReason: string, message?: string}}
+ */
+function selectCandidateShows(showsList, sentShows, { updateUnsent, lookbackDays, allowedIds, market }) {
+  if (updateUnsent) {
+    return {
+      shows: unsentDraftShowsForUpdate(sentShows, showsList, market, allowedIds),
+      emptyReason: 'No unsent draft for these shows — nothing to update',
+    };
+  }
+  let shows = findRecentlyOpenedShows(showsList, lookbackDays);
+  if (shows.length === 0) return { shows, emptyReason: 'No recently opened shows — nothing to broadcast' };
+  // Apply --shows allow-list (if provided). The workflow uses this to enforce its
+  // stricter readiness gate (15+ scored reviews) — see SHOWS_ARG comment above.
+  if (!allowedIds) return { shows, emptyReason: '' };
+  const before = shows.length;
+  shows = shows.filter(s => allowedIds.has(s.id || s.slug));
+  return {
+    shows,
+    message: `--shows allow-list: ${shows.length}/${before} shows passed (allowed: ${[...allowedIds].join(',')})`,
+    emptyReason: 'No allowed shows match recently opened set — nothing to broadcast',
+  };
 }
 
 /**
@@ -388,26 +418,19 @@ async function main() {
     sentData = { shows: {} };
   }
 
-  // Find recently opened shows
-  let recentlyOpened = findRecentlyOpenedShows(showsList, LOOKBACK_DAYS);
+  // Shows this run works on: recently opened ones, or (--update-unsent-draft)
+  // the shows of unsent drafts, whatever their opening date (BRO-7386).
+  const selection = selectCandidateShows(showsList, sentData.shows, {
+    updateUnsent: UPDATE_UNSENT, lookbackDays: LOOKBACK_DAYS, allowedIds: ALLOWED_SHOW_IDS, market: MARKET,
+  });
+  if (selection.message) console.log(selection.message);
+  let recentlyOpened = selection.shows;
   if (recentlyOpened.length === 0) {
-    console.log('No recently opened shows — nothing to broadcast');
+    console.log(selection.emptyReason);
     process.exit(0);
   }
 
-  // Apply --shows allow-list (if provided). The workflow uses this to enforce its
-  // stricter readiness gate (15+ scored reviews) — see SHOWS_ARG comment above.
-  if (ALLOWED_SHOW_IDS) {
-    const before = recentlyOpened.length;
-    recentlyOpened = recentlyOpened.filter(s => ALLOWED_SHOW_IDS.has(s.id || s.slug));
-    console.log(`--shows allow-list: ${recentlyOpened.length}/${before} shows passed (allowed: ${[...ALLOWED_SHOW_IDS].join(',')})`);
-    if (recentlyOpened.length === 0) {
-      console.log('No allowed shows match recently opened set — nothing to broadcast');
-      process.exit(0);
-    }
-  }
-
-  console.log(`Found ${recentlyOpened.length} recently opened show(s):`);
+  console.log(`Found ${recentlyOpened.length} ${UPDATE_UNSENT ? 'show(s) with an unsent draft' : 'recently opened show(s)'}:`);
   for (const s of recentlyOpened) {
     console.log(`  - ${s.title} (${s.id}) opened ${s.openingDate}`);
   }
@@ -510,7 +533,8 @@ async function main() {
     } else if (UPDATE_UNSENT) {
       // BRO-6634: the draft already exists (a deadline draft may have been
       // forced past this gate), so newer numbers are always better than the
-      // ones it shows. The workflow's own readiness gate still applies.
+      // ones it shows. Refresh targets come from the tracker's unsent drafts, not
+      // the workflow's drafting readiness list (BRO-7386).
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
       console.log(`  ⚠️  ${show.title}: gate failed (${gate.reasons.join(', ')}); updating the existing draft's numbers anyway.`);
     } else {
@@ -1102,7 +1126,7 @@ async function updateUnsentDraftInPlace({ sentData, broadcastKey, showsForEmail,
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { ownerDraftNoticeHtml, syncTrackerToOrigin, mergeTrackerEntries, refreshTrackerUnderLock, OPENING_NIGHT_IGNORE_STATUSES, findRecentlyOpenedShows, buildBroadcastName, broadcastNotBefore, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
+module.exports = { ownerDraftNoticeHtml, syncTrackerToOrigin, mergeTrackerEntries, refreshTrackerUnderLock, OPENING_NIGHT_IGNORE_STATUSES, findRecentlyOpenedShows, selectCandidateShows, buildBroadcastName, broadcastNotBefore, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
 
 if (require.main === module) {
   main().catch(err => {

@@ -151,6 +151,55 @@ function draftsNeedingRefresh(sentShows, readNumbers, onlyIds = null) {
 }
 
 /**
+ * BRO-7386: what the workflow's "Find unsent drafts whose numbers moved" step
+ * hands the update step. Every unsent draft in the tracker is considered, with
+ * no ready-set filter: the drafting gates (2-day opening window, 7 AM time
+ * gate, readiness list) decide whether to CREATE a draft, never whether an
+ * existing one keeps up with the site.
+ * @returns {{broadway: string[], 'west-end': string[], shows: string[], moved: object[]}}
+ *   per market, one comma-joined id list per draft (a combo is updated whole)
+ */
+function refreshPlanByMarket(sentShows, readNumbers) {
+  const plan = { broadway: [], 'west-end': [], shows: [], moved: [] };
+  for (const r of draftsNeedingRefresh(sentShows, readNumbers)) {
+    (plan[r.market] || (plan[r.market] = [])).push(r.ids.join(','));
+    for (const id of r.ids) if (!plan.shows.includes(id)) plan.shows.push(id);
+    plan.moved.push(r);
+  }
+  return plan;
+}
+
+/**
+ * BRO-7386: the shows `--update-unsent-draft` works on, picked from the unsent
+ * drafts in the tracker. Never from the opening-date lookback or the drafting
+ * readiness list: a draft made on day 1 must keep following the numbers after
+ * the show leaves the 2-day opening window (Cloud 9 kept 81 from 12 reviews
+ * while the site showed 77 from 18).
+ * @param {object} sentShows   opening-night-sent.json `shows`
+ * @param {object[]} showsList shows.json rows
+ * @param {string} market      'broadway' | 'west-end' (the draft key's prefix)
+ * @param {Iterable<string>|null} [allowedIds] --shows allow-list
+ * @returns {object[]} shows.json rows, in draft order, each once
+ */
+function unsentDraftShowsForUpdate(sentShows, showsList, market, allowedIds = null) {
+  const allow = allowedIds ? new Set(allowedIds) : null;
+  const byId = new Map((showsList || []).map(s => [s.id || s.slug, s]));
+  const seen = new Set();
+  const out = [];
+  for (const e of unsentDraftRecords(sentShows)) {
+    if (e.market !== market) continue;
+    for (const id of e.ids) {
+      if (seen.has(id) || (allow && !allow.has(id))) continue;
+      const show = byId.get(id);
+      if (!show) continue;
+      seen.add(id);
+      out.push(show);
+    }
+  }
+  return out;
+}
+
+/**
  * Decide whether `--update-unsent-draft` should PATCH the draft recorded under
  * broadcastKey with the numbers the email now shows.
  * @returns {{action:'skip', reason:string} | {action:'update', record:object, was:object}}
@@ -214,5 +263,5 @@ module.exports = {
   displayScore, numbersFromEmailRows, readShowNumbers, numbersDiffer,
   previewKeyIds, latestPreviewForShow, isUnsentDraft, unsentDraftRecords,
   draftBaseline, draftChanged, draftsNeedingRefresh, remindersDue, stampReminder,
-  unsentDraftUpdatePlan, stampDraftUpdate,
+  unsentDraftUpdatePlan, stampDraftUpdate, unsentDraftShowsForUpdate, refreshPlanByMarket,
 };

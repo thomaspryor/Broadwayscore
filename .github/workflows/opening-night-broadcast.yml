@@ -135,6 +135,41 @@ jobs:
           fi
           echo "BROADCAST_HOLD_ACTIVE=false" >> $GITHUB_ENV
 
+      # BRO-7386: unsent drafts whose displayed numbers (rounded score, review
+      # count) moved since the draft was built. Picked from the tracker alone,
+      # BEFORE and independent of the drafting gates below (2-day opening
+      # window, 7 AM time gate, readiness list): those decide whether to create
+      # a draft, never whether an existing one keeps up with the site. Cloud 9's
+      # draft kept 81 from 12 reviews while the site showed 77 from 18, because
+      # this check used to sit inside "Check already broadcast" and only saw
+      # shows in the opening window that passed the readiness gate. Running it
+      # on every trigger (overnight scoring runs included) also gets the draft
+      # current before the morning digest grades it. One line per combo so a
+      # combo draft is updated as a whole.
+      - name: Find unsent drafts whose numbers moved
+        id: refresh
+        run: |
+          node -e "
+            const fs = require('fs');
+            let sent = {};
+            try { sent = JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8')).shows || {}; } catch {}
+            let plan = { broadway: [], 'west-end': [], shows: [], moved: [] };
+            try {
+              const { refreshPlanByMarket, readShowNumbers } = require('./scripts/lib/broadcast-refresh');
+              plan = refreshPlanByMarket(sent, readShowNumbers);
+              for (const r of plan.moved) process.stderr.write('Draft ' + r.broadcastKey + ' numbers moved: ' + JSON.stringify(r.was) + ' -> ' + JSON.stringify(r.now) + '\n');
+            } catch (err) {
+              process.stderr.write('::warning::draft refresh check failed (' + err.message + ')\n');
+            }
+            const out = [
+              'refresh_broadway=' + (plan.broadway || []).join(';'),
+              'refresh_westend=' + (plan['west-end'] || []).join(';'),
+              'refresh_shows=' + plan.shows.join(','),
+            ];
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, out.join('\n') + '\n');
+            console.log(out.join('\n'));
+          "
+
       - name: Find recently opened shows
         id: find
         run: |
@@ -362,33 +397,10 @@ jobs:
               process.stderr.write('Deadline mode: drafting only ' + overdue.join(',') + ' this run; ' + pending.filter(id => !deadlineIds.has(id)).join(',') + ' wait for a normal run\n');
             }
             fs.writeFileSync('/tmp/deadline_shows', overdue.join(','));
-
-            // BRO-6634: unsent drafts whose displayed numbers (rounded score,
-            // review count) moved since the draft was built. One line per combo
-            // so a combo draft is updated as a whole.
-            const refreshLines = { broadway: [], 'west-end': [] };
-            try {
-              const { draftsNeedingRefresh, readShowNumbers } = require('./scripts/lib/broadcast-refresh');
-              for (const r of draftsNeedingRefresh(sent, readShowNumbers, shows)) {
-                (refreshLines[r.market] || (refreshLines[r.market] = [])).push(r.ids.join(','));
-                process.stderr.write('Draft ' + r.broadcastKey + ' numbers moved: ' + JSON.stringify(r.was) + ' -> ' + JSON.stringify(r.now) + '\n');
-              }
-            } catch (err) {
-              process.stderr.write('::warning::draft refresh check failed (' + err.message + ')\n');
-            }
-            fs.writeFileSync('/tmp/refresh_broadway', refreshLines.broadway.join(';'));
-            fs.writeFileSync('/tmp/refresh_westend', (refreshLines['west-end'] || []).join(';'));
-            fs.writeFileSync('/tmp/refresh_shows', [...new Set([...refreshLines.broadway, ...(refreshLines['west-end'] || [])].join(',').split(',').filter(Boolean))].join(','));
+            // Unsent-draft refreshes are picked by the 'Find unsent drafts whose
+            // numbers moved' step, outside these drafting gates (BRO-7386).
             if (batch.length > 0) console.log(batch.join(','));
           ")
-          {
-            echo "refresh_broadway=$(cat /tmp/refresh_broadway 2>/dev/null || true)"
-            echo "refresh_westend=$(cat /tmp/refresh_westend 2>/dev/null || true)"
-            echo "refresh_shows=$(cat /tmp/refresh_shows 2>/dev/null || true)"
-          } >> $GITHUB_OUTPUT
-          # Shows the QA gates, consensus and mobile data cover: new drafts + updates.
-          GATE_SHOWS=$(printf '%s,%s' "$PENDING" "$(cat /tmp/refresh_shows 2>/dev/null || true)" | tr ',' '\n' | grep -v '^$' | sort -u | paste -sd, -)
-          echo "gate_shows=$GATE_SHOWS" >> $GITHUB_OUTPUT
           DEADLINE_SHOWS=$(cat /tmp/deadline_shows 2>/dev/null || true)
           echo "deadline_shows=$DEADLINE_SHOWS" >> $GITHUB_OUTPUT
 
@@ -423,9 +435,22 @@ jobs:
             done
           fi
 
+      # Shows the QA gates, consensus and mobile data cover: new drafts (pending,
+      # empty when the drafting gates skipped "Check already broadcast") plus
+      # unsent-draft refreshes (picked independently, BRO-7386).
+      - name: Shows for the QA gates (new drafts + refreshes)
+        id: gate_set
+        env:
+          PENDING: ${{ steps.check.outputs.pending_shows }}
+          REFRESH: ${{ steps.refresh.outputs.refresh_shows }}
+        run: |
+          GATE_SHOWS=$(printf '%s,%s' "$PENDING" "$REFRESH" | tr ',' '\n' | grep -v '^$' | sort -u | paste -sd, - || true)
+          echo "Gate shows: ${GATE_SHOWS:-none}"
+          echo "gate_shows=$GATE_SHOWS" >> $GITHUB_OUTPUT
+
       - name: Checklist gate — block send if QA errors (unless FORCE_BROADCAST=true)
         id: checklist_gate
-        if: steps.check.outputs.gate_shows != ''
+        if: steps.gate_set.outputs.gate_shows != ''
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -457,7 +482,7 @@ jobs:
               BREACHED_SHOWS+=("$1")
             fi
           }
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.gate_shows }}"
+          IFS=',' read -ra SHOWS <<< "${{ steps.gate_set.outputs.gate_shows }}"
           for SHOW in "${SHOWS[@]}"; do
             # --out: remediation logs go to stdout, so a merged redirect makes
             # the JSON unparseable and the catch below reads ERRORS=0 — passing
@@ -523,7 +548,7 @@ jobs:
       - name: Drift gate — block send if reviews.json out of sync with review-texts (per-show)
         id: drift_gate
         # BRO-2816: skip once the checklist gate already blocked and alerted (one alert per run).
-        if: steps.check.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true'
+        if: steps.gate_set.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -554,7 +579,7 @@ jobs:
               BREACHED_SHOWS+=("$1")
             fi
           }
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.gate_shows }}"
+          IFS=',' read -ra SHOWS <<< "${{ steps.gate_set.outputs.gate_shows }}"
           for SHOW in "${SHOWS[@]}"; do
             # Capture exit code WITHOUT a pipe (memory: pipe-masks-exit-code).
             # --strict exits 2 on breach; everything else is exit 0/1.
@@ -598,7 +623,7 @@ jobs:
       - name: Orphan-unscored gate — self-heal requeue, alert only after exhausted attempts
         id: orphan_gate
         # BRO-2816: skip on a checklist/drift block so a blocked night does not dispatch paid rescores.
-        if: steps.check.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
+        if: steps.gate_set.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -629,7 +654,7 @@ jobs:
           # requeue script still runs, so a rescore is dispatched either way.
           DEADLINE_SHOWS=",${{ steps.check.outputs.deadline_shows }},"
           OVERRIDDEN_SHOWS=()
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.gate_shows }}"
+          IFS=',' read -ra SHOWS <<< "${{ steps.gate_set.outputs.gate_shows }}"
           for SHOW in "${SHOWS[@]}"; do
             PRIOR_BLOCKED=$BLOCKED
             RESULT=$(node scripts/dispatch-orphan-rescore-requeue.js --show="$SHOW")
@@ -735,7 +760,7 @@ jobs:
         # 90s-transport-hang wall a reviewed /second-opinion rejected trying
         # to fix via deadline/retry sizing. Left as-is.
         id: commit_orphan_state_early
-        if: steps.check.outputs.gate_shows != ''
+        if: steps.gate_set.outputs.gate_shows != ''
         continue-on-error: true
         env:
           PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
@@ -775,7 +800,7 @@ jobs:
         # is ~60s + up to 2 more capped API attempts — do not treat the freed
         # budget as spendable elsewhere.
         id: commit_alert_ledger_early
-        if: steps.check.outputs.gate_shows != ''
+        if: steps.gate_set.outputs.gate_shows != ''
         continue-on-error: true
         env:
           PUSH_DEADLINE_SEC: '60'
@@ -806,7 +831,7 @@ jobs:
         # this echoes it into the run log and the job summary so an operator
         # grepping a green run can still see the BRO-2373 wall was hit.
         # Cannot fail (plain echoes), so it cannot re-introduce the cascade.
-        if: always() && steps.check.outputs.gate_shows != ''
+        if: always() && steps.gate_set.outputs.gate_shows != ''
         run: |
           ORPHAN='${{ steps.commit_orphan_state_early.outcome }}'
           LEDGER='${{ steps.commit_alert_ledger_early.outcome }}'
@@ -837,10 +862,10 @@ jobs:
         run: node scripts/sync-followers.js
 
       - name: Generate consensus
-        if: steps.check.outputs.gate_shows != ''
+        if: steps.gate_set.outputs.gate_shows != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          PENDING: ${{ steps.check.outputs.gate_shows }}
+          PENDING: ${{ steps.gate_set.outputs.gate_shows }}
         run: |
           # One call for the whole list (--shows=a,b, BRO-4595): one shows.json
           # load and one consensus-file write instead of one per show.
@@ -848,8 +873,53 @@ jobs:
           node scripts/generate-critic-consensus.js --shows="$PENDING" || true
 
       - name: Generate mobile data (pre-computed scores for email)
-        if: steps.check.outputs.gate_shows != ''
+        if: steps.gate_set.outputs.gate_shows != ''
         run: bash scripts/generate-mobile-artifacts.sh
+
+      # BRO-6634 (owner 2026-10-30): when the score or review count shown in an
+      # unsent draft changes, the draft is updated in place (PATCH, live GET must
+      # say draft) and the owner gets one email saying it changed. No approval
+      # step and never /send: the owner sends from Resend. The script exits 0
+      # without touching anything when the draft already shows these numbers.
+      # BRO-7386: runs BEFORE "Create broadcast draft" so an existing draft is
+      # brought current first, not after a slow new-draft run; it reads only the
+      # refresh step's list, never the drafting gates' outputs.
+      - name: Update unsent drafts with new numbers
+        id: update_drafts
+        if: steps.refresh.outputs.refresh_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_WE_AUDIENCE_ID: ${{ secrets.RESEND_WE_AUDIENCE_ID }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # scripts/lib/send-lock.js needs it (same as the draft step).
+          GH_TOKEN: ${{ github.token }}
+          REFRESH_BROADWAY: ${{ steps.refresh.outputs.refresh_broadway }}
+          REFRESH_WESTEND: ${{ steps.refresh.outputs.refresh_westend }}
+        run: |
+          LOOKBACK=${{ inputs.lookback_days || 2 }}
+          UPDATED="false"
+          update_market() {
+            local market="$1"
+            local combos="$2"
+            IFS=';' read -ra COMBOS <<< "$combos"
+            for ids in "${COMBOS[@]}"; do
+              [ -z "$ids" ] && continue
+              echo "--- $market draft update: $ids ---"
+              rc=0
+              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$ids" --update-unsent-draft 2>&1) || rc=$?
+              echo "$OUTPUT"
+              if grep -q "Draft updated" <<<"$OUTPUT"; then UPDATED="true"; fi
+              # One failed combo must not stop the others; the step goes red at
+              # the end so the failure is seen (later steps run on always()).
+              if [ "$rc" -ne 0 ]; then echo "::error::draft update failed for $market $ids (exit $rc)"; FAILED=1; fi
+            done
+          }
+          FAILED=0
+          [ -n "$REFRESH_BROADWAY" ] && update_market broadway "$REFRESH_BROADWAY"
+          [ -n "$REFRESH_WESTEND" ] && update_market west-end "$REFRESH_WESTEND"
+          echo "draft_updated=$UPDATED" >> $GITHUB_OUTPUT
+          [ "$FAILED" -eq 0 ]
 
       - name: Create broadcast draft (owner sends manually from Resend)
         if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
@@ -944,48 +1014,6 @@ jobs:
 
           echo "broadcast_sent=$SENT" >> $GITHUB_OUTPUT
           echo "draft_created=${DRAFTED:-false}" >> $GITHUB_OUTPUT
-
-      # BRO-6634 (owner 2026-10-30): when the score or review count shown in an
-      # unsent draft changes, the draft is updated in place (PATCH, live GET must
-      # say draft) and the owner gets one email saying it changed. No approval
-      # step and never /send: the owner sends from Resend. The script exits 0
-      # without touching anything when the draft already shows these numbers.
-      - name: Update unsent drafts with new numbers
-        id: update_drafts
-        if: steps.check.outputs.refresh_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          RESEND_WE_AUDIENCE_ID: ${{ secrets.RESEND_WE_AUDIENCE_ID }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          # scripts/lib/send-lock.js needs it (same as the draft step).
-          GH_TOKEN: ${{ github.token }}
-          REFRESH_BROADWAY: ${{ steps.check.outputs.refresh_broadway }}
-          REFRESH_WESTEND: ${{ steps.check.outputs.refresh_westend }}
-        run: |
-          LOOKBACK=${{ inputs.lookback_days || 2 }}
-          UPDATED="false"
-          update_market() {
-            local market="$1"
-            local combos="$2"
-            IFS=';' read -ra COMBOS <<< "$combos"
-            for ids in "${COMBOS[@]}"; do
-              [ -z "$ids" ] && continue
-              echo "--- $market draft update: $ids ---"
-              rc=0
-              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$ids" --update-unsent-draft 2>&1) || rc=$?
-              echo "$OUTPUT"
-              if grep -q "Draft updated" <<<"$OUTPUT"; then UPDATED="true"; fi
-              # One failed combo must not stop the others; the step goes red at
-              # the end so the failure is seen (later steps run on always()).
-              if [ "$rc" -ne 0 ]; then echo "::error::draft update failed for $market $ids (exit $rc)"; FAILED=1; fi
-            done
-          }
-          FAILED=0
-          [ -n "$REFRESH_BROADWAY" ] && update_market broadway "$REFRESH_BROADWAY"
-          [ -n "$REFRESH_WESTEND" ] && update_market west-end "$REFRESH_WESTEND"
-          echo "draft_updated=$UPDATED" >> $GITHUB_OUTPUT
-          [ "$FAILED" -eq 0 ]
 
       # BRO-4417: the deadline override lets a draft through a QA gate, so the
       # owner must see what the gate flagged BEFORE pressing Send. Only fires when
@@ -1397,7 +1425,7 @@ jobs:
       # margin math for a call that's actually smaller.
       - name: Commit orphan-rescore-requeue state (late — defense-in-depth for a stranded early push)
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
-        if: always() && steps.find.outputs.has_shows == 'true'
+        if: always() && (steps.find.outputs.has_shows == 'true' || steps.refresh.outputs.refresh_shows != '')
         env:
           PUSH_DEADLINE_SEC: '60'
         run: |
@@ -1504,7 +1532,7 @@ jobs:
       # owner email per unsent draft every 6h (max 3), only while a live Resend
       # GET still says draft. Stamps the tracker, which Commit data persists.
       - name: Remind owner about unsent drafts
-        if: always() && steps.find.outputs.has_shows == 'true' && env.BROADCAST_HOLD_ACTIVE != 'true'
+        if: always() && (steps.find.outputs.has_shows == 'true' || steps.refresh.outputs.refresh_shows != '') && env.BROADCAST_HOLD_ACTIVE != 'true'
         continue-on-error: true
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -1512,7 +1540,7 @@ jobs:
         run: node scripts/remind-unsent-broadcast-draft.js
 
       - name: Commit data
-        if: always() && steps.find.outputs.has_shows == 'true'
+        if: always() && (steps.find.outputs.has_shows == 'true' || steps.refresh.outputs.refresh_shows != '')
         env:
           PUSH_DEADLINE_SEC: '300'
         run: |
@@ -1586,7 +1614,7 @@ jobs:
 
 
       - name: Push core data to private repo
-        if: always() && steps.find.outputs.has_shows == 'true'
+        if: always() && (steps.find.outputs.has_shows == 'true' || steps.refresh.outputs.refresh_shows != '')
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
