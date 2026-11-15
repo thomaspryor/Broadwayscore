@@ -7,7 +7,8 @@
 # name, and cloud containers name the connector mcp__Linear__*, mcp__claude_ai_Linear__* or
 # mcp__<uuid>__* (scripts/lib/root-cause-stop.mjs). A hook sees the tool name, so it can match
 # all three. Only create/update writes are allowed: delete_* tools are untouched and prompt as
-# before. Fails open (exit 0, no decision) on missing jq or unparseable input.
+# before. Known trade-off (ship-check): the uuid branch cannot tell Linear from another uuid-named
+# connector that also exposes save_comment/save_issue; accepted, both are low-risk writes. Fails open (exit 0, no decision) on missing jq or unparseable input.
 # Kill switch: ALLOW_LINEAR_WRITES_DISABLE=1.
 
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then
