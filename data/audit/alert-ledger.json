@@ -40520,7 +40520,7 @@
       "resolvedAt": "2026-11-09T18:54:18.217Z"
     },
     "test-yml:data-validation-red:audit-review-contamination": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Data audit failing: Audit review contamination",
       "firstSeen": "2026-11-09T20:22:26.713Z",
@@ -40532,7 +40532,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-7500",
-      "silentRefires": 14
+      "silentRefires": 14,
+      "resolvedAt": "2026-11-15T15:01:18.325Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-7239-hub-closing-guard": {
       "status": "resolved",
@@ -41410,13 +41412,13 @@
       "firstSeen": "2026-11-10T15:36:09.318Z",
       "incidentOpenedAt": "2026-11-12T23:40:04.801Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-15T14:13:00.266Z",
+      "lastSeen": "2026-11-15T15:01:18.351Z",
       "lastNotifiedAt": "2026-11-15T01:05:44.655Z",
       "lastSurfacedAt": "2026-11-14T00:37:28.960Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-7468",
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "test-yml:data-validation-red:run-review-text-folder-orphan-guard-needs-review-texts": {
       "status": "resolved",
