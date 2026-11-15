@@ -240,5 +240,19 @@
       }
     ],
     "queuedAt": "2026-11-15T15:22:08.079Z"
+  },
+  {
+    "conditionKey": "bsc-runner:disk-pressure",
+    "title": "Dispatch refused — disk pressure (still open — BRO-4772)",
+    "description": "Still firing after 117 notifications since it was filed. Tracked at BRO-4772.\n\ndisk pressure (2.9GB free < 5GB dispatch floor) on this Mac — every launch would be refused; scripts/gc-merged-worktrees.sh frees space — watchdog is holding all redispatches until it clears",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-4772",
+    "fields": [],
+    "queuedAt": "2026-11-15T15:00:09.259Z"
   }
 ]
