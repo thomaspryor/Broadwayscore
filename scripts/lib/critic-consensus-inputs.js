@@ -92,35 +92,100 @@ function reviewTextInput(data, showId, liveOutlets = null, normalizeOutlet = nul
  * contamination audit sharing this module must stay write-free across its
  * require graph and review-guards is not; the audit runs without them, so its
  * drift count can sit a few rows above the generator's (thresholds are 10/15).
- * @param {{reviewTextsDir?: string, onWarn?: (msg: string) => void, normalizeOutlet?: (name: string) => string, show?: object,
+ * With opts.show and opts.shows (shows.json entries), review texts the show carries from its
+ * priorRuns siblings are read too (carriedTextFiles, BRO-7539).
+ * @param {{reviewTextsDir?: string, onWarn?: (msg: string) => void, normalizeOutlet?: (name: string) => string, show?: object, shows?: object[],
  *   isScoreable?: (data: object, show?: object, filePath?: string) => boolean,
  *   createDedup?: () => {isDuplicate: (data: object) => boolean, add: (data: object) => void}}} [opts]
  * @returns {object[]}
  */
 function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
-  const dir = path.join(opts.reviewTextsDir || DEFAULT_REVIEW_TEXTS_DIR, showId);
-  if (!fs.existsSync(dir)) return [];
+  const root = opts.reviewTextsDir || DEFAULT_REVIEW_TEXTS_DIR;
   const reviews = [];
   const dedup = opts.createDedup ? opts.createDedup() : null;
-  for (const file of fs.readdirSync(dir).filter(f => isReviewTextFile(f)).sort(namedBeforeUnknown)) {
-    try {
-      const filePath = path.join(dir, file);
-      const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-      const ctx = { show: opts.show, filePath, isScoreable: opts.isScoreable };
-      if (dedup) {
-        if (dedup.isDuplicate(data)) continue;
-        // Register every row the rebuild keeps, even one with no text or no
-        // live row here, so an --unknown stub at the same outlet still reads
-        // as its duplicate (the rebuild dedups before any text check).
-        if (passesExclusions(data, ctx)) dedup.add(data);
+
+  /** Take one parsed file: dedup, then the generator's input row (keyed to `showId`). */
+  const take = (data, ctx) => {
+    if (dedup) {
+      if (dedup.isDuplicate(data)) return;
+      // Register every row the rebuild keeps, even one with no text or no
+      // live row here, so an --unknown stub at the same outlet still reads
+      // as its duplicate (the rebuild dedups before any text check).
+      if (passesExclusions(data, ctx)) dedup.add(data);
+    }
+    const row = reviewTextInput(data, showId, liveOutlets, opts.normalizeOutlet || null, ctx);
+    if (row) reviews.push(row);
+  };
+
+  const dir = path.join(root, showId);
+  if (fs.existsSync(dir)) {
+    for (const file of fs.readdirSync(dir).filter(f => isReviewTextFile(f)).sort(namedBeforeUnknown)) {
+      try {
+        const filePath = path.join(dir, file);
+        take(JSON.parse(fs.readFileSync(filePath, 'utf-8')), { show: opts.show, filePath, isScoreable: opts.isScoreable });
+      } catch (err) {
+        if (opts.onWarn) opts.onWarn(`Failed to parse ${file}: ${err.message}`);
       }
-      const row = reviewTextInput(data, showId, liveOutlets, opts.normalizeOutlet || null, ctx);
-      if (row) reviews.push(row);
-    } catch (err) {
-      if (opts.onWarn) opts.onWarn(`Failed to parse ${file}: ${err.message}`);
     }
   }
+
+  // BRO-7539: the earlier-run entries this show carries via priorRuns (the
+  // rebuild's inheritPriorRunReviews rule, reused through collectCarriedFiles)
+  // hold their review TEXTS in their own folders. reviews.json already shows
+  // those rows under this show's id, so without them a transfer such as
+  // Pride at the Bridge had 25 live rows, 0 readable texts and no Critics' Take.
+  // Own files go first, so the dedup above drops a carried twin (same URL, same
+  // outlet+critic) exactly as inheritPriorRunReviews drops it.
+  for (const d of carriedTextFiles(opts.show, opts.shows, root, opts)) {
+    take(d, { show: d._ctxShow, filePath: d._srcPath, isScoreable: opts.isScoreable });
+  }
   return reviews;
+}
+
+/**
+ * Review-text files the rebuild carries onto `show` from its priorRuns
+ * siblings. Needs opts.shows (every shows.json entry); without it nothing is
+ * carried, so a caller that has no show list keeps the own-folder behaviour.
+ * Includability is judged against the sibling that holds the file, and the
+ * window / inheritReviews / 5-outlet rules are prior-run-sibling's own.
+ * @returns {object[]} copies tagged _ctxShow, _srcPath, _carriedFromShowId
+ */
+function carriedTextFiles(show, shows, root, opts = {}) {
+  if (!show || !Array.isArray(shows) || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return [];
+  const { collectCarriedFiles, priorRunClassifier } = require('./prior-run-sibling');
+  const cache = new Map();
+  const loadFiles = (id) => {
+    if (cache.has(id)) return cache.get(id);
+    const out = [];
+    const d = path.join(root, id);
+    if (fs.existsSync(d)) {
+      for (const file of fs.readdirSync(d).filter(f => isReviewTextFile(f)).sort(namedBeforeUnknown)) {
+        try {
+          const filePath = path.join(d, file);
+          out.push({ ...JSON.parse(fs.readFileSync(filePath, 'utf-8')), _srcPath: filePath });
+        } catch (err) {
+          if (opts.onWarn) opts.onWarn(`Failed to parse ${id}/${file}: ${err.message}`);
+        }
+      }
+    }
+    // The show's own folder as the rebuild sees it: only includable files count
+    // toward collectCarriedFiles' 5-outlet separation (the rebuild counts kept
+    // rows, not every file on disk) and toward who reviewed the return.
+    const kept = id === show.id ? out.filter(f => passesExclusions(f, { show, filePath: f._srcPath, isScoreable: opts.isScoreable })) : out;
+    cache.set(id, kept);
+    return kept;
+  };
+  const isCovered = (d, sibling) => passesExclusions(d, { show: sibling, filePath: d._srcPath, isScoreable: opts.isScoreable });
+  const carried = collectCarriedFiles(show, shows, { loadFiles, isCovered });
+  if (carried.length === 0) return carried;
+  // The rebuild's one-review-per-outlet rule (supersededPriorRunReviews, BRO-4954):
+  // an outlet that reviewed the return drops its earlier-run review, even with a
+  // different critic, which the per-outlet liveOutlets check and the same-critic
+  // dedup would both let through.
+  const { isCurrent } = priorRunClassifier(show, shows);
+  const outletKey = r => String(r.outletId || r.outlet || '').trim().toLowerCase();
+  const currentOutlets = new Set(loadFiles(show.id).filter(isCurrent).map(outletKey).filter(Boolean));
+  return carried.filter(d => !currentOutlets.has(outletKey(d)));
 }
 
 const UNKNOWN_FILE_RE = /--(unknown|unnamed)\b/i;

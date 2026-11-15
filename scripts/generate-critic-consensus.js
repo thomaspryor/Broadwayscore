@@ -50,11 +50,13 @@ const anthropic = {
 
 // loadReviewTexts / consensusFingerprint live in scripts/lib so the
 // contamination audit counts the same inputs this script stores (BRO-4869).
-function loadReviewTexts(showId, liveOutlets = null, show = undefined) {
+function loadReviewTexts(showId, liveOutlets = null, show = undefined, shows = undefined) {
   return loadConsensusInputs(showId, liveOutlets, {
     onWarn: (msg) => console.warn(`  ⚠️  ${msg}`),
     normalizeOutlet,
     show,
+    // BRO-7539: priorRuns siblings' texts, for shows whose live rows are inherited.
+    shows,
     // BRO-6226: the scorer's own predicate and the rebuild's within-show dedup.
     isScoreable,
     createDedup: createWithinShowDedup,
@@ -343,7 +345,7 @@ async function main() {
     console.log(`\n📖 ${showTitle} (${showId})`);
 
     // Load reviews
-    const reviews = loadReviewTexts(showId, liveOutlets, show);
+    const reviews = loadReviewTexts(showId, liveOutlets, show, showsData.shows);
 
     // Layer 5a: Input validation — minimum review threshold
     const scoredReviews = reviews.filter(r => r.score != null);

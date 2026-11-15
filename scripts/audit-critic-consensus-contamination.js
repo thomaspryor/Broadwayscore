@@ -161,7 +161,7 @@ function audit(opts = {}) {
       // Drift: the stored fingerprint vs the one a regeneration would write
       // today, built from the same inputs (BRO-4869).
       if (reviews && haveTexts) {
-        const current = consensusFingerprint(loadReviewTexts(id, reviewsData.liveOutlets, { reviewTextsDir: textsDir, show: showsById && showsById.get(id) }));
+        const current = consensusFingerprint(loadReviewTexts(id, reviewsData.liveOutlets, { reviewTextsDir: textsDir, show: showsById && showsById.get(id), shows: showsById && [...showsById.values()] }));
         flags.push(...consensusDriftFlags(c, current));
       }
     }
