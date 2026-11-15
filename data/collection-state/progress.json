@@ -5,7 +5,18 @@
     "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
     "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
     "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
-    "downstate-2026/broadwaynews--unknown.json"
+    "downstate-2026/broadwaynews--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+    "desire-under-the-elms-off-west-end-2026/rolandcat--roviews.json",
+    "dogstar-off-west-end-2026/islingtontribune--unknown.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "julius-caesar-globe-off-west-end-2026/theatre-weekly--unknown.json",
+    "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "speculations-off-west-end-2026/westminsterextra--unknown.json"
   ],
   "failed": [
     "king-lear-off-broadway-2026/patch--lauren-traut.json",
@@ -71,21 +82,39 @@
     "all-my-sons-2008/usatoday--elysa-gardner.json",
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
-    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "cloud-9-west-end-2026/times-uk--dominic-maxwell.json",
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/telegraph--unknown.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "ghost-notes-off-broadway-2026/oazis--unknown.json",
-      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+      "julius-caesar-globe-off-west-end-2026/theatre-weekly--unknown.json",
+      "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
     ],
     "directCookies": [],
     "scrapingdog": [
-      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json",
+      "desire-under-the-elms-off-west-end-2026/rolandcat--roviews.json",
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
     "scrapingbee": [
       "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
@@ -94,11 +123,13 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+      "dogstar-off-west-end-2026/islingtontribune--unknown.json",
+      "speculations-off-west-end-2026/westminsterextra--unknown.json"
     ]
   },
   "startTime": "2026-11-15T11:09:37.289Z",
-  "lastProcessed": "is-he-dead-2007/nypost--clive-barnes.json",
+  "lastProcessed": "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
   "log": [
     {
       "t": "2026-11-15T11:13:06.343Z",
@@ -198,6 +229,17 @@
       "t": "2026-11-15T12:30:40.303Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T13:10:30.577Z",
+      "event": "bb-session",
+      "session": "f98af1e2",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-15T13:10:31.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
