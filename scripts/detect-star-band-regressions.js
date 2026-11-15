@@ -47,6 +47,7 @@ const path = require('path');
 const glob = require('glob');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { shouldResolveStarBandAlert } = require('./lib/star-band-alert-decision.js');
 const { starBandVerdict, scoringRegression, DEFAULT_TOL } = require('./lib/star-band-regression');
 const { scoringStamp } = require('./lib/scoring-recency');
 const { shouldUseAnchoredMode } = require('./lib/star-reliability');
@@ -183,7 +184,14 @@ if (findings.length > 20) console.log(`  ...and ${findings.length - 20} more (fu
 if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify({ byKind, byMarket, byShow, findings: findings.map(({ abs, ...rest }) => rest) }, null, 2));
 
 (async () => {
-  if (!ALERT || findings.every(f => f.kind === 'false-truncation')) return; // report-only kind, see above
+  if (!ALERT) return;
+  // BRO-7512: a whole-corpus run with nothing actionable is a definitive green observation. Returning
+  // silently left 'star-band:regressions' open in the ledger forever once the flagged reviews drained.
+  if (shouldResolveStarBandAlert(findings)) {
+    try { require('./lib/owner-alert-router').resolveCondition('star-band:regressions', { reason: 'detector clean over the whole corpus (BRO-7512)' }); }
+    catch (e) { console.error(`::warning::star-band resolve failed: ${e.message}`); }
+    return; // false-truncation is report-only (see above), never alerts
+  }
   const { routeAlert } = require('./lib/owner-alert-router');
   // false-truncation is report-only (staged drain), so it is neither flagged nor part of this alert's count (BRO-6121).
   const actionable = findings.filter(f => f.kind !== 'false-truncation');
