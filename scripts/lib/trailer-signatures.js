@@ -201,20 +201,25 @@ function stripStageCriticBio(text) {
 // review-length, so a review cut off mid-sentence in front of them stays truncated.
 const STAGE_PROMO_RE = /\s*Invest in The Stage today with a subscription[^\n]{0,60}$/;
 const STAGE_NEWSLETTER_RE = /\s*For all the latest [^\n]{0,80}?sign up to [^\n]{0,80}?newsletter(?: here)?\.?\s*$/i;
-const STAGE_RUN_LISTING_RE = /\n\s*[\p{Lu}][^\n.]{1,80}?,\s+then\s+[^\n.]{1,120}$/u;
-const STAGE_BIO_ANY_RE = /\s+([A-Z][\w'’-]+(?: [A-Z][\w'’-]+)? (?:is|was) (?:a|an|the) [^\n]{0,360}?)$/;
+const STAGE_RUN_LISTING_RE = /\n\s*[\p{Lu}][^\n.]{1,80}?,\s+then\s+(?:then\s+)?(?=[^\n]*\d)[^\n.]{1,120}$/u;
+const STAGE_BIO_ANY_RE = /(?:\n\s*|\s{2,})((?!(?:It|This|That|There|He|She|They)\b)[A-Z][\w'’-]+(?: [A-Z][\w'’-]+)? (?:is|was) (?:a|an|the) [^\n]{0,360}?)$/;
+
+const STAGE_BIO_SPACE_RE = /(?<=[.!?]["'”’]?)\s((?!(?:It|This|That|There|He|She|They)\b)[A-Z][\w'’-]+(?: [A-Z][\w'’-]+)? (?:is|was) (?:a|an|the) [^\n]{0,360}?)$/;
 
 function stripStagePageTail(text) {
   if (!text || typeof text !== 'string') return text;
   let t = text.replace(/\s+$/, '');
   let peeled = false;
+  let promoSeen = false;
   for (let i = 0; i < 6; i++) {
     let n = t.replace(STAGE_PROMO_RE, '');
+    if (n !== t) promoSeen = true;
     if (n === t) n = t.replace(STAGE_NEWSLETTER_RE, '');
     if (n === t) n = t.replace(STAGE_RUN_LISTING_RE, '');
     if (n === t) {
       // bio: a short last sentence run that names a writing job and is not review prose
-      const m = STAGE_BIO_ANY_RE.exec(t);
+      // a bio set off by one space is accepted only when the page's subscription promo followed it
+      const m = STAGE_BIO_ANY_RE.exec(t) || (promoSeen ? STAGE_BIO_SPACE_RE.exec(t) : null);
       if (m && STAGE_BIO_JOB_RE.test(m[1]) && !/[.!?]["'”’]?\s+[A-Z]/.test(m[1].replace(/^[^.]*\.\s+(?=(?:He|She|They)\b)/, ''))) n = t.slice(0, m.index);
     }
     if (n === t) break;
@@ -355,7 +360,7 @@ const OUTLET_TRAILER_STRIPPERS = Object.freeze({
   'sunday-times': stripTimesFooter,
   telegraph: stripTelegraphFooter,
   'sunday-telegraph': stripTelegraphFooter,
-  thestage: stripStagePageTail,
+  thestage: stripStageCriticBio,
   'one-minute-critic': stripRelatedPostHeadlines,
   thefourthwalsh: stripFourthWalshInfoBlock,
 });
@@ -371,6 +376,9 @@ const CLASSIFY_ONLY_OUTLETS = Object.freeze(new Set(['times-uk', 'sunday-times',
  *   strippers; the save path (stripTrailingJunk) leaves it off.
  */
 function stripOutletTrailer(text, outletId, { forClassify = false } = {}) {
+  // BRO-7569: the wider Stage page tail (promo, newsletter, run listing) only feeds the
+  // classifier; the saved text keeps its pre-existing bio-only strip.
+  if (forClassify && outletId === 'thestage') return stripStagePageTail(text);
   const fn = outletId && OUTLET_TRAILER_STRIPPERS[outletId];
   if (!fn) return text;
   if (!forClassify && CLASSIFY_ONLY_OUTLETS.has(outletId)) return text;

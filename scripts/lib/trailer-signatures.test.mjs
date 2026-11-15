@@ -308,3 +308,17 @@ test('text-quality checkTruncation ignores the UK listing trailer', () => {
   assert.ok(!checkTruncation(BODY + ' • At the Almeida, London, until 7 June').signals.includes('no-final-punctuation'));
   assert.ok(checkTruncation(BODY.slice(0, -40)).signals.includes('no-final-punctuation'));
 });
+
+test('The Stage page tail: prose that looks like a bio or a ", then" line is never peeled (BRO-7569 review)', () => {
+  const cases = [
+    `${BODY} Lucy Prebble is a playwright at the height of her powers.`,
+    `${BODY} It is a writer’s triumph and a night to remember.`,
+    `${BODY.slice(0, -1)} and Caryl Churchill is a playwright who has always pushed`,
+    `${BODY}\n\nNothing here works, then the second act collapses into farce and it never`,
+  ];
+  for (const c of cases) assert.equal(T.stripStagePageTail(c), c, c.slice(-60));
+  // saved text keeps the old bio-only strip: the newsletter / listing are classify-only
+  const news = 'For all the latest reviews from The Stage, sign up to our weekly reviews newsletter here';
+  assert.equal(T.stripOutletTrailer(`${BODY}\n\n${news}`, 'thestage'), `${BODY}\n\n${news}`);
+  assert.equal(T.stripOutletTrailer(`${BODY}\n\n${news}`, 'thestage', { forClassify: true }), BODY);
+});

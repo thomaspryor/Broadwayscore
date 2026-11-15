@@ -3,7 +3,7 @@
 // Usage: node scripts/audit-outlet-fulltext-gaps.js [--json] [outlet ...]  (outlets => list gap files)
 const fs = require('fs');
 const path = require('path');
-const root = process.env.REVIEW_TEXTS_DIR || '/Users/tompryor/broadway-review-texts';
+const root = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const base = fs.existsSync(root + '/data/review-texts') ? root + '/data/review-texts' : root;
 const WANT = ['nytimes','nyt-theater','wsj','washpost','newyorker','financialtimes','times-uk','telegraph','thestage','vulture','variety','standard','independent','guardian'];
 const args = process.argv.slice(2);

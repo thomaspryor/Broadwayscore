@@ -68,3 +68,7 @@ test('isNonReviewSectionUrl: real review pages, incl. lifestyle-section reviews,
     'https://www.nytimes.com/2025/11/07/opinion/culture/44-the-musical-review.html',
   ]) assert.equal(isNonReviewSectionUrl(u), false, u);
 });
+
+test('isNonReviewSectionUrl: titles that contain the word are not refused (BRO-7569 review)', () => {
+  for (const u of ['https://www.nytimes.com/2026/03/01/theater/the-interview-broadway.html', 'https://www.telegraph.co.uk/theatre/what-to-see/the-interview-hampstead-theatre/']) assert.equal(isNonReviewSectionUrl(u), false, u);
+});
