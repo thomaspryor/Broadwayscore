@@ -29,7 +29,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
-const { parseShowsText, fixRefusal } = createRequire(import.meta.url)('../lib/newsletter-sent-reconcile.js');
+const { parseShowsText, parseStateText, fixRefusal } = createRequire(import.meta.url)('../lib/newsletter-sent-reconcile.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
@@ -49,10 +49,6 @@ const EDITIONS = editionArg ? [editionArg] : ['broadway', 'west-end'];
 
 const STATE_PATH = path.join(repo, 'data/newsletter-state.json');
 const SHOWS_PATH = path.join(repo, 'data/shows.json');
-
-function loadJson(p, fallback) {
-  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
-}
 
 async function resendGet(url) {
   const r = await fetch(url, { headers: { Authorization: `Bearer ${KEY}` }, signal: AbortSignal.timeout(20_000) });
@@ -74,7 +70,7 @@ async function main() {
   // shows.json mapped 0 sent slugs and --fix wiped featuredShowIds.
   const slugToId = parseShowsText(fs.readFileSync(SHOWS_PATH, 'utf8'), SHOWS_PATH);
 
-  const state = loadJson(STATE_PATH, { issues: [] });
+  const state = parseStateText(fs.existsSync(STATE_PATH) ? fs.readFileSync(STATE_PATH, 'utf8') : null, STATE_PATH);
   let anyDrift = false;
   let fixedAny = false;
 
@@ -121,7 +117,7 @@ async function main() {
     if (extra.length) console.log(`  in state.json but never sent (phantom suppression): ${extra.join(', ')}`);
     if (unmappedSlugs.length) console.log(`  note: ${unmappedSlugs.length} /show/ slug(s) in the HTML had no shows.json match: ${unmappedSlugs.join(', ')}`);
 
-    const refusal = fixRefusal({ sentSlugCount: sentSlugs.size, mappedCount: sentIds.size });
+    const refusal = fixRefusal({ sentSlugCount: sentSlugs.size, mappedCount: sentIds.size, stateCount: stateIds.size });
     if (doFix && refusal) {
       console.error(`  REFUSED (${edition} ${weekStart}): ${refusal}`);
       process.exitCode = 1;

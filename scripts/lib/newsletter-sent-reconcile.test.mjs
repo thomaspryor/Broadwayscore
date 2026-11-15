@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 const require_ = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { buildSlugIndex, parseShowsText, fixRefusal } = require_('./newsletter-sent-reconcile.js');
+const { buildSlugIndex, parseShowsText, parseStateText, fixRefusal } = require_('./newsletter-sent-reconcile.js');
 
 // Markers built at runtime so the repo's conflict-marker audit doesn't trip on the fixture.
 const [LT, EQ, GT] = ['<', '=', '>'].map((c) => c.repeat(7));
@@ -51,6 +51,18 @@ test('allows a fix when the lookup is healthy or nothing was sent', () => {
   assert.equal(fixRefusal({ sentSlugCount: 28, mappedCount: 28 }), null);
   assert.equal(fixRefusal({ sentSlugCount: 10, mappedCount: 5 }), null);
   assert.equal(fixRefusal({ sentSlugCount: 0, mappedCount: 0 }), null);
+  assert.equal(fixRefusal({ sentSlugCount: 0, mappedCount: 0, stateCount: 0 }), null);
+});
+
+test('refuses to wipe a non-empty record when the sent HTML has no show links', () => {
+  assert.match(fixRefusal({ sentSlugCount: 0, mappedCount: 0, stateCount: 28 }), /refusing/);
+});
+
+test('state file: missing = fresh, corrupt or shapeless = throw (never treated as empty)', () => {
+  assert.deepEqual(parseStateText(null), { issues: [] });
+  assert.throws(() => parseStateText('{"issues": ['), /not valid JSON/);
+  assert.throws(() => parseStateText('{}'), /no issues array/);
+  assert.equal(parseStateText('{"issues":[{"weekStart":"2026-11-02"}]}').issues.length, 1);
 });
 
 test('verify-sent-vs-state.mjs uses the strict loader and the fix refusal (no empty-list fallback)', () => {
@@ -58,6 +70,8 @@ test('verify-sent-vs-state.mjs uses the strict loader and the fix refusal (no em
   assert.match(src, /parseShowsText\(/);
   assert.match(src, /fixRefusal\(/);
   assert.doesNotMatch(src, /loadJson\(SHOWS_PATH/);
+  assert.doesNotMatch(src, /loadJson\(STATE_PATH/);
+  assert.match(src, /stateCount: stateIds\.size/);
 });
 
 test('refresh-drafts.sh stops when the core-data pull leaves conflicts', () => {
