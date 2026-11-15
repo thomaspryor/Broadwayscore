@@ -645,6 +645,9 @@ async function scrapePlaybillVerdict() {
   // job's 100 minutes on 2026-11-08, so the job hit its limit before the archive
   // and review-text pushes ran. The budget covers the whole run (Steps 1-3 too).
   const timeBudget = createRunBudget(parseTimeBudgetMin(args));
+  // Same worst case as Step 4 below: one SERP (~1 min) + two Verdict article
+  // fetches through the fetchPage chain (~2.5 min each, run-budget.js).
+  const TARGETED_MIN_REMAINING_MS_TO_START = 6 * 60_000;
 
   if (targetShowIds) {
     console.log(`Targeted mode: ${targetShowIds.length} show(s): ${targetShowIds.join(', ')}`);
@@ -672,7 +675,11 @@ async function scrapePlaybillVerdict() {
     targetShows = kept;
     console.log(`Processing ${targetShows.length} targeted show(s) via Google search...\n`);
 
-    for (const show of targetShows) {
+    for (const [idx, show] of targetShows.entries()) {
+      if (!timeBudget.canStartItem(TARGETED_MIN_REMAINING_MS_TO_START)) {
+        console.log(`\n⏱ Time budget (${timeBudget.minutes}min) nearly used after ${timeBudget.elapsedMin()}min — skipping ${targetShows.length - idx} targeted show(s)`);
+        break;
+      }
       const showId = show.id;
       await processShowViaGoogle(show, showId, shows);
     }

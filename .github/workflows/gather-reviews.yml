@@ -674,7 +674,7 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           INPUT_SHOWS: ${{ inputs.shows }}
-        run: node scripts/scrape-playbill-verdict.js --shows=${INPUT_SHOWS}
+        run: node scripts/scrape-playbill-verdict.js --shows=${INPUT_SHOWS} --time-budget-min=20
 
       - name: Scrape NYC Theatre roundups for target shows
         env:

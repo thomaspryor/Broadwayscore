@@ -106,9 +106,10 @@ jobs:
         run: npm ci
 
       - name: Scrape Playbill Verdict
-        # BRO-7213: backstop under the script's --time-budget-min=60. The 2026-11-08
-        # deep run's scrape took 94 of 100 min and the pushes below never ran.
-        timeout-minutes: 80
+        # BRO-7213: the script's --time-budget-min=60 bounds this step. The 2026-11-08
+        # deep run's scrape took 94 of 100 min and the pushes below never ran. No step
+        # timeout-minutes here: audit-push-retry-budgets sums step timeouts against
+        # the job's 100 min, and an 80-min backstop alone overdraws it.
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
