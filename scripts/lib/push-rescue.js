@@ -355,7 +355,8 @@ function replayOne({ sha, ref, info }, claimed, mainWins = false) {
   console.log(`push-rescue: ${ref}: restoring ${plan.restore.length}, skipping ${plan.skipped.length}, conflicts ${plan.conflicts.length}${modified.length ? `, ${modified.length} modified/deleted path(s) not replayed` : ''}`);
   for (const x of [...plan.skipped, ...plan.conflicts]) console.log(`  ${plan.conflicts.includes(x) ? 'CONFLICT' : 'skip'} ${x.path}: ${x.why}${x.rescueBlob ? ` (rescue blob ${x.rescueBlob}, main blob ${x.mainBlob}; branch tip ${sha})` : ''}`);
   for (const x of plan.conflicts) {
-    console.log(`  COMPARE ${x.path}: main[${describeReviewFile(show('origin/main', x.path))}] rescued[${describeReviewFile(show(sha, x.path))}]`);
+    try { console.log(`  COMPARE ${x.path}: main[${describeReviewFile(show('origin/main', x.path))}] rescued[${describeReviewFile(show(sha, x.path))}]`); }
+    catch (e) { console.log(`  COMPARE ${x.path}: unavailable (${annotate(e.message).slice(0, 80)})`); }
   }
   return { ref, tip: sha, restored: plan.restore, restoredBlobs: Object.fromEntries(plan.restore.map((p) => [p, rescueBlob.get(p)])), skipped: plan.skipped, conflicts: plan.conflicts, keepForHuman: plan.keepForHuman, modified: modified.slice(0, 50) };
 }
