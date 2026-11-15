@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-15T09:07:38.393Z",
+  "timestamp": "2026-11-15T09:45:11.269Z",
   "stats": {
     "totalReviews": 82146,
     "alreadyFlagged": 22416,
     "dateGuardCatches": 221,
     "directorMismatch": 3709,
     "tvFilmSignals": 2316,
-    "londonSignals": 3758,
+    "londonSignals": 3759,
     "offBroadwaySignals": 751,
     "yearMismatch": 376,
     "noPublishDate": 8439
@@ -99357,6 +99357,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "rolandcat--roviews.json",
+      "score": 65,
       "publishDate": "2026-11-14",
       "url": "https://rolandcat.substack.com/p/review-desire-under-the-elms-almeida",
       "findings": [
@@ -105674,6 +105675,19 @@
       "score": 88,
       "publishDate": "2026-11-13",
       "url": "https://www.theguardian.com/stage/2026/nov/13/hamlet-hail-to-the-thief-radiohead-record-shakespeare-tragedy",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "liamodell--unknown.json",
+      "publishDate": "2026-11-15",
+      "url": "https://liamodell.com/2026/11/15/hamlet-hail-to-the-thief-review-barbican-theatre-london-cast-samuel-blenkin-claudia-harrison-paul-hilton-radiohead-thom-yorke/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
