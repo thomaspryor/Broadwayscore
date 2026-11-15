@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7034-4",
   "planId": "811db47e-1de8-44fa-9474-9a3890ebf277",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-15T12:58:42.684Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "ghost guardian--charles-isherwood: exclude NYT mislabel"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-15T13:59:20.599Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-west-end-2021/independent--paul-taylor.json url: \"https://www.independent.co.uk/news/uk/home-news/lion-king-west-end-london-evacuated-b2380995.html\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ghost-the-musical-2012/guardian--charles-isherwood.json wrongAttributionReason: null -> \"BRO-7034: Charles Isherwood was the New York Times critic, not a Guardian critic. This Guardian row's bwwExcerpt is identical to nytimes--charles-isherwood.json, its url 404s (3 attempts), and the Guardian API lookup only found the July 2012 closing-news piece. Excluded as a cross-outlet mislabel of the NYT review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ghost-the-musical-2012/guardian--charles-isherwood.json wrongAttribution: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
