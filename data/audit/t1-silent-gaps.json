@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T17:06:41.051Z",
+  "generatedAt": "2026-11-15T18:19:41.701Z",
   "windowDays": 45,
   "showsScanned": 244,
   "gaps": [
@@ -18,9 +18,32 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 154.07532722222223,
+      "fileAgeHours": 155.2882938888889,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 131.52687527777778,
+      "nonTerminalAgeHours": 132.7437225,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "openingDate": "2026-11-06",
+      "file": "whatsonstage--tanyel-gumushan.json",
+      "outletId": "whatsonstage",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": true,
+      "skipReason": null,
+      "fetchAbandoned": false,
+      "recoverable": false,
+      "url": "https://www.whatsonstage.com/news/shakespeares-globe-reveals-full-company-for-julius-caesar_1734439/",
+      "recovery": null,
+      "recoveryCount": 3,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=julius-caesar-globe-off-west-end-2026",
+      "firstSeen": "2026-11-15T18:16:39.065Z",
+      "fileAgeHours": 0.046738055555555554,
+      "gapSeenAt": "2026-11-15T18:19:41.701Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +61,9 @@
       "forumLinkRecoveryCount": 7,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 123.30718888888889,
+      "fileAgeHours": 124.5202625,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 122.16243027777777,
+      "nonTerminalAgeHours": 123.3792775,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +81,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 139.86731333333333,
+      "fileAgeHours": 141.08042777777777,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 139.45442833333334,
+      "nonTerminalAgeHours": 140.67127555555555,
       "needsManualRecovery": false
     },
     {
@@ -78,9 +101,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 18.363595,
+      "fileAgeHours": 19.576710555555554,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 17.097418055555554,
+      "nonTerminalAgeHours": 18.31426527777778,
       "needsManualRecovery": false
     }
   ],

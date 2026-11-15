@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-15T17:09:25.000Z",
+  "generatedAt": "2026-11-15T18:20:06.455Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 325,
-  "clean": 324,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "openingDate": "2026-11-10",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.47 vs local 77.08 (Δ0.61)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 33,
-      "deployedCount": 35,
-      "firstDefectAt": "2026-11-15T17:09:15.777Z"
-    }
-  ],
+  "clean": 325,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
