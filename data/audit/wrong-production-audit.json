@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T00:11:57.545Z",
+  "timestamp": "2026-11-15T01:41:31.440Z",
   "stats": {
-    "totalReviews": 82115,
-    "alreadyFlagged": 22396,
-    "dateGuardCatches": 220,
+    "totalReviews": 82118,
+    "alreadyFlagged": 22399,
+    "dateGuardCatches": 222,
     "directorMismatch": 3697,
     "tvFilmSignals": 2313,
-    "londonSignals": 3754,
+    "londonSignals": 3756,
     "offBroadwaySignals": 750,
     "yearMismatch": 376,
-    "noPublishDate": 8470
+    "noPublishDate": 8464
   },
   "findings": [
     {
@@ -99550,6 +99550,19 @@
       ]
     },
     {
+      "showId": "downstate-2026",
+      "file": "theatermania--david-gordon.json",
+      "publishDate": "2026-09-08",
+      "url": "https://www.theatermania.com/news/bruce-norriss-downstate-sets-broadway-premiere-with-k-todd-freeman-and-francis-guinan_1852625/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 44d before show (2026-09-08 vs 2026-10-22)"
+        }
+      ]
+    },
+    {
       "showId": "downstate-west-end-2019",
       "file": "guardian--michael-billington.json",
       "score": 78,
@@ -122229,6 +122242,24 @@
       ]
     },
     {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-08-25",
+      "url": "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 79d before show (2026-08-25 vs 2026-11-12)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "pride-west-end-2026",
       "file": "afridiziak-theatre-news--althyr-pivatto.json",
       "score": 87,
@@ -123487,7 +123518,7 @@
     {
       "showId": "roleplay-off-west-end-2026",
       "file": "theatreandtonic--eloise.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/roleplay-at-soho-theatre-review",
       "findings": [
@@ -143919,6 +143950,20 @@
       "score": 78,
       "publishDate": "2026-01-11",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": "2026-01-07",
+      "url": "https://sierz.co.uk/reviews/woman-in-mind-duke-of-yorks-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
