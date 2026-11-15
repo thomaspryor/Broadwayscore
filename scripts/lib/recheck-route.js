@@ -141,8 +141,7 @@ function selectRewatchTargets({ ledgerEntries, now = Date.now(), limit = MAX_REW
   const latest = new Map();
   for (const e of ledgerEntries || []) {
     if (!e || e.event !== 'recheck' || !e.cardId || e.skip) continue;
-    if (since && String(e.ts) < since) continue;
-    latest.set(e.cardId, e); // ledger is append-ordered: last wins
+    latest.set(e.cardId, e); // ledger is append-ordered: last wins, even outside the look-back
   }
   const routed = alreadyRouted(ledgerEntries, { now, coverKnown: !!coverIndex });
   const routes = liveRoutesByCard(ledgerEntries);
@@ -151,7 +150,9 @@ function selectRewatchTargets({ ledgerEntries, now = Date.now(), limit = MAX_REW
   const exhausted = [];
   for (const r of latest.values()) {
     if (skip.has(r.cardId) || !r.verifyCmd) continue;
-    if (now - Date.parse(r.ts) < minAgeHours * 3600000) continue; // rechecked tonight already
+    if (since && String(r.ts) < since) continue; // latest row is older than the look-back
+    const age = now - Date.parse(r.ts);
+    if (!(age >= minAgeHours * 3600000)) continue; // rechecked tonight already, or unparseable ts
     if (recheckVerdict(r, { tsxTests }).status !== 'fail') continue;
     if (coveredBy(r.cardId, { coverIndex, routed })) continue;
     const prior = routes.get(r.cardId) || [];

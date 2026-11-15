@@ -220,3 +220,13 @@ test('real ledger replay: the shadow-era fails come back as rewatch targets', ()
   assert.ok(targets.length >= 20, `expected the shadow-era backlog, got ${targets.length}`);
   assert.ok(targets.every((t) => t.verifyCmd && t.rewatch));
 });
+
+test('selectRewatchTargets: a newer pass outside the look-back hides an older fail, and bad timestamps never qualify', () => {
+  const NOW = Date.parse('2026-11-15T12:00:00Z');
+  const fail = (ts, cardId = 'BRO-1') => ({ event: 'recheck', cardId, ts, verifyCmd: 'node x.js', exit: 1, ok: false, status: 'fail' });
+  const pass = (ts) => ({ event: 'recheck', cardId: 'BRO-1', ts, verifyCmd: 'node x.js', exit: 0, ok: true, status: 'pass' });
+  const rows = [fail('2026-10-01T00:00:00Z'), pass('2026-10-10T00:00:00Z')];
+  assert.equal(R.selectRewatchTargets({ ledgerEntries: rows, now: NOW, since: '2026-10-15' }).targets.length, 0);
+  const bad = [fail('not-a-date', 'BRO-2')];
+  assert.equal(R.selectRewatchTargets({ ledgerEntries: bad, now: NOW }).targets.length, 0);
+});
