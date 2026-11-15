@@ -370,7 +370,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           rc=0
-          out=$(timeout -k 10 60 node scripts/check-actions-cache-budget.js 2>&1) || rc=$?
+          out=$(timeout -k 10 240 node scripts/check-actions-cache-budget.js --heal 2>&1) || rc=$?
           echo "$out"
           if [ "$rc" -ne 0 ] || grep -q '^- ' <<<"$out"; then
             echo "::warning::Actions cache budget: see step output (non-blocking)"

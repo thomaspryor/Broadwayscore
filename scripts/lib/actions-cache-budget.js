@@ -72,3 +72,54 @@ function auditCacheEntries(entries, opts = {}) {
 }
 
 module.exports = { auditCacheEntries, keyPrefix, DEFAULTS, LIMIT_BYTES };
+
+// BRO-7506: detection (auditCacheEntries) only warned, so the repo kept crossing
+// the cap between looks and the SERP-eviction probe went red again (BRO-6322,
+// BRO-6826, BRO-6993). This is the self-heal half. ALLOW-list, not deny-list:
+// only families GitHub rebuilds on its own may be evicted; anything else
+// (bd-serp-cache-*, digest-*, money-monthly-baseline-* ...) is never touched.
+const HEAL_TARGET_BYTES = 6 * GIB;
+const EVICTABLE_PREFIXES = ['nextjs-cache-', 'node-cache-', 'playwright-'];
+const MAX_EVICTIONS_PER_RUN = 50;
+
+function selectEntriesToEvict(
+  entries,
+  { totalBytes, targetBytes = HEAL_TARGET_BYTES, defaultRef = 'refs/heads/main', maxEvictions = MAX_EVICTIONS_PER_RUN } = {},
+) {
+  const rows = Array.isArray(entries) ? entries : [];
+  const size = (e) => Number(e.sizeInBytes) || 0;
+  // Pass the authoritative total (actions/cache/usage) when known: the listing
+  // is capped at 1000 rows and can undercount.
+  let total = Number.isFinite(totalBytes) ? totalBytes : rows.reduce((n, e) => n + size(e), 0);
+  if (total <= targetBytes) return [];
+  const ts = (e) => new Date(e.lastAccessedAt || e.createdAt || 0).getTime() || 0;
+  const family = (e) => `${e.ref}|${keyPrefix(e.key)}`;
+  const newestPerFamily = new Map();
+  for (const e of rows) {
+    const f = family(e);
+    const cur = newestPerFamily.get(f);
+    if (!cur || ts(e) > ts(cur)) newestPerFamily.set(f, e);
+  }
+  const candidates = rows
+    .filter((e) => EVICTABLE_PREFIXES.some((p) => String(e.key || '').startsWith(p)))
+    // the newest entry of each family on the default ref is what deploys restore
+    .filter((e) => !(e.ref === defaultRef && newestPerFamily.get(family(e)) === e))
+    .sort((a, b) => {
+      const ao = a.ref === defaultRef ? 1 : 0;
+      const bo = b.ref === defaultRef ? 1 : 0;
+      if (ao !== bo) return ao - bo; // orphans on land/* and PR refs first
+      if (ts(a) !== ts(b)) return ts(a) - ts(b);
+      return size(b) - size(a);
+    });
+  const out = [];
+  for (const e of candidates) {
+    if (total <= targetBytes || out.length >= maxEvictions) break;
+    out.push(e);
+    total -= size(e);
+  }
+  return out;
+}
+
+module.exports.selectEntriesToEvict = selectEntriesToEvict;
+module.exports.HEAL_TARGET_BYTES = HEAL_TARGET_BYTES;
+module.exports.EVICTABLE_PREFIXES = EVICTABLE_PREFIXES;

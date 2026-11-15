@@ -41,7 +41,8 @@ permissions:
   contents: write
   # actions: read — the Live-data step's BRO-3887 probe reads the repo's
   # Actions cache usage (BRO-447); notify-failure's listWorkflowRuns needs it too.
-  actions: read
+  # BRO-7506: write so the pre-probe heal step can evict rebuildable caches.
+  actions: write
 
 concurrency:
   group: check-corpus-drift
@@ -466,6 +467,15 @@ jobs:
       # BRO-447: the bro3887 probe now asserts repo Actions cache usage (< 8 GiB,
       # the cause of SERP-cache eviction) via the GitHub API instead of a fixed
       # credits/day ceiling, hence GH_TOKEN here and actions: read above.
+      # BRO-7506: evict rebuildable caches (never the SERP cache) before the
+      # BRO-3887 probe reads usage, so a spike since the daily heal cannot redden it.
+      - name: Heal Actions cache budget
+        if: always()
+        continue-on-error: true # lint-allow-swallow: best-effort; the probe below reports the real size
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: timeout -k 10 240 node scripts/check-actions-cache-budget.js --heal || echo "::warning::cache heal failed (non-blocking)"
+
       - name: Live-data assertions (moved from test.yml unit batch)
         id: livedata
         if: always()
