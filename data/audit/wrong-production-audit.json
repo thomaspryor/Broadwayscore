@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-11-15T19:15:09.360Z",
+  "timestamp": "2026-11-15T19:49:17.522Z",
   "stats": {
-    "totalReviews": 82268,
-    "alreadyFlagged": 22427,
-    "dateGuardCatches": 221,
+    "totalReviews": 82265,
+    "alreadyFlagged": 22430,
+    "dateGuardCatches": 220,
     "directorMismatch": 3708,
     "tvFilmSignals": 2318,
     "londonSignals": 3765,
@@ -99400,7 +99400,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "rolandcat--roviews.json",
-      "score": 65,
+      "score": 56,
       "publishDate": "2026-11-14",
       "url": "https://rolandcat.substack.com/p/review-desire-under-the-elms-almeida",
       "findings": [
@@ -111558,19 +111558,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "file": "whatsonstage--tanyel-gumushan.json",
-      "publishDate": "2026-10-06",
-      "url": "https://www.whatsonstage.com/news/shakespeares-globe-reveals-full-company-for-julius-caesar_1734439/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 31d before show (2026-10-06 vs 2026-11-06)"
         }
       ]
     },
