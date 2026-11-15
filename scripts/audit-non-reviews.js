@@ -31,6 +31,11 @@ const https = require('https');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
+const { hasHelpFlag } = require('./lib/cli-help.js');
+if (hasHelpFlag(args)) {
+  console.log('Usage: node scripts/audit-non-reviews.js [--dry-run] [--force] [--skip-llm] [--verbose] [--show=ID]');
+  process.exit(0);
+}
 // --gate: per-push trunk catastrophe floor (test.yml). Same free heuristics-only,
 // report-only behaviour as --strict, but the block/pass decision is the pure
 // scripts/lib/non-review-gate.js (definitive wrong-page = zero-tolerance). The full
