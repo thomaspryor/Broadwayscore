@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-15T03:06:03.954Z",
+  "timestamp": "2026-11-15T03:41:17.605Z",
   "stats": {
-    "totalReviews": 82134,
+    "totalReviews": 82138,
     "alreadyFlagged": 22404,
     "dateGuardCatches": 221,
-    "directorMismatch": 3707,
+    "directorMismatch": 3708,
     "tvFilmSignals": 2315,
     "londonSignals": 3756,
     "offBroadwaySignals": 751,
@@ -51827,6 +51827,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from pass-over-2021"
+        }
+      ]
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "score": 44,
+      "publishDate": "2026-11-11",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-11-11/passing-strange-review-theater-pasadena-playhouse",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"annie dorsen\" from passing-strange-2008"
         }
       ]
     },
