@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-15T23:04:33.235Z",
+  "generatedAt": "2026-11-15T23:35:20.646Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 89,
+    "avgScoreDiff": 3
   },
   "syndicationPairs": [
     {
@@ -162,7 +162,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Matt Windman",
+      "showId": "marvins-room-2017",
+      "primaryOutlet": "newsday",
+      "secondaryOutlet": "amny",
+      "primaryFile": "newsday--matt-windman.json",
+      "secondaryFile": "amny--matt-windman.json",
+      "similarity": 89,
+      "primaryScore": 48,
+      "secondaryScore": 45,
+      "scoreDiff": 3
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
