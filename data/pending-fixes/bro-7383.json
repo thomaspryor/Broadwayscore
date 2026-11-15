@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7383",
   "planId": "659bb424-f42e-47b0-b0c4-e06948c09fe8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-15T02:55:57.958Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "description": "Stale legacy BWW roundup parse: outlet and critic were taken from the quote's own text. The same Adam Feldman / Time Out New York review is already held in timeout--adam-feldman.json, and the current parser (bww-roundup-parser.js) splits this line correctly."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-15T04:44:56.583Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted new-york-new-york-2023/new-york-is-an-affection-project--new-york.json"
+    }
+  ],
+  "executedIn": "ci"
 }
