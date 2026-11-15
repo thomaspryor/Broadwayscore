@@ -137,10 +137,11 @@ function plan(target, adoptHookless = false) {
   // The repo's allow rules ahead of the owner's own. Ours are the repo rules the owner did not
   // already have (an owner rule that matches a repo rule stays theirs through uninstall); the record
   // is what a later run and --uninstall take back. permissions and the record are rebuilt at a fixed
-  // spot so re-runs write nothing. A malformed owner allow (not an array) is left untouched.
+  // spot so re-runs write nothing. A malformed owner permissions/allow (not an object/array) is left untouched.
   const ownerPerms = preserve && existing.permissions && typeof existing.permissions === 'object' && !Array.isArray(existing.permissions) ? existing.permissions : null;
   const perms = ownerPerms ? { ...ownerPerms } : {};
-  const malformed = !!ownerPerms && ownerPerms.allow !== undefined && !Array.isArray(ownerPerms.allow);
+  const badShape = preserve && existing.permissions !== undefined && !ownerPerms; // permissions is not an object
+  const malformed = badShape || (!!ownerPerms && ownerPerms.allow !== undefined && !Array.isArray(ownerPerms.allow));
   const recorded = new Set(preserve && Array.isArray(existing[ALLOW_RECORD_KEY]) ? existing[ALLOW_RECORD_KEY] : []);
   const had = new Set(preserve ? allowOf(existing) : []);
   const ours = malformed ? [] : repoAllow.filter((x) => recorded.has(x) || !had.has(x));
@@ -151,7 +152,8 @@ function plan(target, adoptHookless = false) {
   }
   delete merged.permissions;
   delete merged[ALLOW_RECORD_KEY];
-  if (Object.keys(perms).length) merged.permissions = perms;
+  if (badShape) merged.permissions = existing.permissions;
+  else if (Object.keys(perms).length) merged.permissions = perms;
   if (ours.length) merged[ALLOW_RECORD_KEY] = ours;
   return { settingsPath, settings: merged, wired, links, mayAdopt, repoSpend };
 }

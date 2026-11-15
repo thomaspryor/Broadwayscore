@@ -370,6 +370,27 @@ test('an owner rule equal to a repo rule survives uninstall; a malformed allow i
   run(['--target', target, '--uninstall']);
   assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), original);
 
+  // A rule the repo no longer lists is taken back on the next run; the owner's own stay.
+  const { target: t2 } = makeTarget('t-allow-dropped');
+  assert.equal(run(['--target', t2]).status, 0);
+  const f2 = path.join(t2, '.claude', 'settings.json');
+  const g = JSON.parse(fs.readFileSync(f2, 'utf8'));
+  g.permissions.allow.push('mcp__StaleRepoRule', 'Bash(ls:*)');
+  g._installedAllow.push('mcp__StaleRepoRule');
+  fs.writeFileSync(f2, JSON.stringify(g));
+  assert.equal(run(['--target', t2]).status, 0);
+  const h = JSON.parse(fs.readFileSync(f2, 'utf8'));
+  assert.ok(!h.permissions.allow.includes('mcp__StaleRepoRule'), 'the dropped repo rule is gone');
+  assert.ok(h.permissions.allow.includes('Bash(ls:*)'), 'the owner rule stays');
+  assert.ok(!h._installedAllow.includes('mcp__StaleRepoRule'));
+
+  const odd = makeTarget('t-allow-notobject').target;
+  const oddFile = path.join(odd, '.claude', 'settings.json');
+  fs.mkdirSync(path.dirname(oddFile));
+  fs.writeFileSync(oddFile, JSON.stringify({ permissions: ['x'] }));
+  assert.equal(run(['--target', odd, '--adopt-hookless-settings']).status, 0);
+  assert.deepEqual(JSON.parse(fs.readFileSync(oddFile, 'utf8')).permissions, ['x'], 'a non-object permissions is kept as is');
+
   const bad = makeTarget('t-allow-malformed').target;
   const badFile = path.join(bad, '.claude', 'settings.json');
   fs.mkdirSync(path.dirname(badFile));
