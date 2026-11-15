@@ -1,66 +1,21 @@
 {
-  "updatedAt": "2026-11-15T16:56:13.424Z",
-  "processed": 87,
-  "failed": 63,
-  "successRate": "58.0%",
+  "updatedAt": "2026-11-15T17:05:55.104Z",
+  "processed": 100,
+  "failed": 10,
+  "successRate": "90.9%",
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 44,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingdog": 13,
+    "browserbase": 12,
+    "directCookies": 2,
+    "scrapingdog": 6,
     "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 27
+    "archive": 34
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-11-15T15:29:43.140Z",
-      "event": "bb-session",
-      "session": "df3d6b71",
-      "url": "http://www.hollywoodreporter.com/review/peter-starcatcher-theater-review-smash-3"
-    },
-    {
-      "t": "2026-11-15T15:31:45.618Z",
-      "event": "bb-session",
-      "session": "ee829535",
-      "url": "http://www.usatoday.com/life/theater/reviews/2010-10-22-lombardi22_ST_N.htm?csp="
-    },
-    {
-      "t": "2026-11-15T15:31:46.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-11-15T15:36:00.727Z",
-      "event": "bb-session",
-      "session": "75938746",
-      "url": "http://www.variety.com/review/VE1117943921.html?categoryid=33&cs=1&nid=2562&utm_"
-    },
-    {
-      "t": "2026-11-15T15:36:01.326Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-11-15T15:36:26.529Z",
-      "event": "bb-session",
-      "session": "9ee33e59",
-      "url": "http://www.hollywoodreporter.com/review/marvins-room-theater-review-1017924"
-    },
-    {
-      "t": "2026-11-15T15:37:03.984Z",
-      "event": "bb-session",
-      "session": "1b43ef71",
-      "url": "https://www.nytimes.com/2017/11/15/theater/latin-history-for-morons-review-john-"
-    },
-    {
-      "t": "2026-11-15T15:37:04.586Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-11-15T15:38:55.069Z",
       "event": "bb-session",
@@ -115,6 +70,61 @@
       "t": "2026-11-15T16:25:59.260Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-15T16:59:01.903Z",
+      "event": "bb-session",
+      "session": "35e55d48",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-15T16:59:02.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T16:59:12.150Z",
+      "event": "bb-session",
+      "session": "a08da980",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-15T16:59:12.711Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-15T16:59:30.853Z",
+      "event": "bb-session",
+      "session": "ed9c1879",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-15T16:59:31.458Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-15T17:02:15.332Z",
+      "event": "bb-session",
+      "session": "4b1332d9",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-15T17:02:15.989Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T17:04:12.815Z",
+      "event": "bb-session",
+      "session": "7de3ec9a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-15T17:04:13.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
