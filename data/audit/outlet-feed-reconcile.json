@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T00:01:13.250Z",
+  "generatedAt": "2026-11-15T01:37:38.835Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -122,16 +122,16 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theatre-vibe",
-      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -144,14 +144,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "the-knockturnal",
-      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 842,
-  "matchedGaps": 4,
+  "itemsScanned": 849,
+  "matchedGaps": 3,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -171,15 +167,6 @@
       "url": "https://variety.com/2026/legit/news/passing-strange-pasadena-playhouse-stew-heidi-interview-1236942647/",
       "headline": "&#8216;Passing Strange&#8217; Comes to Pasadena Playhouse: Creators Stew and Heidi Rodewald on the Rock Musical Reaching L.A. Almost Two Decades After Tony-Winning Broadway Run",
       "publishDate": "2026-11-08"
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "level": "matched",
-      "outletId": "one-minute-critic",
-      "url": "https://1minutecritic.com/the-visitors-second-stage-off-broadway-review/",
-      "headline": "A life-or-death request puts family loyalty on trial in &#8216;The Visitors&#8217;",
-      "publishDate": "2026-11-14"
     },
     {
       "showId": "the-visitors-off-broadway-2026",
