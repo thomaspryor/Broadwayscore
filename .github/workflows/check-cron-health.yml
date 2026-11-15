@@ -192,7 +192,7 @@ jobs:
             # previous run's commit failed after the send.
             # BRO-7337: the daily digest cron is gone; the hourly opening-post drafter
             # (41 * * * *) remains. GitHub's real gap on an hourly cron is ~7h, so 13h.
-            "reddit-engagement-digest.yml|13|Reddit Engagement Drafter"
+            # BRO-7524: reddit-engagement-digest.yml has no cron anymore (dispatch only), so it is no longer watched.
             "weekly-video-reviews.yml|192|Weekly Video Reviews"
             "weekly-nyt-critics-picks.yml|72|NYT Critics Picks"
             "weekly-show-origins.yml|192|Weekly Show Origins"

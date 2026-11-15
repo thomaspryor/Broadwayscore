@@ -1,15 +1,11 @@
 name: Reddit Engagement Digest
 
 on:
-  schedule:
-    # BRO-7337: the daily '45 1 * * *' digest cron was removed (Reddit retired, config/retired-sources.json).
-    # Restore it from git history to turn the digest back on.
-    # BRO-6634: opening-night cadence for the Reddit draft. Hourly, the cheap
-    # `due` job asks the draft script's own rule whether any show needs a draft
-    # or redraft (a displayed-score or review-count move counts, 59->60
-    # included); only then does draft-opening-posts run, and its email step
-    # sends the update. The digest job stays daily.
-    - cron: '41 * * * *'
+  # BRO-7337: the daily '45 1 * * *' digest cron was removed (Reddit retired, config/retired-sources.json).
+  # Restore it from git history to turn the digest back on.
+  # BRO-7524: the hourly '41 * * * *' drafter cron was removed too (Reddit retired). The
+  # opening-night poller still dispatches due_check=true after a verified deploy.
+  # Restore both crons from git history to turn Reddit back on.
 
   workflow_dispatch:
     inputs:

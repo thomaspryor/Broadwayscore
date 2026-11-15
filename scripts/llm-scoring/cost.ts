@@ -42,7 +42,8 @@ export const COST_PER_MILLION_TOKENS = {
   // Claude — Sonnet 4 (default) and Haiku 3.5 (single-model fallback path).
   // model name routing matches the inline logic at index.ts L1516.
   'claude-sonnet': { input: 3.00, output: 15.00 },
-  'claude-haiku':  { input: 0.80, output: 4.00 },
+  // Haiku 4.5 list price $1/$5 (BRO-7524; 0.80/4.00 was Haiku 3.5).
+  'claude-haiku':  { input: 1.00, output: 5.00 },
   // OpenAI — gpt-4o. This is the ENSEMBLE DEFAULT (see ensemble-scorer.ts) —
   // removed from OpenAI's current pricing page but still the live/served model.
   openai: { input: 2.50, output: 10.00 },
@@ -55,9 +56,9 @@ export const COST_PER_MILLION_TOKENS = {
   // OpenAI — gpt-5.6-luna (BRO-7341 candidate). $0.20 in / $1.20 out after the
   // 2026-07-30 price cut (secondary sources; confirm on developers.openai.com).
   'openai-gpt56-luna': { input: 0.20, output: 1.20 },
-  // gpt-5.6-sol: list price not verified. Deliberately HIGH (upper-bound) so cost
-  // guards over-estimate rather than under-estimate an A/B run.
-  'openai-gpt56-sol': { input: 5.00, output: 30.00 },
+  // gpt-5.6-sol: $4 in / $20 out, same row as scripts/lib/research-cost.js (checked
+  // 2026-11-11 against developers.openai.com/api/docs/pricing, BRO-7339/7524).
+  'openai-gpt56-sol': { input: 4.00, output: 20.00 },
   // Gemini — 2.5-flash: $0.30 in / $2.50 out (verified against Google's
   // published pricing 2026-07-26; the previous 1.25/5.00 were 2.5-PRO
   // prices and overstated the gemini leg ~4x in estimates).

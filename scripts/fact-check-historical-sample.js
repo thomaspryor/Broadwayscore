@@ -21,7 +21,7 @@
  *   node scripts/fact-check-historical-sample.js sample --cohort=we-historical --n=100 --seed=5080
  *   node scripts/fact-check-historical-sample.js sample --cohort=we-historical --season=2024-2025 --n=30
  *     (a season sample is cohort "we-historical-2024-2025" for check/report)
- *   node scripts/fact-check-historical-sample.js check  --cohort=we-historical [--limit=N] [--ids=a,b] [--max-usd=12] [--concurrency=4]
+ *   node scripts/fact-check-historical-sample.js check  --cohort=we-historical [--limit=N] [--ids=a,b] [--max-cost=12] [--concurrency=4]
  *   node scripts/fact-check-historical-sample.js report --cohort=we-historical [--json] [--triage]
  *   node scripts/fact-check-historical-sample.js sample --cohort=nyc-facts --n=40 --seed=6489  (then check/report)
  *
@@ -50,6 +50,10 @@ const OUT_DIR = path.join(ROOT, 'data', 'audit', 'fact-check');
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const { AUDIT_OPENAI: OPENAI_MODEL } = require('./lib/models');
 const { perTokenUsd } = require('./lib/research-cost');
+const { parseMaxCost, createSpendGuard, createCallMemo, callKey } = require('./lib/experiment-guard');
+// BRO-7524: one cap for the whole run, checked before EVERY model call; identical calls run once.
+const callMemo = createCallMemo();
+let guard = null;
 // USD. Gemini 2.5 Flash: $0.30/M in, $2.50/M out (thinking billed as output),
 // grounded prompt $0.035. OpenAI rates + the $0.01 search-call fee come from
 // research-cost.js RATES for the model pinned in models.js (BRO-7339).
@@ -118,13 +122,17 @@ async function fetchWithTimeout(url, opts = {}, ms = 30000) {
 // tokens = model fees (capped by --max-usd); search = grounding/search-call fees at list price, reported apart.
 const spend = { usd: 0, gemini: 0, openai: 0, search: 0 };
 
-async function askGemini(parts, { grounded }) {
+function askGemini(parts, opts) {
+  return callMemo(callKey('gemini', parts, !!opts.grounded), () => askGeminiRaw(parts, opts));
+}
+async function askGeminiRaw(parts, { grounded }) {
   // A real thinking budget (grounded fact lookups reason over search results)
   // with room left for the JSON answer; tests/unit/gemini-thinking-budget-guard.
   const body = { contents: [{ parts }], generationConfig: { thinkingConfig: { thinkingBudget: 2048 }, maxOutputTokens: 8192 } };
   if (grounded) body.tools = [{ google_search: {} }];
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${process.env.GEMINI_API_KEY}`;
   for (let attempt = 0; attempt < 3; attempt++) {
+    if (guard) guard.assertRoom();
     const res = await fetchWithTimeout(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }, 120000);
     const j = await res.json().catch(() => ({}));
     if (res.status === 429 || res.status >= 500) { await new Promise((r) => setTimeout(r, 5000 * (attempt + 1))); continue; }
@@ -134,6 +142,7 @@ async function askGemini(parts, { grounded }) {
       + ((u.candidatesTokenCount || 0) + (u.thoughtsTokenCount || 0)) * PRICE.gemini.out;
     spend.usd += cost; spend.gemini += cost;
     if (grounded) spend.search += PRICE.gemini.grounded;
+    if (guard) guard.add(cost + (grounded ? PRICE.gemini.grounded : 0));
     const c = (j.candidates || [])[0] || {};
     const text = ((c.content || {}).parts || []).map((p) => p.text || '').join('');
     const chunks = ((c.groundingMetadata || {}).groundingChunks || []).map((g) => g.web && g.web.uri).filter(Boolean);
@@ -142,11 +151,15 @@ async function askGemini(parts, { grounded }) {
   throw new Error('gemini: retries exhausted');
 }
 
-async function askOpenAI(content, { search }) {
+function askOpenAI(content, opts) {
+  return callMemo(callKey('openai', content, !!opts.search), () => askOpenAIRaw(content, opts));
+}
+async function askOpenAIRaw(content, { search }) {
   const body = { model: OPENAI_MODEL, input: [{ role: 'user', content }] };
   body.reasoning = { effort: 'low' };
   if (search) body.tools = [{ type: 'web_search', search_context_size: 'low' }];
   for (let attempt = 0; attempt < 3; attempt++) {
+    if (guard) guard.assertRoom();
     const res = await fetchWithTimeout('https://api.openai.com/v1/responses', {
       method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.OPENAI_API_KEY}` }, body: JSON.stringify(body),
     }, 240000);
@@ -158,6 +171,7 @@ async function askOpenAI(content, { search }) {
     const cost = (u.input_tokens || 0) * PRICE.openai.in + (u.output_tokens || 0) * PRICE.openai.out;
     spend.usd += cost; spend.openai += cost;
     spend.search += searches * PRICE.openai.search;
+    if (guard) guard.add(cost + searches * PRICE.openai.search);
     const msg = (j.output || []).filter((o) => o.type === 'message').pop();
     const part = msg && (msg.content || []).find((c) => c.type === 'output_text');
     const chunks = ((part && part.annotations) || []).filter((a) => a.type === 'url_citation').map((a) => a.url);
@@ -320,7 +334,8 @@ async function cmdCheck() {
   const only = arg('ids') ? new Set(String(arg('ids')).split(',')) : null;
   let todo = sample.ids.map((r) => r.id).filter((id) => (only ? only.has(id) : !done.has(id)));
   if (arg('limit')) todo = todo.slice(0, Number(arg('limit')));
-  const maxUsd = Number(arg('max-usd', 12));
+  const maxUsd = parseMaxCost(process.argv, 12); // --max-cost (alias --max-usd), enforced per call
+  guard = createSpendGuard(maxUsd);
   const conc = Number(arg('concurrency', 4));
   console.log(`${cohort}: checking ${todo.length} shows (cap $${maxUsd})`);
   let i = 0; let stopped = false;
@@ -334,7 +349,10 @@ async function cmdCheck() {
         const r = await checkShow(show, cohort);
         fs.appendFileSync(f.checks, JSON.stringify(r) + '\n');
         console.log(`  ${id}: done (model $${spend.usd.toFixed(2)}, search $${spend.search.toFixed(2)})`);
-      } catch (e) { console.log(`  ${id}: ERROR ${e.message}`); }
+      } catch (e) {
+        console.log(`  ${id}: ERROR ${e.message}`);
+        if (e.name === 'BudgetExceeded') { stopped = true; break; }
+      }
     }
   }
   await Promise.all([...Array(conc)].map(worker));
