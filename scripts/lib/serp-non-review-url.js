@@ -24,4 +24,29 @@ function isNonReviewUrl(url) {
   return ANNOUNCEMENT.test(path);
 }
 
-module.exports = { isNonReviewUrl };
+// BRO-7569: pages on an outlet's own site that are not a review of the production even
+// though the aggregator attached them to the review row. The gap engine accepted the
+// Times interview "charlotte-ritchie-interview-cloud-9" as Susannah Butter's Cloud 9
+// review (7,700 chars, stub -> complete). Same rule as above: a path that says
+// review/verdict/stars is never ruled out. Sections are whole path segments.
+const NON_REVIEW_SECTIONS = new Set([
+  'opinion', 'long-reads', 'promoted-content', 'recipes', 'shop', 'money', 'video', 'videos',
+  'obituaries', 'obituary', 'puzzles', 'games', 'cooking', 'tax', 'luxury',
+]);
+const NON_REVIEW_SLUG = /(^|[/-])(interviews?|profile|obituary|obit|podcast|newsletter|listicle|gift-guide|best-of-the-year|best-theatre-of)($|[/-])/i;
+
+function isNonReviewSectionUrl(url) {
+  let u;
+  try { u = new URL(url); } catch { return false; }
+  let path = u.pathname;
+  try { path = decodeURIComponent(path); } catch { /* keep raw */ }
+  path = path.toLowerCase();
+  if (/review|verdict|stars?\b/.test(path)) return false;
+  if (NON_REVIEW_SLUG.test(path)) return true;
+  // 'news' is a review section on some outlets; only treat it as non-review on The Stage, where reviews live in /reviews/.
+  if (/(^|\.)thestage\.co\.uk$/.test(u.hostname) && /^\/(news|opinion|features|careers|long-reads|promoted-content|jobs)\b/.test(path)) return true;
+  const segs = path.split('/').filter(Boolean);
+  return segs.slice(0, -1).some((x) => NON_REVIEW_SECTIONS.has(x));
+}
+
+module.exports = { isNonReviewUrl, isNonReviewSectionUrl };

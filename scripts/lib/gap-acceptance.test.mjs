@@ -33,6 +33,18 @@ const base = (extra = {}) => ({
 });
 const ctx = { showId: SHOW_ID };
 
+test('refuses text from a non-review page (interview / opinion / shop) even when it names the show (BRO-7569)', () => {
+  const u = 'https://www.thetimes.com/culture/theatre-dance/article/jesse-green-interview-joe-turners-come-and-gone-0xbvk5cd9';
+  const d = acceptRecoveredText(base({ url: u }), { rawText: GOOD }, ctx);
+  assert.equal(d.accept, false);
+  assert.equal(d.code, 'non_review_url');
+  // the candidate url counts too, not just the stored one
+  const d2 = acceptRecoveredText(base(), { rawText: GOOD, url: 'https://www.nytimes.com/2026/03/16/opinion/joe-turners-come-and-gone.html' }, ctx);
+  assert.equal(d2.code, 'non_review_url');
+  // a real review page is untouched
+  assert.equal(acceptRecoveredText(base(), { rawText: GOOD }, ctx).accept, true);
+});
+
 test('accepts a longer, on-topic text and reports the tier change', () => {
   const d = acceptRecoveredText(base(), { rawText: GOOD }, ctx);
   assert.equal(d.accept, true, d.reason);

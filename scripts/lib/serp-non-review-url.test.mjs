@@ -44,3 +44,27 @@ test('keeps real reviews, including ones whose slug mentions casting or returns'
 test('a malformed percent escape does not throw', () => {
   assert.doesNotThrow(() => isNonReviewUrl('https://example.com/a%E0%A4b'));
 });
+
+// BRO-7569: real URLs the gap engine met on 2025-26 review rows (non-review pages attached by an aggregator).
+const { isNonReviewSectionUrl } = require('./serp-non-review-url.js');
+test('isNonReviewSectionUrl: interview / opinion / shop / recipe / promoted pages are not reviews (BRO-7569)', () => {
+  for (const u of [
+    'https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-interview-cloud-9-ghosts-0xbvk5cd9',
+    'https://www.nytimes.com/2025/11/07/opinion/culture/44-obama-musical-hamilton.html',
+    'https://variety.com/shop/broadway-show-tickets-where-to-buy-1234970196/',
+    'https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit-with-bacon-and-mustard-recipe',
+    'https://www.thestage.co.uk/promoted-content/the-last-self-tape-explores-how-art-performance',
+    'https://www.thestage.co.uk/news/jeremy-herrin-every-brilliant-thing-has-been-unprecedented-success',
+    'https://www.thetimes.com/life-style/luxury/article/invisible-tech-sound-systems-times-luxury-6pxtqwp08',
+  ]) assert.equal(isNonReviewSectionUrl(u), true, u);
+});
+test('isNonReviewSectionUrl: real review pages, incl. lifestyle-section reviews, are kept (BRO-7569)', () => {
+  for (const u of [
+    'https://www.thetimes.com/culture/theatre-dance/article/hamlet-hail-to-the-thief-review-moment',
+    'https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-john-lithgow',
+    'https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.html',
+    'https://www.washingtonpost.com/lifestyle/style/worlds-converge-with-grace-in-an-american-in-paris',
+    'https://www.hollywoodreporter.com/lifestyle/arts/american-buffalo-david-mamet-1235130707/',
+    'https://www.nytimes.com/2025/11/07/opinion/culture/44-the-musical-review.html',
+  ]) assert.equal(isNonReviewSectionUrl(u), false, u);
+});

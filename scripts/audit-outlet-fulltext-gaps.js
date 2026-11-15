@@ -10,20 +10,28 @@ const args = process.argv.slice(2);
 const asJson = args.includes('--json');
 const list = args.filter(a => !a.startsWith('--'));
 const t = {}; const gaps = [];
-function isFull(r) { return (r.fullText || '').length >= 1500 && !/truncat|excerpt|stub|invalid/.test(r.contentTier || ''); }
+// Tier as the rebuild will write it (current classifier), so a fix to the classifier shows up
+// before the nightly rebuild re-tiers the stored files. manualContentTier always wins.
+const { classifyTierWriteBack } = require('./lib/content-tier-reason-sync');
+function liveTier(r) {
+  if (r.manualContentTier) return r.manualContentTier;
+  try { return classifyTierWriteBack(r).tierResult.contentTier || r.contentTier; } catch { return r.contentTier; }
+}
+function isFull(r) { return (r.fullText || '').length >= 1500 && !/truncat|excerpt|stub|invalid/.test(r.tier || ''); }
 for (const s of fs.readdirSync(base)) {
   if (!/-(2025|2026)(\b|-)/.test(s)) continue;
   let fl; try { fl = fs.readdirSync(path.join(base, s)); } catch { continue; }
   for (const f of fl) {
     if (!f.endsWith('.json') || f.startsWith('_')) continue;
     let r; try { r = JSON.parse(fs.readFileSync(path.join(base, s, f))); } catch { continue; }
+    r.tier = liveTier(r);
     const o = r.outletId || f.split('--')[0];
     if (!WANT.includes(o)) continue;
     if (r.wrongProduction || r.wrongShow || r.isRoundupArticle || r.duplicateOf) continue;
     const x = t[o] || (t[o] = { n: 0, full: 0, documented: 0 }); x.n++;
     if (isFull(r)) x.full++;
-    else if (r.unrecoverableReason) { x.documented++; }
-    else gaps.push({ outlet: o, show: s, file: f, tier: r.contentTier || 'none', len: (r.fullText || '').length, url: r.url, reason: r.contentTierReason || r.incompleteReason || '' });
+    else if (r.textUnrecoverable && require('./lib/gap-terminal').validateTerminal(r).valid) { x.documented++; }
+    else gaps.push({ outlet: o, show: s, file: f, tier: r.tier || 'none', len: (r.fullText || '').length, url: r.url, reason: r.contentTierReason || r.incompleteReason || '' });
   }
 }
 if (asJson) { console.log(JSON.stringify({ rates: t, gaps }, null, 1)); process.exit(0); }

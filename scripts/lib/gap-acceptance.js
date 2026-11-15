@@ -309,6 +309,11 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
     return refuse('excluded_record', 'record is flagged wrongShow/wrongProduction');
   }
   if (ctx.blocklisted) return refuse('blocklisted', `url is in ${showId}/_blocklist.json`);
+  // BRO-7569: an interview / opinion / lifestyle / shop page is not the review, whatever it says about the show.
+  {
+    const nr = require('./serp-non-review-url');
+    if (newUrl && (nr.isNonReviewUrl(newUrl) || nr.isNonReviewSectionUrl(newUrl))) return refuse('non_review_url', `url is not a review page: ${newUrl}`);
+  }
 
   // 2. Clean exactly once, the same way for every route.
   const cleaned = cleanCandidateText(candidate.rawText, { url: newUrl, showId });
