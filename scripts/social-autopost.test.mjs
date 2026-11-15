@@ -1908,3 +1908,16 @@ test('BRO-7417: london-compare with the gate on posts when its New York show is 
     });
   });
 });
+
+test('BRO-7417: the post tail judges notability on ctx.slim, not on the public show files (revert run.js slim: ctx.slim and this fails)', async () => {
+  await withNotableGate(async () => {
+    const hot = show({ id: 'hot-ob-7417-2026', slug: 'hot-ob-7417', title: 'Hot', category: 'off-broadway', venue: 'A Basement', openingDate: '2026-10-15' });
+    const hotSlim = { [hot.id]: { cs: 82, rc: 6, rv: [{ t: 1 }, { t: 1 }, { t: 1 }, { t: 1 }], au: { sources: {} } } }; // 4 tier-1: notable
+    assert.ok(require('./social-autopost/notable.js').socialNotable(hot, hotSlim), 'fixture is notable through ctx.slim');
+    assert.ok(!require('./social-autopost/notable.js').socialNotable(hot), 'and not through the public files (none exist for it)');
+    await withFakeBuffer(240, [], async seen => {
+      await gatePost({ newer: hot, slim: hotSlim, ungated: false, type: 'closing-soon' });
+      assert.equal(seen.created.length, 5);
+    });
+  });
+});
