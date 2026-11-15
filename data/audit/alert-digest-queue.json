@@ -926,5 +926,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-15T22:52:35.467Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7559-recheck-stale-checks",
+    "title": "Landing blocked: rebase red on land/bro-7559-recheck-stale-checks",
+    "description": "land.yml did not land land/bro-7559-recheck-stale-checks: the rebase gate went red at 4fd0aa83a8. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7559-recheck-stale-checks @ 4fd0aa83a8 (origin/land/bro-7559-recheck-stale-checks) → origin/main @ fb6f1f5f95 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ fb6f1f5f95: Rebasing (1/1) error: could not apply 4fd0aa83a89... BRO-7559: recheck names stale checks and retries no-verdict Done cards hint: Resolve all conflicts manually, mark them as resolved with hint: Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43775440224",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7559-recheck-stale-checks"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "4fd0aa83a89644e9e5d2fdf77379d7a7b7649948"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43775440224"
+      }
+    ],
+    "queuedAt": "2026-11-15T23:55:25.254Z"
   }
 ]
