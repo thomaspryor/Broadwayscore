@@ -1,8 +1,8 @@
 // subject-writer.mjs (BRO-7168): code checks, fallback and ranking, with the
 // network calls stubbed. Requires the real module, no copied logic.
-import { test } from 'node:test';
+import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence } from './subject-writer.mjs';
+import { cardDetailRepeats, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence } from './subject-writer.mjs';
 
 const facts = {
   edition: 'west-end',
@@ -142,11 +142,11 @@ test('short form of a long title counts as that show, not as other shows inside 
 test('openings lead: with this week\'s openings in the facts, a closings-only subject or first sentence is rejected (owner, 2026-11-09)', () => {
   const f = { ...facts, leadTitles: ['The Bridge'] };
   const p = buildPool(f);
-  const closingLead = { angle: 'last chance', subject: 'The Revlon Girl, 83/100, closes Saturday', preheader: 'Critics gave it an 83. Plus The Bridge, at the Bush.', lede: 'The Revlon Girl (83) closes Saturday at the Park Theatre. The Bridge (76) opened Tuesday at the Bush.' };
+  const closingLead = { angle: 'last chance', subject: 'The Revlon Girl, 83/100, closes Saturday', preheader: 'Critics gave it an 83. Plus The Bridge, at the Bush.', lede: 'The Revlon Girl (83) closes Saturday, so this is the last call. The Bridge (76) is the other one to catch.' };
   const probs = checkCandidate(closingLead, p).join();
   assert.match(probs, /subject must be about this week's openings/);
   assert.match(probs, /first sentence must name one of this week's openings/);
-  const openingLead = { angle: 'best opening', subject: 'The Bridge scores 76/100, the week\'s standout', preheader: 'Critics scored it 76. The Revlon Girl (83) closes Saturday.', lede: 'The Bridge (76) opened Tuesday at the Bush, and critics liked it. The Revlon Girl (83) closes Saturday.' };
+  const openingLead = { angle: 'best opening', subject: 'The Bridge scores 76/100, the week\'s standout', preheader: 'Critics scored it 76. The Revlon Girl (83) closes Saturday.', lede: 'The Bridge (76) is the week\'s new opening, and critics liked it. The Revlon Girl (83) closes Saturday.' };
   assert.deepEqual(checkCandidate(openingLead, p), []);
   // A group angle on the openings is fine without a title.
   assert.ok(!checkCandidate({ ...openingLead, subject: 'How the week\'s London openings landed' }, p).some(x => /subject must/.test(x)));
@@ -172,7 +172,7 @@ const goodWe = {
   angle: 'best reviewed',
   subject: 'Cloud 9 lands at a solid 77/100 from 33 critics',
   preheader: 'Dogstar, at Hampstead, scores 64/100 from 26 critics.',
-  lede: 'Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics. Off West End, Dogstar opened on Monday at Hampstead Theatre and scores 64/100.',
+  lede: 'Cloud 9 lands at a solid 77/100 from 33 critics, the best of a quiet week. Off West End, Dogstar trails at 64/100.',
 };
 
 test('the owner\'s score-first subject passes', () => {
@@ -200,7 +200,7 @@ test('a show named in the subject must carry its Critic Score; a title with a la
 });
 
 test('the opening paragraph\'s first sentence gives the lead show\'s score', () => {
-  const noScore = { ...goodWe, lede: 'Cloud 9 opened at the Lyttelton Theatre on Tuesday to warm notices. Dogstar (64) opened on Monday at Hampstead Theatre.' };
+  const noScore = { ...goodWe, lede: 'Cloud 9 got warm notices from critics across the board this week. Dogstar (64) trails it by a little.' };
   assert.match(checkCandidate(noScore, wePool).join(), /first sentence names a show, so it must give that show's Critic Score/);
 });
 
@@ -217,7 +217,7 @@ test('an abbreviation in the first sentence does not cut it before the Critic Sc
   assert.equal(firstSentence(lede), "The Bridge opened at St. Ann's Warehouse on Tuesday and scores 76/100 from 25 critics.");
   assert.equal(firstSentence('Ms. Blakk for President opens at 70/100. More.'), 'Ms. Blakk for President opens at 70/100.');
   assert.equal(firstSentence('Cloud 9 opened Tuesday. It scores 77/100.'), 'Cloud 9 opened Tuesday.');
-  assert.deepEqual(checkCandidate({ ...good, lede }, pool), []);
+  assert.deepEqual(checkCandidate({ ...good, lede: "The Bridge scores 76/100 from 25 critics at St. Ann's, and The Revlon Girl (83) closes Saturday." }, pool), []);
 });
 
 test('tier-label and "recommend" bans cover the inflected and lowercase forms', () => {
@@ -236,4 +236,15 @@ test('plain English about mixed reviews or worth seeing is not a banned tier lab
     const p = checkCandidate({ ...good, subject: ok }, pool).filter(x => /tier label/.test(x));
     assert.deepEqual(p, [], ok);
   }
+});
+
+test('the lede does not repeat what the cards show: venue, opening date, critic quote (owner, 2026-11-15)', () => {
+  const bad = 'Here There Are Blueberries opened at the Ethel Barrymore Theatre on Monday and scores 82/100 from 24 critics. Frank Scheck of New York Stage Review gave it 98 out of 100.';
+  assert.equal(cardDetailRepeats(bad).length, 3);
+  assert.deepEqual(cardDetailRepeats('Cloud 9 lands at a solid 77/100 from 33 critics, the best of a quiet week. Dogstar trails at 64.'), []);
+  // closings and previews may still name a weekday; only an opening's venue/date is banned
+  assert.deepEqual(cardDetailRepeats('The Revlon Girl (83) closes Saturday.'), []);
+  const withDetail = { ...goodWe, lede: 'Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics. Off West End, Dogstar trails at 64/100.' };
+  assert.match(checkCandidate(withDetail, wePool).join(), /lede says where or when a show opened/);
+  assert.match(writerPrompt(wePool), /NEVER repeat venues, opening dates/);
 });

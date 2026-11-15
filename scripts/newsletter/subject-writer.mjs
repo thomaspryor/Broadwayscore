@@ -31,7 +31,7 @@ const { foldDiacritics } = require_('../lib/title-match.js');
 
 export const SUBJECT_MAX = 60;      // phones show about 40; hard stop at 60
 export const PREHEADER_MAX = 110;
-export const LEDE_MAX = 650;
+export const LEDE_MAX = 380;
 const CALL_MS = 90000;
 const MAX_ROUNDS = 2;               // one rewrite with the problems listed
 const DEADLINE_MS = 4 * 60 * 1000;  // whole pass; the draft job has 25 minutes
@@ -151,6 +151,22 @@ export function buildPool(facts) {
   };
 }
 
+/**
+ * Detail the show cards below the lede already carry (owner, 2026-11-15: "we
+ * already say the theater and the date it opened, that's not editorial"). The
+ * lede is the voice: a score, a verdict, a point of view. Returns the reasons a
+ * lede repeats card detail; empty means it does not.
+ */
+export function cardDetailRepeats(lede) {
+  const t = String(lede || '');
+  const why = [];
+  if (/\b(?:opened|opens|premiered|premieres)\s+(?:at|on|in)\b/i.test(t)) why.push('says where or when a show opened; the cards show that');
+  if (/\bopened\s+(?:(?:this|last)\s+)?(?:Mon|Tues?|Wednes|Thurs?|Fri|Satur|Sun)day\b/i.test(t)) why.push('gives the day a show opened; the cards show that');
+  if (/\bat (?:the )?[A-Z][\w'.&-]*(?: [A-Z][\w'.&-]*)* (?:Theatre|Theater|Playhouse|Horizons|Center|Centre|Hall|House|Rep)\b/.test(t)) why.push('names a theatre; the cards show that');
+  if (/\bgave (?:it )?\d{1,3} out of 100\b/i.test(t)) why.push("quotes one critic's score; keep to our Critic Score");
+  return why;
+}
+
 /** Everything code can check about one candidate. Empty means it passed. */
 export function checkCandidate(c, pool, recent = []) {
   const p = [];
@@ -173,6 +189,7 @@ export function checkCandidate(c, pool, recent = []) {
     const days = weekdaysIn(body).filter(d => !pool.weekdays.has(d));
     if (days.length) p.push(`${field} names a day the facts do not: ${days.join(', ')}`);
   }
+  for (const why of cardDetailRepeats(lede)) p.push(`lede ${why}`);
   const leads = pool.leadTitles || [];
   if (leads.length) {
     const namesLead = (t) => leads.some(l => mentions(t, l));
@@ -218,7 +235,7 @@ Rules:
 2. Subject: 30 to 50 characters is best, never over ${SUBJECT_MAX}. One story. Sound like a friend who reads every review, not a database. Specific beats clever. Name a show when it helps.
    THE CRITIC SCORE IS THE STAR. It is our own number, 0 to 100, built from every critic's review. Lead with it as "77/100 from 33 critics". Never use our tier labels (Recommended, Worth Seeing, Mixed, Critical Gold, Critical Miss) and never write "recommended" or "recommend": the label is not the news, the number is. You may add ONE plain word that fits the number (solid for the 70s, strong for the 80s, exceptional for 90+, middling for the 60s, weak below 55). A subject that names a show must carry that show's score. Good: "Cloud 9 lands at a solid 77/100 from 33 critics". "Hamlet Hail to the Thief hits 78/100 from 26 critics". Bad: "Critics recommend Cloud 9", "Dogstar gets a Mixed 64", "Cloud 9 (77) is Recommended from 33 reviews".
 3. Preview text (shown after the subject in the inbox): 40 to ${PREHEADER_MAX} characters. It adds the next thing a reader wants to know; never repeat the subject.
-4. Opening paragraph: 2 to 4 short sentences that tell the story the subject promised, then mention the other notable news. The first sentence gives the lead show's Critic Score as a number out of 100 and the number of critics behind it, e.g. "Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics, the most of any London opening this week." Later mentions can use parentheses, e.g. The Bridge (76). Do not describe a score with a tier label.
+4. Opening paragraph: the editorial voice, 2 or 3 short sentences, like a friend telling you what happened this week. Lead with the Critic Score as a number out of 100 and the number of critics, then say what it means or what stood out. The show cards below it already show every theatre, opening date, score and critic count, so NEVER repeat venues, opening dates or days of the week for an opening ("opened at the Lyttelton Theatre on Tuesday"), and never name a critic or outlet or quote a critic's score. Use plain words and contractions; no stiff phrases like "the only Broadway opening this week" or "the most of any". Good: "Cloud 9 lands at a solid 77/100 from 33 critics, the best of a quiet week. Dogstar trails at 64." Bad: "Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics, the most of any London opening this week." Later mentions can use parentheses, e.g. The Bridge (76). Do not describe a score with a tier label.
 5. Never use: "opens to X reviews", "with critics", "big/busy/packed week", "scoring 75 or higher", "the reviews are in", dashes as punctuation, quotation marks, exclamation marks, emoji, clickbait, "not X, but Y".
 6. Vary the shape between candidates: a statement, a verdict, a score-first line, a question only if it is specific.
 ${recent.length ? `\nRecent subject lines. Do not resemble these in wording, shape or opening words:\n${recent.map(r => `- ${r}`).join('\n')}\n` : ''}
