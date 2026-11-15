@@ -90,7 +90,7 @@ test('BRO-6469: sender forwards --skip-mac-local through composition and standal
       assert.equal(opts.now, options.now);
     }
     const source = fs.readFileSync(senderPath, 'utf8');
-    assert.match(source, /composeDigestEmail\(\{[^;]*reportOnly: noAutofix, skipMacLocal, now\s*\}\)/,
+    assert.match(source, /composeDigestEmail\(\{[^;]*reportOnly: cloudAutofix \? 'cloud' : noAutofix, skipMacLocal, now\s*\}\)/,
       'main must forward the parsed flag to composition');
   } finally {
     healthModule.localLoopDeadMessage = original;
