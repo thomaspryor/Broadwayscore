@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-15T08:22:53.645Z",
+  "timestamp": "2026-11-15T09:07:38.393Z",
   "stats": {
-    "totalReviews": 82142,
+    "totalReviews": 82146,
     "alreadyFlagged": 22416,
     "dateGuardCatches": 221,
     "directorMismatch": 3709,
     "tvFilmSignals": 2316,
-    "londonSignals": 3757,
+    "londonSignals": 3758,
     "offBroadwaySignals": 751,
     "yearMismatch": 376,
     "noPublishDate": 8439
@@ -99351,6 +99351,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "rolandcat--roviews.json",
+      "publishDate": "2026-11-14",
+      "url": "https://rolandcat.substack.com/p/review-desire-under-the-elms-almeida",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
