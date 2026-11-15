@@ -705,7 +705,7 @@ jobs:
         run: |
           git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json data/audit/commercial-data-history.json data/recoupment-calibration-anchors.json
-          # BRO-7182: owner-alert-router state from the contamination audit's --alert (20h cooldown, dedup).
+          # BRO-7182: owner-alert-router state from the contamination audit --alert run (20h cooldown, dedup).
           bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then

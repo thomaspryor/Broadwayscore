@@ -249,7 +249,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
-          # BRO-7182: owner-alert-router state from the rejected-source audit's --alert (20h cooldown, dedup).
+          # BRO-7182: owner-alert-router state from the rejected-source audit --alert run (20h cooldown, dedup).
           bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
 
           # Drop aspect-ratio violators from the batch instead of letting the
