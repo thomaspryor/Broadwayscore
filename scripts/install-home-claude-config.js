@@ -58,6 +58,14 @@ function hookCommand(target, hookName) {
 const SPEND_KEYS = ['env', 'effortLevel'];
 // What this installer last wrote for them, so an owner's own values are told apart on every run.
 const SPEND_RECORD_KEY = '_installedSpend';
+// permissions.allow rules (BRO-7526): without them a multi-repo session prompts for every
+// allowed MCP tool, because only a one-repo session reads the repo's .claude/settings.json.
+const ALLOW_RECORD_KEY = '_installedAllow';
+
+const allowOf = (settings) => {
+  const a = settings && settings.permissions && settings.permissions.allow;
+  return Array.isArray(a) ? a.filter((x) => typeof x === 'string') : [];
+};
 
 // The owner's part of a settings file: env entries and effortLevel that differ from what we wrote.
 function ownerSpend(existing) {
@@ -100,7 +108,7 @@ function buildSettings(repoSettings, target) {
   // ran with the 1M context window and no effort default; the Oct 25-31 coordinator hit 780k.
   const spend = {};
   for (const key of SPEND_KEYS) if (repoSettings[key] !== undefined) spend[key] = repoSettings[key];
-  return { settings: { [MARK_KEY]: MARK, ...spend, hooks }, wired };
+  return { settings: { [MARK_KEY]: MARK, ...spend, hooks }, wired, allow: allowOf(repoSettings) };
 }
 
 function readJson(p) {
@@ -110,7 +118,7 @@ function readJson(p) {
 function plan(target, adoptHookless = false) {
   const repoSettings = readJson(path.join(REPO_ROOT, '.claude', 'settings.json'));
   if (!repoSettings) throw new Error('cannot read .claude/settings.json in this checkout');
-  const { settings, wired } = buildSettings(repoSettings, target);
+  const { settings, wired, allow: repoAllow } = buildSettings(repoSettings, target);
   const repoSpend = Object.fromEntries(SPEND_KEYS.filter((k) => settings[k] !== undefined).map((k) => [k, settings[k]]));
   const links = LINKS
     .filter((name) => fs.existsSync(path.join(REPO_ROOT, '.claude', name)))
@@ -126,6 +134,17 @@ function plan(target, adoptHookless = false) {
   for (const key of [...SPEND_KEYS, SPEND_RECORD_KEY]) delete merged[key]; // fixed key order: re-runs write nothing
   Object.assign(merged, mergeSpend(repoSpend, owner));
   if (Object.keys(repoSpend).length) merged[SPEND_RECORD_KEY] = repoSpend;
+  // The repo's allow rules ahead of the owner's own; the owner's are whatever we did not record.
+  // permissions and the record are rebuilt at a fixed spot so re-runs write nothing.
+  const recorded = new Set(preserve && Array.isArray(existing[ALLOW_RECORD_KEY]) ? existing[ALLOW_RECORD_KEY] : []);
+  const ownerAllow = (preserve ? allowOf(existing) : []).filter((x) => !recorded.has(x) && !repoAllow.includes(x));
+  const perms = preserve && existing.permissions && typeof existing.permissions === 'object' && !Array.isArray(existing.permissions) ? { ...existing.permissions } : {};
+  const allowList = [...repoAllow, ...ownerAllow];
+  if (allowList.length) perms.allow = allowList; else delete perms.allow;
+  delete merged.permissions;
+  delete merged[ALLOW_RECORD_KEY];
+  if (Object.keys(perms).length) merged.permissions = perms;
+  if (repoAllow.length) merged[ALLOW_RECORD_KEY] = repoAllow;
   return { settingsPath, settings: merged, wired, links, mayAdopt, repoSpend };
 }
 
@@ -196,6 +215,15 @@ function uninstall(p) {
     // Keep only the owner's own env entries / effortLevel (what differs from what we recorded).
     const owner = ownerSpend(remaining);
     for (const key of [...SPEND_KEYS, SPEND_RECORD_KEY]) delete remaining[key];
+    // Take back only the allow rules we recorded; the owner's own stay.
+    const ours = new Set(Array.isArray(existing[ALLOW_RECORD_KEY]) ? existing[ALLOW_RECORD_KEY] : []);
+    delete remaining[ALLOW_RECORD_KEY];
+    if (remaining.permissions && Array.isArray(remaining.permissions.allow)) {
+      const left = remaining.permissions.allow.filter((x) => !ours.has(x));
+      const perms = { ...remaining.permissions };
+      if (left.length) perms.allow = left; else delete perms.allow;
+      if (Object.keys(perms).length) remaining.permissions = perms; else delete remaining.permissions;
+    }
     if (Object.keys(owner.env).length) remaining.env = owner.env;
     if (owner.effortLevel !== undefined) remaining.effortLevel = owner.effortLevel;
     if (Object.keys(remaining).length) fs.writeFileSync(p.settingsPath, JSON.stringify(remaining, null, 2) + '\n');

@@ -276,7 +276,8 @@ test('explicit adoption preserves hookless owner settings through install, check
   assert.equal(run(['--target', target, '--adopt-hookless-settings']).status, 0);
   const installed = JSON.parse(fs.readFileSync(file, 'utf8'));
   assert.deepEqual(installed.autoMode, original.autoMode);
-  assert.deepEqual(installed.permissions, original.permissions);
+  assert.deepEqual(installed.permissions.deny, original.permissions.deny, 'the owner deny rule survives');
+  assert.ok(installed.permissions.allow.includes('mcp__Linear'), 'the repo allow rules are added beside it (BRO-7526)');
   assert.ok(Object.keys(installed.hooks).length > 0);
   assert.equal(run(['--target', target, '--check']).status, 0);
   assert.equal(run(['--target', target]).status, 0);
@@ -321,6 +322,42 @@ test('an owner env entry and effort level survive re-runs and uninstall (BRO-668
   assert.equal(run('--check').status, 0, 'no drift after a re-run');
   run('--uninstall');
   assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { env: { FOO: '1' }, effortLevel: 'high' });
+});
+
+// BRO-7526: a multi-repo session (cwd /home/user) never read the repo's permissions.allow, so
+// Linear (and Claude_Code_Remote) tools prompted on every call even with the connector on
+// always-allow and Auto mode. The installer now carries the allow rules into the home settings.
+test('repo permissions.allow reaches multi-repo sessions, beside the owner\'s own rules (BRO-7526)', () => {
+  const real = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
+  assert.ok(real.permissions.allow.includes('mcp__Linear'), 'the repo allows the Linear connector');
+  const { target } = makeTarget('t-allow');
+  const file = path.join(target, '.claude', 'settings.json');
+  assert.equal(run(['--target', target]).status, 0);
+  const fresh = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.deepEqual(fresh.permissions.allow, real.permissions.allow);
+  assert.equal(run(['--target', target, '--check']).status, 0, 'no drift after install');
+
+  // An owner rule (and a deny rule) survive re-runs; an owner rule we did not write is not recorded as ours.
+  fresh.permissions.allow.push('Bash(ls:*)');
+  fresh.permissions.deny = ['Bash(rm:*)'];
+  fs.writeFileSync(file, JSON.stringify(fresh));
+  assert.equal(run(['--target', target]).status, 0);
+  const rerun = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.deepEqual(rerun.permissions.allow, [...real.permissions.allow, 'Bash(ls:*)']);
+  assert.deepEqual(rerun.permissions.deny, ['Bash(rm:*)']);
+  assert.equal(run(['--target', target, '--check']).status, 0, 'no drift after a re-run');
+
+  // A rule the repo drops later is taken back on the next run; uninstall leaves only the owner's.
+  const recorded = rerun._installedAllow;
+  assert.deepEqual(recorded, real.permissions.allow);
+  assert.equal(run(['--target', target, '--uninstall']).status, 0);
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { permissions: { allow: ['Bash(ls:*)'], deny: ['Bash(rm:*)'] } });
+});
+
+test('a repo without allow rules writes no permissions block (BRO-7526)', () => {
+  const { settings, allow } = buildSettings({ hooks: {} }, '/home/user');
+  assert.deepEqual(allow, []);
+  assert.equal(settings.permissions, undefined);
 });
 
 // BRO-7180: nothing checked at runtime that the runner actually reaches a hook. The liveness
