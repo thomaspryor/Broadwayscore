@@ -155,20 +155,6 @@
     "queuedAt": "2026-11-15T12:34:04.787Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-15.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-15T13:03:19.317Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
     "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline — escalated after 15 notifications",
     "description": "Filed BRO-7516 for owner triage after 15 repeats with no tracker.\n\nreplay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
@@ -285,6 +271,62 @@
       }
     ],
     "queuedAt": "2026-11-15T15:33:51.452Z"
+  },
+  {
+    "conditionKey": "corpus-drift:sibling-title-misroute",
+    "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff) (still open — BRO-6754)",
+    "description": "Still firing after 42 notifications since it was filed. Tracked at BRO-6754.\n\ncheck-corpus-drift.js audit \"sibling-title-misroute\" (node scripts/audit-sibling-title-misroute.js --strict) has been drifting. Latest output:\n\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  ap--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  broadwayselect--peter-filichia.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  magical-misstari-tour--tari-stratton.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  theater-scene--rachel-goddard.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  washpost--peter-marks.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2014 -> the-crucible-crucible-regional-2024  plays-to-see--rowena-hawkins.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  i-paper--fiona-mountford.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  telegraph--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  variety--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2023 -> the-crucible-crucible-regional-2024  timeout-london--andrzej-lukowski.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-play-that-goes-wrong-west-end-2021 -> the-play-that-goes-wrong-regional-2026  afridiziak-theatre-news--althyr-pivatto.json  (sibling opening 17d from publishDate vs current 4307d)\n    [reroute] the-thanksgiving-play-2023 -> the-thanksgiving-play-regional-2024  chicagotribune--chris-jones.json  (same-title-sibling: url-year, venue-substring)\n    [ambiguous] a-midsummer-nights-dream-1996  telegraph--unknown.json  (ambiguous-production)\n    [ambiguous] a-time-to-kill-2013  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] come-from-away-2017  time--richard-zoglin.json  (ambiguous-production)\n    [ambiguous] eclipsed-2016  curtainup--elyse-sommer.json  (ambiguous-production)\n    [ambiguous] guys-and-dolls-2009  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] little-shop-of-horrors-off-broadway-2019  nytg--gillian-russo.json  (ambiguous-production)\n    [ambiguous] loves-labours-lost-off-west-end-2026  gay-times--chris-selman.json  (ambiguous-production)\n    [ambiguous] midnight-in-the-garden-of-good-and-evil-2024  deadline--greg-evans.json  (ambiguous-production)\n    [ambiguous] midnight-in-the-garden-of-good-and-evil-2024  nydailynews--karu-f-daniels.json  (ambiguous-production)\n    [ambiguous] much-ado-about-nothing-west-end-2022  artsdesk--unknown.json  (ambiguous-production)\n    [ambiguous] north-by-northwest-old-regional-2026  timeout--adam-feldman.json  (ambiguous-production)\n    [ambiguous] on-your-feet-2015  minneapolis-star-tribune--mark-kennedy.json  (ambiguous-production)\n    [ambiguous] pericles-off-broadway-2024  culturesauce--thom-geier.json  (ambiguous-production)\n    [ambiguous] pericles-off-broadway-2024  theatermania--pete-hempstead.json  (ambiguous-production)\n    [ambiguous] pippin-2013  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] she-loves-me-regional-2023  around-the-town-chicago--alan-bresloff.json  (ambiguous-production)\n    [ambiguous] she-loves-me-regional-2023  chicagoonstage--mira-temkin.json  (ambiguous-production)\n    [ambiguous] sister-act-regional-2025  around-the-town-chicago--alan-bresloff.json  (ambiguous-production)\n    [ambiguous] this-is-our-youth-2014  chicagotribune--chris-jones.json  (ambiguous-production)\n    [ambiguous] titanique-off-broadway-2022  frontmezzjunkies--unknown.json  (ambiguous-production)\n    [ambiguous] twelfth-night-off-west-end-2026  show-score--unknown.json  (ambiguous-production)\n    [ambiguous] war-horse-west-end-2018  whatsonstage--jane-kemp.json  (ambiguous-production)\n    [same-url] trouble-in-mind-2021 -> trouble-in-mind-west-end-2021  whatsonstage--alun-hood.json  (same url as trouble-in-mind-west-end-2021/whatsonstage--alun-hood.json)\n    [same-url] jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 -> jesus-christ-superstar-west-end-2026  independent--alice-saville.json  (same url as jesus-christ-superstar-west-end-2026/independent--alice-saville.json)\n    [same-url] jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 -> jesus-christ-superstar-west-end-2026  standard--nick-curtis.json  (same url as jesus-christ-superstar-west-end-2026/standard--nick-curtis.json)\n    [same-url] jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 -> jesus-christ-superstar-west-end-2026  thereviewshub--harry-mayes.json  (same url as jesus-christ-superstar-west-end-2026/thereviewshub--harry-mayes.json)\n    [same-url] fences-leeds-regional-2026 -> fences-off-west-end-2026  whatsonstage--jim-keaveney.json  (same url as fences-off-west-end-2026/whatsonstage--jim-keaveney.json)\n  Verify by hand, then either fix the file or run --update-baseline once it's a confirmed, deliberately-unfixed FP.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6754",
+    "fields": [],
+    "queuedAt": "2026-11-15T16:01:36.881Z"
+  },
+  {
+    "conditionKey": "corpus-drift:critic-outlets",
+    "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff) (still open — BRO-4515)",
+    "description": "Still firing after 54 notifications since it was filed. Tracked at BRO-4515.\n\ncheck-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Sandi Durell at theater-life (3% share) for stick-fly-2011\n  Chris Omaweng at london-theatre (1% share) for romeo-and-juliet-west-end-2026\n  Mark Fisher at the-scotsman (3% share) for escaped-alone-tron-regional-2024\n  Mark Fisher at the-scotsman (3% share) for stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026\n  Lucy Popescu at islingtontribune (3% share) for the-last-ship-west-end-2026\n  Angela Allyn at third-coast-review (1% share) for the-notebooks-of-leonardo-da-vinci-regional-2022\n  Lyndsey Winship at dance-magazine (7% share) for company-2021\n  Bridget Galton at islington-gazette (5% share) for paddington-the-musical-west-end-2025\n  Bridget Galton at islington-gazette (5% share) for when-we-have-sufficiently-tortured-each-other-west-end-2019\n  Howard Loxton at camdennewjournal (1% share) for peter-gynt-west-end-2019\n  Allison Considine at off-off-online (2% share) for the-smuggler-off-broadway-2023\n  John Groves at bestoftheatre (4% share) for what-the-animals-say-off-west-end-2026\n  John Cutler at bestoftheatre (3% share) for an-oak-tree-off-west-end-2026\n  Chris Bartlett at musical-theatre-review (9% share) for million-dollar-quartet-off-west-end-2026\n  Georgina Brown at independent (4% share) for middlemarch-rsc-regional-2026\n  Dan English at thereviewshub (9% share) for beautiful-little-fool-off-west-end-2026\n  Dan English at thereviewshub (9% share) for consumed-off-west-end-2026\n  Dan English at thereviewshub (9% share) for paranormal-activity-west-end-2025\n  Dan English at thereviewshub (9% share) for the-rat-trap-off-west-end-2026\n  Dan English at thereviewshub (9% share) for welcome-to-pemfort-off-west-end-2026\n  Kelly MacBlane at talkinbroadway (10% share) for south-pacific-regional-2026\n  Kelly MacBlane at talkinbroadway (10% share) for white-christmas-regional-2025\n  Kate Wyver at timeout-london (3% share) for expendable-west-end-2024\n  Kenji Fujishima at frombroadway (1% share) for aftermath-art-new-york-off-broadway-2026\n  Jacob Davis at chicago-critic (9% share) for airline-highway-2015\n  Markos Papadatos at truehollywoodtalk (6% share) for night-of-january-16th-off-broadway-2026\n  Margret Echeverria at nytg (5% share) for amy-and-the-orphans-off-broadway-2018\n  Ross at times-square-chronicles (7% share) for mama-im-a-big-girl-now-off-broadway-2024\n  Daisy Bowie-Sell at timeout-london (8% share) for the-nether-west-end-2015\n  Daisy Bowie-Sell at timeout-london (8% share) for urinetown-the-musical-west-end-2014\n  Caitlin Huston at broadwaynews (9% share) for escape-to-margaritaville-2018\n  Tim Leininger at onstage-blog (6% share) for king-kong-2018\n  Mert Dilek at thestage (9% share) for les-miserables-west-end-2021\n  Seth Wilson at talkinbroadway (9% share) for things-with-friends-regional-2025\n  Brian Scott at theater-life (9% share) for snow-in-midsummer-off-broadway-2022\n  David Pollock at independent (7% share) for let-the-right-one-in-west-end-2014\n  Mark Meszoros at san-diego-union-tribune (8% share) for some-like-it-hot-tour-2024\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-4515",
+    "fields": [],
+    "queuedAt": "2026-11-15T16:01:40.655Z"
+  },
+  {
+    "conditionKey": "corpus-drift:duplicate-of-cleared-contradiction",
+    "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance) (still open — BRO-5503)",
+    "description": "Still firing after 50 notifications since it was filed. Tracked at BRO-5503.\n\ncheck-corpus-drift.js audit \"duplicate-of-cleared-contradiction\" (node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0) has been drifting. Latest output:\n\nDuplicate-of-cleared contradiction sweep: 82547 review file(s) scanned, 1 match(es).\n  time-stands-still-2010/hollywood-reporter--david-rooney.json -> hollywood-reporter--frank-scheck.json (both claim/deny the same URL)\n\nFAIL: 1 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5503",
+    "fields": [],
+    "queuedAt": "2026-11-15T16:01:40.849Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-15.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-15T16:01:40.932Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-7521-mwhx5dpa",
