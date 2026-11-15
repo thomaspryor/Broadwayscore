@@ -1,18 +1,20 @@
 {
-  "updatedAt": "2026-11-14T09:39:23.988Z",
-  "scanned": 4822,
-  "showsWithViolations": 168,
-  "totalViolations": 222,
-  "newSinceLastRun": 0,
+  "updatedAt": "2026-11-15T10:12:03.855Z",
+  "scanned": 4832,
+  "showsWithViolations": 169,
+  "totalViolations": 223,
+  "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 968,
-    "not-shipped": 57,
+    "temporal-override-low-confidence": 970,
+    "not-shipped": 59,
     "duplicate-not-shipped": 57,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "passing-strange-regional-2026::artsdesk--helen-hawkins.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "hells-kitchen-2024::chelsea-community-news--michael-musto.json",
@@ -235,7 +237,8 @@
     "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json",
     "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
     "oppenheimer-west-end-2015::standard--fiona-mountford.json",
-    "school-of-rock-west-end-2016::timeout-london--andrzej-lukowski.json"
+    "school-of-rock-west-end-2016::timeout-london--andrzej-lukowski.json",
+    "passing-strange-regional-2026::artsdesk--helen-hawkins.json"
   ],
   "hits": [
     {
@@ -2094,7 +2097,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre's 2019 production, not a review of the West End opening at Aldwych T — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review, but it reviews the Chichester Festival Theatre's 2019 production of Shadowlands, no — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -2103,10 +2106,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a review of the Chichester Festival Theatre's 2019 production, not a review of the West End opening at Aldwych T",
+          "cvReasoning": "This is a legitimate theater review, but it reviews the Chichester Festival Theatre's 2019 production of Shadowlands, no",
           "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End production opening 2026-02-12",
-            "Opening paragraph explicitly states: 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych for a limited run' — review was written about the Chichester run before transfer"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run",
+            "Opening paragraph explicitly states: 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych for a limited run'"
           ]
         }
       ]
@@ -4410,6 +4413,27 @@
           "cvIssues": [
             "Scraped content does not match the expected excerpt from the known Time Out London review by Andrzej Lukowski",
             "The scraped text contains different critical analysis and structure than the expected review"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "title": "Passing Strange",
+      "openingDate": "2026-11-11",
+      "message": "artsdesk/Helen Hawkins (artsdesk--helen-hawkins.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 4d of opening, likely correct production] The scraped review explicitly identifies the venue as — https://theartsdesk.com/theatre/passing-strange-young-vic-review-exuberant-pocket-musical-thoughtful-core",
+      "violations": [
+        {
+          "filename": "artsdesk--helen-hawkins.json",
+          "url": "https://theartsdesk.com/theatre/passing-strange-young-vic-review-exuberant-pocket-musical-thoughtful-core",
+          "outletId": "artsdesk",
+          "criticName": "Helen Hawkins",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 4d of opening, likely correct production] The scraped review explicitly identifies the venue as",
+          "cvIssues": [
+            "Review is of Young Vic (London West End) production, not Pasadena Playhouse regional production",
+            "Venue mismatch: Young Vic named throughout; Pasadena Playhouse not mentioned"
           ]
         }
       ]

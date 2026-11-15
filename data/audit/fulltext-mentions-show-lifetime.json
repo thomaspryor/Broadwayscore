@@ -1,11 +1,14 @@
 {
-  "updatedAt": "2026-11-14T09:40:03.058Z",
-  "scanned": 4822,
+  "updatedAt": "2026-11-15T10:12:39.387Z",
+  "scanned": 4832,
   "showsWithViolations": 565,
   "totalViolations": 854,
-  "newSinceLastRun": 1,
+  "newSinceLastRun": 4,
   "newViolationKeys": [
-    "revolution-days-citizens-regional-2026::herald--neil-cooper.json"
+    "the-rose-tattoo-2019::chicagotribune--chris-jones.json",
+    "33-variations-2009::nytimes--ben-brantley.json",
+    "what-the-animals-say-off-west-end-2026::reviewsgate--william-russell.json",
+    "les-miserables-tour-2022::metro-weekly--andre-hereford.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -51,6 +54,7 @@
     "mj-2022::timeout--adam-feldman.json",
     "west-side-story-2020::thestage--nicole-serratore.json",
     "the-sound-inside-2019::variety--marilyn-stasio.json",
+    "the-rose-tattoo-2019::chicagotribune--chris-jones.json",
     "linda-vista-2019::theater-news-online--joe-dziemianowicz.json",
     "the-height-of-the-storm-2019::financialtimes--max-mcguinness.json",
     "the-height-of-the-storm-2019::theater-news-online--david-cote.json",
@@ -65,7 +69,6 @@
     "american-son-2018::thestage--mark-shenton.json",
     "torch-song-2018::thestage--mark-shenton.json",
     "the-ferryman-2018::bobs-theater-blog--robert-sholiton.json",
-    "the-lifespan-of-a-fact-2018::njcom--christopher-kelly.json",
     "the-boys-in-the-band-2018::broadwaynews--charles-isherwood.json",
     "the-iceman-cometh-2018::variety--marilyn-stasio.json",
     "summer-2018::hollywood-reporter--david-rooney.json",
@@ -119,7 +122,6 @@
     "les-miserables-2014::timeout--david-cote.json",
     "les-miserables-2014::usatoday--elysa-gardner.json",
     "les-miserables-2014::vulture--jesse-green.json",
-    "aladdin-2014::ap--mark-kennedy.json",
     "all-the-way-2014::ap--mark-kennedy.json",
     "all-the-way-2014::ap--unknown.json",
     "waiting-for-godot-2013::newsday--linda-winer.json",
@@ -218,13 +220,12 @@
     "time-stands-still-2010::backstage--david-sheward.json",
     "a-view-from-the-bridge-2010::hollywood-reporter--frank-scheck.json",
     "a-steady-rain-2009::ap--michael-kuchwara.json",
-    "burn-the-floor-2009::backstage--jo-sagolla.json",
     "burn-the-floor-2009::ew--jennifer-armstrong.json",
     "9-to-5-2009::country-stars-central--christian-scalise.json",
     "waiting-for-godot-2009::northjerseycom--robert-feldberg.json",
     "irenas-vow-2009::usatoday--elysa-gardner.json",
-    "exit-the-king-2009::nydailynews--joe-dziemianowicz.json",
     "god-of-carnage-2009::ny1--roma-torre.json",
+    "33-variations-2009::nytimes--ben-brantley.json",
     "hedda-gabler-2009::ap--michael-kuchwara.json",
     "13-2008::nytimes--charles-isherwood.json",
     "in-the-heights-2008::newyorker--hilton-als.json",
@@ -386,6 +387,7 @@
     "the-smile-of-her-off-west-end-2026::thestage--dave-fargnoli.json",
     "shit-meet-fan-off-broadway-2024::lighting-and-sound-america--david-barbour.json",
     "giant-west-end-2025::thestage--laurie-yule.json",
+    "what-the-animals-say-off-west-end-2026::reviewsgate--william-russell.json",
     "the-standard-of-living-west-end-2026::plays-to-see--tim-hochstrasser.json",
     "the-standard-of-living-west-end-2026::standard--nick-curtis.json",
     "the-standard-of-living-west-end-2026::theatrecat--unknown.json",
@@ -649,6 +651,7 @@
     "les-miserables-tour-2022::la-dance-chronicle--joanne-divito.json",
     "les-miserables-tour-2022::laughingplace--jeremiah-good.json",
     "les-miserables-tour-2022::maryland-theatre-guide--unknown.json",
+    "les-miserables-tour-2022::metro-weekly--andre-hereford.json",
     "les-miserables-tour-2022::minneapolis-star-tribune--star-tribune-staff.json",
     "les-miserables-tour-2022::new-city-stage--dennis-polkow.json",
     "les-miserables-tour-2022::oc-register--christopher-smith.json",
@@ -1745,6 +1748,30 @@
       ]
     },
     {
+      "showId": "the-rose-tattoo-2019",
+      "title": "The Rose Tattoo",
+      "openingDate": "2019-10-15",
+      "message": "chicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'The Rose Tattoo' (500 chars): https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-rose-tattoo-broadway-review-1017-20191016-ibdw4aq4vfajdnt4lhdwl4d4fy-story.html",
+      "violations": [
+        {
+          "filename": "chicagotribune--chris-jones.json",
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-rose-tattoo-broadway-review-1017-20191016-ibdw4aq4vfajdnt4lhdwl4d4fy-story.html",
+          "outletId": "chicagotribune",
+          "criticName": "Chris Jones",
+          "haystackLength": 500,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "linda-vista-2019",
       "title": "Linda Vista",
       "openingDate": "2019-10-10",
@@ -2067,30 +2094,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
-      "showId": "the-lifespan-of-a-fact-2018",
-      "title": "The Lifespan of a Fact",
-      "openingDate": "2018-10-18",
-      "message": "njcom/Christopher Kelly (njcom--christopher-kelly.json) SHIPPED but fullText never mentions 'The Lifespan of a Fact' (303 chars): https://www.nj.com/entertainment/index.ssf/2018/10/lifespan_of_a_fact_review_broadway_daniel_radcliff.html",
-      "violations": [
-        {
-          "filename": "njcom--christopher-kelly.json",
-          "url": "https://www.nj.com/entertainment/index.ssf/2018/10/lifespan_of_a_fact_review_broadway_daniel_radcliff.html",
-          "outletId": "njcom",
-          "criticName": "Christopher Kelly",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -3233,30 +3236,6 @@
       ]
     },
     {
-      "showId": "aladdin-2014",
-      "title": "Aladdin",
-      "openingDate": "2014-03-20",
-      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED but fullText never mentions 'Aladdin' (297 chars, textIssues flag set): https://hosted.ap.org/dynamic/stories/U/US_THEATER_REVIEW_ALADDIN?SITE=CAVIC&SECTION=HOME&TEMPLATE=DEFAULT",
-      "violations": [
-        {
-          "filename": "ap--mark-kennedy.json",
-          "url": "https://hosted.ap.org/dynamic/stories/U/US_THEATER_REVIEW_ALADDIN?SITE=CAVIC&SECTION=HOME&TEMPLATE=DEFAULT",
-          "outletId": "ap",
-          "criticName": "Mark Kennedy",
-          "haystackLength": 297,
-          "textIssuesFlag": true,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "all-the-way-2014",
       "title": "All The Way",
       "openingDate": "2014-03-06",
@@ -4292,11 +4271,11 @@
       "showId": "follies-2011",
       "title": "Follies",
       "openingDate": "2011-09-12",
-      "message": "chicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'Follies' (466 chars): http://www.chicagotribune.com/news/columnists/chi-follies-review-broadway-20110912,0,5375281.column",
+      "message": "chicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'Follies' (466 chars): https://www.chicagotribune.com/news/columnists/chi-follies-review-broadway-20110912,0,5375281.column",
       "violations": [
         {
           "filename": "chicagotribune--chris-jones.json",
-          "url": "http://www.chicagotribune.com/news/columnists/chi-follies-review-broadway-20110912,0,5375281.column",
+          "url": "https://www.chicagotribune.com/news/columnists/chi-follies-review-broadway-20110912,0,5375281.column",
           "outletId": "chicagotribune",
           "criticName": "Chris Jones",
           "haystackLength": 466,
@@ -4380,11 +4359,11 @@
       "showId": "the-normal-heart-2011",
       "title": "The Normal Heart",
       "openingDate": "2011-04-27",
-      "message": "sfgate/Mark Kennedy (sfgate--mark-kennedy.json) SHIPPED but fullText never mentions 'The Normal Heart' (468 chars): http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2011/04/27/entertainment/e191657D22.DTL\nwsj/Terry Teachout (wsj--terry-teachout.json) SHIPPED but fullText never mentions 'The Normal Heart' (303 chars): http://online.wsj.com/article/SB10001424052748704132204576285172021280218.html\n⚠️  bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) also too short to assess (0 chars): http://www.bloomberg.com/news/2011-04-28/mantello-throws-a-fit-in-normal-heart-rock-s-queen-reviews.html",
+      "message": "sfgate/Mark Kennedy (sfgate--mark-kennedy.json) SHIPPED but fullText never mentions 'The Normal Heart' (468 chars): https://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2011/04/27/entertainment/e191657D22.DTL\nwsj/Terry Teachout (wsj--terry-teachout.json) SHIPPED but fullText never mentions 'The Normal Heart' (303 chars): https://online.wsj.com/article/SB10001424052748704132204576285172021280218.html",
       "violations": [
         {
           "filename": "sfgate--mark-kennedy.json",
-          "url": "http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2011/04/27/entertainment/e191657D22.DTL",
+          "url": "https://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2011/04/27/entertainment/e191657D22.DTL",
           "outletId": "sfgate",
           "criticName": "Mark Kennedy",
           "haystackLength": 468,
@@ -4400,7 +4379,7 @@
         },
         {
           "filename": "wsj--terry-teachout.json",
-          "url": "http://online.wsj.com/article/SB10001424052748704132204576285172021280218.html",
+          "url": "https://online.wsj.com/article/SB10001424052748704132204576285172021280218.html",
           "outletId": "wsj",
           "criticName": "Terry Teachout",
           "haystackLength": 303,
@@ -5348,24 +5327,8 @@
       "showId": "burn-the-floor-2009",
       "title": "Burn the Floor",
       "openingDate": "2009-08-02",
-      "message": "backstage/Jo Sagolla (backstage--jo-sagolla.json) SHIPPED but fullText never mentions 'Burn the Floor' (195 chars, textIssues flag set): https://www.backstage.com/bso/reviews-ny-theatre-broadway/burn-the-floor-1003999353.story\new/Jennifer Armstrong (ew--jennifer-armstrong.json) SHIPPED but fullText never mentions 'Burn the Floor' (98 chars, textIssues flag set): https://www.ew.com/ew/article/0,,20295500,00.html",
+      "message": "ew/Jennifer Armstrong (ew--jennifer-armstrong.json) SHIPPED but fullText never mentions 'Burn the Floor' (98 chars, textIssues flag set): https://www.ew.com/ew/article/0,,20295500,00.html",
       "violations": [
-        {
-          "filename": "backstage--jo-sagolla.json",
-          "url": "https://www.backstage.com/bso/reviews-ny-theatre-broadway/burn-the-floor-1003999353.story",
-          "outletId": "backstage",
-          "criticName": "Jo Sagolla",
-          "haystackLength": 195,
-          "textIssuesFlag": true,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
         {
           "filename": "ew--jennifer-armstrong.json",
           "url": "https://www.ew.com/ew/article/0,,20295500,00.html",
@@ -5457,17 +5420,17 @@
       ]
     },
     {
-      "showId": "exit-the-king-2009",
-      "title": "Exit the King",
-      "openingDate": "2009-03-26",
-      "message": "nydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'Exit the King' (303 chars): http://www.nydailynews.com/entertainment/arts/2009/03/27/2009-03-27_oh_what_a_rush_geoffrey_rush_takes_broad.html",
+      "showId": "god-of-carnage-2009",
+      "title": "God of Carnage",
+      "openingDate": "2009-03-22",
+      "message": "ny1/Roma Torre (ny1--roma-torre.json) SHIPPED but fullText never mentions 'God of Carnage' (512 chars): https://www.ny1.com/6-bronx-news-content/ny1_living/on_stage/96040/ny1-theater-review---god-of-carnage-/",
       "violations": [
         {
-          "filename": "nydailynews--joe-dziemianowicz.json",
-          "url": "http://www.nydailynews.com/entertainment/arts/2009/03/27/2009-03-27_oh_what_a_rush_geoffrey_rush_takes_broad.html",
-          "outletId": "nydailynews",
-          "criticName": "Joe Dziemianowicz",
-          "haystackLength": 303,
+          "filename": "ny1--roma-torre.json",
+          "url": "https://www.ny1.com/6-bronx-news-content/ny1_living/on_stage/96040/ny1-theater-review---god-of-carnage-/",
+          "outletId": "ny1",
+          "criticName": "Roma Torre",
+          "haystackLength": 512,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -5481,17 +5444,17 @@
       ]
     },
     {
-      "showId": "god-of-carnage-2009",
-      "title": "God of Carnage",
-      "openingDate": "2009-03-22",
-      "message": "ny1/Roma Torre (ny1--roma-torre.json) SHIPPED but fullText never mentions 'God of Carnage' (512 chars): https://www.ny1.com/6-bronx-news-content/ny1_living/on_stage/96040/ny1-theater-review---god-of-carnage-/",
+      "showId": "33-variations-2009",
+      "title": "33 Variations",
+      "openingDate": "2009-03-09",
+      "message": "nytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions '33 Variations' (303 chars): https://theater2.nytimes.com/2009/03/10/theater/reviews/10thir.html?hp",
       "violations": [
         {
-          "filename": "ny1--roma-torre.json",
-          "url": "https://www.ny1.com/6-bronx-news-content/ny1_living/on_stage/96040/ny1-theater-review---god-of-carnage-/",
-          "outletId": "ny1",
-          "criticName": "Roma Torre",
-          "haystackLength": 512,
+          "filename": "nytimes--ben-brantley.json",
+          "url": "https://theater2.nytimes.com/2009/03/10/theater/reviews/10thir.html?hp",
+          "outletId": "nytimes",
+          "criticName": "Ben Brantley",
+          "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -8790,6 +8753,30 @@
           "criticName": "Laurie Yule",
           "haystackLength": 2785,
           "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "what-the-animals-say-off-west-end-2026",
+      "title": "What The Animals Say",
+      "openingDate": "2026-10-02",
+      "message": "reviewsgate/William Russell (reviewsgate--william-russell.json) SHIPPED but fullText never mentions 'What The Animals Say' (2061 chars, textIssues flag set): https://www.reviewsgate.co.uk/all-reviews/what-the-animals-say-by-david-ireland-the-finborough-theatre-118-finborough-road-london-sw10-until-24-october-2026",
+      "violations": [
+        {
+          "filename": "reviewsgate--william-russell.json",
+          "url": "https://www.reviewsgate.co.uk/all-reviews/what-the-animals-say-by-david-ireland-the-finborough-theatre-118-finborough-road-london-sw10-until-24-october-2026",
+          "outletId": "reviewsgate",
+          "criticName": "William Russell",
+          "haystackLength": 2061,
+          "textIssuesFlag": true,
           "triage": {
             "bucket": "truncated",
             "evidence": [
@@ -14109,7 +14096,7 @@
       "showId": "les-miserables-tour-2022",
       "title": "Les Misérables",
       "openingDate": "2022-10-07",
-      "message": "broadwayworld/Colin Fleming-Stumpf (broadwayworld--colin-fleming-stumpf.json) SHIPPED but fullText never mentions 'Les Misérables' (3434 chars): https://www.broadwayworld.com/central-new-york/article/Review-LES-MISERABLES-at-Rochester-Broadway-Theatre-League-20241016\nbroadwayworld/Jarrod Michael (broadwayworld--jarrod-michael.json) SHIPPED but fullText never mentions 'Les Misérables' (4972 chars): https://www.broadwayworld.com/appleton/article/Review-LES-MISERABLES-at-Fox-Cities-Performing-Arts-Center-20240221\nbroadwayworld/Roy Berko (broadwayworld--roy-berko.json) SHIPPED but fullText never mentions 'Les Misérables' (7175 chars): https://www.broadwayworld.com/cleveland/article/Review-LES-MISERABLES-at-Connor-Palace-Cleveland-20240919\nbroadwayworld/Scott Rawson (broadwayworld--scott-rawson.json) SHIPPED but fullText never mentions 'Les Misérables' (2736 chars): https://www.broadwayworld.com/madison/article/Review-LES-MISERABLES-on-Tour-at-the-Overture-Center-20240221\nbroadwayworld/Tracey Paleo (broadwayworld--tracey-paleo.json) SHIPPED but fullText never mentions 'Les Misérables' (4493 chars): https://www.broadwayworld.com/los-angeles/article/Review-LES-MISERABLES-at-Hollywood-Pantages-Theatre-20230808\ncalgary-herald/Louis B. Hobson (calgary-herald--louis-b-hobson.json) SHIPPED but fullText never mentions 'Les Misérables' (6513 chars): https://calgaryherald.com/entertainment/theatre/review-masterful-performances-give-rise-to-an-extraordinary-retelling-of-les-miserables\nchasingsupermom/Bekki (chasingsupermom--bekki.json) SHIPPED but fullText never mentions 'Les Misérables' (6657 chars): https://chasingsupermom.com/2026/04/01/les-miserables-in-portland-now-through-april-5th-full-show-review/\ndazzlingdailydeals/Amber (dazzlingdailydeals--amber.json) SHIPPED but fullText never mentions 'Les Misérables' (4154 chars): https://www.dazzlingdailydeals.com/an-unforgettable-night-with-les-miserables-in-portland-oregon/\ndc-theater-arts/Isabella Artino (dc-theater-arts--isabella-artino.json) SHIPPED but fullText never mentions 'Les Misérables' (5749 chars): https://dctheaterarts.org/2025/06/14/stellar-les-miserables-on-tour-at-kennedy-center-is-still-revolutionary/\nequality365/Eric Andrews-Katz (equality365--eric-andrews-katz.json) SHIPPED but fullText never mentions 'Les Misérables' (10114 chars): https://equality365.com/review-les-miserables-is-wonderful-theatre/\nla-dance-chronicle/Joanne DiVito (la-dance-chronicle--joanne-divito.json) SHIPPED but fullText never mentions 'Les Misérables' (4969 chars): https://www.ladancechronicle.com/les-miserables-triumphant-return/\nlaughingplace/Jeremiah Good (laughingplace--jeremiah-good.json) SHIPPED but fullText never mentions 'Les Misérables' (3114 chars): https://www.laughingplace.com/w/entertainment/les-miserables-dr-philips-center-review/\nmaryland-theatre-guide/Unknown (maryland-theatre-guide--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4999 chars): https://mdtheatreguide.com/2025/06/theatre-review-les-miserables-at-the-kennedy-center-2/\nminneapolis-star-tribune/Star Tribune staff (minneapolis-star-tribune--star-tribune-staff.json) SHIPPED but fullText never mentions 'Les Misérables' (10651 chars): https://www.startribune.com/brandi-carlile-conan-gray-esperanza-spalding-carter-faith-les-miserables/601563414\nnew-city-stage/Dennis Polkow (new-city-stage--dennis-polkow.json) SHIPPED but fullText never mentions 'Les Misérables' (2670 chars): https://www.newcitystage.com/2026/05/19/a-last-less-elaborate-look-at-a-reimagined-les-miserables/\noc-register/Christopher Smith (oc-register--christopher-smith.json) SHIPPED but fullText never mentions 'Les Misérables' (6957 chars): https://www.ocregister.com/2023/09/21/review-les-miserables-storms-the-barricades-in-costa-mesa/\npicksinsix/Ed Tracy (picksinsix--ed-tracy.json) SHIPPED but fullText never mentions 'Les Misérables' (4998 chars): https://www.conversationswithedtracy.com/picksinsix/2025/8/6/picksinsix-review-les-miserables-broadway-in-south-bend\nrachelsreviewstheatre/Unknown (rachelsreviewstheatre--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4473 chars): https://rachelsreviewstheatre.com/2026/07/02/les-miserables-at-tuacahn-is-a-triumph-review/\nrevue/Emily Alspaugh (revue--emily-alspaugh.json) SHIPPED but fullText never mentions 'Les Misérables' (6226 chars): https://revuewm.com/arts/review-les-miserables-is-a-stunning-feast-for-the-senses\nstage-raw/Socks Whitmore (stage-raw--socks-whitmore.json) SHIPPED but fullText never mentions 'Les Misérables' (5197 chars): https://stageraw.com/les-miserables/\nthe-cap-times/Allison Garfield (the-cap-times--allison-garfield.json) SHIPPED but fullText never mentions 'Les Misérables' (4494 chars): https://captimes.com/entertainment/les-miserables-at-overture-has-bright-spots-lacks-emotional-depth/article_19f88d54-cbd7-11ee-a5de-9b218b229536.html\nvariety/Katcy Stephan (variety--katcy-stephan.json) SHIPPED but fullText never mentions 'Les Misérables' (2542 chars): https://variety.com/2023/legit/news/les-miserables-mis-pantages-national-tour-los-angeles-1235687822/",
+      "message": "broadwayworld/Colin Fleming-Stumpf (broadwayworld--colin-fleming-stumpf.json) SHIPPED but fullText never mentions 'Les Misérables' (3434 chars): https://www.broadwayworld.com/central-new-york/article/Review-LES-MISERABLES-at-Rochester-Broadway-Theatre-League-20241016\nbroadwayworld/Jarrod Michael (broadwayworld--jarrod-michael.json) SHIPPED but fullText never mentions 'Les Misérables' (4972 chars): https://www.broadwayworld.com/appleton/article/Review-LES-MISERABLES-at-Fox-Cities-Performing-Arts-Center-20240221\nbroadwayworld/Roy Berko (broadwayworld--roy-berko.json) SHIPPED but fullText never mentions 'Les Misérables' (7175 chars): https://www.broadwayworld.com/cleveland/article/Review-LES-MISERABLES-at-Connor-Palace-Cleveland-20240919\nbroadwayworld/Scott Rawson (broadwayworld--scott-rawson.json) SHIPPED but fullText never mentions 'Les Misérables' (2736 chars): https://www.broadwayworld.com/madison/article/Review-LES-MISERABLES-on-Tour-at-the-Overture-Center-20240221\nbroadwayworld/Tracey Paleo (broadwayworld--tracey-paleo.json) SHIPPED but fullText never mentions 'Les Misérables' (4493 chars): https://www.broadwayworld.com/los-angeles/article/Review-LES-MISERABLES-at-Hollywood-Pantages-Theatre-20230808\ncalgary-herald/Louis B. Hobson (calgary-herald--louis-b-hobson.json) SHIPPED but fullText never mentions 'Les Misérables' (6513 chars): https://calgaryherald.com/entertainment/theatre/review-masterful-performances-give-rise-to-an-extraordinary-retelling-of-les-miserables\nchasingsupermom/Bekki (chasingsupermom--bekki.json) SHIPPED but fullText never mentions 'Les Misérables' (6657 chars): https://chasingsupermom.com/2026/04/01/les-miserables-in-portland-now-through-april-5th-full-show-review/\ndazzlingdailydeals/Amber (dazzlingdailydeals--amber.json) SHIPPED but fullText never mentions 'Les Misérables' (4154 chars): https://www.dazzlingdailydeals.com/an-unforgettable-night-with-les-miserables-in-portland-oregon/\ndc-theater-arts/Isabella Artino (dc-theater-arts--isabella-artino.json) SHIPPED but fullText never mentions 'Les Misérables' (5749 chars): https://dctheaterarts.org/2025/06/14/stellar-les-miserables-on-tour-at-kennedy-center-is-still-revolutionary/\nequality365/Eric Andrews-Katz (equality365--eric-andrews-katz.json) SHIPPED but fullText never mentions 'Les Misérables' (10114 chars): https://equality365.com/review-les-miserables-is-wonderful-theatre/\nla-dance-chronicle/Joanne DiVito (la-dance-chronicle--joanne-divito.json) SHIPPED but fullText never mentions 'Les Misérables' (4969 chars): https://www.ladancechronicle.com/les-miserables-triumphant-return/\nlaughingplace/Jeremiah Good (laughingplace--jeremiah-good.json) SHIPPED but fullText never mentions 'Les Misérables' (3114 chars): https://www.laughingplace.com/w/entertainment/les-miserables-dr-philips-center-review/\nmaryland-theatre-guide/Unknown (maryland-theatre-guide--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4999 chars): https://mdtheatreguide.com/2025/06/theatre-review-les-miserables-at-the-kennedy-center-2/\nmetro-weekly/André Hereford (metro-weekly--andre-hereford.json) SHIPPED but fullText never mentions 'Les Misérables' (6224 chars): https://www.metroweekly.com/2023/04/les-miserables-review-rebel-yell\nminneapolis-star-tribune/Star Tribune staff (minneapolis-star-tribune--star-tribune-staff.json) SHIPPED but fullText never mentions 'Les Misérables' (10651 chars): https://www.startribune.com/brandi-carlile-conan-gray-esperanza-spalding-carter-faith-les-miserables/601563414\nnew-city-stage/Dennis Polkow (new-city-stage--dennis-polkow.json) SHIPPED but fullText never mentions 'Les Misérables' (2670 chars): https://www.newcitystage.com/2026/05/19/a-last-less-elaborate-look-at-a-reimagined-les-miserables/\noc-register/Christopher Smith (oc-register--christopher-smith.json) SHIPPED but fullText never mentions 'Les Misérables' (6957 chars): https://www.ocregister.com/2023/09/21/review-les-miserables-storms-the-barricades-in-costa-mesa/\npicksinsix/Ed Tracy (picksinsix--ed-tracy.json) SHIPPED but fullText never mentions 'Les Misérables' (4998 chars): https://www.conversationswithedtracy.com/picksinsix/2025/8/6/picksinsix-review-les-miserables-broadway-in-south-bend\nrachelsreviewstheatre/Unknown (rachelsreviewstheatre--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4473 chars): https://rachelsreviewstheatre.com/2026/07/02/les-miserables-at-tuacahn-is-a-triumph-review/\nrevue/Emily Alspaugh (revue--emily-alspaugh.json) SHIPPED but fullText never mentions 'Les Misérables' (6226 chars): https://revuewm.com/arts/review-les-miserables-is-a-stunning-feast-for-the-senses\nstage-raw/Socks Whitmore (stage-raw--socks-whitmore.json) SHIPPED but fullText never mentions 'Les Misérables' (5197 chars): https://stageraw.com/les-miserables/\nthe-cap-times/Allison Garfield (the-cap-times--allison-garfield.json) SHIPPED but fullText never mentions 'Les Misérables' (4494 chars): https://captimes.com/entertainment/les-miserables-at-overture-has-bright-spots-lacks-emotional-depth/article_19f88d54-cbd7-11ee-a5de-9b218b229536.html\nvariety/Katcy Stephan (variety--katcy-stephan.json) SHIPPED but fullText never mentions 'Les Misérables' (2542 chars): https://variety.com/2023/legit/news/les-miserables-mis-pantages-national-tour-los-angeles-1235687822/",
       "violations": [
         {
           "filename": "broadwayworld--colin-fleming-stumpf.json",
@@ -14309,6 +14296,22 @@
           "outletId": "maryland-theatre-guide",
           "criticName": "Unknown",
           "haystackLength": 4999,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "metro-weekly--andre-hereford.json",
+          "url": "https://www.metroweekly.com/2023/04/les-miserables-review-rebel-yell",
+          "outletId": "metro-weekly",
+          "criticName": "André Hereford",
+          "haystackLength": 6224,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
@@ -19053,10 +19056,10 @@
   "triage": {
     "total": 854,
     "counts": {
-      "excerpt": 187,
+      "excerpt": 185,
       "wrong-production": 9,
-      "unresolved": 584,
-      "truncated": 74
+      "unresolved": 585,
+      "truncated": 75
     },
     "outletPlans": [
       {
@@ -19222,10 +19225,10 @@
       },
       {
         "outletId": "ap",
-        "total": 28,
+        "total": 27,
         "counts": {
           "unresolved": 3,
-          "excerpt": 25
+          "excerpt": 24
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -19258,15 +19261,6 @@
           },
           {
             "file": "a-steady-rain-2009/ap--michael-kuchwara.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "aladdin-2014/ap--mark-kennedy.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -19587,9 +19581,9 @@
       },
       {
         "outletId": "backstage",
-        "total": 10,
+        "total": 9,
         "counts": {
-          "excerpt": 9,
+          "excerpt": 8,
           "truncated": 1
         },
         "requiresArticleReview": true,
@@ -19599,15 +19593,6 @@
             "bucket": "truncated",
             "evidence": [
               "contentTier=truncated"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "burn-the-floor-2009/backstage--jo-sagolla.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
@@ -20375,10 +20360,10 @@
       },
       {
         "outletId": "chicagotribune",
-        "total": 4,
+        "total": 5,
         "counts": {
           "unresolved": 2,
-          "excerpt": 2
+          "excerpt": 3
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -20402,6 +20387,15 @@
           },
           {
             "file": "the-price-2017/chicagotribune--chris-jones.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-rose-tattoo-2019/chicagotribune--chris-jones.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -22995,6 +22989,25 @@
         ]
       },
       {
+        "outletId": "metro-weekly",
+        "total": 1,
+        "counts": {
+          "unresolved": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "les-miserables-tour-2022/metro-weekly--andre-hereford.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
         "outletId": "minneapolis-star-tribune",
         "total": 1,
         "counts": {
@@ -23209,25 +23222,6 @@
         ]
       },
       {
-        "outletId": "njcom",
-        "total": 1,
-        "counts": {
-          "excerpt": 1
-        },
-        "requiresArticleReview": true,
-        "candidates": [
-          {
-            "file": "the-lifespan-of-a-fact-2018/njcom--christopher-kelly.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        ]
-      },
-      {
         "outletId": "northjerseycom",
         "total": 11,
         "counts": {
@@ -23413,24 +23407,15 @@
       },
       {
         "outletId": "nydailynews",
-        "total": 8,
+        "total": 7,
         "counts": {
-          "excerpt": 7,
+          "excerpt": 6,
           "unresolved": 1
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "baby-its-you-2011/nydailynews--joe-dziemianowicz.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "exit-the-king-2009/nydailynews--joe-dziemianowicz.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -23645,10 +23630,11 @@
       },
       {
         "outletId": "nytimes",
-        "total": 8,
+        "total": 9,
         "counts": {
           "wrong-production": 2,
           "unresolved": 5,
+          "excerpt": 1,
           "truncated": 1
         },
         "requiresArticleReview": true,
@@ -23658,6 +23644,15 @@
             "bucket": "truncated",
             "evidence": [
               "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "33-variations-2009/nytimes--ben-brantley.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
@@ -23996,6 +23991,25 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "reviewsgate",
+        "total": 1,
+        "counts": {
+          "truncated": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         ]
