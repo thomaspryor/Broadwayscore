@@ -833,10 +833,12 @@ function buildCardNotes(row) {
 // grace if no Mac dispatch has claimed it, and a non-PARKED provenance line so
 // autofix-filed-marker.js still knows who filed it. A row the cloud worker
 // could not run (linear-issue-create refuses the START-NOW) files parked.
-function startNowNotes(notes) {
+function startNowNotes(notes, { cloudFiled = false } = {}) {
   return [
-    startNowLine('a Mac dispatch'),
-    `${AUTOFIX_FILED_MARKER} (START-NOW): runAutofix also dispatches it via linear-next in the same pass.`,
+    startNowLine(cloudFiled ? 'an earlier worker' : 'a Mac dispatch'),
+    cloudFiled
+      ? `${AUTOFIX_FILED_MARKER} (START-NOW): filed by the morning digest Action (BRO-7520); the cloud worker takes it, no Mac dispatch is involved.`
+      : `${AUTOFIX_FILED_MARKER} (START-NOW): runAutofix also dispatches it via linear-next in the same pass.`,
     '',
     notes,
   ].join('\n');
@@ -854,7 +856,7 @@ function reattachedLiveState(filed) {
   return filed.stateType === 'started' ? 'tracked' : null;
 }
 
-function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false, ignoreNumbers = false, testId = null, execFn = execFileSync } = {}) {
+function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false, cloudFiled = false, ignoreNumbers = false, testId = null, execFn = execFileSync } = {}) {
   // Dedup BEFORE filing (BRO-286 merge-review P0): a persistent health row
   // hits this every morning, and the Notion-mirror dedup (matchOpenTask in
   // planAutofix) can't see Linear issues — without this check the same row
@@ -928,7 +930,7 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
   try {
     let out;
     if (startNow) {
-      const body = startNowNotes(notes);
+      const body = startNowNotes(notes, { cloudFiled });
       try {
         out = run(createArgs(body, ['--dispatch']));
       } catch (err) {
@@ -1649,6 +1651,51 @@ function runAutofix({
 // row came back state 'decision'. Every other queued row is shown through its
 // autofix row instead. Matched on conditionKey, so a queued row must carry it
 // (BRO-5099: the health snapshot used to drop it, emptying this list daily).
+// BRO-7520: the Action's own filing step. The email is built off the Mac with
+// report-only autofix, so a fresh visitor row read "no automatic fix
+// confirmed" until the Mac pass filed it 3 days later. This files the cards
+// the Mac pass would file on its first sighting, as START-NOW Todo cards the
+// cloud worker takes (no cmux, no local state, no dispatch spawn), and marks
+// the rows so the email says so. Same rules as the Mac gate: a visitor ERROR
+// files at once, a visitor warning once its snapshot firstSeen is old enough,
+// every other row is left to the Mac pass ('watching' while young, else
+// needs-card). Dedup by "BSC Daily: <row>" title is fileCard's own lookup.
+// Mutates and returns `plan`. Fail-soft per row.
+const CLOUD_FILE_BUDGET_MS = 150000;
+function runCloudFile({
+  plan, cap = DISPATCH_CAP, log = () => {}, fileCardFn = fileCard, openLinearTitles = null,
+  now = new Date(), budgetMs = CLOUD_FILE_BUDGET_MS, nowMsFn = Date.now,
+} = {}) {
+  if (!Array.isArray(plan) || !plan.length) return plan || [];
+  const { hold } = computePersistenceGate(plan, {}, now.getTime(), { openTitles: openLinearTitles });
+  const held = new Set(hold);
+  const startMs = nowMsFn();
+  let filed = 0;
+  for (const row of plan) {
+    if (row.state !== 'needs-card') continue;
+    if (held.has(row)) { row.state = 'watching'; continue; }
+    // computePersistenceGate also releases non-visitor rows on the shared clock; those stay the Mac pass's.
+    if (!isVisitorFacingRow(row)) continue;
+    if (filed >= cap) { log(`[digest-autofix] cloud-file cap ${cap} reached; "${row.title}" left for the next run`); continue; }
+    if (nowMsFn() - startMs > budgetMs) { log(`[digest-autofix] cloud-file budget ${budgetMs}ms spent; "${row.title}" left for the next run`); continue; }
+    const res = fileCardFn(row.title, buildCardNotes(row), {
+      log, refreshNotesOnReattach: Array.isArray(row.affected), startNow: true, cloudFiled: true, ignoreNumbers: true,
+      testId: Array.isArray(row.affected) ? null : (row.testId || null),
+    });
+    if (res && res.ok) {
+      row.taskId = `linear:${res.identifier}`;
+      row.linearIdentifier = res.identifier;
+      row.wasNew = !res.existing;
+      row.state = reattachedLiveState(res) || 'card-filed';
+      if (!res.existing) filed++;
+    } else {
+      row.state = 'card-failed';
+      row.wasNew = true;
+    }
+  }
+  return plan;
+}
+
 function keepDecisionQueued(queued, autofixRows) {
   // 'info' rows (BRO-5481 receipts) stay too: the renderer shows them as one FYI line.
   const keys = new Set((autofixRows || []).filter(r => r && (r.state === 'decision' || r.state === 'info') && r.conditionKey).map(r => r.conditionKey));
@@ -1705,7 +1752,7 @@ function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0, freshne
 
 module.exports = {
   keepDecisionQueued, localRollupIssues, stuckSignalDetail, ROLLUP_ROW_NAMES,
-  planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
+  planAutofix, runAutofix, runCloudFile, CLOUD_FILE_BUDGET_MS, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, reconcileAndAppendDigest, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   persistenceKey, computePersistenceGate, validFirstSeen, earlierFirstSeen, SHARED_CLOCK_RELEASE_CAP, markTrackedReportOnly, coveredRowTitles, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
   fileCard, reattachedLiveState, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,

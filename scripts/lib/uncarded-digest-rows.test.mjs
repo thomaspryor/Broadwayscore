@@ -44,3 +44,16 @@ test('result row: warn with the list, pass when carded, pass without a snapshot,
   const down = await uncardedDigestRowsResult({ snapshot, listOpenIssues: async () => { throw new Error('down'); }, nowMs: NOW });
   assert.match(down.message, /^Unmeasurable/);
 });
+
+test('BRO-7520: a row whose check passes in THIS run drops out; an absent or failing result does not', async () => {
+  const names = snapshot.warns.slice(0, 2).map((r) => r.name);
+  const green = new Set([names[0]]);
+  assert.deepEqual(findUncardedDigestRows(snapshot, [], NOW, { greenNow: green }).map((r) => r.title), ['BSC Daily: Check Performance Budget']);
+  assert.equal(findUncardedDigestRows(snapshot, [], NOW, { greenNow: new Set() }).length, 2, 'absent result proves nothing');
+  const res = await uncardedDigestRowsResult({ snapshot, listOpenIssues: async () => [], nowMs: NOW, currentResults: [
+    { name: names[0], status: 'pass' }, { name: names[1], status: 'warn' },
+  ] });
+  assert.match(res.message, /^1 digest row/);
+  const none = await uncardedDigestRowsResult({ snapshot, listOpenIssues: async () => [], nowMs: NOW, currentResults: names.map((name) => ({ name, status: 'pass' })) });
+  assert.equal(none.status, 'pass');
+});

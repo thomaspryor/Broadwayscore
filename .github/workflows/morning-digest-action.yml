@@ -14,9 +14,10 @@ name: Morning Digest
 # Sends: schedule, or workflow_dispatch with send=true. Both run send-morning-digest.js
 # --send-to-owner --no-autofix --skip-mac-local (--resend-sent-guard, or --test-send for a test dispatch): never a broadcast (rule 17),
 # one owner email a day (the guard refuses when Resend already shows today's digest; exit 3 =
-# already sent = green; any unreadable guard = red, never a send). Autofix and the canary are
-# NOT here: the Action rows are report-only, and the Mac's existing morning-digest job runs them
-# (--autofix-only path after the handoff date, no install step).
+# already sent = green; any unreadable guard = red, never a send). The real send passes
+# --cloud-autofix (BRO-7520): report-only like --no-autofix, plus START-NOW cards for visitor rows, filed only once
+# the Resend guard says send; the cloud worker takes them, no Mac involved. The dispatch spawn and the canary are
+# NOT here: the Mac's existing morning-digest job runs them (--autofix-only path after the handoff date).
 #
 # CATCH-UP (handoff day 2026-11-02): GitHub started NONE of the three scheduled runs, and this repo
 # is known to drop most scheduled runs (BRO-4282, cron-redispatch.yml). Events are delivered reliably,
@@ -190,7 +191,7 @@ jobs:
         run: |
           status=0
           if [ "$IS_TEST" = "true" ]; then MODE="--test-send"; else MODE="--resend-sent-guard"; fi
-          node scripts/send-morning-digest.js --send-to-owner --no-autofix --skip-mac-local $MODE \
+          node scripts/send-morning-digest.js --send-to-owner --cloud-autofix --skip-mac-local $MODE \
             > "$RUNNER_TEMP/digest.log" 2>&1 || status=$?
           echo "digest send exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, not published)"
           grep -E '^\[digest\] (Resend sent-today guard|sent to|refusing)' "$RUNNER_TEMP/digest.log" | sed -E 's/\(subject: .*$/(subject withheld)/; s/sent to [^ ]+/sent to owner/' || true

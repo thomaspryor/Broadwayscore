@@ -29,7 +29,7 @@ const TITLE_PREFIX_RE = /^(?:Fix: )?/;
  * @param {number} nowMs
  * @returns {Array<{title:string, days:number}>} oldest first
  */
-function findUncardedDigestRows(snapshot, openIssues, nowMs, { minDays = UNCARDED_AFTER_DAYS } = {}) {
+function findUncardedDigestRows(snapshot, openIssues, nowMs, { minDays = UNCARDED_AFTER_DAYS, greenNow = null } = {}) {
   const plan = planAutofix({ health: snapshot || {}, tasks: [], queued: (snapshot && snapshot.queued) || [], today: new Date(nowMs).toISOString().slice(0, 10) });
   const issues = Array.isArray(openIssues) ? openIssues : [];
   const titles = new Set(issues.map((i) => String((i && i.title) || '').replace(TITLE_PREFIX_RE, '')));
@@ -40,6 +40,11 @@ function findUncardedDigestRows(snapshot, openIssues, nowMs, { minDays = UNCARDE
     if (row.state !== 'needs-card' || !row.firstSeen) continue;
     const days = (nowMs - Date.parse(row.firstSeen)) / 86400000;
     if (!(days >= minDays)) continue;
+    // BRO-7520: the snapshot is the PREVIOUS run's, so a row whose check passes in this run still listed
+    // for one more day. Dropped only on positive evidence: every health-check name behind the row is
+    // present in this run's results with status pass (an absent result proves nothing).
+    const names = Array.isArray(row.affected) && row.affected.length ? row.affected.map((a) => a && a.name) : [row.name];
+    if (greenNow && names.length && names.every((n) => n && greenNow.has(n))) continue;
     const free1 = numberFreeTitle(row.title);
     const plain = row.title.replace(/^BSC Daily: /, '');
     if (titles.has(row.title) || free.has(free1) || covered.has(free1) || covered.has(numberFreeTitle(plain)) || (row.name && covered.has(numberFreeTitle(row.name)))) continue;
@@ -49,7 +54,7 @@ function findUncardedDigestRows(snapshot, openIssues, nowMs, { minDays = UNCARDE
 }
 
 /** The health-check row. Linear failure reports unmeasurable rather than passing. */
-async function uncardedDigestRowsResult({ snapshot, listOpenIssues, nowMs = Date.now() }) {
+async function uncardedDigestRowsResult({ snapshot, listOpenIssues, nowMs = Date.now(), currentResults = null }) {
   if (!snapshot) return { name: ROW_NAME, status: 'pass', message: 'No previous digest snapshot to check' };
   let openIssues;
   try {
@@ -57,14 +62,17 @@ async function uncardedDigestRowsResult({ snapshot, listOpenIssues, nowMs = Date
   } catch (err) {
     return { name: ROW_NAME, status: 'warn', message: `Unmeasurable: could not list open Linear issues (${String(err.message || err).slice(0, 160)})` };
   }
-  const rows = findUncardedDigestRows(snapshot, openIssues, nowMs);
+  const greenNow = Array.isArray(currentResults)
+    ? new Set(currentResults.filter((r) => r && r.status === 'pass' && r.name).map((r) => r.name))
+    : null;
+  const rows = findUncardedDigestRows(snapshot, openIssues, nowMs, { greenNow });
   if (rows.length === 0) return { name: ROW_NAME, status: 'pass', message: `Every digest row listed ${UNCARDED_AFTER_DAYS}+ days has a card` };
   const list = rows.slice(0, 5).map((r) => `${r.title.replace(/^BSC Daily: /, '')} (${r.days}d)`).join('; ');
   return {
     name: ROW_NAME,
     status: 'warn',
     message: `${rows.length} digest row(s) listed ${UNCARDED_AFTER_DAYS}+ days with no card: ${list}${rows.length > 5 ? '; ...' : ''}`,
-    hint: 'Cards for digest rows are filed by the Mac pass (send-morning-digest.js --autofix-only) once a row passes the 72h hold; the hold now reads the snapshot firstSeen, so a row this old means that pass is not running, is failing to file, or the card was closed while the row stayed red. Check the Mac morning-digest job log and data/audit/digest-autofix-ledger.jsonl. Blind spot: router-queued rows and rows the Mac adds itself carry no snapshot firstSeen, so this row cannot see them.',
+    hint: 'Visitor rows get a card from the digest Action filing step (BRO-7520); the others are filed by the Mac pass (send-morning-digest.js --autofix-only) once a row passes the 72h hold; the hold now reads the snapshot firstSeen, so a row this old means that pass is not running, is failing to file, or the card was closed while the row stayed red. Check the Mac morning-digest job log and data/audit/digest-autofix-ledger.jsonl. Blind spot: router-queued rows and rows the Mac adds itself carry no snapshot firstSeen, so this row cannot see them.',
   };
 }
 

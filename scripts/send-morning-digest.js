@@ -335,6 +335,9 @@ Usage:
   --autofix-only        run auto-fix + canary like a normal run but send nothing (Mac, after the digest moved to the Action)
   --force      bypass the send-once-per-ET-day guard (deliberate re-send only)
   --no-autofix          skip auto-fix planning, dispatch and the canary (no dispatch fleet here)
+  --cloud-autofix       the Action's real send (BRO-7520): report-only like --no-autofix (it implies it), plus files
+                        START-NOW cards for visitor rows the cloud worker takes, only once the Resend guard says
+                        send; ignored by --dry-run, --test-send and --autofix-only
   --skip-mac-local      skip the readers of Mac-only state (cmux, dispatch ledgers, the shared
                         checkout) and print one line naming them plus the Mac's heartbeat age
                         (needs GH_TOKEN)
@@ -747,6 +750,9 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
   }
   if (loopDeadMsg) {
     alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
+  } else if (fixing && reportOnly === 'cloud') {
+    // BRO-7520: the Action files the cards itself; say only what it did.
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. Visitor-facing ones got a fix card this morning and a cloud worker takes them; the rest are tracked or being watched. Details below.</p>`);
   } else if (fixing && reportOnly) {
     // BRO-6230: --no-autofix builds a report-only plan; nothing was queued, so say so.
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. This digest only reports them; it did not start any automatic fix. Details below.</p>`);
@@ -1077,7 +1083,9 @@ async function main() {
   if (args['autofix-only'] && (args['send-to'] || args['send-to-owner'])) { console.error('[digest] --autofix-only never sends; drop --send-to/--send-to-owner'); process.exit(1); }
   const dryRun = !!args['dry-run'] || autofixOnly; // --autofix-only --dry-run stays a dry run for autofix too
   if (dryRun) process.env.DIGEST_NO_LIST_TOKEN = '1';
-  const noAutofix = !!args['no-autofix'];
+  // BRO-7520: --cloud-autofix is report-only (no runAutofix, no dispatch spawn, no canary) plus card filing.
+  const cloudAutofix = !!args['cloud-autofix'] && !args['dry-run'] && !args['test-send'] && !autofixOnly;
+  const noAutofix = !!args['no-autofix'] || !!args['cloud-autofix'];
   const skipMacLocal = !!args['skip-mac-local'];
   // --test-send (BRO-6764): one labelled "TEST: " email that touches NO sent-state: it skips both sent-today guards
   // (so it can go out after the day's real digest), writes no ~/.broadwayscore-state stamp and no board snapshot.
@@ -1651,6 +1659,8 @@ async function main() {
   // or stuck signals only this machine can see), never as a duplicate.
   // Fail-soft: any error here degrades to un-annotated rows, never blocks the send.
   let autofixRows = null;
+  let resendGuard = null; // BRO-7520: --cloud-autofix reads it before filing; the send guard below reuses it
+  let cloudFiledCount = 0;
   let autofixFailed = false; // --autofix-only exits nonzero on it (a launchd job nobody reads would hide it)
   // --no-autofix (BRO-6230, the Action): plan only, no card filing or
   // dispatch, and no Mac task dir. Rows with an open Linear card read
@@ -1662,6 +1672,18 @@ async function main() {
     const coveredTitles = await readCoveredRowTitles();
     autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount, stuckSignals: stuckSignalTexts }), tasks: [], queued }), openTitles, coveredTitles);
     if (sections.health && Array.isArray(sections.health.queued)) sections.health.queued = keepDecisionQueued(sections.health.queued, autofixRows);
+    if (cloudAutofix) {
+      // Filing waits for the Resend verdict: the schedule crons re-run this after the email went out.
+      if (resendSentGuard) {
+        const recipient = sendTo || process.env.OWNER_EMAIL || null;
+        resendGuard = await resendSentToday({ apiKey: process.env.RESEND_API_KEY, recipient });
+        console.log(`[digest] Resend sent-today guard: ${resendGuard.verdict} — ${resendGuard.reason}`);
+      }
+      if (resendGuard && resendGuard.verdict === 'send') {
+        require('./lib/digest-autofix.js').runCloudFile({ plan: autofixRows, openLinearTitles: openTitles, log: (m) => console.log(m) });
+        cloudFiledCount = autofixRows.filter((r) => r.state === 'card-filed').length;
+      } else console.log('[digest] --cloud-autofix: no filing (the Resend guard did not say send)');
+    }
     const tracked = autofixRows.filter((r) => r.state === 'tracked').length;
     console.log(`[digest] --no-autofix: report only, nothing filed or dispatched; ${tracked} of ${autofixRows.length} row(s) already have an open card${openTitles ? '' : ' (Linear unreadable)'}`);
   } catch (err) {
@@ -1822,7 +1844,7 @@ async function main() {
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
     console.log(`[digest] ${sections.macLocalSkipped.text}`);
   }
-  const { subject, html, bodyHtml, reportHtml } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, improvementLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: noAutofix, skipMacLocal, now });
+  const { subject, html, bodyHtml, reportHtml } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, improvementLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: cloudAutofix ? 'cloud' : noAutofix, skipMacLocal, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
@@ -1862,8 +1884,7 @@ async function main() {
 
   // BRO-6230: the ~/.broadwayscore-state guard below lives on one machine. A
   // second sender (the GitHub Action) cannot see it, so it asks Resend instead.
-  let resendGuard = null;
-  if (resendSentGuard) {
+  if (resendSentGuard && !resendGuard) {
     const recipient = sendTo || process.env.OWNER_EMAIL || null;
     resendGuard = await resendSentToday({ apiKey: process.env.RESEND_API_KEY, recipient });
     console.log(`[digest] Resend sent-today guard: ${resendGuard.verdict} — ${resendGuard.reason}`);

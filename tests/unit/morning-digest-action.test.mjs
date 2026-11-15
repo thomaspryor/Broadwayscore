@@ -90,7 +90,7 @@ test('digest workflow: the only send is owner-only, guarded, report-only; never 
   const code = WF.replace(/^\s*#.*$/gm, '');
   assert.doesNotMatch(code, /--send-to [^-]|broadcasts|--force/);
   assert.equal(code.match(/--send-to-owner/g).length, 1);
-  assert.match(WF, /send-morning-digest\.js --send-to-owner --no-autofix --skip-mac-local \$MODE \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
+  assert.match(WF, /send-morning-digest\.js --send-to-owner --cloud-autofix --skip-mac-local \$MODE \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
   assert.match(WF, /MODE="--resend-sent-guard"/);
   assert.match(WF, /send-morning-digest\.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
   // Already sent (exit 3) is green; every other nonzero stays red.

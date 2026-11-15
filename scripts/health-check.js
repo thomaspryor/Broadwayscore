@@ -3387,13 +3387,14 @@ async function checkUntrackedPersistentRows() {
 // BRO-7488: advisory (warn-only) tripwire for a digest row listed 4+ days with
 // no card. Reads the PREVIOUS run's tracked snapshot (this run rewrites it
 // after the checks) and Linear's open issues, both visible from CI.
-async function checkUncardedDigestRows() {
+async function checkUncardedDigestRows(currentResults = null) {
   try {
     let snapshot = null;
     try { snapshot = JSON.parse(fs.readFileSync(HEALTH_DIGEST_SNAPSHOT_FILE, 'utf8')); } catch { snapshot = null; }
     return [await uncardedDigestRowsResult({
       snapshot,
       listOpenIssues: () => require('./lib/linear-client.js').listOpenIssuesWithDescriptions(),
+      currentResults,
     })];
   } catch (err) {
     return [{ name: UNCARDED_DIGEST_ROW_NAME, status: 'warn', message: `Unmeasurable: ${String(err.message || err).slice(0, 160)}` }];
@@ -6372,7 +6373,7 @@ function checkReverseDiscovery() {
 }
 
 async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
-  return [
+  const results = [
     ...checkFreshness(),
     ...checkAuditFreshness(),
     ...checkBoardDispatchFreshness(),
@@ -6414,7 +6415,6 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixCanary(isCI),
     ...checkAutofixThroughput(isCI),
     ...(await checkUntrackedPersistentRows()),
-    ...(await checkUncardedDigestRows()),
     ...checkDigestInvariantFail(isCI),
     ...checkStuckPipelineItems(),
     ...checkDataFreshnessGaps(),
@@ -6428,6 +6428,9 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCorpusAudits(),
     ...checkReverseDiscovery(),
   ];
+  // BRO-7520: last, so rows whose check passes in THIS run drop out of the previous snapshot's list.
+  results.push(...(await checkUncardedDigestRows(results)));
+  return results;
 }
 
 async function main() {
