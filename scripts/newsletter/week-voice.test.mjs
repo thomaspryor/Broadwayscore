@@ -22,7 +22,7 @@ test('busy Broadway week (Apr 20): count in subject, packed opener, tie and the 
   ] });
   assert.equal(v.subject, 'Schmigadoon! and 5 other shows open on Broadway this week');
   assert.equal(plain(v.sentences.join(' ')),
-    "A packed week on Broadway, with six openings. Schmigadoon! opens at 79/100, tied with Joe Turner's Come and Gone and The Balusters. Beaches lands at 44.");
+    "A packed week on Broadway, with six openings. Schmigadoon! opens at 79/100, tied with Joe Turner's Come and Gone and The Balusters. Beaches lands at 44/100.");
   assert.deepEqual(v.showRefs.map(r => r.title), ['Schmigadoon!', "Joe Turner's Come and Gone", 'The Balusters', 'Beaches']);
 });
 
@@ -31,7 +31,7 @@ test('Off-Broadway week (Aug 10): a weak most-reviewed lead never claims the bes
   const v = composeWeekVoice({ ob: [ob('An American Daughter', 47, 22), ob('Benevolent', 84, 9), ob("The Winter's Tale", 80, 8), ob('Marlise', 70, 5)] });
   assert.equal(v.subject, 'An American Daughter and 3 other shows open off-Broadway this week');
   assert.equal(plain(v.sentences.join(' ')),
-    "A steady week for Off Broadway. An American Daughter opens to a weak 47. Benevolent (84) and The Winter's Tale (80) are the ones to see.");
+    "A steady week for Off Broadway. An American Daughter opens to a weak 47/100. Benevolent (84/100) and The Winter's Tale (80/100) are the ones to see.");
 });
 
 test('slow week (Aug 24): quiet-week subject, both markets named', () => {
@@ -67,7 +67,7 @@ test('"draws the most reviews" is never said (review count is a sort key, not ne
   const v = composeWeekVoice({ ob: [ob('Tied Lead', 50, 10), ob('Tied Other', 48, 10)] });
   const text = plain(v.sentences.join(' '));
   assert.doesNotMatch(text, /most reviews/);
-  assert.match(text, /Tied Lead opens off-Broadway to a weak 50\./);
+  assert.match(text, /Tied Lead opens off-Broadway to a weak 50\/100\./);
 });
 
 test('Free Shakespeare in the Park is never called off-Broadway', () => {
@@ -126,7 +126,7 @@ test('packed week: calendar count stays, and the lede says how many got a Critic
   const v = composeWeekVoice({ ob: list, counts: { ob: 12 } });
   assert.equal(v.subject, '7 off-Broadway shows get reviews, Show G scores highest with critics');
   const text = plain(v.sentences.join(' '));
-  assert.match(text, /^A packed week Off Broadway, with 12 openings\. 7 got enough reviews for a Critic Score, and Show G scored the highest with a 66\./);
+  assert.match(text, /^A packed week Off Broadway, with 12 openings\. 7 got enough reviews for a Critic Score, and Show G scored the highest with 66\/100\./);
   assert.doesNotMatch(text, /most reviews/);
 });
 
