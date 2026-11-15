@@ -284,21 +284,6 @@
     "queuedAt": "2026-11-14T14:52:45.285Z"
   },
   {
-    "conditionKey": "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
-    "title": "Live-data test failing: BRO-93 acceptance: current shows.json produces zero stale announced flags (scripts/audit-stale-announced-shows.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-93 acceptance: current shows.json produces zero stale announced flags\" in scripts/audit-stale-announced-shows.test.mjs is red against the live corpus.\n\nexpected zero stale announced shows, got: [\n{\n\"id\": \"the-apology-west-end-2027\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"the-humans-west-end-2027\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n}\n]\n+ actual - expected\n\n+ [\n+   {\n+     id: 'the-apology-west-end-2027',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'the-humans-west-end-2027',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   }\n+ ]\n- []\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
-    "fields": [],
-    "queuedAt": "2026-11-14T14:04:44.258Z"
-  },
-  {
     "conditionKey": "land:land/bro7490-batch-slot-sync",
     "title": "Landing blocked: unit-tests-node red on land/bro7490-batch-slot-sync",
     "description": "land.yml did not land land/bro7490-batch-slot-sync: the unit-tests-node gate went red at 297d008a36. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43619720380",
@@ -632,5 +617,19 @@
       }
     ],
     "queuedAt": "2026-11-15T00:19:50.521Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
+    "title": "Live-data test failing: BRO-93 acceptance: current shows.json produces zero stale announced flags (scripts/audit-stale-announced-shows.test.mjs) — still happening after 3 days",
+    "description": "Filed BRO-7499: this has been happening for 3+ days without clearing.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-93 acceptance: current shows.json produces zero stale announced flags\" in scripts/audit-stale-announced-shows.test.mjs is red against the live corpus.\n\nexpected zero stale announced shows, got: [\n{\n\"id\": \"the-apology-west-end-2027\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"the-humans-west-end-2027\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n}\n]\n+ actual - expected\n\n+ [\n+   {\n+     id: 'the-apology-west-end-2027',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'the-humans-west-end-2027',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   }\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7499",
+    "fields": [],
+    "queuedAt": "2026-11-15T00:33:14.823Z"
   }
 ]
