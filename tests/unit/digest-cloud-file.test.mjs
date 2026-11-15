@@ -12,7 +12,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const { planAutofix, runCloudFile, DISPATCH_CAP } = require('../../scripts/lib/digest-autofix.js');
 const { ownerFixStatus } = require('../../scripts/lib/autonomous-email-render.js');
 
-const NOW = new Date('2026-11-16T12:00:00Z');
+// Real clock: planAutofix's validFirstSeen rejects dates past Date.now(), so a fixed future NOW would null every firstSeen.
+const NOW = new Date();
 const ago = (d) => new Date(NOW.getTime() - d * 864e5).toISOString();
 const NONE = 'no automatic fix confirmed';
 const fakeFile = () => { const calls = []; return { calls, fn: (title, notes, o) => { calls.push({ title, notes, o }); return { ok: true, identifier: `BRO-${900 + calls.length}` }; } }; };
@@ -35,7 +36,7 @@ test('without the filing step the same fresh row reads "no automatic fix confirm
   assert.equal(ownerFixStatus({ name: 'Test UGC Features' }, plan), NONE);
 });
 
-test('visitor warnings file on their first morning, young, old or with an unreadable firstSeen (no 3-day wait)', () => {
+test('a visitor warning files on the run the email first shows it (48h settle, unknown age files), never a 3-day wait', () => {
   const plan = planFor([], [
     { name: 'Check Performance Budget', message: 'slow', firstSeen: ago(0) },
     { name: 'Check Old Thing', message: 'x', firstSeen: ago(5) },
@@ -43,7 +44,9 @@ test('visitor warnings file on their first morning, young, old or with an unread
   ]);
   const f = fakeFile();
   runCloudFile({ plan, fileCardFn: f.fn, now: NOW });
-  assert.deepEqual(plan.map((r) => r.state), ['card-filed', 'card-filed', 'card-filed']);
+  // ago(0) is still settling (the email holds it back too), ago(5) and the 1970 seed are shown, so filed.
+  assert.deepEqual(plan.map((r) => r.state), ['watching', 'card-filed', 'card-filed']);
+  assert.equal(f.calls.length, 2);
   for (const r of plan) assert.notEqual(ownerFixStatus({ name: r.name }, plan), NONE);
 });
 
@@ -62,8 +65,11 @@ test('cap: at most DISPATCH_CAP new cards a run, the rest stay needs-card', () =
   runCloudFile({ plan, fileCardFn: f.fn, now: NOW });
   assert.equal(f.calls.length, DISPATCH_CAP);
   assert.equal(plan.filter((r) => r.state === 'card-filed').length, DISPATCH_CAP);
-  assert.equal(plan.filter((r) => r.state === 'queued').length, 2);
+  const over = plan.filter((r) => r.state === 'file-next-run');
+  assert.equal(over.length, 2);
   for (const r of plan) assert.notEqual(ownerFixStatus({ name: r.name }, plan), NONE);
+  // Over-cap rows have no card: their status must never claim one.
+  for (const r of over) assert.doesNotMatch(ownerFixStatus({ name: r.name }, plan), /ticket filed|has a|tracker filed|queued/);
 });
 
 test('budget: rows past the time budget are not filed', () => {
@@ -72,7 +78,7 @@ test('budget: rows past the time budget are not filed', () => {
   const f = fakeFile();
   runCloudFile({ plan, fileCardFn: (...a) => { t += 200000; return f.fn(...a); }, now: NOW, nowMsFn: () => t, budgetMs: 150000 });
   assert.equal(f.calls.length, 1);
-  assert.equal(plan[1].state, 'queued');
+  assert.equal(plan[1].state, 'file-next-run');
 });
 
 test('dedup: a reattached card that is already being worked reads tracked and spends no cap slot', () => {

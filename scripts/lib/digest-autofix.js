@@ -383,8 +383,8 @@ function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
     if (openTitles && (openTitles.has(row.title) || [...openTitles].some((t) => numberFreeTitle(t) === numberFreeTitle(row.title)))) continue;
     // A visitor-facing error a worker can fix files START-NOW on its first
     // sighting: waiting 3 days in case it clears leaves visitors facing it
-    // with nothing working on it. Low volume (1-2 a day), and the resolved-
-    // alert sweep cancels a START-NOW card once its row clears.
+    // with nothing working on it. Low volume (1-2 a day). A card whose row
+    // clears first is closed by its worker's check-health-row-absent check.
     if (row.healthError && isVisitorFacingRow(row)) continue;
     if (sharedAge >= threshold) { sharedReleased.push({ row, ageHours: sharedAge }); continue; }
     hold.push(row);
@@ -1652,34 +1652,39 @@ function runAutofix({
 // autofix row instead. Matched on conditionKey, so a queued row must carry it
 // (BRO-5099: the health snapshot used to drop it, emptying this list daily).
 // BRO-7520: the Action's own filing step. The email is built off the Mac with
-// report-only autofix, so a fresh visitor row read "no automatic fix
-// confirmed" until the Mac pass filed it 3 days later. This files the cards
-// the Mac pass would file on its first sighting, as START-NOW Todo cards the
-// cloud worker takes (no cmux, no local state, no dispatch spawn), and marks
-// the rows so the email says so. Same rules as the Mac gate: a visitor ERROR
-// files at once, a visitor warning once its snapshot firstSeen is old enough,
-// every other row is left to the Mac pass ('watching' while young, else
-// needs-card). Dedup by "BSC Daily: <row>" title is fileCard's own lookup.
-// Mutates and returns `plan`. Fail-soft per row.
+// report-only autofix, so a visitor row read "no automatic fix confirmed"
+// until the Mac pass filed it 3 days later. This files START-NOW Todo cards
+// the cloud worker takes (no cmux, no local state, no dispatch spawn) and
+// marks the rows so the email says so. Timing follows the email itself
+// (health-first-seen.js isSettling): a visitor row is filed on the run where
+// the email first shows it, so an ERROR files at once and a warning once it
+// has lasted SETTLE_HOURS (48h; unknown age files, the same fail-safe the
+// email uses). Before that it reads 'watching' and the email holds it back.
+// Every other row is left to the Mac pass ('watching' while young, else
+// needs-card). Past the cap or budget a row reads 'file-next-run'. Dedup by
+// "BSC Daily: <row>" title is fileCard's own lookup. A card whose row clears
+// before a worker starts is closed by that worker's acceptance check
+// (check-health-row-absent.js); the resolved-alert sweep only covers router
+// cards. Mutates and returns `plan`. Fail-soft per row.
 const CLOUD_FILE_BUDGET_MS = 150000;
 function runCloudFile({
   plan, cap = DISPATCH_CAP, log = () => {}, fileCardFn = fileCard, openLinearTitles = null,
   now = new Date(), budgetMs = CLOUD_FILE_BUDGET_MS, nowMsFn = Date.now,
 } = {}) {
   if (!Array.isArray(plan) || !plan.length) return plan || [];
-  // BRO-7520 follow-up (owner 2026-11-15: no 3-day wait): visitor-facing rows, warnings included, file
-  // on their first morning. The persistence gate stays the Mac pass's for every other row. now and
-  // openLinearTitles are kept for callers; a row already carded reattaches through fileCard's dedup.
-  void now; void openLinearTitles;
+  const { isSettling } = require('./health-first-seen.js');
+  // The Mac gate still decides non-visitor rows: young ones read 'watching', as on the Mac.
+  const { hold } = computePersistenceGate(plan, {}, now.getTime(), { openTitles: openLinearTitles });
+  const held = new Set(hold);
   const startMs = nowMsFn();
   let filed = 0;
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
-    // Non-visitor rows stay the Mac pass's.
-    if (!isVisitorFacingRow(row)) continue;
-    // Past the cap or budget the row is filed by the next run: it reads 'queued', never "no automatic fix confirmed".
-    if (filed >= cap) { row.state = 'queued'; log(`[digest-autofix] cloud-file cap ${cap} reached; "${row.title}" left for the next run`); continue; }
-    if (nowMsFn() - startMs > budgetMs) { row.state = 'queued'; log(`[digest-autofix] cloud-file budget ${budgetMs}ms spent; "${row.title}" left for the next run`); continue; }
+    if (!isVisitorFacingRow(row)) { if (held.has(row)) row.state = 'watching'; continue; }
+    if (isSettling(row, row.healthError ? 'error' : 'warn', now.getTime())) { row.state = 'watching'; continue; }
+    // No card yet; the next run files it. Never 'queued' (that state means a card exists).
+    if (filed >= cap) { row.state = 'file-next-run'; log(`[digest-autofix] cloud-file cap ${cap} reached; "${row.title}" left for the next run`); continue; }
+    if (nowMsFn() - startMs > budgetMs) { row.state = 'file-next-run'; log(`[digest-autofix] cloud-file budget ${budgetMs}ms spent; "${row.title}" left for the next run`); continue; }
     const res = fileCardFn(row.title, buildCardNotes(row), {
       log, refreshNotesOnReattach: Array.isArray(row.affected), startNow: true, cloudFiled: true, ignoreNumbers: true,
       testId: Array.isArray(row.affected) ? null : (row.testId || null),

@@ -432,6 +432,8 @@ const AUTOFIX_STATE_LABEL = {
   'in-progress': ['\u{1f527}', 'a live fix session is on it (liveness-checked this run)'],
   'queued': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
   'card-filed': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
+  // BRO-7520: over the cloud filer's daily cap; no card yet, the next run files it.
+  'file-next-run': ['\u23f3', 'fix card is filed on the next automated run (daily cap reached)'],
   'card-failed': ['\u26a0\ufe0f', 'tracker filing FAILED \u2014 nothing is working on this yet; retries tomorrow'],
   'acknowledged': ['\u2139\ufe0f', 'already tracked with a known resolve-by date \u2014 no new card needed'],
   // BRO-5099: router notice for a condition that already has a Linear card.
@@ -665,6 +667,7 @@ const OWNER_FIX_STATUS = {
   'launch-refused': 'automatic fix could not start; not being fixed automatically',
   'no-live-session': 'fix attempt not confirmed (no live session found)',
   'watching': 'being watched; a fix is queued if it is still here after 3 days',
+  'file-next-run': 'a fix ticket is filed on the next automatic run',
 };
 
 // BRO-5430 (owner, 2026-10-16: "I hate getting emailed about issues that can
@@ -676,7 +679,7 @@ const OWNER_FIX_STATUS = {
 // and subject; the wording never calls them "being fixed". Everything else
 // (parked, card-failed, no-live-session, no matching row, or a dead loop)
 // means nothing is fixing it, so it stays listed.
-const OWNER_HANDLED_STATES = new Set(['watching', 'queued', 'card-filed', 'dispatched', 'in-progress', 'tracked', 'acknowledged']);
+const OWNER_HANDLED_STATES = new Set(['watching', 'file-next-run', 'queued', 'card-filed', 'dispatched', 'in-progress', 'tracked', 'acknowledged']);
 
 function findAutofixRow(row, autofixRows) {
   if (!Array.isArray(autofixRows) || !row || !row.name) return null;
@@ -800,7 +803,7 @@ function buildOwnerView({
         name: r.name, plain, severity, handled, since: seenAt ? shortDateET(seenAt) : null,
         sinceDays: seenAt ? Math.max(0, Math.floor((nowMs - Date.parse(seenAt)) / 86400000)) : null, status: loginRow ? 'needs your login: only you can fix this' : ownerFixStatus(r, autofixRows, loopDead),
         ...(loginRow ? { loginSource: true, fixUrl: r.fixUrl || null } : {}),
-        kind: !handled ? null : fix.state === 'watching' ? 'watching' : fix.state === 'acknowledged' ? 'acknowledged' : 'ticket',
+        kind: !handled ? null : fix.state === 'watching' ? 'watching' : fix.state === 'file-next-run' ? 'nextRun' : fix.state === 'acknowledged' ? 'acknowledged' : 'ticket',
       };
       const prev = byPlain.get(plain);
       // The unfixed member is what the owner needs to see, at its own severity.
@@ -836,6 +839,7 @@ function buildOwnerView({
     visitorHandled: handledItems.length,
     visitorHandledWatching: handledItems.filter((i) => i.kind === 'watching').length,
     visitorHandledAcknowledged: handledItems.filter((i) => i.kind === 'acknowledged').length,
+    visitorHandledNextRun: handledItems.filter((i) => i.kind === 'nextRun').length,
     visitorErrors: split.visitors.errors,
     visitorWarns: split.visitors.warns,
     internalErrors: split.internal.errors,
@@ -871,10 +875,12 @@ function visitorHandledLine(view, { more = false } = {}) {
   if (!n) return '';
   const w = view.visitorHandledWatching || 0;
   const a = view.visitorHandledAcknowledged || 0;
-  const t = n - w - a;
+  const x = view.visitorHandledNextRun || 0;
+  const t = n - w - a - x;
   const bits = [];
   if (t) bits.push(`${t} already ${t === 1 ? 'has a fix ticket' : 'have fix tickets'}`);
   if (a) bits.push(`${a} already known, with a set end date`);
+  if (x) bits.push(`${x} get${x === 1 ? 's' : ''} a fix ticket on the next automatic run`);
   if (w) bits.push(`${w} new, which get${w === 1 ? 's' : ''} a fix ticket if still there after 3 days`);
   const lead = more
     ? `${n} more ${n === 1 ? 'is' : 'are'} with the automation, nothing for you to do`
