@@ -243,3 +243,13 @@ test('buildRouteBatch: a card already routed MAX_REROUTES times is not routed ag
   assert.equal(out.skipped.exhausted, 1);
   assert.deepEqual(out.skipped.coveredBy, { 'BRO-2': 'BRO-777' });
 });
+
+test('selectRewatchTargets: a later env-cause row does not hide an earlier real fail', () => {
+  const NOW = Date.parse('2026-11-15T12:00:00Z');
+  const base = { event: 'recheck', cardId: 'BRO-1', verifyCmd: 'node x.js' };
+  const rows = [
+    { ...base, ts: '2026-11-10T00:00:00Z', exit: 1, ok: false, status: 'fail' },
+    { ...base, ts: '2026-11-13T00:00:00Z', exit: 1, ok: false, status: 'unverifiable', envCause: 'missing-secret' },
+  ];
+  assert.deepEqual(R.selectRewatchTargets({ ledgerEntries: rows, now: NOW }).targets.map((t) => t.cardId), ['BRO-1']);
+});
