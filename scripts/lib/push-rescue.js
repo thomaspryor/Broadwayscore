@@ -32,7 +32,10 @@
  * Branches are never deleted on age or on doubt: one with a conflict (main
  * or another rescue holds different content at the path), a file the
  * ownership gate dropped, is kept and named every hour
- * until a human resolves it. PUSH_RESCUE_DISABLE=1 turns off `rescue`.
+ * until a human resolves it. Exception (BRO-7549): when the rescued copy of a conflicting file holds
+ * nothing main lacks (settleConflict says 'main'), main wins automatically; the tip is still tagged
+ * push-rescue-archive/... before the delete. Mixed or tied conflicts, and 'rescued is strictly fuller'
+ * (computed and logged, not acted on), still wait for a person. PUSH_RESCUE_AUTO_SETTLE_DISABLE=1 restores always-wait. PUSH_RESCUE_DISABLE=1 turns off `rescue`.
  *
  * Resolving one: once the owner picks main's copy of every conflicting file,
  * dispatch replay-push-rescue.yml with main_wins=<branch>@<tip sha>
@@ -176,7 +179,8 @@ function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new M
     if (mainBlob.has(p)) {
       if (mainBlob.get(p) === ours) skipped.push({ path: p, why: 'already on main' });
       else if (superseded(p)) skipped.push({ path: p, why: 'main holds the same review, further along' });
-      else if (mainWins) skipped.push({ path: p, why: MAIN_WINS_WHY, rescueBlob: ours, mainBlob: mainBlob.get(p) });
+      else if (mainWins === true) skipped.push({ path: p, why: MAIN_WINS_WHY, rescueBlob: ours, mainBlob: mainBlob.get(p) });
+      else if (typeof mainWins === 'function' && mainWins(p)) skipped.push({ path: p, why: AUTO_MAIN_WHY, rescueBlob: ours, mainBlob: mainBlob.get(p) });
       else conflicts.push({ path: p, why: MAIN_CONFLICT_WHY });
     } else if (touchedOnMain.has(p)) skipped.push({ path: p, why: 'changed on main since the rescue (e.g. drained or moved)' });
     else if (claimed.has(p)) {
@@ -188,6 +192,8 @@ function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new M
 }
 
 const MAIN_WINS_WHY = 'owner chose main over this rescue copy (main_wins)';
+const AUTO_MAIN_WHY = 'main holds everything the rescue copy has (auto-settled, BRO-7549)';
+const ARCHIVE_WHYS = new Set([MAIN_WINS_WHY, AUTO_MAIN_WHY]);
 const MAIN_CONFLICT_WHY = 'main holds a different version';
 
 /**
@@ -234,13 +240,13 @@ function onlyMainConflicts(r) {
  * BRO-7541: metadata-only summary of one review file, so a person can tell which side of a
  * conflict is the fuller one without anyone reading review text. Never returns text content.
  */
-function describeReviewFile(raw) {
+function reviewFacts(raw) {
   const text = String(raw || '');
-  if (!text) return 'absent';
+  if (!text) return { kind: 'absent' };
   let j;
-  try { j = JSON.parse(text); } catch { return `bytes=${Buffer.byteLength(text)} unparseable-json`; }
-  if (!j || typeof j !== 'object' || Array.isArray(j)) return `bytes=${Buffer.byteLength(text)} non-object`;
-  const has = (k) => (j[k] !== undefined && j[k] !== null && j[k] !== '' ? 'yes' : 'no');
+  try { j = JSON.parse(text); } catch { return { kind: 'unparseable', bytes: Buffer.byteLength(text) }; }
+  if (!j || typeof j !== 'object' || Array.isArray(j)) return { kind: 'non-object', bytes: Buffer.byteLength(text) };
+  const has = (k) => j[k] !== undefined && j[k] !== null && j[k] !== '';
   const flags = ['wrongShow', 'wrongProduction', 'isRoundupArticle'].filter((k) => j[k]);
   let newest = null;
   for (const [k, v] of Object.entries(j)) {
@@ -248,16 +254,77 @@ function describeReviewFile(raw) {
     const t = Date.parse(v);
     if (!Number.isNaN(t) && /^\d{4}-\d{2}-\d{2}/.test(v) && (newest === null || t > newest.t)) newest = { k: k.replace(/[^A-Za-z]/g, '').slice(0, 30), t };
   }
+  return {
+    kind: 'object', j, bytes: Buffer.byteLength(text), flags,
+    fullTextLen: typeof j.fullText === 'string' ? j.fullText.length : 0,
+    contentTier: /^[a-z_-]{1,20}$/.test(String(j.contentTier || '')) ? j.contentTier : (j.contentTier ? 'other' : 'none'),
+    hasAssigned: has('assignedScore'), hasLlm: has('llmScore'), hasCritic: !!j.criticName, newest,
+  };
+}
+
+function describeReviewFile(raw) {
+  const f = reviewFacts(raw);
+  if (f.kind === 'absent') return 'absent';
+  if (f.kind === 'unparseable') return `bytes=${f.bytes} unparseable-json`;
+  if (f.kind === 'non-object') return `bytes=${f.bytes} non-object`;
+  const yn = (b) => (b ? 'yes' : 'no');
   return [
-    `bytes=${Buffer.byteLength(text)}`,
-    `fullTextLen=${typeof j.fullText === 'string' ? j.fullText.length : 0}`,
-    `contentTier=${/^[a-z_-]{1,20}$/.test(String(j.contentTier || '')) ? j.contentTier : (j.contentTier ? 'other' : 'none')}`,
-    `assignedScore=${has('assignedScore')}`,
-    `llmScore=${has('llmScore')}`,
-    `criticName=${j.criticName ? 'present' : 'null'}`,
-    `flags=${flags.length ? flags.join('+') : 'none'}`,
-    `newest=${newest ? `${newest.k}:${new Date(newest.t).toISOString()}` : 'none'}`,
+    `bytes=${f.bytes}`,
+    `fullTextLen=${f.fullTextLen}`,
+    `contentTier=${f.contentTier}`,
+    `assignedScore=${yn(f.hasAssigned)}`,
+    `llmScore=${yn(f.hasLlm)}`,
+    `criticName=${f.hasCritic ? 'present' : 'null'}`,
+    `flags=${f.flags.length ? f.flags.join('+') : 'none'}`,
+    `newest=${f.newest ? `${f.newest.k}:${new Date(f.newest.t).toISOString()}` : 'none'}`,
   ].join(' ');
+}
+
+/**
+ * BRO-7549: decide a main-vs-rescued conflict on one review file without a person.
+ * Returns {decision: 'main'|'rescued'|'wait', reasons: string[]}; reasons are metadata only, never text.
+ *  main    : the rescued copy holds nothing main lacks (its text is empty or byte-identical to main's,
+ *            same exclusion flags, tier not above main's, every score/identity/excerpt it holds equals main's).
+ *  rescued : rescued is strictly fuller and main is not better on any compared field (computed and logged;
+ *            replay does not act on it yet, the branch keeps waiting for a person).
+ *  wait    : anything mixed, tied in a way that matters, unparseable, or both scored differently.
+ */
+const SCORE_KEYS = ['assignedScore', 'llmScore', 'originalScore'];
+// Verdict fields (contentVerification(+Promoted), archivePath, verdict incompleteReason) are NOT here: they are compared like any other field.
+const RESCUE_IGNORE_KEYS = new Set([...BOOKKEEPING_KEYS, 'contentTier', 'contentTierReason', 'fullText']);
+function settleConflict(mainRaw, rescuedRaw) {
+  const m = reviewFacts(mainRaw);
+  const r = reviewFacts(rescuedRaw);
+  if (m.kind !== 'object' || r.kind !== 'object') return { decision: 'wait', reasons: ['a side is absent or not a JSON object'] };
+  const a = r.j; const b = m.j;
+  const wait = [];
+  const mainBetter = [];
+  const rescuedBetter = [];
+  if (m.flags.slice().sort().join() !== r.flags.slice().sort().join()) wait.push('exclusion flags differ');
+  const mt = isEmpty(b.fullText) ? '' : String(b.fullText);
+  const rt = isEmpty(a.fullText) ? '' : String(a.fullText);
+  if (rt && rt !== mt) { if (!mt || rt.length > mt.length) rescuedBetter.push('rescued has text main lacks or a longer text'); else wait.push('texts differ'); }
+  else if (mt && !rt) mainBetter.push('main has text, rescued has none');
+  const mr = TIER_RANK[b.contentTier]; const rr = TIER_RANK[a.contentTier];
+  if (mr === undefined || rr === undefined) { if (canon(b.contentTier) !== canon(a.contentTier)) wait.push('tier unknown'); }
+  else if (rr > mr) rescuedBetter.push('rescued tier higher'); else if (mr > rr) mainBetter.push('main tier higher');
+  for (const k of SCORE_KEYS) {
+    const hm = !isEmpty(b[k]); const hr = !isEmpty(a[k]);
+    if (hm && hr && canon(a[k]) !== canon(b[k])) wait.push(`${k} differs on both sides`);
+    else if (hr && !hm) rescuedBetter.push(`${k} only on rescued`); else if (hm && !hr) mainBetter.push(`${k} only on main`);
+  }
+  for (const k of Object.keys(a)) {
+    if (isEmpty(a[k]) || RESCUE_IGNORE_KEYS.has(k) || SCORE_KEYS.includes(k)) continue;
+    if ((k === 'incompleteReason' || k === 'incompleteDetail') && isFetchStateOnly(a)) continue;
+    if (k === 'url') { if (normUrl(a[k]) !== normUrl(b[k])) wait.push('url differs'); continue; }
+    if (k === 'criticName' && UNKNOWN_CRITIC.test(String(a[k]))) continue;
+    if (isEmpty(b[k])) wait.push(`${k} only on rescued`);
+    else if (canon(a[k]) !== canon(b[k]) && !/At$/.test(k)) wait.push(`${k} differs`); // machine timestamps (*At) may differ; main's is kept
+  }
+  if (wait.length) return { decision: 'wait', reasons: wait };
+  if (rescuedBetter.length && !mainBetter.length) return { decision: 'rescued', reasons: rescuedBetter };
+  if (rescuedBetter.length) return { decision: 'wait', reasons: ['each side better on a different field', ...rescuedBetter, ...mainBetter] };
+  return { decision: 'main', reasons: mainBetter.length ? mainBetter : ['same on every compared field'] };
 }
 
 function git(args, opts = {}) {
@@ -346,7 +413,18 @@ function replayOne({ sha, ref, info }, claimed, mainWins = false) {
     && gitOk(['log', '-1', '--format=%H', `--since=${since}`, 'origin/main', '--', p]).trim() !== ''));
   const show = (rev, p) => { const r = git(['show', `${rev}:${p}`]); return r.status === 0 ? r.stdout : ''; };
   const superseded = (p) => mainSupersedesRescue(show(sha, p), show('origin/main', p));
-  const plan = replayPlan({ adds, mainBlob, touchedOnMain: touched, rescueBlob, claimed, superseded, mainWins });
+  // BRO-7549: a conflict a machine can settle (rescued copy holds nothing main lacks) no longer waits for a person.
+  // The decision is per path and applies only to main conflicts; kill switch PUSH_RESCUE_AUTO_SETTLE_DISABLE=1.
+  // Fails closed: any non-empty value except an explicit off word disables auto-settle.
+  const killVal = String(process.env.PUSH_RESCUE_AUTO_SETTLE_DISABLE || '').trim().toLowerCase();
+  const autoOn = killVal === '' || ['0', 'false', 'no', 'off'].includes(killVal);
+  const verdicts = new Map();
+  const verdictFor = (p) => {
+    if (!verdicts.has(p)) { try { verdicts.set(p, settleConflict(show('origin/main', p), show(sha, p))); } catch { verdicts.set(p, { decision: 'wait', reasons: ['comparison failed'] }); } }
+    return verdicts.get(p);
+  };
+  const autoMain = (p) => autoOn && verdictFor(p).decision === 'main';
+  const plan = replayPlan({ adds, mainBlob, touchedOnMain: touched, rescueBlob, claimed, superseded, mainWins: mainWins || autoMain });
   for (const p of plan.restore) {
     fs.mkdirSync(path.dirname(p), { recursive: true });
     fs.writeFileSync(p, gitOk(['show', `${sha}:${p}`]));
@@ -354,7 +432,12 @@ function replayOne({ sha, ref, info }, claimed, mainWins = false) {
   }
   console.log(`push-rescue: ${ref}: restoring ${plan.restore.length}, skipping ${plan.skipped.length}, conflicts ${plan.conflicts.length}${modified.length ? `, ${modified.length} modified/deleted path(s) not replayed` : ''}`);
   for (const x of [...plan.skipped, ...plan.conflicts]) console.log(`  ${plan.conflicts.includes(x) ? 'CONFLICT' : 'skip'} ${x.path}: ${x.why}${x.rescueBlob ? ` (rescue blob ${x.rescueBlob}, main blob ${x.mainBlob}; branch tip ${sha})` : ''}`);
+  for (const x of plan.skipped.filter((y) => y.why === AUTO_MAIN_WHY)) {
+    try { console.log(`  COMPARE ${x.path}: main[${describeReviewFile(show('origin/main', x.path))}] rescued[${describeReviewFile(show(sha, x.path))}]`); } catch { /* logging only */ }
+    console.log(`  AUTO-SETTLE ${x.path}: main wins (${verdictFor(x.path).reasons.join('; ')}); tip ${sha} is archived as a tag before the branch is deleted`);
+  }
   for (const x of plan.conflicts) {
+    if (x.why === MAIN_CONFLICT_WHY) { const v = verdictFor(x.path); console.log(`  AUTO-SETTLE ${x.path}: ${autoOn ? `waits for a person (${v.decision}: ${v.reasons.join('; ')})` : 'disabled by PUSH_RESCUE_AUTO_SETTLE_DISABLE'}`); }
     try { console.log(`  COMPARE ${x.path}: main[${describeReviewFile(show('origin/main', x.path))}] rescued[${describeReviewFile(show(sha, x.path))}]`); }
     catch (e) { console.log(`  COMPARE ${x.path}: unavailable (${annotate(e.message).slice(0, 80)})`); }
   }
@@ -424,8 +507,8 @@ function cliPrune(args) {
   const ok = prunable(manifest, (p) => blobAt('origin/main', p));
   for (const r of ok) {
     // Delete only the tip this replay read (a branch that moved since is kept for the next run).
-    // A branch main_wins overrode is the only copy of those files: tag its tip first.
-    if ((r.skipped || []).some((x) => x.why === MAIN_WINS_WHY)) {
+    // A branch main_wins (or auto-settle) overrode is the only copy of those files: tag its tip first.
+    if ((r.skipped || []).some((x) => ARCHIVE_WHYS.has(x.why))) {
       const tag = `refs/tags/push-rescue-archive/${r.ref.slice(RESCUE_PREFIX.length)}`;
       const t = git(['push', 'origin', `${r.tip}:${tag}`], { timeout: netTimeoutMs() });
       if (t.status !== 0 && !/already exists/.test(t.stderr || '')) {
@@ -461,7 +544,7 @@ function cliPrune(args) {
   }
 }
 
-module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY, describeReviewFile, retryFetch, isTransientGitError };
+module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY, AUTO_MAIN_WHY, describeReviewFile, reviewFacts, settleConflict, retryFetch, isTransientGitError };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);
