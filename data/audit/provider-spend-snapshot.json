@@ -1,33 +1,36 @@
 {
-  "generatedAt": "2026-11-14T09:21:32.398Z",
-  "bannerText": "OVER BUDGET: scrapingbee on pace to run out before renewal: ~13870 credits/day (7-day average) x 21 days to 2026-12-05 = 291264 > 104009 left",
+  "generatedAt": "2026-11-15T09:56:41.355Z",
+  "bannerText": "OVER BUDGET: scrapingbee on pace to run out before renewal: ~14064 credits/day (7-day average) x 20 days to 2026-12-05 = 281283 > 88250 left",
   "items": [
     {
-      "title": "2026-11-13 · Browserbase: $0.73 (124 sessions, 32.13min)"
+      "title": "2026-11-14 · Browserbase: $0.75 (157 sessions, 39.31min)"
     },
     {
-      "title": "2026-11-13 · Bright Data: $2.98 (319 serp / 1666 unlocker)"
+      "title": "2026-11-14 · Bright Data: $3.63 (620 serp / 1797 unlocker)"
     },
     {
-      "title": "ScrapingBee: 15560 credits (145991 this cycle)"
+      "title": "ScrapingBee: 15759 credits (161750 this cycle)"
     },
     {
-      "title": "ScrapingDog: 63097 credits (741264 this cycle)"
+      "title": "ScrapingDog: 72440 credits (813704 this cycle)"
     },
     {
-      "title": "Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 105, bww-rr-discover.js 17, collect-talkinbroadway-index.js 1, sweep-we-aggregators.js:the-stage 1"
+      "title": "Browserbase attribution: 98% attributed — top callers (covers 98% of billed calls): collect-review-texts.js 150, bww-rr-discover.js 3, collect-talkinbroadway-index.js 1"
     },
     {
-      "title": "Bright Data attribution: 100% attributed — top callers (covers 99% of billed calls): opening-night-poller.js 605, audit-show-review-gap.js 403, gather-reviews.js 383, collect-review-texts.js 352, replay-pending-bylines.js 219"
+      "title": "Bright Data attribution: 100% attributed — top callers (covers 100% of billed calls): gather-reviews.js 637, audit-show-review-gap.js 615, opening-night-poller.js 512, collect-review-texts.js 460, replay-pending-bylines.js 222"
     },
     {
-      "title": "ScrapingBee attribution: 100% attributed — top callers (covers 100% of billed credits): opening-night-poller.js 7775cr, gather-reviews.js 6774cr, discover-opening-night-reviews.js 3250cr, collect-review-texts.js 1720cr, scrape-show-score-audience.js 390cr"
+      "title": "ScrapingBee attribution: 100% attributed — top callers (covers 100% of billed credits): opening-night-poller.js 9720cr, gather-reviews.js 9606cr, collect-review-texts.js 1083cr, discover-opening-night-reviews.js 525cr, scrape-show-score-audience.js 365cr"
     },
     {
-      "title": "ScrapingDog attribution: 100% attributed — top callers (covers 81% of billed credits): gather-reviews.js 23306cr, audit-show-review-gap.js 10725cr, discover-opening-night-reviews.js 8323cr, scrape-nyc-theatre-roundups.js 4365cr, collect-review-texts.js 4279cr"
+      "title": "ScrapingDog attribution: 97% attributed — top callers (covers 77% of billed credits): gather-reviews.js 22567cr, audit-show-review-gap.js 14406cr, collect-review-texts.js 7340cr, discover-opening-night-reviews.js 7119cr, opening-night-poller.js 4471cr"
     },
     {
-      "title": "2026-11-13 · LLM APIs (metered estimate, not the full bill): Gemini est $3.99 (3131 calls; 26 repeats) · OpenAI est $25.47 (2817 calls; 1 repeats) · top: scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $20.89; scripts/llm-scoring/comparative-rescore.ts [LLM Ensemble Score Reviews] $4.50; scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $2.87"
+      "title": "⚠️ ScrapingDog top-caller coverage low: 77% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
+    },
+    {
+      "title": "2026-11-14 · LLM APIs (metered estimate, not the full bill): Gemini est $0.47 (403 calls; 11 repeats) · OpenAI est $8.66 (198 calls; 471 search-grounded, 4 repeats) · top: scripts/deep-research-commercial.js [Commercial Weekly Orchestrator] $7.19; scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $1.13; scripts/llm-scoring/comparative-rescore.ts [LLM Ensemble Score Reviews] $0.27"
     }
   ],
   "moreCount": 0
