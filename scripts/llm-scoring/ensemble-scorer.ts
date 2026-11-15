@@ -44,6 +44,7 @@ export interface EnsembleScoringOptions {
    * as EnsembleResult.shadow. Claude/Gemini outputs are shared, so the shadow
    * differs from the control ONLY in the OpenAI leg. Unset in production.
    */
+  shadowClaudeModel?: 'claude-sonnet-4-6' | 'claude-sonnet-5-5';
   shadowOpenaiModel?: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
 }
 
@@ -168,6 +169,7 @@ export class EnsembleReviewScorer {
   private claudeScorer: ReviewScorer;
   private openaiScorer: OpenAIReviewScorer;
   private shadowOpenaiScorer: OpenAIReviewScorer | null;
+  private shadowClaudeScorer: ReviewScorer | null;
   private geminiScorer: GeminiScorer | null;
   private kimiScorer: KimiScorer | null;
   private options: EnsembleScoringOptions;
@@ -207,6 +209,10 @@ export class EnsembleReviewScorer {
 
     this.shadowOpenaiScorer = options.shadowOpenaiModel
       ? new OpenAIReviewScorer(openaiApiKey, { model: options.shadowOpenaiModel, verbose: this.options.verbose })
+      : null;
+
+    this.shadowClaudeScorer = options.shadowClaudeModel
+      ? new ReviewScorer(claudeApiKey, { model: options.shadowClaudeModel, verbose: this.options.verbose })
       : null;
 
     // Gemini is optional - enables 3-model mode if provided
@@ -421,8 +427,22 @@ export class EnsembleReviewScorer {
         .catch(err => ({ model: 'openai' as const, result: null, error: err.message }))
       : null;
 
+    // Experiment only (BRO-7529): the shadow Claude leg runs alongside, same prompt.
+    const shadowClaudePromise: Promise<ModelOutcome> | null = this.shadowClaudeScorer
+      ? this.shadowClaudeScorer.scoreReviewV5(reviewText, context, systemPromptOverride)
+        .then(outcome => ({
+          model: 'claude' as const,
+          result: outcome.success && !outcome.rejected ? outcome.result! : null,
+          error: outcome.error,
+          rejected: outcome.rejected,
+          rejection: outcome.rejection,
+          rejectionReasoning: outcome.rejectionReasoning
+        }))
+        .catch(err => ({ model: 'claude' as const, result: null, error: err.message }))
+      : null;
+
     // Run all models in parallel
-    const [results, shadowOutcome] = await Promise.all([Promise.all(promises), shadowPromise]);
+    const [results, shadowOutcome, shadowClaudeOutcome] = await Promise.all([Promise.all(promises), shadowPromise, shadowClaudePromise]);
 
     const combined = this.combineOutcomes(results, band);
     if (shadowOutcome) {
@@ -433,6 +453,13 @@ export class EnsembleReviewScorer {
       const legStatus = (o?: ModelOutcome) => ({ ok: !!(o && o.result), rejected: !!(o && o.rejected), error: o && !o.result && !o.rejected ? String(o.error || 'no_result').slice(0, 200) : undefined });
       combined.openaiLeg = legStatus(results.find(r => r.model === 'openai'));
       combined.shadow.openaiLeg = legStatus(shadowOutcome);
+    }
+    if (shadowClaudeOutcome) {
+      const swapped = results.map(r => (r.model === 'claude' ? shadowClaudeOutcome : r));
+      combined.shadowClaude = this.combineOutcomes(swapped, band);
+      const legStatus = (o?: ModelOutcome) => ({ ok: !!(o && o.result), rejected: !!(o && o.rejected), error: o && !o.result && !o.rejected ? String(o.error || 'no_result').slice(0, 200) : undefined });
+      combined.claudeLeg = legStatus(results.find(r => r.model === 'claude'));
+      combined.shadowClaude.claudeLeg = legStatus(shadowClaudeOutcome);
     }
     return combined;
   }
@@ -771,6 +798,7 @@ export class EnsembleReviewScorer {
     // Experiment only: stretch the shadow here, before any early return, so a
     // shadow that scored is stretched even when the control was rejected.
     if (ensembleResult.shadow) ensembleResult.shadow = applyTailStretch(ensembleResult.shadow, anchoredBandScoreSource);
+    if (ensembleResult.shadowClaude) ensembleResult.shadowClaude = applyTailStretch(ensembleResult.shadowClaude, anchoredBandScoreSource);
 
     // Check for rejection (v5.2+)
     if (ensembleResult.rejected) {
@@ -814,8 +842,10 @@ export class EnsembleReviewScorer {
     // share, so the stored per-model scores stay raw and re-ensemble-scores.ts
     // can reapply it idempotently.
     const shadowStretched = ensembleResult.shadow;
+    const shadowClaudeStretched = ensembleResult.shadowClaude;
     ensembleResult = applyTailStretch(ensembleResult, anchoredBandScoreSource);
     if (shadowStretched) ensembleResult.shadow = shadowStretched; // stretched once, above
+    if (shadowClaudeStretched) ensembleResult.shadowClaude = shadowClaudeStretched;
 
     // Post-scoring hallucination guard: if the LLM admitted it had no real review
     // content and invented a score, refuse to write the result.
@@ -1087,6 +1117,19 @@ export class EnsembleReviewScorer {
       gemini: geminiUsage ? { input: geminiUsage.input, output: geminiUsage.output } : null,
       kimi: kimiUsage ? { input: kimiUsage.input, output: kimiUsage.output } : null,
       total
+    };
+  }
+
+  /** Experiment only (BRO-7529): tokens the shadow legs spent, for the A/B cost report and --max-cost-usd. */
+  getShadowTokenUsage(): {
+    claude: { input: number; output: number; cacheWrite: number; cacheRead: number } | null;
+    openai: { input: number; output: number } | null;
+  } {
+    const c = this.shadowClaudeScorer ? this.shadowClaudeScorer.getTokenUsage() : null;
+    const o = this.shadowOpenaiScorer ? this.shadowOpenaiScorer.getTokenUsage() : null;
+    return {
+      claude: c ? { input: c.input, output: c.output, cacheWrite: c.cacheWrite, cacheRead: c.cacheRead } : null,
+      openai: o ? { input: o.input, output: o.output } : null,
     };
   }
 

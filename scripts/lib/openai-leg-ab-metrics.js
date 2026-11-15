@@ -61,14 +61,19 @@ function weightedShares(records, armKey) {
   return { shares, denom };
 }
 
-function legMidpointError(arm, band) {
-  if (!band || !arm || !Number.isFinite(arm.openaiScore)) return null;
+function legMidpointError(arm, band, scoreKey = 'openaiScore') {
+  if (!band || !arm || !Number.isFinite(arm[scoreKey])) return null;
   const mid = (band.floor + band.ceiling) / 2;
-  return Math.abs(arm.openaiScore - mid);
+  return Math.abs(arm[scoreKey] - mid);
 }
 
 /** records -> full report with per-gate pass/fail. Records where control failed are excluded and counted. */
-function computeReport(records) {
+function computeReport(records, opts = {}) {
+  // opts.leg 'claude' (BRO-7529): the swapped leg is Claude, so leg accuracy and
+  // leg errors read claudeScore / claudeLegOk instead of the OpenAI fields.
+  const scoreKey = opts.leg === 'claude' ? 'claudeScore' : 'openaiScore';
+  const okKey = opts.leg === 'claude' ? 'claudeLegOk' : 'openaiLegOk';
+  const rejKey = opts.leg === 'claude' ? 'claudeLegRejected' : 'openaiLegRejected';
   const usable = records.filter((r) => outcomeClass(r.control) !== 'failed');
   const controlFailed = records.length - usable.length;
 
@@ -101,7 +106,7 @@ function computeReport(records) {
 
   const errs = { control: [], shadow: [] };
   for (const r of usable) {
-    const ec = legMidpointError(r.control, r.band); const es = legMidpointError(r.shadow, r.band);
+    const ec = legMidpointError(r.control, r.band, scoreKey); const es = legMidpointError(r.shadow, r.band, scoreKey);
     if (ec !== null && es !== null) { errs.control.push(ec); errs.shadow.push(es); }
   }
   const mae = (a) => (a.length ? +(a.reduce((x, y) => x + y, 0) / a.length).toFixed(2) : null);
@@ -109,7 +114,7 @@ function computeReport(records) {
 
   // A leg error = the OpenAI call itself failed (not a rejection). Whole-arm
   // failures count too. Control's rate is reported for comparison.
-  const legFailed = (a) => outcomeClass(a) === 'failed' || (a && a.openaiLegOk === false && !a.openaiLegRejected);
+  const legFailed = (a) => outcomeClass(a) === 'failed' || (a && a[okKey] === false && !a[rejKey]);
   const shadowFailed = usable.filter((r) => legFailed(r.shadow)).length;
   const controlLegFailed = usable.filter((r) => legFailed(r.control)).length;
   const shadowErrorRate = usable.length ? shadowFailed / usable.length : 0;
