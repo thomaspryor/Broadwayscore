@@ -755,6 +755,9 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 360-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
 
 
 
@@ -913,6 +916,14 @@ jobs:
   # surviving rebuild rebuilds everything from main) but it took this run's
   # collection and scoring triggers with it. They read only data/review-texts,
   # which the gather and aggregator jobs have already pushed.
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: gather-reviews-rebuild
   follow-up:
     needs: [prepare, gather-reviews, scrape-aggregators]
     if: ${{ !cancelled() && needs.prepare.result == 'success' }}

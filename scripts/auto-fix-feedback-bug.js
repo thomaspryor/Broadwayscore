@@ -16,6 +16,7 @@
  *   ANTHROPIC_API_KEY - Claude API key
  */
 
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { Anthropic } from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';

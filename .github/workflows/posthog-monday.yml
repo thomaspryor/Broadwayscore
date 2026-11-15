@@ -55,6 +55,11 @@ jobs:
     name: Friction Analyzer → Linear Issues
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write # BRO-7521: ledger save step pushes data/audit
+      actions: read
+      issues: write
+      pull-requests: write
     # Run after insights, but don't block on its failure
     needs: weekly-insights
     if: always()
@@ -77,6 +82,14 @@ jobs:
         with:
           title: 'PostHog Friction Analyzer Failed'
           severity: 'warning'
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: posthog-monday-friction-analyzer
 
   friction-fixer:
     name: Auto-fix Friction Cards → Draft PRs
@@ -134,3 +147,11 @@ jobs:
         with:
           title: 'PostHog Friction Fixer Failed'
           severity: 'warning'
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: posthog-monday-friction-fixer

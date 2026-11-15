@@ -8,14 +8,24 @@
 'use strict';
 
 const fs = require('fs');
-const { LEDGER_PATH } = require('./gemini-usage-ledger');
+const { LEDGER_PATH, sessionLedgerPath } = require('./gemini-usage-ledger');
 
-function readRows(p = process.env.GEMINI_USAGE_LEDGER_PATH || LEDGER_PATH) {
+function readFile(p) {
   try {
     return fs.readFileSync(p, 'utf8').split('\n').filter(Boolean)
       .map((l) => { try { return JSON.parse(l); } catch { return null; } })
       .filter(Boolean);
   } catch { return []; }
+}
+
+/** Tracked ledger plus this machine's session-call rows (BRO-7521, kind 'session'). */
+function readRows(p) {
+  // An explicit path (tests, one-off audits) reads exactly that file; only the
+  // default view adds this machine's session rows.
+  if (p) return readFile(p);
+  const base = process.env.GEMINI_USAGE_LEDGER_PATH || LEDGER_PATH;
+  const sp = sessionLedgerPath();
+  return sp === base ? readFile(base) : readFile(base).concat(readFile(sp));
 }
 
 /** rows -> { providers: {name: totals}, callers: [{provider, workflow, script, ...totals}] } */
@@ -35,8 +45,9 @@ function summarize(rows, { fromMs = -Infinity, toMs = Infinity } = {}) {
       a.dupCalls += r.dupCalls || 0;
     };
     add(providers[provider] || (providers[provider] = blank()));
-    const key = `${provider}|${r.workflow || 'unknown'}|${r.script || 'unknown'}`;
-    if (!callers.has(key)) callers.set(key, { provider, workflow: r.workflow || 'unknown', script: r.script || 'unknown', ...blank() });
+    const kind = r.kind || 'api';
+    const key = `${provider}|${r.workflow || 'unknown'}|${r.script || 'unknown'}|${kind}`;
+    if (!callers.has(key)) callers.set(key, { provider, workflow: r.workflow || 'unknown', script: r.script || 'unknown', kind, ...blank() });
     add(callers.get(key));
   }
   return { providers, callers: [...callers.values()].sort((a, b) => b.usd - a.usd) };

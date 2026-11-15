@@ -26,6 +26,7 @@
  *   node scripts/scrape-cast-changes.js --high-freq-only         # Only high-rotation shows
  *   node scripts/scrape-cast-changes.js --force                  # Bypass stability guards
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const path = require('path');

@@ -155,6 +155,9 @@ jobs:
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 25-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
 
       # Core data files (shows.json, reviews.json, etc.) live in a private
       # data repo and aren't checked into the main repo. Same pattern every
@@ -355,3 +358,11 @@ jobs:
           else
             echo "Status: FAILED — see job logs." >> $GITHUB_STEP_SUMMARY
           fi
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: newsletter-draft

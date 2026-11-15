@@ -7,6 +7,7 @@
  * - Token usage tracking
  */
 
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import Anthropic from '@anthropic-ai/sdk';
 import { LLMScoringResult, ScoredReviewFile, ReviewTextFile, SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';

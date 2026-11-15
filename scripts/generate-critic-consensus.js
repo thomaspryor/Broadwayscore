@@ -5,6 +5,7 @@
  * Concise 1-2 sentence summaries (max 280 chars) capturing critical reception
  */
 
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import models from './lib/models.js';
 const { COPY_SONNET } = models;
 import fs from 'fs';

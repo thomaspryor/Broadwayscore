@@ -79,6 +79,9 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 63-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
@@ -167,6 +170,14 @@ jobs:
             git commit -m "data: Update board dispatch ledger [skip ci]"
             bash scripts/lib/push-with-retry.sh 25 main
           fi
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: data-health-check-board-dispatch
 
   health-check:
     runs-on: ubuntu-latest
@@ -308,6 +319,10 @@ jobs:
       actions: write
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 374-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -2110,6 +2125,21 @@ jobs:
             -f alert_title="Daily Data Health Check Crashed" \
             -f alert_context='{"note":"Health check script crashed — BSC Daily email may not have sent."}' \
             -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+
+      # BRO-7521: last month's LLM usage ledger vs vendor receipts; ::warning:: on a >20% gap
+      # in the first week of the month. Observation only (exit 0).
+      - name: Reconcile LLM spend ledger vs receipts
+        continue-on-error: true
+        run: node scripts/reconcile-llm-spend.js
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: data-health-check-health-check
 
   # BRO-7329: quiet review-forecast pilot. Appends one dated row per upcoming Broadway show to
   # ledger/YYYY-MM-DD.jsonl in the PRIVATE core-data repo (a committed forecast in this public repo

@@ -21,6 +21,7 @@
  *   node scripts/scrape-lottery-rush.js --dry-run           # Preview only
  *   node scripts/scrape-lottery-rush.js --verbose           # Verbose logging
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const { mapSpecialToSpecialLottery, isAccessProgram } = require('./lib/special-lottery');

@@ -135,7 +135,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      rm -f "$PLAN_REVIEW_CODEX_OUT"
      ```
      If `CODEX_EMPTY` or `CODEX_REFUSED`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner (Phase 3) that Codex was READY but returned unusable output — distinguish "empty" (CLI produced no text, task #1081) from "refused" (Codex explicitly declined, task #1320) using `$CODEX_REASON`, both distinct from "not installed".
-   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"`, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran in the coverage banner (Phase 3).
+   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"` piped through `tee >(node scripts/log-llm-call.js --provider=openai --caller=plan-review >/dev/null 2>&1)` so the spend ledger sees it, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran in the coverage banner (Phase 3).
 
 2. **Independent Claude — Structure, Gaps & Devil's Advocate** — Use the Task tool with subagent_type "review-panelist" and this prompt:
 
@@ -209,7 +209,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      -H "Content-Type: application/json" \
      -d "$(jq -n --arg plan "$(cat "${PLAN_FILE:-/tmp/critique-plan.txt}")" '{
        contents: [{parts: [{text: ("Review this plan for internal contradictions, gaps between stated goals and actual steps, and assumptions that are never validated.\n\n**CONSISTENCY LENS:**\n1. Does the plan contradict itself? (e.g., says \"simple\" but has 8 steps, says \"fast\" but requires 3 API calls)\n2. Are there gaps between what the plan SAYS it does and what the steps ACTUALLY do?\n3. What does the plan assume is true but never checks? (data exists, API is available, user has permissions)\n\n**GAP LENS:**\n4. What is the plan silent about? (error handling, rollback, what happens if step 3 fails)\n5. Are there steps that depend on each other but don't say so?\n6. What would a new developer ask after reading this plan that isn't answered?\n\nBe specific. Reference step numbers. Under 400 words. Bullet points only.\n\n" + $plan)}]}
-     }')" | jq -r '.candidates[0].content.parts[0].text'
+     }')" | tee >(node scripts/log-llm-call.js --provider=gemini --model=gemini-2.5-flash --caller=plan-review >/dev/null 2>&1) | jq -r '.candidates[0].content.parts[0].text'
    ```
 
 5. **User Impact & Platform Defaults** — Use the Task tool with subagent_type "review-panelist" and this prompt:

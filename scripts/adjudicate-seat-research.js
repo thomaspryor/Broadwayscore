@@ -20,6 +20,7 @@
  *   1  — script error
  */
 
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import models from './lib/models.js';
 const { ADJUDICATE_SONNET } = models;
 import fs from 'fs';

@@ -38,6 +38,7 @@
  * a spike this size usually means the predicate or the LLM verification
  * regressed, not routine catch-up drift.
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');

@@ -542,6 +542,7 @@ on:
       - 'scripts/resolve-we-unlisted-tr.js'
       # tests/unit/landed-but-open-merge-direction.test.mjs
       - 'scripts/reconcile-landed-but-open.js'
+      - 'scripts/log-llm-call.js'
       # tests/unit/recoupment-reconcile-gate.test.mjs
       - 'scripts/reconcile-recoupment-claims.js'
       # tests/unit/push-retry-failure-ledger.test.mjs

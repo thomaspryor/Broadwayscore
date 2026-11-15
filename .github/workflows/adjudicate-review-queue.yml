@@ -173,3 +173,11 @@ jobs:
           else
             echo "**Status:** Queue empty, no action taken" >> $GITHUB_STEP_SUMMARY
           fi
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: adjudicate-review-queue

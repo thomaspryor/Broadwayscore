@@ -29,6 +29,7 @@
  * the model. Re-runs each week, so a show added to shows.json later still
  * picks up the reviews posted during its run.
  */
+require('../lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const path = require('path');

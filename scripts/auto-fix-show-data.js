@@ -11,6 +11,7 @@
  * Philosophy: Fix EVERYTHING automatically. Zero human intervention needed.
  * Cast is NOT tracked (changes too frequently).
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const path = require('path');

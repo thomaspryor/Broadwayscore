@@ -62,6 +62,7 @@ import {
   submitBatches,
   pollUntilTerminal,
   fetchAndMerge,
+  recordBatchSpend,
   outcomesForItem,
   buildBatchState,
   computeInputHash,
@@ -1969,9 +1970,10 @@ async function main(): Promise<void> {
     state: BatchState,
     items: Array<PendingBatchItem | null>
   ): Promise<{ written: Set<string>; merged: boolean; abandoned: boolean }> {
-    const { rows, unretrievableVendors } = await fetchAndMerge(state, batchKeys);
+    const { rows, unretrievableVendors, vendorResults } = await fetchAndMerge(state, batchKeys);
     const cfg = (scorer as EnsembleReviewScorer).getBatchConfig();
     const done = new Set<string>();
+    if (unretrievableVendors.length === 0) recordBatchSpend(state, vendorResults); // BRO-7521: once per consumed batch
 
     // A vendor leg we PAID for whose results could not be retrieved is not the
     // same as a vendor returning per-item errors. Merging anyway would publish
@@ -1986,6 +1988,7 @@ async function main(): Promise<void> {
       });
       console.log(`\n   ⛔ REFUSING TO MERGE — could not retrieve results for: ${unretrievableVendors.join('; ')}`);
       if (action === 'abandon') {
+        recordBatchSpend(state, vendorResults); // BRO-7521: this drain consumes the batch
         // Permanently unretrievable, not a transient blip. Keeping the state
         // any longer only wedges every subsequent run until the 48h age gate.
         // The paid leg is already lost either way, so abandon it and let the

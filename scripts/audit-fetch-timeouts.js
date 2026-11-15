@@ -60,6 +60,7 @@
  * by an outer timeout, or read-only tooling run once by hand and watched):
  * add  // hygiene-fetch-timeout-ok: <reason>  anywhere in the file.
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');

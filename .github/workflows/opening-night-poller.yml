@@ -1743,3 +1743,11 @@ jobs:
           # BRO-5479: a Broadway poll (or an unknown one) also emails right away.
           email_with_auto_fix: ${{ steps.audience.outputs.broadway != 'false' && 'true' || 'false' }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: opening-night-poller

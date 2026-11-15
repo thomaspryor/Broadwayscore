@@ -1,4 +1,5 @@
 name: Run Script (cloud sessions)
+# ledger-exempt: contents: read token cannot push the ledger; spend seen via vendor receipts (BRO-7521)
 
 # BRO-5008: lets a cloud Claude session (iPhone, iPad, claude.ai/code) run a
 # committed repo script that needs production API keys, which only the Mac's .env

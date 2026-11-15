@@ -91,6 +91,9 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 24-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
 
 
 
@@ -1731,3 +1734,11 @@ jobs:
           # BRO-5477: auto-fix first, email only if the fix fails (page-worthy-alerts.js AUTO_FIX_FIRST_WORKFLOWS)
           auto_fix_first: ${{ vars.AUTO_FIX_FIRST_DISABLED != 'true' && 'true' || 'false' }}
           linear_api_key: ${{ secrets.LINEAR_API_KEY }}
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: opening-night-broadcast

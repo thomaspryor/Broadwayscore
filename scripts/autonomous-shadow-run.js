@@ -40,6 +40,7 @@
  */
 
 'use strict';
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const { TRIAGE_SONNET } = require('./lib/models.js');
 const fs = require('fs');

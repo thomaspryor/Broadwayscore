@@ -10,6 +10,7 @@
  *   node scripts/test-review-submission.js "https://variety.com/review/hamilton" "Hamilton" "Variety"
  */
 
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import models from './lib/models.js';
 const { ADJUDICATE_SONNET } = models;
 import { Anthropic } from '@anthropic-ai/sdk';

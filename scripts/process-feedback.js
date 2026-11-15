@@ -7,6 +7,7 @@
  * Runs daily. Uses dedup tracking to avoid re-processing submissions.
  */
 
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { Anthropic } from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';

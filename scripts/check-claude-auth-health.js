@@ -26,6 +26,7 @@
  * transient empty reply while every other run that day was healthy.
  */
 'use strict';
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const path = require('path');
 const { spawnSync } = require('child_process');

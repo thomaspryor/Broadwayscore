@@ -345,6 +345,14 @@ jobs:
             data/collection-state/progress.json
           retention-days: 30
 
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: collect-free-reviews-collect
+
   rebuild:
     if: ${{ inputs.dry_run != true && always() }}
     needs: collect
@@ -566,3 +574,11 @@ jobs:
           echo "Collected free-outlet review texts across ${{ inputs.parallel_jobs }} parallel jobs." >> $GITHUB_STEP_SUMMARY
           echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} reviews" >> $GITHUB_STEP_SUMMARY
           echo "- **Chained next round:** ${{ steps.chain.outputs.chained }}" >> $GITHUB_STEP_SUMMARY
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: collect-free-reviews-rebuild

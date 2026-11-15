@@ -73,6 +73,9 @@ jobs:
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 45-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
 
 
 
@@ -1110,3 +1113,11 @@ jobs:
           git add data/audit/pipeline-health/
           git diff --staged --quiet || git commit -m "health: Record rebuild-reviews success"
           bash scripts/lib/push-with-retry.sh
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: rebuild-reviews

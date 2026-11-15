@@ -1,4 +1,5 @@
 name: Supabase Functions
+# ledger-exempt: only forwards the key to edge-function secrets; makes no model calls (BRO-7521)
 
 # Two jobs, two triggers:
 # - deploy: keeps the deployed edge functions in lockstep with main. Without

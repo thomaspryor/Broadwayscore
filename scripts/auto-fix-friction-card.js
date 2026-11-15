@@ -36,6 +36,7 @@
  *   node scripts/auto-fix-friction-card.js --dry-run         # print proposed patches, no git/PR/Linear writes
  *   node scripts/auto-fix-friction-card.js --issue=BRO-123   # scope to one issue (still real writes unless --dry-run)
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const path = require('path');

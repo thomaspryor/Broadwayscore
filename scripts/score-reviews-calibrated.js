@@ -6,6 +6,7 @@
  * Uses few-shot examples from reviews with known original ratings
  * to improve scoring accuracy. Run with --help for usage.
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const { getExcerpts } = require('./lib/excerpt-fields');

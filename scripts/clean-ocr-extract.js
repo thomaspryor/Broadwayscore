@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Extract clean review text from newspapers.com OCR garble
 // Replaces fullText with just the review portion, then standard scorer can handle it
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const path = require('path');

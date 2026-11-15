@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 /**
  * llm-triage.js — report-only LLM triage of stuck board cards (BRO-7139 Step 3).
  *

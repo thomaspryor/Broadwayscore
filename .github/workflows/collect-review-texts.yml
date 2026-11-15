@@ -634,6 +634,15 @@ jobs:
           git diff --staged --quiet || git commit -m "health: Record collect-review-texts success"
           bash scripts/lib/push-with-retry.sh
 
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: collect-review-texts-collect-reviews-single
+
   # Parallel multi-job mode (matrix strategy)
   collect-reviews-parallel:
     if: ${{ inputs.parallel == 'true' }}
@@ -871,3 +880,11 @@ jobs:
 
   # Rebuild also triggered via workflow_run as backup, but explicit dispatch above
   # is more reliable during high-activity periods.
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: collect-review-texts-collect-reviews-parallel

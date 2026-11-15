@@ -13,6 +13,7 @@
  * ±7 days of each other. Failures fall through to the human-review Notion
  * card path.
  */
+require('./llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const https = require('https');
 const { serpQuery } = require('./url-discovery');

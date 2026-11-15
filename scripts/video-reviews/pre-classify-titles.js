@@ -19,6 +19,7 @@
  *
  * Requires: ANTHROPIC_API_KEY
  */
+require('../lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const path = require('path');

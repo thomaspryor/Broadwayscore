@@ -3,6 +3,7 @@
  * with market + venue context. Uses targeted pre-filter (text must reference a
  * known Broadway venue or strong marker) to keep LLM calls bounded.
  */
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import * as fs from 'fs';
 import * as path from 'path';
 import { buildScoringInput } from './llm-scoring/input-builder';

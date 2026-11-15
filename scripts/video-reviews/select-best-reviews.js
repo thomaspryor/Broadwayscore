@@ -32,6 +32,7 @@
  *   node scripts/video-reviews/select-best-reviews.js --dry-run   # report picks, write nothing
  *   node scripts/video-reviews/select-best-reviews.js --dry-run --sample=5   # also ask the picker for 5 groups
  */
+require('../lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const path = require('path');

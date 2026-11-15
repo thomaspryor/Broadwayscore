@@ -32,6 +32,7 @@
  *                         the existing parser (up to 8 Sonnet calls with a key).
  *                         Without Sonnet results the comparison is incomplete.
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');

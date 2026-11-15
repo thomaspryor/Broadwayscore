@@ -294,6 +294,14 @@ jobs:
           path: data/audit/retroactive-verify-report.json
           retention-days: 30
 
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: verify-existing-reviews-verify
+
   rebuild:
     if: ${{ inputs.dry_run != true && always() }}
     needs: verify
@@ -488,3 +496,11 @@ jobs:
           title: 'Verify Existing Reviews Failed'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: verify-existing-reviews-rebuild

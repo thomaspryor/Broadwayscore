@@ -336,6 +336,15 @@ jobs:
           severity: 'warning'
           description: 'The weekly theater newsletter reader did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (the renew-gmail job handles that), an ANTHROPIC_API_KEY problem, or a push conflict on data/audit/.'
 
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: finance-ingest-newsletters
+
   # BRO-3712: when either job fails, ask Google whether the saved token is
   # revoked. Only then (exit 3) start gmail-reauth.yml, which puts a one-tap
   # renewal link on the card and so in the owner's decisions email. A Gmail

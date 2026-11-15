@@ -24,6 +24,7 @@
  *   - Hard fail → returns { shouldRespond: false, sentiment: 'neutral' }
  *     so the orchestrator can still log the mention without crashing
  */
+require('./llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const { COPY_SONNET, COPY_FALLBACK_SONNET } = require('./models.js');
 const https = require('https');

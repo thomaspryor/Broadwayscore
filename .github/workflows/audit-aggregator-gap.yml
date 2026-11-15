@@ -84,6 +84,10 @@ jobs:
     if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
@@ -596,3 +600,11 @@ jobs:
         with:
           title: 'Aggregator Review Gap Audit Failed'
           severity: 'warning'
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: audit-aggregator-gap

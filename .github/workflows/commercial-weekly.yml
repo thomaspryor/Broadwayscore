@@ -264,6 +264,9 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 120-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -374,6 +377,14 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Weekly deep research tracking marks'
 
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: commercial-weekly-deep-research
+
   auto-apply:
     needs: deep-research
     if: always() && inputs.dry_run != true
@@ -389,6 +400,9 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 30-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -763,3 +777,11 @@ jobs:
           title: 'Commercial Weekly Orchestrator Failed'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: commercial-weekly-auto-apply

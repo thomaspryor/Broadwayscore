@@ -17,12 +17,12 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const SCRIPTS = path.join(ROOT, 'scripts');
 
 // A file "calls an LLM API" when it names the API host or loads either SDK.
-// Anthropic is metered separately (data/llm-scoring-runs.json, claude-session-cost).
-const CALLS_LLM_RE = /generativelanguage\.googleapis\.com|api\.openai\.com|require\(\s*['"](?:openai|@google\/generative-ai)['"]\s*\)|from\s+['"](?:openai|@google\/generative-ai)['"]|new OpenAI\(/;
+// Anthropic /v1/messages is metered by the same wrapper (BRO-7521); batch results via recordBatchUsage.
+const CALLS_LLM_RE = /generativelanguage\.googleapis\.com|api\.openai\.com|api\.anthropic\.com|require\(\s*['"](?:openai|@google\/generative-ai|@anthropic-ai\/sdk)['"]\s*\)|from\s+['"](?:openai|@google\/generative-ai|@anthropic-ai\/sdk)['"]|new (?:OpenAI|Anthropic)\(/;
 const METER_RE = /llm-usage-install|gemini-usage-ledger['"]\)\.install\(\)/;
-const CLIENT_RE = /new (?:OpenAI|GoogleGenerativeAI)\(/;
+const CLIENT_RE = /new (?:OpenAI|GoogleGenerativeAI|Anthropic)\(/;
 // The meter itself and tests that stub fetch are not callers.
-const EXEMPT = new Set(['scripts/lib/gemini-usage-ledger.js', 'scripts/lib/llm-usage-install.js']);
+const EXEMPT = new Set(['scripts/lib/gemini-usage-ledger.js', 'scripts/lib/llm-usage-install.js', 'scripts/test-fixtures/stub-autonomous-email-io.cjs']);
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {

@@ -4,6 +4,7 @@
  * Usage: node scripts/video-reviews/score-video-reviews.js [--show show-id]
  * Requires: ANTHROPIC_API_KEY in environment or .env
  */
+require('../lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 try { require('dotenv').config(); } catch(e) {}
 const fs = require('fs');

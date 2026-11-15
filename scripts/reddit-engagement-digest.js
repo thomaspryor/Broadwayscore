@@ -32,6 +32,7 @@
  * account keeps engaging genuinely and can still cite score data, but never
  * reaches 'links-ok' again.
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const { COPY_SONNET } = require('./lib/models.js');
 const https = require('https');

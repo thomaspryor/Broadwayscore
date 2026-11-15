@@ -421,6 +421,15 @@ jobs:
           echo "- **Remaining:** ${{ steps.chain.outputs.remaining || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Chained next round:** ${{ steps.chain.outputs.chained || 'false' }}" >> $GITHUB_STEP_SUMMARY
 
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: collect-soft-paywall-collect-single
+
   # Parallel mode: run all 6 domains simultaneously when "all" is selected
   prepare-all:
     if: ${{ inputs.domain == 'all' }}
@@ -637,6 +646,15 @@ jobs:
             data/audit/validation/collection-report-*.json
             data/collection-state/progress.json
           retention-days: 30
+
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: collect-soft-paywall-collect-all
 
   # Trigger rebuild after all parallel jobs complete
   rebuild-all:
@@ -856,3 +874,11 @@ jobs:
           echo "Collected review texts from 6 soft-paywall domains." >> $GITHUB_STEP_SUMMARY
           echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} reviews" >> $GITHUB_STEP_SUMMARY
           echo "- **Chained next round:** ${{ steps.chain.outputs.chained }}" >> $GITHUB_STEP_SUMMARY
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: collect-soft-paywall-rebuild-all

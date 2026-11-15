@@ -19,6 +19,7 @@
  *   node scripts/posthog-friction-analyzer.js            # live run
  *   node scripts/posthog-friction-analyzer.js --dry-run  # print proposed cards, no writes
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const crypto = require('crypto');
 const fs = require('fs');

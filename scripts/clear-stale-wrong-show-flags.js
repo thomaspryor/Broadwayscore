@@ -39,6 +39,7 @@
  * — a spike this large usually means the predicate or LLM regressed, not
  * routine drift, and this writes unattended to the private review-texts corpus.
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');

@@ -20,6 +20,7 @@
  * Live mode only touches the dedicated `Auto` select (never Status, never
  * domain Tags). The executor (scripts/autonomous-run.js) consumes the queue.
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const { TRIAGE_SONNET } = require('./lib/models.js');
 const fs = require('fs');

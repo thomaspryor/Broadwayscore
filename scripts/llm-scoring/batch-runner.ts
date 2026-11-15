@@ -108,6 +108,8 @@ export interface BatchState {
 export interface MergeOutcome {
   rows: MergedRow[];
   unretrievableVendors: string[];
+  /** Raw per-vendor results, for spend recording (recordBatchSpend). */
+  vendorResults: { claude: VendorResult[]; openai: VendorResult[]; gemini: VendorResult[] };
 }
 
 /**
@@ -458,7 +460,23 @@ export async function fetchAndMerge(state: BatchState, keys: ApiKeys): Promise<M
       state.itemCount
     ),
     unretrievableVendors,
+    vendorResults: { claude: claudeResults, openai: openaiResults, gemini: geminiResults },
   };
+}
+
+/**
+ * BRO-7521: Batch API calls are invisible to the fetch meter, so ledger them
+ * (kind 'batch', priced at the 50% batch rate). Call ONCE per batch, on the
+ * drain that consumes the results (merge or abandon), never on a drain that
+ * keeps the state for a re-fetch, or the same batch is counted again.
+ */
+export function recordBatchSpend(state: BatchState, vr: MergeOutcome['vendorResults']): void {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { recordBatchUsage } = require('../lib/gemini-usage-ledger');
+  const caller = 'scripts/llm-scoring/batch-runner.ts';
+  recordBatchUsage({ provider: 'anthropic', model: state.models.claude, results: vr.claude.filter((r) => r.usage), caller });
+  recordBatchUsage({ provider: 'openai', model: state.models.openai, results: vr.openai.filter((r) => r.usage), caller });
+  recordBatchUsage({ provider: 'gemini', model: state.models.gemini || 'unknown', results: vr.gemini.filter((r) => r.usage), caller });
 }
 
 /**

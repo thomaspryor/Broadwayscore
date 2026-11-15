@@ -17,6 +17,7 @@
  *
  * Costs one model call per batch of up to 6 screenshots.
  */
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import path from 'node:path';
 import sharp from 'sharp';
 import Anthropic from '@anthropic-ai/sdk';

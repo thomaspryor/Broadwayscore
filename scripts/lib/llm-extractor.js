@@ -16,6 +16,7 @@
  *     const llmReviews = await llmFallbackExtract(html, { aggregator: 'dtli', showTitle, showId });
  *   }
  */
+require('./llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const { EXTRACTION_SONNET } = require('./models.js');
 const https = require('https');

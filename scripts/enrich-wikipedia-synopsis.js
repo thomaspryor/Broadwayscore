@@ -15,6 +15,7 @@
  *
  * Usage: node scripts/enrich-wikipedia-synopsis.js [--dry-run] [--category=off-broadway|west-end|broadway] [--show=ID]
  */
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const fs = require('fs');
 const path = require('path');

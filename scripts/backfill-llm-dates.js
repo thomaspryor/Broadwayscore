@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 const { maxPlausibleYear } = require('./lib/date-utils');
 /**
  * Extract publishDate from review text using Claude Haiku.

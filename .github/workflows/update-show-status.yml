@@ -1000,6 +1000,15 @@ jobs:
       # should-deploy-gate.js) and the step's own 15-minute dedup would have
       # skipped it nearly every time.
 
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-show-status-update-shows
+
   # S4-T3 (2026 data audit, BRO-4204): the workflow RUN turns red when a
   # discovery source is blind. Two signals were already WRITTEN every run but
   # nothing ever read them — playbillBroadway sat at a 24-run zero streak (olt

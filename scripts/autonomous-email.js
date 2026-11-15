@@ -21,6 +21,7 @@
  */
 
 'use strict';
+require('./lib/llm-usage-install'); // LLM spend meter, before any client is built (BRO-5043)
 
 const { CLAUDE_HAIKU } = require('./lib/models.js');
 const { LAUNCH_REFUSED_PREFIX } = require('./lib/attempt-memory.js');
