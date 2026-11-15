@@ -189,7 +189,7 @@ async function main() {
         fetchMethod: 'thetimes-subscriber-browser-session',
         sourceMethod: 'thetimes-subscriber-recovery-login',
         contentTierReasonFallback: 'Recovered via authenticated Times UK browser session (task #919)',
-      });
+      }, { headline: require('./lib/gap-acceptance').pageHeadline(result.html) });
       if (outcome.ok) {
         stats.recovered++;
         console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
