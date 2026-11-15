@@ -4,7 +4,19 @@
     "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json",
     "ghost-notes-off-broadway-2026/oazis--unknown.json",
     "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
-    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+    "dogstar-off-west-end-2026/islingtontribune--unknown.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "julius-caesar-globe-off-west-end-2026/theatre-weekly--unknown.json",
+    "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "speculations-off-west-end-2026/westminsterextra--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -17,21 +29,38 @@
     "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
     "the-visitors-off-broadway-2026/boston-globe--unknown.json",
     "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
-    "msblackforpresident-off-broadway-2026/guardian--unknown.json"
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "cloud-9-west-end-2026/times-uk--dominic-maxwell.json",
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
-      "ghost-notes-off-broadway-2026/oazis--unknown.json"
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+      "julius-caesar-globe-off-west-end-2026/theatre-weekly--unknown.json",
+      "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
     ],
     "directCookies": [],
     "scrapingdog": [
-      "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json"
+      "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json",
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+      "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
     "scrapingbee": [
       "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
@@ -39,11 +68,13 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+      "dogstar-off-west-end-2026/islingtontribune--unknown.json",
+      "speculations-off-west-end-2026/westminsterextra--unknown.json"
     ]
   },
   "startTime": "2026-11-15T14:38:16.078Z",
-  "lastProcessed": "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
   "log": [
     {
       "t": "2026-11-15T14:52:15.622Z",
@@ -88,6 +119,17 @@
       "t": "2026-11-15T14:58:16.147Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T15:08:53.669Z",
+      "event": "bb-session",
+      "session": "8bd5bc19",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-15T15:08:54.594Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
