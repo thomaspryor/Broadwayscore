@@ -751,8 +751,12 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
   if (loopDeadMsg) {
     alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
   } else if (fixing && reportOnly === 'cloud') {
-    // BRO-7520: the Action files the cards itself; say only what it did.
-    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. Visitor-facing ones got a fix card this morning and a cloud worker takes them; the rest are tracked or being watched. Details below.</p>`);
+    // BRO-7520: the Action files the cards itself; say only what it did (count real card-filed rows).
+    const filedNow = (autofixRows || []).filter((r) => r.state === 'card-filed').length;
+    const filedTxt = filedNow
+      ? `${filedNow} visitor-facing ${filedNow === 1 ? 'one' : 'ones'} got a fix card this morning and a cloud worker takes ${filedNow === 1 ? 'it' : 'them'}; the rest are tracked or being watched`
+      : 'No new fix card was filed this morning; each row below says whether it is tracked or being watched';
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. ${filedTxt}. Details below.</p>`);
   } else if (fixing && reportOnly) {
     // BRO-6230: --no-autofix builds a report-only plan; nothing was queued, so say so.
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. This digest only reports them; it did not start any automatic fix. Details below.</p>`);
@@ -1685,7 +1689,7 @@ async function main() {
       } else console.log('[digest] --cloud-autofix: no filing (the Resend guard did not say send)');
     }
     const tracked = autofixRows.filter((r) => r.state === 'tracked').length;
-    console.log(`[digest] --no-autofix: report only, nothing filed or dispatched; ${tracked} of ${autofixRows.length} row(s) already have an open card${openTitles ? '' : ' (Linear unreadable)'}`);
+    console.log(`[digest] ${cloudAutofix ? `--cloud-autofix: ${cloudFiledCount} card(s) filed, nothing dispatched` : '--no-autofix: report only, nothing filed or dispatched'}; ${tracked} of ${autofixRows.length} row(s) already have an open card${openTitles ? '' : ' (Linear unreadable)'}`);
   } catch (err) {
     console.error(`[digest] WARN report-only autofix failed (email still sends): ${String(err.message).slice(0, 160)}`);
   }

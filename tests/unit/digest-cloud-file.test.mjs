@@ -103,4 +103,13 @@ test('cloud-mode email header says what the Action did, not "only reports"', () 
   const html = buildHtml({ sections, autofixRows: rows, reportOnly: 'cloud', loopDeadMsg: '' });
   assert.match(html, /got a fix card this morning/);
   assert.doesNotMatch(html, /did not start any automatic fix/);
+  // review finding: never claim a card was filed when none was
+  const none = buildHtml({ sections, autofixRows: [{ state: 'watching', title: 'BSC Daily: X broken', name: 'X broken' }], reportOnly: 'cloud', loopDeadMsg: '' });
+  assert.doesNotMatch(none, /got a fix card this morning/);
+  assert.match(none, /No new fix card was filed this morning/);
+});
+
+test('health-check passes this run\'s results to the uncarded-rows check (ordering guard)', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/health-check.js'), 'utf8');
+  assert.match(src, /results\.push\(\.\.\.\(await checkUncardedDigestRows\(results\)\)\)/);
 });

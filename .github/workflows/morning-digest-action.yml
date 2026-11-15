@@ -12,7 +12,7 @@ name: Morning Digest
 # Mac sends again, the Action stays quiet) or revert the commit.
 #
 # Sends: schedule, or workflow_dispatch with send=true. Both run send-morning-digest.js
-# --send-to-owner --no-autofix --skip-mac-local (--resend-sent-guard, or --test-send for a test dispatch): never a broadcast (rule 17),
+# --send-to-owner --cloud-autofix --skip-mac-local (--resend-sent-guard, or --test-send for a test dispatch): never a broadcast (rule 17),
 # one owner email a day (the guard refuses when Resend already shows today's digest; exit 3 =
 # already sent = green; any unreadable guard = red, never a send). The real send passes
 # --cloud-autofix (BRO-7520): report-only like --no-autofix, plus START-NOW cards for visitor rows, filed only once
