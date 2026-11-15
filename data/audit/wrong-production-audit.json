@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-11-15T18:26:36.490Z",
+  "timestamp": "2026-11-15T18:39:03.890Z",
   "stats": {
-    "totalReviews": 82264,
+    "totalReviews": 82263,
     "alreadyFlagged": 22428,
     "dateGuardCatches": 221,
     "directorMismatch": 3708,
     "tvFilmSignals": 2318,
-    "londonSignals": 3763,
-    "offBroadwaySignals": 750,
+    "londonSignals": 3764,
+    "offBroadwaySignals": 751,
     "yearMismatch": 375,
     "noPublishDate": 8455
   },
@@ -121435,6 +121435,24 @@
       "publishDate": "February 28, 2008",
       "url": "http://www.talkinbroadway.com/world/PassingStrange.html",
       "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "file": "variety--unknown.json",
+      "publishDate": "2026-11-08",
+      "url": "https://variety.com/2026/legit/news/passing-strange-pasadena-playhouse-stew-heidi-interview-1236942647/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
