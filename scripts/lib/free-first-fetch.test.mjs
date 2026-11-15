@@ -106,3 +106,10 @@ test('decideFreeSearch needs "review" as a whole slug word ("preview" is not a r
   assert.equal(mk('https://deadline.com/2025/10/ragtime-broadway-preview-1/').use, false);
   assert.equal(mk('https://deadline.com/2025/10/ragtime-broadway-review-1/').use, true);
 });
+
+test('isCurrentProductionPost has an upper bound; stage markers are whole slug words', () => {
+  assert.equal(f.isCurrentProductionPost('2026-04-01T10:00:00', '2018-03-01'), false, 'later revival must not count');
+  assert.equal(f.isCurrentProductionPost('2018-04-01T10:00:00', '2018-03-01'), true);
+  assert.equal(f.looksLikeStageReview('https://deadline.com/2025/10/hamlet-review-riz-ahmed-screenplay-1236/'), false);
+  assert.equal(f.looksLikeStageReview('https://deadline.com/2025/10/hamlet-broadway-review-1236/'), true);
+});

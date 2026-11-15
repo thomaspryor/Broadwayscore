@@ -267,7 +267,7 @@ test('BRO-7532: free WP search hit skips the paid render; empty, blocked, junk, 
     ['stale production (2009 post date)', wp(hit, '2009-11-01T00:00:00')],
     ['post date lookup fails', async (u) => { if (/\/posts\//.test(u)) throw new Error('x'); return { status: 200, body: JSON.stringify(hit) }; }],
     ['hit without an id', wp([{ url: review }])],
-    ['film review sharing the title', wp([{ id: 3, url: 'https://deadline.com/2024/11/wicked-review-ariana-grande-1236/' }])],
+    ['film review sharing the title', wp([{ id: 3, url: 'https://deadline.com/2025/10/ragtime-broadway-film-review-1236/' }])],
     ['West End review of the same title', wp([{ id: 4, url: 'https://deadline.com/2025/10/ragtime-west-end-review-1/' }])],
   ]) {
     r = await run(ff);

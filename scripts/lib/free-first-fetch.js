@@ -33,7 +33,7 @@ function urlMatchesLinkPattern(url, linkPattern) {
 }
 
 const FILM_TV_MARKERS = /(?:^|[\/-])(?:movie|movies|film|films|tv|series|netflix|streaming|documentary|festival|tribeca|sundance|cannes|sxsw|venice|toronto|apple-tv|hbo|disney)(?:$|[\/-])/i;
-const STAGE_MARKERS = /(?:broadway|theat(?:er|re)|musical|off-broadway|west-end|revival|play)/i;
+const STAGE_MARKERS = /(?:^|[\/-])(?:broadway|theat(?:er|re)|musical|off-broadway|west-end|revival|play)(?:$|[\/-])/i;
 const OTHER_MARKET_MARKERS = { broadway: /(?:west-end|london|edinburgh)/i, 'west-end': /(?:broadway)/i };
 
 /**
@@ -53,11 +53,11 @@ function looksLikeStageReview(url, market = 'broadway') {
  * after (openingDate - graceDays). Unknown opening date or unparseable date =>
  * false, so the paid render decides.
  */
-function isCurrentProductionPost(postDate, openingDate, graceDays = 45) {
+function isCurrentProductionPost(postDate, openingDate, graceDays = 45, maxDays = 120) {
   const post = Date.parse(postDate);
   const open = Date.parse(openingDate);
   if (!Number.isFinite(post) || !Number.isFinite(open)) return false;
-  return post >= open - graceDays * 86400000;
+  return post >= open - graceDays * 86400000 && post <= open + maxDays * 86400000;
 }
 
 /** WP single-post URL used to read a candidate's publish date. */
