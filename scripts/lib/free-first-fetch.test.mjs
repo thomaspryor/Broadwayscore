@@ -113,3 +113,47 @@ test('isCurrentProductionPost has an upper bound; stage markers are whole slug w
   assert.equal(f.looksLikeStageReview('https://deadline.com/2025/10/hamlet-review-riz-ahmed-screenplay-1236/'), false);
   assert.equal(f.looksLikeStageReview('https://deadline.com/2025/10/hamlet-broadway-review-1236/'), true);
 });
+
+test('BRO-7531: clean no-match helpers', () => {
+  const ff = require('./free-first-fetch.js');
+  // bounded URL: opening -45d .. +120d, 100 per page; unknown date => null (paid render decides)
+  assert.match(ff.buildWpBoundedSearchUrl('https://deadline.com/', 'Petra', '2026-11-10'),
+    /^https:\/\/deadline\.com\/wp-json\/wp\/v2\/posts\?search=Petra%20review&after=2026-09-26T00:00:00&before=2027-03-10T00:00:00&per_page=100&_fields=id,link,date$/);
+  assert.equal(ff.buildWpBoundedSearchUrl('https://deadline.com', 'Petra', null), null);
+  assert.equal(ff.buildWpBoundedSearchUrl('https://deadline.com', 'Petra', 'TBA'), null);
+  // posts parser: JSON arrays only
+  assert.deepEqual(ff.parseWpPostsResults('[{"id":5,"link":"https://deadline.com/a/"},{"id":"x","link":"nope"}]'), [{ url: 'https://deadline.com/a/', id: 5 }]);
+  for (const bad of ['<html>', '{"code":"rest_forbidden"}', '', undefined, '[oops']) assert.equal(ff.parseWpPostsResults(bad), null);
+  // clean = array, page not full, nothing the paid filter accepts
+  const opts = { linkPattern: /href="(https:\/\/deadline\.com\/\d{4}\/\d{2}\/[^"]+)"/g, showTitle: 'Petra', urlLooksLike: (u) => /petra/.test(u), nonReviewReason: (u) => (/box-office/.test(u) ? 'box-office' : null) };
+  const post = (slug) => ({ url: `https://deadline.com/2026/11/${slug}/` });
+  assert.equal(ff.isCleanFreeNoMatch([], opts), true);
+  assert.equal(ff.isCleanFreeNoMatch([post('other-film-review-1'), post('petra-box-office-2')], opts), true, 'a named non-review is dropped by the paid path too');
+  assert.equal(ff.isCleanFreeNoMatch([post('petra-review-1')], opts), false);
+  assert.equal(ff.isCleanFreeNoMatch(null, opts), false, 'unusable answer is never clean');
+  assert.equal(ff.isCleanFreeNoMatch(Array.from({ length: 20 }, (_, i) => post(`x-${i}`)), opts), false, 'a full page may be cut off');
+  assert.equal(ff.isCleanFreeNoMatch(Array.from({ length: 20 }, (_, i) => post(`x-${i}`)), { ...opts, pageSize: 100 }), true);
+  assert.equal(ff.isCleanFreeNoMatch([post('x-1')], { ...opts, rawCount: 20 }), false, 'full is judged on the raw row count, not the parsed one');
+  assert.equal(ff.wpRawCount('[{"id":1},{"id":2}]'), 2);
+  for (const bad of ['<html>', '{"a":1}', '[oops', '', undefined]) assert.equal(ff.wpRawCount(bad), null);
+  // canary: one cheap known-good query per endpoint
+  assert.equal(ff.buildWpCanaryUrl('https://deadline.com/'), 'https://deadline.com/wp-json/wp/v2/search?search=Broadway%20review&per_page=1&subtype=post');
+  assert.equal(ff.buildWpCanaryUrl('https://deadline.com', 'posts'), 'https://deadline.com/wp-json/wp/v2/posts?search=Broadway%20review&per_page=1&_fields=id,link,date');
+  // audit miss log ignores posts dated before the production window
+  assert.equal(ff.urlDatedBeforeProduction('https://deadline.com/2020/09/film-review-x-1/', '2026-11-09'), true);
+  assert.equal(ff.urlDatedBeforeProduction('https://deadline.com/2026/09/x-review-1/', '2026-11-09'), false, 'September ends inside the 45-day grace');
+  assert.equal(ff.urlDatedBeforeProduction('https://deadline.com/2026/11/x-review-1/', '2026-11-09'), false);
+  assert.equal(ff.urlDatedBeforeProduction('https://www.hollywoodreporter.com/lifestyle/arts/x-review-1/', '2026-11-09'), false, 'undated URL counts');
+  assert.equal(ff.urlDatedBeforeProduction('https://deadline.com/2020/09/x-1/', null), false, 'unknown opening date counts');
+  // audit sample: 5% by default, env override, 0 turns it off
+  assert.equal(ff.shouldAuditCleanNoMatch(() => 0.04, {}), true);
+  assert.equal(ff.shouldAuditCleanNoMatch(() => 0.05, {}), false);
+  assert.equal(ff.shouldAuditCleanNoMatch(() => 0.5, { FREE_WP_CLEAN_AUDIT_RATE: '1' }), true);
+  assert.equal(ff.shouldAuditCleanNoMatch(() => 0, { FREE_WP_CLEAN_AUDIT_RATE: '0' }), false);
+  assert.equal(ff.shouldAuditCleanNoMatch(() => 0.04, { FREE_WP_CLEAN_AUDIT_RATE: 'junk' }), true, 'unparseable rate falls back to the default');
+  // policy: off-Broadway / off-West-End only, with a kill switch
+  assert.equal(ff.trustCleanFreeNoMatch({ category: 'off-broadway' }, {}), true);
+  assert.equal(ff.trustCleanFreeNoMatch({ category: 'off-west-end' }, {}), true);
+  for (const show of [{ category: 'broadway' }, { category: 'west-end' }, { category: 'regional' }, { category: 'tour' }, {}, null]) assert.equal(ff.trustCleanFreeNoMatch(show, {}), false);
+  assert.equal(ff.trustCleanFreeNoMatch({ category: 'off-broadway' }, { FREE_WP_NO_MATCH_PAID: '1' }), false);
+});

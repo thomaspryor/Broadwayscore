@@ -2,9 +2,17 @@
  * Free-first fetch decisions (BRO-7532). Pure functions; no network.
  *
  * Rule: a free path may only SHORT-CIRCUIT a paid path when it produced a usable
- * answer. Errors, blocks, non-JSON, empty and no-match all mean "fall back to the
- * paid path", so coverage can only go up.
+ * answer. Errors, blocks and non-JSON always mean "fall back to the paid path".
+ *
+ * BRO-7531 follow-up (2026-11-15): a "no match" also fell back to the paid render,
+ * so the free search saved nothing on the shows that cost the most. In the hour
+ * after BRO-7532 landed the poller still paid 16 renders/hour for Deadline and
+ * Hollywood Reporter (17/hour before), 14 of 16 for off-Broadway and
+ * off-West-End shows, which those outlets reviewed once in 17 months. A CLEAN
+ * no-match (see isCleanFreeNoMatch) now stands for those markets only; Broadway,
+ * West End and everything else keep the paid render as the backstop.
  */
+const { isSlowTrickleMarket } = require('./serp-second-opinion-policy');
 
 /** WordPress REST search URL (works on deadline.com / hollywoodreporter.com). */
 function buildWpSearchUrl(base, title) {
@@ -93,6 +101,121 @@ function decideFreeSearch(posts, { linkPattern, showTitle, urlLooksLike, nonRevi
   return urls.length ? { use: true, urls, hits, reason: 'hit' } : { use: false, urls: [], hits: [], reason: 'no-matching-review' };
 }
 
+/** Page size of the date-bounded search; an answer this long may be cut off. */
+const WP_BOUNDED_PAGE_SIZE = 100;
+/** Page size of the plain search (buildWpSearchUrl's per_page). */
+const WP_SEARCH_PAGE_SIZE = 20;
+
+/**
+ * Date-bounded WordPress search (posts endpoint): every post matching the title
+ * that was published inside the show's production window, the same window
+ * isCurrentProductionPost uses. A plain search for a common title ("Touch",
+ * "The Heart") fills its page with years of film reviews; inside the window the
+ * answer is small enough to be complete.
+ * @returns {string|null} null when the opening date is unknown or unparseable.
+ */
+function buildWpBoundedSearchUrl(base, title, openingDate, graceDays = 45, maxDays = 120) {
+  const open = Date.parse(openingDate);
+  if (!Number.isFinite(open)) return null;
+  const iso = (ms) => new Date(ms).toISOString().slice(0, 19);
+  const b = String(base || '').replace(/\/+$/, '');
+  return `${b}/wp-json/wp/v2/posts?search=${encodeURIComponent(`${title} review`)}`
+    + `&after=${iso(open - graceDays * 86400000)}&before=${iso(open + maxDays * 86400000)}`
+    + `&per_page=${WP_BOUNDED_PAGE_SIZE}&_fields=id,link,date`;
+}
+
+/** @returns {{url:string,id:number|null}[]|null} null when the body is not a JSON array. */
+function parseWpPostsResults(body) {
+  if (typeof body !== 'string') return null;
+  const t = body.trim();
+  if (!t.startsWith('[')) return null;
+  let arr;
+  try { arr = JSON.parse(t); } catch { return null; }
+  if (!Array.isArray(arr)) return null;
+  return arr
+    .filter(p => p && typeof p.link === 'string' && /^https?:\/\//.test(p.link))
+    .map(p => ({ url: p.link, id: Number.isInteger(p.id) ? p.id : null }));
+}
+
+/**
+ * Is this free answer a CLEAN no-match, one the paid render could not improve on?
+ * True only when the search answered with a JSON array, the page was not full
+ * (a full page may have cut the review off), and NOTHING in it would pass the
+ * paid path's own filter (link pattern, urlLooksLike, named non-review). A post
+ * the paid filter would accept but the stricter free filters rejected (no stage
+ * marker, old date) is not clean: the paid render decides, as before.
+ */
+function isCleanFreeNoMatch(posts, { linkPattern, showTitle, urlLooksLike, nonReviewReason, pageSize = WP_SEARCH_PAGE_SIZE, rawCount = null } = {}) {
+  if (!Array.isArray(posts)) return false;
+  // "Full" is judged on the RAW row count: the parsers drop rows without a link,
+  // so a full page of 20 could otherwise count as 19 and pass as complete.
+  if (Math.max(posts.length, Number.isInteger(rawCount) ? rawCount : 0) >= pageSize) return false;
+  for (const p of posts) {
+    const url = p && p.url;
+    if (!url) continue;
+    if (!urlMatchesLinkPattern(url, linkPattern)) continue;
+    if (urlLooksLike && !urlLooksLike(url, showTitle)) continue;
+    if (nonReviewReason && nonReviewReason(url)) continue;
+    return false;
+  }
+  return true;
+}
+
+/** Rows in a JSON-array body before any filtering; null when it is not a JSON array. */
+function wpRawCount(body) {
+  if (typeof body !== 'string' || !body.trim().startsWith('[')) return null;
+  try { const a = JSON.parse(body); return Array.isArray(a) ? a.length : null; } catch { return null; }
+}
+
+/**
+ * Canary query for a WordPress endpoint ('search' or 'posts'): a word every
+ * theatre trade site has thousands of posts for. An EMPTY free answer is only
+ * trusted when this still returns rows, so an endpoint that starts answering
+ * `[]` to everything (plugin change, cached empty, JSON rate-limit page) falls
+ * back to the paid render instead of silently hiding reviews.
+ */
+function buildWpCanaryUrl(base, kind = 'search') {
+  const b = String(base || '').replace(/\/+$/, '');
+  return kind === 'posts'
+    ? `${b}/wp-json/wp/v2/posts?search=${encodeURIComponent('Broadway review')}&per_page=1&_fields=id,link,date`
+    : `${b}/wp-json/wp/v2/search?search=${encodeURIComponent('Broadway review')}&per_page=1&subtype=post`;
+}
+
+/**
+ * Audit sample: on this share of clean no-matches the paid render still runs,
+ * so a review the free search cannot see is caught within a few poller ticks
+ * and logged (FREE-WP-CLEAN-MISS). Default 5%; FREE_WP_CLEAN_AUDIT_RATE=0..1.
+ */
+function shouldAuditCleanNoMatch(rand = Math.random, env = process.env) {
+  const raw = env && env.FREE_WP_CLEAN_AUDIT_RATE;
+  const rate = raw !== undefined && raw !== '' && Number.isFinite(Number(raw)) ? Math.min(1, Math.max(0, Number(raw))) : 0.05;
+  return rate > 0 && rand() < rate;
+}
+
+/**
+ * Does the URL carry a /YYYY/MM/ publish month that ended before the show's
+ * production window (opening - graceDays)? Used to keep old film reviews of a
+ * same-titled work out of the audit's miss log. Undated URL or unknown opening
+ * date => false (cannot tell, so it counts).
+ */
+function urlDatedBeforeProduction(url, openingDate, graceDays = 45) {
+  const m = /\/(20\d{2})\/(0[1-9]|1[0-2])\//.exec(String(url || ''));
+  const open = Date.parse(openingDate);
+  if (!m || !Number.isFinite(open)) return false;
+  return Date.UTC(Number(m[1]), Number(m[2]), 1) <= open - graceDays * 86400000;
+}
+
+/**
+ * May a clean free no-match stand without the paid render for this show?
+ * Off-Broadway and off-West-End only (the same markets that dropped the paid
+ * SERP second opinion). No show object, or any other market, keeps the render.
+ * Kill switch: FREE_WP_NO_MATCH_PAID=1 restores the render after every no-match.
+ */
+function trustCleanFreeNoMatch(show, env = process.env) {
+  if (env && env.FREE_WP_NO_MATCH_PAID === '1') return false;
+  return isSlowTrickleMarket(show);
+}
+
 /**
  * theatre.reviews direct-first gate. Accept only a real page: 200, not a
  * challenge, closed document, and a positive content marker for the path
@@ -117,6 +240,16 @@ module.exports = {
   looksLikeStageReview,
   isCurrentProductionPost,
   buildWpPostDateUrl,
+  buildWpBoundedSearchUrl,
+  parseWpPostsResults,
+  isCleanFreeNoMatch,
+  trustCleanFreeNoMatch,
+  wpRawCount,
+  buildWpCanaryUrl,
+  shouldAuditCleanNoMatch,
+  urlDatedBeforeProduction,
+  WP_BOUNDED_PAGE_SIZE,
+  WP_SEARCH_PAGE_SIZE,
   isTheatreReviewsHost,
   theatreReviewsDirectAcceptable,
 };

@@ -282,6 +282,77 @@ test('BRO-7532: free WP search hit skips the paid render; empty, blocked, junk, 
   assert.equal(r.paid, 1, 'kill switch restores the paid-only behaviour');
 });
 
+test('BRO-7531: a clean free no-match skips the paid render for off-Broadway / off-West-End only', async (t) => {
+  const { searchOutletSite } = require('./site-search-discovery.js');
+  const paidReview = 'https://deadline.com/2026/11/petra-paid-render-review-1/';
+  const paidHtml = `<a href="${paidReview}">x</a>`;
+  // The canary ("Broadway review") answers with a row unless a case overrides it.
+  const canary = (u) => /search=Broadway%20review/.test(u);
+  const run = async (freeFetch, show, opening = '2026-11-10', { canaryAnswer = { status: 200, body: JSON.stringify([{ id: 1, url: 'https://deadline.com/2026/11/x-1/', link: 'https://deadline.com/2026/11/x-1/' }]) }, random = () => 0.99 } = {}) => {
+    let paid = 0;
+    const outcomes = {};
+    const asked = [];
+    const urls = (await searchOutletSite('deadline', 'Petra', {
+      openingDate: opening, outcomes, show,
+      _deps: { freeFetch: async (u) => { asked.push(u); return canary(u) ? canaryAnswer : freeFetch(u); }, sbFetch: async () => { paid++; return paidHtml; }, random },
+    })).map(r => r.url);
+    return { urls, paid, outcomes, asked };
+  };
+  const ob = { id: 'petra-off-broadway-2026', category: 'off-broadway' };
+  const owe = { id: 'petra-off-west-end-2026', category: 'off-west-end' };
+  const json = (v) => ({ status: 200, body: JSON.stringify(v) });
+  const noise = (n) => Array.from({ length: n }, (_, i) => ({ id: 100 + i, url: `https://deadline.com/2026/11/box-office-weekend-${i}-1/`, link: `https://deadline.com/2026/11/box-office-weekend-${i}-1/` }));
+  const bounded = (u) => /\/wp\/v2\/posts\?/.test(u);
+
+  // 1. short page, nothing the paid filter would accept: the no-match stands
+  let r = await run(async () => json([]), ob);
+  assert.deepEqual([r.urls, r.paid, r.outcomes.deadline], [[], 0, 'confirmed-empty'], 'empty answer for an off-Broadway show skips the paid render');
+  r = await run(async () => json(noise(3)), owe);
+  assert.deepEqual([r.urls, r.paid], [[], 0], 'non-review noise for an off-West-End show skips the paid render');
+  assert.equal(r.asked.some(bounded), false, 'a short clean page needs no second free request');
+  assert.equal(r.asked.some(canary), false, 'a non-empty answer needs no canary');
+  r = await run(async () => json(noise(3)), ob, null);
+  assert.deepEqual([r.urls, r.paid], [[], 0], 'a short clean page decides without an opening date');
+
+  // 2. full page (common title): one date-bounded free re-ask decides
+  r = await run(async (u) => json(bounded(u) ? noise(7) : noise(20)), ob);
+  assert.deepEqual([r.urls, r.paid], [[], 0], 'full page + complete clean bounded answer skips the paid render');
+  const b = r.asked.find(bounded);
+  assert.match(b, /after=2026-09-26T00:00:00&before=2027-03-10T00:00:00&per_page=100/, 'bounded to opening -45d .. +120d');
+
+  // 3. anything unclear keeps the paid render, exactly as before
+  const candidate = { id: 9, url: 'https://deadline.com/2026/11/petra-something-1/', link: 'https://deadline.com/2026/11/petra-something-1/' };
+  for (const [label, ff, show, opening, opts] of [
+    ['short page holding a post the paid filter would accept', async () => json([candidate]), ob],
+    ['bounded answer holding a post the paid filter would accept', async (u) => json(bounded(u) ? [candidate] : noise(20)), ob],
+    ['bounded answer that fills its page', async (u) => json(bounded(u) ? noise(100) : noise(20)), ob],
+    ['bounded request blocked', async (u) => (bounded(u) ? { status: 403, body: 'Forbidden' } : json(noise(20))), ob],
+    ['bounded request returns HTML', async (u) => (bounded(u) ? { status: 200, body: '<html>challenge</html>' } : json(noise(20))), ob],
+    ['bounded request throws', async (u) => { if (bounded(u)) throw new Error('ECONNRESET'); return json(noise(20)); }, ob],
+    ['full page and no opening date to bound by', async () => json(noise(20)), ob, null],
+    ['free search blocked', async () => ({ status: 403, body: 'Forbidden' }), ob],
+    ['free search returns HTML', async () => ({ status: 200, body: '<html>challenge</html>' }), ob],
+    ['empty answer while the canary is empty too (endpoint broken)', async () => json([]), ob, undefined, { canaryAnswer: json([]) }],
+    ['empty answer while the canary is blocked', async () => json([]), ob, undefined, { canaryAnswer: { status: 403, body: 'Forbidden' } }],
+    ['empty bounded answer while the posts canary is empty', async (u) => json(bounded(u) ? [] : noise(20)), ob, undefined, { canaryAnswer: json([]) }],
+    ['full page whose rows lost their links in parsing', async () => json(Array.from({ length: 20 }, (_, i) => ({ id: i }))), ob, null],
+    ['the audit sample', async () => json(noise(3)), ob, undefined, { random: () => 0.01 }],
+    ['Broadway show', async () => json([]), { id: 'petra-2026', category: 'broadway' }],
+    ['West End show', async () => json([]), { id: 'petra-west-end-2026', category: 'west-end' }],
+    ['show with no category yet', async () => json([]), { id: 'petra-2026' }],
+    ['no show object', async () => json([]), null],
+  ]) {
+    r = await run(ff, show, opening === undefined ? '2026-11-10' : opening, opts);
+    assert.deepEqual([r.urls, r.paid], [[paidReview], 1], `${label} must keep the paid render`);
+  }
+
+  // 4. kill switch
+  process.env.FREE_WP_NO_MATCH_PAID = '1';
+  t.after(() => { delete process.env.FREE_WP_NO_MATCH_PAID; });
+  r = await run(async () => json([]), ob);
+  assert.equal(r.paid, 1, 'FREE_WP_NO_MATCH_PAID=1 restores the paid render after every no-match');
+});
+
 test('BRO-7532: only deadline and hollywood-reporter carry freeWp, each with a paid-render config intact', () => {
   for (const [id, cfg] of Object.entries(SITE_SEARCH_ENDPOINTS)) {
     if (cfg.freeWp) {

@@ -27,7 +27,12 @@ const { namedNonReviewReason } = require('./non-review-url-patterns');
 const { hasNonMetOperaUrlMarker, operaHouseForVenue, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
 const { recordSbCall } = require('./provider-telemetry');
-const { buildWpSearchUrl, parseWpSearchResults, decideFreeSearch, isCurrentProductionPost, buildWpPostDateUrl } = require('./free-first-fetch');
+const {
+  buildWpSearchUrl, parseWpSearchResults, decideFreeSearch, isCurrentProductionPost, buildWpPostDateUrl,
+  buildWpBoundedSearchUrl, parseWpPostsResults, isCleanFreeNoMatch, trustCleanFreeNoMatch,
+  wpRawCount, buildWpCanaryUrl, shouldAuditCleanNoMatch, urlDatedBeforeProduction,
+  WP_BOUNDED_PAGE_SIZE, WP_SEARCH_PAGE_SIZE,
+} = require('./free-first-fetch');
 
 // Helper: parse JSON response, returning empty array if the body is HTML
 // (Cloudflare fallback can return HTML even after fetchSSR's challenge detection
@@ -1443,7 +1448,7 @@ async function fetchJsSearchHtml(config, url, deps = {}) {
  * Returns result rows when the search produced at least one real review
  * candidate, otherwise null so the caller runs the paid render as before.
  */
-async function tryFreeWpSearch(config, outletId, searchTitle, showTitle, deps = {}, verbose = false, { openingDate = null, market = 'broadway' } = {}) {
+async function tryFreeWpSearch(config, outletId, searchTitle, showTitle, deps = {}, verbose = false, { openingDate = null, market = 'broadway', info = null } = {}) {
   if (process.env.FREE_WP_SEARCH_DISABLED === '1') return null;
   try {
     const url = buildWpSearchUrl(config.freeWp.base, searchTitle);
@@ -1460,7 +1465,12 @@ async function tryFreeWpSearch(config, outletId, searchTitle, showTitle, deps = 
       market,
     });
     if (!decision.use) {
-      if (verbose) console.log(`    Site search [${config.name}]: free WP search ${decision.reason}, using paid render`);
+      // BRO-7531 follow-up: tell the caller when this no-match is CLEAN (nothing the
+      // paid render's own filter would accept). Only checked when the caller asked.
+      if (info && info.wantCleanCheck) {
+        info.cleanNoMatch = await isCleanWpNoMatch(config, searchTitle, showTitle, res.body, openingDate, deps);
+      }
+      if (verbose) console.log(`    Site search [${config.name}]: free WP search ${decision.reason}${info && info.cleanNoMatch ? ' (clean)' : ', using paid render'}`);
       return null;
     }
     // Current-production gate: a candidate only counts when its publish date is
@@ -1482,6 +1492,60 @@ async function tryFreeWpSearch(config, outletId, searchTitle, showTitle, deps = 
   } catch (err) {
     if (verbose) console.log(`    Site search [${config.name}]: free WP search failed (${String(err.message).slice(0, 60)}), using paid render`);
     return null;
+  }
+}
+
+/**
+ * BRO-7531 follow-up: is the free search's "no match" clean enough to stand?
+ * The plain search answer decides when it is short. A full page (common title)
+ * is re-asked once, free, bounded to the show's production window; that answer
+ * must be complete and hold nothing the paid filter would accept. Any error,
+ * block, non-JSON or unknown opening date => not clean => the paid render runs.
+ */
+// One canary per endpoint per process: is the free search still answering at all?
+const _wpCanaryMemo = new Map();
+function freeWpEndpointHealthy(base, kind, deps = {}) {
+  const check = async () => {
+    try {
+      const url = buildWpCanaryUrl(base, kind);
+      const res = await (deps && deps.freeFetch ? deps.freeFetch(url) : _fetchSSRDirect(url, 10000));
+      return !!res && res.status === 200 && (wpRawCount(res.body) || 0) > 0;
+    } catch (_) {
+      return false;
+    }
+  };
+  if (deps && deps.freeFetch) return check(); // injected fetch (tests): never memoized
+  const key = `${kind}:${base}`;
+  if (!_wpCanaryMemo.has(key)) _wpCanaryMemo.set(key, check());
+  return _wpCanaryMemo.get(key);
+}
+
+/**
+ * Is the free search's no-match CLEAN (nothing the paid render's own filter would
+ * accept, and nothing hidden)? A short first page decides by itself, with or
+ * without an opening date. A full first page (common title) gets one
+ * date-bounded re-ask, which needs the opening date. An EMPTY answer is only
+ * believed when the endpoint's canary still returns rows. Every unclear case is
+ * "not clean", which keeps the paid render.
+ */
+async function isCleanWpNoMatch(config, searchTitle, showTitle, body, openingDate, deps = {}) {
+  const filter = { linkPattern: config.linkPattern, showTitle, urlLooksLike: urlLooksLikeReview, nonReviewReason: namedNonReviewReason };
+  const posts = parseWpSearchResults(body);
+  const raw = wpRawCount(body);
+  if (isCleanFreeNoMatch(posts, { ...filter, rawCount: raw })) {
+    return raw > 0 || freeWpEndpointHealthy(config.freeWp.base, 'search', deps);
+  }
+  if (!Array.isArray(posts) || Math.max(posts.length, raw || 0) < WP_SEARCH_PAGE_SIZE) return false; // short page with a paid-filter candidate
+  const url = buildWpBoundedSearchUrl(config.freeWp.base, searchTitle, openingDate);
+  if (!url) return false;
+  try {
+    const res = await (deps && deps.freeFetch ? deps.freeFetch(url) : _fetchSSRDirect(url, 10000));
+    if (!res || res.status !== 200) return false;
+    const bRaw = wpRawCount(res.body);
+    if (!isCleanFreeNoMatch(parseWpPostsResults(res.body), { ...filter, pageSize: WP_BOUNDED_PAGE_SIZE, rawCount: bRaw })) return false;
+    return bRaw > 0 || freeWpEndpointHealthy(config.freeWp.base, 'posts', deps);
+  } catch (_) {
+    return false;
   }
 }
 
@@ -1533,6 +1597,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
 
   try {
     let results;
+    let auditedCleanNoMatch = false;
 
     // Custom fetch+parse path (e.g. Algolia JSON API, WP REST API, section page).
     // 4th arg (showId) used by opera outlets for WARN log context — see filterOperaUrls.
@@ -1588,13 +1653,23 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
 
       // BRO-7532: free WordPress REST search before the paid JS render. Only a
       // usable hit short-circuits; every other outcome falls through unchanged.
+      // BRO-7531 follow-up: for off-Broadway / off-West-End shows a CLEAN free
+      // no-match also stands (trustCleanFreeNoMatch); every other market, and
+      // every unclear answer, still gets the paid render.
+      const freeInfo = { wantCleanCheck: trustCleanFreeNoMatch(show), cleanNoMatch: false };
       const freeResults = config.freeWp && config.requiresJs
-        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose, { openingDate, market })
+        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose, { openingDate, market, info: freeInfo })
         : null;
+      const cleanNoMatch = !freeResults && freeInfo.wantCleanCheck && freeInfo.cleanNoMatch === true;
+      // Audit sample: a small share of clean no-matches still pays for the render,
+      // so a review the free search cannot see is caught within a few ticks.
+      auditedCleanNoMatch = cleanNoMatch && shouldAuditCleanNoMatch(options._deps && options._deps.random ? options._deps.random : Math.random);
+      const skipPaid = cleanNoMatch && !auditedCleanNoMatch;
+      if (cleanNoMatch && verbose) console.log(`    Site search [${config.name}]: clean free no-match ${auditedCleanNoMatch ? 'audited with the paid render' : 'stands, paid render skipped'} (${show.category})`);
 
       let html = '';
-      if (freeResults) {
-        // results come from the free search; skip the paid render
+      if (freeResults || skipPaid) {
+        // free search answered (a validated hit, or a clean no-match); skip the paid render
       } else if (config.requiresJs) {
         html = await fetchJsSearchHtml(config, searchUrl, options._deps && options._deps.sbFetch ? { sbFetch: options._deps.sbFetch } : {});
       } else {
@@ -1626,6 +1701,12 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
     // Both parsers can find news mentioning reviews. Apply the write path's
     // named exclusions before returning candidates, including skipUrlFilter feeds.
     results = results.filter(result => !namedNonReviewReason(result.url));
+    // The free search called this a clean no-match and the audit render disagrees:
+    // always logged, so a blind spot in the free search is visible in the job log.
+    if (auditedCleanNoMatch) {
+      const missed = results.filter(r => !urlDatedBeforeProduction(r.url, openingDate));
+      if (missed.length) console.warn(`FREE-WP-CLEAN-MISS [${config.name}] "${showTitle}": paid render found ${missed.length} result(s) the free search did not: ${missed.slice(0, 3).map(r => r.url).join(' ')}`);
+    }
 
     if (verbose) {
       console.log(`    Site search [${config.name}]: ${results.length} result(s)`);
