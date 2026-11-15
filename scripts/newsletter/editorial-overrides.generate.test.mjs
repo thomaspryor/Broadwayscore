@@ -38,7 +38,9 @@ test('West End 2026-11-09 features Pride under its plain title with a "moved" ed
   assert.ok(meta.openingShows.some((s) => s.id === PRIDE), 'Pride must be an opening show');
   assert.ok(meta.openingShows.find((s) => s.id === PRIDE).title === 'Pride', 'plain title, no venue suffix');
   assert.ok(!html.includes('Pride - Bridge Theatre'), 'no venue-suffixed title anywhere in the email');
-  assert.match(meta.lede, /Pride\*? has moved from the Dorfman Theatre to the Bridge Theatre\./);
+  assert.match(meta.lede, /Pride\*? has transferred/);
+  const note = (meta.lede.match(/Pride\*? has transferred[^.]*\./) || [''])[0];
+  assert.ok(note && !/Dorfman|Bridge Theatre|critics/.test(note), 'the note names no theatre and no critic count');
   assert.ok(meta.ledeShows.some((s) => s.id === PRIDE), 'lede names Pride, so the lede-in-body check must see it');
 });
 

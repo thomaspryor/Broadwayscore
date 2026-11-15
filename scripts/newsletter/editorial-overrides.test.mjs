@@ -22,13 +22,13 @@ test('waiver and display title only for the named show', () => {
 test('movedNote is built from priorRuns data and never invents a move', () => {
   const show = { venue: 'Bridge Theatre', priorRuns: [{ venue: 'Dorfman Theatre' }] };
   const mostlyOld = movedNote(show, { avg: 86.2, count: 25 }, '*Pride*', { fresh: 1, total: 25 });
-  assert.match(mostlyOld, /^\*Pride\* has moved from the Dorfman Theatre to the Bridge Theatre\./);
-  assert.match(mostlyOld, /86\/100 from 25 critics comes mostly from reviews of the earlier run/);
+  assert.match(mostlyOld, /^\*Pride\* has transferred, so its 86\/100 mostly reflects reviews of the earlier run/);
+  assert.doesNotMatch(mostlyOld, /Dorfman|Bridge|critics/, 'no theatre names or critic counts');
   const mixed = movedNote(show, { avg: 80, count: 10 }, 'Pride', { fresh: 8, total: 10 });
   assert.match(mixed, /draws on reviews of both runs/);
   assert.equal(movedNote({ venue: 'Bridge Theatre' }, null, 'Pride'), null, 'no priorRuns');
   assert.equal(movedNote({ venue: 'Bridge Theatre', priorRuns: [{ venue: 'Bridge Theatre' }] }, null, 'Pride'), null, 'same venue');
-  assert.equal(movedNote(show, null, 'Pride'), 'Pride has moved from the Dorfman Theatre to the Bridge Theatre.');
+  assert.equal(movedNote(show, null, 'Pride'), 'Pride has transferred.');
 });
 
 test('the committed overrides file is well formed and every row names its week, edition and approver', () => {
@@ -49,5 +49,5 @@ test('movedNote never claims "both runs" unless old and new reviews are both pre
   assert.match(movedNote(show, agg, 'X', { fresh: 5, total: 10 }), /both runs/);
   assert.doesNotMatch(movedNote(show, agg, 'X', { fresh: null, total: 10 }), /both runs|earlier run/);
   assert.doesNotMatch(movedNote(show, agg, 'X', { fresh: 10, total: 10 }), /both runs|earlier run/);
-  assert.match(movedNote(show, agg, 'X', { fresh: 1, total: 10 }), /mostly from reviews of the earlier run/);
+  assert.match(movedNote(show, agg, 'X', { fresh: 1, total: 10 }), /mostly reflects reviews of the earlier run/);
 });
