@@ -33,9 +33,10 @@ test('movedNote is built from priorRuns data and never invents a move', () => {
 
 test('the committed overrides file is well formed and every row names its week, edition and approver', () => {
   const rows = loadOverrides();
-  assert.ok(rows.length >= 1);
+  // Zero rows is valid: expired exceptions may be pruned once their week has passed.
   for (const r of rows) {
     assert.match(r.weekStart, /^\d{4}-\d{2}-\d{2}$/);
+    assert.equal(new Date(r.weekStart + 'T12:00:00Z').getUTCDay(), 1, `${r.showId}: weekStart must be a Monday`);
     assert.ok(['broadway', 'west-end'].includes(r.edition), r.showId);
     assert.ok(r.showId && r.approvedBy, `row ${r.showId} needs approvedBy`);
   }
