@@ -129,7 +129,8 @@ test('BRO-6439: recoverableQuote sees the same garbageFullText recovery the rebu
   assert.equal(applyScoreRelevantMigrations(migrated).garbageRecovered, true, 'fixture must exercise the recovery');
   const rebuildShips = finalizePullQuote(migrated, 'Some Show', 'open');
   assert.ok(rebuildShips, 'fixture: the rebuild ships a quote from the recovered text');
-  assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'open'), null, 'fixture: the un-migrated file has no quote');
+  // BRO-7505: finalizePullQuote itself applies the migrations, so an un-migrated file gets the rebuild's answer.
+  assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'open'), rebuildShips);
   assert.equal(recoverableQuote({ ...data }, 'Some Show', 'open'), rebuildShips);
   // Never mutates the caller's file object (the backfill writes reviews.json, never review-texts).
   const input = { ...data };
@@ -176,4 +177,16 @@ test('BRO-7127: applyScoreRelevantMigrations does not recover a "Cross-show dupl
   }
   const other = { ...base, garbageFullTextNote: 'Truncated by scraper' };
   assert.equal(applyScoreRelevantMigrations(other).garbageRecovered, true, 'control: other garbage notes still recover');
+});
+
+// BRO-7505 class guard: recoverableQuote must be a thin wrapper over the rebuild's finalizePullQuote. Three cards
+// (BRO-6117, BRO-6439, BRO-7012) were each a pre-quote rebuild step the backfill's own copy of the chain lacked.
+// A pre-quote step re-implemented in the backfill fails here; add it to finalizePullQuote instead.
+test('BRO-7505: backfill re-implements no pre-quote rebuild step; finalizePullQuote owns them', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/backfill-missing-pullquotes.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(src, /applyScoreRelevantMigrations|selectBestExcerpt\(/, 'backfill must call finalizePullQuote only');
+  const rebuild = fs.readFileSync(new URL('../../scripts/rebuild-all-reviews.js', import.meta.url), 'utf8');
+  const fn = rebuild.slice(rebuild.indexOf('function finalizePullQuote'), rebuild.indexOf('Require-as-a-library'));
+  assert.match(fn, /applyScoreRelevantMigrations\(/, 'finalizePullQuote must apply the rebuild migrations');
 });

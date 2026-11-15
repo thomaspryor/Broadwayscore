@@ -1343,7 +1343,13 @@ function preWindowPriorRuns(showId) {
  */
 function finalizePullQuote(data, showTitle, showStatus) {
   data._showStatus = showStatus;
-  const raw = selectBestExcerpt(data, showTitle);
+  // BRO-7505: the rebuild migrates a file (applyScoreRelevantMigrations: garbageFullText recovery etc.) BEFORE it
+  // reaches here. Applied here too, on a copy, so callers holding an un-migrated file (backfill, live-data test)
+  // get the same answer without re-implementing the step. Idempotent for the rebuild's already-migrated data.
+  // Every pre-quote step added to the rebuild belongs in this function, never in a caller (BRO-6439 / BRO-7127).
+  const migrated = { ...data };
+  applyScoreRelevantMigrations(migrated);
+  const raw = selectBestExcerpt(migrated, showTitle);
   if (raw && isJunkExcerpt(raw)) return null;
   const quote = normalizeQuoteWrapping(raw && decodeHtmlEntities(raw));
   // Reject quotes ending with broken contractions (truncated at HTML entity boundaries)
