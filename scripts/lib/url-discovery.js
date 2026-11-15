@@ -1068,8 +1068,9 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // normal run would have escalated: see the cache-poisoning note further down.
   const _chainTruncated = _skips.size > 0;
   let _sdFiller = null; // off-domain-only Scrapingdog answer that was escalated
-  // BRO-7531: Scrapingdog's request went out and came back readable (an array,
-  // no opaque tokens dropped). A failure or an all-opaque answer is no opinion.
+  // BRO-7531: Scrapingdog's request went out and came back as a literal, readable
+  // empty. A failure, an all-opaque answer, or off-domain filler (the site:
+  // filter was ignored) says nothing about the outlet, so it is no opinion.
   let _sdClean = false;
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
     let sdAttempt = {};
@@ -1137,7 +1138,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     // rows (BRO-3344). A skipped SD (breaker/quota/cap) is not a fallback.
     // An all-opaque SD answer is tagged apart from an SD failure (provider-telemetry).
     if (sdAttempt.ran) _fallbackFrom = sdAttempt.opaque > 0 && Array.isArray(sdResults) ? 'scrapingdog-opaque' : 'scrapingdog';
-    _sdClean = !!sdAttempt.ran && Array.isArray(sdResults) && !(sdAttempt.opaque > 0);
+    _sdClean = !!sdAttempt.ran && Array.isArray(sdResults) && sdResults.length === 0 && !(sdAttempt.opaque > 0);
   }
 
   const _entries = {
@@ -1179,8 +1180,9 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   let provider = primary.name;
   // BRO-7531: on a press-night flow, when Scrapingdog gave a readable answer and
   // Bright Data (asked first) then really answered with nothing, ScrapingBee is
-  // not asked as a third vendor on this pass: nothing is cached 24h on this
-  // path, so the next pass asks all of them again. A small audit sample still
+  // not asked as a third vendor on this pass. That two-vendor empty is never
+  // parked (not in the 24h cache, not in the 45-min negative cache), so the
+  // next pass asks all of them again. A small audit sample still
   // asks, so a review only ScrapingBee would have found shows up in the logs
   // (THIRD-OPINION-HIT). Every other case asks the other vendor as before.
   const _primaryEmpty = !results || results.length === 0;
@@ -1190,6 +1192,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   };
   const _skipThird = _primaryEmpty && !shouldAskOtherSecondOpinion(_thirdCtx);
   const _auditThird = _skipThird && shouldAuditThirdOpinion();
+  const _thirdSkipped = !!fallback && _skipThird && !_auditThird;
   if (fallback && _primaryEmpty && (!_skipThird || _auditThird)) {
     const fbResults = _readable(await withSpendFallback(primary.key ? primary.name : _fallbackFrom, () => _withGeo(fallback.fn)(query, fallback.key, log, dateRange)));
     if (fbResults && fbResults.length > 0) {
@@ -1238,6 +1241,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     && (results.length === 0 || _resultsOffDomainOnly)
     && emptyAuthoritative === false
     && !_chainTruncated
+    && !_thirdSkipped
   ) {
     // T11: the 24h cache above intentionally skipped this write (empty +
     // emptyAuthoritative:false), but the caller opted into a short negative

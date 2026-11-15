@@ -25,6 +25,9 @@ process.env.BD_BREAKER_STATE_PATH = path.join(tmp, 'bd-breaker.json');
 process.env.SD_BREAKER_STATE_PATH = path.join(tmp, 'sd-breaker.json');
 process.env.SB_BREAKER_STATE_PATH = path.join(tmp, 'sb-breaker.json');
 delete process.env.SERP_OB_SECOND_OPINION;
+// No real ScrapingBee key: its credit check is a live HTTPS call that could
+// switch ScrapingBee off mid-test when the account runs low.
+delete process.env.SCRAPINGBEE_API_KEY;
 delete process.env.SCRAPER_SPEND_PURPOSE;
 
 const require = createRequire(import.meta.url);
@@ -225,13 +228,34 @@ test('Broadway press night: a real Bright Data empty after a clean Scrapingdog e
   assert.ok(calls.length > first, 'next pass must ask again (empty was not cached)');
 });
 
-test('Broadway press night: off-domain Scrapingdog filler plus a real Bright Data empty returns the filler without ScrapingBee', async () => {
+test('Broadway press night: off-domain Scrapingdog filler is no opinion, so ScrapingBee is still asked after a Bright Data empty', async () => {
   bdData = BD_EMPTY;
   sdOrganic = JUNK;
   const r = await run(`site:example-outlet.com "BW Filler" Broadway review ${q++}`, false, undefined);
   assert.equal(r.provider, 'scrapingdog');
   assert.ok(asked('brightdata') > 0);
+  assert.ok(asked('scrapingbee') > 0, 'filler ignored the site: filter; two vendors have not agreed');
+});
+
+test('West End press night: a two-vendor empty is never parked in the 45-min negative cache', async () => {
+  bdData = BD_EMPTY;
+  const query = `site:example-outlet.com "WE Third" West End review ${q++}`;
+  await run(query, false, undefined, 45 * 60 * 1000);
   assert.equal(asked('scrapingbee'), 0);
+  const first = calls.length;
+  await run(query, false, undefined, 45 * 60 * 1000);
+  assert.ok(calls.length > first, 'next pass must ask the vendors again');
+});
+
+test('West End press night: an empty from all three vendors (audit sample) is parked for 45 minutes as before', async () => {
+  bdData = BD_EMPTY;
+  process.env.SERP_THIRD_OPINION_AUDIT_RATE = '1';
+  const query = `site:example-outlet.com "WE Parked" West End review ${q++}`;
+  await run(query, false, undefined, 45 * 60 * 1000);
+  assert.ok(asked('scrapingbee') > 0);
+  const first = calls.length;
+  await run(query, false, undefined, 45 * 60 * 1000);
+  assert.equal(calls.length, first, 'served from the negative cache, no new vendor calls');
 });
 
 test('Broadway press night: an unparsed Bright Data page is not an answer, ScrapingBee is still asked', async () => {

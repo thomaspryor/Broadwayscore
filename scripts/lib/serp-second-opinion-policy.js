@@ -72,10 +72,12 @@ function shouldEscalateOffDomainAnswer(offDomainOnly, emptyAuthoritative, second
 /**
  * BRO-7531: after the first second-opinion vendor came back with nothing, should
  * the other one be asked too? Yes in every case but one. On a press-night flow
- * (emptyAuthoritative === false), when Scrapingdog gave a readable answer and
+ * (emptyAuthoritative === false), when Scrapingdog gave a literal readable empty
+ * (sdClean: not a failure, not all-opaque, not off-domain filler) and
  * Bright Data, asked first, really answered (a parsed answer with an organic
  * list, zero results, no unreadable links dropped), ScrapingBee is not asked on
- * this pass. Nothing is cached 24h on that path, so the next pass asks again.
+ * this pass. The caller never parks that two-vendor empty in any cache, so the
+ * next pass asks every vendor again.
  *
  * Measured 2026-11-15 (three-pass replay of a Broadway press night): 16 of 23
  * ScrapingBee asks followed such a Bright Data empty and found nothing, at 25
