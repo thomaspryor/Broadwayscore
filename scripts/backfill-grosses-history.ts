@@ -190,6 +190,7 @@ async function backfillHistory(): Promise<void> {
   const recheckTotals = args.includes('--recheck-totals');
   const refillPreviewPerfs = args.includes('--refill-preview-perfs');
   let maxWeeks = Infinity;
+  let afterWeek = '';
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--weeks' && args[i + 1]) {
@@ -199,7 +200,18 @@ async function backfillHistory(): Promise<void> {
       startFrom = args[i + 1];
       i++;
     } else if (args[i] === '--max-weeks' && args[i + 1]) {
-      maxWeeks = parseInt(args[i + 1], 10);
+      maxWeeks = Number(args[i + 1]);
+      if (!Number.isInteger(maxWeeks) || maxWeeks < 1) {
+        console.error(`--max-weeks must be a positive integer, got "${args[i + 1]}"`);
+        process.exit(2);
+      }
+      i++;
+    } else if (args[i] === '--after' && args[i + 1]) {
+      afterWeek = args[i + 1];
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(afterWeek)) {
+        console.error(`--after must be YYYY-MM-DD, got "${afterWeek}"`);
+        process.exit(2);
+      }
       i++;
     }
   }
@@ -211,8 +223,11 @@ async function backfillHistory(): Promise<void> {
   // Refill mode: the shows each stored week is missing, by week key.
   const holeSlugs = new Map<string, string[]>();
   if (refillPreviewPerfs) {
-    weeksToDo = (findPreviewPerfWeeks(history) as string[]).slice(0, maxWeeks);
-    console.log(`Refetching ${weeksToDo.length} stored weeks that hold a gross with 0 performances...${dryRun ? ' (DRY RUN)' : ''}`);
+    // A week Playbill cannot settle stays on the list, so a run resumes after
+    // the last week the previous one reached (--after) instead of retrying it.
+    weeksToDo = (findPreviewPerfWeeks(history) as string[]).filter(w => w > afterWeek).slice(0, maxWeeks);
+    console.log(`Refetching ${weeksToDo.length} stored weeks that hold a gross with 0 performances${afterWeek ? ` after ${afterWeek}` : ''}...${dryRun ? ' (DRY RUN)' : ''}`);
+    console.log(`NEXT_AFTER=${weeksToDo.length ? weeksToDo[weeksToDo.length - 1] : 'done'}`);
   } else if (recheckTotals) {
     // Gross findings only: a week merely short a show is --refill-gaps' job.
     // Fetched by Sunday; reconcile finds a BWW-era Monday key itself.

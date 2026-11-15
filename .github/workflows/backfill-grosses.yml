@@ -28,8 +28,13 @@ on:
         required: false
         default: false
         type: boolean
+      after_week:
+        description: 'refill_preview_perfs only: resume after this week (YYYY-MM-DD); the log prints NEXT_AFTER for the next run'
+        required: false
+        default: ''
+        type: string
       max_weeks:
-        description: 'refill_preview_perfs only: weeks per run (about 5 s each; fixed weeks drop out of the next run)'
+        description: 'refill_preview_perfs only: weeks per run (about 5 s each)'
         required: false
         default: '200'
         type: string
@@ -85,12 +90,18 @@ jobs:
             ARGS="--recheck-totals"
           fi
           if [ "${{ inputs.refill_preview_perfs }}" = "true" ]; then
+            [[ "${INPUT_MAX_WEEKS:-200}" =~ ^[1-9][0-9]*$ ]] || { echo "max_weeks must be a positive integer"; exit 1; }
             ARGS="--refill-preview-perfs --max-weeks ${INPUT_MAX_WEEKS:-200}"
+            if [ -n "${INPUT_AFTER_WEEK}" ]; then
+              [[ "${INPUT_AFTER_WEEK}" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || { echo "after_week must be YYYY-MM-DD"; exit 1; }
+              ARGS="$ARGS --after ${INPUT_AFTER_WEEK}"
+            fi
           fi
           npx tsx scripts/backfill-grosses-history.ts $ARGS
         env:
           NODE_ENV: production
           INPUT_WEEKS: ${{ github.event.inputs.weeks || '55' }}
+          INPUT_AFTER_WEEK: ${{ github.event.inputs.after_week }}
           INPUT_MAX_WEEKS: ${{ github.event.inputs.max_weeks || '200' }}
           INPUT_START_FROM: ${{ github.event.inputs.start_from }}
 

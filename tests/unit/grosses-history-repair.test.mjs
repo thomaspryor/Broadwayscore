@@ -157,6 +157,8 @@ test('patchPreviewPerformances keeps a stored seatsOffered and refuses an implau
 test('the backfill script wires --refill-preview-perfs to the repair helpers', async () => {
   const src = (await import('node:fs')).readFileSync(new URL('../../scripts/backfill-grosses-history.ts', import.meta.url), 'utf8');
   assert.match(src, /--refill-preview-perfs/);
+  assert.match(src, /--after/); // resume cursor: unsettled weeks must not block later ones
+  assert.match(src, /positive integer/);
   assert.match(src, /findPreviewPerfWeeks\(history\)/);
   assert.match(src, /patchPreviewPerformances\(history\.weeks\[weekDate\], snapshot\)/);
 });
