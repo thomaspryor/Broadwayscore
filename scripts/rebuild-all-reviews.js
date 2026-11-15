@@ -1347,8 +1347,10 @@ function finalizePullQuote(data, showTitle, showStatus) {
   // reaches here. Applied here too, on a copy, so callers holding an un-migrated file (backfill, live-data test)
   // get the same answer without re-implementing the step. Idempotent for the rebuild's already-migrated data.
   // Every pre-quote step added to the rebuild belongs in this function, never in a caller (BRO-6439 / BRO-7127).
+  // Not for a wrong-author file: the rebuild deleted its untrusted fullText after migrating, and recovering
+  // garbageFullText here would put that text back into the quote.
   const migrated = { ...data };
-  applyScoreRelevantMigrations(migrated);
+  if (!isFullTextWrongAuthorActive(data)) applyScoreRelevantMigrations(migrated);
   const raw = selectBestExcerpt(migrated, showTitle);
   if (raw && isJunkExcerpt(raw)) return null;
   const quote = normalizeQuoteWrapping(raw && decodeHtmlEntities(raw));

@@ -190,3 +190,12 @@ test('BRO-7505: backfill re-implements no pre-quote rebuild step; finalizePullQu
   const fn = rebuild.slice(rebuild.indexOf('function finalizePullQuote'), rebuild.indexOf('Require-as-a-library'));
   assert.match(fn, /applyScoreRelevantMigrations\(/, 'finalizePullQuote must apply the rebuild migrations');
 });
+
+// BRO-7505 review finding: the rebuild deletes a wrong-author file's fullText AFTER migrating; finalizePullQuote must not re-recover it.
+test('BRO-7505: finalizePullQuote does not resurrect garbageFullText for a wrong-author file', () => {
+  const body = 'The revival is a thoroughly gripping production that deserves every bit of praise it gets from audiences. '
+    + 'The lead performance is something special, and the director keeps the evening moving at a confident clip. '
+    + 'The design is handsome without ever upstaging the actors, and the second act lands with real force.';
+  const data = { showId: 'some-show-2014', outletId: 'ap', criticName: 'A Critic', fullText: null, garbageFullText: body, fullTextWrongAuthor: true };
+  assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'open'), null);
+});
