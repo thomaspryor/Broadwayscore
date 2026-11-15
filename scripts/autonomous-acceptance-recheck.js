@@ -60,10 +60,16 @@ const { selectRecheckTargets, summarize, decideAutoClose, describeResult, should
 // the frozen Notion mirror's leg (mirror froze 2026-08-20, CLAUDE.md §6).
 const { closeCardAfterPass } = require('./lib/recheck-autoclose.js');
 const { decideHandoff, handoffCard } = require('./lib/recheck-handoff.js');
-const { routeMode, buildRouteBatch, fileRouteBatch } = require('./lib/recheck-route.js');
+const { routeMode, buildRouteBatch, fileRouteBatch, buildCoverIndex, selectRewatchTargets, refreshRewatchTargets, MAX_REWATCH } = require('./lib/recheck-route.js');
+const { verifiabilityForCard } = require('./lib/autonomous-recheck-core.js');
+const { mapIssueToCard } = require('./lib/linear-recheck-source.js');
 const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates } = require('./lib/linear-recheck-source.js');
 
+const linearClient = require('./lib/linear-client.js');
 const REPO = path.join(__dirname, '..');
+// --backlog doubles as the shadow-era backfill: rewatch looks back to the first recheck of the report-only weeks.
+const BACKFILL_SINCE = '2026-10-15';
+const MAX_REROUTES_LABEL = require('./lib/recheck-route.js').MAX_REROUTES;
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 // A DEDICATED ledger, never the shared data/audit/autonomous-ledger.jsonl
 // default (task #695 ship-check finding, verified live): com.broadwayscore.
@@ -193,21 +199,30 @@ function enforcementState(cfg, entries) {
 // routed before) go to ONE worker card. Shadow until RECHECK_ROUTE_FROM: the
 // ledger row says what it would have filed. Never throws: routing is a side
 // channel and must not cost the night's summary row.
-async function routeRealFailures({ runId, results, handedOff, sha = null, env = process.env, now = Date.now(), file = fileRouteBatch } = {}) {
+async function routeRealFailures({ runId, results, handedOff, sha = null, env = process.env, now = Date.now(), file = fileRouteBatch, coverIndex = null, maxBatches = 1 } = {}) {
   try {
     const mode = routeMode({ env, now });
     if (mode.mode === 'off') { console.error('[recheck] routing off (RECHECK_ROUTE=off)'); return null; }
     // Stamp the commit (rows with a sha key keep their write-time env verdict,
     // check-env-cause.js) and redact emails before any output reaches a card.
     const rows = (results || []).map((r) => ({ ...r, sha, detail: r.detail ? redactEmails(String(r.detail)) : r.detail, note: r.note ? redactEmails(String(r.note)) : r.note }));
-    const batch = buildRouteBatch({ rows, handedOff, sha, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now });
-    if (!batch.title) return null;
-    const cardIds = batch.cards.map((c) => c.cardId);
-    let out = { filed: false, identifier: null, error: null };
-    if (mode.mode === 'live') out = await file({ title: batch.title, body: batch.body });
-    ledger.appendEntry({ event: 'recheck-route', runId, mode: mode.mode, filed: out.filed, ...(out.maybeFiled ? { maybeFiled: true } : {}), identifier: out.identifier, cardIds, overflow: batch.overflow, skipped: batch.skipped, note: mode.mode === 'shadow' ? `would file "${batch.title}" (${mode.why})` : out.filed ? `filed ${out.identifier}` : `route refused: ${out.error}` }, RECHECK_LEDGER_PATH);
-    console.error(`[recheck] route (${mode.mode}): ${cardIds.length} card(s)${out.identifier ? ` -> ${out.identifier}` : ''}${out.error ? ` refused: ${out.error}` : ''}`);
-    return { mode: mode.mode, ...out, cardIds };
+    // BRO-7557: a backlog sweep can fail more cards than one batch holds; each filed batch's cards
+    // join the hand-off list so the next pass builds the next batch from the rest.
+    const done = [...(handedOff || [])];
+    let last = null;
+    for (let i = 0; i < Math.max(1, maxBatches); i++) {
+      const batch = buildRouteBatch({ rows, handedOff: done, sha, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now, coverIndex });
+      if (!batch.title) break;
+      const cardIds = batch.cards.map((c) => c.cardId);
+      let out = { filed: false, identifier: null, error: null };
+      if (mode.mode === 'live') out = await file({ title: batch.title, body: batch.body });
+      ledger.appendEntry({ event: 'recheck-route', runId, mode: mode.mode, filed: out.filed, ...(out.maybeFiled ? { maybeFiled: true } : {}), identifier: out.identifier, cardIds, overflow: batch.overflow, skipped: batch.skipped, note: mode.mode === 'shadow' ? `would file "${batch.title}" (${mode.why})` : out.filed ? `filed ${out.identifier}` : `route refused: ${out.error}` }, RECHECK_LEDGER_PATH);
+      console.error(`[recheck] route (${mode.mode}): ${cardIds.length} card(s)${out.identifier ? ` -> ${out.identifier}` : ''}${out.error ? ` refused: ${out.error}` : ''}`);
+      last = { mode: mode.mode, ...out, cardIds };
+      if (mode.mode !== 'live' || !out.filed) break; // shadow/refused: do not loop on the same cards
+      done.push(...cardIds);
+    }
+    return last;
   } catch (err) {
     console.error(`[recheck] route skipped: ${String(err && err.message || err).slice(0, 200)}`);
     return null;
@@ -397,6 +412,26 @@ async function main(argv = process.argv.slice(2)) {
     targets.push(t);
   }
 
+  // BRO-7557: a Done card is rechecked on one night only, so a failure (shadow era, or one that
+  // outlived its route card) never came back. Re-run cards whose latest recheck is a real fail
+  // and that nothing covers: no open card names them and no live route is inside the retry
+  // window. --backlog (the CI one-shot sweep) is also the backfill: every such card since 2026-10-15.
+  let coverIndex = null;
+  try {
+    coverIndex = buildCoverIndex(await linearClient.listOpenIssuesWithDescriptions());
+  } catch (err) {
+    console.error(`[recheck] open-card index unavailable (${String(err.message).slice(0, 120)}); rewatch and routing use the long dedupe window`);
+  }
+  const rewatchSince = args.backlog ? BACKFILL_SINCE : new Date(Date.now() - 30 * 86400000).toISOString();
+  const picked = selectRewatchTargets({ ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], limit: args.backlog ? MAX_CARDS_BACKLOG : MAX_REWATCH, since: rewatchSince, exclude: [...seen], coverIndex });
+  if (picked.exhausted.length) console.error(`[recheck] rewatch gave up on ${picked.exhausted.length} card(s) already routed ${MAX_REROUTES_LABEL}x: ${picked.exhausted.join(', ')}`);
+  if (picked.targets.length) {
+    const fresh = await refreshRewatchTargets(picked.targets, { getIssue: linearClient.getIssue, toCard: mapIssueToCard, gateFor: verifiabilityForCard });
+    for (const d of fresh.dropped) console.error(`[recheck] rewatch skips ${d.cardId}: ${d.why}`);
+    for (const t of fresh.targets) { seen.add(t.cardId); targets.push(t); }
+    console.error(`[recheck] rewatch: ${fresh.targets.length} still-failing card(s) re-run (${fresh.dropped.length} dropped)`);
+  }
+
   // Free (no-test) targets first: they cost no checkout, so a spent budget must never be what drops them.
   targets.sort((a, b) => (a.skip || a.verifyCmd ? 1 : 0) - (b.skip || b.verifyCmd ? 1 : 0));
   console.error(`[recheck] ${targets.length} card(s) marked Done in the last ${windowHours}h have a dispatch record`);
@@ -499,7 +534,7 @@ async function main(argv = process.argv.slice(2)) {
 
       // BRO-6240: close a card whose real test just passed. Decision is pure
       // (decideAutoClose); the close goes through linear-brain's Done gate.
-      if (autoclose && !r.skip && r.status === 'pass' && deadline - Date.now() >= MIN_REMAINING_MS_TO_START) {
+      if (autoclose && !t.rewatch && !r.skip && r.status === 'pass' && deadline - Date.now() >= MIN_REMAINING_MS_TO_START) {
         const verdict = decideAutoClose({ card: cardsById.get(t.cardId), target: t, result: r });
         if (!verdict.close) {
           keptOpen.push({ cardId: t.cardId, reason: verdict.reason });
@@ -513,7 +548,7 @@ async function main(argv = process.argv.slice(2)) {
       }
 
       // BRO-6853: a due card nothing above closed goes to a worker (decideHandoff is idempotent).
-      if (handoffOn && handedOff.length < MAX_HANDOFFS && (!t.verifyCmd || deadline - Date.now() >= MIN_REMAINING_MS_TO_START)) {
+      if (handoffOn && !t.rewatch && handedOff.length < MAX_HANDOFFS && (!t.verifyCmd || deadline - Date.now() >= MIN_REMAINING_MS_TO_START)) {
         const card = cardsById.get(t.cardId);
         const closeVerdict = !r.skip && r.status === 'pass' ? decideAutoClose({ card, target: t, result: r }) : null;
         const h = decideHandoff({ card, target: t, result: r, closeVerdict, closeRefused });
@@ -529,7 +564,7 @@ async function main(argv = process.argv.slice(2)) {
     if (checkout) removeCheckout(checkout);
   }
 
-  await routeRealFailures({ runId, results, handedOff, sha: (checkout && checkout.sha) || null });
+  await routeRealFailures({ runId, results, handedOff, sha: (checkout && checkout.sha) || null, coverIndex, maxBatches: args.backlog ? 5 : 1 });
 
   const counts = summarize(results, { noCriteria: dropped.length });
   const couldNotRun = results.filter((x) => !x.skip && x.envCause).length;
