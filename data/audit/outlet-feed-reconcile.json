@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T02:52:00.534Z",
+  "generatedAt": "2026-11-15T03:26:00.312Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -104,6 +104,11 @@
       "openingDate": "2026-11-13"
     },
     {
+      "id": "les-miserables-regional-2026",
+      "title": "Les Miserables",
+      "openingDate": "2026-11-10"
+    },
+    {
       "id": "passing-strange-regional-2026",
       "title": "Passing Strange",
       "openingDate": "2026-11-11"
@@ -113,21 +118,17 @@
     {
       "showId": "first-and-last-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "les-miserables-regional-2026",
-      "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 85,
   "feedsFailed": [
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
-      "outletId": "amny",
-      "error": "HTTP 403 for https://www.amny.com/category/entertainment/theater/feed/"
+      "outletId": "front-row-center",
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -146,7 +147,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 852,
+  "itemsScanned": 848,
   "matchedGaps": 3,
   "possibleGaps": 3,
   "gaps": [
