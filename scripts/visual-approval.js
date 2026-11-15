@@ -11,6 +11,8 @@
  * visual-evidence/bro-n (neither ever lands), then writes ONE DECISION NEEDED
  * block on the card. The owner sees it on the decision list and in the daily
  * email; Approve lets visual-approval-land.yml ship the held change.
+ * The held tip should carry a clean land-local-check verdict (BRO-7501); advisory warning by default,
+ * VISUAL_APPROVAL_LAND_CHECK=strict refuses (--land-check-ok="<why>" overrides).
  * Exit: 0 asked, 1 refused (message says why), 2 usage.
  */
 'use strict';
@@ -21,7 +23,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const va = require('./lib/visual-approval.js');
 const link = require('../src/lib/owner-decision-link.js');
 
-const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run] [--shared-style-change] [--page-shots-ok="<why whole pages show the change>"]';
+const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run] [--shared-style-change] [--land-check-ok="<why>"] [--page-shots-ok="<why whole pages show the change>"]';
 
 function arg(argv, name) { const a = argv.find((x) => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : ''; }
 
@@ -44,6 +46,15 @@ async function request(argv) {
   if (!surface.length && !argv.includes('--shared-style-change')) {
     console.error('Refused: this change touches no UI file (src/**/*.tsx|jsx|css|scss, tailwind/postcss config), so there is nothing visual for the owner to approve. Do NOT ask. Verify the page renders it (load it, check the output), then land it: git push origin HEAD:refs/heads/land/<name>. Copy-only edits are exempt too. Only if a shared .ts/.js module (colors, score buckets, layout constants) changes how existing pages LOOK, re-run with --shared-style-change.');
     return 1;
+  }
+  // BRO-7501: the held tip must have passed land-local-check, or the approved change can fail its land.
+  let landCheckNote = '';
+  {
+    const lc = require('./lib/land-local-check-log.js').verdictForRef(cwd, 'HEAD');
+    const gate = va.landCheckGate({ status: lc.status, sha: lc.sha, env: process.env, okReason: arg(argv, 'land-check-ok') });
+    if (gate.message) console.error(`[visual-approval] ${gate.message}`);
+    if (gate.action === 'refuse') return 1;
+    if (gate.reason) landCheckNote = ` land-local-check override: ${gate.reason}.`;
   }
   let verdict;
   try { verdict = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch { console.error(`Refused: no verdict.json in ${dir}. Run node scripts/visual-qa.mjs first.`); return 1; }
@@ -99,7 +110,7 @@ async function request(argv) {
   const team = await linear.getTeam();
   const label = await linear.findOrCreateLabel(team.id, link.AWAITING_OWNER_LABEL);
   await linear.addLabelToIssue(issue.id, label.id);
-  await linear.createComment(issue.id, `Asked the owner to look at ${thumbs.length} screenshot(s). Held change: ${hold} (patch ${patch.slice(0, 12)}). It ships by itself after Approve; Reject returns the card with the owner's note.`);
+  await linear.createComment(issue.id, `Asked the owner to look at ${thumbs.length} screenshot(s). Held change: ${hold} (patch ${patch.slice(0, 12)}). It ships by itself after Approve; Reject returns the card with the owner's note.${landCheckNote}`);
   // BRO-7491 Phase 1 (SHADOW): note what the before/after screenshot check found. It never changes the ask above
   // and a failure here must never undo it, so it sits after the ask and is fully guarded.
   try {

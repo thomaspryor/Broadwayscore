@@ -76,4 +76,15 @@ function latestVerdict({ sha, tree, file }) {
   }
 }
 
-module.exports = { LOG_NAME, VERDICT_BY_EXIT, logPath, recordVerdict, latestVerdict };
+/** Recorded verdict for `ref` (a rev) in the checkout `cwd`: {status, sha}; status is the verdict, 'none' (no record) or 'unknown' (cannot resolve/read). Shared by the land push hook's advisory and visual-approval request (BRO-7501). */
+function verdictForRef(cwd, ref = 'HEAD') {
+  const sha = gitOut(cwd, ['rev-parse', '--verify', '--quiet', `${ref}^{commit}`]);
+  if (!sha) return { status: 'unknown', sha: '' };
+  const tree = gitOut(cwd, ['rev-parse', '--verify', '--quiet', `${ref}^{tree}`]);
+  const file = logPath(cwd);
+  if (!file) return { status: 'unknown', sha };
+  const rec = latestVerdict({ sha, tree, file });
+  return { status: rec ? rec.verdict : 'none', sha };
+}
+
+module.exports = { LOG_NAME, VERDICT_BY_EXIT, logPath, recordVerdict, latestVerdict, verdictForRef };

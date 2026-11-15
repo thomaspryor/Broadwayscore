@@ -233,3 +233,50 @@ test('showInlineHint names every crop by absolute path and says to render them i
   assert.match(hint, /display="render"/);
   assert.match(hint, /push land\/<name> yourself/);
 });
+
+// BRO-7501: a held change must carry a land-local-check verdict, or an approved change can fail its land (BRO-7494).
+const lcl = require('./land-local-check-log.js');
+
+test('landCheckGate: clean passes silently; everything else warns by default (advisory first)', () => {
+  assert.deepEqual(va.landCheckGate({ status: 'clean', sha: 'a'.repeat(40) }), { action: 'ok', message: null, reason: null });
+  for (const status of ['none', 'new-failures', 'not-ready', 'skipped', 'unknown', 'weird']) {
+    const g = va.landCheckGate({ status, sha: 'a'.repeat(40), env: {} });
+    assert.equal(g.action, 'warn', status);
+    assert.match(g.message, /^WARNING: /);
+    assert.ok(g.message.includes('node scripts/lib/land-local-check.js'), status);
+  }
+});
+
+test('landCheckGate strict: refuses none/new-failures/not-ready, only warns for skipped/unknown, reason overrides', () => {
+  const env = { VISUAL_APPROVAL_LAND_CHECK: 'strict' };
+  for (const status of ['none', 'new-failures', 'not-ready']) {
+    const g = va.landCheckGate({ status, sha: 'b'.repeat(40), env });
+    assert.equal(g.action, 'refuse', status);
+    assert.match(g.message, /^Refused: .*--land-check-ok=/);
+    assert.equal(va.landCheckGate({ status, sha: 'b'.repeat(40), env, okReason: '   ' }).action, 'refuse', 'blank reason is not a reason');
+    const o = va.landCheckGate({ status, sha: 'b'.repeat(40), env, okReason: 'docs only' });
+    assert.equal(o.action, 'warn');
+    assert.equal(o.reason, 'docs only');
+  }
+  for (const status of ['skipped', 'unknown']) assert.equal(va.landCheckGate({ status, sha: 'b'.repeat(40), env }).action, 'warn', status);
+  assert.equal(va.landCheckGate({ status: 'clean', env }).action, 'ok');
+});
+
+test('verdictForRef (real git + log): none, sha hit, tree fallback after an amend, new-failures', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'va-lc-'));
+  const g = (...a) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { cwd: dir, encoding: 'utf8' }).trim();
+  g('init', '-q'); writeFileSync(path.join(dir, 'f.txt'), '1'); g('add', '.'); g('commit', '-qm', 'one');
+  assert.equal(lcl.verdictForRef(dir, 'HEAD').status, 'none');
+  const first = g('rev-parse', 'HEAD');
+  lcl.recordVerdict(dir, 0, { head: first });
+  assert.deepEqual(lcl.verdictForRef(dir, 'HEAD'), { status: 'clean', sha: first });
+  g('commit', '--amend', '-qm', 'one again'); // new sha, same tree
+  const amended = g('rev-parse', 'HEAD');
+  assert.notEqual(amended, first);
+  assert.deepEqual(lcl.verdictForRef(dir, 'HEAD'), { status: 'clean', sha: amended });
+  writeFileSync(path.join(dir, 'f.txt'), '2'); g('commit', '-aqm', 'two');
+  assert.equal(lcl.verdictForRef(dir, 'HEAD').status, 'none');
+  lcl.recordVerdict(dir, 1, { head: g('rev-parse', 'HEAD') });
+  assert.equal(lcl.verdictForRef(dir, 'HEAD').status, 'new-failures');
+  assert.equal(lcl.verdictForRef(dir, 'nope').status, 'unknown');
+});

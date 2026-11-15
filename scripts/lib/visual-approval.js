@@ -267,4 +267,33 @@ function openVisualRequests(issues) {
   return issues.filter((i) => link.parseVisualApproval(i.description) && /DECISION NEEDED/i.test(i.description || '') && !/ANSWERED by the owner/.test(i.description || ''));
 }
 
-module.exports = { visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+/**
+ * BRO-7501: has land-local-check judged the held tip? A hold the owner approves is then shipped by the lander
+ * through land.yml; BRO-7494's approved change was refused there (unit-tests-node) because nobody ran the
+ * check on the hold tip. Pushes to visual-hold/* never reach the land push hook, so this is the only place.
+ * Pure: status is the recorded verdict (clean | new-failures | not-ready | skipped | none | unknown).
+ * Advisory by default (CLAUDE.md 19); VISUAL_APPROVAL_LAND_CHECK=strict refuses on none/new-failures/not-ready
+ * unless a non-empty reason is given. -> { action: 'ok'|'warn'|'refuse', message, reason }
+ */
+const LAND_CHECK_CMD = 'node scripts/lib/land-local-check.js | tail -15';
+function landCheckGate({ status, sha = '', env = {}, okReason = '' }) {
+  if (status === 'clean') return { action: 'ok', message: null, reason: null };
+  const short = String(sha).slice(0, 10);
+  const text = {
+    none: `no land-local-check verdict for the held tip ${short}.`,
+    'new-failures': `land-local-check found NEW failures on the held tip ${short}; land.yml will refuse it after the owner approves.`,
+    'not-ready': `land-local-check could not run on the held tip ${short} (uncommitted edits, no local data: run ./scripts/setup-local-data.sh --link-only, or no node_modules).`,
+    skipped: `land-local-check gave up waiting for the land-check mutex on the held tip ${short}.`,
+    unknown: `could not read a land-local-check verdict for the held tip ${short}.`,
+  }[status] || `unrecognised land-local-check status "${status}".`;
+  const fix = `Run \`${LAND_CHECK_CMD}\` (~20 min, background it) until it exits 0, then re-run request. An approved change that fails its land costs a ~30 min cycle (BRO-7494).`;
+  const strict = String(env.VISUAL_APPROVAL_LAND_CHECK || '').toLowerCase() === 'strict';
+  const blocking = ['none', 'new-failures', 'not-ready'].includes(status);
+  if (strict && blocking) {
+    if (String(okReason).trim()) return { action: 'warn', message: `WARNING (override: ${String(okReason).trim()}): ${text} ${fix}`, reason: String(okReason).trim() };
+    return { action: 'refuse', message: `Refused: ${text} ${fix} Or pass --land-check-ok="<why the check cannot apply>".`, reason: null };
+  }
+  return { action: 'warn', message: `WARNING: ${text} ${fix}`, reason: null };
+}
+
+module.exports = { landCheckGate, LAND_CHECK_CMD, visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
