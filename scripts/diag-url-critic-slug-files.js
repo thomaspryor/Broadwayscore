@@ -67,7 +67,7 @@ function main() {
       if (!hasUrlCriticSlug(f)) continue;
       const me = facts(show.name, f);
       const outletPart = f.slice(0, f.indexOf('--'));
-      const unknown = !me.criticName || /^unknown$/i.test(me.criticName) || /^https?:/i.test(me.criticName);
+      const unknown = !me.criticName || /^unknown$/i.test(me.criticName) || /^https?:|^www\.|[a-z0-9-]+\.(com|org|net|co\.uk)\b|\//i.test(me.criticName);
       const slug = unknown ? null : slugifyCritic(me.criticName);
       const dest = slug ? `${outletPart}--${slug}.json` : null;
       const destFacts = dest && files.includes(dest) ? facts(show.name, dest) : null;
