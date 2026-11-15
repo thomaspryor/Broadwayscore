@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-15T07:32:21.376Z",
+  "runDate": "2026-11-15T07:43:50.466Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -50,7 +50,7 @@
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 52,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
@@ -244,5 +244,11 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/ohio-state-murders-broadway-review-1235267066/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/audra-mcdonald-ohio-state-murders-closing-broadway-january-1235291746/"
+    }
+  ]
 }
