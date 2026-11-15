@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { SCORING_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
+const { claudeSamplingParams } = require('./lib/llm-batch');
 
 // Load .env file manually (source .env doesn't work in all environments)
 const envPath = path.join(__dirname, '../.env');
@@ -171,6 +172,7 @@ async function scoreWithClaude(reviewText, context) {
   const prompt = buildPromptV5(reviewText, context);
   const response = await client.messages.create({
     model: SCORING_SONNET,
+    ...claudeSamplingParams(SCORING_SONNET, null), // 5.5: no temperature, thinking off (BRO-7537)
     max_tokens: 500,
     system: SYSTEM_PROMPT_V5,
     messages: [{ role: 'user', content: prompt }]

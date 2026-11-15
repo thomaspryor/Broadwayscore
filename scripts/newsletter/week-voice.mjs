@@ -138,7 +138,7 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
     const top = [...list].sort((x, y) => scoreOf(y) - scoreOf(x))[0];
     if (size === 'busy') sentences.push(`An unusually busy week in New York, with ${word(total)} openings.`);
     else if (size === 'quiet') sentences.push(total === 1 ? 'A quieter week in New York, with just one opening.' : `A quieter week in New York, with ${word(total)} openings.`);
-    if (n >= 5 && reviewed < n) sentences.push(`${capitalize(word(reviewed))} of the ${word(n)} openings ${M.the} got enough reviews for a Critic Score, and ${top.show.title} scored the highest with a ${scoreOf(top)}.`);
+    if (n >= 5 && reviewed < n) sentences.push(`${capitalize(word(reviewed))} of the ${word(n)} openings ${M.the} got enough reviews for a Critic Score, and ${top.show.title} scored the highest with ${scoreOf(top)}/100.`);
   }
   else if (total === 1) sentences.push('A slow week in New York, with just one opening.');
   else if (total === 2) sentences.push('A slow week in New York, with just two openings.');
@@ -149,7 +149,7 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
     const reviewed = list.length;
     const top = [...list].sort((x, y) => scoreOf(y) - scoreOf(x))[0];
     const tail = reviewed < n
-      ? ` ${reviewed} got enough reviews for a Critic Score, and ${top.show.title} scored the highest with a ${scoreOf(top)}.`
+      ? ` ${reviewed} got enough reviews for a Critic Score, and ${top.show.title} scored the highest with ${scoreOf(top)}/100.`
       : '';
     sentences.push(`A packed week ${M.the}, with ${word(n)} openings.${tail}`);
   }
@@ -165,12 +165,12 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
   if (others.length && S < 65) {
     // Never "draws the most reviews": review count is only the lead sort key,
     // not news (owner, 2026-10-18).
-    const grade = `${S < 55 ? 'weak' : 'middling'} ${S}`;
+    const grade = `${S < 55 ? 'weak' : 'middling'} ${S}/100`;
     sentences.push(`${L} ${verb}${loc} to a ${grade}.`);
     const toSee = others.filter(o => scoreOf(o) >= 75).sort((a, b) => scoreOf(b) - scoreOf(a)).slice(0, 2);
     if (toSee.length) {
       toSee.forEach(o => named.add(o.show.id));
-      const names = joinWithAnd(toSee.map(o => `${o.show.title} (${scoreOf(o)})`));
+      const names = joinWithAnd(toSee.map(o => `${o.show.title} (${scoreOf(o)}/100)`));
       sentences.push(`${names} ${toSee.length === 1 ? 'is the one' : 'are the ones'} to see.`);
     }
   } else {
@@ -194,7 +194,7 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
       .sort((a, b) => scoreOf(a) - scoreOf(b))[0];
     if (low) {
       named.add(low.show.id);
-      sentences.push(`${low.show.title} lands at ${scoreOf(low)}.`);
+      sentences.push(`${low.show.title} lands at ${scoreOf(low)}/100.`);
     }
   }
   // The other market, one sentence, led by its most-reviewed show.
@@ -295,7 +295,7 @@ function composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds
       const v = o.isReopening ? 'reopened' : 'opened';
       return `On Broadway, ${o.show.title} ${v} at ${sc}/100.`;
     })()
-    : `On Broadway, ${joinWithAnd(bwScored.map(o => `${o.show.title} (${scoreOf(o)})`))} opened.`;
+    : `On Broadway, ${joinWithAnd(bwScored.map(o => `${o.show.title} (${scoreOf(o)}/100)`))} opened.`;
   sentences.push(bwSentence);
 
   const named = new Set([...hl.ids, ...bwScored.map(o => o.show.id)]);

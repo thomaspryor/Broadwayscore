@@ -463,5 +463,105 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-15T17:37:59.130Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7535-followup",
+    "title": "Landing blocked: rebase red on land/bro-7535-followup",
+    "description": "land.yml did not land land/bro-7535-followup: the rebase gate went red at 0a755c3375. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43744864715",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7535-followup"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "0a755c33752e6fde3074273eab7c0290aadf5c3d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43744864715"
+      }
+    ],
+    "queuedAt": "2026-11-15T18:14:41.390Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7182-strict-audit-alerts",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7182-strict-audit-alerts",
+    "description": "land.yml did not land land/bro-7182-strict-audit-alerts: the unit-tests-node gate went red at 01b27c1df5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43742302173",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7182-strict-audit-alerts"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "01b27c1df51b7aa12b9d221efc828e2bc1417459"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43742302173"
+      }
+    ],
+    "queuedAt": "2026-11-15T18:13:31.401Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:R2 Cold Backup",
+    "title": "Cron's latest run failed (not yet stale): R2 Cold Backup",
+    "description": "R2 Cold Backup: Latest run failed (last success 173h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43746138718",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/43746138718)"
+      }
+    ],
+    "queuedAt": "2026-11-15T18:21:10.770Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Fetch All Image Formats",
+    "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
+    "description": "Fetch All Image Formats: Latest run failed (last success 3h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43746138718",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/43746138718)"
+      }
+    ],
+    "queuedAt": "2026-11-15T18:21:10.793Z"
   }
 ]

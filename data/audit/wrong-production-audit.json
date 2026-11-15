@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T17:43:42.317Z",
+  "timestamp": "2026-11-15T18:26:36.490Z",
   "stats": {
-    "totalReviews": 82236,
-    "alreadyFlagged": 22427,
-    "dateGuardCatches": 220,
+    "totalReviews": 82264,
+    "alreadyFlagged": 22428,
+    "dateGuardCatches": 221,
     "directorMismatch": 3708,
-    "tvFilmSignals": 2317,
-    "londonSignals": 3759,
+    "tvFilmSignals": 2318,
+    "londonSignals": 3763,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
-    "noPublishDate": 8447
+    "noPublishDate": 8455
   },
   "findings": [
     {
@@ -65370,6 +65370,24 @@
       ]
     },
     {
+      "showId": "the-afronauts-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "publishDate": "2026-11-15",
+      "url": "https://monstagigz.com/2026/11/15/theatre-review-the-afronauts-starring-lucian-msamati-ivanno-jeremiah-and-pamela-nomvete-by-ryan-calais-cameron-at-the-royal-court/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-alchemist-off-broadway-2021",
       "file": "vulture--helen-shaw.json",
       "score": 77,
@@ -96856,6 +96874,20 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "matineemouse--unknown.json",
+      "score": 87,
+      "publishDate": "2026-11-15",
+      "url": "https://matineemouse.substack.com/p/cloud-9-national-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": 89,
       "publishDate": "2026-11-12",
@@ -96977,6 +97009,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "telegraph--unknown.json",
+      "publishDate": "2026-11-11",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cloud-9-revival-review-modern-classic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -105725,6 +105770,20 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "london-unattached--unknown.json",
+      "score": 92,
+      "publishDate": "2026-11-15",
+      "url": "https://www.london-unattached.com/hamlet-hail-thief-barbican-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": 64,
       "publishDate": "2026-11-10",
@@ -111485,6 +111544,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "file": "whatsonstage--tanyel-gumushan.json",
+      "publishDate": "2026-10-06",
+      "url": "https://www.whatsonstage.com/news/shakespeares-globe-reveals-full-company-for-julius-caesar_1734439/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 31d before show (2026-10-06 vs 2026-11-06)"
         }
       ]
     },

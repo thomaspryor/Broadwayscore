@@ -11,6 +11,7 @@ import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first impo
 import Anthropic from '@anthropic-ai/sdk';
 import { LLMScoringResult, ScoredReviewFile, ReviewTextFile, SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';
+const { SCORING_SONNET } = require('../lib/models');
 const { createReviewBudget, callWithTimeout } = require('../lib/llm-call-budget.js');
 
 // Import text quality assessment module
@@ -42,8 +43,7 @@ interface ScoringOutcome {
  * thinking:{type:'between_tools'}. Exported for the unit test.
  */
 export function claudeSamplingParams(model: string): Record<string, unknown> {
-  if (model.startsWith('claude-sonnet-5')) return { thinking: { type: 'between_tools' } };
-  return { temperature: 0.3 };
+  return require('../lib/llm-batch.js').claudeSamplingParams(model);
 }
 
 // ========================================
@@ -172,7 +172,7 @@ export class ReviewScorer {
   constructor(apiKey: string, options: Partial<ScoringOptions> = {}) {
     this.client = new Anthropic({ apiKey });
     this.options = {
-      model: options.model || 'claude-sonnet-4-6',
+      model: options.model || SCORING_SONNET,
       maxRetries: options.maxRetries ?? 5,
       verbose: options.verbose ?? false
     };
@@ -200,6 +200,7 @@ export class ReviewScorer {
         const response = await callWithTimeout(() => this.client.messages.create({
           model: this.options.model,
           max_tokens: 1000,
+          ...require('../lib/llm-batch.js').claudeSamplingParams(this.options.model, null),
           system: SYSTEM_PROMPT,
           messages: [
             { role: 'user', content: prompt }

@@ -45,6 +45,14 @@ function parseCustomIdIndex(customId) {
  * scoreReviewV5 (max_tokens: 500, temperature: 0.3, system cache_control
  * breakpoint) so batch and sync produce byte-identical requests.
  */
+// Per-model sampling/thinking params (BRO-7537). Shared by the sync scorer and
+// the batch builder so a pinned model never gets params its API 400s on:
+// claude-sonnet-5-5 rejects temperature and disabled thinking.
+function claudeSamplingParams(model, temperature = 0.3) {
+  if (/^claude-sonnet-5/.test(String(model))) return { thinking: { type: 'between_tools' } };
+  return temperature === null ? {} : { temperature }; // null = legacy caller that never set temperature
+}
+
 function buildAnthropicBatchRequest({ customId, model, systemPrompt, userPrompt, maxTokens = 500, temperature = 0.3 }) {
   if (!customId || !model || !systemPrompt || !userPrompt) {
     throw new Error('buildAnthropicBatchRequest: customId, model, systemPrompt, userPrompt are required');
@@ -54,7 +62,7 @@ function buildAnthropicBatchRequest({ customId, model, systemPrompt, userPrompt,
     params: {
       model,
       max_tokens: maxTokens,
-      temperature,
+      ...claudeSamplingParams(model, temperature),
       system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
       messages: [{ role: 'user', content: userPrompt }],
     },
@@ -333,6 +341,7 @@ module.exports = {
   buildCustomId,
   parseCustomIdIndex,
   buildAnthropicBatchRequest,
+  claudeSamplingParams,
   parseAnthropicBatchResult,
   buildOpenAIBatchLine,
   parseOpenAIBatchResult,

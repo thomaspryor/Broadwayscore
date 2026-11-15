@@ -43,3 +43,21 @@ test('computeReport leg=claude scores accuracy on claudeScore and counts claude 
   const o = computeReport(recs);
   assert.equal(o.gates.legAccuracy.value.shadow, o.gates.legAccuracy.value.control);
 });
+
+test('BRO-7537: batch request for the scoring pin never carries temperature on 5.5 (API 400)', () => {
+  const { buildAnthropicBatchRequest } = require('../../scripts/lib/llm-batch.js');
+  const { SCORING_SONNET } = require('../../scripts/lib/models.js');
+  const mk = (model) => buildAnthropicBatchRequest({ customId: 'x', model, systemPrompt: 's', userPrompt: 'u' }).params;
+  const pin = mk(SCORING_SONNET);
+  if (SCORING_SONNET.startsWith('claude-sonnet-5')) {
+    assert.equal('temperature' in pin, false);
+    assert.deepEqual(pin.thinking, { type: 'between_tools' });
+  }
+  assert.equal(mk('claude-sonnet-4-6').temperature, 0.3);
+});
+
+test('BRO-7537: legacy callers (temperature null) keep 4.6 requests unchanged and get thinking off on 5.5', () => {
+  const { claudeSamplingParams } = require('../../scripts/lib/llm-batch.js');
+  assert.deepEqual(claudeSamplingParams('claude-sonnet-4-6', null), {});
+  assert.deepEqual(claudeSamplingParams('claude-sonnet-5-5', null), { thinking: { type: 'between_tools' } });
+});

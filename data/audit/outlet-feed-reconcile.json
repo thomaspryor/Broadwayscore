@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T17:09:25.276Z",
+  "generatedAt": "2026-11-15T18:20:06.876Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,59 +133,34 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 883,
-  "matchedGaps": 5,
+  "itemsScanned": 853,
+  "matchedGaps": 0,
   "possibleGaps": 3,
   "gaps": [
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "matineemouse",
-      "url": "https://matineemouse.substack.com/p/cloud-9-national-theatre-review",
-      "headline": "Cloud 9 at the National Theatre, Lyttelton Review",
-      "publishDate": "2026-11-15"
-    },
-    {
-      "showId": "here-there-are-blueberries-2026",
-      "title": "Here There Are Blueberries",
-      "level": "matched",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/here-there-are-blueberries-the-banality-of-evil-captured-in-a-photograph/",
-      "headline": "Here There Are Blueberries: The Banality of Evil, Captured in a Photograph",
-      "publishDate": "2026-11-15"
-    },
-    {
-      "showId": "passing-strange-regional-2026",
-      "title": "Passing Strange",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/10/passing-strange-pasadena-playhouse-review/",
-      "headline": "Theater Review: PASSING STRANGE (Pasadena Playhouse / Los Angeles)",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "passing-strange-regional-2026",
-      "title": "Passing Strange",
-      "level": "matched",
-      "outletId": "variety",
-      "url": "https://variety.com/2026/legit/news/passing-strange-pasadena-playhouse-stew-heidi-interview-1236942647/",
-      "headline": "&#8216;Passing Strange&#8217; Comes to Pasadena Playhouse: Creators Stew and Heidi Rodewald on the Rock Musical Reaching L.A. Almost Two Decades After Tony-Winning Broadway Run",
-      "publishDate": "2026-11-08"
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/opera-vermont-to-present-amahl-and-the-night-visitors/",
-      "headline": "Opera Vermont to Present &#8216;Amahl and the Night Visitors&#8217;",
-      "publishDate": "2026-11-15"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",

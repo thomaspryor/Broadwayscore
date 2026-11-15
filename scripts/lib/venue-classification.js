@@ -11,14 +11,13 @@
  * "theatre"/"theater" + parentheticals stripped per normalizeVenueName).
  */
 
-const path = require('path');
 const { foldDiacritics } = require('./title-match');
 // Single home of the placeholder predicate (S4-T7): the census CLI, this
 // write-time guard and the source lint all require() this same module.
 const { isPlaceholderVenue } = require('./placeholder-venue');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./broadway-theaters');
-const venueList = require(path.join(__dirname, '../../data/west-end-venues.json'));
-const obVenueList = require(path.join(__dirname, '../../data/off-broadway-venues.json'));
+const venueList = require('../../data/west-end-venues.json');
+const obVenueList = require('../../data/off-broadway-venues.json');
 
 const WEST_END_VENUES = new Set(venueList);
 const OFF_BROADWAY_VENUES = new Set(obVenueList);

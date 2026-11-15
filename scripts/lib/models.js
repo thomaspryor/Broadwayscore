@@ -42,7 +42,9 @@ module.exports = {
   // scores corpus-wide, so these move only after the A/B gate passes. Every
   // call site that scores reviews uses these, never CLAUDE_SONNET/CLAUDE_OPUS
   // (tests/unit/model-table-single-source.test.mjs enforces).
-  SCORING_SONNET: 'claude-sonnet-4-6',
+  // BRO-7537: flipped 4.6 -> 5.5 after the BRO-7529 A/B passed every §13 gate
+  // (data/audit/scoring-ab-2026-11-cheaper-legs.json). Rollback = this line.
+  SCORING_SONNET: 'claude-sonnet-5-5',
   SCORING_OPUS: 'claude-opus-4-7', // video-reviews/score-video-reviews.js
   GPT4O: 'gpt-4o',
   // Review-SCORING OpenAI pins (same rule as SCORING_SONNET above): the
@@ -51,7 +53,8 @@ module.exports = {
   // the leg is the ONLY thing that changes, so flip and rollback are one line.
   // OpenAI retires gpt-4o on 2027-01-14 (owner email 2026-10-14). The request
   // shape per model lives in scripts/lib/llm-batch.js OPENAI_REQUEST_PROFILES.
-  SCORING_OPENAI: 'gpt-4o',
+  // BRO-7537: flipped gpt-4o -> gpt-5.6-luna (same BRO-7529 A/B audit file).
+  SCORING_OPENAI: 'gpt-5.6-luna',
   COMPARATIVE_OPENAI: 'gpt-4o',
   GPT4O_MINI: 'gpt-4o-mini',
   // Cheaper gpt-4o candidate evaluated in task #504 (2026-07-26) — API id

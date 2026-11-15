@@ -7,6 +7,7 @@ const Anthropic = require('@anthropic-ai/sdk').default;
 const OpenAI = require('openai').default;
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { SCORING_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
+const { claudeSamplingParams } = require('./lib/llm-batch');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -60,10 +61,11 @@ REVIEW TEXT:
 async function scoreWithClaude(client, text) {
   const response = await client.messages.create({
     model: SCORING_SONNET,
+    ...claudeSamplingParams(SCORING_SONNET, null), // 5.5: no temperature, thinking off (BRO-7537)
     max_tokens: 100,
     messages: [{ role: 'user', content: PROMPT + text }]
   });
-  const content = response.content[0].text.trim();
+  const content = response.content.find(c => c.type === 'text').text.trim();
   try {
     return JSON.parse(content.replace(/```json\n?|\n?```/g, ''));
   } catch(e) {
