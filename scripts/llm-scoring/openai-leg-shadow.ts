@@ -149,7 +149,7 @@ function armOf(e: any) {
 }
 
 // List prices, $ per 1M tokens: [input, output, cacheRead, cacheWrite].
-// Sonnet 5.5 $2/$10 (cache read $0.10), Sonnet 4.6 $3/$15, gpt-4o $2.50/$10, gpt-5.6-luna $0.20/$1.20,
+// Sonnet 5.5 list likely $2/$10, but the cap table below prices it at the 4.6 rates (no repo price source). Sonnet 4.6 $3/$15, gpt-4o $2.50/$10, gpt-5.6-luna $0.20/$1.20,
 // Gemini 2.5-flash $0.30/$2.50 (scripts/llm-scoring/cost.ts, scripts/lib/research-cost.js).
 const CLAUDE_RATES: Record<string, number[]> = { 'claude-sonnet-4-6': [3, 15, 0.3, 3.75], 'claude-sonnet-5-5': [3, 15, 0.3, 3.75] /* cap prices 5.5 at 4.6 list rates (no repo price source); real bill is lower or equal */ };
 const OPENAI_RATES_PM: Record<string, number[]> = { 'gpt-4o': [2.5, 10], 'gpt-5.6-luna': [0.2, 1.2], 'gpt-6-luna': [0.2, 1.2], 'gpt-5.4-mini': [0.75, 4.5], 'gpt-5.6-sol': [5, 30] };
@@ -187,8 +187,12 @@ async function runShard() {
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
 
   const done = new Set<string>();
-  if (fs.existsSync(outPath)) {
-    for (const l of fs.readFileSync(outPath, 'utf8').split('\n')) { try { done.add(JSON.parse(l).id); } catch { /* partial line */ } }
+  // done = every id any shard of this label already scored (dedupe shifts shard membership, so a
+  // sibling shard's file can hold ids this shard would otherwise re-bill on resume).
+  const prefix = path.basename(outPath).replace(/shard-\d+\.jsonl$/, '');
+  for (const f of fs.readdirSync(path.dirname(outPath))) {
+    if (!new RegExp('^' + prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + 'shard-\\d+\\.jsonl$').test(f)) continue;
+    for (const l of fs.readFileSync(path.join(path.dirname(outPath), f), 'utf8').split('\n')) { try { done.add(JSON.parse(l).id); } catch { /* partial line */ } }
   }
 
   const pop = population();

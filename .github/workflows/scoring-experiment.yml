@@ -38,7 +38,7 @@ on:
         required: false
         default: ''
       max_cost_usd:
-        description: 'openai-leg-shadow: TOTAL spend cap in USD across the 4 shards (each gets a quarter; resumed runs count prior spend). Owner hard cap is 80.'
+        description: 'openai-leg-shadow: spend cap in USD for THIS dispatch across the 4 shards (each gets a quarter; resumes of the same label count prior spend; the 80 USD owner cap is across all dispatches, so budget accordingly). Owner hard cap is 80.'
         required: false
         default: '75'
       open_shows:
