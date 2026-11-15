@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-13T07:51:27.513Z",
-    "completedAt": "2026-11-13T07:55:08.450Z",
-    "totalReviews": 82121,
-    "processed": 35,
-    "skipped": 82072,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 277583,
-      "output": 13280,
-      "cacheRead": 159391,
-      "cacheWrite": 26377,
-      "total": 711234
-    },
-    "costUsd": 1.1309129500000001,
-    "runId": "43388256472",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-13T08:00:04.508Z",
-    "completedAt": "2026-11-13T08:05:35.724Z",
-    "totalReviews": 139,
-    "processed": 139,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 356550,
-      "output": 30855,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 387405
-    },
-    "costUsd": 0.9904472,
-    "runId": "43388256472",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-13T08:51:26.386Z",
     "completedAt": "2026-11-13T08:51:26.387Z",
     "totalReviews": 0,
@@ -418076,6 +418038,60 @@
     },
     "costUsd": 0,
     "runId": "43736778187",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-15T17:20:36.447Z",
+    "completedAt": "2026-11-15T17:25:31.087Z",
+    "totalReviews": 82555,
+    "processed": 86,
+    "skipped": 82458,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 514238,
+      "output": 28009,
+      "cacheRead": 331117,
+      "cacheWrite": 26366,
+      "total": 1342073
+    },
+    "costUsd": 1.03159045,
+    "runId": "43740274940",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-15T17:25:50.403Z",
+    "completedAt": "2026-11-15T17:26:03.649Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "43740274940",
     "source": "comparative-rescore",
     "errorDetails": []
   }
