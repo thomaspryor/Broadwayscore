@@ -3,14 +3,14 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { track } from '@vercel/analytics';
 
+import { buildAffiliateUrl, affiliateRel, trackTicketClick } from '@/lib/affiliate-utils';
+
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
     posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void; flush?: () => void; get_distinct_id?: () => string; getFeatureFlag?: (key: string) => string | boolean | undefined };
   }
 }
-
-import { buildAffiliateUrl, affiliateRel, trackTicketClick } from '@/lib/affiliate-utils';
 
 // Re-export affiliate helpers so existing consumers don't break
 export { isAffiliateEnabled, isAffiliatePartner } from '@/lib/affiliate-utils';

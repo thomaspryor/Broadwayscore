@@ -14,6 +14,10 @@ export default [...nextVitals, {
     ...compilerRules,
     // Next 16 adds this navigation preference; retain the existing lint policy.
     '@next/next/no-location-assign-relative-destination': 'off',
+    // BRO-7494: code between import lines that reads an imported binding throws
+    // "Cannot access 'X_1' before initialization" under ts-node's CommonJS
+    // transpile (unit tests), though webpack hoists it. Zero violations at landing.
+    'import/first': 'error',
   },
   linterOptions: { reportUnusedDisableDirectives: false },
 }];

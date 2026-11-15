@@ -3,6 +3,8 @@ import type { NextRequest } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import type { GrantDeps } from './critic-ownership';
 
+import type { PublicCriticProfile } from './critic-server-types';
+
 // BRO-6895: server-side plumbing for critic claiming. All writes use the
 // service role AFTER the caller's Supabase JWT is verified.
 
@@ -103,8 +105,6 @@ export async function emailOwner(subject: string, html: string, replyTo?: string
     return res.ok;
   } catch (e) { console.error('[critics] owner email failed', e instanceof Error ? e.message : e); return false; }
 }
-
-import type { PublicCriticProfile } from './critic-server-types';
 export type { PublicCriticProfile };
 
 export function photoUrlFor(path: string | null): string | null {

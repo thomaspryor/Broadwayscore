@@ -3,10 +3,10 @@
 import fs from 'fs';
 import path from 'path';
 import type { DiaryShowDetail } from './diary-show-types';
+import { getShowStubsByIds } from './show-stubs';
 
 export type { DiaryShowDetail };
 export { marketLabel } from './diary-show-types';
-import { getShowStubsByIds } from './show-stubs';
 export { getShowStubsByIds, STUB_BATCH_SIZE } from './show-stubs';
 
 let cache: Map<string, DiaryShowDetail> | null = null;

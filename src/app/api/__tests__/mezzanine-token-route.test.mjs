@@ -7,10 +7,10 @@
  * Only global fetch is stubbed. Run: npx tsx --test src/app/api/__tests__/mezzanine-token-route.test.mjs
  */
 import { register, createRequire } from 'node:module';
-register('./next-subpath-loader.mjs', import.meta.url);
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+register('./next-subpath-loader.mjs', import.meta.url);
 
 const require = createRequire(import.meta.url);
 const m = require('../../../../scripts/lib/mezzanine-token-renewal.js');

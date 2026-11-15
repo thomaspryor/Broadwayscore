@@ -32,6 +32,9 @@ import { getRegistryTier, getOutletRegistry } from './outlet-id-mapper';
 // The one critic-score formula, shared with the slim-file generator (BRO-4312).
 import { scoreReviews } from '../../scripts/lib/compute-critic-score';
 import { normalizeShowStatus, effectiveShowStatus } from '../../scripts/lib/effective-status';
+import { getMarketDate } from './date-utils';
+import { getReviewAgeYear } from './show-date-line';
+import { stripInlineMarkdown } from './formatting';
 
 /** Per-review detail returned by scripts/lib/compute-critic-score.js scoreReviews(). */
 interface SharedScoredReview {
@@ -43,9 +46,6 @@ interface SharedScoredReview {
   outletShare: number;
   weightedScore: number;
 }
-import { getMarketDate } from './date-utils';
-import { getReviewAgeYear } from './show-date-line';
-import { stripInlineMarkdown } from './formatting';
 
 // ===========================================
 // TYPES

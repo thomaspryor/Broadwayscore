@@ -11,10 +11,10 @@
  * Run: npx tsx --test src/app/api/__tests__/submit-review-pii-route.test.mjs
  */
 import { register, createRequire } from 'node:module';
-register('./next-subpath-loader.mjs', import.meta.url);
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+register('./next-subpath-loader.mjs', import.meta.url);
 
 const require = createRequire(import.meta.url);
 const { extractSubmitterEmail, CONTACT_HEADING, NOT_STORED } = require('../../../../scripts/lib/submitter-contact.js');

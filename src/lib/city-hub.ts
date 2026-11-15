@@ -3,10 +3,10 @@
 // Recently closed. Closed shows older than RECENT_DAYS move to an archive
 // list so a hub fed by ~1,000 local productions (BRO-6518) stays short.
 
+import registry from '../../data/city-hubs.json';
+
 export const RECENT_DAYS = 365;
 export const CLOSED_LIMIT = 12;
-
-import registry from '../../data/city-hubs.json';
 
 export interface HubCity {
   name: string;

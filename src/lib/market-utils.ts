@@ -11,6 +11,19 @@ import {
   MIN_REVIEWS_FOR_SCORE_OFF_WEST_END,
 } from '@/config/score-buckets';
 
+// A `category: 'regional'` show can be a US Broadway-feeder (A.R.T., Goodman,
+// La Jolla) OR a UK West End-feeder (RSC Stratford, Chichester Festival
+// Theatre — added for card #1405, Game of Thrones: The Mad King). The
+// category alone can't tell them apart, so country/currency defaulted every
+// regional show to 'US'/$ until now — silently wrong for any UK one.
+// data/uk-regional-venues.json is the SAME list scripts/lib/aggregator-
+// candidate-extract.js's REGIONAL_FEEDER_VENUES draws its UK entries from
+// (via the `match` string, word-bounded there) — one source of truth, so
+// adding a venue there automatically fixes currency/country here too.
+// A plain JSON import is safe in a client bundle: venue-classification.ts's
+// isOffWestEndVenue() already does exactly this with west-end-venues.json.
+import ukRegionalVenues from '../../data/uk-regional-venues.json';
+
 export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end' | 'regional' | 'tour';
 
 /** Returns true for both 'west-end' and 'off-west-end' — i.e., any London market. */
@@ -57,19 +70,6 @@ export function getMarketMinReviews(category?: string): number {
       return MIN_REVIEWS_FOR_SCORE;
   }
 }
-
-// A `category: 'regional'` show can be a US Broadway-feeder (A.R.T., Goodman,
-// La Jolla) OR a UK West End-feeder (RSC Stratford, Chichester Festival
-// Theatre — added for card #1405, Game of Thrones: The Mad King). The
-// category alone can't tell them apart, so country/currency defaulted every
-// regional show to 'US'/$ until now — silently wrong for any UK one.
-// data/uk-regional-venues.json is the SAME list scripts/lib/aggregator-
-// candidate-extract.js's REGIONAL_FEEDER_VENUES draws its UK entries from
-// (via the `match` string, word-bounded there) — one source of truth, so
-// adding a venue there automatically fixes currency/country here too.
-// A plain JSON import is safe in a client bundle: venue-classification.ts's
-// isOffWestEndVenue() already does exactly this with west-end-venues.json.
-import ukRegionalVenues from '../../data/uk-regional-venues.json';
 
 type UkRegionalVenueEntry = { match: string; city: string; aliases?: string[] };
 

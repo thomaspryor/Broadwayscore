@@ -3,6 +3,40 @@
 // Change this file to update scoring rules site-wide
 import { DEFAULT_GOLD_THRESHOLD, RECOMMENDED_MIN, WORTH_SEEING_MIN, MIXED_MIN } from '../../scripts/lib/score-tiers';
 
+// ===========================================
+// ANCHORED-BANDS ROLLOUT POLICY (Phase B)
+// ===========================================
+// Markets that get the V6 anchored-bands scoring path by default.
+// Reviews whose show.category is in this set use band-constrained LLM scoring
+// (see scripts/lib/star-reliability.js::shouldUseAnchoredMode). Other markets
+// use V5 unless the ANCHORED_BANDS_PILOT env flag is set explicitly.
+//
+// Rollout sequence:
+//   2026-05-17: WE + Off-West-End soft-launched (pilot markets, defined here).
+//   2026-07-20: broadway + off-broadway added (NYC rollout, see
+//               ./ANCHORED_MARKETS_NYC_V6.ts for that market's rollout
+//               history + verified outcome). Mirror change:
+//               scripts/lib/star-reliability.js
+import { ANCHORED_MARKETS_NYC_V6 } from './ANCHORED_MARKETS_NYC_V6';
+
+// Shows pre-dating the 2005 cutoff that have been manually curated with
+// verified opening-night reviews. Bypasses shouldHideReviews.
+// To add a new historical show: edit data/curated-historical-shows.json (no code change needed).
+import curatedHistoricalShowsData from '../../data/curated-historical-shows.json';
+import { getShowYear } from '../lib/date-utils';
+
+// Outlet ID → Tier mapping (keys are canonical lowercase registry IDs).
+//
+// SOURCE OF TRUTH: src/config/outlet-tiers.json
+//
+// Edit the JSON to add/change an outlet tier. Both TypeScript (this file,
+// via import) and JavaScript (scripts/lib/compute-critic-score.js, via
+// require) load from the same file, so drift between the two paths is
+// impossible. Before April 2026, this data was duplicated in multiple
+// files and drifted silently — causing homepage-vs-show-page score
+// mismatches (Stereophonic incident, April 10, 2026).
+import outletTiersJson from './outlet-tiers.json';
+
 export const METHODOLOGY_VERSION = "2.2.0";
 export const METHODOLOGY_DATE = "2026-02-22";
 
@@ -21,33 +55,11 @@ export const LOW_CONF_SCORE_SOURCES = new Set([
   'thumb',
   'bwwScore-fallback',
 ]);
-
-// ===========================================
-// ANCHORED-BANDS ROLLOUT POLICY (Phase B)
-// ===========================================
-// Markets that get the V6 anchored-bands scoring path by default.
-// Reviews whose show.category is in this set use band-constrained LLM scoring
-// (see scripts/lib/star-reliability.js::shouldUseAnchoredMode). Other markets
-// use V5 unless the ANCHORED_BANDS_PILOT env flag is set explicitly.
-//
-// Rollout sequence:
-//   2026-05-17: WE + Off-West-End soft-launched (pilot markets, defined here).
-//   2026-07-20: broadway + off-broadway added (NYC rollout, see
-//               ./ANCHORED_MARKETS_NYC_V6.ts for that market's rollout
-//               history + verified outcome). Mirror change:
-//               scripts/lib/star-reliability.js
-import { ANCHORED_MARKETS_NYC_V6 } from './ANCHORED_MARKETS_NYC_V6';
 export const ANCHORED_MARKETS: ReadonlySet<string> = new Set([
   'west-end',
   'off-west-end',
   ...Array.from(ANCHORED_MARKETS_NYC_V6),
 ]);
-
-// Shows pre-dating the 2005 cutoff that have been manually curated with
-// verified opening-night reviews. Bypasses shouldHideReviews.
-// To add a new historical show: edit data/curated-historical-shows.json (no code change needed).
-import curatedHistoricalShowsData from '../../data/curated-historical-shows.json';
-import { getShowYear } from '../lib/date-utils';
 export const CURATED_HISTORICAL_SHOWS = new Set<string>(curatedHistoricalShowsData);
 
 /** Returns true if a show's reviews should be completely hidden on the site. */
@@ -99,18 +111,6 @@ export const VALID_TIERS: readonly (1 | 2 | 3 | 4)[] = (
 // Acknowledges that off-market coverage is typically lighter / different
 // critical engagement than the parent market. Set to 1.0 to disable.
 export const OFF_MARKET_MULTIPLIER = 0.8 as const;
-
-// Outlet ID → Tier mapping (keys are canonical lowercase registry IDs).
-//
-// SOURCE OF TRUTH: src/config/outlet-tiers.json
-//
-// Edit the JSON to add/change an outlet tier. Both TypeScript (this file,
-// via import) and JavaScript (scripts/lib/compute-critic-score.js, via
-// require) load from the same file, so drift between the two paths is
-// impossible. Before April 2026, this data was duplicated in multiple
-// files and drifted silently — causing homepage-vs-show-page score
-// mismatches (Stereophonic incident, April 10, 2026).
-import outletTiersJson from './outlet-tiers.json';
 
 type OutletTierEntry = {
   tier: 1 | 2 | 3 | 4;

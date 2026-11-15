@@ -34,9 +34,9 @@ import {
   signedUrlToAbsolute as toAbsolute,
   storageObjectUrl,
 } from './review-photo-model';
+import { MAX_PHOTOS_PER_REVIEW as MAX_PHOTOS } from './review-photo-model';
 
 export { DIARY_PHOTOS_BUCKET, MAX_PHOTOS_PER_REVIEW } from './review-photo-model';
-import { MAX_PHOTOS_PER_REVIEW as MAX_PHOTOS } from './review-photo-model';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';

@@ -8,12 +8,12 @@
  * Run: npx tsx --test src/app/__tests__/sitemap-shard-id.test.mjs
  */
 import { register } from 'node:module';
-register('../api/__tests__/next-subpath-loader.mjs', import.meta.url);
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+register('../api/__tests__/next-subpath-loader.mjs', import.meta.url);
 
 // sitemap.ts imports these gitignored manifests (built by prebuild.sh). The
 // Unit Tests job does not build them, so build them here (sub-second each).

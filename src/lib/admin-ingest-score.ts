@@ -9,9 +9,9 @@
 // had silently drifted to an inflated curve (A=95, D=65, F=50 vs canonical 90/35/20),
 // scoring every manually-ingested letter grade far too high (2026-06-29). A
 // cross-file parity test now enforces these never diverge again.
-const LETTER_GRADE_VALUES = LETTER_GRADE_MAP;
-
 import { LETTER_GRADE_MAP } from '@/config/scoring';
+
+const LETTER_GRADE_VALUES = LETTER_GRADE_MAP;
 
 export interface ScoreParseResult {
   score: number;

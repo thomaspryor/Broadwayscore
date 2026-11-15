@@ -13,6 +13,8 @@ import { bizOgImage } from '@/lib/biz-og';
 import { getTonyWinners } from '@/lib/data-topic-pages';
 import { formatMillions, type MusicalOutcome } from '@/lib/investment-topics';
 import { StatGrid } from '@/components/show-cards';
+import TopicPageShell from '@/components/biz/TopicPageShell';
+import MoneyGate from '@/components/biz/MoneyGate';
 
 const OUTCOME: Record<MusicalOutcome, { label: string; className: string }> = {
   recouped: { label: 'Recouped', className: 'text-status-open' },
@@ -20,8 +22,6 @@ const OUTCOME: Record<MusicalOutcome, { label: string; className: string }> = {
   running: { label: 'Still running', className: 'text-gray-300' },
   unknown: { label: 'Closed with no verdict', className: 'text-fg-muted' },
 };
-import TopicPageShell from '@/components/biz/TopicPageShell';
-import MoneyGate from '@/components/biz/MoneyGate';
 
 const TITLE = "What Happened to the Tony Winners' Investors";
 const DESCRIPTION = "Best Musical and Best Play winners since the 2021-22 season, and whether each recouped.";

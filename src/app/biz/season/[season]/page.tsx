@@ -9,9 +9,6 @@ import { seasonOgImage } from '@/lib/biz-og';
 import BizHeader from '@/components/biz/BizHeader';
 import { notFound } from 'next/navigation';
 
-// Below this many tracked commercial shows a recoup ratio (e.g. 1 of 3) overstates a thin sample.
-const MIN_TRACKED_SHOWS = 5;
-
 import { featureFlags } from '@/config/feature-flags';
 import {
   getSeasonsWithCommercialData,
@@ -32,6 +29,9 @@ import { formatCapitalSummary } from '@/lib/biz-format';
 import { formatSeasonMoney, returnedCapitalText } from '@/lib/season-profile';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 import EmailTomLink from '@/components/EmailTomLink';
+
+// Below this many tracked commercial shows a recoup ratio (e.g. 1 of 3) overstates a thin sample.
+const MIN_TRACKED_SHOWS = 5;
 
 // Dynamically generate params from actual data - auto-updates when shows are added
 export function generateStaticParams() {

@@ -12,6 +12,8 @@
  * registered in Apple Developer Console under the Services ID configuration.
  */
 
+import { reportUgcError } from './ugc-analytics';
+
 declare global {
   interface Window {
     AppleID?: {
@@ -38,8 +40,6 @@ declare global {
     };
   }
 }
-
-import { reportUgcError } from './ugc-analytics';
 
 let sdkLoaded = false;
 let sdkLoading: Promise<void> | null = null;
