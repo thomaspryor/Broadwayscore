@@ -299,20 +299,6 @@
     "queuedAt": "2026-11-14T14:04:44.258Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-14.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-14T15:29:51.911Z"
-  },
-  {
     "conditionKey": "land:land/bro7490-batch-slot-sync",
     "title": "Landing blocked: unit-tests-node red on land/bro7490-batch-slot-sync",
     "description": "land.yml did not land land/bro7490-batch-slot-sync: the unit-tests-node gate went red at 297d008a36. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43619720380",
@@ -601,6 +587,20 @@
     "tracked": "BRO-7497",
     "fields": [],
     "queuedAt": "2026-11-14T23:36:08.014Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-15.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-15T00:22:02.097Z"
   },
   {
     "conditionKey": "land:land/bro-7494-lazy-guard",

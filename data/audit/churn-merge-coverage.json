@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-14T15:26:26.462Z",
+    "generatedAt": "2026-11-15T00:19:48.347Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,51 +9,97 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 1,
-    "coveredCount": 7,
-    "highChurnTracked": 8
+    "exemptCount": 5,
+    "coveredCount": 13,
+    "highChurnTracked": 18
   },
   "flagged": [],
   "exempt": [
     {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 68
+    },
+    {
       "path": "data/audit/alert-ledger.json",
-      "churn": 41
+      "churn": 55
+    },
+    {
+      "path": "public/data/admin/critic-coverage.json",
+      "churn": 32
+    },
+    {
+      "path": "public/data/admin/locks.json",
+      "churn": 32
+    },
+    {
+      "path": "public/data/mobile-shows.json",
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 84,
+      "churn": 94,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 53,
+      "churn": 83,
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 43,
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 69,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 41,
+      "churn": 51,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 41,
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 41,
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 41,
+      "churn": 51,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gemini-usage-ledger.jsonl",
+      "churn": 45,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/exclusion-daily-totals.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-hamlet-hail-to-the-thief-off-west-end-2026.json",
+      "churn": 32,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 32,
       "mergeAttr": "ours"
     }
   ]
