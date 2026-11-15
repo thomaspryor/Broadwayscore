@@ -29,3 +29,13 @@ test('transient classifier', () => {
   assert.ok(isTransientGitError('error: RPC failed; HTTP 503'));
   assert.ok(!isTransientGitError('CONFLICT in file'));
 });
+
+import { describeReviewFile } from '../lib/push-rescue.js';
+test('describeReviewFile reports metadata only, never text', () => {
+  const secret = 'SECRET REVIEW BODY';
+  const d = describeReviewFile(JSON.stringify({ fullText: secret, contentTier: 'truncated', criticName: null, llmScore: 70, wrongShow: true, scoredAt: '2026-11-11T10:00:00Z', publishDate: '2026-11-01' }));
+  assert.match(d, /fullTextLen=18 contentTier=truncated assignedScore=no llmScore=yes criticName=null flags=wrongShow newest=scoredAt:2026-11-11T10:00:00Z/);
+  assert.ok(!d.includes(secret));
+  assert.equal(describeReviewFile(''), 'absent');
+  assert.match(describeReviewFile('{oops'), /unparseable-json/);
+});
