@@ -17,8 +17,12 @@ fi
 [ -n "$ALLOW_LINEAR_WRITES_DISABLE" ] && exit 0
 command -v jq >/dev/null 2>&1 || exit 0
 
-tool="$(jq -r '.tool_name // ""' 2>/dev/null)" || exit 0
+input="$(cat)"
+tool="$(printf '%s' "$input" | jq -r '.tool_name // ""' 2>/dev/null)" || exit 0
+# Closing a card goes through linear-brain.js (the Done gate); a direct Done/Canceled write keeps its prompt.
+state="$(printf '%s' "$input" | jq -r '.tool_input.state // "" | tostring' 2>/dev/null)" || state=""
 shopt -s nocasematch
+if [[ "$state" =~ ^(done|completed|canceled|cancelled|duplicate)$ ]]; then exit 0; fi
 if [[ "$tool" =~ ^mcp__(Linear|claude_ai_Linear|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})__(save_comment|save_issue)$ ]]; then
   jq -n '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"allow",permissionDecisionReason:"Linear comment and issue writes are pre-approved by the owner (BRO-7534)."}}'
 fi

@@ -5,13 +5,15 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 
 const HOOK = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '.claude', 'hooks', 'allow-linear-writes.sh');
 const UUID = '0b2f7a3c-1d4e-4f56-8a9b-123456789abc';
 
-function decide(tool, env = {}) {
+function decide(tool, env = {}, toolInput = {}) {
   const r = spawnSync('bash', [HOOK], {
-    input: JSON.stringify({ hook_event_name: 'PreToolUse', tool_name: tool, tool_input: {} }),
+    input: JSON.stringify({ hook_event_name: 'PreToolUse', tool_name: tool, tool_input: toolInput }),
     encoding: 'utf8',
     env: { ...process.env, HOME: '/nonexistent-home', ...env },
   });
@@ -37,8 +39,29 @@ test('gives no decision for deletes, other Linear tools, other servers and looka
   ]) assert.equal(decide(t), null, t);
 });
 
-test('kill switch and a master hook under $HOME both turn it off', () => {
+test('kill switch turns it off', () => {
   assert.equal(decide('mcp__Linear__save_comment', { ALLOW_LINEAR_WRITES_DISABLE: '1' }), null);
+});
+
+test('a copy of the hook under $HOME/.claude/hooks defers to that copy', () => {
+  const home = mkdtempSync(path.join(tmpdir(), 'alw-home-'));
+  mkdirSync(path.join(home, '.claude', 'hooks'), { recursive: true });
+  writeFileSync(path.join(home, '.claude', 'hooks', 'allow-linear-writes.sh'), '');
+  assert.equal(decide('mcp__Linear__save_comment', { HOME: home }), null);
+});
+
+test('closing a card directly (state Done/Canceled) keeps its prompt; other issue writes are allowed', () => {
+  for (const state of ['Done', 'done', 'Canceled', 'Duplicate']) assert.equal(decide('mcp__Linear__save_issue', {}, { state }), null, state);
+  for (const state of ['In Progress', 'Backlog', 'Todo']) assert.equal(decide('mcp__Linear__save_issue', {}, { state }).permissionDecision, 'allow', state);
+  assert.equal(decide('mcp__Linear__save_comment', {}, { body: 'x' }).permissionDecision, 'allow');
+});
+
+test('settings.json wires the hook for all three connector prefixes', () => {
+  const s = JSON.parse(readFileSync(path.join(path.dirname(HOOK), '..', 'settings.json'), 'utf8'));
+  const g = s.hooks.PreToolUse.find((x) => x.hooks.some((h) => h.command.includes('allow-linear-writes.sh')));
+  assert.ok(g, 'PreToolUse group for allow-linear-writes.sh');
+  const re = new RegExp(`^(?:${g.matcher})$`);
+  for (const server of ['Linear', 'claude_ai_Linear', UUID]) for (const t of ['save_comment', 'save_issue']) assert.ok(re.test(`mcp__${server}__${t}`), `${server} ${t}`);
 });
 
 test('unparseable input fails open with no decision', () => {
