@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T22:47:09.041Z",
+  "timestamp": "2026-11-15T22:57:26.293Z",
   "stats": {
-    "totalReviews": 82273,
+    "totalReviews": 82276,
     "alreadyFlagged": 22436,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
-    "tvFilmSignals": 2318,
+    "tvFilmSignals": 2319,
     "londonSignals": 3763,
     "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8456
+    "noPublishDate": 8459
   },
   "findings": [
     {
@@ -83439,6 +83439,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "wanted-2022",
+      "file": "newsbreak--unknown.json",
+      "publishDate": "2026-11-08",
+      "url": "https://sports.newsbreak.com/news/4994542982149-reviews-what-are-the-critics-saying-about-wanted-on-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
