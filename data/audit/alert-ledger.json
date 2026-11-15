@@ -21952,10 +21952,10 @@
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
       "incidentOpenedAt": "2026-11-06T18:45:30.510Z",
-      "lastSeen": "2026-11-12T19:24:58.574Z",
-      "lastNotifiedAt": "2026-11-12T19:24:58.574Z",
-      "lastSurfacedAt": "2026-11-12T19:24:58.574Z",
-      "notifyCount": 9,
+      "lastSeen": "2026-11-15T18:21:10.793Z",
+      "lastNotifiedAt": "2026-11-15T18:21:10.793Z",
+      "lastSurfacedAt": "2026-11-15T18:21:10.793Z",
+      "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -36151,12 +36151,13 @@
       "title": "Cron stale 3+ consecutive days: Replay Push Rescue",
       "firstSeen": "2026-11-02T21:15:33.632Z",
       "incidentOpenedAt": "2026-11-14T17:32:43.005Z",
-      "lastSeen": "2026-11-14T17:32:43.005Z",
+      "lastSeen": "2026-11-15T18:21:10.917Z",
       "lastNotifiedAt": "2026-11-14T17:32:43.005Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-7493"
+      "linearIdentifier": "BRO-7493",
+      "silentRefires": 1
     },
     "land:land/bro-6857": {
       "status": "resolved",
@@ -43759,6 +43760,19 @@
       "lastSeen": "2026-11-15T18:13:31.401Z",
       "lastNotifiedAt": "2026-11-15T18:13:31.401Z",
       "lastSurfacedAt": "2026-11-15T18:13:31.401Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-failed:R2 Cold Backup": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): R2 Cold Backup",
+      "firstSeen": "2026-11-15T18:21:10.769Z",
+      "incidentOpenedAt": "2026-11-15T18:21:10.769Z",
+      "lastSeen": "2026-11-15T18:21:10.769Z",
+      "lastNotifiedAt": "2026-11-15T18:21:10.769Z",
+      "lastSurfacedAt": "2026-11-15T18:21:10.769Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
