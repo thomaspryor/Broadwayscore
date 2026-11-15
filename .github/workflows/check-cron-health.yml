@@ -493,6 +493,11 @@ jobs:
               # Surface the latest run's conclusion so the alert tells us whether
               # recent runs are failing vs cancelled vs simply absent.
               FAILURES="${FAILURES}❌ ${name}: Last SUCCESS ${HOURS_AGO}h ago (max ${max_hours}h). Latest run conclusion: ${LATEST_ANY}\n"
+              # BRO-7541: a stale backup whose latest run failed must still count as "failing"
+              # for the backup escalation card (else the card auto-closes on a false recovery).
+              if [ "$LATEST_ANY" = "failure" ] && printf '%s' "$name" | grep -qi backup; then
+                WARNINGS="${WARNINGS}⚠️ ${name}: Latest run failed (last success ${HOURS_AGO}h ago)\n"
+              fi
             elif [ "$LATEST_ANY" = "failure" ]; then
               WARNINGS="${WARNINGS}⚠️ ${name}: Latest run failed (last success ${HOURS_AGO}h ago)\n"
             fi
