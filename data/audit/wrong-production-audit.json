@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T21:30:41.173Z",
+  "timestamp": "2026-11-15T21:44:03.682Z",
   "stats": {
-    "totalReviews": 82266,
-    "alreadyFlagged": 22433,
+    "totalReviews": 82287,
+    "alreadyFlagged": 22437,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
     "tvFilmSignals": 2318,
-    "londonSignals": 3763,
-    "offBroadwaySignals": 751,
+    "londonSignals": 3766,
+    "offBroadwaySignals": 752,
     "yearMismatch": 375,
-    "noPublishDate": 8452
+    "noPublishDate": 8457
   },
   "findings": [
     {
@@ -65372,6 +65372,7 @@
     {
       "showId": "the-afronauts-west-end-2026",
       "file": "monstagigz--unknown.json",
+      "score": 72,
       "publishDate": "2026-11-15",
       "url": "https://monstagigz.com/2026/11/15/theatre-review-the-afronauts-starring-lucian-msamati-ivanno-jeremiah-and-pamela-nomvete-by-ryan-calais-cameron-at-the-royal-court/",
       "findings": [
@@ -67277,7 +67278,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "artsdesk--veronica-lee.json",
-      "score": 75,
+      "score": 77,
       "publishDate": "2025-05-15",
       "url": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
       "findings": [
@@ -67675,7 +67676,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": null,
+      "score": 72,
       "publishDate": "2025-05-14",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-comedy-about-spies-review-inventive-humour-we-need-cd2nx6qlc",
       "findings": [
@@ -96874,6 +96875,20 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "matineemouse--ella-tomlin.json",
+      "score": 87,
+      "publishDate": "2026-11-15",
+      "url": "https://matineemouse.substack.com/p/cloud-9-national-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "matineemouse--unknown.json",
       "score": 87,
       "publishDate": "2026-11-15",
@@ -105747,6 +105762,20 @@
       "score": 80,
       "publishDate": "2026-11-13",
       "url": "https://www.londontheatre.co.uk/reviews/hamlet-hail-to-the-thief-review-shakespeare-radiohead-barbican",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "london-unattached--jeanne-horak.json",
+      "score": 92,
+      "publishDate": "2026-11-15",
+      "url": "https://www.london-unattached.com/hamlet-hail-thief-barbican-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -121410,6 +121439,24 @@
       "publishDate": "February 28, 2008",
       "url": "http://www.talkinbroadway.com/world/PassingStrange.html",
       "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "file": "variety--chris-willman.json",
+      "publishDate": "2026-11-08",
+      "url": "https://variety.com/2026/legit/news/passing-strange-pasadena-playhouse-stew-heidi-interview-1236942647/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
