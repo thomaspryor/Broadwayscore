@@ -20,7 +20,8 @@
 
 const { MODEL_RUN_FIELDS } = require('./merge-commercial-data');
 
-const NOT_CONTENT = new Set([...MODEL_RUN_FIELDS, 'lastUpdated', 'firstAdded']);
+// breakEvenSource/Quality are derived by the write guard (BRO-7254): not an edit.
+const NOT_CONTENT = new Set([...MODEL_RUN_FIELDS, 'lastUpdated', 'firstAdded', 'breakEvenSource', 'breakEvenQuality']);
 
 // Key order is not content: a writer that rebuilds sources[] entries with
 // keys in another order must not count as an edit.

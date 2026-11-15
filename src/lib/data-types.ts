@@ -485,6 +485,10 @@ export interface ShowCommercial {
   weeklyRunningCostSource?: string | null;
   /** What the cited weekly cost is: fixed running costs, a breakeven gross, or an all-in operating expense (BRO-5093). */
   weeklyRunningCostBasis?: 'running' | 'breakeven' | 'all-in';
+  /** Where the displayed break-even comes from, one sentence (BRO-7254, scripts/lib/break-even-provenance.js; derived by the write guard). Server-side only. */
+  breakEvenSource?: string;
+  /** reported: rests on a cited press/SEC/producer cost; estimated: an estimate or model default; unavailable: none shown. */
+  breakEvenQuality?: 'reported' | 'estimated' | 'unavailable';
   isEstimate?: {
     capitalization?: boolean;
     weeklyRunningCost?: boolean;

@@ -129,6 +129,9 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // redated to the period it measured (BRO-6218, Cabaret's first seven
     // weeks). commercial-field-edit.js refuses any anchor anchorErrors flags.
     'costHistory',
+    // BRO-7254: derived break-even provenance (break-even-provenance.js). The
+    // write guard re-stamps both on save; a plan may set them to the derived value.
+    'breakEvenSource', 'breakEvenQuality',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

@@ -1,6 +1,6 @@
 # BRO-7254: baseline investigation, 2026-11-15
 
-Status: incomplete. No estimate, model, or private data was changed. This is
+Status: baseline reconstructed and committed as the replacement protocol; see the follow-up section at the end. This is
 reproducible audit evidence, not a claim that the acceptance criteria passed.
 
 ## Findings
@@ -161,7 +161,59 @@ NODE
   test was added that would give a false impression of meeting its data and
   backtest criteria.
 
-REMAINING: Recover the original backtest protocol, frozen inputs and twelve-show cohort, or explicitly reconcile a replacement baseline.
-REMAINING: Audit all twelve historical false alarms and calibrate comparable/press-backed estimates, including cast size; retain changes only after the specified backtest improves.
-REMAINING: Populate breakEvenSource and a quality assessment for every running Broadway commercial record, including the four named shows, through the writer and approved data-fix path.
-REMAINING: Provide the missing acceptance test and demonstrate at least 72% in-window detection with fewer than twelve long-survival false alarms.
+## Follow-up, 2026-11-15: replacement protocol, recalibration trials, provenance
+
+**Replacement protocol.** The original BRO-7246 scratch logic, frozen inputs and
+twelve-show cohort are not recoverable. The reconstruction above is now the
+protocol, committed as `scripts/backtest-closing-watch.mjs`
+(`runClosingWatchBacktest`, same rules, production functions imported). It
+reproduces 54/78 = 69.23% in window and 3 false alarms (moulin-rouge,
+mamma-mia-2001, kinky-boots-2013) on the 2026-11-15 snapshot. "False alarm"
+means a closed show that ran 104+ weeks after its first forecast; the 12 in
+the card used the lost protocol and is not comparable.
+
+**Misses.** 24 of 78 forecasts fall outside the window: 14 late (ran past p75)
+and 10 early. Of the late ones 10 rest on estimated break-evens, 4 on cited
+press costs (Cabaret 2024, The Play That Goes Wrong, Once on This Island,
+Legally Blonde).
+
+**Recalibrations tried, none kept** (in window / forecasts, false alarms):
+
+| Change | Result |
+| --- | --- |
+| baseline | 54/78 = 69.2%, 3 |
+| estimated break-evens x0.80 / 0.85 / 0.90 / 0.95 | 58.8% / 58.9% / 66.2% / 64.5%, 1-3 |
+| estimated break-evens x1.05 / 1.10 | 67.1% / 65.0%, 3 |
+| all break-evens x0.90 / 0.95 / 1.05 | 69.1% / 69.3% (52/75, fewer forecasts) / 65.8% |
+| raw weekly cost instead of model break-even (estimated / all) | 58.7% / 56.2% |
+| estimateWeeklyNut x 1.269 (median reported break-even / nut, n=35) for estimated | 63.0% |
+| same, only for type-default records (20) | 68.8%-70.0% depending on the 4th decimal of the ratio; x1.35-1.45 adds false alarms (4-5) |
+| fill missing break-evens with that comparable (345 runs) | 60.5%, 12 |
+| min / max of estimate and comparable | 64.5% / 65.1% |
+
+The type-default variant flips between 55 and 56 hits on a ratio change in the
+fourth decimal, so it is noise, not an improvement, and was not kept.
+
+**Upper bound.** Lowering each late-miss estimated break-even alone by 10-30%
+gives at most 55/78 (70.5%); lowering all ten by 20% at once gives 53/77
+(68.8%). Because every break-even also feeds the survival calibration, no
+break-even change reaches 72% under this protocol. The remaining misses come
+from the window model (how wide p25-p75 is and when the first forecast fires),
+not the break-even inputs.
+
+**Provenance.** `scripts/lib/break-even-provenance.js` derives
+`breakEvenSource` (which field the figure is and what it rests on, no copied
+citations or amounts) and `breakEvenQuality` (`reported` only on a cited
+press, SEC or producer cost; otherwise `estimated`; `unavailable` when no
+break-even shows). The commercial write guard stamps both on every save, the
+merge re-derives them, record checks refuse a quality the cost fields do not
+support, and plan `data/pending-fixes/bro-7254.json` writes the four named
+shows (all `estimated`: their costs are analyst or industry estimates; Wanted's
+"trade-reported" label sits on a forum citation). On the snapshot, the 39
+running Broadway records come out 8 reported, 14 estimated, 17 unavailable.
+
+Test: `node --test scripts/closing-watch-breakeven.test.mjs`. The 72% target
+is a visible TODO test, not a pass.
+
+REMAINING: 72% in window is not reached (69.23%). Raising it needs a change to the window model in src/lib/closing-watch.ts (p25-p75 choice, first-forecast timing), tested with the committed backtest, which is outside break-even calibration.
+REMAINING: Press-reported weekly costs for the ten estimated late misses would improve their provenance, but the upper bound above shows they cannot move the metric to target.

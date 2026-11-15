@@ -355,6 +355,10 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     }
   }
 
+  // breakEvenSource / breakEvenQuality (BRO-7254): derived by the write
+  // guard; a stored quality must match the cost fields (never 'reported' on an estimate).
+  // Lazy require: break-even-provenance reaches this file through waltz-cost-gap-fill.
+  out.push(...require('./break-even-provenance').breakEvenProvenanceErrors(showId, show));
   // weeklyRunningCostBasis (BRO-5093): a known value, on a cited cost.
   if (show.weeklyRunningCostBasis != null) {
     if (!COST_BASES.includes(show.weeklyRunningCostBasis)) {

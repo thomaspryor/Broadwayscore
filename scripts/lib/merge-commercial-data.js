@@ -81,6 +81,7 @@
 //   * `updatedAt` becomes the newer of the two timestamps.
 
 const { syncBreakevenToCost } = require('./commercial-breakeven');
+const { stampBreakEvenProvenance } = require('./break-even-provenance');
 const { carryHumanReviewHold } = require('./commercial-apply-gate');
 
 const HUMAN_REVIEWED_COMMERCIAL_FIELDS = [
@@ -150,6 +151,9 @@ const MODEL_RUN_FIELDS = [
   // BRO-4989 shadow fields (written alongside, never read by the site yet).
   'modelRecoupmentPctV2', 'modelInvestorMultiple', 'modelReturnedExCreditPct', 'modelTaxCreditExcluded', 'modelTaxCreditCounted',
 ];
+// Derived from the cost and model fields (BRO-7254, break-even-provenance.js):
+// re-stamped after every merge and save, so never a content conflict.
+const DERIVED_FIELDS = ['breakEvenSource', 'breakEvenQuality'];
 const LINKED_FIELD_GROUPS = [
   // commercialConversion: a converted run must carry a commercial designation (BRO-5508).
   ['designation', 'designationBasis', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason', 'commercialConversion'],
@@ -157,11 +161,12 @@ const LINKED_FIELD_GROUPS = [
   ['weeklyRunningCost', 'costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostNote', 'weeklyRunningCostRange', 'weeklyRunningCostBasis'],
   MODEL_RUN_FIELDS,
   ['ourRecoupEstimatePct', 'ourRecoupEstimateAsOf'],
+  DERIVED_FIELDS,
 ];
 const GROUP_OF = new Map(LINKED_FIELD_GROUPS.flatMap(g => g.map(f => [f, g])));
 // Bookkeeping both sides bump on any write, and model output both sides
 // recomputed: a differing value is not a content conflict worth reporting.
-const isContentUnit = (unit) => unit !== MODEL_RUN_FIELDS && !(unit.length === 1 && unit[0] === 'lastUpdated');
+const isContentUnit = (unit) => unit !== MODEL_RUN_FIELDS && unit !== DERIVED_FIELDS && !(unit.length === 1 && unit[0] === 'lastUpdated');
 
 const isPlainObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 
@@ -272,6 +277,8 @@ function mergeCommercialJson(ours, remote, base) {
       // The run's break-even and the merged cost can come from different
       // sides; rescale it exactly as the write guard does on save (BRO-4985).
       if (syncBreakevenToCost(chosen)) breakevenResynced++;
+      // Re-derive provenance a side carried, so it matches the merged cost (the guard adds it on save).
+      if (chosen.breakEvenQuality != null || chosen.breakEvenSource != null) stampBreakEvenProvenance(chosen);
     } else {
       chosen = { ...winner };
     }

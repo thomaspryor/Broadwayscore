@@ -29,6 +29,7 @@ const path = require('path');
 const { createJsonWriteGuard } = require('./json-write-guard');
 const { canonicalDesignation } = require('./commercial-designations');
 const { syncBreakevenToCost } = require('./commercial-breakeven');
+const { stampBreakEvenProvenance } = require('./break-even-provenance');
 const { buildShowKeyIndex, canonicalizeCommercialKeys } = require('./commercial-slug-key');
 const { stampContentChanges } = require('./commercial-record-stamp');
 
@@ -82,6 +83,9 @@ function createCommercialWriteGuard(commercialPath) {
         // A weekly cost changed since the last model run: scale the model's
         // break-even with it, never leave it below the cost (BRO-4985).
         syncBreakevenToCost(rec);
+        // Where that break-even comes from and how good it is (BRO-7254):
+        // derived, so re-stamped on every save and never stale.
+        if (rec && typeof rec === 'object') stampBreakEvenProvenance(rec);
       }
       // BRO-4623: commercial.json is keyed by slug. A record keyed by a show
       // ID (from any writer that skipped scripts/lib/commercial-slug-key.js)
