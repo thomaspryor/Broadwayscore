@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-15T01:53:15.781Z",
+  "timestamp": "2026-11-15T02:22:11.029Z",
   "stats": {
-    "totalReviews": 82118,
+    "totalReviews": 82134,
     "alreadyFlagged": 22400,
     "dateGuardCatches": 221,
-    "directorMismatch": 3697,
+    "directorMismatch": 3706,
     "tvFilmSignals": 2314,
     "londonSignals": 3756,
     "offBroadwaySignals": 750,
@@ -9782,6 +9782,24 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2023-03-30",
+      "url": "https://chicago.suntimes.com/2023/3/30/23663420/book-of-mormon-review-chicago-musical-hasnt-lost-any-of-its-irreverent-charm-or-biting-satire",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "city-pulse--by-karen-rich.json",
       "score": 90,
       "publishDate": "2025-06-20",
@@ -10013,6 +10031,24 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "rachelweinbergreviews--rachelrweinberg.json",
+      "publishDate": "2023-03-30",
+      "url": "https://rachelweinbergreviews.com/2023/03/30/review-the-book-of-mormon-national-tour-presented-by-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "revue--josh.json",
       "score": 89,
       "publishDate": "2025-11-05",
@@ -10059,6 +10095,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "the-oakland-press--gary-graff.json",
+      "publishDate": "2023-03-15",
+      "url": "https://www.theoaklandpress.com/2023/03/15/book-of-mormon-brings-wickedly-funny-religious-satire-back-to-the-fisher-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
         }
       ]
     },
@@ -35987,6 +36036,45 @@
     },
     {
       "showId": "jagged-little-pill-tour-2022",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2023-04-13",
+      "url": "https://chicago.suntimes.com/2023/4/13/23682343/jagged-little-pill-stage-musical-review-chicago-alanis-morissette",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "chicagoonstage--karen-topham.json",
+      "publishDate": "2023-04-13",
+      "url": "https://www.chicagoonstage.com/jagged-little-pill/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-04-14",
+      "url": "https://www.chicagotribune.com/2023/04/14/review-a-blistering-lead-performance-in-jagged-little-pill-at-nederlander-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
       "file": "chrisgrum--christopher-grum.json",
       "score": 78,
       "publishDate": "2023-09-08",
@@ -36019,6 +36107,19 @@
       "score": 79,
       "publishDate": "2023-08-09",
       "url": "https://www.startribune.com/review-jagged-little-pill-broadway-musical-minneapolis-orpheum-diablo-cody-alanis-morissette/600295934",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "morris-theatre-dc--drew-morris.json",
+      "publishDate": "2023-03-16",
+      "url": "https://morristheatredc.com/reviews/review-jagged-little-pill-national-tour",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48380,6 +48481,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "splash-magazines--elaine-mura.json",
+      "score": 90,
       "publishDate": "2026-11-13",
       "url": "https://splashmags.com/2026/11/oh-mary-a-totally-unauthorized-biography/",
       "findings": [
@@ -84656,7 +84758,7 @@
     {
       "showId": "west-side-story-2020",
       "file": "dctheatrescene--jonathan-mandell.json",
-      "score": null,
+      "score": 58,
       "publishDate": "2020-02-27",
       "url": "https://dctheatrescene.com/2020/02/27/west-side-story-on-broadway-ivo-van-hoves-thrilling-homoerotic-incoherent-broadway-music-video/",
       "findings": [
@@ -84987,7 +85089,7 @@
     {
       "showId": "west-side-story-2020",
       "file": "people--dave-quinn.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2020-02-20",
       "url": "https://people.com/theater/west-side-story-broadway-review/",
       "findings": [
@@ -119689,6 +119791,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
+      "score": 53,
       "publishDate": "2025-01-15",
       "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332?srsltid=AfmBOooFYMS55-_sjSgOF1w5BRmrcWtQCQjXYzkBVdqyq__jNXXIJNa6",
       "findings": [
@@ -119702,7 +119805,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "i-paper--unknown.json",
-      "score": 53,
+      "score": 54,
       "publishDate": null,
       "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332",
       "findings": [
@@ -143962,7 +144065,7 @@
     {
       "showId": "woman-in-mind-west-end-2025",
       "file": "sierz-co-uk--unknown.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2026-01-07",
       "url": "https://sierz.co.uk/reviews/woman-in-mind-duke-of-yorks-theatre/",
       "findings": [
