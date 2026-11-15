@@ -152,6 +152,26 @@ jobs:
           LINEAR_RECLAIM_KILL_SWITCH: ${{ vars.LINEAR_RECLAIM_KILL_SWITCH }}
         run: node scripts/linear-reclaim-abandoned.js
 
+      # BRO-7554: silent headless dispatches and failed Land runs a card never mentions. Advisory first (CLAUDE.md 19):
+      # notes only, no --requeue until the hourly dry output has been read. A failure here never fails the job.
+      - name: Flag silent headless dispatches and unseen failed Land runs
+        id: silent-dispatch
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          SILENT_DISPATCH_SWEEP_DISABLE: ${{ vars.SILENT_DISPATCH_SWEEP_DISABLE }}
+        run: node scripts/linear-reclaim-abandoned.js --silent-dispatch-sweep
+
+      - name: Notify on silent-dispatch sweep failure
+        if: steps.silent-dispatch.outcome == 'failure'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Silent-dispatch sweep failed'
+          description: 'hourly pass could not flag silent headless dispatches or unseen failed Land runs (BRO-7554)'
+          severity: 'warning'
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

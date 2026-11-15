@@ -200,6 +200,18 @@ function hasMacOnlyLabel(issue) {
  *   calling this)
  * @returns {{mode: 'tab'|'headless', reason: string}}
  */
+/**
+ * BRO-7554: refusal text when linear-next.js runs inside a cloud container, else null. Cloud-capable work goes to a
+ * cloud worker instead (docs/cloud-worker-session-runbook.md); LINEAR_NEXT_ALLOW_CLOUD=1 overrides.
+ */
+function cloudDispatchRefusal(env = process.env, identifier = 'BRO-N') {
+  if (String(env.CLAUDE_CODE_REMOTE || '') !== 'true') return null;
+  if (String(env.LINEAR_NEXT_ALLOW_CLOUD || '') === '1') return null;
+  return `[linear-next] refusing to dispatch ${identifier} from a cloud container: a detached job here dies with the container and nothing watches it (BRO-7554). `
+    + `Cloud route: file or claim the card with linear-brain.js --child and start a worker with create_session (docs/cloud-worker-session-runbook.md), `
+    + `or leave a START-NOW: line in a Todo card for the board worker. A card that truly needs the Mac: filed --mac-only. Override: LINEAR_NEXT_ALLOW_CLOUD=1.`;
+}
+
 function decideRouting(issue, { headless = false, macHeadless = false } = {}) {
   // BRO-6080: the Mac's parked drain passes --mac-headless for the mac-only
   // cards it takes. Headless still runs on this Mac, and it is the lane the
@@ -1318,6 +1330,7 @@ module.exports = {
   issueLabelNames,
   hasMacOnlyLabel,
   decideRouting,
+  cloudDispatchRefusal,
   decideDetach,
   describeHeadlessOutcome,
   findChildLaunchRow,
