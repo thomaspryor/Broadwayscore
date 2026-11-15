@@ -740,7 +740,7 @@ async function main() {
   console.log(`Too short: ${stats.tooShort}`);
   console.log(`Too long: ${stats.tooLong}`);
   console.log(`No quote found: ${stats.notFound}`);
-  console.log(`Errors: ${stats.errors}`);
+  console.log(`Errors: ${stats.errors}${stats.emptyReplies ? ` (incl. ${stats.emptyReplies} empty model replies, stamped and not retried)` : ''}`);
   console.log(`Written: ${stats.written}`);
   console.log(`Rejections stamped (skipped next run): ${stats.stamped}`);
   if (stats.stampQuarantined) console.log(`::warning::Rejection stamps quarantined by safeWriteReview (will be re-asked next run): ${stats.stampQuarantined}`);
