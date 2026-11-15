@@ -788,5 +788,36 @@
       }
     ],
     "queuedAt": "2026-11-15T21:28:38.766Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7549-push-rescue-auto-settle",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7549-push-rescue-auto-settle",
+    "description": "land.yml did not land land/bro-7549-push-rescue-auto-settle: the scripts-lib-tests gate went red at cc72d9b665. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43762173686",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7549-push-rescue-auto-settle"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "cc72d9b66521fae17e04deb41114915c0ff973ea"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43762173686"
+      }
+    ],
+    "queuedAt": "2026-11-15T21:31:59.468Z"
   }
 ]
