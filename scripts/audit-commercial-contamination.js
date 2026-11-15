@@ -219,7 +219,7 @@ async function main() {
     const { routeAuditDecisions } = require('./lib/audit-alert');
     let recordsCount = 0;
     try { recordsCount = Object.keys(JSON.parse(fs.readFileSync(COMMERCIAL_FILE, 'utf-8')).shows || {}).length; } catch { recordsCount = 0; }
-    const decisions = decideCommercialContaminationAlert({ issues, recordsCount, showsLoaded: loadShows() !== null });
+    const decisions = decideCommercialContaminationAlert({ issues, recordsCount, showsLoaded: (loadShows() || []).length > 0 });
     if (!decisions.length) console.log('[audit-commercial-contamination] --alert skipped: shows.json unreadable or commercial.json empty');
     await routeAuditDecisions(decisions, 'audit-commercial-contamination');
   }
