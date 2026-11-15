@@ -123,6 +123,15 @@ Paste the summary output. If `scoring-delta.js` shows bucket shift >5% or mean d
 
 Report: does the happy path work? Yes/no with evidence.
 
+### Phase 2.5: A cost change is measured on every flow it serves (BRO-7552)
+
+If the change moves spend (fetch, SERP, scraper, vendor order, caching, a cap), "it compiles and the unit tests pass" is not evidence. On 2026-11-15 a free-first search saved nothing (its test asserted that every failure falls back to one paid call, so the test encoded the bug) and a SERP change doubled the cost of a Broadway press-night pass that nobody measured, because the session only measured the off-Broadway flow it was optimising.
+
+1. List every flow the code path serves (press-night Broadway and West End, press-night off-market, gather-reviews, audits, backfills), not only the target one.
+2. After it lands, measure each with the ledger: `node scripts/spend-effect-check.js --since=<ISO time it went live> --hosts=<hosts>` (`--hosts=serp` for search). Read every row. `WORSE` or `NO CHANGE` on any flow is a defect to fix now, not a footnote. Wait for traffic: in the first hour a flow with no calls shows `idle`; replay it with the real script on a real show if it matters (press night: replay a pass on a Broadway show before and after).
+3. A test that asserts the fallback-to-paid behaviour is not evidence of savings. A line like `EFFECT: ... numbers pending` is not a result: say "live, not yet proven until <date>" and do not write "verified".
+4. `RECHECK-AFTER` is only for an effect whose first observation is more than 24 hours away (the tool printed `idle` or `pending`). The ledger shows spend within the hour; do not defer what the ledger can already show.
+
 ### Phase 3: Check for collateral damage
 
 This is the part that gets skipped. For each file in the "blast radius":
