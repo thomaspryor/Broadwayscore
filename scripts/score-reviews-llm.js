@@ -23,6 +23,7 @@ const Anthropic = require('@anthropic-ai/sdk').default;
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isAlreadyLlmScored } = require('./lib/review-guards');
 const { SCORING_SONNET } = require('./lib/models');
+const { claudeSamplingParams } = require('./lib/llm-batch');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -70,6 +71,7 @@ The review:
 async function scoreReview(client, reviewText) {
   const response = await client.messages.create({
     model: SCORING_SONNET,
+    ...claudeSamplingParams(SCORING_SONNET, null), // 5.5: no temperature, thinking off (BRO-7537)
     max_tokens: 100,
     messages: [
       {

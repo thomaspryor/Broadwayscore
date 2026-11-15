@@ -15,6 +15,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const Anthropic = require('@anthropic-ai/sdk').default;
 const { SCORING_SONNET } = require('./lib/models');
+const { claudeSamplingParams } = require('./lib/llm-batch');
 const { buildSingleModelWarning, buildEnsembleDelegationArgs } = require('./lib/single-model-warning');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -144,6 +145,7 @@ async function scoreReview(client, reviewText, showId, outlet) {
 
   const response = await client.messages.create({
     model: SCORING_SONNET,
+    ...claudeSamplingParams(SCORING_SONNET, null), // 5.5: no temperature, thinking off (BRO-7537)
     max_tokens: 500,
     messages: [
       {

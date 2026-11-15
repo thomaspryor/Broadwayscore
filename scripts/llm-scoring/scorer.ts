@@ -200,6 +200,7 @@ export class ReviewScorer {
         const response = await callWithTimeout(() => this.client.messages.create({
           model: this.options.model,
           max_tokens: 1000,
+          ...require('../lib/llm-batch.js').claudeSamplingParams(this.options.model, null),
           system: SYSTEM_PROMPT,
           messages: [
             { role: 'user', content: prompt }

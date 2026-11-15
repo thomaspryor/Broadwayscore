@@ -55,3 +55,9 @@ test('BRO-7537: batch request for the scoring pin never carries temperature on 5
   }
   assert.equal(mk('claude-sonnet-4-6').temperature, 0.3);
 });
+
+test('BRO-7537: legacy callers (temperature null) keep 4.6 requests unchanged and get thinking off on 5.5', () => {
+  const { claudeSamplingParams } = require('../../scripts/lib/llm-batch.js');
+  assert.deepEqual(claudeSamplingParams('claude-sonnet-4-6', null), {});
+  assert.deepEqual(claudeSamplingParams('claude-sonnet-5-5', null), { thinking: { type: 'between_tools' } });
+});

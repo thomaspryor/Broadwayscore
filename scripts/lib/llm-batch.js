@@ -50,7 +50,7 @@ function parseCustomIdIndex(customId) {
 // claude-sonnet-5-5 rejects temperature and disabled thinking.
 function claudeSamplingParams(model, temperature = 0.3) {
   if (/^claude-sonnet-5/.test(String(model))) return { thinking: { type: 'between_tools' } };
-  return { temperature };
+  return temperature === null ? {} : { temperature }; // null = legacy caller that never set temperature
 }
 
 function buildAnthropicBatchRequest({ customId, model, systemPrompt, userPrompt, maxTokens = 500, temperature = 0.3 }) {
