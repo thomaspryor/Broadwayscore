@@ -230,6 +230,36 @@ function onlyMainConflicts(r) {
   return (r.conflicts || []).length > 0 && r.conflicts.every((c) => c.why === MAIN_CONFLICT_WHY) && !(r.dropped || []).length;
 }
 
+/**
+ * BRO-7541: metadata-only summary of one review file, so a person can tell which side of a
+ * conflict is the fuller one without anyone reading review text. Never returns text content.
+ */
+function describeReviewFile(raw) {
+  const text = String(raw || '');
+  if (!text) return 'absent';
+  let j;
+  try { j = JSON.parse(text); } catch { return `bytes=${Buffer.byteLength(text)} unparseable-json`; }
+  if (!j || typeof j !== 'object') return `bytes=${Buffer.byteLength(text)} non-object`;
+  const has = (k) => (j[k] !== undefined && j[k] !== null && j[k] !== '' ? 'yes' : 'no');
+  const flags = ['wrongShow', 'wrongProduction', 'isRoundupArticle'].filter((k) => j[k]);
+  let newest = null;
+  for (const [k, v] of Object.entries(j)) {
+    if (typeof v !== 'string' || !/(At|Date|Time|date|time)$/.test(k)) continue;
+    const t = Date.parse(v);
+    if (!Number.isNaN(t) && (newest === null || t > newest.t)) newest = { k, t, v };
+  }
+  return [
+    `bytes=${Buffer.byteLength(text)}`,
+    `fullTextLen=${typeof j.fullText === 'string' ? j.fullText.length : 0}`,
+    `contentTier=${j.contentTier || 'none'}`,
+    `assignedScore=${has('assignedScore')}`,
+    `llmScore=${has('llmScore')}`,
+    `criticName=${j.criticName ? 'present' : 'null'}`,
+    `flags=${flags.length ? flags.join('+') : 'none'}`,
+    `newest=${newest ? `${newest.k}:${newest.v}` : 'none'}`,
+  ].join(' ');
+}
+
 function git(args, opts = {}) {
   const r = spawnSync('git', args, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, ...opts });
   if (r.error) throw r.error;
@@ -324,6 +354,9 @@ function replayOne({ sha, ref, info }, claimed, mainWins = false) {
   }
   console.log(`push-rescue: ${ref}: restoring ${plan.restore.length}, skipping ${plan.skipped.length}, conflicts ${plan.conflicts.length}${modified.length ? `, ${modified.length} modified/deleted path(s) not replayed` : ''}`);
   for (const x of [...plan.skipped, ...plan.conflicts]) console.log(`  ${plan.conflicts.includes(x) ? 'CONFLICT' : 'skip'} ${x.path}: ${x.why}${x.rescueBlob ? ` (rescue blob ${x.rescueBlob}, main blob ${x.mainBlob}; branch tip ${sha})` : ''}`);
+  for (const x of plan.conflicts) {
+    console.log(`  COMPARE ${x.path}: main[${describeReviewFile(show('origin/main', x.path))}] rescued[${describeReviewFile(show(sha, x.path))}]`);
+  }
   return { ref, tip: sha, restored: plan.restore, restoredBlobs: Object.fromEntries(plan.restore.map((p) => [p, rescueBlob.get(p)])), skipped: plan.skipped, conflicts: plan.conflicts, keepForHuman: plan.keepForHuman, modified: modified.slice(0, 50) };
 }
 
@@ -427,7 +460,7 @@ function cliPrune(args) {
   }
 }
 
-module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY, retryFetch, isTransientGitError };
+module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY, describeReviewFile, retryFetch, isTransientGitError };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);
