@@ -351,7 +351,41 @@ async function fetchRecentlyCompletedLinearCandidates(client, opts = {}) {
   return { ...res, skipped: false };
 }
 
+// BRO-7559: re-fetch named cards (a Done card whose last recheck had no
+// verdict has left the completion window, and the completed listing is capped
+// at COMPLETED_MAX_PAGES). One aliased query per chunk; issue(id:) also returns
+// archived issues. Same never-throws {cards, truncated, error} contract.
+const BY_ID_CHUNK = 20;
+const IDENTIFIER_RE = /^[A-Z][A-Z0-9]*-\d+$/;
+
+function buildIssuesByIdentifierQuery(ids) {
+  const fields = 'identifier title description updatedAt completedAt state { name type } comments(first: 50, orderBy: createdAt) { nodes { body createdAt } }';
+  return `query {\n${ids.map((id, i) => `  i${i}: issue(id: "${id}") { ${fields} }`).join('\n')}\n}`;
+}
+
+async function fetchLinearIssuesByIdentifier(client, ids, opts = {}) {
+  const clean = [...new Set((ids || []).map((x) => String(x).trim().toUpperCase()))].filter((x) => IDENTIFIER_RE.test(x));
+  const lc = client || require('./linear-client.js');
+  const cards = [];
+  for (let i = 0; i < clean.length; i += BY_ID_CHUNK) {
+    const chunk = clean.slice(i, i + BY_ID_CHUNK);
+    let data;
+    try {
+      data = await lc.graphql(buildIssuesByIdentifierQuery(chunk), {}, { timeoutMs: ATTEMPT_TIMEOUT_MS, maxAttempts: MAX_ATTEMPTS });
+    } catch (err) {
+      return { cards, truncated: true, error: String((err && err.message) || err).slice(0, 300) };
+    }
+    for (const node of Object.values(data || {})) {
+      const card = mapIssueToCard(node);
+      if (card) cards.push(card);
+    }
+  }
+  return { cards, truncated: false, error: null };
+}
+
 module.exports = {
+  buildIssuesByIdentifierQuery,
+  fetchLinearIssuesByIdentifier,
   EXCLUDED_STATE_TYPES,
   STAMP_KEYWORD,
   ATTEMPT_TIMEOUT_MS,

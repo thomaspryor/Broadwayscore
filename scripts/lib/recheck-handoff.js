@@ -50,8 +50,12 @@ function decideHandoff({ card, target, result, closeVerdict = null, closeRefused
   // private review texts). It will never pass here, so the card would sit
   // forever; a worker rewrites VERIFY into a check this machine can run.
   if (status === 'unverifiable' && result.envCause) return { handoff: true, reason: 'test-cannot-run-here', why: `The RECHECK-AFTER date has passed but its test cannot run on the recheck machine (${plainEnvCause(result.envCause)}): \`${target.verifyCmd}\`.` };
+  // BRO-7559: the command names a test that is not on main, or the whole unit
+  // suite. Neither can ever say whether THIS claim held; a worker repoints it.
+  if (status === 'unverifiable' && (result.cause === 'missing-path' || result.cause === 'whole-suite' || result.cause === 'moved-fail')) return { handoff: true, reason: 'stale-check', why: `The RECHECK-AFTER date has passed but its check is stale (${String(result.detail || result.cause).slice(0, 200)}): \`${target.verifyCmd}\`.` };
   if (status === 'pass' && closeVerdict && !closeVerdict.close) {
     if (/not a real test/.test(closeVerdict.reason)) return { handoff: true, reason: 'weak-test', why: `Its test passed but is not a real test (file-exists or generic): \`${target.verifyCmd}\`.` };
+    if (/^stale check/.test(closeVerdict.reason)) return { handoff: true, reason: 'stale-check', why: `Its test passed only after re-pointing a moved path (${String(result.detail || '').slice(0, 200)}); update the card's VERIFY to the new path: \`${target.verifyCmd}\`.` };
     if (/comments were added after/.test(closeVerdict.reason)) return { handoff: true, reason: 'human-comment-after-stamp', why: `Its test passed (\`${target.verifyCmd}\`) but someone commented after the stamp, so the nightly run will not close it on its own.` };
   }
   return no('nothing to hand off');
