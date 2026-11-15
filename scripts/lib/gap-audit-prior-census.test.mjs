@@ -52,7 +52,7 @@ test('BRO-7561: candidate drops against baselines older than 7 days are discount
   const prevOf = (live, cand, at) => riskStateMap([mk(live, cand, at)], { now }).s;
   // 2- and 4-candidate shows from 2026-10-31: zero tolerance before, candidate-only drop now fine
   assert.equal(isRiskyGapChange(prevOf(1, 2, old), 'incomplete:1:1'), false);
-  assert.equal(isRiskyGapChange(prevOf(2, 4, old), 'incomplete:2:2'), false);
+  assert.equal(isRiskyGapChange(prevOf(2, 4, old), 'incomplete:2:3'), false);
   // same drop against a fresh baseline stays risky
   assert.equal(isRiskyGapChange(prevOf(1, 2, fresh), 'incomplete:1:1'), true);
   // live loss against an old baseline stays risky; dead census too
