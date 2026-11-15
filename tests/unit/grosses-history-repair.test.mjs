@@ -15,6 +15,8 @@ const {
   deriveSeatsOffered,
   derivePreviewPerformances,
   repairGrossesHistory,
+  findPreviewPerfWeeks,
+  patchPreviewPerformances,
 } = require('../../scripts/lib/grosses-history-repair.js');
 
 test('weekKeyFor snaps a date to its week-ending Sunday', () => {
@@ -113,4 +115,48 @@ test('repairGrossesHistory leaves an unprovable preview week alone', () => {
   assert.equal(stats.performancesFilled, 0);
   assert.equal(history.weeks['2023-03-12'].sweeney.performances, 0);
   assert.equal(history.weeks['2023-03-12'].sweeney.seatsOffered, undefined);
+});
+
+// BRO-4987: the re-fetch that fills the preview weeks derivePreviewPerformances cannot prove.
+test('findPreviewPerfWeeks lists Sunday weeks holding a gross with 0 performances', () => {
+  const history = { weeks: {
+    '2024-08-11': { 'a-2024': { gross: 100, performances: 0 }, 'b-2024': { gross: 50, performances: 8 } },
+    '2024-08-18': { 'a-2024': { gross: 100, performances: 8 } },
+    '2024-08-04': { 'c-2024': { gross: 0, performances: 0 } },
+    '2024-08-05': { 'a-2024': { gross: 100, performances: 0 } }, // Monday key: not fetched
+  } };
+  assert.deepEqual(findPreviewPerfWeeks(history), ['2024-08-11']);
+});
+
+test('patchPreviewPerformances sets only performances (and a missing seatsOffered) when the gross agrees', () => {
+  // Once Upon a Mattress 2024-08-11 is 0 + 8 on Playbill.
+  const week = {
+    'mattress-2024': { gross: 1234567, capacity: 90, atp: 100, attendance: 8000, performances: 0, seatsOffered: null },
+    'wrong-gross-2024': { gross: 500, performances: 0 },
+    'regular-2024': { gross: 900, performances: 8 },
+  };
+  const snapshot = {
+    'mattress-2024': { gross: 1234567, capacity: 91, atp: 101, attendance: 8001, performances: 8, seatsOffered: 8800 },
+    'wrong-gross-2024': { gross: 99999, performances: 8, seatsOffered: 1 },
+    'regular-2024': { gross: 900, performances: 7 },
+  };
+  assert.deepEqual(patchPreviewPerformances(week, snapshot), ['mattress-2024']);
+  assert.deepEqual(week['mattress-2024'], { gross: 1234567, capacity: 90, atp: 100, attendance: 8000, performances: 8, seatsOffered: 8800 });
+  assert.equal(week['wrong-gross-2024'].performances, 0);
+  assert.equal(week['regular-2024'].performances, 8);
+});
+
+test('patchPreviewPerformances keeps a stored seatsOffered and refuses an implausible count', () => {
+  const week = { 'a-2024': { gross: 10, performances: 0, seatsOffered: 700 }, 'b-2024': { gross: 10, performances: 0 } };
+  const snapshot = { 'a-2024': { gross: 10, performances: 7, seatsOffered: 999 }, 'b-2024': { gross: 10, performances: 40 } };
+  assert.deepEqual(patchPreviewPerformances(week, snapshot), ['a-2024']);
+  assert.equal(week['a-2024'].seatsOffered, 700);
+  assert.equal(week['b-2024'].performances, 0);
+});
+
+test('the backfill script wires --refill-preview-perfs to the repair helpers', async () => {
+  const src = (await import('node:fs')).readFileSync(new URL('../../scripts/backfill-grosses-history.ts', import.meta.url), 'utf8');
+  assert.match(src, /--refill-preview-perfs/);
+  assert.match(src, /findPreviewPerfWeeks\(history\)/);
+  assert.match(src, /patchPreviewPerformances\(history\.weeks\[weekDate\], snapshot\)/);
 });

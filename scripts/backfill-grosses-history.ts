@@ -25,7 +25,13 @@
  * rows that miss it are replaced when every page row matched a show
  * (BRO-5038).
  *
- * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--refill-gaps] [--recheck-totals] [--dry-run]
+ * --refill-preview-perfs re-fetches the stored weeks that still hold a row with
+ * a gross and 0 performances (the old backfill dropped Previews) and patches
+ * only performances, plus seatsOffered where missing, from the matching slug
+ * whose gross agrees. --max-weeks N caps one run (fixed weeks drop out of the
+ * next run's list), so a 675-week repair fits several CI runs (BRO-4987).
+ *
+ * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--refill-gaps] [--recheck-totals] [--refill-preview-perfs [--max-weeks 150]] [--dry-run]
  */
 
 import * as fs from 'fs';
@@ -33,7 +39,7 @@ import * as path from 'path';
 
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
-const { repairGrossesHistory } = require('./lib/grosses-history-repair');
+const { repairGrossesHistory, findPreviewPerfWeeks, patchPreviewPerformances } = require('./lib/grosses-history-repair');
 const { recordPublishedTotal, reconcilePublishedTotal, checkWeekTotals, sundayOf } = require('./lib/grosses-integrity');
 const { historicalGrossesProduction } = require('./lib/grosses-run-window');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
@@ -182,6 +188,8 @@ async function backfillHistory(): Promise<void> {
   const dryRun = args.includes('--dry-run');
   const refillGaps = args.includes('--refill-gaps');
   const recheckTotals = args.includes('--recheck-totals');
+  const refillPreviewPerfs = args.includes('--refill-preview-perfs');
+  let maxWeeks = Infinity;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--weeks' && args[i + 1]) {
@@ -189,6 +197,9 @@ async function backfillHistory(): Promise<void> {
       i++;
     } else if (args[i] === '--start-from' && args[i + 1]) {
       startFrom = args[i + 1];
+      i++;
+    } else if (args[i] === '--max-weeks' && args[i + 1]) {
+      maxWeeks = parseInt(args[i + 1], 10);
       i++;
     }
   }
@@ -199,7 +210,10 @@ async function backfillHistory(): Promise<void> {
   let weeksToDo: string[];
   // Refill mode: the shows each stored week is missing, by week key.
   const holeSlugs = new Map<string, string[]>();
-  if (recheckTotals) {
+  if (refillPreviewPerfs) {
+    weeksToDo = (findPreviewPerfWeeks(history) as string[]).slice(0, maxWeeks);
+    console.log(`Refetching ${weeksToDo.length} stored weeks that hold a gross with 0 performances...${dryRun ? ' (DRY RUN)' : ''}`);
+  } else if (recheckTotals) {
     // Gross findings only: a week merely short a show is --refill-gaps' job.
     // Fetched by Sunday; reconcile finds a BWW-era Monday key itself.
     const findings: Array<{ rule: string; week: string; measure?: string }> = checkWeekTotals(history);
@@ -244,7 +258,13 @@ async function backfillHistory(): Promise<void> {
       if (attempt > 1) console.log(`  Retry ${attempt}/${MAX_RETRIES} for week ${weekDate}...`);
       try {
         const { snapshot, matched, rows, weekTotalGross, tableGross } = await scrapeWeek(weekDate);
-        if (recheckTotals) {
+        if (refillPreviewPerfs) {
+          const patched: string[] = patchPreviewPerformances(history.weeks[weekDate], snapshot);
+          console.log(`  ✓ ${weekDate}: patched ${patched.length} rows${patched.length ? ` (${patched.join(', ')})` : ''}`);
+          successCount++;
+          succeeded = true;
+          if (successCount % 3 === 0) save();
+        } else if (recheckTotals) {
           const { action, before, after, dropped } = reconcilePublishedTotal(history, weekDate, {
             snapshot, rowCount: rows, printedGross: weekTotalGross, tableGross, source: 'playbill',
           });

@@ -297,6 +297,46 @@ function repairGrossesHistory(history, { shows = null, nowMs = Date.now() } = {}
   return stats;
 }
 
+/**
+ * Weeks that still hold a row with a gross but 0 performances (a preview week
+ * the old backfill stored without its Previews count, BRO-4987). Sorted.
+ * Weeks are fetched by their stored Sunday key.
+ */
+function findPreviewPerfWeeks(history) {
+  const out = [];
+  for (const [week, rows] of Object.entries((history && history.weeks) || {})) {
+    if (!isSundayKey(week)) continue;
+    if (Object.values(rows || {}).some(isPreviewZeroRow)) out.push(week);
+  }
+  return out.sort();
+}
+
+function isPreviewZeroRow(row) {
+  return !!row && row.gross > 0 && row.performances === 0;
+}
+
+/**
+ * Patch ONLY performances (Perfs + Previews as Playbill publishes it) and a
+ * missing seatsOffered on the stored perf-0 rows of one week, from a fresh
+ * Playbill snapshot of that week. A row is touched only when the snapshot has
+ * the same slug with performances > 0 and a gross within $1 of the stored one
+ * (the same production and week); any other field stays as stored.
+ * @returns {string[]} the slugs patched
+ */
+function patchPreviewPerformances(weekRows, snapshot) {
+  const patched = [];
+  for (const [slug, row] of Object.entries(weekRows || {})) {
+    if (!isPreviewZeroRow(row)) continue;
+    const fresh = snapshot && snapshot[slug];
+    if (!fresh || !(fresh.performances > 0) || !(fresh.performances <= MAX_WEEKLY_PERFORMANCES)) continue;
+    if (!Number.isFinite(fresh.gross) || Math.abs(fresh.gross - row.gross) > 1) continue;
+    row.performances = fresh.performances;
+    if (row.seatsOffered == null && fresh.seatsOffered != null) row.seatsOffered = fresh.seatsOffered;
+    patched.push(slug);
+  }
+  return patched;
+}
+
 module.exports = {
   isSundayKey,
   weekKeyFor,
@@ -306,4 +346,6 @@ module.exports = {
   deriveSeatsOffered,
   derivePreviewPerformances,
   repairGrossesHistory,
+  findPreviewPerfWeeks,
+  patchPreviewPerformances,
 };

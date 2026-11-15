@@ -23,6 +23,16 @@ on:
         required: false
         default: false
         type: boolean
+      refill_preview_perfs:
+        description: 'Refetch weeks storing a gross with 0 performances and patch performances/seatsOffered (BRO-4987; ignores weeks/start_from; see max_weeks)'
+        required: false
+        default: false
+        type: boolean
+      max_weeks:
+        description: 'refill_preview_perfs only: weeks per run (about 5 s each; fixed weeks drop out of the next run)'
+        required: false
+        default: '200'
+        type: string
 
 # BRO-934: manual grosses-history writer; shares the group with the other grosses writers.
 concurrency:
@@ -74,10 +84,14 @@ jobs:
           if [ "${{ inputs.recheck_totals }}" = "true" ]; then
             ARGS="--recheck-totals"
           fi
+          if [ "${{ inputs.refill_preview_perfs }}" = "true" ]; then
+            ARGS="--refill-preview-perfs --max-weeks ${INPUT_MAX_WEEKS:-200}"
+          fi
           npx tsx scripts/backfill-grosses-history.ts $ARGS
         env:
           NODE_ENV: production
           INPUT_WEEKS: ${{ github.event.inputs.weeks || '55' }}
+          INPUT_MAX_WEEKS: ${{ github.event.inputs.max_weeks || '200' }}
           INPUT_START_FROM: ${{ github.event.inputs.start_from }}
 
       - name: Check for changes
