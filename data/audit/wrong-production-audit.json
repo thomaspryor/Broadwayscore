@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T07:34:05.753Z",
+  "timestamp": "2026-11-15T07:56:02.918Z",
   "stats": {
     "totalReviews": 82142,
     "alreadyFlagged": 22416,
     "dateGuardCatches": 221,
     "directorMismatch": 3709,
     "tvFilmSignals": 2316,
-    "londonSignals": 3756,
+    "londonSignals": 3757,
     "offBroadwaySignals": 751,
     "yearMismatch": 376,
-    "noPublishDate": 8437
+    "noPublishDate": 8439
   },
   "findings": [
     {
@@ -98561,6 +98561,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dear-liar-off-west-end-2026",
+      "file": "london-box-office--miriam-gibson.json",
+      "score": 58,
+      "publishDate": "2026-02-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/dear-liar-jermyn-street-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
