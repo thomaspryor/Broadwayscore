@@ -215,7 +215,8 @@ test('refreshRewatchTargets: uses the card\'s current VERIFY; unreadable, open a
 });
 
 test('real ledger replay: the shadow-era fails come back as rewatch targets', () => {
-  const entries = fs.readFileSync(path.join(here, '..', '..', 'data', 'audit', 'autonomous-recheck-ledger.jsonl'), 'utf8').trim().split('\n').map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+  // Frozen snapshot (latest failing row per card, 2026-11-15): the live CI ledger moves every night.
+  const entries = fs.readFileSync(path.join(here, '..', '..', 'tests', 'fixtures', 'recheck-ledger-latest-fails-2026-11-15.jsonl'), 'utf8').trim().split('\n').map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
   const { targets } = R.selectRewatchTargets({ ledgerEntries: entries, now: Date.parse('2026-11-16T08:00:00Z'), since: '2026-10-15', limit: 500, coverIndex: new Map() });
   assert.ok(targets.length >= 20, `expected the shadow-era backlog, got ${targets.length}`);
   assert.ok(targets.every((t) => t.verifyCmd && t.rewatch));
@@ -229,4 +230,16 @@ test('selectRewatchTargets: a newer pass outside the look-back hides an older fa
   assert.equal(R.selectRewatchTargets({ ledgerEntries: rows, now: NOW, since: '2026-10-15' }).targets.length, 0);
   const bad = [fail('not-a-date', 'BRO-2')];
   assert.equal(R.selectRewatchTargets({ ledgerEntries: bad, now: NOW }).targets.length, 0);
+});
+
+test('buildRouteBatch: a card already routed MAX_REROUTES times is not routed again, and the covering card is named', () => {
+  const NOW = Date.parse('2026-11-15T12:00:00Z');
+  const row = (id) => ({ event: 'recheck', cardId: id, name: 'n', ts: '2026-11-14T00:00:00Z', verifyCmd: 'node x.js', exit: 1, ok: false, status: 'fail', detail: 'boom' });
+  const route = (id, d) => ({ event: 'recheck-route', mode: 'live', filed: true, cardIds: [id], ts: `2026-10-${d}T00:00:00Z`, identifier: `BRO-9${d}` });
+  const led = [route('BRO-1', '01'), route('BRO-1', '05'), route('BRO-1', '09')];
+  const cover = new Map([['BRO-2', new Set(['BRO-777'])]]);
+  const out = R.buildRouteBatch({ rows: [row('BRO-1'), row('BRO-2'), row('BRO-3')], ledgerEntries: led, now: NOW, coverIndex: cover });
+  assert.deepEqual(out.cards.map((c) => c.cardId), ['BRO-3']);
+  assert.equal(out.skipped.exhausted, 1);
+  assert.deepEqual(out.skipped.coveredBy, { 'BRO-2': 'BRO-777' });
 });
