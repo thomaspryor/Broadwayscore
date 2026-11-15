@@ -959,6 +959,37 @@
     "queuedAt": "2026-11-15T23:55:25.254Z"
   },
   {
+    "conditionKey": "land:land/bro-7569-fulltext-gaps",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7569-fulltext-gaps",
+    "description": "land.yml did not land land/bro-7569-fulltext-gaps: the unit-tests-node gate went red at 311a34e4c7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43777300458",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7569-fulltext-gaps"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "311a34e4c7fdf6cb3677578c8b5fc3cebab2a7db"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43777300458"
+      }
+    ],
+    "queuedAt": "2026-11-15T23:59:41.990Z"
+  },
+  {
     "conditionKey": "land:land/bro-2938-diag",
     "title": "Landing blocked: unit-tests-node red on land/bro-2938-diag",
     "description": "land.yml did not land land/bro-2938-diag: the unit-tests-node gate went red at 537fe0ed29. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43774918468",
