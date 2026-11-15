@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T05:25:36.367Z",
+  "timestamp": "2026-11-15T06:42:08.777Z",
   "stats": {
     "totalReviews": 82142,
-    "alreadyFlagged": 22405,
+    "alreadyFlagged": 22416,
     "dateGuardCatches": 221,
-    "directorMismatch": 3708,
-    "tvFilmSignals": 2315,
+    "directorMismatch": 3709,
+    "tvFilmSignals": 2316,
     "londonSignals": 3756,
     "offBroadwaySignals": 751,
     "yearMismatch": 376,
-    "noPublishDate": 8453
+    "noPublishDate": 8436
   },
   "findings": [
     {
@@ -54935,6 +54935,20 @@
     },
     {
       "showId": "prima-facie-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "score": null,
+      "publishDate": "2023-04-23",
+      "url": "https://www.chicagotribune.com/2023/04/23/review-prima-facie-with-jodie-comer-is-a-gripping-broadway-legal-thriller/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-2023",
       "file": "nydailynews--chris-jones.json",
       "score": 88,
       "publishDate": "April 23, 2023",
@@ -62823,6 +62837,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2008 (2x) more than 2017 (0x). 2008 matches production: sunday-in-the-park-with-george-2008"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
+      "file": "musical-theatre-review--ron-cohen.json",
+      "score": 97,
+      "publishDate": null,
+      "url": "http://musicaltheatrereview.com/sunday-in-the-park-with-george-hudson-theatre-new-york/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
         }
       ]
     },

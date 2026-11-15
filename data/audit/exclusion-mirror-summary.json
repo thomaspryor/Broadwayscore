@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-11-15T05:25:14.526Z",
+  "generatedAt": "2026-11-15T06:41:53.269Z",
   "totalScanned": 82415,
-  "totalExcluded": 30994,
+  "totalExcluded": 30991,
   "ruleCounts": {
-    "wrongProduction": 20187,
+    "wrongProduction": 20198,
     "duplicateOf": 2292,
     "rejectionReason": 1507,
     "wrongShow": 1356,
-    "noTextOrScoreSignal": 1082,
+    "noTextOrScoreSignal": 1065,
     "unverifiableWebSearchRow": 886,
-    "nonReview": 865,
+    "nonReview": 866,
     "wrongAttribution": 348,
     "isRoundupArticle": 314,
-    "cvWrongArticleHighConfidence": 270,
+    "cvWrongArticleHighConfidence": 271,
     "blockedReviewUrl": 256,
-    "knownSyndicationSecondary": 215,
+    "knownSyndicationSecondary": 216,
     "crossOutletDuplicate": 201,
     "bodylessAggregatorScoreUncorroborated": 172,
     "listingPageUrl": 166,
@@ -44,24 +44,27 @@
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 1,
-    "rejectionReason": 3
+    "wrongProduction": 11,
+    "noTextOrScoreSignal": -17,
+    "nonReview": 1,
+    "cvWrongArticleHighConfidence": 1,
+    "knownSyndicationSecondary": 1
   },
-  "previousGeneratedAt": "2026-11-15T03:40:54.163Z",
+  "previousGeneratedAt": "2026-11-15T05:25:14.526Z",
   "mirror": {
     "comparedShows": 4767,
     "comparedFiles": 81787,
     "agreeExcluded": 30960,
-    "agreeIncluded": 50333,
-    "mirrorOnly": 184,
+    "agreeIncluded": 50332,
+    "mirrorOnly": 185,
     "rebuildOnly": 310,
-    "disagreements": 494,
-    "disagreementRate": 0.006,
+    "disagreements": 495,
+    "disagreementRate": 0.0061,
     "mirrorOnlyByRule": {
       "cvWrongArticleHighConfidence": 144,
       "contentTierInvalid": 26,
       "noTextOrScoreSignal": 10,
-      "knownSyndicationSecondary": 2,
+      "knownSyndicationSecondary": 3,
       "previewPlaceholder": 1,
       "rejectionReason": 1
     },
@@ -87,5 +90,5 @@
     "notComparedShows": 62,
     "notComparedFiles": 628
   },
-  "previousDisagreementRate": 0.0061
+  "previousDisagreementRate": 0.006
 }
