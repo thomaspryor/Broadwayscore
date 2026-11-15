@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-15T17:21:45.104Z",
+  "timestamp": "2026-11-15T17:43:42.317Z",
   "stats": {
     "totalReviews": 82236,
-    "alreadyFlagged": 22424,
+    "alreadyFlagged": 22427,
     "dateGuardCatches": 220,
     "directorMismatch": 3708,
-    "tvFilmSignals": 2319,
+    "tvFilmSignals": 2317,
     "londonSignals": 3759,
     "offBroadwaySignals": 750,
     "yearMismatch": 375,
@@ -25506,20 +25506,6 @@
     },
     {
       "showId": "glengarry-glen-ross-2025",
-      "file": "latimes--robert-lloyd.json",
-      "score": null,
-      "publishDate": "2025-04-25",
-      "url": "https://www.latimes.com/entertainment-arts/tv/newsletter/2025-04-25/stranger-things-freaky-tales-good-night-and-good-luck-glengarry-glen-ross-snowy-owl",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2025",
       "file": "one-minute-critic--matthew-wexler.json",
       "score": 80,
       "publishDate": "2025-04-13",
@@ -30719,20 +30705,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (3x) more than 2006 (1x). 2026 matches production: heartbreak-house-regional-2026"
-        }
-      ]
-    },
-    {
-      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "file": "deadline--nellie-andreeva.json",
-      "score": null,
-      "publishDate": "2026-06-08",
-      "url": "https://deadline.com/2026/06/emmys-heated-rivalry-lord-of-the-flies-rivals-eligibility-1236942841/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -36626,7 +36598,7 @@
     {
       "showId": "john-proctor-is-the-villain-2025",
       "file": "latimes--charles-mcnulty.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2025-05-21",
       "url": "https://www.latimes.com/entertainment-arts/story/2025-05-21/kimberly-belflower-playwright-danya-taymor-director-john-proctor-is-the-villain-crucible",
       "findings": [
@@ -47483,6 +47455,7 @@
     {
       "showId": "north-by-northwest-old-regional-2026",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 77,
       "publishDate": "2026-07-10",
       "url": "https://www.sandiegouniontribune.com/2026/07/10/review-funny-and-dance-fueled-north-by-northwest-dazzles-in-its-american-premiere/",
       "findings": [
@@ -95550,6 +95523,7 @@
     {
       "showId": "caroline-or-change-west-end-2018",
       "file": "nytimes--ben-brantley.json",
+      "score": 94,
       "publishDate": "2019-02-25",
       "url": "https://www.nytimes.com/2019/02/25/theater/company-caroline-or-change-reviews-london.html?eafs_enabled=false",
       "findings": [
@@ -112507,7 +112481,7 @@
     {
       "showId": "latin-history-for-morons-2017",
       "file": "newsday--barbara-schuler.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2017-11-15",
       "url": "https://www.newsday.com/entertainment/theater/latin-history-for-morons-review-1.14991144",
       "findings": [
@@ -112521,7 +112495,7 @@
     {
       "showId": "latin-history-for-morons-2017",
       "file": "nytimes--jesse-green.json",
-      "score": null,
+      "score": 64,
       "publishDate": "2017-11-15",
       "url": "https://www.nytimes.com/2017/11/15/theater/latin-history-for-morons-review-john-leguizamo.html?mtrref=news.url.google.com&gwh=0F0377D0E1DF1596EDD1C33B00C5CFD0&gwt=pay",
       "findings": [
