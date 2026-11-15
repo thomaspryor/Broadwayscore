@@ -120,6 +120,28 @@ describe('claim rejection memory', () => {
     assert.ok(triage.isRejectedSource(archive, 's', 'https://a.com/1'));
     assert.ok(triage.isRejectedSource(archive, 's', 'https://b.com/2'));
   });
+
+  // BRO-7496: Indecent came back as designation "Recouped" with no recouped:true
+  // and the already-rejected American Theatre link only in sources[]; the
+  // rejection guard keyed on recoupedSource missed it and the row sat pending.
+  it('treats a designation-only "Recouped" citing only rejected sources as the rejected claim', () => {
+    const archive = { shows: { indecent: { archivedReason: triage.REJECTED, rejectedSources: ['https://americantheatre.org/2019/roth'] } } };
+    const row = { designation: 'Recouped', sources: [{ type: 'sec', url: 'https://sec.gov/x' }, { type: 'trade', url: 'https://americantheatre.org/2019/roth/' }] };
+    assert.ok(triage.designationOnlyClaim(row));
+    assert.equal(triage.rejectedClaimEvidence(archive, 'indecent', row), 'https://americantheatre.org/2019/roth');
+    const fresh = { ...row, sources: [...row.sources, { type: 'trade', url: 'https://nytimes.com/new' }] };
+    assert.equal(triage.rejectedClaimEvidence(archive, 'indecent', fresh), null, 'a new source still needs a person');
+    assert.ok(!triage.designationOnlyClaim({ designation: 'TBD', sources: row.sources }));
+    assert.ok(!triage.designationOnlyClaim({ designation: 'Recouped', recouped: true }));
+  });
+
+  it('rejecting a designation-only claim remembers its non-SEC source links', () => {
+    const archive = { shows: {} };
+    const entry = { designation: 'Easy Winner', sources: [{ type: 'sec', url: 'https://sec.gov/x' }, { type: 'trade', url: 'https://playbill.com/won' }] };
+    triage.recordRejection(archive, { slug: 'w', entry, detail: 'unsupported', now: 't' });
+    assert.ok(triage.isRejectedSource(archive, 'w', 'https://playbill.com/won'));
+    assert.ok(!triage.isRejectedSource(archive, 'w', 'https://sec.gov/x'), 'the capitalization filing is never rejected');
+  });
 });
 
 describe('Linear card commands', () => {

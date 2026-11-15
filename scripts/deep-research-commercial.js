@@ -35,7 +35,7 @@ const { createRunBudget } = require('./lib/run-budget');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
 const { filterUncoveredClosedShows, COMMERCIAL_RESEARCH_FLOOR, staleClosuresNeedingResearch } = require('./lib/commercial-queue');
 const { holdForBackfill, carryHumanReviewHold, withoutRecoupmentClaim } = require('./lib/commercial-apply-gate');
-const { rejectedClaimSource: rejectedClaimSourceIn } = require('./lib/commercial-claim-triage');
+const { rejectedClaimSource: rejectedClaimSourceIn, rejectedClaimEvidence, designationOnlyClaim } = require('./lib/commercial-claim-triage');
 const { refuseClearedField } = require('./lib/cleared-field-guard');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
@@ -58,6 +58,10 @@ function rejectedClaimSource(slug, recoupedSource) {
     try { rejectionArchive = JSON.parse(fs.readFileSync(ARCHIVE_PATH, 'utf8')); } catch { rejectionArchive = { shows: {} }; }
   }
   return rejectedClaimSourceIn(rejectionArchive, slug, recoupedSource);
+}
+function rejectedEvidence(slug, entry) {
+  rejectedClaimSource(slug, null); // loads the archive once
+  return rejectedClaimEvidence(rejectionArchive, slug, entry);
 }
 const COST_LOG_PATH = path.join(DATA_DIR, 'deep-research-cost-log.json');
 const PROGRESS_PATH = path.join(DATA_DIR, 'deep-research-progress.json');
@@ -987,10 +991,14 @@ async function main() {
       }
 
       let row = analysis;
-      const rejectedUrl = analysis._recoupedClaim ? rejectedClaimSource(slug, analysis.recoupedSource) : null;
+      // BRO-7496: a designation-only "Recouped" (no recouped:true) citing only
+      // rejected sources is the same rejected claim and must not be re-filed.
+      const designationOnly = designationOnlyClaim(analysis);
+      const rejectedUrl = analysis._recoupedClaim ? rejectedClaimSource(slug, analysis.recoupedSource)
+        : designationOnly ? rejectedEvidence(slug, analysis) : null;
       if (rejectedUrl) {
         console.log(`    Recouped claim dropped: ${rejectedUrl} was already rejected for ${slug}`);
-        row = { ...withoutRecoupmentClaim(analysis), claimStripped: { at: analysis.researchedAt, reason: `source previously rejected: ${rejectedUrl}` } };
+        row = { ...withoutRecoupmentClaim(analysis), ...(designationOnly ? { designation: 'TBD' } : {}), claimStripped: { at: analysis.researchedAt, reason: `source previously rejected: ${rejectedUrl}` } };
       }
 
       // Merge into pending (don't overwrite existing entries from other research runs)

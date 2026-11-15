@@ -104,7 +104,7 @@ function daysAgo(isoString) {
 // Shared with apply-commercial-pending.js — same `_recoupedClaim || recouped`
 // semantics. Don't redefine inline; reuse so the rules stay in lockstep.
 const { hasRecoupedClaim, isReviewHold, requiresHumanReview, withoutRecoupmentClaim } = require('./lib/commercial-apply-gate');
-const { triageRecoupedClaim, recordRejection, writeArchiveRecord } = require('./lib/commercial-claim-triage');
+const { triageRecoupedClaim, recordRejection, writeArchiveRecord, designationOnlyClaim } = require('./lib/commercial-claim-triage');
 const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 
 // ctx (optional): {commercialShows, showKeyIndex}, for recouped-claim triage.
@@ -334,7 +334,8 @@ function rejectOne({ pending, archive, key, reason, showKeyIndex }) {
     console.error(`FATAL: no pending entry "${key}"`);
     process.exit(1);
   }
-  if (!hasRecoupedClaim(entry)) {
+  // BRO-7496: a "Recouped"-family designation with no recouped:true is a claim too.
+  if (!hasRecoupedClaim(entry) && !designationOnlyClaim(entry)) {
     console.error(`FATAL: "${key}" carries no recouped claim`);
     process.exit(1);
   }
@@ -348,7 +349,7 @@ function rejectOne({ pending, archive, key, reason, showKeyIndex }) {
   if (DRY_RUN) return;
   const now = new Date().toISOString();
   recordRejection(archive, { slug, pendingKey: key, entry, detail: reason, now });
-  if (held) pending.shows[key] = { ...withoutRecoupmentClaim(entry), claimStripped: { at: now, reason } };
+  if (held) pending.shows[key] = { ...withoutRecoupmentClaim(entry), ...(designationOnlyClaim(entry) ? { designation: 'TBD' } : {}), claimStripped: { at: now, reason } };
   else delete pending.shows[key];
   archive.lastUpdated = now;
   pending.lastUpdated = now;

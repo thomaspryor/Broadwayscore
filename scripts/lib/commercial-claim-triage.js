@@ -24,6 +24,7 @@
 const { resolveCommercialSlug } = require('./commercial-slug-key');
 const { isStaleDuplicate } = require('./recoupment-reconcile-gate');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
+const { isRecoupedDesignation } = require('./commercial-designations');
 
 const REJECTED = 'rejected-recouped-claim';
 
@@ -80,6 +81,35 @@ function rejectedClaimSource(archive, slug, recoupedSource) {
 }
 
 /**
+ * BRO-7496: deep research can say "Recouped" through the designation alone
+ * (no recouped:true, no recoupedSource), citing the evidence only in sources[].
+ * Such a row is a recoupment claim too. Its evidence is the recoupedSource
+ * links when present, else every non-SEC source (an SEC filing only backs
+ * the capitalization figure, never recoupment).
+ */
+function designationOnlyClaim(entry) {
+  return !!entry && entry.recouped !== true && entry._recoupedClaim !== true && isRecoupedDesignation(entry.designation);
+}
+
+function claimEvidenceUrls(entry) {
+  if (!entry) return [];
+  const own = urlsIn(entry.recoupedSource);
+  if (own.length) return own;
+  if (!designationOnlyClaim(entry)) return [];
+  return (Array.isArray(entry.sources) ? entry.sources : [])
+    .filter((s) => s && typeof s.url === 'string' && s.type !== 'sec')
+    .map((s) => normalizeUrl(s.url))
+    .filter(Boolean);
+}
+
+/** rejectedClaimSource for a whole row: the rejected URL when EVERY claim evidence URL was rejected, else null. */
+function rejectedClaimEvidence(archive, slug, entry) {
+  const urls = claimEvidenceUrls(entry);
+  if (!urls.length || !urls.every((u) => isRejectedSource(archive, slug, u))) return null;
+  return urls[0];
+}
+
+/**
  * Write an archive record without losing earlier rejections: archive.shows
  * holds one record per key, so a later write (aged-out, another rejection)
  * would otherwise erase the URL the scraper must keep skipping.
@@ -92,8 +122,12 @@ function writeArchiveRecord(archive, key, record) {
 
 /** Record a rejected claim under the show slug (where the scraper looks it up). */
 function recordRejection(archive, { slug, pendingKey, entry, detail, now }) {
+  // A designation-only claim has no recoupedSource: remember its source links instead.
+  const evidence = designationOnlyClaim(entry) ? claimEvidenceUrls(entry) : [];
+  const own = Array.isArray(entry && entry.rejectedSources) ? entry.rejectedSources : [];
   writeArchiveRecord(archive, slug, {
     ...entry,
+    ...(evidence.length ? { rejectedSources: [...new Set([...own, ...evidence])] } : {}),
     ...(pendingKey && pendingKey !== slug ? { pendingKey } : {}),
     archivedAt: now,
     archivedReason: REJECTED,
@@ -136,6 +170,9 @@ module.exports = {
   urlsIn,
   isRejectedSource,
   rejectedClaimSource,
+  designationOnlyClaim,
+  claimEvidenceUrls,
+  rejectedClaimEvidence,
   writeArchiveRecord,
   recordRejection,
   triageRecoupedClaim,
