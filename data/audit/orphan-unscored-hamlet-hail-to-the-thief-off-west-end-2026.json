@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
   "openingDate": "2026-11-12",
-  "detectedAt": "2026-11-15T09:53:51.000Z",
+  "detectedAt": "2026-11-15T10:34:42.773Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "liamodell--unknown.json",
-      "outletId": "liamodell",
-      "criticName": "Unknown",
-      "url": "https://liamodell.com/2026/11/15/hamlet-hail-to-the-thief-review-barbican-theatre-london-cast-samuel-blenkin-claudia-harrison-paul-hilton-radiohead-thom-yorke/",
-      "fullTextLen": 8283,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "london-box-office--shehrazade-zafar-arif.json",
       "outletId": "london-box-office",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
