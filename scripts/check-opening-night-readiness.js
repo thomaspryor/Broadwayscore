@@ -26,6 +26,7 @@ const { readinessMarket, isWestEndReadinessMarket } = require('./lib/readiness-m
 const { spawnSync } = require('child_process');
 const { readinessVerdict } = require('./lib/outlet-feed-reconcile');
 const { posterReadiness, preExistingReviewsReadiness, parseImageAuditLine, describeSpawnFailure } = require('./lib/readiness-guards');
+const RL = require('./lib/readiness-lane'); // lane / embargo / recent-change checks (BRO-7548)
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -516,6 +517,59 @@ async function runChecks() {
     }
   } else {
     report(SKIP, 'Orchestrator check', 'GH_TOKEN not set');
+  }
+
+  // 13. Opening-night lane (BRO-7548). The lane is the primary publisher for Broadway (LANE_ONLY_MARKETS), so a
+  // readiness verdict that only knows the orchestrator can say "ready" while the lane is disarmed or dead.
+  const toStatus = (v) => ({ pass: PASS, warn: WARN, fail: FAIL, skip: SKIP }[v.status]);
+  const emit = (name, v) => report(toStatus(v), name, v.detail);
+  const nowMs = Date.now();
+  const night = show.openingDate;
+  emit('Embargo (reviews open)', RL.embargoVerdict(show, nowMs));
+
+  let armed = null;
+  try {
+    const r = spawnSync('node', [path.join(__dirname, 'opening-night-lane-rehearse.js'), '--arm-check'], { encoding: 'utf8', timeout: 60000 });
+    const line = String(r.stdout || '').split('\n').reverse().find((l) => l.trim().startsWith('{'));
+    const armJson = line ? JSON.parse(line) : null;
+    if (armJson && typeof armJson.arm === 'boolean') armed = armJson.arm;
+    emit('Lane armed', RL.armVerdict(armJson));
+  } catch (e) {
+    emit('Lane armed', RL.armVerdict(null));
+  }
+
+  const emb = RL.embargoFor(show);
+  if (!ghToken) {
+    report(SKIP, 'Lane night run / watchdog / recent changes', 'GH_TOKEN not set');
+  } else if (!emb || !night) {
+    report(WARN, 'Lane night run / watchdog', 'No embargo or opening date, so no night to look for.');
+  } else if (RL.nightOver(show, nowMs)) {
+    report(SKIP, 'Lane night run / watchdog', `Press night ${night} is over (embargo ${emb.embargoAt} was more than 12h ago).`);
+  } else {
+    const ghGet = (url) => fetchGitHubJSON(url, { token: ghToken, caller: 'check-opening-night-readiness.js' });
+    const toRuns = (resp) => ((resp && resp.workflow_runs) || []).map((r) => ({
+      displayTitle: r.display_title || r.name || '', status: r.status, conclusion: r.conclusion, createdAt: r.created_at,
+    }));
+    for (const [wf, label] of [['opening-night-lane-live.yml', 'Lane night run'], ['opening-night-lane-watchdog.yml', 'Lane watchdog']]) {
+      const noun = label.toLowerCase();
+      try {
+        const resp = await ghGet(`https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/${wf}/runs?per_page=30`);
+        emit(label, RL.laneRunVerdict(toRuns(resp), { showId: SHOW_ID, night, label: noun, kickAtMs: emb.kickAtMs, nowMs }));
+      } catch (e) {
+        report(WARN, label, `GitHub API error (${e.status || e.message}); could not look for the ${label.toLowerCase()}.`);
+      }
+    }
+    const WINDOW_H = 48;
+    const since = new Date(nowMs - WINDOW_H * 3600000).toISOString();
+    try {
+      const responses = [];
+      for (const p of RL.PIPELINE_PATHS) {
+        responses.push(await ghGet(`https://api.github.com/repos/thomaspryor/Broadwayscore/commits?sha=main&since=${encodeURIComponent(since)}&per_page=20&path=${encodeURIComponent(p)}`));
+      }
+      emit('Pipeline changes (last 48h)', RL.changesVerdict(RL.mergeCommitResponses(responses), { armed, windowHours: WINDOW_H }));
+    } catch (e) {
+      report(WARN, 'Pipeline changes (last 48h)', `GitHub API error (${e.status || e.message}); could not list recent pipeline commits.`);
+    }
   }
 
   printSummary();
