@@ -67,8 +67,8 @@ export async function fetchTrendingShowPages({ repo, days = 7, limit = 5, asOf =
       : path.resolve(repo, process.env.GA_KEY_FILE);
     client = new BetaAnalyticsDataClient({ keyFilename: keyPath });
   } else if (process.env.GA_SERVICE_ACCOUNT_KEY) {
-    const decoded = Buffer.from(process.env.GA_SERVICE_ACCOUNT_KEY, 'base64').toString('utf8');
-    client = new BetaAnalyticsDataClient({ credentials: JSON.parse(decoded) });
+    const { parseEnvJson } = cjsRequire('../lib/parse-env-json.js');
+    client = new BetaAnalyticsDataClient({ credentials: parseEnvJson('GA_SERVICE_ACCOUNT_KEY', { base64: true }) });
   } else if (!process.env.CI && !process.env.GITHUB_ACTIONS) {
     // Application Default Credentials — LAST resort, and LOCAL ONLY.
     //

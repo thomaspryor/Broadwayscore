@@ -14,6 +14,7 @@
  */
 
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+const { parseEnvJson } = require('./parse-env-json');
 
 function hasGaCredentials() {
   return Boolean(process.env.GA_SERVICE_ACCOUNT_KEY || process.env.GA_KEY_FILE);
@@ -24,8 +25,7 @@ function getGaClient() {
     return new BetaAnalyticsDataClient({ keyFilename: process.env.GA_KEY_FILE });
   }
   if (process.env.GA_SERVICE_ACCOUNT_KEY) {
-    const decoded = Buffer.from(process.env.GA_SERVICE_ACCOUNT_KEY, 'base64').toString('utf8');
-    return new BetaAnalyticsDataClient({ credentials: JSON.parse(decoded) });
+    return new BetaAnalyticsDataClient({ credentials: parseEnvJson('GA_SERVICE_ACCOUNT_KEY', { base64: true }) });
   }
   return new BetaAnalyticsDataClient();
 }
