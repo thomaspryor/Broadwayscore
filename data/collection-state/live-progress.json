@@ -1,31 +1,64 @@
 {
-  "updatedAt": "2026-11-15T20:24:30.358Z",
-  "processed": 16,
-  "failed": 5,
-  "successRate": "76.2%",
+  "updatedAt": "2026-11-15T20:28:44.488Z",
+  "processed": 5,
+  "failed": 10,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 2,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-11-15T20:17:48.903Z",
+      "t": "2026-11-15T20:22:30.855Z",
       "event": "bb-session",
-      "session": "471a7d96",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+      "session": "c1a95bf6",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
     },
     {
-      "t": "2026-11-15T20:17:49.279Z",
+      "t": "2026-11-15T20:22:31.704Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-15T20:23:14.246Z",
+      "event": "bb-session",
+      "session": "073c5ccc",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-15T20:23:15.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T20:25:35.462Z",
+      "event": "bb-session",
+      "session": "a0684f1a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-15T20:25:36.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-15T20:27:19.037Z",
+      "event": "bb-session",
+      "session": "8861393d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-15T20:27:19.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
