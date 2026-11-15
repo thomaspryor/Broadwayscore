@@ -81,3 +81,14 @@ test('API failures, incomplete pagination, invalid arguments and unreviewed card
   incomplete.comments.pageInfo = { hasNextPage: true };
   await assert.rejects(checkResolution(key, response([incomplete])), /Incomplete/);
 });
+
+// BRO-6788/BRO-6787: Done cards get archived by linear-archive-done.js, and
+// Linear hides archived issues unless includeArchived is set, so the probe saw
+// zero cards and reported "expected exactly one card" for a resolved finding.
+test('the probe looks up archived cards too, since Done cards are archived', async () => {
+  const client = { TEAM_KEY: 'BRO', graphql: async (query) => {
+    const archivedVisible = /includeArchived:\s*true/.test(query);
+    return { issues: { nodes: archivedVisible ? [issue([comment(reason)])] : [], pageInfo: { hasNextPage: false } } };
+  } };
+  assert.equal((await checkResolution(key, client)).ok, true);
+});

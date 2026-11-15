@@ -26,7 +26,7 @@ async function checkResolution(key, client = require('./linear-client.js')) {
   if (!/^[a-f0-9]{32}$/.test(key || '')) throw new Error('Expected a 32-hex finding key');
   const marker = `UX-FINDING: ${key}`;
   const data = await client.graphql(`query($marker: String!, $teamKey: String!) {
-    issues(first: 2, filter: { team: { key: { eq: $teamKey } }, description: { contains: $marker } }) {
+    issues(first: 2, includeArchived: true, filter: { team: { key: { eq: $teamKey } }, description: { contains: $marker } }) {
       nodes { identifier title description
         comments(first: 100, orderBy: createdAt) {
           nodes { body createdAt } pageInfo { hasNextPage endCursor }
