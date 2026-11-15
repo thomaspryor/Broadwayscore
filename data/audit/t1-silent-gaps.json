@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T08:53:36.087Z",
+  "generatedAt": "2026-11-15T10:34:28.949Z",
   "windowDays": 45,
   "showsScanned": 246,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=cloud-9-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-caryl-churchill-should-be-as-celebrated-as-pinter-this-show-proves-it-cmx2q5tlz --outlet=times-uk --critic=\"Dominic Maxwell\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-15T00:52:12.790Z",
-      "fileAgeHours": 8.022768888888889,
+      "fileAgeHours": 9.704195833333333,
       "gapSeenAt": "2026-11-15T02:51:38.155Z",
-      "nonTerminalAgeHours": 6.032758611111111,
+      "nonTerminalAgeHours": 7.714109166666667,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 145.85718583333335,
+      "fileAgeHours": 147.53860416666666,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 123.30882944444444,
+      "nonTerminalAgeHours": 124.99018,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 7,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 115.08910527777778,
+      "fileAgeHours": 116.77048472222222,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 113.94438444444444,
+      "nonTerminalAgeHours": 115.625735,
       "needsManualRecovery": false
     },
     {
@@ -78,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 131.6492663888889,
+      "fileAgeHours": 133.3306188888889,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 131.2363825,
+      "nonTerminalAgeHours": 132.91773305555554,
       "needsManualRecovery": false
     },
     {
@@ -98,9 +98,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 10.145549166666667,
+      "fileAgeHours": 11.826899722222223,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 8.879372222222223,
+      "nonTerminalAgeHours": 10.560722777777778,
       "needsManualRecovery": false
     }
   ],
