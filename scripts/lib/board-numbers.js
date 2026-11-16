@@ -131,25 +131,8 @@ const RECENT_QUERY = `query RecentCards($filter: IssueFilter, $after: String) {
   }
 }`;
 
-// Keep this narrow: a repair ABOUT a routine is work, not the routine's daily log.
-function ceremonyKind(card, nowMs) {
-  const title = String(card.title || '').trim();
-  if (/^\[E2E Canary\]/i.test(title)) return 'canary';
-  // BRO-6338: sessions' own end-to-end test cards ("TEST (BRO-6235): ... safe to ignore") close themselves.
-  if (/^TEST \(BRO-\d+\):.*\bsafe to ignore\b/i.test(title)) return 'canary';
-  // BRO-6130: a card closed as a Duplicate of another is the same work counted twice.
-  if (String(card.state && card.state.name || '').trim().toLowerCase() === 'duplicate') return 'duplicate';
-  if (/^Opening-night (?:watch|audit) \d{4}-\d{2}-\d{2}$/i.test(title)
-    || /^CANARY: touch\b/i.test(title)
-    || /^Week in Review(?:\s*[,\u2014:-]\s*|\s+)\d{4}-\d{2}-\d{2}(?: to \d{4}-\d{2}-\d{2})?$/i.test(title)) return 'routineLog';
-  const created = Date.parse(card.createdAt);
-  const closed = Date.parse(card.completedAt || card.canceledAt);
-  // A quick automated repair or an unmarked card is still real work. Only
-  // explicitly session-filed cards qualify; never guess from updatedAt.
-  if (cardDedupe.inferCardSource(card) === 'session' && closed <= nowMs
-    && closed >= created && closed - created <= 6 * 3600_000) return 'sessionTracking';
-  return null;
-}
+// BRO-7595: the rule lives in board-ceremony.js so the digest headline uses it too.
+const { ceremonyKind } = require('./board-ceremony.js');
 
 /** Digest-only counts: other inflow-ratio callers still measure the whole board. */
 function summarizeBoardFlow(cards, { now = new Date(), windowDays = 7 } = {}) {
@@ -333,7 +316,7 @@ async function fetchClaudeCost({ graphql, now = new Date(), cwd, days = 7, readL
 }
 
 /** Every live read, each fail-soft on its own: a missing piece renders "n/a", never blocks the digest. */
-async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchBoardInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards, fetchOpus = fetchOpusUsage, fetchCost = fetchClaudeCost, fetchDaily = require('./board-summary.js').fetchDailyFlow } = {}) {
+async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchBoardInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards, fetchOpus = fetchOpusUsage, fetchCost = fetchClaudeCost, fetchDaily = require('./board-summary.js').fetchDailyFlow, fetchAwaiting = require('./board-summary.js').fetchAwaitingCheck } = {}) {
   const soft = async (fn) => { try { return await fn(); } catch (err) { return { error: String(err && err.message || err).slice(0, 120) }; } };
   // Sequential on purpose because of Linear rate limits.
   const open = await soft(() => fetchOpen({ graphql }));
@@ -345,6 +328,8 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
   const opus = await soft(() => fetchOpus({ now }));
   const cost = await soft(() => fetchCost({ graphql, now, cwd }));
   const daily = await soft(() => fetchDaily({ graphql, now }));
+  // BRO-7595: last, so a slow comment-heavy read can only cost this one line of the verdict.
+  const awaiting = await soft(() => fetchAwaiting({ graphql, now }));
   let landed = null;
   try { landed = readLandedFn({ cwd, nowMs: now.getTime() }); } catch { /* n/a */ }
   return {
@@ -357,6 +342,7 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
     opus,
     cost,
     daily,
+    awaiting,
     landed1: landed ? landed.d1 : null,
     landed7: landed ? landed.d7 : null,
   };
@@ -400,6 +386,8 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     // BRO-6081: per-day added/closed for the owner summary chart (board-summary.js).
     daily: ok(data.daily) && Array.isArray(data.daily.days) ? data.daily.days : null,
     dailyTruncated: ok(data.daily) && !!data.daily.truncated,
+    // BRO-7595: Paused fixes waiting for their RECHECK-AFTER date (board-summary.js verdict).
+    awaitingCheck: ok(data.awaiting) ? data.awaiting : null,
     floors,
   };
 }
@@ -407,8 +395,8 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
 /**
  * BRO-6338. PURE. When cards were added faster than they were closed on each of the last
  * two complete days, one line naming the top filing source of the last 24h. null otherwise.
- * Daily counts cover every card (session self-tracking included); the source split excludes
- * test alarms, routine logs and self-tracking, so the line says which is which.
+ * Daily counts and the source split both leave out test alarms, routine logs, duplicates and
+ * session self-tracking (board-ceremony.js, BRO-7595).
  */
 function filingOutpacesClosingLine(m) {
   // A truncated page makes the daily counts minimums, so the comparison can't be trusted.
@@ -421,7 +409,7 @@ function filingOutpacesClosingLine(m) {
   const who = top ? ` Top filer in 24h: ${top.source}, ${top.count}${total ? ` of ${total}` : ''} (not counting test alarms, routine logs and self-tracking).` : '';
   const flood = m.bySource && m.bySource.floods && m.bySource.floods[0]
     ? ` Biggest flood: ${m.bySource.floods[0].source} "${m.bySource.floods[0].kind}" ${m.bySource.floods[0].count}.` : '';
-  return `Filing is outpacing closing for 2 days: ${added} added, ${closed} closed (all cards, canceled counted as closed).${who}${flood}`;
+  return `Filing is outpacing closing for 2 days: ${added} added, ${closed} closed (not counting test alarms, routine logs, duplicates or quick self-tracking; canceled counted as closed).${who}${flood}`;
 }
 
 const FLOOD_LABEL = `${cardDedupe.FLOOD_THRESHOLD}+ cards of one kind from one filer in 24h`;

@@ -25,12 +25,15 @@ const CLOSED_COLOR = '#2a78d6';
 const INK = '#1a1a19';
 const MUTED = '#6b6b66';
 
+// BRO-7595: title, description and state let bucketDailyFlow drop bookkeeping cards
+// (board-ceremony.js), the same ones board-numbers' 7-day counts already leave out.
 const DAILY_FLOW_QUERY = `query DailyFlow($filter: IssueFilter, $after: String) {
   issues(filter: $filter, first: 250, after: $after, includeArchived: true) {
     pageInfo { hasNextPage endCursor }
-    nodes { createdAt completedAt canceledAt }
+    nodes { title description createdAt completedAt canceledAt state { name } }
   }
 }`;
+const { ceremonyKind } = require('./board-ceremony.js');
 
 /** YYYY-MM-DD of a timestamp in the owner's time zone. */
 function localDay(ts, tz = TZ) {
@@ -55,13 +58,18 @@ function dayKeys(now, days = DAYS, tz = TZ) {
 /**
  * PURE. Issue timestamps -> [{ day, added, closed }] for the last `days` local
  * days (closed = completed or canceled; an issue created and closed in the
- * window counts on both days).
+ * window counts on both days). Bookkeeping cards (test alarms, routine logs,
+ * duplicates, a session's own tracking card closed within 6h) are left out on
+ * both sides (BRO-7595): they open and close themselves, so counting them only
+ * inflated both bars and their timing skew made the pile look like it grew.
  */
 function bucketDailyFlow(nodes, { now = new Date(), days = DAYS, tz = TZ } = {}) {
   const keys = dayKeys(now, days, tz);
   const rows = new Map(keys.map((d) => [d, { day: d, added: 0, closed: 0, canceled: 0 }]));
+  const nowMs = now.getTime();
   for (const n of nodes || []) {
     if (!n) continue;
+    if (ceremonyKind(n, nowMs)) continue;
     if (n.createdAt) { const r = rows.get(localDay(n.createdAt, tz)); if (r) r.added++; }
     const closedAt = n.completedAt || n.canceledAt;
     if (closedAt) {
@@ -91,6 +99,62 @@ async function fetchDailyFlow({ graphql, now = new Date(), days = DAYS, teamKey 
     if (page + 1 >= maxPages) return { days: bucketDailyFlow(nodes, { now, days }), truncated: true };
     after = conn.pageInfo.endCursor;
   }
+}
+
+// BRO-7595: a fix that can only be proven later is Paused with a RECHECK-AFTER date
+// (CLAUDE.md, Session Discipline). Those cards are already-shipped work waiting for
+// the nightly recheck, so the verdict names them instead of calling them backlog.
+const AWAITING_CHECK_QUERY = `query AwaitingCheck($filter: IssueFilter, $after: String) {
+  issues(filter: $filter, first: 100, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes { identifier title description createdAt updatedAt completedAt state { name type }
+      comments(first: 50, orderBy: createdAt) { nodes { body createdAt } } }
+  }
+}`;
+const AWAITING_MAX_PAGES = 4;
+// More overdue checks than this and the verdict stays "Falling behind": the recheck is not keeping up.
+const OVERDUE_CHECK_LIMIT = 10;
+
+/**
+ * PURE. Paused cards with a RECHECK-AFTER stamp -> counts. A stamp is overdue once
+ * its whole (UTC) day has passed, since the nightly recheck should have run by then.
+ * -> { waiting, overdue, waitingAddedInWindow }
+ */
+function summarizeAwaitingCheck(issues, { now = new Date(), days = DAYS } = {}) {
+  const { mapIssueToCard } = require('./linear-recheck-source.js');
+  const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
+  const nowMs = now.getTime();
+  const windowStartMs = nowMs - days * 86_400_000;
+  const out = { waiting: 0, overdue: 0, waitingAddedInWindow: 0 };
+  for (const issue of issues || []) {
+    if (!issue || String(issue.state && issue.state.name || '').toLowerCase() !== 'paused') continue;
+    const stamp = parseRecheckAfterFromCard(mapIssueToCard(issue));
+    if (!Number.isFinite(stamp)) continue;
+    if (stamp + 86_400_000 <= nowMs) { out.overdue++; continue; }
+    out.waiting++;
+    if (Date.parse(issue.createdAt) >= windowStartMs) out.waitingAddedInWindow++;
+  }
+  return out;
+}
+
+/** Fail-soft read of the Paused-with-a-check-date cards. -> summarizeAwaitingCheck + { truncated } */
+async function fetchAwaitingCheck({ graphql, now = new Date(), days = DAYS, teamKey = TEAM_KEY, maxPages = AWAITING_MAX_PAGES } = {}) {
+  const filter = {
+    team: { key: { eq: teamKey } },
+    state: { name: { eq: 'Paused' } },
+    or: [{ description: { contains: 'RECHECK-AFTER' } }, { comments: { some: { body: { contains: 'RECHECK-AFTER' } } } }],
+  };
+  const issues = [];
+  let after = null;
+  for (let page = 0; page < maxPages; page++) {
+    const data = await graphql(AWAITING_CHECK_QUERY, { filter, after }, { maxAttempts: 2, timeoutMs: 6_000, baseMs: 250 });
+    const conn = data && data.issues;
+    if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the awaiting-check count');
+    issues.push(...conn.nodes);
+    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { ...summarizeAwaitingCheck(issues, { now, days }), truncated: false };
+    after = conn.pageInfo.endCursor;
+  }
+  return { ...summarizeAwaitingCheck(issues, { now, days }), truncated: true };
 }
 
 const sum = (rows, k) => rows.reduce((a, r) => a + r[k], 0);
@@ -125,7 +189,21 @@ function boardVerdict(m, daily, { partial = false } = {}) {
   const sentence = `Over the last 7 days ${closedText} and ${added} were added${pile}${open === null ? '' : ` (${open} open now)`}.`;
   if (partial) return { tone: null, headline: 'Partial numbers today', sentence: `${sentence} Linear did not return every card, so these are minimums.` };
   if (net <= 0) return { tone: 'good', headline: 'Keeping up', sentence };
-  return { tone: 'warn', headline: 'Falling behind', sentence };
+  // BRO-7595: name the shipped-but-unproven fixes so the owner can tell them from real backlog.
+  const a = m.awaitingCheck && !m.awaitingCheck.truncated ? m.awaitingCheck : null;
+  if (!a) return { tone: 'warn', headline: 'Falling behind', sentence };
+  const fixes = a.waitingAddedInWindow;
+  const fixesText = fixes
+    ? ` ${fixes} of the added cards are fixes already shipped and waiting for their check date.`
+    : '';
+  const overdueText = a.overdue
+    ? ` ${plural(a.overdue, 'card is', 'cards are')} past ${a.overdue === 1 ? 'its' : 'their'} check date and still open.`
+    : '';
+  // Never green while the pile grows: a middle tone, only when the growth is all waiting fixes and the recheck keeps up.
+  if (net - fixes <= 0 && a.overdue <= OVERDUE_CHECK_LIMIT) {
+    return { tone: 'steady', headline: 'Growing only by fixes waiting for their check', sentence: `${sentence}${fixesText}${overdueText}` };
+  }
+  return { tone: 'warn', headline: 'Falling behind', sentence: `${sentence}${fixesText}${overdueText}` };
 }
 
 function weekdayLabel(day, tz = TZ) {
@@ -155,7 +233,7 @@ function renderChart(daily, esc, { now = new Date(), tz = TZ } = {}) {
   return `<p style="font-size:13px;font-weight:700;color:${INK};margin:16px 0 2px;">Cards added vs closed, last 7 full days</p>
 <p style="font-size:12px;color:${MUTED};margin:0 0 4px;">${key(ADDED_COLOR, 'added (+)')} &nbsp;&nbsp; ${key(CLOSED_COLOR, 'closed (&minus;)')}</p>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">${rows}</table>
-<p style="font-size:11px;color:${MUTED};margin:2px 0 0;">Closed includes canceled cards.</p>`;
+<p style="font-size:11px;color:${MUTED};margin:2px 0 0;">Closed includes canceled cards. Test alarms, routine logs, duplicates and sessions' own quick tracking cards are left out.</p>`;
 }
 
 function tile(big, label, note, esc, side) {
@@ -199,7 +277,8 @@ function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Da
   const v = boardVerdict(m, daily, { partial });
   const tone = v.tone === 'good'
     ? { bg: '#e8f6e8', dot: '#0ca30c', icon: '&#10003;' }
-    : v.tone === 'warn' ? { bg: '#fdf3dc', dot: '#b97e00', icon: '!' } : { bg: '#f4f4f1', dot: MUTED, icon: '?' };
+    : v.tone === 'warn' ? { bg: '#fdf3dc', dot: '#b97e00', icon: '!' }
+      : v.tone === 'steady' ? { bg: '#e8f0fa', dot: CLOSED_COLOR, icon: '&#8635;' } : { bg: '#f4f4f1', dot: MUTED, icon: '?' };
   const t = tilesFor(m, { startedIdle, compact });
   const tiles = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:10px 0 0;">
 <tr>${tile(t[0][1], t[0][0], t[0][2], esc, 'left')}${tile(t[1][1], t[1][0], t[1][2], esc, 'right')}</tr>
@@ -269,5 +348,5 @@ ${rows}
 }
 
 module.exports = {
-  DAILY_FLOW_QUERY, localDay, dayKeys, bucketDailyFlow, fetchDailyFlow, boardVerdict, tilesFor, renderBoardSummaryHtml, renderBoardCategoriesHtml,
+  DAILY_FLOW_QUERY, localDay, dayKeys, bucketDailyFlow, fetchDailyFlow, summarizeAwaitingCheck, fetchAwaitingCheck, OVERDUE_CHECK_LIMIT, boardVerdict, tilesFor, renderBoardSummaryHtml, renderBoardCategoriesHtml,
 };

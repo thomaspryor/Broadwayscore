@@ -169,3 +169,84 @@ test('Stuck tile uses the board table started-idle number when the table exists'
   assert.equal(tile[1], '1 card');
   assert.equal(tilesFor(model({ stuckCards: 16 }), { startedIdle: null })[2][1], '16 cards');
 });
+
+// BRO-7595: the morning headline counted every card, so test alarms and sessions' own
+// tracking cards inflated both bars, and ~50 shipped fixes parked for a later check
+// read as "Falling behind" with no explanation.
+test('BRO-7595: bucketDailyFlow leaves out test alarms, duplicates and quick session tracking cards', () => {
+  const rows = bucketDailyFlow([
+    { title: '[E2E Canary] alarm', createdAt: '2026-10-23T14:00:00Z', canceledAt: '2026-10-23T15:00:00Z' },
+    { title: 'Track this session', description: 'Filed by: session (kind: fix)', createdAt: '2026-10-22T14:00:00Z', completedAt: '2026-10-22T16:00:00Z' },
+    { title: 'Same as BRO-1', state: { name: 'Duplicate' }, createdAt: '2026-10-21T14:00:00Z', canceledAt: '2026-10-21T15:00:00Z' },
+    { title: 'Real fix', description: 'Filed by: session (kind: fix)', createdAt: '2026-10-20T14:00:00Z', completedAt: '2026-10-22T14:00:00Z' },
+    { title: 'Real alert', description: 'Filed by: ci-red', createdAt: '2026-10-23T14:00:00Z' },
+  ], { now: NOW });
+  assert.equal(rows.reduce((a, r) => a + r.added, 0), 2, 'only the real fix and the real alert count as added');
+  assert.equal(rows.reduce((a, r) => a + r.closed, 0), 1, 'only the real fix counts as closed');
+  assert.equal(rows.reduce((a, r) => a + r.canceled, 0), 0);
+});
+
+test('BRO-7595: fetchDailyFlow asks Linear for the fields the bookkeeping rule needs', () => {
+  const { DAILY_FLOW_QUERY } = require('./board-summary.js');
+  for (const f of ['title', 'description', 'state { name }']) assert.ok(DAILY_FLOW_QUERY.includes(f), f);
+});
+
+const paused = (stamp, createdAt = '2026-10-22T10:00:00Z', where = 'comment') => ({
+  identifier: 'BRO-1', title: 'x', createdAt, state: { name: 'Paused', type: 'backlog' },
+  description: where === 'notes' ? `RECHECK-AFTER: ${stamp}` : 'notes',
+  comments: { nodes: where === 'comment' ? [{ body: `Paused.\nRECHECK-AFTER: ${stamp}`, createdAt }] : [] },
+});
+
+test('BRO-7595: summarizeAwaitingCheck splits Paused check-date cards into waiting and overdue', () => {
+  const { summarizeAwaitingCheck } = require('./board-summary.js');
+  const r = summarizeAwaitingCheck([
+    paused('2026-11-05'), // waiting, added this week
+    paused('2026-11-05', '2026-09-01T10:00:00Z', 'notes'), // waiting, added before the window
+    paused('2026-10-20'), // overdue
+    paused('2026-10-24'), // today (UTC): still due tonight, so waiting
+    { ...paused('2026-11-05'), state: { name: 'Todo', type: 'unstarted' } }, // handed off, not waiting
+    { ...paused('x'), description: '', comments: { nodes: [] } }, // no stamp
+  ], { now: NOW });
+  assert.deepEqual(r, { waiting: 3, overdue: 1, waitingAddedInWindow: 2 });
+});
+
+test('BRO-7595: growth made only of waiting fixes is a middle tone, never green; overdue checks keep the warning', () => {
+  const m = (awaitingCheck) => model({ awaitingCheck });
+  const daily = [{ day: 'd', added: 248, closed: 220, canceled: 20 }];
+  const steady = boardVerdict(m({ waiting: 60, overdue: 3, waitingAddedInWindow: 40, truncated: false }), daily);
+  assert.equal(steady.tone, 'steady');
+  assert.match(steady.headline, /waiting for their check/);
+  assert.match(steady.sentence, /40 of the added cards are fixes already shipped and waiting for their check date\./);
+  assert.match(steady.sentence, /3 cards are past their check date/);
+  const overdue = boardVerdict(m({ waiting: 60, overdue: 38, waitingAddedInWindow: 40, truncated: false }), daily);
+  assert.equal(overdue.tone, 'warn');
+  assert.match(overdue.sentence, /38 cards are past their check date/);
+  const realGrowth = boardVerdict(m({ waiting: 5, overdue: 0, waitingAddedInWindow: 5, truncated: false }), daily);
+  assert.equal(realGrowth.headline, 'Falling behind');
+  assert.equal(boardVerdict(m(null), daily).headline, 'Falling behind', 'no awaiting data: unchanged verdict');
+  assert.equal(boardVerdict(m({ waiting: 60, overdue: 0, waitingAddedInWindow: 40, truncated: true }), daily).tone, 'warn', 'a truncated read is not trusted');
+  assert.equal(boardVerdict(m({ waiting: 60, overdue: 0, waitingAddedInWindow: 40 }), [{ day: 'd', added: 5, closed: 9 }]).tone, 'good');
+  const html = renderBoardSummaryHtml(m({ waiting: 60, overdue: 3, waitingAddedInWindow: 40, truncated: false }), [{ ...daily[0], day: '2026-10-23' }]);
+  assert.match(html, /#e8f0fa/);
+});
+
+test('BRO-7595: fetchBoardNumbersData reads the awaiting-check count last and buildBoardNumbers carries it', async () => {
+  const { fetchBoardNumbersData } = require('./board-numbers.js');
+  const order = [];
+  const stub = (name, val = {}) => async () => { order.push(name); return val; };
+  const data = await fetchBoardNumbersData({
+    graphql: async () => ({}), now: NOW, cwd: process.cwd(), readLandedFn: () => null,
+    fetchInflow: stub('inflow'), fetchOpen: stub('open', { error: 'n/a' }), fetchStuck: stub('stuck'), fetchBySource: stub('bySource'),
+    fetchParked: stub('parked'), fetchOpus: stub('opus'), fetchCost: stub('cost'), fetchDaily: stub('daily', { days: [] }),
+    fetchAwaiting: stub('awaiting', { waiting: 2, overdue: 1, waitingAddedInWindow: 1, truncated: false }),
+  });
+  assert.equal(order[order.length - 1], 'awaiting');
+  assert.deepEqual(buildBoardNumbers({ data }).awaitingCheck, { waiting: 2, overdue: 1, waitingAddedInWindow: 1, truncated: false });
+  const failed = await fetchBoardNumbersData({
+    graphql: async () => ({}), now: NOW, cwd: process.cwd(), readLandedFn: () => null,
+    fetchInflow: stub('inflow'), fetchOpen: stub('open', { error: 'n/a' }), fetchStuck: stub('stuck'), fetchBySource: stub('bySource'),
+    fetchParked: stub('parked'), fetchOpus: stub('opus'), fetchCost: stub('cost'), fetchDaily: stub('daily'),
+    fetchAwaiting: async () => { throw new Error('429'); },
+  });
+  assert.equal(buildBoardNumbers({ data: failed }).awaitingCheck, null, 'a failed read is fail-soft');
+});
