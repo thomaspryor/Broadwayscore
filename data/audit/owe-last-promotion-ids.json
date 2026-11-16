@@ -1,6 +1,37 @@
 {
-  "generatedAt": "2026-11-15T20:27:11.962Z",
-  "promoted": [],
+  "generatedAt": "2026-11-16T23:48:17.064Z",
+  "promoted": [
+    {
+      "id": "the-matchgirl-passion-off-west-end-2026",
+      "source": "venue-page:marylebone-theatre",
+      "sourceUrl": "https://marylebonetheatre.com/"
+    },
+    {
+      "id": "dwelling-off-west-end-2027",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
+    },
+    {
+      "id": "lilith-off-west-end-2027",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
+    },
+    {
+      "id": "private-peaceful-off-west-end-2027",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
+    },
+    {
+      "id": "sticky-off-west-end-2027",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
+    },
+    {
+      "id": "the-shape-of-the-wave-off-west-end-2027",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
+    }
+  ],
   "rejected": [
     {
       "title": "Desire Under the Elms",
@@ -347,6 +378,14 @@
       "reason": "already in shows.json as joy-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Life Changing",
+      "venue": "Southwark Playhouse",
+      "source": "venue-page:southwark-playhouse",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
       "title": "Memoriam",
       "venue": "Southwark Playhouse",
       "source": "venue-page:southwark-playhouse",
@@ -401,14 +440,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "An Oak Tree",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
       "title": "A Homo Alone 2 Yikes We Did It Again",
@@ -1107,14 +1138,6 @@
       "reason": "already in shows.json as are-you-even-indian-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "CADEL: Lungs on Legs",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as cadel-lungs-on-legs-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "Concrete",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1369,14 +1392,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as steam-off-west-end-2027 (normalized-equal)"
-    },
-    {
-      "title": "Suicidal",
-      "venue": "Waterloo East Theatre",
-      "source": "venue-page:waterloo-east-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-15))"
     },
     {
       "title": "This Boy",
