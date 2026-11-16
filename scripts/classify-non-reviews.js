@@ -118,6 +118,10 @@ const COST_BY_PROVIDER = {
   openai: 0.005
 };
 const COST_PER_CALL = COST_BY_PROVIDER[PROVIDER] || 0.0001;
+// BRO-7536: the verdict cache key names provider and model, so a cheap model's
+// uncertain verdict never suppresses a re-ask under --provider=claude (or a model bump).
+const CLASSIFY_MODEL_BY_PROVIDER = { claude: `${CLAUDE_SONNET}+advisor:${CLAUDE_OPUS}`, openai: GPT4O, gemini: GEMINI_FLASH };
+const CLASSIFY_PROVIDER_KEY = `${PROVIDER}:${CLASSIFY_MODEL_BY_PROVIDER[PROVIDER] || GEMINI_FLASH}`;
 
 // --- Stats ---
 const stats = {
@@ -357,7 +361,9 @@ function parseClassifyResponse(raw) {
         isReview: isReviewMatch[1] === 'true',
         contentType: typeMatch ? typeMatch[1].toLowerCase() : 'unknown',
         confidence: 'low',
-        reasoning: '(parsed from malformed response)'
+        reasoning: '(parsed from malformed response)',
+        // BRO-7536: a salvaged parse is not a verdict worth remembering; it stays retriable.
+        salvaged: true,
       };
     }
   }
@@ -954,6 +960,7 @@ async function main() {
       if (INCREMENTAL && fullText.length > 200 && verdictCache.shouldSkipClassify(data, {
         showTitle: showTitleMap[data.showId || dir.name] || data.showId || dir.name,
         promptVersion: CLASSIFY_PROMPT_VERSION,
+        provider: CLASSIFY_PROVIDER_KEY,
         overwrite: NO_VERDICT_CACHE,
         laneStillBypasses: laneBypasses(data, 'nonReview'),
         evidenceStillBlocks: !!nonReviewStampBlockReason(data, hasBotStubTruncationSignal(data)),
@@ -1084,7 +1091,7 @@ async function main() {
           } else {
             uncertainCases.push(item);
             stats.uncertainCases++;
-            verdictStamps.push({ file: entry.file, showId: entry.showId, reason: verdictCache.classifyStampReason('uncertain') });
+            if (!result.salvaged) verdictStamps.push({ file: entry.file, showId: entry.showId, reason: verdictCache.classifyStampReason('uncertain') });
           }
 
           if (VERBOSE) {
@@ -1250,6 +1257,7 @@ async function main() {
               context: showTitleMap[v.showId] || v.showId,
               reason: v.reason,
               promptVersion: CLASSIFY_PROMPT_VERSION,
+              provider: CLASSIFY_PROVIDER_KEY,
             }));
             const result = safeWriteReview(fullPath, data);
             if (result.lockedSkipped) lockedSkipCount++;
@@ -1325,6 +1333,7 @@ function saveReport(nonReviews, uncertainCases, heuristicFlags, reviewsConfirmed
 module.exports = {
   main,
   CLASSIFY_PROMPT_VERSION,
+  CLASSIFY_PROVIDER_KEY,
   _setLLMForTest(fn) { llmOverride = fn; },
 };
 

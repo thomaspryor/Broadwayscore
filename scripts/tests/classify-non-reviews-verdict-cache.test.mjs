@@ -28,6 +28,8 @@ const longText = (marker, n = 10) => `${marker} ${FILLER.repeat(n)}`.trim();
 
 const FIXTURES = {
   'uncertain-outlet--critic-one.json': { url: 'https://example.org/culture/one', fullText: longText('MARKER_UNCERTAIN') },
+  // Malformed reply salvaged by regex (low confidence): not a real verdict, must stay retriable.
+  'salvage-outlet--critic-four.json': { url: 'https://example.org/culture/four', fullText: longText('MARKER_SALVAGE') },
   // Short body from a review-marker URL: the RC2 guard skips the stamp and must leave it retriable.
   'suspect-outlet--critic-two.json': { url: 'https://example.org/reviews/the-synthetic-musical-review/', fullText: longText('MARKER_SUSPECT', 3) },
   // High-confidence content-verifier "review" verdict blocks the terminal stamp.
@@ -60,6 +62,7 @@ const asked = [];
 classifier._setLLMForTest(async (_sys, user) => {
   const marker = (user.match(/MARKER_[A-Z]+/) || ['?'])[0];
   asked.push(marker);
+  if (marker === 'MARKER_SALVAGE') return '{"isReview": false, "contentType": "feature", "confidence": "med'; // cut off mid-reply
   const confidence = marker === 'MARKER_UNCERTAIN' ? 'medium' : 'high';
   return JSON.stringify({ isReview: false, contentType: 'feature', confidence, reasoning: 'synthetic' });
 });
@@ -77,11 +80,14 @@ async function run() {
 
 test('second incremental run asks only the EXTRACTION-SUSPECT file again', async () => {
   const first = await run();
-  assert.deepEqual(first, ['MARKER_CONFLICT', 'MARKER_SUSPECT', 'MARKER_UNCERTAIN']);
+  assert.deepEqual(first, ['MARKER_CONFLICT', 'MARKER_SALVAGE', 'MARKER_SUSPECT', 'MARKER_UNCERTAIN']);
 
   const u = read('uncertain-outlet--critic-one.json');
   assert.equal(u[cache.CLASSIFY_FIELDS.reason], 'uncertain');
   assert.equal(u[cache.CLASSIFY_FIELDS.promptVersion], classifier.CLASSIFY_PROMPT_VERSION);
+  assert.equal(u[cache.CLASSIFY_FIELDS.provider], classifier.CLASSIFY_PROVIDER_KEY);
+  assert.match(classifier.CLASSIFY_PROVIDER_KEY, /^gemini:gemini-/, 'key names provider and model');
+  assert.equal(read('salvage-outlet--critic-four.json')[cache.CLASSIFY_FIELDS.at], undefined, 'salvaged malformed parse must not be stamped');
   assert.equal(u.isNonReview, undefined, 'uncertain verdict must not flag the file');
   assert.equal(u.classifiedAt, undefined, 'uncertain verdict is not a classification');
 
@@ -94,27 +100,35 @@ test('second incremental run asks only the EXTRACTION-SUSPECT file again', async
   assert.equal(s.isNonReview, undefined);
 
   const second = await run();
-  assert.deepEqual(second, ['MARKER_SUSPECT'], 'judged files must make zero LLM calls on an unchanged second run');
+  assert.deepEqual(second, ['MARKER_SALVAGE', 'MARKER_SUSPECT'], 'judged files must make zero LLM calls on an unchanged second run');
 });
 
 test('changed text or an old prompt version re-queues a stamped file', async () => {
   const u = read('uncertain-outlet--critic-one.json');
   u.fullText = longText('MARKER_UNCERTAIN', 11); // refetched body
   write('uncertain-outlet--critic-one.json', u);
-  assert.deepEqual(await run(), ['MARKER_SUSPECT', 'MARKER_UNCERTAIN']);
-  assert.deepEqual(await run(), ['MARKER_SUSPECT'], 'restamped on the new text');
+  assert.deepEqual(await run(), ['MARKER_SALVAGE', 'MARKER_SUSPECT', 'MARKER_UNCERTAIN']);
+  assert.deepEqual(await run(), ['MARKER_SALVAGE', 'MARKER_SUSPECT'], 'restamped on the new text');
 
   const u2 = read('uncertain-outlet--critic-one.json');
   u2[cache.CLASSIFY_FIELDS.promptVersion] = 'g0-oldprompt';
   write('uncertain-outlet--critic-one.json', u2);
-  assert.deepEqual(await run(), ['MARKER_SUSPECT', 'MARKER_UNCERTAIN']);
+  assert.deepEqual(await run(), ['MARKER_SALVAGE', 'MARKER_SUSPECT', 'MARKER_UNCERTAIN']);
+});
+
+test('a verdict from another provider/model re-queues', async () => {
+  const u = read('uncertain-outlet--critic-one.json');
+  u[cache.CLASSIFY_FIELDS.provider] = 'openai:some-cheaper-model';
+  write('uncertain-outlet--critic-one.json', u);
+  assert.deepEqual(await run(), ['MARKER_SALVAGE', 'MARKER_SUSPECT', 'MARKER_UNCERTAIN']);
+  assert.deepEqual(await run(), ['MARKER_SALVAGE', 'MARKER_SUSPECT']);
 });
 
 test('withdrawn evidence re-queues an EVIDENCE-CONFLICT file, which is then applied', async () => {
   const c = read('conflict-outlet--critic-three.json');
   delete c.contentVerification;
   write('conflict-outlet--critic-three.json', c);
-  assert.deepEqual(await run(), ['MARKER_CONFLICT', 'MARKER_SUSPECT']);
+  assert.deepEqual(await run(), ['MARKER_CONFLICT', 'MARKER_SALVAGE', 'MARKER_SUSPECT']);
   assert.equal(read('conflict-outlet--critic-three.json').isNonReview, true);
 });
 
@@ -126,12 +140,13 @@ test('pure decision: stamp reasons, lane lapse, overwrite', () => {
 
   const pv = 'g1-abc';
   const fullText = longText('X');
-  const lane = { fullText, ...cache.buildVerdictStamp(cache.CLASSIFY_FIELDS, { text: fullText, context: TITLE, reason: 'lane-skip', promptVersion: pv }) };
-  assert.equal(cache.shouldSkipClassify(lane, { showTitle: TITLE, promptVersion: pv, laneStillBypasses: true }), true);
-  assert.equal(cache.shouldSkipClassify(lane, { showTitle: TITLE, promptVersion: pv, laneStillBypasses: false }), false, 'lapsed lane re-queues');
-  assert.equal(cache.shouldSkipClassify(lane, { showTitle: TITLE, promptVersion: pv, laneStillBypasses: true, overwrite: true }), false);
-  assert.equal(cache.shouldSkipClassify(lane, { showTitle: 'Other Title', promptVersion: pv, laneStillBypasses: true }), false, 'prompt context change re-queues');
-  assert.equal(cache.shouldSkipClassify({ fullText }, { showTitle: TITLE, promptVersion: pv }), false);
+  const lane = { fullText, ...cache.buildVerdictStamp(cache.CLASSIFY_FIELDS, { text: fullText, context: TITLE, reason: 'lane-skip', promptVersion: pv, provider: 'gemini:m' }) };
+  assert.equal(cache.shouldSkipClassify(lane, { showTitle: TITLE, promptVersion: pv, provider: 'gemini:m', laneStillBypasses: true }), true);
+  assert.equal(cache.shouldSkipClassify(lane, { showTitle: TITLE, promptVersion: pv, provider: 'gemini:m', laneStillBypasses: false }), false, 'lapsed lane re-queues');
+  assert.equal(cache.shouldSkipClassify(lane, { showTitle: TITLE, promptVersion: pv, provider: 'gemini:m', laneStillBypasses: true, overwrite: true }), false);
+  assert.equal(cache.shouldSkipClassify(lane, { showTitle: 'Other Title', promptVersion: pv, provider: 'gemini:m', laneStillBypasses: true }), false, 'prompt context change re-queues');
+  assert.equal(cache.shouldSkipClassify({ fullText }, { showTitle: TITLE, promptVersion: pv, provider: 'gemini:m' }), false);
+  assert.equal(cache.shouldSkipClassify(lane, { showTitle: TITLE, promptVersion: pv, provider: 'claude:m', laneStillBypasses: true }), false, 'other model re-queues');
 });
 
 test.after(() => fs.rmSync(ROOT, { recursive: true, force: true }));

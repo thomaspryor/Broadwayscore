@@ -64,21 +64,39 @@ if (hasHelpFlag(process.argv.slice(2))) {
   process.exit(0);
 }
 
-const { verifyContent: realVerifyContent, buildVerificationPrompt, resolveCvMarket, isCvVerdictFromPartialWindow } = require('./lib/content-verifier');
+const { verifyContent: realVerifyContent, buildVerificationPrompt, getProviderChain, resolveCvMarket, isCvVerdictFromPartialWindow } = require('./lib/content-verifier');
 const verdictCache = require('./lib/llm-verdict-cache');
 let verifyOverride = null; // tests only (_setVerifyForTest)
 const verifyContent = (opts) => (verifyOverride ? verifyOverride(opts) : realVerifyContent(opts));
 
 // BRO-7536: stamped verdicts are re-asked when the verifier prompt changes. Bump
 // the guard version when verifyContent's post-LLM overrides change a verdict.
+// Several rendered variants, so a change to any market / long-runner / prior-run
+// / excerpt branch of the prompt moves the version too.
 const VERIFY_PROMPT_VERSION = (() => {
-  let p = '';
-  try {
-    const built = buildVerificationPrompt({ scrapedText: '<TEXT>', showTitle: '<SHOW>', outletName: '<OUTLET>', criticName: '<CRITIC>', market: 'broadway' });
-    p = typeof built === 'string' ? built : (built && built.prompt) || '';
-  } catch { p = ''; }
-  return verdictCache.promptVersionFor(p || 'content-verifier', 1);
+  const base = { scrapedText: '<TEXT>', showTitle: '<SHOW>', outletName: '<OUTLET>', criticName: '<CRITIC>' };
+  const leg = { openingDate: '2001-01-01', closingDate: '2002-01-01' };
+  const variants = [
+    ...['broadway', 'west-end', 'off-west-end', 'off-broadway', 'opera'].map(market => ({ ...base, market })),
+    { ...base, market: 'west-end', openingDate: '1986-10-09', isLongRunningProduction: true },
+    { ...base, market: 'broadway', priorRuns: [leg], tourLegs: [{ startDate: '2003-01-01', endDate: '2003-06-01' }] },
+    { ...base, market: 'broadway', excerpt: '<EXCERPT>', url: 'https://example.org/2020/01/review', publishDate: '2024-01-01', openingDate: '2024-01-01' },
+  ];
+  const parts = variants.map(v => {
+    try {
+      const built = buildVerificationPrompt(v);
+      return typeof built === 'string' ? built : (built && built.prompt) || '';
+    } catch { return ''; }
+  });
+  return verdictCache.promptVersionFor(parts.join('\n=====\n') || 'content-verifier', 1);
 })();
+
+// The model a call this run would reach first ('llm:<name>'); a stamp from a
+// weaker model does not stand in for it (BRO-7536).
+const VERIFY_PRIMARY_PROVIDER = (() => {
+  try { const chain = getProviderChain(); return chain.length ? `llm:${chain[0].name}` : null; } catch { return null; }
+})();
+const acceptStampProvider = (p) => verdictCache.verifyProviderSatisfies(p, VERIFY_PRIMARY_PROVIDER);
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
@@ -145,12 +163,30 @@ function getAllReviewFiles() {
 let skippedPriorVerdict = 0;
 
 /** Stamp a verdict that changed nothing else, so the next run skips this file (BRO-7536). */
-function stampJudged(item, fields, reason) {
+/** Cache context: every input of the prompt and the post-LLM overrides besides the text. */
+function verifyCtx(r, show) {
+  return verdictCache.verifierContext(r, show, {
+    market: resolveCvMarket(show),
+    isLongRunningProduction: isLongRunningProduction(show),
+    excerpt: verifierExcerpt(r),
+  });
+}
+
+/** Stamp fields for a real LLM verdict, or null for a heuristic fallback (never cached). */
+function judgedStamp(item, fields, reason, result) {
+  if (!verdictCache.isLlmVerdict(result)) return null;
+  return verdictCache.buildVerdictStamp(fields, {
+    text: item.text, context: verifyCtx(item.review, showsMap.get(item.showId)),
+    reason, promptVersion: VERIFY_PROMPT_VERSION, provider: result.verifiedBy,
+  });
+}
+
+/** Stamp a verdict that changed nothing else, so the next run skips this file (BRO-7536). */
+function stampJudged(item, fields, reason, result) {
+  const stamp = judgedStamp(item, fields, reason, result);
+  if (!stamp) return;
   const data = readReviewForUpdate(item.filePath);
-  Object.assign(data, verdictCache.buildVerdictStamp(fields, {
-    text: item.text, context: verdictCache.verifierContext(item.review, showsMap.get(item.showId)),
-    reason, promptVersion: VERIFY_PROMPT_VERSION,
-  }));
+  Object.assign(data, stamp);
   persistReviewSnapshot({ filePath: item.filePath, data: data, trailingNewline: true });
 }
 
@@ -167,8 +203,8 @@ function categorizeReviews(reviewFiles) {
         const candidate = recoverCandidate(r);
         // BRO-7536: this flag was already re-read on the same text and prompt and kept.
         if (candidate && verdictCache.hasMatchingVerdictStamp(r, verdictCache.RECOVER_FIELDS, {
-          text: candidate.text, context: verdictCache.verifierContext(r, showsMap.get(showId)),
-          promptVersion: VERIFY_PROMPT_VERSION, overwrite: CLI.noVerdictCache,
+          text: candidate.text, context: verifyCtx(r, showsMap.get(showId)),
+          promptVersion: VERIFY_PROMPT_VERSION, overwrite: CLI.noVerdictCache, acceptProvider: acceptStampProvider,
         })) {
           skippedPriorVerdict++;
           continue;
@@ -195,8 +231,8 @@ function categorizeReviews(reviewFiles) {
         if (r.verifiedBy && r.verifiedBy.startsWith('llm:')) continue;
         // BRO-7536: a low-confidence verdict on this same text and prompt wrote nothing; don't re-pay for it.
         if (verdictCache.hasMatchingVerdictStamp(r, verdictCache.VERIFY_FIELDS, {
-          text: r.fullText, context: verdictCache.verifierContext(r, showsMap.get(showId)),
-          promptVersion: VERIFY_PROMPT_VERSION, overwrite: CLI.noVerdictCache,
+          text: r.fullText, context: verifyCtx(r, showsMap.get(showId)),
+          promptVersion: VERIFY_PROMPT_VERSION, overwrite: CLI.noVerdictCache, acceptProvider: acceptStampProvider,
         })) {
           skippedPriorVerdict++;
           continue;
@@ -301,7 +337,7 @@ async function processVerify(items) {
           persistReviewSnapshot({ filePath: item.filePath, data: data, trailingNewline: true });
         } else if (!CLI.dryRun) {
           // Low-confidence flag verdict: not acted on, but remembered (BRO-7536).
-          stampJudged(item, verdictCache.VERIFY_FIELDS, `low-confidence-${reason}`);
+          stampJudged(item, verdictCache.VERIFY_FIELDS, `low-confidence-${reason}`, result);
         }
       } else {
         // Mark as verified
@@ -384,7 +420,7 @@ async function processRecover(items) {
           // file from the guard for good.
           if (data.wrongProductionReason === OTHER_PRODUCTION_URL_REASON) {
             console.log(`  KEEP ${label}: flag is url-proven (${OTHER_PRODUCTION_URL_REASON}), not recovering`);
-            stampJudged(item, verdictCache.RECOVER_FIELDS, 'kept-url-proven');
+            stampJudged(item, verdictCache.RECOVER_FIELDS, 'kept-url-proven', result);
             continue;
           }
 
@@ -450,7 +486,7 @@ async function processRecover(items) {
           persistReviewSnapshot({ filePath: item.filePath, data: data, trailingNewline: true });
         } else if (!CLI.dryRun) {
           // Low-confidence "valid" verdict: the flag stays, and so would the same answer next run (BRO-7536).
-          stampJudged(item, verdictCache.RECOVER_FIELDS, `low-confidence-recover`);
+          stampJudged(item, verdictCache.RECOVER_FIELDS, `low-confidence-recover`, result);
         }
       } else {
         // LLM confirms the flag was correct
@@ -465,10 +501,9 @@ async function processRecover(items) {
         if (!CLI.dryRun) {
           const data = readReviewForUpdate(item.filePath);
           data.verifiedBy = provider;
-          Object.assign(data, verdictCache.buildVerdictStamp(verdictCache.RECOVER_FIELDS, {
-            text: item.text, context: verdictCache.verifierContext(item.review, show),
-            reason: `confirmed-${reason}`, promptVersion: VERIFY_PROMPT_VERSION,
-          }));
+          // Heuristic fallbacks (LLM outage, parse failure) are never stamped.
+          const stamp = judgedStamp(item, verdictCache.RECOVER_FIELDS, `confirmed-${reason}`, result);
+          if (stamp) Object.assign(data, stamp);
           persistReviewSnapshot({ filePath: item.filePath, data: data, trailingNewline: true });
         }
       }
@@ -677,6 +712,7 @@ async function main() {
 module.exports = {
   main,
   VERIFY_PROMPT_VERSION,
+  VERIFY_PRIMARY_PROVIDER,
   _setVerifyForTest(fn) { verifyOverride = fn; },
 };
 

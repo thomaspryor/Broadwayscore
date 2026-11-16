@@ -1194,6 +1194,8 @@ function isCvVerdictFromTruncatedFetch(cv, text, url) {
 
 module.exports = {
   buildVerificationPrompt,
+  // Exported so verify-existing-reviews.js can name the model a call would reach (BRO-7536).
+  getProviderChain,
   CV_WINDOW_CHARS,
   PREVIEW_ARTICLE_TYPE_GUIDANCE,
   isCvVerdictFromPartialWindow,
