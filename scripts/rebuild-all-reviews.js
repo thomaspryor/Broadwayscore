@@ -224,7 +224,15 @@ function canonicalPickUrl(u) {
     return u;
   }
 }
-const NYT_CRITICS_PICK_URLS = (() => {
+// BRO-7598 (cousin of BRO-7523): built on first use, not at import. It walks
+// data/review-texts for every manual NYT pick, so building it above the
+// require.main guard made every importer (tests, helpers) read the corpus.
+let nytCriticsPickUrls = null;
+function getNytCriticsPickUrls() {
+  if (!nytCriticsPickUrls) nytCriticsPickUrls = buildNytCriticsPickUrls();
+  return nytCriticsPickUrls;
+}
+function buildNytCriticsPickUrls() {
   const set = new Set();
   try {
     const picksData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'nyt-critics-picks.json'), 'utf8'));
@@ -267,7 +275,7 @@ const NYT_CRITICS_PICK_URLS = (() => {
     console.warn('[nyt-critics-picks] Could not load data/designations.json:', e.message);
   }
   return set;
-})();
+}
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
@@ -5853,7 +5861,7 @@ showDirs.forEach(showId => {
       const desiredDesignation = (() => {
         if (isNytOutlet) {
           const pickUrl = review.url || data.url;
-          return pickUrl && NYT_CRITICS_PICK_URLS.has(canonicalPickUrl(pickUrl)) ? 'Critics_Pick' : null;
+          return pickUrl && getNytCriticsPickUrls().has(canonicalPickUrl(pickUrl)) ? 'Critics_Pick' : null;
         }
         // Non-NYT: clear Critics_Pick (FP from a legacy path); preserve anything else.
         if (data.designation === 'Critics_Pick') return null;
