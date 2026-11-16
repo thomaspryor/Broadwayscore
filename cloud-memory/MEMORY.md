@@ -8,7 +8,6 @@
 - [Google Search Console API](feedback_gsc_api_auth.md) — ADC + webmasters scope + X-Goog-User-Project
 
 ## 👤 User profile & session discipline
-- [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — unmarked never close; close kills claude+nohup ([[feedback_cmux_tab_close_kills_children.md]])
 - [Terse output default](feedback_terse_output_default.md) — no recap, keep proof ([[feedback_no_human_day_estimates.md]])
 - [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff" ([[feedback_user_device_context.md]])
@@ -46,7 +45,6 @@
 - [GHA cron reliability](feedback_github_cron_delays.md) — fire 30min-3h late, shift earlier + launchd backup; ~60d inactive → silently disabled HTTP 422 ([[feedback_github_auto_disable_workflows.md]])
 - [GHA step gotchas](feedback_gha_secrets_in_if.md) — secrets unusable in step if:; `if: always()` ~5min on cancel ([[feedback_if_always_does_not_run_on_cancel.md]]); cache@v4 no save on key hit ([[feedback_actions_cache_no_save_on_hit.md]])
 - [Silent workflow failures](feedback_silent_workflow_failures.md) — never || true on git push; git add ||true may stage NOTHING ([[feedback_silent_git_add_failures.md]]); pipefail or pipe masks exit ([[feedback_pipe_masks_exit_code.md]])
-- [Test extraction pattern](feedback_test_extraction_pattern.md) — extract to scripts/lib/ + require(); .mjs node:test, register in test.yml ([[feedback_test_format_node_not_jest.md]])
 - [Branch protection: direct pushes not gated](feedback_branch_protection_direct_push.md) — required checks gate PR merges only; direct pushes land red
 - [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin under tool_input; PreToolUse has no model field
 - [Compound shell/git traps](feedback_compound_shell_git_traps.md) — zsh vars don't word-split; never `stash pop` after conditional push (pops another session's); `git push` standalone ([[feedback_prepush_gate_stash_push_parser.md]])
@@ -62,10 +60,8 @@
 
 ## 📋 Open work
 - [Coverage Verdict APPROVED](project_coverage_verdict_plan.md) — FULL S0-S5 approved 2026-08-02, runs without owner; tasks #901-906; don't re-ask, dispatch stalled cards
-- [Linear migration decision](project_linear_migration_decision.md) — done: Linear is the board, Notion retired 2026-08-20
 - [Sprint plans must be durable](feedback_sprint_plans_must_be_durable.md) — cards point at claude-outputs/repo paths; scratchpad dies
 - [Autonomous loop schedule](autonomous-loop-schedule.md) — LOOP RETIRED 2026-07-27, do NOT re-enable; email lives on as send-morning-digest.js @ 7:30am ET; cron map valid
-- [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
 - [Regional auto-promotion](project_regional_expansion_watchlist.md) — roundup=go-live; auto add+reviews+images; transferOf/transferredTo cross-link tryout↔Broadway; cast/audience manual
 
 ## 🎯 Opening night pipeline
