@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T17:11:25.106Z",
+  "timestamp": "2026-11-16T17:57:48.007Z",
   "stats": {
-    "totalReviews": 82097,
-    "alreadyFlagged": 22473,
+    "totalReviews": 82173,
+    "alreadyFlagged": 22477,
     "dateGuardCatches": 222,
-    "directorMismatch": 3714,
-    "tvFilmSignals": 2329,
-    "londonSignals": 3774,
+    "directorMismatch": 3713,
+    "tvFilmSignals": 2328,
+    "londonSignals": 3771,
     "offBroadwaySignals": 755,
     "yearMismatch": 374,
-    "noPublishDate": 8182
+    "noPublishDate": 8246
   },
   "findings": [
     {
@@ -54843,7 +54843,7 @@
       "showId": "present-laughter-2017",
       "file": "nbcny--robert-kahn.json",
       "score": 71,
-      "publishDate": null,
+      "publishDate": "2017-04-05T18:49:48-04:00",
       "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-Kevin-Kline-Present-Laughter-417884933.html",
       "findings": [
         {
@@ -58240,7 +58240,7 @@
     },
     {
       "showId": "side-show-2014",
-      "file": "timeout--david-cote.json",
+      "file": "timeout--adam-feldman.json",
       "score": 57,
       "publishDate": "November 17, 2014",
       "url": "http://www.timeout.com/newyork/theater/side-show-1",
@@ -65689,7 +65689,7 @@
       "showId": "the-assembled-parties-2013",
       "file": "newsday--linda-winer.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2013-04-17T21:30:46-04:00",
       "url": "http://www.newsday.com/entertainment/theater/the-assembled-parties-review-touching-1.5084600",
       "findings": [
         {
@@ -66843,7 +66843,7 @@
       "showId": "the-cherry-orchard-2016",
       "file": "njcom--christopher-kelly.json",
       "score": 36,
-      "publishDate": null,
+      "publishDate": "2016-10-16T19:15:50-04:00",
       "url": "https://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
       "findings": [
         {
@@ -67031,25 +67031,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "the-children-2017",
-      "file": "newsday--barbara-schuler.json",
-      "score": 78,
-      "publishDate": "December 12, 2017",
-      "url": "http://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -79725,20 +79706,6 @@
       "score": 92,
       "publishDate": "2023-06-27",
       "url": "https://www.chicagoonstage.com/goodmans-tommy/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
-        }
-      ]
-    },
-    {
-      "showId": "the-whos-tommy-regional-2023",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 91,
-      "publishDate": "2023-06-27",
-      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-tommy-goodman-theatre-review-20230627-axhlav6iy5apzjaca2ooguv3om-story.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -126892,7 +126859,7 @@
       "showId": "spongebob-squarepants-2017",
       "file": "dailybeast--tim-teeman.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "2017-12-04T18:59:46-05:00",
       "url": "https://www.thedailybeast.com/the-brilliant-spongebob-squarepants-on-broadway-is-zany-colorful-and-anti-trump/",
       "findings": [
         {
@@ -130982,20 +130949,6 @@
     },
     {
       "showId": "the-children-2017",
-      "file": "nytimes--jesse-green.json",
-      "score": 91,
-      "publishDate": "December 13, 2017",
-      "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-children-2017",
       "file": "stage-left--robert-russo.json",
       "score": 88,
       "publishDate": "2017-12-12",
@@ -131047,20 +131000,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
-        }
-      ]
-    },
-    {
-      "showId": "the-children-2017",
-      "file": "variety--marilyn-stasio.json",
-      "score": 81,
-      "publishDate": "December 13, 2017",
-      "url": "https://variety.com/2017/legit/reviews/the-children-review-broadway-1202634084/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -142276,7 +142215,7 @@
       "file": "stage-left--robert-russo.json",
       "score": 93,
       "publishDate": "2018-05-07",
-      "url": "https://www.stageleft.nyc/blog/2018/5/7/reviews-the-revivals-cometh-broadways-2017-2018-season-ends-with-the-iceman-cometh-saint-joan-and-travesties",
+      "url": null,
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
