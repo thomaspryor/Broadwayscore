@@ -48,14 +48,32 @@ function escapeRe(s) {
  * @param {string} criticName
  * @returns {string|null}
  */
+const ACCENT_CLASS = { a: 'aàáâãäåā', e: 'eèéêëē', i: 'iìíîïī', o: 'oòóôõöøō', u: 'uùúûüū', c: 'cçć', n: 'nñń', s: 'sšś', z: 'zžź', y: 'yýÿ' };
+// Tolerates accents on the page when the stored name has none (and the reverse).
+function accentTolerant(word) {
+  return word.split('').map((ch) => {
+    const k = ch.toLowerCase();
+    return ACCENT_CLASS[k] ? `[${ACCENT_CLASS[k]}${ACCENT_CLASS[k].toUpperCase()}]` : escapeRe(ch);
+  }).join('');
+}
+const NAME_SUFFIX_RE = /^(?:jr|sr|ii|iii|iv)$/i;
+
 function criticPattern(criticName) {
   const parts = String(criticName || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .split(/\s+/).map((p) => p.replace(/[^A-Za-z'.-]/g, '')).filter((p) => /[a-z]/i.test(p));
+    .split(/\s+/).map((p) => p.replace(/[^A-Za-z'.-]/g, '').replace(/\.+$/, ''))
+    .filter((p) => /[a-z]/i.test(p) && !NAME_SUFFIX_RE.test(p));
   if (parts.length < 2) return null;
-  const first = parts[0].replace(/\.$/, '');
+  const first = parts[0];
   const last = parts[parts.length - 1];
-  if (first.length < 2 || last.length < 2) return null;
-  return `\\b${escapeRe(first)}\\s+(?:[A-Za-z.'-]+\\s+){0,2}?${escapeRe(last)}\\b`;
+  // initials ("A. O. Scott", "A.O. Scott") are too weak to match on: no pattern, never a verdict against the row
+  if (first.length < 2 || last.length < 2 || /\./.test(first)) return null;
+  return `\\b${accentTolerant(first)}\\s+(?:[A-Za-z.'-]+\\s+){0,2}?${accentTolerant(last)}\\b`;
+}
+
+// A house credit or page-text "By ..." guess is not proof of another author.
+const HOUSE_AUTHOR_RE = /\b(?:staff|team|desk|editors?|editorial|newsroom|reporters?|contributors?|variety|deadline|associated press|reuters|ap)\b/i;
+function strongOtherAuthors(authors) {
+  return authors.filter((a) => /^(?:meta|jsonld|rel-author):/.test(a) && !HOUSE_AUTHOR_RE.test(a));
 }
 
 /**
@@ -79,10 +97,16 @@ function classifyEvidence(row, ev) {
     return { verdict: 'unread', evidenceUrl, note: `no page read (live status ${s == null ? '?' : s})` };
   }
   const authors = Array.isArray(ev.authors) ? ev.authors : [];
-  const matched = (ev.matches || []).length > 0 || (re && authors.some((a) => re.test(a)));
-  if (matched) return { verdict: 'confirmed', evidenceUrl, note: `${ev.via} page names ${row.criticName}` };
-  if (authors.length > 0) {
-    const names = authors.map((a) => a.replace(/^[a-z-]+:\s*/, '')).slice(0, 3).join('; ');
+  // Verdicts against the row need a pattern: initials/single names stay no-signal, never byline-other.
+  if (!re) return { verdict: 'no-signal', evidenceUrl, note: `${ev.via} page read; critic name too short to match safely` };
+  const authorMatch = authors.some((a) => re.test(a));
+  const strongOther = strongOtherAuthors(authors);
+  // A text-only mention ("More from <name>") does not confirm when the page credits someone else.
+  if (authorMatch || ((ev.matches || []).length > 0 && strongOther.length === 0)) {
+    return { verdict: 'confirmed', evidenceUrl, note: `${ev.via} page names ${row.criticName}` };
+  }
+  if (strongOther.length > 0 && (ev.matches || []).length === 0) {
+    const names = strongOther.map((a) => a.replace(/^[a-z-]+:\s*/, '')).slice(0, 3).join('; ');
     return { verdict: 'byline-other', evidenceUrl, note: `${ev.via} page credits ${names}, never ${row.criticName}` };
   }
   return { verdict: 'no-signal', evidenceUrl, note: `${ev.via} page has no author signal` };

@@ -64,7 +64,8 @@ test('verdicts', () => {
   assert.match(other.note, /Zachary Stewart/);
   // The TheaterMania hand-check: the url redirected to an unrelated page whose
   // cast list held "Alexa Green". Surname-only text is not a confirmation.
-  assert.equal(classifyEvidence(row, { url, via: 'live', authors: ['byline: By Alexa Green'], matches: [] }).verdict, 'byline-other');
+  assert.equal(classifyEvidence(row, { url, via: 'live', authors: ['meta: Alexa Green'], matches: [] }).verdict, 'byline-other');
+  assert.equal(classifyEvidence(row, { url, via: 'live', authors: ['byline: By Alexa Green'], matches: [] }).verdict, 'no-signal', 'a page-text By guess is not proof');
   assert.equal(classifyEvidence(row, { url, via: 'live', authors: [], matches: [] }).verdict, 'no-signal');
 });
 
@@ -114,3 +115,26 @@ test('checkpoint: results read back from JSONL and from saved cloud-run stdout',
   assert.equal(readResults(path.join(dir, 'missing')).size, 0);
   assert.equal(typeof checkOne, 'function');
 });
+
+// BRO-7569/5259 ship-check regressions: a verdict against the row needs a real pattern and a strong author signal
+{
+  const { classifyEvidence, criticPattern } = createRequire(import.meta.url)('./lib/byline-sweep.js');
+  const page = (authors, matches = []) => ({ via: 'live', url: 'https://x.test/a', authors, matches });
+  test('initials name never gets byline-other', () => {
+    assert.notEqual(classifyEvidence({ criticName: 'A. O. Scott' }, page(['meta: A. O. Scott'])).verdict, 'byline-other');
+    assert.equal(criticPattern('A.O. Scott'), null);
+  });
+  test('suffix and accents still match', () => {
+    assert.equal(classifyEvidence({ criticName: 'Frank Scheck Jr.' }, page(['meta: Frank Scheck'])).verdict, 'confirmed');
+    assert.equal(classifyEvidence({ criticName: 'Jose Solis' }, page(['meta: José Solís'])).verdict, 'confirmed');
+  });
+  test('house credits and text "By" guesses are not another author', () => {
+    assert.notEqual(classifyEvidence({ criticName: 'Jesse Green' }, page(['meta: Variety Staff', 'byline: By Act Two'])).verdict, 'byline-other');
+  });
+  test('a real different meta author is byline-other', () => {
+    assert.equal(classifyEvidence({ criticName: 'Jesse Green' }, page(['meta: Alexa Smith'])).verdict, 'byline-other');
+  });
+  test('sidebar mention beside another credited author is not confirmed', () => {
+    assert.notEqual(classifyEvidence({ criticName: 'Jesse Green' }, page(['meta: Alexa Smith'], ['Jesse Green'])).verdict, 'confirmed');
+  });
+}

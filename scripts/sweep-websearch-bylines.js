@@ -83,7 +83,9 @@ async function check(cands, opts) {
       authors: (ev.authors || []).slice(0, 5), checkedAt: new Date().toISOString(),
     };
     console.log(`SWEEP ${JSON.stringify(rec)}`);
-    if (opts.out) fs.appendFileSync(opts.out, `${JSON.stringify(rec)}\n`);
+    // a thrown error or timeout is not a result: do not checkpoint it, so a resumed run retries it
+    const transient = ev.error || (v.verdict === 'unread' && !ev.statusLive);
+    if (opts.out && !transient) fs.appendFileSync(opts.out, `${JSON.stringify(rec)}\n`);
     tally[v.verdict] = (tally[v.verdict] || 0) + 1;
     await new Promise((r) => setTimeout(r, opts.delayMs));
   }
@@ -120,6 +122,9 @@ async function main() {
   const reportFile = argVal(argv, 'report');
   if (reportFile) return report(cands, reportFile);
   if (argv.includes('--check')) {
+    const nums = ['offset', 'limit', 'delay-ms'].filter((k) => argVal(argv, k) != null && !Number.isFinite(Number(argVal(argv, k))));
+    if (nums.length) { console.error(`bad number for --${nums.join(', --')}`); process.exit(2); }
+    if (argv.includes('--scrape') && !argVal(argv, 'limit')) { console.error('--scrape needs --limit (paid fetches are capped per run)'); process.exit(2); }
     return check(cands, {
       offset: Number(argVal(argv, 'offset') || 0),
       limit: Number(argVal(argv, 'limit') || 0),
