@@ -1,7 +1,7 @@
 {
   "system": "quality",
-  "status": "warn",
-  "lastChecked": "2026-11-15T09:26:50.136Z",
+  "status": "pass",
+  "lastChecked": "2026-11-16T00:01:55.175Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,7 +19,7 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.3% scored (50739/51638)"
+      "message": "98.3% scored (50845/51717)"
     },
     {
       "name": "Quality: corpus drift",
@@ -29,7 +29,7 @@
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "20161 messages, 0 auth failures (p=reject)"
+      "message": "20180 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1886 outlet(s), 82105 review(s)"
+      "message": "No broken-extractor signature in 1887 outlet(s), 82000 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1886 outlet(s), 82105 review(s)"
+      "message": "No broken-extractor signature in 1887 outlet(s), 82000 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -68,8 +68,8 @@
     },
     {
       "name": "Quality: coverageExpectation drift",
-      "status": "warn",
-      "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
+      "status": "pass",
+      "message": "No coverageExpectation re-probes needed"
     },
     {
       "name": "Quality: outlet-heartbeat red flags",

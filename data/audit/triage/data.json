@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-15T09:26:50.135Z",
+  "lastChecked": "2026-11-16T00:01:55.174Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -84,32 +84,32 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "25 of 379 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7478 Opening-night audit 2026-11-14"
+      "message": "20 of 385 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7477 The Recs bylines land as Unknown: extractor rejects 'The Recs RDC - Name' author meta"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-14"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-15"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "97 review(s) with no usable text, 66 rejected although verified as a review, 34 never scored, 36 with a blocked URL (0 published on the site), across 678 current shows"
+      "message": "100 review(s) with no usable text, 67 rejected although verified as a review, 28 never scored, 36 with a blocked URL (0 published on the site), across 689 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (0 more already queued for rescore), of 48686 checked"
+      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (0 more already queued for rescore), of 48814 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "2 early publish date(s) awaiting recheck (limit 40); 209 already attempted and not yet confirmed"
+      "message": "6 early publish date(s) awaiting recheck (limit 40); 209 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3442 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 3455 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -125,11 +125,6 @@
       "name": "Data: reviewed shows missing from shows.json",
       "status": "pass",
       "message": "No aggregator-reviewed show is missing from the catalogue"
-    },
-    {
-      "name": "Data: BWW roundup discovery misses near opening",
-      "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: now-you-see-me-live-2026 (12 misses, last 2026-11-15T02:17:47.968Z)."
     }
   ]
 }

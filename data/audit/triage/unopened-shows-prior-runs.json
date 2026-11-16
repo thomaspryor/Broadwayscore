@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-15T10:12:34.865Z",
+  "generatedAt": "2026-11-16T01:00:41.111Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 5998,
-  "flaggedShows": 48,
-  "flaggedFiles": 169,
+  "scannedShows": 6000,
+  "flaggedShows": 47,
+  "flaggedFiles": 168,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -18,7 +18,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 27,
-    "needs-human-review": 21
+    "needs-human-review": 20
   },
   "shows": [
     {
@@ -2657,42 +2657,6 @@
           "url": "https://www.timeout.com/london/theatre/the-snowman-review",
           "wrongProduction": true,
           "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Almeida Theatre",
-      "previewsStartDate": "2026-11-10",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Almeida Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2017
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "guardian--peter-robinson.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongShow",
-          "afterReason": "wrongShow",
-          "outletId": "guardian",
-          "criticName": "Peter Robinson",
-          "publishDate": "2017-09-27",
-          "url": null,
-          "wrongProduction": false,
-          "wrongShow": true,
           "evaluationError": null
         }
       ]
