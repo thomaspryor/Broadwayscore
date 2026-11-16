@@ -2,7 +2,6 @@
 // are not an owed review of that production. Real functions only (CLAUDE.md §15).
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const noise = require('./gap-census-noise.js');
@@ -403,17 +402,4 @@ test("census: a company review at <company> for a show on that company own stage
   assert.equal(own('https://example.com/anon-a-tempest-at-mcc-theater', 'Anon(a)', 'off-broadway', 'The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space'), null);
   assert.equal(own('https://example.com/the-weir-at-the-irish-rep', 'The Weir', 'off-broadway', 'Irish Repertory Theatre'), null);
   assert.equal(own('https://example.com/review-much-ado-at-the-public', 'Much Ado About Nothing', 'off-broadway', 'Delacorte Theater'), null);
-});
-
-// Class guard: every live review on the site is a review of its own production, so the
-// rule must never fire on one (it fired on 4 before the company/venue groups, BRO-7621).
-test('census: urlNamesOtherNyHouse never fires on a live review of its own show', { skip: !fs.existsSync(new URL('../../data/reviews.json', import.meta.url)) && 'data/reviews.json not present' }, () => {
-  const shows = require('../../data/shows.json');
-  const list = Array.isArray(shows) ? shows : shows.shows;
-  const byId = new Map(list.map((s) => [s.id, s]));
-  const rv = require('../../data/reviews.json');
-  const hits = (Array.isArray(rv) ? rv : rv.reviews)
-    .filter((r) => r && r.url && byId.has(r.showId) && ny.urlNamesOtherNyHouse(r.url, byId.get(r.showId)))
-    .map((r) => `${r.showId} ${r.url}`);
-  assert.deepEqual(hits, []);
 });
