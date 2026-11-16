@@ -14,6 +14,9 @@
  * same division of labor as every other "file a card, the standing loop
  * dispatches it" flow in this repo. Pure planner here so the card content is
  * unit-testable without touching the board API (CLAUDE.md §15).
+ *
+ * Also files the same kind of card for review submissions that park as
+ * needs-manual-review (BRO-7606, scripts/file-review-submission-card.js).
  */
 
 'use strict';
@@ -80,8 +83,9 @@ function feedbackTitlePrefix(issueNumber) {
 
 // Does this `linear-brain find` JSON output name an open card for the issue?
 // find matches the term in title OR description and prints `null` when
-// nothing matches, so require the title prefix ourselves.
-function isOpenTwin(findOutput, issueNumber) {
+// nothing matches, so require the title prefix ourselves. `prefixFor` picks
+// the card family (feedback by default; review submissions, BRO-7606).
+function isOpenTwin(findOutput, issueNumber, prefixFor = feedbackTitlePrefix) {
   // find prints indented multi-line JSON (linear-brain.js JSON.stringify(.., null, 2)) or `null`.
   const text = String(findOutput || '').trim();
   let parsed = null;
@@ -89,7 +93,22 @@ function isOpenTwin(findOutput, issueNumber) {
     const start = text.indexOf('{');
     if (start >= 0) { try { parsed = JSON.parse(text.slice(start)); } catch { parsed = null; } }
   }
-  return !!(parsed && typeof parsed.title === 'string' && parsed.title.startsWith(feedbackTitlePrefix(issueNumber)));
+  return !!(parsed && typeof parsed.title === 'string' && parsed.title.startsWith(prefixFor(issueNumber)));
+}
+
+// Shared find-then-create for one GitHub issue's card. Fail-soft: never
+// throws, never logs argv (the notes) because the Actions log is public.
+function fileCardOnce({ card, issueNumber, prefixFor, source }, run) {
+  try {
+    const found = run(['find', prefixFor(issueNumber)]);
+    if (isOpenTwin(found, issueNumber, prefixFor)) return { filed: false, reused: true, title: card.title };
+  } catch { /* fail open: a find error must not stop the card */ }
+  try {
+    run(['create', card.title, '--priority', '1', '--notes', `${card.notes}\n\n_Filed from CI. Suggested action: ${card.action}._`, '--dispatch', '--source', source]);
+  } catch (err) {
+    return { filed: false, error: `linear-brain create exited ${err && err.status != null ? err.status : 'unknown'}` };
+  }
+  return { filed: true, title: card.title };
 }
 
 /**
@@ -101,16 +120,83 @@ function isOpenTwin(findOutput, issueNumber) {
  */
 function fileFeedbackCard({ diagnosis, planReason, planState, issueNumber, issueUrl }, { run } = {}) {
   const card = buildEscalationCard({ diagnosis, planReason, planState, issueNumber, issueUrl });
-  try {
-    const found = run(['find', feedbackTitlePrefix(issueNumber)]);
-    if (isOpenTwin(found, issueNumber)) return { filed: false, reused: true, title: card.title };
-  } catch { /* fail open: a find error must not stop the card */ }
-  try {
-    run(['create', card.title, '--priority', '1', '--notes', `${card.notes}\n\n_Filed from CI. Suggested action: ${card.action}._`, '--dispatch', '--source', 'workflow:auto-fix-feedback-bug']);
-  } catch (err) {
-    return { filed: false, error: `linear-brain create exited ${err && err.status != null ? err.status : 'unknown'}` };
-  }
-  return { filed: true, title: card.title };
+  return fileCardOnce({ card, issueNumber, prefixFor: feedbackTitlePrefix, source: 'workflow:auto-fix-feedback-bug' }, run);
 }
 
-module.exports = { buildEscalationCard, feedbackTitlePrefix, isOpenTwin, fileFeedbackCard };
+// ---------------------------------------------------------------------------
+// Review submissions (BRO-7606). process-review-submission.yml labels a reader's
+// [Review Submission] issue needs-manual-review when validation cannot decide,
+// the approved review never lands, or scraping fails; the sweep in rebuild-fast
+// does the same for reviews never scored. Before this nothing filed a card and
+// 13 submissions sat parked up to 8 weeks. Same one-card-per-issue contract as
+// feedback above. The title is FIXED per issue (no show, no reason) so every
+// filer (the workflow steps and the sweep backfill) computes the same title.
+
+function reviewSubmissionTitlePrefix(issueNumber) {
+  return `Review submission #${issueNumber}:`;
+}
+
+/**
+ * @param {object} opts
+ * @param {number|string} opts.issueNumber
+ * @param {string} [opts.issueUrl]
+ * @param {string} [opts.showId] - matched show id, when validation found one
+ * @param {string} [opts.reviewUrl] - the submitted (public) review URL
+ * @param {string} [opts.reason] - why it parked, from the workflow or sweep
+ */
+function buildReviewSubmissionCard({ issueNumber, issueUrl, showId = '', reviewUrl = '', reason = '' } = {}) {
+  if (!issueNumber) throw new Error('buildReviewSubmissionCard requires issueNumber');
+  // Public repo and logs: only the public review URL and show id go on the
+  // card, never the submitter's name, email or note (BRO-4453).
+  const title = `${reviewSubmissionTitlePrefix(issueNumber)} needs a manual check`;
+  const problem = [
+    `A reader submitted a review (GitHub issue #${issueNumber}${issueUrl ? `, ${issueUrl}` : ''}) and process-review-submission.yml could not add it on its own, so it is labelled needs-manual-review.`,
+    `Why: ${truncate(redactEmails(reason || 'not recorded; read the bot comments on the issue'), 400)}`,
+    reviewUrl ? `Review URL: ${truncate(reviewUrl, 300)}` : '',
+    showId ? `Matched show: ${showId}` : 'Matched show: none',
+  ].filter(Boolean).join('\n');
+  const approach = [
+    'Read the issue and its bot comments. Typical causes and fixes:',
+    '- Show not in data/shows.json: add it (run scripts/validate-show-venue.js first, CLAUDE.md section 3).',
+    '- Outlet not in data/outlet-registry.json: register it.',
+    '- URL slug gives no show title, or validation erred: identify the show from the article text.',
+    'Then ingest the review (ingest-urls / re-dispatch process-review-submission.yml with issue_number and notify=false) and confirm it is live; scripts/sweep-awaiting-score-submissions.js closes the issue once it is. If the submission is not a valid review, close the issue with a reason.',
+  ].join('\n');
+  const notes = [
+    '## Problem', problem, '',
+    '## Suggested approach', approach, '',
+    '## Acceptance criteria',
+    `GitHub issue #${issueNumber} is closed: the review is live on the site, or the issue says why it was rejected.`,
+    '',
+    `VERIFY: node scripts/check-review-item-resolved.js --issue-closed=${issueNumber}`,
+  ].join('\n');
+  return { title, priority: 'P1', status: 'Not started', action: 'Investigate', notes };
+}
+
+// GitHub label put on a [Review Submission] issue once its card exists, so the
+// rebuild-fast sweep skips it without a board call, and a card the owner
+// cancelled is not re-filed while the issue stays open.
+const CARD_FILED_LABEL = 'linear-card';
+
+// Which open GitHub issues (gh issue list --json number,title,labels) still
+// need a review-submission card: parked as needs-manual-review (or
+// scraping-failed) and not yet marked CARD_FILED_LABEL.
+function reviewSubmissionsNeedingCard(issues) {
+  return (issues || []).filter((issue) => {
+    if (!String(issue && issue.title).startsWith('[Review Submission]')) return false;
+    const names = ((issue && issue.labels) || []).map((l) => (typeof l === 'string' ? l : l && l.name));
+    if (names.includes(CARD_FILED_LABEL)) return false;
+    return names.includes('needs-manual-review') || names.includes('scraping-failed');
+  });
+}
+
+function fileReviewSubmissionCard({ issueNumber, issueUrl, showId, reviewUrl, reason }, { run } = {}) {
+  const card = buildReviewSubmissionCard({ issueNumber, issueUrl, showId, reviewUrl, reason });
+  return fileCardOnce({ card, issueNumber, prefixFor: reviewSubmissionTitlePrefix, source: 'workflow:process-review-submission' }, run);
+}
+
+module.exports = {
+  buildEscalationCard, feedbackTitlePrefix, isOpenTwin, fileFeedbackCard,
+  buildReviewSubmissionCard, reviewSubmissionTitlePrefix, fileReviewSubmissionCard,
+  reviewSubmissionsNeedingCard, CARD_FILED_LABEL,
+};

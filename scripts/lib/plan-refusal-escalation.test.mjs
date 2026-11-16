@@ -106,3 +106,91 @@ test('isOpenTwin parses the indented multi-line JSON linear-brain find really pr
   assert.equal(isOpenTwin(real, 901), true);
   assert.equal(isOpenTwin(`[linear] note\n${real}`, 901), true);
 });
+
+// ---------------------------------------------------------------------------
+// BRO-7606: review submissions labelled needs-manual-review get one card too.
+const {
+  buildReviewSubmissionCard, fileReviewSubmissionCard, reviewSubmissionsNeedingCard, CARD_FILED_LABEL,
+} = require('./plan-refusal-escalation.js');
+const { main: fileReviewSubmissionCardCli } = require('../file-review-submission-card.js');
+
+test('buildReviewSubmissionCard: fixed title per issue, armed VERIFY, no submitter PII', () => {
+  const card = buildReviewSubmissionCard({
+    issueNumber: 1159, reviewUrl: 'https://thecritic.co.uk/x-review/', showId: 'x-2026',
+    reason: 'outlet not registered; contact jane@example.com',
+  });
+  assert.equal(card.title, 'Review submission #1159: needs a manual check');
+  // the sweep knows no show or reason, and must compute the same title
+  assert.equal(buildReviewSubmissionCard({ issueNumber: 1159 }).title, card.title);
+  assert.match(card.notes, /## Problem[\s\S]*## Suggested approach[\s\S]*## Acceptance criteria/);
+  assert.match(card.notes, /thecritic\.co\.uk\/x-review/);
+  assert.match(card.notes, /x-2026/);
+  assert.doesNotMatch(card.notes, /jane@example\.com/);
+  const verdict = evaluateVerifiability(card.notes);
+  assert.equal(verdict.armed, true);
+  assert.equal(verdict.cmd, 'node scripts/check-review-item-resolved.js --issue-closed=1159');
+  assert.throws(() => buildReviewSubmissionCard({}), /issueNumber/);
+});
+
+test('fileReviewSubmissionCard files --dispatch once, then reuses the open card for the same issue', () => {
+  const board = [];
+  const run = (args) => {
+    if (args[0] === 'find') {
+      const hit = board.find((t) => t.includes(args[1]));
+      return hit ? JSON.stringify({ identifier: 'BRO-1', title: hit }, null, 2) : 'null\n';
+    }
+    assert.ok(args.includes('--dispatch'));
+    assert.ok(!args.includes('--park'));
+    assert.ok(args.includes('workflow:process-review-submission'));
+    board.push(args[1]);
+    return '';
+  };
+  const first = fileReviewSubmissionCard({ issueNumber: 1200, reason: 'validation could not decide' }, { run });
+  const second = fileReviewSubmissionCard({ issueNumber: 1200, showId: 'other' }, { run });
+  assert.equal(first.filed, true);
+  assert.equal(second.reused, true);
+  assert.equal(board.length, 1);
+  // a feedback card for the same GitHub number is not a twin, nor is #120
+  board.length = 0; board.push('Feedback #1200: Wonder');
+  assert.equal(fileReviewSubmissionCard({ issueNumber: 1200 }, { run }).filed, true);
+  board.length = 0; board.push('Review submission #1200: needs a manual check');
+  assert.equal(fileReviewSubmissionCard({ issueNumber: 120 }, { run }).filed, true);
+});
+
+test('reviewSubmissionsNeedingCard: parked review submissions without the linear-card label', () => {
+  const issue = (number, title, labels) => ({ number, title, labels: labels.map((name) => ({ name })) });
+  const picked = reviewSubmissionsNeedingCard([
+    issue(1, '[Review Submission] A', ['needs-manual-review']),
+    issue(2, '[Review Submission] B', ['scraping-failed']),
+    issue(3, '[Review Submission] C', ['needs-manual-review', CARD_FILED_LABEL]),
+    issue(4, '[Bug] D', ['needs-manual-review']),
+    issue(5, '[Review Submission] E', ['awaiting-score']),
+  ]).map((i) => i.number);
+  assert.deepEqual(picked, [1, 2]);
+});
+
+test('file-review-submission-card CLI: env mode files and labels; sweep caps and skips labelled issues', () => {
+  const calls = [];
+  const deps = {
+    run: (args) => { calls.push(['linear', args[0]]); return args[0] === 'find' ? 'null' : ''; },
+    runGh: (args) => {
+      calls.push(['gh', args.slice(0, 2).join(' ')]);
+      if (args[0] === 'issue') {
+        return args[args.indexOf('--label') + 1] === 'needs-manual-review' ? JSON.stringify([
+          { number: 11, title: '[Review Submission] a', body: '### Review URL\n\nhttps://ex.com/r\n', labels: [{ name: 'needs-manual-review' }] },
+          { number: 12, title: '[Review Submission] b', body: '', labels: [{ name: 'needs-manual-review' }, { name: CARD_FILED_LABEL }] },
+          { number: 13, title: '[Review Submission] c', body: '', labels: [{ name: 'needs-manual-review' }] },
+        ]) : '[]';
+      }
+      return '';
+    },
+  };
+  assert.equal(fileReviewSubmissionCardCli([], { ISSUE_NUMBER: '77', REASON: 'r' }, deps), 0);
+  assert.deepEqual(calls, [['linear', 'find'], ['linear', 'create'], ['gh', 'api -X']]);
+  calls.length = 0;
+  fileReviewSubmissionCardCli(['--sweep', '--max=1'], {}, deps);
+  assert.equal(calls.filter((c) => c[1] === 'create').length, 1); // capped at 1, #12 skipped
+  calls.length = 0;
+  assert.equal(fileReviewSubmissionCardCli([], { ISSUE_NUMBER: '' }, deps), 0);
+  assert.equal(calls.length, 0);
+});
