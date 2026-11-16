@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T09:11:44.615Z",
+  "generatedAt": "2026-11-16T10:23:11.508Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -144,9 +144,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 848,
+  "itemsScanned": 843,
   "matchedGaps": 1,
   "possibleGaps": 1,
   "gaps": [
