@@ -37,7 +37,7 @@ import { scrubCloudEnv } from '../../tests/helpers/cloud-env.mjs';
 
 // BRO-7609: CLAUDE_CODE_REMOTE=true (every cloud container) arms the BRO-7554 cloud refusal before the guards these
 // tests exercise. They assert dispatch-guard behaviour in a plain world, so scrub it. The cloud guard itself is
-// covered with an explicit env in tests/unit/linear-next.test.mjs.
+// covered in scripts/lib/silent-dispatch-sweep.test.mjs.
 scrubCloudEnv();
 
 // linear-next main() without --model asks LIVE Linear for cloud Opus claims (opus-budget.js);

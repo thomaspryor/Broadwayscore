@@ -44,7 +44,7 @@ function runSuite(file, env) {
       clearTimeout(timer);
       const num = (label) => Number((out.match(new RegExp(`^# ${label} (\\d+)`, 'm')) || [])[1]);
       const failed = [...out.matchAll(/^not ok \d+ - (.*)$/gm)].map((m) => m[1]);
-      resolve({ file, code, pass: num('pass'), fail: num('fail'), failed });
+      resolve({ file, code, pass: num('pass'), fail: num('fail'), cancelled: num('cancelled'), failed });
     });
   });
 }
@@ -58,7 +58,7 @@ test('every Linear-driving suite gives the same result in a simulated cloud cont
     const a = cloud[i], b = clean[i];
     if (![a.pass, a.fail, b.pass, b.fail].every(Number.isFinite)) { problems.push(`${f}: could not parse TAP totals (cloud ${a.pass}/${a.fail}, clean ${b.pass}/${b.fail}); the suite crashed or the reporter format changed`); return; }
     if (!(b.pass > 0) || b.fail !== 0) problems.push(`${f}: broken even in a clean world (pass ${b.pass}, fail ${b.fail}): ${b.failed.join('; ')}`);
-    if (a.pass !== b.pass || a.fail !== b.fail) {
+    if (a.pass !== b.pass || a.fail !== b.fail || a.code !== b.code || a.cancelled !== b.cancelled) {
       problems.push(`${f}: cloud pass ${a.pass}/fail ${a.fail} vs clean pass ${b.pass}/fail ${b.fail}; red only in cloud: ${a.failed.join('; ')}. Call scrubCloudEnv() from tests/helpers/cloud-env.mjs.`);
     }
   });
