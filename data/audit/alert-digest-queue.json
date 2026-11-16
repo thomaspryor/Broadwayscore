@@ -376,5 +376,33 @@
       }
     ],
     "queuedAt": "2026-11-16T05:35:33.081Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:well-see-off-broadway-2026",
+    "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--6991e48c.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/well-see/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-16T05:50:07.270Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:tristan-and-yseult-off-broadway-2026",
+    "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline — escalated after 15 notifications",
+    "description": "Filed BRO-7581 for owner triage after 15 repeats with no tracker.\n\nreplay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nydailynews--39951290.json (nydailynews): fetch failed: All scraping methods failed http://www.nydailynews.com/entertainment/theater-arts/tristan-yseult-shines-brooklyn-article-1.2022234",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7581",
+    "fields": [],
+    "queuedAt": "2026-11-16T05:50:37.936Z"
   }
 ]
