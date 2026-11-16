@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7594-g",
   "planId": "f1f20274-1846-4185-8ac9-c9813a9e59e6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-16T14:10:06.286Z",
   "submitter": {
     "name": null,
@@ -46,5 +46,14 @@
         "description": "shows.json: awake-and-sing-2026.creativeTeam"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-16T16:16:14.191Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for awake-and-sing-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
