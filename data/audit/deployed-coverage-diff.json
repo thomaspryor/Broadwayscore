@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-16T04:32:23.297Z",
+  "generatedAt": "2026-11-16T06:37:59.139Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 325,
-  "clean": 324,
+  "checked": 328,
+  "clean": 327,
   "defective": 1,
   "byType": {
     "score-drift": 1
@@ -18,7 +18,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 87.02 vs local 87.39 (Δ0.37)"
+          "detail": "deployed cs 87.25 vs local 87.02 (Δ0.23)"
         }
       ],
       "missingFromProd": [],
