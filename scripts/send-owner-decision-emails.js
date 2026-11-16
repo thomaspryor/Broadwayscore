@@ -23,7 +23,7 @@ const linear = require('./lib/linear-client');
 const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 const { findOwnerDecisions, planNotification } = require('./lib/owner-decision-notify.js');
 const link = require('../src/lib/owner-decision-link.js');
-const { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail } = require('./lib/owner-decision-email.js');
+const { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, pictureHold } = require('./lib/owner-decision-email.js');
 const { holdReason, sendMode } = require('./lib/owner-decision-quiet-period.js');
 
 const USAGE = 'Usage: node scripts/send-owner-decision-emails.js [--dry-run] [--only=BRO-N] [--roundup] [--no-sweep] [--max=8]';
@@ -33,6 +33,7 @@ const LEGACY_KEY = 'owner-decisions:new';
 const BACKLOG_MIN = 3;
 const ROUNDUP_AFTER_MS = 3 * 24 * 60 * 60 * 1000;
 const MAX_PAGES = 40;
+const PICTURE_NEEDED_MARK = 'PICTURE NEEDED (BRO-7578):';
 
 const QUERY = `query($teamKey: String!, $after: String) {
   issues(first: 25, after: $after, filter: {
@@ -161,11 +162,30 @@ async function main(argv = process.argv.slice(2)) {
   // BRO-6266: hold a decision already answered, one a session is working on
   // right now (a comment in the last 90 min), or one with a plain comment that
   // may already answer it. Held cards stay on the digest and the list page.
+  // BRO-7578: the text of the cards a decision names, so a mockup canvas linked
+  // there reaches the email too.
+  const relatedOf = (d) => link.relatedCardIds(byId.get(d.identifier).description, d.identifier)
+    .map((id) => byId.get(id) && byId.get(id).description).filter(Boolean);
+  const needPicture = [];
   const fresh = untold.filter((d) => {
     const hold = holdReason(byId.get(d.identifier), d, { secret });
     if (hold) console.log(`[hold] ${d.identifier} (${hold.reason}): ${hold.detail}`);
-    return !hold;
+    if (hold) return false;
+    const blind = pictureHold({ question: d.question || d.title, description: byId.get(d.identifier).description, related: relatedOf(d) });
+    if (blind) { console.log(`[hold] ${d.identifier} (needs-picture): ${blind}`); needPicture.push(d); }
+    return !blind;
   });
+  // Said once on the card, so whoever owns it adds a screenshot or mockup link; the next run then emails it.
+  if (!opts.dryRun) {
+    for (const d of needPicture) {
+      if (hasComment(d, PICTURE_NEEDED_MARK)) continue;
+      try {
+        const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
+        await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
+          { input: { issueId: issue.issue.id, body: `${PICTURE_NEEDED_MARK} this decision asks how something should look, so it is not emailed to the owner until the card has an Evidence: screenshot line or a link to the mockups (a claude.ai artifact). Add one to the description; the next run sends it.` } });
+      } catch (err) { console.error(`[owner-decision-emails] could not note the missing picture on ${d.identifier}: ${err.message}`); }
+    }
+  }
   console.log(`[owner-decision-emails] ${fresh.length} not yet emailed, ${untold.length - fresh.length} held (cap ${opts.max} per run)`);
   const { sendEmailAlert } = require('./lib/discord-notify.js');
   const markTold = async (d, text) => {
@@ -192,7 +212,7 @@ async function main(argv = process.argv.slice(2)) {
     return failures ? 1 : 0;
   }
   for (const d of fresh.slice(0, opts.max)) {
-    const email = buildDecisionEmail({ decision: d, description: byId.get(d.identifier).description, secret });
+    const email = buildDecisionEmail({ decision: d, description: byId.get(d.identifier).description, related: relatedOf(d), secret });
     if (opts.dryRun) { console.log(`[dry-run] would email "${email.subject}" (${d.identifier})`); continue; }
     // Resend dedupes this key for 24h, so a failed marker write below cannot double-send within a day.
     const ok = await sendEmailAlert({ title: email.subject, description: '', severity: 'error', subjectLabel: '', html: email.html, idempotencyKey: `owner-decision:${d.identifier}:${email.tokenHash}` });

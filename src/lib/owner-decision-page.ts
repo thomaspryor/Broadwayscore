@@ -32,6 +32,7 @@ button,a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;te
 a.btn.alt{background:#2c2c38;color:#fff}
 textarea{width:100%;box-sizing:border-box;min-height:140px;font-size:16px;padding:12px;border-radius:10px;border:1px solid #444;background:#15151c;color:#fff;margin:0 0 12px}
 a{color:#d4a574}
+a.see{display:block;text-align:center;font-weight:700;text-decoration:none;padding:12px;border:2px solid #d4a574;border-radius:10px}
 pre{white-space:pre-wrap;word-wrap:break-word;font:inherit;margin:0}
 .shot{margin:0 0 12px}
 .shot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid #2c2c38;background:#fff}

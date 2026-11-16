@@ -12,6 +12,8 @@ const link = linkModule as unknown as {
   verifyToken: (token: string | null, secret: string, now?: number) => any;
   loadDecision: (args: { graphql: Graphql; id: string; hash: string; secret: string }) => Promise<any>;
   recordAnswer: (args: { graphql: Graphql; id: string; hash: string; secret: string; choiceKey: string; text: string; via?: string }) => Promise<any>;
+  mockupLinks: (...texts: string[]) => string[];
+  relatedCardIds: (description: string, selfId: string) => string[];
 };
 const { verifyToken, loadDecision, recordAnswer, MAX_ANSWER_CHARS } = link;
 
@@ -41,6 +43,23 @@ function gate(req: NextRequest, tokenRaw: string | null): { id: string; hash: st
 }
 
 type Loaded = any;
+
+// BRO-7578: the mockups (on this card or the cards it names) and the card itself,
+// above the Confirm button, so the owner can look before saving an answer.
+async function seeLinksHtml(issue: { identifier?: string; url?: string; description?: string } | undefined): Promise<string> {
+  if (!issue) return '';
+  const own = String(issue.description || '');
+  let related: string[] = [];
+  try {
+    const ids = link.relatedCardIds(own, String(issue.identifier || '')).slice(0, 4);
+    related = (await Promise.all(ids.map((id) => linearGraphql('query($id: String!) { issue(id: $id) { description } }', { id })
+      .then((d: any) => String(d?.issue?.description || ''), () => '')))).filter(Boolean);
+  } catch { related = []; }
+  const shots = link.mockupLinks(own, ...related)
+    .map((u, i, all) => `<p><a class="see" href="${esc(u)}" rel="noreferrer">${all.length > 1 ? `See the mockups (${i + 1})` : 'See the mockups'}</a></p>`).join('');
+  const card = typeof issue.url === 'string' && issue.url.startsWith('https://linear.app/') ? `<p><a href="${esc(issue.url)}" rel="noreferrer">Open the card for the full background</a></p>` : '';
+  return shots + card;
+}
 
 function recordedPage(l: Loaded): Response {
   return page('Already answered', `<h1>Already answered</h1><p>This decision was recorded on the card. Nothing changes if you tap again.</p>
@@ -92,7 +111,7 @@ export async function GET(req: NextRequest) {
   // BRO-6654: a task card (Owner step lines) shows its steps, so the Done page reads on its own.
   const task = (open.block as { task?: boolean; steps?: string[] }).task === true;
   const steps = task ? `<ol>${((open.block as { steps?: string[] }).steps || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ol>` : '';
-  const head = `<h1>${task ? 'Your task' : 'Your decision'}</h1><p class="q">${esc(link.displayQuestion(open.question))}</p>${steps}<p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
+  const head = `<h1>${task ? 'Your task' : 'Your decision'}</h1><p class="q">${esc(link.displayQuestion(open.question))}</p>${steps}<p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${await seeLinksHtml(open.issue)}${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
 
   if (choice === 'own') {
     return page(task ? 'Your task' : 'Your decision', `${head}${form(`<input type="hidden" name="choice" value="own"><textarea name="text" maxlength="${MAX_ANSWER_CHARS}" required placeholder="Type your answer here" aria-label="Your answer"></textarea><button type="submit">Send my answer</button>`)}`);

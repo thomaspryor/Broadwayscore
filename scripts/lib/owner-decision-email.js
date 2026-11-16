@@ -6,7 +6,7 @@
  * owner-facing rules: plain English, no em dashes, no card ids in the text.
  */
 
-const { displayQuestion, parseDecisionBlock, answerChoices, signToken, signListToken, questionHash, unescapeMarkdown, collapseSelfLinks } = require('../../src/lib/owner-decision-link.js');
+const { displayQuestion, parseDecisionBlock, answerChoices, signToken, signListToken, questionHash, unescapeMarkdown, collapseSelfLinks, mockupLinks, isVisualQuestion } = require('../../src/lib/owner-decision-link.js');
 const { pickEmailImage, fullUrlForThumb } = require('./visual-approval.js');
 
 const BASE_URL = 'https://broadwayscorecard.com';
@@ -36,7 +36,8 @@ function button(href, label, primary) {
  * decision: { identifier, title, url, question }, description: the card text,
  * secret: signing secret. Returns { subject, html, tokenHash }.
  */
-function buildDecisionEmail({ decision, description, secret, now = Date.now(), baseUrl = BASE_URL, reminder = false }) {
+function buildDecisionEmail({ decision, description, related = [], secret, now = Date.now(), baseUrl = BASE_URL, reminder = false }) {
+  const seeHtml = contextLinksHtml({ decision, links: mockupLinks(description, ...related) });
   const hash = questionHash(decision.question || decision.title);
   const token = signToken({ id: decision.identifier, hash, secret, now });
   const block = parseDecisionBlock(description);
@@ -46,7 +47,7 @@ function buildDecisionEmail({ decision, description, secret, now = Date.now(), b
   // BRO-6654: Owner step lines make this a task the owner does by hand, then taps Done.
   const task = block.task;
   const subject = `${reminder ? 'Still waiting: ' : task ? 'Task for you: ' : 'Decision needed: '}${subjectText}`;
-  if (task) return { subject, html: taskHtml({ decision, block, choices, question, token, secret, now, baseUrl, reminder }), tokenHash: hash };
+  if (task) return { subject, html: taskHtml({ decision, block, choices, question, token, secret, now, baseUrl, reminder, seeHtml }), tokenHash: hash };
 
   const optionHtml = block.options.length >= 2
     ? block.options.map((o) => `<div style="margin:14px 0 4px;"><div style="font-weight:700;">${esc(o.label)}: ${esc(noDash(o.name))}</div>`
@@ -61,16 +62,37 @@ function buildDecisionEmail({ decision, description, secret, now = Date.now(), b
 <p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'Waiting on you'}. Work on this is paused until you answer.</p>
 <h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
 ${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(decision.title))}</p>` : ''}
+${seeHtml}
 ${evidenceHtml(block.evidence)}
 ${block.why ? `<p style="margin:0 0 12px;"><strong>Why this is your call:</strong> ${esc(noDash(block.why))}</p>` : ''}
 ${optionHtml}
 ${block.recommendation ? `<p style="margin:16px 0 6px;"><strong>My recommendation:</strong> ${esc(noDash(block.recommendation))}</p>` : ''}
 ${block.defaultText ? `<p style="margin:0 0 12px;"><strong>If you do not answer:</strong> ${esc(noDash(block.defaultText))}</p>` : ''}
 ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
-<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved. This link works for 14 days. If you already answered this in a Claude chat, tell that chat 'record my answer' and it will be saved here.${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''}</p>
+<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved. This link works for 14 days. If you already answered this in a Claude chat, tell that chat 'record my answer' and it will be saved here.</p>
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
+}
+
+// BRO-7578: the mockups and the card sit right under the question, above every
+// answer button, so the owner sees what they are deciding before deciding it.
+function contextLinksHtml({ decision, links }) {
+  const shots = (links || []).map((u, i) => button(u, links.length > 1 ? `See the mockups (${i + 1})` : 'See the mockups', false)).join('');
+  const card = decision && decision.url ? `<p style="margin:4px 0 14px;font-size:15px;"><a href="${esc(decision.url)}" style="color:#1a1208;font-weight:600;">Open the card for the full background</a></p>` : '';
+  return shots + card;
+}
+
+/**
+ * BRO-7578: a question about how something looks is not emailed without a
+ * picture (an Evidence screenshot) or a mockup link on the card or a card it
+ * names. Returns a plain reason when it must wait, else null.
+ */
+function pictureHold({ question, description, related = [] }) {
+  if (!isVisualQuestion(question)) return null;
+  if (parseDecisionBlock(description).evidence.length) return null;
+  if (mockupLinks(description, ...related).length) return null;
+  return 'a question about how something looks, with no screenshot and no mockup link on the card or the cards it names';
 }
 
 // BRO-6876 / BRO-7491: ONE small picture plus at most two text links. The card's Evidence URLs are
@@ -90,7 +112,7 @@ function evidenceHtml(evidence) {
 // The task body: why it needs the owner, the numbered steps, then Done /
 // could-not-do-it. Tapping Done records the answer and sends the card back to
 // the work queue, so the work carries on without the owner finding the chat.
-function taskHtml({ decision, block, choices, question, token, secret, now, baseUrl, reminder }) {
+function taskHtml({ decision, block, choices, question, token, secret, now, baseUrl, reminder, seeHtml = '' }) {
   const steps = block.steps.map((s) => `<li style="margin:0 0 10px;">${esc(noDash(s))}</li>`).join('');
   const buttons = choices.map((c, i) => button(answerUrl(token, c.key, baseUrl), c.label, i === 0)).join('');
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -99,11 +121,12 @@ function taskHtml({ decision, block, choices, question, token, secret, now, base
 <p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'A task for you'}. Work on this is paused until you tap Done.</p>
 <h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
 ${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(decision.title))}</p>` : ''}
+${seeHtml}
 ${block.why ? `<p style="margin:0 0 12px;"><strong>Why Claude cannot do this itself:</strong> ${esc(noDash(block.why))}</p>` : ''}
 <ol style="padding-left:22px;margin:12px 0 16px;">${steps}</ol>
 ${buttons}
 ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
-<p style="margin:16px 0 0;color:#666;font-size:13px;">When you tap Done, the work goes back in the queue and carries on by itself. You do not need to find the Claude chat. Each button asks you to confirm first.${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''} This link works for 14 days.</p>
+<p style="margin:16px 0 0;color:#666;font-size:13px;">When you tap Done, the work goes back in the queue and carries on by itself. You do not need to find the Claude chat. Each button asks you to confirm first. This link works for 14 days.</p>
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
 }
@@ -142,4 +165,4 @@ ${button(listUrl(secret, { now, baseUrl }), 'See and answer everything', true)}
   return { subject, html };
 }
 
-module.exports = { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, answerUrl, listUrl, BASE_URL };
+module.exports = { pictureHold, contextLinksHtml, buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, answerUrl, listUrl, BASE_URL };

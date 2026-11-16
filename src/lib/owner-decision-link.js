@@ -119,6 +119,30 @@ function splitUpDown(rest) {
   return { name: plain(name), upside: plain(parts[0] || ''), downside: plain(parts.slice(1).join(' / ')) };
 }
 
+// BRO-7578: what lets the owner SEE a decision before answering. The owner got an
+// email about two iPhone design rounds with no picture and no visible link, while
+// the mockups sat on a canvas linked only from the cards the decision named.
+const MOCKUP_URL_RE = /https:\/\/claude\.ai\/(?:code\/)?artifact\/[A-Za-z0-9_-]{6,80}/g;
+const MAX_MOCKUP_LINKS = 3;
+/** Distinct claude.ai artifact links (mockup canvases, pages) found in the given texts, in order. */
+function mockupLinks(...texts) {
+  const out = [];
+  for (const t of texts) {
+    for (const m of String(t || '').matchAll(MOCKUP_URL_RE)) {
+      if (out.length < MAX_MOCKUP_LINKS && !out.includes(m[0])) out.push(m[0]);
+    }
+  }
+  return out;
+}
+/** Card ids a description names (BRO-N), excluding the card itself. */
+function relatedCardIds(description, selfId) {
+  const ids = String(description || '').match(/\bBRO-\d{1,6}\b/g) || [];
+  return [...new Set(ids)].filter((id) => id !== selfId);
+}
+// A question about how something looks. Answering one blind is the failure BRO-7578 fixes.
+const VISUAL_QUESTION_RE = /\b(?:designs?|mock-?ups?|redesign|layout|looks?|visual|screens?|tab order|icons?|colou?rs?)\b/i;
+function isVisualQuestion(question) { return VISUAL_QUESTION_RE.test(String(question || '')); }
+
 /** Parse the plain-English parts of a decision card. Never throws. */
 function parseDecisionBlock(description) {
   const out = { why: null, options: [], recommendation: null, defaultText: null, evidence: [], steps: [] };
@@ -647,7 +671,7 @@ module.exports = {
   signListToken, verifyListToken, mintDecisionToken, listOpenDecisions, isPlaceholderQuestion,
   TOKEN_TTL_MS, MAX_ANSWER_CHARS, MARKER_RE, ID_RE, AWAITING_OWNER_LABEL,
   stripCode, collapseSelfLinks, capQuestion, markerLines, questionHash, unescapeMarkdown,
-  parseDecisionBlock, answerChoices, STEP_RE, TASK_CHOICES,
+  parseDecisionBlock, answerChoices, STEP_RE, TASK_CHOICES, mockupLinks, relatedCardIds, isVisualQuestion,
   VISUAL_TTL_MS, displayQuestion, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, ANSWER_REF_RE, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
