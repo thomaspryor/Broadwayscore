@@ -421,6 +421,8 @@ test('isVanishedReviewFile: only this candidate\'s own missing file is skippable
   // not ENOENT
   assert.equal(L.isVanishedReviewFile(Object.assign(new Error('x'), { code: 'EACCES', path: gone }), gone), false);
   assert.equal(L.isVanishedReviewFile(new SyntaxError('bad json'), gone), false);
+  // an ENOENT that does not name a path is not this file's
+  assert.equal(L.isVanishedReviewFile(Object.assign(new Error('x'), { code: 'ENOENT' }), gone), false);
   // ENOENT but the file is back (rename raced back in): not vanished
   fs.writeFileSync(gone, '{}');
   assert.equal(L.isVanishedReviewFile(err, gone), false);
@@ -457,6 +459,11 @@ test('strategyEligibility: ensemble not_a_review after our own recovery blocks s
   // a paywall teaser judged before any engine recovery (times-uk clive-davis): not blocked
   const noRecovery = L.strategyState(new Map(), KEY, 'REFETCH_FREE');
   assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: closedOld, review: listing, gapClass: 'TRUNCATED_OTHER', state: noRecovery }).ok, true);
+  // the reviewer's case: our text was lost (reopen), then the ensemble judged
+  // the collector's teaser: that verdict is not about our text, not blocked
+  const reopen = { reviewKey: KEY, strategy: 'ARCHIVE', outcome: 'reopened', reason: 'recovered_text_lost', url: U, ts: '2026-11-09T20:00:00Z' };
+  const stLost = L.strategyState(L.indexRows([recovered, reopen]), KEY, 'ARCHIVE');
+  assert.equal(L.strategyEligibility({ strategy: 'ARCHIVE', show: closedOld, review: listing, gapClass: 'TRUNCATED_OTHER', state: stLost }).ok, true);
   // verdict older than our recovery: not blocked
   const older = { ...listing, priorAutomatedTextVerdicts: [ens('2026-11-01T00:00:00Z')] };
   assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: closedOld, review: older, gapClass: 'TRUNCATED_OTHER', state: st }).ok, true);
@@ -483,13 +490,16 @@ test('strategyEligibility: two lost free-fetch recoveries at one url stop raw-HT
   const once = [rec('2026-11-09T07:00:00Z'), lost('2026-11-10T07:00:00Z')];
   assert.equal(elig(once).ok, true, 'one loss: try again');
   const twice = [...once, rec('2026-11-10T07:30:00Z'), lost('2026-11-12T07:00:00Z')];
-  for (const s of ['REFETCH_FREE', 'PAID_FETCH', 'ARCHIVE']) assert.deepEqual(elig(twice, s), { ok: false, reason: 'lost_loop_at_url' }, s);
-  // a subscriber session reads what the free page cannot: not blocked
-  assert.notEqual(elig(twice, 'BROWSER_SESSION').reason, 'lost_loop_at_url');
+  assert.deepEqual(elig(twice), { ok: false, reason: 'lost_loop_at_url' });
+  // a canonical variant of the url is the same url
+  assert.equal(elig(twice, 'REFETCH_FREE', { ...review, url: U + '?utm_source=x' }).reason, 'lost_loop_at_url');
+  // paid/archive/subscriber/rediscovery may still bring a clean text or a new url
+  for (const s of ['PAID_FETCH', 'ARCHIVE', 'BROWSER_SESSION', 'URL_REDISCOVER']) assert.notEqual(elig(twice, s).reason, 'lost_loop_at_url', s);
   // a url change lifts it
   assert.equal(elig(twice, 'REFETCH_FREE', { ...review, url: 'https://example.com/real-review' }).ok, true);
   // losses of ARCHIVE/BROWSER_SESSION recoveries are real losses, not this trade
   const paidLost = [rec('2026-11-09T07:00:00Z', 'ARCHIVE'), lost('2026-11-10T07:00:00Z', 'ARCHIVE'), rec('2026-11-10T08:00:00Z', 'ARCHIVE'), lost('2026-11-12T07:00:00Z', 'ARCHIVE')];
+  // (URL_FIND / URL_REDISCOVER losses are at a found url, not this trade either)
   assert.equal(elig(paidLost).ok, true);
   // a blocked historic gap is counted for the owner, not silently dropped
   const N = require('./gap-recovery-nightly.js');

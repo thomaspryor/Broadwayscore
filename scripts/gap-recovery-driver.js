@@ -366,6 +366,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   try {
     for (let i = 0; i < work.length; i++) {
       const c = work[i];
+      let strategy = c.strategy;
       try {
       if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); break; }
       if (L.ceilingReachedNow({ file: ledgerPath, ceiling, runMode: runCeiling != null, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
@@ -382,7 +383,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
           record(c, 'BROWSER_SESSION', { outcome: 'browser_unavailable', reason: k.reason });
         }
       }
-      let strategy = c.strategy;
+      strategy = c.strategy;
       stats.attempted++;
       console.log(`\n[${i + 1}/${work.length}] ${c.reviewKey} ${c.gapClass} -> ${strategy}`);
 
@@ -534,7 +535,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         // Renamed/deleted under us: skip this review (non-evidence), keep the night going.
         if (!L.isVanishedReviewFile(e, c.filePath)) throw e;
         console.log(`  ✗ non_evidence (file_vanished): ${c.reviewKey} was renamed or removed by another writer`);
-        record(c, c.strategy, { outcome: 'non_evidence', reason: 'file_vanished' });
+        record(c, strategy, { outcome: 'non_evidence', reason: 'file_vanished', detail: { url: c.url || null } });
       }
     }
     flush('final');

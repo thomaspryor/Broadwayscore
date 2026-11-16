@@ -182,20 +182,22 @@ function strategyState(index, reviewKey, strategy) {
   const supersededUrls = RAW_HTML_STRATEGIES.has(strategy)
     ? all.filter((r) => r.outcome === 'reopened' && r.reason === SUPERSEDED_REASON && r.url).map((r) => r.url)
     : [];
-  // Urls where a free-fetch recovery was lost (another writer put a shorter
-  // text back) LOST_LOOP_AT times: the engine and the collector read the same
-  // page differently and trade it nightly (12 reviews, all REFETCH_FREE, by
-  // 2026-11-15; jena-friedman thecomedybureau 4x). Counted per url, across reopens.
-  const lostCounts = new Map();
-  if (RAW_HTML_STRATEGIES.has(strategy)) {
-    for (const r of all) {
-      if (r.outcome === 'reopened' && r.reason === LOST_REASON && r.url && SUPERSEDABLE_STRATEGIES.has(r.strategy)) lostCounts.set(r.url, (lostCounts.get(r.url) || 0) + 1);
-    }
-  }
-  const lostLoopUrls = [...lostCounts].filter(([, n]) => n >= LOST_LOOP_AT).map(([u]) => u);
-  // Engine recoveries of this review (any strategy, across reopens), by url.
-  const recoveredAtUrl = all.filter((r) => r.outcome === 'recovered' && r.url && r.ts).map((r) => ({ url: r.url, ts: r.ts }));
-  const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0, supersededUrls, lostLoopUrls, recoveredAtUrl };
+  // Urls (one entry per loss) where a REFETCH_FREE recovery was lost: another
+  // writer put a shorter text back. Read across every reopen; compared
+  // canonically at eligibility time (12 reviews traded nightly by 2026-11-15,
+  // all REFETCH_FREE; jena-friedman thecomedybureau 4x).
+  const lostFreeUrls = strategy === 'REFETCH_FREE'
+    ? all.filter((r) => r.outcome === 'reopened' && r.reason === LOST_REASON && r.url && r.strategy === 'REFETCH_FREE').map((r) => r.url)
+    : [];
+  // While-on-disk windows of our recoveries: from the recovery to its next
+  // reopen (open-ended when none). A verdict inside one judged OUR text.
+  const reopenTimes = all.filter((r) => r.outcome === 'reopened' && r.ts).map((r) => Date.parse(r.ts)).sort((x, y) => x - y);
+  const recoveredWindows = all.filter((r) => r.outcome === 'recovered' && r.url && r.ts).map((r) => {
+    const from = Date.parse(r.ts);
+    const to = reopenTimes.find((t) => t > from);
+    return { url: r.url, from, to: to == null ? Infinity : to };
+  });
+  const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0, supersededUrls, lostFreeUrls, recoveredWindows };
   for (const r of rows) {
     st.lastTs = r.ts;
     if (EVIDENCE_OUTCOMES.has(r.outcome)) {
@@ -247,25 +249,26 @@ function strategyEligibility({ strategy, show, review, gapClass, state }) {
       return { ok: false, reason: 'superseded_at_url' };
     }
   }
-  // Lost twice at this url: a third accept is the same trade. No lift on text
-  // quality (the newer text is short by definition); a url change lifts it.
-  // Counted in needsDecision (EXHAUSTED_REASONS) so it stays visible.
-  if (state && Array.isArray(state.lostLoopUrls) && state.lostLoopUrls.length && /^https?:\/\//i.test(String(review.url || ''))) {
+  // A free refetch here was lost LOST_LOOP_AT times: a third accept is the
+  // same trade (the engine's raw-HTML read keeps page chrome the collector's
+  // cleaner read drops). Only REFETCH_FREE stops: ARCHIVE / PAID_FETCH /
+  // BROWSER_SESSION / URL_REDISCOVER may still bring a clean text or a new url
+  // (a url change lifts the block). The gap stays open and counted.
+  if (state && Array.isArray(state.lostFreeUrls) && state.lostFreeUrls.length && /^https?:\/\//i.test(String(review.url || ''))) {
     const { urlCanonicallyChanged } = require('./url-change-invariant');
-    if (state.lostLoopUrls.some((u) => !urlCanonicallyChanged(u, review.url))) return { ok: false, reason: 'lost_loop_at_url' };
+    if (state.lostFreeUrls.filter((u) => !urlCanonicallyChanged(u, review.url)).length >= LOST_LOOP_AT) return { ok: false, reason: 'lost_loop_at_url' };
   }
-  // The engine recovered this url before and the ensemble then called the
-  // record "not a review": our own accept was a listing/news page. Fetching the
-  // same url again only re-accepts it (the collector rewrites it short,
-  // reconcile reopens, the next night re-accepts: jena-friedman thecomedybureau
-  // 6 recoveries, 42 verdicts). A verdict with no engine recovery before it may
-  // be a paywall teaser of a real review (times-uk, broadwaynews), so that
-  // alone blocks nothing. URL_FIND looks elsewhere and stays eligible.
-  if (FETCH_STRATEGIES.has(strategy) && state && Array.isArray(state.recoveredAtUrl) && state.recoveredAtUrl.length && /^https?:\/\//i.test(String(review.url || ''))) {
+  // The ensemble called the record "not a review" while OUR recovered text was
+  // on disk (between a recovery at this url and its next reopen): our own
+  // accept was a listing/news page, and fetching the same url again only
+  // re-accepts it. A verdict outside those windows judged someone else's text,
+  // e.g. a paywall teaser of a real review (times-uk, broadwaynews), so it
+  // blocks nothing. URL_FIND looks elsewhere (gap-url-find eligibility).
+  if (FETCH_STRATEGIES.has(strategy) && state && Array.isArray(state.recoveredWindows) && state.recoveredWindows.length && /^https?:\/\//i.test(String(review.url || ''))) {
     const { urlCanonicallyChanged } = require('./url-change-invariant');
-    const ours = state.recoveredAtUrl.filter((r) => !urlCanonicallyChanged(r.url, review.url)).map((r) => r.ts).sort();
-    const verdicts = require('./stale-automated-text-verdict').ensembleNotAReviewTimes(review);
-    if (ours.length && verdicts.some((t) => Date.parse(t) > Date.parse(ours[0]))) {
+    const ours = state.recoveredWindows.filter((w) => !urlCanonicallyChanged(w.url, review.url));
+    const verdicts = require('./stale-automated-text-verdict').ensembleNotAReviewTimes(review).map((t) => Date.parse(t));
+    if (verdicts.some((t) => ours.some((w) => t >= w.from && t < w.to))) {
       return { ok: false, reason: 'not_a_review_after_recovery' };
     }
   }
@@ -370,7 +373,7 @@ function recoveredRowFromLanding(landed, info = {}) {
 // same strategy is not retried at that url (other strategies still are).
 const SUPERSEDED_REASON = 'recovered_text_superseded';
 const LOST_REASON = 'recovered_text_lost';
-// Lost reopens of a free-fetch recovery at one url before raw-HTML strategies stop there.
+// Lost reopens of a REFETCH_FREE recovery at one url before REFETCH_FREE stops there.
 const LOST_LOOP_AT = 2;
 // Below these the newer text is itself a gap (a stub, a wall): a real loss.
 const SUPERSEDE_MIN_CHARS = 500;
@@ -511,8 +514,8 @@ function ownedRecordReason(review) {
 // candidate's own file counts: any other missing file is a real fault and
 // must still stop the run. BRO-7171 2026-11-15: one rename killed the night.
 function isVanishedReviewFile(err, filePath) {
-  if (!err || err.code !== 'ENOENT' || !filePath) return false;
-  if (err.path && path.resolve(err.path) !== path.resolve(filePath)) return false;
+  if (!err || err.code !== 'ENOENT' || !filePath || !err.path) return false;
+  if (path.resolve(err.path) !== path.resolve(filePath)) return false;
   return !fs.existsSync(filePath);
 }
 
