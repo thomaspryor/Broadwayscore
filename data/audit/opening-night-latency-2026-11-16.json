@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-16T10:04:19.915Z",
+  "generatedAt": "2026-11-16T11:33:17.358Z",
   "date": "2026-11-16",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 200201,
+  "entryCount": 205134,
   "shows": [
     {
       "showId": "the-whos-tommy-tour-2026",
@@ -8032,7 +8032,7 @@
     },
     {
       "showId": "untitled-vampire-play-regional-2026",
-      "reviewCount": 1,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8047,7 +8047,7 @@
     },
     {
       "showId": "windfall-regional-2026",
-      "reviewCount": 1,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8062,7 +8062,7 @@
     },
     {
       "showId": "white-christmas-regional-2025",
-      "reviewCount": 1,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8077,7 +8077,7 @@
     },
     {
       "showId": "things-with-friends-regional-2025",
-      "reviewCount": 1,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8092,7 +8092,7 @@
     },
     {
       "showId": "you-will-get-sick-regional-2025",
-      "reviewCount": 1,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8107,7 +8107,37 @@
     },
     {
       "showId": "tick-tick-boom-regional-2023",
-      "reviewCount": 1,
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "covenant-regional-2026",
+      "reviewCount": 16,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
