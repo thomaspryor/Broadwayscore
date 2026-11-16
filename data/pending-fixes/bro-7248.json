@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7248",
   "planId": "8706e879-b5f1-4298-aadf-fd93d59a25fc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-16T01:01:16.772Z",
   "submitter": {
     "name": null,
@@ -208,5 +208,39 @@
         "description": "commercial.json: buena-vista-social-club.sources"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-16T02:05:47.424Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for buena-vista-social-club"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for buena-vista-social-club"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for buena-vista-social-club"
+    }
+  ],
+  "executedIn": "ci"
 }
