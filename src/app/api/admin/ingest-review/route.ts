@@ -476,6 +476,9 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     ...coreFields,
     ...manualFields,
   };
+  // BRO-7613: buildManualReviewFields labels a supplied date 'manual'; a date
+  // read out of the pasted text was not typed by the operator.
+  if (publishDate && !body.publishDate) merged.dateSource = 'admin-detected';
 
   // Issue #10 (Lost Boys 2026-04-26) — clear stale keyPhrases on tier change.
   // When /ingest writes humanReviewScore and the existing file has

@@ -1899,6 +1899,19 @@ function revertBodyFromRefusedUrl(before, existing, input, fields) {
     if (key in before) existing[key] = before[key]; else delete existing[key];
     reverted.push(key);
   }
+  // BRO-7613: a manual entry forces publishDate/dateSource over a non-blank
+  // stored value (protectedFields), so the blank-only rule above never undoes
+  // it. When the operator's url was refused, that date belongs to the refused
+  // article: put the file's own date back.
+  if (Array.isArray(fields.protectedFields) && fields.protectedFields.includes('publishDate')) {
+    for (const key of ['publishDate', 'dateSource']) {
+      if (fields[key] == null || reverted.includes(key)) continue;
+      if (JSON.stringify(existing[key]) !== JSON.stringify(fields[key])) continue;
+      if (JSON.stringify(before[key]) === JSON.stringify(existing[key])) continue;
+      if (key in before) existing[key] = before[key]; else delete existing[key];
+      reverted.push(key);
+    }
+  }
   return reverted;
 }
 

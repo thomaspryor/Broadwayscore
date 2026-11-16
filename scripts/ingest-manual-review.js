@@ -83,6 +83,16 @@ const starsArg = getArg('stars');
 const inlineText = getArg('text');
 const textFile = getArg('text-file');
 const publishDate = getArg('publish-date');
+// BRO-7613: an operator date now overwrites the stored one, so it must be a real
+// calendar day in canonical form (the admin route enforces the same shape).
+if (publishDate != null) {
+  const { validateCalendarDate } = require('./lib/date-utils');
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(publishDate);
+  if (!m || !validateCalendarDate(Number(m[1]), Number(m[2]), Number(m[3]))) {
+    console.error(`Error: --publish-date must be a real date in YYYY-MM-DD form (got "${publishDate}")`);
+    process.exit(1);
+  }
+}
 const dryRun = hasFlag('dry-run');
 const noRebuild = hasFlag('no-rebuild');
 const forceClearStale = hasFlag('force-clear-stale-flag');

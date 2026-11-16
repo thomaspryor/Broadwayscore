@@ -67,19 +67,6 @@ function isPreExistingContentBad(preExisting) {
 }
 
 /**
- * BRO-7613: the intended-values map ingest-manual-review.js verifies after a
- * write. Every operator-supplied identity/body field must land or the
- * break-glass tool fails loudly: url, criticName (normalized by the caller),
- * fullText (only when the pre-existing body was bad), and publishDate. The
- * writer only fills a BLANK publishDate, so before BRO-7613 an explicit
- * --publish-date onto a file already carrying a wrong date (a SERP discovery
- * date, 2026-09-02, on a 2022 review) was dropped while the script printed
- * "Updated".
- * @param {{action: string, url?: string|null, fullText?: string|null,
- *   publishDate?: string|null, criticName?: string|null, preExisting?: object|null}} p
- * @returns {object} intended map for findStaleMergeFields ({} for a new file).
- */
-/**
  * BRO-7613: stored publishDates come in several shapes ("March 11, 2022",
  * ISO timestamps, YYYY-MM-DD). The same calendar day is not a stale value, so
  * align the landed date to the intended string when both resolve to one day.
@@ -94,6 +81,19 @@ function alignLandedPublishDate(intended, landed) {
   return landed;
 }
 
+/**
+ * BRO-7613: the intended-values map ingest-manual-review.js verifies after a
+ * write. Every operator-supplied identity/body field must land or the
+ * break-glass tool fails loudly: url, criticName (normalized by the caller),
+ * fullText (only when the pre-existing body was bad), and publishDate. The
+ * writer only fills a BLANK publishDate, so before BRO-7613 an explicit
+ * --publish-date onto a file already carrying a wrong date (a SERP discovery
+ * date, 2026-09-02, on a 2022 review) was dropped while the script printed
+ * "Updated".
+ * @param {{action: string, url?: string|null, fullText?: string|null,
+ *   publishDate?: string|null, criticName?: string|null, preExisting?: object|null}} p
+ * @returns {object} intended map for findStaleMergeFields ({} for a new file).
+ */
 function buildManualIngestIntended({ action, url, fullText, publishDate, criticName, preExisting }) {
   const intended = {};
   if (action === 'new') return intended;
