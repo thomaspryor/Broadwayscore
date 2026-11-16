@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-16T19:16:17.469Z",
+  "timestamp": "2026-11-16T19:44:43.428Z",
   "stats": {
     "totalReviews": 82180,
-    "alreadyFlagged": 22477,
+    "alreadyFlagged": 22476,
     "dateGuardCatches": 222,
-    "directorMismatch": 3713,
+    "directorMismatch": 3714,
     "tvFilmSignals": 2328,
     "londonSignals": 3774,
     "offBroadwaySignals": 755,
@@ -68757,6 +68757,19 @@
       "score": 87,
       "publishDate": "2024-03-13",
       "url": "https://www.theatermania.com/news/review-the-effect-asks-is-it-love-or-is-it-just-the-drugs_1733623/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from the-effect-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-effect-off-broadway-2024",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "2024-03-14",
+      "url": "https://www.thewrap.com/the-effect-off-broadway-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
