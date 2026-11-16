@@ -237,7 +237,9 @@ function allShows() {
  * BRO-7545: a round-up TR edited to cover a transfer has one section per
  * production; only `showId`'s section(s) are returned. `owners` names the
  * production of each section (null when the page has fewer than two).
- * opts.shows overrides shows.json (tests); opts.allSections skips the split.
+ * opts.shows overrides shows.json (tests); opts.allSections skips the split;
+ * opts.matchedShowId is the show the round-up was matched to (owns the rows
+ * above the first section heading; unknown = nobody does).
  */
 function extractReviewsWithSections(html, showId, opts = {}) {
   const $ = cheerio.load(html);
@@ -320,12 +322,45 @@ function extractReviewsWithSections(html, showId, opts = {}) {
     }
   });
 
-  if (opts.allSections || phrases.length < 2) return { rows: reviews, owners: null, dropped: 0 };
+  if (opts.allSections || phrases.length < 2) return { rows: reviews, owners: null, dropped: 0, unresolved: [], preamble: 0 };
   const shows = opts.shows || allShows();
   const show = shows.find((s) => s && s.id === showId);
+  const page = archiveUrlOf(html) || '(page without canonical URL)';
   // An unknown id cannot be placed in either production: nothing is safe to return.
-  if (!show) return { rows: [], owners: null, dropped: reviews.length };
-  return rowsForShow(tagged, phrases, show, shows);
+  if (!show) {
+    warnSectionLoss(`theatre.reviews ${page}: ${showId} is not in shows.json, so none of the ${reviews.length} row(s) on this ${phrases.length}-production page were returned`);
+    return { rows: [], owners: null, dropped: reviews.length, unresolved: [], preamble: 0 };
+  }
+  const out = rowsForShow(tagged, phrases, show, shows, opts.matchedShowId == null ? null : opts.matchedShowId);
+  // Coverage loss must be visible: name the page and heading (never review text).
+  for (const u of out.unresolved) {
+    warnSectionLoss(`theatre.reviews ${page}: section "${u.heading}" matches no single tracked production of "${show.title}"; its ${u.rows} row(s) were not written to any show`);
+  }
+  return out;
+}
+
+const _sectionWarnings = new Set();
+function warnSectionLoss(msg) {
+  if (_sectionWarnings.has(msg)) return;
+  _sectionWarnings.add(msg);
+  console.warn(`::warning::${msg}`);
+}
+
+/**
+ * Archive a transfer's copy of a round-up it owns a section of. Idempotent: an
+ * archive that already holds this page for this URL is left alone, so the
+ * index's fetchedAt does not churn every run. Returns true when it wrote.
+ */
+function writeSectionArchive({ archiveDir, index, showId, url, modified, html, sectionOf, dryRun }) {
+  if (dryRun) return false;
+  const file = path.join(archiveDir, `${showId}.html`);
+  const prev = index[showId];
+  let same = false;
+  try { same = fs.readFileSync(file, 'utf8') === html; } catch { same = false; }
+  if (same && prev && sameRoundupUrl(prev.url, url) && prev.sectionOf === sectionOf) return false;
+  fs.writeFileSync(file, html);
+  index[showId] = { url, modified: modified || null, fetchedAt: new Date().toISOString(), sectionOf };
+  return true;
 }
 
 /**
@@ -707,7 +742,7 @@ async function main() {
       console.log(`  [CACHED] ${show.title}`);
     }
 
-    const sec = extractReviewsWithSections(html, show.id, { shows });
+    const sec = extractReviewsWithSections(html, show.id, { shows, matchedShowId: show.id });
     if (sec.dropped) console.log(`    ${sec.dropped} row(s) belong to another production's section of this round-up`);
     reconcileShow(show, sec.rows, roundup.url, matched.find(m => m.show.id === show.id).confidence, fromCache);
     // BRO-7545: TR adds a transfer's reviews to the premiere's round-up. The
@@ -721,12 +756,9 @@ async function main() {
       if (!v.ok) { console.log(`    ✗ ${otherId} section: archive guard (${v.reason})`); continue; }
       archivedFor.add(otherId);
       sectionClaims.push({ showId: otherId, url: roundup.url });
-      if (!DRY_RUN) {
-        fs.writeFileSync(path.join(ARCHIVE_DIR, `${otherId}.html`), html);
-        index[otherId] = { url: roundup.url, modified: roundup.modified || null, fetchedAt: new Date().toISOString(), sectionOf: show.id };
-      }
-      console.log(`  [SECTION] ${other.title} (${otherId}) ← its section of ${roundup.url}`);
-      reconcileShow(other, extractReviews(html, otherId, { shows }), roundup.url, 'production-section', false);
+      const wrote = writeSectionArchive({ archiveDir: ARCHIVE_DIR, index, showId: otherId, url: roundup.url, modified: roundup.modified, html, sectionOf: show.id, dryRun: DRY_RUN });
+      console.log(`  [SECTION] ${other.title} (${otherId}) ← its section of ${roundup.url}${wrote ? '' : ' (archive unchanged)'}`);
+      reconcileShow(other, extractReviews(html, otherId, { shows, matchedShowId: show.id }), roundup.url, 'production-section', false);
     }
   }
 
@@ -810,7 +842,7 @@ function writeCoverage(entries, unmatched, orphanArchives, disc) {
 }
 
 // Export for use by opening-night-poller
-module.exports = { extractReviews, extractReviewsWithSections, discoverRoundupUrls, extractTitleFromSlug, writeReviewFiles };
+module.exports = { extractReviews, extractReviewsWithSections, writeSectionArchive, discoverRoundupUrls, extractTitleFromSlug, writeReviewFiles };
 
 // Only run main() when executed directly (not when required)
 if (require.main === module) {

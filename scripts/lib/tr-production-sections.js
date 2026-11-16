@@ -115,15 +115,26 @@ function resolveSections(phrases, show, shows) {
 /**
  * Keep the rows that belong to `show`.
  * @param {Array<{row:object, section:number}>} tagged section = heading index, -1 before any heading
- * @returns {{rows:object[], owners:Array<string|null>|null, dropped:number}}
+ * @param {string|null} [matchedShowId] the show the round-up was matched to. On
+ *   a split page, rows above the first heading go to that show only (never to
+ *   every production, which wrote them twice), and to none when it is unknown.
+ * @returns {{rows:object[], owners:Array<string|null>|null, dropped:number,
+ *   unresolved:Array<{heading:string, rows:number}>, preamble:number}}
  */
-function rowsForShow(tagged, phrases, show, shows) {
+function rowsForShow(tagged, phrases, show, shows, matchedShowId = null) {
   const owners = resolveSections(phrases, show, shows);
-  if (!owners) return { rows: tagged.map((t) => t.row), owners: null, dropped: 0 };
+  if (!owners) return { rows: tagged.map((t) => t.row), owners: null, dropped: 0, unresolved: [], preamble: 0 };
   // Unresolved sections are dropped, not given to `show`: on a two-production
   // page the default would be the wrong production half the time.
-  const rows = tagged.filter((t) => t.section < 0 || owners[t.section] === show.id).map((t) => t.row);
-  return { rows, owners, dropped: tagged.length - rows.length };
+  const preambleOwner = matchedShowId != null && matchedShowId === show.id;
+  const keep = (t) => (t.section < 0 ? preambleOwner : owners[t.section] === show.id);
+  const rows = tagged.filter(keep).map((t) => t.row);
+  const unresolved = owners
+    .map((id, i) => ({ id, heading: phrases[i], rows: tagged.filter((t) => t.section === i).length }))
+    .filter((u) => u.id == null && u.rows > 0)
+    .map(({ heading, rows: n }) => ({ heading, rows: n }));
+  const preamble = preambleOwner ? 0 : tagged.filter((t) => t.section < 0).length;
+  return { rows, owners, dropped: tagged.length - rows.length, unresolved, preamble };
 }
 
 /** Other productions that own a section of this page (to write them too). */
