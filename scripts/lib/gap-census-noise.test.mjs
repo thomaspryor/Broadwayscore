@@ -366,3 +366,37 @@ test('BRO-7603 ship-check: an undated Deadline URL with "review" in the slug sta
   assert.equal(classifyGapCandidateUrl('https://deadline.com/downstate-broadway-review-1237220229').ok, true);
   assert.equal(classifyGapCandidateUrl(DL_NEWS[0]).ok, false);
 });
+
+// BRO-7621: Downstate (Booth, Broadway 2026) census listed the 2022 Playwrights Horizons review as missing.
+test('census: "<title> at <another New York house>" is an earlier staging, not owed', () => {
+  const show = { id: 'downstate-2026', title: 'Downstate', category: 'broadway', venue: 'Booth Theatre', openingDate: '2026-11-15' };
+  const ctx = { show, tokensOf: titleTokens };
+  const row = (url) => ({ url });
+  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/'), 'missing', ctx), 'url-other-ny-house');
+  assert.equal(noise.censusExclusionReason(row('https://example.com/downstate-at-the-public-theater-review'), 'missing', ctx), 'url-other-ny-house');
+  // This production's own review keeps its row.
+  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/'), 'missing', ctx), null);
+  // Names Broadway: this production.
+  assert.equal(noise.censusExclusionReason(row('https://example.com/downstate-broadway-review-from-playwrights-horizons-at-playwrights-horizons'), 'missing', ctx), null);
+  // House named but not as "<title> at <house>".
+  assert.equal(noise.censusExclusionReason(row('https://example.com/playwrights-horizons-alum-reviews-downstate'), 'missing', ctx), null);
+  // The show plays at that house itself.
+  const offB = { ...show, category: 'off-broadway', venue: 'Playwrights Horizons' };
+  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/'), 'missing', { show: offB, tokensOf: titleTokens }), null);
+  // Declared prior runs count; London shows are out of scope.
+  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/'), 'missing', { show: { ...show, priorRuns: [{ venue: 'Playwrights Horizons' }] }, tokensOf: titleTokens }), null);
+  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/'), 'missing', { show: { ...show, category: 'west-end' }, tokensOf: titleTokens }), null);
+});
+
+test('census: a show at the house itself (any spelling or stage of it) keeps "<title> at <house>" rows', () => {
+  const r = (url, show) => noise.censusExclusionReason({ url }, 'missing', { show: { openingDate: '2026-01-01', ...show }, tokensOf: titleTokens });
+  assert.equal(r('https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/',
+    { title: 'Anon(a): A Tempest at Our Kitchen Table', category: 'off-broadway', venue: 'The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space' }), null);
+  assert.equal(r('https://www.theatermania.com/news/review-the-blood-quilt-a-bewitching-family-drama-at-lincoln-center-theater_1756268/',
+    { title: 'The Blood Quilt', category: 'off-broadway', venue: 'Mitzi E. Newhouse Theatre' }), null);
+  assert.equal(r('http://www.irishcentral.com/opinion/cahirodoherty/silent-night-in-the-country-conor-mcphersons-the-weir-at-the-irish-rep-208985991-238183581.html',
+    { title: 'The Weir', category: 'off-broadway', venue: 'Irish Repertory Theatre' }), null);
+  // A Broadway transfer's earlier Public run is still another staging.
+  assert.equal(r('https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-mind-at-the-public/',
+    { title: "Hell's Kitchen", category: 'broadway', venue: 'Shubert Theatre', openingDate: '2024-04-20' }), 'url-year-before-run');
+});

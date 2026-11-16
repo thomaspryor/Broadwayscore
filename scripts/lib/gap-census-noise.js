@@ -220,6 +220,8 @@ function censusExclusionReason(m, kind, ctx = {}) {
   // whoever cites it (a current roundup that also links a prior run's review does not make it this run's).
   // Same predicate the ingest gate uses, so it honors declared priorRuns and year-titled shows.
   if (m.url && ctx.show && isUrlDatedPathBeforeRun(m.url, ctx.show)) return 'url-year-before-run';
+  // BRO-7621: "<title> at <another New York house>" reviews an earlier New York staging.
+  if (m.url && ctx.show && require('./census-other-place').urlNamesOtherNyHouse(m.url, ctx.show)) return 'url-other-ny-house';
   if (kind === 'missing') return missingNoiseReason(m, ctx);
   if (kind !== 'flagged') return null;
   if (m.confirmedNonReview === true) return 'confirmed-non-review';

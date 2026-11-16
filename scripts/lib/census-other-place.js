@@ -173,6 +173,60 @@ function censusOtherPlaceSignal(url, serpTitle, show, outletArg) {
   return null;
 }
 
+// BRO-7621: New York houses whose own productions transfer to Broadway or other
+// Off-Broadway houses. A review slug reading "<title> at <one of these>" is that
+// earlier staging's review (Downstate: exeuntnyc "review-downstate-at-playwrights-horizons",
+// 2022), not an owed review of a production elsewhere.
+// Each group is one house or company (its spellings and its own stages), so a show
+// playing at any of them is never told its own house is "another" one. Spelled with
+// "theater"; slugs and venues are folded to it.
+const NY_HOUSE_GROUPS = [
+  ['playwrights-horizons'], ['public-theater', 'the-public', 'joes-pub'], ['second-stage'],
+  ['atlantic-theater', 'linda-gross'], ['signature-theater', 'pershing-square-signature'],
+  ['new-york-theater-workshop', 'nytw'], ['vineyard-theater'], ['mcc-theater', 'mcc'],
+  ['lincoln-center', 'mitzi-newhouse', 'mitzi-e-newhouse', 'claire-tow', 'vivian-beaumont'],
+  ['the-shed'], ['park-avenue-armory'], ['st-anns-warehouse'], ['lucille-lortel'], ['minetta-lane'],
+  ['soho-rep'], ['primary-stages'], ['rattlestick'], ['ars-nova'], ['classic-stage-company', 'csc'],
+  ['irish-repertory', 'irish-rep'], ['new-world-stages'], ['bam', 'brooklyn-academy-of-music', 'harvey-theater'],
+  ['city-center'], ['the-flea'],
+];
+const NY_OTHER_HOUSES = NY_HOUSE_GROUPS.flat();
+
+/**
+ * BRO-7621: the URL slug reads "<title> at <another New York house>", so it reviews
+ * an earlier New York staging (pure). New York shows only. Vetoed when the URL also
+ * names this show's own venue or Broadway, when the show plays at that house, or
+ * when the show declares priorRuns (their reviews count, as for censusOtherPlaceSignal).
+ * @param {string} url
+ * @param {{category?: string, title?: string, venue?: string, priorRuns?: any[]}} show
+ * @returns {string|null} the house named, or null
+ */
+function urlNamesOtherNyHouse(url, show) {
+  if (process.env.CENSUS_OTHER_PLACE_DISABLED === '1') return null;
+  if (!show || !NY_CATEGORIES.has(show.category)) return null;
+  if (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) return null;
+  const path = pathOf(url);
+  if (path == null) return null;
+  const fold = (t) => (t === 'theatre' ? 'theater' : t);
+  const titleKey = tokensOf(show.title).map(fold).join('-');
+  if (!titleKey) return null;
+  const toks = path.split('/').flatMap(tokensOf).map(fold);
+  const venueToks = tokensOf(String(show.venue || '').replace(/^the\s+/i, '')).map(fold);
+  const venueKey = venueToks.join('-');
+  if (venueKey && hasRun(toks, venueKey)) return null;
+  if (['broadway', 'broadways'].some((m) => toks.includes(m))) return null;
+  for (const group of NY_HOUSE_GROUPS) {
+    // The show plays at this house (any of its names or stages) itself.
+    if (group.some((h) => hasRun(venueToks, h.replace(/^the-/, '')))) continue;
+    for (const house of group) {
+      // "<title> at <house>", optionally "at the <house>".
+      const starts = [...runsAt(toks, `at-${house}`), ...runsAt(toks, `at-the-${house.replace(/^the-/, '')}`)];
+      if (starts.some((i) => hasRun(toks.slice(0, i), titleKey))) return house;
+    }
+  }
+  return null;
+}
+
 /**
  * BRO-6896: apply production evidence at the census writer, including stored
  * publication dates. Opaque URLs (the WSJ's prior-season Boheme review) cannot
@@ -233,4 +287,4 @@ function createCensusProductionGuard({ reviews, normalizeUrl, loadShowFiles = ()
   };
 }
 
-module.exports = { censusOtherPlaceSignal, createCensusProductionGuard, OTHER_HOUSES, CITIES, NY_MARKERS, NY_COVERAGE_MIN };
+module.exports = { censusOtherPlaceSignal, createCensusProductionGuard, urlNamesOtherNyHouse, NY_HOUSE_GROUPS, NY_OTHER_HOUSES, OTHER_HOUSES, CITIES, NY_MARKERS, NY_COVERAGE_MIN };
