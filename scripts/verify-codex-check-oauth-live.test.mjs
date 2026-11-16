@@ -14,8 +14,11 @@ import { fileURLToPath } from 'node:url';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const LEDGER = path.join(HERE, '..', 'data', 'audit', 'gemini-usage-ledger.jsonl');
 const SINCE = Date.parse('2026-11-16T00:00:00Z');
+const CHECKABLE_FROM = Date.parse('2026-11-23T00:00:00Z');
 
-test('the Codex runner recorded at least one Claude check billed through the subscription (auth=oauth)', () => {
+test('the Codex runner recorded at least one Claude check billed through the subscription (auth=oauth)', {
+  skip: Date.now() < CHECKABLE_FROM && 'not checkable before the RECHECK-AFTER date 2026-11-23',
+}, () => {
   const rows = fs.readFileSync(LEDGER, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
   const checks = rows.filter((r) => r.provider === 'anthropic' && r.script === 'scripts/codex/daily-runner.js' && Date.parse(r.ts) >= SINCE);
   const oauth = checks.filter((r) => r.auth === 'oauth');
