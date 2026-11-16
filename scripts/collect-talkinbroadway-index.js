@@ -92,6 +92,16 @@ async function readPage(page, url) {
   return { title: r.title, text: r.text, anchors, html: r.html, canonical: r.canonical };
 }
 
+/** Print the text around a page's byline, raw and tag-stripped, so a new byline shape can be taught (BRO-7262). */
+function logBylineContext(html) {
+  const raw = String(html || '');
+  const flat = raw.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+  const hits = [...flat.matchAll(/.{0,60}(?:review by|reviewed by|\b20\d\d\b).{0,60}/gi)].slice(0, 6).map((m) => m[0].trim());
+  console.log(`    byline context: ${JSON.stringify(hits)}`);
+  const rawHits = [...raw.matchAll(/.{0,80}review(?:ed)?\s+by.{0,160}/gis)].slice(0, 3).map((m) => m[0].replace(/\s+/g, ' '));
+  console.log(`    byline html: ${JSON.stringify(rawHits)}`);
+}
+
 async function main() {
   const apiKey = process.env.BROWSERBASE_API_KEY;
   const projectId = process.env.BROWSERBASE_PROJECT_ID;
@@ -197,17 +207,15 @@ async function main() {
         const pageDate = bylineDate(r.html);
         if (pageDate ? !reviewDateFitsShow(pageDate, { openingDate: t.openingDate }) : t.verifyPageDate) {
           console.log(`  ${t.showId} skipped: page byline date ${pageDate || 'missing'} does not fit the opening ${t.openingDate} (${t.url})`);
-          if (!pageDate) {
-            // Say what the page's byline looks like so a new page shape can be taught to bylineDate (BRO-7262).
-            const flat = String(r.html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
-            const hits = [...flat.matchAll(/.{0,60}(?:review by|reviewed by|\b20\d\d\b).{0,60}/gi)].slice(0, 6).map((m) => m[0].trim());
-            console.log(`    byline context: ${JSON.stringify(hits)}`);
-          }
+          // Say what the page's byline looks like so a new page shape can be taught to bylineDate (BRO-7262).
+          if (!pageDate) logBylineContext(r.html);
           continue;
         }
         const picked = pickCriticForShow(r.html, t.title);
         if (picked.skip) {
           console.log(`  ${t.showId} skipped: ${picked.skip} (${t.url}); needs a person`);
+          // A no-byline skip is a page shape bylineSections does not know yet: print it (BRO-7262).
+          if (picked.skip === 'no-byline') logBylineContext(r.html);
           continue;
         }
         const critic = picked.critic;
