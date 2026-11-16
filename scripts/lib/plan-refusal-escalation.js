@@ -8,8 +8,8 @@
  * (GitHub Actions) — there is no cmux and no bsc-next on that runner, so it
  * cannot itself spawn a session the way scripts/lib/digest-autofix.js does
  * from the Mac. The CI-side half of "auto-dispatch" is filing a
- * self-contained P1 Linear issue (generate-remediation-plan.js files it via
- * linear-brain.js create; notion-brain.js create has exited 6 since BRO-377);
+ * self-contained P1 Linear issue (the workflow's 'File dispatchable card' step
+ * runs scripts/file-feedback-card.js, BRO-7600; it files with --dispatch);
  * the Mac-side P0/P1 dispatch path (linear-next.js --id BRO-N) picks it up —
  * same division of labor as every other "file a card, the standing loop
  * dispatches it" flow in this repo. Pure planner here so the card content is
@@ -25,14 +25,6 @@ function truncate(str, max) {
   return s.length > max ? `${s.slice(0, max - 1)}…` : s;
 }
 
-/**
- * @param {object} opts
- * @param {object} opts.diagnosis - parsed DIAGNOSIS_JSON from the issue body
- * @param {string} opts.planReason - plan.reason from the LLM's canCreatePlan:false response
- * @param {number|string} opts.issueNumber
- * @param {string} [opts.issueUrl]
- * @returns {{title: string, priority: string, status: string, action: string, notes: string, parkReason: string}}
- */
 /**
  * @param {object} opts
  * @param {object} opts.diagnosis - parsed DIAGNOSIS_JSON from the issue body
@@ -90,8 +82,13 @@ function feedbackTitlePrefix(issueNumber) {
 // find matches the term in title OR description and prints `null` when
 // nothing matches, so require the title prefix ourselves.
 function isOpenTwin(findOutput, issueNumber) {
-  let parsed;
-  try { parsed = JSON.parse(String(findOutput || '').trim().split('\n').filter((l) => l.startsWith('{') || l === 'null').pop() || 'null'); } catch { return false; }
+  // find prints indented multi-line JSON (linear-brain.js JSON.stringify(.., null, 2)) or `null`.
+  const text = String(findOutput || '').trim();
+  let parsed = null;
+  try { parsed = JSON.parse(text); } catch {
+    const start = text.indexOf('{');
+    if (start >= 0) { try { parsed = JSON.parse(text.slice(start)); } catch { parsed = null; } }
+  }
   return !!(parsed && typeof parsed.title === 'string' && parsed.title.startsWith(feedbackTitlePrefix(issueNumber)));
 }
 

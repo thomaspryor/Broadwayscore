@@ -269,6 +269,7 @@ jobs:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
           PLAN_CREATED: ${{ steps.plan.outputs.plan_created }}
           PLAN_REFUSED: ${{ steps.plan.outputs.plan_refused }}
+          PLAN_REASON: ${{ steps.plan.outputs.plan_refusal_reason }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/file-feedback-card.js
 

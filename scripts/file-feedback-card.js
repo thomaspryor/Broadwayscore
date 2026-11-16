@@ -22,7 +22,7 @@ function main(env = process.env) {
     cwd: path.join(__dirname, '..'), encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'],
   });
   const res = fileFeedbackCard({
-    diagnosis, planState, issueNumber,
+    diagnosis, planState, planReason: env.PLAN_REASON, issueNumber,
     issueUrl: `https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}`,
   }, { run });
   console.log(`file-feedback-card: #${issueNumber} ${res.filed ? 'filed' : res.reused ? 'card already open' : `not filed (${res.error})`}`);

@@ -483,6 +483,7 @@ Or if you cannot create an actionable plan:
     // filer for every needs-manual-review path. It needs LINEAR_API_KEY, which
     // this step deliberately does not hold.
     output('plan_refused', 'true');
+    output('plan_refusal_reason', String(plan.reason || '').replace(/\s+/g, ' ').slice(0, 300));
     const escalation = { filed: true };
 
     // Send a status email — its wording depends on whether the card above
@@ -494,7 +495,7 @@ Or if you cannot create an actionable plan:
       const showRef = diagnosis.submitterShow ? ` about <strong>${diagnosis.submitterShow}</strong>` : '';
 
       const banner = escalation.filed
-        ? `<p style="margin:0 0 12px;padding:10px 14px;background-color:#dbeafe;border:1px solid #3b82f6;border-radius:6px;color:#1e40af;font-size:14px;">&#129302; <strong>Fix session dispatched</strong> &mdash; auto-fix and the plan generator both couldn't scope this one, so a P1 card was filed and queued for a Claude session to investigate. No action needed.</p>`
+        ? `<p style="margin:0 0 12px;padding:10px 14px;background-color:#dbeafe;border:1px solid #3b82f6;border-radius:6px;color:#1e40af;font-size:14px;">&#129302; <strong>Card being filed</strong> &mdash; auto-fix and the plan generator both couldn't scope this one, so the next workflow step files a P1 card for a Claude session to investigate. No action needed.</p>`
         : `<p style="margin:0 0 12px;padding:10px 14px;background-color:#fef3c7;border:1px solid #f59e0b;border-radius:6px;color:#92400e;font-size:14px;">&#9888;&#65039; <strong>Needs your attention</strong> &mdash; auto-fix and plan generator both couldn't handle this one, and filing the auto-dispatch card also failed.</p>`;
 
       const fallbackHtml = `<!DOCTYPE html>
@@ -519,8 +520,8 @@ ${diagnosis.originalMessage
 </body></html>`;
 
       const fallbackSubject = diagnosis.submitterShow
-        ? `${escalation.filed ? 'Fix dispatched' : 'Manual Fix Needed'}: ${diagnosis.submitterShow} (#${issueNumber})`
-        : `${escalation.filed ? 'Fix dispatched' : 'Manual Fix Needed'} (#${issueNumber})`;
+        ? `${escalation.filed ? 'Fix card queued' : 'Manual Fix Needed'}: ${diagnosis.submitterShow} (#${issueNumber})`
+        : `${escalation.filed ? 'Fix card queued' : 'Manual Fix Needed'} (#${issueNumber})`;
 
       try {
         await sendEmail(

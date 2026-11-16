@@ -100,3 +100,9 @@ test('fileFeedbackCard fails open on find error and soft on create error, withou
   assert.equal(res.error, 'linear-brain create exited 2');
   assert.doesNotMatch(JSON.stringify(res), /secret reader text/);
 });
+
+test('isOpenTwin parses the indented multi-line JSON linear-brain find really prints', () => {
+  const real = JSON.stringify({ identifier: 'BRO-9', title: 'Feedback #901: Wonder', stateName: 'Todo' }, null, 2) + '\n';
+  assert.equal(isOpenTwin(real, 901), true);
+  assert.equal(isOpenTwin(`[linear] note\n${real}`, 901), true);
+});
