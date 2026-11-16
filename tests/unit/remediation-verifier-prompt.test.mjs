@@ -41,3 +41,15 @@ test('verifier call uses the reasoning-capable GPT54_MINI, not gpt-4o-mini (BRO-
   assert.match(call, /max_completion_tokens/);
   assert.ok(!/temperature|max_tokens/.test(call.replace(/\/\/.*$/gm, '')));
 });
+test('redaction only applies to shows.json edits with a concrete showId (review findings)', () => {
+  for (const a of [{ type: 'data-edit', showId: null, field: 'creativeTeam' },
+                   { type: 'data-edit', file: 'audience-buzz.json', showId: 'awake-and-sing-2026', field: 'title' }]) {
+    const r = redactDisputedFields(showCtx, { actions: [a] });
+    assert.deepEqual(r.redacted, []);
+    assert.equal(r.context, showCtx);
+  }
+});
+test('verifier request pins reasoning_effort none', () => {
+  const src = fs.readFileSync(new URL('../../scripts/generate-remediation-plan.js', import.meta.url), 'utf8');
+  assert.match(src, /reasoning_effort: 'none'/);
+});

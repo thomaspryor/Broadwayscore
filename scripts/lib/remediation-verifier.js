@@ -30,7 +30,7 @@ function deleteAt(obj, pathParts) {
 
 // Returns { context, redacted:[fields] }. Show Data blocks only; other parts untouched.
 function redactDisputedFields(showContext, plan) {
-  const edits = ((plan && plan.actions) || []).filter(a => a && a.type === 'data-edit' && a.field);
+  const edits = ((plan && plan.actions) || []).filter(a => a && a.type === 'data-edit' && a.field && a.showId && (!a.file || a.file === 'shows.json'));
   if (!showContext || edits.length === 0) return { context: showContext || '', redacted: [] };
   const redacted = [];
   const out = String(showContext).split(/\n\n(?=## )/).map(part => {
@@ -39,7 +39,7 @@ function redactDisputedFields(showContext, plan) {
     if (!data) return part;
     let changed = false;
     for (const e of edits) {
-      if (e.showId && data.id && e.showId !== data.id) continue;
+      if (e.showId !== data.id) continue;
       if (deleteAt(data, fieldPath(e.field))) { changed = true; redacted.push(e.field); }
     }
     if (!changed) return part;

@@ -32,7 +32,7 @@ if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
   process.exit(0);
 }
 const { buildFixApprovalEmail, formatFieldValue } = require('./lib/email-templates.js');
-const { GPT4O_MINI, GPT54_MINI, CLAUDE_SONNET } = require('./lib/models');
+const { GPT54_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { buildVerifierPrompt } = require('./lib/remediation-verifier');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
@@ -154,7 +154,7 @@ function maybeTrackContentFix(diagnosis, issueNumber) {
   }
 }
 
-// --- GPT-4o verification ---
+// --- Plan verification ---
 
 async function verifyPlanWithGPT(plan, diagnosis, showContext) {
   const openaiKey = process.env.OPENAI_API_KEY;
@@ -167,6 +167,7 @@ async function verifyPlanWithGPT(plan, diagnosis, showContext) {
 
   const data = JSON.stringify({
     model: GPT54_MINI, // BRO-7608: gpt-4o-mini anchored on stored values (0/5 on a correct director fix); 5.4-mini 5/5, wrong-production control still fails 5/5
+    reasoning_effort: 'none', // same profile as llm-batch.js OPENAI_REQUEST_PROFILES: reasoning must not eat the cap
     max_completion_tokens: 3000, // reasoning model: no temperature, tokens include reasoning
     messages: [{ role: 'user', content: prompt }],
   });
@@ -186,27 +187,28 @@ async function verifyPlanWithGPT(plan, diagnosis, showContext) {
         try {
           const parsed = JSON.parse(body);
           const text = parsed.choices?.[0]?.message?.content || '';
+          if (!text) console.log(`Plan verification: empty response (finish_reason=${parsed.choices?.[0]?.finish_reason}, error=${parsed.error?.message})`);
           const jsonMatch = text.match(/\{[\s\S]*\}/);
           if (jsonMatch) {
             const result = JSON.parse(jsonMatch[0]);
-            console.log(`GPT-4o verification: ${result.passed ? 'PASSED' : 'FAILED'} (${result.confidence})`);
+            console.log(`Plan verification: ${result.passed ? 'PASSED' : 'FAILED'} (${result.confidence})`);
             if (result.issues?.length > 0) {
               console.log(`  Issues: ${result.issues.join('; ')}`);
             }
             resolve({ verified: result.passed, issues: result.issues || [], confidence: result.confidence });
           } else {
-            console.log('GPT-4o verification: could not parse response');
+            console.log('Plan verification: could not parse response');
             resolve({ verified: true, skipped: true });
           }
         } catch (err) {
-          console.log(`GPT-4o verification error: ${err.message}`);
+          console.log(`Plan verification error: ${err.message}`);
           resolve({ verified: true, skipped: true });
         }
       });
     });
     req.setTimeout(300000, () => req.destroy(new Error('request timed out after 300s idle')));
     req.on('error', (err) => {
-      console.log(`GPT-4o verification network error: ${err.message}`);
+      console.log(`Plan verification network error: ${err.message}`);
       resolve({ verified: true, skipped: true });
     });
     req.write(data);
