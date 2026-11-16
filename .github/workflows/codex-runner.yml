@@ -111,12 +111,16 @@ jobs:
           # Opens the stored Codex login: the cloud env's OpenAI key, which differs from
           # the OPENAI_API_KEY secret above (scripts/codex/auth-store.js keyMaterial).
           CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
-          # BRO-7522: pay-as-you-go. Measured 2026-11-01..15: $17.28 over 89 checks (~$1.15/day).
-          # To bill the subscription instead (owner step: `claude setup-token` on the Mac, store the
-          # output as secret CLAUDE_CODE_OAUTH_TOKEN), swap this line for
-          # CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}. The runner already passes it
-          # to the reviewer (R.reviewerSandboxAuth) and the ledger rows then read auth=oauth.
-          # Remove ANTHROPIC_API_KEY when swapping: an API key outranks the token.
+          # BRO-7596: the Claude check bills the owner's subscription automatically once the repo secret
+          # CLAUDE_CODE_OAUTH_TOKEN is set (owner step: `claude setup-token` on the Mac, store the output
+          # as that secret). While it is unset the check stays pay-as-you-go (BRO-7522: ~$1.15/day).
+          # scripts/lib/reviewer-auth.js picks the login: token set -> the API key is withheld from the
+          # reviewer (an API key outranks the token); token rejected on auth -> falls back to the key
+          # with an alert. Ledger rows read auth=oauth or auth=api-key. An unset secret is an empty
+          # string here and counts as unset. Keep ANTHROPIC_API_KEY below as the fallback.
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Rollback without editing code: set repo variable CODEX_REVIEWER_AUTH=api-key to force the paid key.
+          CODEX_REVIEWER_AUTH: ${{ vars.CODEX_REVIEWER_AUTH }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CODEX_RUNNER_PUSH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_TOKEN: ${{ github.token }}

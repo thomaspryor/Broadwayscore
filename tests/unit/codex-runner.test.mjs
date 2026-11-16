@@ -837,7 +837,9 @@ test('the Claude check reads (never runs) the change, compares with fresh main, 
   assert.doesNotMatch(src, /Bash\(node --test/);
   // An env key goes to the sandbox; a cloud login file keeps the reviewer as the runner, reads denied.
   assert.match(src, /if \(R\.reviewerSandboxAuth\(process\.env\)\)/);
-  assert.equal(src.split("'--settings', JSON.stringify({ permissions: { deny: R.REVIEWER_READ_DENY } })").length, 3, 'both reviewer paths carry the deny rules');
+  // BRO-7596: one shared settings const (the deny rules), spread into both reviewer paths.
+  assert.equal(src.split("'--settings', JSON.stringify({ permissions: { deny: R.REVIEWER_READ_DENY } })").length, 2, 'the deny rules are defined once');
+  assert.equal(src.split('[...args, ...settings]').length, 3, 'both reviewer paths carry the deny rules');
 });
 
 test('reviewerSandboxAuth and REVIEWER_READ_DENY', () => {

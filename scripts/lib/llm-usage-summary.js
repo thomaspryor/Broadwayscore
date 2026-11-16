@@ -38,7 +38,7 @@ function summarize(rows, { fromMs = -Infinity, toMs = Infinity } = {}) {
     if (!(t >= fromMs && t < toMs)) continue;
     const provider = r.provider || 'gemini'; // rows written before the provider field are all Gemini
     const add = (a) => {
-      a.usd += r.costUsd || 0;
+      a.usd += r.auth === 'oauth' ? 0 : (r.costUsd || 0); // subscription logins are not billed per call (BRO-7596)
       a.calls += r.calls || 0;
       a.unknownCalls += r.unknownCalls || 0;
       a.groundedCalls += r.groundedCalls || 0;

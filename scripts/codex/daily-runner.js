@@ -516,6 +516,8 @@ function runCodex(id, prompt, tag, timeoutMs = CODEX_TIMEOUT_MS) {
   return { code: r.code, report, out: r.out };
 }
 
+const RA = require(path.join(ROOT, 'scripts/lib/reviewer-auth.js'));
+let oauthTokenFailed = false; // BRO-7596: the subscription token failed on auth this run; the rest use the API key
 /** The reviewer's whole tool list: reading only (see runCheck). */
 const CHECK_TOOLS = 'Read,Grep,Glob';
 function runCheck(card, body, codexReport, tag, data) {
@@ -548,19 +550,42 @@ function runCheck(card, body, codexReport, tag, data) {
     // so its reach is those dirs (minus REVIEWER_READ_DENY), never the rest of the machine.
     '--tools', CHECK_TOOLS,
   ];
-  let r;
-  if (R.reviewerSandboxAuth(process.env)) {
-    // Auth is an env key (the GitHub lanes): run as the sandbox too, so a read the diff talks it
-    // into cannot reach runner-only files. The key goes through a file, never argv.
-    // Only the login itself (and ANTHROPIC_* endpoint config): the session's other CLAUDE_* tokens stay out.
-    const auth = Object.fromEntries(Object.entries(process.env).filter(([k]) => /^ANTHROPIC_/.test(k) || k === 'CLAUDE_CODE_OAUTH_TOKEN'));
-    r = SB.run(WT, 'claude', [...args, '--settings', JSON.stringify({ permissions: { deny: R.REVIEWER_READ_DENY } })], { timeoutMs: 30 * 60_000, input: prompt, secretEnv: auth });
-  } else {
+  // BRO-7596: the subscription token whenever it is set (the API key is withheld from the reviewer),
+  // the API key if the token fails on auth. recorded as auth=oauth|api-key in the cost ledger.
+  const runReviewer = (a) => {
+    const settings = ['--settings', JSON.stringify({ permissions: { deny: R.REVIEWER_READ_DENY } })];
+    if (R.reviewerSandboxAuth(process.env)) {
+      // Auth is an env key (the GitHub lanes): run as the sandbox too, so a read the diff talks it
+      // into cannot reach runner-only files. The key goes through a file, never argv.
+      // Only the login itself (and ANTHROPIC_* endpoint config): the session's other CLAUDE_* tokens stay out.
+      return SB.run(WT, 'claude', [...args, ...settings], { timeoutMs: 30 * 60_000, input: prompt, secretEnv: a.env });
+    }
     // A cloud container's login is a root-only file the sandbox cannot use, so the reviewer runs as
     // the runner with its reads denied on the places runner secrets live.
-    r = sh('claude', [...args, '--settings', JSON.stringify({ permissions: { deny: R.REVIEWER_READ_DENY } })],
-      { cwd: WT, timeoutMs: 30 * 60_000, env: R.scrubEnv(process.env, { reviewer: true }), input: prompt });
+    return sh('claude', [...args, ...settings], { cwd: WT, timeoutMs: 30 * 60_000, env: RA.applyAuthToEnv(R.scrubEnv(process.env, { reviewer: true }), a), input: prompt });
+  };
+  let authPick = RA.chooseReviewerAuth(process.env, { oauthFailed: oauthTokenFailed });
+  let r = runReviewer(authPick);
+  let out = R.parseCheckOutput(r.stdout);
+  let oauthAttemptOut = '';
+  if (authPick.mode === 'oauth' && !process.env.ANTHROPIC_API_KEY && RA.isAuthFailure({ code: r.code, error: out.error, text: out.text, out: r.out })) log(`::error::${card.identifier}: CLAUDE_CODE_OAUTH_TOKEN was rejected and no ANTHROPIC_API_KEY is set to fall back to; the Claude check cannot run.`);
+  if (authPick.mode === 'oauth' && RA.shouldFallBack({ mode: 'oauth', failure: RA.isAuthFailure({ code: r.code, error: out.error, text: out.text, out: r.out }), apiKeyAvailable: Boolean(process.env.ANTHROPIC_API_KEY) })) {
+    oauthTokenFailed = true;
+    log(`::error::${card.identifier}: CLAUDE_CODE_OAUTH_TOKEN was rejected by the Claude check; falling back to ANTHROPIC_API_KEY for the rest of this run. Re-run \`claude setup-token\` and store the new CLAUDE_CODE_OAUTH_TOKEN secret.`);
+    try {
+      require(path.join(ROOT, 'scripts/lib/discord-notify.js')).sendEmailAlert({
+        title: 'Overnight code check: subscription token rejected',
+        description: 'The Codex runner\'s Claude check could not sign in with CLAUDE_CODE_OAUTH_TOKEN, so it fell back to the pay-as-you-go API key (billing resumes). Run `claude setup-token` and store the output as the CLAUDE_CODE_OAUTH_TOKEN repo secret.',
+        url: 'https://github.com/thomaspryor/Broadwayscore/actions/workflows/codex-runner.yml', subjectLabel: '',
+        idempotencyKey: `codex-oauth-fallback:${process.env.GITHUB_RUN_ID || new Date().toISOString().slice(0, 10)}`,
+      }).catch(() => {});
+    } catch { /* the annotation above is the floor */ }
+    oauthAttemptOut = `--- first attempt (CLAUDE_CODE_OAUTH_TOKEN, rejected) ---\n${r.out}\n--- retry on the API key ---\n`;
+    authPick = RA.chooseReviewerAuth(process.env, { oauthFailed: true });
+    r = runReviewer(authPick);
+    out = R.parseCheckOutput(r.stdout);
   }
+  if (oauthAttemptOut) r = { ...r, out: oauthAttemptOut + r.out }; // keep the rejected first attempt in the log
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}.log`), r.out);
   // The verdict is about the committed HEAD. A moved HEAD means the reviewer committed or
   // checked out, so its verdict is void. Leftover files are test residue (tests rewrite
@@ -570,13 +595,12 @@ function runCheck(card, body, codexReport, tag, data) {
   git(['clean', '-qfd', '-e', 'node_modules']);
   provideData(WT);
   if (base) { try { cleanTree(BASE_WT); } catch { /* the next prepareBase resets it */ } }
-  const out = R.parseCheckOutput(r.stdout);
-  checkSpentUsd += out.costUsd;
+  if (authPick.mode !== 'oauth') checkSpentUsd += out.costUsd; // the subscription is not billed per call (BRO-7596); its plan limit is the guard
   checkCount += 1;
   const m = (checkByModel[model] = checkByModel[model] || { n: 0, usd: 0 });
   m.n += 1;
   m.usd += out.costUsd;
-  require(path.join(ROOT, 'scripts/lib/gemini-usage-ledger.js')).recordClaudeCheck({ model, costUsd: out.costUsd, error: out.error, card: card.identifier }); // BRO-7522
+  require(path.join(ROOT, 'scripts/lib/gemini-usage-ledger.js')).recordClaudeCheck({ model, costUsd: out.costUsd, error: out.error, card: card.identifier, auth: RA.ledgerAuth(authPick) }); // BRO-7522, BRO-7596
   log(`${card.identifier} ${tag}: Claude check (${model}) cost $${out.costUsd.toFixed(2)}${out.error ? ` (${out.error})` : ''}`);
   const verdict = r.code === 0 && !tampered && !out.error ? R.parseVerdict(out.text) : 'NONE';
   return { verdict, text: tampered ? 'The reviewer changed the worktree, so its verdict was discarded.' : tail(out.text || r.out, 3000) };
