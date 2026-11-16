@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T20:28:40.380Z",
+  "timestamp": "2026-11-16T21:05:00.968Z",
   "stats": {
-    "totalReviews": 82186,
-    "alreadyFlagged": 22477,
+    "totalReviews": 82218,
+    "alreadyFlagged": 22480,
     "dateGuardCatches": 222,
-    "directorMismatch": 3714,
+    "directorMismatch": 3715,
     "tvFilmSignals": 2328,
     "londonSignals": 3776,
     "offBroadwaySignals": 755,
     "yearMismatch": 374,
-    "noPublishDate": 8239
+    "noPublishDate": 8246
   },
   "findings": [
     {
@@ -22414,6 +22414,19 @@
       "score": 86,
       "publishDate": "2026-09-17",
       "url": "https://northernartsreview.co.uk/central-north/review-august-wilsons-fences-at-leeds-playhouse/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel bailey\" from fences-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "fences-leeds-regional-2026",
+      "file": "thereviewshub--jay-nuttall.json",
+      "publishDate": "2026-09-18",
+      "url": "https://www.thereviewshub.com/fences-leeds-playhouse/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -68768,6 +68781,7 @@
     {
       "showId": "the-effect-off-broadway-2024",
       "file": "thewrap--robert-hofler.json",
+      "score": 64,
       "publishDate": "2024-03-14",
       "url": "https://www.thewrap.com/the-effect-off-broadway-review/",
       "findings": [
@@ -112288,6 +112302,7 @@
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "file": "1883magazine--helen-keegan.json",
+      "score": 84,
       "publishDate": "2026-09-16",
       "url": "https://1883magazine.com/kimberly-akimbo-musical/",
       "findings": [
@@ -131074,6 +131089,7 @@
     {
       "showId": "the-children-2017",
       "file": "variety--marilyn-stasio.json",
+      "score": 85,
       "publishDate": "2017-12-14",
       "url": "http://variety.com/2017/legit/reviews/the-children-review-broadway-play-1202641588/",
       "findings": [
