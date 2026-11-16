@@ -29,6 +29,7 @@ const { shouldRefuseDispatch, isLeaseLive, parseEtime } = require('./worktree-gc
 const { classifyHeadlessJobResult } = require('./headless-wrapup-block.js');
 const { detectJobLanding } = require('./headless-unlanded-detection.js');
 const { killedTasksLedgerFields } = require('./headless-background-task-guard.js');
+const { isSlimTree, treeModeArgs } = require('./codex-runner.js');
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
 // from inside worktrees, and leases/logs must be one canonical set.
@@ -172,13 +173,30 @@ function gitSafeJobId(jobId) {
 // single highest-risk moment for GC to race this job. Recording the
 // (not-yet-created) expected path at lease-acquire time, before
 // `git worktree add` even runs, closes that window instead of narrowing it.
-function jobWorktreePath(jobId) {
-  return path.join(REPO, '.claude', 'worktrees', `job-${gitSafeJobId(jobId)}`);
+function jobWorktreePath(jobId, repo = REPO) {
+  return path.join(repo, '.claude', 'worktrees', `job-${gitSafeJobId(jobId)}`);
 }
-function provisionJobWorktree(jobId) {
+function provisionJobWorktree(jobId, mode = 'full', repo = REPO) {
   const safe = gitSafeJobId(jobId);
-  const wtPath = jobWorktreePath(jobId);
-  execFileSync('git', ['-C', REPO, 'worktree', 'add', wtPath, '-b', `job/${safe}`, 'origin/main'], { stdio: 'pipe' });
+  const wtPath = jobWorktreePath(jobId, repo);
+  const git = (dir, args) => execFileSync('git', ['-C', dir, ...args], { stdio: 'pipe' });
+  const slim = mode === 'slim';
+  git(repo, ['worktree', 'add', ...(slim ? ['--no-checkout'] : []), wtPath, '-b', `job/${safe}`, 'origin/main']);
+  if (slim) {
+    try {
+      const sparseArgs = treeModeArgs(mode);
+      // A concurrent first sparse checkout can briefly hold the shared Git config lock.
+      try { git(wtPath, sparseArgs); } catch { git(wtPath, sparseArgs); }
+      git(wtPath, ['checkout', '--force', 'HEAD']);
+    } catch (error) {
+      // This tree was just registered under our lease, and the worker hasn't started.
+      try { git(repo, ['worktree', 'remove', '--force', wtPath]); }
+      catch (cleanupError) {
+        throw new Error(`Could not provision ${wtPath} or remove the partial checkout: ${cleanupError.message}`, { cause: error });
+      }
+      throw error;
+    }
+  }
   return wtPath;
 }
 
@@ -440,7 +458,7 @@ async function runJob(opts) {
   try {
     if (isolate && !resumeSessionId) {
       try {
-        wtPath = provisionJobWorktree(jobId);
+        wtPath = provisionJobWorktree(jobId, opts.worktreeMode);
         cwd = wtPath;
       } catch (e) {
         // Provisioning failure must leave a ledger trace — an invisible throw
@@ -460,10 +478,14 @@ async function runJob(opts) {
     // manual headless job spawned in the gap can never be credited as the resume.
     ledger.appendEntry({ event: ledger.JOB_EVENTS.SPAWNED, taskId, jobId, subject, cwd, logFile, model: model || null, resumed: Boolean(resumeSessionId), resumeOfSession: resumeSessionId || null });
 
+    const usesSparseCheckout = wtPath ? opts.worktreeMode === 'slim' : Boolean(resumeSessionId && opts.cwd && isSlimTree(cwd));
+    const sparseNotice = usesSparseCheckout
+      ? 'This job uses a sparse checkout that omits bulk images and archives. If your task needs those files, run `git sparse-checkout disable` in this checkout before inspecting, editing, building, or validating them.\n\n'
+      : '';
     const res = await runClaudeCli({
       // Budget preamble on every job, resume included: the resumed session
       // has a fresh clock and needs the same commit-early contract.
-      prompt: buildBudgetPreamble(timeoutMs) + prompt,
+      prompt: buildBudgetPreamble(timeoutMs) + sparseNotice + prompt,
       cwd, model, resumeSessionId, timeoutMs, graceMs, logFile,
       // BRO-3442: every bsc-runner spawn IS a headless `claude -p` job, resume
       // included — this is the fix for Gate H's cwd-sniffing heuristic
@@ -565,7 +587,7 @@ async function runJob(opts) {
 }
 
 module.exports = {
-  gitSafeJobId,
+  gitSafeJobId, provisionJobWorktree,
   runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
   DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble, parseDispatchFloorGB, freeDiskGB, routeDiskPressureAlert,

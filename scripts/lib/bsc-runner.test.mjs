@@ -13,14 +13,49 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { parseDispatchFloorGB, runJob, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS } = require('./bsc-runner.js');
+const { parseDispatchFloorGB, provisionJobWorktree, runJob, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS } = require('./bsc-runner.js');
 const { scanFile } = require('../audit-alert-senders.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+test('job provisioning supports slim and full checkouts and cleans up a failed slim checkout', (t) => {
+  const repo = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-job-checkout-')));
+  t.after(() => fs.rmSync(repo, { recursive: true, force: true }));
+  const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  const image = 'public/images/shows/test.jpg';
+  git(repo, 'init');
+  git(repo, 'config', 'core.hooksPath', '.git/hooks');
+  fs.mkdirSync(path.join(repo, path.dirname(image)), { recursive: true });
+  fs.writeFileSync(path.join(repo, image), 'image');
+  fs.writeFileSync(path.join(repo, 'README.md'), 'code');
+  git(repo, 'add', '.');
+  git(repo, '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-m', 'fixture');
+  git(repo, 'update-ref', 'refs/remotes/origin/main', 'HEAD');
+
+  const slim = provisionJobWorktree('small', 'slim', repo);
+  assert.equal(fs.existsSync(path.join(slim, image)), false);
+  assert.equal(fs.existsSync(path.join(slim, 'README.md')), true);
+  assert.equal(git(slim, 'status', '--porcelain'), '');
+  git(slim, 'sparse-checkout', 'disable');
+  assert.equal(fs.existsSync(path.join(slim, image)), true);
+
+  const full = provisionJobWorktree('full', undefined, repo);
+  assert.equal(fs.existsSync(path.join(full, image)), true);
+  assert.equal(git(full, 'status', '--porcelain'), '');
+
+  git(repo, 'config', 'core.hooksPath', path.join(repo, '.git/hooks'));
+  fs.writeFileSync(path.join(repo, '.git/hooks/post-checkout'), '#!/bin/sh\nexit 1\n', { mode: 0o755 });
+  assert.throws(() => provisionJobWorktree('failed', 'slim', repo), /checkout --force HEAD/);
+  assert.doesNotMatch(git(repo, 'worktree', 'list', '--porcelain'), /job-failed/);
+  assert.equal(fs.existsSync(path.join(repo, '.claude/worktrees/job-failed')), false);
+});
 
 function withEnv(vars, fn) {
   const saved = {};

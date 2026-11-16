@@ -1254,7 +1254,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // BSC_RUNNER_DISABLED (the retired Notion-loop's plist switch, #1311)
     // must not gate the Linear path at the runner level (BRO-286).
     const jobStartMs = Date.now();
-    const res = await runJob({ taskId, subject: pseudoTask.subject, prompt: seed, model, isolate: true, killSwitchEnv: 'LINEAR_NEXT_DISABLED' });
+    const { cardNeedsImages } = require('./lib/codex-runner.js');
+    const cardText = [issue.title, issue.description, gate.cmd, ...ld.sortedCommentBodies(issue)].join('\n');
+    const worktreeMode = process.env.BSC_FULL_JOB_CHECKOUT === '1' || cardNeedsImages(cardText) ? 'full' : 'slim';
+    const res = await runJob({ taskId, subject: pseudoTask.subject, prompt: seed, model, isolate: true, killSwitchEnv: 'LINEAR_NEXT_DISABLED', worktreeMode });
     if (res.stage === 'lease-held') {
       console.error(`[linear-next] ${identifier} already has a live headless job (${(res.holder && res.holder.jobId) || 'unknown'}). Use bsc-status to inspect.`);
       process.exitCode = 1;
