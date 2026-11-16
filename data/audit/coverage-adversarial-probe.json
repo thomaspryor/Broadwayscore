@@ -1,149 +1,164 @@
 {
-  "generatedAt": "2026-11-09T22:18:33.794Z",
+  "generatedAt": "2026-11-16T22:00:14.526Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
-    "all-male-as-you-like-it-regional-2026",
-    "memoirs-of-amorous-gentlemen-off-broadway-2026",
-    "angels-bone-west-end-2026",
-    "broom-play-off-broadway-2026"
+    "iphigenie-en-tauride-english-national-opera-west-end-2026",
+    "the-moth-off-west-end-2026",
+    "the-feel-good-story-america-needs-right-now-regional-2026",
+    "the-unexpected-3rd-2026",
+    "desire-under-the-elms-off-west-end-2026"
   ],
-  "settlingSkipped": 7,
+  "settlingSkipped": 4,
   "shows": [
     {
-      "showId": "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
-      "title": "Rabih Mroué & Lina Majdalanie: Four Walls and a Roof",
-      "openingDate": "2026-10-22",
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "openingDate": "2026-11-06",
       "sampleState": "measured",
-      "sampleReason": "opened 18d ago",
-      "naiveQuery": "Rabih Mroué and Lina Majdalanie: Four Walls and a Roof NYU Skirball review",
+      "sampleReason": "opened 10d ago",
+      "naiveQuery": "Iphigenie en Tauride - English National Opera London Coliseum review",
       "candidates": [],
       "queries": [
         {
           "ok": true,
-          "raw": 10
+          "raw": 4
         }
       ],
-      "onDiskCount": 0
+      "onDiskCount": 21
     },
     {
-      "showId": "all-male-as-you-like-it-regional-2026",
-      "title": "As You Like It",
-      "openingDate": "2026-10-06",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "openingDate": "2026-10-30",
       "sampleState": "measured",
-      "sampleReason": "opened 34d ago",
-      "naiveQuery": "As You Like It Royal Shakespeare Theatre, Stratford-upon-Avon review",
+      "sampleReason": "opened 17d ago",
+      "naiveQuery": "The Moth Finborough Theatre review",
       "candidates": [
         {
-          "url": "https://www.theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
+          "url": "https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre",
+          "url": "https://www.thereviewshub.com/the-moth-finborough-theatre-london/",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://theartsdispatch.substack.com/p/as-you-like-it-review-royal-shakespeare",
-          "state": "live",
+          "url": "https://broadwaybaby.com/shows/the-moth/839368",
+          "state": "excluded",
+          "reason": "wrongProduction"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
+          "state": "excluded",
+          "reason": "duplicateOf"
+        },
+        {
+          "url": "https://fringereview.co.uk/review/fringereview-uk/the-moth",
+          "state": "gap",
           "reason": null
         }
       ],
       "queries": [
         {
           "ok": true,
-          "raw": 10
+          "raw": 6
         }
       ],
-      "onDiskCount": 38
+      "onDiskCount": 33
     },
     {
-      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Memoirs of Amorous Gentlemen",
-      "openingDate": "2026-10-15",
+      "showId": "the-feel-good-story-america-needs-right-now-regional-2026",
+      "title": "The Feel Good Story America Needs Right Now",
+      "openingDate": "2026-10-03",
       "sampleState": "measured",
-      "sampleReason": "opened 25d ago",
-      "naiveQuery": "Memoirs of Amorous Gentlemen The Night Egg at the Culture Club review",
+      "sampleReason": "opened 44d ago",
+      "naiveQuery": "The Feel Good Story America Needs Right Now Theatre West, West Hollywood, CA review",
       "candidates": [
         {
-          "url": "https://exeuntnyc.com/reviews/review-memoirs-of-amorous-gentlemen-at-the-culture-club/",
+          "url": "https://stagescenela.com/2026/10/the-feel-good-story-america-needs-right-now/",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://joshatthemovies.com/2026/10/24/theater-review-memoirs-of-amorous-gentlemen/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TNDDVA",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-memoirs-of-amorous-gentlemen-duncan-sheiks-dark-swan-song_1857256/",
-          "state": "live",
+          "url": "https://www.theatreinla.com/the-feel-good-story-america-needs-right-now",
+          "state": "gap",
           "reason": null
         }
       ],
       "queries": [
         {
           "ok": true,
-          "raw": 10
+          "raw": 3
         }
       ],
-      "onDiskCount": 31
+      "onDiskCount": 4
     },
     {
-      "showId": "angels-bone-west-end-2026",
-      "title": "Angel's Bone",
-      "openingDate": "2026-10-17",
+      "showId": "the-unexpected-3rd-2026",
+      "title": "The Unexpected 3rd",
+      "openingDate": "2026-10-26",
       "sampleState": "measured",
-      "sampleReason": "opened 23d ago",
-      "naiveQuery": "Angel's Bone London Coliseum review",
-      "candidates": [],
+      "sampleReason": "opened 21d ago",
+      "naiveQuery": "The Unexpected 3rd George Street Playhouse, New Brunswick, NJ review",
+      "candidates": [
+        {
+          "url": "https://njartsmaven.substack.com/p/review-the-unexpected-3rd-an-energetic",
+          "state": "live",
+          "reason": null
+        }
+      ],
       "queries": [
         {
           "ok": true,
-          "raw": 10
+          "raw": 4
         }
       ],
-      "onDiskCount": 26
+      "onDiskCount": 5
     },
     {
-      "showId": "broom-play-off-broadway-2026",
-      "title": "Broom Play",
-      "openingDate": "2026-11-07",
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "openingDate": "2026-11-14",
       "sampleState": "measured",
       "sampleReason": "opened 2d ago",
-      "naiveQuery": "Broom Play The Players Theatre review",
+      "naiveQuery": "Desire Under the Elms Almeida Theatre review",
       "candidates": [
         {
-          "url": "https://thefrontrowcenter.com/2026/11/broom-play/",
+          "url": "https://rolandcat.substack.com/review-desire-under-the-elms-almeida",
           "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
+          "state": "excluded",
+          "reason": "wrongProduction"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
+          "state": "gap",
           "reason": null
         }
       ],
       "queries": [
         {
           "ok": true,
-          "raw": 10
+          "raw": 7
         }
       ],
-      "onDiskCount": 3
+      "onDiskCount": 8
     }
   ],
   "summary": {
-    "verdict": "clean",
+    "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 0,
-    "gapShows": []
+    "gapCount": 3,
+    "gapShows": [
+      "the-moth-off-west-end-2026",
+      "the-feel-good-story-america-needs-right-now-regional-2026",
+      "desire-under-the-elms-off-west-end-2026"
+    ]
   }
 }
