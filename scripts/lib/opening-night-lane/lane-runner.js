@@ -215,6 +215,12 @@ async function runLaneNight({
         // a byline or date in; holding it would drop the night's biggest reviews, so only its outlet name is required and
         // the gaps are reported on the summary page.
         if (!row.publishDate) { const d = card.cardPublishDate(row); if (d) row.publishDate = d; }
+        // A review a roundup cites whose own page has no date (Cititour): the roundup's date, provisional (BRO-7587). Held
+        // for three reads otherwise, then left to the regular pipeline hours later.
+        if (!row.publishDate && a.aggregatorCited !== false && a.source === 'aggregator') {
+          const fb = trust.roundupFallbackDate({ aggregatorDate: a.aggregatorDate, night });
+          if (fb) Object.assign(row, fb);
+        }
         // The byline from the text when the page markup gave none (Talkin' Broadway's was null on Wanted).
         if (card.missingCardFields(row, { quote: false }).includes('criticName')) { const c = card.cardCriticName(row); if (c) row.criticName = c; }
         const gaps = card.missingCardFields(row, { quote: false }).filter((f) => f === 'outlet' || card.hasQuotableText(row));

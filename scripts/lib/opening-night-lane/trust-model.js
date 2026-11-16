@@ -136,6 +136,19 @@ function admitLaneCandidate({ source, aggregatorCited = false, publishDate = nul
 }
 
 /**
+ * The provisional date for a roundup-cited review whose own page carries none (Cititour's never does): the roundup's
+ * calendar date, marked dateSource 'roundup-article' exactly as the regular pipeline stamps it (publish-date-provenance.js
+ * roundupEntryDateFields), so the next text fetch replaces it with a page date. Only when the roundup is dated within one
+ * day of the night (a stale or other-production roundup gives nothing). Never from the opening date.
+ * @returns {{publishDate: string, dateSource: 'roundup-article'}|null}
+ */
+function roundupFallbackDate({ aggregatorDate, night } = {}) {
+  if (!isDay(night) || !isDay(aggregatorDate)) return null;
+  const day = Math.round((Date.parse(`${aggregatorDate}T00:00:00Z`) - Date.parse(`${night}T00:00:00Z`)) / DAY_MS);
+  return Math.abs(day) <= 1 ? { publishDate: aggregatorDate, dateSource: 'roundup-article' } : null;
+}
+
+/**
  * The file a lane review is written to. Never the plain `outlet--critic.json` slot (that file may be an older,
  * flagged review of another production): a slot collision creates a NEW file keyed by outlet + critic + night.
  * Re-running for the same URL reuses its file (idempotent); a different URL on the same name gets a URL-hash suffix.
@@ -218,5 +231,5 @@ function buildLaneReview({
 
 module.exports = {
   PROVENANCE_KEY, PRODUCTION_VERIFIED, SOURCES, LANE_BYPASSED_GUARDS, MIN_FULL_TEXT_CHARS, SEEN_BEFORE_DAYS, SEEN_AFTER_DAYS,
-  buildLaneProvenance, isLaneReview, laneRowSource, laneBypasses, calendarDateIn, admitLaneCandidate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
+  buildLaneProvenance, isLaneReview, laneRowSource, laneBypasses, calendarDateIn, admitLaneCandidate, roundupFallbackDate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
 };

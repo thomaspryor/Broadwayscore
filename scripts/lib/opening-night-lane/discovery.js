@@ -364,8 +364,22 @@ function extractPublishDate(html) {
 // candidate: { url, source: 'aggregator'|'outlet-index', aggregatorCited?, publishDate?, title?, needsDate?, via, outletId? }
 
 /** An aggregator page's cited links as candidates; `excerptField` is the review-file field (excerpt-fields.js) its quotes go in. */
-function citedCandidates(links, via, excerptField) {
-  return links.map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via, ...(l.excerpt ? { excerpts: { [excerptField]: l.excerpt } } : {}) }));
+function citedCandidates(links, via, excerptField, aggregatorDate = null) {
+  return links.map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via, ...(aggregatorDate ? { aggregatorDate } : {}), ...(l.excerpt ? { excerpts: { [excerptField]: l.excerpt } } : {}) }));
+}
+
+/**
+ * The calendar date of the roundup page that cites a review (its own publish date, else the -YYYYMMDD BWW writes in its
+ * article URL). The lane gives a cited review whose own page carries no date this one, marked provisional, instead of
+ * holding it for hours (BRO-7587: Cititour's page has no date; the lane dropped it after 3 reads, the regular pipeline
+ * stamped the same roundup date 3 hours later).
+ */
+function roundupPageDate(html, pageUrl) {
+  const iso = extractPublishDate(html);
+  const m = String(iso || '').match(/^\d{4}-\d{2}-\d{2}/);
+  if (m) return m[0];
+  const u = String(pageUrl || '').match(/-(20\d{2})(\d{2})(\d{2})(?:[/?#]|$)/);
+  return u ? `${u[1]}-${u[2]}-${u[3]}` : null;
 }
 
 /**
@@ -399,8 +413,9 @@ function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) 
         if (!pageDatedNear(html, show.openingDate)) { refusedStored.add(stored); return []; }
         roundup = stored;
       }
-      const links = requireKnownOutletLinks(storyCitedLinks(html || await fetchText(roundup), roundup, BWW_STORY), roundup, 'bww-roundup');
-      return citedCandidates(links, roundup, 'bwwExcerpt');
+      const pageHtml = html || await fetchText(roundup);
+      const links = requireKnownOutletLinks(storyCitedLinks(pageHtml, roundup, BWW_STORY), roundup, 'bww-roundup');
+      return citedCandidates(links, roundup, 'bwwExcerpt', roundupPageDate(html || pageHtml, roundup));
     },
   };
 }
@@ -794,7 +809,7 @@ function playbillVerdictAdapter() {
       const when = extractPublishDate(html);
       if (!when || !admitLaneCandidate({ source: 'outlet-index', aggregatorCited: false, publishDate: when, night, ...(timeZone ? { timeZone } : {}) }).admit) return [];
       const links = requireKnownOutletLinks(storyCitedLinks(html, hit.articleUrl, PLAYBILL_STORY), hit.articleUrl, 'playbill-verdict');
-      return citedCandidates(links, hit.articleUrl, 'playbillVerdictExcerpt');
+      return citedCandidates(links, hit.articleUrl, 'playbillVerdictExcerpt', roundupPageDate(html, hit.articleUrl));
     },
   };
 }
@@ -1388,7 +1403,7 @@ async function runDiscoveryPass({
   const judge = (c, key, publishDate, page = c[PREFETCHED_PAGE]) => {
     pending.delete(key);
     const verdict = admitLaneCandidate({ source: c.source, aggregatorCited: c.aggregatorCited === true, publishDate, night, ...(timeZone ? { timeZone } : {}) });
-    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.excerpts ? { excerpts: c.excerpts } : {}), ...(typeof page === 'string' && page ? { [PREFETCHED_PAGE]: page } : {}) });
+    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.aggregatorDate ? { aggregatorDate: c.aggregatorDate } : {}), ...(c.excerpts ? { excerpts: c.excerpts } : {}), ...(typeof page === 'string' && page ? { [PREFETCHED_PAGE]: page } : {}) });
     else reject(c, key, verdict.reason);
   };
   const reject = (c, key, reason) => {
@@ -1572,7 +1587,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
-  NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate, MAX_FEEDS_PER_PASS, MAX_DIRECT_FEEDS_PER_PASS, looksReviewLike,
+  NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate, roundupPageDate, MAX_FEEDS_PER_PASS, MAX_DIRECT_FEEDS_PER_PASS, looksReviewLike,
   nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, LATE_DATE_CHECK_STARTS, loadSeen, recordDiscovered, PREFETCHED_PAGE,
