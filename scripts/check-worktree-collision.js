@@ -43,7 +43,7 @@ function getWorktreeState(name, repoRoot) {
   // git reports worktree paths fully resolved (macOS /var -> /private/var), so
   // compare real paths; a plain string compare missed the worktree and failed open.
   const real = (p) => { try { return fs.realpathSync(p); } catch { return p; } };
-  const targetPath = `${real(repoRoot)}/.claude/worktrees/${name}`;
+  const targetPath = real(`${repoRoot}/.claude/worktrees/${name}`);
   for (const { path: wtPath, locked, lockReason } of parseWorktreePorcelain(porcelain)) {
     if (real(wtPath) !== targetPath) continue;
 

@@ -911,6 +911,10 @@ gc_one_repo() {
     log "WARN  repo '$repo_name' — cd to $REPO failed, skipping"
     return
   fi
+  # BRO-7325: git worktree list reports resolved paths, so compare against the
+  # resolved repo path too. Through a symlink, the main-checkout skip and the
+  # orphan sweep's is_registered check would otherwise never match.
+  REPO="$(pwd -P)"
 
   if [ -n "$TIMEOUT_BIN" ]; then
     # unbounded-fetch-ok: bounded by $TIMEOUT_BIN 20s; see file header.
