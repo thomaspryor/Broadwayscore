@@ -109,11 +109,11 @@ const AWAITING_CHECK_QUERY = `query AwaitingCheck($filter: IssueFilter, $after: 
   issues(filter: $filter, first: 100, after: $after) {
     pageInfo { hasNextPage endCursor }
     nodes { identifier title description createdAt updatedAt completedAt state { name type }
-      comments(last: 50, orderBy: createdAt) { nodes { body createdAt } } }
+      comments(first: 50, orderBy: createdAt) { nodes { body createdAt } } }
   }
 }`;
-// The NEWEST 50 comments: a re-pause posts a fresh stamp in a new comment (recheck-stamp.js),
-// so a long card's live stamp is at the end, not the start.
+// Linear pages comments newest first, so first: 50 is the NEWEST 50 (BRO-5287; never last:,
+// which returns the oldest). A re-pause posts a fresh stamp in a new comment (recheck-stamp.js).
 const AWAITING_MAX_PAGES = 4;
 // More overdue checks than this and the verdict stays "Falling behind": the recheck is not keeping up.
 const OVERDUE_CHECK_LIMIT = 10;

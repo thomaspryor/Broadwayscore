@@ -252,7 +252,7 @@ test('BRO-7595: fetchBoardNumbersData reads the awaiting-check count last and bu
 });
 
 test('BRO-7595: the awaiting-check query reads the newest comments, where a re-pause stamp lands', () => {
-  assert.match(require('./board-summary.js').AWAITING_CHECK_QUERY, /comments\(last: 50, orderBy: createdAt\)/);
+  assert.match(require('./board-summary.js').AWAITING_CHECK_QUERY, /comments\(first: 50, orderBy: createdAt\)/);
 });
 
 test('BRO-7595: waiting fixes are counted over the chart days and never exceed the cards added', () => {
