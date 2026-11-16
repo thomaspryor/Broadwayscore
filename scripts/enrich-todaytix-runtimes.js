@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { fetchPage, cleanup } = require('./lib/scraper');
-const { extractRunTimeDisplay, parseRunTimeDisplay, todaytixPageUrl, isPlaceholderRunningTime } = require('./lib/todaytix-runtime');
+const { extractRunTimeDisplay, parseRunTimeDisplay, todaytixPageUrl, isPlaceholderRunningTime, apiRuntimeTrusted, parseCompactRuntime } = require('./lib/todaytix-runtime');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -160,9 +160,12 @@ async function main() {
           }
           parts.push(`runtime=${pageRuntime.runtime} (page)`);
           runtimeEnriched++;
-        } else if (isPlaceholderRunningTime(ttShow.runningTime)) {
-          // TodayTix filler (3hr 12min, two intermissions), not a real run time (BRO-5860).
-          parts.push('runtime skipped (TodayTix placeholder)');
+        } else if (ttShow.runningTime && ttShow.runningTime.minutes && !apiRuntimeTrusted(show, ttShow.runningTime)) {
+          // TodayTix filler value (BRO-5860, BRO-7594), or a pre-previews show whose
+          // API value is a listing default: wait for the page to publish one.
+          parts.push(isPlaceholderRunningTime(ttShow.runningTime)
+            ? 'runtime skipped (TodayTix placeholder)'
+            : `runtime skipped (API only, show is ${show.status})`);
           noRuntime++;
         } else if (ttShow.runningTime && ttShow.runningTime.minutes) {
           const mins = ttShow.runningTime.minutes;
@@ -209,7 +212,12 @@ async function main() {
       }
 
       // Intermissions (from runningTime description if present)
-      if (show.intermissions === undefined && ttShow.runningTime && ttShow.runningTime.display && !isPlaceholderRunningTime(ttShow.runningTime)) {
+      // Only when the API's minutes match the stored runtime (BRO-7594 review): a
+      // runtime from the page or another source must not take its intermission
+      // count from a different (possibly stale) API record.
+      const storedMinutes = parseCompactRuntime(show.runtime || '');
+      const apiAgrees = storedMinutes != null && ttShow.runningTime && Math.abs(storedMinutes - ttShow.runningTime.minutes) <= 5;
+      if (show.intermissions == null && apiAgrees && ttShow.runningTime.display && apiRuntimeTrusted(show, ttShow.runningTime)) {
         const display = ttShow.runningTime.display.toLowerCase();
         if (display.includes('no intermission') || display.includes('no interval')) {
           if (!DRY_RUN) show.intermissions = 0;

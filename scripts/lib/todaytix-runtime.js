@@ -92,26 +92,91 @@ function parseRunTimeDisplay(display) {
 }
 
 /**
- * TodayTix's filler runningTime. Listings with no real run time (all Met Opera
- * titles, ABT ballets, The Last Ship at the Met, A View from the Bridge at
- * La MaMa: 10 rows, 2026-10) carry a fresh runningTime record of exactly this
- * value while the page's runTimeAndIntermission is null. Written as "3h 12m"
- * on every one of them (BRO-5860). Never a measurement: reject it.
+ * TodayTix's filler runningTime values. Listings with no real run time carry a
+ * runningTime record with one of these displays while the page's
+ * runTimeAndIntermission is null. Never a measurement: reject them.
+ *
+ * - 3hr 12min, two intermissions: Met Opera / ABT / La MaMa rows (BRO-5860, 10 rows 2026-10).
+ * - 1hr 35mins (inc. interval): London default on 63 listings, 29 of them with a
+ *   null page field (BRO-7594, 2026-11-16). Amadeus, West Side Story, Death of a
+ *   Salesman were all stored as "1h 35m".
+ * - 1hr 35min (no intermission): NYC default on 6 listings (Kiss of the Spider
+ *   Woman's page says 2hr 30min incl. intermission) (BRO-7594).
+ * - 4hrs (inc two intervals): NYC default on 5 listings, incl. Awake and Sing! (TT 45488) before previews; we
+ *   stored "4h" and the FAQ told Google "4 hours with no intermission" (BRO-7594).
+ *
+ * A real show can run 1h 35m, so the London filler is matched on its exact
+ * display string ("mins (inc. interval)"), not on minutes alone.
  */
-const PLACEHOLDER_RUNNING_TIME = { minutes: 192, display: /^3\s*hrs?\s*12\s*min\.?\s*\(?incl(?:\.|uding)?\s*(?:two|2)\s*intermissions\)?\.?$/i };
+const PLACEHOLDER_RUNNING_TIMES = [
+  { minutes: 192, display: /^3\s*hrs?\s*12\s*min\.?\s*\(?incl(?:\.|uding)?\s*(?:two|2)\s*intermissions\)?\.?$/i },
+  { minutes: 95, display: /^1\s*hr\s*35\s*mins\s*\(inc\.\s*interval\)$/i },
+  { minutes: 95, display: /^1\s*hr\s*35\s*min\s*\(no\s*intermission\)$/i },
+  { minutes: 240, display: /^4\s*hrs\s*\(inc\s*two\s*intervals\)$/i },
+];
 
 /**
  * True when a TodayTix runningTime ({minutes, display}) or a display string is
- * the filler value above.
+ * one of the filler values above.
  *
  * @param {{minutes?: number, display?: string}|string|null} rt
  * @returns {boolean}
  */
 function isPlaceholderRunningTime(rt) {
   if (!rt) return false;
-  const display = typeof rt === 'string' ? rt : (rt.display || '');
-  if (typeof rt === 'object' && rt.minutes != null && rt.minutes !== PLACEHOLDER_RUNNING_TIME.minutes) return false;
-  return PLACEHOLDER_RUNNING_TIME.display.test(display.trim());
+  const display = (typeof rt === 'string' ? rt : (rt.display || '')).trim();
+  return PLACEHOLDER_RUNNING_TIMES.some(p => {
+    if (typeof rt === 'object' && rt.minutes != null && rt.minutes !== p.minutes) return false;
+    return p.display.test(display);
+  });
+}
+
+/**
+ * Statuses before the first performance. TodayTix's API runningTime for these
+ * is a listing default far more often than a measurement (every BRO-7594 row
+ * was pre-previews), so writers must take a run time for them only from the
+ * show PAGE, never the API fallback.
+ */
+const PRE_PERFORMANCE_STATUSES = new Set(['announced', 'upcoming']);
+
+/**
+ * May the API runningTime be used as a fallback for this show?
+ *
+ * @param {object} show - shows.json entry
+ * @param {{minutes?: number, display?: string}|null} apiRunningTime
+ * @returns {boolean}
+ */
+function apiRuntimeTrusted(show, apiRunningTime) {
+  if (!apiRunningTime || !apiRunningTime.minutes) return false;
+  if (isPlaceholderRunningTime(apiRunningTime)) return false;
+  if (show && PRE_PERFORMANCE_STATUSES.has(show.status)) return false;
+  return true;
+}
+
+/**
+ * Stored shows.json runtimes that are TodayTix fillers (BRO-5860, BRO-7594).
+ * Value: true when the row is filler whatever its intermissions; false when only
+ * a row with unknown intermissions is (writers dropped the filler's count).
+ */
+const STORED_FILLER_RUNTIMES = { '3h 12m': true, '1h 35m': false, '4h': false };
+
+/**
+ * Real run times that equal a stored filler. Each checked on the TodayTix page.
+ * 2026-11-16 (BRO-7594): both pages read "1hr 35min." with no intermission note.
+ */
+const STORED_FILLER_EXEMPT = new Set(['spare-parts-off-broadway-2026', 'fishing-for-alaska-off-broadway-2026']);
+
+/**
+ * TodayTix-linked rows whose stored runtime is a filler value.
+ *
+ * @param {object[]} shows
+ * @returns {string[]} "id (runtime)"
+ */
+function storedFillerRows(shows) {
+  return shows
+    .filter(s => s.todaytixId && Object.prototype.hasOwnProperty.call(STORED_FILLER_RUNTIMES, s.runtime) && !STORED_FILLER_EXEMPT.has(s.id))
+    .filter(s => STORED_FILLER_RUNTIMES[s.runtime] || s.intermissions == null)
+    .map(s => `${s.id} (${s.runtime})`);
 }
 
 /**
@@ -160,4 +225,7 @@ module.exports = {
   formatCompactRuntime,
   todaytixPageUrl,
   isPlaceholderRunningTime,
+  apiRuntimeTrusted,
+  storedFillerRows,
+  PRE_PERFORMANCE_STATUSES,
 };

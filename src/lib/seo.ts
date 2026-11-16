@@ -762,9 +762,16 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
       const runtimeStr = hours > 0
         ? `${hours} hour${hours > 1 ? 's' : ''}${mins > 0 ? ` and ${mins} minutes` : ''}`
         : `${mins} minutes`;
+      // BRO-7594: intermissions null/undefined means UNKNOWN, not zero. Saying
+      // "with no intermission" for unknown rows put false claims in the FAQPage
+      // JSON-LD (Awake and Sing! "4 hours with no intermission" reached Gemini).
+      const n = show.intermissions;
+      const intermissionClause = typeof n === 'number' && n > 0
+        ? `, including ${n} intermission${n > 1 ? 's' : ''}`
+        : n === 0 ? ' with no intermission' : '';
       faqs.push({
         question: `How long is ${show.title}?`,
-        answer: `${show.title} has a runtime of ${runtimeStr}${show.intermissions ? `, including ${show.intermissions} intermission${show.intermissions > 1 ? 's' : ''}` : ' with no intermission'}.`,
+        answer: `${show.title} has a runtime of ${runtimeStr}${intermissionClause}.`,
       });
     }
   }

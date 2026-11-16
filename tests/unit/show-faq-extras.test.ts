@@ -124,3 +124,16 @@ test('a price that is only a prefix of the number in the name is still stated ($
   const lr = { specialLottery: { name: 'MTC $35', platform: '', url: '', price: 3, instructions: '' } } as unknown as Parameters<typeof describeDiscountTickets>[1];
   assert.match(describeDiscountTickets('X', lr, '$') || '', /\(MTC \$35\) for \$3\./);
 });
+
+// BRO-7594: intermissions null/undefined is UNKNOWN. The FAQ (and its FAQPage
+// JSON-LD, which Gemini quoted) said "4 hours with no intermission" for
+// Awake and Sing! when the count was simply unknown.
+test('runtime answer only claims "no intermission" when the count is 0', () => {
+  const ans = (over: Record<string, unknown>) =>
+    getShowFAQs(show(over)).find(f => /How long is/.test(f.question))!.answer;
+  assert.equal(ans({ runtime: '4h', intermissions: null }), 'Example Show has a runtime of 4 hours.');
+  assert.equal(ans({ runtime: '1h 35m' }), 'Example Show has a runtime of 1 hour and 35 minutes.');
+  assert.equal(ans({ runtime: '1h 30m', intermissions: 0 }), 'Example Show has a runtime of 1 hour and 30 minutes with no intermission.');
+  assert.equal(ans({ runtime: '2h 30m', intermissions: 1 }), 'Example Show has a runtime of 2 hours and 30 minutes, including 1 intermission.');
+  assert.equal(ans({ runtime: '3h', intermissions: 2 }), 'Example Show has a runtime of 3 hours, including 2 intermissions.');
+});

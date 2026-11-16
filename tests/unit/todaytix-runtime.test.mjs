@@ -145,3 +145,41 @@ test('isPlaceholderRunningTime: tolerates spacing/number variants of the filler'
   assert.strictEqual(isPlaceholderRunningTime('3 hr 12 min (including two intermissions)'), true);
   assert.strictEqual(isPlaceholderRunningTime({ minutes: 193, display: '3hr 12min (incl. two intermissions)' }), false);
 });
+
+// BRO-7594: three more TodayTix filler values, captured from api.todaytix.com
+// 2026-11-16 (Awake and Sing! TT 45488 "4hrs (inc two intervals)"; 64 London
+// listings "1hr 35mins (inc. interval)"; 6 NYC listings "1hr 35min (no intermission)").
+test('isPlaceholderRunningTime: BRO-7594 fillers are rejected, real lookalikes are not', () => {
+  const { isPlaceholderRunningTime } = require('../../scripts/lib/todaytix-runtime.js');
+  assert.strictEqual(isPlaceholderRunningTime({ id: 43104, minutes: 240, display: '4hrs (inc two intervals)' }), true);
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 95, display: '1hr 35mins (inc. interval)' }), true);
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 95, display: '1hr 35min (no intermission)' }), true);
+  // real page displays at the same lengths must pass
+  assert.strictEqual(isPlaceholderRunningTime('1hr 35min. No interval.'), false);
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 240, display: '4hr. Incl. 2 intermissions.' }), false);
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 100, display: '1hr 35mins (inc. interval)' }), false);
+});
+
+test('apiRuntimeTrusted: API fallback refused for fillers and pre-performance shows', () => {
+  const { apiRuntimeTrusted } = require('../../scripts/lib/todaytix-runtime.js');
+  const real = { minutes: 150, display: '2hr 30min (incl. intermission)' };
+  assert.strictEqual(apiRuntimeTrusted({ status: 'open' }, real), true);
+  assert.strictEqual(apiRuntimeTrusted({ status: 'previews' }, real), true);
+  assert.strictEqual(apiRuntimeTrusted({ status: 'upcoming' }, real), false);
+  assert.strictEqual(apiRuntimeTrusted({ status: 'announced' }, real), false);
+  assert.strictEqual(apiRuntimeTrusted({ status: 'open' }, { minutes: 240, display: '4hrs (inc two intervals)' }), false);
+  assert.strictEqual(apiRuntimeTrusted({ status: 'open' }, null), false);
+});
+
+test('storedFillerRows flags stored fillers with unknown intermissions only', () => {
+  const { storedFillerRows: fillerRows } = require('../../scripts/lib/todaytix-runtime.js');
+  const rows = [
+    { id: 'awake-and-sing-2026', todaytixId: 45488, runtime: '4h', intermissions: null },
+    { id: 'amadeus-west-end-2026', todaytixId: 1, runtime: '1h 35m' },
+    { id: 'wake-off-west-end-2027', todaytixId: 2, runtime: '1h 35m', intermissions: 0 },
+    { id: 'no-tt', runtime: '4h', intermissions: null },
+    { id: 'spare-parts-off-broadway-2026', todaytixId: 3, runtime: '1h 35m', intermissions: null },
+    { id: 'met', todaytixId: 4, runtime: '3h 12m', intermissions: 2 },
+  ];
+  assert.deepStrictEqual(fillerRows(rows), ['awake-and-sing-2026 (4h)', 'amadeus-west-end-2026 (1h 35m)', 'met (3h 12m)']);
+});
