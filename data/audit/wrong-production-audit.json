@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-16T23:11:18.374Z",
+  "timestamp": "2026-11-16T23:43:25.287Z",
   "stats": {
-    "totalReviews": 82221,
+    "totalReviews": 82222,
     "alreadyFlagged": 22484,
     "dateGuardCatches": 222,
     "directorMismatch": 3716,
-    "tvFilmSignals": 2329,
-    "londonSignals": 3777,
+    "tvFilmSignals": 2328,
+    "londonSignals": 3778,
     "offBroadwaySignals": 755,
     "yearMismatch": 375,
     "noPublishDate": 8243
@@ -52036,6 +52036,7 @@
     {
       "showId": "passing-strange-regional-2026",
       "file": "theatermania--unknown.json",
+      "score": 88,
       "publishDate": "2026-11-16",
       "url": "https://www.theatermania.com/news/review-passing-strange-finally-makes-its-la-debut-at-the-pasadena-playhouse_1859872/",
       "findings": [
@@ -71293,19 +71294,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "file": "daily-mail--unknown.json",
-      "publishDate": "2026-11-14",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16291511/Brad-Pitts-canine-survival-thriller-Heart-Beast-goes-viral-fans-hail-one-best-films-year.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -120515,6 +120503,19 @@
           "severity": "MEDIUM",
           "detail": "Published 142d before show (2024-07-25 vs 2024-12-14)"
         },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "whatsonstage--tom-millward.json",
+      "publishDate": "2025-01-15",
+      "url": "https://www.whatsonstage.com/news/cameron-mackintosh-matthew-bourne-and-more-on-reimagining-oliver-in-2025_1660735/",
+      "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
