@@ -551,6 +551,12 @@ function logTbBylineShape(html, criticHint) {
     const i = raw.toLowerCase().indexOf(last.toLowerCase());
     if (i >= 0) hits.push(raw.slice(Math.max(0, i - 100), i + 60).replace(/\s+/g, ' '));
   }
+  // Older pages may sign with a bare "by Name" or "- Name" (no "review by"): show those and the title.
+  for (const m of [...raw.matchAll(/.{0,50}\bby\s*(?:<[^>]{0,80}>\s*){0,3}[A-Z][a-z]+\.?\s+[A-Z][a-z]+.{0,30}/gs)].slice(0, 4)) {
+    hits.push('BY: ' + m[0].replace(/\s+/g, ' '));
+  }
+  const title = (raw.match(/<title[^>]*>([^<]{0,120})/i) || [])[1];
+  if (title) hits.push('TITLE: ' + title.trim());
   console.warn(`  [tb-extract] no byline matched (${raw.length} chars html); byline markup: ${JSON.stringify(hits)}`);
 }
 
