@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "pass",
-  "lastChecked": "2026-11-16T00:01:55.175Z",
+  "lastChecked": "2026-11-16T09:47:24.050Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,12 +19,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.3% scored (50845/51717)"
+      "message": "98.3% scored (50660/51561)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (2h ago)"
+      "message": "29 audit(s) drifting, each reported on its own card or the digest FYI line (0h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -39,7 +39,7 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "pass",
-      "message": "No probable domain moves in 376 unregistered host(s)"
+      "message": "No probable domain moves in 375 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1887 outlet(s), 82000 review(s)"
+      "message": "No broken-extractor signature in 1887 outlet(s), 82036 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1887 outlet(s), 82000 review(s)"
+      "message": "No broken-extractor signature in 1887 outlet(s), 82036 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -74,7 +74,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "151 outlet×market rows checked, none NEW silent 2+ consecutive weeks (43 known/baselined, 6d ago)"
+      "message": "151 outlet×market rows checked, none NEW silent 2+ consecutive weeks (43 known/baselined, 7d ago)"
     },
     {
       "name": "Quality: outlet feed staleness",

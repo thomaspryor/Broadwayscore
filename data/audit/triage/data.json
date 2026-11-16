@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-16T00:01:55.174Z",
+  "lastChecked": "2026-11-16T09:47:24.049Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -94,22 +94,22 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "100 review(s) with no usable text, 67 rejected although verified as a review, 28 never scored, 36 with a blocked URL (0 published on the site), across 689 current shows"
+      "message": "89 review(s) with no usable text, 68 rejected although verified as a review, 20 never scored, 36 with a blocked URL (0 published on the site), across 685 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
-      "status": "warn",
-      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (0 more already queued for rescore), of 48814 checked"
+      "status": "pass",
+      "message": "No published review score contradicts the critic's rating (48919 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "6 early publish date(s) awaiting recheck (limit 40); 209 already attempted and not yet confirmed"
+      "message": "1 early publish date(s) awaiting recheck (limit 40); 210 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3455 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 3457 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -119,7 +119,7 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 549 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 547 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
