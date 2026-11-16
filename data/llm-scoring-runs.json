@@ -728680,21 +728680,21 @@
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-16T23:52:32.101Z",
-    "completedAt": "2026-11-16T23:52:34.962Z",
-    "totalReviews": 4,
-    "processed": 1,
-    "skipped": 3,
+    "startedAt": "2026-11-16T23:51:57.694Z",
+    "completedAt": "2026-11-16T23:52:08.822Z",
+    "totalReviews": 3,
+    "processed": 3,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 8330,
-      "output": 332,
-      "cacheRead": 5418,
+      "input": 23930,
+      "output": 1037,
+      "cacheRead": 16254,
       "cacheWrite": 0,
-      "total": 19691
+      "total": 57728
     },
-    "costUsd": 0.0170711,
-    "runId": "43982441495",
+    "costUsd": 0.0492543,
+    "runId": "43982313432",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -739567,10 +739567,10 @@
       {
         "showId": "confederates-regional-2026-fountain-theatre",
         "ourDistribution": {
-          "up": 3,
+          "up": 2,
           "flat": 0,
           "down": 1,
-          "total": 4
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -759288,6 +759288,16 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
+      },
+      {
+        "showId": "our-town-regional-2026",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
       },
       {
         "showId": "out-here-regional-2026",
@@ -780371,8 +780381,8 @@
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-16T23:57:34.157Z",
-    "completedAt": "2026-11-16T23:57:34.159Z",
+    "startedAt": "2026-11-16T23:57:08.376Z",
+    "completedAt": "2026-11-16T23:57:08.378Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -780385,7 +780395,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "43982441495",
+    "runId": "43982313432",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
