@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-16T12:44:57.380Z",
+  "runDate": "2026-11-16T14:26:38.002Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 20,
+    "maxReviews": 12,
     "priority": "all",
-    "showFilter": "1619-the-journey-of-a-people-regional-2024,beneath-the-willow-tree-regional-2024,covenant-regional-2026,henry-v-regional-2024,iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026,im-gonna-marry-you-tobey-maguire-regional-2026,inherit-the-wind-regional-2024,les-miserables-regional-2024,midnight-in-the-garden-of-good-and-evil-regional-2024,native-son-regional-2024,prodigal-son-regional-2025,smokefall-regional-2025,strange-cargo-the-doom-of-the-demeter-regional-2025,the-25th-annual-putnam-county-spelling-bee-off-broadway-2025,the-house-of-ideas-regional-2024,the-lord-of-the-rings-a-musical-tale-regional-2024,the-tragedy-of-macbeth-regional-2024,three-sisters-regional-2024,yo-ho-regional-2026",
+    "showFilter": "inherit-the-wind-regional-2024,midnight-in-the-garden-of-good-and-evil-regional-2024,strange-cargo-the-doom-of-the-demeter-regional-2025,the-lord-of-the-rings-a-musical-tale-regional-2024,the-tragedy-of-macbeth-regional-2024,covenant-regional-2026,iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026,im-gonna-marry-you-tobey-maguire-regional-2026,prodigal-son-regional-2025,yo-ho-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 6,
+    "processed": 1,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "64.7%"
+    "successRate": "10.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,12 +23,12 @@
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 10,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
+    "tier1Attempts": 9,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
@@ -38,13 +38,13 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 17,
-    "tier3Success": 10,
-    "tier3_6Attempts": 5,
+    "tier3Attempts": 10,
+    "tier3Success": 1,
+    "tier3_6Attempts": 9,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
+    "tier4Attempts": 9,
     "tier4Success": 0,
-    "totalFailed": 5,
+    "totalFailed": 8,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,25 +54,18 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 11,
-    "failed": 6,
+    "processed": 1,
+    "failed": 9,
     "shows": [
-      "1619-the-journey-of-a-people-regional-2024",
-      "beneath-the-willow-tree-regional-2024",
       "covenant-regional-2026",
-      "henry-v-regional-2024",
       "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026",
       "im-gonna-marry-you-tobey-maguire-regional-2026",
       "inherit-the-wind-regional-2024",
-      "les-miserables-regional-2024",
       "midnight-in-the-garden-of-good-and-evil-regional-2024",
-      "native-son-regional-2024",
       "prodigal-son-regional-2025",
       "strange-cargo-the-doom-of-the-demeter-regional-2025",
-      "the-house-of-ideas-regional-2024",
       "the-lord-of-the-rings-a-musical-tale-regional-2024",
       "the-tragedy-of-macbeth-regional-2024",
-      "three-sisters-regional-2024",
       "yo-ho-regional-2026"
     ],
     "outOfScopeShows": [],
@@ -82,45 +75,31 @@
     }
   },
   "processed": [
-    "im-gonna-marry-you-tobey-maguire-regional-2026/talkinbroadway--savannah-brooks.json",
-    "yo-ho-regional-2026/talkinbroadway--christine-malcom.json",
-    "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/talkinbroadway--christine-malcom.json",
-    "covenant-regional-2026/talkinbroadway--christine-malcom.json",
-    "prodigal-son-regional-2025/talkinbroadway--christine-malcom.json",
-    "henry-v-regional-2024/talkinbroadway--christine-malcom.json",
-    "beneath-the-willow-tree-regional-2024/talkinbroadway--christine-malcom.json",
-    "les-miserables-regional-2024/talkinbroadway--christine-malcom.json",
-    "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json",
-    "three-sisters-regional-2024/talkinbroadway--christine-malcom.json",
-    "native-son-regional-2024/talkinbroadway--christine-malcom.json"
+    "yo-ho-regional-2026/talkinbroadway--christine-malcom.json"
   ],
   "failed": [
+    "im-gonna-marry-you-tobey-maguire-regional-2026/talkinbroadway--savannah-brooks.json",
+    "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/talkinbroadway--christine-malcom.json",
+    "covenant-regional-2026/talkinbroadway--christine-malcom.json",
     "strange-cargo-the-doom-of-the-demeter-regional-2025/talkinbroadway--christine-malcom.json",
+    "prodigal-son-regional-2025/talkinbroadway--christine-malcom.json",
     "the-tragedy-of-macbeth-regional-2024/talkinbroadway--christine-malcom.json",
     "inherit-the-wind-regional-2024/talkinbroadway--christine-malcom.json",
-    "the-house-of-ideas-regional-2024/talkinbroadway--christine-malcom.json",
     "the-lord-of-the-rings-a-musical-tale-regional-2024/talkinbroadway--christine-malcom.json",
     "midnight-in-the-garden-of-good-and-evil-regional-2024/talkinbroadway--christine-malcom.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "im-gonna-marry-you-tobey-maguire-regional-2026/talkinbroadway--savannah-brooks.json",
-      "yo-ho-regional-2026/talkinbroadway--christine-malcom.json",
-      "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/talkinbroadway--christine-malcom.json",
-      "covenant-regional-2026/talkinbroadway--christine-malcom.json",
-      "prodigal-son-regional-2025/talkinbroadway--christine-malcom.json",
-      "henry-v-regional-2024/talkinbroadway--christine-malcom.json",
-      "beneath-the-willow-tree-regional-2024/talkinbroadway--christine-malcom.json",
-      "les-miserables-regional-2024/talkinbroadway--christine-malcom.json",
-      "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json",
-      "three-sisters-regional-2024/talkinbroadway--christine-malcom.json",
-      "native-son-regional-2024/talkinbroadway--christine-malcom.json"
+      "yo-ho-regional-2026/talkinbroadway--christine-malcom.json"
     ],
     "failed": [
+      "im-gonna-marry-you-tobey-maguire-regional-2026/talkinbroadway--savannah-brooks.json",
+      "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/talkinbroadway--christine-malcom.json",
+      "covenant-regional-2026/talkinbroadway--christine-malcom.json",
       "strange-cargo-the-doom-of-the-demeter-regional-2025/talkinbroadway--christine-malcom.json",
+      "prodigal-son-regional-2025/talkinbroadway--christine-malcom.json",
       "the-tragedy-of-macbeth-regional-2024/talkinbroadway--christine-malcom.json",
       "inherit-the-wind-regional-2024/talkinbroadway--christine-malcom.json",
-      "the-house-of-ideas-regional-2024/talkinbroadway--christine-malcom.json",
       "the-lord-of-the-rings-a-musical-tale-regional-2024/talkinbroadway--christine-malcom.json",
       "midnight-in-the-garden-of-good-and-evil-regional-2024/talkinbroadway--christine-malcom.json"
     ]
@@ -133,26 +112,14 @@
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [
-      "im-gonna-marry-you-tobey-maguire-regional-2026/talkinbroadway--savannah-brooks.json",
-      "yo-ho-regional-2026/talkinbroadway--christine-malcom.json",
-      "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/talkinbroadway--christine-malcom.json",
-      "covenant-regional-2026/talkinbroadway--christine-malcom.json",
-      "prodigal-son-regional-2025/talkinbroadway--christine-malcom.json",
-      "henry-v-regional-2024/talkinbroadway--christine-malcom.json",
-      "beneath-the-willow-tree-regional-2024/talkinbroadway--christine-malcom.json",
-      "les-miserables-regional-2024/talkinbroadway--christine-malcom.json",
-      "three-sisters-regional-2024/talkinbroadway--christine-malcom.json",
-      "native-son-regional-2024/talkinbroadway--christine-malcom.json"
+      "yo-ho-regional-2026/talkinbroadway--christine-malcom.json"
     ],
     "archiveToday": [],
-    "archive": [
-      "the-house-of-ideas-regional-2024/talkinbroadway--christine-malcom.json",
-      "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
     "Talkin' Broadway": {
-      "count": 5,
+      "count": 8,
       "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
