@@ -52,15 +52,27 @@ test('idle runs and malformed signatures do not alert; paid failed attempts can 
   assert.equal(checkRepeatSignature([run({ processed: 0 }), run({ processed: 0 }), run({ processed: 0 })], now)[0].count, 3);
 });
 
-test('a UTC day sums across run ids, ignores invalid costs, and is unknown when the log does not cover it', () => {
+test('a UTC day sums across run ids, and is unknown when the log does not cover it', () => {
   const day = '2026-09-30';
-  const at = (iso, costUsd) => run({ completedAt: iso, costUsd });
-  const runs = [at('2026-09-29T23:59:59Z', 100), at('2026-09-30T00:00:00Z', 6), at('2026-09-30T23:59:59.999Z', 4),
-    at('2026-10-01T00:00:00Z', 100),
-    ...[undefined, '50', NaN, Infinity, -10].map(costUsd => at('2026-09-30T12:00:00Z', costUsd))];
-  assert.deepEqual(sumCostUsdForUtcDay(runs, day, { now }), { day, usd: 10, covered: true, runs: 7 });
+  const at = (iso, costUsd, extra = {}) => run({ completedAt: iso, costUsd, ...extra });
+  const runs = [at('2026-09-29T23:59:59Z', 100), at('2026-09-30T00:00:00Z', 6), at('2026-09-30T12:00:00Z', 0),
+    at('2026-09-30T23:59:59.999Z', 4), at('2026-10-01T00:00:00Z', 100)];
+  assert.deepEqual(sumCostUsdForUtcDay(runs, day, { now }), { day, usd: 10, covered: true, runs: 3 });
   // Oldest retained summary is after 00:00Z: earlier runs may have been capped away.
-  assert.deepEqual(sumCostUsdForUtcDay(runs.slice(2), day, { now }), { day, usd: null, covered: false, runs: 6 });
+  assert.deepEqual(sumCostUsdForUtcDay(runs.slice(2), day, { now }), { day, usd: null, covered: false, runs: 2 });
+  // A run with no usable cost makes the day unknown, never a smaller total.
+  for (const costUsd of [undefined, null, '50', NaN, Infinity, -10]) {
+    assert.equal(sumCostUsdForUtcDay([...runs, at('2026-09-30T12:00:00Z', costUsd)], day, { now }).covered, false, String(costUsd));
+  }
+  // Stale log: nothing written after the day ended, so its last runs may be missing.
+  assert.equal(sumCostUsdForUtcDay(runs.slice(0, 4), day, { now }).covered, false);
+  // Stamps: a stamp at/before 00:00Z vouches for a log whose oldest row is later;
+  // with merged writers the latest (narrowest) stamp wins.
+  const stamped = (keeps) => [at('2026-09-30T06:00:00Z', 3), at('2026-10-01T01:00:00Z', 1, { logKeepsSince: keeps })];
+  assert.equal(sumCostUsdForUtcDay(stamped('2026-09-29T00:00:00.000Z'), day, { now }).usd, 3);
+  assert.equal(sumCostUsdForUtcDay(stamped('2026-09-30T06:00:00.000Z'), day, { now }).covered, false);
+  const merged = [at('2026-09-30T06:00:00Z', 3, { logKeepsSince: '2026-09-30T05:00:00.000Z' }), ...stamped('2026-09-29T00:00:00.000Z')];
+  assert.equal(sumCostUsdForUtcDay(merged, day, { now }).covered, false, 'a wider stamp from another writer does not override a narrower one');
   // The day has not ended yet.
   assert.equal(sumCostUsdForUtcDay(runs, day, { now: new Date('2026-09-30T20:00:00Z') }).covered, false);
   for (const bad of ['2026-9-30', '', null, 'not-a-day']) assert.equal(sumCostUsdForUtcDay(runs, bad, { now }).usd, null);
@@ -114,26 +126,31 @@ test('BRO-7576: the 7-day average rule stops the flapping that re-filed the card
     return n;
   };
   const oneDay = rec => rec.llmScoring.cost > 10;
-  const sevenDay = (rec, hist) => llmScoringBreach(rec, hist, 10).breached;
+  // null (under 4 measured days) neither opens nor closes.
+  const sevenDay = (rec, hist) => { const v = llmScoringBreach(rec, hist, 10); return v ? v.breached : false; };
   assert.equal(opens(oneDay), 5, 'the old one-day rule re-opens with every busy day');
-  assert.equal(opens(sevenDay), 3, 'the 7-day average opens only on sustained spend');
+  assert.equal(opens(sevenDay), 2, 'the 7-day average opens only on sustained spend');
   const v = llmScoringBreach(records[27], records.slice(0, 27), 10);
   assert.deepEqual({ ...v }, { avg: 20.13, days: 7, today: 3.43, threshold: 10, breached: true });
 });
 
 test('llmScoringBreach: unmeasured days neither alarm nor clear, and do not count as $0', () => {
   const rec = (day, llmScoring) => ({ day, llmScoring });
-  const hist = [rec('2026-11-10', { status: 'ok', cost: 30 }), rec('2026-11-11', { status: 'unknown' }),
+  const hist = [rec('2026-11-08', { status: 'ok', cost: 20 }), rec('2026-11-09', { status: 'ok', cost: 10 }),
+    rec('2026-11-10', { status: 'ok', cost: 30 }), rec('2026-11-11', { status: 'unknown' }),
     rec('2026-11-12', undefined), rec('2026-11-01', { status: 'ok', cost: 999 })];
   // 11-01 is outside the 7-day window; unknown/missing days are skipped, not zeroed.
   assert.deepEqual({ ...llmScoringBreach(rec('2026-11-13', { status: 'ok', cost: 0 }), hist, 10) },
-    { avg: 15, days: 2, today: 0, threshold: 10, breached: true });
+    { avg: 15, days: 4, today: 0, threshold: 10, breached: true });
+  // Under 4 measured days is not a trend: no verdict either way.
+  assert.equal(llmScoringBreach(rec('2026-11-13', { status: 'ok', cost: 0 }), hist.slice(1), 10), null);
   assert.equal(llmScoringBreach(rec('2026-11-13', { status: 'unknown' }), hist, 10), null);
   assert.equal(llmScoringBreach(rec('2026-11-13', undefined), hist, 10), null);
   for (const line of [null, undefined, NaN, 0, -1, '10']) {
     assert.equal(llmScoringBreach(rec('2026-11-13', { status: 'ok', cost: 50 }), hist, line), null);
   }
-  assert.equal(llmScoringBreach(rec('2026-11-13', { status: 'ok', cost: 10 }), [], 10).breached, false, 'at the line is not over it');
+  assert.equal(llmScoringBreach(rec('2026-11-13', { status: 'ok', cost: 10 }),
+    hist.slice(0, 3).map(r => ({ ...r, llmScoring: { status: 'ok', cost: 10 } })), 10).breached, false, 'at the line is not over it');
 });
 
 test('daily spend CLI records yesterday\'s LLM scoring cost only when the run log covers it', t => {
@@ -154,26 +171,44 @@ test('daily spend CLI records yesterday\'s LLM scoring cost only when the run lo
       };
       if (id === 'fs') return { ...fs, readFileSync(p, ...args) {
         if (String(p).endsWith('/data/llm-scoring-runs.json')) return process.env.TEST_RUNS;
+        if (String(p).endsWith('/provider-spend-daily.jsonl') && process.env.TEST_LEDGER) return process.env.TEST_LEDGER;
         if (String(p).includes('/data/')) throw new Error('No test ledger');
         return fs.readFileSync(p, ...args);
       }};
       return load.call(this, id, parent, ...rest);
     };
   `);
-  const cli = runs => spawnSync(process.execPath, ['-r', preload, 'scripts/check-provider-spend.js', '--dry-run'], {
+  const cli = (runs, ledger = []) => spawnSync(process.execPath, ['-r', preload, 'scripts/check-provider-spend.js', '--dry-run'], {
     cwd: path.resolve(import.meta.dirname, '../..'), encoding: 'utf8', timeout: 30000,
-    env: { ...process.env, TEST_RUNS: JSON.stringify(runs) },
+    env: { ...process.env, TEST_RUNS: JSON.stringify(runs), TEST_LEDGER: ledger.map(r => JSON.stringify(r)).join('\n') },
   });
+  const day = (d, llmScoring) => ({ day: d, providers: {}, ...(llmScoring ? { llmScoring } : {}) });
   const covered = cli([run({ completedAt: '2026-09-29T22:00:00Z', costUsd: 1 }),
     run({ completedAt: '2026-09-30T08:00:00Z', costUsd: 7.5, processed: 1 }),
     run({ completedAt: '2026-09-30T20:00:00Z', costUsd: 5, processed: 2 }),
     run({ completedAt: '2026-10-01T10:00:00Z', costUsd: 40, processed: 3 })]);
   assert.equal(covered.status, 0, covered.stdout + covered.stderr);
-  assert.match(covered.stdout, /2026-09-30: LLM scoring \$12\.5 \(2 run summaries\); 1-day average \$12\.5 vs \$10 line: OVER/);
+  // One measured day is not a trend: recorded, but no verdict.
+  assert.match(covered.stdout, /2026-09-30: LLM scoring \$12\.5 \(2 run summaries\)\n/);
+  // With measured history the 7-day average is judged; 09-29 was 'unknown' in
+  // the ledger and is re-measured from the log ($1 + $3 = $4): (12.5+4+20+20)/4.
+  const runsWithDayBefore = [run({ completedAt: '2026-09-28T23:00:00Z', costUsd: 9 }),
+    run({ completedAt: '2026-09-29T01:00:00Z', costUsd: 3 }), ...JSON.parse(JSON.stringify([
+      run({ completedAt: '2026-09-29T22:00:00Z', costUsd: 1 }),
+      run({ completedAt: '2026-09-30T08:00:00Z', costUsd: 7.5, processed: 1 }),
+      run({ completedAt: '2026-09-30T20:00:00Z', costUsd: 5, processed: 2 }),
+      run({ completedAt: '2026-10-01T10:00:00Z', costUsd: 40, processed: 3 })]))];
+  const withHistory = cli(runsWithDayBefore, [day('2026-09-27', { status: 'ok', cost: 20 }),
+    day('2026-09-28', { status: 'ok', cost: 20 }), day('2026-09-29', { status: 'unknown' })]);
+  assert.equal(withHistory.status, 0, withHistory.stdout + withHistory.stderr);
+  assert.match(withHistory.stdout, /2026-09-30: LLM scoring \$12\.5 \(2 run summaries\); 4-day average \$14\.13 vs \$10 line: OVER/);
   const uncovered = cli([run({ completedAt: '2026-09-30T08:00:00Z', costUsd: 50 })]);
   assert.equal(uncovered.status, 0, uncovered.stdout + uncovered.stderr);
   assert.match(uncovered.stdout, /2026-09-30: LLM scoring could not measure/);
   assert.doesNotMatch(uncovered.stdout, /line: OVER/);
+  // A re-run that can no longer see the whole day keeps the earlier figure.
+  const rerun = cli([run({ completedAt: '2026-09-30T08:00:00Z', costUsd: 50 })], [day('2026-09-30', { status: 'ok', cost: 12.5, runs: 2 })]);
+  assert.match(rerun.stdout, /2026-09-30: LLM scoring \$12\.5 \(2 run summaries\)/);
 });
 
 test('daily spend CLI checks repeat signatures: three alert, two stay quiet, without billing requests', t => {

@@ -134,8 +134,9 @@ async function main() {
   // BRO-7576: DAY's whole-UTC-day LLM scoring cost, recorded on the day record
   // below; the daily spend condition is judged on its 7-day average here.
   let llmDay = { covered: false };
+  let scoringRuns = null;
   try {
-    const scoringRuns = JSON.parse(fs.readFileSync(DEFAULT_RUNS_LOG_PATH, 'utf8'));
+    scoringRuns = JSON.parse(fs.readFileSync(DEFAULT_RUNS_LOG_PATH, 'utf8'));
     await reportRollingCostAlerts(scoringRuns, { now, dryRun: DRY_RUN });
     llmDay = sumCostUsdForUtcDay(scoringRuns, DAY, { now });
   } catch (err) {
@@ -193,9 +194,12 @@ async function main() {
   record.attributedPct = attributedPct;
   // Not under record.providers: those are billing-API readings with their own
   // measurability/streak rules. Uncovered = could not measure, never $0.
+  // A re-run (--day=, or a second run the same day) that can no longer see the
+  // whole day keeps the figure an earlier run measured instead of erasing it.
+  const earlierLlm = ledger.find((r) => r.day === DAY)?.llmScoring;
   record.llmScoring = llmDay.covered
     ? { status: 'ok', cost: +llmDay.usd.toFixed(2), runs: llmDay.runs }
-    : { status: 'unknown' };
+    : (earlierLlm?.status === 'ok' ? earlierLlm : { status: 'unknown' });
   // Billed-unit denominator per provider — reuses provider-telemetry.js's
   // BILLING_COUNT_FIELD directly (not a re-typed copy) so this can't drift
   // from computeAttributedPct's own denominator if the mapping ever changes.
@@ -267,6 +271,15 @@ async function main() {
     console.log(`[provider-spend] Browserbase allowance for ${a.caller} ${a.expired ? 'ended' : `ends in ${a.daysLeft} day(s)`} (${a.until})`);
   }
 
+  // Summaries can land in the run log after the morning job measured a day
+  // (a batch still running at 00:00Z, a delayed push), so re-measure the day
+  // before DAY and correct it when the log now covers it.
+  if (Array.isArray(scoringRuns)) {
+    const dayBefore = new Date(Date.parse(`${DAY}T00:00:00Z`) - 86400000).toISOString().slice(0, 10);
+    const prevRec = series.find((r) => r.day === dayBefore);
+    const re = prevRec ? sumCostUsdForUtcDay(scoringRuns, dayBefore, { now }) : null;
+    if (re?.covered) prevRec.llmScoring = { status: 'ok', cost: +re.usd.toFixed(2), runs: re.runs };
+  }
   const llmVerdict = llmScoringBreach(record, series, thresholds.llmScoringDailyUsd);
   console.log(`[provider-spend] ${DAY}: LLM scoring ${record.llmScoring.status === 'ok'
     ? `$${record.llmScoring.cost} (${record.llmScoring.runs} run summaries)` : 'could not measure (run log does not cover the day)'}${llmVerdict

@@ -214,6 +214,7 @@ function budgetBreaches(record, thresholds, history = []) {
  * unmeasured day neither alarms nor clears), else
  * { avg, days, today, threshold, breached }. Pure.
  */
+const LLM_SCORING_MIN_DAYS = 4;
 function llmScoringBreach(record, history, thresholdUsd) {
   if (typeof thresholdUsd !== 'number' || !Number.isFinite(thresholdUsd) || thresholdUsd <= 0) return null;
   const today = record?.llmScoring;
@@ -221,6 +222,8 @@ function llmScoringBreach(record, history, thresholdUsd) {
   const costs = [today.cost, ...windowDays(record, history)
     .map((r) => (r.llmScoring?.status === 'ok' ? r.llmScoring.cost : null))
     .filter((n) => typeof n === 'number' && Number.isFinite(n))];
+  // Too few measured days to call it a trend: neither alarm nor clear.
+  if (costs.length < LLM_SCORING_MIN_DAYS) return null;
   const avg = +(costs.reduce((a, b) => a + b, 0) / costs.length).toFixed(2);
   return { avg, days: costs.length, today: today.cost, threshold: thresholdUsd, breached: avg > thresholdUsd };
 }

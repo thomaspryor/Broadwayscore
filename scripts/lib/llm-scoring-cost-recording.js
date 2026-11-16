@@ -71,7 +71,9 @@ function appendRunSummary(summary, { runsLogPath = DEFAULT_RUNS_LOG_PATH } = {})
     // (Math.max): rows trimmed earlier are gone whatever this append keeps.
     const stamped = runs.length ? Date.parse(runs[runs.length - 1]?.logKeepsSince) : NaN;
     const times = runs.map(r => Date.parse(r?.completedAt)).filter(Number.isFinite);
-    const prevKeeps = Number.isFinite(stamped) ? stamped : (times.length ? Math.min(...times) : -Infinity);
+    // An empty log vouches only from this summary on.
+    const prevKeeps = Number.isFinite(stamped) ? stamped
+      : (times.length ? Math.min(...times) : Date.parse(summary.completedAt));
     summary.logKeepsSince = new Date(Math.max(cutoff, prevKeeps)).toISOString();
   }
 
@@ -222,19 +224,26 @@ function sumCostUsdForUtcDay(runs, day, { now = new Date() } = {}) {
   const end = start + DAY_MS;
   const list = Array.isArray(runs) ? runs : [];
   const times = list.map(r => Date.parse(r?.completedAt)).filter(Number.isFinite);
-  // Whole day present: a retained row from before it began, or the newest
-  // row's appendRunSummary stamp says nothing since the day began was trimmed.
-  const keeps = Date.parse(list[list.length - 1]?.logKeepsSince);
-  const covered = times.length > 0 && (Math.min(...times) <= start || keeps <= start)
-    && new Date(now).getTime() >= end;
+  // Concurrent writers are merged by appending, so the last row's stamp may
+  // come from a writer that saw less: trust the latest (narrowest) stamp.
+  const stamps = list.map(r => Date.parse(r?.logKeepsSince)).filter(Number.isFinite);
+  const keeps = stamps.length ? Math.max(...stamps) : NaN;
   let usd = 0;
   let count = 0;
-  for (const r of runs || []) {
+  let badCost = false;
+  for (const r of list) {
     const t = Date.parse(r?.completedAt);
     if (!(t >= start && t < end)) continue;
     count++;
-    if (Number.isFinite(r.costUsd) && r.costUsd > 0) usd += r.costUsd;
+    if (typeof r.costUsd === 'number' && Number.isFinite(r.costUsd) && r.costUsd >= 0) usd += r.costUsd;
+    else badCost = true;
   }
+  // Whole day present: the log reaches back to 00:00Z (a retained row from
+  // before it, or a stamp saying nothing since then was trimmed), a summary
+  // was written after the day ended (the log is not stale), and every run in
+  // the day carries a real cost (a missing cost is unknown, never $0).
+  const covered = times.length > 0 && (Math.min(...times) <= start || keeps <= start)
+    && times.some(t => t >= end) && !badCost && new Date(now).getTime() >= end;
   return { day, usd: covered ? +usd.toFixed(4) : null, covered, runs: count };
 }
 
