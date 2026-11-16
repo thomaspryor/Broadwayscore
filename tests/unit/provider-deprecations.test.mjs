@@ -95,6 +95,24 @@ describe('Gemini parser', () => {
 
 describe('drift through the shared driftReport', () => {
   const today = '2026-11-11';
+  it('tracks both Gemini 2.5 migrations pending A/B without hiding countdowns or date drift (BRO-7511)', () => {
+    const { MODEL_SHUTDOWNS, ACCEPTED_SHUTDOWNS } = require('../../scripts/lib/research-cost');
+    const ids = ['gemini-2.5-flash', 'gemini-2.5-pro'];
+    for (const id of ids) assert.equal(ACCEPTED_SHUTDOWNS[id], '2026-12-01');
+    const input = {
+      page: D.parseGeminiDeprecations(GEMINI),
+      registry: { ...ACCEPTED_SHUTDOWNS, ...MODEL_SHUTDOWNS },
+      referenced: [...ids, 'gemini-3.8-flash'], today, baseIdFn: D.geminiBaseId,
+    };
+    const report = D.driftReport(input);
+    assert.deepEqual([report.missing, report.dateDrift], [[], []]);
+    assert.deepEqual(report.soon.map((s) => [s.id, s.daysLeft]), ids.map((id) => [id, 20]));
+    const decisions = decideProviderRetirementAlerts('gemini', { inputMissing: false, ...report });
+    assert.equal(decisions.find((d) => d.conditionKey === 'gemini-retirement:unregistered').action, 'resolve');
+    const moved = D.driftReport({ ...input, page: input.page.map((r) => ({ ...r, shutdown: '2026-11-30' })) });
+    assert.deepEqual(moved.dateDrift.map((d) => d.id), ids);
+  });
+
   it('flags the unregistered Gemini pin with its countdown (the gemini-2.5-flash case)', () => {
     const r = D.driftReport({ page: D.parseGeminiDeprecations(GEMINI), registry: {}, referenced: ['gemini-2.5-flash', 'gemini-3.8-flash'], today, baseIdFn: D.geminiBaseId });
     assert.deepEqual(r.missing.map((m) => [m.id, m.daysLeft, m.replacement]), [['gemini-2.5-flash', 20, 'gemini-3.5-flash-lite']]);

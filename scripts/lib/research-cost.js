@@ -118,7 +118,7 @@ const MODEL_SHUTDOWNS = {
 // Models the repo knowingly still uses with an announced shutdown, each waiting on a
 // migration that needs its own A/B. Kept apart from MODEL_SHUTDOWNS
 // because that table feeds the any-announced-shutdown guard in research-cost.test.mjs;
-// scripts/audit-openai-retirements.js reads both, so the countdown is still tracked.
+// The OpenAI and provider retirement audits read both, so the countdown is still tracked.
 const ACCEPTED_SHUTDOWNS = {
   // BRO-7341: the review-scoring ensemble's OpenAI leg (models.js SCORING_OPENAI,
   // COMPARATIVE_OPENAI, GPT4O, GPT4O_MINI). Moving it shifts scores corpus-wide, so it
@@ -130,6 +130,13 @@ const ACCEPTED_SHUTDOWNS = {
   // and a voice/timing A/B before changing the social-video voiceover.
   // https://developers.openai.com/api/docs/deprecations (checked 2026-11-16).
   'gpt-4o-mini-tts': '2027-01-06',
+  // BRO-7511: Flash powers review scoring (gemini-scorer.ts, ensemble-scorer.ts);
+  // Pro powers review-factcheck/check.js and visual-qa.mjs. Keep their pins until
+  // scoring A/B and fact-check/visual validation cover Google's replacements:
+  // Flash -> gemini-3.5-flash-lite; Pro -> gemini-3.8-flash.
+  // https://ai.google.dev/gemini-api/docs/deprecations (checked 2026-11-16).
+  'gemini-2.5-flash': '2026-12-01',
+  'gemini-2.5-pro': '2026-12-01',
 };
 
 /**

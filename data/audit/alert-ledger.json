@@ -43707,7 +43707,7 @@
       "linearIdentifier": "BRO-7510"
     },
     "gemini-retirement:unregistered": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Gemini shutdown: 2 models the repo uses are not in the retirement registry",
       "firstSeen": "2026-11-15T09:32:52.104Z",
@@ -43717,7 +43717,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-7511"
+      "linearIdentifier": "BRO-7511",
+      "resolvedAt": "2026-11-16T22:31:22.153Z",
+      "resolveReason": "every referenced Gemini model with a shutdown date is registered"
     },
     "express-retry-still-thin:nutty-nattys-magic-puppet-show-off-broadway-2026": {
       "status": "open",
