@@ -64,7 +64,7 @@ test('an issue with both queue labels is closed once and both labels are removed
 test('dry-run makes no GitHub mutations', t => {
   const f = fixture(t);
   sweepSubmissions({ ...f, dryRun: true });
-  assert.equal(f.calls.filter(a => a[1] === 'list').length, 3);
+  assert.equal(f.calls.filter(a => a[1] === 'list').length, 4);
   assert.deepEqual(f.writes(), []);
 });
 
@@ -115,4 +115,24 @@ test('a submission matches a review stored under http:// or www. (BRO-7614, #106
     sweepSubmissions(f);
     assert.deepEqual(f.writes().map(a => a[1]), ['comment', 'close', 'edit'], storedUrl);
   }
+});
+
+const UNLABELED = ['review-submission', 'validated', 'approved'];
+
+test('a landed submission with no queue label is closed once old enough (BRO-7625)', t => {
+  const f = fixture(t, { labels: UNLABELED, ageHours: 10 });
+  sweepSubmissions(f);
+  assert.deepEqual(f.writes().map(a => a[1]), ['comment', 'close']);
+});
+
+test('a fresh landed submission with no queue label is untouched', t => {
+  const f = fixture(t, { labels: UNLABELED, ageHours: 1 });
+  sweepSubmissions(f);
+  assert.deepEqual(f.writes(), []);
+});
+
+test('an old unlabeled submission that has not landed gets no writes', t => {
+  const f = fixture(t, { labels: UNLABELED, ageHours: 100, landed: false });
+  sweepSubmissions(f);
+  assert.deepEqual(f.writes(), []);
 });
