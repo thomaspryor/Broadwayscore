@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-16T07:57:46.894Z",
+  "timestamp": "2026-11-16T08:10:59.817Z",
   "stats": {
-    "totalReviews": 82075,
-    "alreadyFlagged": 22461,
+    "totalReviews": 82076,
+    "alreadyFlagged": 22462,
     "dateGuardCatches": 221,
     "directorMismatch": 3710,
-    "tvFilmSignals": 2321,
-    "londonSignals": 3769,
+    "tvFilmSignals": 2323,
+    "londonSignals": 3770,
     "offBroadwaySignals": 752,
     "yearMismatch": 373,
     "noPublishDate": 8186
@@ -43044,6 +43044,19 @@
       ]
     },
     {
+      "showId": "meet-the-cartozians-off-broadway-2025",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "November 17th, 2025",
+      "url": "https://www.timeout.com/newyork/theater/meet-the-cartozians-play-review-armenian-talene-monahon",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "file": "amnewscurtainraiser--unknown.json",
       "publishDate": null,
@@ -50610,6 +50623,25 @@
       "showId": "p-rn-play-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 72,
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/porn-play-royal-court-review-b1258079.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "standard--unknown.json",
+      "score": 75,
       "publishDate": "November 14th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/porn-play-royal-court-review-b1258079.html",
       "findings": [
