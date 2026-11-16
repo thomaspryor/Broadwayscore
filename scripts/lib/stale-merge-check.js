@@ -67,6 +67,29 @@ function isPreExistingContentBad(preExisting) {
 }
 
 /**
+ * BRO-7613: the intended-values map ingest-manual-review.js verifies after a
+ * write. Every operator-supplied identity/body field must land or the
+ * break-glass tool fails loudly: url, criticName (normalized by the caller),
+ * fullText (only when the pre-existing body was bad), and publishDate. The
+ * writer only fills a BLANK publishDate, so before BRO-7613 an explicit
+ * --publish-date onto a file already carrying a wrong date (a SERP discovery
+ * date, 2026-09-02, on a 2022 review) was dropped while the script printed
+ * "Updated".
+ * @param {{action: string, url?: string|null, fullText?: string|null,
+ *   publishDate?: string|null, criticName?: string|null, preExisting?: object|null}} p
+ * @returns {object} intended map for findStaleMergeFields ({} for a new file).
+ */
+function buildManualIngestIntended({ action, url, fullText, publishDate, criticName, preExisting }) {
+  const intended = {};
+  if (action === 'new') return intended;
+  if (url) intended.url = url;
+  if (fullText && isPreExistingContentBad(preExisting)) intended.fullText = fullText;
+  if (publishDate) intended.publishDate = publishDate;
+  if (criticName) intended.criticName = criticName;
+  return intended;
+}
+
+/**
  * BRO-3791: the post-write verification every bulk caller shares. Builds the
  * intended-values map for an `action: 'updated'` write (url always; fullText
  * only when the pre-existing file actually needed fixing) and diffs it against
@@ -159,4 +182,4 @@ function isSameArticleBodyUpgrade(existing, incomingText, opts = {}) {
   return shared / oldShingles.size >= (multiShowWhole ? 0.8 : 0.5);
 }
 
-module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, isPreExistingContentBad, isSameArticleBodyUpgrade, TEASER_MAX_WORDS };
+module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, buildManualIngestIntended, isPreExistingContentBad, isSameArticleBodyUpgrade, TEASER_MAX_WORDS };

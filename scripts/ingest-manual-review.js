@@ -58,7 +58,7 @@ const path = require('path');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
 const { findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
-const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
+const { findStaleMergeFields, buildManualIngestIntended } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision, assertManualReviewBodyPersisted } = require('./lib/manual-review-fields');
 const {
   recoverFromText,
@@ -287,12 +287,10 @@ const result = createOrMergeReviewFile(showId, input, { dryRun });
 // badContent gate — so re-pasting the SAME already-correct text isn't a false
 // positive).
 if (result.filepath && !dryRun && (result.action !== 'new' || fullText)) {
-  const intended = {};
-  if (result.action !== 'new') {
-    if (url) intended.url = url;
-    if (fullText && isPreExistingContentBad(preExisting)) intended.fullText = fullText;
-    intended.criticName = normalizeCritic(criticName);
-  }
+  const intended = buildManualIngestIntended({
+    action: result.action, url, fullText, publishDate,
+    criticName: normalizeCritic(criticName), preExisting,
+  });
   let landed;
   try {
     landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
