@@ -238,4 +238,11 @@ describe('article-extractor: talkinbroadway.com', () => {
     assert.ok(text && text.startsWith('Regional Reviews: Chicago'), String(text).slice(0, 80));
     assert.ok(!text.includes('Share:') && !text.includes('Sound Advice'));
   });
+  test('older unsigned layout: an HTML-encoded apostrophe in "Also see Karen&#39;s" still qualifies (BRO-7262)', () => {
+    const para = 'Confident direction and a sharp ensemble. '.repeat(10);
+    for (const ap of ['&#39;', '&rsquo;', '&#8217;']) {
+      const html = `<html><body><p>Regional Reviews: Chicago</p><font>Also see Karen${ap}s reviews of <i>A</i></font><p>${para}</p><p>Share:</p></body></html>`;
+      assert.ok(extractArticleText(html, 'www.talkinbroadway.com'), ap);
+    }
+  });
 });

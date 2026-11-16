@@ -578,7 +578,7 @@ function logTbBylineShape(html, criticHint) {
 // Only a page with exactly one such header qualifies, so a stacked multi-review page never blends.
 // A real single review prints exactly one "Also see Karen's reviews of" / "Also Christine's review of"
 // line by the header; a regional listing page prints none and a stacked page several (ship-check review).
-const TB_ALSO_SEE = /Also\s+(?:see\s+)?\p{Lu}[\p{L}.\u2019'-]*(?:'|\u2019)s\s+reviews?\s+of/gu;
+const TB_ALSO_SEE = /Also\s+(?:see\s+)?\p{Lu}[\p{L}.\u2019'-]*(?:'|\u2019|&#39;|&#8217;|&rsquo;)s\s+reviews?\s+of/gu;
 function extractTalkinBroadwayUnsigned(html) {
   const bodyFrom = Math.max(0, html.search(/<\/head>/i)); // the <title> may repeat the header
   const headers = [...html.slice(bodyFrom).matchAll(/Regional Reviews:/g)];
@@ -586,6 +586,10 @@ function extractTalkinBroadwayUnsigned(html) {
   let start = bodyFrom + headers[0].index;
   const alsoSee = [...html.slice(start).matchAll(TB_ALSO_SEE)];
   if (alsoSee.length !== 1 || alsoSee[0].index > 3000) return null;
+  // The page names its critic only in this line, which the extracted text drops: log it so a
+  // misattributed file (ch774 says "Karen's" but was filed as Christine Malcom) can be found.
+  const signer = (alsoSee[0][0].match(/\p{Lu}[\p{L}.\u2019'-]*(?=(?:'|\u2019|&#39;|&#8217;|&rsquo;)s\s)/u) || [])[0];
+  if (signer) console.warn(`  [tb-extract] unsigned page; "Also see" names critic first name: ${signer}`);
   const credit = html.slice(start, start + 8000).search(/Photo by\b/);
   if (credit > -1) {
     const after = start + credit;
