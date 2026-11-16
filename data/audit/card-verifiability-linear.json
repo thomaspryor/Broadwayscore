@@ -1,13 +1,38 @@
 {
-  "generatedAt": "2026-11-15T12:56:06.430Z",
-  "total": 385,
-  "armedCount": 365,
-  "refusedCount": 20,
+  "generatedAt": "2026-11-16T13:57:38.038Z",
+  "total": 396,
+  "armedCount": 374,
+  "refusedCount": 22,
   "byKind": {
-    "shape": 19,
+    "shape": 20,
+    "path-prefix": 1,
     "basename": 1
   },
   "refused": [
+    {
+      "id": "BRO-7595",
+      "name": "Board falling behind: find and fix what floods the board with cards (385 added vs 348 closed in 7d)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7595/board-falling-behind-find-and-fix-what-floods-the-board-with-cards-385",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/board-inflow-report.js --days=7)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7593",
+      "name": "Two Girls: Guardian feature scored as a review (fix + Guardian tone guard)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7593/two-girls-guardian-feature-scored-as-a-review-fix-guardian-tone-guard",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const r=require('./data/reviews.json');process.exit((r.reviews||r).some(x=>/2-girls-1-cup-play/.test(x.url||''))",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7580",
+      "name": "Decide: offline opening-night test harness (plan + review)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7580/decide-offline-opening-night-test-harness-plan-review",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f /tmp/claude-0/-home-user/74573ec2-fd83-538d-bc61-eebec32dd92a/scratchpad/plan-review-result.md)",
+      "kind": "path-prefix"
+    },
     {
       "id": "BRO-7477",
       "name": "The Recs bylines land as Unknown: extractor rejects 'The Recs RDC - Name' author meta",
@@ -54,14 +79,6 @@
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7381/off-broadway-cast-backfill-is-unscheduled-46-of-130-nyc-previewopen",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -q 'schedule:' .github/workflows/backfill-cast-web.yml)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7346",
-      "name": "Refetch clean text for 3 genuine reviews with spliced foreign text (BRO-7344 leftovers)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7346/refetch-clean-text-for-3-genuine-reviews-with-spliced-foreign-text-bro",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-unadjudicated-cv-flags.js | grep -c 'stuck CV-promoted isNonReview\t')",
       "kind": "shape"
     },
     {
@@ -170,12 +187,39 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 268,
-    "checked": 268,
+    "total": 261,
+    "checked": 261,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-7594",
+      "name": "Awake and Sing! FAQ says 4h no intermission; FAQ treats unknown intermissions as none",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7594/awake-and-sing-faq-says-4h-no-intermission-faq-treats-unknown",
+      "cmd": "node --test scripts/lib/awake-and-sing-faq.test.mjs",
+      "missingPaths": [
+        "scripts/lib/awake-and-sing-faq.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7550",
+      "name": "Fetch Show Images: intermittent failure in auto-discovery step (5 of 30 runs)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7550/fetch-show-images-intermittent-failure-in-auto-discovery-step-5-of-30",
+      "cmd": "node --test tests/unit/fetch-show-images-flake.test.mjs",
+      "missingPaths": [
+        "tests/unit/fetch-show-images-flake.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7517",
+      "name": "Investigate model API cost savings (OpenAI, Google, Anthropic)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7517/investigate-model-api-cost-savings-openai-google-anthropic",
+      "cmd": "test -f memory/api-cost-investigation.md",
+      "missingPaths": [
+        "memory/api-cost-investigation.md"
+      ]
+    },
     {
       "id": "BRO-7466",
       "name": "Recheck: nightly forecast sync step after lo50/hi50 RPC change (BRO-7430)",
@@ -750,15 +794,6 @@
       "cmd": "node --test scripts/lib/cmux-workspaces-parse-failures.test.mjs",
       "missingPaths": [
         "scripts/lib/cmux-workspaces-parse-failures.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-2762",
-      "name": "BrowseListClient: 'Default' sort button still no-ops on customSort pages",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2762/browselistclient-default-sort-button-still-no-ops-on-customsort-pages",
-      "cmd": "node --test tests/unit/sort-toggle.test.mjs",
-      "missingPaths": [
-        "tests/unit/sort-toggle.test.mjs"
       ]
     },
     {
