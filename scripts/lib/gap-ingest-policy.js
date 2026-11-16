@@ -330,6 +330,19 @@ function quarantinedPriorRunDate(output, show) {
 }
 
 /**
+ * BRO-7587: the write guard's old-production refusal (review-file-writer.js, BRO-7210: dated over a year before the run
+ * starts) also exits 1, with nothing quarantined. A roundup for the current run that still links last production's
+ * review (Downstate on Broadway cited the 2022 Washington Post review) is permanently, correctly refused; counted as
+ * a failed ingest it held the press-night gap check red with a gap no one can close.
+ * @param {string} output child stdout+stderr
+ * @returns {string|null} the refused review's date, or null when this is not that refusal
+ */
+function oldProductionRefusalDate(output) {
+  const m = /Refusing old-production review:[^\n]*\(dated (\d{4}-\d{2}-\d{2})[^)]*, over a year before/.exec(String(output || ''));
+  return m ? m[1] : null;
+}
+
+/**
  * A flagged-out gap row whose stored review file(s) are flagged wrongProduction /
  * wrongShow AND dated before this run is a prior production's review: the
  * validator's content verdict and the date agree, so the exclusion is permanent
@@ -420,4 +433,4 @@ function orderIngestCandidates(rows, priorIngestResults = [], priorSkippedByCap 
     .sort((a, b) => a.k[0] - b.k[0] || a.k[1] - b.k[1] || a.i - b.i).map(x => x.m);
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates };
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, oldProductionRefusalDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates };

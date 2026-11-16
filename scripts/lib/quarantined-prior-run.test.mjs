@@ -34,3 +34,16 @@ test('other failures and missing files are not excused', () => {
   assert.equal(quarantinedPriorRunDate('(date_implausible)\n quarantined to: /nope/x.json', show), null);
   assert.equal(quarantinedPriorRunDate(out('2023-09-25').replace('date_implausible', 'cross_market_contamination'), show), null);
 });
+
+// BRO-7587: Downstate (Broadway 2026) press-night gap check failed on the 2022 Washington Post review its roundup still links.
+const { oldProductionRefusalDate } = require('./gap-ingest-policy.js');
+const REFUSAL = '⛔ Refusing old-production review: https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/ (dated 2022-11-25, over a year before downstate-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)';
+test('the write guard\'s old-production refusal is read as an expected prior-production refusal', () => {
+  assert.equal(oldProductionRefusalDate(REFUSAL), '2022-11-25');
+  assert.equal(oldProductionRefusalDate('fetch failed'), null);
+  assert.equal(oldProductionRefusalDate(''), null);
+});
+test('the audit routes that refusal to an expected result (wired, not just defined)', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new globalThis.URL(import.meta.url).pathname), '..', 'audit-show-review-gap.js'), 'utf8');
+  assert.match(src, /oldProductionRefusalDate\([\s\S]{0,300}expectedReason: 'old-production-review'/);
+});

@@ -220,7 +220,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates } = require('./lib/gap-ingest-policy');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, oldProductionRefusalDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
@@ -2155,6 +2155,11 @@ function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = fal
     const priorDate = show && quarantinedPriorRunDate(`${e && e.stdout || ''}${e && e.stderr || ''}`, show);
     if (priorDate) {
       return { ok: false, noop: true, expected: true, expectedReason: 'prior-production-quarantined', reason: `${showId}: ${url} dated ${priorDate} predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed.`, provisional };
+    }
+    // BRO-7587: the write guard's old-production refusal (a roundup still linking the last production's review).
+    const oldDate = oldProductionRefusalDate(`${e && e.stdout || ''}${e && e.stderr || ''}`);
+    if (oldDate) {
+      return { ok: false, noop: true, expected: true, expectedReason: 'old-production-review', reason: `${showId}: ${url} dated ${oldDate}, over a year before this run; refused as the earlier production's review. Expected, no action needed.`, provisional };
     }
     // BRO-6588: the writer's pre-opening news refusal also exits 1; it is an expected skip, not a failed ingest.
     const guardSkip = classifyIngestSkip(String(e && e.stdout || ''));
