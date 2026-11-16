@@ -108,9 +108,11 @@ const AWAITING_CHECK_QUERY = `query AwaitingCheck($filter: IssueFilter, $after: 
   issues(filter: $filter, first: 100, after: $after) {
     pageInfo { hasNextPage endCursor }
     nodes { identifier title description createdAt updatedAt completedAt state { name type }
-      comments(first: 50, orderBy: createdAt) { nodes { body createdAt } } }
+      comments(last: 50, orderBy: createdAt) { nodes { body createdAt } } }
   }
 }`;
+// The NEWEST 50 comments: a re-pause posts a fresh stamp in a new comment (recheck-stamp.js),
+// so a long card's live stamp is at the end, not the start.
 const AWAITING_MAX_PAGES = 4;
 // More overdue checks than this and the verdict stays "Falling behind": the recheck is not keeping up.
 const OVERDUE_CHECK_LIMIT = 10;
@@ -348,5 +350,5 @@ ${rows}
 }
 
 module.exports = {
-  DAILY_FLOW_QUERY, localDay, dayKeys, bucketDailyFlow, fetchDailyFlow, summarizeAwaitingCheck, fetchAwaitingCheck, OVERDUE_CHECK_LIMIT, boardVerdict, tilesFor, renderBoardSummaryHtml, renderBoardCategoriesHtml,
+  DAILY_FLOW_QUERY, localDay, dayKeys, bucketDailyFlow, fetchDailyFlow, summarizeAwaitingCheck, fetchAwaitingCheck, AWAITING_CHECK_QUERY, OVERDUE_CHECK_LIMIT, boardVerdict, tilesFor, renderBoardSummaryHtml, renderBoardCategoriesHtml,
 };

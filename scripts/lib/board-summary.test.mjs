@@ -250,3 +250,7 @@ test('BRO-7595: fetchBoardNumbersData reads the awaiting-check count last and bu
   });
   assert.equal(buildBoardNumbers({ data: failed }).awaitingCheck, null, 'a failed read is fail-soft');
 });
+
+test('BRO-7595: the awaiting-check query reads the newest comments, where a re-pause stamp lands', () => {
+  assert.match(require('./board-summary.js').AWAITING_CHECK_QUERY, /comments\(last: 50, orderBy: createdAt\)/);
+});
