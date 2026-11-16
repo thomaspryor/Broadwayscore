@@ -167,6 +167,11 @@ test('reviewSubmissionsNeedingCard: parked review submissions without the linear
     issue(5, '[Review Submission] E', ['awaiting-score']),
   ]).map((i) => i.number);
   assert.deepEqual(picked, [1, 2]);
+  // settle window: an issue the per-issue step touched 2 min ago is left alone
+  const now = Date.parse('2026-11-16T12:00:00Z');
+  const fresh = { ...issue(6, '[Review Submission] F', ['needs-manual-review']), updatedAt: '2026-11-16T11:58:00Z' };
+  const old = { ...issue(7, '[Review Submission] G', ['needs-manual-review']), updatedAt: '2026-11-16T11:00:00Z' };
+  assert.deepEqual(reviewSubmissionsNeedingCard([fresh, old], { now, settleMs: 15 * 60 * 1000 }).map((i) => i.number), [7]);
 });
 
 test('file-review-submission-card CLI: env mode files and labels; sweep caps and skips labelled issues', () => {

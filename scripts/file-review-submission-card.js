@@ -25,6 +25,8 @@ const {
 } = require('./lib/plan-refusal-escalation.js');
 
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+// Issues touched in the last 15 min are left to the per-issue workflow step.
+const SETTLE_MS = 15 * 60 * 1000;
 
 function runLinear(args) {
   return execFileSync('node', [path.join(__dirname, 'linear-brain.js'), ...args], {
@@ -62,7 +64,7 @@ function sweep({ max = 5, dryRun = false } = {}, { run, runGh }) {
   try {
     const byNumber = new Map();
     for (const label of ['needs-manual-review', 'scraping-failed']) {
-      const found = JSON.parse(runGh(['issue', 'list', '--repo', REPO, '--label', label, '--state', 'open', '--limit', '100', '--json', 'number,title,body,labels']));
+      const found = JSON.parse(runGh(['issue', 'list', '--repo', REPO, '--label', label, '--state', 'open', '--limit', '100', '--json', 'number,title,body,labels,updatedAt']));
       for (const issue of found) byNumber.set(issue.number, issue);
     }
     issues = [...byNumber.values()];
@@ -70,7 +72,7 @@ function sweep({ max = 5, dryRun = false } = {}, { run, runGh }) {
     console.log(`::warning::review-submission card sweep skipped: gh issue list failed (${String(e.message).split('\n')[0]})`);
     return [];
   }
-  const todo = reviewSubmissionsNeedingCard(issues).sort((a, b) => a.number - b.number);
+  const todo = reviewSubmissionsNeedingCard(issues, { settleMs: SETTLE_MS }).sort((a, b) => a.number - b.number);
   console.log(`file-review-submission-card: ${todo.length} parked submission(s) without a card${todo.length > max ? `, filing the first ${max}` : ''}`);
   const results = [];
   for (const issue of todo.slice(0, max)) {

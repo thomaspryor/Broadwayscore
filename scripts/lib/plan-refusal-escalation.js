@@ -181,9 +181,12 @@ const CARD_FILED_LABEL = 'linear-card';
 // Which open GitHub issues (gh issue list --json number,title,labels) still
 // need a review-submission card: parked as needs-manual-review (or
 // scraping-failed) and not yet marked CARD_FILED_LABEL.
-function reviewSubmissionsNeedingCard(issues) {
+// settleMs: skip issues touched within this window, so the sweep never races the
+// per-issue workflow step that is filing the same card right now (needs updatedAt).
+function reviewSubmissionsNeedingCard(issues, { now = Date.now(), settleMs = 0 } = {}) {
   return (issues || []).filter((issue) => {
     if (!String(issue && issue.title).startsWith('[Review Submission]')) return false;
+    if (settleMs > 0 && issue.updatedAt && now - Date.parse(issue.updatedAt) < settleMs) return false;
     const names = ((issue && issue.labels) || []).map((l) => (typeof l === 'string' ? l : l && l.name));
     if (names.includes(CARD_FILED_LABEL)) return false;
     return names.includes('needs-manual-review') || names.includes('scraping-failed');
