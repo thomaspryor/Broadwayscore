@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-15T15:49:51.968Z",
+    "lastUpdated": "2026-11-16T15:52:03.271Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6610: coverageExpectation re-decided latimes"
+    "lastChange": "BRO-7606: registered the-critic (thecritic.co.uk; UK general-interest magazine, tier 3; ingested unregistered in BRO-7600)"
   },
   "outlets": {
     "westendtheatre": {
@@ -15612,6 +15612,17 @@
         "foodfamilytravel"
       ],
       "domain": "foodfamilytravel.com"
+    },
+    "the-critic": {
+      "displayName": "The Critic",
+      "tier": 3,
+      "aliases": [
+        "the-critic",
+        "the critic",
+        "thecritic"
+      ],
+      "domain": "thecritic.co.uk",
+      "region": "london"
     }
   },
   "_aliasIndex": {
@@ -16366,8 +16377,11 @@
     "city-cast-dc": "city-cast-dc",
     "city cast dc": "city-cast-dc",
     "citycast dc": "city-cast-dc",
-    "citycastdc": "city-cast-dc"
+    "citycastdc": "city-cast-dc",
+    "the-critic": "the-critic",
+    "the critic": "the-critic",
+    "thecritic": "the-critic"
   },
-  "lastUpdated": "2026-11-03T00:21:07.790Z",
-  "lastChange": "BRO-6742: registered theatre-reviews-paul-seven (theatre.reviews' own /review/ pages by Paul Lewis; no domain, the host is an aggregator)"
+  "lastUpdated": "2026-11-16T15:52:03.271Z",
+  "lastChange": "BRO-7606: registered the-critic (thecritic.co.uk; UK general-interest magazine, tier 3; ingested unregistered in BRO-7600)"
 }
