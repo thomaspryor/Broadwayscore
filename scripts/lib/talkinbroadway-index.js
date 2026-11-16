@@ -123,20 +123,28 @@ function matchShowByTitle(title, shows, { now = new Date(), windowDays = 400, ah
   return { show: null, reason: hits.length ? 'ambiguous' : 'none' };
 }
 
-/** Every "[Theatre ]Review by {Critic}[ - {Date}]" byline in a page, with the plain text just before it. */
+/** Every "Theatre Review by {Critic}[ - {Date}]" byline in a page (regional fallback: "Review by {Critic}"),
+ * with the plain text just before it. */
 function bylineSections(html) {
-  // Regional pages print the byline without a date and without "Theatre" ("</font>Review by Karen Topham </p>",
-  // ch944), so both are optional; an undated name ends at the next tag or line break (BRO-7262). A bare
-  // "Review by" must be capitalised and the name must start with a capital and stay short, so prose such as
-  // "a review by the Times" is not read as a byline.
-  const re = /(?:[Tt][Hh][Ee][Aa][Tt][Rr][Ee]\s+[Rr][Ee][Vv][Ii][Ee][Ww]|Review) by\s*(?:<[aA][^>]*>)?\s*([A-Z\u00C0-\u024F][^<\n]{0,59}?)\s*(?:<\/[aA]>)?(?:\s+-\s+[A-Za-z]+\.?\s+\d{1,2},?\s+\d{4}|\s*(?=<|\n|$))/g;
+  const src = String(html || '');
+  // Broadway pages: "Theatre Review by {Critic} - {Date}"; some regional pages drop the date (BRO-7262).
+  const theatre = /Theatre Review by\s*(?:<a[^>]*>)?\s*([^<\n|]+?)\s*(?:<\/a>)?(?:\s+-\s+[A-Za-z]+\.?\s+\d{1,2},?\s+\d{4}|\s*(?=[<\n|]|$))/gi;
+  // Regional pages with neither "Theatre" nor a date: "</font>Review by Karen Topham </p>" (chicago/ch944) or
+  // "Review by Gil Benbrook | Season Schedule" (phoenix). Used ONLY when the page has no "Theatre Review by"
+  // byline, so a stray "Review by" link in page chrome cannot turn a working Broadway page into a multi-review
+  // skip. "Review by" must be written exactly so and the name must start with a capital and stay short, so prose
+  // ("a review by the Times") is never a byline.
+  const bare = /Review by\s*(?:<[aA]\b[^>]*>)?\s*([A-Z\u00C0-\u024F][^<\n|]{0,59}?)\s*(?:<\/[aA]>)?\s*(?=[<\n|]|$)/g;
+  let matches = [...src.matchAll(theatre)];
+  if (!matches.length) matches = [...src.matchAll(bare)];
   const out = [];
   let prevEnd = 0;
-  for (const m of String(html || '').matchAll(re)) {
+  for (const m of matches) {
     // Only the stretch since the previous byline, last 300 characters: the heading that
     // names the show sits right above its own byline, and the review above it is not evidence.
-    const before = html.slice(prevEnd, m.index).replace(/<[^>]*>/g, ' ').slice(-300);
-    out.push({ critic: m[1].trim(), before });
+    const before = src.slice(prevEnd, m.index).replace(/<[^>]*>/g, ' ').slice(-300);
+    const critic = m[1].replace(/&nbsp;|\u00A0/gi, ' ').replace(/\s+/g, ' ').trim();
+    if (critic) out.push({ critic, before });
     prevEnd = m.index + m[0].length;
   }
   return out;

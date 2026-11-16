@@ -174,4 +174,23 @@ describe('article-extractor: talkinbroadway.com', () => {
       '<p>As a review by the Times put it, the play drags. ' + 'More prose here. '.repeat(30) + '</p></body></html>';
     assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
   });
+
+  test('regional page: "Review by Name | Season Schedule" byline anchors extraction (BRO-7262 review)', () => {
+    const reviewBody = 'Phoenix Theatre Company mounts a bright revival of the musical. '.repeat(12);
+    const html = '<html><body>' + NEWSLETTER_CHROME +
+      '<p><b>Some Show</b><br>Phoenix Theatre Company<br>Review by Gil Benbrook | <a href="s.html">Season Schedule</a></p>' +
+      `<p>${reviewBody}</p></body></html>`;
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text && text.startsWith('Review by Gil Benbrook'), String(text).slice(0, 80));
+    assert.ok(text.includes('bright revival'));
+  });
+
+  test('dated page: a stray "Review by" link does not move the start (BRO-7262 review)', () => {
+    const reviewBody = 'This immersive haunted-house show delivers real scares. '.repeat(15);
+    const html = '<html><body><a href="r.html">Review by Region</a>' + NEWSLETTER_CHROME +
+      "<P><B>Theatre Review by <A HREF='mailto:hm@x'>Howard Miller</A> - October 26, 2026</B>" +
+      `<P>${reviewBody}</body></html>`;
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text && text.startsWith('Theatre Review by Howard Miller'), String(text).slice(0, 80));
+  });
 });

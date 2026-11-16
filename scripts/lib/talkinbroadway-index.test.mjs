@@ -229,3 +229,14 @@ test('pickCriticForShow: regional byline without "Theatre" (ch944 shape, BRO-726
   assert.deepEqual(pickCriticForShow('<p>As a review by the Times put it, the play drags.</p>', 'X'), { skip: 'no-byline' });
   assert.deepEqual(pickCriticForShow('<p>Review by the Times, which hated it.</p>', 'X'), { skip: 'no-byline' });
 });
+
+test('pickCriticForShow: regional "Name | Season Schedule", &nbsp;, case, stray chrome (BRO-7262 review)', () => {
+  // Phoenix/San Jose shape from stored regional reviews: the name ends at "|".
+  assert.deepEqual(pickCriticForShow('<p>Review by Gil Benbrook | <a href="s.html">Season Schedule</a></p><p>t', 'X'), { critic: 'Gil Benbrook' });
+  assert.deepEqual(pickCriticForShow('</font>Review by Karen Topham&nbsp;</p>', 'X'), { critic: 'Karen Topham' });
+  // Upper-case "THEATRE REVIEW BY" still matches, as before the regional change.
+  assert.deepEqual(pickCriticForShow('<B>THEATRE REVIEW BY Howard Miller - May 3, 2026</B>', 'X'), { critic: 'Howard Miller' });
+  // A stray "Review by" link in page chrome must not turn a dated Broadway page into a multi-review skip.
+  const withChrome = '<a href="r.html">Review by Region</a>' + oneReview;
+  assert.deepEqual(pickCriticForShow(withChrome, 'Good Time Charlie'), { critic: 'Kimberly Ramírez' });
+});

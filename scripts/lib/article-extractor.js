@@ -530,11 +530,11 @@ function extractLsaByline(text) {
 const TB_BYLINE_SHAPE = /^\s*\p{L}[\p{L}\w.'\u2019-]*(?:\s+\p{L}[\p{L}\w.'\u2019-]*){0,3}\s*-\s*.{0,30}\b\d{4}\b/u;
 
 // Regional pages (/page/regional/...) sign reviews with no date and often no "Theatre":
-// "Steppenwolf Theatre<br> </font>Review by Karen Topham </p>" (chicago/ch944, BRO-7262). Only used
-// when a page has no dated byline. "Review" must be capitalised and the name must start with a capital
-// and end at a tag, so prose like "a review by the Times" never anchors extraction.
-const TB_UNDATED_BYLINE = /(?:Theatre\s+)?Review by\s*(?:<a\b[^>]*>)?\s*[A-Z\u00C0-\u024F][^<\n]{0,59}?\s*(?:<\/a>)?\s*(?=<)/gi;
-const TB_UNDATED_CASE = /^(?:Theatre\s+)?Review by\s*(?:<a\b[^>]*>)?\s*[A-Z\u00C0-\u024F]/;
+// "Steppenwolf Theatre<br> </font>Review by Karen Topham </p>" (chicago/ch944) or
+// "Review by Gil Benbrook | Season Schedule" (phoenix) (BRO-7262). Only used when a page has no dated
+// byline. Case-sensitive: "Review by" written exactly so, a name starting with a capital, ending at a tag,
+// "|" or line break, so prose like "a review by the Times" never anchors extraction.
+const TB_UNDATED_BYLINE = /Review by\s*(?:<[aA]\b[^>]*>)?\s*[A-Z\u00C0-\u024F][^<\n|]{0,59}?\s*(?:<\/[aA]>)?\s*(?=[<\n|])/g;
 
 function extractTalkinBroadwayBody(html, criticHint) {
   const MARKER_LEN = 'Theatre Review by'.length;
@@ -543,9 +543,7 @@ function extractTalkinBroadwayBody(html, criticHint) {
     TB_BYLINE_SHAPE.test(stripHtml(html.slice(p + MARKER_LEN, p + MARKER_LEN + 200)))
   );
   if (!positions.length) {
-    positions = [...html.matchAll(TB_UNDATED_BYLINE)]
-      .filter((m) => TB_UNDATED_CASE.test(m[0]))
-      .map((m) => m.index);
+    positions = [...html.matchAll(TB_UNDATED_BYLINE)].map((m) => m.index);
   }
   if (!positions.length) return null;
 
