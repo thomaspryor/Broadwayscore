@@ -32,7 +32,8 @@ if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
   process.exit(0);
 }
 const { buildFixApprovalEmail, formatFieldValue } = require('./lib/email-templates.js');
-const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
+const { GPT4O_MINI, GPT54_MINI, CLAUDE_SONNET } = require('./lib/models');
+const { buildVerifierPrompt } = require('./lib/remediation-verifier');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { generateApprovalUrl } = require('./lib/approval-link.js');
@@ -162,39 +163,11 @@ async function verifyPlanWithGPT(plan, diagnosis, showContext) {
     return { verified: true, skipped: true };
   }
 
-  const prompt = `You are fact-checking a proposed data fix for Broadway Scorecard. Your ONLY job is to check for factual errors — wrong production years, wrong directors, wrong show IDs, or claims that contradict the show data provided.
-
-## Proposed Fix
-**Summary:** ${plan.summary}
-**Steps:** ${plan.steps.join('; ')}
-**Actions:** ${JSON.stringify(plan.actions, null, 2)}
-
-## Original Diagnosis
-${diagnosis.summary}
-${diagnosis.whatsHappening}
-
-## Show Data From Our Database
-${showContext || '(no show data available)'}
-
-## Instructions
-1. Check each action's showId — does it match a real show in the data?
-2. Check any production years or revival claims — do they match the show data's openingDate?
-3. Check factual claims about directors, cast, venues — do they match creativeTeam data?
-4. If the show data doesn't include the claimed show, flag it as UNVERIFIED (not necessarily wrong, just can't confirm)
-
-Respond with ONLY a JSON object:
-{
-  "passed": true/false,
-  "issues": ["Issue 1", "Issue 2"],
-  "confidence": "high|medium|low"
-}
-
-If everything looks correct, return {"passed": true, "issues": [], "confidence": "high"}.`;
+  const prompt = buildVerifierPrompt(plan, diagnosis, showContext);
 
   const data = JSON.stringify({
-    model: GPT4O_MINI,
-    temperature: 0.1,
-    max_tokens: 500,
+    model: GPT54_MINI, // BRO-7608: gpt-4o-mini anchored on stored values (0/5 on a correct director fix); 5.4-mini 5/5, wrong-production control still fails 5/5
+    max_completion_tokens: 3000, // reasoning model: no temperature, tokens include reasoning
     messages: [{ role: 'user', content: prompt }],
   });
 
