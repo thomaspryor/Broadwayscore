@@ -74,6 +74,8 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-7596 RECHECK-AFTER probe: live usage ledger; passes only after the owner stores CLAUDE_CODE_OAUTH_TOKEN.
+  'scripts/verify-codex-check-oauth-live.test.mjs': 'BRO-7596',
   // BRO-7531 RECHECK-AFTER probe: live vendor billing record, skipped until 2026-11-23.
   'scripts/verify-bro-7531-recheck.test.mjs': 'BRO-7531',
   // BRO-7228 RECHECK-AFTER probe: live memory-conflict report, skipped until 2026-11-11.
