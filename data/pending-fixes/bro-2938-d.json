@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2938-d",
   "planId": "6e8b5f6b-0a3b-4e24-9d03-1732532e01e3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-16T00:46:58.561Z",
   "submitter": {
     "name": null,
@@ -31,5 +31,20 @@
         "description": "Rename to one-minute-critic--matthew-wexler.json: 1minutecritic.com is Matthew Wexler's site and the filename slug is his byline link (wexlerwrites); every other one-minute-critic file is his"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-16T01:39:29.240Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "encores-la-cage-aux-folles-off-broadway-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json criticName: \"Unknown\" -> \"Matthew Wexler\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved encores-la-cage-aux-folles-off-broadway-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json → encores-la-cage-aux-folles-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
