@@ -22,6 +22,9 @@
  *   node scripts/collect-talkinbroadway-index.js [--dry-run]
  *     [--window-days=400] [--max-pages=12] [--data-dir=PATH]
  *   --dry-run      list what is missing, fetch nothing but the index pages, write nothing
+ *   --show=ID --only-url=URL   (BRO-7262) skip the index crawl and read one review page
+ *                  (any section, e.g. a regional page the index lists never reach) through
+ *                  the same Browserbase session, with the same title/date/critic checks.
  */
 'use strict';
 
@@ -38,12 +41,18 @@ const {
 } = require('./lib/talkinbroadway-index');
 const { readBrowserPage } = require('./lib/browser-read-page');
 
-const USAGE = 'Usage: node scripts/collect-talkinbroadway-index.js [--dry-run] [--window-days=N] [--max-pages=N] [--data-dir=PATH]';
+const USAGE = 'Usage: node scripts/collect-talkinbroadway-index.js [--dry-run] [--window-days=N] [--max-pages=N] [--data-dir=PATH] [--show=ID --only-url=URL]';
 const args = process.argv.slice(2);
 if (hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 
 const getArg = (name) => { const a = args.find((x) => x.startsWith(`--${name}=`)); return a ? a.split('=').slice(1).join('=') : null; };
 const dryRun = args.includes('--dry-run');
+const onlyUrl = getArg('only-url');
+const onlyShow = getArg('show');
+if (!!onlyUrl !== !!onlyShow) { console.error('--only-url and --show go together'); process.exit(2); }
+if (onlyUrl && !/^https:\/\/www\.talkinbroadway\.com\/page\/.+\.html$/.test(onlyUrl)) {
+  console.error(`--only-url must be a https://www.talkinbroadway.com/page/...html review page: ${onlyUrl}`); process.exit(2);
+}
 const windowDays = parseInt(getArg('window-days'), 10) || 400;
 const maxPages = parseInt(getArg('max-pages'), 10) || 12;
 const reviewTextsDir = getArg('data-dir') || path.join(__dirname, '..', 'data', 'review-texts');
@@ -102,6 +111,11 @@ async function main() {
 
   const { chromium } = require('playwright');
   const { createBbSession } = require('./lib/browserbase-session');
+  if (onlyUrl) {
+    // Settle what can be settled before a paid session opens (BRO-7262).
+    if (!shows.some((x) => x.id === onlyShow)) { console.error(`unknown show ${onlyShow}`); process.exit(2); }
+    if (held.has(heldKey(onlyShow))) { console.log(`${onlyShow} already holds a talkinbroadway review; nothing to fetch`); process.exit(0); }
+  }
   let session;
   try {
     session = await createBbSession({
@@ -124,7 +138,7 @@ async function main() {
   try {
     // 1. Index pages -> review links. The index page itself is the newest review.
     const entries = [];
-    for (const url of LIST_PAGES) {
+    for (const url of (onlyUrl ? [] : LIST_PAGES)) {
       try {
         const r = await readPage(page, url);
         const links = extractReviewLinks(r.anchors);
@@ -151,7 +165,14 @@ async function main() {
     }
 
     // 2. What are we missing?
-    const { toFetch, skipped } = planCollection(entries, shows, held, { now: new Date(), windowDays });
+    let { toFetch, skipped } = planCollection(entries, shows, held, { now: new Date(), windowDays });
+    if (onlyUrl) {
+      const show = shows.find((x) => x.id === onlyShow);
+      toFetch = [{
+        showId: show.id, title: show.title, url: normalizeTbUrl(onlyUrl), openingDate: show.openingDate, verifyPageDate: true,
+      }];
+      skipped = [];
+    }
     const why = {};
     for (const s of skipped) why[s.why] = (why[s.why] || 0) + 1;
     console.log(`\nmissing reviews: ${toFetch.length}; skipped: ${JSON.stringify(why)}`);

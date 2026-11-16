@@ -17,6 +17,16 @@ on:
         required: false
         type: boolean
         default: false
+      show_id:
+        description: 'BRO-7262: with only_url, ingest just this show (skips the index crawl)'
+        required: false
+        type: string
+        default: ''
+      only_url:
+        description: 'BRO-7262: one talkinbroadway.com review page to read through Browserbase (any section, e.g. regional)'
+        required: false
+        type: string
+        default: ''
 
 concurrency:
   group: collect-talkinbroadway-index
@@ -80,11 +90,17 @@ jobs:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INPUT_ONLY_URL: ${{ inputs.only_url }}
         run: |
-          ARGS=""
-          if [ "${INPUT_DRY_RUN}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          # shellcheck disable=SC2086
-          node scripts/collect-talkinbroadway-index.js $ARGS
+          ARGS=()
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then ARGS+=(--dry-run); fi
+          if { [ -n "${INPUT_ONLY_URL}" ] && [ -z "${INPUT_SHOW_ID}" ]; } || { [ -z "${INPUT_ONLY_URL}" ] && [ -n "${INPUT_SHOW_ID}" ]; }; then
+            echo "show_id and only_url must be given together"; exit 2
+          fi
+          if [ -n "${INPUT_ONLY_URL}" ]; then ARGS+=("--show=${INPUT_SHOW_ID}" "--only-url=${INPUT_ONLY_URL}"); fi
+          node scripts/collect-talkinbroadway-index.js "${ARGS[@]}"
+
 
       # Safety net: ingest --land pushes each review itself; this catches anything it left.
       - name: Push review-texts to private repo
