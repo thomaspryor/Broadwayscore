@@ -10,14 +10,8 @@
 # strings it protects). Move identifiers to references/cookies.md, keep mechanism.
 # Rationale: memory/feedback_claude_skills_public_via_repo.md
 #
-# Scope is .claude/skills/** only — the catalog-indexed surface. cloud-memory/ is
-# public but not catalog-indexed; not enforced here by design.
-#
-# COVERAGE (BRO-7325): this check runs only on the owner's Mac, the one machine that
-# holds the denylist. Cloud sessions and CI have no denylist, so the hook exits 0 there
-# and a cloud push of a skill file is NOT checked. That gap is by design: committing the
-# list (even hashed) would publish or fingerprint the wording it protects. Mac pushes
-# stay covered. Pinned by scripts/tests/cloud-settings-guards.test.mjs ("check-skill-redaction: ...").
+# Scope: .claude/skills/** only (cloud-memory/ is not catalog-indexed). COVERAGE (BRO-7325): Mac only;
+# cloud/CI lack the denylist so pushes there are unchecked, by design (committing it would leak it).
 
 # Self-skip if a user-level master copy exists (matches existing hook convention).
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then exit 0; fi
