@@ -41480,7 +41480,7 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-frankie-2002-cleanup-regression-guard-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run frankie-2002 cleanup regression guard (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.318Z",
@@ -41494,7 +41494,9 @@
       "linearIdentifier": "BRO-7468",
       "silentRefires": 31,
       "escalatedAt": "2026-11-16T15:20:50.307Z",
-      "escalationLane": "cloud-start-now"
+      "escalationLane": "cloud-start-now",
+      "resolvedAt": "2026-11-16T15:31:00.899Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-review-text-folder-orphan-guard-needs-review-texts": {
       "status": "resolved",
