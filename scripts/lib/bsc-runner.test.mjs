@@ -27,7 +27,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 test('job provisioning supports slim and full checkouts and cleans up a failed slim checkout', (t) => {
   const repo = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-job-checkout-')));
-  t.after(() => fs.rmSync(repo, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   const image = 'public/images/shows/test.jpg';
   git(repo, 'init');
