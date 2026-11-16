@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-15T23:59:10.154Z",
+  "timestamp": "2026-11-16T00:26:44.987Z",
   "stats": {
-    "totalReviews": 82041,
-    "alreadyFlagged": 22445,
-    "dateGuardCatches": 220,
+    "totalReviews": 82043,
+    "alreadyFlagged": 22446,
+    "dateGuardCatches": 222,
     "directorMismatch": 3708,
     "tvFilmSignals": 2320,
     "londonSignals": 3769,
     "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8206
+    "noPublishDate": 8205
   },
   "findings": [
     {
@@ -122556,6 +122556,20 @@
     },
     {
       "showId": "pride-bridge-theatre-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2026-08-25",
+      "url": "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 79d before show (2026-08-25 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
       "file": "london-theatre-reviews--ltr.json",
       "publishDate": "2026-08-25",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=28830",
@@ -122583,6 +122597,18 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "file": "standard--laura-harding.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 79d before show (2026-08-25 vs 2026-11-12)"
         }
       ]
     },
