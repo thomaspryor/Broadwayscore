@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
       ? b.options.map((o: any) => `<p class="opt">${esc(o.label)}: ${esc(o.name)}</p>${o.upside ? `<p class="up">Upside: ${esc(o.upside)}</p>` : ''}${o.downside ? `<p class="down">Downside: ${esc(o.downside)}</p>` : ''}<a class="btn" href="${base}&o=${encodeURIComponent(o.key)}">Choose ${esc(o.label)}</a>`).join('')
       : d.choices.map((c: any) => `<a class="btn" href="${base}&o=${encodeURIComponent(c.key)}">${esc(c.label)}</a>`).join('');
     return `<section class="box"><p class="q">${esc(link.displayQuestion(d.question))}</p>
-${d.title && d.title !== d.question ? `<p class="small">About: ${esc(d.title)}</p>` : ''}
+${d.title && d.title !== d.question ? `<p class="small">About: ${esc(link.displayQuestion(d.title))}</p>` : ''}
 ${evidenceHtml(b.evidence)}
 ${b.why ? `<p><strong>${b.task ? 'Why Claude cannot do this itself' : 'Why this is your call'}:</strong> ${esc(b.why)}</p>` : ''}
 ${b.task ? `<ol>${(b.steps || []).map((st: string) => `<li>${esc(st)}</li>`).join('')}</ol>` : ''}
@@ -77,7 +77,7 @@ ${options}
 ${b.recommendation ? `<p><strong>My recommendation:</strong> ${esc(b.recommendation)}</p>` : ''}
 ${b.defaultText ? `<p class="small"><strong>If you do not answer:</strong> ${esc(b.defaultText)}</p>` : ''}
 <a class="btn alt" href="${base}&o=own">Reply in my own words</a>
-<p class="small">Card ${esc(d.identifier)}${d.url ? ` · <a href="${esc(d.url)}" rel="noreferrer">open</a>` : ''}</p></section>`;
+${d.url ? `<p class="small"><a href="${esc(d.url)}" rel="noreferrer">Open the card for the full background</a></p>` : ''}</section>`;
   }).join('');
   const n = decisions.length;
   return page('Decisions', `<h1>${n} ${n === 1 ? 'decision is' : 'decisions are'} waiting on you</h1><p class="small">Most urgent first. Tapping an option opens a page that asks you to confirm before anything is saved.</p>${cards}${decisions.omitted ? `<p class="small">${decisions.omitted} more not shown here. Answer these first and refresh.</p>` : ''}`);

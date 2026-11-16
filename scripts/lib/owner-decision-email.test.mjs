@@ -87,3 +87,14 @@ test('the About line shows no card ids', () => {
   assert.match(html, /About: iPhone app batch round 2: 5 of the 16 app-repo cards from are still Todo/);
   assert.doesNotMatch(html, /About:[^<]*BRO-/);
 });
+
+test('owner-facing decision pages never print a card id as text', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  for (const f of ['src/app/api/owner-decision/route.ts', 'src/app/api/owner-decision/list/route.ts', 'scripts/lib/owner-decision-email.js']) {
+    const src = fs.readFileSync(path.join(root, f), 'utf8');
+    assert.doesNotMatch(src, /\$\{esc\([^)]*\.identifier\)\}/, `${f} prints a card id`);
+    assert.doesNotMatch(src, /About: \$\{esc\((?:noDash\()?[\w.?]*title\)/, `${f} prints a raw title (ids and link markup) in About`);
+  }
+});

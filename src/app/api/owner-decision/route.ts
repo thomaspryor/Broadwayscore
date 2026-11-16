@@ -67,7 +67,7 @@ async function seeLinksHtml(issue: { identifier?: string; url?: string; descript
 function recordedPage(l: Loaded): Response {
   return page('Already answered', `<h1>Already answered</h1><p>This decision was recorded on the card. Nothing changes if you tap again.</p>
 <div class="box"><pre>${esc((l as { recorded?: string }).recorded || '')}</pre></div>
-<p class="small">Card: ${esc(l.issue?.identifier)} ${esc(l.issue?.title)}</p>`);
+<p class="small">About: ${esc(link.displayQuestion(l.issue?.title || ''))}</p>`);
 }
 
 function staleNotice(l: Loaded): Response {
@@ -114,7 +114,7 @@ export async function GET(req: NextRequest) {
   // BRO-6654: a task card (Owner step lines) shows its steps, so the Done page reads on its own.
   const task = (open.block as { task?: boolean; steps?: string[] }).task === true;
   const steps = task ? `<ol>${((open.block as { steps?: string[] }).steps || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ol>` : '';
-  const head = `<h1>${task ? 'Your task' : 'Your decision'}</h1><p class="q">${esc(link.displayQuestion(open.question))}</p>${steps}<p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${await seeLinksHtml(open.issue)}${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
+  const head = `<h1>${task ? 'Your task' : 'Your decision'}</h1><p class="q">${esc(link.displayQuestion(open.question))}</p>${steps}<p class="small">About: ${esc(link.displayQuestion(open.issue.title || ''))}</p>${await seeLinksHtml(open.issue)}${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
 
   if (choice === 'own') {
     return page(task ? 'Your task' : 'Your decision', `${head}${form(`<input type="hidden" name="choice" value="own"><textarea name="text" maxlength="${MAX_ANSWER_CHARS}" required placeholder="Type your answer here" aria-label="Your answer"></textarea><button type="submit">Send my answer</button>`)}`);
@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
     // An Approve of a held visual change is shipped by the lander, and "I could not do it" changes nothing, so neither needs a worker
     // (same exclusions as OWNER_TASK_DONE_RE in scripts/lib/cloud-worker-pick.js).
     if (!/^(?:Option A: Approve\b|I could not do it|Could not do it)/i.test(String(r.answer?.label || ''))) await wakeWorker(String(r.issue?.identifier || ''));
-    const card = r.issue ? `<p class="small">Card: ${esc(r.issue.identifier)} ${esc(r.issue.title)}</p>` : '';
+    const card = r.issue ? `<p class="small">About: ${esc(link.displayQuestion(r.issue.title || ''))}</p>` : '';
     return page('Recorded', `<h1>Recorded</h1><p>Your answer is saved on the card: <strong>${esc(r.answer?.label)}</strong>.</p><p>Claude picks the card up from the board and carries on. You do not need to do anything else.</p>${card}`);
   } catch (e) { return failure(e); }
 }
