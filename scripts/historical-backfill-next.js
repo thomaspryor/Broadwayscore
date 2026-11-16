@@ -85,6 +85,11 @@ function main() {
   const from = (next - shows.length + all.length) % all.length;
   console.log(`Historical backfill: ${shows.length} show(s) from position ${from} of ${all.length} (cycle ${cycle}); next position ${next}`);
   console.log(shows.join(','));
+  // BRO-7551: make the cycle and cursor visible in the job summary. Cost per
+  // cycle: node scripts/audit-historical-backfill-yield.js (kept: ~0.9 net new reviews/show).
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `Historical backfill: cycle ${cycle}, ${shows.length} show(s) from position ${from} of ${all.length}, next cursor ${next}\n`);
+  }
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `shows=${shows.join(',')}\n`);
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `first=${shows[0] || ''}\n`);
   if (!dryRun) {
