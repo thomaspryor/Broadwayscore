@@ -47,3 +47,10 @@ test('the audit routes that refusal to an expected result (wired, not just defin
   const src = fs.readFileSync(path.join(path.dirname(new globalThis.URL(import.meta.url).pathname), '..', 'audit-show-review-gap.js'), 'utf8');
   assert.match(src, /oldProductionRefusalDate\([\s\S]{0,300}expectedReason: 'old-production-review'/);
 });
+test('the writer still prints the refusal line the audit parses (contract pin)', () => {
+  const w = fs.readFileSync(path.join(path.dirname(new globalThis.URL(import.meta.url).pathname), 'review-file-writer.js'), 'utf8');
+  const m = /console\.warn\(`  ⛔ (Refusing old-production review: [^`]*)`\)/.exec(w);
+  assert.ok(m, 'review-file-writer.js no longer prints "Refusing old-production review"; update oldProductionRefusalDate');
+  const sample = m[1].replace(/\$\{input\.url \|\| filepath\}/, 'https://x.com/a').replace(/\$\{fields\.publishDate \|\| input\.publishDate\}/, '2022-11-25').replace(/\$\{showId\}/, 'downstate-2026');
+  assert.equal(oldProductionRefusalDate(sample), '2022-11-25');
+});
