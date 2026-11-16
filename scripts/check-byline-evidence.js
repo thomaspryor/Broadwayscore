@@ -56,9 +56,10 @@ async function checkOne(spec, opts) {
   const bar = spec.indexOf('|');
   const url = bar >= 0 ? spec.slice(0, bar) : spec;
   const expect = bar >= 0 && spec.slice(bar + 1) ? new RegExp(spec.slice(bar + 1), 'i') : null;
-  const out = { url, via: null, snapshot: null, authors: [], matches: [] };
+  const out = { url, via: null, snapshot: null, authors: [], matches: [], statusLive: null };
   const tries = [];
   const live = await get(url);
+  out.statusLive = live.status;
   if (live.status === 200 && live.body.length > 2000) tries.push({ via: 'live', body: live.body });
   const wb = await wayback(url, opts.year || waybackTimestamp(url));
   if (wb) tries.push({ via: 'wayback', snapshot: wb.snapshot, body: wb.body });
@@ -74,7 +75,7 @@ async function checkOne(spec, opts) {
   }
   // Prefer the first source that matches the expectation; else the first one read.
   const pick = tries.find((t) => expect && matchContexts(t.body, expect).length) || tries[0];
-  if (!pick) return { ...out, via: 'none', statusLive: live.status };
+  if (!pick) return { ...out, via: 'none' };
   out.via = pick.via;
   out.snapshot = pick.snapshot || null;
   out.authors = extractAuthorSignals(pick.body);
@@ -106,4 +107,4 @@ if (require.main === module) {
   main().then((code) => process.exit(code));
 }
 
-module.exports = { get, wayback };
+module.exports = { get, wayback, checkOne };
