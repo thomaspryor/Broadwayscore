@@ -470,5 +470,36 @@
       }
     ],
     "queuedAt": "2026-11-16T17:54:10.687Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7569-fulltext-gaps",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7569-fulltext-gaps",
+    "description": "land.yml did not land land/bro-7569-fulltext-gaps: the unit-tests-node gate went red at a2faf41f08. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43920866343",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7569-fulltext-gaps"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a2faf41f0837734bec150d4e3ffc1e33afd41530"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43920866343"
+      }
+    ],
+    "queuedAt": "2026-11-16T18:06:39.922Z"
   }
 ]
