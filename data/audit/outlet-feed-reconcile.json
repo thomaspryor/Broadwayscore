@@ -1,8 +1,13 @@
 {
-  "generatedAt": "2026-11-15T23:34:08.398Z",
+  "generatedAt": "2026-11-16T00:04:38.190Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
+    {
+      "id": "the-good-thief-off-broadway-2026",
+      "title": "The Good Thief",
+      "openingDate": "2026-11-17"
+    },
     {
       "id": "desire-under-the-elms-off-west-end-2026",
       "title": "Desire Under the Elms",
@@ -17,21 +22,6 @@
       "id": "the-fantasticks-2026",
       "title": "The Fantasticks",
       "openingDate": "2026-11-16"
-    },
-    {
-      "id": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "openingDate": "2026-11-09"
-    },
-    {
-      "id": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "openingDate": "2026-11-09"
-    },
-    {
-      "id": "here-there-are-blueberries-2026",
-      "title": "Here There Are Blueberries",
-      "openingDate": "2026-11-09"
     },
     {
       "id": "downstate-2026",
@@ -94,11 +84,6 @@
       "openingDate": "2026-11-13"
     },
     {
-      "id": "a-body-of-water-regional-2026",
-      "title": "A Body of Water",
-      "openingDate": "2026-11-09"
-    },
-    {
       "id": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
       "openingDate": "2026-11-13"
@@ -126,6 +111,10 @@
   ],
   "skipped": [
     {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
       "showId": "first-and-last-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -133,37 +122,21 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
     },
     {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londonpubtheatres",
-      "error": "Timeout fetching https://www.londonpubtheatres.com/feed/rss2"
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 837,
-  "matchedGaps": 1,
-  "possibleGaps": 3,
+  "itemsScanned": 823,
+  "matchedGaps": 2,
+  "possibleGaps": 1,
   "gaps": [
     {
       "showId": "cloud-9-west-end-2026",
@@ -175,6 +148,15 @@
       "publishDate": "2026-11-15"
     },
     {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
+      "headline": "Downstate Broadway Review",
+      "publishDate": "2026-11-15"
+    },
+    {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
       "level": "possible",
@@ -182,24 +164,6 @@
       "url": "https://westendwilma.com/after-birth-royal-court-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=after-birth-royal-court-theatre",
       "headline": "After Birth &#8211; the reality of life after birth at Royal Court Theatre",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "level": "possible",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-alice-immersive-wonderland-dock-x",
-      "headline": "Review: ALICE IMMERSIVE WONDERLAND, Dock X",
-      "publishDate": "2026-11-13"
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "level": "possible",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-thursford-christmas-spectacular-2026",
-      "headline": "Review: THURSFORD CHRISTMAS SPECTACULAR 2026",
-      "publishDate": "2026-11-13"
     }
   ]
 }
