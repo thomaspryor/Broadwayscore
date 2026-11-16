@@ -284,5 +284,19 @@
     "tracked": "BRO-4816",
     "fields": [],
     "queuedAt": "2026-11-16T02:28:00.189Z"
+  },
+  {
+    "conditionKey": "cmux-reachability:unreachable",
+    "title": "cmux socket unreachable for <1h (3 consecutive checks) (still open — BRO-5640)",
+    "description": "Still firing after 18 notifications since it was filed. Tracked at BRO-5640.\n\nlistWorkspaces() has failed to reach the cmux control socket on 3 consecutive checks (<1h). This check is prose-independent of classifyCmuxError (BRO-2959's auth-denied taxonomy) — it fires on reachability alone, so a future cmux release reworking its error text, or a capability loss that returns a clean empty result, still pages. Last error: Command failed: /Applications/cmux.app/Contents/Resources/bin/cmux list-workspaces\nError: No live cmux socket found. Tried:\n  /Users/tompryor/.local/state/cmux/cmux.sock\n  /tmp/cmux.sock\n  /Users/tompryor/.local/state/cmux/cmux-501.sock\n  /tmp/cmux-501.sock\n. This is the same failure class that disabled bsc-reconcile's tab self-heal, bsc-prune, and dispatch-watchdog simultaneously for ~2h on 2026-09-07 (BRO-2959) with nothing paging.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5640",
+    "fields": [],
+    "queuedAt": "2026-11-16T02:37:25.049Z"
   }
 ]
