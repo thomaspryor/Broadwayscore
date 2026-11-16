@@ -27,8 +27,13 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
       const found = JSON.parse(runGh(['issue', 'list', '--label', label, '--state', 'open', '--limit', '100', '--json', 'number,title,body,createdAt,labels']));
       for (const issue of found) byNumber.set(issue.number, issue);
     }
-    const sub = JSON.parse(runGh(['issue', 'list', '--label', 'review-submission', '--state', 'open', '--limit', '100', '--json', 'number,title,body,createdAt,labels']));
-    for (const issue of sub) if (!byNumber.has(issue.number)) byNumber.set(issue.number, issue);
+    // Unlabeled stragglers (BRO-7625). Separate try so a failure here never skips the queue-label sweep.
+    try {
+      const sub = JSON.parse(runGh(['issue', 'list', '--label', 'review-submission', '--state', 'open', '--limit', '1000', '--json', 'number,title,body,createdAt,labels']));
+      for (const issue of sub) if (!byNumber.has(issue.number)) byNumber.set(issue.number, issue);
+    } catch (e) {
+      console.log(`::warning::unlabeled review-submission list failed (${e.message.split('\n')[0]})`);
+    }
     issues = [...byNumber.values()];
   } catch (e) {
     console.log(`::warning::awaiting-score sweep skipped: gh issue list failed (${e.message.split('\n')[0]})`);
@@ -45,15 +50,15 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
     // already on the site says nothing about whether those reports are fixed.
     if (!String(issue.title).startsWith('[Review Submission]')) continue;
     const hasQueueLabel = issue.labels.some(l => QUEUE_LABELS.includes(l.name));
-    const createdHours = (Date.now() - Date.parse(issue.createdAt)) / 3600e3;
-    if (!hasQueueLabel && createdHours < UNLABELED_MIN_HOURS) continue;
+    const ageHours = (Date.now() - Date.parse(issue.createdAt)) / 3600e3;
+    if (!hasQueueLabel && ageHours < UNLABELED_MIN_HOURS) continue;
     // Unlabeled issues get manualReview semantics: close if landed, never relabel/comment otherwise.
     const manualReview = !hasQueueLabel || issue.labels.some(l => MANUAL_LABELS.includes(l.name));
     const url = (String(issue.body).match(/### Review URL\s*\n+\s*(https?:\/\/\S+)/) || [])[1];
     const show = url ? findShowForSubmission(url, shows, textsDir) : null;
     const landed = !!(show && checkSubmissionLanded({ showId: show.id, url, reviews, reviewTextsDir: textsDir, show }).landed);
-    const ageHours = (Date.now() - Date.parse(issue.createdAt)) / 3600e3;
     const action = decideAwaitingSubmission({ landed, ageHours, manualReview });
+    if (!hasQueueLabel && !landed) console.log(`::notice::#${issue.number} has no queue label and is not live (age ${ageHours.toFixed(1)}h); left open`);
     console.log(`#${issue.number} ${show ? show.id : '(no review file found)'} age=${ageHours.toFixed(1)}h -> ${action}`);
     if (dryRun || action === 'wait') continue;
     const n = String(issue.number);
