@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-16T13:41:25.548Z",
+  "generatedAt": "2026-11-16T14:32:17.581Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 7,
+    "newlyFlagged": 7,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 5,
+    "showsAffected": 7,
+    "avgSimilarity": 77,
+    "avgScoreDiff": 1.7
   },
   "syndicationPairs": [
     {
@@ -162,7 +162,92 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Holli Harms",
+      "showId": "parcel-from-america-off-broadway-2026",
+      "primaryOutlet": "front-row-center",
+      "secondaryOutlet": "openingnight",
+      "primaryFile": "front-row-center--holli-harms.json",
+      "secondaryFile": "openingnight--holli-harms.json",
+      "similarity": 85,
+      "primaryScore": 94,
+      "secondaryScore": 93,
+      "scoreDiff": 1
+    },
+    {
+      "critic": "Kelly MacBlane",
+      "showId": "south-pacific-regional-2026",
+      "primaryOutlet": "talkinbroadway",
+      "secondaryOutlet": "chicagoonstage",
+      "primaryFile": "talkinbroadway--kelly-macblane.json",
+      "secondaryFile": "chicagoonstage--kelly-macblane.json",
+      "similarity": 76,
+      "primaryScore": 90,
+      "secondaryScore": 90,
+      "scoreDiff": 0
+    },
+    {
+      "critic": "Kelly MacBlane",
+      "showId": "white-christmas-regional-2025",
+      "primaryOutlet": "talkinbroadway",
+      "secondaryOutlet": "chicagoonstage",
+      "primaryFile": "talkinbroadway--kelly-macblane.json",
+      "secondaryFile": "chicagoonstage--kelly-macblane.json",
+      "similarity": 72,
+      "primaryScore": 91,
+      "secondaryScore": 90,
+      "scoreDiff": 1
+    },
+    {
+      "critic": "Kyle A. Thomas",
+      "showId": "the-unseen-regional-2025",
+      "primaryOutlet": "talkinbroadway",
+      "secondaryOutlet": "chicagoonstage",
+      "primaryFile": "talkinbroadway--kyle-a-thomas.json",
+      "secondaryFile": "chicagoonstage--kyle-a-thomas.json",
+      "similarity": 71,
+      "primaryScore": 89,
+      "secondaryScore": 89,
+      "scoreDiff": 0
+    },
+    {
+      "critic": "Savannah Brooks",
+      "showId": "im-gonna-marry-you-tobey-maguire-regional-2026",
+      "primaryOutlet": "talkinbroadway",
+      "secondaryOutlet": "chicagoonstage",
+      "primaryFile": "talkinbroadway--savannah-brooks.json",
+      "secondaryFile": "chicagoonstage--savannah-brooks.json",
+      "similarity": 76,
+      "primaryScore": 87,
+      "secondaryScore": 82,
+      "scoreDiff": 5
+    },
+    {
+      "critic": "Savannah Brooks",
+      "showId": "kowalski-regional-2026",
+      "primaryOutlet": "talkinbroadway",
+      "secondaryOutlet": "chicagoonstage",
+      "primaryFile": "talkinbroadway--savannah-brooks.json",
+      "secondaryFile": "chicagoonstage--savannah-brooks.json",
+      "similarity": 74,
+      "primaryScore": 82,
+      "secondaryScore": 81,
+      "scoreDiff": 1
+    },
+    {
+      "critic": "Seth Wilson",
+      "showId": "things-with-friends-regional-2025",
+      "primaryOutlet": "talkinbroadway",
+      "secondaryOutlet": "chicagoonstage",
+      "primaryFile": "talkinbroadway--seth-wilson.json",
+      "secondaryFile": "chicagoonstage--seth-wilson.json",
+      "similarity": 86,
+      "primaryScore": 85,
+      "secondaryScore": 81,
+      "scoreDiff": 4
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
