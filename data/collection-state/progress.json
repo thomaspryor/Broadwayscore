@@ -23,7 +23,21 @@
     "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
     "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
     "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
-    "here-there-are-blueberries-2026/nysr--unknown.json"
+    "here-there-are-blueberries-2026/nysr--unknown.json",
+    "downstate-2026/nytg--gillian-russo.json",
+    "downstate-2026/nytimes--helen-shaw.json",
+    "downstate-2026/vulture--sara-holdren.json",
+    "downstate-2026/deadline--greg-evans.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/nypost--johnny-oleksinski.json",
+    "downstate-2026/theatermania--zachary-stewart.json",
+    "downstate-2026/timeout--adam-feldman.json",
+    "downstate-2026/wsj--charles-isherwood.json",
+    "downstate-2026/cititour--brian-scott-lipton.json",
+    "downstate-2026/theatrely--joey-sims.json",
+    "downstate-2026/exeunt-magazine--lane-williamson.json",
+    "downstate-2026/nysr--michael-sommers.json",
+    "downstate-2026/nysr--roma-torre.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -62,11 +76,25 @@
       "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
       "ghost-notes-off-broadway-2026/oazis--unknown.json",
       "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
-      "here-there-are-blueberries-2026/nysr--unknown.json"
+      "here-there-are-blueberries-2026/nysr--unknown.json",
+      "downstate-2026/nytg--gillian-russo.json",
+      "downstate-2026/nydailynews--unknown.json",
+      "downstate-2026/nypost--johnny-oleksinski.json",
+      "downstate-2026/theatermania--zachary-stewart.json",
+      "downstate-2026/timeout--adam-feldman.json",
+      "downstate-2026/exeunt-magazine--lane-williamson.json",
+      "downstate-2026/nysr--michael-sommers.json",
+      "downstate-2026/nysr--roma-torre.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+      "data/review-texts/downstate-2026/nytimes--helen-shaw.json",
+      "downstate-2026/nytimes--helen-shaw.json",
+      "data/review-texts/downstate-2026/deadline--greg-evans.json",
+      "downstate-2026/deadline--greg-evans.json",
+      "data/review-texts/downstate-2026/wsj--charles-isherwood.json",
+      "downstate-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -75,10 +103,13 @@
     ],
     "scrapingbee": [
       "the-fantasticks-2026/theatrely--unknown.json",
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+      "downstate-2026/cititour--brian-scott-lipton.json",
+      "downstate-2026/theatrely--joey-sims.json"
     ],
     "brightdata": [
-      "cranford-off-west-end-2026/times-uk--clive-davis.json"
+      "cranford-off-west-end-2026/times-uk--clive-davis.json",
+      "downstate-2026/vulture--sara-holdren.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -90,7 +121,7 @@
     ]
   },
   "startTime": "2026-11-16T02:43:33.354Z",
-  "lastProcessed": "wanted-2022/nytimes--unknown.json",
+  "lastProcessed": "downstate-2026/nysr--roma-torre.json",
   "log": [
     {
       "t": "2026-11-16T03:00:43.709Z",
@@ -355,6 +386,45 @@
       "t": "2026-11-16T06:15:08.199Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T06:20:25.925Z",
+      "event": "bb-session",
+      "session": "51b64f8e",
+      "url": "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sad"
+    },
+    {
+      "t": "2026-11-16T06:20:26.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T06:20:50.656Z",
+      "event": "bb-session",
+      "session": "5f95238e",
+      "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229/"
+    },
+    {
+      "t": "2026-11-16T06:21:53.607Z",
+      "event": "bb-session",
+      "session": "2b2f44a2",
+      "url": "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broa"
+    },
+    {
+      "t": "2026-11-16T06:21:54.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-16T06:22:11.624Z",
+      "event": "bb-session",
+      "session": "fd8d2bd7",
+      "url": "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broa"
+    },
+    {
+      "t": "2026-11-16T06:22:12.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ],
   "recoveredAfterFailure": [

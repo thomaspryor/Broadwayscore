@@ -1,60 +1,21 @@
 {
-  "updatedAt": "2026-11-16T06:15:29.511Z",
-  "processed": 24,
+  "updatedAt": "2026-11-16T06:23:12.524Z",
+  "processed": 38,
   "failed": 19,
-  "successRate": "55.8%",
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 22,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingdog": 2,
-    "scrapingbee": 2,
-    "brightdata": 1,
+    "scrapingbee": 4,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-11-16T05:11:10.963Z",
-      "event": "bb-session",
-      "session": "41fc4f53",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-16T05:11:11.786Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-16T05:13:45.694Z",
-      "event": "bb-session",
-      "session": "94b35815",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-16T05:13:46.033Z",
-      "event": "bb-session",
-      "session": "fb3d0efe",
-      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
-    },
-    {
-      "t": "2026-11-16T05:13:46.644Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-16T05:13:46.826Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-16T05:13:56.040Z",
-      "event": "bb-session",
-      "session": "2d6c4bc9",
-      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
-    },
     {
       "t": "2026-11-16T05:13:56.854Z",
       "event": "bb-cookie-inject",
@@ -125,6 +86,45 @@
       "t": "2026-11-16T06:15:08.199Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T06:20:25.925Z",
+      "event": "bb-session",
+      "session": "51b64f8e",
+      "url": "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sad"
+    },
+    {
+      "t": "2026-11-16T06:20:26.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T06:20:50.656Z",
+      "event": "bb-session",
+      "session": "5f95238e",
+      "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229/"
+    },
+    {
+      "t": "2026-11-16T06:21:53.607Z",
+      "event": "bb-session",
+      "session": "2b2f44a2",
+      "url": "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broa"
+    },
+    {
+      "t": "2026-11-16T06:21:54.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-16T06:22:11.624Z",
+      "event": "bb-session",
+      "session": "fd8d2bd7",
+      "url": "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broa"
+    },
+    {
+      "t": "2026-11-16T06:22:12.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
