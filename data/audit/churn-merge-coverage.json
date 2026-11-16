@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-16T13:32:46.517Z",
+    "generatedAt": "2026-11-16T15:13:57.249Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -16,29 +16,29 @@
   "flagged": [
     {
       "path": "data/audit/reddit-post-drafts.json",
-      "churn": 35
+      "churn": 37
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 52
+      "churn": 56
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 51,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 38,
+      "churn": 43,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 33,
+      "churn": 37,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/gemini-usage-ledger.jsonl",
+      "churn": 34,
       "mergeAttr": "union"
     }
   ]
