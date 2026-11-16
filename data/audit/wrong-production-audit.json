@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-16T08:39:26.933Z",
+  "timestamp": "2026-11-16T09:12:18.719Z",
   "stats": {
     "totalReviews": 82076,
     "alreadyFlagged": 22462,
     "dateGuardCatches": 221,
-    "directorMismatch": 3710,
+    "directorMismatch": 3711,
     "tvFilmSignals": 2323,
     "londonSignals": 3770,
     "offBroadwaySignals": 752,
-    "yearMismatch": 373,
+    "yearMismatch": 374,
     "noPublishDate": 8186
   },
   "findings": [
@@ -24734,6 +24734,19 @@
       ]
     },
     {
+      "showId": "gary-a-sequel-to-titus-andronicus-regional-2025",
+      "file": "talkinbroadway--richard-t-green.json",
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch805.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2025 (1x). 2019 matches production: gary-a-sequel-to-titus-andronicus-2019"
+        }
+      ]
+    },
+    {
       "showId": "gatz-off-broadway-2024",
       "file": "newyorker--helen-shaw.json",
       "score": 92,
@@ -29136,6 +29149,19 @@
       "score": 48,
       "publishDate": "2026-02-15",
       "url": "https://splashmags.com/2026/02/hamnet-the-play-review-alas-poor-yoric/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "talkinbroadway--christine-malcom.json",
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch862.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
