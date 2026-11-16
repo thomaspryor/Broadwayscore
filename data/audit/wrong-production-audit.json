@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-11-16T04:43:37.668Z",
+  "timestamp": "2026-11-16T06:53:01.917Z",
   "stats": {
-    "totalReviews": 82047,
+    "totalReviews": 82080,
     "alreadyFlagged": 22461,
     "dateGuardCatches": 221,
     "directorMismatch": 3710,
-    "tvFilmSignals": 2319,
+    "tvFilmSignals": 2321,
     "londonSignals": 3769,
-    "offBroadwaySignals": 750,
+    "offBroadwaySignals": 752,
     "yearMismatch": 373,
     "noPublishDate": 8186
   },
@@ -19687,6 +19687,20 @@
       ]
     },
     {
+      "showId": "downstate-2026",
+      "file": "nytg--gillian-russo--on-2026-11-15.json",
+      "score": 86,
+      "publishDate": "2026-11-16T03:06:16.000Z",
+      "url": "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
       "showId": "dr-horribles-sing-along-blog-regional-2021",
       "file": "new-city-stage--ben-kaye.json",
       "score": 56,
@@ -38942,6 +38956,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from la-cage-aux-folles-2004"
+        }
+      ]
+    },
+    {
+      "showId": "la-fille-du-regiment-off-broadway-2025",
+      "file": "nytimes--joshua-barone.json",
+      "publishDate": "2025-10-16",
+      "url": "https://www.nytimes.com/2025/10/16/arts/music/sandra-oh-met-opera.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -99808,6 +99835,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "downstate-2026",
+      "file": "exeunt-magazine--lane-williamson.json",
+      "score": 78,
+      "publishDate": "2026-11-15",
+      "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "downstate-2026",
+      "file": "exeunt-magazine--read-more-articles-by-lane-williamson--on-2026-11-15.json",
+      "score": 77,
+      "publishDate": "2026-11-16T03:03:50.000Z",
+      "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },

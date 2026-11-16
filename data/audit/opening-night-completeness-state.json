@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-16T06:18:26.906Z",
+  "updatedAt": "2026-11-16T06:52:39.442Z",
   "shows": {
     "cloud-9-west-end-2026": {
       "openingDate": "2026-11-10",
@@ -695,7 +695,14 @@
     },
     "les-miserables-regional-2026": {
       "openingDate": "2026-11-10",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "washingtoncitypaper",
+          "criticName": "Melissa Lin Sturges",
+          "url": "https://washingtoncitypaper.com/article/794655/a-galvanizing-les-miserables-takes-the-stage-at-olney-theatre-center/",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     },
     "passing-strange-regional-2026": {
@@ -762,6 +769,12 @@
           "scored": true
         },
         {
+          "outletId": "cititour",
+          "criticName": "Brian Scott Lipton",
+          "url": "https://cititour.com/NYC_Broadway/Downstate/1412",
+          "scored": true
+        },
+        {
           "outletId": "deadline",
           "criticName": "Greg Evans",
           "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229/",
@@ -771,6 +784,12 @@
           "outletId": "exeunt-magazine",
           "criticName": "Lane Williamson",
           "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+          "scored": true
+        },
+        {
+          "outletId": "nydailynews",
+          "criticName": "Chris Jones",
+          "url": "https://www.nydailynews.com/2026/11/15/broadway-review-downstate-mantello/",
           "scored": true
         },
         {
@@ -834,12 +853,6 @@
           "scored": true
         },
         {
-          "outletId": "thewrap",
-          "criticName": "Robert Hofler",
-          "url": "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
-          "scored": true
-        },
-        {
           "outletId": "timeout",
           "criticName": "Adam Feldman",
           "url": "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
@@ -852,7 +865,7 @@
           "scored": true
         }
       ],
-      "lastAlertAt": null
+      "lastAlertAt": "2026-11-16T06:52:39.024Z"
     },
     "pride-bridge-theatre-off-west-end-2026": {
       "openingDate": "2026-11-14",
