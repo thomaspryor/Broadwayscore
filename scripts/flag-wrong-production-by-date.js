@@ -231,7 +231,8 @@ function run() {
         // a lone dateline can be a page-updated stamp on an archive page (an unconfirmed
         // sweep of every undated file flagged 61 more, mostly old shows).
         const lineDate = textDateline(data.fullText);
-        if (lineDate && data.llmPublishDateGuess === lineDate) {
+        const updatedStamp = /(?:updated|modified|edited|revised)\b[^\n]{0,30}\d{4}/i.test(String(data.fullText || '').slice(0, 400));
+        if (lineDate && !updatedStamp && data.llmPublishDateGuess === lineDate) {
           const d = parseDate(lineDate);
           if (d && !isNaN(d.getTime())) pubDate = d;
         }

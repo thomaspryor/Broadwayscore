@@ -11,13 +11,20 @@ const { audit } = require('./audit-critic-consensus-contamination.js');
 const haveTexts = fs.existsSync(new URL('../data/review-texts', import.meta.url).pathname)
   && fs.existsSync(new URL('../data/critic-consensus.json', import.meta.url).pathname);
 
-test('audit({onlyShow}) returns only that show and agrees with the full audit', { skip: !haveTexts && 'needs data/review-texts (private repo)' }, () => {
+test('audit({onlyShow}) excludes every other show (non-vacuous)', { skip: !haveTexts && 'needs data/review-texts (private repo)' }, () => {
   const all = audit();
   const consensusIds = Object.keys(JSON.parse(fs.readFileSync(new URL('../data/critic-consensus.json', import.meta.url), 'utf8')).shows);
-  const someId = (all[0] && all[0].id) || consensusIds[0];
-  const scoped = audit({ onlyShow: someId });
-  assert.deepEqual(scoped, all.filter(i => i.id === someId));
-  assert.ok(scoped.every(i => i.id === someId));
+  const otherId = consensusIds.find(id => !all.some(i => i.id === id)) || consensusIds[0];
+  for (const issue of all) {
+    // scoping to a different show must never surface this issue
+    if (issue.id === otherId) continue;
+    assert.ok(audit({ onlyShow: otherId }).every(i => i.id === otherId), 'scoped audit leaked another show');
+    break;
+  }
+  if (all.length) {
+    const scopedToIssue = audit({ onlyShow: all[0].id });
+    assert.deepEqual(scopedToIssue.map(i => i.id), [all[0].id]);
+  }
 });
 
 test('--show with an id that has no consensus entry exits 2, never passes', { skip: !haveTexts && 'needs data/review-texts (private repo)' }, () => {

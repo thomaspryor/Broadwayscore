@@ -278,3 +278,18 @@ test('a lone old printed date with no matching LLM guess is not enough to flag',
     fs.rmSync(fx.tmp, { recursive: true, force: true });
   }
 });
+
+test('an "Updated <date>" stamp the model echoed is not treated as the publish date', () => {
+  const fx = makeFixture();
+  try {
+    const p = path.join(path.dirname(fx.reviewPath), 'colin--thomas.json');
+    fs.writeFileSync(p, JSON.stringify({
+      outlet: 'Colin Thomas', outletId: 'colin-thomas', criticName: 'Colin Thomas',
+      url: 'https://example.com/farce-review/',
+      fullText: 'Updated Sep 17, 2022 | Review\n\nA farce review text.',
+      llmPublishDateGuess: '2022-09-17', assignedScore: 62,
+    }));
+    runFlagger(fx, ['--apply']);
+    assert.notEqual(JSON.parse(fs.readFileSync(p, 'utf8')).wrongProduction, true);
+  } finally { fs.rmSync(fx.tmp, { recursive: true, force: true }); }
+});

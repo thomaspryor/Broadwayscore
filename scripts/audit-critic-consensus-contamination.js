@@ -70,6 +70,7 @@ const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
 
 const FAIL_SIGNALS = new Set([
   'SHOW_NOT_IN_DB',
+  'NO_LIVE_REVIEWS_DATA',
   'REVIEWCOUNT_DRIFT',
   'MEANSCORE_DRIFT',
 ]);
@@ -150,6 +151,11 @@ function audit(opts = {}) {
     const flags = [];
 
     if (showIds && !showIds.has(id)) flags.push('SHOW_NOT_IN_DB');
+
+    if (opts.onlyShow && !(reviewsByShow && reviewsByShow.get(id))) {
+      // A scoped check must not pass on missing data (BRO-7579 review).
+      flags.push('NO_LIVE_REVIEWS_DATA');
+    }
 
     if (reviewsByShow) {
       const reviews = reviewsByShow.get(id);
