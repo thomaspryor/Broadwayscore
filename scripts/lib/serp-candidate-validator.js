@@ -119,6 +119,30 @@ const US_DOMAIN_SUFFIXES = [
 const { foldDiacritics } = require('./title-match');
 const { namedNonReviewReason } = require('./non-review-url-patterns');
 
+// Persistent, show-scoped tombstones survive deletion of a wrong-production
+// review file. BRO-7604: SERP repeatedly rediscovered this yearless THR URL
+// for the 2002 show after cleanup. The 2019 show's review record confirms its
+// publication date; do not infer production metadata from the URL.
+const KNOWN_WRONG_PRODUCTION_URLS = new Map([
+  ['frankie-and-johnny-in-the-clair-de-lune-2002', new Map([
+    ['hollywoodreporter.com/review/frankie-johnny-clair-de-lune-theater-1214274',
+      'BRO-7604: published 2019-05-30 for the 2019 revival; the 2002 production closed 2003-03-09'],
+  ])],
+]);
+
+function knownWrongProductionReason(showId, url) {
+  const rejected = KNOWN_WRONG_PRODUCTION_URLS.get(showId);
+  if (!rejected) return null;
+  try {
+    const parsed = new URL(url);
+    // Compare article identity across HTTP/HTTPS, www, tracking and anchors.
+    const key = parsed.hostname.replace(/^www\./, '') + parsed.pathname.replace(/\/$/, '');
+    return rejected.get(key) || null;
+  } catch {
+    return null;
+  }
+}
+
 function _loadShowsJson() {
   if (_showsJsonCache) return _showsJsonCache;
   try {
@@ -260,6 +284,13 @@ function validateSerpCandidate({ show, candidate }) {
   if (!url) {
     _recordResult(true, null);
     return { ok: true };
+  }
+
+  const knownWrong = knownWrongProductionReason(show.id, url);
+  if (knownWrong) {
+    const result = { ok: false, reason: 'known-wrong-production-url', detail: knownWrong, confidence: 'high' };
+    _recordResult(false, result.reason);
+    return result;
   }
 
   // ---------- Named non-review URL patterns (BRO-4101) ----------
