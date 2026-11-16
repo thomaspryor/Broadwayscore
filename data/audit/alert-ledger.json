@@ -430,12 +430,13 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-11-06T09:29:18.224Z",
-      "lastSeen": "2026-11-15T09:56:41.407Z",
+      "lastSeen": "2026-11-16T00:27:47.922Z",
       "lastNotifiedAt": "2026-11-15T09:56:41.407Z",
       "lastSurfacedAt": "2026-11-15T09:56:41.407Z",
       "notifyCount": 56,
       "cardId": null,
-      "linearIdentifier": "BRO-6867"
+      "linearIdentifier": "BRO-6867",
+      "silentRefires": 1
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "resolved",
@@ -9981,12 +9982,13 @@
       "title": "Overdue P0/P1 queue: 16 P0 older than 24h, 33 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-15T09:31:07.465Z",
+      "lastSeen": "2026-11-16T00:03:44.595Z",
       "lastNotifiedAt": "2026-11-15T09:31:07.465Z",
       "lastSurfacedAt": "2026-11-09T09:55:22.973Z",
       "notifyCount": 43,
       "cardId": null,
-      "linearIdentifier": "BRO-5613"
+      "linearIdentifier": "BRO-5613",
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -17835,13 +17837,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-15T09:56:39.899Z",
+      "lastSeen": "2026-11-16T00:27:46.512Z",
       "lastNotifiedAt": "2026-11-11T09:59:22.165Z",
       "lastSurfacedAt": "2026-11-11T09:59:22.165Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -33276,10 +33278,12 @@
       "lastSurfacedAt": "2026-11-13T13:50:00.344Z",
       "notifyCount": 19,
       "cardId": null,
-      "linearIdentifier": "BRO-7457",
+      "linearIdentifier": null,
       "silentRefires": 4,
       "resolvedAt": "2026-11-15T21:30:20.551Z",
-      "resolveReason": "outside the post-opening alert window on a complete scan"
+      "resolveReason": "outside the post-opening alert window on a complete scan",
+      "sweptTracker": "BRO-7457",
+      "notifyCountAtRelease": 19
     },
     "opening-night-placeholder-synopsis-the-moth-off-west-end-2026": {
       "status": "resolved",
@@ -37579,10 +37583,12 @@
       "lastSurfacedAt": "2026-11-14T13:13:53.776Z",
       "notifyCount": 17,
       "cardId": null,
-      "linearIdentifier": "BRO-7485",
+      "linearIdentifier": null,
       "silentRefires": 2,
       "resolvedAt": "2026-11-15T21:30:59.915Z",
-      "resolveReason": "outside the post-opening alert window on a complete scan"
+      "resolveReason": "outside the post-opening alert window on a complete scan",
+      "sweptTracker": "BRO-7485",
+      "notifyCountAtRelease": 17
     },
     "land:land/job/linear-BRO-6975-mw2c95n8": {
       "status": "resolved",
@@ -38517,10 +38523,12 @@
       "lastSurfacedAt": "2026-11-15T13:21:35.664Z",
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-7516",
+      "linearIdentifier": null,
       "silentRefires": 2,
       "resolvedAt": "2026-11-15T21:30:54.806Z",
-      "resolveReason": "outside the post-opening alert window on a complete scan"
+      "resolveReason": "outside the post-opening alert window on a complete scan",
+      "sweptTracker": "BRO-7516",
+      "notifyCountAtRelease": 15
     },
     "uncollected-blackout:tango-after-dark-off-west-end-2026": {
       "status": "resolved",
@@ -40272,12 +40280,13 @@
       "title": "dogstar-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-09T09:56:18.136Z",
       "incidentOpenedAt": "2026-11-14T09:08:13.764Z",
-      "lastSeen": "2026-11-15T09:32:19.394Z",
+      "lastSeen": "2026-11-16T00:03:58.183Z",
       "lastNotifiedAt": "2026-11-15T09:32:19.394Z",
       "lastSurfacedAt": "2026-11-15T09:32:19.394Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "syndicated-critic-pairs:unexplained": {
       "status": "open",
@@ -40285,12 +40294,13 @@
       "title": "Same-critic outlet pairs: 53 show/critic pairs counted at two outlets",
       "firstSeen": "2026-11-09T09:57:37.244Z",
       "incidentOpenedAt": "2026-11-09T09:57:37.244Z",
-      "lastSeen": "2026-11-15T09:32:48.805Z",
+      "lastSeen": "2026-11-16T00:04:29.793Z",
       "lastNotifiedAt": "2026-11-15T09:32:48.805Z",
       "lastSurfacedAt": null,
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-7207"
+      "linearIdentifier": "BRO-7207",
+      "silentRefires": 1
     },
     "default-critic-diversity:unflagged": {
       "status": "resolved",
@@ -40578,10 +40588,12 @@
       "lastSurfacedAt": "2026-11-15T01:05:45.041Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-7500",
+      "linearIdentifier": null,
       "silentRefires": 14,
       "resolvedAt": "2026-11-15T15:04:48.808Z",
-      "resolveReason": "step passed"
+      "resolveReason": "step passed",
+      "sweptTracker": "BRO-7500",
+      "notifyCountAtRelease": 4
     },
     "land:land/bro-7239-hub-closing-guard": {
       "status": "resolved",
@@ -41126,12 +41138,13 @@
       "title": "iphigenie-en-tauride-english-national-opera-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-10T09:54:32.719Z",
       "incidentOpenedAt": "2026-11-10T09:54:32.719Z",
-      "lastSeen": "2026-11-15T09:32:19.347Z",
+      "lastSeen": "2026-11-16T00:03:58.135Z",
       "lastNotifiedAt": "2026-11-15T09:32:19.347Z",
       "lastSurfacedAt": "2026-11-15T09:32:19.347Z",
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:dogstar-off-west-end-2026": {
       "status": "open",
@@ -42652,7 +42665,7 @@
       "linearIdentifier": null
     },
     "star-band-drift:published-out-of-band": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Star-band drift: 1 published score outside the critic's own rating",
       "firstSeen": "2026-11-12T10:00:07.652Z",
@@ -42662,7 +42675,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-7407"
+      "linearIdentifier": "BRO-7407",
+      "resolvedAt": "2026-11-16T00:04:29.255Z",
+      "resolveReason": "no published score out of band"
     },
     "land:land/job/linear-BRO-7401-mwdddk9w": {
       "status": "resolved",
@@ -43057,12 +43072,13 @@
       "title": "OpenAI shutdown: 1 model the repo uses is not in the retirement registry",
       "firstSeen": "2026-11-13T09:38:07.488Z",
       "incidentOpenedAt": "2026-11-13T09:38:07.488Z",
-      "lastSeen": "2026-11-15T09:32:49.625Z",
+      "lastSeen": "2026-11-16T00:04:30.286Z",
       "lastNotifiedAt": "2026-11-15T09:32:49.625Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-7441"
+      "linearIdentifier": "BRO-7441",
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-7435-mwes3x7w": {
       "status": "open",
@@ -43620,8 +43636,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7502",
-      "resolvedAt": "2026-11-15T17:06:40.097Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-15T17:06:40.097Z",
+      "sweptTracker": "BRO-7502",
+      "notifyCountAtRelease": 1
     },
     "prod-data-parity:mismatch": {
       "status": "open",
@@ -43643,12 +43661,13 @@
       "title": "Anthropic shutdown: 4 models the repo uses are not in the retirement registry",
       "firstSeen": "2026-11-15T09:32:50.270Z",
       "incidentOpenedAt": "2026-11-15T09:32:50.270Z",
-      "lastSeen": "2026-11-15T09:32:50.270Z",
+      "lastSeen": "2026-11-16T00:04:31.087Z",
       "lastNotifiedAt": "2026-11-15T09:32:50.270Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7510"
+      "linearIdentifier": "BRO-7510",
+      "silentRefires": 1
     },
     "gemini-retirement:unregistered": {
       "status": "open",
@@ -43656,12 +43675,13 @@
       "title": "Gemini shutdown: 2 models the repo uses are not in the retirement registry",
       "firstSeen": "2026-11-15T09:32:52.104Z",
       "incidentOpenedAt": "2026-11-15T09:32:52.104Z",
-      "lastSeen": "2026-11-15T09:32:52.104Z",
+      "lastSeen": "2026-11-16T00:04:32.000Z",
       "lastNotifiedAt": "2026-11-15T09:32:52.104Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7511"
+      "linearIdentifier": "BRO-7511",
+      "silentRefires": 1
     },
     "express-retry-still-thin:nutty-nattys-magic-puppet-show-off-broadway-2026": {
       "status": "open",
