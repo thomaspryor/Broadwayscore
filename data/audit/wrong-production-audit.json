@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T17:57:48.007Z",
+  "timestamp": "2026-11-16T18:22:36.887Z",
   "stats": {
-    "totalReviews": 82173,
+    "totalReviews": 82177,
     "alreadyFlagged": 22477,
     "dateGuardCatches": 222,
     "directorMismatch": 3713,
-    "tvFilmSignals": 2328,
-    "londonSignals": 3771,
+    "tvFilmSignals": 2329,
+    "londonSignals": 3774,
     "offBroadwaySignals": 755,
     "yearMismatch": 374,
-    "noPublishDate": 8246
+    "noPublishDate": 8243
   },
   "findings": [
     {
@@ -56677,6 +56677,20 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
+      "file": "city-am--adam-bloodworth.json",
+      "score": 80,
+      "publishDate": "2026-04-01",
+      "url": "https://www.cityam.com/romeo-juliet-review-this-optimistic-take-is-quietly-radical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 39,
       "publishDate": "2026-04-03",
@@ -88056,6 +88070,20 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-west-end-2022",
+      "file": "city-am--adam-bloodworth.json",
+      "score": null,
+      "publishDate": "2022-11-25",
+      "url": "https://www.cityam.com/a-christmas-carol-the-old-vic-review-bright-and-joyous-even-scrooges-cant-dislike-this/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "a-christmas-carol-west-end-2023",
       "file": "all-that-dazzles-uk--unknown.json",
       "score": 92,
@@ -112232,6 +112260,19 @@
     },
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
+      "file": "1883magazine--helen-keegan.json",
+      "publishDate": "2026-09-16",
+      "url": "https://1883magazine.com/kimberly-akimbo-musical/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "kimberly-akimbo-off-west-end-2026",
       "file": "matineemouse--matinee-mouse.json",
       "score": 82,
       "publishDate": "2026-09-18",
@@ -131000,6 +131041,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-children-2017",
+      "file": "variety--marilyn-stasio.json",
+      "publishDate": "2017-12-14",
+      "url": "http://variety.com/2017/legit/reviews/the-children-review-broadway-play-1202641588/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
