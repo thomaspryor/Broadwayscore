@@ -86,6 +86,8 @@ for (const showDir of showDirs) {
 
     // Only look at isNonReview:true files
     if (data.isNonReview !== true) continue;
+    // BRO-7593: the publisher's own label (and a human flag) is not a misclassification.
+    if (require('./lib/guardian-publication').isPublisherTaggedNonReview(data) || /^manual \(not a review\)/i.test(String(data.isNonReviewReason || ''))) continue;
 
     // Build confidence signals
     const signals = [];

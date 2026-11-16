@@ -120,3 +120,88 @@ test('SERP and roundup writes name Observer files, while Guardian critics stay G
   assert.equal(explicitObserver.action, 'new');
   assert.match(explicitObserver.filepath, /observer--a-new-critic\.json$/);
 });
+
+// BRO-7593: Two Girls (2026) scored a Guardian feature as a 76 review.
+const { guardianToneNonReviewReason, applyGuardianTone, GUARDIAN_API_TAGS } = require('./guardian-publication');
+
+test('BRO-7593: a Guardian feature (tone/features, no star) is a non-review', () => {
+  const content = { tags: [{ id: 'tone/features' }], starRating: null };
+  assert.match(guardianToneNonReviewReason(content), /tone\/features/);
+  const rec = { outletId: 'guardian', url: 'https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city' };
+  assert.ok(applyGuardianTone(rec, content));
+  assert.equal(rec.isNonReview, true);
+  assert.deepEqual(rec.guardianApi.tones, ['tone/features']);
+});
+
+test('BRO-7593: real reviews, starred pieces and tagless items are left alone', () => {
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/reviews' }, { id: 'tone/features' }] }), null);
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/features' }], starRating: '4' }), null);
+  // A music live review of a cabaret show is a review even with no star and no tone/reviews.
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/livereview' }] }), null);
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/albumreview' }] }), null);
+  // An unfamiliar tone is not evidence.
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/sometone' }] }), null);
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/news' }], starRating: 3 }), null);
+  assert.equal(guardianToneNonReviewReason({ tags: [] }), null);
+  assert.equal(guardianToneNonReviewReason({}), null);
+  assert.equal(guardianToneNonReviewReason(undefined), null);
+});
+
+test('BRO-7593: a manual clear keeps the row scored; the opening-night lane does not', () => {
+  const content = { tags: [{ id: 'tone/comment' }] };
+  const cleared = { nonReviewManualClear: true };
+  assert.equal(applyGuardianTone(cleared, content), null);
+  assert.equal(cleared.isNonReview, undefined);
+  // Lane-stamped aggregator row (how Two Girls came in): the publisher's label still applies.
+  const lane = { productionVerified: 'aggregator', bwwRoundupUrl: 'https://www.broadwayworld.com/x' };
+  assert.ok(applyGuardianTone(lane, content));
+  assert.equal(lane.isNonReview, true);
+});
+
+test('BRO-7593: the single-verdict hold and the reclassifier respect the publisher label', () => {
+  const { evaluateSoloVerdictHold } = require('./single-verdict-guard');
+  const { isPublisherTaggedNonReview } = require('./guardian-publication');
+  const rec = {};
+  applyGuardianTone(rec, { tags: [{ id: 'tone/features' }] });
+  assert.equal(isPublisherTaggedNonReview(rec), true);
+  assert.equal(evaluateSoloVerdictHold(rec, 'nonReview', {}).reason, 'hard-or-human-signal');
+  const fs = require('fs');
+  for (const f of ['scripts/classify-non-reviews.js', 'scripts/fix-non-review-misclassifications.js']) {
+    assert.match(fs.readFileSync(f, 'utf8'), /isPublisherTaggedNonReview/, `${f} must not clear a publisher-tagged non-review`);
+  }
+});
+
+test('BRO-7593: both API callers request the tone tags', () => {
+  assert.equal(GUARDIAN_API_TAGS, 'tone');
+  const fs = require('fs');
+  for (const f of ['scripts/fetch-guardian-reviews.js', 'scripts/collect-review-texts.js']) {
+    assert.match(fs.readFileSync(f, 'utf8'), /show-tags/, `${f} must request show-tags`);
+  }
+  const { result } = guardianContentToResult({ webTitle: 'x', tags: [{ id: 'tone/features' }], fields: { bodyText: 'y'.repeat(400) } });
+  assert.deepEqual(result.apiMeta.toneContent.tags, [{ id: 'tone/features' }]);
+});
+
+test('BRO-7593: a fresh CV "review" verdict does not demote a Guardian tone flag', () => {
+  const { isNonReviewDemotedByFreshCV } = require('./review-guards');
+  const cv = { articleType: 'review', articleTypeConfidence: 'high', confidence: 'high', isValid: true, verifiedAt: '2099-01-01T00:00:00Z' };
+  const flagged = { isNonReview: true, isNonReviewReason: 'guardian-tone: filed as tone/features, not tone/reviews (BRO-7593)', contentVerification: cv, bwwExcerpt: 'x', assignedScore: 76 };
+  assert.equal(isNonReviewDemotedByFreshCV(flagged), false);
+});
+
+test('BRO-7593: rebuild does not let the opening-night lane skip a publisher-tagged non-review', () => {
+  const { laneBypasses } = require('./opening-night-lane/trust-model');
+  const rec = { isNonReview: true, isNonReviewReason: 'guardian-tone: filed as tone/features, not tone/reviews (BRO-7593)' };
+  assert.equal(laneBypasses(rec, 'nonReview'), false);
+});
+
+test('BRO-7593: a classifier flag is upgraded to the publisher label; a human flag is kept', () => {
+  const gem = { isNonReview: true, isNonReviewReason: 'gemini: interview' };
+  assert.ok(applyGuardianTone(gem, { tags: [{ id: 'tone/interviews' }] }));
+  assert.match(gem.isNonReviewReason, /^guardian-tone:/);
+  const human = { isNonReview: true, isNonReviewReason: 'manual (not a review): owner call' };
+  assert.equal(applyGuardianTone(human, { tags: [{ id: 'tone/features' }] }), null);
+  assert.match(human.isNonReviewReason, /^manual/);
+  const none = {};
+  assert.equal(applyGuardianTone(none, { tags: [] }), null);
+  assert.deepEqual(none.guardianApi.tones, []);
+});

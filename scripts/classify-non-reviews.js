@@ -794,6 +794,8 @@ async function runReclassifyFlagged() {
       // Re-read fresh to pick up any concurrent edits
       const fresh = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
       if (fresh.isNonReview !== true) { failed++; continue; }
+      // BRO-7593: an LLM disagreement never clears the publisher's own non-review label.
+      if (require('./lib/guardian-publication').isPublisherTaggedNonReview(fresh)) { failed++; continue; }
       fresh.isNonReview = false;
       fresh.nonReviewClearedNote = `[${now.slice(0,10)} cleared stale isNonReview — reclassify-audit (${PROVIDER}) now says ${d.newClassification.contentType} (${d.newClassification.confidence}) — Notion 34e637c5-416f-8144]`;
       // Preserve old type for forensics. Setting to null (not delete) because

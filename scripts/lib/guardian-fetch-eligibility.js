@@ -34,7 +34,10 @@ function guardianFetchEligibility(data, { minTextLength = 200 } = {}) {
   // .../2026/nov/05/... file) is not an article path: the API 404s it on every run.
   if (!isDatedGuardianArticleUrl(data.url)) return { eligible: false, reason: 'undated-url' };
   // Rating-only: the API already answered "no star" for this row. Do not ask again every run.
-  if (hasText && data.guardianApi && data.guardianApi.fetchedAt && !data.guardianApi.starRating) {
+  // BRO-7593: unless the tone tags were never recorded; one more fetch reads them, so a
+  // feature API-fetched before the tone check still gets flagged.
+  if (hasText && data.guardianApi && data.guardianApi.fetchedAt && !data.guardianApi.starRating
+    && (Array.isArray(data.guardianApi.tones) || data.isNonReview === true)) {
     return { eligible: false, reason: 'api-has-no-star' };
   }
   return { eligible: true, mode: hasText ? 'rating-only' : 'fetch-text' };

@@ -41,7 +41,7 @@ const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { guardianFetchEligibility, shouldFailRun } = require('./lib/guardian-fetch-eligibility');
-const { GUARDIAN_API_FIELDS, applyGuardianPublication } = require('./lib/guardian-publication');
+const { GUARDIAN_API_FIELDS, GUARDIAN_API_TAGS, applyGuardianPublication, applyGuardianTone } = require('./lib/guardian-publication');
 
 // Lazy show lookup so the Guardian fetcher can reject a prior-production article
 // the API returns for a revival's stale slug (see updateReviewFile date guard).
@@ -119,6 +119,7 @@ async function fetchArticleFromAPI(articleId) {
     const params = new URLSearchParams({
       'api-key': CONFIG.apiKey,
       'show-fields': GUARDIAN_API_FIELDS,
+      'show-tags': GUARDIAN_API_TAGS,
     });
 
     const url = `${CONFIG.baseUrl}/${articleId}?${params}`;
@@ -158,6 +159,7 @@ async function fetchArticleFromAPI(articleId) {
               webUrl: content.webUrl,
               apiUrl: content.apiUrl,
               webPublicationDate: content.webPublicationDate || null,
+              tags: Array.isArray(content.tags) ? content.tags : null,
             });
           } else if (json.response?.status === 'error') {
             resolve({
@@ -359,6 +361,9 @@ function updateReviewFile(review, apiResult) {
     fetchedAt: new Date().toISOString(),
   };
   applyGuardianPublication(data, apiResult.publication);
+  // BRO-7593: the Guardian filed it as a feature/news/comment, not a review.
+  const toneReason = applyGuardianTone(data, { tags: apiResult.tags || [], starRating: apiResult.starRating });
+  if (toneReason) { stats.nonReview = (stats.nonReview || 0) + 1; console.log(`  ⛔ ${review.showId}/${review.file}: ${toneReason}`); }
 
   if (!CLI.dryRun) {
     persistReviewSnapshot({ filePath: review.filePath, data: data });
@@ -465,6 +470,7 @@ async function main() {
   console.log(`Processed: ${toProcess.length}`);
   console.log(`Fetched:   ${stats.fetched}`);
   console.log(`Failed:    ${stats.failed}`);
+  if (stats.nonReview) console.log(`Non-review (Guardian tone, BRO-7593): ${stats.nonReview}`);
   console.log(`API Errors: ${stats.apiErrors}`);
   console.log(`Not found (stale URL, not a run failure): ${stats.notFound}`);
 

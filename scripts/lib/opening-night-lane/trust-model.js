@@ -89,6 +89,9 @@ function laneBypasses(review, guard, ctx = {}) {
   if (!LANE_BYPASSED_GUARDS.includes(guard)) {
     throw new Error(`laneBypasses: unknown guard "${guard}" (known: ${LANE_BYPASSED_GUARDS.join(', ')})`);
   }
+  // BRO-7593: the publisher's own "not a review" label (Guardian tone/features) is not the classifier verdict the
+  // lane stands down for: Two Girls 2026 entered through a BWW roundup and was a Guardian feature.
+  if (guard === 'nonReview' && require('../guardian-publication').isPublisherTaggedNonReview(review)) return false;
   return isLaneReview(review, ctx);
 }
 

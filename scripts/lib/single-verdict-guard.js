@@ -77,7 +77,8 @@ function humanOrHardSignal(data) {
     || data.isNotReview === true || data.nonReviewFlag === true || data.nonReviewContent === true
     || data.wrongAttribution === true || data.fabricatedEntry === true
     || data.incompleteReason === 'wrong_content' || data.contentTier === 'invalid'
-    || (typeof data.isNonReviewReason === 'string' && /^manual \(not a review\)/i.test(data.isNonReviewReason)));
+    || (typeof data.isNonReviewReason === 'string' && /^manual \(not a review\)/i.test(data.isNonReviewReason))
+    || require('./guardian-publication').isPublisherTaggedNonReview(data)); // BRO-7593
 }
 
 /**
