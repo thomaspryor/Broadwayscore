@@ -28,7 +28,7 @@ const { evaluateVerifiability, isSafeCheckCommand } = require('./verify-gate.js'
 // the bottom of this file) reuses the exact same dispatch-time gates
 // bsc-next.js/linear-next.js already enforce, rather than inventing a
 // second "is this card real work" predicate — CLAUDE.md §15.
-const { autofixFiledIssueGuard } = require('./linear-dispatch.js');
+const { autofixFiledIssueGuard, dispatchCommentMode } = require('./linear-dispatch.js');
 const { classifyHeadlessDispatchability } = require('./headless-dispatchability.js');
 // Dispatch extraction and comment corrections share one specificity policy.
 const { compareVerifyCommands, preservesVerifyCoverage, rawCandidates } = require('./autonomous-verify-cmd.js');
@@ -593,6 +593,21 @@ function isRecheckIgnorableComment(body) {
   return text.startsWith(RECHECK_HANDOFF_MARKER) || IGNORABLE_COMMENT_RE.test(text) || isFilerRefreshComment(text);
 }
 
+// BRO-7595: linear-next.js posts a HEADLESS dispatch receipt only after that
+// job finished (linear-next.js "only posted after that job finished"), so it
+// lands right after the worker's own pause report that carries the stamp. It
+// is the receipt of the run that wrote the stamp, not a later pickup. Before
+// this, every headless-worked recheck card stayed open forever. Only a LONE
+// headless receipt is excused: two dispatches after the stamp mean a real
+// re-dispatch, and a claim, report or any other comment still blocks.
+const DISPATCH_RECEIPT_RE = /^Dispatched\s+(?:[0-9a-f]+\s+)?to\b/;
+function commentsAfterStampBlockClose(after) {
+  const list = Array.isArray(after) ? after : [];
+  const receipts = list.filter((c) => DISPATCH_RECEIPT_RE.test(String(c || '').trimStart()));
+  const ownReceipt = receipts.length === 1 && dispatchCommentMode({ body: receipts[0] }) === 'headless' ? receipts[0] : null;
+  return list.some((c) => c !== ownReceipt && !isRecheckIgnorableComment(c));
+}
+
 function isStrongAutoCloseCommand(cmd) {
   const c = String(cmd || '').trim();
   return !!c && isSafeCheckCommand(c) && AUTOCLOSE_STRONG_FORMS.some((re) => re.test(c));
@@ -621,7 +636,7 @@ function decideAutoClose({ card, target, result, now = new Date() } = {}) {
   if (Array.isArray(card.comments)) {
     let last = -1;
     for (let i = card.comments.length - 1; i >= 0; i--) { if (parseRecheckAfter(card.comments[i]) != null) { last = i; break; } }
-    if (last >= 0 && card.comments.slice(last + 1).some((c) => !isRecheckIgnorableComment(c))) return no('comments were added after the RECHECK-AFTER stamp comment');
+    if (last >= 0 && commentsAfterStampBlockClose(card.comments.slice(last + 1))) return no('comments were added after the RECHECK-AFTER stamp comment');
   }
   if (!AUTOCLOSE_STATE_TYPES.includes(card.stateType)) return no(`card state type is ${card.stateType || 'unknown'}, not an open backlog/unstarted card`);
   if (!isStrongAutoCloseCommand(target.verifyCmd)) return no('command is not a real test (file-exists or generic check)');
@@ -648,6 +663,7 @@ module.exports = {
   isRecheckIgnorableComment,
   isStrongAutoCloseCommand,
   decideAutoClose,
+  commentsAfterStampBlockClose,
   buildAutoCloseComment,
   RECHECK_AFTER_RE,
   SHADOW_EXIT,
