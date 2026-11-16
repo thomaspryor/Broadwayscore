@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-16T10:54:26.483Z",
+  "runDate": "2026-11-16T11:33:13.039Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 3,
+    "maxReviews": 2,
     "priority": "all",
-    "showFilter": "1619-the-journey-of-a-people-regional-2024,henry-v-regional-2024,covenant-regional-2026",
+    "showFilter": "1619-the-journey-of-a-people-regional-2024,henry-v-regional-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 0,
     "failed": 2,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,12 +23,12 @@
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
@@ -38,8 +38,8 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 2,
@@ -54,11 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
+    "processed": 0,
     "failed": 2,
     "shows": [
       "1619-the-journey-of-a-people-regional-2024",
-      "covenant-regional-2026",
       "henry-v-regional-2024"
     ],
     "outOfScopeShows": [],
@@ -67,17 +66,13 @@
       "failed": 0
     }
   },
-  "processed": [
-    "covenant-regional-2026/talkinbroadway--christine-malcom.json"
-  ],
+  "processed": [],
   "failed": [
     "henry-v-regional-2024/talkinbroadway--christine-malcom.json",
     "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "covenant-regional-2026/talkinbroadway--christine-malcom.json"
-    ],
+    "processed": [],
     "failed": [
       "henry-v-regional-2024/talkinbroadway--christine-malcom.json",
       "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json"
@@ -90,9 +85,7 @@
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "covenant-regional-2026/talkinbroadway--christine-malcom.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
