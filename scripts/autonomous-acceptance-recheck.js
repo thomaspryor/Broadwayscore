@@ -537,7 +537,9 @@ async function main(argv = process.argv.slice(2)) {
       if (!t.skip && t.verifyCmd && remainingMs < MIN_REMAINING_MS_TO_START) {
         const deferred = targets.slice(targets.indexOf(t)).length;
         console.error(`[recheck] ${timeBudgetMinLabel}min budget spent — deferring ${deferred} card(s) to tomorrow so the morning email is not held up`);
-        ledger.appendEntry({ event: 'recheck-deferred', runId, note: `${deferred} card(s) not re-checked: the run hit its ${timeBudgetMinLabel}min budget` }, RECHECK_LEDGER_PATH);
+        // cardIds (BRO-7559): a Done card leaves its completion window, so
+        // "re-checked tomorrow" only holds if the retry pass can find it.
+        ledger.appendEntry({ event: 'recheck-deferred', runId, cardIds: targets.slice(targets.indexOf(t)).filter((x) => !x.skip && x.verifyCmd).map((x) => x.cardId), note: `${deferred} card(s) not re-checked: the run hit its ${timeBudgetMinLabel}min budget` }, RECHECK_LEDGER_PATH);
         break;
       }
       let closeRefused = null;

@@ -61,3 +61,11 @@ test('the legacy exit-3 match does not swallow other exit codes', () => {
   assert.equal(causeOfRecheckRow({ status: 'unverifiable', detail: 'check exited 3 (alert still firing)' }), 'exit3');
   assert.equal(causeOfRecheckRow({ status: 'unverifiable', detail: 'check exited 30' }), null);
 });
+
+test('cards a budget-capped run never reached are retried (BRO-7559 deferred)', () => {
+  const deferredRow = { event: 'recheck-deferred', ts: new Date(NOW - 2 * 864e5).toISOString(), cardIds: ['D1', 'D2'], note: 'x' };
+  const ids = retryCandidateIds([deferredRow, row('D2', 1.5, 'pass', 'ok')], { now: NOW });
+  assert.deepEqual(ids, ['D1']);
+  // A legacy deferred row with no cardIds names nothing.
+  assert.deepEqual(retryCandidateIds([{ event: 'recheck-deferred', ts: deferredRow.ts, note: 'x' }], { now: NOW }), []);
+});

@@ -18,8 +18,8 @@ const DAY_MS = 24 * 3600 * 1000;
 
 // Causes worth another try, and where. 'timeout' needs a run with real budget
 // (the --backlog sweep), never the 5-minute nightly one (second-opinion finding).
-const NIGHTLY_RETRY_CAUSES = new Set(['missing-path', 'exit3']);
-const BACKLOG_RETRY_CAUSES = new Set(['missing-path', 'exit3', 'timeout']);
+const NIGHTLY_RETRY_CAUSES = new Set(['missing-path', 'exit3', 'deferred']);
+const BACKLOG_RETRY_CAUSES = new Set(['missing-path', 'exit3', 'timeout', 'deferred']);
 
 const LEGACY_CAUSE_RES = [
   ['missing-path', /names a path absent from this checkout|^check is stale: .* is not on main/],
@@ -53,7 +53,15 @@ function retryCandidateIds(entries, o = {}) {
   const exclude = o.exclude || new Set();
 
   const byCard = new Map();
+  // A run that hit its budget names the cards it never reached (cardIds on
+  // the 'recheck-deferred' row): each counts as a no-verdict attempt.
+  const rows = [];
   for (const e of entries || []) {
+    if (e && e.event === 'recheck-deferred' && Array.isArray(e.cardIds)) {
+      for (const id of e.cardIds) rows.push({ event: 'recheck', cardId: id, ts: e.ts, status: 'unverifiable', cause: 'deferred' });
+    } else rows.push(e);
+  }
+  for (const e of rows) {
     if (!e || e.event !== 'recheck' || !e.cardId) continue;
     const t = Date.parse(e.ts || '');
     if (!Number.isFinite(t)) continue;
