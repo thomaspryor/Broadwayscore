@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T15:27:02.480Z",
+  "timestamp": "2026-11-16T15:42:36.323Z",
   "stats": {
-    "totalReviews": 82085,
-    "alreadyFlagged": 22471,
+    "totalReviews": 82090,
+    "alreadyFlagged": 22470,
     "dateGuardCatches": 222,
     "directorMismatch": 3713,
-    "tvFilmSignals": 2324,
-    "londonSignals": 3773,
+    "tvFilmSignals": 2325,
+    "londonSignals": 3774,
     "offBroadwaySignals": 755,
     "yearMismatch": 374,
-    "noPublishDate": 8182
+    "noPublishDate": 8184
   },
   "findings": [
     {
@@ -56612,6 +56612,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "british-theatre--anita-marguerite-butler.json",
+      "publishDate": "2026-04-01",
+      "url": "https://www.britishtheatreguide.info/reviews/romeo-and-julie-harold-pinter-t-25477",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -124266,6 +124279,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "theartsdispatch--the-arts-dispatch.json",
+      "publishDate": "2026-04-19",
+      "url": "https://theartsdispatch.substack.com/p/romeo-and-juliet-review-harold-pinter",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
