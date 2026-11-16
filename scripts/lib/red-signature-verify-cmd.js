@@ -197,10 +197,16 @@ function armOrOwnerJudgment(cmd, armedNote, unsafeNote) {
  *   `note` explains the fallback/refusal when `line` isn't a direct hit, and
  *   is null when the step's own command was used as-is.
  */
+function stripCiTimeout(cmd) {
+  return cmd ? String(cmd).replace(/^timeout\s+(?:-k\s+\d+\s+)?\d+\s+/, '') : cmd;
+}
+
 function verifyForSignature({ job: rawJob, step, testFile }, rawYmlText, { isTsxTest = isTsxManifestTest } = {}) {
   // BRO-7113: matrix jobs report as `Unit Test Shard (2)`; the workflow's job `name:` has no suffix.
   const job = String(rawJob || '').replace(/\s*\(\d+\)$/, '');
-  const stepCmd = findStepRunCommandInWorkflow(rawYmlText, job, step);
+  // BRO-7113: test.yml bounds single-file steps with `timeout -k 10 N node --test X`;
+  // the bound is a CI concern, so re-verify with the bare command the allowlist knows.
+  const stepCmd = stripCiTimeout(findStepRunCommandInWorkflow(rawYmlText, job, step));
   // BRO-6262: a failing unit test re-verifies against ITS OWN file, not the whole
   // suite. The whole-suite proxy keeps failing on unrelated reds, so the Done gate
   // refused these cards and they sat In Review. Only the proxy fallback is
@@ -242,6 +248,7 @@ function verifyForSignature({ job: rawJob, step, testFile }, rawYmlText, { isTsx
 module.exports = {
   verifyForSignature,
   findStepRunCommandInWorkflow,
+  stripCiTimeout,
   // Exported so a test can assert every JOB_PROXY_COMMANDS key still
   // resolves to a real job in the live workflow file — a job rename
   // silently orphans its proxy entry otherwise (ship-check finding: the

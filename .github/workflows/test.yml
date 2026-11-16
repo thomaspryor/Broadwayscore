@@ -3725,8 +3725,11 @@ jobs:
           while IFS= read -r f; do
             [ -z "$f" ] && continue
             # timeout 60 (BRO-7113): --test-timeout bounds tests, not a child that never exits.
-            if timeout 60 node --test --test-timeout 30000 "$f" > /dev/null 2>&1; then
+            orc=0; timeout -k 10 60 node --test --test-timeout 30000 "$f" > /dev/null 2>&1 || orc=$?
+            if [ "$orc" -eq 0 ]; then
               STALE="$STALE $f"
+            elif [ "$orc" -eq 124 ] || [ "$orc" -eq 137 ]; then
+              echo "::warning::exempt test $f still running after 60s (killed), so it is not judged stale this run"
             fi
           done < <(node scripts/audit-orphan-tests.js --list-exempt)
           if [ -n "$STALE" ]; then
@@ -5090,7 +5093,7 @@ jobs:
         continue-on-error: true
         run: |
           node scripts/audit-direct-github-api.js
-          timeout 300 node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
+          timeout -k 10 300 node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
 
       - name: Page furniture class guard (BRO-7171, advisory)
         # Every outlet extractor, run on saved real pages
@@ -5186,7 +5189,7 @@ jobs:
         if: always()
         run: |
           for i in $(seq 1 20); do
-            timeout 120 node --test --test-timeout 60000 scripts/lib/file-lock.test.mjs || { echo "::error::file-lock race test failed on repeat $i/20"; exit 1; }
+            timeout -k 10 120 node --test --test-timeout 60000 scripts/lib/file-lock.test.mjs || { echo "::error::file-lock race test failed on repeat $i/20"; exit 1; }
           done
 
       - name: Run pre-push conflict-marker guard test (bash integration)
@@ -5538,7 +5541,7 @@ jobs:
       - name: Run merge-worktree-to-main stash-restore test (BRO-2904)
         # The script must restore its own wt-integ-<pid> stash on every exit (EXIT trap + INT/TERM/HUP traps), not only at call sites that remember restore_stash. Fails 3/4 against the pre-fix script.
         if: always()  # independent suite
-        run: timeout 180 node --test scripts/merge-worktree-to-main.test.mjs
+        run: timeout -k 10 180 node --test scripts/merge-worktree-to-main.test.mjs
 
       - name: Run merge-worktree-to-main conflict-resolution regression test (task #888)
         # Task #888 (2026-08-02): while landing #732, restore_stash()'s
@@ -5710,7 +5713,7 @@ jobs:
         # Static check, so it works on ubuntu even though the polluted path is
         # macOS-only — the exposure is local, but the defect is authored here.
         if: always()
-        run: timeout 300 node --test scripts/lib/ledger-write-isolation.test.mjs
+        run: timeout -k 10 300 node --test scripts/lib/ledger-write-isolation.test.mjs
 
       - name: Run API fallback path disqualifier unit tests
         # BRO-3663. The predicate deciding which paths the Git Data API fallback
@@ -5719,7 +5722,7 @@ jobs:
         # had already drifted once (BRO-3348). It now has one definition; this
         # pins its rules so a change to them fails here.
         if: always()  # independent suite — don't let an earlier red step skip it
-        run: timeout 300 node --test scripts/lib/api-fallback-disqualifier.test.mjs
+        run: timeout -k 10 300 node --test scripts/lib/api-fallback-disqualifier.test.mjs
 
       - name: Recoupment model backtest vs previous commit (advisory, BRO-4989)
         # Scores the commercial recoupment model at the pushed-from commit and at
@@ -6183,7 +6186,7 @@ jobs:
         run: node scripts/auto-close-expired-shows.js --dry-run
 
       - name: Auto-close expired shows tests (BRO-5071)
-        run: timeout 300 node --test scripts/auto-close-expired-shows.test.mjs
+        run: timeout -k 10 300 node --test scripts/auto-close-expired-shows.test.mjs
 
       # --- Independent data-check steps below all carry `if: always()` ---------
       # Each is a SEPARATE assertion (validation, contamination, integrity).
@@ -6222,7 +6225,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/lib/review-guards.explain.test.mjs
+        run: timeout -k 10 300 node --test scripts/lib/review-guards.explain.test.mjs
 
       - name: Run autoclear-vs-ensemble corpus test (needs review-texts)
         # #1146/#1156: an auto-clear path (allowEarlyDate/allowCrossMarket
@@ -6234,7 +6237,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/lib/autoclear-vs-ensemble.test.mjs
+        run: timeout -k 10 300 node --test scripts/lib/autoclear-vs-ensemble.test.mjs
 
       # "Autoclear-vs-ensemble audit (strict)" MOVED to check-corpus-drift.js
       # (BRO-3535, 2026-09-16): audit-autoclear-vs-ensemble.js --strict scans
@@ -6259,7 +6262,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/lib/aggregator-domain-tld-parity.test.mjs
+        run: timeout -k 10 300 node --test scripts/lib/aggregator-domain-tld-parity.test.mjs
 
       - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
         # Same corpus-missing trap as explainExclusion above, same fix: the
@@ -6273,7 +6276,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
+        run: timeout -k 10 300 node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
 
       - name: Run frankie-2002 cleanup regression guard (needs review-texts)
         # BRO-853: same corpus-missing trap as explainExclusion above. Registered
@@ -6285,7 +6288,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/verify-frankie-2002-cleanup.test.mjs
+        run: timeout -k 10 300 node --test scripts/verify-frankie-2002-cleanup.test.mjs
 
       - name: Run review-text folder orphan guard (needs review-texts)
         # BRO-5683: scripts/verify-review-text-folders.test.mjs (BRO-5153) asserts
@@ -6297,7 +6300,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/verify-review-text-folders.test.mjs
+        run: timeout -k 10 300 node --test scripts/verify-review-text-folders.test.mjs
 
       - name: Run BRO-1397 prior-run former-cast sweep (needs review-texts)
         # BRO-1397: registered in tests/unit-test-manifest.txt, but that batch
@@ -6309,7 +6312,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/verify-prior-run-former-cast-sweep.test.mjs
+        run: timeout -k 10 300 node --test scripts/verify-prior-run-former-cast-sweep.test.mjs
 
       - name: Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)
         # Same corpus-missing trap as the frankie step above: registered in
@@ -6323,7 +6326,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/verify-addams-wsj-dedup-held.test.mjs
+        run: timeout -k 10 300 node --test scripts/verify-addams-wsj-dedup-held.test.mjs
 
       - name: Run data validation
         if: always()
@@ -6402,7 +6405,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: timeout 300 node --test scripts/audit-self-contradictory-clear-drained.test.mjs
+        run: timeout -k 10 300 node --test scripts/audit-self-contradictory-clear-drained.test.mjs
 
       # ── RETIRED 2026-08-14: "Audit stale flag after URL correction" (#483) ──
       #

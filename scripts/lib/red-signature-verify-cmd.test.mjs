@@ -224,3 +224,11 @@ test('a matrix-suffixed Unit Test Shard job resolves like its unsuffixed name (B
   assert.ok(v.line.startsWith('VERIFY: '), v.line);
   assert.notEqual(v.line, 'VERIFY: owner-judgment');
 });
+
+// BRO-7113: test.yml bounds single-file steps with `timeout -k 10 N node --test X`.
+// The re-verify command must stay the bare safe-form `node --test X`, not owner-judgment.
+test('a timeout-bounded single-file step in the real test.yml still resolves to its safe-form command', () => {
+  const yml = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', '.github', 'workflows', 'test.yml'), 'utf8');
+  const v = verifyForSignature({ job: 'Unit Tests', step: 'Dispatch-ledger write isolation (no test may write the real ledger)' }, yml);
+  assert.equal(v.line, 'VERIFY: node --test scripts/lib/ledger-write-isolation.test.mjs');
+});

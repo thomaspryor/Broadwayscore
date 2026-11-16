@@ -23,8 +23,11 @@ case "$secs" in ''|*[!0-9]*) echo "::error::run-test-batch-bounded.sh: seconds m
 
 # set -m: a background job gets its own process group (pgid == $!), so the kill
 # reaches every test child. Portable (macOS has no setsid).
+# The tee runs INSIDE the backgrounded subshell (pipefail keeps the command's exit
+# code), so `wait` returns only after the log is fully written and callers that
+# parse it (summarize-failing-tests.sh, run_batch counts) never read a partial log.
 set -m
-"$@" > >(tee "$log") 2>&1 &
+( set -o pipefail; "$@" 2>&1 | tee "$log" ) &
 pid=$!
 deadline=$(( $(date +%s) + secs ))
 while kill -0 "$pid" 2>/dev/null; do
@@ -39,6 +42,13 @@ while kill -0 "$pid" 2>/dev/null; do
     msg="$label batch still running after ${secs}s (normal runtime is a small fraction of that), killed."
     if [ -n "$stalled" ]; then msg="$msg Test files still running: ${stalled% }"; else msg="$msg No test-file child was alive, so the runner itself stalled."; fi
     echo "::error title=Stalled test batch::$msg"
+    # TAP-shaped lines so the existing triage parsers (summarize-failing-tests.sh,
+    # main-red-streak.js firstFailingTestFileInJobLog) name the stalled file too.
+    n=0
+    for f in $stalled; do
+      n=$((n + 1))
+      printf 'not ok %d - %s (stalled: still running after %ss, killed)\n  ---\n  location: '"'"'%s:1:1'"'"'\n  ...\n' "$n" "$f" "$secs" "$f" | tee -a "$log"
+    done
     [ -n "${GITHUB_STEP_SUMMARY:-}" ] && printf '### %s batch stalled\n%s\n' "$label" "$msg" >> "$GITHUB_STEP_SUMMARY"
     exit 124
   fi

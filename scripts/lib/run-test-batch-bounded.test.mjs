@@ -42,7 +42,10 @@ test('a wedged test-file child fails the batch with 124 and is named; finished f
     assert.match(r.stdout, /::error title=Stalled test batch::fixture batch still running after 6s/);
     assert.match(r.stdout, /Test files still running: \S*wedged\.test\.mjs/);
     assert.doesNotMatch(r.stdout.split('Test files still running:')[1] || '', /fast\.test\.mjs/);
-    assert.ok(readFileSync(log, 'utf8').length > 0, 'batch output is tee\'d to the log');
+    // TAP-shaped stall lines, so summarize-failing-tests.sh and main-red-streak.js name the file.
+    const logText = readFileSync(log, 'utf8');
+    assert.match(logText, /^not ok 1 - \S*wedged\.test\.mjs \(stalled: still running after 6s, killed\)$/m);
+    assert.match(logText, /^  location: '\S*wedged\.test\.mjs:1:1'$/m);
   } finally { rmSync(f.dir, { recursive: true, force: true }); }
 });
 
@@ -84,8 +87,12 @@ test('test.yml: every --test invocation is bounded, and helper bounds fit each j
   lines.forEach((line, i) => {
     const code = line.replace(/^\s*#.*$/, '');
     if (!/\b(node|tsx)\s+(--\S+\s+)*--test\b/.test(code)) return;
-    if (/\btimeout\s+(-k\s+\d+\s+)?\d+\s/.test(code)) return;
-    if (/run-test-batch-bounded\.sh/.test(lines[i - 1] || '') && /\\\s*$/.test(lines[i - 1])) return;
+    // `timeout` as a command word (NOT the --test-timeout flag, which bounds tests,
+    // not processes), with a -k kill-after so a TERM-ignoring child still dies.
+    if (/(^|[\s;&|(!])timeout\s+-k\s+\d+\s+\d+\s/.test(code)) return;
+    // Continuation of the helper call, or of run_batch (whose body uses the helper).
+    const prev = lines[i - 1] || '';
+    if (/(run-test-batch-bounded\.sh|\brun_batch\s)/.test(prev) && /\\\s*$/.test(prev)) return;
     if (/run-test-batch-bounded\.sh/.test(code)) return;
     unbounded.push(`test.yml:${i + 1}: ${line.trim().slice(0, 100)}`);
   });
@@ -104,6 +111,9 @@ test('test.yml: every --test invocation is bounded, and helper bounds fit each j
     if (b) cur.boundSec += Number(b[1]);
   }
   const used = jobs.filter((j) => j.boundSec > 0);
+  // run_batch must itself route through the helper for the continuation exemption to hold.
+  const rb = lines.join('\n').match(/run_batch\(\) \{[\s\S]*?\n          \}/);
+  assert.ok(rb && /run-test-batch-bounded\.sh/.test(rb[0]), 'run_batch() no longer uses run-test-batch-bounded.sh');
   assert.ok(used.length >= 3, `expected the helper in 3+ jobs, found ${used.map((j) => j.name)}`);
   for (const j of used) {
     assert.ok(j.limitMin, `${j.name} uses the helper but has no job timeout-minutes`);
