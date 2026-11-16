@@ -43,6 +43,7 @@ const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligib
 const { findContentOwner } = require('./lib/duplicate-images');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
+const { recordImageFetchOutcome, imageFetchRunHealth } = require('./lib/image-fetch-outcome');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 const { buildSourceIndex, addToSourceIndex, sourceConflict, stripConflictingSources, showScoreArtEligible, todaytixIdOwner, isOwnSiteSource, isShoppingSource } = require('./lib/shared-image-source');
 const { findOtherSameTitleProduction } = require('./lib/canon-poster-art');
@@ -2098,7 +2099,7 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
   }
 }
 
-async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
+async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx, fetchOutcome) {
   console.log(`\n📽️  ${show.title}`);
 
   // Regional feeder-venue shows: venue og:image is the canonical key art —
@@ -2271,6 +2272,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   } else {
     googleImages = await fetchFromGoogleImages(show);
     if (googleImages && googleImages.searchErrored) { googleErrored = true; googleImages = null; }
+    if (googleErrored) fetchOutcome.searchErrored = true;
     if (googleErrored && verifyCtx) strictTallyFor(verifyCtx, show.id).searchErrored = true;
     if (googleImages) await verifyGooglePoster(googleImages, show, verifyCtx);
   }
@@ -2486,10 +2488,11 @@ async function processOneShowInner(show, apiLookup, todayTixIds, badImagesOnly, 
   // freshly created EMPTY directory surviving as false coverage). See
   // scripts/lib/show-images.js for the cleanup logic and tests.
   inFlightFetches.set(show.id, { dir: showImageDir, dirBefore });
+  const fetchOutcome = { searchErrored: false };
   let images;
   try {
     images = await runFetchWithCleanup(
-      () => fetchShowImages(show, todayTixInfo, apiData, verifyCtx),
+      () => fetchShowImages(show, todayTixInfo, apiData, verifyCtx, fetchOutcome),
       showImageDir,
       dirBefore,
       show.id
@@ -2503,7 +2506,7 @@ async function processOneShowInner(show, apiLookup, todayTixIds, badImagesOnly, 
   }
 
   if (!dryRunMode) noteNoReliableArtOutcome(show, images, verifyCtx);
-  return { show, images, apiSourced: !!apiData };
+  return { show, images, apiSourced: !!apiData, searchErrored: fetchOutcome.searchErrored };
 }
 
 // BRO-5022: persist "no reliable art" when the strict tier rejected every
@@ -2530,7 +2533,7 @@ function noteNoReliableArtOutcome(show, images, verifyCtx) {
 // checkpoint() is called every 25 shows to save progress to disk.
 async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, checkpoint, maxRuntimeMin = 0) {
   const startTime = Date.now();
-  const results = { success: [], failed: [], skipped: [] };
+  const results = { success: [], failed: [], unavailable: [], skipped: [] };
 
   // Separate API-matched shows (instant, no rate limit needed) from scrape-needed shows
   const apiShows = [];
@@ -2557,10 +2560,8 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
     if (result && result.images) {
       if (!dryRunMode) applyImages(result.show, result.images);
       if (dryRunMode) dryRunResults.push({ showId: result.show.id, title: result.show.title, currentThumbnail: result.show.images?.thumbnail || null, newImages: result.images, source: result.apiSourced ? 'TodayTix API' : 'scrape' });
-      results.success.push(show.title);
-    } else {
-      results.failed.push(show.title);
     }
+    recordImageFetchOutcome(results, show, { status: 'fulfilled', value: result }, console.log);
   }
 
   if (apiShows.length > 0) {
@@ -2598,20 +2599,17 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
       }))
     );
 
-    for (const settled of batchResults) {
+    for (const [index, settled] of batchResults.entries()) {
       if (settled.status === 'fulfilled' && settled.value && settled.value.images) {
         if (!dryRunMode && !settled.value.applied) applyImages(settled.value.show, settled.value.images);
         if (dryRunMode) dryRunResults.push({ showId: settled.value.show.id, title: settled.value.show.title, currentThumbnail: settled.value.show.images?.thumbnail || null, newImages: settled.value.images, source: settled.value.apiSourced ? 'TodayTix API' : 'scrape' });
-        results.success.push(settled.value.show.title);
-      } else {
-        const show = settled.status === 'fulfilled' ? settled.value?.show : batch[0];
-        results.failed.push(show?.title || 'unknown');
       }
+      recordImageFetchOutcome(results, batch[index], settled, console.log);
     }
 
     processed += batch.length;
     if (scrapeShows.length > scrapeConcurrency) {
-      console.log(`   [${processed}/${scrapeShows.length}] ${results.success.length} success, ${results.failed.length} failed`);
+      console.log(`   [${processed}/${scrapeShows.length}] ${results.success.length} success, ${results.failed.length} failed, ${results.unavailable.length} awaiting art`);
     }
 
     // Checkpoint every 25 shows to save progress (protects against timeout)
@@ -3425,6 +3423,10 @@ async function main() {
   console.log('='.repeat(60));
   console.log(`✓ Success: ${results.success.length}`);
   console.log(`✗ Failed: ${results.failed.length}`);
+  console.log(`Skipped (pinned): ${results.skipped.length}`);
+  if (results.unavailable.length) {
+    console.warn(`::warning::${results.unavailable.length} upcoming/announced show(s) have no usable art yet: ${results.unavailable.join(', ')}`);
+  }
 
   if (results.failed.length > 0) {
     console.log(`\nFailed shows:`);
@@ -3460,6 +3462,7 @@ async function main() {
   if (outputFile) {
     fs.appendFileSync(outputFile, `images_fetched=${results.success.length}\n`);
     fs.appendFileSync(outputFile, `images_failed=${results.failed.length}\n`);
+    fs.appendFileSync(outputFile, `images_unavailable=${results.unavailable.length}\n`);
     if (verifyCtx) {
       fs.appendFileSync(outputFile, `images_rejected=${verifyCtx.rejected}\n`);
       if (verifyCtx.imageTypes) {
@@ -3469,18 +3472,13 @@ async function main() {
     }
   }
 
-  // Success-rate gate — a run of 10+ shows where more than half fail (e.g. a
-  // ScrapingBee credit exhaustion nobody caught for 10 days, 6 runs, 5-15%
-  // success every time) must exit non-zero so CI's `if: failure()` step fires
-  // notify-failure. Below 10 shows the sample is too small to be meaningful
-  // (a single stubborn show failing shouldn't page anyone).
-  const totalAttempted = results.success.length + results.failed.length;
-  if (totalAttempted >= 10) {
-    const failureRate = results.failed.length / totalAttempted;
-    if (failureRate > 0.5) {
-      console.error(`\n❌ FAILURE RATE ${Math.round(failureRate * 100)}% (${results.failed.length}/${totalAttempted}) exceeds the 50% threshold — exiting non-zero.`);
-      process.exit(1);
-    }
+  // BRO-7550: future-show art gaps are expected discovery misses. Keep the
+  // ten-show sample and 50% gate for failures, plus a zero-success guard so
+  // a total provider outage cannot become green as "awaiting art".
+  const health = imageFetchRunHealth(results);
+  if (health.exitCode) {
+    console.error(`\n❌ ${health.message}`);
+    process.exit(health.exitCode);
   }
 
   // Explicit exit (BRO-4401). Run 36676191484 printed its SUMMARY at
