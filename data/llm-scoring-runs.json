@@ -1,5 +1,24 @@
 [
   {
+    "startedAt": "2026-11-14T00:16:16.573Z",
+    "completedAt": "2026-11-14T00:16:16.591Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "43531319013",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-11-14T00:46:15.524Z",
     "completedAt": "2026-11-14T00:46:15.526Z",
     "totalReviews": 0,
@@ -418695,67 +418714,47 @@
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-16T13:34:51.538Z",
-    "completedAt": "2026-11-16T13:35:01.952Z",
-    "totalReviews": 20,
-    "processed": 45,
-    "skipped": 17,
-    "errors": 1,
+    "startedAt": "2026-11-16T13:47:34.913Z",
+    "completedAt": "2026-11-16T13:47:40.221Z",
+    "totalReviews": 21,
+    "processed": 1,
+    "skipped": 20,
+    "errors": 44,
     "tokensUsed": {
-      "input": 372853,
-      "output": 19771,
-      "cacheRead": 279964,
-      "cacheWrite": 42614,
-      "total": 1002809
+      "input": 96860,
+      "output": 2975,
+      "cacheRead": 70331,
+      "cacheWrite": 10630,
+      "total": 253751
     },
-    "costUsd": 0.917576,
-    "runId": "43876545206",
+    "costUsd": 0.2181865,
+    "runId": "43876553164",
     "source": "index",
     "errorDetails": [
       {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
+        "showId": "once-upon-a-one-more-time-2023",
+        "outletId": "nyt-theater",
+        "error": "resume_input_hash_mismatch"
       }
     ],
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-16T13:40:01.777Z",
-    "completedAt": "2026-11-16T13:40:09.903Z",
-    "totalReviews": 4,
-    "processed": 4,
+    "startedAt": "2026-11-16T13:52:38.741Z",
+    "completedAt": "2026-11-16T13:52:50.076Z",
+    "totalReviews": 5,
+    "processed": 5,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 10215,
-      "output": 863,
+      "input": 12512,
+      "output": 1134,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 11078
+      "total": 13646
     },
-    "costUsd": 0.028411000000000002,
-    "runId": "43876545206",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-15T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-16T13:47:02.555Z",
-    "completedAt": "2026-11-16T13:47:02.558Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "43876556328",
+    "costUsd": 0.0355911,
+    "runId": "43876553164",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
