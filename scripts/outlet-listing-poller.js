@@ -908,12 +908,12 @@ async function main() {
     activeShows = ow.selectWindowShows(allShows);
     lateShows = ow.selectLateWindowShows(allShows); // BRO-7574: late publishers (one-minute-critic) match a longer window
     if (activeShows.length === 0 && lateShows.length === 0) {
-      console.log('No shows 0-3 days past opening: nothing to fetch.');
+      console.log('No shows in the opening window (0-3 days, or 0-10 for late publishers): nothing to fetch.');
       console.log('OPENING_WINDOW_STATS fetches=0 paid=0');
       if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'new_stubs=0\n');
       return;
     }
-    console.log(`Window shows: ${activeShows.map(s => `${s.id} (${s.openingDate})`).join(', ')}`);
+    console.log(`Window shows: ${activeShows.map(s => `${s.id} (${s.openingDate})`).join(', ')}${lateShows.length ? ` | late-publisher window: ${lateShows.length} show(s)` : ''}`);
     paidBudget = ow.createPaidBudget(opts.maxPaid);
   }
   if (opts.market) { activeShows = activeShows.filter(s => s.category === opts.market || s.market === opts.market); lateShows = lateShows.filter(s => s.category === opts.market || s.market === opts.market); }

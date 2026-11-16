@@ -16,7 +16,8 @@ const i = process.argv.indexOf('--limit');
 const limit = i > -1 ? parseInt(process.argv[i + 1], 10) || 3 : 3;
 const root = process.env.WINDOW_DATA_ROOT || path.join(__dirname, '..', 'data');
 const raw = JSON.parse(fs.readFileSync(path.join(root, 'shows.json'), 'utf8'));
-const win = ow.selectWindowShows(Array.isArray(raw) ? raw : raw.shows);
+// BRO-7574: late-publisher stubs (one-minute-critic, up to 10 days past opening) are collected too.
+const win = ow.selectLateWindowShows(Array.isArray(raw) ? raw : raw.shows);
 const byShow = {};
 for (const s of win) {
   const dir = path.join(root, 'review-texts', s.id);
