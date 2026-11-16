@@ -382,20 +382,6 @@
     "queuedAt": "2026-11-16T16:46:27.106Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-16.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-16T17:07:47.390Z"
-  },
-  {
     "conditionKey": "land:land/bro-7606-v2",
     "title": "Landing blocked: merged-tree-tests red on land/bro-7606-v2",
     "description": "land.yml did not land land/bro-7606-v2: the merged-tree-tests gate went red at 53d3540e02. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7606-v2 @ 53d3540e02 (origin/land/bro-7606-v2) → origin/main @ 890046e852 [land] attempt 1/3: rebased onto 890046e852, 8 file(s) changed — running checks [land] verified-base: main moved 27954dc712 → 890046e852 across 113 file(s), substantive — re-checking on the merged tree (+4 test file(s) changed on main since the verified base); full re-check: branch and main both changed 1 fil Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43905615584",
@@ -425,5 +411,33 @@
       }
     ],
     "queuedAt": "2026-11-16T16:57:13.976Z"
+  },
+  {
+    "conditionKey": "corpus-drift:show-score-urls",
+    "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff) — escalated after 15 notifications",
+    "description": "Filed BRO-7610 for owner triage after 15 repeats with no tracker.\n\ncheck-corpus-drift.js audit \"show-score-urls\" (node scripts/audit-show-score-urls.js --strict) has been drifting. Latest output:\n\n═══════════════════════════════════════════════════\n  Show Score URL Audit Report\n═══════════════════════════════════════════════════\n\nSUSPICIOUS — no archive to verify (36):\n  no-mans-land-2013 (closed, James Earl Jones Theatre): No archive to verify, multi-production show (2 productions)\n  of-mice-and-men-2014 (closed, Longacre Theatre): No archive to verify, multi-production show (2 productions)\n  annie-2012 (closed, Palace Theatre): No archive to verify, multi-production show (3 productions)\n  cat-on-a-hot-tin-roof-2013 (closed, Richard Rodgers Theatre): No archive to verify, multi-production show (6 productions)\n  a-streetcar-named-desire-2012 (closed, Broadhurst Theatre): No archive to verify, multi-production show (5 productions)\n  hamlet-2009 (closed, Broadhurst Theatre): No archive to verify, multi-production show (3 productions)\n  les-miserables-2014 (closed, Imperial Theatre): No archive to verify, multi-production show (3 productions)\n  cyrano-de-bergerac-2012 (closed, Todd Haimes Theatre): No archive to verify, multi-production show (3 productions)\n  jekyll-and-hyde-2013 (closed, Marquis Theatre): No archive to verify, multi-production show (2 productions)\n  godspell-2011 (closed, Circle in the Square Theatre): No archive to verify, multi-production show (2 productions)\n  ... and 26 more (use --verbose)\n\nANOTHER PRODUCTION'S PAGE (1):\n  the-other-place-2013: https://www.show-score.com/broadway-shows/the-other-place\n    8/8 page dates (earliest 2024-10-09) come over 365 days after this production closed 2013-03-03: another production's page [archived page dates]\n\nRemove with: node scripts/purge-wrong-production-show-score.js --apply\n\nSummary:\n  Duplicate URLs:       0\n  Confirmed wrong:      0\n  Suspicious (no arch): 36\n  Other production:     1\n  OK:                   827\n  No archive:           97\n  Total checked:        964",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7610",
+    "fields": [],
+    "queuedAt": "2026-11-16T17:43:51.866Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-16.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-16T17:43:52.011Z"
   }
 ]
