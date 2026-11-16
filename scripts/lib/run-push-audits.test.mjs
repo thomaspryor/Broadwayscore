@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { readFileSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync, rmSync, existsSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { createRequire } from 'node:module';
 
@@ -197,9 +197,40 @@ test('BRO-3014: the scripts/** source scanners stay CI-only (no --scope-stdin ye
   }
 });
 
-test('BRO-3014 end-to-end: the newly wired audits pass on the live repo', () => {
-  execFileSync('bash', [SCRIPT, '.github/workflows/test.yml', 'scripts/launchd/x.plist', 'scripts/.duplicate-of-floor.json',
-    'scripts/sweep-we-aggregators.js', 'next.config.js'], { encoding: 'utf8', stdio: 'pipe' });
+// BRO-7583: this used to EXECUTE the ~26 selected audits against the live tree
+// inside the scripts-lib-tests land gate. Any branch that tripped any audit
+// (an unregistered test, a workflow lint, a transient CI-only difference) then
+// reddened "scripts-lib-tests" with only "Command failed" and no audit output:
+// the "Landing blocked: scripts-lib-tests red" card filed 3x in 30 days. Every
+// one of those audits already has its own labelled CI step / push-lane run, so
+// the unit test now proves WIRING only: each selected audit's target exists.
+test('BRO-3014 wiring: every audit the push lane selects points at a script that exists', () => {
+  const src = readFileSync(SCRIPT, 'utf8');
+  const targets = [...src.matchAll(/run_audit\s+"[^"]+"\s+"([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(targets.length >= 25, `expected the run_audit calls to parse, got ${targets.length}`);
+  const missing = targets.filter((t) => !existsSync(join(LIB_DIR, '..', '..', t)));
+  assert.deepEqual(missing, [], `run-push-audits.sh wires audits whose script is missing: ${missing.join(', ')}`);
+  const labels = listAudits(['.github/workflows/test.yml', 'scripts/launchd/x.plist', 'scripts/.duplicate-of-floor.json',
+    'scripts/sweep-we-aggregators.js', 'next.config.js']);
+  for (const l of ['workflow-hygiene', 'duplicate-of-floor', 'launchd-stale-sync-guard', 'verifier-wiring']) {
+    assert.ok(labels.includes(l), `${l} must be selected by its trigger file`);
+  }
+});
+
+// BRO-7583 class guard: a scripts/lib unit test must never run the live audit
+// dispatcher without --list (that is what made scripts-lib-tests red on
+// unrelated branches). Any new execution of it must stay in --list mode.
+test('BRO-7583 guard: no scripts/lib test runs run-push-audits.sh over the live repo', () => {
+  const offenders = [];
+  for (const f of readdirSync(LIB_DIR).filter((n) => n.endsWith('.test.mjs'))) {
+    if (f === 'run-push-audits.test.mjs') continue;
+    const txt = readFileSync(join(LIB_DIR, f), 'utf8');
+    if (/['"`][^'"`\n]*run-push-audits\.sh/.test(txt) &&/execFileSync|spawnSync|execSync/.test(txt) && !/--list/.test(txt)) offenders.push(f);
+  }
+  assert.deepEqual(offenders, [], 'these tests execute run-push-audits.sh without --list');
+  // and in this file every real (non --list) run of SCRIPT must use a sandboxed stdin/tmp repo, never the live-tree argv form
+  const own = readFileSync(join(LIB_DIR, 'run-push-audits.test.mjs'), 'utf8');
+  assert.ok(!/execFileSync\('bash', \[SCRIPT, '\.github/.test(own), 'live-repo argv execution of SCRIPT is back');
 });
 
 test('argv form (no stdin) matches piped-stdin form', () => {
