@@ -36,7 +36,7 @@ const { resolveOutletFromUrl, URL_HOST_ALIASES } = require('../review-normalizat
 // once per host). Exact hosts only, after www is stripped; shared with normalizeUrl so the two never disagree.
 const HOST_ALIAS = new Map(URL_HOST_ALIASES);
 const { isFeatureSectionReviewPath } = require('../domain-filters');
-const { admitLaneCandidate } = require('./trust-model');
+const { admitLaneCandidate, calendarDateIn } = require('./trust-model');
 const laneSources = require('./lane-sources');
 const ledger = require('./ledger');
 
@@ -374,10 +374,11 @@ function citedCandidates(links, via, excerptField, aggregatorDate = null) {
  * holding it for hours (BRO-7587: Cititour's page has no date; the lane dropped it after 3 reads, the regular pipeline
  * stamped the same roundup date 3 hours later).
  */
-function roundupPageDate(html, pageUrl) {
+function roundupPageDate(html, pageUrl, timeZone) {
   const iso = extractPublishDate(html);
-  const m = String(iso || '').match(/^\d{4}-\d{2}-\d{2}/);
-  if (m) return m[0];
+  // extractPublishDate returns a UTC instant: a 10pm Eastern post is the next day in UTC, so read the calendar day in the market's zone.
+  const day = iso ? calendarDateIn(iso, timeZone || undefined) : null;
+  if (day) return day;
   const u = String(pageUrl || '').match(/-(20\d{2})(\d{2})(\d{2})(?:[/?#]|$)/);
   return u ? `${u[1]}-${u[2]}-${u[3]}` : null;
 }
@@ -399,7 +400,7 @@ function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) 
   const refusedStored = new Set();
   return {
     name: 'bww-roundup', kind: 'aggregator', phase: 'cheap',
-    async discover({ show, fetchText }) {
+    async discover({ show, fetchText, timeZone }) {
       // The homepage only lists the last few days. A show that has scrolled off (a busy week, a layout change, any replay
       // older than a few days) falls back to the roundup URL the show already has on record (BRO-6872).
       let roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title, { openingDate: show.openingDate, showId: show.id });
@@ -415,7 +416,7 @@ function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) 
       }
       const pageHtml = html || await fetchText(roundup);
       const links = requireKnownOutletLinks(storyCitedLinks(pageHtml, roundup, BWW_STORY), roundup, 'bww-roundup');
-      return citedCandidates(links, roundup, 'bwwExcerpt', roundupPageDate(html || pageHtml, roundup));
+      return citedCandidates(links, roundup, 'bwwExcerpt', roundupPageDate(pageHtml, roundup, timeZone));
     },
   };
 }
@@ -809,7 +810,7 @@ function playbillVerdictAdapter() {
       const when = extractPublishDate(html);
       if (!when || !admitLaneCandidate({ source: 'outlet-index', aggregatorCited: false, publishDate: when, night, ...(timeZone ? { timeZone } : {}) }).admit) return [];
       const links = requireKnownOutletLinks(storyCitedLinks(html, hit.articleUrl, PLAYBILL_STORY), hit.articleUrl, 'playbill-verdict');
-      return citedCandidates(links, hit.articleUrl, 'playbillVerdictExcerpt', roundupPageDate(html, hit.articleUrl));
+      return citedCandidates(links, hit.articleUrl, 'playbillVerdictExcerpt', roundupPageDate(html, hit.articleUrl, timeZone));
     },
   };
 }
@@ -1358,6 +1359,7 @@ async function runDiscoveryPass({
         for (const flag of TRUST_FLAGS) if (other[flag] === true) kept[flag] = true;
         if (!kept.publishDate && other.publishDate) { kept.publishDate = other.publishDate; kept.needsDate = false; }
         if (!kept.outletId && other.outletId) kept.outletId = other.outletId;
+        if (!kept.aggregatorDate && other.aggregatorDate) kept.aggregatorDate = other.aggregatorDate;
         if (!kept[PREFETCHED_PAGE] && other[PREFETCHED_PAGE]) kept[PREFETCHED_PAGE] = other[PREFETCHED_PAGE];
       }
       byKey.set(key, kept);

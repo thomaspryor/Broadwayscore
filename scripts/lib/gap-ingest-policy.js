@@ -338,8 +338,11 @@ function quarantinedPriorRunDate(output, show) {
  * @returns {string|null} the refused review's date, or null when this is not that refusal
  */
 function oldProductionRefusalDate(output) {
-  const m = /Refusing old-production review:[^\n]*\(dated (\d{4}-\d{2}-\d{2})[^)]*, over a year before/.exec(String(output || ''));
-  return m ? m[1] : null;
+  const text = String(output || '');
+  const m = /Refusing old-production review:[^\n]*\(dated (\d{4}-\d{2}-\d{2})[^)]*, over a year before/.exec(text);
+  if (m) return m[1];
+  // The writer's reason code survives a reworded message; the date is then unknown but the refusal is the same.
+  return /Write-guard refused the write[^\n]*\(oldProductionReview\)/.test(text) ? 'unknown' : null;
 }
 
 /**

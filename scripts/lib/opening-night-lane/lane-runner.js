@@ -217,7 +217,10 @@ async function runLaneNight({
         if (!row.publishDate) { const d = card.cardPublishDate(row); if (d) row.publishDate = d; }
         // A review a roundup cites whose own page has no date (Cititour): the roundup's date, provisional (BRO-7587). Held
         // for three reads otherwise, then left to the regular pipeline hours later.
-        if (!row.publishDate && a.aggregatorCited !== false && a.source === 'aggregator') {
+        // Not for a show with an earlier run (transfer, revival): its roundup also cites the earlier run's reviews, and a date from
+        // the roundup would pass them as tonight's.
+        const hasEarlierRun = (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) || !!show.transferOf;
+        if (!row.publishDate && a.source === 'aggregator' && !hasEarlierRun) {
           const fb = trust.roundupFallbackDate({ aggregatorDate: a.aggregatorDate, night });
           if (fb) Object.assign(row, fb);
         }
