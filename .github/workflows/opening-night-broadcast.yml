@@ -459,6 +459,10 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-7607: a breach blocks only the set its show is in (new drafts vs
+          # unsent-draft refreshes), see scripts/lib/broadcast-gate-scope.js.
+          PENDING_SHOWS: ${{ steps.check.outputs.pending_shows }}
+          REFRESH_SHOWS: ${{ steps.refresh.outputs.refresh_shows }}
           # BRO-2378: same checklist script as opening-night-checklist.yml (BRO-67);
           # without the key its LLM parity fallback silently no-ops in this gate.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -541,22 +545,33 @@ jobs:
             # orphan_gate pattern), so later steps are not skipped; the broadcast
             # step checks the output. Exits 1 only when delivery is unconfirmed,
             # which lets "Notify on failure" email the owner instead.
-            BREACHED_LIST="$BREACHED_LIST" node scripts/lib/broadcast-gate-alert.js checklist
+            # BRO-7607: blocked/refresh_blocked are scoped to the set each breached
+            # show is in and written BEFORE the alert, so an unconfirmed alert
+            # (exit 1, red step) still fails closed. The alert only reports.
+            BREACHED="$BREACHED_LIST" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT"
+            BREACHED_LIST="$BREACHED_LIST" GITHUB_OUTPUT= node scripts/lib/broadcast-gate-alert.js checklist
           else
             echo "Checklist gate passed (blocked=$BLOCKED, force=$FORCE)"
             echo "blocked=false" >> $GITHUB_OUTPUT
+            echo "refresh_blocked=false" >> $GITHUB_OUTPUT
           fi
           echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
 
       - name: Drift gate — block send if reviews.json out of sync with review-texts (per-show)
         id: drift_gate
         # BRO-2816: skip once the checklist gate already blocked and alerted (one alert per run).
-        if: steps.gate_set.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true'
+        # BRO-7607: !cancelled() so a red checklist step (alert delivery unconfirmed)
+        # cannot skip this gate while a draft step still runs.
+        if: (!cancelled()) && steps.gate_set.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-7607: a breach blocks only the set its show is in (new drafts vs
+          # unsent-draft refreshes), see scripts/lib/broadcast-gate-scope.js.
+          PENDING_SHOWS: ${{ steps.check.outputs.pending_shows }}
+          REFRESH_SHOWS: ${{ steps.refresh.outputs.refresh_shows }}
         run: |
           # Per-show drift gate. Same predicate as the daily Check Review-Count Drift
           # workflow, but with a tighter single-show threshold (>2 absolute, vs >3 daily).
@@ -616,22 +631,31 @@ jobs:
             # orphan_gate pattern), so later steps are not skipped; the broadcast
             # step checks the output. Exits 1 only when delivery is unconfirmed,
             # which lets "Notify on failure" email the owner instead.
-            BREACHED_LIST="$BREACHED_LIST" node scripts/lib/broadcast-gate-alert.js drift
+            # BRO-7607: blocked/refresh_blocked are scoped to the set each breached
+            # show is in and written BEFORE the alert, so an unconfirmed alert
+            # (exit 1, red step) still fails closed. The alert only reports.
+            BREACHED="$BREACHED_LIST" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT"
+            BREACHED_LIST="$BREACHED_LIST" GITHUB_OUTPUT= node scripts/lib/broadcast-gate-alert.js drift
           else
             echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
             echo "blocked=false" >> $GITHUB_OUTPUT
+            echo "refresh_blocked=false" >> $GITHUB_OUTPUT
           fi
           echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
 
       - name: Orphan-unscored gate — self-heal requeue, alert only after exhausted attempts
         id: orphan_gate
         # BRO-2816: skip on a checklist/drift block so a blocked night does not dispatch paid rescores.
-        if: steps.gate_set.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
+        if: (!cancelled()) && steps.gate_set.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-7607: a breach blocks only the set its show is in (new drafts vs
+          # unsent-draft refreshes), see scripts/lib/broadcast-gate-scope.js.
+          PENDING_SHOWS: ${{ steps.check.outputs.pending_shows }}
+          REFRESH_SHOWS: ${{ steps.refresh.outputs.refresh_shows }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Lost Boys 2026-04-26 #8 defense (Gap 1). scripts/verify-all-scored.js
@@ -657,33 +681,38 @@ jobs:
           # requeue script still runs, so a rescore is dispatched either way.
           DEADLINE_SHOWS=",${{ steps.check.outputs.deadline_shows }},"
           OVERRIDDEN_SHOWS=()
+          BREACHED_SHOWS=()
           IFS=',' read -ra SHOWS <<< "${{ steps.gate_set.outputs.gate_shows }}"
           for SHOW in "${SHOWS[@]}"; do
-            PRIOR_BLOCKED=$BLOCKED
+            SHOW_BLOCKED=false
             RESULT=$(node scripts/dispatch-orphan-rescore-requeue.js --show="$SHOW")
             echo "Show $SHOW: $RESULT"
             ACTION=$(echo "$RESULT" | node -e "try{process.stdout.write(JSON.parse(require('fs').readFileSync(0,'utf8')).action||'error')}catch{process.stdout.write('error')}")
             case "$ACTION" in
               clear) ;;
-              in-flight|wait|dispatch) BLOCKED=true ;;
-              alert) BLOCKED=true; echo "::error::Show $SHOW: orphan-unscored self-heal exhausted its 2-attempt/24h budget — owner-alert-router notified once." ;;
-              error) BLOCKED=true; echo "::warning::Show $SHOW: dispatch-orphan-rescore-requeue.js hit an internal error (see log above) — failing closed, broadcast stays blocked." ;;
-              *) BLOCKED=true; echo "::warning::Show $SHOW: dispatch-orphan-rescore-requeue.js returned unexpected action '$ACTION'" ;;
+              in-flight|wait|dispatch) SHOW_BLOCKED=true ;;
+              alert) SHOW_BLOCKED=true; echo "::error::Show $SHOW: orphan-unscored self-heal exhausted its 2-attempt/24h budget — owner-alert-router notified once." ;;
+              error) SHOW_BLOCKED=true; echo "::warning::Show $SHOW: dispatch-orphan-rescore-requeue.js hit an internal error (see log above) — failing closed, broadcast stays blocked." ;;
+              *) SHOW_BLOCKED=true; echo "::warning::Show $SHOW: dispatch-orphan-rescore-requeue.js returned unexpected action '$ACTION'" ;;
             esac
-            if [ "$BLOCKED" = "true" ] && [ "$PRIOR_BLOCKED" != "true" ] && [[ "$DEADLINE_SHOWS" == *",$SHOW,"* ]]; then
-              BLOCKED=false
+            if [ "$SHOW_BLOCKED" = "true" ] && [[ "$DEADLINE_SHOWS" == *",$SHOW,"* ]]; then
               # id:action so the owner page can tell "still unscored" from "check crashed".
               OVERRIDDEN_SHOWS+=("$SHOW:$ACTION")
               echo "::warning::Show $SHOW is past its draft deadline: unscored review(s) recorded ($ACTION), draft not blocked"
+            elif [ "$SHOW_BLOCKED" = "true" ]; then
+              BLOCKED=true
+              BREACHED_SHOWS+=("$SHOW")
             fi
           done
 
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
-            echo "::notice::Orphan-unscored gate blocking broadcast — self-heal requeue in progress (see per-show output above). No operator email unless the auto-dispatch budget is exhausted."
-            echo "blocked=true" >> $GITHUB_OUTPUT
+            echo "::notice::Orphan-unscored gate holding back: ${BREACHED_SHOWS[*]} — self-heal requeue in progress (see per-show output above). No operator email unless the auto-dispatch budget is exhausted."
+            # BRO-7607: scoped like the checklist/drift gates.
+            BREACHED="$(IFS=,; echo "${BREACHED_SHOWS[*]}")" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT"
           else
             echo "Orphan-unscored gate passed (blocked=$BLOCKED, force=$FORCE)"
             echo "blocked=false" >> $GITHUB_OUTPUT
+            echo "refresh_blocked=false" >> $GITHUB_OUTPUT
           fi
           echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
 
@@ -889,7 +918,9 @@ jobs:
       # refresh step's list, never the drafting gates' outputs.
       - name: Update unsent drafts with new numbers
         id: update_drafts
-        if: steps.refresh.outputs.refresh_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        # BRO-7607: refreshes read refresh_blocked, so a breached new-draft show no
+        # longer holds them, and every gate must have run (a skipped gate is not a pass).
+        if: steps.refresh.outputs.refresh_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outcome == 'success' && steps.drift_gate.outcome == 'success' && steps.orphan_gate.outcome == 'success' && steps.checklist_gate.outputs.refresh_blocked != 'true' && steps.drift_gate.outputs.refresh_blocked != 'true' && steps.orphan_gate.outputs.refresh_blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -1458,14 +1489,9 @@ jobs:
           # "Create broadcast draft"), so whenever the BRO-2373 90s transport
           # wall defeats an early push, its commit lands here instead. This
           # step's failure still turns the job red AFTER the draft rather
-          # than instead of it. Correction (ship-check, Claude): red here does
-          # NOT always page. "Notify on failure" below is suppressed when
-          # orphan_gate.outputs.blocked == 'true', and the paths that write
-          # orphan state (dispatch/wait/in-flight/alert) are exactly the ones
-          # that set it — so those runs go red in the Actions UI with no
-          # email. They are also runs where the draft is gate-skipped anyway,
-          # so this does not affect the BRO-2435 symptom; the durable record
-          # is push-retry-failures.jsonl via push-retry-deadman.js.
+          # than instead of it. "Notify on failure" no longer reads any gate's
+          # blocked output (BRO-2816), so a red run here pages; the durable
+          # record is push-retry-failures.jsonl via push-retry-deadman.js.
           # `node scripts/audit-push-retry-budgets.js` reports no flags at
           # this sizing (retryDeadlineRatio 45/60=0.75, job-timeout margin
           # restored to ~17%) — re-confirm with that script before changing.

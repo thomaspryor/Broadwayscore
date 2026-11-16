@@ -112,6 +112,39 @@ describe('opening-night-broadcast.yml gate wiring', () => {
     assert.match(orphan, /steps\.drift_gate\.outputs\.blocked != 'true'/);
   });
 
+  // BRO-7607 (2026-11-16): the Cloud 9 refresh's checklist errors held back
+  // Downstate's new draft for three runs. Each gate now scopes its breach.
+  test('every gate scopes its breach to new drafts vs refreshes, written before any alert', () => {
+    for (const id of ['checklist_gate', 'drift_gate', 'orphan_gate']) {
+      const step = byId(id);
+      assert.match(step.run, /node scripts\/lib\/broadcast-gate-scope\.js >> "\$GITHUB_OUTPUT"/, `${id} must scope its breach`);
+      assert.match(step.run, /refresh_blocked=false/, `${id} pass branch must write refresh_blocked=false`);
+      assert.match(String(step.env.PENDING_SHOWS), /steps\.check\.outputs\.pending_shows/);
+      assert.match(String(step.env.REFRESH_SHOWS), /steps\.refresh\.outputs\.refresh_shows/);
+      const scopeAt = step.run.indexOf('broadcast-gate-scope.js');
+      const alertAt = step.run.indexOf('broadcast-gate-alert.js');
+      if (alertAt !== -1) {
+        assert.ok(scopeAt < alertAt, `${id}: blocked must be written before the alert (fail closed when unconfirmed)`);
+        assert.match(step.run, /GITHUB_OUTPUT= node scripts\/lib\/broadcast-gate-alert\.js/, `${id}: the alert must not write blocked itself`);
+      }
+    }
+    assert.doesNotMatch(byId('orphan_gate').run, /PRIOR_BLOCKED/, 'orphan gate must decide per show');
+  });
+
+  test('draft refreshes read refresh_blocked and need every gate to have run', () => {
+    const cond = byId('update_drafts').if;
+    for (const id of ['checklist_gate', 'drift_gate', 'orphan_gate']) {
+      assert.match(cond, new RegExp(`steps\\.${id}\\.outputs\\.refresh_blocked != 'true'`), `update_drafts misses ${id}`);
+      assert.match(cond, new RegExp(`steps\\.${id}\\.outcome == 'success'`), `update_drafts must not treat a skipped ${id} as a pass`);
+      assert.doesNotMatch(cond, new RegExp(`steps\\.${id}\\.outputs\\.blocked`), 'a new-draft block must not hold refreshes');
+    }
+  });
+
+  test('drift and orphan gates still run when an earlier gate step went red', () => {
+    assert.match(byId('drift_gate').if, /!cancelled\(\)/);
+    assert.match(byId('orphan_gate').if, /!cancelled\(\)/);
+  });
+
   test('failure notifiers are not masked by a gate block', () => {
     for (const s of [byId('notify')]) {
       assert.doesNotMatch(String(s.if), /outputs\.blocked/, `${s.name}: a blocked gate must not hide later failures`);
