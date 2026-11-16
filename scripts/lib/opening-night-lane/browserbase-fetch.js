@@ -187,35 +187,37 @@ function createBrowserbaseFetcher({
     if (!s.pages) { retired.delete(s); s.closing = true; s.browser.close().catch(() => {}); }
   }
 
-  /** Put the subscriber cookies for a logged-in host into the session's context, once per session and host. */
-  async function injectLoggedIn(s, url) {
+  /** The subscriber cookies for a logged-in host in Playwright's shape; none means no session is created (BRO-7601). */
+  function loggedInCookies(url) {
     const host = hostOf(url);
-    s.injected = s.injected || new Set();
-    if (!host || s.injected.has(host)) return;
     const cookies = (cookiesFor(host) || [])
       .filter((c) => c && c.name && c.value && c.domain)
       .map((c) => ({ name: c.name, value: c.value, domain: c.domain, path: c.path || '/', httpOnly: !!c.httpOnly, secure: c.secure !== false, sameSite: c.sameSite || 'None',
         ...(c.expires && c.expires > 0 ? { expires: c.expires > 1e12 ? Math.floor(c.expires / 1000) : c.expires } : {}) }));
     if (!cookies.length) throw new BrowserbaseUnavailable(`no subscriber cookies for ${host}`);
-    await s.context.addCookies(cookies);
-    s.injected.add(host);
+    return { host, cookies };
   }
 
   async function fetch(url) {
     if (!available()) throw new BrowserbaseUnavailable(offReason || 'paused after a refusal');
+    const loggedIn = routesLoggedIn(url) ? loggedInCookies(url) : null;
     const s = await session();
-    if (routesLoggedIn(url)) await injectLoggedIn(s, url);
     counts.fetches++;
     s.pages++;
     let page = null; let timer; let warmupDone = null; let cleared = false;
     const deadline = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`browserbase fetch timed out after ${fetchTimeoutMs}ms: ${url}`)), fetchTimeoutMs); });
     deadline.catch(() => {});
     try {
+      if (loggedIn) { // inside the deadline and the page count, so a stalled injection cannot outlive the fetch or a rotation
+        s.injected = s.injected || new Set();
+        if (!s.injected.has(loggedIn.host)) { await Promise.race([s.context.addCookies(loggedIn.cookies), deadline]); s.injected.add(loggedIn.host); }
+      }
       // A new session clears TB's Cloudflare check with one page before opening more. On 2026-11-04 every shadow run's
       // first pass opened six pages at once in a fresh session and only 2 of the 30 loaded (26 still showed the challenge after 26 s); once
       // one page had cleared it, later pages loaded in about 7 s. The rest wait for the first to settle; if it stayed
       // behind the challenge, the next waiter becomes the warm-up, so a session that never cleared never gets the burst.
-      while (!s.cleared) {
+      // The Cloudflare warm-up is TB's: a logged-in host's page must neither wait for it nor mark the session cleared.
+      while (!loggedIn && !s.cleared) {
         if (s.warmup) { await Promise.race([s.warmup, deadline]); continue; }
         s.warmup = new Promise((resolve) => { warmupDone = resolve; });
         break;
@@ -223,7 +225,7 @@ function createBrowserbaseFetcher({
       const opening = s.context.newPage();
       try { page = await Promise.race([opening, deadline]); } catch (e) { opening.then((p) => p && p.close()).catch(() => {}); throw e; }
       const r = await Promise.race([readPage(page, url, { timeoutMs: Math.max(5000, fetchTimeoutMs - 15000) }), deadline]);
-      cleared = !r.challenge;
+      cleared = !loggedIn && !r.challenge;
       if (r.challenge) throw Object.assign(new Error(`403 still behind the Cloudflare challenge: ${url}`), { status: 403 });
       if (r.status === 404 || r.status === 410) throw Object.assign(new Error(`${r.status} not found: ${url}`), { status: r.status });
       return { content: r.html, finalUrl: r.finalUrl && r.finalUrl !== url ? r.finalUrl : null, status: r.status, via: 'browserbase' };
@@ -263,9 +265,7 @@ function laneFetchPage({ fetchPage, browserbase, isFullPage = defaultIsFullPage 
       } catch { /* 401 or no cookies: the logged-in browser is next */ }
       try {
         return await browserbase.fetch(url);
-      } catch (e) {
-        if (!e || !e.bbUnavailable) throw e;
-      }
+      } catch { /* a timeout, challenge or 404 in the browser: the old chain, as before this route existed */ }
       return fetchPage(url, opts);
     }
     if (!opts?.directOnly && browserbase && routesThroughBrowserbase(url) && browserbase.available()) {
@@ -282,8 +282,9 @@ function laneFetchPage({ fetchPage, browserbase, isFullPage = defaultIsFullPage 
 /** A page whose extracted article reaches the scorer's body gate: not a paywall teaser. */
 function defaultIsFullPage(html, url) {
   const { extractArticleText } = require('../article-extractor');
-  const { BODY_GATE_CHARS } = require('../scorable-text');
-  return String(extractArticleText(html, hostOf(url)) || '').trim().length >= BODY_GATE_CHARS;
+  const { getHardPaywallDomain, HARD_PAYWALL_FLOORS } = require('../paywall-completeness');
+  const floor = HARD_PAYWALL_FLOORS[getHardPaywallDomain(url)] || 1000; // WSJ's completeness floor: shorter is a teaser until a logged-in read says otherwise
+  return String(extractArticleText(html, hostOf(url)) || '').trim().length >= floor;
 }
 
 /** The real wiring: scraper.fetchPage plus a Browserbase fetcher over createBbSession and Playwright, loaded lazily. */

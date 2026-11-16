@@ -242,3 +242,28 @@ test('BRO-7601: Browserbase off or refusing -> WSJ uses the normal fetchPage cha
     assert.equal(st.calls[st.calls.length - 1].tiers, undefined, 'last call is the unrestricted chain');
   }
 });
+
+test('BRO-7601 review: a browser error falls through to the old chain; no cookies means no session; WSJ never warms up for TB', async () => {
+  // error in the browser read -> old chain
+  const st = { calls: [], sessions: 0 };
+  const ctx = { addCookies: async () => {}, newPage: async () => ({ close: async () => {} }) };
+  const browser = { isConnected: () => true, on() {}, close: async () => {}, contexts: () => [ctx] };
+  const mk = (cookies, read) => bbf.createBrowserbaseFetcher({ env: KEYS, createSession: async () => { st.sessions++; return { id: 's1aaaaaaa', connectUrl: 'x' }; }, connect: async () => browser, readPage: read, cookiesFor: () => cookies });
+  const C = [{ name: 'a', value: 'b', domain: '.wsj.com' }];
+  const fp = async (u, o) => { st.calls.push(o || {}); if (o && o.tiers) throw new Error('401'); return { content: TEASER }; };
+  const lane = bbf.laneFetchPage({ fetchPage: fp, browserbase: mk(C, async () => ({ status: 403, html: '', challenge: true })), isFullPage: () => false });
+  assert.equal((await lane(WSJ)).content, TEASER, 'a challenge in the browser still reaches the old chain');
+  // no cookies -> no session billed
+  st.sessions = 0;
+  const lane2 = bbf.laneFetchPage({ fetchPage: fp, browserbase: mk([], async () => ({ status: 200, html: FULL })), isFullPage: () => false });
+  assert.equal((await lane2(WSJ)).content, TEASER);
+  assert.equal(st.sessions, 0);
+  // a WSJ read first does not mark the session cleared for TB: the next TB fetches still queue behind one warm-up page
+  const events = [];
+  const tb = 'https://www.talkinbroadway.com/page/world/X.html';
+  const f = mk(C, async (_p, url) => { events.push(`start ${url}`); await new Promise((r) => setTimeout(r, 15)); events.push(`end ${url}`); return { status: 200, finalUrl: url, html: 'x', challenge: false }; });
+  await f.fetch(WSJ);
+  events.length = 0;
+  await Promise.all([f.fetch(tb + '?1'), f.fetch(tb + '?2')]);
+  assert.equal(events[1], `end ${tb}?1`, events.join(' | '));
+});

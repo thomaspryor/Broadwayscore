@@ -125,6 +125,7 @@ function fakeBrowserbase() {
     env: { BROWSERBASE_API_KEY: 'k', BROWSERBASE_PROJECT_ID: 'p' },
     createSession: async () => { sessions++; return { id: `s${sessions}`, connectUrl: 'wss://fake' }; },
     connect: async () => browser,
+    cookiesFor: () => [], // no subscriber cookies: WSJ keeps the recorded fetchPage path whatever this machine holds (BRO-7601)
     readPage: async (_page, url) => {
       reads.push(url);
       const hit = d.canonicalUrl(url) === d.canonicalUrl(U.talkinbroadway);
