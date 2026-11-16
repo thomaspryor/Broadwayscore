@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T09:26:58.902Z",
+  "timestamp": "2026-11-16T09:51:29.495Z",
   "stats": {
     "totalReviews": 82077,
-    "alreadyFlagged": 22462,
+    "alreadyFlagged": 22464,
     "dateGuardCatches": 221,
-    "directorMismatch": 3711,
+    "directorMismatch": 3713,
     "tvFilmSignals": 2323,
     "londonSignals": 3771,
     "offBroadwaySignals": 753,
     "yearMismatch": 374,
-    "noPublishDate": 8185
+    "noPublishDate": 8183
   },
   "findings": [
     {
@@ -63446,6 +63446,19 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
+      "file": "talkinbroadway--christine-malcom.json",
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch909.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "third-coast-review--emily-werner.json",
       "score": 87,
       "publishDate": "2026-09-01",
@@ -70604,6 +70617,19 @@
       "score": 68,
       "publishDate": "2026-07-22",
       "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "talkinbroadway--unknown.json",
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -97057,6 +97083,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "sierz-co-uk--unknown.json",
+      "score": 91,
       "publishDate": "2026-11-14",
       "url": "https://sierz.co.uk/reviews/cloud-9-national-theatre/",
       "findings": [
