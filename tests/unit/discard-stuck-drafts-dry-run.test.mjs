@@ -64,3 +64,14 @@ test('tracker says already sent: refused even as a dry run', () => {
     assert.equal(readFileSync(file, 'utf8'), before);
   } finally { rmSync(cwd, { recursive: true, force: true }); }
 });
+
+test('only the market record says sent (per-show copy still says draft): still refused', () => {
+  const sent = { ...draftRec, draftStatus: 'sent', sentAt: '2026-11-01T00:00:00Z' };
+  const { cwd, file, before } = setup({ [KEY]: sent, [SHOW]: { ...draftRec } });
+  try {
+    const r = run(cwd, [`--show=${SHOW}`]);
+    assert.equal(r.code, 1, r.out);
+    assert.match(r.out, /already sent/);
+    assert.equal(readFileSync(file, 'utf8'), before);
+  } finally { rmSync(cwd, { recursive: true, force: true }); }
+});
