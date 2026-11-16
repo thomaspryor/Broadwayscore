@@ -366,6 +366,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   try {
     for (let i = 0; i < work.length; i++) {
       const c = work[i];
+      try {
       if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); break; }
       if (L.ceilingReachedNow({ file: ledgerPath, ceiling, runMode: runCeiling != null, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
       if (L.killSwitchActive().active) { console.log('\nKill switch turned on mid-run; stopping.'); break; }
@@ -529,6 +530,12 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       // wiped by a concurrent cleanup job's `git reset` before checkpoint 5).
       if (accepted % 5 === 0 || strategy === 'URL_FIND' || Date.now() - lastFlushAt > 2 * 60 * 1000) flush(`checkpoint ${accepted}`);
       await new Promise((res) => setTimeout(res, 1500));
+      } catch (e) {
+        // Renamed/deleted under us: skip this review (non-evidence), keep the night going.
+        if (!L.isVanishedReviewFile(e, c.filePath)) throw e;
+        console.log(`  ✗ non_evidence (file_vanished): ${c.reviewKey} was renamed or removed by another writer`);
+        record(c, c.strategy, { outcome: 'non_evidence', reason: 'file_vanished' });
+      }
     }
     flush('final');
   } catch (e) {

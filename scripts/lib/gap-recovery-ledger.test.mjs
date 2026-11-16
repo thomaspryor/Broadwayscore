@@ -406,3 +406,33 @@ test('reconcile: a subscriber/archive/paid recovery replaced by a collector fetc
     assert.equal(L.reconcileRecovered(rows, () => later)[0].reason, 'recovered_text_lost', strategy);
   }
 });
+
+// BRO-7171 2026-11-15: a review renamed mid-run (artshub--unknown.json ->
+// artshub--dr-diana-carroll.json) threw ENOENT out of the driver loop and the
+// whole nightly run stopped as status=failed.
+test('isVanishedReviewFile: only this candidate\'s own missing file is skippable', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gap-vanish-'));
+  const gone = path.join(dir, 'artshub--unknown.json');
+  let err;
+  try { fs.readFileSync(gone, 'utf8'); } catch (e) { err = e; }
+  assert.equal(L.isVanishedReviewFile(err, gone), true);
+  // a different missing file (shows.json, registry) is a real fault
+  assert.equal(L.isVanishedReviewFile(err, path.join(dir, 'other.json')), false);
+  // not ENOENT
+  assert.equal(L.isVanishedReviewFile(Object.assign(new Error('x'), { code: 'EACCES', path: gone }), gone), false);
+  assert.equal(L.isVanishedReviewFile(new SyntaxError('bad json'), gone), false);
+  // ENOENT but the file is back (rename raced back in): not vanished
+  fs.writeFileSync(gone, '{}');
+  assert.equal(L.isVanishedReviewFile(err, gone), false);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('driver: the per-review loop skips a vanished file instead of failing the run', () => {
+  const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
+  const loop = src.slice(src.indexOf('for (let i = 0; i < work.length; i++)'));
+  const catchAt = loop.indexOf('L.isVanishedReviewFile(e, c.filePath)');
+  assert.ok(catchAt > 0, 'driver loop must catch vanished review files');
+  // the catch sits inside the loop, before the run-level flush('final')
+  assert.ok(catchAt < loop.indexOf("flush('final')"), 'catch must be per-review, not run-level');
+  assert.match(loop.slice(catchAt - 200, catchAt + 400), /reason: 'file_vanished'/);
+});

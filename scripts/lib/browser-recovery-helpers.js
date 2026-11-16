@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot } = require('./persist-review-snapshot');
+const { isVanishedReviewFile } = require('./gap-recovery-ledger');
 const path = require('path');
 
 const { recoverReviewText } = require('./gap-acceptance');
@@ -110,7 +111,9 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
  * @returns {{ok: boolean, code: string, reason?: string, newLen?: number}}
  */
 function processRecoveredText(candidate, rawText, labels, opts = {}) {
-  const r = recoverReviewText({
+  let r;
+  try {
+  r = recoverReviewText({
     filePath: candidate.filePath,
     rawText,
     headline: opts.headline || null,
@@ -121,6 +124,11 @@ function processRecoveredText(candidate, rawText, labels, opts = {}) {
     dryRun: !!opts.dryRun,
     tracker: opts.tracker || RUN_WRITES,
   });
+  } catch (e) {
+    // Renamed/removed by another writer mid-run: skip it, not a run-ending fault (BRO-7171).
+    if (!isVanishedReviewFile(e, candidate.filePath)) throw e;
+    return { ok: false, code: 'file_vanished', reason: `${path.basename(candidate.filePath)} was renamed or removed by another writer`, newLen: 0 };
+  }
   return { ok: r.ok, code: r.code, reason: r.reason, newLen: r.newLen };
 }
 
@@ -132,11 +140,18 @@ function processRecoveredText(candidate, rawText, labels, opts = {}) {
  * @param {{tracker?: Set<string>}} [opts]
  */
 function stampDead(candidate, fields, opts = {}) {
+  let vanished = false;
   withReviewTextsLock(`stamp:${path.basename(candidate.filePath)}`, () => {
-    const data = readReviewForUpdate(candidate.filePath);
+    let data;
+    try { data = readReviewForUpdate(candidate.filePath); } catch (e) {
+      if (!isVanishedReviewFile(e, candidate.filePath)) throw e;
+      vanished = true;
+      return;
+    }
     Object.assign(data, fields);
     persistReviewSnapshot({ filePath: candidate.filePath, data, trailingNewline: true });
   });
+  if (vanished) return;
   (opts.tracker || RUN_WRITES).add(path.resolve(candidate.filePath));
 }
 

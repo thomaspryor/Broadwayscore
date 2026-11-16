@@ -468,7 +468,18 @@ function ownedRecordReason(review) {
   return null;
 }
 
+// A review file another writer renamed or deleted after the plan was built
+// (byline fix artshub--unknown -> artshub--<critic>, dedup, merge). Only this
+// candidate's own file counts: any other missing file is a real fault and
+// must still stop the run. BRO-7171 2026-11-15: one rename killed the night.
+function isVanishedReviewFile(err, filePath) {
+  if (!err || err.code !== 'ENOENT' || !filePath) return false;
+  if (err.path && path.resolve(err.path) !== path.resolve(filePath)) return false;
+  return !fs.existsSync(filePath);
+}
+
 module.exports = {
+  isVanishedReviewFile,
   pendingPushInfo,
   outcomeForGateRefusal,
   ownedRecordReason,

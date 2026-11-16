@@ -81,3 +81,20 @@ test('processRecoveredText: a plausibly-dated review for the right show proceeds
   const result = processRecoveredText(candidate, text, { fetchMethod: 'test', sourceMethod: 'test' });
   assert.equal(result.ok, true, `expected the plausibly-dated review to pass the date guard, got: ${result.reason}`);
 });
+
+// BRO-7171 2026-11-15: a review renamed mid-run (byline fix) threw ENOENT and
+// ended the whole recovery run. Both shared write paths must skip it instead.
+test('processRecoveredText / stampDead skip a review file renamed away mid-run', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-vanish-'));
+  process.env.REVIEW_TEXTS_LOCK_PATH = path.join(dir, 'lock');
+  const { stampDead, RUN_WRITES } = require('./browser-recovery-helpers.js');
+  const gone = { filePath: path.join(dir, 'woman-in-mind-west-end-2025', 'artshub--unknown.json'), url: 'https://example.com/r' };
+  const r = processRecoveredText(gone, 'x '.repeat(2000), { site: 'Test', outlet: 'Test' });
+  assert.strictEqual(r.ok, false);
+  assert.strictEqual(r.code, 'file_vanished');
+  const tracker = new Set();
+  assert.doesNotThrow(() => stampDead(gone, { httpStatus: 404 }, { tracker }));
+  assert.strictEqual(tracker.size, 0, 'a vanished file is not tracked for checkpoint');
+  assert.ok(!RUN_WRITES.has(path.resolve(gone.filePath)));
+  fs.rmSync(dir, { recursive: true, force: true });
+});
