@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T23:43:25.287Z",
+  "timestamp": "2026-11-16T23:56:29.124Z",
   "stats": {
-    "totalReviews": 82222,
+    "totalReviews": 82233,
     "alreadyFlagged": 22484,
     "dateGuardCatches": 222,
     "directorMismatch": 3716,
     "tvFilmSignals": 2328,
     "londonSignals": 3778,
     "offBroadwaySignals": 755,
-    "yearMismatch": 375,
-    "noPublishDate": 8243
+    "yearMismatch": 377,
+    "noPublishDate": 8246
   },
   "findings": [
     {
@@ -6936,6 +6936,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2021 (0x). 2026 matches production: assassins-regional-2026"
         }
       ]
     },
@@ -41365,6 +41370,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "little-women-regional-2024",
+      "file": "chicago-reader--kerry-reid.json",
+      "score": 81,
+      "publishDate": "2024-12-10",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/little-women-lauren-gunderson-northlight/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: little-women-regional-2026"
         }
       ]
     },
