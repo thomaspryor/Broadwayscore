@@ -558,7 +558,13 @@
     "irishtown-off-broadway-2025/front-row-center--david-walters.json",
     "smash-2025/broadwaynews--brittani-samuel.json",
     "abigails-party-royal-exchange-regional-2025/thestage--chris-bartlett.json",
-    "stephen-sondheims-old-friends-2025/one-minute-critic--matthew-wexler.json"
+    "stephen-sondheims-old-friends-2025/one-minute-critic--matthew-wexler.json",
+    "julius-caesar-globe-off-west-end-2026/thereviewshub--unknown.json",
+    "cranford-off-west-end-2026/thestage--dave-fargnoli.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
@@ -604,8 +610,6 @@
     "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "i-became-we-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "memoriam-off-west-end-2026/ground--unknown.json",
-    "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
     "billy-crystal-860-2026/theater-life--paulanne-simmons.json",
@@ -836,7 +840,18 @@
     "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
     "irishtown-off-broadway-2025/theater-life--paulanne-simmons.json",
     "all-the-beauty-in-the-world-off-broadway-2025/the-interested-bystander--cary-wong.json",
-    "the-last-five-years-2025/vulture--sara-holdren.json"
+    "the-last-five-years-2025/vulture--sara-holdren.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+    "cranford-off-west-end-2026/standard--nick-curtis.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json",
+    "girls-off-west-end-2026/plays-to-see--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1091,10 +1106,16 @@
       "takeaway-liverpool-everyman-regional-2025/number9reviews--view-my-complete.json",
       "the-great-gatsby-west-end-2025/londontheatredirect--hay-brunsdon.json",
       "titanic-the-musical-regional-2025/chicagotheaterandarts--jodie-jacobs.json",
-      "irishtown-off-broadway-2025/front-row-center--david-walters.json"
+      "irishtown-off-broadway-2025/front-row-center--david-walters.json",
+      "julius-caesar-globe-off-west-end-2026/thereviewshub--unknown.json",
+      "cranford-off-west-end-2026/thestage--dave-fargnoli.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "dogstar-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
@@ -1147,7 +1168,8 @@
       "takeaway-liverpool-everyman-regional-2025/ground--unknown.json",
       "all-the-worlds-a-stage-off-broadway-2025/theater-life--david-sheward.json",
       "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
-      "irishtown-off-broadway-2025/theater-life--paulanne-simmons.json"
+      "irishtown-off-broadway-2025/theater-life--paulanne-simmons.json",
+      "memoriam-off-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
@@ -1429,6 +1451,29 @@
     ]
   },
   "startTime": "2026-11-16T09:05:09.821Z",
-  "lastProcessed": "the-last-five-years-2025/vulture--sara-holdren.json",
-  "log": []
+  "lastProcessed": "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-16T13:58:58.287Z",
+      "event": "bb-session",
+      "session": "4ba89a23",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-16T14:00:26.898Z",
+      "event": "bb-session",
+      "session": "d9630d3d",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-16T14:01:04.689Z",
+      "event": "bb-session",
+      "session": "78cf176c",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    }
+  ],
+  "recoveredAfterFailure": [
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+  ]
 }
