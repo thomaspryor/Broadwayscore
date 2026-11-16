@@ -286,6 +286,20 @@
     "queuedAt": "2026-11-16T02:28:00.189Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:downstate-2026",
+    "title": "Review gap — \"Downstate\" missing 10 cited review(s)",
+    "description": "Downstate (downstate-2026): 10 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=downstate-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-16T03:22:58.264Z"
+  },
+  {
     "conditionKey": "cmux-reachability:unreachable",
     "title": "cmux socket unreachable for <1h (3 consecutive checks) (still open — BRO-5640)",
     "description": "Still firing after 18 notifications since it was filed. Tracked at BRO-5640.\n\nlistWorkspaces() has failed to reach the cmux control socket on 3 consecutive checks (<1h). This check is prose-independent of classifyCmuxError (BRO-2959's auth-denied taxonomy) — it fires on reachability alone, so a future cmux release reworking its error text, or a capability loss that returns a clean empty result, still pages. Last error: Command failed: /Applications/cmux.app/Contents/Resources/bin/cmux list-workspaces\nError: No live cmux socket found. Tried:\n  /Users/tompryor/.local/state/cmux/cmux.sock\n  /tmp/cmux.sock\n  /Users/tompryor/.local/state/cmux/cmux-501.sock\n  /tmp/cmux-501.sock\n. This is the same failure class that disabled bsc-reconcile's tab self-heal, bsc-prune, and dispatch-watchdog simultaneously for ~2h on 2026-09-07 (BRO-2959) with nothing paging.",

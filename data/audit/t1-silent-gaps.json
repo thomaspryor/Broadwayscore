@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T02:53:40.091Z",
+  "generatedAt": "2026-11-16T03:23:14.557Z",
   "windowDays": 45,
   "showsScanned": 246,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 163.8566502777778,
+      "fileAgeHours": 164.35129694444444,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 141.30994194444443,
+      "nonTerminalAgeHours": 141.80284916666668,
       "needsManualRecovery": false
     },
     {
@@ -38,33 +38,9 @@
       "forumLinkRecoveryCount": 8,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 133.08852611111112,
+      "fileAgeHours": 133.58316166666665,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 131.94549694444444,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "cranford-off-west-end-2026",
-      "title": "Cranford",
-      "openingDate": "2026-11-03",
-      "file": "times-uk--clive-davis.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/cranford-review-genteel-scenes-of-small-town-life-bw7jfmxml",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=cranford-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/cranford-review-genteel-scenes-of-small-town-life-bw7jfmxml --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-16T01:44:18.777Z",
-      "fileAgeHours": 1.155831111111111,
-      "gapSeenAt": "2026-11-16T02:53:40.091Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 132.43840416666666,
       "needsManualRecovery": false
     },
     {
@@ -82,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 149.65038,
+      "fileAgeHours": 150.14328805555556,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 149.237495,
+      "nonTerminalAgeHours": 149.7304022222222,
       "needsManualRecovery": false
     },
     {
@@ -102,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 28.146661388888887,
+      "fileAgeHours": 28.639568611111113,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 26.88048472222222,
+      "nonTerminalAgeHours": 27.373391944444446,
       "needsManualRecovery": false
     }
   ],

@@ -580,12 +580,13 @@
       "title": "Review-gap audit refused to write — 16.1% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
       "incidentOpenedAt": "2026-11-07T16:40:54.348Z",
-      "lastSeen": "2026-11-15T23:30:36.389Z",
+      "lastSeen": "2026-11-16T03:22:58.163Z",
       "lastNotifiedAt": "2026-11-15T23:30:36.389Z",
       "lastSurfacedAt": "2026-11-14T23:36:04.552Z",
       "notifyCount": 94,
       "cardId": null,
-      "linearIdentifier": "BRO-7497"
+      "linearIdentifier": "BRO-7497",
+      "silentRefires": 1
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "resolved",
@@ -19503,7 +19504,7 @@
       "title": "Roundup gaps: 22 listed review(s) not captured across 5 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-16T02:53:29.039Z",
+      "lastSeen": "2026-11-16T03:22:58.337Z",
       "lastNotifiedAt": "2026-11-15T15:31:57.775Z",
       "lastSurfacedAt": null,
       "notifyCount": 55,
@@ -19580,7 +19581,7 @@
         "downstate-2026",
         "jenufa-off-broadway-2026"
       ],
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38758,13 +38759,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-16T02:53:28.977Z",
+      "lastSeen": "2026-11-16T03:22:58.283Z",
       "lastNotifiedAt": "2026-11-15T11:47:45.568Z",
       "lastSurfacedAt": "2026-11-15T11:47:45.568Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -44119,6 +44120,19 @@
       "cardId": null,
       "linearIdentifier": null,
       "resolvedAt": "2026-11-16T01:49:35.757Z"
+    },
+    "review-gap:opening-window:downstate-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review gap — \"Downstate\" missing 10 cited review(s)",
+      "firstSeen": "2026-11-16T03:22:58.264Z",
+      "incidentOpenedAt": "2026-11-16T03:22:58.264Z",
+      "lastSeen": "2026-11-16T03:22:58.264Z",
+      "lastNotifiedAt": "2026-11-16T03:22:58.264Z",
+      "lastSurfacedAt": "2026-11-16T03:22:58.264Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

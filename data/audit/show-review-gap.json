@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-16T02:53:28.324Z",
+  "generatedAt": "2026-11-16T03:22:57.839Z",
   "windowDays": 1095,
-  "targets": 250,
-  "auditedThisRun": 21,
-  "carriedForward": 2713,
+  "targets": 238,
+  "auditedThisRun": 18,
+  "carriedForward": 2718,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 660,
-    "missingCurrentRun": 1316,
+    "missingCurrentRun": 1330,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 895,
-    "totalRecoverable": 58,
-    "totalRecovered": 113,
+    "totalRecoverable": 57,
+    "totalRecovered": 112,
     "humanExcluded": 23,
-    "automatedExcluded": 992,
+    "automatedExcluded": 991,
     "automatedExcludedListed": 716,
-    "priorProductionCitations": 8557
+    "priorProductionCitations": 8563
   },
   "results": [
     {
@@ -23099,76 +23099,12 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Act of God\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Act of God\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 7,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Act of God\" review riverside",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Act of God Riverside Studios review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Act of God Riverside Studios review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Act of God Riverside Studios review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 7,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 11,
-        "byReason": {
-          "non-review-host": 6,
-          "aggregator-internal-nav": 1,
-          "roundup-page": 1,
-          "no-review-evidence": 1,
-          "tag-index-page": 1,
-          "show-hub": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -23325,7 +23261,7 @@
         "liveCount": 10,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-16T00:04:10.595Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "act-your-age-regional-2026",
@@ -82938,20 +82874,9 @@
       "openingDate": "2026-04-07",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620"
-      ],
+      "previewsStartDate": "2026-03-18",
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html",
-        "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html",
-        "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
-        "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
-        "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
-        "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
-        "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
-        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
-        "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
-        "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
         "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
         "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
         "https://www.vulture.com/article/cats-the-jellicle-ball-is-the-real-thing.html",
@@ -82982,21 +82907,12 @@
         "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
         "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
         "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
-        "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/",
-        "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/"
+        "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/"
       ],
-      "dirFiles": 74,
-      "dirClean": 42,
+      "dirFiles": 72,
+      "dirClean": 43,
       "inReviewsJson": 40,
-      "missing": [
-        {
-          "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "artsfuse.org",
@@ -83012,6 +82928,10 @@
         },
         {
           "host": "latimes.com",
+          "count": 1
+        },
+        {
+          "host": "people.com",
           "count": 1
         },
         {
@@ -83041,59 +82961,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--sara-holdren.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html?utm_campaign=vulture&utm_medium=s1&utm_source=tw#/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newyorker--helen-shaw-2024-bway.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
-            },
-            {
-              "file": "newyorker--helen-shaw.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
           "url": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -83110,16 +82977,24 @@
             },
             {
               "file": "nydailynews--joe-dziemianowicz.json",
-              "flag": "wrongProduction",
+              "flag": "duplicate",
               "urlInDir": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/"
             }
           ],
           "exclusion": "humanExcluded",
           "basis": [
             "knownSyndicationSecondary",
-            "wrongProduction"
+            "duplicateOf"
           ],
           "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/cats-the-jellicle-ball-broadway"
+            }
+          ],
+          "listingDate": "2026-04-07",
+          "listingSource": "show-score",
           "reverify": false
         }
       ],
@@ -83130,81 +83005,19 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 274,
+        "count": 4,
         "byReason": {
-          "not-http-url": 38,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 215,
-          "aggregator-section-root": 6
+          "stored-date-before-production": 4
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620",
-          "publishDate": "2024-06-20"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
-          "host": "whatsonstage.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
-            "url": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
-            "outletId": "chicagotribune.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
-            "url": "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
             "outletId": "newyorktheatreguide.com",
@@ -83384,12 +83197,6 @@
             "outletId": "thewrap.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
           }
         ],
         "censusSchema": 4,
@@ -83403,7 +83210,7 @@
         "liveCount": 29,
         "candidateCount": 29
       },
-      "computedAt": "2026-11-01T02:12:48.530Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
@@ -91934,7 +91741,6 @@
         "https://www.theguardian.com/stage/2026/nov/11/cloud-9-review-national-theatre-london-caryl-churchill",
         "https://www.timeout.com/london/news/cloud-9-review-national-theatre-caryl-churchill-2026-111126",
         "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
-        "https://www.beyondthejoke.co.uk/content/theatre-review-cloud-9",
         "https://theatreandtonic.co.uk/blog/cloud-9-lyttelton-national-theatre-london-review",
         "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
         "https://thespyinthestalls.com/2026/11/cloud-9",
@@ -91945,6 +91751,7 @@
         "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
         "https://monstagigz.com/2026/11/12/theatre-review-cloud-9-starring-sam-troughton-tom-mothersdale-charlotte-ritchie-stuart-thompson-at-the-lyttelton-national-theatre/",
         "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-orgasms-and-orgies-in-the-foliage-fchw23k6r",
+        "https://www.beyondthejoke.co.uk/content/theatre-review-cloud-9",
         "https://www.beyondthejoke.co.uk/content/18097/theatre-review-cloud-9"
       ],
       "dirFiles": 43,
@@ -92140,90 +91947,18 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Cloud 9\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Cloud 9\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Cloud 9\" review lyttelton",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Cloud 9\" Cooke review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Cloud 9 Lyttelton Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Cloud 9 Lyttelton Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 7,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Cloud 9 Lyttelton Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 13,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 304,
+        "count": 293,
         "byReason": {
-          "not-http-url": 53,
-          "non-review-host": 19,
           "aggregator-internal-nav": 217,
+          "not-http-url": 53,
           "aggregator-section-root": 5,
-          "podcast-episode": 1,
-          "roundup-page": 3,
-          "no-review-evidence": 2,
-          "tag-index-page": 1,
-          "venue-production-page": 1,
-          "write-path-blocked": 1,
-          "guide-article": 1
+          "non-review-host": 15,
+          "roundup-page": 2,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
@@ -92407,7 +92142,7 @@
         "liveCount": 16,
         "candidateCount": 17
       },
-      "computedAt": "2026-11-16T00:04:10.595Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "cloud-nine-off-broadway-2015",
@@ -122103,7 +121838,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-15T23:30:35.747Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "do-something-pretty-regional-2026",
@@ -124441,7 +124176,12 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-16T00:04:10.595Z"
+      "computedAt": "2026-11-16T00:04:10.595Z",
+      "quarantine": {
+        "nextState": "complete:3:3",
+        "since": "2026-11-16T03:22:58.017Z",
+        "lastAt": "2026-11-16T03:22:58.017Z"
+      }
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -125900,18 +125640,230 @@
       "status": "open",
       "category": "broadway",
       "previewsStartDate": "2026-10-22",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+      ],
       "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/Downstate/1412",
+        "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
+        "https://deadline.com/2026/11/downstate-broadway-review-1237220229/",
+        "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+        "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
+        "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
+        "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
+        "https://nypost.com/2026/11/15/entertainment/downstate-review-controversial-drama-is-the-best-new-play-on-broadway/",
+        "https://nystagereview.com/2026/11/15/downstate-the-disturbing-humanity-of-the-inhuman/",
+        "https://nystagereview.com/2026/11/15/downstate-real-life-realism/",
+        "https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
+        "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/",
+        "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
+        "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broadway-2d6ef23c",
+        "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
+        "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/",
         "https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672",
         "https://deadline.com/downstate-broadway-scott-rudin-barry-diller-1237070817",
         "https://www.broadwaynews.com/bruce-norris-downstate-delays-first-broadway-preview-again-due-to-illness/",
         "https://www.theatermania.com/news/bruce-norriss-downstate-sets-broadway-premiere-with-k-todd-freeman-and-francis-guinan_1852625/",
         "https://frontmezzjunkies.com/2026/10/22/downstate-finally-arrives-on-broadway-tonight-and-im-ready-to-enter-that-difficult-house-again/"
       ],
-      "dirFiles": 7,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 8,
+      "dirClean": 1,
+      "inReviewsJson": 2,
       "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Downstate/1412",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+            }
+          ]
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+            }
+          ]
+        },
+        {
+          "url": "https://nypost.com/2026/11/15/entertainment/downstate-review-controversial-drama-is-the-best-new-play-on-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/11/15/downstate-the-disturbing-humanity-of-the-inhuman/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/11/15/downstate-real-life-realism/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broadway-2d6ef23c",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+            }
+          ]
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            }
+          ]
+        },
         {
           "url": "https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672",
           "host": "deadline.com",
@@ -126030,87 +125982,20 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Downstate\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Downstate\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Downstate\" review booth",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Downstate\" Norris review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Downstate Booth Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Downstate Booth Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Downstate Booth Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 379,
         "byReason": {
-          "non-review-host": 9,
-          "aggregator-internal-nav": 1,
+          "aggregator-internal-nav": 247,
+          "not-http-url": 74,
+          "production-database-listing": 9,
+          "aggregator-section-root": 10,
+          "non-review-host": 35,
           "non-stage-review": 1,
-          "census-junk-host": 2,
-          "ticketing-reseller": 1,
-          "show-listing-page": 1,
-          "roundup-page": 1,
-          "no-review-evidence": 1
+          "roundup-page": 2,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
@@ -126118,11 +126003,11 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672",
-          "host": "deadline.com",
-          "outletId": "deadline",
+          "url": "https://cititour.com/NYC_Broadway/Downstate/1412",
+          "host": "cititour.com",
+          "outletId": "cititour",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -126130,28 +126015,232 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=deadline.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+          "reason": null
+        },
+        {
+          "url": "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
+          "host": "chicagotribune.com",
+          "outletId": "chicagotribune",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229/",
+          "host": "deadline.com",
+          "outletId": "deadline",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://nypost.com/2026/11/15/entertainment/downstate-review-controversial-drama-is-the-best-new-play-on-broadway/",
+          "host": "nypost.com",
+          "outletId": "nypost"
+        },
+        {
+          "url": "https://nystagereview.com/2026/11/15/downstate-the-disturbing-humanity-of-the-inhuman/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2026/11/15/downstate-real-life-realism/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
+          "host": "timeout.com",
+          "outletId": "timeout"
+        },
+        {
+          "url": "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broadway-2d6ef23c",
+          "host": "wsj.com",
+          "outletId": "wsj"
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/",
+          "host": "washingtonpost.com",
+          "outletId": "washpost"
+        },
+        {
+          "url": "https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672",
+          "host": "deadline.com",
+          "outletId": "deadline"
         },
         {
           "url": "https://deadline.com/downstate-broadway-scott-rudin-barry-diller-1237070817",
           "host": "deadline.com",
-          "outletId": "deadline",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=deadline.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+          "outletId": "deadline"
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/Downstate/1412"
+          },
+          {
+            "outletId": "chicagotribune",
+            "outlet": "chicagotribune",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229/"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html"
+          },
+          {
+            "outletId": "nypost",
+            "outlet": "nypost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nypost.com/2026/11/15/entertainment/downstate-review-controversial-drama-is-the-best-new-play-on-broadway/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2026/11/15/downstate-the-disturbing-humanity-of-the-inhuman/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2026/11/15/downstate-real-life-realism/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/"
+          },
+          {
+            "outletId": "timeout",
+            "outlet": "timeout",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/"
+          },
+          {
+            "outletId": "washpost",
+            "outlet": "washpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/"
+          },
           {
             "outletId": "deadline",
             "outlet": "deadline",
@@ -126188,8 +126277,127 @@
             "url": "https://frontmezzjunkies.com/2026/10/22/downstate-finally-arrives-on-broadway-tonight-and-im-ready-to-enter-that-difficult-house-again/"
           }
         ],
-        "suppressedMissing": [],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broadway-2d6ef23c"
+          }
+        ],
         "candidates": [
+          {
+            "url": "https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Downstate/1412",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
+            "outletId": "chicagotribune",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229/",
+            "outletId": "deadline",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://nypost.com/2026/11/15/entertainment/downstate-review-controversial-drama-is-the-best-new-play-on-broadway/",
+            "outletId": "nypost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/11/15/downstate-the-disturbing-humanity-of-the-inhuman/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/11/15/downstate-real-life-realism/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
+            "outletId": "timeout",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broadway-2d6ef23c",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/",
+            "outletId": "washpost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
           {
             "url": "https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672",
             "outletId": "deadline",
@@ -126228,10 +126436,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 4
+        "liveCount": 1,
+        "candidateCount": 17
       },
-      "computedAt": "2026-11-16T00:04:10.595Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
@@ -182113,10 +182321,8 @@
         "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-review-barbican-radiohead-b1304586.html",
         "https://www.allthatdazzles.co.uk/post/review-hamlet-hail-to-the-thief-barbican-theatre",
         "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre/",
-        "https://www.britishtheatreguide.info/hamlet-hail-to-barbican-theatr-26211",
         "https://theatreandtonic.co.uk/blog/hamlet-hail-to-the-thief-at-barbican-review",
         "https://www.thereviewshub.com/hamlet-hail-to-the-thief-barbican-theatre-london/",
-        "https://rolandcat.substack.com/review-hamlet-hail-to-the-thief-barbican",
         "https://www.theguardian.com/stage/2026/nov/13/hamlet-hail-to-the-thief-radiohead-record-shakespeare-tragedy",
         "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre",
         "https://www.theupcoming.co.uk/2026/11/12/hamlet-hail-to-the-thief-at-barbican-theatre-theatre-review/",
@@ -182143,6 +182349,7 @@
         "https://www.thestage.co.uk/reviews/hamlet-hail-to-the-thief-review-barbican-theatre-london-radiohead",
         "https://thespyinthestalls.com/2026/11/hamlet-hail-to-the-thief/",
         "https://www.theatreandtonic.co.uk/blog/hamlet-hail-to-the-thief-at-barbican-review",
+        "https://rolandcat.substack.com/review-hamlet-hail-to-the-thief-barbican",
         "https://theatreweekly.com/new-production-images-released-for-hamlet-hail-to-the-thief-at-the-barbican-theatre/",
         "https://rolandcat.substack.com/p/review-hamlet-hail-to-the-thief-barbican",
         "https://www.rollingstone.co.uk/music/live-reviews/hamlet-hail-to-the-thief-review-photos-radiohead-thom-yorke-50031/",
@@ -182424,79 +182631,18 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Hamlet Hail to the Thief\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Hamlet Hail to the Thief\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Hamlet Hail to the Thief\" review barbican",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Hamlet Hail to the Thief Barbican Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Hamlet Hail to the Thief Barbican Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Hamlet Hail to the Thief Barbican Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 8,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 304,
+        "count": 291,
         "byReason": {
-          "not-http-url": 49,
-          "non-review-host": 20,
           "aggregator-internal-nav": 220,
+          "not-http-url": 49,
           "aggregator-section-root": 5,
-          "podcast-episode": 1,
-          "ticketing-listing": 1,
-          "ticket-seller-product-page": 1,
-          "no-review-evidence": 2,
-          "write-path-blocked": 4,
-          "stored-date-before-production": 1
+          "non-review-host": 15,
+          "write-path-blocked": 1,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
@@ -182708,12 +182854,6 @@
           {
             "url": "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre/",
             "outletId": "musicaltheatrereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-15T21:15:49.156Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/hamlet-hail-to-barbican-theatr-26211",
-            "outletId": "britishtheatreguide.info",
             "state": "live",
             "firstSeenAt": "2026-11-15T21:15:49.156Z"
           },
@@ -182944,7 +183084,7 @@
         "liveCount": 27,
         "candidateCount": 29
       },
-      "computedAt": "2026-11-16T00:04:10.595Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "hamlet-off-broadway-2024",
@@ -194036,7 +194176,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -194046,7 +194186,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -194056,7 +194196,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 4,
             "accepted": 0,
             "error": null
           }
@@ -194067,14 +194207,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 14,
         "byReason": {
-          "no-review-evidence": 1,
-          "non-review-host": 19,
-          "aggregator-internal-nav": 1,
-          "news-roundup-site": 2,
-          "bare-host": 1,
-          "venue-production-page": 1
+          "aggregator-internal-nav": 3,
+          "non-review-host": 10,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -194089,7 +194226,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T14:25:41.013Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -225968,7 +226105,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-16T01:36:25.439Z"
+      "computedAt": "2026-11-16T01:36:25.439Z",
+      "quarantine": {
+        "nextState": "incomplete:0:2",
+        "since": "2026-11-16T03:22:58.017Z",
+        "lastAt": "2026-11-16T03:22:58.017Z"
+      }
     },
     {
       "showId": "jerker-off-west-end-2026",
@@ -237168,51 +237310,30 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://thefrontrowcenter.com/2026/11/kate-allie-and-the-86-mets",
-        "https://thefrontrowcenter.com/2026/11/kate-allie-and-the-86-mets/",
+        "https://gaycitynews.com/kate-allie-and-the-86-mets-audience-connect-dots",
         "https://openingnight.online/kate-allie-and-the-86-mets-at-asylumnyc/"
       ],
       "dirFiles": 2,
       "dirClean": 1,
       "inReviewsJson": 1,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
+      "missing": [
         {
-          "url": "https://thefrontrowcenter.com/2026/11/kate-allie-and-the-86-mets",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "front-row-center--tulis-mccall.json",
-              "flag": "clean",
-              "urlInDir": "https://thefrontrowcenter.com/2026/11/kate-allie-and-the-86-mets/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "isSyndicatedDuplicate"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "copyOfLiveReview": true,
+          "url": "https://gaycitynews.com/kate-allie-and-the-86-mets-audience-connect-dots",
+          "host": "gaycitynews.com",
+          "knownOutletId": "gay-city-news",
+          "serpCensus": true,
           "sources": [
             {
               "source": "serp-census",
               "sourceUrl": null
             }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
+          ]
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
         {
-          "url": "https://thefrontrowcenter.com/2026/11/kate-allie-and-the-86-mets/",
+          "url": "https://thefrontrowcenter.com/2026/11/kate-allie-and-the-86-mets",
           "host": "thefrontrowcenter.com",
           "knownOutletId": "front-row-center",
           "recoverable": false,
@@ -237269,7 +237390,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 1,
             "error": null
           },
@@ -237279,7 +237400,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -237289,8 +237410,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -237299,32 +237420,61 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 6,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 16,
         "byReason": {
-          "non-review-host": 6,
           "aggregator-internal-nav": 1,
-          "census-junk-host": 7,
-          "non-stage-review": 2,
-          "no-review-evidence": 3
+          "non-review-host": 7,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "venue-production-page": 3,
+          "news-roundup-site": 1,
+          "merch-store": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://gaycitynews.com/kate-allie-and-the-86-mets-audience-connect-dots",
+          "host": "gaycitynews.com",
+          "outletId": "gay-city-news",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "gay-city-news",
+            "outlet": "gay-city-news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://gaycitynews.com/kate-allie-and-the-86-mets-audience-connect-dots"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -237332,6 +237482,13 @@
             "outletId": "openingnight.online",
             "state": "live",
             "firstSeenAt": "2026-11-12T13:24:12.359Z"
+          },
+          {
+            "url": "https://gaycitynews.com/kate-allie-and-the-86-mets-audience-connect-dots",
+            "outletId": "gay-city-news",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
           }
         ],
         "censusSchema": 4,
@@ -237340,17 +237497,12 @@
             "url": "https://thefrontrowcenter.com/2026/11/kate-allie-and-the-86-mets",
             "host": "thefrontrowcenter.com",
             "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/11/kate-allie-and-the-86-mets/",
-            "host": "thefrontrowcenter.com",
-            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 1,
-        "candidateCount": 1
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-14T11:32:26.041Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
@@ -313335,7 +313487,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-15T23:30:35.747Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "nye-west-end-2024",
@@ -331130,6 +331282,45 @@
       "computedAt": "2026-10-31T19:29:46.681Z"
     },
     {
+      "showId": "other-bodies-off-broadway-2026",
+      "title": "Other Bodies",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "previewsStartDate": "2026-11-19",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-16T03:22:57.839Z"
+    },
+    {
       "showId": "other-desert-cities-2026",
       "title": "Other Desert Cities",
       "openingDate": "2026-10-18",
@@ -342489,7 +342680,6 @@
         "https://www.afridiziak.com/reviews/peter-pan/",
         "https://www.islingtontribune.co.uk/article/review-peter-pan-at-park-theatre",
         "https://www.timeout.com/london/theatre/peter-pan-26",
-        "https://www.timeout.com/london/theatre/wendy-peter-pan-review",
         "https://www.peterpanthemusical.com/peter-pan/reviews.html",
         "https://www.standard.co.uk/culture/theatre/peter-pan-theatre-review-an-appealing-evening-about-the-sadness-and-pleasure-of-growing-up-a3679511.html",
         "https://nextmag.ca/review-peter-pan-is-not-quite-neverland-but-nearly-there/",
@@ -342694,20 +342884,6 @@
           ]
         },
         {
-          "url": "https://www.timeout.com/london/theatre/wendy-peter-pan-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-10-29",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.peterpanthemusical.com/peter-pan/reviews.html",
           "host": "peterpanthemusical.com",
           "knownOutletId": null,
@@ -342843,11 +343019,11 @@
       "candidatesRejected": {
         "count": 128,
         "byReason": {
-          "non-review-host": 20,
           "aggregator-internal-nav": 62,
           "not-http-url": 6,
           "production-database-listing": 34,
           "aggregator-section-root": 4,
+          "non-review-host": 20,
           "non-stage-review": 1,
           "bare-host": 1
         }
@@ -342991,13 +343167,6 @@
         {
           "url": "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
           "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/wendy-peter-pan-review",
-          "host": "timeout.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -343232,7 +343401,7 @@
         "liveCount": 5,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-15T23:30:35.747Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "peter-panto-and-the-incredible-stinkerbell-tron-regional-2024",
@@ -348315,14 +348484,13 @@
       ],
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/",
-        "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026",
         "https://www.londontheatredirect.com/news/reasons-to-see-pride-at-bridge",
-        "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre",
         "https://monstagigz.com/2026/11/14/theatre-review-pride-the-musical-starring-samuel-barnett-at-the-bridge-theatre/",
         "https://www.westendbestfriend.co.uk/news/pride-transfer-bridge-theatre-november-2026",
         "https://variety.com/2026/theater/news/pride-musical-bridge-theatre-transfer-november-1236841452/",
-        "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026/"
+        "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026",
+        "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026/",
+        "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre"
       ],
       "dirFiles": 32,
       "dirClean": 23,
@@ -348437,9 +348605,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -348447,47 +348615,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatre-weekly--unknown.json",
+              "file": "london-theatre--olivia-rook.json",
               "flag": "clean",
-              "urlInDir": "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": true,
-          "recoverableFile": "london-theatre--unknown.json",
-          "recoverableOutletId": "london-theatre",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--unknown.json",
-              "flag": "emptyBody",
               "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "noTextOrScoreSignal"
+            "rejectionReason"
           ],
           "sources": [
             {
@@ -348545,75 +348680,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Pride - Bridge Theatre\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Pride - Bridge Theatre\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Pride - Bridge Theatre\" review bridge",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Pride - Bridge Theatre Bridge Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Pride - Bridge Theatre Bridge Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Pride - Bridge Theatre Bridge Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 11,
-        "byReason": {
-          "non-review-host": 7,
-          "non-stage-review": 1,
-          "census-junk-host": 1,
-          "ticketing-reseller": 1,
-          "ticket-seller-product-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -348677,19 +348749,6 @@
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre",
-          "host": "londontheatre.co.uk",
-          "file": "london-theatre--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -348779,17 +348838,12 @@
             "url": "https://variety.com/2026/theater/news/pride-musical-bridge-theatre-transfer-november-1236841452/",
             "host": "variety.com",
             "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/",
-            "host": "theatreweekly.com",
-            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 4,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-16T00:04:10.595Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "pride-theatre-dorfman-west-end-2026",
@@ -371070,7 +371124,12 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-16T00:04:10.595Z"
+      "computedAt": "2026-11-16T00:04:10.595Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-11-16T03:22:58.017Z",
+        "lastAt": "2026-11-16T03:22:58.017Z"
+      }
     },
     {
       "showId": "saturday-church-off-broadway-2025",
@@ -413731,9 +413790,9 @@
       },
       "computedAt": "2026-11-14T11:32:26.041Z",
       "quarantine": {
-        "nextState": "incomplete:8:15",
-        "since": "2026-11-15T23:30:36.161Z",
-        "lastAt": "2026-11-15T23:30:36.161Z"
+        "nextState": "incomplete:11:14",
+        "since": "2026-11-16T03:22:58.017Z",
+        "lastAt": "2026-11-16T03:22:58.017Z"
       }
     },
     {
@@ -423572,7 +423631,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -423582,8 +423641,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 1,
+            "results": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -423592,7 +423651,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 6,
             "accepted": 0,
             "error": null
           },
@@ -423619,16 +423678,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
         "count": 12,
         "byReason": {
-          "non-review-host": 7,
-          "aggregator-internal-nav": 3,
-          "non-stage-review": 1,
-          "write-path-blocked": 1
+          "aggregator-internal-nav": 5,
+          "non-review-host": 2,
+          "non-stage-review": 2,
+          "write-path-blocked": 1,
+          "tag-index-page": 1,
+          "review-hub-page": 1
         }
       },
       "dedupedVariants": [],
@@ -423704,7 +423765,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-15T14:11:26.108Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -487599,7 +487660,12 @@
         "liveCount": 21,
         "candidateCount": 22
       },
-      "computedAt": "2026-11-14T14:25:41.013Z"
+      "computedAt": "2026-11-14T14:25:41.013Z",
+      "quarantine": {
+        "nextState": "incomplete:17:18",
+        "since": "2026-11-16T03:22:58.017Z",
+        "lastAt": "2026-11-16T03:22:58.017Z"
+      }
     },
     {
       "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
@@ -495764,7 +495830,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -495774,7 +495840,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -495804,7 +495870,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 7,
             "accepted": 0,
             "error": null
           }
@@ -495815,11 +495881,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 12,
+        "count": 19,
         "byReason": {
-          "non-review-host": 10,
           "aggregator-internal-nav": 1,
-          "no-review-evidence": 1
+          "non-review-host": 14,
+          "census-junk-host": 2,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -495874,7 +495942,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-15T14:11:26.108Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -502353,28 +502421,16 @@
         "https://exeuntnyc.com/reviews/review-the-verge-at-the-public-theater/",
         "https://www.theaterscene.net/plays/offbway-plays/the-verge/samuel-l-leiter/",
         "https://pagesonstages.com/2026/11/05/the-verge/",
+        "https://culturesauce.com/verge-susan-glaspell-off-broadway-review",
+        "https://www.vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html",
         "https://www.nytimes.com/rope-the-verge-review-off-broadway-silverman",
         "https://nystagereview.com/2026/11/05/the-verge-a-portrait-in-discontent",
-        "https://www.vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html",
         "https://www.timeout.com/newyork/theater/the-verge"
       ],
       "dirFiles": 24,
       "dirClean": 13,
       "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-verge",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "thefrontrowcenter.com",
@@ -502407,8 +502463,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 1,
+            "results": 6,
+            "accepted": 2,
             "error": null
           },
           {
@@ -502417,8 +502473,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 1,
+            "results": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -502427,7 +502483,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 7,
             "accepted": 3,
             "error": null
           },
@@ -502438,7 +502494,7 @@
             "geo": "us",
             "ok": true,
             "results": 7,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -502447,7 +502503,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -502464,56 +502520,41 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 5,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 315,
+        "count": 316,
         "byReason": {
+          "aggregator-internal-nav": 208,
           "not-http-url": 64,
-          "non-review-host": 23,
-          "aggregator-internal-nav": 209,
           "aggregator-section-root": 5,
-          "podcast-episode": 1,
+          "non-review-host": 23,
+          "non-stage-review": 1,
           "no-review-evidence": 1,
+          "write-path-blocked": 1,
           "roundup-page": 5,
+          "podcast-episode": 1,
           "tag-index-page": 2,
-          "ticketing-reseller": 2,
-          "show-listing-page": 3
+          "ticketing-reseller": 1,
+          "show-listing-page": 4
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
-      "unextractable": [],
-      "ingestResults": [
+      "nonReviewCandidates": [
         {
           "url": "https://www.timeout.com/newyork/theater/the-verge",
           "host": "timeout.com",
-          "outletId": "timeout",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "timeout-listing-capsule",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-verge-off-broadway-2026: https://www.timeout.com/newyork/theater/the-verge is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+          "knownOutletId": "timeout",
+          "nonReviewVerdict": "timeout-listing-blurb",
+          "nonReviewDetail": "unauthored-and-pre-opening"
         }
       ],
-      "ingestSkippedByCap": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "timeout",
-            "outlet": "timeout",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/the-verge"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -502565,6 +502606,18 @@
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
           {
+            "url": "https://culturesauce.com/verge-susan-glaspell-off-broadway-review",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T08:59:32.034Z"
+          },
+          {
             "url": "https://www.nytimes.com/rope-the-verge-review-off-broadway-silverman",
             "outletId": "nytimes.com",
             "state": "live",
@@ -502577,25 +502630,24 @@
             "firstSeenAt": "2026-11-12T17:07:51.502Z"
           },
           {
-            "url": "https://www.vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T08:59:32.034Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/the-verge",
-            "outletId": "timeout",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "timeout.com",
+            "state": "live",
             "firstSeenAt": "2026-11-05T03:08:07.157Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 9,
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-verge",
+            "host": "timeout.com",
+            "reason": "timeout-listing-blurb"
+          }
+        ],
+        "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-14T13:05:12.268Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -517356,19 +517408,20 @@
       "previewsStartDate": "2026-10-30",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+        "https://www.planethugill.com/2026/11/not-what-we-expected-new-tosca-at-eno",
+        "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
+        "https://www.broadwayworld.com/translate/ru/Review-TOSCA-London-Coliseum-20261031",
+        "https://bachtrack.com/review-eno-tosca",
+        "https://www.london-unattached.com/tosca-english-national-opera-review/",
+        "https://www.bestoftheatre.co.uk/blog/post/first-look-axelle-fanyo-eno-tosca-london-coliseum",
+        "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-21382",
+        "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
         "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
         "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
         "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-26187",
-        "https://theartsdesk.com/opera/tosca-eno-review-totalitarian-staging-doesnt-convince",
-        "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
-        "https://www.planethugill.com/2026/11/not-what-we-expected-new-tosca-at-eno",
-        "https://www.london-unattached.com/tosca-english-national-opera-review/",
-        "https://bachtrack.com/review-eno-tosca",
         "https://theatreweekly.com/review-tosca-at-london-coliseum",
         "https://bachtrack.com/review-tosca-eno-malfitano",
-        "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
-        "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-21382",
-        "https://www.broadwayworld.com/translate/ru/Review-TOSCA-London-Coliseum-20261031",
         "https://theqr.co.uk/2026/11/03/review-tosca-eno-london-coliseum/",
         "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
         "https://www.classicalsource.com/concert/english-national-opera-tosca/",
@@ -517380,20 +517433,20 @@
         "https://www.jackstage.co.uk/post/eno-s-tosca-review-a-fiery-revival-of-puccini-s-opera-without-political-grounding",
         "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t",
         "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3",
+        "https://theartsdesk.com/opera/tosca-eno-review-totalitarian-staging-doesnt-convince",
         "https://www.scenemag.co.uk/review-tosca-eno/",
-        "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
         "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
         "https://www.thestage.co.uk/reviews/tosca-review-at-london-coliseum-starring-sinead-campbell-wallace-and-adam-smith-directed-by-christof-loy-and-georg-zlabinger",
         "https://www.classicalsource.com/concert/english-national-opera-tosca-claire-rutter-as-tosca-directed-by-catherine-malfitano/"
       ],
-      "dirFiles": 31,
-      "dirClean": 22,
-      "inReviewsJson": 22,
+      "dirFiles": 32,
+      "dirClean": 23,
+      "inReviewsJson": 23,
       "missing": [
         {
-          "url": "https://theartsdesk.com/opera/tosca-eno-review-totalitarian-staging-doesnt-convince",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
+          "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
+          "host": "opera-now.com",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -517405,18 +517458,6 @@
         {
           "url": "https://www.scenemag.co.uk/review-tosca-eno/",
           "host": "scenemag.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
-          "host": "opera-now.com",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -517530,6 +517571,39 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/first-look-axelle-fanyo-eno-tosca-london-coliseum",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--milo-garth.json",
+              "flag": "clean",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/first-look-axelle-fanyo-eno-tosca-london-coliseum"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -517588,8 +517662,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 5,
+            "accepted": 3,
             "error": null
           },
           {
@@ -517598,8 +517672,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -517618,8 +517692,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
-            "accepted": 3,
+            "results": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -517629,7 +517703,7 @@
             "geo": "gb",
             "ok": true,
             "results": 4,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -517638,25 +517712,22 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 5,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 7,
         "byReason": {
-          "non-review-host": 7,
-          "no-review-evidence": 2,
-          "non-review-path": 2,
-          "show-hub": 1,
-          "census-junk-host": 2,
-          "ticket-seller-product-page": 1
+          "non-review-host": 4,
+          "census-junk-host": 1,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
@@ -517706,15 +517777,15 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.scenemag.co.uk/review-tosca-eno/",
-          "host": "scenemag.co.uk",
+          "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
+          "host": "opera-now.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
         },
         {
-          "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
-          "host": "opera-now.com",
+          "url": "https://www.scenemag.co.uk/review-tosca-eno/",
+          "host": "scenemag.co.uk",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -517728,21 +517799,6 @@
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://theartsdesk.com/opera/tosca-eno-review-totalitarian-staging-doesnt-convince",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.thestage.co.uk/reviews/tosca-review-at-london-coliseum-starring-sinead-campbell-wallace-and-adam-smith-directed-by-christof-loy-and-georg-zlabinger",
           "host": "thestage.co.uk",
@@ -517779,11 +517835,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "artsdesk",
-            "outlet": "artsdesk",
+            "outletId": "opera-now.com",
+            "outlet": "opera-now.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theartsdesk.com/opera/tosca-eno-review-totalitarian-staging-doesnt-convince"
+            "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review"
           },
           {
             "outletId": "scenemag.co.uk",
@@ -517791,13 +517847,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.scenemag.co.uk/review-tosca-eno/"
-          },
-          {
-            "outletId": "opera-now.com",
-            "outlet": "opera-now.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review"
           },
           {
             "outletId": "lovable.app",
@@ -517831,6 +517880,42 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.planethugill.com/2026/11/not-what-we-expected-new-tosca-at-eno",
+            "outletId": "planethugill.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-14T21:11:54.822Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/translate/ru/Review-TOSCA-London-Coliseum-20261031",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T17:07:25.311Z"
+          },
+          {
+            "url": "https://bachtrack.com/review-eno-tosca",
+            "outletId": "bachtrack.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-10T12:04:40.258Z"
+          },
+          {
+            "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
+            "outletId": "london-unattached.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T15:34:54.267Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-21382",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-11-11T14:18:27.904Z"
+          },
+          {
             "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
             "outletId": "musicomh.com",
             "state": "live",
@@ -517849,24 +517934,6 @@
             "firstSeenAt": "2026-11-09T09:27:30.273Z"
           },
           {
-            "url": "https://www.planethugill.com/2026/11/not-what-we-expected-new-tosca-at-eno",
-            "outletId": "planethugill.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-14T21:11:54.822Z"
-          },
-          {
-            "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
-            "outletId": "london-unattached.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T15:34:54.267Z"
-          },
-          {
-            "url": "https://bachtrack.com/review-eno-tosca",
-            "outletId": "bachtrack.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-10T12:04:40.258Z"
-          },
-          {
             "url": "https://theatreweekly.com/review-tosca-at-london-coliseum",
             "outletId": "theatreweekly.com",
             "state": "live",
@@ -517877,24 +517944,6 @@
             "outletId": "bachtrack.com",
             "state": "live",
             "firstSeenAt": "2026-11-13T19:27:24.665Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T23:57:50.737Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-21382",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-11-11T14:18:27.904Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/translate/ru/Review-TOSCA-London-Coliseum-20261031",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T17:07:25.311Z"
           },
           {
             "url": "https://theqr.co.uk/2026/11/03/review-tosca-eno-london-coliseum/",
@@ -517964,17 +518013,9 @@
           },
           {
             "url": "https://theartsdesk.com/opera/tosca-eno-review-totalitarian-staging-doesnt-convince",
-            "outletId": "artsdesk",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theartsdesk.com",
+            "state": "live",
             "firstSeenAt": "2026-11-15T14:11:26.108Z"
-          },
-          {
-            "url": "https://www.scenemag.co.uk/review-tosca-eno/",
-            "outletId": "scenemag.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-07T10:04:26.682Z"
           },
           {
             "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
@@ -517982,6 +518023,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-05T10:41:26.899Z"
+          },
+          {
+            "url": "https://www.scenemag.co.uk/review-tosca-eno/",
+            "outletId": "scenemag.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T10:04:26.682Z"
           },
           {
             "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
@@ -518038,12 +518086,17 @@
             "url": "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3",
             "host": "musicomh.com",
             "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/first-look-axelle-fanyo-eno-tosca-london-coliseum",
+            "host": "bestoftheatre.co.uk",
+            "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 14,
+        "liveCount": 15,
         "candidateCount": 21
       },
-      "computedAt": "2026-11-15T14:11:26.108Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -531174,7 +531227,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -531184,7 +531237,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -531194,7 +531247,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 6,
             "accepted": 0,
             "error": null
           },
@@ -531214,7 +531267,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
@@ -531225,14 +531278,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 12,
+        "count": 13,
         "byReason": {
-          "non-review-host": 5,
           "aggregator-internal-nav": 2,
-          "ticketing-reseller": 2,
-          "tag-index-page": 1,
-          "no-review-evidence": 1,
-          "ticketing-listing": 1
+          "non-review-host": 2,
+          "census-junk-host": 1,
+          "no-review-evidence": 3,
+          "write-path-blocked": 1,
+          "news-roundup-site": 1,
+          "ticketing-reseller": 3
         }
       },
       "dedupedVariants": [],
@@ -531247,7 +531301,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T11:32:26.041Z"
+      "computedAt": "2026-11-16T03:22:57.839Z"
     },
     {
       "showId": "viva-la-mort-regional-2024",
@@ -551931,6 +551985,278 @@
       "computedAt": "2026-10-31T17:58:22.702Z"
     },
     {
+      "showId": "wuthering-heights-off-broadway-2026",
+      "title": "Wuthering Heights",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "previewsStartDate": "2026-11-19",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-heres-what-critics-think-of-emma-rices-wuthering-heights-at-st-anns-warehouse"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.thedailybeast.com/how-wuthering-heights-became-a-mad-musical",
+        "https://nystagereview.com/2022/10/18/wuthering-heights-happily-a-bit-extra/",
+        "https://newyorktheater.me/2022/10/18/wuthering-heights-review-emily-bronte-to-a-rock-beat/",
+        "https://www.nytimes.com/2022/10/18/theater/wuthering-heights-review.html",
+        "https://www.londontheatre.co.uk/reviews/wuthering-heights-review-national-theatre",
+        "https://www.timeout.com/london/theatre/wuthering-heights-review",
+        "https://www.standard.co.uk/culture/theatre/wuthering-heights-review-emily-bronte-national-theatre-b981088.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/wuthering-heights-national-theatre-review-bronte-turned-frolicsome/",
+        "https://www.independent.co.uk/independentpremium/culture/wuthering-heights-national-theatre-review-b2008357.html",
+        "https://theartsdesk.com/theatre/wuthering-heights-national-theatre-review-too-much-heat-not-enough-light"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.thedailybeast.com/how-wuthering-heights-became-a-mad-musical",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-heres-what-critics-think-of-emma-rices-wuthering-heights-at-st-anns-warehouse"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2022/10/18/wuthering-heights-happily-a-bit-extra/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-heres-what-critics-think-of-emma-rices-wuthering-heights-at-st-anns-warehouse"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2022/10/18/wuthering-heights-review-emily-bronte-to-a-rock-beat/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-heres-what-critics-think-of-emma-rices-wuthering-heights-at-st-anns-warehouse"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/10/18/theater/wuthering-heights-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-heres-what-critics-think-of-emma-rices-wuthering-heights-at-st-anns-warehouse"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/wuthering-heights-review-national-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/wuthering-heights"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/wuthering-heights-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/wuthering-heights"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/wuthering-heights-review-emily-bronte-national-theatre-b981088.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/wuthering-heights"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/wuthering-heights-national-theatre-review-bronte-turned-frolicsome/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/wuthering-heights"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/independentpremium/culture/wuthering-heights-national-theatre-review-b2008357.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/wuthering-heights"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/wuthering-heights-national-theatre-review-too-much-heat-not-enough-light",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/wuthering-heights"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 135,
+        "byReason": {
+          "aggregator-internal-nav": 43,
+          "not-http-url": 6,
+          "production-database-listing": 12,
+          "aggregator-section-root": 4,
+          "non-review-host": 21,
+          "non-stage-review": 1,
+          "roundup-page": 48
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-emma-rices-wuthering-heights-at-st-anns-warehouse",
+          "publishDate": "2022-10-19"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.thedailybeast.com/how-wuthering-heights-became-a-mad-musical",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2022/10/18/wuthering-heights-happily-a-bit-extra/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2022/10/18/wuthering-heights-review-emily-bronte-to-a-rock-beat/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/10/18/theater/wuthering-heights-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/wuthering-heights-review-national-theatre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/wuthering-heights-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/wuthering-heights-review-emily-bronte-national-theatre-b981088.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/wuthering-heights-national-theatre-review-bronte-turned-frolicsome/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/independentpremium/culture/wuthering-heights-national-theatre-review-b2008357.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/wuthering-heights-national-theatre-review-too-much-heat-not-enough-light",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-16T03:22:57.839Z"
+    },
+    {
       "showId": "wyrd-regional-2025",
       "title": "wyrd",
       "openingDate": "2025-10-13",
@@ -553149,27 +553475,28 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-16T02:53:28.323Z",
+    "at": "2026-11-16T03:22:57.838Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "slanted-floors-off-broadway-2026",
-      "msblackforpresident-off-broadway-2026",
-      "the-moth-off-west-end-2026"
+      "the-steel-man-off-broadway-2026",
+      "tosca-english-national-opera-west-end-2026",
+      "the-charioteer-off-broadway-2026",
+      "cats-the-jellicle-ball-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026",
-      "in-my-own-little-world-off-west-end-2026"
+      "other-bodies-off-broadway-2026",
+      "wuthering-heights-off-broadway-2026"
     ],
-    "neverAuditedDueAtStart": 4,
+    "neverAuditedDueAtStart": 2,
     "oldestDueRowAtStart": {
       "showId": "cats-the-jellicle-ball-2026",
       "computedAt": "2026-11-01T02:12:48.530Z",
-      "ageHours": 360.4
+      "ageHours": 360.9
     },
     "oldestDueRowAfterRun": {
-      "showId": "cats-the-jellicle-ball-2026",
-      "computedAt": "2026-11-01T02:12:48.530Z",
+      "showId": "cold-war-choir-practice-off-broadway-2026",
+      "computedAt": "2026-11-01T02:38:06.751Z",
       "ageHours": 360.7
     }
   }
