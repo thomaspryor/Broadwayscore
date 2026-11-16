@@ -63,7 +63,8 @@ jobs:
     #           + redo push deadline 300s = 530s
     #   always() steps after the push (core-data push, deploy trigger,
     #   failure notify, summary)          ~300s
-    #   total ~2030s = ~34 min, leaving ~11 min under 45 min.
+    #   parked-submission card sweep (BRO-7606, step timeout) 300s
+    #   total ~2330s = ~39 min, leaving ~6 min under 45 min.
     # tests/unit/rebuild-fast-push-retry.test.mjs re-checks this arithmetic.
     timeout-minutes: 45
 
@@ -515,7 +516,7 @@ jobs:
           # The redo replays this run's data/audit writes 3-way and publishes
           # only the paths the lost commit changed. Redo cycles push with a
           # 300s deadline (a fresh-HEAD push lands fast); see the job's
-          # timeout-minutes comment for the worst-case budget (~34 of 45 min).
+          # timeout-minutes comment for the worst-case budget (~39 of 45 min).
           REBUILD_FAST_MAX_CYCLES: '2'
           REBUILD_FAST_REDO_PUSH_DEADLINE_SEC: '300'
         run: |
@@ -607,6 +608,20 @@ jobs:
           fi
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
+
+      # BRO-7606: backfill a Linear card for any parked review submission
+      # (needs-manual-review / scraping-failed) whose issue has no linear-card
+      # label yet: Linear down when process-review-submission ran, or the
+      # awaiting-score sweep above relabelled it. Labelled issues cost no board
+      # call; capped at 3 per run and after the push, so it cannot hold up data.
+      - name: File cards for parked review submissions
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: node scripts/file-review-submission-card.js --sweep --max=3
 
       - name: Notify on failure
         if: failure()
