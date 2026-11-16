@@ -557,6 +557,17 @@ function logTbBylineShape(html, criticHint) {
   }
   const title = (raw.match(/<title[^>]*>([^<]{0,120})/i) || [])[1];
   if (title) hits.push('TITLE: ' + title.trim());
+  // Structure only: block tag + text length; text shown only for short labels (<= 40 chars), never review prose.
+  const body = raw.replace(/<(script|style)[\s\S]*?<\/\1>/gi, '');
+  const start = Math.max(0, body.search(/Photo by|<body/i));
+  const skel = [];
+  for (const m of body.slice(start).matchAll(/<(p|td|div|h[1-6]|i|b|em|strong|font|span|section|article)\b[^>]*>([^<]*)/gi)) {
+    const t = m[2].replace(/\s+/g, ' ').trim();
+    if (!t) continue;
+    skel.push(t.length <= 40 ? `${m[1].toLowerCase()}:${JSON.stringify(t)}` : `${m[1].toLowerCase()}:${t.length}`);
+    if (skel.length >= 70) break;
+  }
+  hits.push('SKEL: ' + skel.join(' '));
   console.warn(`  [tb-extract] no byline matched (${raw.length} chars html); byline markup: ${JSON.stringify(hits)}`);
 }
 
