@@ -154,6 +154,17 @@ test('enterworktree-guard: resuming a same-name worktree with uncommitted work i
   assert.equal(ok.status, 0, ok.stderr);
 });
 
+test('enterworktree-guard: a repo reached through a symlink still finds the dirty worktree (BRO-7325)', () => {
+  // git reports resolved paths; a raw string compare missed the worktree and failed open
+  // (macOS /var -> /private/var). The symlink makes this go red on Linux CI too.
+  const dirtyRepo = worktreeRepo('symlinked', { dirty: true });
+  const link = path.join(scratch, `ewg-link-${process.pid}-${Date.now()}`);
+  fs.symlinkSync(dirtyRepo, link, 'dir');
+  const refused = runHook('enterworktree-guard.sh', enterWorktree('proof-wt'), { env: { BROADWAYSCORE_REPO: link } });
+  assert.equal(refused.status, 2, refused.stderr);
+  assert.match(refused.stderr, /uncommitted changes/);
+});
+
 test('enterworktree-guard: pass cases (no name, a fresh name, the kill switch) never block', () => {
   const dirtyRepo = worktreeRepo('dirty2', { dirty: true });
   const env = { BROADWAYSCORE_REPO: dirtyRepo };

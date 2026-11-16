@@ -23,6 +23,7 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
+const fs = require('fs');
 const { evaluateWorktreeEntry } = require('./lib/duplicate-dispatch-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { parseWorktreePorcelain } = require('./lib/worktree-lock-parse');
@@ -39,9 +40,12 @@ function getWorktreeState(name, repoRoot) {
     return null;
   }
 
-  const targetPath = `${repoRoot}/.claude/worktrees/${name}`;
+  // git reports worktree paths fully resolved (macOS /var -> /private/var), so
+  // compare real paths; a plain string compare missed the worktree and failed open.
+  const real = (p) => { try { return fs.realpathSync(p); } catch { return p; } };
+  const targetPath = real(`${repoRoot}/.claude/worktrees/${name}`);
   for (const { path: wtPath, locked, lockReason } of parseWorktreePorcelain(porcelain)) {
-    if (wtPath !== targetPath) continue;
+    if (real(wtPath) !== targetPath) continue;
 
     let dirty = false;
     try {

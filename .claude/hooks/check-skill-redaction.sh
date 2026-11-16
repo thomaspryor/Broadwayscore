@@ -10,8 +10,8 @@
 # strings it protects). Move identifiers to references/cookies.md, keep mechanism.
 # Rationale: memory/feedback_claude_skills_public_via_repo.md
 #
-# Scope is .claude/skills/** only — the catalog-indexed surface. cloud-memory/ is
-# public but not catalog-indexed; not enforced here by design.
+# Scope: .claude/skills/** only (cloud-memory/ is not catalog-indexed). COVERAGE (BRO-7325): Mac only;
+# cloud/CI lack the denylist so pushes there are unchecked, by design (committing it would leak it).
 
 # Self-skip if a user-level master copy exists (matches existing hook convention).
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then exit 0; fi

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { execFileSync, spawn } from 'node:child_process';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, symlinkSync, utimesSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, symlinkSync, utimesSync, realpathSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,7 +16,8 @@ const hook = join(root, '.claude/hooks/pre-push-visual-gate.sh');
 const logger = { log() {}, error() {} };
 
 function fixture(t, branch = 'codex/bro-419', workspace = 'repo') {
-  const temp = mkdtempSync(join(tmpdir(), 'bro419-'));
+  // realpath: git reports resolved paths (macOS /var -> /private/var), so expected paths must too (BRO-7325).
+  const temp = realpathSync(mkdtempSync(join(tmpdir(), 'bro419-')));
   t.after(() => rmSync(temp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const repo = join(temp, workspace);
   const home = join(temp, 'home');

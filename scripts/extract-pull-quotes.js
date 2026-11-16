@@ -28,7 +28,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, hasUsableLlmQuote, snapToSourceSpan, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, startsMidClause, expandToSentenceStart, hasUsableLlmQuote, snapToSourceSpan, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -554,6 +554,34 @@ async function processReview(entry) {
       return;
     }
 
+    // Mid-clause check (BRO-7598): every word verbatim, but cut from inside an
+    // "as"/"which" clause ("Mr. Norris so superbly does in this troubling but
+    // terrific play." from "...truthful, as Mr. Norris so superbly does...").
+    // The fix is usually the SAME sentence from its start, so the hint asks
+    // for that, unlike the context retry above.
+    if (startsMidClause(quote, data.fullText)) {
+      // First choice: the critic's own sentence from its first word, no LLM call.
+      const whole = expandToSentenceStart(quote, data.fullText);
+      if (whole && !isBadCandidateLength(whole) && !isContextDependentQuote(whole, { showTitle: data.showTitle })
+          && !isPromoTeaser(whole) && !isInServiceSection(whole, data.fullText) && !shouldRejectAsReservation(whole, score)) {
+        stats.midClauseExpanded = (stats.midClauseExpanded || 0) + 1;
+        if (VERBOSE) console.log(`  MID-CLAUSE expanded to its sentence: "${whole.slice(0, 80)}..."`);
+        quote = whole;
+        break;
+      }
+      if (attempt === 1) {
+        stats.midClauseRetried = (stats.midClauseRetried || 0) + 1;
+        if (VERBOSE) console.log(`  MID-CLAUSE: "${quote.slice(0, 80)}..." — retrying`);
+        hint = `Your previous attempt ("${quote}") starts in the middle of a sentence: in the review it follows a word such as "as" or "which", so on its own it is not a complete sentence. Quote that sentence in full from its first word (or pick a different complete sentence).`;
+        continue;
+      }
+      stats.midClauseRejected = (stats.midClauseRejected || 0) + 1;
+      if (VERBOSE) console.log(`  MID-CLAUSE rejected after retry: ${path.basename(filePath)}`);
+      if (!DRY_RUN) markContextChecked(filePath);
+      reject('mid-clause');
+      return;
+    }
+
     // Length check: a too-short/too-long candidate that gives up here falls
     // through to the raw-fullText heuristic scrape, which tends to grab an
     // awkward parenthetical aside or plot-summary sentence instead of a real
@@ -595,6 +623,7 @@ async function processReview(entry) {
       const snapped = snapToSourceSpan(quote, data.fullText);
       if (snapped && verifyInText(snapped, data.fullText) && !isBadCandidateLength(snapped)
           && !isContextDependentQuote(snapped, { showTitle: data.showTitle })
+          && !startsMidClause(snapped, data.fullText)
           && !isPromoTeaser(snapped) && !isInServiceSection(snapped, data.fullText)
           && !shouldRejectAsReservation(snapped, score)) {
         stats.snappedToSource = (stats.snappedToSource || 0) + 1;
