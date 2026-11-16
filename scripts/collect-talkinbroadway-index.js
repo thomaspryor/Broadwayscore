@@ -197,6 +197,12 @@ async function main() {
         const pageDate = bylineDate(r.html);
         if (pageDate ? !reviewDateFitsShow(pageDate, { openingDate: t.openingDate }) : t.verifyPageDate) {
           console.log(`  ${t.showId} skipped: page byline date ${pageDate || 'missing'} does not fit the opening ${t.openingDate} (${t.url})`);
+          if (!pageDate) {
+            // Say what the page's byline looks like so a new page shape can be taught to bylineDate (BRO-7262).
+            const flat = String(r.html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+            const hits = [...flat.matchAll(/.{0,60}(?:review by|reviewed by|\b20\d\d\b).{0,60}/gi)].slice(0, 6).map((m) => m[0].trim());
+            console.log(`    byline context: ${JSON.stringify(hits)}`);
+          }
           continue;
         }
         const picked = pickCriticForShow(r.html, t.title);
