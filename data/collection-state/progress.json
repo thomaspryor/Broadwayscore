@@ -1,28 +1,124 @@
 {
   "processed": [
-    "covenant-regional-2026/talkinbroadway--christine-malcom.json",
-    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
+    "untitled-vampire-play-regional-2026/talkinbroadway--christine-malcom.json",
+    "windfall-regional-2026/talkinbroadway--christine-malcom.json",
+    "white-rooster-regional-2026/talkinbroadway--christine-malcom.json",
+    "white-christmas-regional-2025/talkinbroadway--kelly-macblane.json",
+    "things-with-friends-regional-2025/talkinbroadway--seth-wilson.json",
+    "you-will-get-sick-regional-2025/talkinbroadway--christine-malcom.json",
+    "tick-tick-boom-regional-2023/talkinbroadway--christine-m-malcom.json",
+    "ghost-notes-off-broadway-2026/oazis--unknown.json",
+    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
   ],
   "failed": [
-    "henry-v-regional-2024/talkinbroadway--christine-malcom.json",
-    "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json"
+    "yo-ho-regional-2026/talkinbroadway--christine-malcom.json",
+    "three-sisters-regional-2024/talkinbroadway--christine-malcom.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "wanted-2022/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [
       "covenant-regional-2026/talkinbroadway--christine-malcom.json",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
+    ]
   },
-  "startTime": "2026-11-16T09:58:32.801Z",
-  "lastProcessed": "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json",
-  "log": []
+  "startTime": "2026-11-16T09:41:42.875Z",
+  "lastProcessed": "wanted-2022/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-16T09:57:48.919Z",
+      "event": "bb-session",
+      "session": "7c9e8b5b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-16T09:57:49.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T09:57:55.016Z",
+      "event": "bb-session",
+      "session": "b0d06ec5",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-16T09:57:55.276Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-16T10:00:37.427Z",
+      "event": "bb-session",
+      "session": "6e2c3a42",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-16T10:00:37.663Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T10:03:19.756Z",
+      "event": "bb-session",
+      "session": "fcd11e67",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-16T10:03:19.993Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T10:03:22.539Z",
+      "event": "bb-session",
+      "session": "11b3c7fc",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-16T10:03:22.794Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T10:03:26.935Z",
+      "event": "bb-session",
+      "session": "e3fc4b57",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-16T10:03:27.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
