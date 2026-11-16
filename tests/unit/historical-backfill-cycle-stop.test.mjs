@@ -1,28 +1,12 @@
-// BRO-7551: the historical backfill wraps to a new cycle after the last show.
-// Guard the wrap behaviour and the yield probe that decides whether it is worth it.
+// BRO-7551: the yield probe that decides whether repeat backfill cycles are worth their cost.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { nextBackfillSlice } = require('../../scripts/historical-backfill-next.js');
-const { measureYield } = require('../../scripts/audit-historical-backfill-yield.js');
+const { measureYield } = require('../../scripts/historical-backfill-next.js');
 
 const DAY = 86400000;
-
-test('cursor wraps to a new cycle after the last show', () => {
-  const list = ['a', 'b', 'c', 'd', 'e'];
-  const r = nextBackfillSlice(list, { next: 4, cycle: 0 }, 3);
-  assert.deepEqual(r.shows, ['e', 'a', 'b']);
-  assert.equal(r.cycle, 1);
-  assert.equal(r.next, 2);
-});
-
-test('mid-cycle slice does not bump the cycle', () => {
-  const r = nextBackfillSlice(['a', 'b', 'c', 'd'], { next: 0, cycle: 2 }, 2);
-  assert.deepEqual(r.shows, ['a', 'b']);
-  assert.equal(r.cycle, 2);
-});
 
 test('yield: revisited shows with new reviews beat the control, verdict keep', () => {
   const end = Date.UTC(2026, 10, 15);
@@ -44,4 +28,18 @@ test('yield: no new reviews anywhere is low-yield (stop-at-cycle-end case)', () 
   const ids = Array.from({ length: 48 }, (_, i) => `s${i}`);
   const first = Object.fromEntries(ids.map((id) => [id, [0]]));
   assert.equal(measureYield(ids, cursor, first, 24).verdict, 'low-yield');
+});
+
+test('yield: cycle start is (runs - 1) days before the last run, and a review before a show\'s visit day does not count', () => {
+  const end = Date.UTC(2026, 10, 15);
+  const cursor = { next: 48, updatedAt: new Date(end).toISOString() };
+  const ids = Array.from({ length: 96 }, (_, i) => `s${i}`);
+  const r0 = measureYield(ids, cursor, {}, 24);
+  assert.equal(r0.cycleStart, new Date(end - DAY).toISOString().slice(0, 10));
+  // s30 is visited on day 2 of the cycle (cycleStart + 1 day); a review one hour before that visit must not count.
+  const visit = end - DAY + DAY;
+  const first = { s30: [visit - 3600000, visit + 3600000], s60: [end - 3600000] };
+  const r = measureYield(ids, cursor, first, 24);
+  assert.equal(r.visited.newSinceVisit, 1);
+  assert.equal(r.control.newSinceCycleStart, 1);
 });

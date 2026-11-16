@@ -45,6 +45,47 @@ function nextBackfillSlice(all, cursor, count) {
   return { shows, next: after, cycle };
 }
 
+const DAY = 86400000;
+
+/**
+ * Pure. `all` ordered show ids, `cursor` {next,updatedAt}, `firstSeenByShow`
+ * id -> array of ms timestamps (NaN allowed), `perDay` shows visited per run.
+ * Returns per-show rates for visited vs control plus the net per-show yield.
+ */
+function measureYield(all, cursor, firstSeenByShow, perDay = 24) {
+  const end = new Date(cursor.updatedAt).getTime();
+  // updatedAt is the last run of this cycle, so the first run was (runs - 1) days earlier.
+  const cycleStart = end - (Math.ceil(cursor.next / perDay) - 1) * DAY;
+  const v = { shows: 0, files: 0, newSinceVisit: 0, showDays: 0 };
+  const c = { shows: 0, files: 0, newSinceCycleStart: 0, showDays: 0 };
+  all.forEach((id, i) => {
+    const stamps = firstSeenByShow[id];
+    if (!stamps) return;
+    if (i < cursor.next) {
+      const visitDay = cycleStart + Math.floor(i / perDay) * DAY;
+      v.shows++; v.files += stamps.length; v.showDays += Math.max((end - visitDay) / DAY, 1);
+      v.newSinceVisit += stamps.filter((t) => t >= visitDay).length;
+    } else {
+      c.shows++; c.files += stamps.length; c.showDays += Math.max((end - cycleStart) / DAY, 1);
+      c.newSinceCycleStart += stamps.filter((t) => t >= cycleStart).length;
+    }
+  });
+  const rate = (n, d) => (d ? n / d : 0);
+  // Windows differ (a visited show is counted from its visit, a control show from the
+  // cycle start), so compare per show-day and scale to a 30-day month.
+  const visitedPerShow = rate(v.newSinceVisit, v.showDays) * 30;
+  const controlPerShow = rate(c.newSinceCycleStart, c.showDays) * 30;
+  return {
+    cycleStart: new Date(cycleStart).toISOString().slice(0, 10),
+    visited: v,
+    control: c,
+    visitedPerShow,
+    controlPerShow,
+    netPerShow: visitedPerShow - controlPerShow,
+    verdict: visitedPerShow > 2 * controlPerShow && v.newSinceVisit > 0 ? 'keep' : 'low-yield',
+  };
+}
+
 const USAGE = `historical-backfill-next.js — pick the next slice of the historical review backfill and advance its cursor.
 
 Usage: node scripts/historical-backfill-next.js [--count=24] [--dry-run] [--force]
@@ -86,7 +127,7 @@ function main() {
   console.log(`Historical backfill: ${shows.length} show(s) from position ${from} of ${all.length} (cycle ${cycle}); next position ${next}`);
   console.log(shows.join(','));
   // BRO-7551: make the cycle and cursor visible in the job summary. Cost per
-  // cycle: node scripts/audit-historical-backfill-yield.js (kept: ~0.9 net new reviews/show).
+  // cycle: node scripts/audit-historical-backfill-yield.js.
   if (process.env.GITHUB_STEP_SUMMARY) {
     fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `Historical backfill: cycle ${cycle}, ${shows.length} show(s) from position ${from} of ${all.length}, next cursor ${next}\n`);
   }
@@ -99,4 +140,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { nextBackfillSlice, alreadyRanToday, DEFAULT_COUNT };
+module.exports = { nextBackfillSlice, measureYield, alreadyRanToday, DEFAULT_COUNT };

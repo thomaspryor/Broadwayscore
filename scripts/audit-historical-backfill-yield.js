@@ -17,45 +17,9 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { measureYield } = require('./historical-backfill-next');
 
-const DAY = 86400000;
 const ROOT = path.join(__dirname, '..');
-
-/**
- * Pure. `all` ordered show ids, `cursor` {next,updatedAt}, `firstSeenByShow`
- * id -> array of ms timestamps (NaN allowed), `perDay` shows visited per run.
- * Returns per-show rates for visited vs control plus the net per-show yield.
- */
-function measureYield(all, cursor, firstSeenByShow, perDay = 24) {
-  const end = new Date(cursor.updatedAt).getTime();
-  const cycleStart = end - Math.ceil(cursor.next / perDay) * DAY;
-  const v = { shows: 0, files: 0, newSinceVisit: 0 };
-  const c = { shows: 0, files: 0, newSinceCycleStart: 0 };
-  all.forEach((id, i) => {
-    const stamps = firstSeenByShow[id];
-    if (!stamps) return;
-    if (i < cursor.next) {
-      const visitDay = cycleStart + Math.floor(i / perDay) * DAY;
-      v.shows++; v.files += stamps.length;
-      v.newSinceVisit += stamps.filter((t) => t >= visitDay).length;
-    } else {
-      c.shows++; c.files += stamps.length;
-      c.newSinceCycleStart += stamps.filter((t) => t >= cycleStart).length;
-    }
-  });
-  const rate = (n, d) => (d ? n / d : 0);
-  const visitedPerShow = rate(v.newSinceVisit, v.shows);
-  const controlPerShow = rate(c.newSinceCycleStart, c.shows);
-  return {
-    cycleStart: new Date(cycleStart).toISOString().slice(0, 10),
-    visited: v,
-    control: c,
-    visitedPerShow,
-    controlPerShow,
-    netPerShow: visitedPerShow - controlPerShow,
-    verdict: visitedPerShow > 2 * controlPerShow && v.newSinceVisit > 0 ? 'keep' : 'low-yield',
-  };
-}
 
 function loadFirstSeen(ids, dir) {
   const out = {};
@@ -65,7 +29,12 @@ function loadFirstSeen(ids, dir) {
     out[id] = [];
     for (const f of fs.readdirSync(d)) {
       if (!f.endsWith('.json') || f.startsWith('_')) continue;
-      try { out[id].push(new Date(JSON.parse(fs.readFileSync(path.join(d, f), 'utf8')).firstSeenAt).getTime()); } catch { /* skip */ }
+      try {
+        const j = JSON.parse(fs.readFileSync(path.join(d, f), 'utf8'));
+        // Not new reviews: excluded from scoring, or a URL correction that reset firstSeenAt.
+        if (j.wrongProduction || j.wrongShow || j.isRoundupArticle || j.duplicateOf || j.firstSeenAtPriorUrl) continue;
+        out[id].push(new Date(j.firstSeenAt).getTime());
+      } catch { /* skip */ }
     }
   }
   return out;
@@ -79,10 +48,9 @@ function main() {
   const r = measureYield(all, cursor, loadFirstSeen(all, path.join(ROOT, 'data/review-texts')));
   if (args.includes('--json')) { console.log(JSON.stringify(r, null, 2)); return; }
   console.log(`cycle ${cursor.cycle} since ${r.cycleStart}, cursor ${cursor.next}/${cursor.total}`);
-  console.log(`revisited: ${r.visited.shows} shows, ${r.visited.newSinceVisit} new reviews (${r.visitedPerShow.toFixed(2)}/show)`);
-  console.log(`control:   ${r.control.shows} shows, ${r.control.newSinceCycleStart} new reviews (${r.controlPerShow.toFixed(2)}/show)`);
-  console.log(`net yield ${r.netPerShow.toFixed(2)} reviews/show -> ${r.verdict}`);
+  console.log(`revisited: ${r.visited.shows} shows, ${r.visited.newSinceVisit} new reviews (${r.visitedPerShow.toFixed(2)}/show/30d)`);
+  console.log(`control:   ${r.control.shows} shows, ${r.control.newSinceCycleStart} new reviews (${r.controlPerShow.toFixed(2)}/show/30d)`);
+  console.log(`net yield ${r.netPerShow.toFixed(2)} reviews/show/30d -> ${r.verdict}`);
 }
 
 if (require.main === module) main();
-module.exports = { measureYield };
