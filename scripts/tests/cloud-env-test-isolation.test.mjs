@@ -50,13 +50,13 @@ function runSuite(file, env) {
 }
 
 test('every Linear-driving suite gives the same result in a simulated cloud container as in a clean world', async () => {
-  const [cloud, clean] = await Promise.all([
-    Promise.all(SUITES.map((f) => runSuite(f, simulatedCloudEnv(cleanEnv())))),
-    Promise.all(SUITES.map((f) => runSuite(f, cleanEnv()))),
-  ]);
+  // Two batches of 9 (not 18 at once) so CI resource contention cannot time a suite out.
+  const cloud = await Promise.all(SUITES.map((f) => runSuite(f, simulatedCloudEnv(cleanEnv()))));
+  const clean = await Promise.all(SUITES.map((f) => runSuite(f, cleanEnv())));
   const problems = [];
   SUITES.forEach((f, i) => {
     const a = cloud[i], b = clean[i];
+    if (![a.pass, a.fail, b.pass, b.fail].every(Number.isFinite)) { problems.push(`${f}: could not parse TAP totals (cloud ${a.pass}/${a.fail}, clean ${b.pass}/${b.fail}); the suite crashed or the reporter format changed`); return; }
     if (!(b.pass > 0) || b.fail !== 0) problems.push(`${f}: broken even in a clean world (pass ${b.pass}, fail ${b.fail}): ${b.failed.join('; ')}`);
     if (a.pass !== b.pass || a.fail !== b.fail) {
       problems.push(`${f}: cloud pass ${a.pass}/fail ${a.fail} vs clean pass ${b.pass}/fail ${b.fail}; red only in cloud: ${a.failed.join('; ')}. Call scrubCloudEnv() from tests/helpers/cloud-env.mjs.`);
