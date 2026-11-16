@@ -61,7 +61,7 @@ function buildDecisionEmail({ decision, description, related = [], secret, now =
 <div style="max-width:520px;margin:0 auto;">
 <p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'Waiting on you'}. Work on this is paused until you answer.</p>
 <h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
-${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(decision.title))}</p>` : ''}
+${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(displayQuestion(decision.title)))}</p>` : ''}
 ${seeHtml}
 ${evidenceHtml(block.evidence)}
 ${block.why ? `<p style="margin:0 0 12px;"><strong>Why this is your call:</strong> ${esc(noDash(block.why))}</p>` : ''}
@@ -78,7 +78,8 @@ ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
 // BRO-7578: the mockups and the card sit right under the question, above every
 // answer button, so the owner sees what they are deciding before deciding it.
 function contextLinksHtml({ decision, links }) {
-  const shots = (links || []).map((u, i) => button(u, links.length > 1 ? `See the mockups (${i + 1})` : 'See the mockups', false)).join('');
+  // Gold and labelled "opens a picture" so it never reads as an answer button.
+  const shots = (links || []).map((u, i) => `<a href="${esc(u)}" style="display:block;text-align:center;text-decoration:none;font-weight:700;font-size:16px;padding:14px 16px;border-radius:10px;border:2px solid #d4a574;background:#fbf4ea;color:#1a1208;margin:8px 0;">${links.length > 1 ? `See the mockups (${i + 1})` : 'See the mockups'} <span style="font-weight:400;font-size:14px;">(opens a picture)</span></a>`).join('');
   const card = decision && decision.url ? `<p style="margin:4px 0 14px;font-size:15px;"><a href="${esc(decision.url)}" style="color:#1a1208;font-weight:600;">Open the card for the full background</a></p>` : '';
   return shots + card;
 }
@@ -88,8 +89,12 @@ function contextLinksHtml({ decision, links }) {
  * picture (an Evidence screenshot) or a mockup link on the card or a card it
  * names. Returns a plain reason when it must wait, else null.
  */
-function pictureHold({ question, description, related = [] }) {
+// After a day of asking on the card with no picture added, it is emailed anyway: a
+// blind question still beats one the owner never hears about.
+const PICTURE_WAIT_MS = 24 * 60 * 60 * 1000;
+function pictureHold({ question, description, related = [], askedAt = null, now = Date.now() }) {
   if (!isVisualQuestion(question)) return null;
+  if (askedAt && now - Date.parse(askedAt) > PICTURE_WAIT_MS) return null;
   if (parseDecisionBlock(description).evidence.length) return null;
   if (mockupLinks(description, ...related).length) return null;
   return 'a question about how something looks, with no screenshot and no mockup link on the card or the cards it names';
@@ -120,7 +125,7 @@ function taskHtml({ decision, block, choices, question, token, secret, now, base
 <div style="max-width:520px;margin:0 auto;">
 <p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'A task for you'}. Work on this is paused until you tap Done.</p>
 <h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
-${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(decision.title))}</p>` : ''}
+${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(displayQuestion(decision.title)))}</p>` : ''}
 ${seeHtml}
 ${block.why ? `<p style="margin:0 0 12px;"><strong>Why Claude cannot do this itself:</strong> ${esc(noDash(block.why))}</p>` : ''}
 <ol style="padding-left:22px;margin:12px 0 16px;">${steps}</ol>
@@ -165,4 +170,4 @@ ${button(listUrl(secret, { now, baseUrl }), 'See and answer everything', true)}
   return { subject, html };
 }
 
-module.exports = { pictureHold, contextLinksHtml, buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, answerUrl, listUrl, BASE_URL };
+module.exports = { pictureHold, PICTURE_WAIT_MS, contextLinksHtml, buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, answerUrl, listUrl, BASE_URL };

@@ -122,25 +122,30 @@ function splitUpDown(rest) {
 // BRO-7578: what lets the owner SEE a decision before answering. The owner got an
 // email about two iPhone design rounds with no picture and no visible link, while
 // the mockups sat on a canvas linked only from the cards the decision named.
-const MOCKUP_URL_RE = /https:\/\/claude\.ai\/(?:code\/)?artifact\/[A-Za-z0-9_-]{6,80}/g;
+// claude.ai/artifact/<id>, claude.ai/code/artifact/<id> and published claude.ai/public/artifacts/<id>;
+// the id must end at a non-id character, never cut short.
+const MOCKUP_URL_RE = /https:\/\/claude\.ai\/(?:code\/artifact|artifact|public\/artifacts)\/[A-Za-z0-9_-]{6,120}(?![A-Za-z0-9_-])/g;
+const MAX_RELATED_CARDS = 4;
 const MAX_MOCKUP_LINKS = 3;
 /** Distinct claude.ai artifact links (mockup canvases, pages) found in the given texts, in order. */
 function mockupLinks(...texts) {
   const out = [];
   for (const t of texts) {
-    for (const m of String(t || '').matchAll(MOCKUP_URL_RE)) {
+    // Linear escapes underscores (\\_), which would otherwise cut an id short.
+    for (const m of unescapeMarkdown(t).matchAll(MOCKUP_URL_RE)) {
       if (out.length < MAX_MOCKUP_LINKS && !out.includes(m[0])) out.push(m[0]);
     }
   }
   return out;
 }
-/** Card ids a description names (BRO-N), excluding the card itself. */
+/** The first few card ids a description names (BRO-N), excluding the card itself. The email and the answer page share this cap. */
 function relatedCardIds(description, selfId) {
   const ids = String(description || '').match(/\bBRO-\d{1,6}\b/g) || [];
-  return [...new Set(ids)].filter((id) => id !== selfId);
+  return [...new Set(ids)].filter((id) => id !== selfId).slice(0, MAX_RELATED_CARDS);
 }
 // A question about how something looks. Answering one blind is the failure BRO-7578 fixes.
-const VISUAL_QUESTION_RE = /\b(?:designs?|mock-?ups?|redesign|layout|looks?|visual|screens?|tab order|icons?|colou?rs?)\b/i;
+// Bare "look"/"screen" are left out: "look into", "screen the reviews" are not visual.
+const VISUAL_QUESTION_RE = /\b(?:designs?|mock-?ups?|redesign(?:ed)?|layouts?|visual|screenshots?|tab order|icons?|colou?rs?)\b|\blooks?\s+(?:like|right|good|better|worse)\b|\bhow\s+(?:it|they|this|that|the\s+\w+)\s+looks?\b/i;
 function isVisualQuestion(question) { return VISUAL_QUESTION_RE.test(String(question || '')); }
 
 /** Parse the plain-English parts of a decision card. Never throws. */
@@ -283,8 +288,17 @@ function visualBindingFor(description, question) {
 }
 
 /** The question as the owner reads it: the visual binding tag "(ref <hash>)" stays in the stored question (the link token signs its hash, so old emails keep working) but is never shown. */
+// BRO-7578: Linear turns a card id in the question into [BRO-N](url); the owner saw that raw in a subject
+// line. Links show as their words, card ids are dropped (owner rule: no ids), empty brackets go.
 function displayQuestion(question) {
-  return String(question == null ? '' : question).replace(/\s*\(ref [0-9a-f]{32}\)\s*$/, '').trim();
+  return String(question == null ? '' : question)
+    .replace(/\s*\(ref [0-9a-f]{32}\)\s*$/, '')
+    .replace(/\[([^\]]*)\]\(<?https?:[^)\s>]*>?\)/g, '$1')
+    .replace(/\bBRO-\d{1,6}\b,?\s*/g, '')
+    .replace(/\(\s*\)/g, '')
+    .replace(/\s+([?.,!])/g, '$1')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 }
 
 function visualMac(secret, id, patch, verdict) {

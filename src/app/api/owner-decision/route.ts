@@ -51,9 +51,12 @@ async function seeLinksHtml(issue: { identifier?: string; url?: string; descript
   const own = String(issue.description || '');
   let related: string[] = [];
   try {
-    const ids = link.relatedCardIds(own, String(issue.identifier || '')).slice(0, 4);
-    related = (await Promise.all(ids.map((id) => linearGraphql('query($id: String!) { issue(id: $id) { description } }', { id })
-      .then((d: any) => String(d?.issue?.description || ''), () => '')))).filter(Boolean);
+    const ids = link.relatedCardIds(own, String(issue.identifier || ''));
+    // Capped at 3s so a slow board never holds up the page; the card link still shows.
+    const fetches = Promise.all(ids.map((id) => linearGraphql('query($id: String!) { issue(id: $id) { description } }', { id })
+      .then((d: any) => String(d?.issue?.description || ''), () => '')));
+    const timeout = new Promise<string[]>((resolve) => setTimeout(() => resolve([]), 3000));
+    related = (await Promise.race([fetches, timeout])).filter(Boolean);
   } catch { related = []; }
   const shots = link.mockupLinks(own, ...related)
     .map((u, i, all) => `<p><a class="see" href="${esc(u)}" rel="noreferrer">${all.length > 1 ? `See the mockups (${i + 1})` : 'See the mockups'}</a></p>`).join('');

@@ -45,3 +45,45 @@ test('a question that is not about looks is never held for a picture', () => {
   assert.equal(pictureHold({ question: 'Should we rescore 400 reviews with the new prompt?', description: 'DECISION NEEDED: Should we rescore 400 reviews with the new prompt?' }), null);
   assert.equal(pictureHold({ question: 'Do you want the Resend plan upgraded to $20 a month?', description: 'x' }), null);
 });
+
+test('a held design question is emailed anyway a day after the card was asked for a picture', () => {
+  const now = Date.parse('2026-11-16T12:00:00Z');
+  assert.match(pictureHold({ question: QUESTION, description: DESC, askedAt: '2026-11-16T01:00:00Z', now }), /no screenshot/);
+  assert.equal(pictureHold({ question: QUESTION, description: DESC, askedAt: '2026-11-15T10:00:00Z', now }), null);
+});
+
+test('ordinary words like "look into" or "screen" do not mark a question as visual', () => {
+  for (const q of ['Should we look into the Resend bounce rate?', 'Can I screen out roundup reviews before scoring?', 'Is the new scraper worth a look?']) {
+    assert.equal(pictureHold({ question: q, description: 'x' }), null, q);
+  }
+  for (const q of ['Which layout should the Upcoming tab use?', 'Does the badge look right in the corner?', 'Approve the icon colors?']) {
+    assert.match(pictureHold({ question: q, description: 'x' }), /no screenshot/, q);
+  }
+});
+
+test('published, code and escaped mockup links are all found whole, and only the first 4 named cards count', () => {
+  const { mockupLinks, relatedCardIds } = require('../../src/lib/owner-decision-link.js');
+  assert.deepEqual(mockupLinks('see https://claude.ai/public/artifacts/0a1b2c3d-4e5f-6789-abcd-ef0123456789 now'), ['https://claude.ai/public/artifacts/0a1b2c3d-4e5f-6789-abcd-ef0123456789']);
+  assert.deepEqual(mockupLinks('https://claude.ai/artifact/abc\\_defghij'), ['https://claude.ai/artifact/abc_defghij']);
+  assert.deepEqual(mockupLinks('https://claude.ai/code/artifact/1234567890'), ['https://claude.ai/code/artifact/1234567890']);
+  assert.deepEqual(relatedCardIds('BRO-1 BRO-2 BRO-9 BRO-3 BRO-4 BRO-5', 'BRO-9'), ['BRO-1', 'BRO-2', 'BRO-3', 'BRO-4']);
+});
+
+test('the mockups link is styled apart from the answer buttons', () => {
+  const html = buildDecisionEmail({ decision: { identifier: 'BRO-7562', title: 't', url: 'https://linear.app/x/issue/BRO-7562', question: QUESTION }, description: `${DESC}\n${CANVAS}`, secret: 's' }).html;
+  assert.match(html, /See the mockups <span[^>]*>\(opens a picture\)<\/span>/);
+});
+
+test('questions show no card ids or link markup to the owner', () => {
+  const { displayQuestion } = require('../../src/lib/owner-decision-link.js');
+  assert.equal(displayQuestion("Should the iPhone app's round 4 design ([BRO-6213](https://linear.app/x/issue/BRO-6213/ios-y)) be built?"), "Should the iPhone app's round 4 design be built?");
+  assert.equal(displayQuestion('Do you want the rounds (BRO-6213 compact Upcoming, BRO-6176 ideas) built?'), 'Do you want the rounds (compact Upcoming, ideas) built?');
+  assert.equal(displayQuestion('Use the [new layout](<https://example.com/a>) here? (ref 0123456789abcdef0123456789abcdef)'), 'Use the new layout here?');
+  assert.equal(displayQuestion('Upgrade Resend to $20 a month?'), 'Upgrade Resend to $20 a month?');
+});
+
+test('the About line shows no card ids', () => {
+  const html = buildDecisionEmail({ decision: { identifier: 'BRO-7562', title: 'iPhone app batch round 2: 5 of the 16 app-repo cards from BRO-6869 are still Todo', url: 'https://linear.app/x/issue/BRO-7562', question: QUESTION }, description: DESC, secret: 's' }).html;
+  assert.match(html, /About: iPhone app batch round 2: 5 of the 16 app-repo cards from are still Todo/);
+  assert.doesNotMatch(html, /About:[^<]*BRO-/);
+});

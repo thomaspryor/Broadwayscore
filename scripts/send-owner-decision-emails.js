@@ -164,14 +164,24 @@ async function main(argv = process.argv.slice(2)) {
   // may already answer it. Held cards stay on the digest and the list page.
   // BRO-7578: the text of the cards a decision names, so a mockup canvas linked
   // there reaches the email too.
+  // Named cards that are already closed are not in byId, so fetch those once (the answer page reads any state).
+  const closedText = new Map();
+  for (const d of untold) {
+    for (const id of link.relatedCardIds(byId.get(d.identifier).description, d.identifier)) {
+      if (byId.has(id) || closedText.has(id)) continue;
+      try { const r = await linear.graphql('query($id: String!) { issue(id: $id) { description } }', { id }); closedText.set(id, (r.issue && r.issue.description) || ''); }
+      catch { closedText.set(id, ''); }
+    }
+  }
   const relatedOf = (d) => link.relatedCardIds(byId.get(d.identifier).description, d.identifier)
-    .map((id) => byId.get(id) && byId.get(id).description).filter(Boolean);
+    .map((id) => (byId.has(id) ? byId.get(id).description : closedText.get(id))).filter(Boolean);
   const needPicture = [];
   const fresh = untold.filter((d) => {
     const hold = holdReason(byId.get(d.identifier), d, { secret });
     if (hold) console.log(`[hold] ${d.identifier} (${hold.reason}): ${hold.detail}`);
     if (hold) return false;
-    const blind = pictureHold({ question: d.question || d.title, description: byId.get(d.identifier).description, related: relatedOf(d) });
+    const asked = ((byId.get(d.identifier).comments || {}).nodes || []).find((c) => link.bodyHasMarker(c.body, PICTURE_NEEDED_MARK));
+    const blind = pictureHold({ question: d.question || d.title, description: byId.get(d.identifier).description, related: relatedOf(d), askedAt: asked ? asked.createdAt : null });
     if (blind) { console.log(`[hold] ${d.identifier} (needs-picture): ${blind}`); needPicture.push(d); }
     return !blind;
   });
@@ -182,7 +192,7 @@ async function main(argv = process.argv.slice(2)) {
       try {
         const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
         await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
-          { input: { issueId: issue.issue.id, body: `${PICTURE_NEEDED_MARK} this decision asks how something should look, so it is not emailed to the owner until the card has an Evidence: screenshot line or a link to the mockups (a claude.ai artifact). Add one to the description; the next run sends it.` } });
+          { input: { issueId: issue.issue.id, body: `${PICTURE_NEEDED_MARK} this decision asks how something should look, so it is not emailed to the owner until the card (or a card it names) has a link to the mockups (a claude.ai artifact). Add one to the description; the next run sends it. If none is added within a day, it is emailed without one.` } });
       } catch (err) { console.error(`[owner-decision-emails] could not note the missing picture on ${d.identifier}: ${err.message}`); }
     }
   }
