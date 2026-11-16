@@ -181,14 +181,15 @@ function censusOtherPlaceSignal(url, serpTitle, show, outletArg) {
 // playing at any of them is never told its own house is "another" one. Spelled with
 // "theater"; slugs and venues are folded to it.
 const NY_HOUSE_GROUPS = [
-  ['playwrights-horizons'], ['public-theater', 'the-public', 'joes-pub'], ['second-stage'],
-  ['atlantic-theater', 'linda-gross'], ['signature-theater', 'pershing-square-signature'],
-  ['new-york-theater-workshop', 'nytw'], ['vineyard-theater'], ['mcc-theater', 'mcc'],
-  ['lincoln-center', 'mitzi-newhouse', 'mitzi-e-newhouse', 'claire-tow', 'vivian-beaumont'],
+  ['playwrights-horizons'], ['public-theater', 'the-public', 'joes-pub', 'delacorte', 'shakespeare-in-the-park'],
+  ['second-stage', 'hayes', 'helen-hayes', 'tony-kiser', 'mcginn-cazale'],
+  ['atlantic-theater', 'atlantic', 'linda-gross'], ['signature-theater', 'signature', 'pershing-square-signature'],
+  ['new-york-theater-workshop', 'nytw'], ['vineyard-theater'], ['mcc-theater', 'mcc', 'robert-w-wilson'],
+  ['lincoln-center', 'lct', 'mitzi-newhouse', 'mitzi-e-newhouse', 'claire-tow', 'vivian-beaumont', 'beaumont'],
   ['the-shed'], ['park-avenue-armory'], ['st-anns-warehouse'], ['lucille-lortel'], ['minetta-lane'],
-  ['soho-rep'], ['primary-stages'], ['rattlestick'], ['ars-nova'], ['classic-stage-company', 'csc'],
-  ['irish-repertory', 'irish-rep'], ['new-world-stages'], ['bam', 'brooklyn-academy-of-music', 'harvey-theater'],
-  ['city-center'], ['the-flea'],
+  ['soho-rep'], ['primary-stages', '59e59', 'cherry-lane'], ['rattlestick'], ['ars-nova'],
+  ['classic-stage-company', 'csc', 'lynn-f-angelson'], ['irish-repertory', 'irish-rep'], ['new-world-stages'],
+  ['bam', 'brooklyn-academy-of-music', 'harvey-theater', 'gilman-opera-house'], ['city-center', 'encores'], ['the-flea'],
 ];
 const NY_OTHER_HOUSES = NY_HOUSE_GROUPS.flat();
 
@@ -205,23 +206,29 @@ function urlNamesOtherNyHouse(url, show) {
   if (process.env.CENSUS_OTHER_PLACE_DISABLED === '1') return null;
   if (!show || !NY_CATEGORIES.has(show.category)) return null;
   if (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) return null;
+  // No venue on file: nothing to tell this show's own house from another one.
+  if (!String(show.venue || '').trim()) return null;
   const path = pathOf(url);
   if (path == null) return null;
   const fold = (t) => (t === 'theatre' ? 'theater' : t);
   const titleKey = tokensOf(show.title).map(fold).join('-');
   if (!titleKey) return null;
   const toks = path.split('/').flatMap(tokensOf).map(fold);
-  const venueToks = tokensOf(String(show.venue || '').replace(/^the\s+/i, '')).map(fold);
-  const venueKey = venueToks.join('-');
-  if (venueKey && hasRun(toks, venueKey)) return null;
+  const venueToks = tokensOf(String(show.venue).replace(/^the\s+/i, '')).map(fold);
+  if (hasRun(toks, venueToks.join('-'))) return null;
   if (['broadway', 'broadways'].some((m) => toks.includes(m))) return null;
+  // Only the LAST "at" phrase places the staging: "began at Playwrights Horizons,
+  // lands at the Golden" reviews the Golden run.
+  const lastAt = toks.lastIndexOf('at');
+  if (lastAt < 0 || !hasRun(toks.slice(0, lastAt), titleKey)) return null;
+  const after = toks.slice(lastAt + 1);
   for (const group of NY_HOUSE_GROUPS) {
-    // The show plays at this house (any of its names or stages) itself.
+    // The show plays at this house or company's own stage (any of its names).
     if (group.some((h) => hasRun(venueToks, h.replace(/^the-/, '')))) continue;
     for (const house of group) {
-      // "<title> at <house>", optionally "at the <house>".
-      const starts = [...runsAt(toks, `at-${house}`), ...runsAt(toks, `at-the-${house.replace(/^the-/, '')}`)];
-      if (starts.some((i) => hasRun(toks.slice(0, i), titleKey))) return house;
+      const want = house.split('-');
+      const at = after[0] === 'the' && want[0] !== 'the' ? 1 : 0;
+      if (want.every((w, k) => after[at + k] === w)) return house;
     }
   }
   return null;

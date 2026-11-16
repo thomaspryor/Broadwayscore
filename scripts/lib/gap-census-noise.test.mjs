@@ -2,6 +2,7 @@
 // are not an owed review of that production. Real functions only (CLAUDE.md §15).
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const noise = require('./gap-census-noise.js');
@@ -368,35 +369,51 @@ test('BRO-7603 ship-check: an undated Deadline URL with "review" in the slug sta
 });
 
 // BRO-7621: Downstate (Booth, Broadway 2026) census listed the 2022 Playwrights Horizons review as missing.
-test('census: "<title> at <another New York house>" is an earlier staging, not owed', () => {
+const ny = require('./census-other-place.js');
+const serp = (url) => ({ url, serpCensus: true });
+test('census: "<title> at <another New York house>" (search-only row) is an earlier staging, not owed', () => {
   const show = { id: 'downstate-2026', title: 'Downstate', category: 'broadway', venue: 'Booth Theatre', openingDate: '2026-11-15' };
-  const ctx = { show, tokensOf: titleTokens };
-  const row = (url) => ({ url });
-  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/'), 'missing', ctx), 'url-other-ny-house');
-  assert.equal(noise.censusExclusionReason(row('https://example.com/downstate-at-the-public-theater-review'), 'missing', ctx), 'url-other-ny-house');
+  const r = (row, s = show, kind = 'missing') => noise.censusExclusionReason(row, kind, { show: s, tokensOf: titleTokens });
+  const PH = 'https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/';
+  assert.equal(r(serp(PH)), 'url-other-ny-house');
+  assert.equal(r(serp('https://example.com/downstate-at-the-public-theater-review')), 'url-other-ny-house');
+  // An aggregator vouched for it, or it is a flagged row: not judged from the URL.
+  assert.equal(r({ url: PH }), null);
+  assert.equal(r(serp(PH), show, 'flagged'), null);
   // This production's own review keeps its row.
-  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/'), 'missing', ctx), null);
-  // Names Broadway: this production.
-  assert.equal(noise.censusExclusionReason(row('https://example.com/downstate-broadway-review-from-playwrights-horizons-at-playwrights-horizons'), 'missing', ctx), null);
+  assert.equal(r(serp('https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/')), null);
+  // Only the last "at" places it: began at Playwrights Horizons, now at the Booth.
+  assert.equal(r(serp('https://example.com/review-downstate-which-began-at-playwrights-horizons-lands-at-the-booth/')), null);
   // House named but not as "<title> at <house>".
-  assert.equal(noise.censusExclusionReason(row('https://example.com/playwrights-horizons-alum-reviews-downstate'), 'missing', ctx), null);
-  // The show plays at that house itself.
-  const offB = { ...show, category: 'off-broadway', venue: 'Playwrights Horizons' };
-  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/'), 'missing', { show: offB, tokensOf: titleTokens }), null);
-  // Declared prior runs count; London shows are out of scope.
-  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/'), 'missing', { show: { ...show, priorRuns: [{ venue: 'Playwrights Horizons' }] }, tokensOf: titleTokens }), null);
-  assert.equal(noise.censusExclusionReason(row('https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/'), 'missing', { show: { ...show, category: 'west-end' }, tokensOf: titleTokens }), null);
+  assert.equal(r(serp('https://example.com/playwrights-horizons-alum-reviews-downstate')), null);
+  // The show plays at that house; no venue on file; declared prior runs; London.
+  assert.equal(r(serp(PH), { ...show, category: 'off-broadway', venue: 'Playwrights Horizons' }), null);
+  assert.equal(r(serp(PH), { ...show, venue: null }), null);
+  assert.equal(r(serp(PH), { ...show, priorRuns: [{ venue: 'Playwrights Horizons' }] }), null);
+  assert.equal(r(serp(PH), { ...show, category: 'west-end' }), null);
 });
 
-test('census: a show at the house itself (any spelling or stage of it) keeps "<title> at <house>" rows', () => {
-  const r = (url, show) => noise.censusExclusionReason({ url }, 'missing', { show: { openingDate: '2026-01-01', ...show }, tokensOf: titleTokens });
-  assert.equal(r('https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/',
-    { title: 'Anon(a): A Tempest at Our Kitchen Table', category: 'off-broadway', venue: 'The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space' }), null);
-  assert.equal(r('https://www.theatermania.com/news/review-the-blood-quilt-a-bewitching-family-drama-at-lincoln-center-theater_1756268/',
-    { title: 'The Blood Quilt', category: 'off-broadway', venue: 'Mitzi E. Newhouse Theatre' }), null);
-  assert.equal(r('http://www.irishcentral.com/opinion/cahirodoherty/silent-night-in-the-country-conor-mcphersons-the-weir-at-the-irish-rep-208985991-238183581.html',
-    { title: 'The Weir', category: 'off-broadway', venue: 'Irish Repertory Theatre' }), null);
-  // A Broadway transfer's earlier Public run is still another staging.
-  assert.equal(r('https://observer.com/2023/11/review-alicia-keys-is-in-a-hells-kitchen-state-of-mind-at-the-public/',
-    { title: "Hell's Kitchen", category: 'broadway', venue: 'Shubert Theatre', openingDate: '2024-04-20' }), 'url-year-before-run');
+test("census: a company review at <company> for a show on that company own stage stays owed", () => {
+  const own = (url, title, category, venue) => ny.urlNamesOtherNyHouse(url, { title, category, venue });
+  // Reviewer-found false positives: live reviews of the right production.
+  assert.equal(own('https://dcmetrotheaterarts.com/2018/03/29/review-lobby-hero-at-second-stage-theater/', 'Lobby Hero', 'broadway', 'Helen Hayes Theater'), null);
+  assert.equal(own('https://exeuntnyc.com/reviews/review-laowang-a-chinatown-king-lear-at-primary-stages/', 'Laowang: A Chinatown King Lear', 'off-broadway', '59E59 Theater A'), null);
+  assert.equal(own('https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/', 'The Saviors', 'off-broadway', 'Atlantic Stage 2'), null);
+  assert.equal(own('https://example.com/the-blood-quilt-at-lincoln-center-theater', 'The Blood Quilt', 'off-broadway', 'Mitzi E. Newhouse Theatre'), null);
+  assert.equal(own('https://example.com/anon-a-tempest-at-mcc-theater', 'Anon(a)', 'off-broadway', 'The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space'), null);
+  assert.equal(own('https://example.com/the-weir-at-the-irish-rep', 'The Weir', 'off-broadway', 'Irish Repertory Theatre'), null);
+  assert.equal(own('https://example.com/review-much-ado-at-the-public', 'Much Ado About Nothing', 'off-broadway', 'Delacorte Theater'), null);
+});
+
+// Class guard: every live review on the site is a review of its own production, so the
+// rule must never fire on one (it fired on 4 before the company/venue groups, BRO-7621).
+test('census: urlNamesOtherNyHouse never fires on a live review of its own show', { skip: !fs.existsSync(new URL('../../data/reviews.json', import.meta.url)) && 'data/reviews.json not present' }, () => {
+  const shows = require('../../data/shows.json');
+  const list = Array.isArray(shows) ? shows : shows.shows;
+  const byId = new Map(list.map((s) => [s.id, s]));
+  const rv = require('../../data/reviews.json');
+  const hits = (Array.isArray(rv) ? rv : rv.reviews)
+    .filter((r) => r && r.url && byId.has(r.showId) && ny.urlNamesOtherNyHouse(r.url, byId.get(r.showId)))
+    .map((r) => `${r.showId} ${r.url}`);
+  assert.deepEqual(hits, []);
 });
