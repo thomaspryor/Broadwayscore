@@ -367,8 +367,23 @@
     "queuedAt": "2026-11-16T16:28:47.264Z"
   },
   {
+    "conditionKey": "live-data-test:tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
+    "title": "Live-data test failing: daily synopsis passes reach every flagged open show within a month (tests/unit/enrichment-target-reach-live.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"daily synopsis passes reach every flagged open show within a month\" in tests/unit/enrichment-target-reach-live.test.mjs is red against the live corpus.\n\nthe daily synopsis enricher never reaches 2 of 37 flagged show(s) on any day of the month (BRO-7437: a bare slice() of a file-ordered, mostly-closed candidate list starves exactly the rows the health check reddens over, so the gap count can never fall and the card is refiled forever)\n+ actual - expected\n\n+ [\n+   'hayward-regional-2026',\n+   'the-best-medicine-regional-2026'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
+    "fields": [],
+    "queuedAt": "2026-11-16T16:46:27.106Z"
+  },
+  {
     "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-16.",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-16.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
     "severity": "info",
     "url": null,
@@ -378,7 +393,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-16T16:29:59.047Z"
+    "queuedAt": "2026-11-16T17:07:47.390Z"
   },
   {
     "conditionKey": "land:land/bro-7606-v2",
@@ -410,20 +425,5 @@
       }
     ],
     "queuedAt": "2026-11-16T16:57:13.976Z"
-  },
-  {
-    "conditionKey": "live-data-test:tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
-    "title": "Live-data test failing: daily synopsis passes reach every flagged open show within a month (tests/unit/enrichment-target-reach-live.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"daily synopsis passes reach every flagged open show within a month\" in tests/unit/enrichment-target-reach-live.test.mjs is red against the live corpus.\n\nthe daily synopsis enricher never reaches 2 of 37 flagged show(s) on any day of the month (BRO-7437: a bare slice() of a file-ordered, mostly-closed candidate list starves exactly the rows the health check reddens over, so the gap count can never fall and the card is refiled forever)\n+ actual - expected\n\n+ [\n+   'hayward-regional-2026',\n+   'the-best-medicine-regional-2026'\n+ ]\n- []\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
-    "fields": [],
-    "queuedAt": "2026-11-16T16:46:27.106Z"
   }
 ]
