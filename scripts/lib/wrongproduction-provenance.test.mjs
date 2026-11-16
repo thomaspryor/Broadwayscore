@@ -131,3 +131,50 @@ test('scanFileForViolations: a real multi-writer fixture with provenance through
   ].join('\n');
   assert.deepEqual(scanFileForViolations(clean, 'scripts/clean-writer.js'), []);
 });
+
+// ── BRO-7575: clear-side class guard ───────────────────────────────────────
+import { createRequire as _cr7575 } from 'node:module';
+import _fs7575 from 'node:fs';
+import _path7575 from 'node:path';
+import _test7575 from 'node:test';
+import _assert7575 from 'node:assert/strict';
+const _req7575 = _cr7575(import.meta.url);
+const _prov7575 = _req7575('./wrongproduction-provenance.js');
+const _orphan7575 = _req7575('./orphaned-wrongprod-provenance.js');
+
+_test7575('BRO-7575: bare flag delete is flagged, settled deletes are not', () => {
+  const bad = 'function f(d){\n  delete d.wrongProduction;\n  delete d.wrongProductionNote;\n}\n';
+  _assert7575.equal(_prov7575.scanFileForOrphaningClears(bad, 'x.js').length, 1);
+  const viaHelper = bad + 'dropWrongProductionProvenance(d);\n';
+  _assert7575.equal(_prov7575.scanFileForOrphaningClears(viaHelper, 'x.js').length, 0);
+  const stamped = bad + "d.wrongProductionAutoCleared = 'x';\n";
+  _assert7575.equal(_prov7575.scanFileForOrphaningClears(stamped, 'x.js').length, 0);
+  const nulled = 'd.wrongProduction = null;\n';
+  _assert7575.equal(_prov7575.scanFileForOrphaningClears(nulled, 'x.js').length, 1);
+  const cv = 'delete data.contentVerification.wrongProduction;\n';
+  _assert7575.equal(_prov7575.scanFileForOrphaningClears(cv, 'x.js').length, 0);
+});
+
+_test7575('BRO-7575: dropWrongProductionProvenance leaves no orphan behind a deleted flag', () => {
+  const d = { wrongProduction: true, wrongProductionDetectedBy: 'ingest-anticipatory-gate', wrongProductionDetail: 'x', anticipatoryGateDaysBeforeOpening: 5 };
+  delete d.wrongProduction;
+  _assert7575.equal(_orphan7575.isOrphanedWrongProdProvenance(d), true);
+  _prov7575.dropWrongProductionProvenance(d);
+  _assert7575.equal(_orphan7575.isOrphanedWrongProdProvenance(d), false);
+});
+
+_test7575('BRO-7575: no scripts/ file deletes the wrongProduction flag and strands its provenance', () => {
+  const root = _path7575.join(import.meta.dirname, '..');
+  const out = [];
+  (function walk(dir) {
+    for (const e of _fs7575.readdirSync(dir, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name === '.git') continue;
+      const full = _path7575.join(dir, e.name);
+      if (e.isDirectory()) walk(full);
+      else if (/\.(js|ts)$/.test(e.name) && !/\.test\./.test(e.name) && !e.name.startsWith('test-')) {
+        out.push(..._prov7575.scanFileForOrphaningClears(_fs7575.readFileSync(full, 'utf8'), _path7575.relative(root, full)));
+      }
+    }
+  })(root);
+  _assert7575.deepEqual(out, []);
+});

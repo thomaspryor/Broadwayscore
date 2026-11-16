@@ -106,6 +106,17 @@ const WRONG_PRODUCTION_PROVENANCE_FIELDS = [
   '_wrongProductionReason',
 ];
 
+/**
+ * Drop the flag's trail (WRONG_PRODUCTION_PROVENANCE_FIELDS) from a review
+ * object in place. Call beside every `delete x.wrongProduction` that is not
+ * going through clearWrongProductionFlags (BRO-7575): the provenance dies with
+ * the flag, or the file becomes an orphan the corpus audit reports.
+ */
+function dropWrongProductionProvenance(data) {
+  for (const f of WRONG_PRODUCTION_PROVENANCE_FIELDS) delete data[f];
+  return data;
+}
+
 function isValidProvenance(value) {
   return typeof value === 'string' && PROVENANCE_VALUES.has(value);
 }
@@ -266,7 +277,76 @@ function scanFileForViolations(content, relPath) {
   return violations;
 }
 
+// ── clear-side scan (BRO-7575) ─────────────────────────────────────────────
+//
+// The write-side lint above stops a flag being SET without a trail. The
+// recurring "corpus drift: provenance but the flag dropped" cards (BRO-2740,
+// 5618, 6063, 6992, 7575) are the mirror image: a writer DELETES the flag and
+// leaves the trail (wrongProductionDetectedBy, ...) behind with no recorded
+// clear, so the file reads as "was flagged" yet scores. Each card fixed one
+// file; the writers stayed. This scan is the class guard: every top-level
+// `delete x.wrongProduction` / `x.wrongProduction = null|undefined` must,
+// nearby, either route through clearWrongProductionFlags, drop the provenance
+// set (WRONG_PRODUCTION_PROVENANCE_FIELDS / a named provenance field), or
+// stamp a recorded clear (isOrphanedWrongProdProvenance's hasRecordedClear).
+
+const CLEAR_RE = /(?:\bdelete\s+([\w$.\[\]'"]*)\.wrongProduction\s*[;,)}]|([\w$\]]+(?:\.[\w$]+|\[[^\]]+\])*)\.wrongProduction\s*=\s*(?:null|undefined)\b)/;
+// The embedded contentVerification sub-object carries its own wrongProduction
+// verdict; deleting THAT is not dropping the review's flag.
+const CV_PATH_RE = /(?:contentVerification|\bcv|verification)$/;
+
+const CLEAR_SETTLED_RE = new RegExp([
+  'clearWrongProductionFlags',
+  'dropWrongProductionProvenance',
+  'WRONG_PRODUCTION_PROVENANCE_FIELDS',
+  'REPLACE_CLEAR_FIELDS',
+  'WP_FIELDS',
+  'delete\\s+[\\w$.\\[\\]\'"]*\\._?wrongProduction(?:DetectedBy|Provenance|Detail)\\b',
+  '\\bwrongProduction(?:AutoCleared|ManualClear|Override|AuditCleared)\\b',
+  '\\bhumanReviewedWrongProduction\\b',
+  '\\bwrongProduction\\s*=\\s*false\\b',
+  'invalidateWrongProductionAutoClear',
+].join('|'));
+
+const CLEAR_WINDOW_LINES = 14;
+
+function findWrongProductionClears(content) {
+  const lines = content.split('\n');
+  const hits = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (isCommentLine(line) || isComparisonLine(line)) continue;
+    const m = CLEAR_RE.exec(line);
+    if (m && !CV_PATH_RE.test(m[1] || m[2] || '') && !isInsideStringLiteral(line, m.index)) hits.push({ line: i + 1, text: line.trim() });
+  }
+  return hits;
+}
+
+function hasNearbyClearSettlement(content, lineNumber, windowLines = CLEAR_WINDOW_LINES) {
+  const lines = content.split('\n');
+  const idx = lineNumber - 1;
+  const window = lines.slice(Math.max(0, idx - windowLines), Math.min(lines.length, idx + windowLines + 1))
+    .filter((l) => !isCommentLine(l))
+    .join('\n');
+  return CLEAR_SETTLED_RE.test(window);
+}
+
+/** Every flag-delete with no provenance cleanup / recorded clear nearby. */
+function scanFileForOrphaningClears(content, relPath) {
+  const violations = [];
+  for (const hit of findWrongProductionClears(content)) {
+    if (!hasNearbyClearSettlement(content, hit.line)) {
+      violations.push({ file: relPath, line: hit.line, text: hit.text });
+    }
+  }
+  return violations;
+}
+
 module.exports = {
+  dropWrongProductionProvenance,
+  scanFileForOrphaningClears,
+  findWrongProductionClears,
+  hasNearbyClearSettlement,
   PROVENANCE_VALUES,
   WRONG_PRODUCTION_PROVENANCE_FIELDS,
   LEGACY_URL_DETECTORS,

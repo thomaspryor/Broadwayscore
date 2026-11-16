@@ -43,6 +43,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { dropWrongProductionProvenance } = require('./wrongproduction-provenance');
 const { splitMultiShowArticle, loadShows, COMMON_WORD_SHOW_TITLES } = require('./multi-show-splitter');
 const { normalizeTitle } = require('./title-match');
 
@@ -1225,6 +1226,7 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
     delete out.roundupArticleReason;
     delete out.wrongProduction;
     delete out.wrongProductionReason;
+    dropWrongProductionProvenance(out);
     if (!humanVerdict && !out.wrongShowManualClear && !out.wrongShowOverride) { delete out.wrongShow; delete out.wrongShowReason; }
     delete out.wrongFullText;
     delete out.incompleteReason;

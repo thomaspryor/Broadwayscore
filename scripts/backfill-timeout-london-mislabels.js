@@ -28,6 +28,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { dropWrongProductionProvenance } = require('./lib/wrongproduction-provenance');
 
 const args = process.argv.slice(2);
 const execute = args.includes('--execute');
@@ -122,6 +123,7 @@ for (const p of planned) {
   if (p.willClearWrongProduction) {
     delete data.wrongProduction;
     delete data.wrongProductionNote;
+    dropWrongProductionProvenance(data);
   }
   fs.writeFileSync(p.filePath, JSON.stringify(data, null, 2) + '\n');
   written++;

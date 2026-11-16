@@ -51,6 +51,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { dropWrongProductionProvenance } = require('../lib/wrongproduction-provenance');
 
 const args = process.argv.slice(2);
 const showArg = args.find(a => a.startsWith('--show='));
@@ -140,6 +141,7 @@ for (const file of files) {
         delete data.wrongProduction;
         delete data.wrongProductionNote;
         delete data.wrongProductionReason;
+        dropWrongProductionProvenance(data);
       }
     }
     if (incompleteReason) {

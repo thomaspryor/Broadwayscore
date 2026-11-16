@@ -53,6 +53,7 @@
  */
 
 const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
+const { dropWrongProductionProvenance } = require('./lib/wrongproduction-provenance');
 const { quarantineBody } = require('./lib/quarantine-body');
 const { withTimeout: sharedWithTimeout } = require('./lib/with-timeout');
 const { guardianContentToResult, titleHtmlFor, guardianMentionWaiver } = require('./lib/guardian-api-result');
@@ -7961,6 +7962,7 @@ async function processReview(review) {
           if (!preserve.wrongProduction) {
             delete postData.wrongProduction;
             delete postData.wrongProductionReason;
+            dropWrongProductionProvenance(postData);
           }
           if (!preserve.wrongShow) {
             delete postData.wrongShow;

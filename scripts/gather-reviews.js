@@ -40,6 +40,7 @@
 const { isOffBroadwayUrlForBroadwayShow } = require('./lib/review-url-market-guard');
 const { hasExcerpt: hasAnyExcerpt } = require('./lib/excerpt-fields');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { dropWrongProductionProvenance } = require('./lib/wrongproduction-provenance');
 const fs = require('fs');
 const { withTimeout } = require('./lib/with-timeout');
 const path = require('path');
@@ -3896,6 +3897,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             delete replacement.wrongProduction;
             delete replacement.wrongProductionReason;
             delete replacement.wrongProductionNote;
+            dropWrongProductionProvenance(replacement);
             delete replacement.wrongShow;
             delete replacement.wrongShowReason;
             delete replacement.wrongShowNote;

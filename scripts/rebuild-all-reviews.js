@@ -29,6 +29,7 @@
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { hasExcerpt: hasAnyExcerpt, getExcerpts } = require('./lib/excerpt-fields');
 const { parseVerdictTierId, verdictAppliesToSource } = require('./lib/score-tiers');
+const { dropWrongProductionProvenance } = require('./lib/wrongproduction-provenance');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -4159,6 +4160,7 @@ showDirs.forEach(showId => {
             if (data.wrongProduction && data.wrongProductionNote && data.wrongProductionNote.includes('US outlet "timeout"')) {
               delete data.wrongProduction;
               delete data.wrongProductionNote;
+              dropWrongProductionProvenance(data);
               if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (timeout → timeout-london)');
             }
             try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}

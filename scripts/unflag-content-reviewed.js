@@ -10,6 +10,7 @@
 const fs = require('fs');
 const { hasExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
+const { dropWrongProductionProvenance } = require('./lib/wrongproduction-provenance');
 
 const BASE = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -55,6 +56,7 @@ for (const entry of manifest) {
   delete data.wrongProduction;
   delete data.wrongShow;
   delete data.wrongProductionNote;
+  dropWrongProductionProvenance(data);
 
   // Set date bypass flags to prevent rebuild guards from re-flagging
   if (entry.allowEarlyDate) data.allowEarlyDate = true;

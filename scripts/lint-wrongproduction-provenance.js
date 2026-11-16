@@ -35,7 +35,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { scanFileForViolations } = require('./lib/wrongproduction-provenance');
+const { scanFileForViolations, scanFileForOrphaningClears } = require('./lib/wrongproduction-provenance');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -108,6 +108,7 @@ function main(argv = process.argv.slice(2)) {
   walk(path.join(REPO_ROOT, SCAN_DIR), files);
 
   const violations = [];
+  const clearViolations = [];
   let scanned = 0;
   for (const absPath of files) {
     const relPath = path.relative(REPO_ROOT, absPath).split(path.sep).join('/');
@@ -120,6 +121,7 @@ function main(argv = process.argv.slice(2)) {
     }
     scanned++;
     violations.push(...scanFileForViolations(content, relPath));
+    clearViolations.push(...scanFileForOrphaningClears(content, relPath));
   }
 
   if (violations.length > 0) {
@@ -132,6 +134,18 @@ function main(argv = process.argv.slice(2)) {
       'within a few lines — wrongProductionProvenance (preferred: \'url\'|\'date\'|' +
       '\'content\'|\'manual\'), or a legacy wrongProductionReason/Note/DetectedBy. ' +
       'See scripts/lib/wrongproduction-provenance.js.'
+    );
+    process.exit(1);
+  }
+
+  if (clearViolations.length > 0) {
+    console.error(`::error::${clearViolations.length} wrongProduction flag delete(s) that strand provenance with no recorded clear (BRO-7575):`);
+    for (const v of clearViolations) console.error(`  - ${v.file}:${v.line}: ${v.text}`);
+    console.error(
+      '\nA file with wrongProductionDetectedBy/Detail/... and no flag reads as "was flagged" yet scores. ' +
+      'Use clearWrongProductionFlags() (scripts/lib/wrong-production-clear.js), or delete ' +
+      'WRONG_PRODUCTION_PROVENANCE_FIELDS with the flag, or stamp a recorded clear ' +
+      '(wrongProductionAutoCleared/ManualClear/Override/AuditCleared).'
     );
     process.exit(1);
   }
