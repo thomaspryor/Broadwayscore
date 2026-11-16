@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasUrlCriticSlug } = require('./audit-url-critic-slug-filenames');
 const { slugifyCritic } = require('./lib/critic-review-scan');
+const { getLongestExcerpt } = require('./lib/excerpt-fields');
 
 const ROOT = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -40,7 +41,7 @@ function facts(show, file) {
     publishDate: d.publishDate || null,
     contentTier: d.contentTier || null,
     textLen: text.length,
-    excerptLen: String(d.dtliExcerpt || d.bwwExcerpt || d.showScoreExcerpt || '').length,
+    excerptLen: getLongestExcerpt(d).length,
     flags: ['wrongProduction', 'wrongShow', 'isRoundupArticle', 'wrongPublication', 'isDuplicate'].filter((k) => d[k] === true),
     duplicateOf: d.duplicateOf || d.duplicateTextOf || null,
     locked: d._locked === true,
