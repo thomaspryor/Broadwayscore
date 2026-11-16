@@ -191,7 +191,12 @@
     "wicked-west-end-2021/west-end-wilma--unknown.json",
     "wicked-2003/theatrely--kobi-kassal.json",
     "mamma-mia-west-end-2021/standard--jessie-thompson.json",
-    "the-lion-king-1997/timeout--adam-feldman.json"
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "julius-caesar-globe-off-west-end-2026/thereviewshub--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json",
+    "memoriam-off-west-end-2026/ground--unknown.json"
   ],
   "failed": [
     "strange-cargo-the-doom-of-the-demeter-regional-2025/talkinbroadway--christine-malcom.json",
@@ -231,7 +236,6 @@
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
     "cranford-off-west-end-2026/standard--nick-curtis.json",
     "a-few-good-men-2026/theater-life--paulanne-simmons.json",
-    "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
     "the-getaway-driver-central-regional-2026/consequence--travis-bland.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
@@ -239,7 +243,6 @@
     "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "i-became-we-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "memoriam-off-west-end-2026/ground--unknown.json",
     "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
@@ -318,7 +321,16 @@
     "wicked-2003/rough-draft-atlanta--sammie-purcell.json",
     "wicked-2003/trib-live--alexis-papalia.json",
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json"
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "girls-off-west-end-2026/plays-to-see--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -426,10 +438,14 @@
       "wicked-west-end-2021/firstnightmagazine--unknown.json",
       "wicked-west-end-2021/stagedtheatre--karen-jemison.json",
       "wicked-west-end-2021/west-end-wilma--unknown.json",
-      "the-lion-king-1997/timeout--adam-feldman.json"
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "dogstar-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
@@ -451,7 +467,9 @@
       "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "oh-mary-west-end-2025/matineemouse--matinee-mouse.json",
       "the-lion-king-tour-2021/ground--unknown.json",
-      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
+      "memoriam-off-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
@@ -465,7 +483,8 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "little-shop-of-horrors-off-broadway-2019/broadwaynews--jeremy-gerard.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
-      "wicked-2003/theatrely--kobi-kassal.json"
+      "wicked-2003/theatrely--kobi-kassal.json",
+      "julius-caesar-globe-off-west-end-2026/thereviewshub--unknown.json"
     ],
     "brightdata": [
       "im-gonna-marry-you-tobey-maguire-regional-2026/talkinbroadway--savannah-brooks.json",
@@ -535,6 +554,29 @@
     ]
   },
   "startTime": "2026-11-16T12:24:45.912Z",
-  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
-  "log": []
+  "lastProcessed": "memoriam-off-west-end-2026/ground--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-16T16:42:44.244Z",
+      "event": "bb-session",
+      "session": "0732bc72",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-16T16:44:14.880Z",
+      "event": "bb-session",
+      "session": "17733f0f",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-16T16:44:49.538Z",
+      "event": "bb-session",
+      "session": "0050796c",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    }
+  ],
+  "recoveredAfterFailure": [
+    "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
+    "memoriam-off-west-end-2026/ground--unknown.json"
+  ]
 }
