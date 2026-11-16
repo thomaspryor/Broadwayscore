@@ -118,12 +118,11 @@ test('classifyResult drops generic_image and non_theatre_work for special events
   assert.deepEqual(classifyResult(r(['generic_image']), { showType: 'play' }), { kind: 'generic_image', errored: false });
 });
 
-test('classifyResult does not flag art of the right work from another production (BRO-6836)', () => {
+test('classifyResult ignores wrong_production but keeps wrong_show, whatever the description says (BRO-6836)', () => {
   const base = { match: false, confidence: 'high', imageType: 'promotional_art' };
-  // Real verifier answers from the 2026-11-16 re-run: Montauk (other director), AMAZE (West End transfer), Young Vic poster.
-  assert.equal(classifyResult({ ...base, issues: ['wrong_production'], description: "The image shows the correct title 'Montauk' but lists Daniel Sullivan as director." }), null);
-  assert.equal(classifyResult({ ...base, issues: ['wrong_production'], description: "The image states 'DIRECT FROM LONDON'S WEST END', indicating a different production origin." }), null);
-  assert.equal(classifyResult({ ...base, issues: ['wrong_show'], description: 'The image shows the correct show title and playwright, but lists Daniel Sullivan as director.' }), null);
-  // Still flagged: another work's art.
-  assert.deepEqual(classifyResult({ ...base, issues: ['wrong_show'], description: "The image shows a poster for 'The Lost Boys'." }), { kind: 'wrong_show', errored: false });
+  assert.equal(classifyResult({ ...base, issues: ['wrong_production'], description: "The image shows the correct title 'Montauk' but lists another director." }), null);
+  assert.equal(classifyResult({ ...base, issues: ['wrong_production'], description: "States 'DIRECT FROM LONDON'S WEST END', a different production origin." }), null);
+  for (const description of ['A poster for The Lost Boys, not the correct title Rope.', "Shows the correct title 'Endgame' but credits a different playwright."]) {
+    assert.deepEqual(classifyResult({ ...base, issues: ['wrong_show'], description }), { kind: 'wrong_show', errored: false });
+  }
 });

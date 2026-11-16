@@ -38,8 +38,8 @@ const EVENT_NOISE_KINDS = ['generic_image', 'non_theatre_work'];
 // (a transfer's "Direct from the West End", "The Young Vic production of", a different director). That is
 // the same work, not "art of another work", so the sweep does not flag it; 2026-11-12 re-run: 78 flagged,
 // sampled ones were Montauk, AMAZE, A View from the Bridge and Jason Manford showing their own title (BRO-6836).
-// A wrong_show row whose own description says the title is correct is the same false positive.
-const SAME_WORK_DESCRIPTION = /\b(?:correct|right|matching)\s+(?:show\s+)?title\b/i;
+// Free-text description matching is deliberately NOT used: "not the correct title" and a same-title
+// different-author rejection (verify-image BRO-5022) both say "correct title" yet are real wrong art.
 
 const hasPath = (v) => typeof v === 'string' && v.length > 0;
 
@@ -108,7 +108,6 @@ function classifyResult(result, { format = null, showType = null } = {}) {
     const kind = WRONG_WORK_ISSUES[i];
     if (!kind) continue;
     if (eventShow && EVENT_NOISE_KINDS.includes(kind)) continue;
-    if (kind === 'wrong_show' && SAME_WORK_DESCRIPTION.test(String(r.description || ''))) continue;
     return { kind, errored: false };
   }
   return null;
