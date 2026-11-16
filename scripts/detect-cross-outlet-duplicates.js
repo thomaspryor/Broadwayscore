@@ -26,6 +26,11 @@
  *   --verbose         Extra logging
  *   --report          Generate audit report only (implies --dry-run)
  *   --skip-llm        Skip LLM confirmation
+ *   --no-verdict-cache  Re-ask pairs already judged by the LLM (BRO-7536)
+ *
+ * LLM pair verdicts are remembered in the report (llmPairVerdicts), keyed by
+ * both text hashes (order-independent) plus the prompt version; a judged pair
+ * is not asked again until either text or the prompt changes (BRO-7536).
  */
 
 require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
@@ -50,9 +55,13 @@ const VERBOSE = args.includes('--verbose');
 const SKIP_LLM = args.includes('--skip-llm');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 const THRESHOLD = parseInt((args.find(a => a.startsWith('--threshold=')) || '').split('=')[1]) || 40;
+const NO_VERDICT_CACHE = args.includes('--no-verdict-cache');
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
-const AUDIT_DIR = path.join(__dirname, '../data/audit');
+// Env overrides are for tests over synthetic fixtures (scripts/tests/*-verdict-cache.test.mjs).
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '../data/review-texts');
+const AUDIT_DIR = process.env.CROSS_OUTLET_AUDIT_DIR || path.join(__dirname, '../data/audit');
+const REPORT_PATH = path.join(AUDIT_DIR, 'cross-outlet-duplicates.json');
+const verdictCache = require('./lib/llm-verdict-cache');
 
 // Outlet tier lookup — reads from outlet-registry.json (source of truth)
 const { getTier } = require('./lib/outlet-tiers');
@@ -108,7 +117,9 @@ const { getBestText, resolveFingerprintGroup } = require('./lib/cross-outlet-gro
 // LLM Confirmation (Layer 3)
 // ============================================================
 
+let llmOverride = null; // tests only (_setLLMForTest)
 function callGemini(prompt) {
+  if (llmOverride) return Promise.resolve().then(() => llmOverride(prompt));
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
@@ -145,17 +156,35 @@ function callGemini(prompt) {
   });
 }
 
-async function llmConfirmDuplicate(text1, text2, outlet1, outlet2) {
+function buildDuplicatePrompt(text1, text2, outlet1, outlet2) {
   const snippet1 = text1.substring(0, 500);
   const snippet2 = text2.substring(0, 500);
-  const prompt = `Are these two texts from the same theater review (possibly syndicated across outlets)?
+  return `Are these two texts from the same theater review (possibly syndicated across outlets)?
 
 Text 1 (${outlet1}): "${snippet1}"
 
 Text 2 (${outlet2}): "${snippet2}"
 
 Answer YES (same review) or NO (different reviews).`;
+}
 
+// BRO-7536: a stored pair verdict is reused only under this prompt version.
+const DUPLICATE_PROMPT_VERSION = verdictCache.promptVersionFor(buildDuplicatePrompt('<A>', '<B>', '<OA>', '<OB>'), 1);
+
+/** Hash of what the LLM sees for one side of a pair (the 500-char snippet and the outlet name). */
+function pairSideHash(review) {
+  return verdictCache.judgedInputHash(String(review.text || '').substring(0, 500), review.outlet || '');
+}
+
+function loadPairVerdictStore() {
+  try {
+    const prior = JSON.parse(fs.readFileSync(REPORT_PATH, 'utf8'));
+    return (prior && prior.llmPairVerdicts && typeof prior.llmPairVerdicts === 'object') ? prior.llmPairVerdicts : {};
+  } catch { return {}; }
+}
+
+async function llmConfirmDuplicate(text1, text2, outlet1, outlet2) {
+  const prompt = buildDuplicatePrompt(text1, text2, outlet1, outlet2);
   try {
     const response = await callGemini(prompt);
     const clean = response.trim().replace(/[^a-zA-Z]/g, '').toLowerCase();
@@ -197,6 +226,11 @@ async function main() {
   // BRO-6759: matching text under two different named critics with no verified
   // link. One file may hold the other's text. Reported, never flagged.
   const wrongTextCandidates = [];
+  // BRO-7536: LLM pair verdicts survive across runs (stored in the report).
+  let pairVerdicts = loadPairVerdictStore();
+  const touchedPairKeys = new Set();
+  stats.llmCalls = 0;
+  stats.llmCached = 0;
 
   for (const showId of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -323,7 +357,18 @@ async function main() {
         // Layer 3: LLM confirmation for borderline (40-70% similarity)
         let llmResult = null;
         if (!SKIP_LLM && sim < 70) {
-          llmResult = await llmConfirmDuplicate(r1.text, r2.text, r1.outlet, r2.outlet);
+          const h1 = pairSideHash(r1);
+          const h2 = pairSideHash(r2);
+          touchedPairKeys.add(verdictCache.pairKey(h1, h2));
+          llmResult = verdictCache.lookupPairVerdict(pairVerdicts, h1, h2, DUPLICATE_PROMPT_VERSION, { overwrite: NO_VERDICT_CACHE });
+          if (llmResult !== null) {
+            stats.llmCached++;
+          } else {
+            llmResult = await llmConfirmDuplicate(r1.text, r2.text, r1.outlet, r2.outlet);
+            stats.llmCalls++;
+            // null (error / unclear reply) is not recorded, so it is retried next run.
+            verdictCache.recordPairVerdict(pairVerdicts, h1, h2, { verdict: llmResult, promptVersion: DUPLICATE_PROMPT_VERSION, showId, files: [r1.file, r2.file] });
+          }
           if (llmResult === true) {
             stats.llmConfirmed++;
           } else if (llmResult === false) {
@@ -376,14 +421,18 @@ async function main() {
   console.log(`Similarity matches: ${stats.similarityMatches}`);
   if (!SKIP_LLM) {
     console.log(`LLM confirmed: ${stats.llmConfirmed} | LLM rejected: ${stats.llmRejected}`);
+    console.log(`LLM calls: ${stats.llmCalls} | reused stored pair verdicts: ${stats.llmCached}`);
   }
+  // A full run drops verdicts for pairs that no longer exist or whose text changed.
+  if (!SHOW_FILTER && !SKIP_LLM) pairVerdicts = verdictCache.prunePairStore(pairVerdicts, touchedPairKeys);
+  const hasPairVerdicts = Object.keys(pairVerdicts).length > 0;
   console.log(`Total duplicates found: ${duplicates.length}`);
   console.log(`Cross-outlet pointer pairs (report only): ${pointerPairs.length}`);
   for (const p of pointerPairs.slice(0, 50)) {
     console.log(`  ${p.showId}: ${p.files[0]} <-> ${p.files[1]} (${p.method})`);
   }
 
-  if (duplicates.length > 0 || pointerPairs.length > 0) {
+  if (duplicates.length > 0 || pointerPairs.length > 0 || hasPairVerdicts) {
     // Deduplicate results (same pair might be found by both methods)
     const seen = new Set();
     const unique = duplicates.filter(d => {
@@ -437,8 +486,10 @@ async function main() {
       crossOutletPointerPairs: pointerPairs,
       // BRO-6759: different named critics, matching text, no verified link.
       wrongTextCandidates,
+      // BRO-7536: LLM pair verdicts, keyed by both side hashes (order-independent) + prompt version.
+      llmPairVerdicts: pairVerdicts,
     };
-    const reportPath = path.join(AUDIT_DIR, 'cross-outlet-duplicates.json');
+    const reportPath = REPORT_PATH;
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
     console.log(`\nAudit report: ${reportPath}`);
 
@@ -478,4 +529,13 @@ async function main() {
   console.log('\nDone.');
 }
 
-main().catch(console.error);
+module.exports = {
+  main,
+  DUPLICATE_PROMPT_VERSION,
+  pairSideHash,
+  _setLLMForTest(fn) { llmOverride = fn; },
+};
+
+if (require.main === module) {
+  main().catch(console.error);
+}

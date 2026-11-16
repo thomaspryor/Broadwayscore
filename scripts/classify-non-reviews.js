@@ -35,6 +35,8 @@
  *   --show=SLUG             Single show filter
  *   --resume                Continue from checkpoint
  *   --verbose               Per-file details
+ *   --no-verdict-cache      Incremental: re-ask files whose earlier uncertain / LANE-SKIP /
+ *                           EVIDENCE-CONFLICT verdict is stamped (BRO-7536)
  *
  * Env:
  *   GEMINI_API_KEY     Required for gemini provider (default)
@@ -55,6 +57,7 @@ const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/model
 const { finalResponseText, describeResponse, firstJsonObject } = require('./lib/anthropic-response-text');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const verdictCache = require('./lib/llm-verdict-cache');
 
 const USAGE = `classify-non-reviews.js — Review vs. Non-Review Classification.
 
@@ -82,6 +85,7 @@ const CONCURRENCY = parseInt((args.find(a => a.startsWith('--concurrency=')) || 
 const MAX_COST = parseFloat((args.find(a => a.startsWith('--max-cost=')) || '').split('=')[1]) || 5.00;
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 const PROVIDER = (args.find(a => a.startsWith('--provider=')) || '').split('=')[1] || 'gemini';
+const NO_VERDICT_CACHE = args.includes('--no-verdict-cache');
 
 // --- Manual overrides: files confirmed as reviews after spot-checking LLM output ---
 // These are excluded from --apply even if the LLM flagged them as non-reviews.
@@ -98,7 +102,8 @@ const MANUAL_REVIEW_OVERRIDES = new Set([
 ]);
 
 // --- Paths ---
-const DATA_DIR = path.join(__dirname, '..', 'data');
+// Env override is for tests over synthetic fixtures (scripts/tests/*-verdict-cache.test.mjs).
+const DATA_DIR = process.env.CLASSIFY_NON_REVIEWS_DATA_DIR || path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const OUTPUT_FILE = path.join(AUDIT_DIR, 'non-review-classification.json');
@@ -264,7 +269,9 @@ function callOpenAI(systemPrompt, userPrompt) {
   });
 }
 
+let llmOverride = null; // tests only (_setLLMForTest)
 function callLLM(systemPrompt, userPrompt) {
+  if (llmOverride) return llmOverride(systemPrompt, userPrompt);
   if (PROVIDER === 'claude') return callClaude(systemPrompt, userPrompt);
   if (PROVIDER === 'openai') return callOpenAI(systemPrompt, userPrompt);
   return callGemini(systemPrompt, userPrompt);
@@ -322,6 +329,11 @@ function buildClassifyPrompt(showTitle, fullText) {
   const text = buildClassifySample(showTitle, fullText);
   return `The target show is: "${showTitle}"\n\nArticle text:\n${text}`;
 }
+
+// BRO-7536: stamped verdicts are re-asked when this changes. Bump the guard
+// version when buildClassifySample's sampling changes what the LLM sees.
+const CLASSIFY_PROMPT_VERSION = verdictCache.promptVersionFor(
+  `${CLASSIFY_SYSTEM_PROMPT}\n---\n${buildClassifyPrompt('<SHOW>', '<TEXT>')}`, 1);
 
 function parseClassifyResponse(raw) {
   let text = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
@@ -937,6 +949,18 @@ async function main() {
       }
 
       const fullText = data.fullText || '';
+      // BRO-7536: an uncertain / lane / evidence-blocked verdict on this exact
+      // text and prompt is stamped; asking again would repeat it and pay for it.
+      if (INCREMENTAL && fullText.length > 200 && verdictCache.shouldSkipClassify(data, {
+        showTitle: showTitleMap[data.showId || dir.name] || data.showId || dir.name,
+        promptVersion: CLASSIFY_PROMPT_VERSION,
+        overwrite: NO_VERDICT_CACHE,
+        laneStillBypasses: laneBypasses(data, 'nonReview'),
+        evidenceStillBlocks: !!nonReviewStampBlockReason(data, hasBotStubTruncationSignal(data)),
+      })) {
+        stats.skippedPriorVerdict = (stats.skippedPriorVerdict || 0) + 1;
+        continue;
+      }
       if (fullText.length > 200) {
         stats.withFullText++;
         toClassify.push({
@@ -971,6 +995,7 @@ async function main() {
   console.log(`In reviews.json: ${stats.inReviewsJson}`);
   console.log(`Skipped (excluded): ${stats.skippedExcluded}`);
   if (stats.skippedAlreadyClassified) console.log(`Skipped (already classified): ${stats.skippedAlreadyClassified}`);
+  if (stats.skippedPriorVerdict) console.log(`Skipped (prior uncertain/lane/evidence verdict, same text+prompt): ${stats.skippedPriorVerdict}`);
   console.log(`With fullText (→ LLM): ${stats.withFullText}`);
   console.log(`Excerpt-only (→ heuristic): ${stats.excerptOnly}`);
   console.log(`Heuristic-flagged: ${stats.heuristicFlagged}`);
@@ -1005,6 +1030,9 @@ async function main() {
   console.log(`\n=== LLM CLASSIFICATION (${filesToProcess.length} files) ===`);
   const nonReviews = [];
   const uncertainCases = [];
+  // BRO-7536: outcomes that write no flag, stamped so the next run skips them.
+  const verdictStamps = []; // { file, showId, reason }
+  const judgedTextByFile = new Map(filesToProcess.map(e => [e.file, e.fullText]));
 
   for (let i = 0; i < filesToProcess.length; i += CONCURRENCY) {
     // Budget check
@@ -1056,6 +1084,7 @@ async function main() {
           } else {
             uncertainCases.push(item);
             stats.uncertainCases++;
+            verdictStamps.push({ file: entry.file, showId: entry.showId, reason: verdictCache.classifyStampReason('uncertain') });
           }
 
           if (VERBOSE) {
@@ -1146,6 +1175,7 @@ async function main() {
           // BRO-4807: an opening-night lane review is never flagged by this classifier.
           if (laneBypasses(data, 'nonReview')) {
             console.log(`  [LANE-SKIP] ${nr.file} — opening-night lane review`);
+            verdictStamps.push({ file: nr.file, showId: nr.showId, reason: verdictCache.classifyStampReason('lane-skip') });
             continue;
           }
           if (data.nonReviewManualClear === true) {
@@ -1169,6 +1199,7 @@ async function main() {
             console.log(`  [EVIDENCE-CONFLICT] ${nr.file} — ${blockReason}; skipping terminal stamp`);
             // BRO-7050: kept live, so stamp it checked; otherwise every incremental run re-pays Gemini for it.
             if (/aggregator lists this review/.test(blockReason)) reviewsConfirmed.push(nr.file);
+            else verdictStamps.push({ file: nr.file, showId: nr.showId, reason: verdictCache.classifyStampReason('evidence-conflict') });
             continue;
           }
           data.isNonReview = true;
@@ -1203,6 +1234,32 @@ async function main() {
           }
         }
         console.log(`Stamped ${stamped} confirmed reviews.`);
+      }
+
+      // BRO-7536: remember verdicts that wrote no flag (uncertain, LANE-SKIP,
+      // EVIDENCE-CONFLICT). EXTRACTION-SUSPECT is never stamped: it stays retriable.
+      const toStamp = verdictStamps.filter(v => v.reason);
+      if (toStamp.length > 0) {
+        let vStamped = 0;
+        for (const v of toStamp) {
+          const fullPath = path.join(REVIEW_TEXTS_DIR, v.file);
+          try {
+            const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+            Object.assign(data, verdictCache.buildVerdictStamp(verdictCache.CLASSIFY_FIELDS, {
+              text: judgedTextByFile.get(v.file),
+              context: showTitleMap[v.showId] || v.showId,
+              reason: v.reason,
+              promptVersion: CLASSIFY_PROMPT_VERSION,
+            }));
+            const result = safeWriteReview(fullPath, data);
+            if (result.lockedSkipped) lockedSkipCount++;
+            if (result.wrote !== false) vStamped++;
+          } catch (e) {
+            if (VERBOSE) console.log(`  ERROR stamping verdict ${v.file}: ${e.message}`);
+          }
+        }
+        stats.verdictStamped = vStamped;
+        console.log(`Stamped ${vStamped} uncertain/lane/evidence verdicts (skipped next run while text+prompt unchanged).`);
       }
     }
   }
@@ -1265,7 +1322,15 @@ function saveReport(nonReviews, uncertainCases, heuristicFlags, reviewsConfirmed
   console.log(`[LOCKED-SKIP-COUNT] classify-non-reviews: ${lockedSkipCount}`);
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e);
-  process.exit(1);
-});
+module.exports = {
+  main,
+  CLASSIFY_PROMPT_VERSION,
+  _setLLMForTest(fn) { llmOverride = fn; },
+};
+
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e);
+    process.exit(1);
+  });
+}
