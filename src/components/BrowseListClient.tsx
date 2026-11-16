@@ -141,6 +141,7 @@ export default function BrowseListClient({
     ? { ...SORT_LABELS, oldest: 'Soonest', newest: 'Latest' }
     : SORT_LABELS;
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
+  const [sortFeedback, setSortFeedback] = useState('');
   const [sort, setSort] = useState<SortState>(
     defaultSort === 'custom' ? 'custom' :
     defaultSort === 'performances' ? 'performances' :
@@ -307,10 +308,13 @@ export default function BrowseListClient({
                     ? (sortToggle.normalizeSort(sort) !== s
                         ? `Click to sort by ${sortLabels[s]}`
                         : `Sorted ${sort === s ? SORT_DIRECTION_LABEL[s]!.base : SORT_DIRECTION_LABEL[s]!.toggled}, click to reverse`)
-                    : undefined,
+                    : sortToggle.getFixedSortTitle(s, sort, sortLabels[s]),
                 }))}
                 value={sortToggle.normalizeSort(sort) as SortOption}
-                onChange={(s) => setSort(sortToggle.getNextSort(s, sort) as SortState)}
+                onChange={(s) => {
+                  setSortFeedback(sortToggle.getFixedSortTitle(s, s, sortLabels[s]) ?? '');
+                  setSort(sortToggle.getNextSort(s, sort) as SortState);
+                }}
                 ariaLabel="Sort shows"
               />
             ) : subtitle ? (
@@ -326,6 +330,7 @@ export default function BrowseListClient({
               />
             )}
           </div>
+          <p role="status" className="text-xs text-fg-muted empty:hidden">{sortFeedback}</p>
         </div>
       )}
 

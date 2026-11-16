@@ -104,7 +104,7 @@ describe('/browse/[slug] SORT ToggleBar responds visibly to every click (best-re
   test('onChange advances sort via sortToggle.getNextSort, not a bare setSort no-op', () => {
     assert.match(
       block,
-      /onChange=\{\(s\) => setSort\(sortToggle\.getNextSort\(s, sort\) as SortState\)\}/,
+      /onChange=\{\(s\) => \{[\s\S]*?setSort\(sortToggle\.getNextSort\(s, sort\) as SortState\);[\s\S]*?\}\}/,
       'clicking a SORT option must call sortToggle.getNextSort so an already-active option (e.g. Critics on best-recent-shows) reverses direction instead of no-op-ing',
     );
   });

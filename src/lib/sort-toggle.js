@@ -87,12 +87,22 @@ function createSortToggle(pairs) {
     return '';
   }
 
+  // Curated server orders cannot be meaningfully reversed. Explain that
+  // constraint instead of presenting an active fixed sort as an empty click.
+  function getFixedSortTitle(baseValue, currentSort, label) {
+    if (isToggleableLocal(baseValue)) return undefined;
+    return currentSort === baseValue
+      ? `Sorted by ${label}. This order is fixed.`
+      : `Click to sort by ${label}`;
+  }
+
   return {
     pairs,
     isToggleable: isToggleableLocal,
     normalizeSort: normalizeSortLocal,
     getNextSort: getNextSortLocal,
     getSortArrow: getSortArrowLocal,
+    getFixedSortTitle,
   };
 }
 
