@@ -30,8 +30,27 @@
 
 const { evaluateDateGuard, earliestShowDate } = require('./date-guard');
 
+// The Stage's browser-rendered archives have only a visible article date.
+// Scope it to the feature's metadata, excluding related article cards. Reading
+// a date from the whole page can silently route a revival to a sidebar's run.
+function extractStageArticleDate(html) {
+  if (!String(html || '').includes('aos-FeatureArticle')) return null;
+  const $ = require('cheerio').load(html);
+  const raw = $('.aos-FeatureArticle .aos-ArticleMetaData .aos-ArticleDate')
+    .filter((_, el) => !$(el).closest('.aos-Article-RelatedContent, .aos-Article-RelArticle, .aos-ArticleTextContainer').length)
+    .first().text().trim();
+  const match = raw.match(/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}),\s+(\d{4})$/i);
+  if (!match) return null;
+  const month = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'].indexOf(match[1].toLowerCase());
+  const date = new Date(Date.UTC(Number(match[3]), month, Number(match[2])));
+  if (date.getUTCMonth() !== month || date.getUTCDate() !== Number(match[2])) return null;
+  return date.toISOString().slice(0, 10);
+}
+
 function extractPageDateFromHtml(html) {
   if (!html || html.length < 100) return null;
+  const stageDate = extractStageArticleDate(html);
+  if (stageDate) return stageDate;
   const pick = (m) => {
     if (!m) return null;
     const d = m[1].substring(0, 10);
@@ -126,9 +145,11 @@ function checkAggregatorPageProduction({ html, show, pageDate } = {}) {
  * @returns {{ show: object, prod: object, rerouted: boolean, from?: string }}
  */
 function resolveProductionByPageDate({ html, show, rematch } = {}) {
-  // Reroute only on the page's OWN publish date (og/JSON-LD scoped to the page),
+  // Reroute only on the page's OWN publish date (Stage article header or
+  // og/JSON-LD scoped to the page),
   // never the first datePublished in the HTML, which can be a related article's.
-  const ownDate = require('./article-extractor').extractPublishDate(html, '') || null;
+  const ownDate = extractStageArticleDate(html)
+    || require('./article-extractor').extractPublishDate(html, '') || null;
   const prod = checkAggregatorPageProduction({ html, show, pageDate: ownDate });
   if (!ownDate || !prod.outOfRun || !prod.pageDate || typeof rematch !== 'function') return { show, prod, rerouted: false };
   const alt = rematch(prod.pageDate);

@@ -119,6 +119,16 @@ function checkArchiveCategory(html, show, siblingCategories) {
     check = { ...check, ok: true, rescued: true };
   }
   if (check.ok) {
+    // BRO-7544: Stage archives can name the right title but hold an earlier
+    // production. Share the scraper's date policy at read/write/audit time,
+    // including the visible dates in legacy browser archives and prior runs.
+    if (/\breview round[- ]up\b/i.test(check.pageTitle)
+        && (/\bThe Stage\b/i.test(check.pageTitle) || /\baos-FeatureArticle\b/.test(html))) {
+      const prod = require('./aggregator-page-production').checkAggregatorPageProduction({ html, show });
+      if (prod.outOfRun) {
+        return { ...check, ok: false, reason: 'roundup-page-date-outside-run', pageDate: prod.pageDate };
+      }
+    }
     // Scope run-window checks to roundup/Verdict pages, not evergreen show
     // listings (BWW /reviews/, Show Score, etc.) that share this guard.
     const kind = /Review Roundup/i.test(check.pageTitle) ? 'bww-roundups'
