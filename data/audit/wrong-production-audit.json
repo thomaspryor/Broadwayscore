@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T02:01:15.957Z",
+  "timestamp": "2026-11-16T02:40:23.779Z",
   "stats": {
-    "totalReviews": 82029,
-    "alreadyFlagged": 22445,
+    "totalReviews": 82041,
+    "alreadyFlagged": 22458,
     "dateGuardCatches": 221,
-    "directorMismatch": 3708,
+    "directorMismatch": 3710,
     "tvFilmSignals": 2318,
     "londonSignals": 3769,
-    "offBroadwaySignals": 751,
-    "yearMismatch": 375,
-    "noPublishDate": 8203
+    "offBroadwaySignals": 750,
+    "yearMismatch": 373,
+    "noPublishDate": 8190
   },
   "findings": [
     {
@@ -5093,39 +5093,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
-        }
-      ]
-    },
-    {
-      "showId": "an-american-in-paris-tour-2022",
-      "file": "newsday--linda-winer.json",
-      "score": 93,
-      "publishDate": null,
-      "url": "http://www.newsday.com/entertainment/theater/an-american-in-paris-review-thrilling-musical-1.10239712",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
-        }
-      ]
-    },
-    {
-      "showId": "an-american-in-paris-tour-2022",
-      "file": "talkinbroadway--matthew-murray.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "https://www.talkinbroadway.com/world/AmericanParis2015.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2015 (2x) more than 2022 (0x). 2015 matches production: an-american-in-paris-2015"
         }
       ]
     },
@@ -17163,6 +17130,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"wole soyinka\" from death-and-the-kings-horseman-1987"
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "broadwayworld--april-sigler.json",
+      "publishDate": "2026-11-11",
+      "url": "https://www.broadwayworld.com/raleigh/article/Review-DEATH-BECOMES-HER-at-DPAC-20261111",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
         }
       ]
     },
@@ -30686,20 +30666,6 @@
       ]
     },
     {
-      "showId": "heartbreak-house-2006",
-      "file": "wsj--terry-teachout.json",
-      "score": 94,
-      "publishDate": null,
-      "url": "https://www.wsj.com/articles/heartbreak-house-review-reviving-shaws-useless-futile-creatures-1536696745",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (3x) more than 2006 (1x). 2026 matches production: heartbreak-house-regional-2026"
-        }
-      ]
-    },
-    {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "gay-city-news--david-kennerley.json",
       "score": 79,
@@ -35994,6 +35960,19 @@
     },
     {
       "showId": "jagged-little-pill-tour-2022",
+      "file": "buzznews--bill-esler.json",
+      "publishDate": "2023-04-14",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5155-don-t-miss-alanis-morisette-s-striking-jagged-little-pill-at-broadway-in-chicago-thru-april-23.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
       "file": "cbc--unknown.json",
       "publishDate": "2023-10-26",
       "url": "https://www.cbc.ca/music/alanis-jagged-little-pill-musical-1.7008708",
@@ -39751,6 +39730,24 @@
       "score": 96,
       "publishDate": "2024-12-22",
       "url": "https://www.theepochtimes.com/bright/les-miserables-the-beloved-musical-visits-chicago-in-a-perfect-production-5780546",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2023-02-08",
+      "url": "https://hotchka.com/les-miserables-tour-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44639,6 +44636,19 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
+      "file": "broadwayworld--miranda-keating.json",
+      "publishDate": "2023-03-03",
+      "url": "https://www.broadwayworld.com/houston/article/Review-MOULIN-ROUGE-THE-MUSICAL-Makes-Audiences-Roar-with-Delight-Night-After-Night-at-The-Hobby-Center-20230303",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--samantha-wu.json",
       "score": 90,
       "publishDate": "2024-11-22",
@@ -48385,6 +48395,19 @@
       "score": 86,
       "publishDate": "2026-10-16",
       "url": "https://www.kqed.org/arts/13994824/in-oh-mary-a-closeted-presidents-unhinged-wife-draws-cackles",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "latimes--jenelle-riley.json",
+      "publishDate": "2026-11-03",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-11-03/creatives-behind-oh-mary-address-hype-prior-to-la-run",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52627,20 +52650,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "peter-pan-goes-wrong-regional-2026",
-      "file": "colin-thomas--colin-thomas.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://colinthomas.ca/peter-pan-goes-wrong-and-so-does-this-farce-sometimes/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"adam meggido\" from peter-pan-goes-wrong-2023"
         }
       ]
     },
@@ -62680,20 +62689,6 @@
       "score": 70,
       "publishDate": "2017-02-23",
       "url": "https://www.chicagotribune.com/entertainment/theater/broadway/sc-sunday-park-george-broadway-review-ent-0223-20170223-column.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
-      "file": "cititour--brian-scott-lipton.json",
-      "score": 91,
-      "publishDate": null,
-      "url": "https://cititour.com/NYC_Broadway/Sunday-in-the-Park-With-George/190",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -74881,6 +74876,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "broadwayworld--tyler-hinton.json",
+      "publishDate": "2026-11-11",
+      "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-THE-OUTSIDERS-is-a-Visceral-Triumph-at-the-Eccles-Theater-20261111",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "buffalorising--peter-hall.json",
       "score": 93,
       "publishDate": "2025-09-20",
@@ -80784,20 +80792,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "translations-west-end-2019",
-      "file": "britishtheatrecom--sophie-adnitt.json",
-      "score": 93,
-      "publishDate": null,
-      "url": "https://www.britishtheatre.com/posts/review-translations-national-theatre-october-2019",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ian rickson\" from translations-west-end-2018"
         }
       ]
     },
@@ -94982,20 +94976,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "brooklyn-laundry-off-broadway-2024",
-      "file": "theater-life--david-sheward.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://theaterlife.com/brooklyn-laundry-pericles/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
