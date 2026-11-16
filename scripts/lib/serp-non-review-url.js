@@ -33,7 +33,7 @@ const NON_REVIEW_SECTIONS = new Set([
   'opinion', 'long-reads', 'promoted-content', 'recipes', 'shop', 'money', 'video', 'videos',
   'obituaries', 'obituary', 'puzzles', 'games', 'cooking', 'tax', 'luxury',
 ]);
-const NON_REVIEW_SLUG = /(?<!the-)(?:^|[/-])(?:interviews?|obituary|podcast|gift-guide)(?:$|[/-])(?!\w*broadway|hampstead)/i;
+const NON_REVIEW_SLUG = /(?:^|[/-])(?<!the-)(?:interviews?|obituary|podcast|gift-guide)(?:$|[/-])(?!\w*broadway|hampstead)/i;
 
 function isNonReviewSectionUrl(url) {
   let u;

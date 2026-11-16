@@ -963,13 +963,14 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // 217 open 2025-26 full-text gaps were such placeholders beside a complete named review; each reads as
   // a stub forever because it has nothing to fetch. Skip when this outlet already has a usable named
   // file for the show (its own url, not flagged away): the placeholder adds no review.
-  if (criticName === 'Unknown' && !input.url && !fields.fullText && outletId && showId) {
+  if (criticName === 'Unknown' && !input.url && !fields.fullText && !input.fullText && outletId && showId) {
     try {
       const dir = path.join(reviewTextsDir, showId);
       const covered = fs.existsSync(dir) && fs.readdirSync(dir).some((f) => {
         if (!f.startsWith(`${outletId}--`) || !f.endsWith('.json') || f === `${outletId}--unknown.json`) return false;
         let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return false; }
-        return !!d.url && !d.wrongShow && !d.wrongProduction && !d.isRoundupArticle && !d.duplicateOf && !d.isNonReview;
+        return !!d.url && !d.wrongShow && !d.wrongProduction && !d.isRoundupArticle && !d.duplicateOf && !d.isNonReview
+          && (d.contentTier === 'complete' || String(d.fullText || '').length >= 800); // a stub/excerpt sibling is not coverage (same rule as cleanup-unknown-placeholders)
       });
       if (covered) return { action: 'skipped', reason: 'unknown-no-url-outlet-already-covered: a named review by this outlet exists for the show' };
     } catch { /* fail open: the guard only prevents a placeholder */ }

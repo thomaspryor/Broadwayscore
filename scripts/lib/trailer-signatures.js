@@ -201,8 +201,10 @@ function stripStageCriticBio(text) {
 // review-length, so a review cut off mid-sentence in front of them stays truncated.
 const STAGE_PROMO_RE = /\s*Invest in The Stage today with a subscription[^\n]{0,60}$/;
 const STAGE_NEWSLETTER_RE = /\s*For all the latest [^\n]{0,80}?sign up to [^\n]{0,80}?newsletter(?: here)?\.?\s*$/i;
-const STAGE_RUN_LISTING_RE = /\n\s*[\p{Lu}][^\n.]{1,80}?,\s+then\s+(?:then\s+)?(?=[^\n]*\d)[^\n.]{1,120}$/u;
-const STAGE_BIO_ANY_RE = /(?:\n\s*|\s{2,})((?!(?:It|This|That|There|He|She|They)\b)[A-Z][\w'’-]+(?: [A-Z][\w'’-]+)? (?:is|was) (?:a|an|the) [^\n]{0,360}?)$/;
+const STAGE_RUN_LISTING_RE = /\n\s*[\p{Lu}][^\n.]{1,80}?,\s+then\s+(?:then\s+)?(?=[^\n]*\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b[^\n]*\d|[^\n]*\d[^\n]*\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b|[^\n]*\b(?:until|from|Theatre|Playhouse|Hall|Centre|Rep)\b)[^\n.]{1,120}$/u;
+// a cut-off sentence ends on a function word; a real bio or listing never does
+const STAGE_CUTOFF_END_RE = /\b(?:the|a|an|and|or|of|to|in|on|at|by|for|with|but|that|this|how|as|from|his|her|their|its|is|was)\s*$/i;
+const STAGE_BIO_ANY_RE = /(?:\n\s*|\s{2,})((?!(?:It|This|That|There|He|She|They)\b)[A-Z][\w'’-]+(?: [A-Z][\w'’-]+)? is (?:a|an|the) [^\n]{0,360}?)$/;
 
 const STAGE_BIO_SPACE_RE = /(?<=[.!?]["'”’]?)\s((?!(?:It|This|That|There|He|She|They)\b)[A-Z][\w'’-]+(?: [A-Z][\w'’-]+)? (?:is|was) (?:a|an|the) [^\n]{0,360}?)$/;
 
@@ -220,7 +222,7 @@ function stripStagePageTail(text) {
       // bio: a short last sentence run that names a writing job and is not review prose
       // a bio set off by one space is accepted only when the page's subscription promo followed it
       const m = STAGE_BIO_ANY_RE.exec(t) || (promoSeen ? STAGE_BIO_SPACE_RE.exec(t) : null);
-      if (m && STAGE_BIO_JOB_RE.test(m[1]) && !/[.!?]["'”’]?\s+[A-Z]/.test(m[1].replace(/^[^.]*\.\s+(?=(?:He|She|They)\b)/, ''))) n = t.slice(0, m.index);
+      if (m && STAGE_BIO_JOB_RE.test(m[1]) && !STAGE_CUTOFF_END_RE.test(m[1]) && !/[.!?]["'”’]?\s+[A-Z]/.test(m[1].replace(/^[^.]*\.\s+(?=(?:He|She|They)\b)/, ''))) n = t.slice(0, m.index);
     }
     if (n === t) break;
     t = n.replace(/\s+$/, '');

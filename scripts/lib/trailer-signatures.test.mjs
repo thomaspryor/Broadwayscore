@@ -322,3 +322,22 @@ test('The Stage page tail: prose that looks like a bio or a ", then" line is nev
   assert.equal(T.stripOutletTrailer(`${BODY}\n\n${news}`, 'thestage'), `${BODY}\n\n${news}`);
   assert.equal(T.stripOutletTrailer(`${BODY}\n\n${news}`, 'thestage', { forClassify: true }), BODY);
 });
+
+import { createRequire as _cr7569 } from 'node:module';
+import _t7569 from 'node:test';
+import _a7569 from 'node:assert/strict';
+{
+  const { classifyTrailers, stripKnownTrailers } = _cr7569(import.meta.url)('./trailer-signatures.js');
+  void classifyTrailers;
+  _t7569('BRO-7569 review: cut-off Stage tails are not stripped into a "complete" review', () => {
+    const body = 'A long review sentence that ends properly. '.repeat(40);
+    for (const tail of [
+      '\n\nWatching it, then reading the 1960 script, I was struck by how the',
+      '\n\nShakespeare was a playwright who understood that the 1590s audience wanted',
+      '  Stoppard is a writer at the height of his powers, and this',
+    ]) {
+      const out = stripKnownTrailers(body + tail, 'thestage');
+      _a7569.ok(String(out && out.text !== undefined ? out.text : out).endsWith(tail.trim()), 'kept: ' + tail.trim());
+    }
+  });
+}

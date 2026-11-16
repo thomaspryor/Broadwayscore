@@ -72,3 +72,14 @@ test('isNonReviewSectionUrl: real review pages, incl. lifestyle-section reviews,
 test('isNonReviewSectionUrl: titles that contain the word are not refused (BRO-7569 review)', () => {
   for (const u of ['https://www.nytimes.com/2026/03/01/theater/the-interview-broadway.html', 'https://www.telegraph.co.uk/theatre/what-to-see/the-interview-hampstead-theatre/']) assert.equal(isNonReviewSectionUrl(u), false, u);
 });
+
+import { createRequire as _cr7569b } from 'node:module';
+import _t7569b from 'node:test';
+import _a7569b from 'node:assert/strict';
+{
+  const m = _cr7569b(import.meta.url)('./serp-non-review-url.js');
+  const fn = m.isNonReviewUrl || m.isNonReviewSerpUrl || Object.values(m).find((v) => typeof v === 'function');
+  _t7569b('BRO-7569 review: a show titled "The Interview" is not refused by slug', () => {
+    _a7569b.equal(fn('https://www.nytimes.com/2025/03/01/theater/the-interview-play.html'), false);
+  });
+}
