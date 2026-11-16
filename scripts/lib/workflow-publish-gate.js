@@ -53,7 +53,8 @@ const SWALLOWING_OPERATORS = /\|\||&&|;|\||(?:^|[^&])&(?:[^&]|$)/;
 
 /**
  * Split a `run:` body into LOGICAL lines: newlines inside a quoted string do
- * not end a line, and a trailing backslash continues one.
+ * not end a line, and a trailing backslash continues one. Ignore shell
+ * comments before interpreting their quotes or backslashes.
  *
  * This is load-bearing. commercial-weekly's commit message opens a double
  * quote that closes three lines later; with a naive per-physical-line scan the
@@ -66,6 +67,7 @@ function logicalLines(run) {
   const out = [];
   let cur = '';
   let quote = null;
+  let wordStart = true;
   for (let i = 0; i < src.length; i += 1) {
     const ch = src[i];
     if (quote) {
@@ -78,22 +80,37 @@ function logicalLines(run) {
       cur += ch;
       continue;
     }
+    // Only an unquoted # at the start of a word begins a shell comment.
+    // In particular, discover's in a comment must not open a quoted string
+    // that consumes the publisher below it (BRO-7542).
+    if (ch === '#' && wordStart) {
+      while (i + 1 < src.length && src[i + 1] !== '\n') i += 1;
+      continue;
+    }
     if (ch === '"' || ch === "'") {
       quote = ch;
+      wordStart = false;
       cur += ch;
       continue;
     }
-    if (ch === '\\' && src[i + 1] === '\n') {
+    if (ch === '\\') {
+      if (src[i + 1] === '\n') {
+        cur += ' ';
+      } else {
+        cur += ch + (src[i + 1] || '');
+        wordStart = false;
+      }
       i += 1;
-      cur += ' ';
       continue;
     }
     if (ch === '\n') {
       out.push(cur);
       cur = '';
+      wordStart = true;
       continue;
     }
     cur += ch;
+    wordStart = /[\s;&|()<>]/.test(ch);
   }
   out.push(cur);
   return out
@@ -213,12 +230,16 @@ function isAlwaysReachable(stepOrJob) {
  * to 'success' while leaving `outcome` at 'failure'.
  */
 function requiresOutcomeSuccess(cond, id) {
-  const text = String(cond || '');
+  const text = String(cond || '').trim().replace(/^\$\{\{/, '').replace(/\}\}$/, '').trim();
   if (/\|\|/.test(text)) return false;
-  if (/!=/.test(text)) return false;
   if (/!\s*\(/.test(text)) return false; // negated group
   const esc = String(id).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`steps\\.${esc}\\.outcome\\s*==\\s*'success'`, 'i').test(text);
+  // Match a whole positive AND term. Other terms may legitimately use !=
+  // (for example new_shows_count != '0'); they do not weaken this guard.
+  return new RegExp(
+    `(?:^|&&)\\s*\\(*\\s*steps\\.${esc}\\.outcome\\s*==\\s*'success'\\s*\\)*\\s*(?:&&|$)`,
+    'i',
+  ).test(text);
 }
 
 /**

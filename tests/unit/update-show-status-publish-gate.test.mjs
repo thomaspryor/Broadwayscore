@@ -76,6 +76,12 @@ function loadWorkflow() {
 
 const stepLabel = (step) => step.name || step.uses || '(unnamed step)';
 
+test('the new Broadway commercial queue is recognized as a publisher despite shell comments', () => {
+  const step = loadJob().steps.find((s) => s.name === 'Queue new Broadway shows for commercial research');
+  assert.ok(step, 'the new Broadway commercial queue step must exist');
+  assert.equal(isPublishingStep(step), true, 'shell comment quotes must not hide the queue push');
+});
+
 test('the workflow parses and the update-shows job still publishes (guard against a vacuous pass)', () => {
   const steps = loadJob().steps || [];
   assert.ok(steps.length > 20, `expected a substantial update-shows job, found ${steps.length} steps`);
