@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7594-f",
   "planId": "773b4900-7b15-4cb2-b203-5704ed819406",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-16T14:06:00.779Z",
   "submitter": {
     "name": null,
@@ -94,5 +94,49 @@
         "description": "shows.json: dead-centre-deaf-republic-off-broadway-2026.intermissions"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-16T16:10:21.792Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for new-owner-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for new-owner-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-verge-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for trial-by-jury-and-the-zoo-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for trial-by-jury-and-the-zoo-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for clifford-odets-waiting-for-lefty-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for dead-centre-deaf-republic-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for dead-centre-deaf-republic-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
