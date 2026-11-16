@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T18:21:43.216Z",
+  "generatedAt": "2026-11-16T19:35:53.225Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -17,6 +17,11 @@
       "id": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "openingDate": "2026-11-10"
+    },
+    {
+      "id": "jenufa-off-broadway-2026",
+      "title": "Jenůfa",
+      "openingDate": "2026-11-16"
     },
     {
       "id": "the-fantasticks-2026",
@@ -117,10 +122,18 @@
     {
       "showId": "first-and-last-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "ted-talks-and-talks-regional-2026",
+      "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 86,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -140,14 +153,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "the-knockturnal",
-      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 871,
-  "matchedGaps": 3,
+  "itemsScanned": 875,
+  "matchedGaps": 4,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -175,6 +184,15 @@
       "outletId": "afridiziak-theatre-news",
       "url": "https://www.afridiziak.com/reviews/hamlet-hail-to-the-thief/",
       "headline": "Hamlet Hail to the Thief – review",
+      "publishDate": "2026-11-16"
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "title": "Passing Strange",
+      "level": "matched",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-passing-strange-finally-makes-its-la-debut-at-the-pasadena-playhouse_1859872/",
+      "headline": "Review: Passing Strange Finally Makes Its LA Debut at the Pasadena Playhouse",
       "publishDate": "2026-11-16"
     },
     {

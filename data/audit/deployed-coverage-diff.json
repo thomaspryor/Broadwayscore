@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-16T18:21:42.918Z",
+  "generatedAt": "2026-11-16T19:35:52.806Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 317,
+  "checked": 318,
   "clean": 317,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "titanique-west-end-2024",
+      "title": "Titanique",
+      "openingDate": "2025-01-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.02 vs local 79.09 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 26,
+      "deployedCount": 26,
+      "firstDefectAt": "2026-11-16T19:35:46.115Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
