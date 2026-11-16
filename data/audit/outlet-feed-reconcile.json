@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T20:45:25.536Z",
+  "generatedAt": "2026-11-16T22:58:09.728Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -131,28 +131,32 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+      "outletId": "theupcoming",
+      "error": "HTTP 503 for https://www.theupcoming.co.uk/feed/"
     },
     {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+      "outletId": "exeunt-magazine",
+      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
     },
     {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "fringereview",
+      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     },
     {
       "outletId": "times-square-chronicles",
@@ -163,26 +167,26 @@
       "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 826,
+  "itemsScanned": 723,
   "matchedGaps": 2,
   "possibleGaps": 1,
   "gaps": [
     {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
+      "showId": "downstate-2026",
+      "title": "Downstate",
       "level": "matched",
-      "outletId": "liamodell",
-      "url": "https://liamodell.com/2026/11/15/cloud-9-review-national-theatre-lyttelton-caryl-churchill/",
-      "headline": "‘Cloud 9’ review &#8211; Caryl Churchill revival is missing fresh context",
-      "publishDate": "2026-11-15"
+      "outletId": "lighting-and-sound-america",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=8812YU",
+      "headline": "Theatre&#32;in&#32;Review:&#32;Downstate&#32;(Booth&#32;Theatre)",
+      "publishDate": "2026-11-16"
     },
     {
-      "showId": "passing-strange-regional-2026",
-      "title": "Passing Strange",
+      "showId": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
       "level": "matched",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-passing-strange-finally-makes-its-la-debut-at-the-pasadena-playhouse_1859872/",
-      "headline": "Review: Passing Strange Finally Makes Its LA Debut at the Pasadena Playhouse",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/now-you-see-me-live/",
+      "headline": "Now You See Me LIVE! Comes to Broadway with High-Octane Magic in a Limited Holiday Engagement through January 3",
       "publishDate": "2026-11-16"
     },
     {

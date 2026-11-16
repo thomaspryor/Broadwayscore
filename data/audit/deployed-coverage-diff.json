@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-16T20:45:25.092Z",
+  "generatedAt": "2026-11-16T22:58:09.439Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 318,
-  "clean": 317,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "openingDate": "2026-11-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.2 vs local 78.11 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30,
-      "firstDefectAt": "2026-11-16T20:45:21.634Z"
-    }
-  ],
+  "clean": 318,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
