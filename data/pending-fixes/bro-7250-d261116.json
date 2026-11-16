@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7250-d261116",
   "planId": "90293abe-f6a8-4e2e-a14e-33e7104661fa",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-16T20:51:24.239Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,20 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-16T20:55:36.705Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added misalliance-regional-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "duplicateOf": "a-christmas-carol-a-musical-ghost-story-regional-2026",
+      "reason": "add-show: \"a-christmas-carol-north-regional-2026\" duplicates existing \"a-christmas-carol-a-musical-ghost-story-regional-2026\" (\"a-christmas-carol-north-regional-2026\" and \"a-christmas-carol-a-musical-ghost-story-regional-2026\" share a venue + overlapping dates and one title is a fragment of the other); if it is a genuinely distinct production list \"a-christmas-carol-a-musical-ghost-story-regional-2026\" in the action's distinctFrom"
+    }
+  ],
+  "executedIn": "ci"
 }
