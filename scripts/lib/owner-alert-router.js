@@ -102,6 +102,7 @@ const { classifyHealthCheck } = require('./digest-audience.js');
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
 const linearClient = require('./linear-client');
+const { titleCore } = require('./card-dedupe');
 const { testIdMarker } = require('./test-identity.js');
 const { isTerminalStateType } = require('./linear-state-types.js');
 
@@ -540,7 +541,7 @@ function testIdForDedupe(testId, dispatchAtFiling) {
 // exactly as it did before this rail existed. `searchIssuesFn` is an
 // injectable seam (tests stub linear-client.js's export) — production always
 // resolves to the real linearClient.searchIssues.
-async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient.searchIssues, title = null, testId = null } = {}) {
+async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient.searchIssues, listOpenFn = linearClient.listOpenIssues, title = null, testId = null } = {}) {
   try {
     const match = await searchIssuesFn(conditionKey);
     if (match) return { matched: true, identifier: match.identifier };
@@ -557,6 +558,15 @@ async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient
     if (title) {
       const byTitle = await searchIssuesFn(title);
       if (byTitle && String(byTitle.title || '').trim() === String(title).trim()) return { matched: true, identifier: byTitle.identifier };
+      // BRO-7595: digest-autofix files that same row as "BSC Daily: <title>", so
+      // the exact compare above never matched it (BRO-7503 duplicated BRO-7455,
+      // BRO-7499 duplicated BRO-7409). Compare the subject without the filer and
+      // tier prefixes across every open card: searchIssues returns only the
+      // first substring hit, which an older card quoting the title can shadow.
+      const core = titleCore(title);
+      const open = core ? await listOpenFn() : [];
+      const twin = (open || []).find((i) => i && titleCore(i.title) === core);
+      if (twin) return { matched: true, identifier: twin.identifier, byTitleCore: true };
     }
     return { matched: false, identifier: null };
   } catch (err) {

@@ -328,6 +328,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       if (args['exact-title']) {
         const open = await linearClient.listOpenIssues();
         match = open.find((i) => i && i.title === term) || null;
+        // BRO-7595: the same subject filed by another filer differs only by the
+        // "BSC Daily:" / "P1:" prefix (digest-autofix vs the alert router), so
+        // exact match missed it and both filed a card. Exact match still wins.
+        if (!match) {
+          const { titleCore } = require('./lib/card-dedupe');
+          const core = titleCore(term);
+          match = core ? open.find((i) => i && titleCore(i.title) === core) || null : null;
+        }
         // --ignore-numbers (BRO-6081): a health row whose title carries a live
         // count ("breaker TRIPPED: web_unlocker2 (2194/1750 reqs)") changes
         // daily, so exact match filed a fresh card each morning (5 for one
