@@ -48,18 +48,36 @@ function retentionCutoffMs(iso) {
  */
 function appendRunSummary(summary, { runsLogPath = DEFAULT_RUNS_LOG_PATH } = {}) {
   let runs = [];
+  let readOk = false;
   if (fs.existsSync(runsLogPath)) {
     try {
       runs = JSON.parse(fs.readFileSync(runsLogPath, 'utf-8'));
+      readOk = Array.isArray(runs);
+      if (!readOk) runs = [];
     } catch {
       runs = [];
     }
   }
 
+  // BRO-7576: stamp the newest row with the oldest time the log still keeps
+  // in full, so sumCostUsdForUtcDay can tell "no runs that morning" from "those
+  // runs were trimmed". Only when the existing log was read intact: a lost or
+  // corrupt log keeps nothing, and must never vouch for a whole day.
+  const cutoff = retentionCutoffMs(summary?.completedAt);
+  if (readOk && Number.isFinite(cutoff) && summary && typeof summary === 'object') {
+    // What the log vouched for before this append: the previous stamp, or for
+    // a log written before stamps existed, its oldest retained row (every cap
+    // so far only trimmed from the front). Never vouch for more than that
+    // (Math.max): rows trimmed earlier are gone whatever this append keeps.
+    const stamped = runs.length ? Date.parse(runs[runs.length - 1]?.logKeepsSince) : NaN;
+    const times = runs.map(r => Date.parse(r?.completedAt)).filter(Number.isFinite);
+    const prevKeeps = Number.isFinite(stamped) ? stamped : (times.length ? Math.min(...times) : -Infinity);
+    summary.logKeepsSince = new Date(Math.max(cutoff, prevKeeps)).toISOString();
+  }
+
   runs.push(summary);
 
   if (runs.length > MAX_RUNS_KEPT) {
-    const cutoff = retentionCutoffMs(summary.completedAt);
     runs = runs.filter((r, i) => i >= runs.length - MAX_RUNS_KEPT || Date.parse(r?.completedAt) >= cutoff);
   }
 
@@ -202,8 +220,13 @@ function sumCostUsdForUtcDay(runs, day, { now = new Date() } = {}) {
   const start = /^\d{4}-\d{2}-\d{2}$/.test(String(day)) ? Date.parse(`${day}T00:00:00Z`) : NaN;
   if (!Number.isFinite(start)) return { day, usd: null, covered: false, runs: 0 };
   const end = start + DAY_MS;
-  const times = (runs || []).map(r => Date.parse(r?.completedAt)).filter(Number.isFinite);
-  const covered = times.length > 0 && Math.min(...times) <= start && new Date(now).getTime() >= end;
+  const list = Array.isArray(runs) ? runs : [];
+  const times = list.map(r => Date.parse(r?.completedAt)).filter(Number.isFinite);
+  // Whole day present: a retained row from before it began, or the newest
+  // row's appendRunSummary stamp says nothing since the day began was trimmed.
+  const keeps = Date.parse(list[list.length - 1]?.logKeepsSince);
+  const covered = times.length > 0 && (Math.min(...times) <= start || keeps <= start)
+    && new Date(now).getTime() >= end;
   let usd = 0;
   let count = 0;
   for (const r of runs || []) {

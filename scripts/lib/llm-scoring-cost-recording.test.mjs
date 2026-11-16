@@ -8,9 +8,10 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const {
-  checkRepeatSignature, checkDailyCostBreach, reportRollingCostAlerts,
-  appendRunSummary, loadCostThresholdUsd,
+  checkRepeatSignature, sumCostUsdForUtcDay, reportRollingCostAlerts,
+  appendRunSummary, loadCostThresholdUsd, DAILY_COST_CONDITION_KEY,
 } = require('./llm-scoring-cost-recording.js');
+const { llmScoringBreach } = require('./provider-spend-core.js');
 const now = new Date('2026-10-01T11:00:00Z');
 const run = (overrides = {}) => ({
   completedAt: '2026-10-01T10:00:00Z', processed: 158,
@@ -41,7 +42,6 @@ test('rolling window includes the 24h boundary but excludes older, future and in
     run({ completedAt: '2026-10-01T11:00:00.001Z' }), run({ completedAt: 'invalid' })];
   assert.deepEqual(checkRepeatSignature([run(), run(), ...outside], now), []);
   assert.equal(checkRepeatSignature([run(), run(), edge, ...outside], now)[0].count, 3);
-  assert.equal(checkDailyCostBreach([run(), edge, ...outside], { now, thresholdUsd: 10 }).totalUsd, 2.32);
 });
 
 test('idle runs and malformed signatures do not alert; paid failed attempts can alert', () => {
@@ -52,123 +52,127 @@ test('idle runs and malformed signatures do not alert; paid failed attempts can 
   assert.equal(checkRepeatSignature([run({ processed: 0 }), run({ processed: 0 }), run({ processed: 0 })], now)[0].count, 3);
 });
 
-test('daily spend sums across run ids, ignores invalid costs, and only breaches above the line', () => {
-  const runs = [run({ costUsd: 6, runId: 'one' }), run({ costUsd: 4, runId: 'two' }),
-    ...[undefined, '50', NaN, Infinity, -10].map(costUsd => run({ costUsd }))];
-  assert.equal(checkDailyCostBreach(runs, { now, thresholdUsd: 10 }).breached, false);
-  runs.push(run({ costUsd: 0.01 }));
-  assert.equal(checkDailyCostBreach(runs, { now, thresholdUsd: 10 }).breached, true);
-  assert.equal(checkDailyCostBreach(runs, { now, thresholdUsd: NaN }), null);
+test('a UTC day sums across run ids, ignores invalid costs, and is unknown when the log does not cover it', () => {
+  const day = '2026-09-30';
+  const at = (iso, costUsd) => run({ completedAt: iso, costUsd });
+  const runs = [at('2026-09-29T23:59:59Z', 100), at('2026-09-30T00:00:00Z', 6), at('2026-09-30T23:59:59.999Z', 4),
+    at('2026-10-01T00:00:00Z', 100),
+    ...[undefined, '50', NaN, Infinity, -10].map(costUsd => at('2026-09-30T12:00:00Z', costUsd))];
+  assert.deepEqual(sumCostUsdForUtcDay(runs, day, { now }), { day, usd: 10, covered: true, runs: 7 });
+  // Oldest retained summary is after 00:00Z: earlier runs may have been capped away.
+  assert.deepEqual(sumCostUsdForUtcDay(runs.slice(2), day, { now }), { day, usd: null, covered: false, runs: 6 });
+  // The day has not ended yet.
+  assert.equal(sumCostUsdForUtcDay(runs, day, { now: new Date('2026-09-30T20:00:00Z') }).covered, false);
+  for (const bad of ['2026-9-30', '', null, 'not-a-day']) assert.equal(sumCostUsdForUtcDay(runs, bad, { now }).usd, null);
+  assert.equal(sumCostUsdForUtcDay([], day, { now }).covered, false);
   assert.equal(loadCostThresholdUsd(undefined, 'llmScoringDailyUsd'), 10);
 });
 
-test('rolling alarms route through the owner router even without a run id; dry run sends nothing', async () => {
+test('BRO-7576 guard: the scoring writers never raise or resolve the daily spend condition', async () => {
+  // $50 inside 24h used to raise it from every scoring run; $0 used to resolve it.
+  for (const runs of [[run({ costUsd: 25, runId: 'a' }), run({ costUsd: 25, runId: 'b' })], [run({ costUsd: 0 })]]) {
+    const keys = [];
+    await reportRollingCostAlerts(runs, {
+      now, routeAlert: async a => keys.push(['route', a.conditionKey]),
+      resolveCondition: async key => keys.push(['resolve', key]),
+    });
+    assert.ok(!keys.some(([, k]) => k === DAILY_COST_CONDITION_KEY), JSON.stringify(keys));
+  }
+});
+
+test('repeat alarms route through the owner router even without a run id; dry run sends nothing', async () => {
   const alerts = [];
   const runs = [run({ costUsd: 4 }), run({ costUsd: 4 }), run({ costUsd: 4 })];
-  await reportRollingCostAlerts(runs, { now, thresholdUsd: 10, routeAlert: async a => alerts.push(a) });
-  assert.deepEqual(alerts.map(a => a.conditionKey), ['llm-scoring:daily-cost-breach', 'llm-scoring:cost-repeat-signature']);
+  await reportRollingCostAlerts(runs, { now, routeAlert: async a => alerts.push(a), resolveCondition: () => {} });
+  assert.deepEqual(alerts.map(a => a.conditionKey), ['llm-scoring:cost-repeat-signature']);
   const { isNeverQuietCondition } = require('./owner-alert-router.js');
   assert.ok(alerts.every(a => isNeverQuietCondition(a.conditionKey)));
   assert.ok(alerts.every(a => a.disposition === 'digest' && a.cooldownHours === 20));
-  await reportRollingCostAlerts(runs, { now, thresholdUsd: 10, dryRun: true, routeAlert: () => assert.fail('dry run routed') });
-  await reportRollingCostAlerts([run(), run()], { now, thresholdUsd: 10, routeAlert: () => assert.fail('healthy run routed'), resolveCondition: () => {} });
+  await reportRollingCostAlerts(runs, { now, dryRun: true, routeAlert: () => assert.fail('dry run routed') });
+  await reportRollingCostAlerts([run(), run()], { now, routeAlert: () => assert.fail('healthy run routed'), resolveCondition: () => {} });
   let attempts = 0;
-  await reportRollingCostAlerts(runs, { now, thresholdUsd: 10, routeAlert: async () => {
+  await reportRollingCostAlerts(runs, { now, resolveCondition: () => {}, routeAlert: async () => {
     attempts++;
     throw new Error('router unavailable');
   } });
-  assert.equal(attempts, 2, 'a routing failure must not abort scoring or suppress the other alarm');
-  const independent = [];
-  await reportRollingCostAlerts(runs, { now, thresholdUsd: null, routeAlert: async a => independent.push(a) });
-  assert.equal(independent.length, 1, 'repeat detection must work even when the daily threshold is unavailable');
+  assert.equal(attempts, 1, 'a routing failure must not abort scoring');
 });
 
-test('recovered daily spend resolves only its own condition, including exactly the alarm line', async () => {
-  for (const costUsd of [0, 5, 10]) {
-    const resolved = [];
-    await reportRollingCostAlerts([run({ costUsd })], {
-      now, thresholdUsd: 10,
-      routeAlert: () => assert.fail('healthy spend routed'),
-      resolveCondition: (key, options) => resolved.push({ key, ...options }),
-    });
-    assert.equal(resolved.length, 1);
-    assert.equal(resolved[0].key, 'llm-scoring:daily-cost-breach');
-    assert.match(resolved[0].reason, /Rolling 24h/);
-    assert.ok(resolved[0].reason.includes(`$${costUsd.toFixed(2)}`));
+test('BRO-7576: the 7-day average rule stops the flapping that re-filed the card', () => {
+  // Real whole-UTC-day LLM scoring totals, 2026-10-19..11-15, reconstructed
+  // from git history of data/llm-scoring-runs.json.
+  const usd = [11.30, 4.60, 5.92, 14.44, 14.95, 19.63, 17.97, 19.93, 19.15, 20.32, 8.50, 26.41, 28.95, 24.81,
+    20.75, 20.26, 4.90, 3.55, 2.10, 5.20, 4.07, 12.63, 4.57, 5.35, 47.62, 63.60, 3.71, 3.43];
+  const start = Date.parse('2026-10-19T00:00:00Z');
+  const records = usd.map((cost, i) => ({
+    day: new Date(start + i * 86400000).toISOString().slice(0, 10), llmScoring: { status: 'ok', cost },
+  }));
+  const opens = rule => {
+    let open = false; let n = 0;
+    records.forEach((rec, i) => { const b = rule(rec, records.slice(0, i)); if (b && !open) n++; open = b; });
+    return n;
+  };
+  const oneDay = rec => rec.llmScoring.cost > 10;
+  const sevenDay = (rec, hist) => llmScoringBreach(rec, hist, 10).breached;
+  assert.equal(opens(oneDay), 5, 'the old one-day rule re-opens with every busy day');
+  assert.equal(opens(sevenDay), 3, 'the 7-day average opens only on sustained spend');
+  const v = llmScoringBreach(records[27], records.slice(0, 27), 10);
+  assert.deepEqual({ ...v }, { avg: 20.13, days: 7, today: 3.43, threshold: 10, breached: true });
+});
+
+test('llmScoringBreach: unmeasured days neither alarm nor clear, and do not count as $0', () => {
+  const rec = (day, llmScoring) => ({ day, llmScoring });
+  const hist = [rec('2026-11-10', { status: 'ok', cost: 30 }), rec('2026-11-11', { status: 'unknown' }),
+    rec('2026-11-12', undefined), rec('2026-11-01', { status: 'ok', cost: 999 })];
+  // 11-01 is outside the 7-day window; unknown/missing days are skipped, not zeroed.
+  assert.deepEqual({ ...llmScoringBreach(rec('2026-11-13', { status: 'ok', cost: 0 }), hist, 10) },
+    { avg: 15, days: 2, today: 0, threshold: 10, breached: true });
+  assert.equal(llmScoringBreach(rec('2026-11-13', { status: 'unknown' }), hist, 10), null);
+  assert.equal(llmScoringBreach(rec('2026-11-13', undefined), hist, 10), null);
+  for (const line of [null, undefined, NaN, 0, -1, '10']) {
+    assert.equal(llmScoringBreach(rec('2026-11-13', { status: 'ok', cost: 50 }), hist, line), null);
   }
+  assert.equal(llmScoringBreach(rec('2026-11-13', { status: 'ok', cost: 10 }), [], 10).breached, false, 'at the line is not over it');
 });
 
-test('daily recovery never resolves from dry runs, overspend, or unavailable evidence', async () => {
-  const cases = [
-    { runs: [run()], dryRun: true },
-    { runs: [run({ costUsd: 10.01 })] },
-    ...[null, NaN, 0, -1].map(thresholdUsd => ({ runs: [run()], thresholdUsd })),
-    { runs: [] },
-    { runs: [run({ completedAt: '2026-09-29T10:00:00Z' })] },
-    { runs: [run({ completedAt: '2026-10-02T10:00:00Z' })] },
-    { runs: [run(), run({ completedAt: '2026-10-02T10:00:00Z' })] },
-    { runs: [run()], now: new Date(NaN) },
-    ...[null, {}, run({ completedAt: 'invalid' })].map(bad => ({ runs: [run(), bad] })),
-    ...[undefined, '5', NaN, Infinity, -1].map(costUsd => ({ runs: [run(), run({ costUsd })] })),
-  ];
-  for (const { runs, ...options } of cases) {
-    let resolutions = 0;
-    await reportRollingCostAlerts(runs, {
-      now, thresholdUsd: 10, ...options,
-      routeAlert: () => {}, resolveCondition: () => { resolutions++; },
-    });
-    assert.equal(resolutions, 0, JSON.stringify({ runs, ...options }));
-  }
-});
-
-test('daily recovery remains independent of repeat alerts and ignores expired legacy costs', async () => {
-  const alerts = [], resolved = [];
-  const runs = [run(), run(), run(), run({ completedAt: '2026-09-29T10:00:00Z', costUsd: undefined })];
-  await reportRollingCostAlerts(runs, {
-    now, thresholdUsd: 10, routeAlert: a => alerts.push(a.conditionKey),
-    resolveCondition: key => resolved.push(key),
-  });
-  assert.deepEqual(alerts, ['llm-scoring:cost-repeat-signature']);
-  assert.deepEqual(resolved, ['llm-scoring:daily-cost-breach']);
-});
-
-test('a daily resolution failure is non-fatal and does not suppress repeat alerts', async () => {
-  const alerts = [];
-  let attempts = 0;
-  const result = await reportRollingCostAlerts([run(), run(), run()], {
-    now, thresholdUsd: 10, routeAlert: a => alerts.push(a.conditionKey),
-    resolveCondition: async () => { attempts++; throw new Error('ledger unavailable'); },
-  });
-  assert.equal(attempts, 1);
-  assert.equal(result.daily.breached, false);
-  assert.deepEqual(alerts, ['llm-scoring:cost-repeat-signature']);
-});
-
-test('daily recovery persists through the real router without altering unrelated incidents', t => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llm-recovery-'));
+test('daily spend CLI records yesterday\'s LLM scoring cost only when the run log covers it', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llm-day-cli-'));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
-  const ledgerPath = path.join(dir, 'ledger.json');
-  const key = 'llm-scoring:daily-cost-breach';
-  const incident = { status: 'open', lastSeen: now.toISOString(), linearIdentifier: 'BRO-6732' };
-  const ledger = { conditions: { [key]: incident, 'llm-scoring:cost-breach': incident } };
-  fs.writeFileSync(ledgerPath, JSON.stringify(ledger));
-  const result = spawnSync(process.execPath, ['-e', `
-    const { reportRollingCostAlerts } = require('./scripts/lib/llm-scoring-cost-recording');
-    reportRollingCostAlerts(JSON.parse(process.env.TEST_RUNS), {
-      now: new Date('2026-10-01T11:00:00Z'), thresholdUsd: 10,
-      routeAlert: () => { throw new Error('Healthy spend must not route'); },
-    }).catch(() => { process.exitCode = 1; });
-  `], {
+  const preload = path.join(dir, 'preload.cjs');
+  fs.writeFileSync(preload, `
+    const Module = require('module'), fs = require('fs'), load = Module._load;
+    const NativeDate = Date;
+    global.Date = class extends NativeDate {
+      constructor(...args) { super(...(args.length ? args : ['2026-10-01T11:00:00Z'])); }
+      static now() { return new NativeDate('2026-10-01T11:00:00Z').getTime(); }
+    };
+    Module._load = function(id, parent, ...rest) {
+      if (id === './lib/provider-billing') return {
+        fetchBdZoneCostDay: async () => null, fetchBbUsageForDay: async () => null,
+        fetchSbUsage: async () => null, fetchSdAccount: async () => null,
+      };
+      if (id === 'fs') return { ...fs, readFileSync(p, ...args) {
+        if (String(p).endsWith('/data/llm-scoring-runs.json')) return process.env.TEST_RUNS;
+        if (String(p).includes('/data/')) throw new Error('No test ledger');
+        return fs.readFileSync(p, ...args);
+      }};
+      return load.call(this, id, parent, ...rest);
+    };
+  `);
+  const cli = runs => spawnSync(process.execPath, ['-r', preload, 'scripts/check-provider-spend.js', '--dry-run'], {
     cwd: path.resolve(import.meta.dirname, '../..'), encoding: 'utf8', timeout: 30000,
-    env: { ...process.env, ALERT_LEDGER_PATH: ledgerPath, TEST_RUNS: JSON.stringify([run()]) },
+    env: { ...process.env, TEST_RUNS: JSON.stringify(runs) },
   });
-  assert.equal(result.status, 0, result.stdout + result.stderr);
-  const saved = JSON.parse(fs.readFileSync(ledgerPath, 'utf8')).conditions;
-  assert.equal(saved[key].status, 'resolved');
-  assert.ok(Number.isFinite(Date.parse(saved[key].resolvedAt)));
-  assert.equal(saved[key].lastSeen, incident.lastSeen);
-  assert.equal(saved[key].linearIdentifier, 'BRO-6732');
-  assert.deepEqual(saved['llm-scoring:cost-breach'], incident);
+  const covered = cli([run({ completedAt: '2026-09-29T22:00:00Z', costUsd: 1 }),
+    run({ completedAt: '2026-09-30T08:00:00Z', costUsd: 7.5, processed: 1 }),
+    run({ completedAt: '2026-09-30T20:00:00Z', costUsd: 5, processed: 2 }),
+    run({ completedAt: '2026-10-01T10:00:00Z', costUsd: 40, processed: 3 })]);
+  assert.equal(covered.status, 0, covered.stdout + covered.stderr);
+  assert.match(covered.stdout, /2026-09-30: LLM scoring \$12\.5 \(2 run summaries\); 1-day average \$12\.5 vs \$10 line: OVER/);
+  const uncovered = cli([run({ completedAt: '2026-09-30T08:00:00Z', costUsd: 50 })]);
+  assert.equal(uncovered.status, 0, uncovered.stdout + uncovered.stderr);
+  assert.match(uncovered.stdout, /2026-09-30: LLM scoring could not measure/);
+  assert.doesNotMatch(uncovered.stdout, /line: OVER/);
 });
 
 test('daily spend CLI checks repeat signatures: three alert, two stay quiet, without billing requests', t => {
@@ -205,16 +209,20 @@ test('daily spend CLI checks repeat signatures: three alert, two stay quiet, wit
   }
 });
 
-test('retention preserves all summaries in the last 24h even when there are over 100', t => {
+test('retention keeps every summary since 00:00Z yesterday even when there are over 100', t => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llm-repeat-'));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const runsLogPath = path.join(dir, 'runs.json');
   const runs = Array.from({ length: 120 }, (_, i) => run({ processed: i + 1 }));
-  runs.unshift(run({ completedAt: '2026-09-29T10:00:00Z' }));
+  // BRO-7576: 05:00Z yesterday is older than 24h but still needed for
+  // yesterday's whole-day total; 23:59Z the day before is not.
+  runs.unshift(run({ completedAt: '2026-09-30T05:00:00Z', processed: 0 }));
+  runs.unshift(run({ completedAt: '2026-09-29T23:59:59Z', processed: -1 }));
   fs.writeFileSync(runsLogPath, JSON.stringify(runs));
   const saved = appendRunSummary(run({ completedAt: now.toISOString() }), { runsLogPath });
-  assert.equal(saved.length, 121);
-  assert.equal(saved[0].processed, 1);
+  assert.equal(saved.length, 122);
+  assert.equal(saved[0].processed, 0);
+  assert.equal(sumCostUsdForUtcDay(saved, '2026-09-30', { now: new Date('2026-10-01T23:00:00Z') }).covered, true);
 });
 
 test('full scoring runs persist Claude cache usage in ensemble and single-model summaries', t => {

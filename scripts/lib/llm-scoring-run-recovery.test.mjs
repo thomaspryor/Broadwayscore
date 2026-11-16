@@ -66,12 +66,12 @@ test('recovery requires complete, finite evidence and a full window; dry runs ne
     'expired unknown costs on an unrelated run do not block current evidence');
 });
 
-test('per-run recovery is independent of daily overspend and repeat alerts', async () => {
+test('per-run recovery is independent of overspend and repeat alerts (the daily condition is check-provider-spend.js, BRO-7576)', async () => {
   const { resolved, alerts } = await check([expired,
     run({ runId: 'a', costUsd: 4 }), run({ runId: 'b', costUsd: 4 }), run({ runId: 'c', costUsd: 4 }),
   ], { thresholdUsd: 10 });
   assert.equal(resolved.length, 1);
-  assert.deepEqual(alerts.map(a => a.conditionKey), ['llm-scoring:daily-cost-breach', 'llm-scoring:cost-repeat-signature']);
+  assert.deepEqual(alerts.map(a => a.conditionKey), ['llm-scoring:cost-repeat-signature']);
 });
 
 test('resolution failures stay non-fatal and later breaches still route immediately', async () => {
