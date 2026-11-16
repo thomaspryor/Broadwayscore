@@ -687,7 +687,13 @@
     "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
     "patriots-2024/broadwaynews--brittani-samuel.json",
     "baby-regional-2024/chicagotheaterandarts--jodie-jacobs.json",
-    "cabaret-2024/broadwaynews--brittani-samuel.json"
+    "cabaret-2024/broadwaynews--brittani-samuel.json",
+    "julius-caesar-globe-off-west-end-2026/thereviewshub--unknown.json",
+    "cranford-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "im-gonna-marry-you-tobey-maguire-regional-2026/talkinbroadway--savannah-brooks.json",
@@ -736,7 +742,6 @@
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "i-became-we-off-broadway-2026/theater-life--paulanne-simmons.json",
     "memoriam-off-west-end-2026/ground--unknown.json",
-    "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
     "billy-crystal-860-2026/theater-life--paulanne-simmons.json",
@@ -1028,7 +1033,19 @@
     "illinoise-2024/nyt-theater--jonathan-mandell.json",
     "illinoise-2024/timeout--adam-feldman.json",
     "heart-of-rock-and-roll-2024/latimes--charles-mcnulty.json",
-    "orlando-off-broadway-2026/guardian--unknown.json"
+    "orlando-off-broadway-2026/guardian--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "girls-off-west-end-2026/plays-to-see--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "memoriam-off-west-end-2026/letterboxd--unknown.json",
+    "roleplay-off-west-end-2026/british-theatre--keith-mckenna.json",
+    "roleplay-off-west-end-2026/british-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1311,10 +1328,18 @@
       "mean-girls-west-end-2024/londontheatredirect--sian-mcbride.json",
       "dark-noon-off-broadway-2024/timeout--raven-snook.json",
       "back-to-the-future-tour-2024/oc-register--christopher-smith.json",
-      "two-strangers-carry-a-cake-across-new-york-west-end-2024/mrcarlwoodward--carl-woodward.json"
+      "two-strangers-carry-a-cake-across-new-york-west-end-2024/mrcarlwoodward--carl-woodward.json",
+      "julius-caesar-globe-off-west-end-2026/thereviewshub--unknown.json",
+      "cranford-off-west-end-2026/telegraph--dominic-cavendish.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json",
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "dogstar-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
@@ -1719,6 +1744,22 @@
     ]
   },
   "startTime": "2026-11-16T09:05:09.821Z",
-  "lastProcessed": "orlando-off-broadway-2026/guardian--unknown.json",
-  "log": []
+  "lastProcessed": "roleplay-off-west-end-2026/british-theatre--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-16T14:58:14.728Z",
+      "event": "bb-session",
+      "session": "6a451017",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-16T14:59:53.530Z",
+      "event": "bb-session",
+      "session": "fa78bd0b",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    }
+  ],
+  "recoveredAfterFailure": [
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+  ]
 }

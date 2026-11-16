@@ -1,19 +1,32 @@
 {
-  "updatedAt": "2026-11-16T14:34:40.535Z",
-  "processed": 688,
-  "failed": 337,
-  "successRate": "67.1%",
+  "updatedAt": "2026-11-16T15:00:53.439Z",
+  "processed": 694,
+  "failed": 350,
+  "successRate": "66.5%",
   "tierBreakdown": {
-    "playwright": 279,
+    "playwright": 285,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 55,
     "scrapingbee": 55,
-    "brightdata": 30,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 281
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-16T14:58:14.728Z",
+      "event": "bb-session",
+      "session": "6a451017",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-16T14:59:53.530Z",
+      "event": "bb-session",
+      "session": "fa78bd0b",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    }
+  ]
 }
