@@ -69,7 +69,7 @@ function lateOutletsToPoll(lateShows, outletStrategyConfig, wpApiConfig, skipOut
 function poolForOutlet(outletId, windowShows, lateShows, now = Date.now()) {
   const days = LATE_PUBLISHER_WINDOW_DAYS[outletId];
   if (!days) return windowShows;
-  return selectWindowShows(lateShows, now, { maxDaysPast: days });
+  return selectWindowShows(lateShows, now, { maxDaysPast: Math.max(days, ...Object.values(WINDOW_DAYS_BY_CATEGORY)) });
 }
 
 /** How an outlet is polled in window mode: its configured strategy, or null (skip: SERP-only). */
