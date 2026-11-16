@@ -326,5 +326,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-16T03:33:19.879Z"
+  },
+  {
+    "conditionKey": "land:land/slim-linear-job-checkouts",
+    "title": "Landing blocked: unit-tests-node red on land/slim-linear-job-checkouts",
+    "description": "land.yml did not land land/slim-linear-job-checkouts: the unit-tests-node gate went red at 4a6490574a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43799981499",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/slim-linear-job-checkouts"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4a6490574a4bc56b6d345d48f3a785a38faf4364"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43799981499"
+      }
+    ],
+    "queuedAt": "2026-11-16T03:49:32.731Z"
   }
 ]
