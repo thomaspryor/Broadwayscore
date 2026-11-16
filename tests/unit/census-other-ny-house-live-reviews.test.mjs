@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7621 class guard: every live review on the site reviews its own production, so the
 // "<title> at <another New York house>" census rule must never fire on one. Before the
 // company/venue groups it fired on 4 (Lobby Hero at Second Stage, Laowang at Primary Stages,
