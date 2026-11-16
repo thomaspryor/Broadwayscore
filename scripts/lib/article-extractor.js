@@ -571,6 +571,37 @@ function logTbBylineShape(html, criticHint) {
   console.warn(`  [tb-extract] no byline matched (${raw.length} chars html); byline markup: ${JSON.stringify(hits)}`);
 }
 
+// Older regional pages (2023-2025 Chicago, e.g. ch755/ch774) carry no byline at all: a single
+// "Regional Reviews: Chicago" header, show/theatre lines, "Also see Karen's reviews of ...", a
+// production photo whose credit reads "Photo by X", then the review paragraphs, then the site's
+// "Discover more" / "Share:" footer (BRO-7262, read from the CI skeleton log of run 43857596035).
+// Only a page with exactly one such header qualifies, so a stacked multi-review page never blends.
+// A real single review prints exactly one "Also see Karen's reviews of" / "Also Christine's review of"
+// line by the header; a regional listing page prints none and a stacked page several (ship-check review).
+const TB_ALSO_SEE = /Also\s+(?:see\s+)?\p{Lu}[\p{L}.\u2019'-]*(?:'|\u2019)s\s+reviews?\s+of/gu;
+function extractTalkinBroadwayUnsigned(html) {
+  const bodyFrom = Math.max(0, html.search(/<\/head>/i)); // the <title> may repeat the header
+  const headers = [...html.slice(bodyFrom).matchAll(/Regional Reviews:/g)];
+  if (headers.length !== 1) return null;
+  let start = bodyFrom + headers[0].index;
+  const alsoSee = [...html.slice(start).matchAll(TB_ALSO_SEE)];
+  if (alsoSee.length !== 1 || alsoSee[0].index > 3000) return null;
+  const credit = html.slice(start, start + 8000).search(/Photo by\b/);
+  if (credit > -1) {
+    const after = start + credit;
+    const close = html.slice(after, after + 800).search(/<\/table>|<\/tr>/i);
+    if (close > -1) start = after + close;
+  }
+  let end = html.length;
+  const tail = html.slice(start);
+  for (const re of [/<\/body>/i, /Discover more/, />\s*Share:\s*</]) {
+    const i = tail.search(re);
+    if (i > -1 && start + i < end) end = start + i;
+  }
+  const text = stripHtml(html.slice(start, end));
+  return text.length >= 300 ? text : null;
+}
+
 function extractTalkinBroadwayBody(html, criticHint) {
   const MARKER_LEN = 'Theatre Review by'.length;
   const rawPositions = [...html.matchAll(/Theatre Review by/gi)].map((m) => m.index);
@@ -580,7 +611,7 @@ function extractTalkinBroadwayBody(html, criticHint) {
   if (!positions.length) {
     positions = [...html.matchAll(TB_UNDATED_BYLINE)].map((m) => m.index);
   }
-  if (!positions.length) return null;
+  if (!positions.length) return extractTalkinBroadwayUnsigned(html);
 
   let start = positions[0];
   const hint = foldDiacritics((criticHint || '').toLowerCase()).replace(/[^a-z]/g, '');

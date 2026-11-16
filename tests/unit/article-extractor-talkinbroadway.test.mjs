@@ -193,4 +193,49 @@ describe('article-extractor: talkinbroadway.com', () => {
     const text = extractArticleText(html, 'www.talkinbroadway.com');
     assert.ok(text && text.startsWith('Theatre Review by Howard Miller'), String(text).slice(0, 80));
   });
+  test('older unsigned regional page: anchors after the photo credit, stops at the footer (BRO-7262)', () => {
+    const para = 'The ensemble carries the history play with clarity and force. '.repeat(6);
+    const html = '<html><body>' + NEWSLETTER_CHROME +
+      '<p>Regional Reviews: Chicago</p><p><i>Some History Play</i><br><font>Fleetwood Theatre</font>' +
+      "<br><font>Also see Christine's reviews of <i>Three Sisters</i></font></p>" +
+      '<table><tr><td><b>Cast Member and Other Actor</b><br><font><i>Photo by Basil Clunie</i></font></td></tr></table>' +
+      `<p>${para}</p><p>${para}</p><p><i>Some History Play</i> runs through July 14, 2024.</p>` +
+      '<div>Discover more</div><span>Broadway show tickets</span><p>Share:</p></body></html>';
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text, 'older layout extracts');
+    assert.ok(text.startsWith('The ensemble carries'), text.slice(0, 80));
+    assert.ok(text.includes('runs through July 14'));
+    for (const chrome of ['Sound Advice', 'Photo by', 'Also see', 'Discover more', 'Broadway show tickets', 'Share:']) {
+      assert.ok(!text.includes(chrome), `excludes ${chrome}`);
+    }
+  });
+
+  test('older unsigned layout: two "Regional Reviews:" headers (stacked runs) are refused (BRO-7262)', () => {
+    const para = 'A long paragraph of review prose for the stacked run. '.repeat(8);
+    const html = '<html><body><p>Regional Reviews: Chicago</p><p>' + para + '</p>' +
+      '<p>Regional Reviews: Chicago</p><p>' + para + '</p></body></html>';
+    assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
+  });
+
+  test('older unsigned layout: a regional listing page (no "Also see" line) is not a review (BRO-7262 review)', () => {
+    const links = Array.from({ length: 30 }, (_, i) => `<li><a href="ch${700 + i}.html">Some Show ${i}</a> - Some Theatre</li>`).join('');
+    const html = '<html><body>' + NEWSLETTER_CHROME + `<p>Regional Reviews: Chicago</p><ul>${links}</ul><p>Share:</p></body></html>`;
+    assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
+  });
+
+  test('older unsigned layout: two "Also see" lines under one header (stacked) are refused (BRO-7262 review)', () => {
+    const para = 'Prose for one of two stacked runs on a single page. '.repeat(8);
+    const html = "<html><body><p>Regional Reviews: Chicago</p><font>Also see Karen's reviews of <i>A</i></font><p>" + para +
+      "</p><font>Also see Karen's reviews of <i>B</i></font><p>" + para + '</p></body></html>';
+    assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
+  });
+
+  test('older unsigned layout without a photo starts at the header (BRO-7262)', () => {
+    const para = 'A clear and confident staging that rewards attention. '.repeat(8);
+    const html = '<html><head><title>Regional Reviews: Chicago - "Play"</title></head><body>' + NEWSLETTER_CHROME +
+      "<p>Regional Reviews: Chicago</p><p><font>Also Christine's review of <i>Three Sisters</i></font></p><p>" + para + '</p><p>Share:</p></body></html>';
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text && text.startsWith('Regional Reviews: Chicago'), String(text).slice(0, 80));
+    assert.ok(!text.includes('Share:') && !text.includes('Sound Advice'));
+  });
 });
