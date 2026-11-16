@@ -52,6 +52,19 @@ test('warns about a same-url twin left in the source folder unless the plan hand
   assert.deepEqual(movePlanWarnings(move, [move, del], fake(files)), []);
 });
 
+// BRO-2938: an overwrite move onto a same-url copy replaces that copy; only OTHER same-url files are left behind.
+test('an overwrite move does not warn about the same-url copy it replaces', () => {
+  const src = 'show-2026/observer--httpsobservercomauthorrex-reed.json';
+  const dest = 'show-2026/observer--rex-reed.json';
+  const files = { [src]: { url: URL }, [dest]: { url: URL }, 'show-2026/observer--unknown.json': { url: URL } };
+  const mv = { type: 'review-file-op', operation: 'move', sourcePath: src, destPath: dest };
+  assert.equal(movePlanWarnings(mv, [mv], fake(files)).length, 2);
+  const over = { ...mv, overwrite: true };
+  const w = movePlanWarnings(over, [over], fake(files));
+  assert.equal(w.length, 1);
+  assert.match(w[0], /observer--unknown\.json holds the same url/);
+});
+
 test('ignores non-move actions and a missing source', () => {
   assert.deepEqual(movePlanWarnings({ type: 'review-file-op', operation: 'delete', sourcePath: 'a/b.json' }, [], fake({})), []);
   assert.deepEqual(movePlanWarnings(move, [move], fake({})), []);

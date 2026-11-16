@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-2938: clear the last 23 review-text files whose filename carries a URL as the critic slug: 9 same-url duplicates deleted (plus one third copy), 5 moved over a duplicate copy that points back at them, 9 Unknown-byline files renamed to outlet--unknown.json, 1 renamed to its real critic",
+    "summary": "BRO-2938: clear 22 of the last 23 review-text files whose filename carries a URL as the critic slug: 9 same-url duplicate deletes (plus two empty or third copies), 5 moves over a duplicate copy that points back at them, 9 Unknown-byline renames to outlet--unknown.json (the 23rd, the Matthew Wexler rename, is bro-2938-d)",
     "steps": [
       "Delete becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json: same url and same text as deadline--greg-evans.json (file already marked duplicateOf it)",
       "Delete cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json: same url as one-minute-critic--matthew-wexler.json (complete); this copy is truncated and marked duplicateOf it",
@@ -23,6 +23,7 @@
       "Move oh-mary-west-end-2025/londonist--httpslondonistcomcontributorswill-noble.json over londonist--will-noble.json: dest is a same-url copy marked duplicateOf this file",
       "Move the-lost-boys-2026/truehollywoodtalk--httpswwwfacebookcommarkospapadatos.json over truehollywoodtalk--markos-papadatos.json: dest is a same-url same-text copy marked duplicateOf this file",
       "Move the-music-man-2022/observer--httpsobservercomauthorrex-reed.json over observer--rex-reed.json: dest is an invalid wrongProduction copy of the same url marked duplicateOf this file",
+      "Delete the-notebook-2024/chicago-sun-times--dennis-polkow.json: empty invalid wrongProduction copy of the Steven Oxman review url, filed under the wrong critic and marked duplicateOf the URL-named file",
       "Move the-notebook-2024/chicago-sun-times--httpschicagosuntimescomsteven-oxman.json over chicago-sun-times--steven-oxman.json: dest is an empty invalid copy of the same url marked duplicateOf this file",
       "Rename glengarry-glen-ross-west-end-2026/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
       "Rename hadestown-west-end-2024/culturemap--httpswwwfacebookcom311748092248591.json to culturemap--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
@@ -32,9 +33,7 @@
       "Rename home-2024/queerty--httpswwwfacebookcomwexlerwrites.json to queerty--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
       "Rename orlando-off-broadway-2026/indiependent--httpsmfacebookcom100016996623460.json to indiependent--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
       "Rename suffs-2024/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
-      "Rename the-lonely-few-off-broadway-2024/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
-      "Rename to one-minute-critic--matthew-wexler.json: 1minutecritic.com is Matthew Wexler's site and the filename slug is his byline link (wexlerwrites); every other one-minute-critic file is his",
-      "Byline for the file renamed above (1minutecritic.com is Matthew Wexler's site; byline link wexlerwrites)"
+      "Rename the-lonely-few-off-broadway-2024/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
     ],
     "riskLevel": "low",
     "actions": [
@@ -126,6 +125,12 @@
       },
       {
         "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-notebook-2024/chicago-sun-times--dennis-polkow.json",
+        "description": "Delete the-notebook-2024/chicago-sun-times--dennis-polkow.json: empty invalid wrongProduction copy of the Steven Oxman review url, filed under the wrong critic and marked duplicateOf the URL-named file"
+      },
+      {
+        "type": "review-file-op",
         "operation": "move",
         "sourcePath": "the-notebook-2024/chicago-sun-times--httpschicagosuntimescomsteven-oxman.json",
         "destPath": "the-notebook-2024/chicago-sun-times--steven-oxman.json",
@@ -194,21 +199,6 @@
         "sourcePath": "the-lonely-few-off-broadway-2024/ew--httpswwwfacebookcomentertainmentweekly.json",
         "destPath": "the-lonely-few-off-broadway-2024/ew--unknown.json",
         "description": "Rename the-lonely-few-off-broadway-2024/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
-      },
-      {
-        "type": "review-file-op",
-        "operation": "move",
-        "sourcePath": "encores-la-cage-aux-folles-off-broadway-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-        "destPath": "encores-la-cage-aux-folles-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-        "description": "Rename to one-minute-critic--matthew-wexler.json: 1minutecritic.com is Matthew Wexler's site and the filename slug is his byline link (wexlerwrites); every other one-minute-critic file is his"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "encores-la-cage-aux-folles-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-        "field": "criticName",
-        "oldValue": "Unknown",
-        "newValue": "Matthew Wexler",
-        "description": "Byline for the file renamed above (1minutecritic.com is Matthew Wexler's site; byline link wexlerwrites)"
       }
     ]
   }

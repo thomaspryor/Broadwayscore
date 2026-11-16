@@ -55,6 +55,8 @@ function movePlanWarnings(a, actions, { readJson, listFolder }) {
     for (const f of listFolder(srcFolder)) {
       const rel = `${srcFolder}/${f}`;
       if (rel === src || handled.has(rel) || path.extname(f) !== '.json') continue;
+      // BRO-2938: an overwrite move replaces its destination, so a same-url copy AT the destination is gone after it.
+      if (a.overwrite === true && rel === dest) continue;
       const other = readJson(rel);
       if (other && urlKey(other.url) === key) out.push(`${rel} holds the same url as ${src}; move or delete it in this plan too, or it stays on ${srcFolder}`);
     }
