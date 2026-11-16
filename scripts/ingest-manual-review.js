@@ -58,7 +58,7 @@ const path = require('path');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
 const { findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
-const { findStaleMergeFields, buildManualIngestIntended } = require('./lib/stale-merge-check');
+const { findStaleMergeFields, buildManualIngestIntended, alignLandedPublishDate } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision, assertManualReviewBodyPersisted } = require('./lib/manual-review-fields');
 const {
   recoverFromText,
@@ -282,7 +282,8 @@ const result = createOrMergeReviewFile(showId, input, { dryRun });
 // silent no-op here is the worst possible failure mode. Same verification as
 // ingest-review-from-url.js: url and criticName (always intended — both are
 // operator-supplied, criticName via normalizeCritic so a case/whitespace
-// difference on the same critic never false-flags) plus fullText (only when
+// difference on the same critic never false-flags), publishDate (BRO-7613:
+// operator dates now win via protectedFields; compared by calendar day) plus fullText (only when
 // the pre-existing content was actually bad — mirroring maybeUpgradeUrl's own
 // badContent gate — so re-pasting the SAME already-correct text isn't a false
 // positive).
@@ -299,7 +300,7 @@ if (result.filepath && !dryRun && (result.action !== 'new' || fullText)) {
     process.exit(1);
   }
   assertManualReviewBodyPersisted(fullText, landed, result.filepath);
-  landed = { ...landed, criticName: normalizeCritic(landed.criticName) };
+  landed = alignLandedPublishDate(intended, { ...landed, criticName: normalizeCritic(landed.criticName) });
   const staleFields = findStaleMergeFields(intended, landed);
   if (staleFields.length > 0) {
     console.error(`\n❌ Stale merge: ${staleFields.join(', ')} still hold a pre-existing value at ${result.filepath} that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.`);

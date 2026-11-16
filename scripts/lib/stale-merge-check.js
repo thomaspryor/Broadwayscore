@@ -79,6 +79,21 @@ function isPreExistingContentBad(preExisting) {
  *   publishDate?: string|null, criticName?: string|null, preExisting?: object|null}} p
  * @returns {object} intended map for findStaleMergeFields ({} for a new file).
  */
+/**
+ * BRO-7613: stored publishDates come in several shapes ("March 11, 2022",
+ * ISO timestamps, YYYY-MM-DD). The same calendar day is not a stale value, so
+ * align the landed date to the intended string when both resolve to one day.
+ * Returns a shallow copy of `landed`.
+ */
+function alignLandedPublishDate(intended, landed) {
+  if (!landed || !intended || !intended.publishDate || landed.publishDate == null) return landed;
+  if (landed.publishDate === intended.publishDate) return landed;
+  const { normalizeDate } = require('./date-utils');
+  const a = normalizeDate(String(landed.publishDate));
+  if (a && a === normalizeDate(String(intended.publishDate))) return { ...landed, publishDate: intended.publishDate };
+  return landed;
+}
+
 function buildManualIngestIntended({ action, url, fullText, publishDate, criticName, preExisting }) {
   const intended = {};
   if (action === 'new') return intended;
@@ -182,4 +197,4 @@ function isSameArticleBodyUpgrade(existing, incomingText, opts = {}) {
   return shared / oldShingles.size >= (multiShowWhole ? 0.8 : 0.5);
 }
 
-module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, buildManualIngestIntended, isPreExistingContentBad, isSameArticleBodyUpgrade, TEASER_MAX_WORDS };
+module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, buildManualIngestIntended, alignLandedPublishDate, isPreExistingContentBad, isSameArticleBodyUpgrade, TEASER_MAX_WORDS };

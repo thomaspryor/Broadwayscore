@@ -187,6 +187,14 @@ function buildManualReviewFields(opts = {}) {
 
   if (publishDate) {
     fields.publishDate = publishDate;
+    // BRO-7613: an operator-supplied date is a correction, so it must win over a
+    // wrong stored one (a SERP discovery date on a 2022 review). The writer's
+    // default merge only fills a blank publishDate; protectedFields is the
+    // manual-entry override path every other operator correction uses.
+    if (operatorTrust && Array.isArray(fields.protectedFields)) {
+      fields.dateSource = 'manual';
+      fields.protectedFields.push('publishDate', 'dateSource');
+    }
   }
 
   return fields;
