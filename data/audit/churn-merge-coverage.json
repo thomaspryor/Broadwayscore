@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-16T09:29:29.173Z",
+    "generatedAt": "2026-11-16T10:06:18.449Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -16,54 +16,54 @@
   "flagged": [
     {
       "path": "data/audit/reddit-post-drafts.json",
-      "churn": 36
+      "churn": 38
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 48
+      "churn": 44
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 54,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 43,
+      "churn": 53,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 43,
+      "churn": 45,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/gemini-usage-ledger.jsonl",
+      "churn": 44,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
