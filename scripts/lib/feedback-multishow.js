@@ -14,6 +14,8 @@
  * required by both scripts + their tests instead of re-implemented per file.
  */
 
+const { normalizeTitleCore } = require('./resolve-show.js');
+
 /**
  * Normalizes a diagnosis payload's show reference into a canonical showIds[]
  * array. Prefers an already-set `showIds` (the canonical field once a
@@ -51,7 +53,7 @@ function normalizeDiagnosisShowIds(diagnosis) {
  *
  * @param {object} diagnosis - parsed DIAGNOSIS_JSON payload
  * @param {Array<object>} shows - full shows.json catalog (array)
- * @returns {{showIds: string[], resolvedShows: Array<{id:string,index:number,show:object}>, unresolvedShowIds: string[], ambiguous: boolean}}
+ * @returns {{showIds: string[], resolvedShows: Array<{id:string,index:number,show:object}>, unresolvedShowIds: string[], ambiguous: boolean, narrowedFrom?: string[]}}
  */
 function resolveShowsForDiagnosis(diagnosis, shows) {
   const showIds = normalizeDiagnosisShowIds(diagnosis);
@@ -63,7 +65,51 @@ function resolveShowsForDiagnosis(diagnosis, shows) {
     else resolvedShows.push({ id, index: idx, show: shows[idx] });
   }
   const ambiguous = Boolean(diagnosis?.ambiguousShow) && resolvedShows.length > 1;
+  if (ambiguous) {
+    const narrowed = narrowToSingleLiveSibling(diagnosis, resolvedShows);
+    if (narrowed) {
+      return {
+        showIds: narrowed.kept.map((r) => r.id),
+        resolvedShows: narrowed.kept,
+        unresolvedShowIds,
+        ambiguous: false,
+        narrowedFrom: narrowed.setAside.map((r) => r.id),
+      };
+    }
+  }
   return { showIds, resolvedShows, unresolvedShowIds, ambiguous };
+}
+
+/**
+ * BRO-7594 (issue #1187): the reader's "show" field "Awake and Sing!" matched
+ * the 1984, 2006 and 2026 productions, so the ambiguity gate parked the report
+ * although two were long closed. Rule: among the candidates whose title matches
+ * the reader's show field (same normalizeTitleCore), when exactly one is not
+ * closed and every one has a known status, that one is the target. The closed
+ * ones are set aside; candidates with a different title (picked up from the
+ * message text, the multi-show path from #515) are kept unchanged, so a
+ * two-title report can never collapse into one and close as fixed.
+ *
+ * Known risk, accepted: a reader writing about an old production's archive
+ * page gets the live production checked instead. auto-fix still compares each
+ * proposed edit's oldValue against the live record, and every posted comment
+ * names the productions that were set aside.
+ *
+ * diagnosis.showId is NOT an independent check: process-feedback fills it
+ * from resolveShow(), which already ranks open/previews first.
+ *
+ * @returns {{kept: Array<object>, setAside: Array<object>}|null}
+ */
+function narrowToSingleLiveSibling(diagnosis, resolvedShows) {
+  const core = normalizeTitleCore(diagnosis?.submitterShow);
+  if (!core) return null;
+  const siblings = resolvedShows.filter((r) => normalizeTitleCore(r.show?.title) === core);
+  if (siblings.length < 2) return null;
+  if (siblings.some((r) => !r.show.status)) return null;
+  const live = siblings.filter((r) => r.show.status !== 'closed');
+  if (live.length !== 1) return null;
+  const setAside = siblings.filter((r) => r !== live[0]);
+  return { kept: resolvedShows.filter((r) => !setAside.includes(r)), setAside };
 }
 
 /**

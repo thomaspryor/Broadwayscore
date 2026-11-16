@@ -71,7 +71,14 @@ function output(action) {
   console.log(action);
 }
 
+// BRO-7594: set when closed same-title productions were dropped; every
+// comment written after that names them so a maintainer can see it.
+let narrowNote = '';
+
 function writeComment(md) {
+  if (narrowNote && !md.includes(narrowNote)) {
+    md = /\n\n---\n\*Auto-/.test(md) ? md.replace(/\n\n---\n\*Auto-/, `${narrowNote}\n\n---\n*Auto-`) : md + narrowNote;
+  }
   fs.writeFileSync(path.join(ROOT, '.github-comment.md'), md);
 }
 
@@ -170,7 +177,11 @@ async function main() {
   // what distinguishes the two; only check it when set.
   const showsData = loadJsonFile('data/shows.json');
   const shows = showsData.shows || showsData;
-  const { showIds, resolvedShows, unresolvedShowIds, ambiguous } = resolveShowsForDiagnosis(diagnosis, shows);
+  const { showIds, resolvedShows, unresolvedShowIds, ambiguous, narrowedFrom } = resolveShowsForDiagnosis(diagnosis, shows);
+  if (narrowedFrom) {
+    narrowNote = `\n\n_Other productions of this title were set aside because they are closed: ${narrowedFrom.map(id => '`' + id + '`').join(', ')}. If the reader meant one of those, reopen this issue._`;
+    console.log(`Set aside closed productions of the same title: ${narrowedFrom.join(', ')} (BRO-7594).`);
+  }
   if (ambiguous) {
     const list = resolvedShows.map(r => `- **${r.show.title}** (\`${r.id}\`, ${r.show.category || 'unknown market'})`).join('\n');
     writeComment(`## Requires Manual Review — Ambiguous Show\n\nThe reader's "show" field matched ${resolvedShows.length} different productions of this title. The machine verdict below (\`${diagnosis.fixType}\`) is informational only — a maintainer needs to confirm which production is actually affected before trusting it or applying any fix:\n\n${list}\n\n---\n*Auto-processed by feedback pipeline*`);

@@ -66,3 +66,48 @@ test('fixing both shows is fixed', () => {
   ]);
   assert.equal(out.action, 'fixed');
 });
+
+// BRO-7594 / issue #1187: the show field matched three productions of one
+// title, only one still running, plus a different title from the message.
+// Narrow the same-title siblings to the live one; carry other titles through.
+const revivals = [
+  { id: 'awake-and-sing-1984', title: 'Awake and Sing!', status: 'closed' },
+  { id: 'awake-and-sing-2006', title: 'Awake and Sing!', status: 'closed' },
+  { id: 'awake-and-sing-2026', title: 'Awake and Sing!', status: 'previews' },
+  { id: 'gemini-1977', title: 'Gemini', status: 'closed' },
+];
+const allIds = revivals.map((s) => s.id);
+const base = { ambiguousShow: true, submitterShow: 'Awake and Sing!', resolvedShowIds: allIds };
+
+test('one live sibling among closed ones narrows; other titles are kept', () => {
+  const r = resolveShowsForDiagnosis(base, revivals);
+  assert.equal(r.ambiguous, false);
+  assert.deepEqual(r.showIds, ['awake-and-sing-2026', 'gemini-1977']);
+  assert.deepEqual(r.narrowedFrom, ['awake-and-sing-1984', 'awake-and-sing-2006']);
+});
+
+test('a kept second title still blocks a "fixed" verdict when only one was fixed', () => {
+  const r = resolveShowsForDiagnosis(base, revivals);
+  const out = summarizeShowFixOutcomes(r.resolvedShows.map((x, i) => ({ show: x.show, applied: i === 0 ? ['runtime cleared'] : [] })));
+  assert.notEqual(out.action, 'fixed');
+});
+
+test('no show field means no narrowing', () => {
+  const r = resolveShowsForDiagnosis({ ...base, submitterShow: null }, revivals);
+  assert.equal(r.ambiguous, true);
+});
+
+test('a sibling with unknown status blocks narrowing', () => {
+  const cat = revivals.map((s) => (s.id === 'awake-and-sing-1984' ? { ...s, status: undefined } : s));
+  assert.equal(resolveShowsForDiagnosis(base, cat).ambiguous, true);
+});
+
+test('two live siblings stay ambiguous', () => {
+  const cat = revivals.map((s) => (s.id === 'awake-and-sing-2006' ? { ...s, status: 'open' } : s));
+  assert.equal(resolveShowsForDiagnosis(base, cat).ambiguous, true);
+});
+
+test('all siblings closed stays ambiguous', () => {
+  const cat = revivals.map((s) => ({ ...s, status: 'closed' }));
+  assert.equal(resolveShowsForDiagnosis(base, cat).ambiguous, true);
+});
