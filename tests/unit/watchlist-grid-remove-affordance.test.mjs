@@ -63,7 +63,12 @@ test('watchlist grid card opens the show page', () => {
 });
 
 test('To Be Rated card opens the show page rating flow', () => {
-  assert.match(extractFunctionBody(SOURCE, 'ToBeRatedSection'), /href=\{`\$\{href\}\?rate=1`\}/);
+  // Planned shows open the new-rating flow (?rate=1); shows already logged
+  // without stars (BRO-7628) open the edit flow (?edit=1) on that viewing.
+  assert.match(
+    extractFunctionBody(SOURCE, 'ToBeRatedSection'),
+    /href=\{`\$\{href\}\?\$\{entry\.edit \? 'edit' : 'rate'\}=1`\}/,
+  );
 });
 
 test('the show page watchlist button removes the entry', () => {
