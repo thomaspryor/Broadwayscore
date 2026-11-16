@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-16T15:12:34.172Z",
+  "runDate": "2026-11-16T15:22:52.721Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 10,
+    "maxReviews": 1,
     "priority": "all",
-    "showFilter": "inherit-the-wind-regional-2024,midnight-in-the-garden-of-good-and-evil-regional-2024,strange-cargo-the-doom-of-the-demeter-regional-2025,the-lord-of-the-rings-a-musical-tale-regional-2024,the-tragedy-of-macbeth-regional-2024,covenant-regional-2026,prodigal-son-regional-2025",
+    "showFilter": "covenant-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 1,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,12 +23,12 @@
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 6,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
@@ -38,13 +38,13 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 7,
-    "tier3Success": 6,
-    "tier3_6Attempts": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,16 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 6,
-    "failed": 1,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "covenant-regional-2026",
-      "inherit-the-wind-regional-2024",
-      "midnight-in-the-garden-of-good-and-evil-regional-2024",
-      "prodigal-son-regional-2025",
-      "strange-cargo-the-doom-of-the-demeter-regional-2025",
-      "the-lord-of-the-rings-a-musical-tale-regional-2024",
-      "the-tragedy-of-macbeth-regional-2024"
+      "covenant-regional-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -72,28 +66,14 @@
     }
   },
   "processed": [
-    "strange-cargo-the-doom-of-the-demeter-regional-2025/talkinbroadway--christine-malcom.json",
-    "prodigal-son-regional-2025/talkinbroadway--christine-malcom.json",
-    "the-tragedy-of-macbeth-regional-2024/talkinbroadway--christine-malcom.json",
-    "inherit-the-wind-regional-2024/talkinbroadway--christine-malcom.json",
-    "the-lord-of-the-rings-a-musical-tale-regional-2024/talkinbroadway--christine-malcom.json",
-    "midnight-in-the-garden-of-good-and-evil-regional-2024/talkinbroadway--christine-malcom.json"
-  ],
-  "failed": [
     "covenant-regional-2026/talkinbroadway--christine-malcom.json"
   ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "strange-cargo-the-doom-of-the-demeter-regional-2025/talkinbroadway--christine-malcom.json",
-      "prodigal-son-regional-2025/talkinbroadway--christine-malcom.json",
-      "the-tragedy-of-macbeth-regional-2024/talkinbroadway--christine-malcom.json",
-      "inherit-the-wind-regional-2024/talkinbroadway--christine-malcom.json",
-      "the-lord-of-the-rings-a-musical-tale-regional-2024/talkinbroadway--christine-malcom.json",
-      "midnight-in-the-garden-of-good-and-evil-regional-2024/talkinbroadway--christine-malcom.json"
-    ],
-    "failed": [
       "covenant-regional-2026/talkinbroadway--christine-malcom.json"
-    ]
+    ],
+    "failed": []
   },
   "tierDetails": {
     "playwright": [],
@@ -103,24 +83,11 @@
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [
-      "strange-cargo-the-doom-of-the-demeter-regional-2025/talkinbroadway--christine-malcom.json",
-      "prodigal-son-regional-2025/talkinbroadway--christine-malcom.json",
-      "the-tragedy-of-macbeth-regional-2024/talkinbroadway--christine-malcom.json",
-      "inherit-the-wind-regional-2024/talkinbroadway--christine-malcom.json",
-      "the-lord-of-the-rings-a-musical-tale-regional-2024/talkinbroadway--christine-malcom.json",
-      "midnight-in-the-garden-of-good-and-evil-regional-2024/talkinbroadway--christine-malcom.json"
+      "covenant-regional-2026/talkinbroadway--christine-malcom.json"
     ],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
