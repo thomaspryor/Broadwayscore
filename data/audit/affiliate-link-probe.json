@@ -15,12 +15,19 @@
       "expectLinks": true,
       "url": "https://broadwayscorecard.com/show/a-few-good-men",
       "verdict": "pass",
-      "linksFound": 2,
+      "linksFound": 9,
       "clientOnly": false,
       "problems": [],
       "destinations": [
         "https://www.todaytix.com/nyc/shows/47264-a-few-good-men",
-        "https://www.todaytix.com/nyc/shows/47264-a-few-good-men"
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546034",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546035",
+        "https://www.todaytix.com/nyc/shows/47264-a-few-good-men",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546037",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546038",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546039",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546040",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546041"
       ]
     },
     {
@@ -31,11 +38,19 @@
       "expectLinks": true,
       "url": "https://broadwayscorecard.com/show/aladdin",
       "verdict": "pass",
-      "linksFound": 2,
+      "linksFound": 10,
       "clientOnly": false,
       "problems": [],
       "destinations": [
         "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470361",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470362",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470363",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470364",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470365",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470366",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470368",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470367",
         "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway"
       ]
     },
@@ -47,12 +62,10 @@
       "expectLinks": true,
       "url": "https://broadwayscorecard.com/show/austentatious-an-improvised-jane-austen-novel-west-end",
       "verdict": "pass",
-      "linksFound": 3,
+      "linksFound": 1,
       "clientOnly": false,
       "problems": [],
       "destinations": [
-        "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel",
-        "https://www.todaytix.com/booking/seating-plan?showId=43897&showtimeId=2482765",
         "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel"
       ]
     },
@@ -64,21 +77,20 @@
       "expectLinks": true,
       "url": "https://broadwayscorecard.com/show/222-a-ghost-story-off-broadway",
       "verdict": "pass",
-      "linksFound": 2,
+      "linksFound": 1,
       "clientOnly": false,
       "problems": [],
       "destinations": [
-        "https://www.todaytix.com/nyc/shows/47218-2-22-a-ghost-story",
         "https://www.todaytix.com/nyc/shows/47218-2-22-a-ghost-story"
       ]
     },
     {
-      "id": "heathers-the-musical-off-broadway-2025",
-      "slug": "heathers-the-musical-off-broadway",
+      "id": "in-the-heights-off-broadway-2026",
+      "slug": "in-the-heights-off-broadway",
       "status": "closed",
-      "todaytixId": 42261,
+      "todaytixId": 46483,
       "expectLinks": false,
-      "url": "https://broadwayscorecard.com/show/heathers-the-musical-off-broadway",
+      "url": "https://broadwayscorecard.com/show/in-the-heights-off-broadway",
       "verdict": "pass",
       "linksFound": 0,
       "clientOnly": false,
@@ -93,15 +105,15 @@
       "detail": "HTTP 200"
     },
     {
-      "dest": "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546034",
       "verdict": "ok",
       "detail": "HTTP 200"
     },
     {
-      "dest": "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel",
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546035",
       "verdict": "ok",
       "detail": "HTTP 200"
     }
   ],
-  "updatedAt": "2026-11-09T22:48:20.381Z"
+  "updatedAt": "2026-11-16T22:39:24.307Z"
 }
