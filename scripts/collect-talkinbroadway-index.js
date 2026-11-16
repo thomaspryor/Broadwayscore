@@ -114,7 +114,11 @@ async function main() {
   if (onlyUrl) {
     // Settle what can be settled before a paid session opens (BRO-7262).
     if (!shows.some((x) => x.id === onlyShow)) { console.error(`unknown show ${onlyShow}`); process.exit(2); }
-    if (held.has(heldKey(onlyShow))) { console.log(`${onlyShow} already holds a talkinbroadway review; nothing to fetch`); process.exit(0); }
+    if (held.has(heldKey(onlyShow))) {
+      console.log(`${onlyShow} already counts as holding a talkinbroadway review (a flagged wrongShow/wrongProduction file counts too); nothing to fetch`);
+      process.exit(0);
+    }
+    if (dryRun) { console.log(`dry run: would read ${onlyUrl} for ${onlyShow}; no session opened`); process.exit(0); }
   }
   let session;
   try {
