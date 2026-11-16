@@ -733,6 +733,103 @@ const afgm = () => {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 };
 
+const rhsPublish = require('./__fixtures__/observed-embargo/rhs.json');
+const afgmPublish = require('./__fixtures__/observed-embargo/afgm.json');
+function publishRecord(rows, { night = '2026-04-23', embargoAt = '2026-04-24T02:00:00Z' } = {}) {
+  const rec = lib.emptyRecord({ showId: 'fixture', night, market: 'broadway', embargoAt, embargoSource: 'market-default' });
+  lib.applySample(rec, { at: new Date(Date.parse(embargoAt) - 4 * 3600000).toISOString(), reviews: [] });
+  lib.applySample(rec, { at: new Date(Date.parse(embargoAt) + 55 * 60000).toISOString(), reviews: [] });
+  lib.applySample(rec, {
+    at: new Date(Date.parse(embargoAt) + 60 * 60000).toISOString(),
+    reviews: rows.map((r, i) => ({ outlet: r.outlet, critic: `Critic ${i}`, date: r.publishedTime })),
+  });
+  return rec;
+}
+
+test('early release: Rocky Horror exact outlet cluster corrects 02:00Z to 01:30Z for every publishing path', () => {
+  for (const path of ['regular', 'lane', 'unknown']) {
+    const rec = publishRecord(rhsPublish);
+    rec.publishedBy = { path };
+    const before = JSON.stringify(rec);
+    const rel = lib.observedRelease(rec);
+    assert.equal(rel?.observedAt, '2026-04-24T01:30:00.000Z', path);
+    assert.equal(rel.lateMin, -30);
+    assert.equal(rel.observedFrom, 'outlet-publish-cluster');
+    assert.equal(lib.releaseSourceLabel(rel), 'the outlet publish-time cluster');
+    assert.equal(JSON.stringify(rec), before, 'observation must not rewrite the probe');
+  }
+});
+
+test('early release: lone posts, repeated outlets, imprecise times and excluded reviews cannot move the clock', () => {
+  const row = (outlet, publishedTime = '2026-04-24T01:30:00Z') => ({ outlet, publishedTime });
+  const cases = [
+    [row('Variety')],
+    [row('Variety'), row('variety'), row('VARIETY')],
+    [row('NYT'), row('The New York Times'), row('TheaterMania')],
+    [row('Variety'), row('Vulture', '2026-04-24T01:30:00'), row('TheaterMania', '2026-04-23')],
+    ['Variety', 'Vulture', 'TheaterMania'].map(o => row(o, '2026-04-23T01:30:00Z')),
+    ['Variety', 'Vulture', 'TheaterMania'].map(o => row(o, '2026-04-24T00:00:00Z')),
+  ];
+  for (const rows of cases) assert.equal(lib.observedRelease(publishRecord(rows)), null);
+  const excluded = publishRecord(['Variety', 'Vulture', 'TheaterMania'].map(o => row(o)));
+  excluded.fileState = { files: [{ outletId: 'variety', includable: false }] };
+  assert.equal(lib.observedRelease(excluded), null);
+  for (const embargoSource of ['manual', 'override']) {
+    assert.equal(lib.observedRelease({ ...publishRecord(rhsPublish), embargoSource }), null);
+  }
+});
+
+test('early release grading uses the observed first-live clock and the earlier captured two-hour cutoff', () => {
+  const rec = publishRecord(rhsPublish);
+  // The deployed summary has only a date; the cluster still supplies the embargo.
+  rec.firstOutletPublishAt = { at: rec.night, precision: 'approx' };
+  rec.reference['2h'] = { count: 4, covered: 4, coverage: 1, missing: [], asOf: '2026-04-24T04:00:00Z' };
+  rec.reference['2h-observed'] = { count: 4, covered: 2, coverage: 0.5, missing: ['variety', 'vulture'], asOf: '2026-04-24T03:30:00Z' };
+  const result = lib.evaluateCheck(rec);
+  assert.equal(result.release?.verdictUses, 'observed');
+  assert.deepEqual(result.gates, result.release.observed.gates);
+  assert.match(result.gates.find(g => g.name === 'first-live').detail, /90 min after embargo/);
+  assert.equal(result.gates.find(g => g.name === 'first-live').status, 'fail');
+  assert.equal(result.gates.find(g => g.name === 'coverage-2h').status, 'fail');
+  assert.equal(lib.observedRecord(rec, result.release).embargoAt, '2026-04-24T01:30:00.000Z');
+  delete rec.reference['2h-observed'];
+  assert.equal(lib.evaluateCheck(rec).gates.find(g => g.name === 'coverage-2h').status, 'unknown', 'a later census cannot prove earlier coverage');
+});
+
+test('early first-live grading keeps raw cluster evidence when a higher-tier publish is missing or later', () => {
+  for (const date of ['2026-04-23', '2026-04-24T02:50:00Z', '2026-04-24T01:00:00Z']) {
+    const rec = lib.emptyRecord({ showId: 'fixture', night: '2026-04-23', embargoAt: '2026-04-24T02:00:00Z' });
+    lib.applySample(rec, { at: '2026-04-24T02:55:00Z', reviews: [] });
+    lib.applySample(rec, { at: '2026-04-24T03:00:00Z', reviews: [
+      { outlet: 'NYT', tier: 1, date },
+      ...['TheaterMania', 'TheWrap', 'Variety'].map(outlet => ({ outlet, tier: 3, date: '2026-04-24T01:33:00Z' })),
+    ] });
+    const result = lib.evaluateCheck(rec);
+    assert.equal(result.gates.find(g => g.name === 'first-live').status, 'fail', date);
+    const observed = lib.observedRecord(rec, result.release);
+    assert.equal(observed.firstOutletPublishAt.at, date.endsWith('01:00:00Z') ? date : '2026-04-24T01:33:00.000Z');
+    assert.equal(observed.embargoAt, '2026-04-24T01:30:00.000Z');
+    // Snapping the clock must not claim publication at 01:30 when the evidence starts at 01:33.
+    for (const p of rec.perReview) { p.firstLiveAt = '2026-04-24T02:08:00Z'; p.prevOkSampleAt = '2026-04-24T02:03:00Z'; }
+    if (!date.endsWith('01:00:00Z')) assert.equal(lib.evaluateCheck(rec).gates.find(g => g.name === 'first-live').status, 'unknown');
+  }
+});
+
+test('late release: AFGM fixture retains 03:00Z and the existing first-live cap and threshold', () => {
+  const { observedEmbargo } = require('./observed-embargo');
+  const options = { night: '2026-10-29', embargoAt: '2026-10-30T02:00:00Z' };
+  assert.equal(observedEmbargo({ estimateMs: Date.parse(options.embargoAt), publishTimes: afgmPublish }).at, '2026-10-30T03:00:00.000Z');
+  // The late rule still accepts one exact outlet, without requiring a cluster.
+  const rec = publishRecord(afgmPublish.filter(r => r.outlet === 'TheaterMania'), options);
+  rec.publishedBy = { path: 'lane' };
+  assert.equal(lib.observedRelease(rec).observedAt, '2026-10-30T03:00:00.000Z');
+  assert.equal(lib.evaluateCheck(rec).release.verdictUses, 'assumed');
+  rec.perReview[0].firstLiveAt = '2026-10-30T02:45:00Z';
+  assert.equal(lib.observedRelease(rec).observedAt, '2026-10-30T02:45:00.000Z');
+  rec.perReview[0].firstLiveAt = '2026-10-30T02:30:00Z';
+  assert.equal(lib.observedRelease(rec), null);
+});
+
 test('re-grading A Few Good Men 2026-10-29 reports the assumed 02:00Z and the observed 03:02Z verdicts', () => {
   const r = lib.evaluateCheck(afgm());
   const g = Object.fromEntries(r.gates.map((x) => [x.name, x]));

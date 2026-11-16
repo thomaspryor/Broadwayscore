@@ -3,15 +3,14 @@
  * BRO-7167 test bench, step 1: the real embargo of a past press night, read from
  * the exact publish times of its reviews.
  *
- * Grading only. Nothing in the opening-night lane may require this file (it
- * would change the lane code hash and disarm the lane); the lane keeps
- * press-night-record.js defaultEmbargoAt / observedReleaseFromPublish.
- * observed-embargo.test.mjs pins that.
+ * Grading only. BRO-7172 shares this rule with press-night-record.js for early
+ * releases. It is part of the lane code hash; changes require the recorded
+ * rehearsal to pass again. It does not change the scheduled embargo.
  *
  * Why: the pilot found the recorded or estimated embargo wrong on 2 of 2 nights
  * (A Few Good Men recorded 02:00Z, real 03:00Z; Rocky Horror estimated 02:00Z,
- * real 01:30Z). observedReleaseFromPublish only ever moves an embargo later, so
- * an early lift (Rocky Horror) is never corrected.
+ * real 01:30Z). The original observedReleaseFromPublish only moved an embargo
+ * later, leaving early lifts such as Rocky Horror uncorrected.
  *
  * Method: outlets publish together the minute the embargo lifts. Find the
  * earliest CLUSTER_WINDOW_MIN window holding at least MIN_CLUSTER distinct
@@ -47,7 +46,7 @@ function snapQuarter(ms) {
  * @param {{outlet?: string, url?: string, publishedTime: string|null}[]} p.publishTimes
  * @param {object} [opts]  { minCluster, windowMin }
  * @returns {{at: string|null, atMs: number|null, source: 'observed-cluster'|'estimate'|'none',
- *   n: number, outlets: string[], shiftMin: number|null}}
+ *   n: number, outlets: string[], shiftMin: number|null, firstPublishedAt?: string}}
  */
 function observedEmbargo({ estimateMs = null, publishTimes = [] } = {}, opts = {}) {
   const minCluster = opts.minCluster || MIN_CLUSTER;
@@ -80,6 +79,7 @@ function observedEmbargo({ estimateMs = null, publishTimes = [] } = {}, opts = {
       return {
         midnightOnly,
         at: new Date(atMs).toISOString(), atMs, source: 'observed-cluster', n: inWindow.size,
+        firstPublishedAt: new Date(pts[i].t).toISOString(), // raw evidence, before quarter-hour snapping
         outlets: [...inWindow.values()],
         shiftMin: estimateMs == null ? null : Math.round((atMs - estimateMs) / MIN),
       };

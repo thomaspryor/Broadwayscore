@@ -64,7 +64,7 @@ function summaryBlock(notPassing) {
   for (const r of notPassing) {
     const bad = r.gates.filter((g) => g.required && g.status !== 'pass').map((g) => `${g.name} ${g.status.toUpperCase()}: ${g.detail}`);
     lines.push(`- ${r.showId} ${r.night}: ${r.verdict}. ${bad.join(' | ')}`);
-    if (r.release) lines.push(`  The observed release (${releaseSourceLabel(r.release)}) was ${r.release.observedAt}, ${r.release.lateMin} min after the assumed embargo ${r.release.assumedAt}; the verdict uses the assumed one. Measured from the observed release: ${r.release.observed.verdict}.`);
+    if (r.release) lines.push(`  The observed release (${releaseSourceLabel(r.release)}) was ${r.release.observedAt}, ${Math.abs(r.release.lateMin)} min ${r.release.lateMin < 0 ? 'before' : 'after'} the assumed embargo ${r.release.assumedAt}; the verdict uses the ${r.release.verdictUses} one. Measured from the observed release: ${r.release.observed.verdict}.`);
   }
   return lines.join('\n');
 }

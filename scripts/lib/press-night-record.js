@@ -797,7 +797,10 @@ function evaluateCheck(rec, opts = {}) {
   const rel = rec ? observedRelease(rec) : null;
   if (!rel) return result;
   const observed = gradeNight(observedRecord(rec, rel), { ...DEFAULT_GATES, ...opts });
-  return { ...result, release: { ...rel, verdictUses: 'assumed', observed } };
+  // BRO-7172: an early lift must not grade against a clock that starts after reviews appeared.
+  // Preserve the existing assumed/observed comparison for late releases.
+  const early = rel.lateMin < 0;
+  return { ...(early ? observed : result), release: { ...rel, verdictUses: early ? 'observed' : 'assumed', observed } };
 }
 
 function gradeNight(rec, g) {
@@ -921,7 +924,9 @@ function gradeNight(rec, g) {
  * assumed embargo (a shadow started late finds reviews late without the release being late). The observed
  * release is the earlier of the lane's first discovery and the first night review seen live. A legacy record
  * from an operator's explicit --embargo-at also counts as assumed (it carries no embargoSource).
- * Returns {assumedAt, observedAt, lateMin, observedFrom: 'lane-discovery'|'first-live'|'outlet-publish'} or null.
+ * BRO-7172: a cluster of at least three distinct outlets can also establish an early release on any
+ * publishing path. lateMin is signed (negative for early). Explicit embargo times remain protected.
+ * Returns {assumedAt, observedAt, lateMin, observedFrom} or null.
  */
 function observedRelease(rec) {
   if (!rec || rec.embargoSource === 'override' || rec.embargoSource === 'manual') return null;
@@ -929,7 +934,8 @@ function observedRelease(rec) {
   // also set the release. Only an outlet's own clock-time publish date can (first live only lowers it); with
   // none the assumed embargo stands.
   // A night nobody could tell gets the same rule: the lane may have been the one publishing.
-  if (publishPath(rec) !== 'regular') return observedReleaseFromPublish(rec);
+  const fromPublish = observedReleaseFromPublish(rec);
+  if (publishPath(rec) !== 'regular' || (fromPublish && fromPublish.lateMin < 0)) return fromPublish;
   const ls = rec.laneShadow;
   const embMs = toMs(rec.embargoAt);
   const discMs = ls ? toMs(ls.firstDiscoveredAt) : null;
@@ -949,6 +955,23 @@ function observedRelease(rec) {
 
 function observedReleaseFromPublish(rec) {
   const embMs = toMs(rec.embargoAt);
+  if (embMs == null) return null;
+  const { observedEmbargo } = require('./observed-embargo');
+  const excluded = excludedOutletSet(rec);
+  const cluster = observedEmbargo({
+    estimateMs: embMs,
+    publishTimes: (rec.perReview || [])
+      .filter((p) => p.publishPrecision === 'exact' && isNightReview(p, rec.night))
+      .map((p) => ({ outlet: outletIdOf(p.outlet), publishedTime: p.publishAt }))
+      .filter((p) => p.outlet && !excluded.has(p.outlet)),
+  });
+  if (cluster.source === 'observed-cluster' && !cluster.midnightOnly && cluster.atMs < embMs) {
+    return {
+      assumedAt: new Date(embMs).toISOString(), observedAt: cluster.at, lateMin: cluster.shiftMin,
+      observedFrom: 'outlet-publish-cluster', firstPublishedAt: cluster.firstPublishedAt,
+    };
+  }
+  // Late releases retain the single-outlet evidence, first-live cap and 30-minute threshold.
   const pub = firstOutletPublish(rec);
   const pubMs = pub.precision === 'exact' ? toMs(pub.at) : null;
   if (embMs == null || pubMs == null) return null;
@@ -964,6 +987,7 @@ function observedReleaseFromPublish(rec) {
 
 /** What the observed release time was taken from, for the CLI and audit-note wording. */
 function releaseSourceLabel(rel) {
+  if (rel.observedFrom === 'outlet-publish-cluster') return 'the outlet publish-time cluster';
   if (rel.observedFrom === 'outlet-publish') return 'the first outlet publish time';
   return rel.observedFrom === 'first-live' ? 'the first night review seen live' : 'the first lane discovery';
 }
@@ -984,7 +1008,15 @@ function observedRecord(rec, rel) {
   // re-based is dropped and the gate reports the +2h as not captured.
   if (ref2) reference['2h'] = ref2;
   else if (!(reference['2h'] && reference['2h'].coverage == null)) delete reference['2h'];
-  return { ...rec, embargoAt: rel.observedAt, embargoSource: 'observed', reference };
+  const observed = { ...rec, embargoAt: rel.observedAt, embargoSource: 'observed', reference };
+  const pub = rec.firstOutletPublishAt;
+  // A tier-preferred summary can omit (or postdate) the early cluster's exact evidence.
+  // Bound publication by the raw timestamp, never the snapped embargo; keep earlier exact evidence.
+  if (rel.observedFrom === 'outlet-publish-cluster' && rel.firstPublishedAt
+    && (!pub || pub.precision !== 'exact' || toMs(pub.at) == null || toMs(pub.at) > toMs(rel.firstPublishedAt))) {
+    observed.firstOutletPublishAt = { at: rel.firstPublishedAt, precision: 'exact', source: 'outlet-publish-cluster', tierScope: 'any' };
+  }
+  return observed;
 }
 
 /**

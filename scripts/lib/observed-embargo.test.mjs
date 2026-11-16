@@ -16,9 +16,10 @@ test('A Few Good Men: recorded 02:00Z, real lift 03:00Z (later)', () => {
   assert.ok(r.n >= 3);
 });
 
-test('Rocky Horror: estimated 02:00Z, real lift 01:30Z (earlier, which the lane rule cannot see)', () => {
+test('Rocky Horror: estimated 02:00Z, real lift 01:30Z (earlier)', () => {
   const r = observedEmbargo({ estimateMs: ms('2026-04-24T02:00:00Z'), publishTimes: rhs });
   assert.equal(r.at, '2026-04-24T01:30:00.000Z');
+  assert.equal(r.firstPublishedAt, '2026-04-24T01:29:03.000Z');
   assert.equal(r.shiftMin, -30);
 });
 
@@ -48,11 +49,12 @@ test('no estimate and no cluster gives none; off-quarter clusters are not snappe
   assert.equal(observedEmbargo({ estimateMs: ms('2026-05-01T02:00:00Z'), publishTimes: rows }).at, '2026-05-01T01:07:00.000Z');
 });
 
-test('lane code never loads this helper (would change the lane hash and disarm the lane)', () => {
+test('the shared early-release rule is hashed with the lane; test-bench tools stay outside it', () => {
   const { laneCodeFiles } = require('./opening-night-lane/rehearsal.js');
   const files = laneCodeFiles();
   assert.ok(files.length > 50);
-  assert.equal(files.filter((f) => /observed-embargo|test-bench/.test(f)).length, 0);
+  assert.equal(files.filter((f) => f.endsWith('/observed-embargo.js')).length, 1);
+  assert.equal(files.filter((f) => /test-bench/.test(f)).length, 0);
 });
 
 test('an outlet whose second critic posted early still counts in the real cluster', () => {

@@ -96,7 +96,7 @@ function printVerdict(result, asJson, rec) {
   }
   const rel = result.release;
   if (rel) {
-    console.log(`[press-night] ${lib.releaseSourceLabel(rel)} (${rel.observedAt}) came ${rel.lateMin} min after the assumed embargo ${rel.assumedAt}; the verdict above uses the assumed embargo. Measured from the observed release: ${rel.observed.verdict}`);
+    console.log(`[press-night] ${lib.releaseSourceLabel(rel)} (${rel.observedAt}) came ${Math.abs(rel.lateMin)} min ${rel.lateMin < 0 ? 'before' : 'after'} the assumed embargo ${rel.assumedAt}; the verdict above uses the ${rel.verdictUses} embargo. Measured from the observed release: ${rel.observed.verdict}`);
     for (const g of rel.observed.gates) {
       console.log(`  ${g.status.toUpperCase().padEnd(7)} ${g.name}: ${g.detail}${g.required ? '' : ' (not required)'}`);
     }
