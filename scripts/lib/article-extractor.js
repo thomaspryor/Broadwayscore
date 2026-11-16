@@ -536,6 +536,24 @@ const TB_BYLINE_SHAPE = /^\s*\p{L}[\p{L}\w.'\u2019-]*(?:\s+\p{L}[\p{L}\w.'\u2019
 // "|" or line break, so prose like "a review by the Times" never anchors extraction.
 const TB_UNDATED_BYLINE = /Review by\s*(?:<[aA]\b[^>]*>)?\s*[A-Z\u00C0-\u024F][^<\n|]{0,59}?\s*(?:<\/[aA]>)?\s*(?=[<\n|])/g;
 
+/**
+ * A TB page that yields no text has a byline shape the extractor does not know yet. Print only the markup
+ * right around each "by" signature (never the review body), so the shape can be read from a CI log; the
+ * site is behind Cloudflare outside CI (BRO-7262: older Chicago pages ch755/ch771 came back empty).
+ */
+function logTbBylineShape(html, criticHint) {
+  const raw = String(html || '');
+  const hits = [...raw.matchAll(/.{0,60}\b(?:review(?:ed)?|critic)\s+by\b.{0,80}/gis)].slice(0, 3)
+    .map((m) => m[0].replace(/\s+/g, ' '));
+  // Pages that never say "review by" still print the critic's name in the signature: show the markup around it.
+  const last = String(criticHint || '').trim().split(/\s+/).pop();
+  if (last && last.length > 2) {
+    const i = raw.toLowerCase().indexOf(last.toLowerCase());
+    if (i >= 0) hits.push(raw.slice(Math.max(0, i - 100), i + 60).replace(/\s+/g, ' '));
+  }
+  console.warn(`  [tb-extract] no byline matched (${raw.length} chars html); byline markup: ${JSON.stringify(hits)}`);
+}
+
 function extractTalkinBroadwayBody(html, criticHint) {
   const MARKER_LEN = 'Theatre Review by'.length;
   const rawPositions = [...html.matchAll(/Theatre Review by/gi)].map((m) => m.index);
@@ -1115,7 +1133,9 @@ function extractArticleTextUnchecked(html, hostname, criticHint, { outletOnly = 
   // <main> PATTERNS below, same "known outlet, don't let a bad fallback
   // masquerade as a real extraction" reasoning as Stage/Times.
   if (host.includes('talkinbroadway.com')) {
-    return extractTalkinBroadwayBody(html, criticHint);
+    const tb = extractTalkinBroadwayBody(html, criticHint);
+    if (!tb) logTbBylineShape(html, criticHint);
+    return tb;
   }
 
   // WSJ: modern articles serve full body via __NEXT_DATA__ JSON for
