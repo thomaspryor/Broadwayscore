@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-16T21:05:00.968Z",
+  "timestamp": "2026-11-16T21:21:53.337Z",
   "stats": {
     "totalReviews": 82218,
     "alreadyFlagged": 22480,
     "dateGuardCatches": 222,
     "directorMismatch": 3715,
     "tvFilmSignals": 2328,
-    "londonSignals": 3776,
+    "londonSignals": 3777,
     "offBroadwaySignals": 755,
     "yearMismatch": 374,
     "noPublishDate": 8246
@@ -97047,6 +97047,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "liamodell--unknown.json",
+      "publishDate": "2026-11-15",
+      "url": "https://liamodell.com/2026/11/15/cloud-9-review-national-theatre-lyttelton-caryl-churchill/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
