@@ -3724,8 +3724,8 @@ jobs:
           STALE=""
           while IFS= read -r f; do
             [ -z "$f" ] && continue
-            # 30s wrapper via Node — `timeout` isn't available on the ubuntu runner without coreutils alias.
-            if node --test --test-timeout 30000 "$f" > /dev/null 2>&1; then
+            # timeout 60 (BRO-7113): --test-timeout bounds tests, not a child that never exits.
+            if timeout 60 node --test --test-timeout 30000 "$f" > /dev/null 2>&1; then
               STALE="$STALE $f"
             fi
           done < <(node scripts/audit-orphan-tests.js --list-exempt)
@@ -4960,8 +4960,10 @@ jobs:
           run_batch() {  # $1=label $2=logfile; remaining args = the command
             local label="$1" log="$2"; shift 2
             echo "::group::$label batch"
-            "$@" 2>&1 | tee "$log"
-            local rc=${PIPESTATUS[0]}
+            # BRO-7113: wall-clock bound that names a never-exiting test-file
+            # child (--test-timeout bounds tests, not processes). Normal ~25 s.
+            bash scripts/lib/run-test-batch-bounded.sh "$label" 300 "$log" -- "$@"
+            local rc=$?
             echo "::endgroup::"
             # Reporter-agnostic on purpose: node --test's default reporter is
             # TAP on Node 20 (what CI pins, `# pass N`) but spec on Node 22+
@@ -5074,8 +5076,10 @@ jobs:
         run: |
           # BRO-5588: name failing tests (advisory step, so warnings not errors); exit code preserved.
           set +e
-          node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs scripts/enrich-fallback-ticket-links-live.test.mjs tests/unit/dmarc-deliverability.test.mjs 2>&1 | tee /tmp/opening-night-live-batch.log
-          rc=${PIPESTATUS[0]}
+          # BRO-7113: bound 300 s names a never-exiting (e.g. network-wedged) test-file child.
+          bash scripts/lib/run-test-batch-bounded.sh "opening-night live" 300 /tmp/opening-night-live-batch.log -- \
+            node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs scripts/enrich-fallback-ticket-links-live.test.mjs tests/unit/dmarc-deliverability.test.mjs
+          rc=$?
           bash scripts/lib/summarize-failing-tests.sh "opening-night live" /tmp/opening-night-live-batch.log "$rc" warning
           exit "$rc"
 
@@ -5086,7 +5090,7 @@ jobs:
         continue-on-error: true
         run: |
           node scripts/audit-direct-github-api.js
-          node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
+          timeout 300 node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
 
       - name: Page furniture class guard (BRO-7171, advisory)
         # Every outlet extractor, run on saved real pages
@@ -5107,8 +5111,9 @@ jobs:
           SCRAPINGDOG_API_KEY: ''
         run: |
           set +e
-          node --test --test-timeout 120000 tests/unit/page-furniture-extractors.test.mjs 2>&1 | tee /tmp/page-furniture.log
-          rc=${PIPESTATUS[0]}
+          bash scripts/lib/run-test-batch-bounded.sh "page furniture" 300 /tmp/page-furniture.log -- \
+            node --test --test-timeout 120000 tests/unit/page-furniture-extractors.test.mjs
+          rc=$?
           bash scripts/lib/summarize-failing-tests.sh "page furniture" /tmp/page-furniture.log "$rc" warning
           exit "$rc"
 
@@ -5120,8 +5125,9 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          node --test --test-timeout 120000 tests/unit/rendered-copy-voice.test.mjs 2>&1 | tee /tmp/copy-voice.log
-          rc=${PIPESTATUS[0]}
+          bash scripts/lib/run-test-batch-bounded.sh "copy voice" 300 /tmp/copy-voice.log -- \
+            node --test --test-timeout 120000 tests/unit/rendered-copy-voice.test.mjs
+          rc=$?
           bash scripts/lib/summarize-failing-tests.sh "copy voice" /tmp/copy-voice.log "$rc" warning
           exit "$rc"
 
@@ -5180,7 +5186,7 @@ jobs:
         if: always()
         run: |
           for i in $(seq 1 20); do
-            node --test --test-timeout 60000 scripts/lib/file-lock.test.mjs || { echo "::error::file-lock race test failed on repeat $i/20"; exit 1; }
+            timeout 120 node --test --test-timeout 60000 scripts/lib/file-lock.test.mjs || { echo "::error::file-lock race test failed on repeat $i/20"; exit 1; }
           done
 
       - name: Run pre-push conflict-marker guard test (bash integration)
@@ -5704,7 +5710,7 @@ jobs:
         # Static check, so it works on ubuntu even though the polluted path is
         # macOS-only — the exposure is local, but the defect is authored here.
         if: always()
-        run: node --test scripts/lib/ledger-write-isolation.test.mjs
+        run: timeout 300 node --test scripts/lib/ledger-write-isolation.test.mjs
 
       - name: Run API fallback path disqualifier unit tests
         # BRO-3663. The predicate deciding which paths the Git Data API fallback
@@ -5713,7 +5719,7 @@ jobs:
         # had already drifted once (BRO-3348). It now has one definition; this
         # pins its rules so a change to them fails here.
         if: always()  # independent suite — don't let an earlier red step skip it
-        run: node --test scripts/lib/api-fallback-disqualifier.test.mjs
+        run: timeout 300 node --test scripts/lib/api-fallback-disqualifier.test.mjs
 
       - name: Recoupment model backtest vs previous commit (advisory, BRO-4989)
         # Scores the commercial recoupment model at the pushed-from commit and at
@@ -5825,8 +5831,11 @@ jobs:
           [ ${#node_tests[@]} -eq 0 ] && { echo "::error::scripts/lib/unit-test-collection.js collected no node unit tests"; exit 1; }
           echo "shard ${{ matrix.shard }}/$SHARD_TOTAL of ${#node_tests[@]} node unit test files"
           set +e
-          node --test --test-timeout 300000 --test-shard="${{ matrix.shard }}/$SHARD_TOTAL" "${node_tests[@]}" 2>&1 | tee /tmp/unit-node-batch.log
-          rc=${PIPESTATUS[0]}
+          # BRO-7113: bound 600 s (normal 77-135 s) names a never-exiting test-file
+          # child; 2 x 600 + setup stays under this job's 30 min.
+          bash scripts/lib/run-test-batch-bounded.sh "unit-node-shard-${{ matrix.shard }}" 600 /tmp/unit-node-batch.log -- \
+            node --test --test-timeout 300000 --test-shard="${{ matrix.shard }}/$SHARD_TOTAL" "${node_tests[@]}"
+          rc=$?
           bash scripts/lib/summarize-failing-tests.sh "unit-node-shard-${{ matrix.shard }}" /tmp/unit-node-batch.log "$rc"
           exit "$rc"
       - name: Run scripts/lib tests shard
@@ -5843,8 +5852,10 @@ jobs:
           [ ${#tests[@]} -eq 0 ] && { echo "::error::live-data-lane.js --filter=blocking returned no scripts/lib tests"; exit 1; }
           # BRO-5588: name failing tests; exit code preserved.
           set +e
-          node --test --test-timeout 300000 --test-shard="${{ matrix.shard }}/$SHARD_TOTAL" "${tests[@]}" 2>&1 | tee /tmp/scripts-lib-batch.log
-          rc=${PIPESTATUS[0]}
+          # BRO-7113: bound 600 s (normal 44-76 s), see the node shard step.
+          bash scripts/lib/run-test-batch-bounded.sh "scripts/lib-shard-${{ matrix.shard }}" 600 /tmp/scripts-lib-batch.log -- \
+            node --test --test-timeout 300000 --test-shard="${{ matrix.shard }}/$SHARD_TOTAL" "${tests[@]}"
+          rc=$?
           bash scripts/lib/summarize-failing-tests.sh "scripts/lib" /tmp/scripts-lib-batch.log "$rc"
           exit "$rc"
       - name: Ledger isolation check (BRO-2664, advisory)
@@ -6172,7 +6183,7 @@ jobs:
         run: node scripts/auto-close-expired-shows.js --dry-run
 
       - name: Auto-close expired shows tests (BRO-5071)
-        run: node --test scripts/auto-close-expired-shows.test.mjs
+        run: timeout 300 node --test scripts/auto-close-expired-shows.test.mjs
 
       # --- Independent data-check steps below all carry `if: always()` ---------
       # Each is a SEPARATE assertion (validation, contamination, integrity).
@@ -6211,7 +6222,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/lib/review-guards.explain.test.mjs
+        run: timeout 300 node --test scripts/lib/review-guards.explain.test.mjs
 
       - name: Run autoclear-vs-ensemble corpus test (needs review-texts)
         # #1146/#1156: an auto-clear path (allowEarlyDate/allowCrossMarket
@@ -6223,7 +6234,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/lib/autoclear-vs-ensemble.test.mjs
+        run: timeout 300 node --test scripts/lib/autoclear-vs-ensemble.test.mjs
 
       # "Autoclear-vs-ensemble audit (strict)" MOVED to check-corpus-drift.js
       # (BRO-3535, 2026-09-16): audit-autoclear-vs-ensemble.js --strict scans
@@ -6248,7 +6259,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/lib/aggregator-domain-tld-parity.test.mjs
+        run: timeout 300 node --test scripts/lib/aggregator-domain-tld-parity.test.mjs
 
       - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
         # Same corpus-missing trap as explainExclusion above, same fix: the
@@ -6262,7 +6273,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
+        run: timeout 300 node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
 
       - name: Run frankie-2002 cleanup regression guard (needs review-texts)
         # BRO-853: same corpus-missing trap as explainExclusion above. Registered
@@ -6274,7 +6285,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/verify-frankie-2002-cleanup.test.mjs
+        run: timeout 300 node --test scripts/verify-frankie-2002-cleanup.test.mjs
 
       - name: Run review-text folder orphan guard (needs review-texts)
         # BRO-5683: scripts/verify-review-text-folders.test.mjs (BRO-5153) asserts
@@ -6286,7 +6297,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/verify-review-text-folders.test.mjs
+        run: timeout 300 node --test scripts/verify-review-text-folders.test.mjs
 
       - name: Run BRO-1397 prior-run former-cast sweep (needs review-texts)
         # BRO-1397: registered in tests/unit-test-manifest.txt, but that batch
@@ -6298,7 +6309,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/verify-prior-run-former-cast-sweep.test.mjs
+        run: timeout 300 node --test scripts/verify-prior-run-former-cast-sweep.test.mjs
 
       - name: Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)
         # Same corpus-missing trap as the frankie step above: registered in
@@ -6312,7 +6323,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/verify-addams-wsj-dedup-held.test.mjs
+        run: timeout 300 node --test scripts/verify-addams-wsj-dedup-held.test.mjs
 
       - name: Run data validation
         if: always()
@@ -6391,7 +6402,7 @@ jobs:
         if: always()
         env:
           REQUIRE_REVIEW_CORPUS: '1'
-        run: node --test scripts/audit-self-contradictory-clear-drained.test.mjs
+        run: timeout 300 node --test scripts/audit-self-contradictory-clear-drained.test.mjs
 
       # ── RETIRED 2026-08-14: "Audit stale flag after URL correction" (#483) ──
       #
@@ -6973,8 +6984,13 @@ jobs:
           [ ${#e2e_unit_tests[@]} -eq 0 ] && { echo "::error::tests/e2e-unit-test-manifest.txt is empty or missing"; exit 1; }
           # BRO-5588 cousin: name failing tests; exit code preserved.
           set +e
-          npx tsx --test --test-timeout 300000 "${e2e_unit_tests[@]}" 2>&1 | tee /tmp/e2e-unit-batch.log
-          rc=${PIPESTATUS[0]}
+          # BRO-7113 cousin: this batch (normal ~90 s) stalled 4x 2026-11-10..15 to
+          # the 55-min job limit with no file named (one never-exiting test-file
+          # child holds the in-order reporter). The bound fails it at 600 s and
+          # names the stalled file.
+          bash scripts/lib/run-test-batch-bounded.sh "e2e unit" 600 /tmp/e2e-unit-batch.log -- \
+            npx tsx --test --test-timeout 300000 "${e2e_unit_tests[@]}"
+          rc=$?
           bash scripts/lib/summarize-failing-tests.sh "e2e unit" /tmp/e2e-unit-batch.log "$rc"
           exit "$rc"
 

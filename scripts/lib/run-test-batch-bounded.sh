@@ -31,7 +31,7 @@ while kill -0 "$pid" 2>/dev/null; do
   if [ "$(date +%s)" -ge "$deadline" ]; then
     # The runner spawns one child per test file with that ONE path in argv; the
     # runner and npx/tsx wrappers carry the whole list, so keep single-file lines.
-    stalled=$(ps -A -o pgid=,args= 2>/dev/null | awk -v g="$pid" '$1 == g' \
+    stalled=$(ps -ww -A -o pgid=,args= 2>/dev/null | awk -v g="$pid" '$1 == g' \
       | awk '{ n = 0; f = ""; for (i = 2; i <= NF; i++) if ($i ~ /\.test\.(mjs|cjs|js|ts|mts)$/) { n++; f = $i } if (n == 1) print f }' \
       | sort -u | tr '\n' ' ')
     kill -TERM -- "-$pid" 2>/dev/null; sleep 5; kill -KILL -- "-$pid" 2>/dev/null

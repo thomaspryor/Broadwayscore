@@ -72,3 +72,41 @@ test('bad arguments exit 2', () => {
   const r = spawnSync('bash', [HELPER, 'x', 'soon', '/dev/null', '--', 'true'], { encoding: 'utf8' });
   assert.equal(r.status, 2);
 });
+
+// Class guard (BRO-7113): in test.yml every `node --test` / `tsx --test` command is
+// wall-clock bounded (inline `timeout N` or this helper), and each job's helper
+// bounds fit inside its timeout-minutes, so a never-exiting test child fails as a
+// named red step instead of a cancelled job at the limit.
+test('test.yml: every --test invocation is bounded, and helper bounds fit each job', () => {
+  const ymlPath = join(dirname(HELPER), '..', '..', '.github', 'workflows', 'test.yml');
+  const lines = readFileSync(ymlPath, 'utf8').split('\n');
+  const unbounded = [];
+  lines.forEach((line, i) => {
+    const code = line.replace(/^\s*#.*$/, '');
+    if (!/\b(node|tsx)\s+(--\S+\s+)*--test\b/.test(code)) return;
+    if (/\btimeout\s+(-k\s+\d+\s+)?\d+\s/.test(code)) return;
+    if (/run-test-batch-bounded\.sh/.test(lines[i - 1] || '') && /\\\s*$/.test(lines[i - 1])) return;
+    if (/run-test-batch-bounded\.sh/.test(code)) return;
+    unbounded.push(`test.yml:${i + 1}: ${line.trim().slice(0, 100)}`);
+  });
+  assert.deepEqual(unbounded, [], 'wrap these in `timeout N` or scripts/lib/run-test-batch-bounded.sh');
+
+  // Per job: sum of helper bounds + 3 min setup < timeout-minutes.
+  const jobs = [];
+  for (const line of lines) {
+    const j = /^  ([a-z0-9-]+):\s*$/.exec(line);
+    if (j) { jobs.push({ name: j[1], limitMin: null, boundSec: 0 }); continue; }
+    const cur = jobs[jobs.length - 1];
+    if (!cur) continue;
+    const t = /^    timeout-minutes:\s*(\d+)/.exec(line);
+    if (t) cur.limitMin = Number(t[1]);
+    const b = /run-test-batch-bounded\.sh\s+"[^"]*"\s+(\d+)\s/.exec(line);
+    if (b) cur.boundSec += Number(b[1]);
+  }
+  const used = jobs.filter((j) => j.boundSec > 0);
+  assert.ok(used.length >= 3, `expected the helper in 3+ jobs, found ${used.map((j) => j.name)}`);
+  for (const j of used) {
+    assert.ok(j.limitMin, `${j.name} uses the helper but has no job timeout-minutes`);
+    assert.ok(j.boundSec + 180 < j.limitMin * 60, `${j.name}: helper bounds ${j.boundSec}s + 180s setup exceed timeout-minutes ${j.limitMin}`);
+  }
+});

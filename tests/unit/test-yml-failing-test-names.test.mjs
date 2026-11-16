@@ -81,10 +81,11 @@ test('works without GITHUB_STEP_SUMMARY set', () => {
 
 test('both bare batches in test.yml call the summarizer and keep the exit code', () => {
   for (const [log, label] of [['/tmp/opening-night-live-batch.log', 'opening-night live'], ['/tmp/scripts-lib-batch.log', 'scripts/lib'], ['/tmp/e2e-unit-batch.log', 'e2e unit']]) {
-    const i = yml.indexOf(`tee ${log}`);
-    assert.ok(i > 0, `${log} tee missing`);
-    const block = yml.slice(i, i + 400);
-    assert.match(block, /rc=\$\{PIPESTATUS\[0\]\}/);
+    // BRO-7113: batches run through run-test-batch-bounded.sh, which tees to <log>.
+    const m = new RegExp(`run-test-batch-bounded\\.sh "[^"]+" \\d+ ${log.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')} --`).exec(yml);
+    assert.ok(m, `${log} bounded batch missing`);
+    const block = yml.slice(m.index, m.index + 600);
+    assert.match(block, /rc=\$\?/);
     assert.ok(block.includes(`summarize-failing-tests.sh "${label}" ${log} "$rc"`), `${label} summarizer call missing`);
     assert.match(block, /exit "\$rc"/);
   }
