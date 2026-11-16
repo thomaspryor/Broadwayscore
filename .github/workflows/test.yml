@@ -1068,6 +1068,8 @@ on:
       # test runs via tests/unit-test-manifest.txt (tests/** already globbed
       # above); path-listed so a solo lib edit triggers CI.
       - 'scripts/auto-fix-feedback-bug.js'
+      # BRO-7606: review-submission card CLI; tested by scripts/lib/plan-refusal-escalation.test.mjs
+      - 'scripts/file-review-submission-card.js'
       # Finance tracker: pure matchers + P&L rollup + ingestion. Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/finance-vendors.json'
