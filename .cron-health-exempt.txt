@@ -123,7 +123,6 @@ process-review-formspree.yml  # weekly safety net; /api/submit-review dispatches
 purge-archives-history.yml  # weekly history purge; a missed week leaves the purge one week later
 rebuild-fast.yml  # 4-hourly safety-net rebuild; rebuild-reviews.yml (paged) and deploy freshness checks cover it
 recollect-for-scores.yml  # weekly recollection; a stale week delays rescoring of a few reviews
-reconcile-broadcast-state.yml  # hourly daytime reconcile; check-missed-broadcasts pages on unsent drafts
 recover-wsj-subscriber.yml  # daily WSJ recovery; a missed day delays a few paywalled texts
 rediscover-urls.yml  # weekly URL rediscovery; a stale week delays fixes for moved review URLs
 regenerate-tier-configs.yml  # weekly tier config refresh; stale tiers stay valid until the next run

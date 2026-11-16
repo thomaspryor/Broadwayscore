@@ -34,7 +34,8 @@ test('BRO-3867/BRO-6751: workflows with a tighter re-dispatch band declare it', 
   const yaml = fs.readFileSync(path.join(ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
   const byWf = Object.fromEntries(parseCriticalCronEntries(yaml).map((e) => [e.workflow, e]));
   const want = { 'audit-aggregator-gap.yml': 1, // BRO-6751: throughput band, see the yml
-     'check-opening-night-drift.yml': 2, 'opening-night-checklist.yml': 3, 'opening-night-express-retry-check.yml': 3, 'social-autopost.yml': 1 };
+     'check-opening-night-drift.yml': 2, 'opening-night-checklist.yml': 3, 'opening-night-express-retry-check.yml': 3, 'social-autopost.yml': 1,
+     'reconcile-broadcast-state.yml': 6 }; // BRO-7623
   for (const [wf, h] of Object.entries(want)) {
     const text = fs.readFileSync(path.join(ROOT, '.github/workflows', wf), 'utf8');
     assert.ok(acceptsRedispatch(text), `${wf} must accept redispatch`);

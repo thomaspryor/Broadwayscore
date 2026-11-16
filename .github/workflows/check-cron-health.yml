@@ -244,6 +244,11 @@ jobs:
             # 2h band false-tripped on the real noon checks on 10-15 and in 4 of 19 replayed checks). Mirrored in
             # TIGHT_BY_DESIGN (scripts/audit-cron-health-coverage.js); do not tighten back.
             "check-opening-night-drift.yml|10|Check Opening Night Drift"
+            # Resend tracker reconcile, scheduled hourly 11-18 UTC (BRO-7623).
+            # On 2026-11-16 GitHub dropped all 8 ticks, so a sent email stayed "draft" in
+            # opening-night-sent.json until a hand run. Worst scheduled gap is 17h (18 -> 11 UTC);
+            # 30h = that gap + the 12h cushion audit-cron-health-coverage.js requires.
+            "reconcile-broadcast-state.yml|30|Reconcile Resend Broadcast State"
             # Opening night checklist, scheduled hourly at :17.
             # BRO-3867 (2026-10-22): GitHub throttles this repo's hourly schedules; success-run
             # gaps over 2026-10-01 -> 10-22 measured p95 7.1h, MAX 10.6h. Replaying the checker at
