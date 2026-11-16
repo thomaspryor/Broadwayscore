@@ -907,5 +907,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-16T07:51:27.739Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-11-16T06:04:18.227819+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nAwake and Sing! — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Hey there, your listing of Awake and Sing! has a runtime of four hours with no intermission in the FAQ. It pulled into Gemini results on Google so you might want to update! \"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1187",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43832055573",
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-11-16T08:35:35.190Z"
   }
 ]
