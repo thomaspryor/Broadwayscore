@@ -205,3 +205,17 @@ test('holdsReview: a flagged or invalid file still counts, an empty stub or a fo
   assert.equal(holdsReview({ contentTier: 'complete' }), false);
   assert.equal(holdsReview(null), false);
 });
+
+test('pickCriticForShow: regional bylines carry no date (BRO-7262)', () => {
+  const undatedLink = '<h2>Adirondack Chair Circle</h2><P><B>Theatre Review by <A HREF="mailto:k@x">Karen Topham</A></B><P>text';
+  const undatedPlain = '<P><B>Theatre Review by Karen Topham</B><BR>Steppenwolf<P>text';
+  assert.deepEqual(pickCriticForShow(undatedLink, 'Adirondack Chair Circle'), { critic: 'Karen Topham' });
+  assert.deepEqual(pickCriticForShow(undatedPlain, 'Adirondack Chair Circle'), { critic: 'Karen Topham' });
+  // A dated byline still yields the bare name, not "Name - October 9, 2026".
+  assert.deepEqual(pickCriticForShow(oneReview, 'Good Time Charlie'), { critic: 'Kimberly Ramírez' });
+  // Two undated reviews on one page still need the heading to name the show.
+  const twoUndated = '<CENTER><B>Good Time Charlie</B></CENTER><P><B>Theatre Review by Karen Topham</B><P>aaa'
+    + '<CENTER><B>The Ask</B></CENTER><P><B>Theatre Review by Michael Dale</B><P>bbb';
+  assert.deepEqual(pickCriticForShow(twoUndated, 'The Ask'), { critic: 'Michael Dale' });
+  assert.deepEqual(pickCriticForShow(twoUndated, 'Nope'), { skip: 'multi-review-page' });
+});

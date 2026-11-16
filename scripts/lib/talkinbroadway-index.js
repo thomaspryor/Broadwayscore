@@ -123,9 +123,11 @@ function matchShowByTitle(title, shows, { now = new Date(), windowDays = 400, ah
   return { show: null, reason: hits.length ? 'ambiguous' : 'none' };
 }
 
-/** Every "Theatre Review by {Critic} - {Date}" byline in a page, with the plain text just before it. */
+/** Every "Theatre Review by {Critic}[ - {Date}]" byline in a page, with the plain text just before it. */
 function bylineSections(html) {
-  const re = /Theatre Review by\s*(?:<a[^>]*>)?\s*([^<\n]+?)\s*(?:<\/a>)?\s+-\s+[A-Za-z]+\.?\s+\d{1,2},?\s+\d{4}/gi;
+  // Regional pages print the byline without a date ("Theatre Review by Karen Topham</B>"),
+  // so the date is optional; without it the name ends at the next tag or line break (BRO-7262).
+  const re = /Theatre Review by\s*(?:<a[^>]*>)?\s*([^<\n]+?)\s*(?:<\/a>)?(?:\s+-\s+[A-Za-z]+\.?\s+\d{1,2},?\s+\d{4}|\s*(?=<|\n|$))/gi;
   const out = [];
   let prevEnd = 0;
   for (const m of String(html || '').matchAll(re)) {
