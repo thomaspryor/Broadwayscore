@@ -27,7 +27,7 @@ const {
   fetchBdZoneCostDay, fetchBbUsageForDay, fetchSbUsage, fetchSdAccount,
 } = require('./lib/provider-billing');
 const {
-  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, rebuildDailyAggregate,
+  computeDayRecord, budgetBreaches, llmScoringBreach, computeStreak, renderSnapshot, utcYesterday, rebuildDailyAggregate,
   ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
   attributionGaps, attributionWindowVerdict,
 } = require('./lib/provider-spend-core');
@@ -128,10 +128,16 @@ async function main() {
   // continuity only means something measured against what survived to disk.
   const now = new Date();
   // Also check scoring across GitHub runs, even if today's scoring queue is empty.
-  const { DEFAULT_RUNS_LOG_PATH, reportRollingCostAlerts } = require('./lib/llm-scoring-cost-recording');
+  const {
+    DEFAULT_RUNS_LOG_PATH, reportRollingCostAlerts, sumCostUsdForUtcDay,
+  } = require('./lib/llm-scoring-cost-recording');
+  // BRO-7576: DAY's whole-UTC-day LLM scoring cost, recorded on the day record
+  // below; the daily spend condition is judged on its 7-day average here.
+  let llmDay = { covered: false };
   try {
     const scoringRuns = JSON.parse(fs.readFileSync(DEFAULT_RUNS_LOG_PATH, 'utf8'));
-    await reportRollingCostAlerts(scoringRuns, { now, thresholdUsd: thresholds.llmScoringDailyUsd, dryRun: DRY_RUN });
+    await reportRollingCostAlerts(scoringRuns, { now, dryRun: DRY_RUN });
+    llmDay = sumCostUsdForUtcDay(scoringRuns, DAY, { now });
   } catch (err) {
     console.warn(`[llm-scoring] rolling spend check unavailable (non-fatal): ${err.message}`);
   }
@@ -185,6 +191,11 @@ async function main() {
   const ledgerCredits = creditsByProvider(callLedger, creditScope);
   const attributedPct = computeAttributedPct(ledgerCounts, record.providers, ledgerCredits);
   record.attributedPct = attributedPct;
+  // Not under record.providers: those are billing-API readings with their own
+  // measurability/streak rules. Uncovered = could not measure, never $0.
+  record.llmScoring = llmDay.covered
+    ? { status: 'ok', cost: +llmDay.usd.toFixed(2), runs: llmDay.runs }
+    : { status: 'unknown' };
   // Billed-unit denominator per provider — reuses provider-telemetry.js's
   // BILLING_COUNT_FIELD directly (not a re-typed copy) so this can't drift
   // from computeAttributedPct's own denominator if the mapping ever changes.
@@ -256,6 +267,11 @@ async function main() {
     console.log(`[provider-spend] Browserbase allowance for ${a.caller} ${a.expired ? 'ended' : `ends in ${a.daysLeft} day(s)`} (${a.until})`);
   }
 
+  const llmVerdict = llmScoringBreach(record, series, thresholds.llmScoringDailyUsd);
+  console.log(`[provider-spend] ${DAY}: LLM scoring ${record.llmScoring.status === 'ok'
+    ? `$${record.llmScoring.cost} (${record.llmScoring.runs} run summaries)` : 'could not measure (run log does not cover the day)'}${llmVerdict
+    ? `; ${llmVerdict.days}-day average $${llmVerdict.avg} vs $${llmVerdict.threshold} line: ${llmVerdict.breached ? 'OVER' : 'ok'}` : ''}`);
+
   if (DRY_RUN) {
     console.log('[provider-spend] --dry-run: no writes, no alerts');
     return;
@@ -300,6 +316,38 @@ async function main() {
         decisionPrompt: `Scraping spend over budget: ${breaches.overspend.join('; ')}. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?`,
       } : {}),
     });
+  }
+
+  // BRO-7576: LLM scoring spend, on the 7-day average of whole UTC days. This
+  // is the only place the condition is raised or resolved (the scoring writers
+  // used to flip it on a rolling 24h total, 15 times in 51 days). Same owner
+  // judgment call as the scraping overspend above (raise the line or cut
+  // scoring volume), so decision:true keeps digest-autofix from filing it as a
+  // fix card (BRO-6062/6317 were such cards, closed when the window aged out).
+  // An unmeasured day (llmVerdict null) neither alarms nor clears.
+  try {
+    const { DAILY_COST_CONDITION_KEY } = require('./lib/llm-scoring-cost-recording');
+    const router = require('./lib/owner-alert-router');
+    if (llmVerdict?.breached) {
+      const title = 'LLM scoring daily spend over budget';
+      await router.routeAlert({
+        conditionKey: DAILY_COST_CONDITION_KEY,
+        title,
+        description: `${title}: averaging $${llmVerdict.avg}/day over the last ${llmVerdict.days} measured days, above the $${llmVerdict.threshold} llmScoringDailyUsd line (${DAY}: $${llmVerdict.today}).`,
+        hint: 'Per-day totals: llmScoring.cost in data/audit/provider-spend-daily.jsonl. Per-run detail: data/llm-scoring-runs.json (source, processed, costUsd). Loops are alarmed separately (llm-scoring:cost-repeat-signature, llm-scoring:cost-breach).',
+        severity: 'warning',
+        disposition: 'digest',
+        cooldownHours: 20,
+        decision: true,
+        decisionPrompt: `${title}: about $${llmVerdict.avg}/day for the last ${llmVerdict.days} days against a $${llmVerdict.threshold}/day line. Raise the line to what scoring new reviews really costs, or cut how many reviews get scored each day?`,
+      });
+    } else if (llmVerdict) {
+      router.resolveCondition(DAILY_COST_CONDITION_KEY, {
+        reason: `LLM scoring averaged $${llmVerdict.avg}/day over ${llmVerdict.days} measured days through ${DAY}, at or below the $${llmVerdict.threshold} line.`,
+      });
+    }
+  } catch (err) {
+    console.log(`::warning::LLM scoring spend alarm failed (non-fatal): ${err.message}`);
   }
 
   // BRO-5526: a clean day resolves the budget conditions. Only the attribution-gap

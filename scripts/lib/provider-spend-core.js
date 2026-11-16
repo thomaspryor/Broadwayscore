@@ -203,6 +203,28 @@ function budgetBreaches(record, thresholds, history = []) {
   return { overspend, unmeasured };
 }
 
+/**
+ * BRO-7576: LLM scoring spend against llmScoringDailyUsd, judged on the
+ * average of the measured whole UTC days in the 7-day window (record.llmScoring
+ * = { status:'ok', cost } written by check-provider-spend.js), the same rule
+ * BRO-6646 gave Bright Data. The old rolling-24h test went over and back under
+ * the line with each scheduled batch (15 times in 51 days of real history),
+ * each time closing and re-filing a card; the 7-day average crossed 3 times.
+ * Returns null when there is no line or this day is not measured (an
+ * unmeasured day neither alarms nor clears), else
+ * { avg, days, today, threshold, breached }. Pure.
+ */
+function llmScoringBreach(record, history, thresholdUsd) {
+  if (typeof thresholdUsd !== 'number' || !Number.isFinite(thresholdUsd) || thresholdUsd <= 0) return null;
+  const today = record?.llmScoring;
+  if (today?.status !== 'ok' || typeof today.cost !== 'number' || !Number.isFinite(today.cost)) return null;
+  const costs = [today.cost, ...windowDays(record, history)
+    .map((r) => (r.llmScoring?.status === 'ok' ? r.llmScoring.cost : null))
+    .filter((n) => typeof n === 'number' && Number.isFinite(n))];
+  const avg = +(costs.reduce((a, b) => a + b, 0) / costs.length).toFixed(2);
+  return { avg, days: costs.length, today: today.cost, threshold: thresholdUsd, breached: avg > thresholdUsd };
+}
+
 // A renewal further out than this is not a monthly cycle (e.g. an expiry date
 // on rolled-over credits), so the pace check would be meaningless.
 const MAX_PACE_RENEWAL_DAYS = 40;
@@ -600,7 +622,7 @@ function attributionWindowVerdict(series, provider, { min = 0.8, days = 2 } = {}
 module.exports = {
   attributionGaps,
   attributionWindowVerdict,
-  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
+  computeDayRecord, budgetBreaches, llmScoringBreach, computeStreak, renderSnapshot,
   utcYesterday, isNextUtcDay, aggregateLedgerByDay, rebuildDailyAggregate, bbCost,
   BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,
   ledgerFreshnessHours, lastLedgerDay, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,

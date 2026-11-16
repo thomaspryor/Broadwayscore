@@ -23,13 +23,26 @@ const path = require('path');
 const DEFAULT_RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
 const DEFAULT_THRESHOLDS_PATH = path.join(__dirname, '../config/provider-spend-thresholds.json');
 
-/** Keep at least 100 summaries, plus every summary in the rolling alarm window. */
+/**
+ * Keep at least 100 summaries, plus every summary that completed on or after
+ * 00:00Z of the UTC day before the newest one (BRO-7576). The daily spend job
+ * (check-provider-spend.js) sums YESTERDAY's whole UTC day the next morning;
+ * with only "100 rows + last 24h" kept, that day's early runs were already gone
+ * on 9 of 20 days checked (2026-10-27..11-15), so the day total was unknowable.
+ */
 const MAX_RUNS_KEPT = 100;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/** 00:00Z of the UTC day before the one `iso` falls on (NaN when unparseable). */
+function retentionCutoffMs(iso) {
+  const t = Date.parse(iso);
+  if (!Number.isFinite(t)) return NaN;
+  return Date.parse(`${new Date(t).toISOString().slice(0, 10)}T00:00:00Z`) - DAY_MS;
+}
+
 /**
  * Append `summary` to the run log at `runsLogPath` (capped at the last
- * MAX_RUNS_KEPT entries plus the last 24h), and return the resulting in-memory array so
+ * MAX_RUNS_KEPT entries plus everything since 00:00Z yesterday), and return the resulting in-memory array so
  * callers (e.g. a breach check right after saving) don't need to re-read
  * the file they just wrote.
  */
@@ -46,7 +59,7 @@ function appendRunSummary(summary, { runsLogPath = DEFAULT_RUNS_LOG_PATH } = {})
   runs.push(summary);
 
   if (runs.length > MAX_RUNS_KEPT) {
-    const cutoff = Date.parse(summary.completedAt) - DAY_MS;
+    const cutoff = retentionCutoffMs(summary.completedAt);
     runs = runs.filter((r, i) => i >= runs.length - MAX_RUNS_KEPT || Date.parse(r?.completedAt) >= cutoff);
   }
 
@@ -80,6 +93,8 @@ function loadCostThresholdUsd(thresholdsPath = DEFAULT_THRESHOLDS_PATH, key = 'l
 // prints its own console.log line in THIS run's CI log regardless of
 // routeAlert's cooldown outcome — only the owner digest dedupes, by design.
 const COST_BREACH_CONDITION_KEY = 'llm-scoring:cost-breach';
+/** Owned by check-provider-spend.js since BRO-7576; same key so the open card carries over. */
+const DAILY_COST_CONDITION_KEY = 'llm-scoring:daily-cost-breach';
 
 /**
  * Pure breach decision: given the run log (already includes this run's just-
@@ -175,53 +190,62 @@ async function reportRunCostBreach(runs, {
   }
 }
 
-/** Rolling 24h total, across all invocations and GitHub run ids. Alarm only. */
-function checkDailyCostBreach(runs, { now = new Date(), thresholdUsd } = {}) {
-  if (!Number.isFinite(thresholdUsd) || thresholdUsd <= 0) return null;
-  const totalUsd = runsWithinDay(runs, now).reduce((sum, r) =>
-    sum + (Number.isFinite(r.costUsd) && r.costUsd > 0 ? r.costUsd : 0), 0);
-  return { totalUsd, thresholdUsd, breached: totalUsd > thresholdUsd, conditionKey: 'llm-scoring:daily-cost-breach' };
+/**
+ * BRO-7576: total LLM scoring cost of one whole UTC day (`day` = YYYY-MM-DD),
+ * across every invocation and GitHub run id. `covered` is false when the log
+ * cannot answer: its oldest retained summary completed after the day began
+ * (rows were capped away), or the day has not ended yet. An uncovered day is
+ * "could not measure" (usd null), never $0. Invalid costs count as 0, as in
+ * the per-run sums above.
+ */
+function sumCostUsdForUtcDay(runs, day, { now = new Date() } = {}) {
+  const start = /^\d{4}-\d{2}-\d{2}$/.test(String(day)) ? Date.parse(`${day}T00:00:00Z`) : NaN;
+  if (!Number.isFinite(start)) return { day, usd: null, covered: false, runs: 0 };
+  const end = start + DAY_MS;
+  const times = (runs || []).map(r => Date.parse(r?.completedAt)).filter(Number.isFinite);
+  const covered = times.length > 0 && Math.min(...times) <= start && new Date(now).getTime() >= end;
+  let usd = 0;
+  let count = 0;
+  for (const r of runs || []) {
+    const t = Date.parse(r?.completedAt);
+    if (!(t >= start && t < end)) continue;
+    count++;
+    if (Number.isFinite(r.costUsd) && r.costUsd > 0) usd += r.costUsd;
+  }
+  return { day, usd: covered ? +usd.toFixed(4) : null, covered, runs: count };
 }
 
-/** Shared by both scoring writers and the daily spend check. Injection keeps tests offline. */
+/**
+ * Shared by both scoring writers and the daily spend check. Injection keeps
+ * tests offline. Loop alarms only: repeated signatures, and recovery of the
+ * per-run breach. BRO-7576: the daily SPEND condition (DAILY_COST_CONDITION_KEY)
+ * is not judged here any more. A rolling-24h total flipped over and under the
+ * line with every scheduled batch (15 open/resolve cycles in 51 days, each a
+ * chance for a fresh card); check-provider-spend.js owns it now, on a 7-day
+ * average of whole UTC days (provider-spend-core.js llmScoringBreach), and is
+ * the only place that raises or resolves it.
+ */
 async function reportRollingCostAlerts(runs, {
-  now = new Date(), thresholdUsd = loadCostThresholdUsd(undefined, 'llmScoringDailyUsd'),
+  now = new Date(),
   runThresholdUsd = loadCostThresholdUsd(),
   dryRun = false, routeAlert, resolveCondition,
 } = {}) {
-  const daily = checkDailyCostBreach(runs, { now, thresholdUsd });
   const repeats = checkRepeatSignature(runs, now);
   const alerts = [];
-  if (!daily) console.warn('[llm-scoring] llmScoringDailyUsd unavailable; daily cost alarm skipped');
-  if (daily?.breached) alerts.push({
-    conditionKey: daily.conditionKey,
-    title: 'LLM scoring daily spend over budget',
-    description: `Rolling 24h LLM scoring cost $${daily.totalUsd.toFixed(2)} exceeds the $${daily.thresholdUsd.toFixed(2)} llmScoringDailyUsd alarm line, across all GitHub runs.`,
-  });
   if (repeats.length) alerts.push({
     // Include "cost" so the router's never-quiet spend policy applies.
     conditionKey: 'llm-scoring:cost-repeat-signature',
     title: 'LLM scoring repeated work detected',
     description: `Repeated scoring signatures in the last 24h (processed/input tokens): ${repeats.map(r => `${r.processed}/${r.input} seen ${r.count} times`).join('; ')}.`,
   });
-  // BRO-6732: a healthy check must clear the incident it raised. Missing or
-  // stale data is not recovery: the total above tolerates unknown costs for
-  // alerting, but those costs must never justify resolving an existing alert.
+  // Missing or stale data is not recovery: unknown costs must never justify
+  // resolving an existing alert (BRO-6732).
   const end = new Date(now).getTime();
   const recent = runsWithinDay(runs, now);
   const recoveryEvidence = recent.length > 0 && runs.every(r => {
     const completed = Date.parse(r?.completedAt);
     return Number.isFinite(completed) && completed <= end;
   }) && recent.every(r => Number.isFinite(r.costUsd) && r.costUsd >= 0);
-  if (!dryRun && daily && !daily.breached && recoveryEvidence) {
-    try {
-      await (resolveCondition || require('./owner-alert-router').resolveCondition)(daily.conditionKey, {
-        reason: `Rolling 24h LLM scoring cost $${daily.totalUsd.toFixed(2)} is at or below the $${daily.thresholdUsd.toFixed(2)} alarm line.`,
-      });
-    } catch (err) {
-      console.error(`[llm-scoring] ${daily.conditionKey} resolution failed (non-fatal): ${err.message}`);
-    }
-  }
   // BRO-7395: the per-run alarm shares one condition across GitHub runs.
   // A cheap invocation alone cannot clear it. Require a full 24h of retained
   // history, fresh summaries, and no cumulative breach among runs active in
@@ -257,7 +281,7 @@ async function reportRollingCostAlerts(runs, {
       }
     }
   }
-  return { daily, repeats };
+  return { repeats };
 }
 
 module.exports = {
@@ -271,6 +295,8 @@ module.exports = {
   loadCostThresholdUsd,
   checkCostBreach,
   checkRepeatSignature,
-  checkDailyCostBreach,
+  sumCostUsdForUtcDay,
+  retentionCutoffMs,
+  DAILY_COST_CONDITION_KEY,
   reportRollingCostAlerts,
 };
