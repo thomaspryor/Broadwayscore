@@ -31,6 +31,36 @@
     "queuedAt": "2026-11-15T23:55:25.254Z"
   },
   {
+    "conditionKey": "live-data-test:scripts/lib/default-critic-home.live.test.mjs::no new registry defaultCritic that the outlet has never published under",
+    "title": "Live-data test failing: no new registry defaultCritic that the outlet has never published under (scripts/lib/default-critic-home.live.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no new registry defaultCritic that the outlet has never published under\" in scripts/lib/default-critic-home.live.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'broadstreetreview|Carol Rocamora (publishes at theater-pizzazz:48, stageandcinema:11, exeunt-magazine:5)'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/lib/default-critic-home.live.test.mjs::no new registry defaultCritic that the outlet has never published under",
+    "fields": [],
+    "queuedAt": "2026-11-16T00:13:12.732Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/rebuild-all-reviews.test.mjs::BRO-7523: requiring rebuild-all-reviews does not read the reviews corpus",
+    "title": "Live-data test failing: BRO-7523: requiring rebuild-all-reviews does not read the reviews corpus (scripts/rebuild-all-reviews.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-7523: requiring rebuild-all-reviews does not read the reviews corpus\" in scripts/rebuild-all-reviews.test.mjs is red against the live corpus.\n\nimport-time reads of the reviews corpus belong below the require.main guard\n+ actual - expected\n\n+ [\n+   '<root>/data/review-texts/hamilton-2015',\n+   '<root>/data/review-texts/hamilton-2015/nytimes--ben-brantley.json',\n+   '<root>/data/review-texts/hadestown-2019',\n+   '<root>/data/review-texts/hadestown-2019/nytimes--jesse-green.json',\n+   '<root>/data/review-texts/moulin-rouge-2019',\n+   '<root>/data/review-texts/moulin-rouge-2019/nytimes--ben-brantley.json',\n+   '<root>/data/review-texts/book-of-mormon-2011',\n+   '<root>/data/review-texts/book-of-mormon-2011/nytimes--ben-brantley.json',\n+   '<root>/data/review-texts/six-2021',\n+   '<root>/data/review-texts/six-2021/nytimes--jesse-green.json',\n+   '<root>/data/review-texts/stereophonic-2024',\n+   '<root>/data/review-texts/stereophonic-2024/nytimes--naveen-kumar.json',\n+   '<root>/data/review-texts/hells-kitchen-2024',\n+   '<root>/data/review-texts/hells-kitchen-2024/nytimes--elisabeth-vincentelli.json',\n+   '<root>/data/review-texts/hells-kitchen-2024/nytimes--elizabeth-vincentelli.json',\n+   '<root>/data/review-texts/oh-mary-2024',\n+   '<root>/data/review-texts/oh-mary-2024/nytimes--jesse-green.json',\n+   '<root>/data/review-texts/water-for-elephants-2024',\n+   '<root>/data/review-texts/water-for-elephants-2024/nytimes--jesse-green.json',\n+   '<root>/data/review-texts/maybe-happy-ending-2024',\n+   '<root>/data/review-texts/maybe-happy-ending-2024/nytimes--jesse-green.json',\n+   '<root>/data/review-texts/oedipus-2025',\n+  ",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/rebuild-all-reviews.test.mjs::BRO-7523: requiring rebuild-all-reviews does not read the reviews corpus",
+    "fields": [],
+    "queuedAt": "2026-11-16T00:13:12.779Z"
+  },
+  {
     "conditionKey": "land:land/bro-7569-fulltext-gaps",
     "title": "Landing blocked: unit-tests-node red on land/bro-7569-fulltext-gaps",
     "description": "land.yml did not land land/bro-7569-fulltext-gaps: the unit-tests-node gate went red at 311a34e4c7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43777300458",
