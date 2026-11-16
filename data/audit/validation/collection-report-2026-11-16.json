@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-16T10:04:39.266Z",
+  "runDate": "2026-11-16T10:54:26.483Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 3,
     "priority": "all",
-    "showFilter": "1619-the-journey-of-a-people-regional-2024,henry-v-regional-2024,covenant-regional-2026,octet-regional-2026,the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+    "showFilter": "1619-the-journey-of-a-people-regional-2024,henry-v-regional-2024,covenant-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 1,
     "failed": 2,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,7 +23,7 @@
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
@@ -38,13 +38,13 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 2,
-    "tier3_6Attempts": 2,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,13 +54,12 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
+    "processed": 1,
     "failed": 2,
     "shows": [
       "1619-the-journey-of-a-people-regional-2024",
       "covenant-regional-2026",
-      "henry-v-regional-2024",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025"
+      "henry-v-regional-2024"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -69,8 +68,7 @@
     }
   },
   "processed": [
-    "covenant-regional-2026/talkinbroadway--christine-malcom.json",
-    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
+    "covenant-regional-2026/talkinbroadway--christine-malcom.json"
   ],
   "failed": [
     "henry-v-regional-2024/talkinbroadway--christine-malcom.json",
@@ -78,8 +76,7 @@
   ],
   "cumulativeResumedState": {
     "processed": [
-      "covenant-regional-2026/talkinbroadway--christine-malcom.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
+      "covenant-regional-2026/talkinbroadway--christine-malcom.json"
     ],
     "failed": [
       "henry-v-regional-2024/talkinbroadway--christine-malcom.json",
@@ -94,15 +91,14 @@
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [
-      "covenant-regional-2026/talkinbroadway--christine-malcom.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json"
+      "covenant-regional-2026/talkinbroadway--christine-malcom.json"
     ],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {
     "Talkin' Broadway": {
-      "count": 2,
+      "count": 1,
       "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
