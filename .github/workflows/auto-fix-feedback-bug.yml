@@ -256,6 +256,22 @@ jobs:
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
         run: node scripts/generate-remediation-plan.js
 
+      # BRO-7600: every needs-manual-review outcome (plan refused, plan created,
+      # skipped, error) gets ONE dispatchable Linear card, deduped by GitHub
+      # issue number. Before this, the only signal was an approve/reject email
+      # and a health-digest warn row, and the old in-plan escalation filed
+      # --park without a LINEAR_API_KEY, so no card was ever filed from CI.
+      - name: File dispatchable card
+        if: always() && steps.fix.outputs.action != 'fixed' && steps.fix.outputs.action != 'not-a-bug'
+        continue-on-error: true
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          PLAN_CREATED: ${{ steps.plan.outputs.plan_created }}
+          PLAN_REFUSED: ${{ steps.plan.outputs.plan_refused }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/file-feedback-card.js
+
       - name: Commit pending fix plan
         if: always() && steps.plan.outputs.plan_created == 'true'
         env:

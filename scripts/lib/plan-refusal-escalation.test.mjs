@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { buildEscalationCard } = require('./plan-refusal-escalation.js');
+const { buildEscalationCard, fileFeedbackCard, isOpenTwin } = require('./plan-refusal-escalation.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 
 test('buildEscalationCard requires an issue number', () => {
@@ -26,7 +26,7 @@ test('buildEscalationCard files a self-contained backlog card (Problem/Suggested
   assert.match(card.notes, /## Problem/);
   assert.match(card.notes, /## Suggested approach/);
   assert.match(card.notes, /## Acceptance criteria/);
-  assert.match(card.notes, /Jane Doe/);
+  assert.doesNotMatch(card.notes, /Jane Doe/); // public repo: no reader name (BRO-7600)
   assert.match(card.notes, /Cannot verify paywalled outlet text/);
   assert.match(card.notes, /issue-closed=516/);
 });
@@ -35,7 +35,7 @@ test('buildEscalationCard falls back to generic wording when diagnosis fields ar
   const card = buildEscalationCard({ diagnosis: {}, planReason: '', issueNumber: 42 });
   assert.match(card.title, /#42/);
   assert.match(card.title, /unscoped feedback/);
-  assert.match(card.notes, /A reporter reported a bug/);
+  assert.match(card.notes, /A reader reported a bug/);
   assert.match(card.notes, /no reason given/);
 });
 
@@ -59,4 +59,44 @@ test('buildEscalationCard notes are armed for bsc-next dispatch', () => {
   assert.equal(verdict.armed, true);
   assert.equal(verdict.cmd, 'node scripts/check-review-item-resolved.js --issue-closed=1');
   assert.equal(verdict.ownerJudgment, false);
+});
+
+test('fileFeedbackCard files with --dispatch, never --park, and names no reader', () => {
+  const calls = [];
+  const run = (args) => { calls.push(args); return args[0] === 'find' ? 'null\n' : ''; };
+  const res = fileFeedbackCard({
+    diagnosis: { submitterName: 'Jane Doe', submitterEmail: 'jane@example.com', submitterShow: 'Wonder' },
+    planState: 'created', issueNumber: 900,
+  }, { run });
+  assert.equal(res.filed, true);
+  const create = calls.find((c) => c[0] === 'create');
+  assert.ok(create.includes('--dispatch'));
+  assert.ok(!create.includes('--park'));
+  assert.match(create[1], /^Feedback #900: Wonder$/);
+  assert.doesNotMatch(create.join(' '), /Jane Doe|jane@example/);
+  assert.match(create.join(' '), /data\/pending-fixes/);
+});
+
+test('fileFeedbackCard dedupes by GitHub issue number (open card whose title starts Feedback #N:)', () => {
+  const calls = [];
+  const run = (args) => { calls.push(args[0]); return JSON.stringify({ identifier: 'BRO-1', title: 'Feedback #901: Wonder' }); };
+  const res = fileFeedbackCard({ diagnosis: {}, issueNumber: 901 }, { run });
+  assert.deepEqual(calls, ['find']);
+  assert.equal(res.reused, true);
+  // #90 must not be treated as a twin of #901's card
+  assert.equal(isOpenTwin(JSON.stringify({ title: 'Feedback #901: x' }), 90), false);
+  // find matches descriptions too: a card merely mentioning the issue is not a twin
+  assert.equal(isOpenTwin(JSON.stringify({ title: 'Cron failed: Feedback #901: mention' }), 901), false);
+  assert.equal(isOpenTwin('null', 901), false);
+});
+
+test('fileFeedbackCard fails open on find error and soft on create error, without echoing argv', () => {
+  const run = (args) => {
+    if (args[0] === 'find') throw new Error('find boom');
+    const e = new Error(`Command failed: node linear-brain.js ${args.join(' ')}`); e.status = 2; throw e;
+  };
+  const res = fileFeedbackCard({ diagnosis: { summary: 'secret reader text' }, issueNumber: 5 }, { run });
+  assert.equal(res.filed, false);
+  assert.equal(res.error, 'linear-brain create exited 2');
+  assert.doesNotMatch(JSON.stringify(res), /secret reader text/);
 });

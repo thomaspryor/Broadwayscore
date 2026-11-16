@@ -23,7 +23,6 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import https from 'https';
-import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
@@ -35,7 +34,6 @@ if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
 const { buildFixApprovalEmail, formatFieldValue } = require('./lib/email-templates.js');
 const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
-const { buildEscalationCard } = require('./lib/plan-refusal-escalation.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { generateApprovalUrl } = require('./lib/approval-link.js');
 const { buildEntry, mergeEntries } = require('./lib/feedback-request-ledger.js');
@@ -153,42 +151,6 @@ function maybeTrackContentFix(diagnosis, issueNumber) {
     console.error('maybeTrackContentFix: failed to update ledger (non-fatal):', err.message);
     return false;
   }
-}
-
-// Files a self-contained P1 card so the standing P0/P1-auto-dispatch-at-creation
-// path (CLAUDE.md §6) picks this up and runs a real fix session — replaces the
-// old dead end of just emailing the owner "needs your attention" with nothing
-// actionable behind it (task #755). This runner has no cmux/bsc-next available
-// (GitHub Actions), so filing the card is the CI-side half of the dispatch;
-// the board workers pick it up from Linear. Fail-soft: a broken Linear call
-// must never crash the workflow — the fallback email still fires either way
-// (with different wording depending on whether this worked).
-function escalatePlanRefusal({ diagnosis, planReason, issueNumber, issueUrl }) {
-  const card = buildEscalationCard({ diagnosis, planReason, issueNumber, issueUrl });
-  const scriptsDir = path.join(ROOT, 'scripts');
-  // Files to LINEAR, not Notion (BRO-377). notion-brain.js create now exits 6
-  // under the Phase 1 read-only guard, and this call site is fail-soft by
-  // design — so leaving it pointed at Notion would not crash the workflow, it
-  // would silently DROP every escalation while logging one line nobody reads.
-  // That is worse than a crash: the escalation exists to reach a human.
-  //
-  // linear-brain.js takes a numeric --priority (0-4) rather than notion-brain's
-  // "P1" string, and has no --status/--action equivalents; the card's status and
-  // action are folded into the notes so nothing is lost. --park carries the same
-  // reason and keeps the CI-filed issue out of auto-dispatch, exactly as before.
-  const linearNotes = `${card.notes}\n\n_Filed from CI. Suggested action: ${card.action}._`;
-  try {
-    execFileSync('node', [
-      path.join(scriptsDir, 'linear-brain.js'), 'create', card.title,
-      '--priority', '2',
-      '--notes', linearNotes, '--park', card.parkReason,
-    ], { cwd: ROOT, encoding: 'utf8', timeout: 60000 });
-  } catch (err) {
-    console.error('escalatePlanRefusal: linear-brain create failed:', err.message);
-    return { filed: false };
-  }
-  console.log(`escalatePlanRefusal: filed P1 card "${card.title}"`);
-  return { filed: true, title: card.title };
 }
 
 // --- GPT-4o verification ---
@@ -516,17 +478,12 @@ Or if you cannot create an actionable plan:
     const tracked = maybeTrackContentFix(diagnosis, issueNumber);
     output('ledger_updated', tracked ? 'true' : 'false');
 
-    // Task #755 (owner mandate 2026-08-02): a refused plan used to just email
-    // the owner "needs your attention" with nothing behind it — homework, not
-    // a fix. File a self-contained P1 card instead so the standing dispatch
-    // loop picks it up and a real session lands the fix.
-    const issueUrl = `https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}`;
-    let escalation = { filed: false };
-    try {
-      escalation = escalatePlanRefusal({ diagnosis, planReason: plan.reason, issueNumber, issueUrl });
-    } catch (err) {
-      console.error('escalatePlanRefusal threw:', err.message);
-    }
+    // BRO-7600: the dispatchable card is filed by the workflow's own
+    // 'File dispatchable card' step (scripts/file-feedback-card.js), the single
+    // filer for every needs-manual-review path. It needs LINEAR_API_KEY, which
+    // this step deliberately does not hold.
+    output('plan_refused', 'true');
+    const escalation = { filed: true };
 
     // Send a status email — its wording depends on whether the card above
     // actually got filed (auto-dispatched) or not (genuine fallback, still
