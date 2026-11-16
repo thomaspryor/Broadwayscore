@@ -27,10 +27,10 @@ const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isJunkOutlet } = require('./lib/review-normalization');
-const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
-const { isClosedShowEligibleForBatchDiscovery, newestOpeningFirst } = require('./lib/discovery-eligibility');
+const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligibility');
+const { createNycTheatreDiscovery } = require('./lib/nyc-theatre-discovery');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -124,37 +124,13 @@ const stats = {
   updatedReviews: 0,
   skippedExisting: 0,
   skippedArchived: 0,
+  skippedNegativeCache: 0,
   skippedConflict: 0,
   errors: [],
 };
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// ---------------------------------------------------------------------------
-// Google Search via ScrapingBee
-// ---------------------------------------------------------------------------
-
-async function googleSearchForShow(showTitle, category, year) {
-  // Use category-appropriate search term (don't search "broadway" for WE/OB shows)
-  const categoryLabel = isLondonMarket(category) ? 'west end'
-    : category === 'off-broadway' ? 'off-broadway'
-    : 'broadway';
-  const yearSuffix = year ? ` ${year}` : '';
-  const query = `site:newyorkcitytheatre.com/news/reviews/ "${showTitle}" ${categoryLabel}${yearSuffix}`;
-
-  try {
-    const results = await serpQuery(query, { nbResults: 5 });
-    if (!results) return null;
-
-    const urls = results.map(r => r.url).filter(url => url && url.includes('newyorkcitytheatre.com'));
-    // Only accept /news/reviews/ URLs (critic roundups)
-    return urls.find(u => /\/news\/reviews\/\d+/.test(u)) || null;
-  } catch (e) {
-    console.log(`  Google search error: ${e.message}`);
-    return null;
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -451,7 +427,7 @@ async function scrapeNYCTheatreRoundups() {
     // Exception: regional shows close fast (limited runs), so a closed
     // regional show may not have been caught yet by scheduled discovery —
     // bounded to a window post-close so an already-exhausted miss doesn't
-    // retry forever (there's no negative cache here).
+    // retry forever. NYC Theatre also caches successful searches with no page.
     recentShows = shows.filter(s => {
       if (!isClosedShowEligibleForBatchDiscovery(s)) return false;
       const opening = new Date(s.openingDate);
@@ -467,8 +443,8 @@ async function scrapeNYCTheatreRoundups() {
   const { kept, tours, regional } = require('./lib/tour-family').nycTheatreTargets(recentShows);
   if (tours.length) console.log(`Skipping ${tours.length} national tour(s): NYC Theatre reviews New York productions only (${tours.map(s => s.id).join(', ')})`);
   if (regional.length) console.log(`Skipping ${regional.length} regional show(s): NYC Theatre reviews New York productions only (${regional.slice(0, 10).map(s => s.id).join(', ')}${regional.length > 10 ? ', ...' : ''})`);
-  // BRO-7213: newest openings first, so a budget-capped run defers the oldest shows.
-  recentShows = newestOpeningFirst(kept);
+  const discovery = createNycTheatreDiscovery({ archiveDir, search: (query, options) => serpQuery(query, options) });
+  recentShows = discovery.orderShows(kept);
 
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);
 
@@ -482,10 +458,6 @@ async function scrapeNYCTheatreRoundups() {
   const MIN_REMAINING_MS_TO_START = 4 * 60_000;
   const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
   for (const [idx, show] of recentShows.entries()) {
-    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
-      console.log(`\n⏱ Time budget (${timeBudget.minutes}min) used after ${timeBudget.elapsedMin()}min — deferring ${recentShows.length - idx} show(s) to the next run`);
-      break;
-    }
     const showId = show.id;
     const archivePath = path.join(archiveDir, `${showId}.html`);
     // Also check slug-based archive from older runs
@@ -497,6 +469,17 @@ async function scrapeNYCTheatreRoundups() {
     // Use cached archive if fresh (<14 days), otherwise re-fetch
     const archiveFresh = fs.existsSync(effectiveArchivePath) &&
       (Date.now() - fs.statSync(effectiveArchivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
+    // Explicit --shows retries bypass misses. A fresh positive archive also
+    // wins over a miss left by a concurrent run. Check before the time budget
+    // so skipped misses cannot keep unvisited shows out of the next batch.
+    if (!targetShowIds && !archiveFresh && discovery.isDeferred(show)) {
+      stats.skippedNegativeCache++;
+      continue;
+    }
+    if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
+      console.log(`\n⏱ Time budget (${timeBudget.minutes}min) used after ${timeBudget.elapsedMin()}min — deferring ${recentShows.length - idx} show(s) to the next run`);
+      break;
+    }
     if (archiveFresh) {
       const html = fs.readFileSync(effectiveArchivePath, 'utf8');
 
@@ -542,6 +525,7 @@ async function scrapeNYCTheatreRoundups() {
         }
 
         stats.skippedArchived++;
+        discovery.recordArchiveHit(show);
         continue;
       }
     }
@@ -551,11 +535,10 @@ async function scrapeNYCTheatreRoundups() {
     console.log(`[SEARCH] ${showId}: "${show.title}"...`);
 
     try {
-      const year = show.openingDate ? new Date(show.openingDate).getFullYear() : '';
-      const url = await googleSearchForShow(show.title, show.category, year);
+      const { url, outcome } = await discovery.searchForShow(show);
 
       if (!url) {
-        console.log(`  No NYC Theatre page found.`);
+        console.log(outcome === 'unavailable' ? '  Google search unavailable; no miss cached.' : '  No NYC Theatre page found; retry-after saved.');
         await sleep(2000);
         continue;
       }
@@ -632,6 +615,7 @@ async function scrapeNYCTheatreRoundups() {
   console.log(`Shows found: ${stats.showsFound}`);
   console.log(`Pages fetched: ${stats.pagesFetched}`);
   console.log(`Used cached archives: ${stats.skippedArchived}`);
+  console.log(`Skipped searches (negative cache): ${stats.skippedNegativeCache}`);
   console.log(`Total excerpts found: ${stats.excerptsFounds}`);
   console.log(`New reviews created: ${stats.newReviews}`);
   console.log(`Existing reviews updated: ${stats.updatedReviews}`);

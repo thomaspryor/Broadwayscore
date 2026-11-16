@@ -54,6 +54,16 @@ test('every batch-gate scraper really applies the closed-show gate in its batch 
   }
 });
 
+test('NYC Theatre wires retry-after and fair ordering into the scheduled scraper (BRO-7546)', () => {
+  const src = read('scrape-nyc-theatre-roundups.js');
+  assert.match(src, /createNycTheatreDiscovery\(\{ archiveDir,/);
+  assert.match(src, /recentShows = discovery\.orderShows\(kept\)/);
+  assert.match(src, /!targetShowIds && !archiveFresh && discovery\.isDeferred\(show\)/);
+  assert.match(src, /await discovery\.searchForShow\(show\)/);
+  assert.match(src, /discovery\.recordArchiveHit\(show\)/);
+  assert.ok(src.indexOf('discovery.isDeferred(show)') < src.indexOf('timeBudget.canStartItem('), 'skip cached misses before reserving another search budget');
+});
+
 test('targeted-only SERP stays behind the --shows flag', () => {
   const src = read('scrape-london-box-office-roundups.js');
   const at = src.indexOf('await serpQuery(');
