@@ -13,6 +13,11 @@
 const { hasExcerpt } = require('./excerpt-fields');
 
 const WINDOW_DAYS_PAST = 3;
+// BRO-7401: Off-West End reviews come later than a press-night lane. Over 1,975 Off-West End reviews
+// since 2026-06, 81% were published within 3 days of opening and 92% within 7; Everything Theatre's
+// Dogstar review (opened 2026-11-09) went up on day 5, after this window had closed, and the
+// aggregator-gap sweep found it first. Off-West End shows stay in the window for 7 days.
+const WINDOW_DAYS_BY_CATEGORY = Object.freeze({ 'off-west-end': 7 });
 const DAY_MS = 24 * 60 * 60 * 1000;
 // BRO-7574: outlets that publish well after press night. One Minute Critic posted The Visitors 5
 // days after opening (The Heart and Slanted Floors the day after), past the 0-3 day window, so the
@@ -30,14 +35,20 @@ function utcDay(d) {
   return Number.isFinite(t) ? Math.floor(t / DAY_MS) : null;
 }
 
-/** Shows whose openingDate is 0..maxDaysPast UTC days ago (status-independent: a press night
- *  can pass while status is still "previews" or "upcoming"). */
-function selectWindowShows(allShows, now = Date.now(), { maxDaysPast = WINDOW_DAYS_PAST } = {}) {
+/** Days past opening a show of this category stays in the window. */
+function windowDaysFor(category) {
+  return WINDOW_DAYS_BY_CATEGORY[category] ?? WINDOW_DAYS_PAST;
+}
+
+/** Shows whose openingDate is 0..N UTC days ago, N = windowDaysFor(category) unless maxDaysPast is
+ *  given (status-independent: a press night can pass while status is still "previews" or "upcoming"). */
+function selectWindowShows(allShows, now = Date.now(), { maxDaysPast = null } = {}) {
   const today = Math.floor(now / DAY_MS);
   return allShows.filter((s) => {
     if (!WINDOW_CATEGORIES.has(s.category)) return false;
     const d = utcDay(s.openingDate);
-    return d !== null && today - d >= 0 && today - d <= maxDaysPast;
+    const limit = maxDaysPast ?? windowDaysFor(s.category);
+    return d !== null && today - d >= 0 && today - d <= limit;
   });
 }
 
@@ -161,6 +172,6 @@ function showsNeedingCollection(windowShows, recordsByShow, limit = 3, { ledger 
 
 module.exports = {
   needsCollection, showsNeedingCollection,
-  WINDOW_DAYS_PAST, WINDOW_CATEGORIES, WINDOW_STRATEGIES, DEFAULT_MAX_PAID, WORST_CASE_USD_PER_PAID_CALL,
+  WINDOW_DAYS_PAST, WINDOW_DAYS_BY_CATEGORY, windowDaysFor, WINDOW_CATEGORIES, WINDOW_STRATEGIES, DEFAULT_MAX_PAID, WORST_CASE_USD_PER_PAID_CALL,
   selectWindowShows, selectLateWindowShows, lateOutletsToPoll, poolForOutlet, LATE_PUBLISHER_WINDOW_DAYS, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
 };

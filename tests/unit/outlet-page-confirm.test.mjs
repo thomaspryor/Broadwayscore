@@ -192,10 +192,14 @@ describe('review findings (BRO-6921 second opinion)', () => {
   test('the venue does not confirm a show that has credits on file', () => {
     assert.equal(pageConfirmsShow('Fish at WP Theater is a comedy', FISH, { nowMs: NOW }), false);
   });
-  test('a venue shared with another running show confirms neither', () => {
+  test('a venue shared with another running show the page names confirms neither', () => {
     const PHYL = { id: 'phyl-off-broadway-2026', title: 'Phyl', status: 'open', openingDate: '2026-10-10', venue: 'Theatre Row' };
     const VIOLIN = { id: 'the-blue-violinist-2026', title: 'The Blue Violinist', status: 'open', openingDate: '2026-10-12', venue: 'Theatre Row' };
-    assert.equal(pageConfirmsShow('Phyl at Theatre Row', PHYL, { nowMs: NOW, otherShows: [PHYL, VIOLIN] }), false);
+    const violinPage = 'The Blue Violinist at Theatre Row, a stage down the hall from Phyl';
+    assert.equal(pageConfirmsShow(violinPage, PHYL, { nowMs: NOW, otherShows: [PHYL, VIOLIN] }), false);
+    // BRO-7401: a rival the page never names cannot be confused with this show (Speculations vs
+    // stale "open" runs at Marylebone Theatre).
+    assert.equal(pageConfirmsShow('Phyl at Theatre Row', PHYL, { nowMs: NOW, otherShows: [PHYL, VIOLIN] }), true);
     assert.equal(pageConfirmsShow('Phyl at Theatre Row', PHYL, { nowMs: NOW, otherShows: [PHYL] }), true);
   });
   test('a tour "venue" is generic and confirms nothing', () => {

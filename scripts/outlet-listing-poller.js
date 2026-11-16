@@ -350,6 +350,19 @@ const WP_API_CONFIG = {
     apiBase: 'https://www.londontheatre1.com/wp-json/wp/v2/posts',
     params: 'categories=14&per_page=50&orderby=date&order=desc',
   },
+  // Everything Theatre (BRO-7401): Off-West End's most prolific fringe outlet, category 3799 = Reviews.
+  // It was census-only, so the 3-hourly opening-window run never read it and the once-a-day run
+  // (cron fires ~17:00 UTC) lost the race to the aggregator-gap sweep on Ceilidh, The Moth,
+  // Speculations and Dogstar. Headlines ("Review: <Title>, <Venue>") also hit other shows of the same
+  // name (Mean Girls in Sheffield -> Girls at the Young Vic, Wicked Fridays -> Wicked), so every
+  // match is checked on the page (title plus credit or venue), like the census path did.
+  'everything-theatre': {
+    apiBase: 'https://everything-theatre.co.uk/wp-json/wp/v2/posts',
+    params: 'categories=3799&per_page=100&_fields=link,date,title&orderby=date&order=desc',
+    urlFilter: /\/review-/,
+    reviewsOnly: true,
+    pageConfirmAll: true,
+  },
   // Chicago Tribune: WP REST API, category 135 = Theater (confirmed 9000+ posts)
   chicagotribune: {
     apiBase: 'https://www.chicagotribune.com/wp-json/wp/v2/posts',
@@ -374,7 +387,7 @@ function parseArgs() {
     outlets: null,
     market: null,
     minShowCount: 5,
-    openingWindow: false, // BRO-7051: 0-3 days past opening, free feeds/listings only, capped paid fetches
+    openingWindow: false, // BRO-7051: 0-3 days past opening (Off-West End 0-7, BRO-7401), free feeds/listings only, capped paid fetches
     maxPaid: ow.DEFAULT_MAX_PAID,
   };
   for (let i = 0; i < args.length; i++) {
@@ -904,11 +917,11 @@ async function main() {
   const liveShows = activeShows;
   let lateShows = [];
   if (win) {
-    // Match only against shows 0-3 days past opening; nothing in the window means no fetches at all.
+    // Match only against shows 0-3 days past opening (Off-West End 0-7); nothing in the window means no fetches at all.
     activeShows = ow.selectWindowShows(allShows);
     lateShows = ow.selectLateWindowShows(allShows); // BRO-7574: late publishers (one-minute-critic) match a longer window
     if (activeShows.length === 0 && lateShows.length === 0) {
-      console.log('No shows in the opening window (0-3 days, or 0-10 for late publishers): nothing to fetch.');
+      console.log('No shows in the opening window (0-3 days, Off-West End 0-7, or 0-10 for late publishers): nothing to fetch.');
       console.log('OPENING_WINDOW_STATS fetches=0 paid=0');
       if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'new_stubs=0\n');
       return;

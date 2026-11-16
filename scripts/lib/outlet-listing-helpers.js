@@ -587,8 +587,8 @@ function pageText(html) {
  * Does the article page name this production? A title form, plus one of its own
  * credits (creditNames: cast, director, a writer while the production is new)
  * as whole words. The venue counts only for a show with no credits on file,
- * and only when no other running show shares that venue: the same rules
- * namesShowVenue and findMatchingShows apply to a feed item.
+ * and only when no other running show the page also names shares that venue
+ * (BRO-7401).
  *
  * @param {string} text  visible page text (pageText)
  * @param {object} show
@@ -609,9 +609,15 @@ function pageConfirmsShow(text, show, { nowMs = Date.now(), otherShows = [] } = 
   // A one-word venue ("JACK", "Signature") is too common a word to prove anything from a page:
   // venueForms keeps only forms of two or more words. A form another running show carries too
   // (the same house) cannot tell the two apart, so it is dropped; the show's own stage can stay.
+  // BRO-7401: a rival in the very same house (identical venue form) only matters when the page names
+  // it too. Off-West End houses keep finished runs "open" with no closing date (Marylebone Theatre's
+  // The Smile Of Her and Tartuffe Remixed), and those silent rivals voided Everything Theatre's
+  // Speculations review. A form that is only part of a different venue's name ("Old Vic" in
+  // "Bristol Old Vic") stays ambiguous whatever the page names, so it is still dropped.
   const rivals = otherShows.filter((o) => o.id !== show.id);
+  const named = (o) => titleForms(o).some((t) => formInHay(t, hay));
   return venueForms(show)
-    .filter((f) => f.split(/\s+/).length >= 2 && !rivals.some((o) => venueForms(o).some((g) => formWithin(f, g))))
+    .filter((f) => f.split(/\s+/).length >= 2 && !rivals.some((o) => venueForms(o).some((g) => formWithin(f, g) && (g !== f || named(o)))))
     .some((f) => hay.includes(` ${f} `));
 }
 
