@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-15T15:49:51.968Z",
+    "lastUpdated": "2026-11-16T16:04:39.531Z",
     "version": "2.1.0",
     "lastChange": "BRO-6610: coverageExpectation re-decided latimes"
   },
@@ -15612,6 +15612,17 @@
         "foodfamilytravel"
       ],
       "domain": "foodfamilytravel.com"
+    },
+    "the-critic": {
+      "displayName": "The Critic",
+      "tier": 3,
+      "aliases": [
+        "the-critic"
+      ],
+      "domain": "thecritic.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-11-16T16:04:39.531Z"
     }
   },
   "_aliasIndex": {
