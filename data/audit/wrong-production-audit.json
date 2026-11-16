@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-16T12:32:35.020Z",
+  "timestamp": "2026-11-16T12:45:13.891Z",
   "stats": {
-    "totalReviews": 82072,
+    "totalReviews": 82074,
     "alreadyFlagged": 22466,
     "dateGuardCatches": 221,
     "directorMismatch": 3713,
     "tvFilmSignals": 2323,
-    "londonSignals": 3771,
+    "londonSignals": 3772,
     "offBroadwaySignals": 754,
     "yearMismatch": 374,
     "noPublishDate": 8183
@@ -105974,6 +105974,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "seeing-dance--zoe-hewitt.json",
+      "score": 90,
+      "publishDate": "2026-11-15",
+      "url": "https://www.seeingdance.com/hamlet-hail-to-the-thief-261115/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
