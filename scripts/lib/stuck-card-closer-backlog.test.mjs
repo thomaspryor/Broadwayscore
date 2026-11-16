@@ -68,6 +68,11 @@ test('decideBacklogClosure: closes only with every condition met; each missing o
   assert.equal(leave({ description: 'DECISION NEEDED: owner picks A or B' }), 'owner-marker');
   assert.equal(leave({ labels: { nodes: [{ name: 'awaiting-owner' }] } }), 'owner-marker');
   assert.equal(leave({ description: 'Fix it.\nPARKED: needs the owner\'s Stripe key to deploy' }), 'parked');
+  // BRO-7595: the filer's own machine park line is not a hold; a person's park line (even bulleted) still is.
+  const machine = 'PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\nFix it.';
+  assert.notEqual(leave({ description: machine }), 'parked');
+  assert.equal(leave({ description: `${machine}\n- **PARKED**: waiting on the owner` }), 'parked');
+  assert.equal(leave({ description: `${machine}\nPARKED: needs an API key` }), 'parked');
   assert.equal(leave({ description: 'RECHECK-AFTER: 2026-01-01 (past)' }), 'recheck-stamped');
   assert.equal(leave({ comments: [{ body: 'RECHECK-AFTER: 2027-01-01', createdAt: iso(NOW - 10 * DAY) }] }), 'recheck-stamped');
   assert.equal(leave({ updatedAt: iso(NOW - BACKLOG_IDLE_MS + HOUR) }), 'recent-activity');

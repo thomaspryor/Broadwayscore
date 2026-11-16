@@ -402,6 +402,14 @@ const BACKLOG_CLOSER_NOTE = 'backlog sweep';
 const ANY_RECHECK_RE = /RECHECK-AFTER\s*:/i;
 // A PARKED: line in the body: the card was set aside on purpose (often for a key, money or a device).
 const PARKED_LINE_RE = /^\s*(?:[-*>]\s*)?\**PARKED\**\s*:/im;
+// BRO-7595: the filer's own "PARKED: Auto-filed by ..." line is not a hold, so a machine-filed
+// card whose work a commit finished can close. Any other park line (bulleted or bold too) still holds.
+function isHeldPark(description) {
+  const d = String(description || '');
+  const lines = d.match(new RegExp(PARKED_LINE_RE.source, 'gim')) || [];
+  if (!lines.length) return false;
+  return !(lines.length === 1 && require('./headless-dispatchability.js').hasOnlyMachinePark(d));
+}
 // Subjects of one step of a larger card, not the end of it.
 const PARTIAL_SUBJECT_RE = /\b(?:wip|step\s*\d+|part\s*\d+|phase\s*\d+|\d+\s*\/\s*\d+|scaffold\w*|failing\s+test|first\s+(?:pass|cut)|prep(?:are|aration)?\s+for)\b/i;
 // Subjects that create or push work to the card rather than finish it.
@@ -459,7 +467,7 @@ function decideBacklogClosure({ candidate, issue, commits, nowMs }) {
     return { close: false, reason: 'closer-already-tried' };
   }
   if (hasOwnerMarker({ ...issue, commentText: bodies.join('\n') })) return { close: false, reason: 'owner-marker' };
-  if (PARKED_LINE_RE.test(String(issue.description || ''))) return { close: false, reason: 'parked' };
+  if (isHeldPark(issue.description)) return { close: false, reason: 'parked' };
   if ([issue.description, ...bodies].some((t) => ANY_RECHECK_RE.test(String(t || '')))) {
     return { close: false, reason: 'recheck-stamped' };
   }
