@@ -64,9 +64,24 @@ function parse(argv) {
   return null;
 }
 
-function issueState(n) {
-  const r = require('child_process').spawnSync('gh', ['api', `repos/thomaspryor/Broadwayscore/issues/${n}`, '--jq', '.state'], { encoding: 'utf8', timeout: 30000 });
-  return r.status === 0 ? r.stdout.trim().toLowerCase() : null;
+// BRO-7612: the Linear Done gate runs this with a throwaway HOME (autonomous-checks.js
+// checksEnv), so `gh` has no login there and every --issue-closed card was refused with
+// "could not read issue". The repo is public: fall back to the unauthenticated REST API.
+function issueState(n, { spawn = require('child_process').spawnSync } = {}) {
+  const pr = spawn('gh', ['api', `repos/thomaspryor/Broadwayscore/issues/${n}`, '--jq', 'if .pull_request then "pr" else .state end'], { encoding: 'utf8', timeout: 30000 });
+  if (pr && pr.status === 0) {
+    const v = String(pr.stdout).trim().toLowerCase();
+    if (v === 'pr') return null; // the issues endpoint also serves pull requests
+    if (/^(open|closed)$/.test(v)) return v;
+  }
+  const c = spawn('curl', ['-sf', '--max-time', '20', '-H', 'Accept: application/vnd.github+json',
+    `https://api.github.com/repos/thomaspryor/Broadwayscore/issues/${n}`], { encoding: 'utf8', timeout: 30000 });
+  if (!c || c.status !== 0) return null;
+  try {
+    const j = JSON.parse(c.stdout);
+    if (j.pull_request) return null;
+    return /^(open|closed)$/.test(j.state) ? j.state : null;
+  } catch { return null; }
 }
 
 function main(argv) {
@@ -91,4 +106,4 @@ function main(argv) {
 }
 
 if (require.main === module) process.exit(main(process.argv));
-module.exports = { checkResolved, parse, slugOfKey };
+module.exports = { checkResolved, parse, slugOfKey, issueState };

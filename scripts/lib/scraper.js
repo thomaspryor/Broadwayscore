@@ -162,6 +162,11 @@ function _isChallengeOrGarbage(content) {
   // text ("(\uFFFD/\uFFFD" zstd frame, "\x1f\uFFFD" gzip member). Unrecoverable, and no extractor
   // can read it, so the chain must fall through to the next provider instead of stopping.
   if (typeof content === 'string' && /^(?:\(\uFFFD\/\uFFFD|\x1f\uFFFD)/.test(content)) return true;
+  // BRO-7612: Bright Data's unlocker answers an unsolved bot wall (1883magazine.com,
+  // Cloudflare) with a 200 whose whole body is a tiny JSON error object,
+  // {"error":"challenge_required",...}. Not HTML, so no check below sees it; the chain
+  // stopped on "Success (Bright Data)" before ScrapingBee, which reads the page.
+  if (isProviderChallengeJson(content)) return true;
   // BRO-5725: the full Cloudflare managed-challenge page is ~29KB (inline JS), so
   // the <10KB gate below let it through as "Success (Playwright)". Its <title> is
   // always exactly "Just a moment..." and no real article is titled that, so this
@@ -192,6 +197,28 @@ function _isChallengeOrGarbage(content) {
     content.includes('<title>Verifying Device</title>') ||
     content.includes('p.toadmash.net')
   )) || isRobotBlockPage(content) || isTollbitGate(content);
+}
+
+/**
+ * BRO-7612: a scraping provider's "bot wall not solved" answer sent as a JSON error object
+ * instead of the page, e.g. Bright Data's {"error":"challenge_required","message":"Bot
+ * challenge required. ..."}. Also matched when a browser tier wraps it in <pre>. Exact error
+ * codes only (plus the "bot challenge" message), so an API's own unrelated error string
+ * ("not_found", "unblocked", "ip_blocked") is never mistaken for one.
+ */
+const PROVIDER_CHALLENGE_ERRORS = /^(?:challenge_required|captcha_required|bot_challenge)$/i;
+function isProviderChallengeJson(content) {
+  if (typeof content !== 'string' || content.length >= 4000) return false;
+  let body = content.replace(/^﻿/, '').trim();
+  const pre = body.startsWith('<') && body.match(/^(?:<[^>]*>\s*)*<pre[^>]*>([\s\S]*?)<\/pre>/i);
+  if (pre) body = pre[1].replace(/&quot;/g, '"').replace(/&amp;/g, '&').trim();
+  if (!body.startsWith('{')) return false;
+  let j;
+  try { j = JSON.parse(body); } catch { return false; }
+  if (!j || typeof j !== 'object') return false;
+  const err = typeof j.error === 'string' ? j.error : (j.error && typeof j.error.code === 'string' ? j.error.code : '');
+  if (PROVIDER_CHALLENGE_ERRORS.test(err.trim())) return true;
+  return !!err && typeof j.message === 'string' && /\bbot challenge\b/i.test(j.message);
 }
 
 /**
@@ -2084,7 +2111,10 @@ async function fetchJSON(url, options = {}) {
   // 30056408665: direct 403, SD 400, SB 401-exhausted-until-2026-08-05 → 0 posts).
   if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
     const raw = await fetchWithBrightData(url);
-    if (raw && raw.content) {
+    if (raw && raw.content && isProviderChallengeJson(raw.content)) {
+      // BRO-7612: Bright Data's own challenge_required error is not the API's JSON.
+      console.log('  fetchJSON Bright Data returned a bot-challenge error, not the payload');
+    } else if (raw && raw.content) {
       try {
         return won('brightdata', JSON.parse(raw.content));
       } catch (err) {
@@ -2434,6 +2464,7 @@ module.exports = {
   __setChromiumForTest,
   __resetRunMemoForTest,
   isChallengeOrGarbage: _isChallengeOrGarbage,
+  isProviderChallengeJson,
   isNearEmptyHtmlShell,
   isTollbitGate,
   cleanup,

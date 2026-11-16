@@ -59,3 +59,26 @@ test('claim: an exact year-suffixed key is judged on its own entry, not the bare
 test('held-empty: any remaining pending row keeps it open, held flag or not', () => {
   assert.equal(checkResolved('held-empty', '', { commercial: {}, pending: { shows: { x: { recoupedDate: '2024' } } } }).resolved, false);
 });
+
+// BRO-7612: the Done gate runs checks with a throwaway HOME, so gh is not logged in.
+test('issue-closed: falls back to the public API when gh cannot authenticate', () => {
+  const { issueState } = require('../check-review-item-resolved.js');
+  const noGh = (cmd, args) => (cmd === 'gh'
+    ? { status: 4, stdout: '', stderr: 'gh auth login' }
+    : { status: 0, stdout: JSON.stringify({ number: Number(args.at(-1).split('/').pop()), state: 'closed' }) });
+  assert.equal(issueState('935', { spawn: noGh }), 'closed');
+  const ghOk = cmd => (cmd === 'gh' ? { status: 0, stdout: 'open\n' } : assert.fail('curl not needed'));
+  assert.equal(issueState('935', { spawn: ghOk }), 'open');
+  const bothFail = () => ({ status: 22, stdout: '' });
+  assert.equal(issueState('935', { spawn: bothFail }), null);
+  const junk = cmd => (cmd === 'gh' ? { status: 1, stdout: '' } : { status: 0, stdout: '{"message":"Not Found"}' });
+  assert.equal(issueState('935', { spawn: junk }), null);
+});
+
+test('issue-closed: a pull request number is never read as a closed issue', () => {
+  const { issueState } = require('../check-review-item-resolved.js');
+  const ghPr = cmd => (cmd === 'gh' ? { status: 0, stdout: 'pr\n' } : assert.fail('curl not needed'));
+  assert.equal(issueState('1', { spawn: ghPr }), null);
+  const curlPr = cmd => (cmd === 'gh' ? { status: 4, stdout: '' } : { status: 0, stdout: '{"state":"closed","pull_request":{"url":"x"}}' });
+  assert.equal(issueState('1', { spawn: curlPr }), null);
+});
