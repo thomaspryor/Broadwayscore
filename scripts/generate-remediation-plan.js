@@ -155,6 +155,10 @@ function maybeTrackContentFix(diagnosis, issueNumber) {
 
 // --- GPT-4o verification ---
 
+// Instruction 5 (BRO-7594): issue #1187's correct plan (clear a reader-disputed
+// 4h runtime) was failed because the verifier read the disputed stored value
+// as proof. Replay: old prompt 0/10 pass; with it, 10/10; wrong-production
+// plan still fails. Scoped to fields the diagnosis names.
 async function verifyPlanWithGPT(plan, diagnosis, showContext) {
   const openaiKey = process.env.OPENAI_API_KEY;
   if (!openaiKey) {
@@ -162,7 +166,7 @@ async function verifyPlanWithGPT(plan, diagnosis, showContext) {
     return { verified: true, skipped: true };
   }
 
-  const prompt = `You are fact-checking a proposed data fix for Broadway Scorecard. Your ONLY job is to check for factual errors — wrong production years, wrong directors, wrong show IDs, or claims that contradict the show data provided.
+  const prompt = `You are fact-checking a proposed data fix for Broadway Scorecard. Your ONLY job is to check for factual errors — wrong production years, wrong directors, wrong show IDs, or claims that contradict the show data provided (except on the field the reader says is wrong, see instruction 5).
 
 ## Proposed Fix
 **Summary:** ${plan.summary}
@@ -179,8 +183,9 @@ ${showContext || '(no show data available)'}
 ## Instructions
 1. Check each action's showId — does it match a real show in the data?
 2. Check any production years or revival claims — do they match the show data's openingDate?
-3. Check factual claims about directors, cast, venues — do they match creativeTeam data?
+3. Check factual claims about directors, cast, venues — do they match creativeTeam data? If the diagnosis says that very field is wrong, follow instruction 5 instead.
 4. If the show data doesn't include the claimed show, flag it as UNVERIFIED (not necessarily wrong, just can't confirm)
+5. The show data is the CURRENT database, which a reader reported as wrong. For a field the diagnosis says is wrong, an action's oldValue matching the show data is expected, not a contradiction, and is never a reason to fail the fix; a newValue that differs from the show data is not a contradiction either (check it only against other evidence here). Clearing a disputed value to null is a valid fix without proof of the correct value. For any field the diagnosis does not name, still treat the show data as the reference.
 
 Respond with ONLY a JSON object:
 {
