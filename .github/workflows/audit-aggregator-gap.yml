@@ -40,7 +40,8 @@ on:
         #   ~340/day the scheduler's own freshness rules need for the 1,021 last-year shows. A pending targeted run is
         #   itself the newest created run, so it resets this clock: a re-dispatch can only evict one pending >1h,
         #   which only a run lasting over 60 min of the 70-min timeout allows (max seen 57 at budget 18, ~63 at 24;
-        #   accepted, BRO-6751: an evicted targeted run's due shows are still in the cron queue). Cost: up to ~2-3x this workflow's SERP/fetch spend;
+        #   accepted, BRO-6751: an evicted targeted run's due shows are still in the cron queue; a plain cron tick
+        #   could already replace a pending targeted run, see the concurrency note). Cost: up to ~2-3x this workflow's SERP/fetch spend;
         #   kill switches AGGREGATOR_GAP_AUDIT_DISABLED / SERP_GAP_CENSUS_DISABLED. Paging band stays 12h.)
         # BRO-4282: set by scripts/cron-redispatch.js when GitHub dropped the
         # hourly schedule. The run then uses the schedule's settings (3y window,
@@ -58,7 +59,7 @@ concurrency:
   # group: two runs in parallel could push through the whole-file API fallback and
   # let a stale run overwrite the other's checkpoint stamps. Cost of sharing: GitHub
   # keeps one pending run, so a later cron tick can replace a queued targeted run.
-  # Runs last ~25 min (p90 43) against the cron plus a 1h re-dispatch band (BRO-6751)
+  # Runs last ~32 min at the 24-min budget (p95 ~49) against the cron plus a 1h re-dispatch band (BRO-6751)
   # that counts any created run, targeted ones included, so a re-dispatch waits 1h
   # after a targeted dispatch; the cron queue puts live newest shows first, so the exposure is small. Verify a targeted dispatch started.
   group: audit-aggregator-gap
@@ -203,7 +204,7 @@ jobs:
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           # Default window widened to 3y + include-closed so the cron grinds the
           # whole back-catalogue, not just the last 21d. Checkpointing + the soft
-          # time budget keep each 25-min run from timing out (every run was being
+          # time budget keep each run from timing out (every run was being
           # cancelled at the cap before, so the sweep never finished — 2026-06-06).
           WINDOW="${INPUT_WINDOW_DAYS}"
           DISPATCH="${INPUT_DISPATCH_GATHER}"
@@ -228,9 +229,9 @@ jobs:
             if ! printf '%s' "$SHOW_IDS" | grep -Eq '^[a-z0-9][a-z0-9-]*(,[a-z0-9][a-z0-9-]*)*$'; then
               echo "::error::show_ids must be a comma-separated list of show ids"; exit 1
             fi
-            # Budget stays near the cron's 24: the commit + push below and the
-            # outlet ground-truth step need the same headroom inside the 70-min cap.
-            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=26"
+            # Budget stays at 20 (BRO-6751 raised only the cron grind to 24): a targeted
+            # run is short by nature and keeps the most headroom inside the 70-min cap.
+            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=20"
             # A targeted run is an explicit "re-check these now". The SERP census
             # cooldown would otherwise skip the census for any show it ran on
             # recently, and with no aggregator URLs the entry is rewritten blank

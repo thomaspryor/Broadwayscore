@@ -293,20 +293,22 @@ function main(argv = process.argv.slice(2)) {
     const count = (g) => out.filter((s) => s.grade === g).length;
     console.log(`summary: ${out.length} show(s): PASS ${count('PASS')}, STALE ${count('STALE')}, FAIL ${count('FAIL')}, BLIND ${count('BLIND')} (no Verdict/BWW article found), NO-AUDIT ${count('NO-AUDIT')}; OVERDUE vs the scheduler's own recheck promise: ${sched ? overdueCount : 'unknown (no checkpoint)'}`);
   }
+  let pctBreach = false; // both pct lines print before either fails the run
   if (maxStalePct !== null) {
     const stale = out.filter(notFresh).length;
     const pct = out.length ? Math.round((1000 * stale) / out.length) / 10 : 0;
     const breach = staleBreach(out, maxStalePct);
     console.error(`stale-pct: ${stale}/${out.length} = ${pct}% stale or never audited (limit < ${maxStalePct}%) ${breach ? 'FAIL' : 'OK'}`);
-    if (breach) return 1;
+    if (breach) pctBreach = true;
   }
   if (maxOverduePct !== null) {
     const known = out.filter((s) => s.overdue === true || s.overdue === false).length;
-    const pct = known ? Math.round((1000 * overdueCount) / known) / 10 : 0;
     const breach = overdueBreach(out, maxOverduePct);
-    console.error(`overdue-pct: ${overdueCount}/${known} = ${pct}% past the scheduler's recheck promise (limit < ${maxOverduePct}%) ${breach ? 'FAIL' : 'OK'}`);
-    if (breach) return 1;
+    const shown = known ? `${overdueCount}/${known} = ${Math.round((1000 * overdueCount) / known) / 10}%` : 'unknown (no row has a known overdue status)';
+    console.error(`overdue-pct: ${shown} past the scheduler's recheck promise (limit < ${maxOverduePct}%) ${breach ? 'FAIL' : 'OK'}`);
+    if (breach) pctBreach = true;
   }
+  if (pctBreach) return 1;
   if (argv.includes('--check-gaps') && hasGap(out)) return 1;
   return argv.includes('--check') && out.some((s) => s.grade !== 'PASS') ? 1 : 0;
 }
