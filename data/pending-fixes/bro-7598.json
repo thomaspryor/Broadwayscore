@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7598",
   "planId": "4a6793a7-27ab-4d64-b126-c4abd988a000",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-16T14:24:42.890Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "downstate-2026/wsj--charles-isherwood.json: llmPullQuote"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-16T16:06:50.585Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "downstate-2026/wsj--charles-isherwood.json llmPullQuote: \"Mr. Norris so superbly does in this troubling but terrific play.\" -> \"A playwright’s responsibility isn’t to either forgive or condemn, but to render life in all its complexity, to present us with a vision of humanity that is truthful, as Mr. Norris so superbly does in this troubling but terrific play.\""
+    }
+  ],
+  "executedIn": "ci"
 }
