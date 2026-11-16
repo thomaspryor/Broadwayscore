@@ -74,10 +74,9 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
-  // BRO-5673 acceptance shims; import suites already run by the node unit-test
+  // BRO-5673 acceptance shim; imports suites already run by the node unit-test
   // batch and scripts/lib/*.test.mjs step. Do not run those suites twice in CI.
   'scripts/batch-session-optimization.test.mjs': 'BRO-5673',
-  'scripts/verify-bro-5384-codex-throughput.test.mjs': 'BRO-5673',
   // BRO-7596 RECHECK-AFTER probe: live usage ledger; passes only after the owner stores CLAUDE_CODE_OAUTH_TOKEN.
   'scripts/verify-codex-check-oauth-live.test.mjs': 'BRO-7596',
   // BRO-7531 RECHECK-AFTER probe: live vendor billing record, skipped until 2026-11-23.
