@@ -633,6 +633,13 @@ function extractTalkinBroadwayBody(html, criticHint) {
   const bodyCloseIdx = html.slice(restStart).search(/<\/body>/i);
   let end = nextValidated !== undefined ? nextValidated : html.length;
   if (bodyCloseIdx > -1 && restStart + bodyCloseIdx < end) end = restStart + bodyCloseIdx;
+  // Regional pages close with an ad strip ("Discover more") and a "Share:"
+  // footer inside the same body; cut them like the unsigned layout does.
+  const rest = html.slice(restStart, end);
+  for (const re of [/Discover more/, />\s*Share:\s*</]) {
+    const i = rest.search(re);
+    if (i > -1 && restStart + i < end) end = restStart + i;
+  }
 
   const text = stripHtml(html.slice(start, end));
   return text.length >= 300 ? text : null;

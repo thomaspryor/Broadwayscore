@@ -169,6 +169,21 @@ describe('article-extractor: talkinbroadway.com', () => {
     assert.ok(!text.includes('Sound Advice'), 'newsletter chrome excluded');
   });
 
+  test('regional byline page: the "Discover more" ad strip and "Share:" footer are cut (BRO-7262)', () => {
+    const reviewBody = 'Steppenwolf stages a quiet, sharp new play about four friends. '.repeat(12);
+    const html =
+      '<html><body>' + NEWSLETTER_CHROME +
+      'Review by Karen Topham </p>' +
+      `<p>${reviewBody}</p>` +
+      '<span>Discover more</span><span>Theater tickets</span><p>Share:</p><p>Copyright 2026</p>' +
+      '</body></html>';
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text && text.includes('four friends'));
+    assert.ok(!text.includes('Discover more'), 'ad strip excluded');
+    assert.ok(!text.includes('Share:'), 'share footer excluded');
+    assert.ok(!text.includes('Copyright'), 'copyright excluded');
+  });
+
   test('regional page: prose "review by" is not a byline', () => {
     const html = '<html><body>' + NEWSLETTER_CHROME +
       '<p>As a review by the Times put it, the play drags. ' + 'More prose here. '.repeat(30) + '</p></body></html>';
