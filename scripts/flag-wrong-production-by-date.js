@@ -19,7 +19,7 @@ const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCity } = require('./lib/wrong-production-autoclear');
-const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateShowScorePreviousProduction, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, guardNoteDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateShowScorePreviousProduction, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, guardNoteDate, textDateline, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { detectPriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { evaluateCurrentRunCorroboration, shouldHoldDateGuardFlag } = require('./lib/wrong-production-corroboration');
 const { applyDateGuardHold, clearDateGuardHold, holdMarkerNeedsWrite, rebuildExcludesHeld } = require('./lib/date-guard-hold');
@@ -219,6 +219,20 @@ function run() {
         const urlDate = extractDateFromUrl(data.url);
         if (urlDate && urlDate.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDate.date)) {
           const d = parseDate(urlDate.date);
+          if (d && !isNaN(d.getTime())) pubDate = d;
+        }
+      }
+      if (!pubDate) {
+        // BRO-7579 (BRO-5750 class): a file with no publishDate and no URL date can still
+        // print its own full date at the top of the text ("by X | Sep 17, 2022"). That
+        // printed dateline is evidence of when the review exists; without it a 2022
+        // Vancouver review sat shipped on the 2026 Boston run (score 62, publishDate null).
+        // Only when the scoring model independently read the same date (llmPublishDateGuess):
+        // a lone dateline can be a page-updated stamp on an archive page (an unconfirmed
+        // sweep of every undated file flagged 61 more, mostly old shows).
+        const lineDate = textDateline(data.fullText);
+        if (lineDate && data.llmPublishDateGuess === lineDate) {
+          const d = parseDate(lineDate);
           if (d && !isNaN(d.getTime())) pubDate = d;
         }
       }

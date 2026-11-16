@@ -220,3 +220,61 @@ test('stale wrongProductionOverride breadcrumb blocks the wrongProduction stamp 
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+// BRO-7579 (BRO-5750 class): no publishDate, no URL date, but the text prints a full
+// dateline from years before the run. Was shipped unflagged (Colin Thomas, 2022
+// Vancouver review under the 2026 Boston Peter Pan Goes Wrong run).
+test('undated review whose text prints an old dateline is flagged wrongProduction (--apply)', () => {
+  const fx = makeFixture();
+  try {
+    const p = path.join(path.dirname(fx.reviewPath), 'colin--thomas.json');
+    fs.writeFileSync(p, JSON.stringify({
+      outlet: 'Colin Thomas', outletId: 'colin-thomas', criticName: 'Colin Thomas',
+      url: 'https://example.com/farce-review/',
+      fullText: 'by Colin Thomas | Sep 17, 2022 | Review | 0 comments\n\nA farce review text.',
+      llmPublishDateGuess: '2022-09-17',
+      assignedScore: 62,
+    }));
+    runFlagger(fx, ['--apply']);
+    const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.equal(data.wrongProduction, true, 'old printed dateline must flag the file');
+  } finally {
+    fs.rmSync(fx.tmp, { recursive: true, force: true });
+  }
+});
+
+test('undated review whose text prints an in-run dateline is NOT flagged', () => {
+  const fx = makeFixture();
+  try {
+    const p = path.join(path.dirname(fx.reviewPath), 'colin--thomas.json');
+    fs.writeFileSync(p, JSON.stringify({
+      outlet: 'Colin Thomas', outletId: 'colin-thomas', criticName: 'Colin Thomas',
+      url: 'https://example.com/farce-review/',
+      fullText: 'by Colin Thomas | May 21, 2026 | Review\n\nA farce review text.',
+      llmPublishDateGuess: '2026-05-21',
+      assignedScore: 62,
+    }));
+    runFlagger(fx, ['--apply']);
+    const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.notEqual(data.wrongProduction, true);
+  } finally {
+    fs.rmSync(fx.tmp, { recursive: true, force: true });
+  }
+});
+
+test('a lone old printed date with no matching LLM guess is not enough to flag', () => {
+  const fx = makeFixture();
+  try {
+    const p = path.join(path.dirname(fx.reviewPath), 'colin--thomas.json');
+    fs.writeFileSync(p, JSON.stringify({
+      outlet: 'Colin Thomas', outletId: 'colin-thomas', criticName: 'Colin Thomas',
+      url: 'https://example.com/farce-review/',
+      fullText: 'Updated Sep 17, 2022 | Review\n\nA farce review text.',
+      assignedScore: 62,
+    }));
+    runFlagger(fx, ['--apply']);
+    assert.notEqual(JSON.parse(fs.readFileSync(p, 'utf8')).wrongProduction, true);
+  } finally {
+    fs.rmSync(fx.tmp, { recursive: true, force: true });
+  }
+});

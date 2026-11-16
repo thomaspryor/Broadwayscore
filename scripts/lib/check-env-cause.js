@@ -28,7 +28,10 @@ const CAUSES = [
   {
     key: 'private-texts-absent',
     // The review texts are a private repo the check workdir never receives.
-    re: /data\/review-texts (?:is missing|not found)/,
+    // Also the two messages scripts/lib/corpus-scan-guard.js throws (BRO-7579):
+    // "the review-texts private repo is not checked out here" and
+    // "check out the review-texts private repo first".
+    re: /data\/review-texts (?:is missing|not found)|review-texts private repo is not checked out|check out the review-texts private repo/,
     plain: 'its check needs the private review texts, which the recheck machine does not have',
   },
   {

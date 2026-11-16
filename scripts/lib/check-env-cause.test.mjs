@@ -97,3 +97,20 @@ test('recheckVerdict: a row classified at write time (has a sha key) is never re
   assert.deepEqual(recheckVerdict({ ...row, sha: 'abc' }, { tsxTests: tsx }), { status: 'fail', envCause: null });
   assert.deepEqual(recheckVerdict({ ...row, sha: null }, { tsxTests: tsx }), { status: 'fail', envCause: null });
 });
+
+// BRO-7579 (BRO-6226 recheck FAIL): the corpus-audit guard's own message is the
+// string a private-data-less recheck prints. It once said something the
+// private-texts-absent cause did not match, so every night counted "the fix
+// broke". Pin the classifier to the REAL message the guard throws, so rewording
+// the guard fails here instead of silently reviving ~1 false fail per audit card.
+test('corpus-scan guard messages classify as private-texts-absent, a real drift stays a fail', () => {
+  const { CorpusNotScannedError } = require('./corpus-scan-guard.js');
+  for (const opts of [{ rootMissing: true }, {}]) {
+    const msg = new CorpusNotScannedError('/tmp/auto-recheck-x/main/data/review-texts', opts).message;
+    const c = envCauseOf(msg);
+    assert.ok(c, `guard message not classified as env cause: ${msg.slice(0, 100)}`);
+    assert.equal(c.key, 'private-texts-absent');
+  }
+  // The audit's own findings (ran, found drift) must remain a real failure.
+  assert.equal(envCauseOf('[audit-critic-consensus-contamination] 1 fail, 0 warn\n  [fail] x\n     REVIEWCOUNT_DRIFT:consensus=25,actual=36,diff=11'), null);
+});

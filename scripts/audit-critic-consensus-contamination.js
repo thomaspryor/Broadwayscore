@@ -17,6 +17,7 @@
  *   node scripts/audit-critic-consensus-contamination.js          # human report
  *   node scripts/audit-critic-consensus-contamination.js --json
  *   node scripts/audit-critic-consensus-contamination.js --strict # warn = fail
+ *   node scripts/audit-critic-consensus-contamination.js --show=<id> # one show (exit 2 if no entry)
  *
  * Signals:
  *   SHOW_NOT_IN_DB        (fail) — key not present in shows.json
@@ -144,6 +145,7 @@ function audit(opts = {}) {
 
   for (const [id, c] of Object.entries(showsMap)) {
     if (!c || typeof c !== 'object') continue;
+    if (opts.onlyShow && id !== opts.onlyShow) continue;
 
     const flags = [];
 
@@ -186,7 +188,19 @@ function audit(opts = {}) {
 function main() {
   try { assertReviewTextCorpus(reviewTextsDir()); } catch (err) { exitIfCorpusNotScanned(err); }
 
-  const issues = audit();
+  // --show=<id> (BRO-7579): audit one show's consensus. A card's own VERIFY must
+  // test the show it fixed, not the whole corpus: the corpus-wide run also fails
+  // on any other show whose take went stale that day (self-heals on regen).
+  const showArg = process.argv.find(a => a.startsWith('--show='));
+  const onlyShow = showArg ? showArg.slice('--show='.length) : null;
+  if (showArg) {
+    const known = Object.keys((JSON.parse(fs.readFileSync(CONSENSUS_FILE, 'utf-8')).shows) || {});
+    if (!onlyShow || !known.includes(onlyShow)) {
+      console.error(`[audit-critic-consensus-contamination] --show=${onlyShow}: no consensus entry with that id (a missing entry cannot pass)`);
+      process.exit(2);
+    }
+  }
+  const issues = audit({ onlyShow });
   const json = process.argv.includes('--json');
   const strict = process.argv.includes('--strict');
   // --gate: per-push trunk catastrophe floor (test.yml). Of the three FAIL

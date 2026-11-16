@@ -169,6 +169,18 @@ describe('cv-wrongproduction-unhandled handled classes (BRO-5437)', () => {
     assert.equal(check.handledReason(d, SHOW, path.join(tmpRoot, SHOW.id, 'x.json')), null);
   });
 
+  it('handledReason: a rebuild self-heal is handled, but only while the top-level flag is still false (BRO-7579)', () => {
+    const cvTrue = { wrongProduction: true, confidence: 'high', reasoning: 'Todd Haimes vs AA Theatre.', issues: [] };
+    const healed = file('x', { wrongProduction: false, wrongProductionSelfHealed: true, contentVerification: cvTrue });
+    assert.equal(check.handledReason(healed, SHOW, '/nonexistent/x.json'), 'self-healed');
+    // a later CV flip re-promotes the flag: no longer healed, a real violation again
+    const flipped = { ...healed, wrongProduction: true };
+    assert.equal(check.handledReason(flipped, SHOW, '/nonexistent/x.json', { exactShipped: true }), null);
+    // marker alone (no top-level false) never counts
+    const markerOnly = file('x', { wrongProductionSelfHealed: true, contentVerification: cvTrue });
+    assert.equal(check.handledReason(markerOnly, SHOW, '/nonexistent/x.json'), null);
+  });
+
   it('handledReason: temporal override is only honored at low confidence', () => {
     const d = file('x', { contentVerification: { wrongProduction: true, confidence: 'medium',
       reasoning: `${OVERRIDE}venue`, issues: [] } });

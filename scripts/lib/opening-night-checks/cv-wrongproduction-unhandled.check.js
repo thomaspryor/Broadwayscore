@@ -87,6 +87,12 @@ function isCorroboratedTemporalOverride(data, show) {
  * - 'rebuild-skip-audit': shouldSkipWrongProductionAudit (wrongProductionOverride,
  *   allowCrossMarket, humanReviewedWrongProduction=false), the rebuild's own
  *   "operator overrode the wrongProduction audit" predicate.
+ * - 'self-healed' (BRO-7579): the rebuild itself cleared a stale CV-promoted flag
+ *   (wrongProductionSelfHealed + top-level wrongProduction=false: own-cast or venue
+ *   carve-out evidence, or a current CV pass that says false). The marker is
+ *   self-correcting: a later high-confidence CV flip re-promotes wrongProduction=true,
+ *   which takes the file out of this class. Without it every self-healed file counted
+ *   as a violation (71 of 223) and each new one re-fired the daily digest row.
  * - 'not-shipped': the file's own top-level wrongProduction flag excludes it
  *   (explainExclusion === 'wrongProduction') AND no shipped row carries this
  *   file's own url+outlet+critic (opts.exactShipped), so the row it matched
@@ -111,6 +117,7 @@ function handledReason(data, show, filePath, opts = {}) {
   const mc = data.wrongProductionManualClear;
   if (typeof mc === 'string' && mc.trim().length >= 12 && !NOT_A_CLEAR_RE.test(mc.trim())) return 'manual-clear-reason';
   if (shouldSkipWrongProductionAudit(data)) return 'rebuild-skip-audit';
+  if (data.wrongProductionSelfHealed === true && data.wrongProduction === false) return 'self-healed';
   if (data.wrongProduction === true && show && !opts.exactShipped
       && explainExclusion(data, show, filePath) === 'wrongProduction') return 'not-shipped';
   // A duplicate copy (same url+outlet+critic as its duplicateOf target, so
