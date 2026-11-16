@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T14:47:48.580Z",
+  "generatedAt": "2026-11-16T16:02:05.852Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -122,8 +122,16 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -142,12 +150,16 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
+      "outletId": "fringereview",
+      "error": "Timeout fetching https://fringereview.co.uk/feed/"
+    },
+    {
+      "outletId": "lighting-and-sound-america",
+      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 877,
-  "matchedGaps": 2,
+  "itemsScanned": 853,
+  "matchedGaps": 3,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -158,6 +170,15 @@
       "url": "https://liamodell.com/2026/11/15/cloud-9-review-national-theatre-lyttelton-caryl-churchill/",
       "headline": "‘Cloud 9’ review &#8211; Caryl Churchill revival is missing fresh context",
       "publishDate": "2026-11-15"
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "level": "matched",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/11/16/review-of-hamlet-hail-to-the-thief-barbican-2026-reimagined-shakespeare-is-everything-it-has-to-be/",
+      "headline": "Review of &#8216;Hamlet Hail to the Thief&#8217; (Barbican, 2026): &#8220;Reimagined Shakespeare is everything it has to be&#8221;",
+      "publishDate": "2026-11-16"
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
