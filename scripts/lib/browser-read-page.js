@@ -18,27 +18,48 @@ const CHALLENGE = /just a moment|checking your browser|cf-chl|attention required
  * @returns {Promise<{ status: number|null, finalUrl: string, title: string, text: string, html: string,
  *   anchors: Array<{href: string, text: string}>, canonical: string|null, challenge: boolean }>}
  */
+/** True for the Playwright error thrown when the page navigates under a read (a challenge redirecting to the real page). */
+function isNavigationRace(err) {
+  return /Execution context was destroyed|because of a navigation|Target page, context or browser has been closed by navigation/i
+    .test(String((err && err.message) || err));
+}
+
+/**
+ * Run one page read; when a navigation destroys its context (the challenge page redirecting once it passes), wait for
+ * the new page to load and read again (BRO-7262: run 43818735464 lost the ch944 review to one such redirect).
+ */
+async function readSettled(page, fn, tries = 4) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (attempt >= tries || !isNavigationRace(e)) throw e;
+      await page.waitForLoadState('domcontentloaded').catch(() => {});
+    }
+  }
+}
+
 async function readBrowserPage(page, url, { timeoutMs = 45000, waits = 6, waitMs = 2500 } = {}) {
   const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: timeoutMs });
   const status = resp ? resp.status() : null;
-  const bodyText = () => page.evaluate(() => (document.body && document.body.innerText) || '');
+  const bodyText = () => readSettled(page, () => page.evaluate(() => (document.body && document.body.innerText) || ''));
   for (let i = 0; i < waits; i++) {
-    const title = await page.title();
+    const title = await readSettled(page, () => page.title());
     const body = await bodyText();
     const challenged = CHALLENGE.test(title) || CHALLENGE.test(body.slice(0, 400));
     // A real 404/410 is short by nature: stop waiting for it to grow.
     if (!challenged && (body.length > 200 || status === 404 || status === 410)) break;
     await page.waitForTimeout(waitMs);
   }
-  const title = await page.title();
+  const title = await readSettled(page, () => page.title());
   const text = await bodyText();
-  const anchors = await page.evaluate(() => Array.from(document.querySelectorAll('a[href]')).map((a) => ({ href: a.getAttribute('href'), text: (a.textContent || '').trim().slice(0, 120) })));
-  const canonical = await page.evaluate(() => {
+  const anchors = await readSettled(page, () => page.evaluate(() => Array.from(document.querySelectorAll('a[href]')).map((a) => ({ href: a.getAttribute('href'), text: (a.textContent || '').trim().slice(0, 120) }))));
+  const canonical = await readSettled(page, () => page.evaluate(() => {
     const el = document.querySelector('link[rel="canonical"]') || document.querySelector('meta[property="og:url"]');
     return el ? (el.getAttribute('href') || el.getAttribute('content')) : null;
-  });
-  const html = await page.content();
+  }));
+  const html = await readSettled(page, () => page.content());
   return { status, finalUrl: page.url(), title, text, html, anchors, canonical, challenge: CHALLENGE.test(title) || CHALLENGE.test(text.slice(0, 400)) };
 }
 
-module.exports = { CHALLENGE, readBrowserPage };
+module.exports = { CHALLENGE, readBrowserPage, readSettled, isNavigationRace };
