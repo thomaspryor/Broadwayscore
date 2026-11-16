@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-16T11:32:16.437Z",
-  "processed": 0,
-  "failed": 2,
-  "successRate": "0%",
+  "updatedAt": "2026-11-16T11:40:43.205Z",
+  "processed": 244,
+  "failed": 151,
+  "successRate": "61.8%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -14,6 +14,73 @@
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-11-16T11:34:40.760Z",
+      "event": "bb-session",
+      "session": "1787c5b1",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-16T11:34:41.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-16T11:34:58.056Z",
+      "event": "bb-session",
+      "session": "6558b2c8",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-16T11:34:58.604Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T11:37:02.742Z",
+      "event": "bb-session",
+      "session": "00251be8",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-16T11:37:03.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T11:40:01.530Z",
+      "event": "bb-session",
+      "session": "102d3150",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-16T11:40:02.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T11:40:09.457Z",
+      "event": "bb-session",
+      "session": "95821a87",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-16T11:40:10.067Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T11:40:29.292Z",
+      "event": "bb-session",
+      "session": "edc5b014",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-16T11:40:29.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
