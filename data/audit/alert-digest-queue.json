@@ -381,6 +381,37 @@
     "queuedAt": "2026-11-16T16:29:59.047Z"
   },
   {
+    "conditionKey": "land:land/bro-7606-v2",
+    "title": "Landing blocked: merged-tree-tests red on land/bro-7606-v2",
+    "description": "land.yml did not land land/bro-7606-v2: the merged-tree-tests gate went red at 53d3540e02. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7606-v2 @ 53d3540e02 (origin/land/bro-7606-v2) → origin/main @ 890046e852 [land] attempt 1/3: rebased onto 890046e852, 8 file(s) changed — running checks [land] verified-base: main moved 27954dc712 → 890046e852 across 113 file(s), substantive — re-checking on the merged tree (+4 test file(s) changed on main since the verified base); full re-check: branch and main both changed 1 fil Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43905615584",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7606-v2"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "53d3540e02fc91172e9a5e59f8ced0af8b848f80"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43905615584"
+      }
+    ],
+    "queuedAt": "2026-11-16T16:57:13.976Z"
+  },
+  {
     "conditionKey": "live-data-test:tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
     "title": "Live-data test failing: daily synopsis passes reach every flagged open show within a month (tests/unit/enrichment-target-reach-live.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"daily synopsis passes reach every flagged open show within a month\" in tests/unit/enrichment-target-reach-live.test.mjs is red against the live corpus.\n\nthe daily synopsis enricher never reaches 2 of 37 flagged show(s) on any day of the month (BRO-7437: a bare slice() of a file-ordered, mostly-closed candidate list starves exactly the rows the health check reddens over, so the gap count can never fall and the card is refiled forever)\n+ actual - expected\n\n+ [\n+   'hayward-regional-2026',\n+   'the-best-medicine-regional-2026'\n+ ]\n- []\n",
