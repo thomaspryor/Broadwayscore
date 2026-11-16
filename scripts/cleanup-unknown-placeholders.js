@@ -3,13 +3,13 @@
 // that sit beside a usable named review by the same outlet for the same show. Dry run by default.
 // Usage: node scripts/cleanup-unknown-placeholders.js [--apply] [--recent-only]
 const { hasHelpFlag } = require('./lib/cli-help');
-if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/cleanup-unknown-placeholders.js [--apply] [--recent-only]  (dry run unless --apply)'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const base = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const apply = process.argv.includes('--apply');
 const recentOnly = process.argv.includes('--recent-only');
-const EXCERPT_KEYS = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt', 'stagedoorExcerpt', 'lboRoundupExcerpt', 'excerpt', 'pullQuote'];
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
+const EXCERPT_KEYS = [...EXCERPT_FIELDS, 'excerpt', 'pullQuote'];
 const SCORE_KEYS = ['originalScore', 'assignedScore', 'aggregatorStars', 'westEndTheatreScore', 'humanReviewScore', 'llmScore', 'dtliThumb', 'bwwThumb'];
 const { foldDiacritics } = require('./lib/title-match');
 const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -29,19 +29,23 @@ function isContentless(r, sibs = []) {
   return true;
 }
 function isCover(d) { return !!d.url && !d.wrongShow && !d.wrongProduction && !d.isRoundupArticle && !d.duplicateOf && !d.isNonReview; }
-const out = [];
-for (const s of fs.readdirSync(base)) {
-  if (s.startsWith('_') || (recentOnly && !/-(2025|2026)(\b|-)/.test(s))) continue;
-  let fl; try { fl = fs.readdirSync(path.join(base, s)); } catch { continue; }
-  for (const f of fl) {
-    const m = /^(.+)--unknown\.json$/.exec(f);
-    if (!m) continue;
-    let r; try { r = JSON.parse(fs.readFileSync(path.join(base, s, f), 'utf8')); } catch { continue; }
-    const sibs = fl.filter((g) => g.startsWith(`${m[1]}--`) && g !== f && g.endsWith('.json')).map((g) => { try { return JSON.parse(fs.readFileSync(path.join(base, s, g), 'utf8')); } catch { return null; } }).filter(Boolean);
-    if (!isContentless(r, sibs)) continue;
-    if (sibs.some(isCover)) out.push(path.join(s, f));
+function main() {
+  if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/cleanup-unknown-placeholders.js [--apply] [--recent-only]  (dry run unless --apply)'); process.exit(0); }
+  const out = [];
+  for (const s of fs.readdirSync(base)) {
+    if (s.startsWith('_') || (recentOnly && !/-(2025|2026)(\b|-)/.test(s))) continue;
+    let fl; try { fl = fs.readdirSync(path.join(base, s)); } catch { continue; }
+    for (const f of fl) {
+      const m = /^(.+)--unknown\.json$/.exec(f);
+      if (!m) continue;
+      let r; try { r = JSON.parse(fs.readFileSync(path.join(base, s, f), 'utf8')); } catch { continue; }
+      const sibs = fl.filter((g) => g.startsWith(`${m[1]}--`) && g !== f && g.endsWith('.json')).map((g) => { try { return JSON.parse(fs.readFileSync(path.join(base, s, g), 'utf8')); } catch { return null; } }).filter(Boolean);
+      if (!isContentless(r, sibs)) continue;
+      if (sibs.some(isCover)) out.push(path.join(s, f));
+    }
   }
+  console.log(`${out.length} contentless Unknown placeholders beside a named review${recentOnly ? ' (2025-26 shows)' : ''}`);
+  if (apply) { for (const p of out) fs.unlinkSync(path.join(base, p)); console.log(`deleted ${out.length}`); } else out.slice(0, 15).forEach((p) => console.log('  ' + p));
 }
-console.log(`${out.length} contentless Unknown placeholders beside a named review${recentOnly ? ' (2025-26 shows)' : ''}`);
-if (apply) { for (const p of out) fs.unlinkSync(path.join(base, p)); console.log(`deleted ${out.length}`); } else out.slice(0, 15).forEach((p) => console.log('  ' + p));
+if (require.main === module) main();
 module.exports = { isContentless, isCover, excerptsQuotedIn };

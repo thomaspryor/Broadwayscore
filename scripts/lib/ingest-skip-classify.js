@@ -260,6 +260,7 @@ const BENIGN_REASONS = [
   'no-changes',                     // identical content already on disk
   'junk-outlet',                    // ticket sellers / listing pages
   'unregistered-outlet-empty-stub', // no text to lose; nothing was dropped
+  'unknown-no-url-outlet-already-covered', // BRO-7569 guard F3: an Unknown no-url placeholder beside a usable named review adds nothing
   'merged-duplicate-url',           // URL already merged into a sibling (BRO-4414); refusing is the desired end state
 ];
 
