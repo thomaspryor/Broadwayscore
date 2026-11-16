@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7594",
   "planId": "3f1d61f7-f4b6-41a4-9382-93180cd0c755",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-16T14:02:10.622Z",
   "submitter": {
     "name": null,
@@ -254,5 +254,129 @@
         "description": "shows.json: are-you-watching-west-end-2026.runtime"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-16T15:45:42.704Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for data-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for data-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for touch-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for tru-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for tru-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for starlight-express-off-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for starlight-express-off-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for manic-street-creature-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for relics-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for relics-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for driftwood-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for driftwood-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for care-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for care-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for an-ideal-husband-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for an-ideal-husband-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for sting-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for sting-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for deep-azure-globe-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for deep-azure-globe-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for please-please-me-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for les-liaisons-dangereuses-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for les-liaisons-dangereuses-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for are-you-watching-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
