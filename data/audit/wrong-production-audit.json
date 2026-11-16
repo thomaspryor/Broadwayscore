@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-16T14:55:14.571Z",
+  "timestamp": "2026-11-16T15:10:07.183Z",
   "stats": {
-    "totalReviews": 82084,
-    "alreadyFlagged": 22470,
+    "totalReviews": 82085,
+    "alreadyFlagged": 22471,
     "dateGuardCatches": 222,
     "directorMismatch": 3713,
-    "tvFilmSignals": 2323,
+    "tvFilmSignals": 2324,
     "londonSignals": 3773,
     "offBroadwaySignals": 755,
     "yearMismatch": 374,
@@ -14969,6 +14969,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (2x) more than 2026 (1x). 2023 matches production: covenant-off-broadway-2023"
+        }
+      ]
+    },
+    {
+      "showId": "cranford-off-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2026-11-16",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cranford-starring-tamsin-greig-review-orange-tree-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
