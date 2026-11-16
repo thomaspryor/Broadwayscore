@@ -560,5 +560,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-16T19:15:09.964Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7614-issue-closed-public",
+    "title": "Landing blocked: rebase red on land/bro-7614-issue-closed-public",
+    "description": "land.yml did not land land/bro-7614-issue-closed-public: the rebase gate went red at b7ca531aa6. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7614-issue-closed-public @ b7ca531aa6 (origin/land/bro-7614-issue-closed-public) → origin/main @ aa2f0a5047 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ aa2f0a5047: Rebasing (1/1) error: could not apply b7ca531aa63... fix(acceptance): --issue-closed reads the public API when gh cannot authenticate (BRO-7614) hint: Resolve all conflicts manually, mark them as  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43932746435",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7614-issue-closed-public"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b7ca531aa635219b1f27ee4562d543a880a9ae96"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43932746435"
+      }
+    ],
+    "queuedAt": "2026-11-16T19:49:13.519Z"
   }
 ]
