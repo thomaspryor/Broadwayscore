@@ -667,6 +667,8 @@ on:
       - 'scripts/build-slug-redirects.js'
       - 'scripts/checkout-sync-post.js'
       - 'scripts/classify-non-reviews.js'
+      - 'scripts/fetch-guardian-reviews.js' # BRO-7593: guardian-publication.test.mjs
+      - 'scripts/fix-non-review-misclassifications.js' # BRO-7593: guardian-publication.test.mjs
       - 'scripts/classify-stale-closures.js'
       - 'scripts/cleanup-phantom-outlets.js'
       - 'scripts/collect-review-texts-v2.js'
