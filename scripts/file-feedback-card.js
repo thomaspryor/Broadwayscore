@@ -8,8 +8,10 @@
  */
 'use strict';
 
+require('./lib/cli-help').exitOnHelp(module);
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { exitFlushed } = require('./lib/exit-flushed.js');
 const { fileFeedbackCard } = require('./lib/plan-refusal-escalation.js');
 const { parseDiagnosisJson } = require('./lib/feedback-submitter-store.js');
 
@@ -29,5 +31,5 @@ function main(env = process.env) {
   return 0;
 }
 
-if (require.main === module) process.exit(main());
+if (require.main === module) exitFlushed(main());
 module.exports = { main };
