@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T10:04:57.149Z",
+  "generatedAt": "2026-11-16T14:48:22.021Z",
   "night": "2026-11-15",
   "counts": {
     "total": 1,
@@ -10,7 +10,7 @@
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "Downstate: published by the new lane; 17 of 18 reviews live by 12:00am; Cititour went live at 2:12am (late); opening-night email draft not due until 9:00am; Reddit draft not due until 9:00am. Failed."
+      "line": "Downstate: published by the new lane; 17 of 18 reviews live by 12:00am; Cititour went live at 2:12am (late); no opening-night email draft; no Reddit draft emailed. Failed."
     }
   ],
   "scoreboard": {
@@ -19,6 +19,8 @@
     "passedOnOwn": 1
   },
   "missFirstSeen": {
-    "downstate-2026|2026-11-15|review:cititour:": "2026-11-16T10:04:57.149Z"
+    "downstate-2026|2026-11-15|review:cititour:": "2026-11-16T10:04:57.149Z",
+    "downstate-2026|2026-11-15|email:broadcast:missing": "2026-11-16T14:48:22.021Z",
+    "downstate-2026|2026-11-15|email:reddit:missing": "2026-11-16T14:48:22.021Z"
   }
 }
