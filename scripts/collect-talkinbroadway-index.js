@@ -173,7 +173,7 @@ async function main() {
     if (onlyUrl) {
       const show = shows.find((x) => x.id === onlyShow);
       toFetch = [{
-        showId: show.id, title: show.title, url: normalizeTbUrl(onlyUrl), openingDate: show.openingDate, verifyPageDate: true,
+        showId: show.id, title: show.title, url: normalizeTbUrl(onlyUrl), openingDate: show.openingDate, verifyPageDate: false, // regional pages carry no byline date; a date that is present is still checked
       }];
       skipped = [];
     }
