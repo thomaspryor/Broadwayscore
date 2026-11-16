@@ -43,3 +43,22 @@ test('yield: cycle start is (runs - 1) days before the last run, and a review be
   assert.equal(r.visited.newSinceVisit, 1);
   assert.equal(r.control.newSinceCycleStart, 1);
 });
+
+test('yield: result does not depend on the clock time of the last run', () => {
+  const ids = Array.from({ length: 96 }, (_, i) => `s${i}`);
+  const first = { s30: [Date.UTC(2026, 10, 14, 8)], s60: [Date.UTC(2026, 10, 14, 8)] };
+  const at = (h) => measureYield(ids, { next: 48, updatedAt: new Date(Date.UTC(2026, 10, 15, h)).toISOString() }, first, 24);
+  assert.deepEqual(at(0).visited, at(23).visited);
+});
+
+test('yield: cursor at 0 (just wrapped) reports no-data, not a future cycle start', () => {
+  const r = measureYield(['a'], { next: 0, updatedAt: new Date().toISOString() }, { a: [0] }, 24);
+  assert.equal(r.verdict, 'no-data');
+});
+
+test('yield: a control rate equal to the visited rate is low-yield (threshold is strict 2x)', () => {
+  const end = Date.UTC(2026, 10, 15);
+  const ids = Array.from({ length: 48 }, (_, i) => `s${i}`);
+  const first = Object.fromEntries(ids.map((id) => [id, [end]]));
+  assert.equal(measureYield(ids, { next: 24, updatedAt: new Date(end).toISOString() }, first, 24).verdict, 'low-yield');
+});

@@ -53,7 +53,9 @@ const DAY = 86400000;
  * Returns per-show rates for visited vs control plus the net per-show yield.
  */
 function measureYield(all, cursor, firstSeenByShow, perDay = 24) {
-  const end = new Date(cursor.updatedAt).getTime();
+  // Day granularity: visit days are UTC midnights so the clock time of the last run does not matter.
+  const end = Math.floor(new Date(cursor.updatedAt).getTime() / DAY) * DAY;
+  if (!(cursor.next > 0)) return { cycleStart: null, visited: { shows: 0, newSinceVisit: 0 }, control: { shows: 0, newSinceCycleStart: 0 }, visitedPerShow: 0, controlPerShow: 0, netPerShow: 0, verdict: 'no-data', assumption: 'cursor at 0: no revisit yet' };
   // updatedAt is the last run of this cycle, so the first run was (runs - 1) days earlier.
   const cycleStart = end - (Math.ceil(cursor.next / perDay) - 1) * DAY;
   const v = { shows: 0, files: 0, newSinceVisit: 0, showDays: 0 };
@@ -82,6 +84,7 @@ function measureYield(all, cursor, firstSeenByShow, perDay = 24) {
     visitedPerShow,
     controlPerShow,
     netPerShow: visitedPerShow - controlPerShow,
+    assumption: `${perDay} shows per day, one advance per day (skipped or forced runs shift the estimate)`,
     verdict: visitedPerShow > 2 * controlPerShow && v.newSinceVisit > 0 ? 'keep' : 'low-yield',
   };
 }

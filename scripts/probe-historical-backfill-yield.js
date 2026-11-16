@@ -33,7 +33,9 @@ function loadFirstSeen(ids, dir) {
         const j = JSON.parse(fs.readFileSync(path.join(d, f), 'utf8'));
         // Not new reviews: excluded from scoring, or a URL correction that reset firstSeenAt.
         if (j.wrongProduction || j.wrongShow || j.isRoundupArticle || j.duplicateOf || j.firstSeenAtPriorUrl) continue;
-        out[id].push(new Date(j.firstSeenAt).getTime());
+        const t = new Date(j.firstSeenAt).getTime();
+        if (!Number.isFinite(t)) continue;
+        out[id].push(t);
       } catch { /* skip */ }
     }
   }
@@ -50,6 +52,7 @@ function main() {
   console.log(`cycle ${cursor.cycle} since ${r.cycleStart}, cursor ${cursor.next}/${cursor.total}`);
   console.log(`revisited: ${r.visited.shows} shows, ${r.visited.newSinceVisit} new reviews (${r.visitedPerShow.toFixed(2)}/show/30d)`);
   console.log(`control:   ${r.control.shows} shows, ${r.control.newSinceCycleStart} new reviews (${r.controlPerShow.toFixed(2)}/show/30d)`);
+  console.log(`assumes: ${r.assumption}; per visited show: ${r.visited.shows ? (r.visited.newSinceVisit / r.visited.shows).toFixed(2) : 0} new reviews`);
   console.log(`net yield ${r.netPerShow.toFixed(2)} reviews/show/30d -> ${r.verdict}`);
 }
 
