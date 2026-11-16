@@ -25,7 +25,7 @@
 const { isSyndicationHost } = require('./syndication-canonical');
 const { foldDiacritics } = require('./title-match');
 const { classifyTimeoutListingBlurb } = require('./timeout-capsule');
-const { isUrlMonthBeforeRun } = require('./gap-ingest-policy');
+const { isUrlMonthBeforeRun, isUrlDatedPathBeforeRun } = require('./gap-ingest-policy');
 
 const TIMEOUT_LISTING_PATH = /^\/[a-z0-9-]+\/(theat(?:er|re))\/[^/]+\/?$/i;
 
@@ -216,6 +216,10 @@ function missingNoiseReason(m, ctx = {}) {
 function censusExclusionReason(m, kind, ctx = {}) {
   if (!m) return null;
   if (typeof m.nonReviewVerdict === 'string' && m.nonReviewVerdict) return m.nonReviewVerdict;
+  // BRO-7603: a dated-permalink year before this production's window is another production's review,
+  // whoever cites it (a current roundup that also links a prior run's review does not make it this run's).
+  // Same predicate the ingest gate uses, so it honors declared priorRuns and year-titled shows.
+  if (m.url && ctx.show && isUrlDatedPathBeforeRun(m.url, ctx.show)) return 'url-year-before-run';
   if (kind === 'missing') return missingNoiseReason(m, ctx);
   if (kind !== 'flagged') return null;
   if (m.confirmedNonReview === true) return 'confirmed-non-review';

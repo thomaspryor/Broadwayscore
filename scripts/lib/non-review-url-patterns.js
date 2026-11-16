@@ -175,6 +175,11 @@ const NON_REVIEW_PATH_PATTERNS = [
   // ("begins-...-previews" alone is NOT here: 1 real frontmezzjunkies review.)
   /(^|[-/])first-photos([-/]|$)/i,
   /(^|[-/])photos-(are-)?released([-/]|$)/i,
+  // BRO-7603: preview-day and preview-delay news. Multi-word on purpose: frontmezzjunkies' real reviews rarely say
+  // "review" in the slug, and broadwaynews has undated real reviews, so a bare "arrives"/"preview" token is unsafe.
+  // 0 of 47,729 reviews.json urls match either shape (2026-11-16).
+  /(^|[-/])delays?-(?:its-|their-)?first-(?:broadway-)?(?:preview|performance)/i,
+  /(^|[-/])arrives-on-broadway-tonight/i,
 ];
 
 // A site's own utility page at the path root: /submit/, /contact-us, /about,
@@ -304,6 +309,14 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // audit ingested it as Seth Walters' "review". 0 of 634 reviews.json theatermania /news/ rows use either prefix
   // (checked 2026-11-09). The 7-digit id keeps pre-2020 reviews of "Watch on the Rhine" (/news/watch-on-the-rhine_80029/) out. allSources: a video page is not a review whoever cited it.
   { host: /(^|\.)theatermania\.com$/, path: /^\/news\/(?:watch|video)-[^/]*_\d{7,}\/?$/i, reason: 'video-feature', allSources: true },
+  // BRO-7603: news pieces the SERP census counted as Downstate "missing reviews" (2026-11-16). Each shape was
+  // measured against all 47,729 reviews.json urls (2026-11-16): 0 hits. A bare "/news/ slug without 'review'" rule is
+  // NOT safe (3 real theatermania /news/<slug>_<7 digits>/ reviews, 500+ LSA/WOS ones), so these are named shapes.
+  // Deadline's old undated permalink /<slug>-<10 digit id> is how its news posts are built; its reviews are
+  // /YYYY/MM/<slug>-review-<id>/ (0 of 369 corpus deadline.com rows are undated).
+  { host: /(^|\.)deadline\.com$/, path: /^\/(?![^/]*review)[a-z0-9-]+-\d{10}\/?$/i, reason: 'news-article', allSources: true },
+  // "<Show> Sets Broadway Premiere With <cast>" casting/date news under /news/ beside /news/review-... pieces.
+  { host: /(^|\.)theatermania\.com$/, path: /^\/news\/[^/]*-sets-(?:broadway|off-broadway)-(?:premiere|opening|run)\b/i, reason: 'news-announcement', allSources: true },
   // BRO-7197: Stage and Street's /<section>/shows/<slug>/ and /broadway/(off-broadway|theaters|resources)/<slug>/ pages are show/venue guides ("WANTED Broadway Musical: Tickets, Cast
   // & Reviews"), never one critic's review. The SERP census listed Wanted's on its opening night. 0 reviews.json rows
   // carry this host (2026-11-09).

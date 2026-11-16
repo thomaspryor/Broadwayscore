@@ -139,6 +139,40 @@ function isUrlYearOutOfWindow(url, show) {
 }
 
 /**
+ * BRO-7603: stricter sibling of isUrlYearOutOfWindow for rows a CURRENT roundup also vouches for. Only a dated
+ * permalink (/YYYY/MM/ in the path: washingtonpost.com/.../2022/11/23/..., nytimes.com/2022/11/15/...) counts as
+ * the publish date. A year-like word in the slug is not one: 34 of 47,729 stored reviews (nysun "1925-comedy",
+ * "since-2019", operawire "2025-26", curtainup "funhome13") are current-run reviews that isUrlYearOutOfWindow
+ * flags, so the census must not hide them (ship-check 2026-11-16). Also honors declared priorRuns and year titles.
+ * @param {string} url
+ * @param {object} show shows.json record
+ * @returns {boolean}
+ */
+function isUrlDatedPathBeforeRun(url, show) {
+  let pathname;
+  try { pathname = new URL(url).pathname; } catch { return false; }
+  return /\/(?:19|20)\d{2}\/\d{2}\//.test(pathname) && isUrlYearOutOfWindow(url, show);
+}
+
+/**
+ * BRO-7603: tag audit rows whose URL's own dated-permalink year predates this production as priorRun
+ * (report-only, never ingested), even when a current-run roundup also links them. Mutates and returns rows.
+ * Rows already priorRun keep their original source. Honors declared priorRuns and year-titled shows.
+ * @param {Array<{url?:string, priorRun?:boolean, priorRunSource?:string}>} rows
+ * @param {object} show shows.json record
+ * @returns {Array}
+ */
+function tagUrlYearPriorRuns(rows, show) {
+  for (const m of rows || []) {
+    if (m && m.url && !m.priorRun && isUrlDatedPathBeforeRun(m.url, show)) {
+      m.priorRun = true;
+      m.priorRunSource = 'url-year-before-run';
+    }
+  }
+  return rows;
+}
+
+/**
  * BRO-3556: production-identity gate for gather-reviews.js's OWN Show Score
  * path (curated-URL / slug-guess page scrape, Playwright carousel, HTML
  * fallback, pagination API). BRO-1412 gated only the audit's Show Score
@@ -436,4 +470,4 @@ function orderIngestCandidates(rows, priorIngestResults = [], priorSkippedByCap 
     .sort((a, b) => a.k[0] - b.k[0] || a.k[1] - b.k[1] || a.i - b.i).map(x => x.m);
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, oldProductionRefusalDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates };
+module.exports = { isUrlDatedPathBeforeRun, tagUrlYearPriorRuns, articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, oldProductionRefusalDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates };

@@ -276,3 +276,93 @@ test('a cross-show drop live under any other show is not owed here (BRO-6968)', 
   assert.deepEqual(noise.crossShowDropsOwedHere([{ url: JC }, { url: OWN }], [], 'the-bridge-off-west-end-2026', canon, { show, tokensOf: titleTokens }).map((d) => d.url), [OWN]);
   assert.equal(noise.crossShowDropsOwedHere([{ url: JC }], [], 'x', canon).length, 1);
 });
+
+// ---- BRO-7603: prior-production URLs and news pieces are not Downstate's missing reviews ----
+const { tagUrlYearPriorRuns, ingestBlockReason } = require('./gap-ingest-policy.js');
+const DS = { id: 'downstate-2026', title: 'Downstate', openingDate: '2026-11-15', previewsStartDate: '2026-10-22', category: 'play', market: 'broadway' };
+const WAPO_2022 = 'https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/';
+const DL_NEWS = ['https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672', 'https://deadline.com/downstate-broadway-scott-rudin-barry-diller-1237070817'];
+const NEWS_DAY = [
+  'https://www.broadwaynews.com/bruce-norris-downstate-delays-first-broadway-preview-again-due-to-illness/',
+  'https://www.theatermania.com/news/bruce-norriss-downstate-sets-broadway-premiere-with-k-todd-freeman-and-francis-guinan_1852625/',
+  'https://frontmezzjunkies.com/2026/10/22/downstate-finally-arrives-on-broadway-tonight-and-im-ready-to-enter-that-difficult-house-again/',
+];
+const REAL_REVIEWS = [
+  'https://deadline.com/2026/11/downstate-broadway-review-1237220229/',
+  'https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/',
+  'https://deadline.com/2025/03/othello-broadway-denzel-washington-1236346453/', // a real Deadline review with no "review" in the slug
+];
+
+test('BRO-7603: tagUrlYearPriorRuns marks a pre-window URL priorRun even when a current article also cites it', () => {
+  const rows = [{ url: WAPO_2022, sources: [{ source: 'aggregator-article' }, { source: 'aggregator-article' }] }, { url: REAL_REVIEWS[0] }];
+  tagUrlYearPriorRuns(rows, DS);
+  assert.equal(rows[0].priorRun, true);
+  assert.equal(rows[0].priorRunSource, 'url-year-before-run');
+  assert.notEqual(rows[1].priorRun, true);
+  assert.ok(ingestBlockReason(rows[0], DS), 'a tagged row is ingest-blocked');
+});
+test('BRO-7603: tagUrlYearPriorRuns keeps a declared priorRuns year, a year-titled show, and an existing source', () => {
+  const declared = { ...DS, priorRuns: [{ openingDate: '2022-10-01', closingDate: '2022-12-31', venue: 'Playwrights Horizons' }] };
+  const r1 = [{ url: WAPO_2022 }];
+  tagUrlYearPriorRuns(r1, declared);
+  assert.notEqual(r1[0].priorRun, true, 'a declared priorRuns entry covering the year readmits the URL');
+  const y = [{ url: 'https://www.nytimes.com/1984/11/20/theater/1984-review.html' }];
+  tagUrlYearPriorRuns(y, { ...DS, title: '1984', openingDate: '2017-06-22', previewsStartDate: '2017-05-18' });
+  assert.notEqual(y[0].priorRun, true, 'a title that is a year never self-blocks');
+  const keep = [{ url: WAPO_2022, priorRun: true, priorRunSource: 'aggregator-article-date' }];
+  tagUrlYearPriorRuns(keep, DS);
+  assert.equal(keep[0].priorRunSource, 'aggregator-article-date');
+});
+test('BRO-7603: censusExclusionReason drops a pre-window URL from missing and flagged rows, any source', () => {
+  const ctx = { show: DS };
+  assert.equal(noise.censusExclusionReason({ url: WAPO_2022 }, 'missing', ctx), 'url-year-before-run');
+  assert.equal(noise.censusExclusionReason({ url: WAPO_2022 }, 'flagged', ctx), 'url-year-before-run');
+  assert.equal(noise.censusExclusionReason({ url: WAPO_2022 }, 'listed', ctx), 'url-year-before-run');
+  assert.equal(noise.censusExclusionReason({ url: REAL_REVIEWS[0] }, 'missing', ctx), null);
+});
+test('BRO-7603: censusVerdictFor no longer counts a 2022 URL listed by a roundup as live, and Downstate reads complete', () => {
+  const result = {
+    showId: DS.id, title: DS.title, openingDate: DS.openingDate, previewsStartDate: DS.previewsStartDate,
+    aggregatorArticles: ['https://playbill.com/x'],
+    aggregatorListedUrls: [REAL_REVIEWS[0], 'https://www.vulture.com/2022/11/theater-review-bruce-norris-downstate-playwrights-horizons.html', 'https://www.nytimes.com/2022/11/15/theater/downstate-review.html'],
+    missing: [{ url: WAPO_2022, host: 'washingtonpost.com', knownOutletId: 'washpost' }, ...DL_NEWS.map((url) => ({ url, host: 'deadline.com', knownOutletId: 'deadline', serpCensus: true })), ...NEWS_DAY.map((url) => ({ url, host: new URL(url).hostname.replace(/^www\./, '') }))],
+    flaggedMisses: [], citedNoUrl: [],
+  };
+  const v = censusVerdictFor(result);
+  assert.deepEqual(v.candidates.filter((c) => c.state === 'live').map((c) => c.url), [REAL_REVIEWS[0]]);
+  assert.deepEqual(v.missing, [], `no false missing rows: ${JSON.stringify(v.missing)}`);
+  assert.equal(v.verdict, 'complete');
+  assert.ok(v.excluded.some((e) => e.url === WAPO_2022 && e.reason === 'url-year-before-run'), 'recorded, not silently dropped');
+});
+test('BRO-7603: a real missing current-run review still reads incomplete', () => {
+  const v = censusVerdictFor({
+    showId: DS.id, title: DS.title, openingDate: DS.openingDate, previewsStartDate: DS.previewsStartDate,
+    aggregatorArticles: ['https://playbill.com/x'], aggregatorListedUrls: [],
+    missing: [{ url: REAL_REVIEWS[0], host: 'deadline.com', knownOutletId: 'deadline' }, { url: REAL_REVIEWS[1], host: 'theatermania.com', knownOutletId: 'theatermania' }],
+    flaggedMisses: [], citedNoUrl: [],
+  });
+  assert.equal(v.verdict, 'incomplete');
+  assert.equal(v.missing.length, 2);
+});
+test('BRO-7603: classifyGapCandidateUrl refuses the Deadline/broadwaynews/theatermania/frontmezz news fixtures but keeps real reviews', () => {
+  for (const u of [...DL_NEWS, ...NEWS_DAY]) assert.equal(classifyGapCandidateUrl(u).ok, false, u);
+  for (const u of REAL_REVIEWS) assert.equal(classifyGapCandidateUrl(u).ok, true, u);
+});
+
+test('BRO-7603 ship-check: a year word in the slug is NOT a publish date (current-run reviews stay counted)', () => {
+  const cases = [
+    ['https://www.nysun.com/article/noel-cowards-1925-comedy-fallen-angels-soars-on-broadway', { ...DS, title: 'Fallen Angels', openingDate: '2026-04-01', previewsStartDate: '2026-03-10' }],
+    ['https://example.com/review-a-strange-loop-returns-since-2019', { ...DS, title: 'A Strange Loop', openingDate: '2022-04-26', previewsStartDate: '2022-03-24' }],
+    ['https://operawire.com/metropolitan-opera-2025-26-review-eugene-onegin/', { ...DS, title: 'Eugene Onegin', openingDate: '2026-02-01', previewsStartDate: null }],
+  ];
+  for (const [u, show] of cases) {
+    const rows = [{ url: u }];
+    tagUrlYearPriorRuns(rows, show);
+    assert.notEqual(rows[0].priorRun, true, u);
+    assert.equal(noise.censusExclusionReason({ url: u }, 'missing', { show }), null, u);
+  }
+});
+test('BRO-7603 ship-check: an undated Deadline URL with "review" in the slug stays a candidate', () => {
+  assert.equal(classifyGapCandidateUrl('https://deadline.com/downstate-broadway-review-1237220229').ok, true);
+  assert.equal(classifyGapCandidateUrl(DL_NEWS[0]).ok, false);
+});

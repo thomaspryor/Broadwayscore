@@ -220,7 +220,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, oldProductionRefusalDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates } = require('./lib/gap-ingest-policy');
+const { tagUrlYearPriorRuns, articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, oldProductionRefusalDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
@@ -1914,6 +1914,14 @@ async function auditShow(show, opts = {}) {
       if (serpCensusOnlyUrls.has(m.url) && !m.weRef) m.serpCensus = true;
     }
   }
+
+  // BRO-7603: a URL whose own embedded publish year predates this production is another production's review
+  // even when a current-run roundup also links it (Downstate: the 2026 Playbill roundup re-cites the 2022
+  // Washington Post notice, so bwPriorRunUrls' "cited only by prior-run articles" test never tagged it and the audit
+  // re-tried an ingest every hour). This deliberately overrides the "current-run corroboration wins" rule above
+  // for a URL-year signal: the date is in the URL itself. isUrlYearOutOfWindow honors declared priorRuns and
+  // year-titled shows. Its own loop (not inside the source-gated block above) so every show is covered.
+  tagUrlYearPriorRuns([...result.missing, ...result.flaggedMisses], show);
 
   // BRO-4971: a CURRENT-run round-up listing contradicts an automated exclusion
   // (backtest: 5/16 London rows were false positives). Mark those for re-check;

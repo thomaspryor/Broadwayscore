@@ -114,9 +114,19 @@ function censusVerdictFor(result, opts = {}) {
   // direction. Rows written before CENSUS_SCHEMA 3 still carry such URLs, and
   // without this skip an unmissed one would count as covered (a vacuous live).
   const isCandidate = (url) => !url || classifyGapCandidateUrl(url).ok;
+  const excluded = [];
+  const noiseCtx = { show: { title: result.title, category: result.category, venue: result.venue, market: result.market, openingDate: result.openingDate, previewsStartDate: result.previewsStartDate, priorRuns: result.priorRuns }, tokensOf: titleTokens };
+  const exclude = (m, kind) => {
+    const reason = censusExclusionReason(m, kind, noiseCtx);
+    if (reason) excluded.push({ url: m.url || '', host: m.host || hostOf(m.url), reason });
+    return !!reason;
+  };
   for (const url of (result.aggregatorListedUrls || [])) {
     if (missingUrls.has(url) || flaggedUrls.has(url) || unextractableUrls.has(url)) continue;
     if (!isCandidate(url)) continue;
+    // BRO-7603: a prior production's review a current roundup also links is not live coverage of THIS run
+    // (2022 Vulture/NYT urls were counted live on Downstate). Recorded in `excluded`, never silently dropped.
+    if (exclude({ url }, 'listed')) continue;
     const id = hostOf(url);
     if (!id || seenUrls.has(url)) continue;
     seenUrls.add(url);
@@ -166,13 +176,6 @@ function censusVerdictFor(result, opts = {}) {
   // dropped from the census, not from the file.
   // BRO-6804: rows the audit already proved are not an owed review stay out of the
   // census too, and are RECORDED in `excluded` (never silently dropped).
-  const excluded = [];
-  const noiseCtx = { show: { title: result.title, category: result.category, venue: result.venue, market: result.market, openingDate: result.openingDate, previewsStartDate: result.previewsStartDate, priorRuns: result.priorRuns }, tokensOf: titleTokens };
-  const exclude = (m, kind) => {
-    const reason = censusExclusionReason(m, kind, noiseCtx);
-    if (reason) excluded.push({ url: m.url || '', host: m.host || hostOf(m.url), reason });
-    return !!reason;
-  };
   for (const m of (result.nonReviewCandidates || [])) {
     excluded.push({ url: m.url || '', host: m.host || hostOf(m.url), reason: m.nonReviewVerdict || 'non-review' });
   }
