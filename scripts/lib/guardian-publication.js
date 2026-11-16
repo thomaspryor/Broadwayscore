@@ -2,6 +2,8 @@
 
 // Both Content API callers need the publication, not just the hosting domain.
 const GUARDIAN_API_FIELDS = 'body,bodyText,headline,byline,standfirst,starRating,publication';
+// The tone tags say how the Guardian itself filed the piece (tone/reviews, tone/features, ...).
+const GUARDIAN_API_TAGS = 'tone';
 const OBSERVER_CRITICS = new Set(['susannah clapp', 'kate kellaway', 'clare brennan']);
 
 function isGuardianHost(url) {
@@ -41,4 +43,36 @@ function applyGuardianPublication(record, publication) {
   return record;
 }
 
-module.exports = { GUARDIAN_API_FIELDS, guardianReviewOutletId, applyGuardianPublication };
+/**
+ * BRO-7593: the Guardian's own tone tag for a Content API item, as a non-review
+ * reason, or null. Two Girls (2026) scored a Joey Sims feature ("did 2 Girls 1 Cup
+ * change the way a generation thinks about sex?", tone/features, interviews with
+ * eight men) as a 76 review: it came in from a BWW roundup link and the API fetch
+ * stored its headline but never looked at how the Guardian filed it.
+ *
+ * Flags only when the API returned tone tags, none is tone/reviews, and there is
+ * no star rating. No tags at all (field not requested, old item) is not evidence.
+ */
+function guardianToneNonReviewReason(content) {
+  if (!content || !Array.isArray(content.tags)) return null;
+  const tones = content.tags.map(t => String((t && t.id) || '')).filter(id => id.startsWith('tone/'));
+  if (tones.length === 0 || tones.includes('tone/reviews')) return null;
+  const star = content.fields ? content.fields.starRating : content.starRating;
+  if (/^[1-5]$/.test(String(star == null ? '' : star).trim())) return null;
+  return `guardian-tone: filed as ${tones.join(', ')}, not tone/reviews (BRO-7593)`;
+}
+
+/** Writer side: flag the record, unless a human cleared it or the opening-night lane holds it. */
+function applyGuardianTone(record, content, { bypass = false } = {}) {
+  const reason = guardianToneNonReviewReason(content);
+  if (Array.isArray(content && content.tags)) {
+    const tones = content.tags.map(t => t && t.id).filter(id => String(id || '').startsWith('tone/'));
+    record.guardianApi = { ...record.guardianApi, tones };
+  }
+  if (!reason || bypass || record.nonReviewManualClear === true || record.isNonReview === true) return null;
+  record.isNonReview = true;
+  record.isNonReviewReason = reason;
+  return reason;
+}
+
+module.exports = { GUARDIAN_API_FIELDS, GUARDIAN_API_TAGS, guardianReviewOutletId, applyGuardianPublication, guardianToneNonReviewReason, applyGuardianTone };

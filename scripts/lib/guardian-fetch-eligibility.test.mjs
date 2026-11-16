@@ -46,9 +46,16 @@ test('excluded rows and api-has-no-star rows are not fetched again (BRO-6964 rev
   assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', wrongProduction: true }).eligible, false);
   assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', wrongShow: true }).eligible, false);
   assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', duplicateOf: 'a.json' }).eligible, false);
-  const r = guardianFetchEligibility({ fullText: text, url: URL_, guardianApi: { fetchedAt: '2026-01-01', starRating: null } });
+  const r = guardianFetchEligibility({ fullText: text, url: URL_, guardianApi: { fetchedAt: '2026-01-01', starRating: null, tones: ['tone/reviews'] } });
   assert.equal(r.eligible, false);
   assert.equal(r.reason, 'api-has-no-star');
+});
+
+test('BRO-7593: a no-star row fetched before tone tags were read gets one more fetch', () => {
+  const text = 'x'.repeat(500);
+  const r = guardianFetchEligibility({ fullText: text, url: URL_, guardianApi: { fetchedAt: '2026-11-04', starRating: null } });
+  assert.equal(r.eligible, true);
+  assert.equal(r.mode, 'rating-only');
 });
 
 test('queueRescoreForLateRating leaves human-review rows alone', () => {

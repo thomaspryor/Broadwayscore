@@ -103,6 +103,8 @@ function guardianContentToResult(content, { show = null } = {}) {
           ? { originalScore: `${stars}/5 stars`, normalizedScore: Math.round((stars / 5) * 100), source: 'guardian-api' }
           : null,
         publishDate: londonDay(content.webPublicationDate),
+        // BRO-7593: tone tags + star, so the writer can refuse a Guardian feature.
+        toneContent: Array.isArray(content.tags) ? { tags: content.tags, starRating: stars } : null,
       },
     },
     reason: null,

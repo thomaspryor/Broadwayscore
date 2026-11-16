@@ -120,3 +120,44 @@ test('SERP and roundup writes name Observer files, while Guardian critics stay G
   assert.equal(explicitObserver.action, 'new');
   assert.match(explicitObserver.filepath, /observer--a-new-critic\.json$/);
 });
+
+// BRO-7593: Two Girls (2026) scored a Guardian feature as a 76 review.
+const { guardianToneNonReviewReason, applyGuardianTone, GUARDIAN_API_TAGS } = require('./guardian-publication');
+
+test('BRO-7593: a Guardian feature (tone/features, no star) is a non-review', () => {
+  const content = { tags: [{ id: 'tone/features' }], fields: { starRating: null } };
+  assert.match(guardianToneNonReviewReason(content), /tone\/features/);
+  const rec = { outletId: 'guardian', url: 'https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city' };
+  assert.ok(applyGuardianTone(rec, content));
+  assert.equal(rec.isNonReview, true);
+  assert.deepEqual(rec.guardianApi.tones, ['tone/features']);
+});
+
+test('BRO-7593: real reviews, starred pieces and tagless items are left alone', () => {
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/reviews' }, { id: 'tone/features' }] }), null);
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/features' }], fields: { starRating: '4' } }), null);
+  assert.equal(guardianToneNonReviewReason({ tags: [{ id: 'tone/news' }], starRating: 3 }), null);
+  assert.equal(guardianToneNonReviewReason({ tags: [] }), null);
+  assert.equal(guardianToneNonReviewReason({ fields: {} }), null);
+  assert.equal(guardianToneNonReviewReason(null), null);
+});
+
+test('BRO-7593: a manual clear or the opening-night lane keeps the row scored', () => {
+  const content = { tags: [{ id: 'tone/comment' }] };
+  const cleared = { nonReviewManualClear: true };
+  assert.equal(applyGuardianTone(cleared, content), null);
+  assert.equal(cleared.isNonReview, undefined);
+  const lane = {};
+  assert.equal(applyGuardianTone(lane, content, { bypass: true }), null);
+  assert.equal(lane.isNonReview, undefined);
+});
+
+test('BRO-7593: both API callers request the tone tags', () => {
+  assert.equal(GUARDIAN_API_TAGS, 'tone');
+  const fs = require('fs');
+  for (const f of ['scripts/fetch-guardian-reviews.js', 'scripts/collect-review-texts.js']) {
+    assert.match(fs.readFileSync(f, 'utf8'), /show-tags/, `${f} must request show-tags`);
+  }
+  const { result } = guardianContentToResult({ webTitle: 'x', tags: [{ id: 'tone/features' }], fields: { bodyText: 'y'.repeat(400) } });
+  assert.deepEqual(result.apiMeta.toneContent.tags, [{ id: 'tone/features' }]);
+});
