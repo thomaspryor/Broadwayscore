@@ -100,6 +100,7 @@ import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
 import { ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
+import { isRated, NOT_RATED_LABEL } from '@/lib/unrated';
 
 // Opens on tap only, so its chunk (editor + photo fields) stays out of the
 // show page's first-load JS (BRO-7486: /show/[slug] sat 9kB over the 330kB cap).
@@ -453,7 +454,8 @@ function Inner({
       trackUgc('rating_saved_local', {
         show_id: show.id,
         source: 'show_page',
-        rating: data.rating,
+        rating: isRated(data.rating) ? data.rating : null,
+        unrated: !isRated(data.rating),
         has_review_text: !!data.reviewText,
         local_count: next.length,
       });
@@ -855,6 +857,13 @@ function Inner({
           </div>
         </div>
       )}
+      {/* BRO-7628: log a viewing without stars. Compact on phones (owner pick);
+          the ::after pad grows the tap area into the gaps without adding height. */}
+      {userFeaturesEnabled && mobileStarState === 'visible' && !ratePanelOpen && (
+        <button type="button" onClick={handleRateIt} data-testid="add-without-rating" className="sm:hidden relative self-start -my-0.5 min-h-0 py-1 text-xs text-fg-muted underline decoration-dotted underline-offset-2 hover:text-white after:absolute after:-top-1 after:-bottom-2 after:-inset-x-2 after:content-['']">
+          Seen it? Add without rating
+        </button>
+      )}
       {userFeaturesEnabled && (
         // Phones never get an auto-width column: rows are two equal columns, and "Log another
         // viewing" (too long for half a phone row at 14px) takes its own full-width row, so every
@@ -899,6 +908,12 @@ function Inner({
               Reads "Add to list" on phones, "List" from sm up. */}
           {isAuthenticated && <LazyChunkBoundary><ShowPageAddToListButton showId={show.id} variant="hero" /></LazyChunkBoundary>}
         </div>
+      )}
+      {/* Same gate as the phone link: known to have no rating (account or device). */}
+      {userFeaturesEnabled && mobileStarState === 'visible' && !ratePanelOpen && (
+        <button type="button" onClick={handleRateIt} data-testid="add-without-rating-desktop" className="hidden sm:inline self-start text-xs text-fg-muted underline decoration-dotted underline-offset-2 hover:text-white">
+          Seen it? Add without rating
+        </button>
       )}
 
       {/* Your plans — date + showtime for a watchlisted show, edited in a
@@ -981,12 +996,18 @@ function Inner({
             <StarTile />
             <div className="min-w-0 flex-1">
               <p className="text-sm sm:text-base font-semibold text-white">
-                Your rating
+                {isRated(localRating.rating) ? 'Your rating' : 'You saw it'}
                 <span className="mt-1 block w-fit sm:mt-0 sm:ml-2 sm:inline-block whitespace-nowrap align-middle rounded-full bg-amber-400/15 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-amber-300">On this device</span>
               </p>
               <span className="flex items-center gap-2 mt-1">
-                <MiniStars rating={localRating.rating} />
-                <span className="text-sm font-bold text-amber-400 tabular-nums">{localRating.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
+                {isRated(localRating.rating) ? (
+                  <>
+                    <MiniStars rating={localRating.rating} />
+                    <span className="text-sm font-bold text-amber-400 tabular-nums">{localRating.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
+                  </>
+                ) : (
+                  <span className="text-sm text-fg-muted" data-testid="not-rated">{NOT_RATED_LABEL}</span>
+                )}
               </span>
             </div>
             <button
@@ -1175,8 +1196,14 @@ function YourRatingInline({
           <span className="flex items-center gap-2 mt-1">
             {/* MiniStars draws plain SVGs: StarRating's read-only mode still renders
                 buttons, and a button inside this row's button is invalid HTML. */}
-            <MiniStars rating={review.rating} />
-            <span className="text-sm font-bold text-amber-400 tabular-nums">{review.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
+            {isRated(review.rating) ? (
+              <>
+                <MiniStars rating={review.rating} />
+                <span className="text-sm font-bold text-amber-400 tabular-nums">{review.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
+              </>
+            ) : (
+              <span className="text-sm text-fg-muted" data-testid="not-rated">{NOT_RATED_LABEL}</span>
+            )}
           </span>
           {diaryDetailText(review) && (
             <span className="ph-mask block mt-1 text-xs text-gray-400 truncate" data-testid="your-rating-detail">{diaryDetailText(review)}</span>

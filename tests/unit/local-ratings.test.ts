@@ -24,7 +24,7 @@ test('parse: malformed storage reads as empty; bad entries and dupes dropped', (
   const out = parseLocalRatings(JSON.stringify([
     { showId: 'a', rating: 4.5, savedAt: 2 },
     { showId: 'a', rating: 1, savedAt: 1 },
-    { showId: 'b', rating: 0 },
+    { showId: 'b', rating: -1 }, // 0 is valid now: seen, not rated (BRO-7628)
     { showId: 'c', rating: 3.3 },
     { showId: 'd', rating: 6 },
     { showId: '', rating: 3 },

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabaseRestSelect } from '@/lib/supabase-rest';
+import { isRated } from '@/lib/unrated';
 
 /**
  * Shared show_id → latest-rating map for the signed-in user.
@@ -32,7 +33,12 @@ async function fetchRatingsMap(userId: string): Promise<Map<string, number>> {
   );
   if (error) throw new Error(error.message);
   for (const row of data ?? []) {
-    if (!map.has(row.show_id)) map.set(row.show_id, row.rating); // first = latest
+    // Latest RATED row wins (rows arrive newest first). A show with only
+    // seen-but-unrated rows (rating 0, BRO-7628) maps to 0: still "seen", so
+    // cards show a Seen chip instead of offering "Add to To See".
+    const prev = map.get(row.show_id);
+    if (prev === undefined) map.set(row.show_id, isRated(row.rating) ? row.rating : 0);
+    else if (!isRated(prev) && isRated(row.rating)) map.set(row.show_id, row.rating);
   }
   return map;
 }

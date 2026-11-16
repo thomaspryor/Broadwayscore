@@ -19,6 +19,7 @@ import type { UserReview } from '@/types/user';
 import { marketLabel, type DiaryShowDetail } from '@/lib/diary-show-types';
 import { formatShowDate } from '@/lib/date-utils';
 import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
+import { isRated, NOT_RATED_LABEL } from '@/lib/unrated';
 
 const ShowPageWatchlistButton = dynamic(() => import('@/components/user/ShowPageWatchlistButton'), { ssr: false });
 
@@ -211,8 +212,14 @@ function Inner({ show }: { show: DiaryShowDetail }) {
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <StarRating rating={latestReview.rating} onRatingChange={() => {}} size="md" readOnly hideLabel />
-                <span className="text-white font-bold">{latestReview.rating.toFixed(1)}</span>
+                {isRated(latestReview.rating) ? (
+                  <>
+                    <StarRating rating={latestReview.rating} onRatingChange={() => {}} size="md" readOnly hideLabel />
+                    <span className="text-white font-bold">{latestReview.rating.toFixed(1)}</span>
+                  </>
+                ) : (
+                  <span className="text-fg-muted" data-testid="not-rated">{NOT_RATED_LABEL}</span>
+                )}
               </div>
               {latestReview.date_seen && (
                 <p className="text-xs text-amber-400 mt-1">

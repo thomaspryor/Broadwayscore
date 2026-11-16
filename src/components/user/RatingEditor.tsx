@@ -214,7 +214,7 @@ export default function RatingEditor({
   const isOverLimit = charsRemaining < 0;
 
   const handleSave = useCallback(async () => {
-    if (saving || isOverLimit || rating < 0.5 || rating > 5) return;
+    if (saving || isOverLimit || rating > 5) return;
     setSaving(true);
     setError(null);
     try {
@@ -225,7 +225,7 @@ export default function RatingEditor({
         seat: normalizeSeat(seat),
       };
       const result = await onSave({
-        rating: sanitizeRating(rating),
+        rating: rating < 0.5 ? 0 : sanitizeRating(rating),
         reviewText: reviewText.trim() || null,
         dateSeen: dateSeen || null,
         reviewId,
@@ -253,7 +253,9 @@ export default function RatingEditor({
           show_id: analytics.showId,
           source: analytics.source,
           mode,
-          rating: sanitizeRating(rating),
+          // Unrated saves send null + unrated so rating averages stay honest (BRO-7628).
+          rating: rating < 0.5 ? null : sanitizeRating(rating),
+          unrated: rating < 0.5,
           has_review_text: !!reviewText.trim(),
           review_length: reviewText.trim().length,
           has_date_seen: !!dateSeen,
@@ -375,7 +377,7 @@ export default function RatingEditor({
             {(hoverValue ?? rating).toFixed(1)}
           </span>
         ) : (
-          <span className="text-xs text-fg-muted" data-testid="pick-stars-hint">Tap a star to rate</span>
+          <span className="text-xs text-fg-muted" data-testid="pick-stars-hint">Stars are optional. You can add them later.</span>
         )}
       </div>
 
@@ -448,10 +450,10 @@ export default function RatingEditor({
         <button
           type="button"
           onClick={handleSave}
-          disabled={isOverLimit || saving || rating < 0.5}
+          disabled={isOverLimit || saving}
           className="btn-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {saving ? 'Saving…' : error ? 'Retry' : 'Save'}
+          {saving ? 'Saving…' : error ? 'Retry' : rating < 0.5 ? 'Save as seen' : 'Save'}
         </button>
         <button
           type="button"

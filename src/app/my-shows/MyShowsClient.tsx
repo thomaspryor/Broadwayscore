@@ -36,6 +36,8 @@ import { createLazyChunk, LazyChunkBoundary, LAZY_PANEL_ERROR_MESSAGE } from '@/
 import { AddShowCard, ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 import { TitleTabs, DiarySegmented } from '@/components/my-shows/MyShowsNav';
+import { isRated, NOT_RATED_LABEL } from '@/lib/unrated';
+import { selectUnratedLoggedEntries } from '@/lib/unrated';
 
 const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
 const FeedTab = dynamic(() => import('@/components/my-shows/feed/FeedTab'), { ssr: false });
@@ -69,7 +71,9 @@ type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
 /** A welcome-sheet "seen it" pick with no stars and no date (BRO-4619). */
 interface SeenUnratedRow { show_id: string; created_at: string }
 /** A To Be Rated poster: a past-dated watchlist row, or a seen_unrated pick (no date). */
-type ToBeRatedEntry = Pick<WatchlistEntry, 'id' | 'show_id' | 'planned_date'>;
+// `edit`: the show already has a seen-but-unrated diary row (rating 0,
+// BRO-7628); tapping edits that row instead of logging another viewing.
+type ToBeRatedEntry = Pick<WatchlistEntry, 'id' | 'show_id' | 'planned_date'> & { edit?: boolean };
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -516,7 +520,10 @@ export default function MyShowsClient() {
     const undated: ToBeRatedEntry[] = seenUnrated
       .filter(u => !reviewedShowIds.has(u.show_id) && !listed.has(u.show_id))
       .map(u => ({ id: `seen-${u.show_id}`, show_id: u.show_id, planned_date: null }));
-    return [...dated, ...undated];
+    undated.forEach(u => listed.add(u.show_id));
+    const loggedUnrated = selectUnratedLoggedEntries(reviews, today)
+      .filter(e => !listed.has(e.show_id));
+    return [...dated, ...undated, ...loggedUnrated];
   }, [watchlist, reviews, seenUnrated]);
 
   // Sorted watchlist
@@ -1506,7 +1513,9 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
             To-Be-Rated rows — right-aligned stars + icons crushed titles to
             ~8 chars at 390px. The lone-star+number compact form before that
             read as "numbers without the actual stars" (owner, 2026-07-19). */}
-        <div className="md:hidden mt-1"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></div>
+        <div className="md:hidden mt-1">{isRated(review.rating)
+          ? <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
+          : <span className="text-xs text-fg-muted" data-testid="not-rated">{NOT_RATED_LABEL}</span>}</div>
         {review.review_text && (
           <p className="text-xs text-fg-muted mt-0.5 line-clamp-1 italic">{review.review_text}</p>
         )}
@@ -1518,7 +1527,9 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
           2026-07-13). Mobile keeps icons IN-FLOW on the right:
           the absolute corner collided with row content at 390px. */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 flex items-center gap-1.5">
-        <span data-testid="diary-desktop-rating" className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel /></span>
+        <span data-testid="diary-desktop-rating" className="hidden md:inline-flex">{isRated(review.rating)
+          ? <StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel />
+          : <span className="text-sm text-fg-muted">{NOT_RATED_LABEL}</span>}</span>
         <div className="flex md:hidden items-center gap-0.5 pointer-events-auto">{actionIcons}</div>
       </div>
       {/* Desktop edit + delete — top-right corner, revealed on hover */}
@@ -1982,7 +1993,7 @@ function ToBeRatedSection({ entries, showMap, idPrefix }: {
           return (
             <PosterGridCard
               key={`rate-${entry.id}`}
-              href={`${href}?rate=1`}
+              href={`${href}?${entry.edit ? 'edit' : 'rate'}=1`}
               posterUrl={show?.posterUrl}
               date={entry.planned_date ? formatPillDate(entry.planned_date) : 'Date not set'}
               title={title}

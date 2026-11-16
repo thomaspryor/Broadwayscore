@@ -80,7 +80,7 @@ export default function LocalRatingsMigrator() {
           invalidateRatingsCache();
           document.dispatchEvent(new Event(RATINGS_SYNC_EVENT));
           document.dispatchEvent(new Event(LOCAL_RATINGS_MIGRATED_EVENT));
-          showToast?.(added === 1 ? 'Your rating is saved to your account.' : `Your ${added} ratings are saved to your account.`, 'success');
+          showToast?.(added === 1 ? 'Saved to your account.' : `${added} shows saved to your account.`, 'success');
         }
         if (toAdd.length - added > 0) {
           showToast?.("We couldn't save a rating to your account yet. It stays on this device and we'll try again.", 'error');

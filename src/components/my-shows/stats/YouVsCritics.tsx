@@ -29,6 +29,7 @@ function PickRow({ pick, onClick }: { pick: ContrarianPick; onClick: () => void 
         <span className="block text-sm font-semibold text-white truncate group-hover:text-brand transition-colors">{pick.title}</span>
         <span className="flex items-center gap-2 mt-1">
           <span className="flex items-center gap-0.5">
+            {/* unrated-ok: picks come from align-critics, which drops rating <= 0 via parseRating */}
             <MiniStars rating={pick.rating} filledOnly />
           </span>
           <span className="text-xs font-semibold text-gray-400 tabular-nums">

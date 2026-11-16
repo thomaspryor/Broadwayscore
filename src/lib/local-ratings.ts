@@ -34,7 +34,8 @@ export type LocalRatingInput = Omit<LocalRating, 'savedAt'>;
 const TIME_SLOTS = new Set(['matinee', 'evening', 'custom']);
 
 function isValidRating(n: unknown): n is number {
-  return typeof n === 'number' && Number.isFinite(n) && n >= 0.5 && n <= 5 && Math.round(n * 2) === n * 2;
+  // 0 = seen but not rated (BRO-7628); otherwise half-star steps 0.5-5.
+  return typeof n === 'number' && Number.isFinite(n) && (n === 0 || (n >= 0.5 && n <= 5 && Math.round(n * 2) === n * 2));
 }
 
 function str(v: unknown): string | undefined {

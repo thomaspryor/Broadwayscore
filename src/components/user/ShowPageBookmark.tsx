@@ -9,6 +9,7 @@ import { getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { featureFlags } from '@/config/feature-flags';
 import { toLocalYMD, isPastPlannedDate, formatBookmarkDate, spokenBookmarkDate } from '@/lib/bookmark-date-label';
+import { isRated } from '@/lib/unrated';
 
 interface ShowPageBookmarkProps {
   showId: string;
@@ -158,7 +159,21 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
   // Rated = seen: the corner slot shows YOUR star rating instead of the
   // bookmark (owner pick 4B, 2026-07-12). One slot, three states:
   // empty bookmark → nothing yet · filled bookmark → want to see · ★ → seen.
-  if (myRating !== null) {
+  if (myRating !== null && !isRated(myRating)) {
+    // Seen without stars (BRO-7628): same slot, a check instead of a number.
+    return (
+      <div
+        className={`absolute top-1 right-1 z-10 pointer-events-none flex items-center gap-0.5 rounded-full bg-surface/90 border border-amber-400/30 font-bold text-[#FFD700] ${size === 'sm' ? 'px-1.5 py-0.5 text-xs' : 'px-2 py-0.5 text-xs'}`}
+        aria-label="You've seen this"
+        role="img"
+        data-testid="seen-chip"
+      >
+        <span aria-hidden="true">✓</span>
+        <span>Seen</span>
+      </div>
+    );
+  }
+  if (isRated(myRating)) {
     return (
       <div
         className={`absolute top-1 right-1 z-10 pointer-events-none flex items-center gap-0.5 rounded-full bg-surface/90 border border-amber-400/30 font-bold text-[#FFD700] ${size === 'sm' ? 'px-1.5 py-0.5 text-xs' : 'px-2 py-0.5 text-xs'}`}
