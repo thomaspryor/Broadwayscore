@@ -94,6 +94,20 @@ describe('the repo registry against the live table shape', () => {
   it('the 2026-12-11 gpt-5 family and o3 are registered (BRO-7339)', () => {
     for (const id of ['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-5-pro', 'o3', 'o3-pro']) assert.equal(MODEL_SHUTDOWNS[id], '2026-12-11', id);
   });
+  it('tracks the video voiceover shutdown while its Realtime migration awaits A/B (BRO-7441)', () => {
+    assert.equal(ACCEPTED_SHUTDOWNS['gpt-4o-mini-tts'], '2027-01-06');
+    // OpenAI's alias and both snapshots share the same shutdown date.
+    const ids = ['gpt-4o-mini-tts', 'gpt-4o-mini-tts-2025-03-20', 'gpt-4o-mini-tts-2025-12-15'];
+    const page = parseDeprecations(`<table>${row('Jan 6, 2027', ids, 'gpt-realtime-2.1-mini')}</table>`);
+    for (const id of ids) {
+      const report = driftReport({ page, registry: { ...ACCEPTED_SHUTDOWNS, ...MODEL_SHUTDOWNS }, referenced: [id], today: '2026-11-16' });
+      assert.deepEqual(report.missing, [], id);
+      assert.deepEqual(report.dateDrift, [], id);
+      assert.equal(report.soon[0].shutdown, '2027-01-06', id);
+      assert.equal(report.soon[0].daysLeft, 51, id);
+      assert.deepEqual(decideOpenAiRetirementAlerts({ inputMissing: false, ...report }).map(d => d.action), ['resolve', 'resolve']);
+    }
+  });
 });
 
 describe('decideOpenAiRetirementAlerts', () => {

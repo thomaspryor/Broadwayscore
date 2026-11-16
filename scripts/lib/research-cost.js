@@ -115,8 +115,8 @@ const MODEL_SHUTDOWNS = {
   // would fail the any-announced-shutdown guard in research-cost.test.mjs.
 };
 
-// Models the repo knowingly still uses past an announced shutdown, each waiting on a
-// migration that needs its own A/B (CLAUDE.md rule 13). Kept apart from MODEL_SHUTDOWNS
+// Models the repo knowingly still uses with an announced shutdown, each waiting on a
+// migration that needs its own A/B. Kept apart from MODEL_SHUTDOWNS
 // because that table feeds the any-announced-shutdown guard in research-cost.test.mjs;
 // scripts/audit-openai-retirements.js reads both, so the countdown is still tracked.
 const ACCEPTED_SHUTDOWNS = {
@@ -125,6 +125,11 @@ const ACCEPTED_SHUTDOWNS = {
   // needs its own A/B (rule 13) and is not part of the BRO-7339 call-site sweep.
   'gpt-4o': '2027-01-14',
   'gpt-4o-mini': '2027-01-14',
+  // BRO-7441: video-proto/tts.js uses audio/speech. OpenAI names
+  // gpt-realtime-2.1-mini as the replacement, requiring a Realtime integration
+  // and a voice/timing A/B before changing the social-video voiceover.
+  // https://developers.openai.com/api/docs/deprecations (checked 2026-11-16).
+  'gpt-4o-mini-tts': '2027-01-06',
 };
 
 /**

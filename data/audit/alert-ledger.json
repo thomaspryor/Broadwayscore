@@ -43077,7 +43077,7 @@
       "resolveReason": "every abandoned review recovered"
     },
     "openai-retirement:unregistered": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "OpenAI shutdown: 1 model the repo uses is not in the retirement registry",
       "firstSeen": "2026-11-13T09:38:07.488Z",
@@ -43087,7 +43087,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-7441"
+      "linearIdentifier": "BRO-7441",
+      "resolvedAt": "2026-11-16T10:58:18.686Z",
+      "resolveReason": "every referenced OpenAI model with a shutdown date is registered"
     },
     "land:land/job/linear-BRO-7435-mwes3x7w": {
       "status": "open",
