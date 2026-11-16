@@ -22,7 +22,8 @@
     "ghost-notes-off-broadway-2026/oazis--unknown.json",
     "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
     "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
-    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+    "here-there-are-blueberries-2026/nysr--unknown.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -38,7 +39,6 @@
     "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
     "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
     "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
-    "here-there-are-blueberries-2026/nysr--unknown.json",
     "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
     "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
     "the-visitors-off-broadway-2026/boston-globe--unknown.json",
@@ -60,7 +60,8 @@
       "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
       "ghost-notes-off-broadway-2026/oazis--unknown.json",
-      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+      "here-there-are-blueberries-2026/nysr--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -155,6 +156,75 @@
       "t": "2026-11-16T03:06:44.826Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T04:08:52.298Z",
+      "event": "bb-session",
+      "session": "3db7e96d",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-16T04:08:52.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-16T04:09:39.093Z",
+      "event": "bb-session",
+      "session": "82accae7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-16T04:09:39.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T04:10:39.842Z",
+      "event": "bb-session",
+      "session": "be762887",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-16T04:10:40.480Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T04:14:08.882Z",
+      "event": "bb-session",
+      "session": "9f9b8ec3",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-16T04:14:09.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T04:14:16.986Z",
+      "event": "bb-session",
+      "session": "f718c7bb",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-16T04:14:17.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T04:14:31.987Z",
+      "event": "bb-session",
+      "session": "487382b7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-16T04:14:32.566Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "here-there-are-blueberries-2026/nysr--unknown.json"
   ]
 }
