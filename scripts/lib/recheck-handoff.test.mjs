@@ -104,3 +104,27 @@ test('BRO-7595: handoffCard clears the filer PARKED line so a worker can take th
   await run('plain body, no park line');
   assert.equal(updates.length, 1, 'no park line: description untouched');
 });
+
+test('BRO-7595: the PARKED line is cleared only after the move; a failed move leaves it, a failed unpark still hands off', async () => {
+  const order = [];
+  const issue = { id: 'uuid-1', state: { name: 'Paused' }, description: `${MACHINE}\n\nbody` };
+  const base = { identifier: 'BRO-1', why: 'w', now: NOW, getIssue: async () => issue };
+  const ok = await handoffCard({ ...base, linearBrainMain: async () => { order.push('move'); }, updateIssue: async () => { order.push('unpark'); } });
+  assert.deepEqual(order, ['move', 'unpark']);
+  assert.equal(ok.unparkError, null);
+
+  const writes = [];
+  const failedMove = await handoffCard({ ...base, linearBrainMain: async () => { throw new Error('linear down'); }, updateIssue: async () => { writes.push(1); } });
+  assert.equal(failedMove.handedOff, false);
+  assert.equal(writes.length, 0, 'a failed move must not clear the line');
+
+  const failedUnpark = await handoffCard({ ...base, linearBrainMain: async () => {}, updateIssue: async () => { throw new Error('write refused'); } });
+  assert.equal(failedUnpark.handedOff, true);
+  assert.match(failedUnpark.unparkError, /write refused/);
+
+  // An edit made after the first read (a person adds a real hold) is respected.
+  let reads = 0;
+  const raced = [];
+  await handoffCard({ ...base, linearBrainMain: async () => {}, getIssue: async () => (++reads === 1 ? issue : { ...issue, description: `${MACHINE}\nPARKED: owner wants to look first` }), updateIssue: async () => { raced.push(1); } });
+  assert.equal(raced.length, 0);
+});

@@ -254,3 +254,18 @@ test('BRO-7595: fetchBoardNumbersData reads the awaiting-check count last and bu
 test('BRO-7595: the awaiting-check query reads the newest comments, where a re-pause stamp lands', () => {
   assert.match(require('./board-summary.js').AWAITING_CHECK_QUERY, /comments\(last: 50, orderBy: createdAt\)/);
 });
+
+test('BRO-7595: waiting fixes are counted over the chart days and never exceed the cards added', () => {
+  const { summarizeAwaitingCheck, boardVerdict } = require('./board-summary.js');
+  const now = new Date('2026-11-16T12:30:00Z'); // 07:30 New York
+  const paused = (createdAt) => ({ identifier: 'BRO-1', title: 't', createdAt, state: { name: 'Paused' }, description: 'RECHECK-AFTER: 2026-11-30', comments: { nodes: [] } });
+  // Created this morning (today is not a chart day) and 8 days ago (outside): neither counts.
+  const s = summarizeAwaitingCheck([paused('2026-11-16T11:00:00Z'), paused('2026-11-08T03:00:00Z'), paused('2026-11-12T15:00:00Z')], { now });
+  assert.equal(s.waiting, 3);
+  assert.equal(s.waitingAddedInWindow, 1);
+  const m = { open: { total: 10 }, added: { d7: null }, completed: { d7: null }, canceled: { d7: null }, awaitingCheck: { waiting: 9, overdue: 0, waitingAddedInWindow: 9, truncated: false } };
+  const daily = [{ day: '2026-11-15', added: 5, closed: 0, canceled: 0 }];
+  const v = boardVerdict(m, daily);
+  assert.match(v.sentence, / 5 of the added cards are fixes/);
+  assert.doesNotMatch(v.sentence, / 9 of the added/);
+});

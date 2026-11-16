@@ -326,25 +326,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     try {
       let match;
       if (args['exact-title']) {
+        // BRO-7595 titleCore fallback and BRO-6081 --ignore-numbers fallback: see findOpenTitleMatch.
         const open = await linearClient.listOpenIssues();
-        match = open.find((i) => i && i.title === term) || null;
-        // BRO-7595: the same subject filed by another filer differs only by the
-        // "BSC Daily:" / "P1:" prefix (digest-autofix vs the alert router), so
-        // exact match missed it and both filed a card. Exact match still wins.
-        if (!match) {
-          const { titleCore } = require('./lib/card-dedupe');
-          const core = titleCore(term);
-          match = core ? open.find((i) => i && titleCore(i.title) === core) || null : null;
-        }
-        // --ignore-numbers (BRO-6081): a health row whose title carries a live
-        // count ("breaker TRIPPED: web_unlocker2 (2194/1750 reqs)") changes
-        // daily, so exact match filed a fresh card each morning (5 for one
-        // breaker). Exact match still wins; this is the fallback.
-        if (!match && args['ignore-numbers']) {
-          const { numberFreeTitle } = require('./lib/card-dedupe');
-          const key = numberFreeTitle(term);
-          match = key === term ? null : open.find((i) => i && numberFreeTitle(i.title) === key) || null;
-        }
+        match = require('./lib/card-dedupe').findOpenTitleMatch(open, term, { ignoreNumbers: !!args['ignore-numbers'] });
       } else {
         match = await linearClient.searchIssues(term);
       }

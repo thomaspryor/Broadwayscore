@@ -91,7 +91,8 @@ async function fetchDailyFlow({ graphql, now = new Date(), days = DAYS, teamKey 
   const nodes = [];
   let after = null;
   for (let page = 0; ; page++) {
-    const data = await graphql(DAILY_FLOW_QUERY, { filter, after }, { maxAttempts: 2, timeoutMs: 6_000, baseMs: 250 });
+    // 15s: pages carry descriptions now (ceremonyKind reads the source footer).
+    const data = await graphql(DAILY_FLOW_QUERY, { filter, after }, { maxAttempts: 2, timeoutMs: 15_000, baseMs: 250 });
     const conn = data && data.issues;
     if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the daily flow');
     nodes.push(...conn.nodes);
@@ -126,7 +127,8 @@ function summarizeAwaitingCheck(issues, { now = new Date(), days = DAYS } = {}) 
   const { mapIssueToCard } = require('./linear-recheck-source.js');
   const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
   const nowMs = now.getTime();
-  const windowStartMs = nowMs - days * 86_400_000;
+  // Same local days as the chart's "added" (dayKeys), so the fixes are a subset of the added cards.
+  const inWindow = new Set(dayKeys(now, days));
   const out = { waiting: 0, overdue: 0, waitingAddedInWindow: 0 };
   for (const issue of issues || []) {
     if (!issue || String(issue.state && issue.state.name || '').toLowerCase() !== 'paused') continue;
@@ -134,7 +136,7 @@ function summarizeAwaitingCheck(issues, { now = new Date(), days = DAYS } = {}) 
     if (!Number.isFinite(stamp)) continue;
     if (stamp + 86_400_000 <= nowMs) { out.overdue++; continue; }
     out.waiting++;
-    if (Date.parse(issue.createdAt) >= windowStartMs) out.waitingAddedInWindow++;
+    if (issue.createdAt && inWindow.has(localDay(issue.createdAt))) out.waitingAddedInWindow++;
   }
   return out;
 }
@@ -165,7 +167,7 @@ const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 /**
  * PURE. The verdict: are cards being closed at least as fast as they arrive?
  * Uses the chart's own days when present so the sentence and the chart agree,
- * else board-numbers' 7-day counts. -> { tone: 'good'|'warn'|null, headline, sentence }
+ * else board-numbers' 7-day counts. -> { tone: 'good'|'steady'|'warn'|null, headline, sentence }
  */
 function boardVerdict(m, daily, { partial = false } = {}) {
   const open = m.open ? m.open.total : null;
@@ -194,7 +196,8 @@ function boardVerdict(m, daily, { partial = false } = {}) {
   // BRO-7595: name the shipped-but-unproven fixes so the owner can tell them from real backlog.
   const a = m.awaitingCheck && !m.awaitingCheck.truncated ? m.awaitingCheck : null;
   if (!a) return { tone: 'warn', headline: 'Falling behind', sentence };
-  const fixes = a.waitingAddedInWindow;
+  // Clamp: the Paused list and the flow are separate reads, so never claim more fixes than cards added.
+  const fixes = Math.min(a.waitingAddedInWindow, added);
   const fixesText = fixes
     ? ` ${fixes} of the added cards are fixes already shipped and waiting for their check date.`
     : '';

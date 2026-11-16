@@ -72,11 +72,18 @@ function buildHandoffComment({ why, now = new Date() } = {}) {
   ].join('\n');
 }
 
+/** Best-effort: the hand-off already happened, so a failed unpark is reported, never thrown. */
+async function runUnpark(unpark) {
+  if (!unpark) return null;
+  try { await unpark(); return null; } catch (e) { return String((e && e.message) || e).slice(0, 200); }
+}
+
 async function handoffCard({ identifier, why, linearBrainMain, now, getIssue, updateIssue } = {}) {
   const comment = buildHandoffComment({ why, now });
   const main = linearBrainMain || require('../linear-brain.js').main;
   const realExit = process.exit;
   let firstCode = null;
+  let unpark = null;
   process.exit = (code) => {
     if (firstCode === null) firstCode = code == null ? 0 : code;
     throw new ExitTrap(firstCode);
@@ -89,12 +96,20 @@ async function handoffCard({ identifier, why, linearBrainMain, now, getIssue, up
       if (!HANDOFF_STATE_NAMES.includes(name)) return { handedOff: false, error: `card is ${name || 'unknown'} now, not Paused/Backlog`, comment };
       // BRO-7595: a Todo card still carrying the filer's PARKED line is blocked for every worker
       // (cloud-worker-pick PARKED_SENTINEL) for 3 days. Clear it the way filing straight into Todo
-      // does (linear-issue-create.js unparkDescription), so the hand-off reaches a worker tonight.
+      // does (linear-issue-create.js unparkDescription), AFTER the move: if the move fails the card
+      // keeps its line untouched, and if the unpark fails the card is still handed off.
       const hd = require('./headless-dispatchability.js');
       if (issue && issue.id && hd.hasOnlyMachinePark(issue.description)) {
-        const { unparkDescription } = require('./linear-drain-parked.js');
+        const read = getIssue || require('./linear-client').getIssue;
+        const write = updateIssue || require('./linear-client').updateIssue;
         const tag = `BRO-7595 recheck handoff ${(now || new Date()).toISOString().slice(0, 10)}`;
-        await (updateIssue || require('./linear-client').updateIssue)(issue.id, { description: unparkDescription(issue.description, tag) });
+        unpark = async () => {
+          // Re-read so an edit made since the first read is not overwritten.
+          const fresh = await read(identifier);
+          if (!fresh || !hd.hasOnlyMachinePark(fresh.description)) return;
+          const { unparkDescription } = require('./linear-drain-parked.js');
+          await write(fresh.id || issue.id, { description: unparkDescription(fresh.description, tag) });
+        };
       }
     }
     // Bounded: a stalled Linear call must not hold the CI step until the hard kill drops the summary row.
@@ -102,9 +117,12 @@ async function handoffCard({ identifier, why, linearBrainMain, now, getIssue, up
       main(['update', identifier, '--state', 'Todo', '--comment', comment]),
       new Promise((_, rej) => setTimeout(() => rej(new Error('handoff timed out after 30s')), 30000).unref()),
     ]);
-    return { handedOff: true, error: null, comment };
+    return { handedOff: true, error: null, comment, unparkError: await runUnpark(unpark) };
   } catch (err) {
-    if (err instanceof ExitTrap) return { handedOff: err.exitCode === 0, error: err.exitCode === 0 ? null : `linear-brain update exited ${err.exitCode}`, comment };
+    if (err instanceof ExitTrap) {
+      const ok = err.exitCode === 0;
+      return { handedOff: ok, error: ok ? null : `linear-brain update exited ${err.exitCode}`, comment, unparkError: ok ? await runUnpark(unpark) : null };
+    }
     return { handedOff: false, error: String((err && err.message) || err).slice(0, 200), comment };
   } finally {
     process.exit = realExit;

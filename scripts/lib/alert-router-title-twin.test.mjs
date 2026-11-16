@@ -29,3 +29,17 @@ test('a different subject is not a twin', async () => {
   });
   assert.equal(r.matched, false);
 });
+
+test('BRO-7595: linear-brain find --exact-title matches across the filer prefix; exact still wins', () => {
+  const { findOpenTitleMatch } = require('./card-dedupe.js');
+  const open = [
+    { identifier: 'BRO-1', title: 'P1: Cron failed: nightly rebuild' },
+    { identifier: 'BRO-2', title: 'BSC Daily: breaker TRIPPED: web (2194/1750 reqs)' },
+    { identifier: 'BRO-3', title: 'BSC Daily: Cron failed: nightly rebuild' },
+  ];
+  assert.equal(findOpenTitleMatch(open, 'BSC Daily: Cron failed: nightly rebuild').identifier, 'BRO-3');
+  assert.equal(findOpenTitleMatch(open.slice(0, 2), 'BSC Daily: Cron failed: nightly rebuild').identifier, 'BRO-1');
+  assert.equal(findOpenTitleMatch(open, 'BSC Daily: Cron failed: weekly rebuild'), null);
+  assert.equal(findOpenTitleMatch(open, 'BSC Daily: breaker TRIPPED: web (2301/1750 reqs)'), null);
+  assert.equal(findOpenTitleMatch(open, 'BSC Daily: breaker TRIPPED: web (2301/1750 reqs)', { ignoreNumbers: true }).identifier, 'BRO-2');
+});

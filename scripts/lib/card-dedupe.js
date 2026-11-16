@@ -295,9 +295,29 @@ const DEDUPE_OPT_OUTS = Object.freeze({
   'recurrence-detector': 'recurrence-detector.js files one root-cause card per recurring class and finds it again by its root-cause-class marker; the flood/rollup rules would fold it into the very instance cards it exists to replace (BRO-7103)',
 });
 
+/**
+ * PURE. `linear-brain find --exact-title`: the open card with this exact title, else
+ * (BRO-7595) one with the same titleCore (the "BSC Daily:" / "P1:" prefix differs
+ * between digest-autofix and the alert router), else with --ignore-numbers (BRO-6081)
+ * one whose title differs only by a live count. Exact match always wins.
+ */
+function findOpenTitleMatch(open, term, { ignoreNumbers = false } = {}) {
+  const list = (open || []).filter(Boolean);
+  let match = list.find((i) => i.title === term) || null;
+  if (!match) {
+    const core = titleCore(term);
+    match = core ? list.find((i) => titleCore(i.title) === core) || null : null;
+  }
+  if (!match && ignoreNumbers) {
+    const key = numberFreeTitle(term);
+    match = key === term ? null : list.find((i) => numberFreeTitle(i.title) === key) || null;
+  }
+  return match;
+}
+
 module.exports = {
   DEDUPE_OPT_OUTS,
   NEAR_DUP_MIN_SCORE, NEAR_DUP_MIN_TOKENS, FLOOD_THRESHOLD, FLOOD_WINDOW_MS, ALERT_ROUTER_MARKER, ROLLUP_TITLE_PREFIX, FOOTER_RE,
-  titleCore, titleTokens, countFreeTitle, findCountOnlyTwin, distinctiveParts, titleKind, jaccard, findNearDuplicate, hasPerCardContract,
+  findOpenTitleMatch, titleCore, titleTokens, countFreeTitle, findCountOnlyTwin, distinctiveParts, titleKind, jaccard, findNearDuplicate, hasPerCardContract,
   numberFreeTitle, inferCardSource, normalizeSource, sourceFooter, parseSourceFooter, rollupTitle, sameKindCards, countSameKind, rollupEnforced,
 };

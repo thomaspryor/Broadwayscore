@@ -618,7 +618,7 @@ async function main(argv = process.argv.slice(2)) {
         if (h.handoff) {
           const out = await handoffCard({ identifier: t.cardId, why: h.why });
           if (out.handedOff) handedOff.push(t.cardId);
-          ledger.appendEntry({ event: 'recheck-handoff', runId, cardId: t.cardId, name: t.name, reason: h.reason, handedOff: out.handedOff, verifyCmd: t.verifyCmd || null, note: out.handedOff ? `handed to a worker: ${h.reason}` : `handoff refused: ${out.error}` }, RECHECK_LEDGER_PATH);
+          ledger.appendEntry({ event: 'recheck-handoff', runId, cardId: t.cardId, name: t.name, reason: h.reason, handedOff: out.handedOff, verifyCmd: t.verifyCmd || null, note: out.handedOff ? `handed to a worker: ${h.reason}${out.unparkError ? `; PARKED line not cleared: ${out.unparkError}` : ''}` : `handoff refused: ${out.error}` }, RECHECK_LEDGER_PATH);
           console.error(`[recheck] ${t.cardId} ${out.handedOff ? `handed to a worker (${h.reason})` : `handoff refused (${out.error})`}`);
         }
       }

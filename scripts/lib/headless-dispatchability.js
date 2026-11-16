@@ -234,9 +234,9 @@ function isAutomationParked(notes) {
 // so a reworded marker cannot drift from this check.
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const MACHINE_PARK_REASON_RE = new RegExp(`${escapeRe(AUTOFIX_FILED_MARKER)}|${escapeRe(ALERT_ROUTER_FILED_MARKER)}`);
-/** The text after each `PARKED:` line, in order. */
+/** The text after each `PARKED:` line, in order. Bulleted, quoted or bold lines count too. */
 function parkReasons(notes) {
-  return [...String(notes || '').matchAll(/^\s*PARKED\s*:(.*)$/gim)].map((m) => m[1]);
+  return [...String(notes || '').matchAll(/^\s*(?:[-*>]\s*)?\**PARKED\**\s*:(.*)$/gim)].map((m) => m[1]);
 }
 function isMachineParkLine(reason, index) {
   return index === 0 && MACHINE_PARK_REASON_RE.test(String(reason || ''));

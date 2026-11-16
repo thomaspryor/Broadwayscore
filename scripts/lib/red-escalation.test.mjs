@@ -145,3 +145,13 @@ test('BRO-7595: a machine-filed red card is escalated and its stamp is takeable;
   const held = `PARKED: needs an API key\n\n${machine}`;
   assert.match(stampStartNow(held, { ageHours: 7, nowIso: iso(NOW) }), /^PARKED: needs an API key/m, 'a person hold is never rewritten');
 });
+
+test('BRO-7595: a bulleted or bold person hold under the machine line still holds', () => {
+  const hd = require('./headless-dispatchability.js');
+  const M = 'PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.';
+  for (const hold of ['- PARKED: owner wants to look', '**PARKED:** needs a key', '> PARKED: waiting on vendor']) {
+    assert.equal(hd.hasOnlyMachinePark(`${M}\n${hold}`), false, hold);
+    assert.equal(hd.hasHeldParkLine(`${M}\n${hold}`), true, hold);
+  }
+  assert.equal(hd.hasOnlyMachinePark(M), true);
+});
