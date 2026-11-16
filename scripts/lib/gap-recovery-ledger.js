@@ -182,7 +182,20 @@ function strategyState(index, reviewKey, strategy) {
   const supersededUrls = RAW_HTML_STRATEGIES.has(strategy)
     ? all.filter((r) => r.outcome === 'reopened' && r.reason === SUPERSEDED_REASON && r.url).map((r) => r.url)
     : [];
-  const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0, supersededUrls };
+  // Urls where a free-fetch recovery was lost (another writer put a shorter
+  // text back) LOST_LOOP_AT times: the engine and the collector read the same
+  // page differently and trade it nightly (12 reviews, all REFETCH_FREE, by
+  // 2026-11-15; jena-friedman thecomedybureau 4x). Counted per url, across reopens.
+  const lostCounts = new Map();
+  if (RAW_HTML_STRATEGIES.has(strategy)) {
+    for (const r of all) {
+      if (r.outcome === 'reopened' && r.reason === LOST_REASON && r.url && SUPERSEDABLE_STRATEGIES.has(r.strategy)) lostCounts.set(r.url, (lostCounts.get(r.url) || 0) + 1);
+    }
+  }
+  const lostLoopUrls = [...lostCounts].filter(([, n]) => n >= LOST_LOOP_AT).map(([u]) => u);
+  // Engine recoveries of this review (any strategy, across reopens), by url.
+  const recoveredAtUrl = all.filter((r) => r.outcome === 'recovered' && r.url && r.ts).map((r) => ({ url: r.url, ts: r.ts }));
+  const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0, supersededUrls, lostLoopUrls, recoveredAtUrl };
   for (const r of rows) {
     st.lastTs = r.ts;
     if (EVIDENCE_OUTCOMES.has(r.outcome)) {
@@ -232,6 +245,28 @@ function strategyEligibility({ strategy, show, review, gapClass, state }) {
     const { urlCanonicallyChanged } = require('./url-change-invariant');
     if (state.supersededUrls.some((u) => !urlCanonicallyChanged(u, review.url))) {
       return { ok: false, reason: 'superseded_at_url' };
+    }
+  }
+  // Lost twice at this url: a third accept is the same trade. No lift on text
+  // quality (the newer text is short by definition); a url change lifts it.
+  // Counted in needsDecision (EXHAUSTED_REASONS) so it stays visible.
+  if (state && Array.isArray(state.lostLoopUrls) && state.lostLoopUrls.length && /^https?:\/\//i.test(String(review.url || ''))) {
+    const { urlCanonicallyChanged } = require('./url-change-invariant');
+    if (state.lostLoopUrls.some((u) => !urlCanonicallyChanged(u, review.url))) return { ok: false, reason: 'lost_loop_at_url' };
+  }
+  // The engine recovered this url before and the ensemble then called the
+  // record "not a review": our own accept was a listing/news page. Fetching the
+  // same url again only re-accepts it (the collector rewrites it short,
+  // reconcile reopens, the next night re-accepts: jena-friedman thecomedybureau
+  // 6 recoveries, 42 verdicts). A verdict with no engine recovery before it may
+  // be a paywall teaser of a real review (times-uk, broadwaynews), so that
+  // alone blocks nothing. URL_FIND looks elsewhere and stays eligible.
+  if (FETCH_STRATEGIES.has(strategy) && state && Array.isArray(state.recoveredAtUrl) && state.recoveredAtUrl.length && /^https?:\/\//i.test(String(review.url || ''))) {
+    const { urlCanonicallyChanged } = require('./url-change-invariant');
+    const ours = state.recoveredAtUrl.filter((r) => !urlCanonicallyChanged(r.url, review.url)).map((r) => r.ts).sort();
+    const verdicts = require('./stale-automated-text-verdict').ensembleNotAReviewTimes(review);
+    if (ours.length && verdicts.some((t) => Date.parse(t) > Date.parse(ours[0]))) {
+      return { ok: false, reason: 'not_a_review_after_recovery' };
     }
   }
   if (FETCH_STRATEGIES.has(strategy)) {
@@ -334,6 +369,9 @@ function recoveredRowFromLanding(landed, info = {}) {
 // re-flagging a paid rescore each cycle. The newer writer's text stands; the
 // same strategy is not retried at that url (other strategies still are).
 const SUPERSEDED_REASON = 'recovered_text_superseded';
+const LOST_REASON = 'recovered_text_lost';
+// Lost reopens of a free-fetch recovery at one url before raw-HTML strategies stop there.
+const LOST_LOOP_AT = 2;
 // Below these the newer text is itself a gap (a stub, a wall): a real loss.
 const SUPERSEDE_MIN_CHARS = 500;
 const SUPERSEDE_TIERS = new Set(['complete', 'truncated']);
@@ -409,7 +447,7 @@ function reconcileRecovered(rows, readReview, nowIso = new Date().toISOString())
       gapClass: last.gapClass,
       strategy: last.strategy,
       outcome: 'reopened',
-      reason: !review ? 'recovered_file_unreadable' : superseded ? SUPERSEDED_REASON : hasBytes ? 'recovered_text_lost' : 'recovered_file_not_complete',
+      reason: !review ? 'recovered_file_unreadable' : superseded ? SUPERSEDED_REASON : hasBytes ? LOST_REASON : 'recovered_file_not_complete',
       url: last.url,
       detail: {
         tier, recoveredAt: last.ts, pushedBlob: last.pushedBlob || null,
@@ -514,4 +552,6 @@ module.exports = {
   reconcileRecovered,
   supersededByLaterFetch,
   SUPERSEDED_REASON,
+  LOST_REASON,
+  LOST_LOOP_AT,
 };
