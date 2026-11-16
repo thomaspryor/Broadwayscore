@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T19:35:52.806Z",
+  "generatedAt": "2026-11-16T20:45:25.092Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,20 +11,20 @@
   },
   "shows": [
     {
-      "showId": "titanique-west-end-2024",
-      "title": "Titanique",
-      "openingDate": "2025-01-08",
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "openingDate": "2026-11-12",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.02 vs local 79.09 (Δ0.07)"
+          "detail": "deployed cs 78.2 vs local 78.11 (Δ0.09)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 26,
-      "firstDefectAt": "2026-11-16T19:35:46.115Z"
+      "localCount": 30,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-11-16T20:45:21.634Z"
     }
   ],
   "persistentDefective": 0,

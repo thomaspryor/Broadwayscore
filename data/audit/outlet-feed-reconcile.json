@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T19:35:53.225Z",
+  "generatedAt": "2026-11-16T20:45:25.536Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -136,7 +136,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "cote-notices",
@@ -153,10 +153,18 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 875,
-  "matchedGaps": 4,
+  "itemsScanned": 826,
+  "matchedGaps": 2,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -167,24 +175,6 @@
       "url": "https://liamodell.com/2026/11/15/cloud-9-review-national-theatre-lyttelton-caryl-churchill/",
       "headline": "‘Cloud 9’ review &#8211; Caryl Churchill revival is missing fresh context",
       "publishDate": "2026-11-15"
-    },
-    {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/11/16/review-of-hamlet-hail-to-the-thief-barbican-2026-reimagined-shakespeare-is-everything-it-has-to-be/",
-      "headline": "Review of &#8216;Hamlet Hail to the Thief&#8217; (Barbican, 2026): &#8220;Reimagined Shakespeare is everything it has to be&#8221;",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "level": "matched",
-      "outletId": "afridiziak-theatre-news",
-      "url": "https://www.afridiziak.com/reviews/hamlet-hail-to-the-thief/",
-      "headline": "Hamlet Hail to the Thief – review",
-      "publishDate": "2026-11-16"
     },
     {
       "showId": "passing-strange-regional-2026",
