@@ -11,6 +11,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { scrubCloudEnv } from '../helpers/cloud-env.mjs';
+
+// BRO-7609: the Done-gate bypass comment gains a session footer when CLAUDE_CODE_REMOTE_SESSION_ID is set (any
+// cloud container). These assertions are about the plain comment body, so run in a plain world.
+scrubCloudEnv();
 import { fileURLToPath } from 'node:url';
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));

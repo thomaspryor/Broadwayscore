@@ -10,6 +10,10 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { scrubCloudEnv } from '../helpers/cloud-env.mjs';
+
+// BRO-7609: the batch includes linear-next-dispatch, which needs a plain (non-cloud) world.
+scrubCloudEnv();
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const FILES = [
