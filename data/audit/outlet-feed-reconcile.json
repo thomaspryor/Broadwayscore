@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T07:51:46.758Z",
+  "generatedAt": "2026-11-16T09:11:44.615Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -122,11 +122,31 @@
   "feedsChecked": 85,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 876,
+  "itemsScanned": 848,
   "matchedGaps": 1,
   "possibleGaps": 1,
   "gaps": [

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T07:51:27.738Z",
+  "generatedAt": "2026-11-16T09:11:24.307Z",
   "windowDays": 45,
   "showsScanned": 246,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 168.8216177777778,
+      "fileAgeHours": 170.153895,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 146.27317694444446,
+      "nonTerminalAgeHours": 147.6055575,
       "needsManualRecovery": true
     },
     {
@@ -38,29 +38,9 @@
       "forumLinkRecoveryCount": 8,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 138.05348055555555,
+      "fileAgeHours": 139.38581416666668,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 136.90873194444444,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "adirondack-chair-circle-regional-2026",
-      "title": "Adirondack Chair Circle",
-      "openingDate": "2026-11-02",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": false,
-      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 154.61360416666668,
-      "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 154.20073,
+      "nonTerminalAgeHours": 138.2411125,
       "needsManualRecovery": false
     },
     {
@@ -78,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 33.109896666666664,
+      "fileAgeHours": 34.442276944444444,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 31.84371972222222,
+      "nonTerminalAgeHours": 33.17610027777778,
       "needsManualRecovery": false
     }
   ],
