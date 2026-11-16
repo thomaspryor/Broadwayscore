@@ -98,9 +98,12 @@ function isOpenTwin(findOutput, issueNumber, prefixFor = feedbackTitlePrefix) {
 
 // Shared find-then-create for one GitHub issue's card. Fail-soft: never
 // throws, never logs argv (the notes) because the Actions log is public.
-function fileCardOnce({ card, issueNumber, prefixFor, source }, run) {
+// exactTitle: the card family has a fixed title, so look it up by exact title.
+// A default find also matches descriptions, and another card quoting
+// "Review submission #N:" could sort first and hide the real twin.
+function fileCardOnce({ card, issueNumber, prefixFor, source, exactTitle = false }, run) {
   try {
-    const found = run(['find', prefixFor(issueNumber)]);
+    const found = run(exactTitle ? ['find', card.title, '--exact-title'] : ['find', prefixFor(issueNumber)]);
     if (isOpenTwin(found, issueNumber, prefixFor)) return { filed: false, reused: true, title: card.title };
   } catch { /* fail open: a find error must not stop the card */ }
   try {
@@ -195,7 +198,7 @@ function reviewSubmissionsNeedingCard(issues, { now = Date.now(), settleMs = 0 }
 
 function fileReviewSubmissionCard({ issueNumber, issueUrl, showId, reviewUrl, reason }, { run } = {}) {
   const card = buildReviewSubmissionCard({ issueNumber, issueUrl, showId, reviewUrl, reason });
-  return fileCardOnce({ card, issueNumber, prefixFor: reviewSubmissionTitlePrefix, source: 'workflow:process-review-submission' }, run);
+  return fileCardOnce({ card, issueNumber, prefixFor: reviewSubmissionTitlePrefix, source: 'workflow:process-review-submission', exactTitle: true }, run);
 }
 
 module.exports = {

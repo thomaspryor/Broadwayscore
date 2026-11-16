@@ -439,7 +439,11 @@ describe('rebuild-fast.yml wiring', () => {
     // post-push steps (core-data push, deploy trigger, failure notify), and at
     // least 5 min spare (mirrors the job's timeout-minutes comment).
     const worstSec = 600 + Number(step.env.PUSH_DEADLINE_SEC)
-      + (max - 1) * (20 + 30 + 180 + Number(step.env.REBUILD_FAST_REDO_PUSH_DEADLINE_SEC)) + 300;
+      + (max - 1) * (20 + 30 + 180 + Number(step.env.REBUILD_FAST_REDO_PUSH_DEADLINE_SEC)) + 300
+      // BRO-7606: the parked-submission card sweep runs after the push; count its step timeout
+      + doc.jobs['rebuild-fast'].steps
+        .filter((s) => s.name === 'File cards for parked review submissions')
+        .reduce((sum, s) => sum + Number(s['timeout-minutes']) * 60, 0);
     assert.ok(worstSec + 300 <= doc.jobs['rebuild-fast']['timeout-minutes'] * 60,
       `worst case ${worstSec}s (+300s margin) exceeds timeout-minutes`);
   });

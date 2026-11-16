@@ -136,7 +136,9 @@ test('fileReviewSubmissionCard files --dispatch once, then reuses the open card 
   const board = [];
   const run = (args) => {
     if (args[0] === 'find') {
-      const hit = board.find((t) => t.includes(args[1]));
+      // the fixed title is looked up exactly, so a card that merely quotes it can't hide the twin
+      assert.ok(args.includes('--exact-title'));
+      const hit = board.find((t) => t === args[1]);
       return hit ? JSON.stringify({ identifier: 'BRO-1', title: hit }, null, 2) : 'null\n';
     }
     assert.ok(args.includes('--dispatch'));

@@ -338,6 +338,35 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
         run: node scripts/file-review-submission-card.js
 
+      # BRO-7606: a validator crash or the job timeout (reported as cancelled,
+      # which failure() misses) used to leave the issue with no label at all,
+      # so neither a card nor the rebuild-fast sweep ever found it. Park it.
+      - name: Park submission - validate job crashed or timed out
+        if: (failure() || cancelled()) && steps.resolve.outputs.issue_number != ''
+        continue-on-error: true
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: parseInt(process.env.ISSUE_NUMBER),
+              labels: ['needs-manual-review']
+            });
+
+      - name: File dispatchable card - validate job crashed or timed out
+        if: (failure() || cancelled()) && steps.resolve.outputs.issue_number != ''
+        continue-on-error: true
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+          REASON: the validate job crashed or timed out before deciding (see the failed run in Actions)
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: node scripts/file-review-submission-card.js
+
       # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
       - name: Commit LLM usage ledger
         if: always()
@@ -648,8 +677,10 @@ jobs:
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
+      # failure() || cancelled(): the 25-min job timeout reports cancelled,
+      # and in-progress runs are never group-cancelled here (BRO-7606).
       - name: Post failure comment
-        if: failure()
+        if: failure() || cancelled()
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
@@ -680,13 +711,13 @@ jobs:
             });
 
       - name: File dispatchable card - scraping failed
-        if: failure()
+        if: failure() || cancelled()
         continue-on-error: true
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
           SHOW_ID: ${{ needs.validate.outputs.show_id }}
           REVIEW_URL: ${{ needs.validate.outputs.review_url }}
-          REASON: approved, but the scrape-review job failed (see the run linked from the issue's bot comment)
+          REASON: approved, but the scrape-review job failed or timed out (see the run linked from the issue's bot comment)
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
         run: node scripts/file-review-submission-card.js

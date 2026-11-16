@@ -63,7 +63,8 @@ jobs:
     #           + redo push deadline 300s = 530s
     #   always() steps after the push (core-data push, deploy trigger,
     #   failure notify, summary)          ~300s
-    #   total ~2030s = ~34 min, leaving ~11 min under 45 min.
+    #   parked-submission card sweep (BRO-7606, step timeout) 300s
+    #   total ~2330s = ~39 min, leaving ~6 min under 45 min.
     # tests/unit/rebuild-fast-push-retry.test.mjs re-checks this arithmetic.
     timeout-minutes: 45
 
@@ -515,7 +516,7 @@ jobs:
           # The redo replays this run's data/audit writes 3-way and publishes
           # only the paths the lost commit changed. Redo cycles push with a
           # 300s deadline (a fresh-HEAD push lands fast); see the job's
-          # timeout-minutes comment for the worst-case budget (~34 of 45 min).
+          # timeout-minutes comment for the worst-case budget (~39 of 45 min).
           REBUILD_FAST_MAX_CYCLES: '2'
           REBUILD_FAST_REDO_PUSH_DEADLINE_SEC: '300'
         run: |
