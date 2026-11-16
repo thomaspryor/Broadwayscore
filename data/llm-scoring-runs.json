@@ -1,74 +1,5 @@
 [
   {
-    "startedAt": "2026-11-13T18:12:16.799Z",
-    "completedAt": "2026-11-13T20:46:46.939Z",
-    "totalReviews": 82227,
-    "processed": 44,
-    "skipped": 82128,
-    "errors": 6,
-    "tokensUsed": {
-      "input": 379833,
-      "output": 17166,
-      "cacheRead": 228375,
-      "cacheWrite": 18850,
-      "total": 961001
-    },
-    "costUsd": 0.7346871500000001,
-    "runId": "43477489840",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "proof-2026",
-        "outletId": "the-recs",
-        "error": "resume_input_hash_mismatch"
-      },
-      {
-        "showId": "beetlejuice-tour-2022",
-        "outletId": "hotchka",
-        "error": "resume_reload_failed:ENOENT: no such file or directory, open '/home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/beetlejuice-tour-2022/hotchka--unknown.json'"
-      },
-      {
-        "showId": "legally-blonde-tour-2022",
-        "outletId": "palm-beach-daily-news",
-        "error": "resume_reload_failed:ENOENT: no such file or directory, open '/home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/legally-blonde-tour-2022/palm-beach-daily-news--unknown.json'"
-      },
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-13T20:47:02.719Z",
-    "completedAt": "2026-11-13T20:51:55.558Z",
-    "totalReviews": 136,
-    "processed": 136,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 346136,
-      "output": 31377,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 377513
-    },
-    "costUsd": 0.9662189,
-    "runId": "43477489840",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-13T20:56:19.823Z",
     "completedAt": "2026-11-13T20:56:19.849Z",
     "totalReviews": 0,
@@ -418603,6 +418534,46 @@
     },
     "costUsd": 0,
     "runId": "43797872061",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-15T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-16T04:35:04.992Z",
+    "completedAt": "2026-11-16T04:35:08.215Z",
+    "totalReviews": 17,
+    "processed": 1,
+    "skipped": 16,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6063,
+      "output": 393,
+      "cacheRead": 0,
+      "cacheWrite": 5418,
+      "total": 16633
+    },
+    "costUsd": 0.0320486,
+    "runId": "43804670783",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-15T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-16T04:40:07.212Z",
+    "completedAt": "2026-11-16T04:40:07.214Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "43804670783",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
