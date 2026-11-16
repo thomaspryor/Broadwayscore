@@ -43,7 +43,8 @@
     "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
     "the-visitors-off-broadway-2026/boston-globe--unknown.json",
     "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
-    "wanted-2022/nytimes--unknown.json"
+    "wanted-2022/nytimes--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -89,7 +90,7 @@
     ]
   },
   "startTime": "2026-11-16T02:43:33.354Z",
-  "lastProcessed": "wanted-2022/nytimes--unknown.json",
+  "lastProcessed": "msblackforpresident-off-broadway-2026/guardian--unknown.json",
   "log": [
     {
       "t": "2026-11-16T03:00:43.709Z",
@@ -222,6 +223,72 @@
       "t": "2026-11-16T04:14:32.566Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T05:08:31.184Z",
+      "event": "bb-session",
+      "session": "5c63e331",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-16T05:08:32.102Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-16T05:09:13.227Z",
+      "event": "bb-session",
+      "session": "fafece2f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-16T05:09:14.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T05:11:10.963Z",
+      "event": "bb-session",
+      "session": "41fc4f53",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-16T05:11:11.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T05:13:45.694Z",
+      "event": "bb-session",
+      "session": "94b35815",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-16T05:13:46.033Z",
+      "event": "bb-session",
+      "session": "fb3d0efe",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-16T05:13:46.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-16T05:13:46.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-16T05:13:56.040Z",
+      "event": "bb-session",
+      "session": "2d6c4bc9",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-16T05:13:56.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
