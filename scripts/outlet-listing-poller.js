@@ -902,10 +902,12 @@ async function main() {
   let activeShows = allShows.filter(s => s.status === 'open' || s.status === 'previews');
   // Every running show, whatever window or market narrows the match pool: they all share houses (BRO-7372).
   const liveShows = activeShows;
+  let lateShows = [];
   if (win) {
     // Match only against shows 0-3 days past opening; nothing in the window means no fetches at all.
     activeShows = ow.selectWindowShows(allShows);
-    if (activeShows.length === 0) {
+    lateShows = ow.selectLateWindowShows(allShows); // BRO-7574: late publishers (one-minute-critic) match a longer window
+    if (activeShows.length === 0 && lateShows.length === 0) {
       console.log('No shows 0-3 days past opening: nothing to fetch.');
       console.log('OPENING_WINDOW_STATS fetches=0 paid=0');
       if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'new_stubs=0\n');
@@ -914,7 +916,7 @@ async function main() {
     console.log(`Window shows: ${activeShows.map(s => `${s.id} (${s.openingDate})`).join(', ')}`);
     paidBudget = ow.createPaidBudget(opts.maxPaid);
   }
-  if (opts.market) activeShows = activeShows.filter(s => s.category === opts.market || s.market === opts.market);
+  if (opts.market) { activeShows = activeShows.filter(s => s.category === opts.market || s.market === opts.market); lateShows = lateShows.filter(s => s.category === opts.market || s.market === opts.market); }
   console.log(`Active shows: ${activeShows.length}${opts.market ? ` (${opts.market})` : ''}`);
 
   // --- Census listing source (BRO-7076) ---
@@ -955,7 +957,7 @@ async function main() {
       outletStrategyConfig: OUTLET_STRATEGY_CONFIG, wpApiConfig: WP_API_CONFIG, skipOutlets: SKIP_OUTLETS,
       minShowCount: Number.isFinite(opts.minShowCount) && opts.minShowCount !== 5 ? opts.minShowCount : 2,
     });
-    qualifyingOutlets = sel.outlets;
+    qualifyingOutlets = [...sel.outlets, ...ow.lateOutletsToPoll(lateShows, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, SKIP_OUTLETS).filter(id => !sel.outlets.includes(id))];
     console.log(`Window outlets: ${qualifyingOutlets.length} feed/listing outlets (${sel.skippedSerp.length} SERP-only outlets skipped, daily run covers them)`);
   } else if (opts.outlets) {
     qualifyingOutlets = opts.outlets;
@@ -1137,7 +1139,7 @@ async function main() {
     for (const { url, headline, publishDate, description, viaSerp: itemViaSerp, viaCensus } of articles) {
       // Census items run report-only unless CENSUS_LISTING_WRITE=1: dry writer, plain fetches, no cache writes.
       const { censusDry, itemDry } = censusListing.censusItemMode({ viaCensus, censusWrite, dryRun: opts.dryRun, added: censusStats.added, maxAdds: CENSUS_MAX_ADDS });
-      const showPool = viaCensus ? censusShows : activeShows;
+      const showPool = viaCensus ? censusShows : (win ? ow.poolForOutlet(outletId, activeShows, lateShows) : activeShows);
       const censusOk = (show) => !viaCensus || (censusListing.censusMarketOk(outletId, show, outletMarkets) && censusListing.censusItemAccepted({ url, headline, description, publishDate }, show));
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
       const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};

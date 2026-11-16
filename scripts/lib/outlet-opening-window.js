@@ -14,6 +14,10 @@ const { hasExcerpt } = require('./excerpt-fields');
 
 const WINDOW_DAYS_PAST = 3;
 const DAY_MS = 24 * 60 * 60 * 1000;
+// BRO-7574: outlets that publish well after press night. One Minute Critic posted The Visitors 5
+// days after opening (The Heart and Slanted Floors the day after), past the 0-3 day window, so the
+// sweep found them first. These outlets are matched against shows up to N days past opening.
+const LATE_PUBLISHER_WINDOW_DAYS = { 'one-minute-critic': 10 };
 // Markets with a press night. Tours and regional stops have none (BRO-4724).
 const WINDOW_CATEGORIES = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
 const WINDOW_STRATEGIES = new Set(['rss', 'sitemap', 'listing-html', 'wp-api']);
@@ -35,6 +39,26 @@ function selectWindowShows(allShows, now = Date.now(), { maxDaysPast = WINDOW_DA
     const d = utcDay(s.openingDate);
     return d !== null && today - d >= 0 && today - d <= maxDaysPast;
   });
+}
+
+/** Shows inside the longest late-publisher window (superset of selectWindowShows). */
+function selectLateWindowShows(allShows, now = Date.now()) {
+  const max = Math.max(WINDOW_DAYS_PAST, ...Object.values(LATE_PUBLISHER_WINDOW_DAYS));
+  return selectWindowShows(allShows, now, { maxDaysPast: max });
+}
+
+/** Late-publisher outlets with a free window strategy, to poll whenever any late-window show exists. */
+function lateOutletsToPoll(lateShows, outletStrategyConfig, wpApiConfig, skipOutlets = new Set()) {
+  if (!lateShows.length) return [];
+  return Object.keys(LATE_PUBLISHER_WINDOW_DAYS)
+    .filter((id) => !skipOutlets.has(id) && windowStrategyFor(id, outletStrategyConfig, wpApiConfig));
+}
+
+/** Shows an outlet's items are matched against in window mode: the 0-3 day window, or the outlet's own longer one. */
+function poolForOutlet(outletId, windowShows, lateShows, now = Date.now()) {
+  const days = LATE_PUBLISHER_WINDOW_DAYS[outletId];
+  if (!days) return windowShows;
+  return selectWindowShows(lateShows, now, { maxDaysPast: days });
 }
 
 /** How an outlet is polled in window mode: its configured strategy, or null (skip: SERP-only). */
@@ -138,5 +162,5 @@ function showsNeedingCollection(windowShows, recordsByShow, limit = 3, { ledger 
 module.exports = {
   needsCollection, showsNeedingCollection,
   WINDOW_DAYS_PAST, WINDOW_CATEGORIES, WINDOW_STRATEGIES, DEFAULT_MAX_PAID, WORST_CASE_USD_PER_PAID_CALL,
-  selectWindowShows, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
+  selectWindowShows, selectLateWindowShows, lateOutletsToPoll, poolForOutlet, LATE_PUBLISHER_WINDOW_DAYS, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
 };
