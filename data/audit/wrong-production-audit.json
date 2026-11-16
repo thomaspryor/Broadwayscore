@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-16T15:42:36.323Z",
+  "timestamp": "2026-11-16T15:58:31.613Z",
   "stats": {
-    "totalReviews": 82090,
+    "totalReviews": 82091,
     "alreadyFlagged": 22470,
     "dateGuardCatches": 222,
     "directorMismatch": 3713,
-    "tvFilmSignals": 2325,
+    "tvFilmSignals": 2328,
     "londonSignals": 3774,
     "offBroadwaySignals": 755,
     "yearMismatch": 374,
@@ -6978,6 +6978,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "britishtheatrecom--susan-novak.json",
+      "score": 78,
+      "publishDate": "2026-04-18",
+      "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -56618,6 +56637,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "british-theatre--anita-marguerite-butler.json",
+      "score": 86,
       "publishDate": "2026-04-01",
       "url": "https://www.britishtheatreguide.info/reviews/romeo-and-julie-harold-pinter-t-25477",
       "findings": [
@@ -56709,6 +56729,19 @@
       "score": 89,
       "publishDate": "2026-03-31",
       "url": "https://monstagigz.com/2026/03/28/theatre-review-romeo-and-juliet-starring-sadie-sink-at-the-harold-pinter-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "the-critic--ben-sixsmith.json",
+      "publishDate": "2026-04-04",
+      "url": "https://thecritic.co.uk/a-bewitching-sink-drama/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -78370,6 +78403,24 @@
       ]
     },
     {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "file": "britishtheatrecom--susan-novak.json",
+      "publishDate": "2026-07-16",
+      "url": "https://www.britishtheatre.com/zh/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-snow-goose-regional-2026",
       "file": "hartford-courant--christopher-arnott.json",
       "score": 45,
@@ -92223,20 +92274,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"csc\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "britishtheatrecom--susan-novak.json",
-      "score": 78,
-      "publishDate": "2026-04-18",
-      "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -124285,6 +124322,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
+      "score": 87,
       "publishDate": "2026-04-19",
       "url": "https://theartsdispatch.substack.com/p/romeo-and-juliet-review-harold-pinter",
       "findings": [
@@ -138892,19 +138930,6 @@
       "score": 43,
       "publishDate": "March 27, 2002",
       "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9906e0dd133bf934a15750c0a9649c8b63&scp=2&sq=%22smell%20of%20the%20kill%22&st=cse",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-smile-of-her-off-west-end-2026",
-      "file": "britishtheatrecom--susan-novak.json",
-      "publishDate": "2026-07-16",
-      "url": "https://www.britishtheatre.com/zh/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
