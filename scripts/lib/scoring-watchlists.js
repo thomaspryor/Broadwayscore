@@ -121,6 +121,10 @@ const LLM_INPUT_FILES = [
   'scripts/lib/content-quality.js',
   'scripts/lib/text-cleaning.js',
   'scripts/llm-scoring/input-builder.ts',
+  // BRO-7538: section selection changes what the models read, not stored scores.
+  'scripts/lib/multi-show-asterisk-divider.js',
+  'scripts/llm-scoring/trim-multi-show.ts',
+  'scripts/llm-scoring/multi-show-detector.ts',
   'scripts/lib/prior-runs-note.js',
   // BRO-6000: prompt note for multi-show split sections, assembled by input-builder.ts.
   'scripts/lib/split-excerpt-note.js',

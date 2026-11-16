@@ -232,6 +232,9 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/text-quality.js',
   'scripts/lib/text-cleaning.js',
   'scripts/llm-scoring/input-builder.ts',
+  'scripts/lib/multi-show-asterisk-divider.js',
+  'scripts/llm-scoring/trim-multi-show.ts',
+  'scripts/llm-scoring/multi-show-detector.ts',
   'scripts/lib/excerpt-fields.js',
   // The gate itself (2026-08-17). Every file above is refused because
   // CLAUDE.md rule 12.7 requires scoring-delta.js to run before the change

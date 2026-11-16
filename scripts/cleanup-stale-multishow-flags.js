@@ -39,7 +39,7 @@ function walkDir(dir) {
         total++;
 
         const text = data.fullText || '';
-        const result = detectMultiShow(text, data.showId);
+        const result = detectMultiShow(text, data.showId, data);
 
         if (!result.isMultiShowReview) {
           cleared++;

@@ -10,6 +10,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { extractVenueBoxSectionForShowId } from './venue-box-sections';
+import { ReviewColumnSource } from './trim-multi-show';
+const { trimByAsteriskDivider } = require('../lib/multi-show-asterisk-divider');
 
 // ========================================
 // TYPES
@@ -33,6 +35,7 @@ interface ShowEntry {
 // ========================================
 
 let cachedShowTitles: Map<string, string> | null = null;
+let cachedTitlesById: Map<string, string> = new Map();
 
 /**
  * Load show titles from data/shows.json
@@ -48,10 +51,12 @@ function loadShowTitles(): Map<string, string> {
     const shows: ShowEntry[] = raw.shows || raw;
 
     cachedShowTitles = new Map();
+    cachedTitlesById = new Map();
 
     for (const show of shows) {
       if (show.title && show.title.length > 2) {
         cachedShowTitles.set(show.title.toLowerCase(), show.id || show.slug);
+        cachedTitlesById.set(show.id || show.slug, show.title.toLowerCase());
       }
     }
 
@@ -127,7 +132,8 @@ function countMentions(text: string, title: string): number {
  */
 export function detectMultiShow(
   text: string,
-  targetShowId: string
+  targetShowId: string,
+  source?: ReviewColumnSource,
 ): MultiShowDetectionResult {
   if (!text || text.length < 200) {
     return { isMultiShowReview: false, otherShows: [], recommendation: 'score' };
@@ -137,8 +143,13 @@ export function detectMultiShow(
   const lowerText = text.toLowerCase();
 
   // Get the target show's title to exclude it
-  const targetTitle = [...showTitles.entries()]
-    .find(([, id]) => id === targetShowId)?.[0];
+  const targetTitle = cachedTitlesById.get(targetShowId);
+
+  // Clear divider columns need trimming even when no other title occurs five
+  // times. Check before the generic roundup heuristic so these can be scored.
+  if (targetTitle && trimByAsteriskDivider(text, targetTitle, source).trimmed) {
+    return { isMultiShowReview: true, otherShows: [], recommendation: 'warn', reason: 'Review column: asterisk-divider section' };
+  }
 
   // Also extract key words from the target show ID for fuzzy exclusion
   const targetIdWords = targetShowId

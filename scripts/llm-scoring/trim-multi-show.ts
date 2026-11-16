@@ -1,9 +1,10 @@
 import { extractVenueBoxSectionForShowId } from './venue-box-sections';
+const { getTitleVariants, trimByAsteriskDivider } = require('../lib/multi-show-asterisk-divider');
 /**
  * Multi-Show Text Trimmer
  *
  * Extracts the relevant section of a multi-show review article for a target show.
- * Uses deterministic heading-based splitting (no LLM). If no clear section boundary
+ * Uses deterministic section boundaries (no LLM). If no clear section boundary
  * is found, returns the original text with trimFailed: true.
  */
 
@@ -11,36 +12,14 @@ export interface TrimResult {
   text: string;
   trimmed: boolean;
   trimFailed: boolean;
-  method: 'heading' | 'venue-box' | 'none';
+  method: 'heading' | 'asterisk-divider' | 'venue-box' | 'none';
   originalLength: number;
   trimmedLength: number;
 }
 
-/**
- * Generate title variants for fuzzy matching in headings.
- * E.g., "The Outsiders: A New Musical" → ["the outsiders: a new musical", "the outsiders"]
- */
-function getTitleVariants(title: string): string[] {
-  const lower = title.toLowerCase();
-  const variants = [lower];
-
-  // Strip subtitle after colon
-  if (lower.includes(':')) {
-    variants.push(lower.split(':')[0].trim());
-  }
-  // Strip subtitle after dash (but not compound words)
-  if (lower.includes(' - ')) {
-    variants.push(lower.split(' - ')[0].trim());
-  }
-  // "& Juliet" ↔ "and Juliet"
-  if (lower.includes(' & ')) {
-    variants.push(lower.replace(/ & /g, ' and '));
-  }
-  if (lower.includes(' and ')) {
-    variants.push(lower.replace(/ and /g, ' & '));
-  }
-
-  return [...new Set(variants)];
+export interface ReviewColumnSource {
+  outletId?: string;
+  criticName?: string;
 }
 
 /**
@@ -89,7 +68,7 @@ function headingContainsTitle(heading: string, titleVariants: string[]): boolean
 /**
  * Trim multi-show review text to the section about the target show.
  *
- * Strategy: Find heading-style section breaks that contain show titles,
+ * Strategy: Try source-specific dividers, then heading breaks with show titles,
  * extract the section for the target show. If no clear headings found,
  * returns original text with trimFailed: true.
  */
@@ -97,10 +76,13 @@ export function trimMultiShowText(
   fullText: string,
   targetShowTitle: string,
   targetShowId: string,
+  source?: ReviewColumnSource,
 ): TrimResult {
   if (!fullText) {
     return { text: fullText, trimmed: false, trimFailed: true, method: 'none', originalLength: 0, trimmedLength: 0 };
   }
+  const byDivider = trimByAsteriskDivider(fullText, targetShowTitle, source);
+  if (byDivider.trimmed) return byDivider;
   const byHeading = trimByHeading(fullText, targetShowTitle);
   // A heading "trim" that keeps (nearly) the whole text removed nothing
   // (master-class-2011: 5693 -> 5693); let the box method try.

@@ -1919,7 +1919,7 @@ async function main(): Promise<void> {
         if (reviewFile.isMultiShowReview && reviewFile.fullText) {
           const showTitle = showTitles.get(reviewFile.showId);
           if (showTitle) {
-            const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
+            const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId, reviewFile);
             if (trimResult.trimmed && !trimResult.trimFailed) applyMultiShowTrim(reviewFile, trimResult);
           }
         }
@@ -2330,7 +2330,7 @@ async function main(): Promise<void> {
 
     // Multi-show detection: flag multi-show reviews for trimming, skip only roundup articles
     if (scorableText && reviewFile.showId && !reviewFile.isCombinedReview) {
-      const multiShowResult = detectMultiShow(scorableText, reviewFile.showId);
+      const multiShowResult = detectMultiShow(scorableText, reviewFile.showId, reviewFile);
 
       if (multiShowResult.isMultiShowReview) {
         // Flag the file for future runs
@@ -2343,7 +2343,7 @@ async function main(): Promise<void> {
         // Trim reviewFile.fullText so the scorer receives only the relevant section
         const showTitle = showTitles.get(reviewFile.showId);
         if (showTitle && reviewFile.fullText) {
-          const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
+          const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId, reviewFile);
           if (trimResult.trimmed && !trimResult.trimFailed) {
             applyMultiShowTrim(reviewFile, trimResult);
             console.log(`(multi-show: trimmed ${trimResult.originalLength}→${trimResult.trimmedLength} chars) `);
@@ -2358,7 +2358,7 @@ async function main(): Promise<void> {
     if (reviewFile.isMultiShowReview && reviewFile.fullText) {
       const showTitle = showTitles.get(reviewFile.showId);
       if (showTitle) {
-        const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId);
+        const trimResult = trimMultiShowText(reviewFile.fullText, showTitle, reviewFile.showId, reviewFile);
         if (trimResult.trimmed && !trimResult.trimFailed) {
           applyMultiShowTrim(reviewFile, trimResult);
           if (options.verbose) {
