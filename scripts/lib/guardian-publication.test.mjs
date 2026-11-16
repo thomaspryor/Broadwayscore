@@ -161,3 +161,10 @@ test('BRO-7593: both API callers request the tone tags', () => {
   const { result } = guardianContentToResult({ webTitle: 'x', tags: [{ id: 'tone/features' }], fields: { bodyText: 'y'.repeat(400) } });
   assert.deepEqual(result.apiMeta.toneContent.tags, [{ id: 'tone/features' }]);
 });
+
+test('BRO-7593: a fresh CV "review" verdict does not demote a Guardian tone flag', () => {
+  const { isNonReviewDemotedByFreshCV } = require('./review-guards');
+  const cv = { articleType: 'review', articleTypeConfidence: 'high', confidence: 'high', isValid: true, verifiedAt: '2099-01-01T00:00:00Z' };
+  const flagged = { isNonReview: true, isNonReviewReason: 'guardian-tone: filed as tone/features, not tone/reviews (BRO-7593)', contentVerification: cv, bwwExcerpt: 'x', assignedScore: 76 };
+  assert.equal(isNonReviewDemotedByFreshCV(flagged), false);
+});

@@ -3326,6 +3326,9 @@ function isNonReviewDemotedByFreshCV(data, opts) {
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
     || (typeof data.isNonReviewReason === 'string'
       && /^manual \(not a review\)/i.test(data.isNonReviewReason))) return false;
+  // BRO-7593: the publisher's own tag (Guardian tone/features etc.) is not an LLM verdict;
+  // a CV pass that read a feature's adjectives as a review must not overrule it.
+  if (typeof data.isNonReviewReason === 'string' && /^guardian-tone:/.test(data.isNonReviewReason)) return false;
   const cv = data.contentVerification;
   if (!cv) return soloVerdictHeld(data, 'nonReview').held; // BRO-7050: no CV record, a lone classifier verdict can still be held
   const isCvPromotedProvenance = typeof data.isNonReviewReason === 'string'
