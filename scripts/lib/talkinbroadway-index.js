@@ -123,11 +123,13 @@ function matchShowByTitle(title, shows, { now = new Date(), windowDays = 400, ah
   return { show: null, reason: hits.length ? 'ambiguous' : 'none' };
 }
 
-/** Every "Theatre Review by {Critic}[ - {Date}]" byline in a page, with the plain text just before it. */
+/** Every "[Theatre ]Review by {Critic}[ - {Date}]" byline in a page, with the plain text just before it. */
 function bylineSections(html) {
-  // Regional pages print the byline without a date ("Theatre Review by Karen Topham</B>"),
-  // so the date is optional; without it the name ends at the next tag or line break (BRO-7262).
-  const re = /Theatre Review by\s*(?:<a[^>]*>)?\s*([^<\n]+?)\s*(?:<\/a>)?(?:\s+-\s+[A-Za-z]+\.?\s+\d{1,2},?\s+\d{4}|\s*(?=<|\n|$))/gi;
+  // Regional pages print the byline without a date and without "Theatre" ("</font>Review by Karen Topham </p>",
+  // ch944), so both are optional; an undated name ends at the next tag or line break (BRO-7262). A bare
+  // "Review by" must be capitalised and the name must start with a capital and stay short, so prose such as
+  // "a review by the Times" is not read as a byline.
+  const re = /(?:[Tt][Hh][Ee][Aa][Tt][Rr][Ee]\s+[Rr][Ee][Vv][Ii][Ee][Ww]|Review) by\s*(?:<[aA][^>]*>)?\s*([A-Z\u00C0-\u024F][^<\n]{0,59}?)\s*(?:<\/[aA]>)?(?:\s+-\s+[A-Za-z]+\.?\s+\d{1,2},?\s+\d{4}|\s*(?=<|\n|$))/g;
   const out = [];
   let prevEnd = 0;
   for (const m of String(html || '').matchAll(re)) {

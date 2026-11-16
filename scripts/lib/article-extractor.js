@@ -529,12 +529,24 @@ function extractLsaByline(text) {
 // whole review body came back empty and the byline was cut to "Kimberly Ram" (2026-10-09).
 const TB_BYLINE_SHAPE = /^\s*\p{L}[\p{L}\w.'\u2019-]*(?:\s+\p{L}[\p{L}\w.'\u2019-]*){0,3}\s*-\s*.{0,30}\b\d{4}\b/u;
 
+// Regional pages (/page/regional/...) sign reviews with no date and often no "Theatre":
+// "Steppenwolf Theatre<br> </font>Review by Karen Topham </p>" (chicago/ch944, BRO-7262). Only used
+// when a page has no dated byline. "Review" must be capitalised and the name must start with a capital
+// and end at a tag, so prose like "a review by the Times" never anchors extraction.
+const TB_UNDATED_BYLINE = /(?:Theatre\s+)?Review by\s*(?:<a\b[^>]*>)?\s*[A-Z\u00C0-\u024F][^<\n]{0,59}?\s*(?:<\/a>)?\s*(?=<)/gi;
+const TB_UNDATED_CASE = /^(?:Theatre\s+)?Review by\s*(?:<a\b[^>]*>)?\s*[A-Z\u00C0-\u024F]/;
+
 function extractTalkinBroadwayBody(html, criticHint) {
   const MARKER_LEN = 'Theatre Review by'.length;
   const rawPositions = [...html.matchAll(/Theatre Review by/gi)].map((m) => m.index);
-  const positions = rawPositions.filter((p) =>
+  let positions = rawPositions.filter((p) =>
     TB_BYLINE_SHAPE.test(stripHtml(html.slice(p + MARKER_LEN, p + MARKER_LEN + 200)))
   );
+  if (!positions.length) {
+    positions = [...html.matchAll(TB_UNDATED_BYLINE)]
+      .filter((m) => TB_UNDATED_CASE.test(m[0]))
+      .map((m) => m.index);
+  }
   if (!positions.length) return null;
 
   let start = positions[0];

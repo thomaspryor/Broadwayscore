@@ -219,3 +219,13 @@ test('pickCriticForShow: regional bylines carry no date (BRO-7262)', () => {
   assert.deepEqual(pickCriticForShow(twoUndated, 'The Ask'), { critic: 'Michael Dale' });
   assert.deepEqual(pickCriticForShow(twoUndated, 'Nope'), { skip: 'multi-review-page' });
 });
+
+test('pickCriticForShow: regional byline without "Theatre" (ch944 shape, BRO-7262)', () => {
+  // The live page, trimmed: the byline follows the venue line and reads "Review by {Critic}".
+  const ch944 = '<p><font size="+2"><b>Adirondack Chair Circle</b></font><br><font size="+1" class="font-center">Steppenwolf Theatre<br> </font>'
+    + 'Review by Karen Topham </p><p><font size="-1">Also see Christine\'s review of <a href="ch943.html"><i>King Hedley II</i></a></font></p><p>text';
+  assert.deepEqual(pickCriticForShow(ch944, 'Adirondack Chair Circle'), { critic: 'Karen Topham' });
+  // Prose is not a byline: lower-case "review by", or a name that does not start with a capital.
+  assert.deepEqual(pickCriticForShow('<p>As a review by the Times put it, the play drags.</p>', 'X'), { skip: 'no-byline' });
+  assert.deepEqual(pickCriticForShow('<p>Review by the Times, which hated it.</p>', 'X'), { skip: 'no-byline' });
+});

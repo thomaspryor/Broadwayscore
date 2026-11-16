@@ -153,4 +153,25 @@ describe('article-extractor: talkinbroadway.com', () => {
     assert.ok(text.includes('sprawling family drama'));
     assert.ok(!text.includes('Sound Advice Weekly'));
   });
+
+  test('regional page: undated "Review by" byline with no "Theatre" (ch944 shape, BRO-7262)', () => {
+    const reviewBody = 'Steppenwolf stages a quiet, sharp new play about four friends. '.repeat(12);
+    const html =
+      '<html><body>' + NEWSLETTER_CHROME +
+      '<p><font size="+2"><b>Adirondack Chair Circle</b></font><br><font size="+1" class="font-center">Steppenwolf Theatre<br> </font>' +
+      'Review by Karen Topham </p><p><font size="-1">Also see the review of <a href="ch943.html"><i>King Hedley II</i></a></font></p>' +
+      `<p>${reviewBody}</p>` +
+      '</body></html>';
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text, 'should extract review text');
+    assert.ok(text.startsWith('Review by Karen Topham'), text.slice(0, 80));
+    assert.ok(text.includes('four friends'));
+    assert.ok(!text.includes('Sound Advice'), 'newsletter chrome excluded');
+  });
+
+  test('regional page: prose "review by" is not a byline', () => {
+    const html = '<html><body>' + NEWSLETTER_CHROME +
+      '<p>As a review by the Times put it, the play drags. ' + 'More prose here. '.repeat(30) + '</p></body></html>';
+    assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
+  });
 });
