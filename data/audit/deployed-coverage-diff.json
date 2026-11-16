@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-16T06:37:59.139Z",
+  "generatedAt": "2026-11-16T07:51:46.478Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 328,
-  "clean": 327,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "openingDate": "2026-11-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 87.25 vs local 87.02 (Δ0.23)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-11-16T04:32:13.322Z"
-    }
-  ],
+  "clean": 328,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
