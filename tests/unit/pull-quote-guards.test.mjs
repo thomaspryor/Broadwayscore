@@ -821,3 +821,28 @@ describe('hasMidSentencePivot: corrective "not X, but Y"', () => {
     assert.equal(hasMidSentencePivot('It is not only funny, but also moving, but the book sags.'), true);
   });
 });
+
+// BRO-7598 ship-check: per-but correction check and single-sentence expansion.
+describe('BRO-7598 review follow-ups', () => {
+  const { expandToSentenceStart } = require('../../scripts/lib/pull-quote-guards.js');
+  test('a real pivot cannot borrow a later correction', () => {
+    assert.equal(hasMidSentencePivot('Overlong, but not dull, but also thrilling.'), true);
+  });
+  test('concessions and "but also not" stay pivots', () => {
+    assert.equal(hasMidSentencePivot('It isn’t flawless, but to our delight it soars.'), true);
+    assert.equal(hasMidSentencePivot('It isn’t perfect, but to the cast’s credit it soars.'), true);
+    assert.equal(hasMidSentencePivot('Not a masterpiece, but to say so misses the point.'), true);
+    assert.equal(hasMidSentencePivot('It is not perfect, but also not bad.'), true);
+  });
+  test('"I refer not to X, but to Y" is a correction', () => {
+    assert.equal(hasMidSentencePivot('The national pastime: I refer not to baseball, but to the acquisition of real estate.'), false);
+  });
+  test('a quote that runs past the sentence stop is not expanded', () => {
+    const src = 'A playwright isn’t there to judge, but to render life, as Mr. Norris so superbly does in this play. It is great.';
+    assert.equal(expandToSentenceStart('Mr. Norris so superbly does in this play. It is great.', src), null);
+  });
+  test('a dangling opening quote mark is dropped from the expansion', () => {
+    const src = 'Intro line here.\n“The writing is sharp and the staging is clean, as Mr. Norris so superbly shows in this play. And then more,” she said.';
+    assert.equal(expandToSentenceStart('Mr. Norris so superbly shows in this play.', src), 'The writing is sharp and the staging is clean, as Mr. Norris so superbly shows in this play.');
+  });
+});

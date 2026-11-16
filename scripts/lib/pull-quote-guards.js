@@ -81,8 +81,20 @@ function isHedgeOpener(quote) {
 // correction when the same clause before it carries a negation and "but" is
 // followed by a parallel phrase (to / also / rather / instead), never by a new
 // subject: "It isn't perfect, but it is fun" still trips the guard.
-// "but to its credit" / "but to be fair" are concessions, so they stay pivots.
-const CORRECTIVE_BUT_RE = /(?:\bnot|\bnever|n['\u2019]t)\b[^.!?;:,]*(?:,[^.!?;:,]*)?,\s+but\s+(?:to(?!\s+(?:its|his|her|their|this|my|me|us|be\s+(?:fair|sure|honest)|judge)\b)|also|rather|instead)\b/i;
+// The check is per ", but": the clause before THIS but (back to the previous
+// comma or sentence stop) must hold the negation, and the words right after it
+// must be a parallel phrase. So "Overlong, but not dull, but also thrilling"
+// still trips on its first but. Concessions ("but to its credit", "but to our
+// delight", "but to this critic", "but to judge by", "but to say so") and
+// "but also not" stay pivots.
+const CORRECTIVE_NEGATION_RE = /(?:\bnot|\bnever|n['\u2019]t)\b/i;
+const CORRECTIVE_FOLLOW_RE = /^(?:to\b(?!\s+(?:its|his|her|their|this|my|me|us|say|judge|be\s+(?:fair|sure|honest))\b)(?!(?:\s+\S+){0,3}?\s+(?:credit|delight|surprise|dismay|relief|chagrin|mind|eyes?|ears?)\b)|also\b(?!\s+not\b)|rather\b|instead\b)/i;
+
+function isCorrectiveBut(quote, butIndex, afterBut) {
+  const clause = quote.slice(0, butIndex).split(/[.!?;:,]/).pop();
+  if (!CORRECTIVE_NEGATION_RE.test(clause)) return false;
+  return CORRECTIVE_FOLLOW_RE.test(quote.slice(afterBut));
+}
 
 function hasMidSentencePivot(quote) {
   if (!quote || typeof quote !== 'string') return false;
@@ -90,12 +102,7 @@ function hasMidSentencePivot(quote) {
   let m;
   while ((m = re.exec(quote)) !== null) {
     if (m[1].toLowerCase() !== 'but') return true;
-    // Is this ", but" the tail of a "not X, but to/also Y" correction?
-    const end = m.index + m[0].length;
-    const after = quote.slice(end, end + 24);
-    const head = quote.slice(0, end) + after;
-    const corrective = CORRECTIVE_BUT_RE.exec(head);
-    if (!corrective || corrective.index + corrective[0].length < end) return true;
+    if (!isCorrectiveBut(quote, m.index, m.index + m[0].length + 1)) return true;
   }
   return false;
 }
@@ -851,11 +858,18 @@ function expandToSentenceStart(quote, fullText, { maxLen = MAX_QUOTE_LENGTH } = 
   const si = sentenceIndexAt(list, at);
   const sentence = list[si];
   // The quote must end where the sentence ends (closing marks aside).
+  // The quote must end inside this one sentence, or the expansion would drop
+  // whatever it carried past the sentence stop.
+  if (at - sentence.start + q.length > sentence.norm.length) return null;
   const tail = sentence.norm.slice(at - sentence.start + q.length);
   if (!/^['")\]]*$/.test(tail)) return null;
   if (at === sentence.start || sentence.raw.length > maxLen) return null;
   if (!/[.!?]["'”’)\]]*$/.test(sentence.raw) || SNAP_CHROME_RE.test(sentence.raw)) return null;
-  return sentence.raw;
+  // A sentence that opens a quotation closed in a later sentence would ship
+  // with a dangling opening mark; drop it.
+  const raw = sentence.raw.trim();
+  if (/^[“"]/.test(raw) && !/[”"]/.test(raw.slice(1))) return raw.slice(1);
+  return raw;
 }
 
 // Anchors are short word runs from the start and end of the quote; a few
