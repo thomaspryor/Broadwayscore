@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T16:29:20.880Z",
+  "timestamp": "2026-11-16T16:43:26.452Z",
   "stats": {
-    "totalReviews": 82092,
-    "alreadyFlagged": 22472,
+    "totalReviews": 82095,
+    "alreadyFlagged": 22473,
     "dateGuardCatches": 222,
-    "directorMismatch": 3713,
-    "tvFilmSignals": 2328,
+    "directorMismatch": 3714,
+    "tvFilmSignals": 2329,
     "londonSignals": 3774,
     "offBroadwaySignals": 755,
     "yearMismatch": 374,
-    "noPublishDate": 8181
+    "noPublishDate": 8180
   },
   "findings": [
     {
@@ -54883,6 +54883,19 @@
     },
     {
       "showId": "present-laughter-2017",
+      "file": "observer--john-bonazzo.json",
+      "publishDate": "2017-03-29",
+      "url": "https://observer.com/2017/03/cobie-smulders-present-laughter-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "present-laughter-2017",
       "file": "theater-life--david-sheward.json",
       "score": 74,
       "publishDate": "2017-04-06",
@@ -62940,6 +62953,20 @@
       "score": 96,
       "publishDate": "2017-02-24T10:35:29",
       "url": "https://thefrontrowcenter.com/2017/02/sunday-park-george/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 91,
+      "publishDate": "February 23rd, 2017",
+      "url": "http://www.hollywoodreporter.com/review/sunday-in-the-park-with-george-theater-979116?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Freviews%2Ftheater+%28The+Hollywood+Reporter+-+Theater+Reviews%29",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
