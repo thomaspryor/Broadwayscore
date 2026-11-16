@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-16T16:01:28.510Z",
-  "windowDays": 1095,
-  "targets": 203,
-  "auditedThisRun": 26,
-  "carriedForward": 2710,
+  "generatedAt": "2026-11-16T16:28:25.966Z",
+  "windowDays": 21,
+  "targets": 4,
+  "auditedThisRun": 4,
+  "carriedForward": 2732,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 646,
-    "missingCurrentRun": 1313,
+    "missingCurrentRun": 1316,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 885,
     "totalRecoverable": 51,
@@ -16,7 +16,7 @@
     "humanExcluded": 18,
     "automatedExcluded": 977,
     "automatedExcludedListed": 713,
-    "priorProductionCitations": 8535
+    "priorProductionCitations": 8533
   },
   "results": [
     {
@@ -125197,12 +125197,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dolly Parton’s Smoky Mountain Christmas Carol\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dolly Parton’s Smoky Mountain Christmas Carol\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dolly Parton’s Smoky Mountain Christmas Carol\" review american",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dolly Parton’s Smoky Mountain Christmas Carol North American Tour review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dolly Parton’s Smoky Mountain Christmas Carol North American Tour review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dolly Parton’s Smoky Mountain Christmas Carol North American Tour review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 10,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 6,
+          "non-review-path": 1,
+          "bare-host": 1,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -125278,7 +125341,7 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-16T13:30:55.161Z"
+      "computedAt": "2026-11-16T16:28:25.966Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -126718,44 +126781,44 @@
       "category": "broadway",
       "previewsStartDate": "2026-10-22",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf",
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway",
+        "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate",
         "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115",
-        "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115",
-        "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+        "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
       ],
       "aggregatorListedUrls": [
-        "https://www.chicagoreader.com/chicago/downstate-steppenwolf-theatre-bruce-norris/Content",
-        "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-downstate-steppenwolf-review-1001-story.html",
-        "https://www.dailyherald.com/entlife/20181004/steppenwolfs-provoking-downstate-offers-an-unflinching-look-at-predators",
-        "https://www.newcitystage.com/2018/10/03/i-believe-you-bruce-a-review-of-downstate-at-steppenwolf-theatre-company/",
-        "https://www.nytimes.com/2018/10/03/theater/downstate-review-bruce-norris-steppenwolf.html",
-        "https://www.nytimes.com/2022/11/15/theater/downstate-review.html",
-        "https://www.vulture.com/2022/11/theater-review-bruce-norris-downstate-playwrights-horizons.html",
-        "https://nystagereview.com/2022/11/15/downstate-bruce-norris-bold-unflinching-look-at-child-abusers/",
-        "https://www.thewrap.com/downstate-off-broadway-review-bruce-norris/",
-        "https://www.thedailybeast.com/why-downstate-is-new-yorks-most-controversial-must-see-play",
-        "https://cititour.com/NYC_Broadway/Downstate/1110",
-        "https://newyorktheater.me/2022/11/15/downstate-review-a-contrarians-play-about-pedophiles-and-punishment/",
-        "https://www.timeout.com/newyork/theater/downstate-review-off-broadway-bruce-norris",
-        "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
-        "https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
-        "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
-        "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+        "https://cititour.com/NYC_Broadway/Downstate/1412",
+        "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
         "https://deadline.com/2026/11/downstate-broadway-review-1237220229/",
-        "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
-        "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/",
+        "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+        "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
+        "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
+        "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
         "https://nypost.com/2026/11/15/entertainment/downstate-review-controversial-drama-is-the-best-new-play-on-broadway/",
         "https://nystagereview.com/2026/11/15/downstate-the-disturbing-humanity-of-the-inhuman/",
         "https://nystagereview.com/2026/11/15/downstate-real-life-realism/",
-        "https://cititour.com/NYC_Broadway/Downstate/1412",
-        "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
-        "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
-        "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
+        "https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
+        "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/",
+        "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
         "https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broadway-2d6ef23c",
+        "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
         "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/",
+        "https://cititour.com/NYC_Broadway/Downstate/1110",
+        "https://www.thedailybeast.com/why-downstate-is-new-yorks-most-controversial-must-see-play",
+        "https://www.vulture.com/2022/11/theater-review-bruce-norris-downstate-playwrights-horizons.html",
+        "https://nypost.com/2022/11/15/shocking-downstate-is-the-seasons-best-play-so-far/",
+        "https://nystagereview.com/2022/11/15/downstate-bruce-norris-bold-unflinching-look-at-child-abusers/",
+        "https://newyorktheater.me/2022/11/15/downstate-review-a-contrarians-play-about-pedophiles-and-punishment/",
+        "https://www.newyorktheatreguide.com/reviews/downstate-off-broadway-review",
+        "https://www.nytimes.com/2022/11/15/theater/downstate-review.html",
+        "https://www.theatermania.com/off-broadway/reviews/review-downstate-offers-sympathy-for-sex-offenders_94562.html",
+        "https://www.timeout.com/newyork/theater/downstate-review-off-broadway-bruce-norris",
+        "https://www.thewrap.com/downstate-off-broadway-review-bruce-norris/",
         "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski",
-        "https://www.vulture.com/theater-review-downstate-bruce-norris-broadway",
+        "https://deadline.com/2026/11/downstate-broadway-review-1237220229",
+        "https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/",
         "https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672",
+        "https://www.vulture.com/theater-review-downstate-bruce-norris-broadway",
         "https://deadline.com/downstate-broadway-scott-rudin-barry-diller-1237070817",
         "https://www.broadwaynews.com/bruce-norris-downstate-delays-first-broadway-preview-again-due-to-illness/",
         "https://www.theatermania.com/news/bruce-norriss-downstate-sets-broadway-premiere-with-k-todd-freeman-and-francis-guinan_1852625/",
@@ -126766,49 +126829,29 @@
       "inReviewsJson": 18,
       "missing": [
         {
-          "url": "https://www.newcitystage.com/2018/10/03/i-believe-you-bruce-a-review-of-downstate-at-steppenwolf-theatre-company/",
-          "host": "newcitystage.com",
-          "knownOutletId": "new-city-stage",
+          "url": "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.nytimes.com/2018/10/03/theater/downstate-review-bruce-norris-steppenwolf.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://cititour.com/NYC_Broadway/Downstate/1110",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2022/11/15/downstate-bruce-norris-bold-unflinching-look-at-child-abusers/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/downstate-off-broadway-review-bruce-norris/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "sources": [
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
+            },
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115"
@@ -126824,6 +126867,10 @@
           "sources": [
             {
               "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
+            },
+            {
+              "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115"
             }
           ],
@@ -126831,10 +126878,27 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://cititour.com/NYC_Broadway/Downstate/1110",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
+          "url": "https://nypost.com/2022/11/15/shocking-downstate-is-the-seasons-best-play-so-far/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
           "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2022/11/15/downstate-bruce-norris-bold-unflinching-look-at-child-abusers/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
+            },
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115"
@@ -126850,7 +126914,24 @@
           "sources": [
             {
               "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
+            },
+            {
+              "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/off-broadway/reviews/review-downstate-offers-sympathy-for-sex-offenders_94562.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
             }
           ],
           "priorRun": true,
@@ -126863,6 +126944,10 @@
           "sources": [
             {
               "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
+            },
+            {
+              "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115"
             }
           ],
@@ -126870,13 +126955,31 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
+          "url": "https://www.thewrap.com/downstate-off-broadway-review-bruce-norris/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
             }
           ]
         },
@@ -126917,9 +127020,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.chicagoreader.com/chicago/downstate-steppenwolf-theatre-bruce-norris/Content",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
+          "url": "https://www.newyorktheatreguide.com/reviews/downstate-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -126927,83 +127030,23 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "chicago-reader--tony-adler.json",
+              "file": "nytg--joe-dziemianowicz.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.chicagoreader.com/chicago/downstate-steppenwolf-theatre-bruce-norris/Content?oid=59107472"
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/downstate-off-broadway-review"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate"
             }
-          ],
-          "reverify": false
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-downstate-steppenwolf-review-1001-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chicagotribune--chris-jones.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-downstate-steppenwolf-review-1001-story.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
-            }
-          ],
-          "reverify": false
-        },
-        {
-          "url": "https://www.dailyherald.com/entlife/20181004/steppenwolfs-provoking-downstate-offers-an-unflinching-look-at-predators",
-          "host": "dailyherald.com",
-          "knownOutletId": "daily-herald",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "daily-herald--barbara-vitello.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailyherald.com/entlife/20181004/steppenwolfs-provoking-downstate-offers-an-unflinching-look-at-predators"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
-            }
-          ],
           "reverify": false
         },
         {
@@ -127097,27 +127140,96 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Downstate\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Downstate\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Downstate\" review booth",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Downstate\" Norris review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Downstate Booth Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Downstate Booth Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Downstate Booth Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 7,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 795,
+        "count": 794,
         "byReason": {
-          "non-review-host": 71,
-          "roundup-page": 2,
-          "aggregator-internal-nav": 530,
+          "aggregator-internal-nav": 523,
           "not-http-url": 148,
-          "production-database-listing": 21,
+          "production-database-listing": 20,
           "aggregator-section-root": 19,
+          "non-review-host": 76,
           "non-stage-review": 2,
-          "podcast-episode": 2
+          "podcast-episode": 2,
+          "roundup-page": 2,
+          "show-hub": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf",
-          "publishDate": "2018-10-04"
+          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate",
+          "publishDate": "2022-11-16"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115",
@@ -127128,29 +127240,8 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.newcitystage.com/2018/10/03/i-believe-you-bruce-a-review-of-downstate-at-steppenwolf-theatre-company/",
-          "host": "newcitystage.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2018/10/03/theater/downstate-review-bruce-norris-steppenwolf.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2022/11/15/downstate-bruce-norris-bold-unflinching-look-at-child-abusers/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thewrap.com/downstate-off-broadway-review-bruce-norris/",
-          "host": "thewrap.com",
+          "url": "https://cititour.com/NYC_Broadway/Downstate/1110",
+          "host": "cititour.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -127163,8 +127254,15 @@
           "censusGateOn": true
         },
         {
-          "url": "https://cititour.com/NYC_Broadway/Downstate/1110",
-          "host": "cititour.com",
+          "url": "https://nypost.com/2022/11/15/shocking-downstate-is-the-seasons-best-play-so-far/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2022/11/15/downstate-bruce-norris-bold-unflinching-look-at-child-abusers/",
+          "host": "nystagereview.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -127177,8 +127275,22 @@
           "censusGateOn": true
         },
         {
+          "url": "https://www.theatermania.com/off-broadway/reviews/review-downstate-offers-sympathy-for-sex-offenders_94562.html",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://www.timeout.com/newyork/theater/downstate-review-off-broadway-bruce-norris",
           "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/downstate-off-broadway-review-bruce-norris/",
+          "host": "thewrap.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -127186,19 +127298,34 @@
       ],
       "ingestResults": [
         {
+          "url": "https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "old-production-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "downstate-2026: https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/ dated 2022-11-15, over a year before this run; refused as the earlier production's review. Expected, no action needed."
+        },
+        {
           "url": "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/",
           "host": "washingtonpost.com",
           "outletId": "washpost",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "old-production-review",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing old-production review: https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/ (dated 2022-11-25, over a year before downstate-2026 starts)\n\n❌ Write-guard refused the write — nothing changed on disk (oldProductionReview)"
+          "reason": "downstate-2026: https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/ dated 2022-11-25, over a year before this run; refused as the earlier production's review. Expected, no action needed."
         },
         {
           "url": "https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672",
@@ -127243,6 +127370,13 @@
             "url": "https://www.washingtonpost.com/theater-dance/2022/11/23/downstate-bruce-norris-pedophiles/"
           },
           {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/"
+          },
+          {
             "outletId": "deadline",
             "outlet": "deadline",
             "critic": "Unknown",
@@ -127281,38 +127415,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2022/11/15/theater/downstate-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T13:30:55.161Z"
-          },
-          {
-            "url": "https://www.vulture.com/2022/11/theater-review-bruce-norris-downstate-playwrights-horizons.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T13:30:55.161Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
-            "outletId": "nytimes.com",
+            "url": "https://cititour.com/NYC_Broadway/Downstate/1412",
+            "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
           {
-            "url": "https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T03:22:57.839Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T03:22:57.839Z"
-          },
-          {
-            "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
-            "outletId": "exeuntnyc.com",
+            "url": "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
+            "outletId": "chicagotribune.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
@@ -127323,14 +127433,26 @@
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
           {
-            "url": "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
-            "outletId": "thewrap.com",
+            "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+            "outletId": "exeuntnyc.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/",
-            "outletId": "theatermania.com",
+            "url": "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
@@ -127353,26 +127475,20 @@
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
           {
-            "url": "https://cititour.com/NYC_Broadway/Downstate/1412",
-            "outletId": "cititour.com",
+            "url": "https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
+            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://www.theatermania.com/news/review-downstate-is-the-most-dangerous-play-on-broadway_1859448/",
+            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T03:22:57.839Z"
-          },
-          {
-            "url": "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
-            "outletId": "chicagotribune.com",
+            "url": "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
@@ -127383,10 +127499,34 @@
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
           },
           {
+            "url": "https://www.thewrap.com/creative-content/theater/downstate-broadway-review-bruce-norris-proves-again-that-hes-a-great-playwright/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://www.vulture.com/2022/11/theater-review-bruce-norris-downstate-playwrights-horizons.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T13:30:55.161Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2022/11/15/theater/downstate-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T13:30:55.161Z"
+          },
+          {
             "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T10:22:47.131Z"
+          },
+          {
+            "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T16:28:25.966Z"
           },
           {
             "url": "https://www.vulture.com/theater-review-downstate-bruce-norris-broadway",
@@ -127400,6 +127540,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-16T03:22:57.839Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-16T16:28:25.966Z"
           },
           {
             "url": "https://deadline.com/downstate-broadway-scott-rudin-joe-mantello-1237062672",
@@ -127440,9 +127587,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 15,
-        "candidateCount": 20
+        "candidateCount": 21
       },
-      "computedAt": "2026-11-16T14:47:12.860Z"
+      "computedAt": "2026-11-16T16:28:25.966Z"
     },
     {
       "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
@@ -226373,15 +226520,40 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thestage.co.uk/jenufa-royal-opera-house-london-claus-guth-janacek",
-        "https://theartsdesk.com/opera/jenufa-royal-opera-review-janacek-scours-soul-again-compelling-new-take",
         "https://bachtrack.com/jenufa-metropolitan-opera-16-november-2026",
-        "https://theartsdesk.com/opera/jenufa-royal-opera-review-electrifying-details-undermined-dead-space"
+        "https://parterre.com/broadcast/109870/jenufa/",
+        "https://theartsdesk.com/opera/jenufa-royal-opera-review-electrifying-details-undermined-dead-space",
+        "https://www.thestage.co.uk/jenufa-royal-opera-house-london-claus-guth-janacek",
+        "https://theartsdesk.com/opera/jenufa-royal-opera-review-janacek-scours-soul-again-compelling-new-take"
       ],
       "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://bachtrack.com/jenufa-metropolitan-opera-16-november-2026",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://parterre.com/broadcast/109870/jenufa/",
+          "host": "parterre.com",
+          "knownOutletId": "parterre-box",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.thestage.co.uk/jenufa-royal-opera-house-london-claus-guth-janacek",
           "host": "thestage.co.uk",
@@ -226398,18 +226570,6 @@
           "url": "https://theartsdesk.com/opera/jenufa-royal-opera-review-janacek-scours-soul-again-compelling-new-take",
           "host": "theartsdesk.com",
           "knownOutletId": "artsdesk",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://bachtrack.com/jenufa-metropolitan-opera-16-november-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
           "serpCensus": true,
           "sources": [
             {
@@ -226454,38 +226614,87 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Jenůfa\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Jenůfa\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Jenůfa\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Jenůfa Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Jenůfa Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Jenůfa Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 12,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 4,
+          "write-path-blocked": 2,
+          "census-junk-host": 3,
+          "no-review-evidence": 1,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.thestage.co.uk/jenufa-royal-opera-house-london-claus-guth-janacek",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
+          "url": "https://parterre.com/broadcast/109870/jenufa/",
+          "host": "parterre.com",
+          "outletId": "parterre-box",
           "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thestage.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
-        {
-          "url": "https://theartsdesk.com/opera/jenufa-royal-opera-review-janacek-scours-soul-again-compelling-new-take",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk",
-          "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -226493,7 +226702,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/jenufa-off-broadway-2026/artsdesk--david-nice.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+          "reason": null
         },
         {
           "url": "https://bachtrack.com/jenufa-metropolitan-opera-16-november-2026",
@@ -226509,12 +226718,56 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=bachtrack.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=bachtrack.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch failed: no usa"
+        },
+        {
+          "url": "https://www.thestage.co.uk/jenufa-royal-opera-house-london-claus-guth-janacek",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thestage.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=thestage.co.uk): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html lang=\"En\"> \n<head>\n<!-- Affino, www.affino.com -->\n<meta charset=\"UTF-8\">\n<link rel=\"preconnect\" href=\"https://d3s3zh7icgjwgd.cloudfront.net\">\n<link rel=\"dns-prefetch\" href=\"//d3\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+        },
+        {
+          "url": "https://theartsdesk.com/opera/jenufa-royal-opera-review-janacek-scours-soul-again-compelling-new-take",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/jenufa-off-broadway-2026/artsdesk--david-nice.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/jenufa-metropolitan-opera-16-november-2026"
+          },
+          {
+            "outletId": "parterre-box",
+            "outlet": "parterre-box",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://parterre.com/broadcast/109870/jenufa/"
+          },
           {
             "outletId": "thestage",
             "outlet": "thestage",
@@ -226530,13 +226783,6 @@
             "url": "https://theartsdesk.com/opera/jenufa-royal-opera-review-janacek-scours-soul-again-compelling-new-take"
           },
           {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/jenufa-metropolitan-opera-16-november-2026"
-          },
-          {
             "outletId": "artsdesk",
             "outlet": "artsdesk",
             "critic": "Unknown",
@@ -226546,6 +226792,20 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://bachtrack.com/jenufa-metropolitan-opera-16-november-2026",
+            "outletId": "bachtrack",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-16T01:36:25.439Z"
+          },
+          {
+            "url": "https://parterre.com/broadcast/109870/jenufa/",
+            "outletId": "parterre-box",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-16T16:28:25.966Z"
+          },
           {
             "url": "https://www.thestage.co.uk/jenufa-royal-opera-house-london-claus-guth-janacek",
             "outletId": "thestage",
@@ -226561,13 +226821,6 @@
             "firstSeenAt": "2026-11-16T09:10:59.401Z"
           },
           {
-            "url": "https://bachtrack.com/jenufa-metropolitan-opera-16-november-2026",
-            "outletId": "bachtrack",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-16T01:36:25.439Z"
-          },
-          {
             "url": "https://theartsdesk.com/opera/jenufa-royal-opera-review-electrifying-details-undermined-dead-space",
             "outletId": "artsdesk",
             "state": "IN_FLIGHT",
@@ -226578,9 +226831,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-16T14:47:12.860Z"
+      "computedAt": "2026-11-16T16:28:25.966Z"
     },
     {
       "showId": "jerker-off-west-end-2026",
@@ -371297,12 +371550,26 @@
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.timeout.com/london/theatre/santas-first-christmas",
+        "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
         "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048"
       ],
       "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
+          "host": "primarytimes.co.uk",
+          "knownOutletId": "primarytimes",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048",
           "host": "primarytimes.co.uk",
@@ -371364,17 +371631,106 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Santa's First Christmas\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Santa's First Christmas\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Santa's First Christmas\" review unicorn",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Santa's First Christmas Unicorn Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Santa's First Christmas Unicorn Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Santa's First Christmas Unicorn Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 9,
+        "byReason": {
+          "non-review-host": 1,
+          "non-stage-review": 2,
+          "show-hub": 1,
+          "show-listing-page": 1,
+          "census-junk-host": 3,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://www.timeout.com/london/theatre/santas-first-christmas",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-10-11"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
+          "host": "primarytimes.co.uk",
+          "outletId": "primarytimes",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+        },
         {
           "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048",
           "host": "primarytimes.co.uk",
@@ -371400,11 +371756,31 @@
             "outlet": "primarytimes",
             "critic": "Unknown",
             "stars": null,
+            "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208"
+          },
+          {
+            "outletId": "primarytimes",
+            "outlet": "primarytimes",
+            "critic": "Unknown",
+            "stars": null,
             "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.timeout.com/london/theatre/santas-first-christmas",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T16:28:25.966Z"
+          },
+          {
+            "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
+            "outletId": "primarytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-16T16:28:25.966Z"
+          },
           {
             "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048",
             "outletId": "primarytimes",
@@ -371414,11 +371790,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 1
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/london/theatre/santas-first-christmas",
+            "host": "timeout.com",
+            "reason": "page-date-before-run"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-16T13:30:55.161Z"
+      "computedAt": "2026-11-16T16:28:25.966Z"
     },
     {
       "showId": "saturday-church-off-broadway-2025",
