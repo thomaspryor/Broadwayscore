@@ -42178,13 +42178,13 @@
       "title": "Unverified revival on Cloud 9",
       "firstSeen": "2026-11-11T10:26:38.949Z",
       "incidentOpenedAt": "2026-11-11T10:26:38.949Z",
-      "lastSeen": "2026-11-16T10:54:11.181Z",
+      "lastSeen": "2026-11-16T11:20:16.348Z",
       "lastNotifiedAt": "2026-11-11T10:26:38.949Z",
       "lastSurfacedAt": "2026-11-11T10:26:38.949Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 85
+      "silentRefires": 86
     },
     "pending-unrecoverable:cloud-9-west-end-2026": {
       "status": "resolved",
@@ -42377,13 +42377,13 @@
       "title": "Content mismatch on Cloud 9",
       "firstSeen": "2026-11-11T17:40:18.493Z",
       "incidentOpenedAt": "2026-11-11T17:40:18.493Z",
-      "lastSeen": "2026-11-16T10:54:11.159Z",
+      "lastSeen": "2026-11-16T11:20:16.331Z",
       "lastNotifiedAt": "2026-11-11T17:40:18.493Z",
       "lastSurfacedAt": "2026-11-11T17:40:18.493Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 81
+      "silentRefires": 82
     },
     "broadcast-gate:checklist:cloud-9-west-end-2026": {
       "status": "open",
@@ -44174,13 +44174,13 @@
       "title": "Unhandled CV.wrongProduction on Downstate",
       "firstSeen": "2026-11-16T06:14:33.719Z",
       "incidentOpenedAt": "2026-11-16T06:14:33.719Z",
-      "lastSeen": "2026-11-16T10:04:16.587Z",
+      "lastSeen": "2026-11-16T11:20:17.541Z",
       "lastNotifiedAt": "2026-11-16T06:14:33.719Z",
       "lastSurfacedAt": "2026-11-16T06:14:33.719Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "feedback-outcomes:2026-11-16T06:04:18.227819+00:00": {
       "status": "open",
@@ -44202,9 +44202,37 @@
       "title": "Unverified revival on Downstate",
       "firstSeen": "2026-11-16T10:04:16.608Z",
       "incidentOpenedAt": "2026-11-16T10:04:16.608Z",
-      "lastSeen": "2026-11-16T10:04:16.608Z",
+      "lastSeen": "2026-11-16T11:20:17.556Z",
       "lastNotifiedAt": "2026-11-16T10:04:16.608Z",
       "lastSurfacedAt": "2026-11-16T10:04:16.608Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "opening-night-remediation-exhausted-t1-missing:downstate-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on downstate-2026",
+      "firstSeen": "2026-11-16T11:20:17.571Z",
+      "incidentOpenedAt": "2026-11-16T11:20:17.571Z",
+      "lastSeen": "2026-11-16T11:20:17.571Z",
+      "lastNotifiedAt": "2026-11-16T11:20:17.571Z",
+      "lastSurfacedAt": "2026-11-16T11:20:17.571Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "broadcast-gate:checklist:cloud-9-west-end-2026,downstate-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Opening-night email draft on hold: a quality check flagged a review",
+      "firstSeen": "2026-11-16T11:20:17.759Z",
+      "incidentOpenedAt": "2026-11-16T11:20:17.759Z",
+      "lastSeen": "2026-11-16T11:20:17.759Z",
+      "lastNotifiedAt": "2026-11-16T11:20:17.759Z",
+      "lastSurfacedAt": "2026-11-16T11:20:17.759Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
