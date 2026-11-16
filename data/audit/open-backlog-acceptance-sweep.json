@@ -1,18 +1,24 @@
 {
-  "generatedAt": "2026-11-16T00:43:01.144Z",
+  "generatedAt": "2026-11-16T10:05:37.687Z",
   "shadow": true,
-  "checkoutSha": "acf4c6533719ff6bafaab63da5b044be0dc26e50",
-  "totalCandidates": 411,
-  "eligibleCandidates": 124,
+  "checkoutSha": "2b0af786166e13c53da1fd95b25aa9606090f867",
+  "totalCandidates": 397,
+  "eligibleCandidates": 122,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
     "pass": 15,
-    "fail": 11,
-    "unverifiable": 4
+    "fail": 13,
+    "unverifiable": 2
   },
   "alreadyDone": [
+    {
+      "id": "BRO-7579",
+      "name": "Recheck 2026-11-16: 10 done claims no longer hold on main",
+      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 Z2FwOmFkaXJvbmRhY2stY2hhaXItY2lyY2xlLXJlZ2lvbmFsLTIwMjYvdGFsa2luYnJvYWR3YXktLXVua25vd24uanNvbg",
+      "detail": null
+    },
     {
       "id": "BRO-7554",
       "name": "Audit Mac-routed work that stalls; move cloud-capable work to cloud",
@@ -44,9 +50,9 @@
       "detail": null
     },
     {
-      "id": "BRO-7542",
-      "name": "workflow-publish-gate logicalLines() treats a quote inside a # comment as opening a string, hiding later publisher steps",
-      "verifyCmd": "node --test tests/unit/update-show-status-publish-gate.test.mjs",
+      "id": "BRO-7538",
+      "name": "Teach trim-multi-show to split HuffPost Finkle First Nighter asterisk-divider columns (5 shows scored on whole multi-show text)",
+      "verifyCmd": "node --test tests/unit/trim-multi-show.test.mjs",
       "detail": null
     },
     {
@@ -92,12 +98,6 @@
       "detail": null
     },
     {
-      "id": "BRO-7427",
-      "name": "The Good Thief (Irish Rep): opening date is Nov 17, not Nov 12",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-good-thief-off-broadway-2026",
-      "detail": null
-    },
-    {
       "id": "BRO-7417",
       "name": "Social autopost: owner-approved briefs bypass the notability gate (BRO-7413 follow-up)",
       "verifyCmd": "node --test scripts/social-autopost.test.mjs",
@@ -105,12 +105,6 @@
     }
   ],
   "failing": [
-    {
-      "id": "BRO-7579",
-      "name": "Recheck 2026-11-16: 10 done claims no longer hold on main",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 Z2FwOmFkaXJvbmRhY2stY2hhaXItY2lyY2xlLXJlZ2lvbmFsLTIwMjYvdGFsa2luYnJvYWR3YXktLXVua25vd24uanNvbg",
-      "detail": "[check-alert-condition-absent] FAIL: \"gap:adirondack-chair-circle-regional-2026/talkinbroadway--unknown.json\" still firing — open, last fired 2026-11-10T01:31:11.630Z (143.2h ago, within 168h)"
-    },
     {
       "id": "BRO-7576",
       "name": "Root cause: \"LLM scoring daily spend over budget\" keeps coming back (3 cards in 30 days)",
@@ -121,13 +115,19 @@
       "id": "BRO-7575",
       "name": "Root cause: \"Corpus drift: review files with wrongProduction provenance but the flag dropped\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class review-files-wrongproduction-provenance-but-flag-dropped --quiet",
-      "detail": "FAIL: last case 10d ago, needs 21\n"
+      "detail": "FAIL: last case 11d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7574",
+      "name": "Root cause: first pass keeps missing one-minute-critic reviews (Off-Broadway, 3 shows in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-broadway-one-minute-critic --quiet",
+      "detail": "FAIL: last case 6d ago, needs 21\n"
     },
     {
       "id": "BRO-7506",
       "name": "Root cause: \"Live-data test failing: BRO-: repo Actions cache stays below the size that evicts the SERP\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class bro-repo-actions-cache-stays-below-size-evicts --quiet",
-      "detail": "FAIL: last case 10d ago, needs 21\n"
+      "detail": "FAIL: last case 11d ago, needs 21\n"
     },
     {
       "id": "BRO-7505",
@@ -163,33 +163,33 @@
       "id": "BRO-7436",
       "name": "Root cause: first pass keeps missing lighting-and-sound-america reviews (Off-Broadway, 3 shows in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-broadway-lighting-and-sound-america --quiet",
-      "detail": "FAIL: last case 6d ago, needs 21\n"
+      "detail": "FAIL: last case 7d ago, needs 21\n"
     },
     {
       "id": "BRO-7435",
       "name": "Root cause: first pass keeps missing theater-scene reviews (Off-Broadway, 4 shows in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-broadway-theater-scene --quiet",
-      "detail": "FAIL: last case 9d ago, needs 21\n"
+      "detail": "FAIL: last case 10d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7403",
+      "name": "Root cause: \"Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-ov\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class off-broadway-venue-complex-unlinked-bare-form-keyword --quiet",
+      "detail": "FAIL: last case 10d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7402",
+      "name": "Root cause: first pass keeps missing front-row-center reviews (Off-Broadway, 3 shows in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-broadway-front-row-center --quiet",
+      "detail": "FAIL: last case 11d ago, needs 21\n"
     }
   ],
   "unverifiable": [
-    {
-      "id": "BRO-7551",
-      "name": "Historical backfill never finishes: cursor wraps to a new cycle every pass (recurring cost check)",
-      "verifyCmd": "node --test tests/unit/historical-backfill-cycle-stop.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/historical-backfill-cycle-stop.test.mjs"
-    },
     {
       "id": "BRO-7550",
       "name": "Fetch Show Images: intermittent failure in auto-discovery step (5 of 30 runs)",
       "verifyCmd": "node --test tests/unit/fetch-show-images-flake.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/fetch-show-images-flake.test.mjs"
-    },
-    {
-      "id": "BRO-7538",
-      "name": "Teach trim-multi-show to split HuffPost Finkle First Nighter asterisk-divider columns (5 shows scored on whole multi-show text)",
-      "verifyCmd": "node --test tests/unit/trim-multi-show.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/trim-multi-show.test.mjs"
     },
     {
       "id": "BRO-7459",
@@ -199,6 +199,13 @@
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-7579",
+      "name": "Recheck 2026-11-16: 10 done claims no longer hold on main",
+      "branch": "land/bro-7579-recheck-fixes",
+      "sha": "a0be55fe10dbc51c96ab8144a137dbdae69e01b4",
+      "landedAt": "2026-11-16T02:21:17.301Z"
+    },
     {
       "id": "BRO-7554",
       "name": "Audit Mac-routed work that stalls; move cloud-capable work to cloud",
@@ -212,6 +219,20 @@
       "branch": "land/bro-7552-effect-gate",
       "sha": "6465215de50a64808fd3580e6b7e3ae821a126a7",
       "landedAt": "2026-11-15T23:38:06.843Z"
+    },
+    {
+      "id": "BRO-7545",
+      "name": "LBO roundup matching: Jesus Christ Superstar matched to 2026 Drury Lane id and rejected out-of-run; 'GRACE PREVADES' title typo",
+      "branch": "land/codex-bro-7545",
+      "sha": "1a3465e065dd9e73dedfdcab0938ddcbf17fd3e6",
+      "landedAt": "2026-11-16T04:31:32.441Z"
+    },
+    {
+      "id": "BRO-7538",
+      "name": "Teach trim-multi-show to split HuffPost Finkle First Nighter asterisk-divider columns (5 shows scored on whole multi-show text)",
+      "branch": "land/codex-bro-7538",
+      "sha": "17a5d71bfab8fa0ef6fb677bc399918cd38c75d6",
+      "landedAt": "2026-11-16T02:19:17.901Z"
     },
     {
       "id": "BRO-7534",
@@ -247,13 +268,6 @@
       "branch": "land/job/linear-BRO-7440-mwesb4m3",
       "sha": "0bf4c3af39a2b8d9b28a7156519bee15924046ca",
       "landedAt": "2026-11-13T10:12:25.414Z"
-    },
-    {
-      "id": "BRO-7427",
-      "name": "The Good Thief (Irish Rep): opening date is Nov 17, not Nov 12",
-      "branch": "land/bro-7427-good-thief-date",
-      "sha": "4a1928adaac57064ff24873c57232c71dd52ca7e",
-      "landedAt": "2026-11-13T04:30:02.461Z"
     },
     {
       "id": "BRO-7417",
