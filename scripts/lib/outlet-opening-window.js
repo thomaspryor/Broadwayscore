@@ -54,7 +54,7 @@ function selectWindowShows(allShows, now = Date.now(), { maxDaysPast = null } = 
 
 /** Shows inside the longest late-publisher window (superset of selectWindowShows). */
 function selectLateWindowShows(allShows, now = Date.now()) {
-  const max = Math.max(WINDOW_DAYS_PAST, ...Object.values(LATE_PUBLISHER_WINDOW_DAYS));
+  const max = Math.max(WINDOW_DAYS_PAST, ...Object.values(WINDOW_DAYS_BY_CATEGORY), ...Object.values(LATE_PUBLISHER_WINDOW_DAYS));
   return selectWindowShows(allShows, now, { maxDaysPast: max });
 }
 
