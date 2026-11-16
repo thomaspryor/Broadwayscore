@@ -40,6 +40,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { dropWrongProductionProvenance } = require('../lib/wrongproduction-provenance');
 
 const argv = process.argv.slice(2);
 const APPLY = argv.includes('--apply');
@@ -114,7 +115,7 @@ for (const c of candidates) {
   // 1. Clear the wrongProduction flag family.
   if (data.wrongProduction === true) {
     mutations.push('delete wrongProduction');
-    if (APPLY) delete data.wrongProduction;
+    if (APPLY) { delete data.wrongProduction; dropWrongProductionProvenance(data); }
   }
   if (data.wrongProductionNote !== undefined) {
     mutations.push('delete wrongProductionNote');

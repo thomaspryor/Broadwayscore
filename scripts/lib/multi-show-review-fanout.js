@@ -1224,9 +1224,13 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
     }
     delete out.roundupNote;
     delete out.roundupArticleReason;
-    delete out.wrongProduction;
-    delete out.wrongProductionReason;
-    dropWrongProductionProvenance(out);
+    // BRO-7575: a human-held flag ('manual' provenance) keeps both flag and
+    // trail; dropping only one half strands an orphan or erases the human verdict.
+    if (out.wrongProductionProvenance !== 'manual') {
+      delete out.wrongProduction;
+      delete out.wrongProductionReason;
+      dropWrongProductionProvenance(out);
+    }
     if (!humanVerdict && !out.wrongShowManualClear && !out.wrongShowOverride) { delete out.wrongShow; delete out.wrongShowReason; }
     delete out.wrongFullText;
     delete out.incompleteReason;

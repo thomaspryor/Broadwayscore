@@ -178,3 +178,25 @@ _test7575('BRO-7575: no scripts/ file deletes the wrongProduction flag and stran
   })(root);
   _assert7575.deepEqual(out, []);
 });
+
+_test7575('BRO-7575: lint catches bracket delete, comparison-line delete; mentions do not settle', () => {
+  const scan = (s) => _prov7575.scanFileForOrphaningClears(s, 'x.js').length;
+  _assert7575.equal(scan("delete d['wrongProduction'];\n"), 1);
+  _assert7575.equal(scan('if (d.wrongProduction === true) delete d.wrongProduction;\n'), 1);
+  _assert7575.equal(scan('if (!d.wrongProductionManualClear) delete d.wrongProduction;\n'), 1);
+  _assert7575.equal(scan("d.wrongProductionManualClear = true;\ndelete d.wrongProduction;\n"), 0);
+});
+
+_test7575('BRO-7575: error-page void leaves no orphan (provenance nulled with the flag)', async () => {
+  const ev = _req7575('./error-page-verdict.js');
+  const USAT = 'Page Not Found (404) | USA TODAY Skip to main content Home U.S. Sports Entertainment Life Money Tech Travel Opinion '
+    + "Sorry, we can't find the page you are looking for. ".repeat(3);
+  const d = {
+    showId: 'south-pacific-2008', outletId: 'usatoday', criticName: 'Elysa Gardner',
+    url: 'https://www.usatoday.com/life/theater/reviews/2008-04-03-south-pacific_N.htm', fullText: USAT, contentTier: 'invalid',
+    wrongProduction: true, wrongProductionReason: 'LLM: page not found', wrongProductionDetectedBy: 'ingest-llm', wrongProductionDetail: 'x',
+  };
+  const kinds = ev.voidErrorPageVerdicts(d, { at: '2026-11-15T00:00:00Z' });
+  _assert7575.ok(kinds.includes('wrongProduction'), 'fixture must exercise the wrongProduction void');
+  _assert7575.equal(_orphan7575.isOrphanedWrongProdProvenance(d), false);
+});

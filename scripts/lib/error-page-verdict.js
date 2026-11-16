@@ -44,7 +44,9 @@ const FAMILIES = {
   isNonReview: ['isNonReview', 'isNonReviewReason', 'nonReviewType', 'nonReviewClassifiedBy', 'classifiedAt'],
   nonReviewFlag: ['nonReviewFlag', 'nonReviewType', 'nonReviewEvidence', 'nonReviewFlaggedAt', 'nonReviewMethod'],
   wrongShow: ['wrongShow', 'wrongShowReason', 'wrongShowAt'],
-  wrongProduction: ['wrongProduction', 'wrongProductionReason', 'wrongProductionNote'],
+  // BRO-7575: the detector trail dies with the flag, or the voided file is an
+  // orphan (provenance, null flag, no recorded clear) the corpus audit reports.
+  wrongProduction: ['wrongProduction', 'wrongProductionReason', 'wrongProductionNote', ...require('./wrongproduction-provenance').WRONG_PRODUCTION_PROVENANCE_FIELDS],
 };
 
 function onSavedErrorPage(d) {

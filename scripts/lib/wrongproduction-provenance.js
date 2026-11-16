@@ -290,22 +290,25 @@ function scanFileForViolations(content, relPath) {
 // set (WRONG_PRODUCTION_PROVENANCE_FIELDS / a named provenance field), or
 // stamp a recorded clear (isOrphanedWrongProdProvenance's hasRecordedClear).
 
-const CLEAR_RE = /(?:\bdelete\s+([\w$.\[\]'"]*)\.wrongProduction\s*[;,)}]|([\w$\]]+(?:\.[\w$]+|\[[^\]]+\])*)\.wrongProduction\s*=\s*(?:null|undefined)\b)/;
+const CLEAR_RE = /(?:\bdelete\s+([\w$.\[\]'"]*?)(?:\.wrongProduction|\[\s*['"]wrongProduction['"]\s*\])(?![\w$])|([\w$\]]+(?:\.[\w$]+|\[[^\]]+\])*)\.wrongProduction\s*=\s*(?:null|undefined)\b)/;
 // The embedded contentVerification sub-object carries its own wrongProduction
 // verdict; deleting THAT is not dropping the review's flag.
 const CV_PATH_RE = /(?:contentVerification|\bcv|verification)$/;
 
+// A MENTION is not a settlement (code-review BRO-7575): require a call, a
+// provenance delete, or an assignment that records the clear.
 const CLEAR_SETTLED_RE = new RegExp([
-  'clearWrongProductionFlags',
-  'dropWrongProductionProvenance',
+  'clearWrongProductionFlags\\s*\\(',
+  'dropWrongProductionProvenance\\s*\\(',
   'WRONG_PRODUCTION_PROVENANCE_FIELDS',
   'REPLACE_CLEAR_FIELDS',
   'WP_FIELDS',
   'delete\\s+[\\w$.\\[\\]\'"]*\\._?wrongProduction(?:DetectedBy|Provenance|Detail)\\b',
-  '\\bwrongProduction(?:AutoCleared|ManualClear|Override|AuditCleared)\\b',
-  '\\bhumanReviewedWrongProduction\\b',
-  '\\bwrongProduction\\s*=\\s*false\\b',
-  'invalidateWrongProductionAutoClear',
+  '\\.wrongProduction(?:AutoCleared|ManualClear|Override|AuditCleared)\\s*=(?!=)',
+  '\\bwrongProduction(?:AutoCleared|ManualClear|Override|AuditCleared)\\s*:',
+  '\\.humanReviewedWrongProduction\\s*=(?!=)',
+  '\\.wrongProduction\\s*=\\s*false\\b',
+  'invalidateWrongProductionAutoClear\\s*\\(',
 ].join('|'));
 
 const CLEAR_WINDOW_LINES = 14;
@@ -315,7 +318,7 @@ function findWrongProductionClears(content) {
   const hits = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (isCommentLine(line) || isComparisonLine(line)) continue;
+    if (isCommentLine(line)) continue; // comparison lines are NOT skipped: `if (x === 1) delete d.wrongProduction;` is a real clear
     const m = CLEAR_RE.exec(line);
     if (m && !CV_PATH_RE.test(m[1] || m[2] || '') && !isInsideStringLiteral(line, m.index)) hits.push({ line: i + 1, text: line.trim() });
   }
