@@ -645,55 +645,24 @@ async function main() {
   // or already-sent one. The GET checks also run under --dry-run (read-only),
   // so a dispatch can be rehearsed; only the DELETE and the tracker write are skipped.
   if (RECREATE_DRAFT) {
-    const { collectRecreateDraftIds, recreateDraftBlockReason } = require('./lib/recreate-draft-guard');
-    const refuse = (why) => {
-      console.error(`\n--recreate-draft REFUSED: ${why}`);
+    // BRO-7580: the decision logic lives in lib/recreate-draft-flow.js so a test can
+    // pin "--dry-run makes zero Resend writes" without a full opening-night fixture.
+    const { runRecreateDraft } = require('./lib/recreate-draft-flow');
+    const recreate = await runRecreateDraft({
+      sentShows: sentData.shows,
+      broadcastKey,
+      showIds: showsForEmail.map(s => s.showId),
+      sendTo: SEND_TO,
+      dryRun: DRY_RUN,
+      hasApiKey: Boolean(RESEND_API_KEY),
+      getBroadcast: (id) => require('./reconcile-broadcast-state').getBroadcastWithRetry(id),
+      deleteBroadcast: (id) => require('./reconcile-broadcast-state').deleteBroadcast(id),
+      clearEntries: (keys) => clearTrackerEntries(sentData, keys, { save: saveSentData, sync: syncTrackerToOrigin }),
+    });
+    if (!recreate.ok) {
+      console.error(`\n--recreate-draft REFUSED: ${recreate.reason}`);
       console.error('No new draft was created.');
       process.exit(1);
-    };
-    // A preview run would delete the draft and then only email a preview.
-    if (SEND_TO) refuse('--recreate-draft cannot be combined with --send-to');
-    const { keys, draftIds, blockReason } = collectRecreateDraftIds(
-      sentData.shows, broadcastKey, showsForEmail.map(s => s.showId));
-    if (blockReason) refuse(blockReason);
-
-    if (draftIds.length && RESEND_API_KEY) {
-      const { getBroadcastWithRetry } = require('./reconcile-broadcast-state');
-      for (const id of draftIds) {
-        const live = await getBroadcastWithRetry(id);
-        const why = recreateDraftBlockReason(live);
-        if (why) refuse(`draft ${id}: ${why}`);
-        console.log(`\n--recreate-draft: old draft ${id} is still unsent (status ${live.data.status})`);
-      }
-    } else if (draftIds.length) {
-      // Only reachable under --dry-run (main() exits earlier without a key otherwise).
-      console.log(`\n[DRY RUN] No RESEND_API_KEY: cannot check live status of ${draftIds.join(', ')}`);
-    }
-
-    if (DRY_RUN) {
-      console.log(`\n[DRY RUN] Would delete old draft(s) ${draftIds.join(', ') || '(none)'} and clear records: ${keys.join(', ') || '(none)'}`);
-    } else {
-      const { deleteBroadcast } = require('./reconcile-broadcast-state');
-      const deletedIds = new Set();
-      for (const id of draftIds) {
-        console.log(`--recreate-draft: deleting old draft ${id}...`);
-        const res = await deleteBroadcast(id);
-        if (!(res.statusCode >= 200 && res.statusCode < 300)) {
-          // Drafts deleted earlier in this loop are gone from Resend: drop their
-          // records now, or a rerun would GET a 404 for them and refuse forever.
-          if (deletedIds.size) {
-            clearTrackerEntries(sentData,
-              keys.filter(key => deletedIds.has(sentData.shows[key]?.draftId)),
-              { save: saveSentData, sync: syncTrackerToOrigin });
-          }
-          refuse(`could not delete old draft ${id} (${res.statusCode}: ${String(res.body).slice(0, 100)})`);
-        }
-        deletedIds.add(id);
-        console.log(`  Old draft deleted from Resend`);
-      }
-      // Clear every record of the deleted draft(s) so the script treats the show as new
-      clearTrackerEntries(sentData, keys, { save: saveSentData, sync: syncTrackerToOrigin });
-      console.log(`  Sent records cleared (${keys.join(', ') || 'none'}) — creating fresh draft`);
     }
   }
 
