@@ -1,19 +1,38 @@
 {
-  "updatedAt": "2026-11-16T19:07:00.046Z",
-  "processed": 455,
-  "failed": 231,
-  "successRate": "66.3%",
+  "updatedAt": "2026-11-16T19:09:30.228Z",
+  "processed": 401,
+  "failed": 182,
+  "successRate": "68.8%",
   "tierBreakdown": {
-    "playwright": 219,
+    "playwright": 208,
     "amp": 2,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 44,
     "scrapingbee": 21,
     "brightdata": 13,
     "archiveToday": 0,
-    "archive": 164
+    "archive": 126
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-16T19:07:00.219Z",
+      "event": "bb-session",
+      "session": "7d33bb4c",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-16T19:08:27.694Z",
+      "event": "bb-session",
+      "session": "4b89074f",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-16T19:09:04.036Z",
+      "event": "bb-session",
+      "session": "b203af57",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    }
+  ]
 }
