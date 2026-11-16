@@ -76,7 +76,8 @@ test('BRO-7576 guard: the scoring writers never raise or resolve the daily spend
       now, routeAlert: async a => keys.push(['route', a.conditionKey]),
       resolveCondition: async key => keys.push(['resolve', key]),
     });
-    assert.ok(!keys.some(([, k]) => k === DAILY_COST_CONDITION_KEY), JSON.stringify(keys));
+    assert.ok(!keys.some(([, k]) => k === 'llm-scoring:daily-cost-breach'), JSON.stringify(keys));
+    assert.equal(DAILY_COST_CONDITION_KEY, 'llm-scoring:daily-cost-breach', 'key carried over so the open card is kept');
   }
 });
 
