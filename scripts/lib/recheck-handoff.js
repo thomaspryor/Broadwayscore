@@ -38,7 +38,9 @@ function decideHandoff({ card, target, result, closeVerdict = null, closeRefused
   if (target.skip) return no('skipped: someone is working it');
   if (!HANDOFF_STATE_NAMES.includes(card.status)) return no(`card is ${card.status || 'unknown'}, not Paused/Backlog`);
   // A card parked on a real block or waiting on the owner is not a worker's to take.
-  if (/^\s*PARKED\s*:/im.test(String(card.notes || '')) || /DECISION NEEDED/.test(String(card.notes || ''))) return no('parked or waiting on the owner');
+  // BRO-7595: the filer's own "PARKED: Auto-filed by ..." line is not a hold. Reading it as one
+  // left every failing recheck on an auto-filed card Paused forever.
+  if (require('./headless-dispatchability.js').hasHeldParkLine(card.notes) || /DECISION NEEDED/.test(String(card.notes || ''))) return no('parked or waiting on the owner');
   const comments = Array.isArray(card.comments) ? card.comments : [];
   const stamp = lastStampIndex(comments);
   if (comments.slice(stamp + 1).some((c) => String(c || '').trimStart().startsWith(RECHECK_HANDOFF_MARKER))) return no('already handed off');
@@ -70,7 +72,7 @@ function buildHandoffComment({ why, now = new Date() } = {}) {
   ].join('\n');
 }
 
-async function handoffCard({ identifier, why, linearBrainMain, now, getIssue } = {}) {
+async function handoffCard({ identifier, why, linearBrainMain, now, getIssue, updateIssue } = {}) {
   const comment = buildHandoffComment({ why, now });
   const main = linearBrainMain || require('../linear-brain.js').main;
   const realExit = process.exit;
@@ -85,6 +87,15 @@ async function handoffCard({ identifier, why, linearBrainMain, now, getIssue } =
       const issue = await (getIssue || require('./linear-client').getIssue)(identifier);
       const name = issue && issue.state && issue.state.name;
       if (!HANDOFF_STATE_NAMES.includes(name)) return { handedOff: false, error: `card is ${name || 'unknown'} now, not Paused/Backlog`, comment };
+      // BRO-7595: a Todo card still carrying the filer's PARKED line is blocked for every worker
+      // (cloud-worker-pick PARKED_SENTINEL) for 3 days. Clear it the way filing straight into Todo
+      // does (linear-issue-create.js unparkDescription), so the hand-off reaches a worker tonight.
+      const hd = require('./headless-dispatchability.js');
+      if (issue && issue.id && hd.hasOnlyMachinePark(issue.description)) {
+        const { unparkDescription } = require('./linear-drain-parked.js');
+        const tag = `BRO-7595 recheck handoff ${(now || new Date()).toISOString().slice(0, 10)}`;
+        await (updateIssue || require('./linear-client').updateIssue)(issue.id, { description: unparkDescription(issue.description, tag) });
+      }
     }
     // Bounded: a stalled Linear call must not hold the CI step until the hard kill drops the summary row.
     await Promise.race([

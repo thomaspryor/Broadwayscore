@@ -131,3 +131,17 @@ test('routeAlert rewrites keep the escalation clock while the incident is open',
   assert.deepEqual(carriedRedFirstFields({ status: 'open', escalatedAt: at, escalationLane: 'cloud-start-now' }), { escalatedAt: at, escalationLane: 'cloud-start-now' });
   assert.equal(carriedRedFirstFields({ status: 'resolved', escalatedAt: at }).escalatedAt, undefined);
 });
+
+// BRO-7595: a red card filed by the alert router carries "PARKED: Auto-filed by owner-alert-router ...".
+// It was read as an owner hold, so a long-red card filed by a machine was never escalated.
+test('BRO-7595: a machine-filed red card is escalated and its stamp is takeable; a person hold still blocks', () => {
+  const machine = 'PARKED: Auto-filed by owner-alert-router (kind: test-yml)\n\n## Problem\nUnit Tests red.\n\n## Acceptance criteria\n`node --test scripts/lib/x.test.mjs` passes.';
+  assert.equal(decide({ card: card({ description: machine }) }).escalate, true);
+  assert.equal(decide({ card: card({ description: `${machine}\nPARKED: waiting on the owner's go-ahead` }) }).reason, 'owner-held');
+  const stamped = stampStartNow(machine, { ageHours: 7, nowIso: iso(NOW) });
+  assert.doesNotMatch(stamped, /^\s*PARKED\s*:/m);
+  assert.match(stamped, /^UNPARKED \(BRO-7595 red escalation 2026-11-08\): Auto-filed by owner-alert-router/m);
+  assert.equal(startNowUnpickableReason({ title: 'test.yml red: Unit Tests', description: stamped, priority: 2, mode: 'dispatch' }), null);
+  const held = `PARKED: needs an API key\n\n${machine}`;
+  assert.match(stampStartNow(held, { ageHours: 7, nowIso: iso(NOW) }), /^PARKED: needs an API key/m, 'a person hold is never rewritten');
+});

@@ -78,3 +78,29 @@ test('handoff: a refused auto-close goes to a worker; a parked or owner-held car
   assert.equal(decideHandoff({ card: card([stamp], { notes: 'PARKED: needs an API key' }), target: target(), result: { status: 'fail' } }).handoff, false);
   assert.equal(decideHandoff({ card: card([stamp], { notes: 'DECISION NEEDED: x' }), target: target(), result: { status: 'fail' } }).handoff, false);
 });
+
+// BRO-7595: digest-autofix and owner-alert-router file cards with their own "PARKED: Auto-filed by ..."
+// line. decideHandoff read that as a person's hold, so 19 failing rechecks sat Paused past their date.
+const MACHINE = 'PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.';
+test('BRO-7595: a failing auto-filed card is handed off; a real PARKED hold still is not', () => {
+  const fail = { status: 'fail' };
+  assert.equal(decideHandoff({ card: card([stamp], { notes: `${MACHINE}\n\nbody` }), target: target(), result: fail }).reason, 'test-failed');
+  assert.equal(decideHandoff({ card: card([stamp], { notes: 'PARKED: Auto-filed by owner-alert-router (kind: x)\n\nbody' }), target: target(), result: fail }).reason, 'test-failed');
+  assert.equal(decideHandoff({ card: card([stamp], { notes: `${MACHINE}\nPARKED: needs an API key` }), target: target(), result: fail }).handoff, false);
+  assert.equal(decideHandoff({ card: card([stamp], { notes: `PARKED: needs an API key\n${MACHINE}` }), target: target(), result: fail }).handoff, false);
+});
+
+test('BRO-7595: handoffCard clears the filer PARKED line so a worker can take the card tonight', async () => {
+  const updates = [];
+  const issue = (description) => ({ id: 'uuid-1', state: { name: 'Paused' }, description });
+  const run = (description) => handoffCard({ identifier: 'BRO-1', why: 'w', now: NOW, linearBrainMain: async () => {}, getIssue: async () => issue(description), updateIssue: async (id, input) => { updates.push({ id, input }); } });
+  assert.equal((await run(`${MACHINE}\n\nbody`)).handedOff, true);
+  assert.equal(updates.length, 1);
+  assert.equal(updates[0].id, 'uuid-1');
+  assert.doesNotMatch(updates[0].input.description, /^\s*PARKED\s*:/m);
+  assert.match(updates[0].input.description, /^UNPARKED \(BRO-7595 recheck handoff 2026-11-02\): Auto-filed by digest-autofix/);
+  const hd = require('./headless-dispatchability.js');
+  assert.equal(hd.hasOnlyMachinePark(updates[0].input.description), false);
+  await run('plain body, no park line');
+  assert.equal(updates.length, 1, 'no park line: description untouched');
+});

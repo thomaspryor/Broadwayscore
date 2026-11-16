@@ -31,7 +31,6 @@ const HOUR_MS = 60 * 60 * 1000;
 const HIGH_PRIORITY = 2;
 const START_NOW_LINE_RE = /^\s*START-NOW\s*:.*$/gim;
 const START_NOW_SINCE_RE = /^\s*START-NOW-SINCE\s*:.*$/gim;
-const PARKED_LINE_RE = /^\s*PARKED\s*:/im;
 const NO_DISPATCH_RE = /^\s*NO-DISPATCH\s*:/im;
 const TERMINAL_STATE_TYPES = new Set(['completed', 'canceled']);
 const HOLD_HISTORY_REASONS = new Set(['awaiting-owner', 'recheck-pending', 'reclaimed-to-backlog', 'backlog-unexplained']);
@@ -66,7 +65,8 @@ function decideRedEscalation({ condition, card, nowMs, env = process.env, thresh
   if (TERMINAL_STATE_TYPES.has(type)) return { escalate: false, reason: `card-${type}`, ageHours };
   const desc = String(card.description || '');
   // A person's hold (PARKED line) or a NO-DISPATCH marker is the owner's call; leave it.
-  if (PARKED_LINE_RE.test(desc)) return { escalate: false, reason: 'owner-held', ageHours };
+  // BRO-7595: the filer's own "PARKED: Auto-filed by ..." line is not a hold (stampStartNow clears it).
+  if (require('./headless-dispatchability.js').hasHeldParkLine(desc)) return { escalate: false, reason: 'owner-held', ageHours };
   if (NO_DISPATCH_RE.test(desc)) return { escalate: false, reason: 'no-dispatch-marker', ageHours };
   // cloud-worker-pick historySkipReason holds that are someone else's call: the
   // owner (awaiting-owner), a RECHECK-AFTER date (recheck-pending), or a person
@@ -105,7 +105,12 @@ function lastEscalationCommentMs(comments) {
 const DEFAULT_SUBJECT = 'main has been red on this signature';
 
 function stampStartNow(description, { ageHours, nowIso, subject = DEFAULT_SUBJECT }) {
-  const body = String(description || '').replace(START_NOW_LINE_RE, '').replace(START_NOW_SINCE_RE, '').replace(/^\n+/, '');
+  let body = String(description || '').replace(START_NOW_LINE_RE, '').replace(START_NOW_SINCE_RE, '').replace(/^\n+/, '');
+  // BRO-7595: the filer's PARKED line blocks every worker (cloud-worker-pick PARKED_SENTINEL), so a
+  // START-NOW under it is never taken. Clear it the way filing straight into Todo does.
+  if (require('./headless-dispatchability.js').hasOnlyMachinePark(body)) {
+    body = require('./linear-drain-parked.js').unparkDescription(body, `BRO-7595 red escalation ${String(nowIso || '').slice(0, 10)}`);
+  }
   const hours = Math.floor(Number(ageHours) || 0);
   return `START-NOW: ${subject} for ${hours}h (BRO-7102 escalation)\nSTART-NOW-SINCE: ${nowIso}\n\n${body}`;
 }

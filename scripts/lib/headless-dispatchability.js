@@ -47,7 +47,7 @@ const { findDecisionQuestion } = require('./decision-card-parse.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 const { hasNoDispatchMarker } = require('./no-dispatch-marker.js');
-const { hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
+const { hasAutofixFiledMarker, AUTOFIX_FILED_MARKER } = require('./autofix-filed-marker.js');
 const { parseVisualApproval } = require('../../src/lib/owner-decision-link.js');
 const { classifyStatus: visualApprovalStatus } = require('./visual-approval.js');
 const { AUTO_FILED_MARKER: ALERT_ROUTER_FILED_MARKER } = require('./linear-drain-parked.js');
@@ -226,6 +226,29 @@ function firstMatch(res, text) {
 function isAutomationParked(notes) {
   const n = String(notes || '');
   return hasAutofixFiledMarker(n) || ALERT_ROUTER_PARKED_RE.test(n);
+}
+
+// BRO-7595: one rule for "this PARKED line is the filer's own bookkeeping". The filers
+// (digest-autofix, owner-alert-router) write it as the FIRST PARKED line at filing; any
+// other PARKED line is someone's hold (default-deny). Built from the filers' own markers,
+// so a reworded marker cannot drift from this check.
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const MACHINE_PARK_REASON_RE = new RegExp(`${escapeRe(AUTOFIX_FILED_MARKER)}|${escapeRe(ALERT_ROUTER_FILED_MARKER)}`);
+/** The text after each `PARKED:` line, in order. */
+function parkReasons(notes) {
+  return [...String(notes || '').matchAll(/^\s*PARKED\s*:(.*)$/gim)].map((m) => m[1]);
+}
+function isMachineParkLine(reason, index) {
+  return index === 0 && MACHINE_PARK_REASON_RE.test(String(reason || ''));
+}
+/** True when some PARKED line is a real hold, not just the filer's machine line. */
+function hasHeldParkLine(notes) {
+  return parkReasons(notes).some((r, i) => !isMachineParkLine(r, i));
+}
+/** True when the card's only PARKED line is the filer's machine line. */
+function hasOnlyMachinePark(notes) {
+  const reasons = parkReasons(notes);
+  return reasons.length > 0 && !hasHeldParkLine(notes);
 }
 
 // BRO-4535: a session that wrote "PARKED: <reason>" by hand is usually waiting
@@ -519,6 +542,10 @@ module.exports = {
   UI_PATH_RE,
   UI_CARD_CLASS_RE,
   isAutomationParked,
+  parkReasons,
+  isMachineParkLine,
+  hasHeldParkLine,
+  hasOnlyMachinePark,
   isDrainableSessionParked,
   isWorkerTakeableParkReason,
   neutralizeParkReason,

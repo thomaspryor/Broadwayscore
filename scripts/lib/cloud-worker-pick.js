@@ -262,17 +262,15 @@ function laneUnworkableReason(reportBody) {
   return LANE_UNWORKABLE_RE.test(String(reportBody || ''));
 }
 const AUTOMATION_PARK_STALE_MS = 3 * 24 * HOUR_MS;
-const MACHINE_PARK_LINE_RE = /Auto-filed by (?:digest-autofix|owner-alert-router)/;
 
 /**
  * True when a PARKED line names an owner hold. Only the first PARKED line can be
- * a filer's machine line (MACHINE_PARK_LINE_RE), which is not a hold; a later
+ * a filer's machine line (headless-dispatchability isMachineParkLine), which is not a hold; a later
  * line that merely quotes the marker is still a person's hold.
  */
 function hasPersonParkHold(notes) {
   const hd = require('./headless-dispatchability.js');
-  return [...String(notes || '').matchAll(/^\s*PARKED\s*:(.*)$/gim)]
-    .some((m, i) => !(i === 0 && MACHINE_PARK_LINE_RE.test(m[1])) && hd.OWNER_HOLD_PARK_RE.test(m[1]));
+  return hd.parkReasons(notes).some((r, i) => !hd.isMachineParkLine(r, i) && hd.OWNER_HOLD_PARK_RE.test(r));
 }
 
 const FILER_RECOMMENT_SLACK_MS = 5000;
