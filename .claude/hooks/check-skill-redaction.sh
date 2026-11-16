@@ -12,6 +12,12 @@
 #
 # Scope is .claude/skills/** only — the catalog-indexed surface. cloud-memory/ is
 # public but not catalog-indexed; not enforced here by design.
+#
+# COVERAGE (BRO-7325): this check runs only on the owner's Mac, the one machine that
+# holds the denylist. Cloud sessions and CI have no denylist, so the hook exits 0 there
+# and a cloud push of a skill file is NOT checked. That gap is by design: committing the
+# list (even hashed) would publish or fingerprint the wording it protects. Mac pushes
+# stay covered. Pinned by scripts/tests/cloud-settings-guards.test.mjs ("check-skill-redaction: ...").
 
 # Self-skip if a user-level master copy exists (matches existing hook convention).
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then exit 0; fi
