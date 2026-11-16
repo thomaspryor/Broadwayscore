@@ -1,20 +1,11 @@
 {
-  "updatedAt": "2026-11-16T01:00:46.536Z",
-  "scanned": 4833,
+  "updatedAt": "2026-11-16T10:14:52.412Z",
+  "scanned": 4834,
   "showsWithViolations": 568,
   "totalViolations": 859,
-  "newSinceLastRun": 10,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "glengarry-glen-ross-2025::hollywood-reporter--unknown.json",
-    "driving-miss-daisy-2010::sfgate--mark-kennedy.json",
-    "a-good-house-west-end-2025::thestage--dave-fargnoli.json",
-    "the-years-west-end-2025::thestage--georgia-luckhurst.json",
-    "the-years-west-end-2025::times-uk--clive-davis.json",
-    "alterations-west-end-2025::thestage--dave-fargnoli.json",
-    "dookin-oot-oran-mor-regional-2025::thestage--fergus-morgan.json",
-    "night-idiot-oran-mor-regional-2025::thestage--fergus-morgan.json",
-    "a-streetcar-named-desire-crucible-regional-2025::thestage--john-murphy.json",
-    "doubt-ustinov-regional-2025::thestage--rosemary-waugh.json"
+    "les-miserables-regional-2026::washingtoncitypaper--melissa-lin-sturges.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -33,7 +24,6 @@
     "stranger-things-2024::broadwaynews--brittani-samuel.json",
     "stranger-things-2024::nytimes--houman-barekat.json",
     "the-last-five-years-2025::thewrap--robert-hofler.json",
-    "glengarry-glen-ross-2025::hollywood-reporter--unknown.json",
     "illinoise-2024::nyt-theater--jonathan-mandell.json",
     "illinoise-2024::talkinbroadway--matthew-murray.json",
     "the-wiz-2024::culturesauce--thom-geier.json",
@@ -875,7 +865,8 @@
     "the-physicists-regional-2026::stage-raw--lovell-estell-iii.json",
     "painted-ponies-regional-2026::stage-raw--steven-morris.json",
     "green-corridors-regional-2026-city-garage-theatre::stage-raw--lovell-estell-iii.json",
-    "a-number-regional-2026::stage-raw--lovell-estell-iii.json"
+    "a-number-regional-2026::stage-raw--lovell-estell-iii.json",
+    "les-miserables-regional-2026::washingtoncitypaper--melissa-lin-sturges.json"
   ],
   "hits": [
     {
@@ -1178,30 +1169,6 @@
           "outletId": "thewrap",
           "criticName": "Robert Hofler",
           "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2025",
-      "title": "Glengarry Glen Ross",
-      "openingDate": "2025-03-31",
-      "message": "hollywood-reporter/Unknown (hollywood-reporter--unknown.json) SHIPPED but fullText never mentions 'Glengarry Glen Ross' (373 chars): https://www.hollywoodreporter.com/lifestyle/arts/glengarry-glen-ross-review-kieran-culkin-bob-odenkirk-1236175987/",
-      "violations": [
-        {
-          "filename": "hollywood-reporter--unknown.json",
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/glengarry-glen-ross-review-kieran-culkin-bob-odenkirk-1236175987/",
-          "outletId": "hollywood-reporter",
-          "criticName": "Unknown",
-          "haystackLength": 373,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -19166,14 +19133,38 @@
           }
         }
       ]
+    },
+    {
+      "showId": "les-miserables-regional-2026",
+      "title": "Les Miserables",
+      "openingDate": "2026-11-10",
+      "message": "washingtoncitypaper/Melissa Lin Sturges (washingtoncitypaper--melissa-lin-sturges.json) SHIPPED but fullText never mentions 'Les Miserables' (6396 chars): https://washingtoncitypaper.com/article/794655/a-galvanizing-les-miserables-takes-the-stage-at-olney-theatre-center/",
+      "violations": [
+        {
+          "filename": "washingtoncitypaper--melissa-lin-sturges.json",
+          "url": "https://washingtoncitypaper.com/article/794655/a-galvanizing-les-miserables-takes-the-stage-at-olney-theatre-center/",
+          "outletId": "washingtoncitypaper",
+          "criticName": "Melissa Lin Sturges",
+          "haystackLength": 6396,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
     }
   ],
   "triage": {
     "total": 859,
     "counts": {
-      "excerpt": 183,
+      "excerpt": 182,
       "wrong-production": 9,
-      "unresolved": 590,
+      "unresolved": 591,
       "truncated": 77
     },
     "outletPlans": [
@@ -22507,10 +22498,10 @@
       },
       {
         "outletId": "hollywood-reporter",
-        "total": 11,
+        "total": 10,
         "counts": {
-          "excerpt": 5,
-          "unresolved": 6
+          "unresolved": 6,
+          "excerpt": 4
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -22525,15 +22516,6 @@
           },
           {
             "file": "american-idiot-2010/hollywood-reporter--frank-scheck.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "glengarry-glen-ross-2025/hollywood-reporter--unknown.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -27977,12 +27959,21 @@
       },
       {
         "outletId": "washingtoncitypaper",
-        "total": 1,
+        "total": 2,
         "counts": {
-          "unresolved": 1
+          "unresolved": 2
         },
         "requiresArticleReview": true,
         "candidates": [
+          {
+            "file": "les-miserables-regional-2026/washingtoncitypaper--melissa-lin-sturges.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
           {
             "file": "or-regional-2026/washingtoncitypaper--jared-strange.json",
             "bucket": "unresolved",

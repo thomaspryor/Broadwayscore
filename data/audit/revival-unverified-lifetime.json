@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-11-16T01:02:59.785Z",
-  "scanned": 4833,
-  "showsWithViolations": 2,
-  "totalViolations": 2,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-11-16T10:16:56.061Z",
+  "scanned": 4834,
+  "showsWithViolations": 3,
+  "totalViolations": 3,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "downstate-2026"
+  ],
   "actionableViolations": 0,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
@@ -13,18 +15,19 @@
   "actionableKeys": [],
   "violationKeys": [
     "cloud-9-west-end-2026",
-    "tristan-and-yseult-off-broadway-2026"
+    "tristan-and-yseult-off-broadway-2026",
+    "downstate-2026"
   ],
   "hits": [
     {
       "showId": "cloud-9-west-end-2026",
       "title": "Cloud 9",
       "openingDate": "2026-11-10",
-      "message": "cloud-9-west-end-2026 review text mentions \"revival\" 45x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "cloud-9-west-end-2026 review text mentions \"revival\" 46x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {
           "titleMatch": false,
-          "mentionCount": 45
+          "mentionCount": 46
         }
       ]
     },
@@ -37,6 +40,18 @@
         {
           "titleMatch": false,
           "mentionCount": 5
+        }
+      ]
+    },
+    {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "openingDate": "2026-11-15",
+      "message": "downstate-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {
+          "titleMatch": false,
+          "mentionCount": 3
         }
       ]
     }
