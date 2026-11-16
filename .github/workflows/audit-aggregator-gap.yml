@@ -3,8 +3,8 @@ name: Audit Aggregator Review Gap
 
 on:
   schedule:
-    # Hourly. Each run audits ~19 shows in an 18-min budget (job p50 25 min,
-    # p90 43 min, 2026-10-25..31). GitHub drops most ticks; the 1h re-dispatch
+    # Hourly. Each run audits ~29 shows in a 24-min budget (was ~22 in 18 min:
+    # job p50 26, p95 43, max 57 min, 2026-11-09..16). GitHub drops most ticks; the 1h re-dispatch
     # band below fills them (BRO-6751). Detect aggregator-listed URLs missing from our review-texts and
     # auto-dispatch gather-reviews for the affected shows so the next poller
     # cron finds them.
@@ -39,7 +39,8 @@ on:
         # redispatch-after-hours: 1  (BRO-6751: at 3h the grind got ~8 runs/day x ~19 shows = ~152 audits/day, below the
         #   ~340/day the scheduler's own freshness rules need for the 1,021 last-year shows. A pending targeted run is
         #   itself the newest created run, so it resets this clock: a re-dispatch can only evict one pending >1h,
-        #   which the 60-min job timeout makes near-impossible. Cost: up to ~2-3x this workflow's SERP/fetch spend;
+        #   which only a run lasting over 60 min of the 70-min timeout allows (max seen 57 at budget 18, ~63 at 24;
+        #   accepted, BRO-6751: an evicted targeted run's due shows are still in the cron queue). Cost: up to ~2-3x this workflow's SERP/fetch spend;
         #   kill switches AGGREGATOR_GAP_AUDIT_DISABLED / SERP_GAP_CENSUS_DISABLED. Paging band stays 12h.)
         # BRO-4282: set by scripts/cron-redispatch.js when GitHub dropped the
         # hourly schedule. The run then uses the schedule's settings (3y window,
@@ -80,13 +81,16 @@ jobs:
     # PUSH_DEADLINE_SEC override (task #458).
     # 60 (was 48): BRO-4431 added the outlet ground-truth audit (hard-capped
     # at 12 min by `timeout 720`, runs at most every 6h) before the commit.
-    timeout-minutes: 60
+    # 70 (was 60), BRO-6751: the audit budget rose 18 -> 24 min for throughput
+    # (OVERDUE held at 3.5-8% of last-year shows at ~22 shows/run). Observed max
+    # job 57 min at 18, so ~63 at 24 plus the same 7-min cushion.
+    timeout-minutes: 70
     if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
-          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          # of main for this 70-min job's final ledger commit; depth-1 aborted when churn outran it.
           fetch-depth: 300
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -213,7 +217,10 @@ jobs:
           # repo (5-retry, racing concurrent CI) needs slack — at 25 some runs were
           # still pushing when the 40-min job cap hit (exit 143). 18 leaves the
           # commit ~17 min even after a slow-show overshoot (2026-06-07).
-          ARGS="--window=$WINDOW --checkpoint --time-budget-min=18"
+          # 24 (BRO-6751, 2026-11-16): with the job cap now 70 the commit keeps the same
+          # slack; +6 min is ~+7 shows/run (~67s/show), the throughput the daily/weekly
+          # recheck promises need while opening-week shows take about half of each run.
+          ARGS="--window=$WINDOW --checkpoint --time-budget-min=24"
           # Targeted run (BRO-4592): the newsletter workflows pass the exact featured
           # shows. Value arrives via env (never interpolated into the script) and is
           # validated, so a bad input fails loudly instead of auditing nothing.
@@ -221,9 +228,9 @@ jobs:
             if ! printf '%s' "$SHOW_IDS" | grep -Eq '^[a-z0-9][a-z0-9-]*(,[a-z0-9][a-z0-9-]*)*$'; then
               echo "::error::show_ids must be a comma-separated list of show ids"; exit 1
             fi
-            # Budget stays near the cron's 18: the commit + push below and the
-            # outlet ground-truth step need the same headroom inside the 60-min cap.
-            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=20"
+            # Budget stays near the cron's 24: the commit + push below and the
+            # outlet ground-truth step need the same headroom inside the 70-min cap.
+            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=26"
             # A targeted run is an explicit "re-check these now". The SERP census
             # cooldown would otherwise skip the census for any show it ran on
             # recently, and with no aggregator URLs the entry is rewritten blank
@@ -494,9 +501,9 @@ jobs:
           # ephemeral, so nothing survived to the next run). Per push-with-retry.sh's own
           # sizing comment: "DO NOT raise this SHARED default... Callers that measurably
           # need more real cycles should override... at their own call site, after
-          # confirming their OWN job-timeout headroom." This step starts ~22-23min into the
-          # 48-min job timeout below (checkouts + the audit's own --time-budget-min=18), so
-          # 900s (15min) leaves ~10-11min of headroom for the trailing steps (push-review-texts,
+          # confirming their OWN job-timeout headroom." This step starts after the gap audit in the
+          # job timeout (70 min since BRO-6751; checkouts + the audit's own --time-budget-min=24 put this
+          # step ~28-30 min in), so 900s (15min) leaves well over 10min of headroom for the trailing steps (push-review-texts,
           # trigger-rebuild, notify), which historically take well under 30s combined.
           PUSH_DEADLINE_SEC: '900'
           # BRO-3068: lower the per-attempt network cap from push-with-retry.sh's
