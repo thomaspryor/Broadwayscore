@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-15T10:14:36.205Z",
-  "scanned": 4832,
-  "showsWithViolations": 198,
-  "totalViolations": 227,
+  "updatedAt": "2026-11-16T01:02:52.603Z",
+  "scanned": 4833,
+  "showsWithViolations": 199,
+  "totalViolations": 228,
   "newSinceLastRun": 1,
   "newViolationKeys": [
-    "anything-goes-2011::https://www.nypost.com/p/entertainment/theater/he_ll_charm_your_pants_off_Z92DrptWT9Xu1MXg19Un6J"
+    "marvins-room-2017::http://wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7159"
   ],
   "actionableViolations": 3,
   "newActionableSinceLastRun": 0,
@@ -30,6 +30,7 @@
     "john-lithgow-stories-by-heart-2018::https://www.curtainup.com/johnlithgowstories18",
     "the-bands-visit-2017::https://www.wolfentertainmentguide.com/viewpage.aspx?record=7314&cat=theater",
     "prince-of-broadway-2017::https://www.curtainup.com/princebway17.html",
+    "marvins-room-2017::http://wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7159",
     "a-dolls-house-part-2-2017::https://www.out.com/michael-musto/2017/5/08/come-away-actress-jenn-colella-out-polyamorous-tony-nominated",
     "charlie-and-the-chocolate-factory-2017::https://www.theaterinthenow.com/2017/05/review-too-much-imagination.html",
     "indecent-2017::https://www.northjersey.com/arts-and-entertainment/theater/gripping-drama-on-banning-of-a-broadway-play-1.1600488",
@@ -407,6 +408,21 @@
           "criticName": "Elyse Sommer",
           "url": "https://www.curtainup.com/princebway17.html",
           "urlSlug": "princebway 17",
+          "namesOtherShow": null
+        }
+      ]
+    },
+    {
+      "showId": "marvins-room-2017",
+      "title": "Marvin's Room",
+      "openingDate": "2017-06-29",
+      "message": "Review URL for wolf-entertainment-guide/William Wolf does not mention show slug (checked: marvins-room-2017, marvins-room, marvin-s-room, marvins, room, marvinsroom): http://wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7159",
+      "violations": [
+        {
+          "outletId": "wolf-entertainment-guide",
+          "criticName": "William Wolf",
+          "url": "http://wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7159",
+          "urlSlug": "viewpage",
           "namesOtherShow": null
         }
       ]
