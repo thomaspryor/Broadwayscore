@@ -322,6 +322,22 @@ jobs:
               labels: ['needs-manual-review']
             });
 
+      # BRO-7606: every parked submission gets ONE dispatchable Linear card,
+      # deduped by GitHub issue number, and the issue is labelled linear-card.
+      # Before this, 13 submissions sat parked up to 8 weeks with no card.
+      # rebuild-fast.yml's card sweep backfills any this step misses.
+      - name: File dispatchable card - Needs Manual Review
+        if: steps.validate.outputs.recommendation == 'needs-manual-review'
+        continue-on-error: true
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+          SHOW_ID: ${{ steps.validate.outputs.show_id }}
+          REVIEW_URL: ${{ steps.validate.outputs.review_url }}
+          REASON: "validation could not decide (reject kind: ${{ steps.validate.outputs.reject_kind || 'none' }}); no matched show usually means the show is not in shows.json, the URL names no show, or the validator errored"
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: node scripts/file-review-submission-card.js
+
       # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
       - name: Commit LLM usage ledger
         if: always()
@@ -608,26 +624,20 @@ jobs:
               labels: ['needs-manual-review'],
             });
 
-      - name: Email owner - approved submission not on site
+      # BRO-7606: the card replaces the old "Action: approved review submission
+      # is not on the site" owner email (BRO-4603: email only when the owner
+      # must act; a worker can fix this).
+      - name: File dispatchable card - approved but not on site
         if: success() && steps.landed.outputs.landed != 'true' && steps.landed.outputs.pending_score != 'true'
+        continue-on-error: true
         env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
           SHOW_ID: ${{ needs.validate.outputs.show_id }}
           REVIEW_URL: ${{ needs.validate.outputs.review_url }}
-          EXCLUDED_REASON: ${{ steps.landed.outputs.excluded_reason }}
-        run: |
-          if [ -z "$RESEND_API_KEY" ] || [ -z "$OWNER_EMAIL" ]; then
-            echo "::warning::Missing RESEND_API_KEY/OWNER_EMAIL; owner not emailed"; exit 0
-          fi
-          PAYLOAD=$(node -e 'const e=process.env;process.stdout.write(JSON.stringify({
-            from:"Broadway Scorecard <noreply@broadwayscorecard.com>",to:[e.OWNER_EMAIL],
-            subject:`Action: approved review submission #${e.ISSUE_NUMBER} is not on the site`,
-            text:`A reader-submitted review was approved but did not make it onto the site.\n\nShow: ${e.SHOW_ID}\nURL: ${e.REVIEW_URL}\nReason: ${e.EXCLUDED_REASON||"unknown"}\n\nIssue: https://github.com/${process.env.GITHUB_REPOSITORY}/issues/${e.ISSUE_NUMBER}`}))')
-          curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
-            -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" \
-            -d "$PAYLOAD" | grep -qE '^2' || echo "::warning::Owner email failed"
+          REASON: "approved, but the pipeline could not add it to the site (${{ steps.landed.outputs.excluded_reason || 'unknown' }})"
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: node scripts/file-review-submission-card.js
 
       - name: Notify on failure
         if: failure()
@@ -660,10 +670,23 @@ jobs:
               body: body
             });
 
-            // Add needs-manual-review label
+            // needs-manual-review too, so the awaiting-score sweep closes it
+            // once the review lands and the morning digest counts it (BRO-7606).
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issueNumber,
-              labels: ['scraping-failed']
+              labels: ['scraping-failed', 'needs-manual-review']
             });
+
+      - name: File dispatchable card - scraping failed
+        if: failure()
+        continue-on-error: true
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+          SHOW_ID: ${{ needs.validate.outputs.show_id }}
+          REVIEW_URL: ${{ needs.validate.outputs.review_url }}
+          REASON: approved, but the scrape-review job failed (see the run linked from the issue's bot comment)
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: node scripts/file-review-submission-card.js
