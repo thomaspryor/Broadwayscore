@@ -202,6 +202,7 @@ async function main() {
         else if (outcome.reason.includes('garbage')) stats.garbage++;
         else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
         else if (outcome.reason.includes('not longer')) stats.notLonger++;
+        else if (outcome.code === 'file_vanished') stats.skipped = (stats.skipped || 0) + 1; // renamed/removed mid-run (BRO-7171)
         else stats.blocked++;
       }
     }

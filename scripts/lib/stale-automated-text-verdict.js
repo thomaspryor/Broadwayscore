@@ -366,22 +366,7 @@ function voidRejectionOnBodyReplacement(d, now, clearedBy = 'junk-body-replaceme
   return true;
 }
 
-/**
- * rejectedAt of every ensemble "not a review" verdict this record carries (the
- * live one plus cleared ones in priorAutomatedTextVerdicts), oldest first.
- * A listing/ticket page changes a little on every fetch (dates, prices), so
- * isRejectedTextUnchanged never fires and the 72h hold only paces the loop:
- * jena-friedman thecomedybureau was cleared and re-rejected 42 times. Pure.
- */
-function ensembleNotAReviewTimes(d) {
-  if (!d || typeof d !== 'object') return [];
-  const hit = (v) => !!v && v.rejectionReason === 'not_a_review' && v.rejectedBy === ENSEMBLE_REJECTER && typeof v.rejectedAt === 'string';
-  const all = [...(Array.isArray(d.priorAutomatedTextVerdicts) ? d.priorAutomatedTextVerdicts : []), d].filter(hit);
-  return all.map((v) => v.rejectedAt).filter((t) => !Number.isNaN(Date.parse(t))).sort();
-}
-
 module.exports = {
-  ensembleNotAReviewTimes,
   voidRejectionOnBodyReplacement,
   isHumanRejecter,
   isAutomatedRejecter,

@@ -439,44 +439,6 @@ test('driver: the per-review loop skips a vanished file instead of failing the r
   assert.match(loop.slice(catchAt - 200, catchAt + 400), /reason: 'file_vanished'/);
 });
 
-// BRO-7171 2026-11-15: jena-friedman thecomedybureau (a ticket listing) was
-// recovered 6x / reopened 4x by the nightly; the ensemble had called the page
-// "not a review" 42 times. Same-url fetches stop; URL_FIND stays open.
-test('strategyEligibility: ensemble not_a_review after our own recovery blocks same-url fetches, not URL_FIND', () => {
-  const U = 'https://thecomedybureau.com/show/x/';
-  const ens = (at) => ({ rejectionReason: 'not_a_review', rejectedBy: 'ensemble-scoreability-check', rejectedAt: at, clearedAt: at, clearedBy: 'collect-review-texts-refetch' });
-  const listing = { url: U, fullText: 'Tickets $25. Doors 7pm.', contentTier: 'truncated', priorAutomatedTextVerdicts: [ens('2026-11-10T00:00:00Z')] };
-  const recovered = { reviewKey: KEY, strategy: 'REFETCH_FREE', outcome: 'recovered', reason: 'landed_on_origin_main', url: U, ts: '2026-11-09T07:00:00Z' };
-  const st = L.strategyState(L.indexRows([recovered]), KEY, 'REFETCH_FREE');
-  for (const strategy of ['REFETCH_FREE', 'PAID_FETCH', 'ARCHIVE', 'BROWSER_SESSION']) {
-    assert.deepEqual(L.strategyEligibility({ strategy, show: closedOld, review: listing, gapClass: 'TRUNCATED_OTHER', state: st }),
-      { ok: false, reason: 'not_a_review_after_recovery' }, strategy);
-  }
-  assert.notEqual(L.strategyEligibility({ strategy: 'URL_FIND', show: closedOld, review: listing, gapClass: 'NO_URL', state: st }).reason, 'not_a_review_after_recovery');
-  // the live (uncleared) verdict counts too
-  const live = { url: U, rejectionReason: 'not_a_review', rejectedBy: 'ensemble-scoreability-check', rejectedAt: '2026-11-10T00:00:00Z' };
-  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: closedOld, review: live, gapClass: 'TRUNCATED_OTHER', state: st }).reason, 'not_a_review_after_recovery');
-  // a paywall teaser judged before any engine recovery (times-uk clive-davis): not blocked
-  const noRecovery = L.strategyState(new Map(), KEY, 'REFETCH_FREE');
-  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: closedOld, review: listing, gapClass: 'TRUNCATED_OTHER', state: noRecovery }).ok, true);
-  // the reviewer's case: our text was lost (reopen), then the ensemble judged
-  // the collector's teaser: that verdict is not about our text, not blocked
-  const reopen = { reviewKey: KEY, strategy: 'ARCHIVE', outcome: 'reopened', reason: 'recovered_text_lost', url: U, ts: '2026-11-09T20:00:00Z' };
-  const stLost = L.strategyState(L.indexRows([recovered, reopen]), KEY, 'ARCHIVE');
-  assert.equal(L.strategyEligibility({ strategy: 'ARCHIVE', show: closedOld, review: listing, gapClass: 'TRUNCATED_OTHER', state: stLost }).ok, true);
-  // verdict older than our recovery: not blocked
-  const older = { ...listing, priorAutomatedTextVerdicts: [ens('2026-11-01T00:00:00Z')] };
-  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: closedOld, review: older, gapClass: 'TRUNCATED_OTHER', state: st }).ok, true);
-  // recovery was at a different url (record moved since): not blocked
-  const moved = { ...listing, url: 'https://example.com/real-review' };
-  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: closedOld, review: moved, gapClass: 'TRUNCATED_OTHER', state: st }).ok, true);
-  // a human verdict, or truncated_text: not blocked
-  const human = { ...listing, priorAutomatedTextVerdicts: [{ ...ens('2026-11-10T00:00:00Z'), rejectedBy: 'manual-triage' }] };
-  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: closedOld, review: human, gapClass: 'TRUNCATED_OTHER', state: st }).ok, true);
-  const trunc = { ...listing, priorAutomatedTextVerdicts: [{ ...ens('2026-11-10T00:00:00Z'), rejectionReason: 'truncated_text' }] };
-  assert.equal(L.strategyEligibility({ strategy: 'REFETCH_FREE', show: closedOld, review: trunc, gapClass: 'TRUNCATED_OTHER', state: st }).ok, true);
-});
-
 // BRO-7171 2026-11-15: 12 reviews traded nightly between the engine (longer
 // raw-HTML text) and the collector (shorter text) at the same url, each trade a
 // recovered_text_lost reopen (jena-friedman thecomedybureau 4x).
@@ -489,6 +451,9 @@ test('strategyEligibility: two lost free-fetch recoveries at one url stop raw-HT
     L.strategyEligibility({ strategy, show: closedOld, review: r, gapClass: 'TRUNCATED_OTHER', state: L.strategyState(L.indexRows(rows), KEY, strategy) });
   const once = [rec('2026-11-09T07:00:00Z'), lost('2026-11-10T07:00:00Z')];
   assert.equal(elig(once).ok, true, 'one loss: try again');
+  // one loss reconciled on two machines is still one loss
+  const dup = [rec('2026-11-09T07:00:00Z'), { ...lost('2026-11-10T07:00:00Z'), detail: { recoveredAt: '2026-11-09T07:00:00Z' } }, { ...lost('2026-11-10T07:05:00Z'), detail: { recoveredAt: '2026-11-09T07:00:00Z' } }];
+  assert.equal(elig(dup).ok, true, 'duplicate reconcile rows are one loss');
   const twice = [...once, rec('2026-11-10T07:30:00Z'), lost('2026-11-12T07:00:00Z')];
   assert.deepEqual(elig(twice), { ok: false, reason: 'lost_loop_at_url' });
   // a canonical variant of the url is the same url

@@ -98,3 +98,14 @@ test('processRecoveredText / stampDead skip a review file renamed away mid-run',
   assert.ok(!RUN_WRITES.has(path.resolve(gone.filePath)));
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('class guard: every recover-*-browser.js that calls processRecoveredText handles file_vanished', () => {
+  const dir = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+  const files = fs.readdirSync(dir).filter((f) => /^recover-.*-browser\.js$/.test(f));
+  assert.ok(files.length >= 6);
+  for (const f of files) {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    if (!src.includes('processRecoveredText(')) continue;
+    assert.match(src, /outcome\.code === 'file_vanished'/, `${f} must not count a vanished file as blocked`);
+  }
+});

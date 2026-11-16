@@ -186,18 +186,18 @@ function strategyState(index, reviewKey, strategy) {
   // writer put a shorter text back. Read across every reopen; compared
   // canonically at eligibility time (12 reviews traded nightly by 2026-11-15,
   // all REFETCH_FREE; jena-friedman thecomedybureau 4x).
-  const lostFreeUrls = strategy === 'REFETCH_FREE'
-    ? all.filter((r) => r.outcome === 'reopened' && r.reason === LOST_REASON && r.url && r.strategy === 'REFETCH_FREE').map((r) => r.url)
-    : [];
-  // While-on-disk windows of our recoveries: from the recovery to its next
-  // reopen (open-ended when none). A verdict inside one judged OUR text.
-  const reopenTimes = all.filter((r) => r.outcome === 'reopened' && r.ts).map((r) => Date.parse(r.ts)).sort((x, y) => x - y);
-  const recoveredWindows = all.filter((r) => r.outcome === 'recovered' && r.url && r.ts).map((r) => {
-    const from = Date.parse(r.ts);
-    const to = reopenTimes.find((t) => t > from);
-    return { url: r.url, from, to: to == null ? Infinity : to };
-  });
-  const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0, supersededUrls, lostFreeUrls, recoveredWindows };
+  // One entry per lost recovery (detail.recoveredAt): the same loss reconciled
+  // on two machines is two rows but one trade.
+  const lostFreeUrls = [];
+  if (strategy === 'REFETCH_FREE') {
+    const seen = new Set();
+    for (const r of all) {
+      if (r.outcome !== 'reopened' || r.reason !== LOST_REASON || !r.url || r.strategy !== 'REFETCH_FREE') continue;
+      const id = `${r.url}|${(r.detail && r.detail.recoveredAt) || r.ts}`;
+      if (!seen.has(id)) { seen.add(id); lostFreeUrls.push(r.url); }
+    }
+  }
+  const st = { evidenceAttempts: 0, lastPolicyReason: null, retryAfter: null, abandoned: false, lastTs: null, nonEvidence: 0, supersededUrls, lostFreeUrls };
   for (const r of rows) {
     st.lastTs = r.ts;
     if (EVIDENCE_OUTCOMES.has(r.outcome)) {
@@ -257,20 +257,6 @@ function strategyEligibility({ strategy, show, review, gapClass, state }) {
   if (state && Array.isArray(state.lostFreeUrls) && state.lostFreeUrls.length && /^https?:\/\//i.test(String(review.url || ''))) {
     const { urlCanonicallyChanged } = require('./url-change-invariant');
     if (state.lostFreeUrls.filter((u) => !urlCanonicallyChanged(u, review.url)).length >= LOST_LOOP_AT) return { ok: false, reason: 'lost_loop_at_url' };
-  }
-  // The ensemble called the record "not a review" while OUR recovered text was
-  // on disk (between a recovery at this url and its next reopen): our own
-  // accept was a listing/news page, and fetching the same url again only
-  // re-accepts it. A verdict outside those windows judged someone else's text,
-  // e.g. a paywall teaser of a real review (times-uk, broadwaynews), so it
-  // blocks nothing. URL_FIND looks elsewhere (gap-url-find eligibility).
-  if (FETCH_STRATEGIES.has(strategy) && state && Array.isArray(state.recoveredWindows) && state.recoveredWindows.length && /^https?:\/\//i.test(String(review.url || ''))) {
-    const { urlCanonicallyChanged } = require('./url-change-invariant');
-    const ours = state.recoveredWindows.filter((w) => !urlCanonicallyChanged(w.url, review.url));
-    const verdicts = require('./stale-automated-text-verdict').ensembleNotAReviewTimes(review).map((t) => Date.parse(t));
-    if (verdicts.some((t) => ours.some((w) => t >= w.from && t < w.to))) {
-      return { ok: false, reason: 'not_a_review_after_recovery' };
-    }
   }
   if (FETCH_STRATEGIES.has(strategy)) {
     const entry = state.evidenceAttempts ? { failureReason: state.lastPolicyReason, failureCount: state.evidenceAttempts } : null;

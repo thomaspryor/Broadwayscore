@@ -38,8 +38,8 @@ const STALE_ROW_HOURS = 20; // run ~02:30 ET, digest ~08:00 ET: a missed night m
 // Skip reasons that mean a strategy has used up its tries (review-guards
 // shouldRetryFetch / shouldRetryUrlDiscovery), as opposed to a cooldown.
 // superseded_at_url: another writer's newer text at this url stands (gap-recovery-ledger).
-// lost_loop_at_url / not_a_review_after_recovery: our accepts at this url keep being undone (BRO-7171).
-const EXHAUSTED_REASONS = new Set(['abandoned', 'max_retries_reached', 'collector_abandoned', 'collector_max_retries_reached', 'superseded_at_url', 'lost_loop_at_url', 'not_a_review_after_recovery']);
+// lost_loop_at_url: our free-fetch accepts at this url keep being undone (BRO-7171).
+const EXHAUSTED_REASONS = new Set(['abandoned', 'max_retries_reached', 'collector_abandoned', 'collector_max_retries_reached', 'superseded_at_url', 'lost_loop_at_url']);
 
 function nightlyPathDefault(root = path.join(__dirname, '..', '..')) {
   return process.env.GAP_RECOVERY_NIGHTLY_PATH || path.join(root, NIGHTLY_REL);
