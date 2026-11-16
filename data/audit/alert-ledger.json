@@ -29533,13 +29533,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-16T00:13:12.823Z",
+      "lastSeen": "2026-11-16T03:44:49.237Z",
       "lastNotifiedAt": "2026-11-15T07:37:10.094Z",
       "lastSurfacedAt": "2026-11-15T07:37:10.094Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-7503",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -39166,18 +39166,17 @@
     },
     "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "Live-data test failing: BRO-93 acceptance: current shows.json produces zero stale announced flags (scripts/audit-stale-announced-shows.test.mjs)",
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-16T00:13:12.452Z",
-      "lastNotifiedAt": "2026-11-15T00:33:12.642Z",
+      "lastSeen": "2026-11-16T03:44:48.878Z",
+      "lastNotifiedAt": "2026-11-16T03:44:48.878Z",
       "lastSurfacedAt": "2026-11-15T00:33:12.642Z",
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-7499",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-7499"
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -43342,7 +43341,7 @@
       "silentRefires": 19
     },
     "live-data-test:scripts/lib/default-critic-home.live.test.mjs::allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) (scripts/lib/default-critic-home.live.test.mjs)",
       "firstSeen": "2026-11-14T02:43:17.309Z",
@@ -43354,7 +43353,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-11-16T03:44:50.003Z",
+      "resolveReason": "live-data test green"
     },
     "express-retry-still-thin:potus-off-broadway-2026": {
       "status": "open",
@@ -43766,13 +43767,13 @@
       "firstSeen": "2026-11-15T16:18:25.047Z",
       "incidentOpenedAt": "2026-11-15T16:18:25.047Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-16T00:13:12.801Z",
+      "lastSeen": "2026-11-16T03:44:49.220Z",
       "lastNotifiedAt": "2026-11-15T16:18:25.047Z",
       "lastSurfacedAt": "2026-11-15T16:18:25.047Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-7535-pullquote-negcache": {
       "status": "resolved",
@@ -44054,7 +44055,7 @@
       "resolvedAt": "2026-11-16T00:29:33.895Z"
     },
     "live-data-test:scripts/lib/default-critic-home.live.test.mjs::no new registry defaultCritic that the outlet has never published under": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no new registry defaultCritic that the outlet has never published under (scripts/lib/default-critic-home.live.test.mjs)",
       "firstSeen": "2026-11-16T00:13:12.731Z",
@@ -44065,7 +44066,9 @@
       "lastSurfacedAt": "2026-11-16T00:13:12.731Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-16T03:44:50.017Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:scripts/rebuild-all-reviews.test.mjs::BRO-7523: requiring rebuild-all-reviews does not read the reviews corpus": {
       "status": "open",
@@ -44074,12 +44077,13 @@
       "firstSeen": "2026-11-16T00:13:12.778Z",
       "incidentOpenedAt": "2026-11-16T00:13:12.778Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-16T00:13:12.778Z",
+      "lastSeen": "2026-11-16T03:44:49.199Z",
       "lastNotifiedAt": "2026-11-16T00:13:12.778Z",
       "lastSurfacedAt": "2026-11-16T00:13:12.778Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-7557-cost": {
       "status": "open",
