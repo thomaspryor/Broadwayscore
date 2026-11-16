@@ -22,8 +22,12 @@ function fakePage({ failFirst = 1, body = 'Theatre Review by Karen Topham '.repe
   };
 }
 
-test('isNavigationRace matches the Playwright navigation error only', () => {
+const CONTENT_NAV = 'page.content: Unable to retrieve content because the page is navigating and changing the content.';
+
+test('isNavigationRace matches the Playwright navigation errors only', () => {
   assert.equal(isNavigationRace(new Error(NAV)), true);
+  assert.equal(isNavigationRace(new Error(CONTENT_NAV)), true);
+  assert.equal(isNavigationRace(new Error('Target page, context or browser has been closed')), false);
   assert.equal(isNavigationRace(new Error('net::ERR_TIMED_OUT')), false);
 });
 
@@ -40,6 +44,19 @@ test('a non-navigation error still throws', async () => {
   await assert.rejects(readBrowserPage(page, 'https://example.test/x'), /ERR_TIMED_OUT/);
 });
 
-test('endless navigation gives up instead of looping', async () => {
-  await assert.rejects(readBrowserPage(fakePage({ failFirst: 1000 }), 'https://example.test/x'), /Execution context was destroyed/);
+test('a redirect during the final content() read is retried too', async () => {
+  const page = fakePage({ failFirst: 0 });
+  let n = 0;
+  page.content = async () => { n++; if (n === 1) throw new Error(CONTENT_NAV); return '<html><body>Theatre Review by Karen Topham</body></html>'; };
+  const r = await readBrowserPage(page, 'https://example.test/ch944.html');
+  assert.ok(r.html.includes('Karen Topham'));
+  assert.equal(n, 2);
+});
+
+test('endless navigation gives up after 4 attempts instead of looping', async () => {
+  const page = fakePage({ failFirst: 0 });
+  let n = 0;
+  page.title = async () => { n++; throw new Error(NAV); };
+  await assert.rejects(readBrowserPage(page, 'https://example.test/x'), /Execution context was destroyed/);
+  assert.equal(n, 4);
 });

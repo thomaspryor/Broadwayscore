@@ -20,7 +20,9 @@ const CHALLENGE = /just a moment|checking your browser|cf-chl|attention required
  */
 /** True for the Playwright error thrown when the page navigates under a read (a challenge redirecting to the real page). */
 function isNavigationRace(err) {
-  return /Execution context was destroyed|because of a navigation|Target page, context or browser has been closed by navigation/i
+  // evaluate/title throw "Execution context was destroyed ... because of a navigation"; content() throws its own
+  // "Unable to retrieve content because the page is navigating and changing the content." A closed target is not retried.
+  return /Execution context was destroyed|because of a navigation|page is navigating/i
     .test(String((err && err.message) || err));
 }
 
