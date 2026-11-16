@@ -1,82 +1,30 @@
 {
   "processed": [
-    "ghost-notes-off-broadway-2026/oazis--unknown.json",
-    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
-    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
-    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
-    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--unknown.json"
+    "amadeus-regional-2025/talkinbroadway--christine-malcom.json",
+    "ashland-avenue-regional-2025/talkinbroadway--christine-malcom.json",
+    "angels-in-america-regional-2025/talkinbroadway--christine-malcom.json"
   ],
   "failed": [
-    "wanted-2022/nytimes--unknown.json",
-    "wanted-2022/nydailynews--unknown.json",
-    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
-    "king-lear-off-broadway-2026/patch--lauren-traut.json",
-    "medea-off-broadway-2026/express-uk--neil-norman.json",
-    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
-    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
-    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
-    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
-    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
-    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
-    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json"
+    "beneath-the-willow-tree-regional-2024/talkinbroadway--christine-malcom.json",
+    "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "ghost-notes-off-broadway-2026/oazis--unknown.json",
-      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "amadeus-regional-2025/talkinbroadway--christine-malcom.json",
+      "ashland-avenue-regional-2025/talkinbroadway--christine-malcom.json",
+      "angels-in-america-regional-2025/talkinbroadway--christine-malcom.json"
     ],
-    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-11-16T06:39:21.139Z",
-  "lastProcessed": "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--unknown.json",
-  "log": [
-    {
-      "t": "2026-11-16T08:01:09.148Z",
-      "event": "bb-session",
-      "session": "c0f75b6a",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
-    },
-    {
-      "t": "2026-11-16T08:01:09.835Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-16T08:01:41.054Z",
-      "event": "bb-session",
-      "session": "e8d2cd0c",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
-    },
-    {
-      "t": "2026-11-16T08:01:41.735Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-16T08:04:10.381Z",
-      "event": "bb-session",
-      "session": "816b91f8",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-16T08:04:11.141Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    }
-  ]
+  "startTime": "2026-11-16T08:11:58.910Z",
+  "lastProcessed": "1619-the-journey-of-a-people-regional-2024/talkinbroadway--christine-malcom.json",
+  "log": []
 }
