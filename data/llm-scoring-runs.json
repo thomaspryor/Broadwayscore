@@ -1,24 +1,5 @@
 [
   {
-    "startedAt": "2026-11-14T00:16:16.573Z",
-    "completedAt": "2026-11-14T00:16:16.591Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "43531319013",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-14T00:46:15.524Z",
     "completedAt": "2026-11-14T00:46:15.526Z",
     "totalReviews": 0,
@@ -418714,47 +418695,67 @@
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-16T13:34:51.104Z",
-    "completedAt": "2026-11-16T13:34:56.450Z",
-    "totalReviews": 12,
-    "processed": 43,
-    "skipped": 11,
+    "startedAt": "2026-11-16T13:04:52.409Z",
+    "completedAt": "2026-11-16T13:12:13.277Z",
+    "totalReviews": 82399,
+    "processed": 70,
+    "skipped": 82320,
     "errors": 1,
     "tokensUsed": {
-      "input": 359139,
-      "output": 18943,
-      "cacheRead": 269128,
-      "cacheWrite": 42717,
-      "total": 967331
+      "input": 579538,
+      "output": 27096,
+      "cacheRead": 400932,
+      "cacheWrite": 21360,
+      "total": 1441816
     },
-    "costUsd": 0.88776595,
-    "runId": "43876548923",
+    "costUsd": 0.6367184,
+    "runId": "43871817824",
     "source": "index",
     "errorDetails": [
       {
-        "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
-        "outletId": "city-am",
-        "error": "resume_input_hash_mismatch"
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
       }
     ],
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-16T13:39:56.280Z",
-    "completedAt": "2026-11-16T13:39:56.283Z",
+    "startedAt": "2026-11-16T13:12:40.989Z",
+    "completedAt": "2026-11-16T13:19:23.189Z",
+    "totalReviews": 82399,
+    "processed": 44,
+    "skipped": 82340,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 363843,
+      "output": 19404,
+      "cacheRead": 274546,
+      "cacheWrite": 42614,
+      "total": 982105
+    },
+    "costUsd": 0.464267775,
+    "runId": "43871817824",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-15T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-16T13:19:25.076Z",
+    "completedAt": "2026-11-16T13:39:49.365Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 152271,
+      "output": 14059,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 166330
     },
-    "costUsd": 0,
-    "runId": "43876548923",
+    "costUsd": 0.2022157,
+    "runId": "43871817824",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-15T00:00:00.000Z"
