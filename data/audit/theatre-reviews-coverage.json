@@ -1,15 +1,15 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-09T17:40:47.869Z",
+    "generatedAt": "2026-11-16T17:00:34.631Z",
     "scope": "full-archive",
-    "roundupsDiscovered": 293,
+    "roundupsDiscovered": 294,
     "restWalkComplete": true,
-    "showsMatched": 214,
-    "listed": 1821,
-    "held": 1735,
-    "excluded": 50,
-    "missing": 29,
-    "added": 0,
+    "showsMatched": 217,
+    "listed": 1831,
+    "held": 1748,
+    "excluded": 52,
+    "missing": 23,
+    "added": 3,
     "unmatched": 1,
     "outOfScope": 78,
     "fetchSkipped": 0
@@ -18,25 +18,15 @@
     {
       "showId": "1536-off-west-end-2026",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/1536-almeida-reviews/",
-      "listed": 14,
-      "held": 10,
+      "listed": 7,
+      "held": 6,
       "excluded": 0,
-      "missing": 3,
+      "missing": 1,
       "missingRows": [
         {
-          "outlet": "WhatsOnStage",
-          "critic": "Alex Wood",
+          "outlet": "The Standard",
+          "critic": "Unknown",
           "refusal": "cross-show-url-owned:1536-west-end-2026"
-        },
-        {
-          "outlet": "The Standard",
-          "critic": "Unknown",
-          "refusal": "flagged-filename-collision"
-        },
-        {
-          "outlet": "The Standard",
-          "critic": "Unknown",
-          "refusal": "flagged-filename-collision"
         }
       ],
       "excludedRows": [],
@@ -45,6 +35,21 @@
       "addedRows": [],
       "matchConfidence": "high",
       "fromCache": true
+    },
+    {
+      "showId": "1536-west-end-2026",
+      "roundupUrl": "https://theatre.reviews/reviews-roundup/1536-almeida-reviews/",
+      "listed": 7,
+      "held": 7,
+      "excluded": 0,
+      "missing": 0,
+      "missingRows": [],
+      "excludedRows": [],
+      "openingDate": "2026-05-12",
+      "added": 0,
+      "addedRows": [],
+      "matchConfidence": "production-section",
+      "fromCache": false
     },
     {
       "showId": "4-48-psychosis-west-end-2025",
@@ -141,7 +146,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "a-month-in-the-country-off-west-end-2026",
@@ -156,7 +161,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -340,7 +345,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "avenue-q-west-end-2026",
@@ -355,7 +360,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "bacchae-west-end-2025",
@@ -393,13 +398,8 @@
       "listed": 12,
       "held": 10,
       "excluded": 0,
-      "missing": 2,
+      "missing": 1,
       "missingRows": [
-        {
-          "outlet": "The Observer",
-          "critic": "Unknown",
-          "refusal": "cross-show-url-owned:the-devil-wears-prada-west-end-2024"
-        },
         {
           "outlet": "Time Out",
           "critic": "Unknown",
@@ -408,8 +408,13 @@
       ],
       "excludedRows": [],
       "openingDate": "2024-11-27",
-      "added": 0,
-      "addedRows": [],
+      "added": 1,
+      "addedRows": [
+        {
+          "outlet": "The Observer",
+          "critic": "Unknown"
+        }
+      ],
       "matchConfidence": "high",
       "fromCache": true
     },
@@ -419,14 +424,8 @@
       "listed": 11,
       "held": 4,
       "excluded": 6,
-      "missing": 1,
-      "missingRows": [
-        {
-          "outlet": "The Observer",
-          "critic": "Unknown",
-          "refusal": "cross-show-url-owned:the-devil-wears-prada-west-end-2024"
-        }
-      ],
+      "missing": 0,
+      "missingRows": [],
       "excludedRows": [
         {
           "outlet": "the i",
@@ -460,8 +459,13 @@
         }
       ],
       "openingDate": "2025-11-25",
-      "added": 0,
-      "addedRows": [],
+      "added": 1,
+      "addedRows": [
+        {
+          "outlet": "The Observer",
+          "critic": "Unknown"
+        }
+      ],
       "matchConfidence": "high",
       "fromCache": true
     },
@@ -493,7 +497,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "beetlejuice-west-end-2026",
@@ -648,7 +652,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -678,7 +682,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "cats-off-west-end-2026",
@@ -693,7 +697,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "christmas-carol-goes-wrong-apollo-west-end-2025",
@@ -747,6 +751,21 @@
       "fromCache": true
     },
     {
+      "showId": "cloud-9-west-end-2026",
+      "roundupUrl": "https://theatre.reviews/reviews-roundup/cloud-9-churchill-reviews/",
+      "listed": 10,
+      "held": 10,
+      "excluded": 0,
+      "missing": 0,
+      "missingRows": [],
+      "excludedRows": [],
+      "openingDate": "2026-11-10",
+      "added": 0,
+      "addedRows": [],
+      "matchConfidence": "high",
+      "fromCache": false
+    },
+    {
       "showId": "clueless-west-end-2025",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/clueless-the-musical-reviews/",
       "listed": 0,
@@ -774,7 +793,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "coriolanus-west-end-2024",
@@ -832,7 +851,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "deaf-republic-west-end-2025",
@@ -892,7 +911,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "death-of-england-closing-time-west-end-2024",
@@ -1030,7 +1049,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "evening-all-afternoon-off-west-end-2026",
@@ -1045,7 +1064,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "every-brilliant-thing-west-end-2025",
@@ -1350,7 +1369,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -1365,8 +1384,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false,
-      "stale": "fetch-failed"
+      "fromCache": false
     },
     {
       "showId": "ilford-boy-off-west-end-2026",
@@ -1381,7 +1399,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "im-every-woman-off-west-end-2026",
@@ -1461,25 +1479,34 @@
       "fromCache": true
     },
     {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "roundupUrl": "https://theatre.reviews/reviews-roundup/into-the-woods-bridge-reviews/",
+      "listed": 6,
+      "held": 6,
+      "excluded": 0,
+      "missing": 0,
+      "missingRows": [],
+      "excludedRows": [],
+      "openingDate": "2026-10-07",
+      "added": 0,
+      "addedRows": [],
+      "matchConfidence": "production-section",
+      "fromCache": false
+    },
+    {
       "showId": "into-the-woods-off-west-end-2025",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/into-the-woods-bridge-reviews/",
-      "listed": 16,
-      "held": 14,
+      "listed": 10,
+      "held": 10,
       "excluded": 0,
-      "missing": 1,
-      "missingRows": [
-        {
-          "outlet": "BroadwayWorld",
-          "critic": "Cheryl Markosky",
-          "refusal": "cross-show-url-owned:into-the-woods-noel-coward-west-end-2026"
-        }
-      ],
+      "missing": 0,
+      "missingRows": [],
       "excludedRows": [],
       "openingDate": "2025-12-11",
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -1532,18 +1559,17 @@
       "listed": 6,
       "held": 5,
       "excluded": 0,
-      "missing": 1,
-      "missingRows": [
-        {
-          "outlet": "Rolling Stone UK",
-          "critic": "Unknown",
-          "refusal": "domain-mismatch: URL domain rollingstone.co.uk doesn't match outlet rollingstone (expected rollingstone.com)"
-        }
-      ],
+      "missing": 0,
+      "missingRows": [],
       "excludedRows": [],
       "openingDate": "2025-06-11",
-      "added": 0,
-      "addedRows": [],
+      "added": 1,
+      "addedRows": [
+        {
+          "outlet": "Rolling Stone UK",
+          "critic": "Unknown"
+        }
+      ],
       "matchConfidence": "high",
       "fromCache": true
     },
@@ -1582,7 +1608,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -1680,7 +1706,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "machinal-west-end-2024",
@@ -1851,7 +1877,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "mean-girls-west-end-2024",
@@ -1881,7 +1907,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "mj-the-musical-west-end-2024",
@@ -1927,7 +1953,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "mrs-warrens-profession-west-end-2025",
@@ -2087,11 +2113,17 @@
       "showId": "oliver-west-end-2024",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/oliver-gielgud-reviews/",
       "listed": 8,
-      "held": 8,
-      "excluded": 0,
+      "held": 7,
+      "excluded": 1,
       "missing": 0,
       "missingRows": [],
-      "excludedRows": [],
+      "excludedRows": [
+        {
+          "outlet": "WhatsOnStage",
+          "critic": "Sarah Crompton",
+          "reason": "wrongProduction"
+        }
+      ],
       "openingDate": "2025-01-14",
       "added": 0,
       "addedRows": [],
@@ -2139,11 +2171,17 @@
       "showId": "othello-west-end-2025",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/othello-david-harewood-toby-jones/",
       "listed": 10,
-      "held": 10,
-      "excluded": 0,
+      "held": 9,
+      "excluded": 1,
       "missing": 0,
       "missingRows": [],
-      "excludedRows": [],
+      "excludedRows": [
+        {
+          "outlet": "the i",
+          "critic": "Fiona Mountford",
+          "reason": "wrongProduction"
+        }
+      ],
       "openingDate": "2025-11-04",
       "added": 0,
       "addedRows": [],
@@ -2199,7 +2237,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "people-places-and-things-west-end-2024",
@@ -2214,7 +2252,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "player-kings-west-end-2024",
@@ -2375,7 +2414,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "romeo-and-juliet-west-end-2024",
@@ -2547,7 +2586,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "spirited-away-west-end-2024",
@@ -2562,8 +2601,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false,
-      "stale": "fetch-failed"
+      "fromCache": false
     },
     {
       "showId": "stage-kiss-off-west-end-2026",
@@ -2615,7 +2653,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "stereophonic-west-end-2025",
@@ -2897,7 +2935,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "the-hills-of-california-west-end-2024",
@@ -2934,7 +2972,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "the-hot-wing-king-west-end-2024",
@@ -2964,7 +3002,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "medium",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "the-importance-of-being-earnest-west-end-2024",
@@ -3069,7 +3107,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "the-misanthrope-west-end-2026",
@@ -3099,7 +3137,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "the-other-place-west-end-2024",
@@ -3651,7 +3689,7 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": true
     },
     {
       "showId": "woman-in-mind-west-end-2025",
@@ -4483,8 +4521,10 @@
       "url": "https://theatre.reviews/reviews-roundup/the-human-body-reviews/",
       "title": "Keeley Hawes in The Human Body",
       "date": "2024-02-28",
-      "reason": "no show with this title",
-      "candidates": [],
+      "reason": "matching show has no opening date to check the production against",
+      "candidates": [
+        "the-humans-west-end-2027"
+      ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Donmar Warehouse) before the 2026-01-01 tracking window"
     },
