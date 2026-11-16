@@ -231,6 +231,11 @@ test('BRO-7583 guard: no scripts/lib test runs run-push-audits.sh over the live 
   // and in this file every real (non --list) run of SCRIPT must use a sandboxed stdin/tmp repo, never the live-tree argv form
   const own = readFileSync(join(LIB_DIR, 'run-push-audits.test.mjs'), 'utf8');
   assert.ok(!/execFileSync\('bash', \[SCRIPT, '\.github/.test(own), 'live-repo argv execution of SCRIPT is back');
+  // any live-tree stdin run of SCRIPT (input is a repo path) must tolerate failure of unrelated audits
+  for (const m of own.matchAll(/execFileSync\('bash', \[SCRIPT\], \{\s*input: '(\.github|scripts|src)[^']*'[^}]*\}\)/g)) {
+    const before = own.slice(Math.max(0, m.index - 60), m.index);
+    assert.match(before, /try\s*\{\s*\n?\s*out = $/, `live-tree run of SCRIPT must be inside try/catch: ${m[0].slice(0, 80)}`);
+  }
 });
 
 test('argv form (no stdin) matches piped-stdin form', () => {
@@ -422,10 +427,12 @@ test('findLongLines passes on a well-formed workflow with no long lines', () => 
 // workflow-only diff, and the live .github/workflows/ tree (which CI already
 // keeps green) must pass both.
 test('end-to-end: run-push-audits.sh runs the new workflow-subject guards and they pass on the live repo', () => {
-  const out = execFileSync('bash', [SCRIPT], {
-    input: '.github/workflows/check-cron-health.yml\n',
-    encoding: 'utf8',
-  });
+  // BRO-7583: a failure of any OTHER selected audit (11 run for this input) must
+  // not red this gate; read the output off the error and assert only these two.
+  let out = '';
+  try {
+    out = execFileSync('bash', [SCRIPT], { input: '.github/workflows/check-cron-health.yml\n', encoding: 'utf8', stdio: 'pipe' });
+  } catch (e) { out = String(e.stdout || '') + String(e.stderr || ''); }
   assert.doesNotMatch(out, /AUDIT BLOCKED: workflow-line-length/);
   assert.doesNotMatch(out, /AUDIT BLOCKED: workflow-concurrency/);
 });
