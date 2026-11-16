@@ -616,8 +616,11 @@ function pageConfirmsShow(text, show, { nowMs = Date.now(), otherShows = [] } = 
   // "Bristol Old Vic") stays ambiguous whatever the page names, so it is still dropped.
   const rivals = otherShows.filter((o) => o.id !== show.id);
   const named = (o) => titleForms(o).some((t) => formInHay(t, hay));
+  // Same house = the rival carries this exact form among its own ("Marylebone Theatre/Main Stage"
+  // also yields "Marylebone Theatre"); then only a rival the page names voids it.
+  const voids = (f, o) => { const g = venueForms(o); return g.includes(f) ? named(o) : g.some((x) => formWithin(f, x)); };
   return venueForms(show)
-    .filter((f) => f.split(/\s+/).length >= 2 && !rivals.some((o) => venueForms(o).some((g) => formWithin(f, g) && (g !== f || named(o)))))
+    .filter((f) => f.split(/\s+/).length >= 2 && !rivals.some((o) => voids(f, o)))
     .some((f) => hay.includes(` ${f} `));
 }
 

@@ -40,9 +40,11 @@ test('the stage name alone confirms too', () => {
   assert.equal(helpers.pageConfirmsShow(text, ripple, { nowMs: NOW, otherShows: [ripple, sibling] }), true);
 });
 
-test('when another running show shares the house, the house name no longer confirms', () => {
-  const text = page('A fine night at Playwrights Horizons.');
+test('when another running show the page names shares the house, the house name no longer confirms', () => {
+  const text = page('A fine night at Playwrights Horizons, down the hall from Other Play.');
   assert.equal(helpers.pageConfirmsShow(text, ripple, { nowMs: NOW, otherShows: [ripple, sibling] }), false);
+  // BRO-7401: a same-house rival the page never names cannot be confused with this show.
+  assert.equal(helpers.pageConfirmsShow(page('A fine night at Playwrights Horizons.'), ripple, { nowMs: NOW, otherShows: [ripple, sibling] }), true);
 });
 
 test('a page that names the title but neither the house nor a credit stays unconfirmed', () => {

@@ -362,6 +362,10 @@ const WP_API_CONFIG = {
     urlFilter: /\/review-/,
     reviewsOnly: true,
     pageConfirmAll: true,
+    // The daily run still reads the census source every day (the feed sees only running shows and
+    // one page of posts; the census also matches runs that closed in the lookback, and covers a
+    // failed or blocked feed).
+    keepCensus: true,
   },
   // Chicago Tribune: WP REST API, category 135 = Theater (confirmed 9000+ posts)
   chicagotribune: {
@@ -1039,7 +1043,8 @@ async function main() {
       } catch (err) {
         console.warn(`  ⚠ WP API failed for ${outletId}: ${err.message}`);
         outletsFailed++;
-        if (win || !(WP_API_CONFIG[outletId].keepSerp && domain)) continue;
+        if (!win && WP_API_CONFIG[outletId].keepCensus && !censusDisabled) articles = []; // BRO-7401: the census block below still covers it
+        else if (win || !(WP_API_CONFIG[outletId].keepSerp && domain)) continue;
       }
       // keepSerp: a mixed review/news feed only admits review-shaped headlines
       // (titleLedReviews), so the SERP sweep this outlet had before keeps running
@@ -1109,7 +1114,7 @@ async function main() {
     // failed, stale or shorter than the lookback. Items join `articles` flagged viaCensus.
     if (!censusDisabled) {
       const why = censusListing.shouldUseCensus({
-        outletId, hasFeed: hasFeedEntry(outletId), health: feedHealth[outletId] || null,
+        outletId, hasFeed: hasFeedEntry(outletId) && !(WP_API_CONFIG[outletId] && WP_API_CONFIG[outletId].keepCensus), health: feedHealth[outletId] || null,
         latestReviewDate: latestByOutlet[outletId] || null, lookbackDays: opts.lookbackDays,
       });
       if (why.use) {

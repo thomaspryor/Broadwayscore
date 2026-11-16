@@ -69,3 +69,15 @@ test('a venue form that is part of a different house name stays ambiguous (Old V
   const text = ' Ebenezer: A Christmas Carol is a horror-tinged film. Its star once played Scrooge at the Old Vic. ';
   assert.equal(pageConfirmsShow(text, carol, { otherShows: [carol, lanny] }), false);
 });
+
+test('the daily run keeps reading the census for Everything Theatre (closed runs, feed failure)', () => {
+  const census = require('../../scripts/lib/outlet-listing-census.js');
+  assert.equal(poller.WP_API_CONFIG['everything-theatre'].keepCensus, true);
+  // what the poller passes for a keepCensus feed: hasFeed false, so the census is read every daily run
+  assert.equal(census.shouldUseCensus({ outletId: 'everything-theatre', hasFeed: false, lookbackDays: 7, env: {} }).use, true);
+});
+
+test('a same-house rival with a compound venue ("/Main Stage") does not void an unnamed venue', () => {
+  const r = { ...tartuffe, venue: 'Marylebone Theatre/Main Stage' };
+  assert.equal(pageConfirmsShow(page('Speculations, a new play at the Marylebone Theatre.'), speculations, { otherShows: [speculations, r] }), true);
+});
