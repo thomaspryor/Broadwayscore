@@ -191,3 +191,54 @@ test('last 10 Broadway openings (when data/reviews.json is present): every on-ti
   let code; try { code = perShow(reviews, shows, { count: 10, until: new Date().toISOString().slice(0, 10) }); } finally { console.log = log; }
   assert.equal(code, 0, `on-time outlets with no lane source:\n${lines.filter((l) => /ON TIME/.test(l)).join('\n')}`);
 });
+
+// BRO-7601: the 2026-11-15 Downstate WSJ review was held ~3h as a paywall teaser. The lane's WSJ cookie fetch answered 401, the paid
+// tiers returned the teaser, and nothing logged-in was tried. The lane now reads WSJ through its Browserbase session with the
+// subscriber cookies injected whenever the free cookie tier does not return the full page.
+const bbf = require('../../scripts/lib/opening-night-lane/browserbase-fetch.js');
+const WSJ = 'https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broadway-2d6ef23c';
+const FULL = `<html><body><article>${'A full WSJ review paragraph. '.repeat(120)}</article></body></html>`;
+const TEASER = '<html><body><article>Teaser only.</article></body></html>';
+const KEYS = { BROWSERBASE_API_KEY: 'k', BROWSERBASE_PROJECT_ID: 'p' };
+
+function wsjLane({ cookieFetch, bbHtml = FULL, cookies = [{ name: 'a', value: 'b', domain: '.wsj.com' }] }) {
+  const st = { fetchPageCalls: [], injected: [], pagesRead: [] };
+  const context = { addCookies: async (c) => { st.injected.push(...c); }, newPage: async () => ({ close: async () => {} }) };
+  const browser = { isConnected: () => true, on() {}, close: async () => {}, contexts: () => [context] };
+  const browserbase = bbf.createBrowserbaseFetcher({
+    env: KEYS, createSession: async () => ({ id: 'sess1aaaa', connectUrl: 'wss://bb/1' }), connect: async () => browser,
+    readPage: async (_p, url) => { st.pagesRead.push(url); return { status: 200, finalUrl: url, html: bbHtml, challenge: false }; },
+    cookiesFor: () => cookies,
+  });
+  const fetchPage = async (url, opts) => { st.fetchPageCalls.push(opts || {}); return cookieFetch(url, opts); };
+  const lane = bbf.laneFetchPage({ fetchPage, browserbase, isFullPage: (html) => html.length > 2000 });
+  return { lane, st };
+}
+
+test('BRO-7601: WSJ cookie fetch 401 -> the full review is read through logged-in Browserbase, no paid tier spent', async () => {
+  const { lane, st } = wsjLane({ cookieFetch: async () => { throw Object.assign(new Error('HTTP 401'), { status: 401 }); } });
+  const r = await lane(WSJ);
+  assert.equal(r.content, FULL);
+  assert.equal(r.via, 'browserbase');
+  assert.deepEqual(st.pagesRead, [WSJ]);
+  assert.equal(st.injected.length, 1, 'subscriber cookies injected into the session');
+  assert.ok(st.fetchPageCalls.every((o) => Array.isArray(o.tiers) && o.tiers.join() === 'cookies-plain'), 'only the free cookie tier ran before Browserbase');
+});
+
+test('BRO-7601: a cookie-tier teaser also goes to Browserbase; a full cookie-tier page does not', async () => {
+  const a = wsjLane({ cookieFetch: async () => ({ content: TEASER, source: 'Cookie-plain' }) });
+  assert.equal((await a.lane(WSJ)).content, FULL);
+  const b = wsjLane({ cookieFetch: async () => ({ content: FULL, source: 'Cookie-plain' }) });
+  assert.equal((await b.lane(WSJ)).content, FULL);
+  assert.deepEqual(b.st.pagesRead, [], 'no Browserbase session spent when the free tier already gave the review');
+});
+
+test('BRO-7601: Browserbase off or refusing -> WSJ uses the normal fetchPage chain as before', async () => {
+  for (const env of [{}, KEYS]) {
+    const st = { calls: [] };
+    const browserbase = bbf.createBrowserbaseFetcher({ env, createSession: async () => { throw new Error('refused'); }, connect: async () => { throw new Error('no'); }, readPage: async () => ({}) });
+    const lane = bbf.laneFetchPage({ fetchPage: async (u, o) => { st.calls.push(o || {}); if (o && o.tiers) throw new Error('HTTP 401'); return { content: TEASER }; }, browserbase, isFullPage: () => false });
+    assert.equal((await lane(WSJ)).content, TEASER);
+    assert.equal(st.calls[st.calls.length - 1].tiers, undefined, 'last call is the unrestricted chain');
+  }
+});

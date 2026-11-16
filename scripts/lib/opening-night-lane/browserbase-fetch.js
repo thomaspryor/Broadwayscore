@@ -4,8 +4,8 @@
  * Talkin' Broadway sits behind a Cloudflare managed challenge that Bright Data, ScrapingBee and headless Playwright do
  * not pass from CI ("every Talkin' Broadway index failed" 59 times on 2026-10-29). collect-review-texts.js and
  * collect-talkinbroadway-index.js get it through a Browserbase session with solveCaptchas; this is the same route for
- * the lane. Only TB is routed: WSJ keeps fetchPage's free cookies tier (browserbase-route.js keeps 'direct-cookies'
- * ahead of Browserbase) and the paywall-teaser excerpt fallback (BRO-6066).
+ * the lane. TB is routed always; WSJ keeps fetchPage's free cookies tier first and goes to a cookie-injected
+ * Browserbase read when that tier fails or returns a teaser (BRO-7601), then the paywall-teaser excerpt fallback (BRO-6066).
  *
  * Spend. One session is shared by every routed fetch of the process (discovery and review fetch alike, a new page per
  * fetch), created on first use and once at a time (single-flight), rotated before its timeout, at most `maxSessions`
@@ -27,6 +27,10 @@
 'use strict';
 
 const BROWSERBASE_HOSTS = Object.freeze(['talkinbroadway.com']);
+// BRO-7601: hosts read through Browserbase with the subscriber cookies injected, but only after the free cookie tier did
+// not return the full page. 2026-11-15: WSJ's cookie fetch answered 401, the paid tiers returned the paywall teaser, and
+// the Downstate review stayed held ~3h until the regular poller's logged-in Browserbase read it.
+const LOGGED_IN_HOSTS = Object.freeze(['wsj.com']);
 const CALLER = 'opening-night-lane';
 const SHADOW_CALLER = 'opening-night-lane-shadow';
 const LATCHING_REFUSAL = /kill switch|not set|caller allowance used|host denied/i;
@@ -41,6 +45,12 @@ function hostOf(url) {
 function routesThroughBrowserbase(url) {
   const host = hostOf(url);
   return !!host && BROWSERBASE_HOSTS.some((d) => host === d || host.endsWith(`.${d}`));
+}
+
+/** True when the lane reads this URL through a logged-in Browserbase session after the free cookie tier. */
+function routesLoggedIn(url) {
+  const host = hostOf(url);
+  return !!host && LOGGED_IN_HOSTS.some((d) => host === d || host.endsWith(`.${d}`));
 }
 
 class BrowserbaseUnavailable extends Error {
@@ -64,7 +74,7 @@ class BrowserbaseUnavailable extends Error {
 function createBrowserbaseFetcher({
   createSession, connect, readPage, releaseSession = async () => {}, env = process.env, now = Date.now, log = () => {},
   caller = CALLER, maxSessions = 8, sessionTimeoutSec = 3600, fetchTimeoutMs = 60000, cooldownMs = 15 * 60 * 1000,
-  reconnectTimeoutMs = 15000,
+  reconnectTimeoutMs = 15000, cookiesFor = (host) => require('../cookie-loader').loadCookiesForDomain(host),
 }) {
   let offReason = env.BROWSERBASE_API_KEY && env.BROWSERBASE_PROJECT_ID ? null : 'BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set';
   let pausedUntil = 0;
@@ -87,7 +97,7 @@ function createBrowserbaseFetcher({
     let session;
     try {
       session = await createSession({
-        caller, purpose: 'opening-night lane Talkin Broadway fetch', host: BROWSERBASE_HOSTS[0], category: 'discovery',
+        caller, purpose: 'opening-night lane fetch (Talkin Broadway, logged-in WSJ)', host: BROWSERBASE_HOSTS[0], category: 'discovery',
         body: { timeout: sessionTimeoutSec, browserSettings: { solveCaptchas: true } },
       });
     } catch (e) {
@@ -177,9 +187,24 @@ function createBrowserbaseFetcher({
     if (!s.pages) { retired.delete(s); s.closing = true; s.browser.close().catch(() => {}); }
   }
 
+  /** Put the subscriber cookies for a logged-in host into the session's context, once per session and host. */
+  async function injectLoggedIn(s, url) {
+    const host = hostOf(url);
+    s.injected = s.injected || new Set();
+    if (!host || s.injected.has(host)) return;
+    const cookies = (cookiesFor(host) || [])
+      .filter((c) => c && c.name && c.value && c.domain)
+      .map((c) => ({ name: c.name, value: c.value, domain: c.domain, path: c.path || '/', httpOnly: !!c.httpOnly, secure: c.secure !== false, sameSite: c.sameSite || 'None',
+        ...(c.expires && c.expires > 0 ? { expires: c.expires > 1e12 ? Math.floor(c.expires / 1000) : c.expires } : {}) }));
+    if (!cookies.length) throw new BrowserbaseUnavailable(`no subscriber cookies for ${host}`);
+    await s.context.addCookies(cookies);
+    s.injected.add(host);
+  }
+
   async function fetch(url) {
     if (!available()) throw new BrowserbaseUnavailable(offReason || 'paused after a refusal');
     const s = await session();
+    if (routesLoggedIn(url)) await injectLoggedIn(s, url);
     counts.fetches++;
     s.pages++;
     let page = null; let timer; let warmupDone = null; let cleared = false;
@@ -227,8 +252,22 @@ function createBrowserbaseFetcher({
  * fetchPage with the Browserbase route: routed hosts go through `browserbase` while it is available, everything else
  * (and routed hosts while it is off) through `fetchPage`. Same shape as scraper.fetchPage: (url, opts) -> {content}.
  */
-function laneFetchPage({ fetchPage, browserbase }) {
+function laneFetchPage({ fetchPage, browserbase, isFullPage = defaultIsFullPage }) {
   return async (url, opts) => {
+    // BRO-7601: free cookie tier first; when it fails or returns less than the full page, the logged-in Browserbase read,
+    // before any paid tier (which only ever returned WSJ's teaser). Browserbase off or refusing: the old chain, unchanged.
+    if (!opts?.directOnly && browserbase && routesLoggedIn(url) && browserbase.available()) {
+      try {
+        const free = await fetchPage(url, { ...opts, tiers: ['cookies-plain'] });
+        if (free && typeof free.content === 'string' && isFullPage(free.content, url)) return free;
+      } catch { /* 401 or no cookies: the logged-in browser is next */ }
+      try {
+        return await browserbase.fetch(url);
+      } catch (e) {
+        if (!e || !e.bbUnavailable) throw e;
+      }
+      return fetchPage(url, opts);
+    }
     if (!opts?.directOnly && browserbase && routesThroughBrowserbase(url) && browserbase.available()) {
       try {
         return await browserbase.fetch(url);
@@ -238,6 +277,13 @@ function laneFetchPage({ fetchPage, browserbase }) {
     }
     return fetchPage(url, opts);
   };
+}
+
+/** A page whose extracted article reaches the scorer's body gate: not a paywall teaser. */
+function defaultIsFullPage(html, url) {
+  const { extractArticleText } = require('../article-extractor');
+  const { BODY_GATE_CHARS } = require('../scorable-text');
+  return String(extractArticleText(html, hostOf(url)) || '').trim().length >= BODY_GATE_CHARS;
 }
 
 /** The real wiring: scraper.fetchPage plus a Browserbase fetcher over createBbSession and Playwright, loaded lazily. */
@@ -256,4 +302,4 @@ function createLaneFetch({ env = process.env, log = (m) => console.log(m), calle
   return { fetchPage: laneFetchPage({ fetchPage, browserbase }), browserbase, close: () => browserbase.close() };
 }
 
-module.exports = { BROWSERBASE_HOSTS, CALLER, SHADOW_CALLER, routesThroughBrowserbase, BrowserbaseUnavailable, createBrowserbaseFetcher, laneFetchPage, createLaneFetch };
+module.exports = { BROWSERBASE_HOSTS, LOGGED_IN_HOSTS, routesLoggedIn, CALLER, SHADOW_CALLER, routesThroughBrowserbase, BrowserbaseUnavailable, createBrowserbaseFetcher, laneFetchPage, createLaneFetch };
