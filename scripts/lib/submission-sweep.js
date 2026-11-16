@@ -6,6 +6,12 @@ const {
   checkSubmissionLanded, decideAwaitingSubmission, findShowForSubmission, AWAITING_SCORE_MAX_HOURS,
 } = require('./submission-landing');
 
+// Every label that parks a submission waiting on its review to land.
+// `scraping-failed` alone (older runs, or a manual label edit) must be swept
+// too, or the issue stays open forever after the review lands (BRO-7614, #1062).
+const QUEUE_LABELS = ['awaiting-score', 'needs-manual-review', 'scraping-failed'];
+const MANUAL_LABELS = ['needs-manual-review', 'scraping-failed'];
+
 function gh(args) {
   return execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 }
@@ -14,7 +20,7 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
   let issues;
   try {
     const byNumber = new Map();
-    for (const label of ['awaiting-score', 'needs-manual-review']) {
+    for (const label of QUEUE_LABELS) {
       const found = JSON.parse(runGh(['issue', 'list', '--label', label, '--state', 'open', '--limit', '100', '--json', 'number,title,body,createdAt,labels']));
       for (const issue of found) byNumber.set(issue.number, issue);
     }
@@ -33,7 +39,7 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
     // The manual queue also contains bug reports and score disputes. A URL
     // already on the site says nothing about whether those reports are fixed.
     if (!String(issue.title).startsWith('[Review Submission]')) continue;
-    const manualReview = issue.labels.some(l => l.name === 'needs-manual-review');
+    const manualReview = issue.labels.some(l => MANUAL_LABELS.includes(l.name));
     const url = (String(issue.body).match(/### Review URL\s*\n+\s*(https?:\/\/\S+)/) || [])[1];
     const show = url ? findShowForSubmission(url, shows, textsDir) : null;
     const landed = !!(show && checkSubmissionLanded({ showId: show.id, url, reviews, reviewTextsDir: textsDir, show }).landed);
@@ -47,7 +53,7 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
         runGh(['issue', 'comment', n, '--body', 'This review is now live on the site. Thank you for your contribution to Broadway Scorecard! 🎭']);
         // Close before removing queue labels so a failed close is retried.
         runGh(['issue', 'close', n, '--reason', 'completed']);
-        const labels = issue.labels.filter(l => ['awaiting-score', 'needs-manual-review'].includes(l.name));
+        const labels = issue.labels.filter(l => QUEUE_LABELS.includes(l.name));
         runGh(['issue', 'edit', n, ...labels.flatMap(l => ['--remove-label', l.name])]);
       } else {
         runGh(['issue', 'comment', n, '--body', `Still not on the site after ${AWAITING_SCORE_MAX_HOURS}h: the review was never scored. Flagged for a maintainer.`]);
@@ -59,4 +65,4 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
   }
 }
 
-module.exports = { sweepSubmissions };
+module.exports = { sweepSubmissions, QUEUE_LABELS };

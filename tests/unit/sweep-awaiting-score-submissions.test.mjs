@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const { sweepSubmissions } = require('../../scripts/lib/submission-sweep.js');
 const { AWAITING_SCORE_MAX_HOURS } = require('../../scripts/lib/submission-landing.js');
 
-function fixture(t, { landed = true, labels = ['needs-manual-review'], ageHours = 100, title = '[Review Submission] Test review' } = {}) {
+function fixture(t, { storedUrl, landed = true, labels = ['needs-manual-review'], ageHours = 100, title = '[Review Submission] Test review' } = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'submission-sweep-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const show = { id: 'test-show-2026', title: 'Test Show', openingDate: '2026-01-01', status: 'open' };
@@ -18,9 +18,9 @@ function fixture(t, { landed = true, labels = ['needs-manual-review'], ageHours 
   const dir = path.join(root, 'review-texts', show.id);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(root, 'shows.json'), JSON.stringify({ shows: [show] }));
-  fs.writeFileSync(path.join(root, 'reviews.json'), JSON.stringify({ reviews: landed ? [{ showId: show.id, url }] : [] }));
+  fs.writeFileSync(path.join(root, 'reviews.json'), JSON.stringify({ reviews: landed ? [{ showId: show.id, url: storedUrl || url }] : [] }));
   fs.writeFileSync(path.join(dir, 'outlet--critic.json'), JSON.stringify({
-    showId: show.id, url, contentTier: 'complete', assignedScore: 80, fullText: 'Review text. '.repeat(200),
+    showId: show.id, url: storedUrl || url, contentTier: 'complete', assignedScore: 80, fullText: 'Review text. '.repeat(200),
   }));
   const issue = { number: 123, title, body: `### Review URL\n${url}`, labels: labels.map(name => ({ name })), createdAt: new Date(Date.now() - ageHours * 3600e3).toISOString() };
   const calls = [];
@@ -64,7 +64,7 @@ test('an issue with both queue labels is closed once and both labels are removed
 test('dry-run makes no GitHub mutations', t => {
   const f = fixture(t);
   sweepSubmissions({ ...f, dryRun: true });
-  assert.equal(f.calls.filter(a => a[1] === 'list').length, 2);
+  assert.equal(f.calls.filter(a => a[1] === 'list').length, 3);
   assert.deepEqual(f.writes(), []);
 });
 
@@ -94,4 +94,25 @@ test('a failed queue read makes no mutations', t => {
   const f = fixture(t);
   sweepSubmissions({ ...f, runGh() { throw new Error('list failed'); } });
   assert.deepEqual(f.writes(), []);
+});
+
+test('a scraping-failed-only submission closes once its review lands (BRO-7614, #1062)', t => {
+  const f = fixture(t, { labels: ['scraping-failed'] });
+  sweepSubmissions(f);
+  assert.deepEqual(f.writes().map(a => a[1]), ['comment', 'close', 'edit']);
+  assert.deepEqual(f.writes()[2], ['issue', 'edit', '123', '--remove-label', 'scraping-failed']);
+});
+
+test('a scraping-failed submission that has not landed is not re-escalated', t => {
+  const f = fixture(t, { labels: ['scraping-failed'], landed: false, ageHours: AWAITING_SCORE_MAX_HOURS + 1 });
+  sweepSubmissions(f);
+  assert.deepEqual(f.writes(), []);
+});
+
+test('a submission matches a review stored under http:// or www. (BRO-7614, #1062)', t => {
+  for (const storedUrl of ['http://example.com/test-review', 'https://www.example.com/test-review/']) {
+    const f = fixture(t, { labels: ['scraping-failed'], storedUrl });
+    sweepSubmissions(f);
+    assert.deepEqual(f.writes().map(a => a[1]), ['comment', 'close', 'edit'], storedUrl);
+  }
 });

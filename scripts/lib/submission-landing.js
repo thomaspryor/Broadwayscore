@@ -15,15 +15,22 @@ const { canonicalizeUrlForDedup, explainExclusion } = require('./review-guards')
 const { unscoredSkipReason } = require('./scoring-queue-counts');
 const { isQueuedRetryStub } = require('./submission-retry-stub');
 
+// Submitters type https:// and www. freely while the ingest may store the
+// page's own http:// URL (#1062: https submitted, http on file), so match
+// scheme- and www-insensitively on top of the dedup canonical form (BRO-7614).
+function submissionUrlKey(url) {
+  return canonicalizeUrlForDedup(url).replace(/^https?:\/\/(www\.)?/, '');
+}
+
 function findSubmissionFile(showDir, submittedUrl) {
-  const want = canonicalizeUrlForDedup(submittedUrl);
+  const want = submissionUrlKey(submittedUrl);
   if (!want || !fs.existsSync(showDir)) return null;
   for (const f of fs.readdirSync(showDir)) {
     if (!f.endsWith('.json')) continue;
     let data;
     try { data = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { continue; }
     const urls = [data.url, data.previousUrl, ...(Array.isArray(data.alternateUrls) ? data.alternateUrls : [])];
-    if (urls.some((u) => u && canonicalizeUrlForDedup(u) === want)) {
+    if (urls.some((u) => u && submissionUrlKey(u) === want)) {
       return { path: path.join(showDir, f), data };
     }
   }
@@ -41,8 +48,8 @@ function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show }) {
   // excluded (ship-check 2026-09-22). A merge that kept a different URL on the
   // file is not found above and is reported as not landed: a maintainer look,
   // never a false "added".
-  const fileUrl = canonicalizeUrlForDedup(file.data.url);
-  const inReviews = !!fileUrl && reviews.some((r) => r.showId === showId && canonicalizeUrlForDedup(r.url) === fileUrl);
+  const fileUrl = submissionUrlKey(file.data.url);
+  const inReviews = !!fileUrl && reviews.some((r) => r.showId === showId && submissionUrlKey(r.url) === fileUrl);
   if (inReviews) return { landed: true, reason: null, file: file.path };
   // BRO-4431: a page we couldn't read yet was saved as a stub that the
   // collector, the T1/T2 gap audit and the aggregator star relay keep
@@ -96,6 +103,6 @@ function findShowForSubmission(url, shows, reviewTextsDir) {
 }
 
 module.exports = {
-  checkSubmissionLanded, findSubmissionFile, decideAwaitingSubmission, findShowForSubmission,
+  checkSubmissionLanded, findSubmissionFile, submissionUrlKey, decideAwaitingSubmission, findShowForSubmission,
   AWAITING_SCORE_MAX_HOURS,
 };
