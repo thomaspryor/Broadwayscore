@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-16T02:05:45.539Z",
+  "generatedAt": "2026-11-16T02:48:40.671Z",
   "date": "2026-11-16",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 181795,
+  "entryCount": 184279,
   "shows": [
     {
       "showId": "the-whos-tommy-tour-2026",
@@ -491,21 +491,6 @@
         "collected-to-scored": 994630,
         "scored-to-rebuilt": 90723,
         "rebuilt-to-deployed": 134910450
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "peter-pan-goes-wrong-regional-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 901504,
-        "rebuilt-to-deployed": 136257343
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -5359,7 +5344,7 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "reviewCount": 46,
+      "reviewCount": 45,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
