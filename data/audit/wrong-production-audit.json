@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-16T00:26:44.987Z",
+  "timestamp": "2026-11-16T01:10:09.009Z",
   "stats": {
-    "totalReviews": 82043,
-    "alreadyFlagged": 22446,
-    "dateGuardCatches": 222,
+    "totalReviews": 82041,
+    "alreadyFlagged": 22447,
+    "dateGuardCatches": 221,
     "directorMismatch": 3708,
     "tvFilmSignals": 2320,
     "londonSignals": 3769,
     "offBroadwaySignals": 751,
     "yearMismatch": 375,
-    "noPublishDate": 8205
+    "noPublishDate": 8203
   },
   "findings": [
     {
@@ -122597,18 +122597,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "pride-bridge-theatre-off-west-end-2026",
-      "file": "standard--laura-harding.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 79d before show (2026-08-25 vs 2026-11-12)"
         }
       ]
     },
