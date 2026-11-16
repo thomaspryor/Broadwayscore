@@ -533,29 +533,25 @@ jobs:
             # 2026-07-22) — the per-show conditionKey now collapses repeats
             # within 24h to a single email.
             #
-            # blocked=true is written from INSIDE the node call, only once we
-            # know the owner was actually informed (delivered or already-silent
-            # per the ledger) — codex adversarial review 2026-07-23 flagged the
-            # previous write-before-call ordering as a fail-CLOSED regression:
-            # if routeAlert() threw or Resend delivery failed, blocked=true
-            # would already be set, suppressing the generic notify-failure
-            # fallback below and leaving the owner with ZERO email for a real
-            # blocked broadcast (worse than the pre-migration behavior).
-            # BRO-2816: exits 0 with blocked=true once the owner is informed (the
-            # orphan_gate pattern), so later steps are not skipped; the broadcast
-            # step checks the output. Exits 1 only when delivery is unconfirmed,
-            # which lets "Notify on failure" email the owner instead.
+            # BRO-7607: blocked/refresh_blocked are written by bash before the
+            # alert (below). "Notify on failure" no longer reads blocked, so the
+            # old reason for writing it only after delivery is gone. The alert
+            # exits 1 when delivery is unconfirmed; the step then ends red.
             # BRO-7607: blocked/refresh_blocked are scoped to the set each breached
             # show is in and written BEFORE the alert, so an unconfirmed alert
             # (exit 1, red step) still fails closed. The alert only reports.
-            BREACHED="$BREACHED_LIST" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT"
-            BREACHED_LIST="$BREACHED_LIST" GITHUB_OUTPUT= node scripts/lib/broadcast-gate-alert.js checklist
+            BREACHED="$BREACHED_LIST" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT" || printf 'blocked=true\nrefresh_blocked=true\n' >> "$GITHUB_OUTPUT"
+            BREACHED_LIST="$BREACHED_LIST" GITHUB_OUTPUT= node scripts/lib/broadcast-gate-alert.js checklist || ALERT_RC=$?
           else
             echo "Checklist gate passed (blocked=$BLOCKED, force=$FORCE)"
             echo "blocked=false" >> $GITHUB_OUTPUT
             echo "refresh_blocked=false" >> $GITHUB_OUTPUT
           fi
           echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
+          # BRO-7607: overridden is written even when the alert was unconfirmed, so
+          # the deadline-draft owner page still fires; the step then goes red
+          # ("Notify on failure") with the alert's exit code.
+          exit "${ALERT_RC:-0}"
 
       - name: Drift gate — block send if reviews.json out of sync with review-texts (per-show)
         id: drift_gate
@@ -624,24 +620,21 @@ jobs:
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
             BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
             echo "::error::Drift gate blocked broadcast — review-count drift exceeds ±2 for: $BREACHED_LIST. Set force_broadcast=true to override."
-            # blocked=true only written after confirmed delivery/silence — see
-            # the checklist gate above for the fail-closed-to-silence bug this
-            # avoids (codex adversarial review 2026-07-23).
-            # BRO-2816: exits 0 with blocked=true once the owner is informed (the
-            # orphan_gate pattern), so later steps are not skipped; the broadcast
-            # step checks the output. Exits 1 only when delivery is unconfirmed,
-            # which lets "Notify on failure" email the owner instead.
             # BRO-7607: blocked/refresh_blocked are scoped to the set each breached
             # show is in and written BEFORE the alert, so an unconfirmed alert
             # (exit 1, red step) still fails closed. The alert only reports.
-            BREACHED="$BREACHED_LIST" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT"
-            BREACHED_LIST="$BREACHED_LIST" GITHUB_OUTPUT= node scripts/lib/broadcast-gate-alert.js drift
+            BREACHED="$BREACHED_LIST" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT" || printf 'blocked=true\nrefresh_blocked=true\n' >> "$GITHUB_OUTPUT"
+            BREACHED_LIST="$BREACHED_LIST" GITHUB_OUTPUT= node scripts/lib/broadcast-gate-alert.js drift || ALERT_RC=$?
           else
             echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
             echo "blocked=false" >> $GITHUB_OUTPUT
             echo "refresh_blocked=false" >> $GITHUB_OUTPUT
           fi
           echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
+          # BRO-7607: overridden is written even when the alert was unconfirmed, so
+          # the deadline-draft owner page still fires; the step then goes red
+          # ("Notify on failure") with the alert's exit code.
+          exit "${ALERT_RC:-0}"
 
       - name: Orphan-unscored gate — self-heal requeue, alert only after exhausted attempts
         id: orphan_gate
@@ -708,7 +701,7 @@ jobs:
           if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
             echo "::notice::Orphan-unscored gate holding back: ${BREACHED_SHOWS[*]} — self-heal requeue in progress (see per-show output above). No operator email unless the auto-dispatch budget is exhausted."
             # BRO-7607: scoped like the checklist/drift gates.
-            BREACHED="$(IFS=,; echo "${BREACHED_SHOWS[*]}")" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT"
+            BREACHED="$(IFS=,; echo "${BREACHED_SHOWS[*]}")" PENDING="$PENDING_SHOWS" REFRESH="$REFRESH_SHOWS" node scripts/lib/broadcast-gate-scope.js >> "$GITHUB_OUTPUT" || printf 'blocked=true\nrefresh_blocked=true\n' >> "$GITHUB_OUTPUT"
           else
             echo "Orphan-unscored gate passed (blocked=$BLOCKED, force=$FORCE)"
             echo "blocked=false" >> $GITHUB_OUTPUT
@@ -1744,10 +1737,9 @@ jobs:
         # silently drop this critical alert. The gate outputs stay a safe
         # AND-guard on cancellation too: a cancelled gate step never sets its
         # 'blocked' output, so the != 'true' checks still pass through.
-        # BRO-2816: no gate fails its step after writing blocked=true any more
-        # (all three exit 0 on an informed block), so the old blocked guards
-        # here only hid unrelated later failures. A gate step that does fail
-        # (alert delivery unconfirmed) must reach this notifier.
+        # BRO-2816/BRO-7607: this never reads a gate's blocked output. A gate
+        # that blocks AND fails (alert delivery unconfirmed, exit 1 after
+        # writing blocked) must reach this notifier.
         if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:

@@ -129,6 +129,14 @@ describe('opening-night-broadcast.yml gate wiring', () => {
       }
     }
     assert.doesNotMatch(byId('orphan_gate').run, /PRIOR_BLOCKED/, 'orphan gate must decide per show');
+    for (const id of ['checklist_gate', 'drift_gate', 'orphan_gate']) {
+      assert.match(byId(id).run, /broadcast-gate-scope\.js >> "\$GITHUB_OUTPUT" \|\| printf 'blocked=true\\nrefresh_blocked=true\\n'/, `${id}: a scope crash must fail closed`);
+    }
+    for (const id of ['checklist_gate', 'drift_gate']) {
+      const run = byId(id).run;
+      assert.match(run, /broadcast-gate-alert\.js \w+ \|\| ALERT_RC=\$\?/, `${id}: an unconfirmed alert must not abort before overridden is written`);
+      assert.ok(run.indexOf('overridden=') < run.indexOf('exit "${ALERT_RC:-0}"'), `${id}: overridden must be written before the alert exit code is returned`);
+    }
   });
 
   test('draft refreshes read refresh_blocked and need every gate to have run', () => {

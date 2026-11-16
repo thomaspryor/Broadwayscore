@@ -15,8 +15,13 @@
  * what lets the job's generic "Notify on failure" fallback email the owner, so
  * a real block never goes unreported (codex adversarial review 2026-07-23).
  *
+ * BRO-7607: the workflow now writes blocked/refresh_blocked itself (scoped by
+ * scripts/lib/broadcast-gate-scope.js) and calls this with GITHUB_OUTPUT unset,
+ * so from the workflow this only reports; its exit code still marks an
+ * unconfirmed alert. The output-file writes remain for direct callers/tests.
+ *
  * CLI (from the workflow):
- *   BREACHED_LIST=a,b node scripts/lib/broadcast-gate-alert.js <checklist|drift>
+ *   BREACHED_LIST=a,b GITHUB_OUTPUT= node scripts/lib/broadcast-gate-alert.js <checklist|drift>
  */
 
 const fs = require('fs');
