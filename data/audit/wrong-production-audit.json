@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-11-16T10:06:11.975Z",
+  "timestamp": "2026-11-16T10:20:29.730Z",
   "stats": {
-    "totalReviews": 82077,
-    "alreadyFlagged": 22464,
+    "totalReviews": 82072,
+    "alreadyFlagged": 22465,
     "dateGuardCatches": 221,
     "directorMismatch": 3713,
     "tvFilmSignals": 2323,
     "londonSignals": 3771,
-    "offBroadwaySignals": 753,
+    "offBroadwaySignals": 754,
     "yearMismatch": 374,
     "noPublishDate": 8183
   },
@@ -133043,6 +133043,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-gin-game-2015",
+      "file": "vulture--jesse-green.json",
+      "publishDate": null,
+      "url": "https://nymag.com/intelligencer/2015/10/theater-reviews-the-gin-game.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
