@@ -36,6 +36,9 @@
  *   node scripts/slow-market-grade.js --last-year --max-stale-pct=5
  *       # BRO-6751: the scheduler's last-year shows (gap-audit-freshness inLastYear);
  *       # exit 1 when stale (any grade) or never-audited rows are >= 5% of them
+ *   node scripts/slow-market-grade.js --last-year --max-overdue-pct=5
+ *       # BRO-6751: exit 1 when OVERDUE rows are >= 5% of rows with a known overdue
+ *       # status (the throughput acceptance; STALE >24h is expected for slow tiers)
  *   node scripts/slow-market-grade.js --opened-from=2025-10-31 --opened-to=2026-10-31 --check-gaps
  *       # BRO-6716: a fixed opening-date window (inclusive), so an acceptance check does
  *       # not drift as shows open; --check-gaps exits 1 on FAIL, BLIND or NO-AUDIT only (a STALE
@@ -162,6 +165,20 @@ function staleBreach(out, maxPct) {
 }
 function notFresh(s) { return s.stale || s.grade === 'NO-AUDIT'; }
 
+/**
+ * Pure (BRO-6751): true when OVERDUE rows (past the scheduler's own recheck
+ * promise + grace) reach `maxPct` percent of rows whose overdue status is known.
+ * This is the throughput acceptance: STALE (>24h) can never fall under 5% over a
+ * year of shows, because weekly / 14d / 30d / yearly tiers are STALE by design.
+ * Rows with overdue === null (unknown show, out of the grind's window, or no
+ * checkpoint) are left out of the denominator; none known = breach.
+ */
+function overdueBreach(out, maxPct) {
+  const known = out.filter((s) => s.overdue === true || s.overdue === false);
+  if (!known.length) return true;
+  return (100 * known.filter((s) => s.overdue === true).length) / known.length >= maxPct;
+}
+
 /** Pure (BRO-6716): ids whose openingDate falls in [from, to] (YYYY-MM-DD, inclusive). */
 function openedBetweenIds(shows, from, to) {
   return shows.filter((s) => {
@@ -190,13 +207,19 @@ function main(argv = process.argv.slice(2)) {
     return 2;
   }
   if (!ids.length && !lastYear && !openedFrom) {
-    console.error('usage: node scripts/slow-market-grade.js --show=<id[,id...]> | --last-year | --opened-from=YYYY-MM-DD --opened-to=YYYY-MM-DD [--check | --check-gaps] [--max-stale-pct=N] [--json]');
+    console.error('usage: node scripts/slow-market-grade.js --show=<id[,id...]> | --last-year | --opened-from=YYYY-MM-DD --opened-to=YYYY-MM-DD [--check | --check-gaps] [--max-stale-pct=N] [--max-overdue-pct=N] [--json]');
     return 2;
   }
   const maxStaleArg = argv.find((a) => a.startsWith('--max-stale-pct='));
   const maxStalePct = maxStaleArg ? Number(maxStaleArg.split('=')[1]) : null;
   if (maxStaleArg && !(Number.isFinite(maxStalePct) && maxStalePct > 0)) {
     console.error(`--max-stale-pct must be a positive number (got ${maxStaleArg})`);
+    return 2;
+  }
+  const maxOverdueArg = argv.find((a) => a.startsWith('--max-overdue-pct='));
+  const maxOverduePct = maxOverdueArg ? Number(maxOverdueArg.split('=')[1]) : null;
+  if (maxOverdueArg && !(Number.isFinite(maxOverduePct) && maxOverduePct > 0)) {
+    console.error(`--max-overdue-pct must be a positive number (got ${maxOverdueArg})`);
     return 2;
   }
   const maxAgeArg = argv.find((a) => a.startsWith('--max-age-hours='));
@@ -277,9 +300,16 @@ function main(argv = process.argv.slice(2)) {
     console.error(`stale-pct: ${stale}/${out.length} = ${pct}% stale or never audited (limit < ${maxStalePct}%) ${breach ? 'FAIL' : 'OK'}`);
     if (breach) return 1;
   }
+  if (maxOverduePct !== null) {
+    const known = out.filter((s) => s.overdue === true || s.overdue === false).length;
+    const pct = known ? Math.round((1000 * overdueCount) / known) / 10 : 0;
+    const breach = overdueBreach(out, maxOverduePct);
+    console.error(`overdue-pct: ${overdueCount}/${known} = ${pct}% past the scheduler's recheck promise (limit < ${maxOverduePct}%) ${breach ? 'FAIL' : 'OK'}`);
+    if (breach) return 1;
+  }
   if (argv.includes('--check-gaps') && hasGap(out)) return 1;
   return argv.includes('--check') && out.some((s) => s.grade !== 'PASS') ? 1 : 0;
 }
 
 if (require.main === module) process.exitCode = main();
-module.exports = { gradeShow, main, lastYearIds, openedBetweenIds, hasGap, staleBreach, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, GRIND_WINDOW_DAYS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };
+module.exports = { gradeShow, main, lastYearIds, openedBetweenIds, hasGap, staleBreach, overdueBreach, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, GRIND_WINDOW_DAYS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };

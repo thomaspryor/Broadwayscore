@@ -94,7 +94,7 @@ test('isOverdue: never-audited show outside the grind window was promised nothin
   assert.equal(isOverdue({ id: 'nodate', category: 'broadway', status: 'closed' }, undefined, N6751, F6751), null);
 });
 
-const { lastYearIds, staleBreach } = require('./slow-market-grade.js');
+const { lastYearIds, staleBreach, overdueBreach } = require('./slow-market-grade.js');
 
 test('BRO-6751 lastYearIds: matches the scheduler (previews date anchors only live shows)', () => {
   const now = Date.parse('2026-11-01T00:00:00Z');
@@ -116,6 +116,20 @@ test('BRO-6751 staleBreach: stale FAIL and NO-AUDIT count; at-or-above fails, be
   assert.equal(staleBreach(rows(5, 100, { grade: 'FAIL', stale: true }), 5), true);
   assert.equal(staleBreach(rows(5, 100, { grade: 'NO-AUDIT', stale: false }), 5), true);
   assert.equal(staleBreach([], 5), true);
+});
+
+test('BRO-6751 overdueBreach: null rows leave the denominator; at-or-above fails, below passes, none known fails', () => {
+  const rows = (od, total, extraNull = 0) => [
+    ...Array.from({ length: total }, (_, i) => ({ overdue: i < od })),
+    ...Array.from({ length: extraNull }, () => ({ overdue: null })),
+  ];
+  assert.equal(overdueBreach(rows(4, 100), 5), false);
+  assert.equal(overdueBreach(rows(5, 100), 5), true);
+  // 5 of 100 known is a breach even when 900 unknown rows would dilute it to 0.5%
+  assert.equal(overdueBreach(rows(5, 100, 900), 5), true);
+  // no checkpoint: every row null -> breach, never a silent 0%
+  assert.equal(overdueBreach(rows(0, 0, 50), 5), true);
+  assert.equal(overdueBreach([], 5), true);
 });
 
 test('gradeShow census count leaves out syndication-portal noise (BRO-6804)', () => {
