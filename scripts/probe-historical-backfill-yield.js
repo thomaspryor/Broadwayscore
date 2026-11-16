@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * audit-historical-backfill-yield.js — does the repeat cycle of the daily
+ * probe-historical-backfill-yield.js — does the repeat cycle of the daily
  * historical review backfill pay for itself? (BRO-7551)
  *
  * On-demand probe, read-only. The backfill (historical-backfill.yml) wraps to a
@@ -10,7 +10,7 @@
  * visit day. The control's rate is background intake (opening-night and other
  * pipelines), so the net return of a repeat pass is visited minus control.
  *
- * Usage: node scripts/audit-historical-backfill-yield.js [--json]
+ * Usage: node scripts/probe-historical-backfill-yield.js [--json]
  * Needs data/review-texts (setup-local-data / cloud-bootstrap) and the cursor.
  */
 'use strict';
@@ -42,7 +42,7 @@ function loadFirstSeen(ids, dir) {
 
 function main() {
   const args = process.argv.slice(2);
-  if (hasHelpFlag(args)) { console.log('Usage: node scripts/audit-historical-backfill-yield.js [--json]'); return; }
+  if (hasHelpFlag(args)) { console.log('Usage: node scripts/probe-historical-backfill-yield.js [--json]'); return; }
   const all = [...new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/backfill-batches.json'), 'utf8')).flat())];
   const cursor = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audit/historical-backfill-cursor.json'), 'utf8'));
   const r = measureYield(all, cursor, loadFirstSeen(all, path.join(ROOT, 'data/review-texts')));
