@@ -41,6 +41,7 @@ const { rowOutletId, loadShowFiles, classifyRows, coverageEntry, archiveUrlOf, s
 const { parseRoundupPost, matchAllRoundups, rematchWithVenues } = require('./lib/tr-roundup-match');
 const { discoverRoundupPostsRest, fetchRoundupBodyVenues } = require('./lib/theatre-reviews-discovery');
 const { markOutOfScope, pinsFromOverrides } = require('./lib/tr-out-of-scope');
+const { productionHeading, rowsForShow, otherSectionOwners } = require('./lib/tr-production-sections');
 
 // Memoized sibling-category index (same shape as scrape-bww-reviews.js) so
 // checkArchiveCategory()'s cross-market-sibling check can fire (BRO-2550).
@@ -210,6 +211,9 @@ function extractTitleFromSlug(url) {
   return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
+// A "<show> is at/can be seen at <venue> until <date>" line, not a review.
+const RUN_INFO_LINE = /\b(?:can be seen|is (?:now )?(?:at|running at|playing at|on at)|was at|runs at|continues at)\b[^]*\buntil\b/i;
+
 /**
  * Extract reviews from a theatre.reviews roundup page.
  *
@@ -219,12 +223,30 @@ function extractTitleFromSlug(url) {
  *
  * Returns array of { outlet, critic, stars, starsOutOf, excerpt, url, source }
  */
-function extractReviews(html, showId) {
+function extractReviews(html, showId, opts = {}) {
+  return extractReviewsWithSections(html, showId, opts).rows;
+}
+
+let _allShowsCache = null;
+function allShows() {
+  if (!_allShowsCache) { try { _allShowsCache = loadShows(); } catch { _allShowsCache = []; } }
+  return _allShowsCache;
+}
+
+/**
+ * BRO-7545: a round-up TR edited to cover a transfer has one section per
+ * production; only `showId`'s section(s) are returned. `owners` names the
+ * production of each section (null when the page has fewer than two).
+ * opts.shows overrides shows.json (tests); opts.allSections skips the split.
+ */
+function extractReviewsWithSections(html, showId, opts = {}) {
   const $ = cheerio.load(html);
   const reviews = [];
+  const tagged = [];
+  const phrases = [];
 
   const content = $('.entry-content, .post-content, article, .content').first();
-  const paragraphs = content.length ? content.find('p') : $('p');
+  const paragraphs = content.length ? content.find('p, h2, h3, h4') : $('p, h2, h3, h4');
 
   let currentStars = 0;
   // BRO-4431: a "0 stars –" tier lists critics who published NO rating (the
@@ -236,6 +258,12 @@ function extractReviews(html, showId) {
     const $p = $(el);
     let text = $p.text().trim();
     if (!text) return;
+    if (/^h[234]$/i.test(el.tagName || el.name || '')) {
+      // A production section starts; its first tier header sets the stars.
+      const phrase = productionHeading(text);
+      if (phrase) { phrases.push(phrase); currentStars = 0; seenTier = false; }
+      return;
+    }
 
     // --- Detect star-tier header ---
     // Patterns: "4 stars ⭑⭑⭑⭑" or "Three stars ⭑⭑⭑" (digit or word, with or without <span>)
@@ -266,6 +294,7 @@ function extractReviews(html, showId) {
       const inlineReview = parseReviewParagraph($, $p, text, parseInt(inlineStarMatch[1], 10));
       if (inlineReview) {
         reviews.push(inlineReview);
+        tagged.push({ row: inlineReview, section: phrases.length - 1 });
         return;
       }
     }
@@ -280,12 +309,23 @@ function extractReviews(html, showId) {
 
     // --- Try to extract a review from this paragraph ---
     const review = parseReviewParagraph($, $p, text, assumed || currentStars === 0 ? null : currentStars);
+    // Run-dates boilerplate whose venue/ticket link parsed as an outlet ("The
+    // Comedy About Spies is at the Noel Coward theatre until ... Buy tickets
+    // from the producers here.", "was at the Bridge ... It can be seen the Noël
+    // Coward Theatre until ..."): no quoted excerpt, so not a review.
+    if (review && !review.excerpt && RUN_INFO_LINE.test(text)) return;
     if (review) {
       reviews.push(review);
+      tagged.push({ row: review, section: phrases.length - 1 });
     }
   });
 
-  return reviews;
+  if (opts.allSections || phrases.length < 2) return { rows: reviews, owners: null, dropped: 0 };
+  const shows = opts.shows || allShows();
+  const show = shows.find((s) => s && s.id === showId);
+  // An unknown id cannot be placed in either production: nothing is safe to return.
+  if (!show) return { rows: [], owners: null, dropped: reviews.length };
+  return rowsForShow(tagged, phrases, show, shows);
 }
 
 /**
@@ -570,6 +610,38 @@ async function main() {
   const saveIndex = () => { if (!DRY_RUN) fs.writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2)); };
   const archivedFor = new Set();
 
+  function reconcileShow(show, rows, roundupUrl, confidence, fromCache) {
+    const files = loadShowFiles(path.join(REVIEW_TEXTS_DIR, show.id));
+    const c = classifyRows(rows, files, show);
+    // Held rows still go through the writer (it merges TR stars/excerpts into the existing
+    // file); excluded rows are never written, so a flagged review is not resurrected.
+    const toWrite = [...c.held.map(h => h.row), ...c.missing];
+    const res = writeReviewFiles(toWrite, show.id);
+    const refused = res.outcomes.filter(o => o.action === 'skipped');
+    const stillMissing = c.missing
+      .map(m => ({ m, o: refused.find(o => o.outlet === m.outlet && (o.critic || null) === (m.critic || null)) }))
+      .filter(x => x.o)
+      .map(x => ({ ...x.m, refusal: x.o.reason }));
+    const createdKeys = new Set(res.outcomes.filter(o => o.action === 'new').map(o => `${o.outlet}|${o.critic || ''}`));
+    const addedRows = c.missing.filter(m => createdKeys.has(`${m.outlet}|${m.critic || ''}`));
+    const added = DRY_RUN ? 0 : addedRows.length;
+    stats.reviewsExtracted += rows.length;
+    stats.filesCreated += res.created;
+    stats.filesUpdated += res.updated;
+    stats.filesSkipped += res.skipped;
+    const entry = coverageEntry(show, roundupUrl, { ...c, missing: DRY_RUN ? c.missing : stillMissing });
+    entry.openingDate = show.openingDate || null;
+    entry.added = DRY_RUN ? 0 : added;
+    entry.addedRows = DRY_RUN ? [] : addedRows.map(m => ({ outlet: m.outlet, critic: m.critic || null }));
+    entry.matchConfidence = confidence;
+    entry.fromCache = fromCache;
+    entries.push(entry);
+    if (!fromCache) console.log(`    ✓ ${rows.length} rows: ${c.held.length} held, ${c.excluded.length} excluded, ${c.missing.length} missing, ${entry.added} added`);
+  }
+  const matchedIds = new Set(matched.map(m => m.show.id));
+  const sectionDone = new Set();
+  const sectionClaims = [];
+
   for (const { roundup, show } of matched) {
     archivedFor.add(show.id);
     const archivePath = path.join(ARCHIVE_DIR, `${show.id}.html`);
@@ -635,33 +707,27 @@ async function main() {
       console.log(`  [CACHED] ${show.title}`);
     }
 
-    const rows = extractReviews(html, show.id);
-    const files = loadShowFiles(path.join(REVIEW_TEXTS_DIR, show.id));
-    const c = classifyRows(rows, files, show);
-    // Held rows still go through the writer (it merges TR stars/excerpts into the existing
-    // file); excluded rows are never written, so a flagged review is not resurrected.
-    const toWrite = [...c.held.map(h => h.row), ...c.missing];
-    const res = writeReviewFiles(toWrite, show.id);
-    const refused = res.outcomes.filter(o => o.action === 'skipped');
-    const stillMissing = c.missing
-      .map(m => ({ m, o: refused.find(o => o.outlet === m.outlet && (o.critic || null) === (m.critic || null)) }))
-      .filter(x => x.o)
-      .map(x => ({ ...x.m, refusal: x.o.reason }));
-    const createdKeys = new Set(res.outcomes.filter(o => o.action === 'new').map(o => `${o.outlet}|${o.critic || ''}`));
-    const addedRows = c.missing.filter(m => createdKeys.has(`${m.outlet}|${m.critic || ''}`));
-    const added = DRY_RUN ? 0 : addedRows.length;
-    stats.reviewsExtracted += rows.length;
-    stats.filesCreated += res.created;
-    stats.filesUpdated += res.updated;
-    stats.filesSkipped += res.skipped;
-    const entry = coverageEntry(show, roundup.url, { ...c, missing: DRY_RUN ? c.missing : stillMissing });
-    entry.openingDate = show.openingDate || null;
-    entry.added = DRY_RUN ? 0 : added;
-    entry.addedRows = DRY_RUN ? [] : addedRows.map(m => ({ outlet: m.outlet, critic: m.critic || null }));
-    entry.matchConfidence = matched.find(m => m.show.id === show.id).confidence;
-    entry.fromCache = fromCache;
-    entries.push(entry);
-    if (!fromCache) console.log(`    ✓ ${rows.length} rows: ${c.held.length} held, ${c.excluded.length} excluded, ${c.missing.length} missing, ${entry.added} added`);
+    const sec = extractReviewsWithSections(html, show.id, { shows });
+    if (sec.dropped) console.log(`    ${sec.dropped} row(s) belong to another production's section of this round-up`);
+    reconcileShow(show, sec.rows, roundup.url, matched.find(m => m.show.id === show.id).confidence, fromCache);
+    // BRO-7545: TR adds a transfer's reviews to the premiere's round-up. The
+    // transfer has no post of its own, so its section is written here.
+    for (const otherId of otherSectionOwners(sec.owners, show.id)) {
+      const other = weShows.find(s => s.id === otherId);
+      if (!other || matchedIds.has(otherId) || sectionDone.has(otherId)) continue;
+      if (TARGET_SHOWS && !TARGET_SHOWS.includes(otherId)) continue;
+      sectionDone.add(otherId);
+      const v = checkArchiveCategory(html, other, siblingCategoriesByShowId()[otherId]);
+      if (!v.ok) { console.log(`    ✗ ${otherId} section: archive guard (${v.reason})`); continue; }
+      archivedFor.add(otherId);
+      sectionClaims.push({ showId: otherId, url: roundup.url });
+      if (!DRY_RUN) {
+        fs.writeFileSync(path.join(ARCHIVE_DIR, `${otherId}.html`), html);
+        index[otherId] = { url: roundup.url, modified: roundup.modified || null, fetchedAt: new Date().toISOString(), sectionOf: show.id };
+      }
+      console.log(`  [SECTION] ${other.title} (${otherId}) ← its section of ${roundup.url}`);
+      reconcileShow(other, extractReviews(html, otherId, { shows }), roundup.url, 'production-section', false);
+    }
   }
 
   // Archives that no matched round-up claims any more (legacy wrong-production pages).
@@ -676,7 +742,7 @@ async function main() {
   // Claims = REST date-window matches that passed the archive guard, never legacy title-only ones.
   const claimed = matched.filter(m => m.confidence !== 'legacy' && !entries.some(e => e.showId === m.show.id && e.skipped));
   const quarantined = TARGET_SHOWS ? [] : require('./lib/tr-archive-claim').quarantineClaimedOrphans(
-    ARCHIVE_DIR, orphanArchives, claimed.map(m => ({ showId: m.show.id, url: m.roundup.url })), { dryRun: DRY_RUN });
+    ARCHIVE_DIR, orphanArchives, [...claimed.map(m => ({ showId: m.show.id, url: m.roundup.url })), ...sectionClaims], { dryRun: DRY_RUN });
   for (const q of quarantined) console.log(`  [QUARANTINED] ${q.showId}.html is the round-up matched to ${q.owner}`);
   if (!DRY_RUN) orphanArchives = orphanArchives.filter(id => !quarantined.some(q => q.showId === id));
 
@@ -744,7 +810,7 @@ function writeCoverage(entries, unmatched, orphanArchives, disc) {
 }
 
 // Export for use by opening-night-poller
-module.exports = { extractReviews, discoverRoundupUrls, extractTitleFromSlug, writeReviewFiles };
+module.exports = { extractReviews, extractReviewsWithSections, discoverRoundupUrls, extractTitleFromSlug, writeReviewFiles };
 
 // Only run main() when executed directly (not when required)
 if (require.main === module) {
