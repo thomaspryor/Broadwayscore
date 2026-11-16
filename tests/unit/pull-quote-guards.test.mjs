@@ -846,3 +846,26 @@ describe('BRO-7598 review follow-ups', () => {
     assert.equal(expandToSentenceStart('Mr. Norris so superbly shows in this play.', src), 'The writing is sharp and the staging is clean, as Mr. Norris so superbly shows in this play.');
   });
 });
+
+// BRO-7598 did-it-work: the lead word alone over-fired on complete clauses.
+describe('startsMidClause needs a real gap, not just the lead word', () => {
+  const { startsMidClause } = require('../../scripts/lib/pull-quote-guards.js');
+  test('"in which" / "with which" start a complete clause', () => {
+    const src = 'Claire Foy and Sam Troughton are also first-rate in a play in which Bartlett exhilaratingly combines the domestic and the epic.';
+    assert.strictEqual(startsMidClause('Bartlett exhilaratingly combines the domestic and the epic.', src), false);
+  });
+  test('"as X is ..." and "other than X steals ..." read on their own', () => {
+    const a = 'You will leave satisfied and excited, as Some Like It Hot is a wildly entertaining farce from start to finish.';
+    assert.strictEqual(startsMidClause('Some Like It Hot is a wildly entertaining farce from start to finish.', a), false);
+    const b = 'There is really nothing else to say other than the Seinfeld alum steals the show from the second the action begins.';
+    assert.strictEqual(startsMidClause('The Seinfeld alum steals the show from the second the action begins.', b), false);
+  });
+  test('real gaps are still caught: pro-verb, reporting verb + comma, bare object relative', () => {
+    const a = 'It is fascinating entertainment, as A Bright Room Called Day does, consistently.';
+    assert.strictEqual(startsMidClause('A Bright Room Called Day does, consistently.', a), true);
+    const b = 'Its run was made possible by another shipwreck, but as Titanique joyously shows, mirth and song can grow out of disaster.';
+    assert.strictEqual(startsMidClause('Titanique joyously shows, mirth and song can grow out of disaster.', b), true);
+    const c = 'This is the arc of the text, which Butler brings vibrantly, lovingly to life in a turn of real force.';
+    assert.strictEqual(startsMidClause('Butler brings vibrantly, lovingly to life in a turn of real force.', c), true);
+  });
+});

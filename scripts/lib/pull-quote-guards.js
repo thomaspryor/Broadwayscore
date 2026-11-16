@@ -287,7 +287,19 @@ function isContextDependentQuote(quote, { showTitle } = {}) {
 // "because" leads were measured too (4,082 and 153 matches, nearly all fine
 // standalone clauses) and left out. Errs toward false: a quote the source
 // repeats, or one not found verbatim, is not judged.
-const MID_CLAUSE_LEAD_RE = /(?:^|[\s,(])(?:as|which|whom|than) '?$/;
+const MID_CLAUSE_LEAD_RE = /(?:^|[\s,(])(as|which|whom|than) '?$/;
+// The lead word alone over-fires: "as Some Like It Hot is a wildly
+// entertaining farce" and "a play in which Bartlett exhilaratingly combines
+// the domestic and the epic" read fine on their own. A real fragment leaves a
+// gap the cut-off words filled:
+// - as/than + a pro-verb or reporting verb with nothing after it: "as Mr.
+//   Norris so superbly does in this play", "as Titanique joyously shows, mirth
+//   and song...", "as A Bright Room Called Day does, consistently."
+// - a bare which/whom (no preposition before it) is an object relative, so
+//   its object is missing: "which Butler brings vibrantly to life", "which I
+//   admired for its dramatic skill". "in which" / "with which" is complete.
+const MID_CLAUSE_GAP_RE = /^[^,.;:!?\u2014]*?\b(?:do|does|did|show|shows|showed|prove|proves|proved|suggest|suggests|suggested|demonstrate|demonstrates|demonstrated|remind|reminds|reminded|note|notes|noted|say|says|said|write|writes|wrote|puts\s+it|put\s+it)\b(?=\s*(?:[,.;:!?\u2014]|$|\s(?:in|on|at|with|here|there|so|now|again|throughout|best|well)\b))/i;
+const RELATIVE_AFTER_PREP_RE = /\b(?:in|of|by|at|on|for|from|with|through|under|over|to|into|during|against|about|without|within)\s+(?:which|whom) '?$/i;
 function startsMidClause(quote, fullText) {
   if (!quote || !fullText || typeof quote !== 'string' || typeof fullText !== 'string') return false;
   const q = normalizeForContiguity(quote).replace(/^['(\[\s]+/, '');
@@ -303,7 +315,11 @@ function startsMidClause(quote, fullText) {
   // Mr. Norris..." still reads the "As").
   const window = src.slice(Math.max(0, at - 40), at);
   const before = window.slice(window.lastIndexOf('\n') + 1);
-  return MID_CLAUSE_LEAD_RE.test(before);
+  const lead = MID_CLAUSE_LEAD_RE.exec(before);
+  if (!lead) return false;
+  if (lead[1] === 'which' || lead[1] === 'whom') return !RELATIVE_AFTER_PREP_RE.test(before);
+  // "Mr." / "St." are not sentence stops for the first-clause scan.
+  return MID_CLAUSE_GAP_RE.test(q.replace(/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Mt)\./gi, '$1'));
 }
 
 // An aggregator excerpt the aggregator itself cut short ("...the plebeian ear
