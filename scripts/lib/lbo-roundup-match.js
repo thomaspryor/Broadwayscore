@@ -17,6 +17,16 @@
  */
 const { matchTitleToShow } = require('./show-matching');
 const { foldDiacritics } = require('./title-match');
+const { checkAggregatorPageProduction } = require('./aggregator-page-production');
+const { extractPublishDate } = require('./article-extractor');
+const fs = require('fs');
+const path = require('path');
+const { canonicalUrlFromHtml, sameRoundupUrl } = require('./aggregator-page-production');
+
+// LBO's reported transposition, not a general fuzzy title match.
+function canonicalizeLboTitle(title) {
+  return String(title || '').replace(/\bgrace[\s-]+prevades\b/gi, 'Grace Pervades');
+}
 
 const VENUE_GENERIC = new Set(['the', 'theatre', 'theater', 'centre', 'center', 'royal', 'of', 'at', 'and', 'london', 'hall', 'house', 'open', 'air']);
 
@@ -109,6 +119,7 @@ function showRunNearYear(show, year) {
  * @returns {{show:object, via:'title'|'slug-venue'}|null}
  */
 function matchLboRoundup(url, extractedTitle, shows, opts = {}) {
+  extractedTitle = canonicalizeLboTitle(extractedTitle);
   if (extractedTitle) {
     // BRO-6089: with a sitemap year, only productions whose run (or a declared
     // prior run) reaches that year compete on title, so a same-title revival
@@ -125,4 +136,38 @@ function matchLboRoundup(url, extractedTitle, shows, opts = {}) {
   return s ? { show: s, via: 'slug-venue' } : null;
 }
 
-module.exports = { showRunNearYear, matchLboRoundup, matchBySlug, postSlugOf, norm };
+/**
+ * BRO-7545: the sitemap year cannot distinguish two runs in the same year.
+ * Route the fetched page by its own publication metadata before archiving or
+ * writing reviews. Prefer a show's own run over a later transfer's priorRuns.
+ * An uncorroborated alternative never replaces the original candidate.
+ */
+function resolveLboRoundupProduction({ html, show, shows }) {
+  const date = extractPublishDate(html, '') || null;
+  const prod = checkAggregatorPageProduction({ html, show, pageDate: date });
+  const unchanged = { show, prod, rerouted: false };
+  if (!date) return unchanged;
+  const siblings = shows.filter(s => norm(s.title) === norm(show.title));
+  const match = matchTitleToShow(show.title, siblings, { market: 'west-end', date, year: Number(date.slice(0, 4)) });
+  const alt = match && match.confidence === 'high' ? match.show : null;
+  if (!alt || alt.id === show.id || !(alt.openingDate || alt.previewsStartDate)) return unchanged;
+  const altProd = checkAggregatorPageProduction({ html, show: { ...alt, priorRuns: [] }, pageDate: date });
+  if (!altProd.corroborated || altProd.outOfRun) return unchanged;
+  return { show: alt, prod: altProd, rerouted: true, from: show.id };
+}
+
+// Once a page is routed to an earlier sibling, reuse that sibling's cache on
+// the next cron run instead of fetching again under the title-only candidate.
+function readLboRoundupArchive({ archiveDir, url, show, shows }) {
+  const candidates = [show, ...shows.filter(s => s.id !== show.id && norm(s.title) === norm(show.title))];
+  for (const candidate of candidates) {
+    const archivePath = path.join(archiveDir, `${candidate.id}.html`);
+    if (!fs.existsSync(archivePath) || Date.now() - fs.statSync(archivePath).mtimeMs >= 14 * 86400000) continue;
+    const html = fs.readFileSync(archivePath, 'utf8');
+    const cachedUrl = canonicalUrlFromHtml(html) || (html.match(/<!--\s*Source:\s*(\S+)\s*-->/i) || [])[1];
+    if (sameRoundupUrl(cachedUrl, url)) return { show: candidate, archivePath, html };
+  }
+  return null;
+}
+
+module.exports = { showRunNearYear, matchLboRoundup, matchBySlug, postSlugOf, norm, canonicalizeLboTitle, resolveLboRoundupProduction, readLboRoundupArchive };

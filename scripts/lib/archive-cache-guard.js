@@ -12,6 +12,7 @@ const {
 const { categoriesOfCoreTitle } = require('./title-containment');
 const path = require('path');
 const { pageTitleTypoMatch } = require('./fuzzy-title-token');
+const { canonicalizeLboTitle } = require('./lbo-roundup-match');
 
 // Shows whose BWW roundup URL a human listed in data/bww-roundup-urls.json.
 // Only those get the one-typo title rescue below (BWW titled one roundup
@@ -77,8 +78,12 @@ const SAME_WORK_OTHER_MARKET_SHOWS = new Set([
 
 function checkArchiveCategory(html, show, siblingCategories) {
   let check = validateRoundupPageTitle(html, show.title, show.category, siblingCategories);
-  const typoRescue = () => /Review Roundup/i.test(check.pageTitle || '')
-    && hasBwwRoundupOverride(show.id) && !!pageTitleTypoMatch(show.title, html);
+  const typoRescue = () => (/Review Roundup/i.test(check.pageTitle || '')
+    && hasBwwRoundupOverride(show.id) && !!pageTitleTypoMatch(show.title, html))
+    // BRO-7545: share the exact LBO typo exception at write and read time.
+    || (/\bLondon Box Office\b/i.test(check.pageTitle || '')
+      && show.title.toLowerCase() === 'grace pervades'
+      && canonicalizeLboTitle(check.pageTitle) !== check.pageTitle);
   // containing-title-sibling means a longer title in shows.json contains this
   // one. When that longer title is only ever another MARKET's production of the
   // same work and the page itself names THIS show's market ("Tina ... on

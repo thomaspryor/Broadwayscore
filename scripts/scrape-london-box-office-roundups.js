@@ -30,7 +30,8 @@ const { matchTitleToShow, matchSlugToShow, loadShows, titleWordsMatch, buildSibl
 const { pickLboIndividualReviewUrls } = require('./lib/lbo-individual-serp');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { matchLboRoundup } = require('./lib/lbo-roundup-match');
+const { matchLboRoundup, resolveLboRoundupProduction, readLboRoundupArchive } = require('./lib/lbo-roundup-match');
+const { writableShowIds } = require('./lib/opening-night-lane/lease-guard');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
@@ -276,8 +277,7 @@ function stripTheatreFromSlug(slug) {
 // revived show (Jane Eyre, Bristol Old Vic vs Southwark Playhouse). Its stars
 // would then score as this production's review, so drop them unless the page's
 // date or venue places it in this run. The excerpt is still kept.
-function withholdStarsUnlessCurrentProduction(reviews, html, show, url) {
-  const prod = checkAggregatorPageProduction({ html, show });
+function withholdStarsUnlessCurrentProduction(reviews, html, show, url, prod = checkAggregatorPageProduction({ html, show })) {
   if (prod.outOfRun) {
     console.warn(`  [SKIP-PAGE] ${url}: ${prod.reason} — another production, writing none of its ${reviews.length} row(s)`);
     stats.pagesOutOfRun = (stats.pagesOutOfRun || 0) + 1;
@@ -433,7 +433,8 @@ async function scrapeLBORoundups() {
     }
     const match = { show: hit.show, confidence: 'high' };
     if (curatedMatchedIds.has(match.show.id)) continue; // Already have curated URL
-    if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
+    // Keep same-title candidates until the fetched page identifies the run.
+    if (targetShowIds && !weShows.some(s => targetShowIds.includes(s.id) && s.title === match.show.title)) continue;
     matchedRoundups.push({ url, show: match.show, extractedTitle });
   }
 
@@ -613,19 +614,21 @@ async function scrapeLBORoundups() {
   for (const list of [matchedRoundups, matchedIndividual]) list.splice(0, list.length, ...list.filter(r => writable.has(r.show.id)));
 
   // Process each matched roundup
-  for (const { url, show } of matchedRoundups) {
-    const showId = show.id;
-    const archivePath = path.join(archiveDir, `${showId}.html`);
+  for (const { url, show: candidate } of matchedRoundups) {
+    // Reuse only this URL's cache, including one already routed to a sibling.
+    const cached = !FORCE && readLboRoundupArchive({ archiveDir, url, show: candidate, shows: weShows });
+    let show = cached ? cached.show : candidate;
+    let showId = show.id;
+    let archivePath = path.join(archiveDir, `${showId}.html`);
+    const candidateArchivePath = archivePath;
 
-    // Check cached archive (fresh < 14 days)
-    const archiveFresh = !FORCE && fs.existsSync(archivePath) &&
-      (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
+    const archiveFresh = !!cached;
 
     let html;
     let isFreshFetch = false;
     if (archiveFresh) {
       console.log(`[CACHE] ${showId}: Using archived HTML`);
-      html = fs.readFileSync(archivePath, 'utf8');
+      html = cached.html;
       stats.skippedArchived++;
     } else {
       console.log(`[FETCH] ${showId}: ${url}`);
@@ -646,6 +649,16 @@ async function scrapeLBORoundups() {
       }
     }
 
+    const route = resolveLboRoundupProduction({ html, show, shows: weShows });
+    if (route.rerouted) {
+      console.log(`  [REROUTED] ${showId} → ${route.show.id} (${route.prod.pageDate})`);
+      show = route.show;
+      showId = show.id;
+      archivePath = path.join(archiveDir, `${showId}.html`);
+    }
+    if (targetShowIds && !targetShowIds.includes(showId)) continue;
+    if (!writableShowIds([showId], { label: 'lbo' }).length) continue;
+
     // Validate: page title should mention the show we matched to, AND (BRO-2565)
     // carry the category-aware cross-market-sibling check + punctuation-mismatch
     // rescue BRO-2547/2549 established for BWW — the same predicate used at both
@@ -663,18 +676,32 @@ async function scrapeLBORoundups() {
       // fresh fetch was never written to disk in the first place (guard runs
       // before the write below). Gated on !DRY_RUN like every other write in
       // this script — a diagnostic dry-run must not delete real archives.
-      if (archiveFresh && !DRY_RUN) fs.unlinkSync(archivePath);
+      if (route.rerouted) {
+        if (archiveFresh && !DRY_RUN) fs.unlinkSync(candidateArchivePath);
+      } else {
+        if (archiveFresh && !DRY_RUN) fs.unlinkSync(archivePath);
+      }
+      continue;
+    }
+
+    // A title match does not make an out-of-run page safe to cache.
+    if (route.prod.outOfRun) {
+      console.log(`  [SKIP-PAGE] ${url}: ${route.prod.reason}`);
+      stats.pagesOutOfRun = (stats.pagesOutOfRun || 0) + 1;
       continue;
     }
 
     // Now safe to persist the archive.
-    if (isFreshFetch && !DRY_RUN) {
+    if (archiveFresh && route.rerouted && !DRY_RUN) {
+      fs.renameSync(candidateArchivePath, candidateArchivePath + '.mismatch');
+    }
+    if ((isFreshFetch || route.rerouted) && !DRY_RUN) {
       fs.writeFileSync(archivePath, `<!-- Source: ${url} -->\n${html}`);
     }
 
     // Extract reviews
     const reviews = extractReviewsFromLBO(html, showId, url);
-    withholdStarsUnlessCurrentProduction(reviews, html, show, url);
+    withholdStarsUnlessCurrentProduction(reviews, html, show, url, route.prod);
     stats.reviewsExtracted += reviews.length;
     console.log(`  Found ${reviews.length} reviews`);
 
