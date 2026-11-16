@@ -583,24 +583,37 @@ function extractTalkinBroadwayUnsigned(html) {
   const bodyFrom = Math.max(0, html.search(/<\/head>/i)); // the <title> may repeat the header
   const headers = [...html.slice(bodyFrom).matchAll(/Regional Reviews:/g)];
   if (headers.length !== 1) return null;
-  let start = bodyFrom + headers[0].index;
-  const alsoSee = [...html.slice(start).matchAll(TB_ALSO_SEE)];
-  if (alsoSee.length !== 1 || alsoSee[0].index > 3000) return null;
-  // The page names its critic only in this line, which the extracted text drops: log it so a
-  // misattributed file (ch774 says "Karen's" but was filed as Christine Malcom) can be found.
-  const signer = (alsoSee[0][0].match(/\p{Lu}[\p{L}.\u2019'-]*(?=(?:'|\u2019|&#39;|&#8217;|&rsquo;)s\s)/u) || [])[0];
-  if (signer) console.warn(`  [tb-extract] unsigned page; "Also see" names critic first name: ${signer}`);
-  const credit = html.slice(start, start + 8000).search(/Photo by\b/);
-  if (credit > -1) {
-    const after = start + credit;
-    const close = html.slice(after, after + 800).search(/<\/table>|<\/tr>/i);
-    if (close > -1) start = after + close;
-  }
+  const header = bodyFrom + headers[0].index;
   let end = html.length;
-  const tail = html.slice(start);
   for (const re of [/<\/body>/i, /Discover more/, />\s*Share:\s*</]) {
-    const i = tail.search(re);
-    if (i > -1 && start + i < end) end = start + i;
+    const i = html.slice(header).search(re);
+    if (i > -1 && header + i < end) end = header + i;
+  }
+  // Count markers to the page's </body>, past any mid-page Share bar, so a stacked page is still seen as one.
+  const bodyEnd = html.slice(header).search(/<\/body>/i);
+  const region = html.slice(header, bodyEnd > -1 ? header + bodyEnd : html.length);
+  const alsoSee = [...region.matchAll(TB_ALSO_SEE)];
+  const credits = [...region.matchAll(/Photo by\b/g)];
+  // One "Also see" line by the header marks a single review. Some pages (ch790, Macbeth) print
+  // none; there a single production-photo credit right under the header marks it instead.
+  // Refused: a stacked page (two "Also see" lines or two photo credits), and a
+  // listing page (no marker, or a list of show links).
+  if (alsoSee.length > 1 || credits.length > 1) return null;
+  if (alsoSee.length === 1 ? alsoSee[0].index > 3000 : (credits.length !== 1 || credits[0].index > 3000)) return null;
+  if ((region.match(/<li\b/gi) || []).length >= 5) return null;
+  // The "Also see" line is a cross-reference; it does not prove who wrote this page. Logged for audit only.
+  const signer = alsoSee.length ? (alsoSee[0][0].match(/\p{Lu}[\p{L}.\u2019'-]*(?=(?:'|\u2019|&#39;|&#8217;|&rsquo;)s\s)/u) || [])[0] : null;
+  if (signer) console.warn(`  [tb-extract] unsigned page; "Also see" names critic first name: ${signer}`);
+  let start = header;
+  if (credits.length) {
+    // Start after the credit's own closing tag, and after the caption cell when one closes right there.
+    const after = header + credits[0].index;
+    const close = /<\/(?:i|font)>/i.exec(html.slice(after, after + 300));
+    if (close) {
+      start = after + close.index + close[0].length;
+      const cell = /^(?:\s*<\/(?:i|font|b|td)>)*\s*<\/tr>(?:\s*<\/table>)?/i.exec(html.slice(start, start + 200));
+      if (cell) start += cell[0].length;
+    }
   }
   const text = stripHtml(html.slice(start, end));
   return text.length >= 300 ? text : null;

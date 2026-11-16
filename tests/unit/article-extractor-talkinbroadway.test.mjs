@@ -238,6 +238,56 @@ describe('article-extractor: talkinbroadway.com', () => {
     assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
   });
 
+  test('older unsigned layout with no "Also see" line: the photo credit marks the review (ch790 Macbeth shape, BRO-7262)', () => {
+    const para = 'Invictus stages a lean, candlelit tragedy with a sharp ensemble. '.repeat(10);
+    const html = '<html><head><title>Chicago - "The Tragedy of Macbeth"</title></head><body>' + NEWSLETTER_CHROME + '<p>Share:</p>' +
+      '<p>Regional Reviews: Chicago</p><i>The Tragedy of Macbeth</i><font>Invictus Theatre Company</font>' +
+      '<b>Carolyn Kruse and Mikha\'el Amin</b><br><font size="-2"><i>Photo by Aaron Reese Boseman Photography</i></font>' +
+      `<p>${para}</p><p>${para}</p><p>Invictus Theatre Company's <i>The Tragedy of Macbeth</i> runs through May.</p>` +
+      '<p>Share:</p><p>Copyright 1997 - 2026</p></body></html>';
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text && text.includes('candlelit tragedy'), String(text).slice(0, 80));
+    assert.ok(!text.includes('Photo by'), 'photo credit excluded');
+    assert.ok(!text.includes('Share:') && !text.includes('Copyright'), 'footer excluded');
+    assert.ok(!text.includes('Sound Advice'), 'newsletter chrome excluded');
+  });
+
+  test('older unsigned layout: a photo credit far below the header does not qualify a listing page (BRO-7262)', () => {
+    const links = Array.from({ length: 60 }, (_, i) => `<li><a href="ch${700 + i}.html">Some Show ${i}</a> - Some Theatre</li>`).join('');
+    const html = '<html><body><p>Regional Reviews: Chicago</p><ul>' + links + '</ul><i>Photo by Someone</i>' + '<p>' + 'x '.repeat(400) + '</p></body></html>';
+    assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
+  });
+
+  test('older unsigned layout: a stacked page with two photo credits and no "Also see" is refused (BRO-7262 review)', () => {
+    const para = 'Prose for one of two stacked runs on a single page. '.repeat(8);
+    const html = '<html><body><p>Regional Reviews: Chicago</p><i>Show A</i><i>Photo by X</i><p>' + para +
+      '</p><i>Show B</i><i>Photo by Y</i><p>' + para + '</p></body></html>';
+    assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
+  });
+
+  test('older unsigned layout: a stacked page with a Share bar between its reviews is refused (BRO-7262 review)', () => {
+    const para = 'Prose for one of two stacked runs on a single page. '.repeat(8);
+    const html = "<html><body><p>Regional Reviews: Chicago</p><font>Also see Karen's reviews of <i>A</i></font><p>" + para +
+      "</p><p>Share:</p><font>Also see Karen's reviews of <i>B</i></font><p>" + para + '</p></body></html>';
+    assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
+  });
+
+  test('older unsigned layout: a listing page with a photo near the top is refused (BRO-7262 review)', () => {
+    const links = Array.from({ length: 40 }, (_, i) => `<li><a href="ch${700 + i}.html">Some Show ${i}</a> - Some Theatre</li>`).join('');
+    const html = '<html><body><p>Regional Reviews: Chicago</p><i>Photo by Z</i><ul>' + links + '</ul></body></html>';
+    assert.equal(extractArticleText(html, 'www.talkinbroadway.com'), null);
+  });
+
+  test('older unsigned layout: a table-wrapped caption is skipped whole, prose in a following table is kept (BRO-7262 review)', () => {
+    const para = 'Prose that starts in a table row and must survive the skip. '.repeat(8);
+    const html = "<html><body><p>Regional Reviews: Chicago</p><font>Also see Karen's reviews of <i>A</i></font>" +
+      '<table><tr><td><b>Cast A and B</b><br><font><i>Photo by Q</i></font></td></tr></table>' +
+      '<table><tr><td>First short para kept.</td></tr><tr><td>' + para + '</td></tr></table></body></html>';
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text && text.includes('First short para kept.'), String(text).slice(0, 80));
+    assert.ok(!text.includes('Photo by') && !text.includes('Cast A and B'));
+  });
+
   test('older unsigned layout: two "Also see" lines under one header (stacked) are refused (BRO-7262 review)', () => {
     const para = 'Prose for one of two stacked runs on a single page. '.repeat(8);
     const html = "<html><body><p>Regional Reviews: Chicago</p><font>Also see Karen's reviews of <i>A</i></font><p>" + para +
