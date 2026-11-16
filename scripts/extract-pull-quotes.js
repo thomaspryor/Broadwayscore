@@ -538,7 +538,7 @@ async function processReview(entry) {
     // ("Despite this elaborate choreography, ...", "If only the rest of the
     // production felt as up-to-date.") is meaningless on a show card. The
     // rebuild defers these, so retry once for a standalone verdict.
-    if (isContextDependentQuote(quote, { showTitle: data.showTitle })) {
+    if (isContextDependentQuote(quote, { showTitle: data.showTitle, fullText: data.fullText })) {
       if (attempt === 1) {
         stats.contextRetried = (stats.contextRetried || 0) + 1;
         if (VERBOSE) console.log(`  CONTEXT-DEPENDENT: "${quote.slice(0, 80)}..." — retrying`);
@@ -594,7 +594,7 @@ async function processReview(entry) {
     if (!verifyInText(quote, data.fullText)) {
       const snapped = snapToSourceSpan(quote, data.fullText);
       if (snapped && verifyInText(snapped, data.fullText) && !isBadCandidateLength(snapped)
-          && !isContextDependentQuote(snapped, { showTitle: data.showTitle })
+          && !isContextDependentQuote(snapped, { showTitle: data.showTitle, fullText: data.fullText })
           && !isPromoTeaser(snapped) && !isInServiceSection(snapped, data.fullText)
           && !shouldRejectAsReservation(snapped, score)) {
         stats.snappedToSource = (stats.snappedToSource || 0) + 1;

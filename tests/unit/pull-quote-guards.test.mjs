@@ -735,3 +735,37 @@ describe('isContextDependentQuote', () => {
     assert.strictEqual(isClippedAggregatorBlurb('A complete two-sentence quote. It ends properly.'), false);
   });
 });
+
+// BRO-7598: WSJ on Downstate (2026-11-15) shipped a verbatim quote cut from
+// inside an "as" clause. The source text, not the quote, shows the cut.
+describe('startsMidClause / isContextDependentQuote with fullText', () => {
+  const { startsMidClause, isContextDependentQuote } = require('../../scripts/lib/pull-quote-guards.js');
+  const wsj = 'Yes, these men are monsters. A playwright’s responsibility isn’t to either forgive or condemn, but to render life in all its complexity, to present us with a vision of humanity that is truthful, as Mr. Norris so superbly does in this troubling but terrific play. Booth Theatre, 222 W. 45th St.';
+  const fragment = 'Mr. Norris so superbly does in this troubling but terrific play.';
+
+  test('flags a quote that starts right after "as" in the same sentence', () => {
+    assert.strictEqual(startsMidClause(fragment, wsj), true);
+    assert.strictEqual(isContextDependentQuote(fragment, { showTitle: 'Downstate', fullText: wsj }), true);
+  });
+
+  test('the whole sentence, and the quote without its source, are not flagged', () => {
+    const whole = 'A playwright’s responsibility isn’t to either forgive or condemn, but to render life in all its complexity, to present us with a vision of humanity that is truthful, as Mr. Norris so superbly does in this troubling but terrific play.';
+    assert.strictEqual(startsMidClause(whole, wsj), false);
+    assert.strictEqual(isContextDependentQuote(fragment, { showTitle: 'Downstate' }), false);
+  });
+
+  test('a dropped leading clause after a comma, "that", or a paragraph break stays usable', () => {
+    const t1 = 'Despite this elaborate choreography, Arden’s production works as theater only intermittently. More text follows here.';
+    assert.strictEqual(startsMidClause('Arden’s production works as theater only intermittently.', t1), false);
+    const t2 = 'I would say that the cast of this revival is the finest on Broadway right now. Go.';
+    assert.strictEqual(startsMidClause('the cast of this revival is the finest on Broadway right now.', t2), false);
+    const t3 = 'It plays as\nThe cast of this revival is the finest on Broadway right now.';
+    assert.strictEqual(startsMidClause('The cast of this revival is the finest on Broadway right now.', t3), false);
+  });
+
+  test('a leading ellipsis is an honest elision; a quote that names the show stands alone', () => {
+    assert.strictEqual(startsMidClause('...Mr. Norris so superbly does in this troubling but terrific play.', wsj), false);
+    const t = 'It works as Downstate proves again and again how much theater can still disturb us. End.';
+    assert.strictEqual(isContextDependentQuote('Downstate proves again and again how much theater can still disturb us.', { showTitle: 'Downstate', fullText: t }), false);
+  });
+});

@@ -237,11 +237,40 @@ function namesShowTitle(quote, showTitle) {
   return at >= 0 && /[A-Z0-9]/.test(q[at + 1]);
 }
 
-function isContextDependentQuote(quote, { showTitle } = {}) {
+function isContextDependentQuote(quote, { showTitle, fullText } = {}) {
   if (!quote || typeof quote !== 'string') return false;
   const s = quote.replace(/^[\s"“‘'`(\[]+/, '');
-  if (!CONTEXT_DEPENDENT_PATTERNS.some(re => re.test(s))) return false;
+  if (!CONTEXT_DEPENDENT_PATTERNS.some(re => re.test(s)) && !startsMidClause(s, fullText)) return false;
   return !namesShowTitle(s, showTitle);
+}
+
+// BRO-7598: a quote lifted from inside a subordinate clause. The WSJ review of
+// Downstate (2026-11-15) reads "...a vision of humanity that is truthful, as
+// Mr. Norris so superbly does in this troubling but terrific play." and shipped
+// "Mr. Norris so superbly does in this troubling but terrific play.": every word
+// verbatim, so verifyInText and the contiguity check passed, but it is not a
+// sentence. The tell is in the source: the words just before the quote, in the
+// same sentence, are "as" / "which" / "whom" / "than". On the 2026-11-16 corpus
+// (47,796 stored quotes) this matched 26, about a third of them real fragments,
+// so it only joins the context-dependent retry (one re-extraction, then kept via
+// llmPullQuoteContextCheckedAt), never a hard reject. Commas and "that"/"if"/
+// "because" leads were measured too (4,082 and 153 matches, nearly all fine
+// standalone clauses) and left out.
+const MID_CLAUSE_LEAD_RE = /(?:^|[\s,(])(?:as|which|whom|than) $/;
+function startsMidClause(quote, fullText) {
+  if (!quote || !fullText || typeof quote !== 'string' || typeof fullText !== 'string') return false;
+  const q = normalizeForContiguity(quote).replace(/^['(\[\s]+/, '');
+  // A leading ellipsis is the critic's or editor's own honest elision.
+  if (/^(?:\.\.\.|…)/.test(q)) return false;
+  const head = q.slice(0, 40);
+  if (head.length < 20) return false;
+  const src = contiguityViews(fullText).breaks;
+  const at = src.indexOf(head);
+  // Absent, at the very start, or ambiguous (quoted twice): nothing to judge.
+  if (at <= 0 || src.indexOf(head, at + 1) !== -1) return false;
+  const before = src.slice(Math.max(0, at - 40), at);
+  if (before.includes('\n')) return false; // a paragraph break starts a sentence
+  return MID_CLAUSE_LEAD_RE.test(before);
 }
 
 // An aggregator excerpt the aggregator itself cut short ("...the plebeian ear
@@ -609,7 +638,7 @@ function llmQuoteHardRejectReason(quote, fullText) {
 // also come back context-dependent (llmPullQuoteContextCheckedAt), it is kept.
 function hasUsableLlmQuote(data) {
   return !!(data && data.llmPullQuote && !llmQuoteHardRejectReason(data.llmPullQuote, data.fullText)
-    && (data.llmPullQuoteContextCheckedAt || !isContextDependentQuote(data.llmPullQuote, { showTitle: data.showTitle })));
+    && (data.llmPullQuoteContextCheckedAt || !isContextDependentQuote(data.llmPullQuote, { showTitle: data.showTitle, fullText: data.fullText })));
 }
 
 // ---------------------------------------------------------------------------
@@ -1205,6 +1234,7 @@ const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2, 'source-truncat
 module.exports = {
   isContextDependentQuote,
   CONTEXT_DEPENDENT_PATTERNS,
+  startsMidClause,
   endsWithSourceEllipsis,
   isClippedAggregatorBlurb,
   llmQuoteHardRejectReason,
