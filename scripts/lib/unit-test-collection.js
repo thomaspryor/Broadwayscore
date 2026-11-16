@@ -200,6 +200,7 @@ const TESTS_UNIT_QUARANTINE = new Map([
 // Every per-file opt-out. Single source of truth. Each entry must exist and
 // carry a non-empty reason; a stale entry fails glob-based-manifest.test.mjs.
 const EXCLUDED = new Map([
+  ['scripts/batch-session-optimization.test.mjs', 'BRO-5673 acceptance shim: imports the collected session-model, codex-runner-stop-context, block-prompting-remote-tools and land-retry-cancelled-schedule suites, plus scripts/lib/cloud-worker-pick.test.mjs (scripts/lib/*.test.mjs glob step). EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
   ...TESTS_UNIT_QUARANTINE,
   // Run at their own test.yml steps (named in a run: line, so the orphan audit counts them).
   ['scripts/auto-close-expired-shows.test.mjs', 'BRO-5071 — runs at its own test.yml step ("Auto-close expired shows tests (BRO-5071)") in the data-safety-guards job, next to the --dry-run check of the same CLI.'],
