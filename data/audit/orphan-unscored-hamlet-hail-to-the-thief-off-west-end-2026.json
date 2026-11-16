@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
   "openingDate": "2026-11-12",
-  "detectedAt": "2026-11-16T20:10:52.899Z",
+  "detectedAt": "2026-11-16T20:28:25.943Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "afridiziak-theatre-news--mark-arbouine.json",
-      "outletId": "afridiziak-theatre-news",
-      "criticName": "Mark Arbouine",
-      "url": "https://www.afridiziak.com/reviews/hamlet-hail-to-the-thief/",
-      "fullTextLen": 5112,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "london-box-office--shehrazade-zafar-arif.json",
       "outletId": "london-box-office",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
