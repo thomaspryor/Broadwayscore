@@ -738,20 +738,30 @@ describe('isContextDependentQuote', () => {
 
 // BRO-7598: WSJ on Downstate (2026-11-15) shipped a verbatim quote cut from
 // inside an "as" clause. The source text, not the quote, shows the cut.
-describe('startsMidClause / isContextDependentQuote with fullText', () => {
-  const { startsMidClause, isContextDependentQuote } = require('../../scripts/lib/pull-quote-guards.js');
+describe('startsMidClause / hasUsableLlmQuote', () => {
+  const { startsMidClause, hasUsableLlmQuote } = require('../../scripts/lib/pull-quote-guards.js');
   const wsj = 'Yes, these men are monsters. A playwright’s responsibility isn’t to either forgive or condemn, but to render life in all its complexity, to present us with a vision of humanity that is truthful, as Mr. Norris so superbly does in this troubling but terrific play. Booth Theatre, 222 W. 45th St.';
   const fragment = 'Mr. Norris so superbly does in this troubling but terrific play.';
 
-  test('flags a quote that starts right after "as" in the same sentence', () => {
+  test('flags a quote that starts right after "as" in the same sentence, and re-queues the stored one', () => {
     assert.strictEqual(startsMidClause(fragment, wsj), true);
-    assert.strictEqual(isContextDependentQuote(fragment, { showTitle: 'Downstate', fullText: wsj }), true);
+    assert.strictEqual(hasUsableLlmQuote({ llmPullQuote: fragment, fullText: wsj, showTitle: 'Downstate' }), false);
+    // Once a re-extraction has judged it, it is kept (no endless re-queue).
+    assert.strictEqual(hasUsableLlmQuote({ llmPullQuote: fragment, fullText: wsj, llmPullQuoteContextCheckedAt: '2026-11-16T00:00:00Z' }), true);
   });
 
   test('the whole sentence, and the quote without its source, are not flagged', () => {
     const whole = 'A playwright’s responsibility isn’t to either forgive or condemn, but to render life in all its complexity, to present us with a vision of humanity that is truthful, as Mr. Norris so superbly does in this troubling but terrific play.';
     assert.strictEqual(startsMidClause(whole, wsj), false);
-    assert.strictEqual(isContextDependentQuote(fragment, { showTitle: 'Downstate' }), false);
+    assert.strictEqual(hasUsableLlmQuote({ llmPullQuote: whole, fullText: wsj }), true);
+    assert.strictEqual(startsMidClause(fragment, ''), false);
+  });
+
+  test('a paragraph opening with "As", and a quote mark after the lead word, are still caught', () => {
+    const t1 = 'Intro paragraph ends here.\nAs Mr. Norris so superbly does in this troubling play, he wins us over.';
+    assert.strictEqual(startsMidClause('Mr. Norris so superbly does in this troubling play, he wins us over.', t1), true);
+    const t2 = 'It is very good, as “Mr. Norris so superbly does in this troubling play” proves to us all.';
+    assert.strictEqual(startsMidClause('Mr. Norris so superbly does in this troubling play', t2), true);
   });
 
   test('a dropped leading clause after a comma, "that", or a paragraph break stays usable', () => {
@@ -763,9 +773,51 @@ describe('startsMidClause / isContextDependentQuote with fullText', () => {
     assert.strictEqual(startsMidClause('The cast of this revival is the finest on Broadway right now.', t3), false);
   });
 
-  test('a leading ellipsis is an honest elision; a quote that names the show stands alone', () => {
+  test('a leading ellipsis is an honest elision; a repeated passage is not judged', () => {
     assert.strictEqual(startsMidClause('...Mr. Norris so superbly does in this troubling but terrific play.', wsj), false);
-    const t = 'It works as Downstate proves again and again how much theater can still disturb us. End.';
-    assert.strictEqual(isContextDependentQuote('Downstate proves again and again how much theater can still disturb us.', { showTitle: 'Downstate', fullText: t }), false);
+    const twice = 'Good, as Mr. Norris so superbly does in this play. Later: Mr. Norris so superbly does in this play.';
+    assert.strictEqual(startsMidClause('Mr. Norris so superbly does in this play.', twice), false);
+  });
+});
+
+describe('expandToSentenceStart', () => {
+  const { expandToSentenceStart } = require('../../scripts/lib/pull-quote-guards.js');
+  const wsj = 'Yes, these men are monsters. A playwright’s responsibility isn’t to either forgive or condemn, but to render life in all its complexity, to present us with a vision of humanity that is truthful, as Mr. Norris so superbly does in this troubling but terrific play. Booth Theatre, 222 W. 45th St.';
+  test('a mid-clause fragment becomes the critic’s whole sentence', () => {
+    assert.strictEqual(expandToSentenceStart('Mr. Norris so superbly does in this troubling but terrific play.', wsj),
+      'A playwright’s responsibility isn’t to either forgive or condemn, but to render life in all its complexity, to present us with a vision of humanity that is truthful, as Mr. Norris so superbly does in this troubling but terrific play.');
+  });
+  test('no expansion when the quote stops before the sentence ends, the sentence is too long, or nothing is mid-clause', () => {
+    assert.strictEqual(expandToSentenceStart('Mr. Norris so superbly does in this troubling', wsj), null);
+    assert.strictEqual(expandToSentenceStart('Mr. Norris so superbly does in this troubling but terrific play.', wsj, { maxLen: 100 }), null);
+    assert.strictEqual(expandToSentenceStart('Yes, these men are monsters.', wsj), null);
+  });
+});
+
+// BRO-7598: "not X, but Y" is a correction, not a reservation pivot.
+describe('hasMidSentencePivot: corrective "not X, but Y"', () => {
+  const wsj = 'A playwright’s responsibility isn’t to either forgive or condemn, but to render life in all its complexity, to present us with a vision of humanity that is truthful, as Mr. Norris so superbly does in this troubling but terrific play.';
+  test('WSJ Downstate verdict sentence is not a reservation on a 93', () => {
+    assert.equal(hasMidSentencePivot(wsj), false);
+    assert.equal(shouldRejectAsReservation(wsj, 93), false);
+  });
+  test('"not only ..., but also" and "not X, but rather Y" are corrections', () => {
+    assert.equal(hasMidSentencePivot('This production is not only packed with technical thrills, but also optimism and heart.'), false);
+    assert.equal(hasMidSentencePivot("It doesn't try to reinvent the wheel, but rather polishes it to a lustrous sheen."), false);
+  });
+  test('a new subject after "but" is still a pivot', () => {
+    assert.equal(hasMidSentencePivot('It isn’t perfect, but it is fun.'), true);
+    assert.equal(hasMidSentencePivot('Not a masterpiece, but a solid evening.'), true);
+  });
+  test('concessions after "but to" stay pivots', () => {
+    assert.equal(hasMidSentencePivot('It never quite lands, but to its credit it tries.'), true);
+    assert.equal(hasMidSentencePivot('Humility is not a requirement for the role, but to this critic there is an undertone.'), true);
+    assert.equal(hasMidSentencePivot('I never saw the revival, but to judge by the photos it was dull.'), true);
+  });
+  test('no negation: "but also" still counts as a pivot', () => {
+    assert.equal(hasMidSentencePivot('Feeling fresh, but also a little dated.'), true);
+  });
+  test('a later real pivot still trips after an earlier corrective one', () => {
+    assert.equal(hasMidSentencePivot('It is not only funny, but also moving, but the book sags.'), true);
   });
 });

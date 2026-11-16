@@ -73,9 +73,31 @@ function isHedgeOpener(quote) {
 /**
  * Does this sentence contain a mid-sentence reservation pivot?
  */
+// BRO-7598: "not X, but Y" is a correction, not a reservation. WSJ on
+// Downstate (score 93): "A playwright's responsibility isn't to either forgive
+// or condemn, but to render life in all its complexity ... as Mr. Norris so
+// superbly does" was refused as a hedge, which pushed the extractor to a
+// fragment cut from the middle of that sentence. The ", but" only counts as a
+// correction when the same clause before it carries a negation and "but" is
+// followed by a parallel phrase (to / also / rather / instead), never by a new
+// subject: "It isn't perfect, but it is fun" still trips the guard.
+// "but to its credit" / "but to be fair" are concessions, so they stay pivots.
+const CORRECTIVE_BUT_RE = /(?:\bnot|\bnever|n['\u2019]t)\b[^.!?;:,]*(?:,[^.!?;:,]*)?,\s+but\s+(?:to(?!\s+(?:its|his|her|their|this|my|me|us|be\s+(?:fair|sure|honest)|judge)\b)|also|rather|instead)\b/i;
+
 function hasMidSentencePivot(quote) {
   if (!quote || typeof quote !== 'string') return false;
-  return MID_SENTENCE_PIVOT_RE.test(quote);
+  const re = new RegExp(MID_SENTENCE_PIVOT_RE.source, 'gi');
+  let m;
+  while ((m = re.exec(quote)) !== null) {
+    if (m[1].toLowerCase() !== 'but') return true;
+    // Is this ", but" the tail of a "not X, but to/also Y" correction?
+    const end = m.index + m[0].length;
+    const after = quote.slice(end, end + 24);
+    const head = quote.slice(0, end) + after;
+    const corrective = CORRECTIVE_BUT_RE.exec(head);
+    if (!corrective || corrective.index + corrective[0].length < end) return true;
+  }
+  return false;
 }
 
 /**
@@ -237,10 +259,10 @@ function namesShowTitle(quote, showTitle) {
   return at >= 0 && /[A-Z0-9]/.test(q[at + 1]);
 }
 
-function isContextDependentQuote(quote, { showTitle, fullText } = {}) {
+function isContextDependentQuote(quote, { showTitle } = {}) {
   if (!quote || typeof quote !== 'string') return false;
   const s = quote.replace(/^[\s"“‘'`(\[]+/, '');
-  if (!CONTEXT_DEPENDENT_PATTERNS.some(re => re.test(s)) && !startsMidClause(s, fullText)) return false;
+  if (!CONTEXT_DEPENDENT_PATTERNS.some(re => re.test(s))) return false;
   return !namesShowTitle(s, showTitle);
 }
 
@@ -251,12 +273,14 @@ function isContextDependentQuote(quote, { showTitle, fullText } = {}) {
 // verbatim, so verifyInText and the contiguity check passed, but it is not a
 // sentence. The tell is in the source: the words just before the quote, in the
 // same sentence, are "as" / "which" / "whom" / "than". On the 2026-11-16 corpus
-// (47,796 stored quotes) this matched 26, about a third of them real fragments,
-// so it only joins the context-dependent retry (one re-extraction, then kept via
-// llmPullQuoteContextCheckedAt), never a hard reject. Commas and "that"/"if"/
+// (51,047 stored quotes) this matched 26, about a third of them real fragments,
+// so it is a soft signal: extract-pull-quotes retries once asking for the whole
+// sentence from its start, and a quote that survives the retry is kept via
+// llmPullQuoteContextCheckedAt. Never a hard reject. Commas and "that"/"if"/
 // "because" leads were measured too (4,082 and 153 matches, nearly all fine
-// standalone clauses) and left out.
-const MID_CLAUSE_LEAD_RE = /(?:^|[\s,(])(?:as|which|whom|than) $/;
+// standalone clauses) and left out. Errs toward false: a quote the source
+// repeats, or one not found verbatim, is not judged.
+const MID_CLAUSE_LEAD_RE = /(?:^|[\s,(])(?:as|which|whom|than) '?$/;
 function startsMidClause(quote, fullText) {
   if (!quote || !fullText || typeof quote !== 'string' || typeof fullText !== 'string') return false;
   const q = normalizeForContiguity(quote).replace(/^['(\[\s]+/, '');
@@ -268,8 +292,10 @@ function startsMidClause(quote, fullText) {
   const at = src.indexOf(head);
   // Absent, at the very start, or ambiguous (quoted twice): nothing to judge.
   if (at <= 0 || src.indexOf(head, at + 1) !== -1) return false;
-  const before = src.slice(Math.max(0, at - 40), at);
-  if (before.includes('\n')) return false; // a paragraph break starts a sentence
+  // Only the same paragraph counts: a break starts a sentence ("...end.\nAs
+  // Mr. Norris..." still reads the "As").
+  const window = src.slice(Math.max(0, at - 40), at);
+  const before = window.slice(window.lastIndexOf('\n') + 1);
   return MID_CLAUSE_LEAD_RE.test(before);
 }
 
@@ -638,7 +664,8 @@ function llmQuoteHardRejectReason(quote, fullText) {
 // also come back context-dependent (llmPullQuoteContextCheckedAt), it is kept.
 function hasUsableLlmQuote(data) {
   return !!(data && data.llmPullQuote && !llmQuoteHardRejectReason(data.llmPullQuote, data.fullText)
-    && (data.llmPullQuoteContextCheckedAt || !isContextDependentQuote(data.llmPullQuote, { showTitle: data.showTitle, fullText: data.fullText })));
+    && (data.llmPullQuoteContextCheckedAt || (!isContextDependentQuote(data.llmPullQuote, { showTitle: data.showTitle })
+      && !startsMidClause(data.llmPullQuote, data.fullText))));
 }
 
 // ---------------------------------------------------------------------------
@@ -805,6 +832,30 @@ function sentenceIndexAt(list, pos) {
     if (list[mid].start <= pos) { ans = mid; lo = mid + 1; } else hi = mid - 1;
   }
   return ans;
+}
+
+// BRO-7598: the whole source sentence a mid-clause quote was cut from, when the
+// quote runs to that sentence's end and the sentence fits a pull quote. The
+// expansion is the critic's own words from the sentence's first word, so it
+// replaces the fragment without another LLM call ("Mr. Norris so superbly does
+// in this troubling but terrific play." -> "A playwright’s responsibility isn’t
+// to either forgive or condemn, ... as Mr. Norris so superbly does in this
+// troubling but terrific play."). snapToSourceSpan cannot: its lead is capped
+// at SNAP_MAX_LEAD to keep listing chrome out, and the lead here is the point.
+function expandToSentenceStart(quote, fullText, { maxLen = MAX_QUOTE_LENGTH } = {}) {
+  if (!startsMidClause(quote, fullText)) return null;
+  const q = normalizeForContiguity(quote).replace(/^['(\[\s]+/, '').replace(/['")\]\s]+$/, '');
+  const { list, joined } = sourceSentences(contiguityViews(fullText));
+  const at = joined.indexOf(q);
+  if (at === -1 || joined.indexOf(q, at + 1) !== -1) return null;
+  const si = sentenceIndexAt(list, at);
+  const sentence = list[si];
+  // The quote must end where the sentence ends (closing marks aside).
+  const tail = sentence.norm.slice(at - sentence.start + q.length);
+  if (!/^['")\]]*$/.test(tail)) return null;
+  if (at === sentence.start || sentence.raw.length > maxLen) return null;
+  if (!/[.!?]["'”’)\]]*$/.test(sentence.raw) || SNAP_CHROME_RE.test(sentence.raw)) return null;
+  return sentence.raw;
 }
 
 // Anchors are short word runs from the start and end of the quote; a few
@@ -1235,6 +1286,7 @@ module.exports = {
   isContextDependentQuote,
   CONTEXT_DEPENDENT_PATTERNS,
   startsMidClause,
+  expandToSentenceStart,
   endsWithSourceEllipsis,
   isClippedAggregatorBlurb,
   llmQuoteHardRejectReason,
