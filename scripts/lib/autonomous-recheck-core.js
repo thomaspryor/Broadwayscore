@@ -608,6 +608,8 @@ function decideAutoClose({ card, target, result, now = new Date() } = {}) {
   if (target.skip) return no(`skipped: ${target.skip}`);
   if (result.status !== 'pass') return no(`check did not pass (${result.status || 'no status'})`);
   if (/retry/i.test(String(result.detail || ''))) return no('passed only on the flake retry, not proof');
+  // BRO-7559: a pass on a re-pointed (moved) test is evidence from a file the card never named.
+  if (result.staleCheck) return no('stale check: passed on a re-pointed test, not the command the card names');
   const stamp = parseRecheckAfterFromCard(card);
   if (stamp == null) return no('no RECHECK-AFTER stamp: the author never asked for a re-check');
   if (stamp > now.getTime()) return no('RECHECK-AFTER date has not arrived yet');

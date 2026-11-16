@@ -35,7 +35,11 @@ test('no Off-West End show posted while the west-end channel set is empty', {
   if (weSet.length) return; // the West End accounts exist: Off-West End posts are expected there
   const shows = require('../data/shows.json');
   const owe = new Set((Array.isArray(shows) ? shows : shows.shows).filter((s) => s.category === 'off-west-end').map((s) => s.id));
+  // A london-compare post (BRO-6373) is the New York show's post: showId is
+  // the NY run and showIds also names its London run, so judge it by showId.
+  // Every other post type is about every show it names (BRO-7559).
+  const subjects = (p) => (p.type === 'london-compare' ? [p.showId] : (p.showIds || [p.showId]));
   const bad = (ledger().posts || []).filter((p) => !p.skipped && (p.date || '') >= LANDED
-    && (p.showIds || [p.showId]).some((id) => owe.has(id)));
+    && subjects(p).some((id) => owe.has(id)));
   assert.deepEqual(bad.map((p) => p.id), [], 'Off-West End show posted to the Broadway accounts');
 });

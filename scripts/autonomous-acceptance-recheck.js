@@ -11,6 +11,7 @@
  *   node scripts/autonomous-acceptance-recheck.js            # normal nightly run
  *   node scripts/autonomous-acceptance-recheck.js --dry-run  # plan only, no ledger write
  *   node scripts/autonomous-acceptance-recheck.js --autoclose [--backlog]
+ *   node scripts/autonomous-acceptance-recheck.js --ids BRO-1,BRO-2  also re-check these cards whatever their age (BRO-7559)
  *   node scripts/autonomous-acceptance-recheck.js --help
  *
  * "Done" on a card is a claim by whoever closed it — nothing has ever checked
@@ -63,7 +64,9 @@ const { decideHandoff, handoffCard } = require('./lib/recheck-handoff.js');
 const { routeMode, buildRouteBatch, fileRouteBatch, buildCoverIndex, selectRewatchTargets, refreshRewatchTargets, MAX_REWATCH } = require('./lib/recheck-route.js');
 const { verifiabilityForCard } = require('./lib/autonomous-recheck-core.js');
 const { mapIssueToCard } = require('./lib/linear-recheck-source.js');
-const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates } = require('./lib/linear-recheck-source.js');
+const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates, fetchLinearIssuesByIdentifier } = require('./lib/linear-recheck-source.js');
+const { resolveStaleCheck, isWholeSuiteCommand, applyMovedResult } = require('./lib/stale-check-path.js');
+const { causeOfRecheckRow, retryCandidateIds, stillDoneCards } = require('./lib/recheck-retry.js');
 
 const linearClient = require('./lib/linear-client.js');
 const REPO = path.join(__dirname, '..');
@@ -88,6 +91,8 @@ const RECHECK_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autonomous-recheck
 const MAX_CARDS = 30;
 // Hand-offs are Linear writes (a comment plus a state move) inside a shared CI step: cap them per night.
 const MAX_HANDOFFS = 25;
+// BRO-7559: slots on top of the cap for Done cards whose last recheck had no verdict.
+const RETRY_SLOTS = 6;
 // --backlog (BRO-6240): a manual one-off to clear the due backlog; the nightly run never sets it.
 const MAX_CARDS_BACKLOG = 80;
 // Below this much budget left, starting another check is worse than deferring
@@ -111,6 +116,7 @@ Usage:
   node scripts/autonomous-acceptance-recheck.js --dry-run   plan only — no checks run, no ledger write
   node scripts/autonomous-acceptance-recheck.js --autoclose close open stamped cards whose real test passed (also RECHECK_AUTOCLOSE=true; RECHECK_AUTOCLOSE_DISABLED=true turns it off)
   node scripts/autonomous-acceptance-recheck.js --route-dry-run  print the batch card the LAST run's real failures route to (BRO-7138); no writes
+  node scripts/autonomous-acceptance-recheck.js --ids BRO-1,BRO-2  also re-check these Done cards whatever their age (BRO-7559)
   node scripts/autonomous-acceptance-recheck.js --backlog   raise the card cap to ${MAX_CARDS_BACKLOG} for a one-off sweep (use a larger --time-budget-min)
   node scripts/autonomous-acceptance-recheck.js --help
 
@@ -404,6 +410,40 @@ async function main(argv = process.argv.slice(2)) {
     seen.add(t.cardId);
     targets.push(t);
   }
+  // BRO-7559: Done cards whose last recheck had no verdict (test not landed
+  // yet, alert ledger behind, out of budget) left the completion window after
+  // ONE try. Re-fetch them by id and re-check them inside tonight's cap.
+  // --ids names cards explicitly (a manual sweep); otherwise the ledger picks.
+  {
+    const explicit = typeof args.ids === 'string' ? args.ids.split(',').map((x) => x.trim()).filter(Boolean) : [];
+    const retryIds = explicit.length ? explicit : retryCandidateIds(ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], { backlog: !!args.backlog, exclude: seen });
+    // A reserved share on top of the cap, not inside it: on a busy night the
+    // in-window cards fill all `limit` slots and a retry would never run.
+    const retryCap = limit + (explicit.length ? explicit.length : RETRY_SLOTS);
+    if (retryIds.length) {
+      const got = await fetchLinearIssuesByIdentifier(null, retryIds.filter((id) => !seen.has(id)));
+      if (got.error) console.error(`[recheck] WARN retry fetch failed: ${got.error}`);
+      // Fetched by id, so the card may have been reopened since: only a card
+      // still Done is a done claim to re-check (a reopened one is being worked).
+      const stillDone = stillDoneCards(got.cards);
+      for (const c of stillDone) cardsById.set(c.id, c);
+      const retryTargets = selectRecheckTargets({
+        doneCards: stillDone,
+        launchEntries: dispatchLedger.readEntries(),
+        windowHours: 24 * 3650, // age is bounded by retryCandidateIds, not the completion window
+        isClaimed: (cardId) => !!findClaimedTask(cardId, taskState),
+        lastRecheckedAt: (cardId) => lastRecheckedByCard.get(cardId) ?? null,
+        onDrop: () => {},
+      });
+      for (const t of retryTargets) {
+        if (targets.length >= retryCap) break;
+        if (seen.has(t.cardId)) continue;
+        seen.add(t.cardId);
+        targets.push({ ...t, retry: true });
+      }
+      console.error(`[recheck] ${retryTargets.length} earlier no-verdict card(s) re-selected (${explicit.length ? '--ids' : 'retry'})`);
+    }
+  }
   // BRO-6853: a due Paused/Backlog card with no runnable test costs no checkout, so the cap must not
   // leave it out: it is either handed to a worker tonight or at least gets a ledger row.
   for (const t of pausedTargets) {
@@ -510,7 +550,23 @@ async function main(argv = process.argv.slice(2)) {
       // logged as a recheck-false-positive, which permanently blocks shadow
       // exit (maxFalsePositives: 0). Absorbing a flake is worth more than the
       // extra wall-clock.
-      else r = { ...t, ...runVerify(checkout.wt, t.verifyCmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)), prepared: checkout.prepared, unpreparedReason: checkout.unpreparedReason }) };
+      // BRO-7559: the whole unit suite proves nothing about one card and never
+      // fits the nightly budget (7 of 8 recheck timeouts): report it as a stale
+      // check to rewrite instead of starting it and SIGTERMing it.
+      else if (isWholeSuiteCommand(t.verifyCmd)) r = { ...t, status: 'unverifiable', cause: 'whole-suite', detail: 'check is the whole unit suite, not this card\'s test: rewrite the VERIFY to name the test the claim rests on' };
+      else {
+        // BRO-7559: a path absent from main is a stale check (moved, never
+        // landed, other repo), never "the fix broke". A uniquely moved test is
+        // re-pointed and run; the pass then cannot auto-close (decideAutoClose).
+        const stale = checkout.prepared ? resolveStaleCheck(checkout.wt, t.verifyCmd) : { kind: 'ok' };
+        if (stale.kind === 'missing') r = { ...t, status: 'unverifiable', cause: 'missing-path', missingPath: true, detail: stale.detail };
+        else {
+          const cmd = stale.kind === 'moved' ? stale.cmd : t.verifyCmd;
+          r = { ...t, ...runVerify(checkout.wt, cmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)), prepared: checkout.prepared, unpreparedReason: checkout.unpreparedReason }) };
+          if (stale.kind === 'moved') r = applyMovedResult(r, stale, cmd);
+        }
+      }
+      if (r.status === 'unverifiable' && !r.cause) r.cause = causeOfRecheckRow(r);
       results.push(r);
       ledger.appendEntry({
         event: 'recheck', runId, cardId: t.cardId, name: t.name,
@@ -523,6 +579,11 @@ async function main(argv = process.argv.slice(2)) {
         detail: r.detail ? redactEmails(String(r.detail).slice(0, 300)) : null,
         note: `${r.skip ? `skipped: ${r.skip}` : r.status}${r.detail ? `: ${redactEmails(String(r.detail).slice(0, 300))}` : ''}`,
         verifyCmd: t.verifyCmd || null,
+        // BRO-7559: structured no-verdict cause (missing-path | exit3 | exit3-no-ledger | timeout | whole-suite),
+        // the command actually run when a moved test was re-pointed, and whether this was a retry.
+        ...(r.cause ? { cause: r.cause } : {}),
+        ...(r.ranCmd ? { ranCmd: r.ranCmd } : {}),
+        ...(t.retry ? { retry: true } : {}),
         // BRO-7138: the fresh-main commit this ran on, so a routed failure names it.
         sha: (checkout && checkout.sha) || null,
         // BRO-7138: set when the check failed on something this machine
