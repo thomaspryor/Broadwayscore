@@ -290,5 +290,36 @@
       }
     ],
     "queuedAt": "2026-11-16T14:38:55.913Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7325-redaction-header",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7325-redaction-header",
+    "description": "land.yml did not land land/bro-7325-redaction-header: the unit-tests-node gate went red at 96b05b1cd4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43892852092",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7325-redaction-header"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "96b05b1cd44526826a65da0c846ef734b410332a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43892852092"
+      }
+    ],
+    "queuedAt": "2026-11-16T15:11:32.562Z"
   }
 ]
