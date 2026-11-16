@@ -1,46 +1,30 @@
 {
-  "generatedAt": "2026-11-16T03:23:35.348Z",
+  "generatedAt": "2026-11-16T04:32:23.297Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 325,
-  "clean": 323,
-  "defective": 2,
+  "clean": 324,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "cranford-off-west-end-2026",
-      "title": "Cranford",
-      "openingDate": "2026-11-03",
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "openingDate": "2026-11-15",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 86.67 vs local 87.01 (Δ0.34)"
+          "detail": "deployed cs 87.02 vs local 87.39 (Δ0.37)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 14,
+      "localCount": 15,
       "deployedCount": 15,
-      "firstDefectAt": "2026-11-16T03:23:25.226Z"
-    },
-    {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.28 vs local 83.48 (Δ0.2)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23,
-      "firstDefectAt": "2026-11-16T03:23:25.226Z"
+      "firstDefectAt": "2026-11-16T04:32:13.322Z"
     }
   ],
   "persistentDefective": 0,
