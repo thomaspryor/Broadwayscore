@@ -12,6 +12,8 @@
  * a fast path that saves the claim call on later page loads.
  */
 
+import { formatClosingLabel } from '@/lib/closing-label';
+
 /** Only accounts this young get the welcome; older ones (e.g. made on iOS) never do. */
 export const WELCOME_ACCOUNT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 /** A device clock a little behind the server still counts a just-made account as new. */
@@ -245,7 +247,8 @@ export function welcomeClosesLabel(closingDate: string | null | undefined): stri
   if (!closingDate || !/^\d{4}-\d{2}-\d{2}$/.test(closingDate)) return null;
   const d = new Date(`${closingDate}T00:00:00Z`);
   if (Number.isNaN(d.getTime())) return null;
-  return `Closes ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}`;
+  const short = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+  return formatClosingLabel({ closingDate }, short);
 }
 
 // ─── Saving a pick ──────────────────────────────────────────────────────
