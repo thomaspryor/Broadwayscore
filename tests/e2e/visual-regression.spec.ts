@@ -56,7 +56,7 @@ test.describe('Visual Regression', () => {
 
   test('review card alignment', async ({ page }) => {
     const reviewCard = page.locator('[data-testid="review-card"]').first();
-    await freezeLiveShowData(page, '[data-testid="review-card"]');
+    await freezeLiveShowData(page, '[data-testid="review-card"]', { pinLongText: true });
     await expect(reviewCard).toHaveScreenshot('review-card.png', {
       maxDiffPixelRatio: 0.05,
     });

@@ -76,3 +76,34 @@ test('grid', async ({ page }) => { await page.goto(FIXTURE_URL); await expect(h)
 test('grid', async ({ page }) => { await page.goto(\`\${MOCK_URL}&tab=x\`); await expect(h).toHaveScreenshot('a.png'); });`;
   assert.deepEqual(findUnfrozenLiveScreenshots(mockQuery), []);
 });
+
+test('reviewer-found bypasses are closed (comments, strings, names, unseen navigation)', () => {
+  const commented = `const SHOW_URL = '/show/x';
+test('hero', async ({ page }) => { // await freezeLiveShowData(page, H);
+  await expect(h).toHaveScreenshot('a.png'); });`;
+  assert.deepEqual(findUnfrozenLiveScreenshots(commented), ['hero']);
+
+  const braceInString = `const SHOW_URL = '/show/x';
+test('a', async ({ page }) => { const s = '}'; await freezeLiveShowData(page, H); });
+test('b', async ({ page }) => { await expect(h).toHaveScreenshot('b.png'); });`;
+  assert.deepEqual(findUnfrozenLiveScreenshots(braceInString), ['b']);
+
+  const apostrophe = `const SHOW_URL = '/show/x';
+test("Critics' Take", async ({ page }) => { await expect(h).toHaveScreenshot('a.png'); });`;
+  assert.deepEqual(findUnfrozenLiveScreenshots(apostrophe), ["Critics' Take"]);
+
+  const unseenNav = `test('hero', async ({ page }) => { await gotoShow(page, 'hamilton'); await expect(h).toHaveScreenshot('a.png'); });`;
+  assert.deepEqual(findUnfrozenLiveScreenshots(unseenNav), ['hero']);
+
+  const pathConst = `const SHOW_PATH = '/show/x';
+test('hero', async ({ page }) => { await page.goto(BASE + SHOW_PATH); await expect(h).toHaveScreenshot('a.png'); });`;
+  assert.deepEqual(findUnfrozenLiveScreenshots(pathConst), ['hero']);
+
+  const fnForm = `const SHOW_URL = '/show/x';
+test('hero', async function ({ page }) { await expect(h).toHaveScreenshot('a.png'); });
+test('later', async ({ page }) => { await freezeLiveShowData(page, H); });`;
+  assert.deepEqual(findUnfrozenLiveScreenshots(fnForm), ['hero']);
+
+  const mockHelper = `test('grid', async ({ page }) => { await goToMock(page, 'diary'); await expect(h).toHaveScreenshot('a.png'); });`;
+  assert.deepEqual(findUnfrozenLiveScreenshots(mockHelper), []);
+});
