@@ -223,7 +223,48 @@ function markReplyDrafted(issueNumber, { token, repo = 'thomaspryor/Broadwayscor
   });
 }
 
+/**
+ * "The reviews are now on the site" drafts for requests that just went live
+ * (BRO-7693). Only missing-reviews entries; each gets ONE draft to the owner
+ * (never the reader unless the owner listed 'missing-reviews' in
+ * FEEDBACK_AUTO_REPLY_KINDS). Sets entry.replyDraftedAt so a re-run never
+ * drafts twice.
+ *
+ * @param {Array<{entry: object, url?: string}>} nowLive
+ * @param {{lookupReader: (submissionId: string) => ({name?: string, email?: string, show?: string, message?: string}|null), transport: Function, env?: object, now?: () => string}} deps
+ * @returns {Promise<Array<{key: string, status: 'drafted'|'skipped'|'failed', reason?: string}>>}
+ */
+async function draftReviewsAddedReplies(nowLive, { lookupReader, transport, env = process.env, now = () => new Date().toISOString() }) {
+  const out = [];
+  for (const r of nowLive || []) {
+    const entry = r && r.entry;
+    if (!entry || entry.kind !== 'missing-reviews') continue;
+    const key = entry.key || entry.submissionId || '?';
+    if (entry.replyDraftedAt) { out.push({ key, status: 'skipped', reason: 'already-drafted' }); continue; }
+    const stored = entry.submissionId ? lookupReader(entry.submissionId) : null;
+    if (!stored || !stored.email) { out.push({ key, status: 'skipped', reason: 'no-reader-email' }); continue; }
+    try {
+      const res = await sendReplyOrDraft({
+        kind: 'missing-reviews',
+        type: 'reviews-added',
+        reader: { name: stored.name, email: stored.email, show: stored.show || entry.title },
+        originalMessage: stored.message,
+        url: r.url,
+        env,
+        transport,
+      });
+      if (!res.sent) { out.push({ key, status: 'skipped', reason: res.reason }); continue; }
+      entry.replyDraftedAt = now();
+      out.push({ key, status: 'drafted' });
+    } catch (err) {
+      out.push({ key, status: 'failed', reason: err.message });
+    }
+  }
+  return out;
+}
+
 module.exports = {
+  draftReviewsAddedReplies,
   DRAFTED_LABEL,
   markReplyDrafted,
   REPLY_KINDS_ENV,
