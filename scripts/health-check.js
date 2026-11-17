@@ -3886,8 +3886,11 @@ function checkDispatchHealth() {
   }), runCheck(HEADLESS_CHECK_NAME, () => {
     const { computeHeadlessDispatchDigest } = require('./lib/dispatch-health.js');
     // Same no-suppression reasoning as the cmux row above — card #1714.
+    const { makeStrandedLandedPredicate } = require('./lib/headless-unlanded-detection.js');
     const { name, status, message, hint } = computeHeadlessDispatchDigest({
       entries, nowMs: Date.now(),
+      // BRO-7664: a stranded job whose tip reached origin/main afterwards is a late landing, not a failure.
+      isStrandedShaLanded: makeStrandedLandedPredicate({ cwd: require('./lib/repo-root').MAIN_REPO_ROOT }),
     });
     return hint ? { name, status, message, hint } : { name, status, message };
   })];

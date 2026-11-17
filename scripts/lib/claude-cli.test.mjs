@@ -698,3 +698,21 @@ test('runClaudeCli: every result carries exitSignal, present-and-null on ordinar
   assert.equal(r.exitSignal, null, 'present and null, never undefined — consumers test === "SIGKILL"');
   assert.ok(!/killed by/.test(String(r.errorDetail)), 'an ordinary non-zero exit must not claim it was killed');
 });
+
+test('buildBudgetPreamble tells headless workers how to end, and its own closing scores clean (BRO-7664)', async () => {
+  // Class guard: 14 of 23 stopped-short runs ended on the interactive
+  // "Keep this tab open" closing. The preamble must ban it AND the closing it
+  // recommends must classify clean, so the advice can never drift into
+  // another stopped-short phrase.
+  const runner = await import('./bsc-runner.js');
+  const { buildBudgetPreamble } = runner.default || runner;
+  const { classifyHeadlessResult } = (await import('./headless-result-classifier.js')).default
+    ? (await import('./headless-result-classifier.js')).default
+    : await import('./headless-result-classifier.js');
+  const preamble = buildBudgetPreamble(120 * 60 * 1000);
+  assert.match(preamble, /\[HEADLESS ENDING\]/);
+  assert.match(preamble, /never end on "Keep this tab open"/);
+  assert.match(preamble, /wait-for-run\.sh/);
+  assert.equal(classifyHeadlessResult('Fix is on the land branch.\n\nNothing is running here; keep this tab only if you want to continue BRO-1.').outcome, 'clean');
+  assert.equal(classifyHeadlessResult('Fix is on the land branch.\n\nKeep this tab open.').outcome, 'stopped-short');
+});

@@ -366,6 +366,18 @@ function buildBudgetPreamble(timeoutMs) {
     + `Background work does not survive the end of your turn: anything still running when you stop is killed, `
     + `so never finish a turn planning to "pick it back up when it completes". Either stay in the turn until it `
     + `finishes, or split it into turn-sized batches and commit after each.\n\n`
+    // BRO-7664: 14 of the 23 stopped-short runs in the 14d window ended on the
+    // interactive "Keep this tab open" closing (CLAUDE.md's owner-facing
+    // template), typically right after pushing land/<name> with the Land run
+    // still going. A headless run has no tab and nothing ever resumes it, so
+    // that closing scores the run as a failure and drags the success rate
+    // under its 80% floor. The preamble never said how a headless run ends.
+    + `[HEADLESS ENDING] No tab exists and nothing resumes this session, so never end on "Keep this tab open", `
+    + `"THIS SESSION: KEEP OPEN" or any "waiting on" / "still running" closing. If a Land run or CI run you started is `
+    + `pending, wait for it in the foreground (scripts/lib/wait-for-run.sh <id>) before your final message. If it truly `
+    + `cannot finish inside your budget, report --status=in-review with what is left and end with "Nothing is running here; `
+    + `keep this tab only if you want to continue <topic>." / THIS SESSION: IDLE. Only a genuine owner decision ends on `
+    + `THIS SESSION: CLOSE ME — BLOCKED: <reason>.\n\n`
     // Owner rule 2026-09-24 (fix it, find its cousins, fix the cause):
     // interactive sessions are held to it by finish-line Gate 6, which is
     // headless-exempt, so the record would otherwise be missing from every

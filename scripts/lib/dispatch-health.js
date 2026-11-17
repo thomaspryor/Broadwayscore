@@ -288,7 +288,7 @@ function isDiskPressureRefusal(entry) {
   return /^disk-pressure:/.test(String((entry && entry.reason) || ''));
 }
 
-function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lane = JOB_LANE } = {}) {
+function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lane = JOB_LANE, isStrandedShaLanded = null } = {}) {
   if (!Number.isFinite(nowMs)) {
     throw new Error('dispatch-health.computeJobLaneOutcomeRate: nowMs (epoch ms) is required — this module takes no clock of its own');
   }
@@ -341,6 +341,15 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
       // saw it and the rate kept counting every acked job as a failure.
       else if ((last.event === JOB_EVENTS.STOPPED_SHORT || last.event === JOB_EVENTS.STRANDED)
         && isLandedAcked(rows, taskId, last)) outcome = 'done';
+      // BRO-7664: job-stranded is judged the instant the session ends, but a
+      // land/<name> push is still going through the Land run at that moment
+      // (13 of 34 stranded rows in the 14d window had reached origin/main by
+      // the time the rate was computed). The caller supplies a git-backed
+      // predicate (kept out of this pure module) that says whether the
+      // stranded row's tip has since landed; if so it was a late landing,
+      // not a failure.
+      else if (last.event === JOB_EVENTS.STRANDED && last.sha && typeof isStrandedShaLanded === 'function'
+        && isStrandedShaLanded(last.sha)) outcome = 'done';
       else if (last.event === JOB_EVENTS.STOPPED_SHORT) outcome = 'stoppedShort';
       else if (last.event === JOB_EVENTS.STRANDED) outcome = 'stranded';
       // BRO-6430: a disk-pressure ABANDONED means bsc-runner refused the
@@ -451,8 +460,9 @@ function computeHeadlessDispatchDigest({
   minResolved = HEADLESS_DEFAULTS.minResolved,
   orphanRateCeiling = HEADLESS_DEFAULTS.orphanRateCeiling,
   lane = JOB_LANE,
+  isStrandedShaLanded = null,
 } = {}) {
-  const stats = computeJobLaneOutcomeRate(entries, { nowMs, windowDays, lane });
+  const stats = computeJobLaneOutcomeRate(entries, { nowMs, windowDays, lane, isStrandedShaLanded });
   const span = `last ${windowDays}d`;
   const floorPct = (successRateFloor * 100).toFixed(0);
   // BRO-3052: orphaned is excluded from `resolved` (see computeJobLaneOutcomeRate),

@@ -57,7 +57,10 @@ function main() {
     .filter(Boolean);
 
   const nowMs = Date.now();
-  const headless = computeJobLaneOutcomeRate(entries, { nowMs, windowDays, lane: JOB_LANE });
+  const headless = computeJobLaneOutcomeRate(entries, {
+    nowMs, windowDays, lane: JOB_LANE,
+    isStrandedShaLanded: require('./lib/headless-unlanded-detection.js').makeStrandedLandedPredicate({ cwd: require('./lib/repo-root').MAIN_REPO_ROOT }),
+  });
   const tab = computeDeadRate(entries, { nowMs, windowDays, lane: CMUX_LANE });
 
   if (asJson) {

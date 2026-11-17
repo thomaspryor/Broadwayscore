@@ -567,3 +567,24 @@ test('BRO-6430: disk-pressure refusals are not failures and stay visible; other 
   assert.equal(empty.status, 'warn');
   assert.match(empty.message, /40 refused before spawn for low disk/);
 });
+
+// BRO-7664: a job-stranded row is written at session end, before the Land run
+// finishes. If its tip reaches origin/main later, the rate must not count it.
+const strandedRun = (taskId, launchTs, sha) => [
+  ...headlessRun(taskId, launchTs, 'inFlight'),
+  { ts: new Date(Date.parse(launchTs) + 60000).toISOString(), event: JOB_EVENTS.STRANDED, taskId, jobId: `j-${taskId}`, sha },
+];
+
+test('stranded job whose tip later landed counts as done; others stay stranded (BRO-7664)', () => {
+  const entries = [...strandedRun('s-late', '2026-08-05T00:00:00.000Z', 'aaa111'), ...strandedRun('s-never', '2026-08-05T01:00:00.000Z', 'bbb222')];
+  const landed = new Set(['aaa111']);
+  const r = computeJobLaneOutcomeRate(entries, { nowMs: NOW, windowDays: 14, isStrandedShaLanded: (s) => landed.has(s) });
+  assert.equal(r.done, 1);
+  assert.equal(r.stranded, 1);
+  assert.deepEqual(r.strandedTaskIds, ['s-never']);
+  // No predicate (or a row without a sha) never improves the rate.
+  const base = computeJobLaneOutcomeRate(entries, { nowMs: NOW, windowDays: 14 });
+  assert.equal(base.stranded, 2);
+  const noSha = computeJobLaneOutcomeRate(strandedRun('s-nosha', '2026-08-05T00:00:00.000Z', undefined), { nowMs: NOW, windowDays: 14, isStrandedShaLanded: () => true });
+  assert.equal(noSha.stranded, 1);
+});

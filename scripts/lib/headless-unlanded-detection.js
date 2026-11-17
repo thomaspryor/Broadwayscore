@@ -200,7 +200,34 @@ function findUnlandedJobDoneEntries(entries, { sinceMs = null, mainRepoCwd = nul
   return out;
 }
 
+/**
+ * BRO-7664: git-backed predicate for dispatch-health's rate. A job-stranded
+ * row is written the moment the session ends, while its land/<name> push may
+ * still be in the Land run; the same sha reaching origin/main afterwards
+ * (ancestry or a landings.jsonl tip row) means the work
+ * landed late, not never. No `git cherry` patch-equivalence fallback here: it
+ * measured 43s on one old sha, and across the 34 real stranded rows it rescued
+ * none that ancestry + the landings tip did not. Inconclusive checks (sha unknown to this repo) are
+ * NOT landed, so the rate never improves on missing evidence.
+ * @param {{cwd: string}} o  a checkout whose object store holds the job branches
+ * @returns {(sha: string) => boolean}
+ */
+function makeStrandedLandedPredicate({ cwd } = {}) {
+  let landings = null;
+  return function isStrandedShaLanded(sha) {
+    if (!cwd || !sha) return false;
+    try {
+      const ancestry = checkLanded({ sha, cwd, ref: 'origin/main' });
+      if (ancestry.verdict === 'LANDED') return true;
+      if (ancestry.verdict !== 'NOT_LANDED') return false;
+      if (landings === null) landings = readOriginLandings(cwd);
+      return resolveLandedVerdict({ ancestryVerdict: 'NOT_LANDED', sha, landings, cherryPlus: null }).verdict === 'LANDED';
+    } catch { return false; }
+  };
+}
+
 module.exports = {
+  makeStrandedLandedPredicate,
   classifyJobDoneLanding,
   resolveLandedVerdict,
   detectJobLanding,
