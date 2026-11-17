@@ -59,6 +59,7 @@ test('every EXPECTED_REPEATS entry matches a real title shape', () => {
     'Commercial scorecard corrections part 3',
     'Commercial data: pending review (4 rows)',
     'Tech Scorecard weekly port 2026-11-09',
+    'Recheck 2026-11-16: 5 done claims no longer hold on main',
   ];
   for (const e of rc.EXPECTED_REPEATS) assert.ok(titles.some((t) => e.re.test(t)), `no title for ${e.re}`);
   assert.equal(rc.expectedRepeatReason('Morning digest did not arrive'), null);
@@ -673,4 +674,14 @@ test('BRO-7375: a sweep find before the embargo or in its first hours raced the 
   const commits = pm.parseGitLog(log).map((c) => ({ ...c }));
   const g = og.gradeOpening({ show, commits, nowMs: emb + 48 * 3600e3 });
   assert.deepEqual(g.sweepFinds.map((s) => s.outletId), ['o2']);
+});
+
+test('BRO-7654: the title recheck-route.js really files is an expected repeat, never a recurring class', async () => {
+  const { buildRouteBatch } = await import('./recheck-route.js').then((m) => m.default || m);
+  const row = (id) => ({ event: 'recheck', cardId: id, name: 'n', status: 'fail', verifyCmd: 'node scripts/x.js', detail: 'FAIL', sha: 'abc', ts: '2026-11-16T00:00:00Z' });
+  const real = buildRouteBatch({ rows: [row('BRO-9001')], ledgerEntries: [], now: Date.parse('2026-11-16T12:00:00Z') });
+  assert.ok(real.title, 'router produced no title; update this test to the new buildRouteBatch signature');
+  assert.ok(rc.expectedRepeatReason(real.title), `router title not exempt: ${real.title}`);
+  const cls = only(classesOf([20, 14, 8, 2].map((d, i) => done(`Recheck 2026-11-${String(10 + i * 2).padStart(2, '0')}: ${i + 1} done claims no longer hold on main`, d, d - 1))));
+  assert.equal(cls.recurring, false);
 });

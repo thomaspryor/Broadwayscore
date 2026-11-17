@@ -58,6 +58,10 @@ const EXPECTED_REPEATS = [
   { re: /^\s*commercial scorecard corrections part\b/i, reason: 'numbered work batches of one project' },
   { re: /^\s*commercial data: pending review\b/i, reason: 'owner review queue, one card per batch' },
   { re: /^\s*tech scorecard weekly port:?\s+\d{4}-\d{2}-\d{2}\b/i, reason: 'weekly porting routine (tech-scorecard docs/PORTING.md) files one dated card per week on purpose (BRO-7334)' },
+  // BRO-7654: recheck-route.js files one dated batch card per night, each naming DIFFERENT failed Done
+  // claims (MAX_REROUTES stops one claim being re-filed). Count = nights with a failure, not one problem
+  // coming back; the underlying alert/health conditions are classes of their own.
+  { re: /^\s*recheck \d{4}-\d{2}-\d{2}: \d+ done claims? no longer hold on main\b/i, reason: 'nightly recheck-route batch (recheck-route.js): one card per night of distinct failed Done claims (BRO-7654)' },
 ];
 
 // Classes whose per-day card is a work queue item produced by a scanner,
