@@ -14,6 +14,11 @@
  *   dup         a duplicate row of a review we hold in full from the same outlet:
  *               an Unknown-critic no-url empty placeholder beside a complete sibling, or
  *               a row whose aggregator excerpt is quoted verbatim in a full sibling.
+ * Not counted at all (neither covered nor gap): rows the gap queue's own scanner
+ * (text-gap-metric.scanCorpus) classes EXCLUDED, e.g. isNonReview news pieces and
+ * Unknown-critic stubs the rebuild drops beside a named review of the same outlet.
+ * One definition with the queue, so the guard never flags a row the queue will
+ * never pick up (BRO-7702: 14 such rows read as "never attempted" gaps).
  * Everything else is a gap.
  */
 const fs = require('fs');
@@ -63,6 +68,21 @@ function excerptQuotedIn(r, fullText) {
 
 function readJson(p) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } }
 
+/**
+ * reviewKeys (`<show>/<file>`) the gap scanner closes as EXCLUDED, with the subclass.
+ * @returns {Map<string,string>}
+ */
+function scannerExclusions(base, showsPath = path.join(__dirname, '..', '..', 'data', 'shows.json')) {
+  const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const shows = new Map((Array.isArray(raw) ? raw : raw.shows || []).filter((x) => x && x.id).map((x) => [x.id, x]));
+  const { scanCorpus } = require('./text-gap-metric');
+  const out = new Map();
+  for (const r of scanCorpus({ dir: base, shows, nowMs: Date.now() }).rows) {
+    if (r.gapClass === 'EXCLUDED' && isRecentProductionShow(r.showId)) out.set(`${r.showId}/${r.file}`, r.subclass || 'excluded');
+  }
+  return out;
+}
+
 function defaultTierOf() {
   const { classifyTierWriteBack } = require('./content-tier-reason-sync');
   return (r) => {
@@ -76,7 +96,8 @@ function defaultTierOf() {
  * @param {{base:string, tierOf?:(r:object)=>string, outlets?:string[]}} o
  * @returns {{rates: Record<string,{n:number,full:number,documented:number,dupCovered:number,pct:number,floor:number}>, gaps: object[]}}
  */
-function computeOutletFulltext({ base, tierOf = defaultTierOf(), outlets = MAJOR_FULLTEXT_OUTLETS }) {
+function computeOutletFulltext({ base, tierOf = defaultTierOf(), outlets = MAJOR_FULLTEXT_OUTLETS, excludedKeys }) {
+  const skip = excludedKeys || scannerExclusions(base);
   const want = new Set(outlets);
   const rates = {};
   const gaps = [];
@@ -104,7 +125,8 @@ function computeOutletFulltext({ base, tierOf = defaultTierOf(), outlets = MAJOR
     for (const x of rows) {
       const { f, r, o, tier } = x;
       if (excluded(r)) continue;
-      const t = rates[o] || (rates[o] = { n: 0, full: 0, documented: 0, dupCovered: 0 });
+      const t = rates[o] || (rates[o] = { n: 0, full: 0, documented: 0, dupCovered: 0, notReview: 0 });
+      if (!x.full && skip.has(`${s}/${f}`)) { t.notReview++; continue; }
       t.n++;
       if (x.full) { t.full++; continue; }
       const sibs = (fullByOutlet.get(o) || []).filter((y) => y.f !== f);
@@ -176,5 +198,5 @@ module.exports = {
   evaluateFloors,
   MAJOR_FULLTEXT_OUTLETS, STRICT_OUTLETS, FLOOR_STRICT, FLOOR_DEFAULT,
   isMajorFulltextOutlet, floorFor, isRecentProductionShow, isFull, excerptPassages, excerptQuotedIn,
-  computeOutletFulltext, quotedExcerptDuplicates,
+  computeOutletFulltext, quotedExcerptDuplicates, scannerExclusions,
 };

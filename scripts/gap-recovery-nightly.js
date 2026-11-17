@@ -77,6 +77,21 @@ function publish(nightlyPath, ledgerPath) {
   });
 }
 
+/** check-outlet-fulltext-floors.js --json against tonight's ledger; null when it cannot run (fail-soft). */
+function outletFloorVerdict(ledger) {
+  const r = spawnSync(process.execPath, [path.join(__dirname, 'check-outlet-fulltext-floors.js'), '--json', `--ledger=${ledger}`], {
+    cwd: ROOT, encoding: 'utf8', timeout: 5 * 60000, maxBuffer: 32 * 1024 * 1024,
+  });
+  try {
+    const v = JSON.parse(r.stdout);
+    log(`outlet floors: ${v.ok ? 'ok' : `below ${v.failingOutlets.join(',') || '-'}; ${v.staleUnattempted.length} stale unattempted`}`);
+    return N.outletFloorSummary(v);
+  } catch {
+    log(`outlet floors: check did not run (exit ${r.status}) ${String(r.stderr || '').slice(0, 200)}`);
+    return null;
+  }
+}
+
 function finishRow(row, nightlyPath, ledgerPath) {
   log(`summary row: ${JSON.stringify(row)}`);
   if (DRY) { log('dry run: row not recorded, nothing published'); return 0; }
@@ -177,6 +192,8 @@ function main() {
     ...base, status, summary, counts, reopened, superseded, ledgerRows: L.readRows(runLedger),
     driverExit: runExit || recExit, ownerBatch,
   });
+  // BRO-7702: the major-outlet full-text floor verdict rides on the row (and so the digest line).
+  if (!DRY) row.outletFloors = outletFloorVerdict(runLedger);
   const code = finishRow(row, nightlyPath, ledgerPath);
   if (DRY) { try { fs.unlinkSync(runLedger); } catch { /* none */ } }
   return status === 'failed' ? 1 : code;
