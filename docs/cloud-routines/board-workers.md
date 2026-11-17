@@ -83,6 +83,8 @@ the test run wakes this session" stops the lane with cards still eligible. Claim
 for 2026-10-20..23 show the lane averaging 2.69 claims per firing (cap 4).
 `node scripts/worker-firing-stats.js --min-avg 3.0` re-measures that. Section 3 is different: once this lane is done, waiting
 there means ending turns until woken.
+For an allowed turn end while a background waiter or test run is live,
+use only `KEEP OPEN - <what it waits on and what wakes it>`.
 
 Never sit idle while a landing is checked (about 15-30 minutes): push it, start
 its waiter in the background (timeout 4000000), and go straight to the next

@@ -2217,6 +2217,29 @@ const PAUSE_PROGRESS = notice('<task-notification><task-id>bmon7k2q9</task-id><e
 const pauseOutput = (status, extra = {}) => ({ ...toolUse('TaskOutput', { task_id: 'b1e9y745t', block: false },
   `<retrieval_status>success</retrieval_status>\n<task_id>b1e9y745t</task_id>\n<status>${status}</status>\n<output>log mentions <status>completed</status></output>`), ...extra });
 
+test('BRO-7653: board-workers teaches a concise live-wait closing accepted by the Stop gates', skipNoRepoHook, () => {
+  const guide = fs.readFileSync(path.join(REPO_ROOT, 'docs/cloud-routines/board-workers.md'), 'utf8');
+  const turnEndRule = guide.slice(guide.indexOf('Turn-end rule'), guide.indexOf('Never sit idle'));
+  assert.match(turnEndRule, /no turn may end/, 'keep picking while the lane has available work');
+  const instruction = turnEndRule.match(/while a background waiter or test run is live,\s+use only `(KEEP OPEN - <what it waits on and what wakes it>)`/);
+  assert.ok(instruction, 'teach the short closing at the point where workers decide whether to end a turn');
+  for (const [label, call, reason] of [
+    ['land waiter', BG_WAIT, 'the landing is still running; its background waiter wakes this session when it finishes'],
+    ['test run', { ...BG_WAIT, input: { ...BG_WAIT.input, command: 'node --test scripts/lib/session-retro.test.mjs' } },
+      'the test run is still running; its completion wakes this session'],
+    ['Monitor', PAUSE_MONITOR, 'the landing is still running; the monitor wakes this session when it finishes'],
+  ]) {
+    const dir = makeTmpDir('pause-guide');
+    try {
+      const message = instruction[1].replace('<what it waits on and what wakes it>', reason);
+      assertAllowed(runHook(pauseTranscript(dir, [call]), message, {
+        ...PAUSE_GATES, OPENWORK_GATE_DISABLE: '0', LOOSEENDS_GATE_DISABLE: '0',
+        CHILDWAIT_GATE_DISABLE: '0', CHILDJOBS_GATE_DISABLE: '0', CHILDWATCH_GATE_DISABLE: '0',
+      }), label);
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  }
+});
+
 for (const [label, calls] of [
   ['Bash waiter', [BG_WAIT]],
   ['Monitor', [PAUSE_MONITOR]],
