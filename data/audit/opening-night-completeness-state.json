@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-17T00:59:36.199Z",
+  "updatedAt": "2026-11-17T01:03:17.068Z",
   "shows": {
     "now-you-see-me-live-2026": {
       "openingDate": "2026-11-11",
@@ -764,17 +764,50 @@
     },
     "barefoot-in-the-park-regional-2026": {
       "openingDate": "2026-11-12",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "curtainup",
+          "criticName": null,
+          "url": "http://curtainup.com/barefootinthepark.html",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     },
     "nacho-ate-spiderman-regional-2026": {
       "openingDate": "2026-11-12",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "la-drama-critics-circle",
+          "criticName": null,
+          "url": "https://ladramacriticscircle.com/nacho-ate-spiderman-the-ruskin-group-theatre",
+          "scored": true
+        },
+        {
+          "outletId": "stage-raw",
+          "criticName": "Asa Fris",
+          "url": "https://stageraw.com/nacho-ate-spiderman",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     },
     "radio-galaxy-regional-2026": {
       "openingDate": "2026-11-15",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "stage-raw",
+          "criticName": "G. Bruce Smith",
+          "url": "https://stageraw.com/radio-galaxy",
+          "scored": true
+        },
+        {
+          "outletId": "stagescenela",
+          "criticName": null,
+          "url": "https://stagescenela.com/2026/11/radio-galaxy",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     }
   }
