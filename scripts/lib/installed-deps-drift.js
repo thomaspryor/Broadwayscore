@@ -69,7 +69,10 @@ function formatMessage(result, repoDir) {
     `🔶 NODE_MODULES DRIFT: ${result.drift.length} of ${result.checked} locked deps differ from package-lock.json in ${repoDir}.\n` +
     `   Local tsc/lint/tests can fail with errors that are NOT from your change (e.g. TS2554 on Next's revalidateTag).\n` +
     lines.join('\n') + more + '\n' +
-    `   Fix: cd ${repoDir} && npm install --no-audit --no-fund`
+    // `npm ci`, never `npm install`: install rewrites package-lock.json, and in the
+    // shared main checkout that churn blocked checkout-sync's fast-forward for
+    // hours (BRO-7713). ci installs exactly what the lockfile pins, unchanged.
+    `   Fix: cd ${repoDir} && npm ci --no-audit --no-fund`
   );
 }
 

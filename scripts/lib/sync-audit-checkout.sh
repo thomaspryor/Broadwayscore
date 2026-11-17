@@ -249,13 +249,19 @@ LEDGER_BACKUP_DIR="${LEDGER_BACKUP_DIR}/sync-ledger-backups"
 # local ledger would be permanently the truncated origin copy. Only backups
 # whose owner is gone (`kill -0` fails) are drained.
 ledger_backup_path() { printf '%s/%s.%s.bak' "$LEDGER_BACKUP_DIR" "$(printf '%s' "$1" | tr '/' '%')" "$2"; }
+# BRO-7713: the ledger as the pre-fast-forward HEAD had it, saved next to the
+# backup (".headcopy", never matched by the "*.bak" drain glob). It lets the
+# restore add back only the rows the LOCAL side appended; see localDeltaLines()
+# in sync-audit-decision.js for why the whole saved file must not be unioned.
+ledger_headcopy_path() { local b; b="$(ledger_backup_path "$1" "$2")"; printf '%s.headcopy' "${b%.bak}"; }
 
 union_restore_ledger() {
-  # $1 = ledger path (repo-relative), $2 = backup file
-  local target="$1" backup="$2"
-  TARGET="$target" BACKUP="$backup" TAG="$TAG" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e '
+  # $1 = ledger path (repo-relative), $2 = backup file,
+  # $3 = optional copy of the ledger at the pre-fast-forward HEAD (BRO-7713)
+  local target="$1" backup="$2" headcopy="${3:-}"
+  TARGET="$target" BACKUP="$backup" HEADCOPY="$headcopy" TAG="$TAG" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e '
     const fs = require("fs");
-    const { unionLedgerLines, stripTornTrailingLine, unionIsSafe } = require(process.env.DECISION_LIB);
+    const { unionLedgerLines, stripTornTrailingLine, unionIsSafe, localDeltaLines } = require(process.env.DECISION_LIB);
     const { smartMergeEntryFor, smartMergeLines } = require(process.env.SMART_LIB);
     const readLines = (p) => {
       let raw; try { raw = fs.readFileSync(p, "utf8"); } catch { return null; }
@@ -267,8 +273,18 @@ union_restore_ledger() {
     const base = readLines(target) || [];
     const saved = readLines(backup);
     if (saved === null) { console.error(`::error::[${tag}] backup missing for ${target}`); process.exit(1); }
-    const { lines: extra, dropped } = stripTornTrailingLine(saved);
+    const { lines: savedClean, dropped } = stripTornTrailingLine(saved);
     if (dropped !== null) console.log(`[${tag}]   dropped a torn trailing line from the saved copy of ${target}`);
+    // BRO-7713: restore only what the local side APPENDED. Rows the
+    // pre-fast-forward HEAD already had belong to origin, and origin may have
+    // rotated them away on purpose; unioning them back grew stage-latency.jsonl
+    // to 196 MB on the Mac. No HEAD copy (a drained backup from an older run)
+    // keeps the old whole-file behaviour.
+    const headLines = process.env.HEADCOPY ? readLines(process.env.HEADCOPY) : null;
+    const extra = localDeltaLines(savedClean, headLines);
+    if (headLines !== null && extra.length < savedClean.length) {
+      console.log(`[${tag}]   ${target}: ${savedClean.length - extra.length} saved row(s) were already on the old HEAD; the origin copy is authoritative for those`);
+    }
     // BRO-2498: a ledger with a registered merge function (same-date-replace
     // trends, keyed ledgers) is reconciled by that function, the one the CI
     // push pass uses, not by the dumb line union below, which would leave two
@@ -429,8 +445,10 @@ if [ -d "$LEDGER_BACKUP_DIR" ]; then
       continue
     fi
     echo "[$TAG] draining orphaned ledger backup from pid $pid: $rel"
-    if union_restore_ledger "$rel" "$bak"; then
+    hc="${bak%.bak}.headcopy"; [ -f "$hc" ] || hc=""
+    if union_restore_ledger "$rel" "$bak" "$hc"; then
       rm -f "$bak" || echo "::error::[$TAG] drained $bak but could not remove it — it will be re-applied next run"
+      [ -n "$hc" ] && rm -f "$hc"
     else
       echo "::error::[$TAG] could not drain $bak — leaving it in place for the next run"
     fi
@@ -580,6 +598,31 @@ if [ -n "$UNTRACKED_PYC" ]; then
   echo "[$TAG] removing untracked .pyc file(s):"
   echo "$UNTRACKED_PYC" | sed "s/^/[$TAG]   /"
   echo "$UNTRACKED_PYC" | xargs -I{} rm -f -- "{}"
+fi
+
+# npm lockfile churn (BRO-7713): a local `npm install` rewrites
+# package-lock.json (a different npm version drops `"dev": true` and the
+# optional platform entries), origin moves the lockfile on every dependency
+# bump, and the churn blocked every fast-forward for hours on 2026-11-17.
+# Restored to HEAD only when the sibling package.json is clean; a dirty
+# package.json means a deliberate dependency change and stays a refusal.
+# lockfileChurnPaths() in sync-audit-decision.js decides (unit-tested).
+LOCK_CHURN=$(DIRTY="$( (git diff --name-only; git diff --cached --name-only) | sort -u)" \
+  UNTRACKED="$(git ls-files --others --exclude-standard 2>/dev/null)" \
+  DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
+    const { lockfileChurnPaths } = require(process.env.DECISION_LIB);
+    const split = (v) => (v || "").split("\n").filter(Boolean);
+    process.stdout.write(lockfileChurnPaths(split(process.env.DIRTY), split(process.env.UNTRACKED)).join("\n"));
+  ' 2>/dev/null || true)
+if [ -n "$LOCK_CHURN" ]; then
+  echo "[$TAG] restoring npm lockfile churn to HEAD (package.json unchanged):"
+  echo "$LOCK_CHURN" | sed "s/^/[$TAG]   /"
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    git checkout HEAD -- "$f" || echo "::error::[$TAG] could not reset $f to HEAD"
+  done <<EOF
+$LOCK_CHURN
+EOF
 fi
 
 # UNTRACKED regenerable snapshots (review finding, task #1563): a crashed
@@ -782,6 +825,10 @@ if [ "$ACTION" = "union-recover" ] && [ -n "$UNION_BLOCKING" ]; then
     ledger_was_staged "$L" && STAGED_LEDGERS="${STAGED_LEDGERS}${L}
 "
     cp "$L" "$(ledger_backup_path "$L" "$$")" || { BACKUP_OK=0; break; }
+    # Pre-fast-forward HEAD copy (BRO-7713). Best-effort: a failure just
+    # restores the whole saved file, the pre-BRO-7713 behaviour.
+    git show "HEAD:$L" > "$(ledger_headcopy_path "$L" "$$")" 2>/dev/null \
+      || rm -f "$(ledger_headcopy_path "$L" "$$")"
   done <<EOF
 $UNION_BLOCKING
 EOF
@@ -800,7 +847,8 @@ EOF
     while IFS= read -r L; do
       [ -n "$L" ] || continue
       B="$(ledger_backup_path "$L" "$$")"
-      if ! union_restore_ledger "$L" "$B"; then
+      HC="$(ledger_headcopy_path "$L" "$$")"; [ -f "$HC" ] || HC=""
+      if ! union_restore_ledger "$L" "$B" "$HC"; then
         RESTORE_OK=0
         # Do not leave THIS ledger sitting at origin-only content until the
         # next launchd tick drains it — anything that reads it, or `git add
@@ -824,6 +872,7 @@ EOF
         [ -n "$L" ] || continue
         rm -f "$(ledger_backup_path "$L" "$$")" \
           || echo "::error::[$TAG] could not remove backup for $L — the next run will re-apply it (harmless: union is idempotent)"
+        rm -f "$(ledger_headcopy_path "$L" "$$")"
       done <<EOF
 $UNION_BLOCKING
 EOF
@@ -846,6 +895,7 @@ EOF
       [ -f "$B" ] || continue
       if cp "$B" "$L"; then
         rm -f "$B" || echo "::error::[$TAG] restored $L but could not remove its backup"
+        rm -f "$(ledger_headcopy_path "$L" "$$")"
       else
         ROLLBACK_OK=0
         echo "::error::[$TAG] FAILED to restore $L from $B — the backup is intact, restore it by hand"

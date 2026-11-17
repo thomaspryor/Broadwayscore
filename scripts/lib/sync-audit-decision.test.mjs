@@ -79,3 +79,22 @@ test('BRO-3405 recoveryPushAllowed: only ledger-only commits are pushed', () => 
   assert.equal(recoveryPushAllowed({ commitCount: 1, touched: [] }), false, 'empty commit is not a ledger commit');
   assert.equal(recoveryPushAllowed(), false);
 });
+
+// ── BRO-7713 ─────────────────────────────────────────────────────────────────
+const { localDeltaLines, lockfileChurnPaths } = require('./sync-audit-decision.js');
+
+test('BRO-7713 localDeltaLines keeps only rows the old HEAD never had', () => {
+  assert.deepEqual(localDeltaLines(['a', 'b', 'c', 'd'], ['a', 'b']), ['c', 'd']);
+  assert.deepEqual(localDeltaLines(['a', 'b'], ['a', 'b', 'z']), [], 'nothing appended locally');
+  assert.deepEqual(localDeltaLines(['a', 'b'], null), ['a', 'b'], 'no HEAD copy keeps every saved row');
+  assert.deepEqual(localDeltaLines([], []), []);
+});
+
+test('BRO-7713 lockfileChurnPaths restores a lockfile only when its package.json is clean', () => {
+  assert.deepEqual(lockfileChurnPaths(['package-lock.json', 'data/audit/x.jsonl']), ['package-lock.json']);
+  assert.deepEqual(lockfileChurnPaths(['package-lock.json', 'package.json']), [], 'deliberate dep change');
+  assert.deepEqual(lockfileChurnPaths(['ios/package-lock.json', 'package.json']), ['ios/package-lock.json'], 'sibling only');
+  assert.deepEqual(lockfileChurnPaths(['ios/package-lock.json', 'ios/package.json']), []);
+  assert.deepEqual(lockfileChurnPaths(['package-lock.json'], ['package-lock.json']), [], 'untracked lockfile has no HEAD copy');
+  assert.deepEqual(lockfileChurnPaths(['not-package-lock.json', 'src/a.ts']), []);
+});

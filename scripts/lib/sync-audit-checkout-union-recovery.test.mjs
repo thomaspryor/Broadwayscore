@@ -212,3 +212,86 @@ test('a diverged checkout where both sides changed a git-merge-unsafe ledger ref
     fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+// ── BRO-7713: rotation must not be undone; npm lockfile churn must not block ──
+const SL = 'data/audit/stage-latency.jsonl';
+const ev = (n) => JSON.stringify({ showId: `s${n}`, stage: 'rebuilt', at: `2026-11-0${n}T00:00:00Z` });
+
+function plainPair(prefix, { lock = false } = {}) {
+  const base = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
+  const origin = path.join(base, 'origin');
+  const clone = path.join(base, 'clone');
+  execFileSync('git', ['init', '-q', '--bare', origin]);
+  execFileSync('git', ['init', '-q', '-b', 'main', clone]);
+  git(clone, 'config', 'user.email', 't@t.t');
+  git(clone, 'config', 'user.name', 't');
+  fs.mkdirSync(path.join(clone, 'data', 'audit'), { recursive: true });
+  fs.copyFileSync(path.join(REPO, '.gitattributes'), path.join(clone, '.gitattributes'));
+  fs.writeFileSync(path.join(clone, SL), [ev(1), ev(2), ev(3)].join('\n') + '\n');
+  if (lock) {
+    fs.writeFileSync(path.join(clone, 'package.json'), '{"name":"x","dependencies":{"a":"1"}}\n');
+    fs.writeFileSync(path.join(clone, 'package-lock.json'), '{"v":1,"dev":true}\n');
+  }
+  git(clone, 'add', '-A');
+  git(clone, 'commit', '-q', '-m', 'init');
+  git(clone, 'remote', 'add', 'origin', origin);
+  git(clone, 'push', '-q', 'origin', 'main');
+  return { base, origin, clone };
+}
+
+test('BRO-7713: union recovery does not resurrect rows origin rotated away', () => {
+  const { base, origin, clone } = plainPair('bro7713-rot-');
+  try {
+    // origin rotated out ev(1)/ev(2) and appended ev(4); the Mac appended ev(5).
+    originCommit(base, origin, 'via-r', (via) => {
+      fs.writeFileSync(path.join(via, SL), [ev(3), ev(4)].join('\n') + '\n');
+    });
+    fs.writeFileSync(path.join(clone, SL), [ev(1), ev(2), ev(3), ev(5)].join('\n') + '\n');
+    const { code, out } = sync(clone, 'rot');
+    assert.equal(code, 0, `expected recovery, got ${code}:\n${out}`);
+    assert.equal(git(clone, 'rev-parse', 'HEAD').trim(), git(clone, 'rev-parse', 'origin/main').trim());
+    assert.deepEqual(lines(path.join(clone, SL)), [ev(3), ev(4), ev(5)], 'rotated rows stay gone, local append kept');
+    // Idempotent: a second tick with nothing new changes nothing.
+    assert.equal(sync(clone, 'rot').code, 0);
+    assert.deepEqual(lines(path.join(clone, SL)), [ev(3), ev(4), ev(5)]);
+  } finally {
+    fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-7713: npm lockfile churn plus dirty ledgers recovers (lockfile restored, local rows kept)', () => {
+  const { base, origin, clone } = plainPair('bro7713-lock-', { lock: true });
+  try {
+    originCommit(base, origin, 'via-l', (via) => {
+      fs.writeFileSync(path.join(via, 'package-lock.json'), '{"v":2,"dev":true}\n');
+      fs.appendFileSync(path.join(via, SL), ev(4) + '\n');
+    });
+    fs.writeFileSync(path.join(clone, 'package-lock.json'), '{"v":1}\n'); // npm churn
+    fs.appendFileSync(path.join(clone, SL), ev(5) + '\n');
+    const { code, out } = sync(clone, 'lock');
+    assert.equal(code, 0, `expected recovery, got ${code}:\n${out}`);
+    assert.match(out, /restoring npm lockfile churn/);
+    assert.equal(git(clone, 'rev-parse', 'HEAD').trim(), git(clone, 'rev-parse', 'origin/main').trim());
+    assert.equal(fs.readFileSync(path.join(clone, 'package-lock.json'), 'utf8'), '{"v":2,"dev":true}\n', "origin's lockfile");
+    assert.deepEqual(lines(path.join(clone, SL)), [ev(1), ev(2), ev(3), ev(4), ev(5)]);
+  } finally {
+    fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-7713: a lockfile dirty WITH its package.json is a deliberate change and still refuses', () => {
+  const { base, origin, clone } = plainPair('bro7713-dep-', { lock: true });
+  try {
+    originCommit(base, origin, 'via-d', (via) => {
+      fs.writeFileSync(path.join(via, 'package-lock.json'), '{"v":2}\n');
+    });
+    fs.writeFileSync(path.join(clone, 'package.json'), '{"name":"x","dependencies":{"a":"1","b":"2"}}\n');
+    fs.writeFileSync(path.join(clone, 'package-lock.json'), '{"v":1,"b":true}\n');
+    const { code, out } = sync(clone, 'dep');
+    assert.notEqual(code, 0, `expected refusal:\n${out}`);
+    assert.match(out, /blocked by .*package-lock\.json/);
+    assert.equal(fs.readFileSync(path.join(clone, 'package-lock.json'), 'utf8'), '{"v":1,"b":true}\n', 'left untouched');
+  } finally {
+    fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
