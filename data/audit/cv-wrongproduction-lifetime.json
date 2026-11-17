@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-11-16T10:13:02.039Z",
-  "scanned": 4834,
+  "updatedAt": "2026-11-17T11:11:17.673Z",
+  "scanned": 4845,
   "showsWithViolations": 123,
   "totalViolations": 152,
   "newSinceLastRun": 0,
   "handled": {
     "temporal-override-low-confidence": 968,
-    "not-shipped": 60,
+    "not-shipped": 62,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
-    "self-healed": 71,
+    "self-healed": 72,
     "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [],
@@ -860,7 +860,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review, but it reviews the Chichester Festival Theatre's 2019 production of Shadowlands, no — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the 2019 Chichester Festival Theatre production being transferred to the West End, not a review of t — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -869,10 +869,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate theater review, but it reviews the Chichester Festival Theatre's 2019 production of Shadowlands, no",
+          "cvReasoning": "This is a review of the 2019 Chichester Festival Theatre production being transferred to the West End, not a review of t",
           "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run",
-            "Opening paragraph explicitly states: 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych for a limited run'"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End Aldwych Theatre run",
+            "Opening sentence states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — this is a preview/announcement of a transfer, not a review of the West End performance"
           ]
         }
       ]

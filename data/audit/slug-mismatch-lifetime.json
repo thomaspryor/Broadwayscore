@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-11-16T10:16:49.617Z",
-  "scanned": 4834,
-  "showsWithViolations": 199,
-  "totalViolations": 228,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-11-17T11:14:29.323Z",
+  "scanned": 4845,
+  "showsWithViolations": 200,
+  "totalViolations": 229,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "les-miserables-regional-2024::https://www.talkinbroadway.com/page/regional/chicago/ch764.html"
+  ],
   "actionableViolations": 3,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
@@ -157,6 +159,7 @@
     "cock-regional-2024::https://www.chicagotheatrereview.com/2024/04/change-partners-and-dance/",
     "inherit-the-wind-regional-2024::https://www.chicagotheatrereview.com/2024/09/freedom-of-thought/",
     "beehive-the-60s-musical-regional-2024::https://www.chicagotheatrereview.com/2024/06/those-gifted-girl-groups/",
+    "les-miserables-regional-2024::https://www.talkinbroadway.com/page/regional/chicago/ch764.html",
     "44-the-obama-musical-regional-2025::https://aroundthetownchicago.com/theatre-reviews/44-the-musical/",
     "44-the-obama-musical-regional-2025::https://chicago.splashmags.com/index.php/2025/08/44-the-musical-review-leaves-the-audience-in-stitches/",
     "1776-regional-2024::https://www.chicagotheatrereview.com/2024/08/history-comes-alive/",
@@ -2157,6 +2160,21 @@
           "criticName": "Colin Douglas",
           "url": "https://www.chicagotheatrereview.com/2024/06/those-gifted-girl-groups/",
           "urlSlug": "2024 06 those-gifted-girl-groups",
+          "namesOtherShow": null
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-regional-2024",
+      "title": "Les Miserables",
+      "openingDate": "2024-07-29",
+      "message": "Review URL for talkinbroadway/Christine Malcom does not mention show slug (checked: les-miserables-regional-2024, les-miserables, les-miserables-regional, miserables, lesmiserables): https://www.talkinbroadway.com/page/regional/chicago/ch764.html",
+      "violations": [
+        {
+          "outletId": "talkinbroadway",
+          "criticName": "Christine Malcom",
+          "url": "https://www.talkinbroadway.com/page/regional/chicago/ch764.html",
+          "urlSlug": "page regional chicago ch 764",
           "namesOtherShow": null
         }
       ]

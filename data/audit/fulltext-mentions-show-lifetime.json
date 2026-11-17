@@ -1,11 +1,18 @@
 {
-  "updatedAt": "2026-11-16T10:14:52.412Z",
-  "scanned": 4834,
-  "showsWithViolations": 568,
-  "totalViolations": 859,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-11-17T11:12:01.286Z",
+  "scanned": 4845,
+  "showsWithViolations": 570,
+  "totalViolations": 866,
+  "newSinceLastRun": 8,
   "newViolationKeys": [
-    "les-miserables-regional-2026::washingtoncitypaper--melissa-lin-sturges.json"
+    "the-assembled-parties-2013::hollywood-reporter--david-rooney.json",
+    "the-assembled-parties-2013::nytimes--ben-brantley.json",
+    "the-other-place-2013::hollywood-reporter--david-rooney.json",
+    "the-other-place-2013::nydailynews--joe-dziemianowicz.json",
+    "the-other-place-2013::nytimes--charles-isherwood.json",
+    "les-miserables-tour-2022::chicago-theatre-review--gayle-kirshenbaum.json",
+    "les-miserables-tour-2022::hotchka--unknown.json",
+    "les-miserables-regional-2024::talkinbroadway--christine-malcom.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -49,7 +56,6 @@
     "mj-2022::hollywood-reporter--lovia-gyarkye.json",
     "mj-2022::nysr--elysa-gardner.json",
     "mj-2022::timeout--adam-feldman.json",
-    "west-side-story-2020::thestage--nicole-serratore.json",
     "the-sound-inside-2019::variety--marilyn-stasio.json",
     "the-rose-tattoo-2019::chicagotribune--chris-jones.json",
     "linda-vista-2019::theater-news-online--joe-dziemianowicz.json",
@@ -133,9 +139,14 @@
     "jekyll-and-hyde-2013::bloomberg--philip-boroff.json",
     "orphans-2013::nydailynews--joe-dziemianowicz.json",
     "orphans-2013::theater-life--eric-march.json",
+    "the-assembled-parties-2013::hollywood-reporter--david-rooney.json",
+    "the-assembled-parties-2013::nytimes--ben-brantley.json",
     "the-big-knife-2013::new-jersey-newsroom--michael-sommers.json",
     "breakfast-at-tiffanys-2013::ap--mark-kennedy.json",
     "ann-2013::ny1--roma-torre.json",
+    "the-other-place-2013::hollywood-reporter--david-rooney.json",
+    "the-other-place-2013::nydailynews--joe-dziemianowicz.json",
+    "the-other-place-2013::nytimes--charles-isherwood.json",
     "the-anarchist-2012::ew--lisa-schwarzbaum.json",
     "the-mystery-of-edwin-drood-2012::newsday--linda-winer.json",
     "elf-2012::ap--peter-santilli.json",
@@ -642,9 +653,11 @@
     "les-miserables-tour-2022::broadwayworld--tracey-paleo.json",
     "les-miserables-tour-2022::calgary-herald--louis-b-hobson.json",
     "les-miserables-tour-2022::chasingsupermom--bekki.json",
+    "les-miserables-tour-2022::chicago-theatre-review--gayle-kirshenbaum.json",
     "les-miserables-tour-2022::dazzlingdailydeals--amber.json",
     "les-miserables-tour-2022::dc-theater-arts--isabella-artino.json",
     "les-miserables-tour-2022::equality365--eric-andrews-katz.json",
+    "les-miserables-tour-2022::hotchka--unknown.json",
     "les-miserables-tour-2022::la-dance-chronicle--joanne-divito.json",
     "les-miserables-tour-2022::laughingplace--jeremiah-good.json",
     "les-miserables-tour-2022::maryland-theatre-guide--unknown.json",
@@ -805,6 +818,7 @@
     "the-bands-visit-regional-2024::chicago-theatre-review--colin-douglas.json",
     "the-art-of-bowing-regional-2023::chicago-reader--dmitry-samarov.json",
     "jump-regional-2024::chicago-theatre-review--colin-douglas.json",
+    "les-miserables-regional-2024::talkinbroadway--christine-malcom.json",
     "bottle-fly-regional-2024::chicago-theatre-review--colin-douglas.json",
     "amelie-regional-2025::broadwayworld--rachel-weinberg.json",
     "amelie-regional-2025::buzznews--john-accrocco.json",
@@ -1251,11 +1265,11 @@
           "haystackLength": 3011,
           "textIssuesFlag": true,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -1275,11 +1289,11 @@
           "haystackLength": 3058,
           "textIssuesFlag": true,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -1696,30 +1710,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2020",
-      "title": "West Side Story",
-      "openingDate": "2020-02-20",
-      "message": "thestage/Nicole Serratore (thestage--nicole-serratore.json) SHIPPED but fullText never mentions 'West Side Story' (303 chars): https://www.thestage.co.uk/reviews/2020/west-side-story-ivo-van-hove-review-at-broadway-theatre-new-york/",
-      "violations": [
-        {
-          "filename": "thestage--nicole-serratore.json",
-          "url": "https://www.thestage.co.uk/reviews/2020/west-side-story-ivo-van-hove-review-at-broadway-theatre-new-york/",
-          "outletId": "thestage",
-          "criticName": "Nicole Serratore",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -3542,6 +3532,46 @@
       ]
     },
     {
+      "showId": "the-assembled-parties-2013",
+      "title": "The Assembled Parties",
+      "openingDate": "2013-04-17",
+      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'The Assembled Parties' (303 chars): http://www.hollywoodreporter.com/review/assembled-parties-theater-review-441557\nnytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'The Assembled Parties' (303 chars): http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-the-samuel-j-friedman-theater.html?pagewanted=all&_r=0",
+      "violations": [
+        {
+          "filename": "hollywood-reporter--david-rooney.json",
+          "url": "http://www.hollywoodreporter.com/review/assembled-parties-theater-review-441557",
+          "outletId": "hollywood-reporter",
+          "criticName": "David Rooney",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "nytimes--ben-brantley.json",
+          "url": "http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-the-samuel-j-friedman-theater.html?pagewanted=all&_r=0",
+          "outletId": "nytimes",
+          "criticName": "Ben Brantley",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "the-big-knife-2013",
       "title": "The Big Knife",
       "openingDate": "2013-04-16",
@@ -3601,6 +3631,62 @@
           "outletId": "ny1",
           "criticName": "Roma Torre",
           "haystackLength": 208,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "the-other-place-2013",
+      "title": "The Other Place",
+      "openingDate": "2013-01-10",
+      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'The Other Place' (303 chars): http://www.hollywoodreporter.com/review/place-theater-review-410891\nnydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'The Other Place' (303 chars): http://www.nydailynews.com/entertainment/music-arts/theater-review-place-article-1.1236693?localLinksEnabled=false\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'The Other Place' (303 chars): http://theater.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html?_r=0",
+      "violations": [
+        {
+          "filename": "hollywood-reporter--david-rooney.json",
+          "url": "http://www.hollywoodreporter.com/review/place-theater-review-410891",
+          "outletId": "hollywood-reporter",
+          "criticName": "David Rooney",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "nydailynews--joe-dziemianowicz.json",
+          "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-place-article-1.1236693?localLinksEnabled=false",
+          "outletId": "nydailynews",
+          "criticName": "Joe Dziemianowicz",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "nytimes--charles-isherwood.json",
+          "url": "http://theater.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html?_r=0",
+          "outletId": "nytimes",
+          "criticName": "Charles Isherwood",
+          "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -6236,11 +6322,11 @@
           "haystackLength": 2946,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -6932,11 +7018,11 @@
           "haystackLength": 3315,
           "textIssuesFlag": true,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         },
@@ -7252,11 +7338,11 @@
           "haystackLength": 2933,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -7380,11 +7466,11 @@
           "haystackLength": 2651,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         },
@@ -7564,11 +7650,11 @@
           "haystackLength": 3059,
           "textIssuesFlag": true,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -8020,11 +8106,11 @@
           "haystackLength": 3289,
           "textIssuesFlag": true,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -8316,11 +8402,11 @@
           "haystackLength": 3242,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -8668,11 +8754,11 @@
           "haystackLength": 2785,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -10020,11 +10106,11 @@
           "haystackLength": 3130,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -10284,11 +10370,11 @@
           "haystackLength": 3085,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -14082,7 +14168,7 @@
       "showId": "les-miserables-tour-2022",
       "title": "Les Misérables",
       "openingDate": "2022-10-07",
-      "message": "broadwayworld/Colin Fleming-Stumpf (broadwayworld--colin-fleming-stumpf.json) SHIPPED but fullText never mentions 'Les Misérables' (3434 chars): https://www.broadwayworld.com/central-new-york/article/Review-LES-MISERABLES-at-Rochester-Broadway-Theatre-League-20241016\nbroadwayworld/Jarrod Michael (broadwayworld--jarrod-michael.json) SHIPPED but fullText never mentions 'Les Misérables' (4972 chars): https://www.broadwayworld.com/appleton/article/Review-LES-MISERABLES-at-Fox-Cities-Performing-Arts-Center-20240221\nbroadwayworld/Roy Berko (broadwayworld--roy-berko.json) SHIPPED but fullText never mentions 'Les Misérables' (7175 chars): https://www.broadwayworld.com/cleveland/article/Review-LES-MISERABLES-at-Connor-Palace-Cleveland-20240919\nbroadwayworld/Scott Rawson (broadwayworld--scott-rawson.json) SHIPPED but fullText never mentions 'Les Misérables' (2736 chars): https://www.broadwayworld.com/madison/article/Review-LES-MISERABLES-on-Tour-at-the-Overture-Center-20240221\nbroadwayworld/Tracey Paleo (broadwayworld--tracey-paleo.json) SHIPPED but fullText never mentions 'Les Misérables' (4493 chars): https://www.broadwayworld.com/los-angeles/article/Review-LES-MISERABLES-at-Hollywood-Pantages-Theatre-20230808\ncalgary-herald/Louis B. Hobson (calgary-herald--louis-b-hobson.json) SHIPPED but fullText never mentions 'Les Misérables' (6513 chars): https://calgaryherald.com/entertainment/theatre/review-masterful-performances-give-rise-to-an-extraordinary-retelling-of-les-miserables\nchasingsupermom/Bekki (chasingsupermom--bekki.json) SHIPPED but fullText never mentions 'Les Misérables' (6657 chars): https://chasingsupermom.com/2026/04/01/les-miserables-in-portland-now-through-april-5th-full-show-review/\ndazzlingdailydeals/Amber (dazzlingdailydeals--amber.json) SHIPPED but fullText never mentions 'Les Misérables' (4154 chars): https://www.dazzlingdailydeals.com/an-unforgettable-night-with-les-miserables-in-portland-oregon/\ndc-theater-arts/Isabella Artino (dc-theater-arts--isabella-artino.json) SHIPPED but fullText never mentions 'Les Misérables' (5749 chars): https://dctheaterarts.org/2025/06/14/stellar-les-miserables-on-tour-at-kennedy-center-is-still-revolutionary/\nequality365/Eric Andrews-Katz (equality365--eric-andrews-katz.json) SHIPPED but fullText never mentions 'Les Misérables' (10114 chars): https://equality365.com/review-les-miserables-is-wonderful-theatre/\nla-dance-chronicle/Joanne DiVito (la-dance-chronicle--joanne-divito.json) SHIPPED but fullText never mentions 'Les Misérables' (4969 chars): https://www.ladancechronicle.com/les-miserables-triumphant-return/\nlaughingplace/Jeremiah Good (laughingplace--jeremiah-good.json) SHIPPED but fullText never mentions 'Les Misérables' (3114 chars): https://www.laughingplace.com/w/entertainment/les-miserables-dr-philips-center-review/\nmaryland-theatre-guide/Unknown (maryland-theatre-guide--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4999 chars): https://mdtheatreguide.com/2025/06/theatre-review-les-miserables-at-the-kennedy-center-2/\nmetro-weekly/André Hereford (metro-weekly--andre-hereford.json) SHIPPED but fullText never mentions 'Les Misérables' (6224 chars): https://www.metroweekly.com/2023/04/les-miserables-review-rebel-yell\nminneapolis-star-tribune/Star Tribune staff (minneapolis-star-tribune--star-tribune-staff.json) SHIPPED but fullText never mentions 'Les Misérables' (10651 chars): https://www.startribune.com/brandi-carlile-conan-gray-esperanza-spalding-carter-faith-les-miserables/601563414\nnew-city-stage/Dennis Polkow (new-city-stage--dennis-polkow.json) SHIPPED but fullText never mentions 'Les Misérables' (2670 chars): https://www.newcitystage.com/2026/05/19/a-last-less-elaborate-look-at-a-reimagined-les-miserables/\noc-register/Christopher Smith (oc-register--christopher-smith.json) SHIPPED but fullText never mentions 'Les Misérables' (6957 chars): https://www.ocregister.com/2023/09/21/review-les-miserables-storms-the-barricades-in-costa-mesa/\npicksinsix/Ed Tracy (picksinsix--ed-tracy.json) SHIPPED but fullText never mentions 'Les Misérables' (4998 chars): https://www.conversationswithedtracy.com/picksinsix/2025/8/6/picksinsix-review-les-miserables-broadway-in-south-bend\nrachelsreviewstheatre/Unknown (rachelsreviewstheatre--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4473 chars): https://rachelsreviewstheatre.com/2026/07/02/les-miserables-at-tuacahn-is-a-triumph-review/\nrevue/Emily Alspaugh (revue--emily-alspaugh.json) SHIPPED but fullText never mentions 'Les Misérables' (6226 chars): https://revuewm.com/arts/review-les-miserables-is-a-stunning-feast-for-the-senses\nstage-raw/Socks Whitmore (stage-raw--socks-whitmore.json) SHIPPED but fullText never mentions 'Les Misérables' (5197 chars): https://stageraw.com/les-miserables/\nthe-cap-times/Allison Garfield (the-cap-times--allison-garfield.json) SHIPPED but fullText never mentions 'Les Misérables' (4494 chars): https://captimes.com/entertainment/les-miserables-at-overture-has-bright-spots-lacks-emotional-depth/article_19f88d54-cbd7-11ee-a5de-9b218b229536.html\nvariety/Katcy Stephan (variety--katcy-stephan.json) SHIPPED but fullText never mentions 'Les Misérables' (2542 chars): https://variety.com/2023/legit/news/les-miserables-mis-pantages-national-tour-los-angeles-1235687822/",
+      "message": "broadwayworld/Colin Fleming-Stumpf (broadwayworld--colin-fleming-stumpf.json) SHIPPED but fullText never mentions 'Les Misérables' (3434 chars): https://www.broadwayworld.com/central-new-york/article/Review-LES-MISERABLES-at-Rochester-Broadway-Theatre-League-20241016\nbroadwayworld/Jarrod Michael (broadwayworld--jarrod-michael.json) SHIPPED but fullText never mentions 'Les Misérables' (4972 chars): https://www.broadwayworld.com/appleton/article/Review-LES-MISERABLES-at-Fox-Cities-Performing-Arts-Center-20240221\nbroadwayworld/Roy Berko (broadwayworld--roy-berko.json) SHIPPED but fullText never mentions 'Les Misérables' (7175 chars): https://www.broadwayworld.com/cleveland/article/Review-LES-MISERABLES-at-Connor-Palace-Cleveland-20240919\nbroadwayworld/Scott Rawson (broadwayworld--scott-rawson.json) SHIPPED but fullText never mentions 'Les Misérables' (2736 chars): https://www.broadwayworld.com/madison/article/Review-LES-MISERABLES-on-Tour-at-the-Overture-Center-20240221\nbroadwayworld/Tracey Paleo (broadwayworld--tracey-paleo.json) SHIPPED but fullText never mentions 'Les Misérables' (4493 chars): https://www.broadwayworld.com/los-angeles/article/Review-LES-MISERABLES-at-Hollywood-Pantages-Theatre-20230808\ncalgary-herald/Louis B. Hobson (calgary-herald--louis-b-hobson.json) SHIPPED but fullText never mentions 'Les Misérables' (6513 chars): https://calgaryherald.com/entertainment/theatre/review-masterful-performances-give-rise-to-an-extraordinary-retelling-of-les-miserables\nchasingsupermom/Bekki (chasingsupermom--bekki.json) SHIPPED but fullText never mentions 'Les Misérables' (6657 chars): https://chasingsupermom.com/2026/04/01/les-miserables-in-portland-now-through-april-5th-full-show-review/\nchicago-theatre-review/Gayle Kirshenbaum (chicago-theatre-review--gayle-kirshenbaum.json) SHIPPED but fullText never mentions 'Les Misérables' (2425 chars): https://www.chicagotheatrereview.com/2023/02/les-miserables/\ndazzlingdailydeals/Amber (dazzlingdailydeals--amber.json) SHIPPED but fullText never mentions 'Les Misérables' (4154 chars): https://www.dazzlingdailydeals.com/an-unforgettable-night-with-les-miserables-in-portland-oregon/\ndc-theater-arts/Isabella Artino (dc-theater-arts--isabella-artino.json) SHIPPED but fullText never mentions 'Les Misérables' (5749 chars): https://dctheaterarts.org/2025/06/14/stellar-les-miserables-on-tour-at-kennedy-center-is-still-revolutionary/\nequality365/Eric Andrews-Katz (equality365--eric-andrews-katz.json) SHIPPED but fullText never mentions 'Les Misérables' (10114 chars): https://equality365.com/review-les-miserables-is-wonderful-theatre/\nhotchka/Unknown (hotchka--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (10456 chars): https://hotchka.com/les-miserables-tour-review\nla-dance-chronicle/Joanne DiVito (la-dance-chronicle--joanne-divito.json) SHIPPED but fullText never mentions 'Les Misérables' (4969 chars): https://www.ladancechronicle.com/les-miserables-triumphant-return/\nlaughingplace/Jeremiah Good (laughingplace--jeremiah-good.json) SHIPPED but fullText never mentions 'Les Misérables' (3114 chars): https://www.laughingplace.com/w/entertainment/les-miserables-dr-philips-center-review/\nmaryland-theatre-guide/Unknown (maryland-theatre-guide--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4999 chars): https://mdtheatreguide.com/2025/06/theatre-review-les-miserables-at-the-kennedy-center-2/\nmetro-weekly/André Hereford (metro-weekly--andre-hereford.json) SHIPPED but fullText never mentions 'Les Misérables' (6224 chars): https://www.metroweekly.com/2023/04/les-miserables-review-rebel-yell\nminneapolis-star-tribune/Star Tribune staff (minneapolis-star-tribune--star-tribune-staff.json) SHIPPED but fullText never mentions 'Les Misérables' (10651 chars): https://www.startribune.com/brandi-carlile-conan-gray-esperanza-spalding-carter-faith-les-miserables/601563414\nnew-city-stage/Dennis Polkow (new-city-stage--dennis-polkow.json) SHIPPED but fullText never mentions 'Les Misérables' (2670 chars): https://www.newcitystage.com/2026/05/19/a-last-less-elaborate-look-at-a-reimagined-les-miserables/\noc-register/Christopher Smith (oc-register--christopher-smith.json) SHIPPED but fullText never mentions 'Les Misérables' (6957 chars): https://www.ocregister.com/2023/09/21/review-les-miserables-storms-the-barricades-in-costa-mesa/\npicksinsix/Ed Tracy (picksinsix--ed-tracy.json) SHIPPED but fullText never mentions 'Les Misérables' (4998 chars): https://www.conversationswithedtracy.com/picksinsix/2025/8/6/picksinsix-review-les-miserables-broadway-in-south-bend\nrachelsreviewstheatre/Unknown (rachelsreviewstheatre--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4473 chars): https://rachelsreviewstheatre.com/2026/07/02/les-miserables-at-tuacahn-is-a-triumph-review/\nrevue/Emily Alspaugh (revue--emily-alspaugh.json) SHIPPED but fullText never mentions 'Les Misérables' (6226 chars): https://revuewm.com/arts/review-les-miserables-is-a-stunning-feast-for-the-senses\nstage-raw/Socks Whitmore (stage-raw--socks-whitmore.json) SHIPPED but fullText never mentions 'Les Misérables' (5197 chars): https://stageraw.com/les-miserables/\nthe-cap-times/Allison Garfield (the-cap-times--allison-garfield.json) SHIPPED but fullText never mentions 'Les Misérables' (4494 chars): https://captimes.com/entertainment/les-miserables-at-overture-has-bright-spots-lacks-emotional-depth/article_19f88d54-cbd7-11ee-a5de-9b218b229536.html\nvariety/Katcy Stephan (variety--katcy-stephan.json) SHIPPED but fullText never mentions 'Les Misérables' (2542 chars): https://variety.com/2023/legit/news/les-miserables-mis-pantages-national-tour-los-angeles-1235687822/",
       "violations": [
         {
           "filename": "broadwayworld--colin-fleming-stumpf.json",
@@ -14197,6 +14283,22 @@
           }
         },
         {
+          "filename": "chicago-theatre-review--gayle-kirshenbaum.json",
+          "url": "https://www.chicagotheatrereview.com/2023/02/les-miserables/",
+          "outletId": "chicago-theatre-review",
+          "criticName": "Gayle Kirshenbaum",
+          "haystackLength": 2425,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
           "filename": "dazzlingdailydeals--amber.json",
           "url": "https://www.dazzlingdailydeals.com/an-unforgettable-night-with-les-miserables-in-portland-oregon/",
           "outletId": "dazzlingdailydeals",
@@ -14234,6 +14336,22 @@
           "outletId": "equality365",
           "criticName": "Eric Andrews-Katz",
           "haystackLength": 10114,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "hotchka--unknown.json",
+          "url": "https://hotchka.com/les-miserables-tour-review",
+          "outletId": "hotchka",
+          "criticName": "Unknown",
+          "haystackLength": 10456,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
@@ -16434,21 +16552,21 @@
       "showId": "a-man-for-all-seasons-royal-bath-regional-2025",
       "title": "A Man for All Seasons",
       "openingDate": "2025-01-22",
-      "message": "thestage/Rosemary Waugh (thestage--rosemary-waugh.json) SHIPPED but fullText never mentions 'A Man for All Seasons' (2481 chars, textIssues flag set): https://www.thestage.co.uk/reviews/a-man-for-all-seasons-review-theatre-royal-bath-martin-shaw-sam-phillips-robert-bolt-henry-viii",
+      "message": "thestage/Rosemary Waugh (thestage--rosemary-waugh.json) SHIPPED but fullText never mentions 'A Man for All Seasons' (424 chars, textIssues flag set): https://www.thestage.co.uk/reviews/a-man-for-all-seasons-review-theatre-royal-bath-martin-shaw-sam-phillips-robert-bolt-henry-viii",
       "violations": [
         {
           "filename": "thestage--rosemary-waugh.json",
           "url": "https://www.thestage.co.uk/reviews/a-man-for-all-seasons-review-theatre-royal-bath-martin-shaw-sam-phillips-robert-bolt-henry-viii",
           "outletId": "thestage",
           "criticName": "Rosemary Waugh",
-          "haystackLength": 2481,
+          "haystackLength": 424,
           "textIssuesFlag": true,
           "triage": {
-            "bucket": "unresolved",
+            "bucket": "truncated",
             "evidence": [
-              "no-conclusive-triage-metadata"
+              "contentTier=truncated"
             ],
-            "nextStep": "read-article-and-verify-title-and-production",
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -16900,11 +17018,11 @@
           "haystackLength": 2743,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -17116,11 +17234,11 @@
           "haystackLength": 3047,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -17783,6 +17901,30 @@
       ]
     },
     {
+      "showId": "les-miserables-regional-2024",
+      "title": "Les Miserables",
+      "openingDate": "2024-07-29",
+      "message": "talkinbroadway/Christine Malcom (talkinbroadway--christine-malcom.json) SHIPPED but fullText never mentions 'Les Miserables' (5166 chars, textIssues flag set): https://www.talkinbroadway.com/page/regional/chicago/ch764.html",
+      "violations": [
+        {
+          "filename": "talkinbroadway--christine-malcom.json",
+          "url": "https://www.talkinbroadway.com/page/regional/chicago/ch764.html",
+          "outletId": "talkinbroadway",
+          "criticName": "Christine Malcom",
+          "haystackLength": 5166,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "bottle-fly-regional-2024",
       "title": "Bottle Fly",
       "openingDate": "2024-10-23",
@@ -18068,11 +18210,11 @@
           "haystackLength": 3037,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -18164,11 +18306,11 @@
           "haystackLength": 2900,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -18236,11 +18378,11 @@
           "haystackLength": 2816,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -18260,11 +18402,11 @@
           "haystackLength": 2846,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -18468,11 +18610,11 @@
           "haystackLength": 2324,
           "textIssuesFlag": true,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -19160,12 +19302,12 @@
     }
   ],
   "triage": {
-    "total": 859,
+    "total": 866,
     "counts": {
-      "excerpt": 182,
+      "excerpt": 186,
       "wrong-production": 9,
-      "unresolved": 591,
-      "truncated": 77
+      "unresolved": 612,
+      "truncated": 59
     },
     "outletPlans": [
       {
@@ -20282,9 +20424,9 @@
       },
       {
         "outletId": "chicago-theatre-review",
-        "total": 11,
+        "total": 12,
         "counts": {
-          "unresolved": 11
+          "unresolved": 12
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -20344,6 +20486,15 @@
           },
           {
             "file": "jump-regional-2024/chicago-theatre-review--colin-douglas.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "les-miserables-tour-2022/chicago-theatre-review--gayle-kirshenbaum.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -22498,10 +22649,10 @@
       },
       {
         "outletId": "hollywood-reporter",
-        "total": 10,
+        "total": 12,
         "counts": {
           "unresolved": 6,
-          "excerpt": 4
+          "excerpt": 6
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -22587,7 +22738,44 @@
             "requiresArticleReview": true
           },
           {
+            "file": "the-assembled-parties-2013/hollywood-reporter--david-rooney.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
             "file": "the-importance-of-being-earnest-2011/hollywood-reporter--david-rooney.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-other-place-2013/hollywood-reporter--david-rooney.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "hotchka",
+        "total": 1,
+        "counts": {
+          "unresolved": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "les-miserables-tour-2022/hotchka--unknown.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -22761,17 +22949,17 @@
         "outletId": "jonathan-baz",
         "total": 1,
         "counts": {
-          "truncated": 1
+          "unresolved": 1
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "equus-off-west-end-2026/jonathan-baz--unknown.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         ]
@@ -23486,9 +23674,9 @@
       },
       {
         "outletId": "nydailynews",
-        "total": 7,
+        "total": 8,
         "counts": {
-          "excerpt": 6,
+          "excerpt": 7,
           "unresolved": 1
         },
         "requiresArticleReview": true,
@@ -23540,6 +23728,15 @@
           },
           {
             "file": "red-2010/nydailynews--joe-dziemianowicz.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-other-place-2013/nydailynews--joe-dziemianowicz.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -23709,11 +23906,11 @@
       },
       {
         "outletId": "nytimes",
-        "total": 9,
+        "total": 11,
         "counts": {
           "wrong-production": 2,
           "unresolved": 5,
-          "excerpt": 1,
+          "excerpt": 3,
           "truncated": 1
         },
         "requiresArticleReview": true,
@@ -23797,6 +23994,24 @@
               "wrongProduction=true"
             ],
             "nextStep": "verify-production-and-existing-flags",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-assembled-parties-2013/nytimes--ben-brantley.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-other-place-2013/nytimes--charles-isherwood.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         ]
@@ -24730,14 +24945,23 @@
       },
       {
         "outletId": "talkinbroadway",
-        "total": 2,
+        "total": 3,
         "counts": {
-          "unresolved": 2
+          "unresolved": 3
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "illinoise-2024/talkinbroadway--matthew-murray.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "les-miserables-regional-2024/talkinbroadway--christine-malcom.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -25361,11 +25585,11 @@
       },
       {
         "outletId": "thestage",
-        "total": 189,
+        "total": 188,
         "counts": {
-          "truncated": 21,
-          "unresolved": 156,
-          "excerpt": 12
+          "unresolved": 173,
+          "excerpt": 11,
+          "truncated": 4
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -25434,11 +25658,11 @@
           },
           {
             "file": "a-good-house-west-end-2025/thestage--dave-fargnoli.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -25452,11 +25676,11 @@
           },
           {
             "file": "a-man-for-all-seasons-royal-bath-regional-2025/thestage--rosemary-waugh.json",
-            "bucket": "unresolved",
+            "bucket": "truncated",
             "evidence": [
-              "no-conclusive-triage-metadata"
+              "contentTier=truncated"
             ],
-            "nextStep": "read-article-and-verify-title-and-production",
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -25488,11 +25712,11 @@
           },
           {
             "file": "a-streetcar-named-desire-crucible-regional-2025/thestage--john-murphy.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -25524,11 +25748,11 @@
           },
           {
             "file": "abigails-party-royal-exchange-regional-2025/thestage--chris-bartlett.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -25641,11 +25865,11 @@
           },
           {
             "file": "arlington-tron-regional-2025/thestage--fergus-morgan.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -25929,11 +26153,11 @@
           },
           {
             "file": "giant-west-end-2025/thestage--laurie-yule.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -25947,11 +26171,11 @@
           },
           {
             "file": "glorious-hope-mill-regional-2025/thestage--chris-bartlett.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26262,11 +26486,11 @@
           },
           {
             "file": "night-idiot-oran-mor-regional-2025/thestage--fergus-morgan.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26406,11 +26630,11 @@
           },
           {
             "file": "roi-return-on-investment-off-west-end-2026/thestage--dave-fargnoli.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26487,11 +26711,11 @@
           },
           {
             "file": "starlight-express-off-west-end-2024/thestage--paul-vale.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26514,11 +26738,11 @@
           },
           {
             "file": "studio3-tron-regional-2025/thestage--david-pollock.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26613,20 +26837,20 @@
           },
           {
             "file": "the-authenticator-west-end-2026/thestage--tom-wicker.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
             "file": "the-brightening-air-west-end-2025/thestage--dave-fargnoli.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26640,11 +26864,11 @@
           },
           {
             "file": "the-corinthian-oran-mor-regional-2026/thestage--fergus-morgan.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26829,20 +27053,20 @@
           },
           {
             "file": "the-price-off-west-end-2026/thestage--unknown.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
             "file": "the-rat-trap-off-west-end-2026/thestage--dave-fargnoli.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26910,11 +27134,11 @@
           },
           {
             "file": "the-wiz-2024/thestage--lane-williamson.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26946,11 +27170,11 @@
           },
           {
             "file": "titanique-west-end-2024/thestage--paul-vale.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -26991,20 +27215,11 @@
           },
           {
             "file": "water-for-elephants-2024/thestage--lane-williamson.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "west-side-story-2020/thestage--nicole-serratore.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
