@@ -176,6 +176,35 @@ function missingCredentials(adapter, creds) {
   return (adapter ? adapter.credentials : []).filter((k) => !(creds && creds[k]));
 }
 
+/**
+ * Keychain check before a login (BRO-7705). Missing items are a sticky
+ * needs-human stop that alerts ONCE ('stop-new'); later runs stay stopped
+ * silently ('stop-sticky'). Unlike the other stops it clears itself the
+ * first run after the owner adds the items, so they never also need --reset.
+ * @param {object} state  per-outlet state
+ * @param {object|null} adapter  loginAdapterFor(outlet)
+ * @param {Record<string,string|null>} creds
+ * @param {string} nowIso
+ * @returns {{action:'proceed'|'stop-new'|'stop-sticky', state:object, missing:string[], note?:string}}
+ */
+function credentialGate(state, adapter, creds, nowIso) {
+  const s = { ...emptyOutletState(), ...(state || {}) };
+  const missing = adapter ? missingCredentials(adapter, creds) : ['login adapter'];
+  if (!missing.length) {
+    if (s.needsHuman && s.needsHuman.code === 'creds-missing') {
+      return { action: 'proceed', missing, state: { ...s, needsHuman: null }, note: 'Keychain items now present; cleared the missing-credentials stop' };
+    }
+    return { action: 'proceed', missing, state: s };
+  }
+  if (s.needsHuman) return { action: 'stop-sticky', missing, state: s };
+  return { action: 'stop-new', missing, state: { ...s, needsHuman: { at: nowIso, reason: `Keychain credentials missing: ${missing.join(', ')}`, code: 'creds-missing' } } };
+}
+
+/** Exit code for a multi-outlet run: the worst one (4 > 3 > 2 > 1 > 0). */
+function worstExitCode(codes) {
+  return (codes || []).reduce((a, b) => Math.max(a, Number(b) || 0), 0);
+}
+
 // --- Expiry-aware scheduling (BRO-7705) --------------------------------------
 
 // launchd runs every 6h; a 3-day lead gives a dozen chances to refresh before
@@ -429,6 +458,8 @@ module.exports = {
   soonestAuthExpiry,
   planRenewal,
   authCookiesChanged,
+  credentialGate,
+  worstExitCode,
   KEYCHAIN_SERVICE,
   LOGIN_COOLDOWN_MS,
   LOGIN_WINDOW_MS,
