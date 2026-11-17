@@ -1450,5 +1450,36 @@
       }
     ],
     "queuedAt": "2026-11-17T16:18:50.136Z"
+  },
+  {
+    "conditionKey": "land:land/retro-loop-7645",
+    "title": "Landing blocked: unit-tests-node red on land/retro-loop-7645",
+    "description": "land.yml did not land land/retro-loop-7645: the unit-tests-node gate went red at 95dca85249. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44131667251",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/retro-loop-7645"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "95dca85249c091dd360c9836bd9498013118a862"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44131667251"
+      }
+    ],
+    "queuedAt": "2026-11-17T17:02:58.694Z"
   }
 ]
