@@ -3,6 +3,13 @@
 const fs = require('fs');
 const path = require('path');
 const { foldDiacritics } = require('../title-match.js');
+let _canonicalizeUrlForDedup = null;
+try { ({ canonicalizeUrlForDedup: _canonicalizeUrlForDedup } = require('../review-guards')); } catch { /* unit-test env */ }
+function canonicalUrl(u) {
+  if (!u || typeof u !== 'string') return null;
+  if (_canonicalizeUrlForDedup) { try { return _canonicalizeUrlForDedup(u) || u; } catch { /* fall through */ } }
+  return u.replace(/^https?:\/\/(www\.)?/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase();
+}
 // Balusters ship-check P1 #5: use canonical generateReviewFilename from review-normalization
 // so filenames match how rebuild and gather write them (handles aliases + prefix stripping).
 let _generateReviewFilename;
@@ -189,7 +196,22 @@ function run(show, context) {
       filenamesInBuild.add(`${r.outletId}--${slug}.json`);
     }
   }
-  const absentees = localFiles.filter(f => !filenamesInBuild.has(f));
+  // BRO-7676: a review's live row can come from a file whose name is not the canonical
+  // outlet--critic.json (the opening-night lane writes outlet--critic--on-<night>.json and
+  // marks the canonical file duplicateOf it). Match on the review's URL as well, or the
+  // file the build actually used reads as a missing, unlogged review and blocks the draft.
+  const urlsInBuild = new Set();
+  for (const r of reviewsForShow) {
+    const u = canonicalUrl(r && r.url);
+    if (u) urlsInBuild.add(u);
+  }
+  const fileUrlInBuild = (f) => {
+    try {
+      const u = canonicalUrl(JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')).url);
+      return !!u && urlsInBuild.has(u);
+    } catch { return false; }
+  };
+  const absentees = localFiles.filter(f => !filenamesInBuild.has(f) && !fileUrlInBuild(f));
   const reasons = {};
   const named = [];
   for (const f of absentees) {

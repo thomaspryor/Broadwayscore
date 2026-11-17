@@ -228,7 +228,7 @@ jobs:
             done
           fi
 
-      - name: Time gate — no broadcast before 7 AM ET
+      - name: Time gate — early-draft flag before 7 AM ET
         # The step always runs (never skipped by an if: on create_draft; BRO-4417 what-else):
         # the old `inputs.send_to_all != 'true'` compared a BOOLEAN input to a
         # string, which GitHub coerces to 1 != NaN, so it was always true and
@@ -236,31 +236,23 @@ jobs:
         # Making it a real skip would leave readiness_gate.outputs.ready_shows
         # empty, and the check step reads only that, so an approval dispatch
         # would find zero shows and create no draft.
-        # BRO-7644 (owner 2026-11-17): a manual dispatch with create_draft (or its
-        # send_to_all alias) is the owner asking for the draft now, so it passes the
-        # gate at any hour. It only creates a Resend DRAFT (code never sends). Every
-        # other trigger still waits until 7 AM ET, and the app push step keeps
-        # waiting too (it reads early_draft below).
+        # BRO-7676 (owner 2026-11-17): the Resend DRAFT is made as soon as the
+        # readiness gate passes, at any hour, on every trigger (code never sends;
+        # the owner sends from Resend). Before 7 AM ET the run is flagged
+        # early_draft=true: the app push waits for 7 AM ET (READY_SHOWS below) and
+        # the owner gets no overnight preview email when the script holds the draft.
+        # ET hour comes from the tz database, so EST and EDT are both right.
+        # blocked is always false now; downstream `blocked != 'true'` reads stay valid.
         if: steps.find.outputs.has_shows == 'true'
         id: time_gate
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          CREATE_DRAFT: ${{ inputs.create_draft || inputs.send_to_all }}
         run: |
-          HOUR_UTC=$(date -u +%H)
-          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ "$CREATE_DRAFT" = "true" ] && [ "$HOUR_UTC" -lt 11 ]; then
-            echo "::notice::Time gate bypassed: manual create_draft dispatch at $HOUR_UTC UTC (draft only, app push still waits for 7 AM ET)."
-            echo "blocked=false" >> $GITHUB_OUTPUT
+          ET_HOUR=$(TZ=America/New_York date +%H)
+          echo "blocked=false" >> $GITHUB_OUTPUT
+          if [ "$((10#$ET_HOUR))" -lt 7 ]; then
+            echo "::notice::Early draft: $ET_HOUR ET is before 7 AM ET. Draft only; the app push waits for 7 AM ET."
             echo "early_draft=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          # 7 AM ET = 11 AM UTC (EDT) or 12 PM UTC (EST). Use 11 as the threshold.
-          if [ "$HOUR_UTC" -lt 11 ]; then
-            echo "::notice::Time gate: $HOUR_UTC UTC is before 7 AM ET (11 UTC). Skipping broadcast — will retry on next scoring cycle."
-            echo "blocked=true" >> $GITHUB_OUTPUT
           else
-            echo "Time gate passed: $HOUR_UTC UTC (after 7 AM ET)"
-            echo "blocked=false" >> $GITHUB_OUTPUT
+            echo "Time gate passed: $ET_HOUR ET (7 AM ET or later)"
           fi
 
       - name: Readiness gate — market-aware (Broadway 15+agg, West End 12)
@@ -977,6 +969,9 @@ jobs:
           # lock helper would exit(1), blocking the send rather than risking a race.
           GH_TOKEN: ${{ github.token }}
           INPUT_SEND_TO: ${{ inputs.send_to }}
+          # BRO-7676: before 7 AM ET a held draft gets no owner preview email
+          # (the next run retries the draft as reviews arrive).
+          EARLY_DRAFT: ${{ steps.time_gate.outputs.early_draft }}
         run: |
           # Modes (BRO-6634, owner 2026-10-30: no approval step, the owner sends from Resend):
           #   - send_to=<email>: transactional preview to that address only (no draft)
@@ -1023,6 +1018,10 @@ jobs:
               # Resend already holds a sent/queued broadcast for this combo: a
               # preview now would describe an email that already went out.
               if grep -q "Resend already has broadcast" <<<"$OUTPUT"; then
+                return
+              fi
+              if [ "$EARLY_DRAFT" = "true" ]; then
+                echo "--- $market: no draft this run; before 7 AM ET, so no preview email (next run retries) ---"
                 return
               fi
               echo "--- $market: no draft this run, preview to owner instead ---"
