@@ -1,15 +1,38 @@
 {
-  "generatedAt": "2026-11-17T15:11:37.837Z",
+  "generatedAt": "2026-11-17T15:43:37.667Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 331,
-  "clean": 330,
-  "defective": 1,
+  "clean": 329,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1,
+    "score-drift": 2
   },
   "shows": [
+    {
+      "showId": "the-lion-king-1997",
+      "title": "The Lion King",
+      "openingDate": "1997-11-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: jasonraize"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.51 vs local 86.58 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [
+        "jasonraize"
+      ],
+      "localCount": 24,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-17T15:43:32.610Z"
+    },
     {
       "showId": "the-fantasticks-2026",
       "title": "The Fantasticks",
@@ -22,7 +45,7 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 20,
+      "localCount": 21,
       "deployedCount": 21,
       "firstDefectAt": "2026-11-17T13:45:22.649Z"
     }
