@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7642",
   "planId": "f22f0da9-5bf6-43a8-9403-60255a776404",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-17T03:17:52.000Z",
   "submitter": {
     "name": null,
@@ -223,5 +223,19 @@
         "description": "Add the Manchester Opera House world premiere (reviewed by Guardian, Times, The Stage) and link it from Toronto as a separate past run."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-17T03:36:41.580Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 13-going-on-30-toronto-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 13-going-on-30-manchester-regional-2025 (priorRuns link on 13-going-on-30-toronto-regional-2026)"
+    }
+  ],
+  "executedIn": "ci"
 }
