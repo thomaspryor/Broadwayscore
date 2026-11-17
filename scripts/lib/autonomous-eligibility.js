@@ -211,6 +211,8 @@ const EXCLUDED_FILES = new Set([
   // The old drift guard only asked isPathAllowed (Tier 1), so Tier 3
   // (isCodePathAllowed) still let the loop edit several of these.
   'scripts/lib/content-quality.js',
+  'scripts/lib/trailer-signatures.js', // BRO-7171: content-quality tier deciders (mirrors scoring-watchlists)
+  'scripts/lib/paywall-detector.js', // BRO-7171
   'scripts/lib/show-title-variants.js',
   'scripts/lib/prior-run-sibling.js',
   'scripts/lib/cross-production-guards.js',  // BRO-5876
