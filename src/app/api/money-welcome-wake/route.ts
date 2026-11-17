@@ -34,9 +34,6 @@ export async function POST(_req: NextRequest) {
     console.error('[money-welcome-wake] not configured (Supabase url, service key or GH_DISPATCH_TOKEN missing)');
     return ok({ ok: false, reason: 'not-configured' });
   }
-  const cooldown = process.env.MONEY_WELCOME_WAKE_COOLDOWN_MS === undefined ? COOLDOWN_MS : Number(process.env.MONEY_WELCOME_WAKE_COOLDOWN_MS) || 0;
-  if (Date.now() - lastActAt < cooldown) return ok({ ok: true, acted: false, reason: 'cooldown' });
-  if (cooldown > 0) lastActAt = Date.now();
   const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
   const gh = { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json', 'User-Agent': 'broadwayscorecard-money-welcome-wake' };
   try {
@@ -46,6 +43,11 @@ export async function POST(_req: NextRequest) {
     );
     if (!rowsRes.ok) { console.error('[money-welcome-wake] select failed', rowsRes.status); return ok({ ok: false, reason: `supabase-${rowsRes.status}` }, 502); }
     if (!w.shouldWake(await rowsRes.json())) return ok({ ok: true, acted: false, reason: 'nothing-waiting' });
+    // The cooldown starts only once a fresh waiting row is confirmed, so a stray call that finds nothing
+    // can never swallow the kick of a real sign-up. It only throttles the GitHub calls below.
+    const cooldown = process.env.MONEY_WELCOME_WAKE_COOLDOWN_MS === undefined ? COOLDOWN_MS : Number(process.env.MONEY_WELCOME_WAKE_COOLDOWN_MS) || 0;
+    if (Date.now() - lastActAt < cooldown) return ok({ ok: true, acted: false, reason: 'cooldown' });
+    if (cooldown > 0) lastActAt = Date.now();
 
     const list = (status: string) => fetch(`https://api.github.com/repos/${repo}/actions/workflows/${WORKFLOW}/runs?status=${status}&per_page=1`, {
       headers: gh, cache: 'no-store', signal: AbortSignal.timeout(8000),
