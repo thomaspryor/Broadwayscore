@@ -27,6 +27,8 @@ const { recheckVerdict } = require('./check-env-cause.js');
 const { skipReason, historySkipReason } = require('./cloud-worker-pick.js');
 const { codexBouncedRecently, codexBounceCapped } = require('./codex-runner.js');
 const { proseDateWait } = require('./prose-date-wait.js');
+const { pastDateHold } = require('./recheck-handoff.js');
+const { mapIssueToCard } = require('./linear-recheck-source.js');
 
 // Order matters: a card's exclusive category is the first one whose trait it has.
 // BRO-7139: `handlers` names the jobs in board-handlers.js that act on the row (empty = nothing does;
@@ -159,7 +161,10 @@ function cardTraits(issue, { nowMs, secret = null, lastRecheckStatus = null } = 
     ? parseRecheckAfterFromCard({ comments: bodies, notes: description }) : null;
   if (stamp != null) {
     if (stamp >= utcDayStart(nowMs)) traits.add('dated-future');
-    else traits.add(lastRecheckStatus === 'fail' ? 'dated-past-failed' : 'dated-past');
+    // BRO-7689: a past-date card the recheck skips (held park line, DECISION NEEDED, or handed to a
+    // worker within the grace window) is not "waiting for its check"; it falls through to its
+    // parked-* row or Paused. Same rule as the digest headline (board-summary.js, BRO-7686).
+    else if (!pastDateHold(mapIssueToCard(issue), nowMs)) traits.add(lastRecheckStatus === 'fail' ? 'dated-past-failed' : 'dated-past');
   }
 
   const reasons = parkReasons(description);
