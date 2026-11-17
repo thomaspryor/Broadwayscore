@@ -372,6 +372,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       process.exit(1);
     }
 
+    // BRO-7632: refuse a placeholder VERIFY in this call's own comment before any write
+    // (state change, bypass ledger row or comment), for state updates and comment-only updates alike.
+    if (typeof args.comment === 'string') {
+      const placeholder = require('./lib/linear-cmd-execution').findPlaceholderVerify(args.comment);
+      if (placeholder) {
+        console.error(`REFUSED (BRO-7632): the VERIFY line still holds a template placeholder, so it can never pass: ${placeholder.slice(0, 160)}. Write the real command.`);
+        process.exit(1);
+      }
+    }
+
     const { resolveState, formatStateError } = require('./lib/linear-state-resolve');
     const {
       DUPLICATE_STATE_TYPE,
@@ -451,14 +461,6 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           args.force && typeof args.force === 'string' && args.force.length >= 10 ? args.force : null;
         if (args.force && !bypassReason) {
           console.error('⚠️  --force ignored by done-semantics gate: the reason must be a string of ≥10 characters.');
-        }
-        // BRO-7632: refuse before any bypass row is written for a close that never happens.
-        if (typeof args.comment === 'string') {
-          const placeholder = require('./lib/linear-cmd-execution').findPlaceholderVerify(args.comment);
-          if (placeholder) {
-            console.error(`REFUSED (BRO-7632): the VERIFY line still holds a template placeholder, so it can never pass: ${placeholder.slice(0, 160)}. Write the real command.`);
-            process.exit(1);
-          }
         }
         // BRO-3435: record every bypass, whether or not the gate would have
         // refused anyway — the open question this exists to answer
