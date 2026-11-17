@@ -170,13 +170,28 @@ async function runLoginFlow(page, adapter, cfg, creds, deps = {}) {
 }
 
 /**
+ * Where a scripted login may run: the Mac Studio only, never CI or a cloud
+ * session (per-runner logins tripped The Stage's device limit, 2026-03-30).
+ * @returns {string|null} refusal reason, or null when allowed
+ */
+function loginRefusal(env = process.env, platform = process.platform) {
+  if (env.CI || env.GITHUB_ACTIONS || env.CLAUDE_CODE_REMOTE === 'true') return 'refusing to log in from CI or a cloud session (device limits, IP blocks); Mac Studio only';
+  if (platform !== 'darwin') return 'scripted logins run on the Mac Studio (darwin) only';
+  return null;
+}
+
+/**
  * The standalone login scripts: open the outlet's shared profile, run the
- * flow with env credentials, write the cookies (method otp-login /
- * password-login, which the extractor treats like any manual refresh).
- * Exits non-zero when the flow did not leave the login pages.
+ * flow with env credentials, then prove it with the outlet's walled probe in
+ * the same profile. Cookies are written only when the probe reads logged in;
+ * anything else throws and leaves data/cookies/<outlet>.json untouched.
  */
 async function standaloneLogin(outlet, creds, { legacy = [], method = 'scripted-login' } = {}) {
+  const refusal = loginRefusal();
+  if (refusal) throw new Error(refusal);
   const renew = require('./cookie-renew');
+  const { COOKIE_PROBES } = require('./cookie-probes');
+  const bprobe = require('./cookie-browser-probe');
   const { launchOtpBrowser, writeOtpCookies } = require('./otp-login-helpers');
   const cfg = renew.RENEW_OUTLETS[outlet];
   const adapter = renew.loginAdapterFor(outlet);
@@ -188,16 +203,19 @@ async function standaloneLogin(outlet, creds, { legacy = [], method = 'scripted-
     const page = context.pages()[0] || (await context.newPage());
     const r = await runLoginFlow(page, adapter, cfg, creds);
     if (r.formMissing || r.why) throw new Error(`login did not complete: ${r.why || 'login form not found'} (on ${r.url})`);
-    console.log(`Login flow finished on ${r.url}`);
-    const cookies = (await context.cookies()).filter((c) => cfg.cookieDomains.some((d) => c.domain.includes(d)));
-    if (!cookies.length) throw new Error(`no ${outlet} cookies after login`);
+    const probe = COOKIE_PROBES[outlet];
+    const check = await bprobe.loadProbe(context, probe, { waitMs: 5000 });
+    const status = bprobe.classify(probe, check);
+    if (status !== 'logged-in') throw new Error(`login flow ended on ${r.url} but the walled probe reads ${status} (${bprobe.describe(probe, check)}); cookies NOT saved`);
+    const cookies = (await context.cookies()).filter((c) => renew.cookieInDomains(c, cfg.cookieDomains));
+    // A metered wall can let a visitor read the probe article; no auth cookie = no session.
+    if (!renew.hasAuthCookie(cookies, cfg.authCookies)) throw new Error(`the walled probe read the article but none of ${cfg.authCookies.join(', ')} is set (metered free view?); cookies NOT saved`);
     const httpOnly = cookies.filter((c) => c.httpOnly).length;
     const p = writeOtpCookies(cfg.fileKey, cookies, { method });
-    console.log(`Wrote ${cookies.length} cookies (${httpOnly} httpOnly) to ${p}`);
-    if (!httpOnly) console.log('WARNING: zero httpOnly cookies captured; the login may not have completed.');
+    console.log(`Walled probe: logged in (${bprobe.describe(probe, check)}). Wrote ${cookies.length} cookies (${httpOnly} httpOnly) to ${p}`);
   } finally {
     await context.close().catch(() => {});
   }
 }
 
-module.exports = { FLOWS, runLoginFlow, standaloneLogin, sleep };
+module.exports = { FLOWS, runLoginFlow, standaloneLogin, loginRefusal, sleep };

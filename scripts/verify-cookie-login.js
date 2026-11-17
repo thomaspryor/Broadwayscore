@@ -77,19 +77,42 @@ async function plainAnon(url) {
   return res.text();
 }
 
-// The renew lock guards the persistent profiles; a launchd renew run holds
-// it for a few minutes at most, so wait rather than fail.
-let lockRelease = null;
-async function takeProfileLock() {
-  if (lockRelease) return true;
-  const { acquireLock, renewLockPath } = require('./lib/cookie-renew');
-  for (let i = 0; i < 40; i++) {
-    lockRelease = acquireLock(renewLockPath());
-    if (lockRelease) return true;
-    if (i === 0) console.error('waiting for the cookie-renew lock (a renew or recovery run has the profiles open)...');
-    await new Promise((r) => setTimeout(r, 15000));
+// Browser-only outlets: the saved cookie file (what the gap driver and CI
+// bundles actually use) is loaded into a throwaway profile and probed there,
+// so this verifies the artifact, not whatever session the persistent profile
+// happens to hold (ship-check). No renew lock needed.
+function savedCookies(outlet) {
+  const { RENEW_OUTLETS } = require('./lib/cookie-renew');
+  const { COOKIE_DIR } = require('./lib/otp-login-helpers');
+  const fileKey = (RENEW_OUTLETS[outlet] && RENEW_OUTLETS[outlet].fileKey) || outlet;
+  try {
+    const c = JSON.parse(require('fs').readFileSync(require('path').join(COOKIE_DIR, `${fileKey}.json`), 'utf8'));
+    return Array.isArray(c) ? c.filter((x) => x && x.name && x.value && x.domain) : [];
+  } catch {
+    return [];
   }
-  return false;
+}
+
+async function probeSavedCookiesInBrowser(p, cookies) {
+  const os = require('os');
+  const fs = require('fs');
+  const path = require('path');
+  const bprobe = require('./lib/cookie-browser-probe');
+  const { launchOtpBrowser } = require('./lib/otp-login-helpers');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-cookie-login-'));
+  const ctx = await launchOtpBrowser(dir, { headless: true, userAgent: bprobe.UA });
+  try {
+    await ctx.addCookies(cookies.map((c) => ({
+      name: c.name, value: c.value, domain: c.domain, path: c.path || '/',
+      expires: Number(c.expires) > 0 ? Number(c.expires) : undefined,
+      httpOnly: !!c.httpOnly, secure: !!c.secure,
+      sameSite: ['Strict', 'Lax', 'None'].includes(c.sameSite) ? c.sameSite : 'Lax',
+    })));
+    return await bprobe.loadProbe(ctx, p);
+  } finally {
+    await ctx.close().catch(() => {});
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 async function sharedProbe(t) {
@@ -99,14 +122,11 @@ async function sharedProbe(t) {
   let withCookies, withoutCookies, where;
   try {
     if (p.browserOnly) {
-      if (process.platform !== 'darwin') return { ...base, ok: false, error: 'browser-only probe runs on the Mac Studio only' };
-      if (!(await takeProfileLock())) return { ...base, ok: false, error: 'cookie-renew lock busy for 10 min' };
-      const { launchOtpBrowser } = require('./lib/otp-login-helpers');
-      const { profileDir, profileNameFor } = require('./lib/cookie-renew');
-      const ctx = await launchOtpBrowser(profileDir(profileNameFor(t.outlet)), { headless: true, userAgent: bprobe.UA });
-      try { withCookies = await bprobe.loadProbe(ctx, p); } finally { await ctx.close().catch(() => {}); }
+      const saved = savedCookies(t.outlet);
+      if (!saved.length) return { ...base, ok: false, detail: 'no saved cookies (data/cookies) to test' };
+      withCookies = await probeSavedCookiesInBrowser(p, saved);
       ({ control: withoutCookies } = await bprobe.classifyWithControl(p, withCookies));
-      where = 'in-profile browser';
+      where = 'browser, saved cookies';
     } else {
       const r = await fetchPage(p.url, { source: 'verify-cookie-login' });
       const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : '');
@@ -170,7 +190,6 @@ async function probe(t) {
   for (const t of targets) {
     results.push(await probe(t));
   }
-  if (lockRelease) lockRelease();
 
   if (JSON_OUT) {
     console.log(JSON.stringify(results, null, 2));
@@ -190,8 +209,16 @@ async function probe(t) {
     }
     if (bad.length) {
       console.log(`❌ ${bad.length} outlet(s) not returning full text: ${bad.map((r) => r.outlet).join(', ')}`);
-      console.log('   → Automatic renewal handles these (launchd com.broadwayscore.cookie-renew). Run it now with:');
-      console.log(`     node scripts/renew-cookies.js --outlets=${bad.map((r) => r.outlet).join(',')}`);
+      const { RENEW_OUTLETS } = require('./lib/cookie-renew');
+      const auto = bad.filter((r) => RENEW_OUTLETS[r.outlet]).map((r) => r.outlet);
+      const manualOnes = bad.filter((r) => !RENEW_OUTLETS[r.outlet]).map((r) => r.outlet);
+      if (auto.length) {
+        console.log('   → Automatic renewal handles these (launchd com.broadwayscore.cookie-renew). Run it now with:');
+        console.log(`     node scripts/renew-cookies.js --outlets=${auto.join(',')}`);
+      }
+      if (manualOnes.length) {
+        console.log(`   → ${manualOnes.join(', ')}: log in in Safari, then: python3 scripts/extract-safari-cookies.py --push`);
+      }
     } else if (!blocked.length) {
       console.log('✅ All probed outlets return full review text (known-logged-out outlets excluded).');
     }

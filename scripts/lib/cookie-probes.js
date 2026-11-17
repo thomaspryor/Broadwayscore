@@ -57,29 +57,40 @@ const COOKIE_PROBES = {
   //             a 2312-char "Subscribe to read" page (the old 1200 floor
   //             passed it) -> browser probe + title wall marker
   //   thetimes  plain fetch = "Verifying Device"; browser 2775 vs 0
+  //
+  // loginWallMarker: the wall as a real browser renders it for a visitor with
+  // no session (in the anonymous page, absent from the subscriber page;
+  // measured 2026-11-17). renew-cookies.js adopts cookies or logs in only
+  // when a slower re-load shows this marker, so a blank render, 404,
+  // consent overlay or redesign never starts a login (BRO-7705 ship-check).
   nytimes: {
     url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html',
     minBody: 4500,
+    loginWallMarker: /gateway-content|regiwall|lready a subscriber/i,
   },
   wapo: {
     url: 'https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/',
     minBody: 4000,
+    loginWallMarker: /paywall-overlay|subs-turnstile-hook-wall|lready a subscriber/i,
   },
   newyorker: {
     url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain',
     minBody: 4000,
     browserOnly: true,
+    loginWallMarker: /InContentBarrier|JOURNEY_PAYWALL/,
   },
   ft: {
     url: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a',
     minBody: 2000,
     wallMarker: /<title>[^<]*Subscribe to (?:read|unlock)/i,
     browserOnly: true,
+    loginWallMarker: /<title>[^<]*Subscribe to (?:read|unlock)/i,
   },
   thetimes: {
     url: 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb',
     minBody: 1500,
     browserOnly: true,
+    loginWallMarker: /zephr-paywall/,
   },
 };
 

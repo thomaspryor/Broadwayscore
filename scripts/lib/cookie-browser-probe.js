@@ -25,13 +25,13 @@ function probeBody(probe, html) {
 /** Load the probe url in an open context; returns {html, body}. */
 async function loadProbe(context, probe, { waitMs = 3000 } = {}) {
   const page = context.pages()[0] || (await context.newPage());
-  await page.goto(probe.url, { waitUntil: 'domcontentloaded', timeout: 45000 });
+  const resp = await page.goto(probe.url, { waitUntil: 'domcontentloaded', timeout: 45000 });
   await page.waitForTimeout(waitMs);
   const html = await page.content();
-  return { html, body: probeBody(probe, html) };
+  return { html, body: probeBody(probe, html), httpStatus: resp ? resp.status() : null };
 }
 
-/** The same url in a fresh, cookie-less profile (the control). */
+/** Same probe in a throwaway, cookie-less profile (the control). */
 async function anonymousProbe(probe, { launch, waitMs } = {}) {
   const launchFn = launch || require('./otp-login-helpers').launchOtpBrowser;
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cookie-probe-anon-'));
@@ -42,6 +42,30 @@ async function anonymousProbe(probe, { launch, waitMs } = {}) {
     await ctx.close().catch(() => {});
     fs.rmSync(dir, { recursive: true, force: true });
   }
+}
+
+/**
+ * Positive evidence that an in-browser "logged-out" reading is real, required
+ * before saved cookies are adopted or a login is submitted. A short body
+ * alone is not enough: a slow render, a 404, a consent overlay or a redesign
+ * also read short (BRO-7705 ship-check). Accepted evidence, on an HTTP 200:
+ *   - the outlet's rendered wall marker (loginWallMarker || gateMarker), or
+ *   - no auth cookie at all in the profile: there is no session to lose.
+ *     (Measured 2026-11-17: every outlet's auth cookies exist only for a
+ *     subscriber; NYT/WaPo/Times walls are metered and do not always render
+ *     for a first visit.)
+ * @param {{status:string, page:{html:string, httpStatus:number|null}, hasAuthCookie?:boolean}} r
+ * @param {object} probe  COOKIE_PROBES entry
+ * @returns {{ok:boolean, reason:string}}
+ */
+function confirmWall(r, probe) {
+  const marker = probe.loginWallMarker || probe.gateMarker;
+  if (!r || r.status !== 'logged-out') return { ok: false, reason: `probe reads ${r ? r.status : 'nothing'}, not logged-out` };
+  const http = r.page && r.page.httpStatus;
+  if (http != null && http !== 200) return { ok: false, reason: `HTTP ${http} on the probe url` };
+  if (marker && marker.test((r.page && r.page.html) || '')) return { ok: true, reason: 'wall marker present' };
+  if (r.hasAuthCookie === false) return { ok: true, reason: 'no auth cookie in the profile (no session to lose)' };
+  return { ok: false, reason: 'an auth cookie is present but the wall marker is not on the page (slow render, overlay or redesign?)' };
 }
 
 function classify(probe, withCookies, withoutCookies) {
@@ -76,4 +100,4 @@ function describe(probe, r) {
   return `body ${r.body.length} chars, floor ${probe.minBody}${probe.wallMarker ? `, wall marker ${probe.wallMarker.test(r.html) ? 'present' : 'absent'}` : ''}`;
 }
 
-module.exports = { UA, probeBody, loadProbe, anonymousProbe, classify, classifyWithControl, describe };
+module.exports = { UA, probeBody, loadProbe, anonymousProbe, classify, classifyWithControl, confirmWall, describe };

@@ -149,7 +149,8 @@ test('authCookiesChanged: re-save only when the session itself changed', () => {
   assert.equal(renew.authCookiesChanged(a, [...a], ['authId']), false);
   assert.equal(renew.authCookiesChanged(a, [a[0], { ...a[1], value: 'g2' }], ['authId']), false, 'tracking cookie churn is not a renewal');
   assert.equal(renew.authCookiesChanged(a, [{ ...a[0], value: 'v2' }, a[1]], ['authId']), true);
-  assert.equal(renew.authCookiesChanged(a, [{ ...a[0], expires: 999 }, a[1]], ['authId']), true, 'a rolled expiry is a renewal');
+  assert.equal(renew.authCookiesChanged(a, [{ ...a[0], expires: 100 + 5 * 86400 }, a[1]], ['authId']), true, 'a rolled expiry is a renewal');
+  assert.equal(renew.authCookiesChanged(a, [{ ...a[0], expires: 999 }, a[1]], ['authId']), false, 'sub-day sliding expiry is not (no push every run)');
   assert.equal(renew.authCookiesChanged([], a, ['authId']), true, 'no saved session -> save');
   assert.equal(renew.authCookiesChanged(a, [a[0], { ...a[1], value: 'g2' }], []), true, 'no auth list -> any change counts');
 });
@@ -290,4 +291,58 @@ test('cookie alerts and CI expiry lines point auto-renewed outlets at renew-cook
   const soon = [{ name: 'authId', expires: Date.now() / 1000 + 2 * 86400 }];
   assert.match(checkAuthExpiry(soon, ['authId'], 'thetimes').message, /renew-cookies\.js --outlet=thetimes/);
   assert.match(checkAuthExpiry(soon, ['authId'], 'someoutlet').message, /Safari/);
+});
+
+test('confirmWall: a short body alone never confirms logged-out', () => {
+  const { confirmWall } = require('../../scripts/lib/cookie-browser-probe.js');
+  const p = COOKIE_PROBES.newyorker;
+  const page = (html, httpStatus = 200) => ({ html, httpStatus, body: '' });
+  assert.equal(confirmWall({ status: 'logged-out', page: page('<div class="InContentBarrier">'), hasAuthCookie: true }, p).ok, true);
+  assert.equal(confirmWall({ status: 'logged-out', page: page('<p>short</p>'), hasAuthCookie: true }, p).ok, false, 'auth cookie + no marker = uncertain');
+  assert.equal(confirmWall({ status: 'logged-out', page: page('<p>short</p>'), hasAuthCookie: false }, p).ok, true, 'no session to lose');
+  assert.equal(confirmWall({ status: 'logged-out', page: page('<div class="InContentBarrier">', 404), hasAuthCookie: false }, p).ok, false, 'non-200 never confirms');
+  assert.equal(confirmWall({ status: 'error', page: page('x'), hasAuthCookie: false }, p).ok, false);
+});
+
+test('hasAuthCookie: a metered free read without the auth cookie is not a session', () => {
+  assert.equal(renew.hasAuthCookie([{ name: 'tmg_session', value: 'x' }], renew.RENEW_OUTLETS.telegraph.authCookies), true);
+  assert.equal(renew.hasAuthCookie([{ name: 'tmg_session', value: '' }], renew.RENEW_OUTLETS.telegraph.authCookies), false);
+  assert.equal(renew.hasAuthCookie([{ name: 'consent', value: 'x' }], renew.RENEW_OUTLETS.telegraph.authCookies), false);
+  assert.equal(renew.hasAuthCookie([], []), true, 'no auth list = not checked');
+});
+
+test('trackUncertain: one digest alert after 24h stuck on an uncertain probe, reset on any other result', () => {
+  const t0 = Date.parse('2026-11-17T00:00:00Z');
+  let r = renew.trackUncertain({}, 1, t0);
+  assert.equal(r.alert, false);
+  r = renew.trackUncertain(r.state, 1, t0 + 23 * 3600e3);
+  assert.equal(r.alert, false);
+  r = renew.trackUncertain(r.state, 1, t0 + 25 * 3600e3);
+  assert.equal(r.alert, true);
+  r = renew.trackUncertain(r.state, 1, t0 + 49 * 3600e3);
+  assert.equal(r.alert, false, 'only once');
+  r = renew.trackUncertain(r.state, 0, t0 + 50 * 3600e3);
+  assert.equal(r.state.uncertainSince, null);
+  assert.equal(r.state.uncertainAlerted, false);
+});
+
+test('isCredsMissingStop accepts the new code and the legacy reason only', () => {
+  assert.equal(renew.isCredsMissingStop({ code: 'creds-missing', reason: 'x' }), true);
+  assert.equal(renew.isCredsMissingStop({ reason: 'Keychain credentials missing' }), true);
+  assert.equal(renew.isCredsMissingStop({ code: 'login-failed', reason: 'bad password' }), false);
+  assert.equal(renew.isCredsMissingStop(null), false);
+});
+
+test('cookieInDomains is a suffix match, not a substring match', () => {
+  assert.equal(renew.cookieInDomains({ domain: '.ft.com' }, ['ft.com']), true);
+  assert.equal(renew.cookieInDomains({ domain: 'markets.ft.com' }, ['ft.com']), true);
+  assert.equal(renew.cookieInDomains({ domain: '.microsoft.com' }, ['ft.com']), false);
+});
+
+test('loginRefusal: Mac only, never CI or cloud', () => {
+  const { loginRefusal } = require('../../scripts/lib/cookie-login-adapters.js');
+  assert.equal(loginRefusal({}, 'darwin'), null);
+  assert.match(loginRefusal({ CI: 'true' }, 'darwin'), /CI or a cloud/);
+  assert.match(loginRefusal({ CLAUDE_CODE_REMOTE: 'true' }, 'darwin'), /CI or a cloud/);
+  assert.match(loginRefusal({}, 'linux'), /darwin/);
 });

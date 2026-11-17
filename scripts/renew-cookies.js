@@ -118,7 +118,21 @@ function readLocalCookies(fileKey) {
   }
 }
 
-const keepDomain = (cfg) => (c) => cfg.cookieDomains.some((d) => String(c.domain || '').includes(d));
+// Rollback: the jar being replaced is kept in data/cookies/_prev/ (a
+// subdirectory, so the extractor's --from-local never bundles it).
+function backupJar(fileKey) {
+  const src = path.join(COOKIE_DIR, `${fileKey}.json`);
+  try {
+    if (!fs.existsSync(src)) return;
+    const dir = path.join(COOKIE_DIR, '_prev');
+    fs.mkdirSync(dir, { recursive: true });
+    fs.copyFileSync(src, path.join(dir, `${fileKey}.json`));
+  } catch (e) {
+    console.warn(`[backup] ${fileKey}: could not keep the previous jar (${e.message})`);
+  }
+}
+
+const keepDomain = (cfg) => (c) => renew.cookieInDomains(c, cfg.cookieDomains);
 
 function toPlaywrightCookie(c) {
   return {
@@ -165,12 +179,17 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // --- steps -------------------------------------------------------------------
 
 // In-profile probe. Returns { status, cookies, detail }: cookies only when logged in.
-async function profileSession(context, cfg, probe) {
-  const r = await bprobe.loadProbe(context, probe);
-  const status = bprobe.classify(probe, r);
-  const detail = bprobe.describe(probe, r);
-  if (status !== 'logged-in') return { status, cookies: null, detail, page: r };
-  return { status, detail, page: r, cookies: (await context.cookies()).filter(keepDomain(cfg)) };
+async function profileSession(context, cfg, probe, { waitMs } = {}) {
+  const r = await bprobe.loadProbe(context, probe, { waitMs });
+  const all = (await context.cookies()).filter(keepDomain(cfg));
+  const hasAuthCookie = renew.hasAuthCookie(all, cfg.authCookies);
+  let status = bprobe.classify(probe, r);
+  let detail = bprobe.describe(probe, r);
+  // A metered wall can show a visitor the whole article (Telegraph, 1 in 4
+  // fresh loads): no auth cookie means no session, whatever the body says.
+  if (status === 'logged-in' && !hasAuthCookie) { status = 'logged-out'; detail += ', but no auth cookie (metered free view)'; }
+  if (status !== 'logged-in') return { status, cookies: null, detail, page: r, hasAuthCookie };
+  return { status, detail, page: r, hasAuthCookie, cookies: all };
 }
 
 // --manual: the owner logs in by hand inside the SAME persistent profile
@@ -247,9 +266,6 @@ async function runOutlet(outlet, all, opts) {
     return done(0, 'needs-human stop cleared (login history kept)');
   }
   const manual = opts.manual;
-  if (cfg.manualOnly && !manual && !opts.probeOnly) {
-    return done(3, `manual-only: node scripts/renew-cookies.js --outlet=${outlet} --manual`);
-  }
 
   const profile = profileNameFor(outlet);
   const localCookies = readLocalCookies(cfg.fileKey);
@@ -321,20 +337,61 @@ async function runOutlet(outlet, all, opts) {
       if (opts.probeOnly) {
         return done(existing.status === 'logged-in' ? 0 : 3, `profile ${existing.status} (${existing.detail})`);
       }
-      if (!existing.cookies && localCookies.length) {
-        // The saved file may hold a session the profile lacks (a Safari or
-        // standalone-script login): adopt it instead of logging in.
-        await context.addCookies(localCookies.filter((c) => c.name && c.value && c.domain).map(toPlaywrightCookie)).catch(() => {});
+      // Positive wall evidence before anything that changes the profile or
+      // spends a login: a slower re-load must show HTTP 200 and the outlet's
+      // rendered wall marker (bprobe.confirmWall).
+      const confirmLoggedOut = async (when) => {
+        const again = await profileSession(context, cfg, probe, { waitMs: 8000 });
+        if (again.cookies) return { cookies: again.cookies };
+        const c = bprobe.confirmWall(again, probe);
+        console.log(`${outlet} logged-out check ${when}: ${c.ok ? 'confirmed' : 'NOT confirmed'} (${c.reason}; ${again.detail})`);
+        return { ok: c.ok, reason: c.reason };
+      };
+      if (!existing.cookies) {
+        const c = await confirmLoggedOut('before adopting/logging in');
+        if (c.cookies) { existing = { ...existing, cookies: c.cookies }; how = 'profile session valid (slow render)'; }
+        else if (!c.ok) return done(1, `profile reads logged out but it is not confirmed (${c.reason}); not adopting cookies or logging in on an uncertain probe`);
+      }
+      // The saved file may hold a session the profile lacks (a Safari or
+      // standalone-script login): adopt it instead of logging in. Never when
+      // the fetch probe has just shown that file is logged out.
+      if (!existing.cookies && localCookies.length && probeStatus !== 'logged-out') {
+        try {
+          await context.addCookies(localCookies.filter((c) => c.name && c.value && c.domain).map(toPlaywrightCookie));
+        } catch (e) {
+          return done(1, `could not adopt the saved cookies (${e.message.split('\n')[0]}); not logging in`);
+        }
         existing = await profileSession(context, cfg, probe);
         console.log(`${outlet} in-profile probe after adopting the saved cookies: ${existing.status} (${existing.detail})`);
         if (existing.cookies) how = 'adopted the saved cookies into the profile';
+        else {
+          const c = await confirmLoggedOut('after adopting the saved cookies');
+          if (c.cookies) { existing = { ...existing, cookies: c.cookies }; how = 'adopted the saved cookies into the profile'; }
+          else if (!c.ok) return done(1, `after adopting the saved cookies the page is not a confirmed wall (${c.reason}); not logging in`);
+        }
       }
       if (existing.cookies) {
         cookies = existing.cookies;
         how = how || 'profile session valid';
       } else {
-        // 3. One gated login.
+        // 3. One gated login. The Keychain is read only when a login could
+        // actually happen (or to lift a missing-credentials stop).
         const adapter = loginAdapterFor(outlet);
+        const handleGate = async (gate) => {
+          if (gate.escalate) {
+            state.needsHuman = { at: new Date().toISOString(), reason: gate.reason, code: 'login-limit' };
+            persist();
+            await alertOwner({ outlet, needsHuman: true, title: `Cookie renew: ${outlet} needs you`,
+              description: `${gate.reason}. Check the account's active sessions, then run: node scripts/renew-cookies.js --outlet=${outlet} --manual`, url: cfg.loginUrl });
+            return done(3, `needs-human: ${gate.reason} (one email sent)`);
+          }
+          return done(state.needsHuman ? 3 : 0, `login not attempted: ${gate.reason}`);
+        };
+        const credsStop = renew.isCredsMissingStop(state.needsHuman);
+        if (!credsStop) {
+          const gate = decideLogin(state, Date.now());
+          if (!gate.allowed) return handleGate(gate);
+        }
         const creds = Object.fromEntries((adapter ? adapter.credentials : []).map((k) => [k, readKeychain(`${outlet}-${k}`)]));
         const g = credentialGate(state, adapter, creds, new Date().toISOString());
         Object.assign(state, g.state);
@@ -345,16 +402,10 @@ async function runOutlet(outlet, all, opts) {
             description: `${outlet} is logged out and no Keychain login exists for it. Add: security add-generic-password -s ${renew.KEYCHAIN_SERVICE} -a ${outlet}-email -w '<email>'${g.missing.includes('password') ? ` ; security add-generic-password -s ${renew.KEYCHAIN_SERVICE} -a ${outlet}-password -w` : ''}. The next run picks it up. Or log in once: node scripts/renew-cookies.js --outlet=${outlet} --manual` });
           return done(3, `needs-human: logged out and Keychain item(s) missing: ${g.missing.map((k) => `${outlet}-${k}`).join(', ')} (one email sent)`);
         }
-        const gate = decideLogin(state, Date.now());
-        if (!gate.allowed) {
-          if (gate.escalate) {
-            state.needsHuman = { at: new Date().toISOString(), reason: gate.reason, code: 'login-limit' };
-            persist();
-            await alertOwner({ outlet, needsHuman: true, title: `Cookie renew: ${outlet} needs you`,
-              description: `${gate.reason}. Check the account's active sessions, then run: node scripts/renew-cookies.js --outlet=${outlet} --manual`, url: cfg.loginUrl });
-            return done(3, `needs-human: ${gate.reason} (one email sent)`);
-          }
-          return done(state.needsHuman ? 3 : 0, `login not attempted: ${gate.reason}`);
+        if (g.action === 'stop-sticky') return done(3, `login not attempted: needs-human since ${state.needsHuman.at}: ${state.needsHuman.reason}`);
+        if (credsStop) {
+          const gate = decideLogin(state, Date.now());
+          if (!gate.allowed) return handleGate(gate);
         }
         // Record the attempt BEFORE submitting so a crash still counts.
         state.logins = [...state.logins, new Date().toISOString()].slice(-10);
@@ -394,6 +445,7 @@ async function runOutlet(outlet, all, opts) {
     return done(0, `logged in (${how}); session matches the saved cookies, nothing to save${still.action === 'refresh' ? ` (note: ${still.reason}; the outlet did not roll it, a login follows once it lapses)` : ''}`);
   }
   const httpOnly = cookies.filter((c) => c.httpOnly).length;
+  backupJar(cfg.fileKey);
   const cookiePath = writeOtpCookies(cfg.fileKey, cookies, { method: 'auto-renew' });
   console.log(`${outlet}: wrote ${cookies.length} cookies (${httpOnly} httpOnly) to ${cookiePath}`);
   if (cfg.localOnly) {
@@ -436,6 +488,11 @@ async function main() {
   if (!release) { console.log('Another renew-cookies run holds the lock; skipping.'); return 0; }
   const all = loadState(STATE_PATH);
   const results = {};
+  // The lock is held through the push and its state write, so a concurrent
+  // run can never overwrite a login record or a needs-human stop written in
+  // between (ship-check). Only the CI confirmation (up to ~40 min, no state
+  // writes) runs after release.
+  let confirmable = [];
   try {
     for (const outlet of list) {
       let r;
@@ -446,41 +503,54 @@ async function main() {
       }
       results[outlet] = r;
       console.log(`${outlet}: ${r.summary}`);
+      // An outlet stuck on an uncertain probe never logs in (by design), so
+      // it would otherwise fail quietly forever: one digest alert after 24h.
+      if (!opts.probeOnly && !opts.reset) {
+        const t = renew.trackUncertain(all[outlet], r.code, Date.now());
+        all[outlet] = t.state;
+        saveState(STATE_PATH, all);
+        if (t.alert) {
+          await alertOwner({ outlet, kind: 'stuck-uncertain', title: `Cookie renew: ${outlet} login state unreadable for 24h+`,
+            description: `renew-cookies.js has not been able to tell whether ${outlet} is logged in since ${t.state.uncertainSince} (last: ${r.summary}). It will not log in on an uncertain reading. Check: node scripts/verify-cookie-login.js --outlets=${outlet}`, url: COOKIE_PROBES[outlet].url });
+        }
+      }
+    }
+
+    // Push once for every outlet with renewed cookies (or a push left over
+    // from a failed run).
+    const fresh = loadState(STATE_PATH);
+    const pending = list.filter((o) => fresh[o] && fresh[o].pendingPush && !RENEW_OUTLETS[o].localOnly);
+    if (pending.length && !opts.probeOnly && !opts.reset) {
+      if (flag('no-push')) {
+        console.log(`--no-push: bundles not updated (pending: ${pending.join(', ')}).`);
+      } else {
+        try {
+          pushBundles();
+          for (const o of pending) Object.assign(fresh[o], { pendingPush: false, lastSuccessAt: new Date().toISOString() });
+          saveState(STATE_PATH, fresh);
+          console.log(`Pushed COOKIES_BUNDLE_* for: ${pending.join(', ')}`);
+          confirmable = flag('no-confirm') ? [] : pending.filter((o) => RENEW_OUTLETS[o].ciConfirm);
+        } catch (e) {
+          for (const o of pending) {
+            results[o] = { code: 4, summary: `${results[o].summary}; bundle push failed (${e.message.split('\n')[0]}), retried next run` };
+            await alertOwner({ outlet: o, kind: 'push-failed', title: `Cookie renew: ${o} push failed`,
+              description: `Cookies renewed locally but COOKIES_BUNDLE_* push failed (${e.message}). The next run retries the push.`, url: `https://github.com/${REPO}/settings/secrets/actions` });
+          }
+        }
+      }
     }
   } finally {
     release();
   }
 
-  // Push once for every outlet with renewed cookies (or a push left over
-  // from a failed run), then confirm the ones CI can see.
-  const fresh = loadState(STATE_PATH);
-  const pending = list.filter((o) => fresh[o] && fresh[o].pendingPush && !RENEW_OUTLETS[o].localOnly);
-  if (pending.length && !opts.probeOnly && !opts.reset) {
-    if (flag('no-push')) {
-      console.log(`--no-push: bundles not updated (pending: ${pending.join(', ')}).`);
-    } else {
-      try {
-        pushBundles();
-        for (const o of pending) Object.assign(fresh[o], { pendingPush: false, lastSuccessAt: new Date().toISOString() });
-        saveState(STATE_PATH, fresh);
-        console.log(`Pushed COOKIES_BUNDLE_* for: ${pending.join(', ')}`);
-        const confirmable = pending.filter((o) => RENEW_OUTLETS[o].ciConfirm);
-        if (confirmable.length && !flag('no-confirm')) {
-          const c = await confirmViaHealthCheck(confirmable);
-          for (const o of confirmable) {
-            if (c.result[o]) continue;
-            results[o] = { code: 4, summary: `${results[o].summary}; CI health check did not confirm${c.timeout ? ' (timed out)' : ''}` };
-            await alertOwner({ outlet: o, kind: 'confirm-failed', title: `Cookie renew: ${o} CI health check still failing`,
-              description: `Cookies were renewed and pushed, but check-cookie-health did not report ${o} logged in${c.timeout ? ' (timed out waiting)' : ''}.`, url: c.url || `https://github.com/${REPO}/actions/workflows/${HEALTH_WORKFLOW}` });
-          }
-        }
-      } catch (e) {
-        for (const o of pending) {
-          results[o] = { code: 4, summary: `${results[o].summary}; bundle push failed (${e.message.split('\n')[0]}), retried next run` };
-          await alertOwner({ outlet: o, kind: 'push-failed', title: `Cookie renew: ${o} push failed`,
-            description: `Cookies renewed locally but COOKIES_BUNDLE_* push failed (${e.message}). The next run retries the push.`, url: `https://github.com/${REPO}/settings/secrets/actions` });
-        }
-      }
+  // Confirm in CI the outlets its live check can see.
+  if (confirmable.length) {
+    const c = await confirmViaHealthCheck(confirmable).catch((e) => ({ result: {}, url: null, error: e.message }));
+    for (const o of confirmable) {
+      if (c.result[o]) continue;
+      results[o] = { code: 4, summary: `${results[o].summary}; CI health check did not confirm${c.timeout ? ' (timed out)' : c.error ? ` (${c.error.split('\n')[0]})` : ''}` };
+      await alertOwner({ outlet: o, kind: 'confirm-failed', title: `Cookie renew: ${o} CI health check still failing`,
+        description: `Cookies were renewed and pushed, but check-cookie-health did not report ${o} logged in${c.timeout ? ' (timed out waiting)' : ''}.`, url: c.url || `https://github.com/${REPO}/actions/workflows/${HEALTH_WORKFLOW}` });
     }
   }
 

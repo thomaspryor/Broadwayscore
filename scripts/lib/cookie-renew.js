@@ -162,6 +162,12 @@ function loginAdapterFor(outlet) {
   return { outlet, kind: cfg.login, profile: cfg.profile || outlet, ...LOGIN_ADAPTERS[cfg.login] };
 }
 
+/** Cookie belongs to one of the outlet's domains (suffix match: ft.com must not take microsoft.com). */
+function cookieInDomains(cookie, domains) {
+  const d = String((cookie && cookie.domain) || '').replace(/^\./, '').toLowerCase();
+  return (domains || []).some((x) => d === x || d.endsWith(`.${x}`));
+}
+
 /** Persistent-profile name for an outlet (nytimes -> nyt). */
 function profileNameFor(outlet) {
   return (RENEW_OUTLETS[outlet] && RENEW_OUTLETS[outlet].profile) || outlet;
@@ -188,17 +194,43 @@ function missingCredentials(adapter, creds) {
  * @param {string} nowIso
  * @returns {{action:'proceed'|'stop-new'|'stop-sticky', state:object, missing:string[], note?:string}}
  */
+/** A missing-Keychain stop (or one recorded before codes existed, BRO-4183). */
+function isCredsMissingStop(needsHuman) {
+  return !!needsHuman && (needsHuman.code === 'creds-missing' || (!needsHuman.code && /Keychain credentials missing/i.test(needsHuman.reason || '')));
+}
+
 function credentialGate(state, adapter, creds, nowIso) {
   const s = { ...emptyOutletState(), ...(state || {}) };
   const missing = adapter ? missingCredentials(adapter, creds) : ['login adapter'];
   if (!missing.length) {
-    if (s.needsHuman && s.needsHuman.code === 'creds-missing') {
+    if (isCredsMissingStop(s.needsHuman)) {
       return { action: 'proceed', missing, state: { ...s, needsHuman: null }, note: 'Keychain items now present; cleared the missing-credentials stop' };
     }
     return { action: 'proceed', missing, state: s };
   }
   if (s.needsHuman) return { action: 'stop-sticky', missing, state: s };
   return { action: 'stop-new', missing, state: { ...s, needsHuman: { at: nowIso, reason: `Keychain credentials missing: ${missing.join(', ')}`, code: 'creds-missing' } } };
+}
+
+/** Any of the outlet's auth cookies present (an empty list = not checked). */
+function hasAuthCookie(cookies, authCookies) {
+  if (!authCookies || !authCookies.length) return true;
+  const names = new Set(authCookies);
+  return (cookies || []).some((c) => c && names.has(c.name) && c.value);
+}
+
+const UNCERTAIN_ALERT_MS = 24 * 60 * 60 * 1000;
+/**
+ * Exit code 1 (probe uncertain/error) never logs in. Track how long an
+ * outlet has been stuck there and ask for ONE digest alert after 24h.
+ * @returns {{state:object, alert:boolean}}
+ */
+function trackUncertain(state, code, nowMs) {
+  const s = { ...emptyOutletState(), ...(state || {}) };
+  if (code !== 1) return { state: { ...s, uncertainSince: null, uncertainAlerted: false }, alert: false };
+  const since = s.uncertainSince || new Date(nowMs).toISOString();
+  const due = !s.uncertainAlerted && nowMs - Date.parse(since) >= UNCERTAIN_ALERT_MS;
+  return { state: { ...s, uncertainSince: since, uncertainAlerted: s.uncertainAlerted || due }, alert: due };
 }
 
 /** Exit code for a multi-outlet run: the worst one (4 > 3 > 2 > 1 > 0). */
@@ -268,7 +300,9 @@ function authCookiesChanged(oldCookies, newCookies, authCookies) {
   const names = authCookies && authCookies.length ? new Set(authCookies) : null;
   const key = (list) => (list || [])
     .filter((c) => c && (!names || names.has(c.name)))
-    .map((c) => `${c.domain}|${c.name}|${c.value}|${names ? Math.round(Number(c.expires) || 0) : ''}`)
+    // Expiry to the day: a cookie whose expiry slides a few seconds per
+    // visit must not re-push the bundles every run.
+    .map((c) => `${c.domain}|${c.name}|${c.value}|${names ? Math.round((Number(c.expires) || 0) / 86400) : ''}`)
     .sort().join('\n');
   return key(oldCookies) !== key(newCookies);
 }
@@ -366,7 +400,7 @@ function emptyOutletState() {
 function decideLogin(state, nowMs) {
   const s = { ...emptyOutletState(), ...(state || {}) };
   if (s.needsHuman) {
-    const how = s.needsHuman.code === 'creds-missing' ? 'clears itself once the Keychain items exist' : 'clear with --reset after fixing';
+    const how = isCredsMissingStop(s.needsHuman) ? 'clears itself once the Keychain items exist' : 'clear with --reset after fixing';
     return { allowed: false, escalate: false, reason: `needs-human since ${s.needsHuman.at}: ${s.needsHuman.reason} (${how})` };
   }
   const times = s.logins.map((t) => Date.parse(t)).filter(Number.isFinite).sort((a, b) => b - a);
@@ -464,7 +498,12 @@ module.exports = {
   planRenewal,
   authCookiesChanged,
   credentialGate,
+  isCredsMissingStop,
+  cookieInDomains,
   worstExitCode,
+  hasAuthCookie,
+  trackUncertain,
+  UNCERTAIN_ALERT_MS,
   KEYCHAIN_SERVICE,
   LOGIN_COOLDOWN_MS,
   LOGIN_WINDOW_MS,
