@@ -111,7 +111,7 @@ function trigramSimilarity(text1, text2) {
   return union === 0 ? 0 : Math.round(100 * intersection / union);
 }
 
-const { getBestText, resolveFingerprintGroup } = require('./lib/cross-outlet-group');
+const { getBestText, resolveFingerprintGroup, excerptCopySide } = require('./lib/cross-outlet-group');
 
 // ============================================================
 // LLM Confirmation (Layer 3)
@@ -342,7 +342,10 @@ async function main() {
         // Skip if already caught by fingerprint
         if (r1.fingerprint && r1.fingerprint === r2.fingerprint) continue;
 
-        const sim = trigramSimilarity(r1.text, r2.text);
+        // BRO-7663: an excerpt-only row whose quote sits inside another outlet's
+        // fullText is that review re-filed under the wrong outlet (Jaccard misses it).
+        const contained = excerptCopySide(r1, r2);
+        const sim = contained ? 100 : trigramSimilarity(r1.text, r2.text);
         if (sim < THRESHOLD) continue;
 
         stats.similarityMatches++;
@@ -384,7 +387,8 @@ async function main() {
                           portalRank(r1.outletId) !== portalRank(r2.outletId) ? (portalRank(r1.outletId) < portalRank(r2.outletId) ? 0 : 1) :
                           r1.text.length >= r2.text.length ? 0 : 1;
         // The file whose own text names the other outlet is the copy, whatever the tier.
-        const copyIdx = verdict.copy === 'a' ? 0 : verdict.copy === 'b' ? 1 : (primaryIdx === 0 ? 1 : 0);
+        const copyIdx = contained ? (contained.copy === 'a' ? 0 : 1)
+          : verdict.copy === 'a' ? 0 : verdict.copy === 'b' ? 1 : (primaryIdx === 0 ? 1 : 0);
         const primary = copyIdx === 0 ? r2 : r1;
         const secondary = copyIdx === 0 ? r1 : r2;
 
@@ -394,7 +398,7 @@ async function main() {
         }
         duplicates.push({
           showId,
-          method: llmResult === true ? 'similarity+llm' : 'similarity',
+          method: contained ? 'excerpt-containment' : llmResult === true ? 'similarity+llm' : 'similarity',
           similarity: sim,
           primaryFile: primary.file,
           primaryOutlet: primary.outlet,

@@ -58,4 +58,45 @@ function resolveFingerprintGroup(plain, classify) {
   return { pairs, review };
 }
 
-module.exports = { getBestText, resolveFingerprintGroup };
+
+/**
+ * BRO-7663: share of an aggregator excerpt's word trigrams found in another
+ * file's fullText (0-100), or null when the excerpt is too short to judge.
+ * Trigram Jaccard (the detector's Layer 2) scores a 45-word excerpt inside a
+ * 1,500-word review at ~3%, so a roundup quote filed under the wrong outlet
+ * (BWW credited Joe Dziemianowicz's New York Theatre Guide line to his old
+ * paper, the Daily News, on the-fantasticks-2026) was never paired.
+ */
+const CONTAINMENT_MIN_WORDS = 12;
+const CONTAINMENT_MATCH = 85;
+function words(text) {
+  return String(text || '').toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+}
+function excerptContainment(excerptText, fullText) {
+  const ew = words(excerptText);
+  const fw = words(fullText);
+  if (ew.length < CONTAINMENT_MIN_WORDS || fw.length <= ew.length) return null;
+  const full = new Set();
+  for (let i = 0; i < fw.length - 2; i++) full.add(fw.slice(i, i + 3).join(' '));
+  let total = 0;
+  let hit = 0;
+  for (let i = 0; i < ew.length - 2; i++) { total++; if (full.has(ew.slice(i, i + 3).join(' '))) hit++; }
+  return total === 0 ? null : Math.round(100 * hit / total);
+}
+
+/**
+ * For a pair of detector rows ({text, textSource}), the excerpt-only row whose
+ * excerpt sits inside the other row's fullText: returns 'a' or 'b' (the copy),
+ * with the containment percent, or null. The excerpt side is always the copy:
+ * an aggregator quote never outranks the fetched review it was lifted from.
+ */
+function excerptCopySide(a, b) {
+  for (const [ex, full, side] of [[a, b, 'a'], [b, a, 'b']]) {
+    if (ex.textSource !== 'excerpts' || full.textSource !== 'fullText') continue;
+    const pct = excerptContainment(ex.text, full.text);
+    if (pct !== null && pct >= CONTAINMENT_MATCH) return { copy: side, containment: pct };
+  }
+  return null;
+}
+
+module.exports = { getBestText, resolveFingerprintGroup, excerptContainment, excerptCopySide, CONTAINMENT_MATCH };
