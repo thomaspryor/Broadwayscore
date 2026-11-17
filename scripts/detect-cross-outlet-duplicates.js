@@ -267,6 +267,7 @@ async function main() {
           outletId: data.outletId || file.split('--')[0],
           outlet: data.outlet || data.outletId || '',
           criticName: data.criticName || '',
+          hasUrl: Boolean(data.url),
           text,
           textSource: source,
           fingerprint: contentFingerprint(text),

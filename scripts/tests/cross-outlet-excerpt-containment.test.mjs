@@ -26,4 +26,9 @@ assert.equal(excerptCopySide({ text: 'A wholly different critic writes that the 
 assert.equal(excerptContainment('a total non-issue', full), null);
 assert.equal(excerptCopySide({ text: full, textSource: 'fullText' }, ft), null);
 
-console.log('cross-outlet-excerpt-containment: 4 cases pass');
+// 5. A quote with its own url or a named byline is not auto-paired (may be the real review).
+assert.equal(excerptCopySide({ ...ex, hasUrl: true }, ft), null);
+assert.equal(excerptCopySide({ ...ex, criticName: 'Soyica Diggs Colbert' }, ft), null);
+assert.deepEqual(excerptCopySide({ ...ex, criticName: 'Unknown' }, ft), { copy: 'a', containment: 100 });
+
+console.log('cross-outlet-excerpt-containment: 5 cases pass');

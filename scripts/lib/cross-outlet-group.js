@@ -89,10 +89,16 @@ function excerptContainment(excerptText, fullText) {
  * excerpt sits inside the other row's fullText: returns 'a' or 'b' (the copy),
  * with the containment percent, or null. The excerpt side is always the copy:
  * an aggregator quote never outranks the fetched review it was lifted from.
+ * Only a bare quote qualifies: no url of its own and no named critic. A row
+ * with a url or a byline may be the real review with a misfetched sibling
+ * (trouble-in-mind-2021 washpost, the-humans-2016 ap), so it stays with the
+ * existing similarity/LLM path (full-corpus dry run, BRO-7663).
  */
 function excerptCopySide(a, b) {
+  const { isPlaceholderCritic } = require('./cross-outlet-pair-policy');
   for (const [ex, full, side] of [[a, b, 'a'], [b, a, 'b']]) {
     if (ex.textSource !== 'excerpts' || full.textSource !== 'fullText') continue;
+    if (ex.hasUrl || !isPlaceholderCritic(ex.criticName)) continue;
     const pct = excerptContainment(ex.text, full.text);
     if (pct !== null && pct >= CONTAINMENT_MATCH) return { copy: side, containment: pct };
   }
