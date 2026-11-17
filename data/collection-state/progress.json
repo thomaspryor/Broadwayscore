@@ -800,7 +800,15 @@
     "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
     "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
     "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
-    "the-fantasticks-2026/bobs-theater-blog--unknown.json"
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1069,7 +1077,8 @@
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/the-great-gatsby-2024/deadline--greg-evans.json",
-      "the-great-gatsby-2024/deadline--greg-evans.json"
+      "the-great-gatsby-2024/deadline--greg-evans.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1371,7 +1380,7 @@
     ]
   },
   "startTime": "2026-11-16T22:09:44.387Z",
-  "lastProcessed": "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+  "lastProcessed": "wanted-2022/nydailynews--unknown.json",
   "log": [
     {
       "t": "2026-11-17T01:06:59.816Z",
@@ -1418,6 +1427,50 @@
       "event": "bb-session",
       "session": "95c539fe",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-17T06:49:21.542Z",
+      "event": "bb-session",
+      "session": "1d5b3eee",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T06:49:22.188Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T06:50:11.951Z",
+      "event": "bb-session",
+      "session": "212870b0",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T06:50:12.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T06:51:56.887Z",
+      "event": "bb-session",
+      "session": "bc6ca445",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T06:51:57.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T06:55:00.145Z",
+      "event": "bb-session",
+      "session": "42ba27bf",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-17T06:55:00.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
