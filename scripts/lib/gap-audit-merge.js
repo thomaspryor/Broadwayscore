@@ -97,6 +97,11 @@ function censusVerdictFor(result, opts = {}) {
   // would read "listed by an aggregator and not missing" as covered, a vacuous pass for an outlet we
   // never captured. They are dropped from the census like the aggregator never listed them.
   const unextractableUrls = new Set((result.unextractable || []).map((m) => m && m.url).filter(Boolean));
+  // BRO-7497: page vetting removes rejected URLs from missing[], but preserves
+  // aggregatorListedUrls as source evidence. Their absence from missing[] is
+  // not proof of coverage. Keep these URLs out of every candidate path below;
+  // the existing excluded[] entries retain the vetting reason.
+  const nonReviewUrls = new Set((result.nonReviewCandidates || []).map((m) => m && m.url).filter(Boolean));
   const entries = [];
   const covered = new Set();
   // One candidate per URL, NOT per host. `covered` stays outlet(host)-level —
@@ -122,7 +127,7 @@ function censusVerdictFor(result, opts = {}) {
     return !!reason;
   };
   for (const url of (result.aggregatorListedUrls || [])) {
-    if (missingUrls.has(url) || flaggedUrls.has(url) || unextractableUrls.has(url)) continue;
+    if (missingUrls.has(url) || flaggedUrls.has(url) || unextractableUrls.has(url) || nonReviewUrls.has(url)) continue;
     if (!isCandidate(url)) continue;
     // BRO-7603: a prior production's review a current roundup also links is not live coverage of THIS run
     // (2022 Vulture/NYT urls were counted live on Downstate). Recorded in `excluded`, never silently dropped.
@@ -180,6 +185,7 @@ function censusVerdictFor(result, opts = {}) {
     excluded.push({ url: m.url || '', host: m.host || hostOf(m.url), reason: m.nonReviewVerdict || 'non-review' });
   }
   for (const m of (result.missing || [])) {
+    if (nonReviewUrls.has(m.url)) continue;
     if (isPriorProductionCitation(m)) continue;
     if (!isCandidate(m.url)) continue;
     if (exclude(m, 'missing')) continue;
@@ -188,6 +194,7 @@ function censusVerdictFor(result, opts = {}) {
     entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
   }
   for (const m of (result.flaggedMisses || [])) {
+    if (nonReviewUrls.has(m.url)) continue;
     if (isPriorProductionCitation(m)) continue;
     if (!isCandidate(m.url)) continue;
     if (exclude(m, 'flagged')) continue;
@@ -197,6 +204,7 @@ function censusVerdictFor(result, opts = {}) {
   }
   for (const c of (result.citedNoUrl || [])) {
     if (!c || !c.outletId) continue;
+    if (nonReviewUrls.has(c.url)) continue;
     if (isPriorProductionCitation(c)) continue;
     entries.push({ outletId: c.outletId, outlet: c.outletName || c.outletId, critic: 'Unknown', stars: null, url: '' });
   }
@@ -277,7 +285,11 @@ function riskStateMap(results, opts = {}) {
     // would refuse the write on every run, forever. Normalise both sides and
     // the guard goes back to catching what it is for: real coverage loss.
     const stored = r.censusVerdict;
-    const usable = stored && typeof stored.liveCount === 'number' && stored.censusSchema === CENSUS_SCHEMA;
+    // BRO-7497: schema 4 already excludes page-vetted non-reviews, but its
+    // writer counted them live via aggregatorListedUrls. Repair only those
+    // contradictory baselines, using the same rule as carry-forward below.
+    const usable = stored && typeof stored.liveCount === 'number' && stored.censusSchema === CENSUS_SCHEMA
+      && !needsCensusMigration(r);
     const cv = usable ? stored : censusVerdictFor(r);
     const liveCount = Number.isFinite(cv.liveCount) ? cv.liveCount : 0;
     const candidateCount = Number.isFinite(cv.candidateCount) ? cv.candidateCount : 0;
@@ -291,7 +303,7 @@ function riskStateMap(results, opts = {}) {
     const at = r.computedAt ? new Date(r.computedAt).getTime() : NaN;
     // A quarantined row's computedAt predates its hold, so it must not age itself clean.
     const aged = !r.quarantine && Number.isFinite(at) && Number.isFinite(nowMs) && nowMs - at > maxAgeMs;
-    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}${usable || !stored ? '' : ':prior-schema'}${aged ? ':aged' : ''}`;
+    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}${!stored || stored.censusSchema === CENSUS_SCHEMA ? '' : ':prior-schema'}${aged ? ':aged' : ''}`;
   }
   return out;
 }
@@ -457,7 +469,7 @@ function partitionAuditedResults(results, riskyIds) {
 
 /**
  * True when a persisted row's census verdict predates the current candidate
- * rule and must be re-derived before anyone reads or diffs it.
+ * rule or contradicts its recorded page exclusions and must be re-derived.
  *
  * A row with NO verdict is left alone: that is a legacy pre-#906 row, and
  * stamping one here would invent a verdict for a show this run never looked
@@ -466,7 +478,12 @@ function partitionAuditedResults(results, riskyIds) {
 function needsCensusMigration(row) {
   const cv = row && row.censusVerdict;
   if (!cv || typeof cv !== 'object') return false;
-  if (cv.censusSchema === CENSUS_SCHEMA) return false;
+  // BRO-7497: this repairs a violation of schema 4's existing exclusion rule,
+  // not a new selection policy. Avoid a blanket schema bump: it would also
+  // recompute unrelated rows under other rules changed since their last audit.
+  const rejected = new Set((row.nonReviewCandidates || []).map(m => m && m.url).filter(Boolean));
+  const overlaps = Array.isArray(cv.candidates) && cv.candidates.some(c => c && c.url && rejected.has(c.url));
+  if (cv.censusSchema === CENSUS_SCHEMA && !overlaps) return false;
   // Only migrate a row that can actually SUPPORT a rebuilt verdict. The
   // recompute reads the raw arrays, not the stored verdict, so a row whose
   // arrays are absent or empty — a partial write, a truncated carry-forward —
