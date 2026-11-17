@@ -705,8 +705,18 @@
     "spread-off-broadway-2026/whatsonstage--michael-coveney.json",
     "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "west-side-story-west-end-2026/theatremonkey--unknown.json",
-    "west-side-story-west-end-2026/west-end-wilma--westendwilma.json"
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "the-fantasticks-2026/chicagotribune--chris-jones.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -945,7 +955,13 @@
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/the-great-gatsby-2024/deadline--greg-evans.json",
       "the-great-gatsby-2024/deadline--greg-evans.json",
-      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
+      "data/review-texts/the-fantasticks-2026/nytimes--elisabeth-vincentelli.json",
+      "the-fantasticks-2026/nytimes--elisabeth-vincentelli.json",
+      "data/review-texts/the-fantasticks-2026/deadline--greg-evans.json",
+      "the-fantasticks-2026/deadline--greg-evans.json",
+      "data/review-texts/the-fantasticks-2026/wsj--charles-isherwood.json",
+      "the-fantasticks-2026/wsj--charles-isherwood.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1201,7 +1217,7 @@
     ]
   },
   "startTime": "2026-11-16T22:09:44.387Z",
-  "lastProcessed": "west-side-story-west-end-2026/west-end-wilma--westendwilma.json",
+  "lastProcessed": "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-17T01:06:59.816Z",
@@ -1258,8 +1274,57 @@
     {
       "t": "2026-11-17T05:55:11.237Z",
       "event": "bb-session",
-      "session": "1e5b1dae",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "b47fd78c",
+      "url": "https://www.wsj.com/articles/the-fantasticks-review-boy-meets-boy-on-broadway-68"
+    },
+    {
+      "t": "2026-11-17T05:44:50.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T05:55:39.119Z",
+      "event": "bb-session",
+      "session": "7f24e908",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T05:55:39.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T05:56:00.282Z",
+      "event": "bb-session",
+      "session": "22a5189b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T05:56:00.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T05:57:58.731Z",
+      "event": "bb-session",
+      "session": "b48156e1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T05:57:59.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T06:01:28.665Z",
+      "event": "bb-session",
+      "session": "051d5d79",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-17T06:01:29.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [

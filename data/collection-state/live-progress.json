@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-17T06:00:50.502Z",
-  "processed": 453,
-  "failed": 252,
-  "successRate": "64.3%",
+  "updatedAt": "2026-11-17T06:02:41.547Z",
+  "processed": 460,
+  "failed": 261,
+  "successRate": "63.8%",
   "tierBreakdown": {
     "playwright": 225,
     "amp": 1,
-    "browserbase": 5,
+    "browserbase": 11,
     "directCookies": 0,
     "scrapingdog": 45,
     "scrapingbee": 19,
@@ -14,14 +14,8 @@
     "archiveToday": 0,
     "archive": 175
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-11-17T01:06:59.816Z",
-      "event": "bb-session",
-      "session": "6ca6f14d",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
     {
       "t": "2026-11-17T01:33:11.658Z",
       "event": "bb-session",
@@ -71,8 +65,63 @@
     {
       "t": "2026-11-17T05:55:11.237Z",
       "event": "bb-session",
-      "session": "1e5b1dae",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "c7ddc257",
+      "url": "https://deadline.com/2026/11/the-fantasticks-broadway-review-1237223063/"
+    },
+    {
+      "t": "2026-11-17T05:44:50.456Z",
+      "event": "bb-session",
+      "session": "b47fd78c",
+      "url": "https://www.wsj.com/articles/the-fantasticks-review-boy-meets-boy-on-broadway-68"
+    },
+    {
+      "t": "2026-11-17T05:44:50.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T05:55:39.119Z",
+      "event": "bb-session",
+      "session": "7f24e908",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T05:55:39.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T05:56:00.282Z",
+      "event": "bb-session",
+      "session": "22a5189b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T05:56:00.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T05:57:58.731Z",
+      "event": "bb-session",
+      "session": "b48156e1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T05:57:59.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T06:01:28.665Z",
+      "event": "bb-session",
+      "session": "051d5d79",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-17T06:01:29.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
