@@ -366,11 +366,14 @@ function isTelegraphListing(seg, afterPromo = false) {
 // more open gaps on other outlets end the same way. Classify-only for every
 // outlet (stripKnownTrailers), never applied to saved text.
 // Each piece is removed from the end only; prose before it must end a sentence.
-const BWW_WIDGET_RE = /\s*(?:Get\s*Info\s*Buy\s*Tix|Get Show Info)[\s\S]{0,300}$/;
-const BWW_PHOTO_RE = /(?:^|\s)(?:All\s+)?(?:production\s+)?(?:photos?|photograph(?:s|y)|photo\s+images?|images?)\s*(?:credits?\s*:?|:|by\b|are\s+by\b|courtesy\s+of\b)[^.!?\n]{1,120}$/i;
+const BWW_WIDGET_RE = /\s*(?:Get\s*Info\s*Buy\s*Tix|Get Show Info\s*\n)[\s\S]{0,300}$/;
+const BWW_PHOTO_RE = /(?:^|\s)(?:All\s+)?(?:production\s+)?(?:photos?|photograph(?:s|y)|photo\s+images?|images?)\s*(?:credits?\s*:?|:|by\b|are\s+by\b|courtesy\s+of\b)([^.!?\n]{1,120})$/i;
+// a ticket / "for information" line is furniture only with a link, a phone, a
+// price or a call to action; "Tickets are going to be scarce ..." is prose.
+const TICKET_EVIDENCE_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|co\.uk|org\.uk|uk)\b|\(?\d{3}\)?[-.\s]\d{3}[-.\s]?\d{4}|\b0\d{3,4}\s?\d{3}\s?\d{3,4}\b|\b(?:visit|visiting|click|call|website)\b|\bhere\b|[$£]\s?\d/i;
 const BWW_TICKETS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)(?:For\s+(?:more\s+)?(?:tickets?|ticket\s+and|information)\b|Tickets?\s*(?::|are\b|available\b)|Get\s+tickets\b)[^\n]{0,220}$/i;
 const BWW_RUN_SEG_RE = new RegExp(
-  `(?:^|[.!?]["'”’)]?\\s+|\\n)((?:[^.!?\\n]|[!?](?=\\)))(?:[^.!?\\n]|[!?](?=\\))){2,199}?(?:\\b(?:until|through|thru|till)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2})|\\bRunning\\b[^.!?\\n]{0,40}${TELEGRAPH_MONTH})[^.!?\\n]{0,80}?)\\.?$`
+  `(?:^|[.!?]["'”’)]?\\s+|\\n)((?:[^.!?\\n]|[!?](?=\\)))(?:[^.!?\\n]|[!?](?=\\))){2,199}?(?:\\b(?:until|through|thru|till)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2}(?:st|nd|rd|th)?)(?:,?\\s*\\d{4})?(?:\\s*(?:,|and)?\\s*then\\s+[^.!?\\n]{0,60})?|\\bRunning\\b[^.!?\\n]{0,40}${TELEGRAPH_MONTH}[^.!?\\n]{0,80}?))\\.?$`
 );
 
 function stripRunInfoTrailer(text) {
@@ -379,9 +382,12 @@ function stripRunInfoTrailer(text) {
   for (let i = 0; i < 5; i++) {
     const before = t;
     t = t.replace(BWW_WIDGET_RE, '').replace(/\s+$/, '');
-    t = t.replace(BWW_PHOTO_RE, '').replace(/\s+$/, '');
+    // a photo credit is names only ("Photography by Helen Murray"), not
+    // "Photos by Weegee line the walls of the set, and ..."
+    const ph = BWW_PHOTO_RE.exec(t);
+    if (ph && looksLikeListing(ph[1])) t = t.slice(0, ph.index).replace(/\s+$/, '');
     const tk = BWW_TICKETS_RE.exec(t);
-    if (tk) t = t.slice(0, tk.index + (tk[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).replace(/\s+$/, '');
+    if (tk && TICKET_EVIDENCE_RE.test(tk[0])) t = t.slice(0, tk.index + (tk[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).replace(/\s+$/, '');
     const run = BWW_RUN_SEG_RE.exec(t);
     // a run line names a venue ("at"/"in" before the date, or "Running ...")
     // and reads like a listing, not prose: see looksLikeListing
@@ -402,7 +408,7 @@ function stripRunInfoTrailer(text) {
 // Words a listing line carries in lower case; every other word in a run line
 // is a title or venue (capitalised) or a number. Prose that happens to end
 // "... and the lead is at the Garrick until 7 June" is mostly lower case.
-const LISTING_LOWER_WORDS = new Set(['the', 'a', 'an', 'at', 'in', 'on', 'of', 'and', 'to', 'until', 'through', 'thru', 'till', 'runs', 'run', 'running', 'plays', 'play', 'playing', 'is', 'are', 'will', 'be', 'now', 'then', 'from', 'for', 'tour', 'touring', 'booking', 'with', 'currently', 'continues', 'performs', 'them', 'it', 'its', 'only', 'open', 'bookings']);
+const LISTING_LOWER_WORDS = new Set(['the', 'a', 'an', 'at', 'in', 'on', 'of', 'and', 'to', 'until', 'through', 'thru', 'till', 'runs', 'run', 'running', 'plays', 'play', 'playing', 'is', 'are', 'will', 'be', 'now', 'then', 'from', 'for', 'tour', 'touring', 'booking', 'with', 'currently', 'continues', 'performs', 'them', 'it', 'its', 'only', 'open', 'bookings', 'by', 'courtesy', 'via', 'provided']);
 function looksLikeListing(seg) {
   const words = String(seg).split(/\s+/).map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')).filter(Boolean);
   let caps = 0;

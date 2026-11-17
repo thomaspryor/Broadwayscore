@@ -383,3 +383,27 @@ test('run-info / photo-credit tail is a trailer on any outlet; a cut-off review 
   const tiny = 'A short note. Roleplay runs at Soho Theatre until 21 November Photo Credits: X';
   assert.equal(T.stripRunInfoTrailer(tiny), tiny);
 });
+
+test('run-info stripper: ship-check cut-off tails stay unstripped (BRO-7171 review)', () => {
+  const lead = BODY.slice(0, 1200).replace(/\s+\S*$/, '') + ' and it works.';
+  for (const tail of [
+    ' Tickets are going to be scarce once word gets out about what Ms. Hall does in the second act, when she',
+    " Tickets available at the box office won't last, and the producers would be wise to extend before the",
+    ' For information on the original 1957 production, the program offers a detailed timeline that traces how the',
+    ' Photos by Weegee line the walls of the set, and the lighting design makes them seem to',
+    ' Images: a burning house, a lonely child, a',
+    ' Hamilton plays at the Victoria Palace Theatre until 6 June, and Lin-Manuel Miranda',
+    ' Next Fall runs at the Helen Hayes Theater through March 3, when Patrick Breen',
+    ' In Oklahoma! (Revival) Jones plays at the Circle in the Square until May 5 Fischer',
+  ]) {
+    assert.equal(T.stripRunInfoTrailer(lead + tail), lead + tail, JSON.stringify(tail));
+  }
+  // still stripped: real shapes with a link / price / call to action / names only
+  for (const tail of [
+    ' Tickets start at $64. Photo Credit: Justin Barbin',
+    ' Runs until 4th July, then at Theatre Royal Bath from 14th - 25th July Photo credit Manuel Harlan',
+    ' We Will Rock You runs at New Village Arts through September 20th. For ticket and showtime information, go to https://newvillagearts.org/ Photo Credit: JEDZANT Photography',
+  ]) {
+    assert.notEqual(T.stripRunInfoTrailer(lead + tail), lead + tail, JSON.stringify(tail));
+  }
+});
