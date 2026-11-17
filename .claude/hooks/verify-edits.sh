@@ -1022,6 +1022,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # BRO-7701: per ref. One boolean let the first finished wait clear every later push
         # (a worker waited on land/a, pushed land/b, claimed Done while b was in flight).
         _land_unchecked = set()    # land refs pushed and not yet followed to a verdict
+        _land_pushes = {}          # ref -> pushes this session; a re-pushed ref needs a waiter verdict
         _land_refused = set()      # refs whose latest verdict is REFUSED: followed, but the work did not land
         def _land_verdict(ref, refused):  # a later LANDED of any ref clears refusals: the fix lands under a new ref name
             if refused:
@@ -1032,13 +1033,13 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
         _push_seg_re = re.compile(r'\bgit\s+push\b([^\n;&|]*)')
-        _refspec_re = re.compile(r'(?:^|\s)[\'"]?(\+?\S*?:)?(?:refs/heads/)?(land/[^\s;&|\'"<>]+)')
+        _refspec_re = re.compile(r'(?:^|\s)[\'"]?(\+?\S*?:)?(?:refs/heads/)?(land/[^\s;&|\'"<>)`]+)')
         def _push_land_refs(cmd):  # (refs pushed, refs deleted), every refspec of every push in the command
             _add, _del = set(), set()
             for _seg in _push_seg_re.finditer(cmd):
-                _deleting = bool(re.search(r'(?:^|\s)(--delete|-d)(?=\s)', _seg.group(1)))
+                _deleting = bool(re.search(r'(?:^|\s)(--delete|-d)(?=\s|$)', _seg.group(1)))
                 for _m in _refspec_re.finditer(_seg.group(1)):
-                    (_del if _deleting or _m.group(1) == ':' else _add).add(_m.group(2))
+                    (_del if _deleting or _m.group(1) == ':' else _add).add(_m.group(2).rstrip(',.'))
             return _add, _del
         def _newest_run_done(res, ref=None):  # the NEWEST run (of this ref, or any) in an actions_get/list result finished
             _runs = []
@@ -1057,7 +1058,8 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                     _id = re.search(r'"(?:id|run_number)"\s*:\s*(\d+)', _ob)
                     _runs.append({'head_branch': _hb.group(1) if _hb else None, 'id': int(_id.group(1)) if _id else 0,
                                   'status': re.search(r'"status"\s*:\s*"([^"]*)"', _ob).group(1)})
-            _mine = [r for r in _runs if ref is None or r.get('head_branch') == ref]
+            _mine = [r for r in _runs if (r.get('head_branch') == ref if ref is not None
+                     else 'land' in str(r.get('path') or r.get('name') or ''))]
             if not _mine:
                 return False
             _key = lambda r: (r.get('id') if isinstance(r.get('id'), int) else 0, r.get('run_number') if isinstance(r.get('run_number'), int) else 0)
@@ -1112,8 +1114,10 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 if _add:
                     _landed_pushed = True
                     _pres = tool_results_by_id.get(_tid, '') or ''
-                    if _tid not in tool_refused_ids and not re.search(r'\[rejected\]|failed to push|src refspec .* does not match', _pres):  # a rejected push starts no Land run; a filtered pipe exiting 1 still pushed
+                    if _tid not in tool_refused_ids and not re.search(r'\[rejected\]|failed to push|src refspec .* does not match|^fatal:|RPC failed|Could not read from remote', _pres, re.M):  # a rejected push starts no Land run; a filtered pipe exiting 1 still pushed
                         _land_unchecked |= _add
+                        for _r in _add:
+                            _land_pushes[_r] = _land_pushes.get(_r, 0) + 1
                         for _k in [k for k, v in _wfl_pending.items() if v in _add]:
                             del _wfl_pending[_k]  # a waiter started before this re-push does not cover it
             elif _name == 'mcp__github__create_branch' and str(_inp.get('branch') or '').startswith('land/'):
@@ -1128,7 +1132,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             elif _land_unchecked and _name in ('mcp__github__actions_get', 'mcp__github__actions_list'):
                 _res = tool_results_by_id.get(_tid, '') or ''
                 for _r in list(_land_unchecked):
-                    if _newest_run_done(_res, None if _r == 'land.yml dispatch' else _r):
+                    if _land_pushes.get(_r, 1) == 1 and _newest_run_done(_res, None if _r == 'land.yml dispatch' else _r):
                         _land_unchecked.discard(_r)
             # Not in the elif chain: `git push ... land/x && node ...wait-for-land.js land/x` is both.
             if _land_unchecked:  # no error filter: a refused foreground waiter exits 1
@@ -1182,7 +1186,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # (prune job, 2026-11-17) while sessions closed SAFE; the closing must say it did not land.
         if (_msg_ok and _land_refused and not _land_unchecked and not _merged_pr
                 and _SAFE_RE.match(_closing()[1])
-                and not re.search(r'refus|did not land|didn.t land|not landed|abandon|retir', _last_msg, re.I)):
+                and not re.search(r'\brefused\b|did not land|didn.t land|not landed|(?:abandon|drop|retir)\w*[^.\n]{0,60}\bland|\bland\w*[^.\n]{0,60}(?:abandon|drop|retir)', _stripped_owner, re.I)):
             # New gate (CLAUDE.md 19): advisory until 2026-11-24, then blocks. LANDREFUSED_GATE_MODE=block|advisory|off.
             if _stall_gate_blocks('LANDREFUSED_GATE_MODE', '2026-11-24T00:00:00Z'):
                 if not _ve_seen("LANDREFUSED") and _ve_allowed("LANDREFUSED"):
@@ -2638,7 +2642,7 @@ if [[ "$result" == "LANDUNCHECKED" ]]; then
   exit 2
 fi
 if [[ "$result" == "LANDREFUSED" ]]; then
-  echo "🛑 BLOCKED: a land push above was REFUSED and never landed afterwards, but you claim SAFE TO ARCHIVE without saying so. Fix on top of the refused commit and land again (a new land/<name> ref), then wait for LANDED. If you are deliberately dropping it, say in the closing message that it was refused and why. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: a land push above was REFUSED and never landed afterwards, but you claim SAFE TO ARCHIVE without saying so. Fix on top of the refused commit, push the land ref again, and wait for LANDED. If you are deliberately dropping it, say in the closing message that it was refused and why. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 if [[ "$result" == "PRUNMERGED" ]]; then

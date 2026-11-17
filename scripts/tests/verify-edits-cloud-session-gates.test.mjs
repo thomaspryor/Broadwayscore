@@ -920,6 +920,10 @@ const WFL_LANDUNCHECKED_CASES = [
   ['one push naming two land refs, only the first waited', [toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-x HEAD:refs/heads/land/fix-y' }), WFL_FG_LANDED], false],
   ['run list: this ref in progress, another run completed', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, '{"workflow_runs":[{"head_branch":"land/fix-x","status":"in_progress"},{"head_branch":"land/other","status":"completed"}]}')], false],
   ['background wait A, re-push A, old waiter output read', [LAND_PUSH, WFL_BG, again(LAND_PUSH), toolUse('Read', { file_path: '/tmp/x/bwfl1234.output' }, '03:41:07Z LANDED: land/fix-x is gone from origin')], false],
+  ['push inside $(...) then waited', [toolUse('Bash', { command: 'out=$(git push origin HEAD:refs/heads/land/fix-x)' }), WFL_FG_LANDED], true],
+  ['trailing -d deletes, not pushes', [LAND_PUSH, WFL_FG_LANDED, toolUse('Bash', { command: 'git push origin land/old -d' })], true],
+  ['re-push, then a run list still showing the previous completed run', [LAND_PUSH, WFL_FG_REFUSED, again(LAND_PUSH), again(LAND_RUN_CHECK)], false],
+  ['push failed with fatal: before reaching origin', [{ ...toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-y' }, 'fatal: unable to access remote'), _isError: true }], true],
   ['reading the waiter script is not running it', [LAND_PUSH, toolUse('Bash', { command: 'cat scripts/lib/wait-for-land.js' }, 'console.log(`LANDED: land/x`)')], false],
 ];
 for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
@@ -939,6 +943,8 @@ const REFUSED_CASES = [
   ['refused, closing reports it', [LAND_PUSH, WFL_FG_REFUSED], 'land.yml refused it; dropping this change because main already has the fix.', true],
   ['refused, fixed and landed under a new ref', [LAND_PUSH, WFL_FG_REFUSED, LAND_PUSH_B, WFL_FG_B], 'Landed via land.yml.', true],
   ['refused then re-pushed same ref and landed', [LAND_PUSH, WFL_FG_REFUSED, again(LAND_PUSH), WFL_FG_LANDED], 'Landed via land.yml.', true],
+  ['refused, closing mentions refusal only in an unrelated sense', [LAND_PUSH, WFL_FG_REFUSED], 'The gate refuses bad input; retired the old flag.', false],
+  ['refused, closing says the landing was dropped', [LAND_PUSH, WFL_FG_REFUSED], 'Dropped this landing: main already has the fix.', true],
   ['background waiter exit 1, closing says nothing', [LAND_PUSH, WFL_BG, wflDone(1)], 'Landed via land.yml.', false],
 ];
 for (const [label, calls, prose, allowed] of REFUSED_CASES) {
