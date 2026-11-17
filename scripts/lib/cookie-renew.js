@@ -34,16 +34,27 @@ const MAX_LOGINS_PER_WINDOW = 2;
 
 const KEYCHAIN_SERVICE = 'broadwayscorecard-cookie-renew';
 
-// One entry per outlet, added one at a time after the previous one has had a
-// supervised live run. Order planned in BRO-4183: thestage, then ft,
-// standard, timeout, newyorker (telegraph subscription was cancelled
-// 2026-07-21, see cloud-memory/reference_paywall_subscriptions_status.md),
-// then nytimes/wsj/wapo which may need manual steps.
+// One entry per outlet. Fields:
+//   fileKey       data/cookies/<fileKey>.json (and the extractor's group name)
+//   profile       persistent Chrome profile name (default: the outlet key);
+//                 shared with browser-outlet-adapters.js and the login scripts
+//   cookieDomains cookies kept from the profile (substring match)
+//   loginUrl      where a human (--manual) or the adapter logs in
+//   login         login adapter kind, see LOGIN_ADAPTERS / loginAdapterFor()
+//   authCookies   cookies whose expiry schedules a renewal (planRenewal);
+//                 each measured, see the comment on the entry
+//   ciConfirm     CI's check-cookie-health Layer 3 can actually see this
+//                 outlet's login, so a push is confirmed there
+//   localOnly     cookies serve the local browser driver only; never pushed
+// The Stage was the first outlet (BRO-4183); BRO-7705 added the other six.
 const RENEW_OUTLETS = {
   thestage: {
     fileKey: 'thestage',
-    cookieDomain: 'thestage.co.uk',
+    cookieDomains: ['thestage.co.uk'],
     loginUrl: 'https://www.thestage.co.uk/login',
+    login: 'stage-form',
+    authCookies: ['USERSECURE', 'USER'],
+    ciConfirm: true,
     // The page renders a hidden duplicate form (#Email3786); bare name=
     // selectors grab it and hang, so target the visible fields. Never touch
     // the per-day "Age_M_D_YYYY" honeypot input.
@@ -54,20 +65,183 @@ const RENEW_OUTLETS = {
       submit: /^login$/i,
     },
   },
-  // BRO-7171: the cancelled subscription stays active to the end of the
-  // billing month. Manual only (no Keychain credentials, no selectors, never
-  // an automatic login): the owner logs in by hand once with --manual in the
-  // persistent profile. localOnly: the cookies serve the local gap-recovery
-  // driver only, so they are saved to data/cookies/telegraph.json but not
-  // pushed to the CI bundles (CI can't get past Akamai anyway).
+  // NYT: email one-time code via Gmail (flow from nyt-otp-login.js). NYT-S is
+  // the ~1y subscriber cookie (363.9d left on 2026-11-17).
+  nytimes: {
+    fileKey: 'nytimes',
+    profile: 'nyt',
+    cookieDomains: ['nytimes.com'],
+    loginUrl: 'https://myaccount.nytimes.com/auth/login',
+    login: 'nyt-otp',
+    authCookies: ['NYT-S'],
+    ciConfirm: true,
+  },
+  // New Yorker (Condé Nast ID): email one-time code (newyorker-otp-login.js).
+  // CN_access ~2 months. Paywall is client-side, so the probe is in-browser.
+  newyorker: {
+    fileKey: 'newyorker',
+    cookieDomains: ['newyorker.com', 'condenast.com'],
+    loginUrl: 'https://www.newyorker.com/auth/initiate?redirectURL=https%3A%2F%2Fwww.newyorker.com%2F&source=HB',
+    login: 'newyorker-otp',
+    authCookies: ['CN_access'],
+    ciConfirm: false,
+  },
+  // WaPo: email -> Next -> password (wapo-login.js). wp_ak_signinv2 is NOT
+  // the session: on 2026-11-17 it had expired 0.7d earlier and the walled
+  // probe still read 6589 chars (anon 309). The *_login_id cookies (~1y)
+  // carry it, so those schedule renewal.
+  wapo: {
+    fileKey: 'wapo',
+    cookieDomains: ['washingtonpost.com'],
+    loginUrl: 'https://www.washingtonpost.com/subscribe/signin/',
+    login: 'two-step-password',
+    authCookies: ['wapo_secure_login_id', 'wapo_login_id'],
+    ciConfirm: true,
+  },
+  // The Times: single-step email + password on login.thetimes.com (Auth0,
+  // thetimes-login.js). authId ~weeks (10.4d left on 2026-11-17). Plain fetch
+  // gets "Verifying Device", so the probe runs in the profile.
+  thetimes: {
+    fileKey: 'thetimes',
+    cookieDomains: ['thetimes.co.uk', 'thetimes.com'],
+    loginUrl: 'https://login.thetimes.com/?gotoUrl=https://www.thetimes.com/',
+    login: 'one-step-password',
+    authCookies: ['authId'],
+    ciConfirm: false,
+  },
+  // FT: accounts.ft.com email -> Next -> password (probed 2026-11-17; the
+  // page also carries a hidden decoy password input "_notUsed", so only
+  // visible fields are filled). FTSession_s ~2 months.
+  ft: {
+    fileKey: 'ft',
+    cookieDomains: ['ft.com'],
+    loginUrl: 'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2F',
+    login: 'two-step-password',
+    authCookies: ['FTSession_s'],
+    ciConfirm: false,
+  },
+  // Telegraph: re-subscribed 2026-11-11 (owner keeps it). Email -> Continue
+  // -> password, with invisible reCAPTCHA Enterprise on the page (probed
+  // 2026-11-17): a challenge is a needs-human stop like any other. Until
+  // Keychain items exist the owner logs in once with --manual. localOnly:
+  // CI can't get past Akamai, so the cookies serve the local gap driver.
+  // No auth cookie measured yet (the profile session is the source of truth).
   telegraph: {
     fileKey: 'telegraph',
-    cookieDomain: 'telegraph.co.uk',
+    cookieDomains: ['telegraph.co.uk'],
     loginUrl: 'https://secure.telegraph.co.uk/customer/secure/login/?redirectTo=https%3A%2F%2Fwww.telegraph.co.uk%2Ftheatre%2Fwhat-to-see%2Fromeo-and-juliet-review-sadie-sink-noah-jupe%2F',
-    manualOnly: true,
+    login: 'two-step-password',
+    authCookies: [],
+    ciConfirm: false,
     localOnly: true,
   },
 };
+
+/**
+ * Login adapter kinds. `credentials` is what must be in the Keychain
+ * (service KEYCHAIN_SERVICE, account <outlet>-<credential>). The browser
+ * steps live in lib/cookie-login-adapters.js, keyed by the same kind.
+ */
+const LOGIN_ADAPTERS = {
+  'stage-form': { credentials: ['email', 'password'] },
+  'one-step-password': { credentials: ['email', 'password'] },
+  'two-step-password': { credentials: ['email', 'password'] },
+  'nyt-otp': { credentials: ['email'], otp: { fromFilter: 'nytimes.com', codePattern: /code[^\d]{0,10}(\d{6})/i } },
+  'newyorker-otp': { credentials: ['email'], otp: { fromFilter: 'condenast.com', codePattern: /code is[^\d]{0,5}(\d{6})/i } },
+};
+
+/**
+ * @param {string} outlet RENEW_OUTLETS key
+ * @returns {{outlet:string, kind:string, credentials:string[], otp?:object, profile:string}|null}
+ *   null for an unknown outlet or an outlet without an automatic login
+ */
+function loginAdapterFor(outlet) {
+  const cfg = RENEW_OUTLETS[outlet];
+  if (!cfg || !cfg.login || !LOGIN_ADAPTERS[cfg.login]) return null;
+  return { outlet, kind: cfg.login, profile: cfg.profile || outlet, ...LOGIN_ADAPTERS[cfg.login] };
+}
+
+/** Persistent-profile name for an outlet (nytimes -> nyt). */
+function profileNameFor(outlet) {
+  return (RENEW_OUTLETS[outlet] && RENEW_OUTLETS[outlet].profile) || outlet;
+}
+
+/**
+ * Which credentials an adapter needs that the Keychain lookup did not return.
+ * @param {{credentials:string[]}} adapter
+ * @param {Record<string,string|null>} creds
+ * @returns {string[]} missing Keychain account suffixes ([] = ready)
+ */
+function missingCredentials(adapter, creds) {
+  return (adapter ? adapter.credentials : []).filter((k) => !(creds && creds[k]));
+}
+
+// --- Expiry-aware scheduling (BRO-7705) --------------------------------------
+
+// launchd runs every 6h; a 3-day lead gives a dozen chances to refresh before
+// the soonest auth cookie lapses while the 20h login cooldown still allows at
+// most a few logins inside it.
+const RENEW_LEAD_MS = 3 * 24 * 60 * 60 * 1000;
+
+/**
+ * Soonest expiry among the outlet's auth cookies. Session cookies (no
+ * expiry) and cookies not in the list are ignored.
+ * @param {Array<{name:string, expires?:number}>} cookies  expires in epoch seconds
+ * @param {string[]} authCookies
+ * @returns {{name:string, expiresMs:number}|null}
+ */
+function soonestAuthExpiry(cookies, authCookies) {
+  const names = new Set(authCookies || []);
+  let best = null;
+  for (const c of cookies || []) {
+    if (!c || !names.has(c.name) || !(Number(c.expires) > 0)) continue;
+    const ms = Number(c.expires) * 1000;
+    if (!best || ms < best.expiresMs) best = { name: c.name, expiresMs: ms };
+  }
+  return best;
+}
+
+/**
+ * What a run should do for one outlet.
+ *   'none'    : logged in and no auth cookie lapses within leadMs
+ *   'refresh' : open the persistent profile, take its (possibly rolled)
+ *               cookies; only if the profile is logged out too may a gated
+ *               login follow
+ *   'stop'    : the probe could not tell (error/vacuous); never log in on it
+ * @param {object} p
+ * @param {'logged-in'|'logged-out'|'vacuous'|'error'|'unknown'} p.probeStatus
+ *   'unknown' = browser-probed outlet, the profile session decides
+ * @param {Array} p.cookies   local cookie file
+ * @param {string[]} p.authCookies
+ * @param {number} p.nowMs
+ * @param {number} [p.leadMs]
+ * @returns {{action:'none'|'refresh'|'stop', reason:string, soonest:{name:string, expiresMs:number}|null}}
+ */
+function planRenewal({ probeStatus, cookies, authCookies, nowMs, leadMs = RENEW_LEAD_MS }) {
+  const soonest = soonestAuthExpiry(cookies, authCookies);
+  const left = soonest ? `${soonest.name} ${((soonest.expiresMs - nowMs) / 86400000).toFixed(1)}d left` : 'no dated auth cookie';
+  if (probeStatus === 'error' || probeStatus === 'vacuous') return { action: 'stop', reason: `probe ${probeStatus}`, soonest };
+  if (probeStatus === 'logged-out') return { action: 'refresh', reason: 'probe logged out', soonest };
+  if (probeStatus === 'unknown') return { action: 'refresh', reason: `in-profile probe (${left})`, soonest };
+  if (soonest && soonest.expiresMs - nowMs < leadMs) return { action: 'refresh', reason: `expiring: ${left}`, soonest };
+  return { action: 'none', reason: `logged in (${left})`, soonest };
+}
+
+/**
+ * Did the profile hand us a session different from the saved file? Compares
+ * the auth cookies' values and expiries (never printed) so a logged-in
+ * profile whose session matches the file does not re-push the bundles every
+ * run. With no auth cookies configured, any change in the outlet's cookie
+ * names/values counts.
+ */
+function authCookiesChanged(oldCookies, newCookies, authCookies) {
+  const names = authCookies && authCookies.length ? new Set(authCookies) : null;
+  const key = (list) => (list || [])
+    .filter((c) => c && (!names || names.has(c.name)))
+    .map((c) => `${c.domain}|${c.name}|${c.value}|${names ? Math.round(Number(c.expires) || 0) : ''}`)
+    .sort().join('\n');
+  return key(oldCookies) !== key(newCookies);
+}
 
 function profileDir(outlet) {
   return path.join(os.homedir(), 'Library', 'Application Support', 'BroadwayScorecard', 'browser-profiles', outlet);
@@ -179,6 +353,7 @@ function decideLogin(state, nowMs) {
  */
 function classifyLoginFailure({ url, html }) {
   const h = html || '';
+  if (require('./cookie-probes').isBotChallenge(h)) return 'bot-challenge';
   if (/recaptcha|hcaptcha|cf-turnstile|captcha/i.test(h)) return 'captcha';
   if (/autocomplete=["']one-time-code["']|verification code|one[- ]time (?:pass)?code|enter the code|we(?:'ve| have) sent (?:you )?(?:a|an) (?:code|email)/i.test(h)) return 'code';
   if (/\/login/i.test(url || '') && /incorrect|invalid|not recogni[sz]ed|try again|does not match/i.test(h)) return 'rejected';
@@ -246,6 +421,14 @@ function readKeychain(account, { exec = execFileSync } = {}) {
 
 module.exports = {
   RENEW_OUTLETS,
+  LOGIN_ADAPTERS,
+  RENEW_LEAD_MS,
+  loginAdapterFor,
+  profileNameFor,
+  missingCredentials,
+  soonestAuthExpiry,
+  planRenewal,
+  authCookiesChanged,
   KEYCHAIN_SERVICE,
   LOGIN_COOLDOWN_MS,
   LOGIN_WINDOW_MS,

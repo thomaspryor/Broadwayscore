@@ -46,6 +46,41 @@ const COOKIE_PROBES = {
     browserOnly: true,
     extractBody: (html) => require('./browser-outlet-adapters').extractTelegraphBody(html),
   },
+  // BRO-7705 probes. Every number below was measured live on 2026-11-17 on
+  // the SAME url with the subscriber session and with none (the control), so
+  // none of them is vacuous the way the old ones were:
+  //   nytimes   fetch 6170 vs anon 2904 (the old 1500 floor passed anon!)
+  //   wapo      fetch 6589 vs anon 309; browser 8067 vs 1314
+  //   newyorker fetch serves the full 8474 chars to anyone (paywall is
+  //             client-side), browser 8474 vs anon 645 -> browser probe
+  //   ft        plain fetch = 403 "Security Verification"; browser 3035 vs
+  //             a 2312-char "Subscribe to read" page (the old 1200 floor
+  //             passed it) -> browser probe + title wall marker
+  //   thetimes  plain fetch = "Verifying Device"; browser 2775 vs 0
+  nytimes: {
+    url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html',
+    minBody: 4500,
+  },
+  wapo: {
+    url: 'https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/',
+    minBody: 4000,
+  },
+  newyorker: {
+    url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain',
+    minBody: 4000,
+    browserOnly: true,
+  },
+  ft: {
+    url: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a',
+    minBody: 2000,
+    wallMarker: /<title>[^<]*Subscribe to (?:read|unlock)/i,
+    browserOnly: true,
+  },
+  thetimes: {
+    url: 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb',
+    minBody: 1500,
+    browserOnly: true,
+  },
 };
 
 /**
@@ -65,6 +100,9 @@ function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker,
     && !(wallMarker && wallMarker.test(r.html || ''));
   const recognisedGate = (r) => !gateMarker || gateMarker.test(r.html || '');
 
+  // A bot interstitial says nothing about the login on either side: never
+  // 'logged-out' (that would start a login), never 'vacuous' (BRO-7705).
+  if ((withCookies && isBotChallenge(withCookies.html)) || (withoutCookies && isBotChallenge(withoutCookies.html))) return 'error';
   if (withoutCookies && passes(withoutCookies)) return 'vacuous';
   if (withoutCookies && !recognisedGate(withoutCookies)) return 'error';
   if (!withCookies || typeof withCookies.html !== 'string' || withCookies.html.length === 0) return 'error';
@@ -76,7 +114,7 @@ function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker,
 // Device"). A page like this says nothing about the login: re-logging in
 // cannot clear it, so callers must not report it as logged-out (2026-10-18:
 // The Times and WSJ challenges were sending the owner to re-login in Safari).
-const BOT_CHALLENGE_RE = /captcha-delivery\.com|<title>\s*(?:Verifying Device|Just a moment\.\.\.)\s*<\/title>|Access is temporarily restricted|slide right to secure/i;
+const BOT_CHALLENGE_RE = /captcha-delivery\.com|<title>\s*(?:Verifying Device|Just a moment\.\.\.|Security Verification)\s*<\/title>|Access is temporarily restricted|slide right to secure/i;
 
 function isBotChallenge(html) {
   return BOT_CHALLENGE_RE.test(String(html || ''));
