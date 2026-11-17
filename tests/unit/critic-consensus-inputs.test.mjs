@@ -237,12 +237,13 @@ describe('BRO-7644: live reviews.json rows feed a show with no review-text files
   it('is unused without fallbackRows', () => {
     assert.equal(loadReviewTexts('lane-show', null, { reviewTextsDir: dir }).length, 0);
   });
-  it('is unused when the show has its own review-text files', () => {
+  it('is unused when the show has 2+ scored review-text files', () => {
     fs.mkdirSync(path.join(dir, 'lane-show'), { recursive: true });
     fs.writeFileSync(path.join(dir, 'lane-show', 'nyt--c-nyt.json'), JSON.stringify(row('nyt')));
+    fs.writeFileSync(path.join(dir, 'lane-show', 'variety--c-variety.json'), JSON.stringify(row('variety')));
     const r = loadReviewTexts('lane-show', null, { reviewTextsDir: dir, fallbackRows: rows });
-    assert.equal(r.length, 1);
-    assert.ok(!r[0].fromLiveRows);
+    assert.equal(r.length, 2);
+    assert.ok(r.every(x => !x.fromLiveRows));
   });
 });
 
