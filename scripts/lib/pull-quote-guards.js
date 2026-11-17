@@ -338,6 +338,17 @@ const PUNCT_FRAGMENT_START_RE = /^[\s"'\u201c\u2018\u00ab(\[]*[,;:]/;
 // musical...". An opening "(" is never the critic's verdict sentence (9 of 9
 // live cases on 2026-11-17 were asides, credits or song-title fragments).
 const PAREN_ASIDE_START_RE = /^[\s"'\u201c\u2018\u00ab]*\(/;
+// "(Courtesy Matthew Murphy/BroadwaySF) The stage musical..." -> "The stage
+// musical...": a closed aside (or photo credit) followed by a capitalised
+// sentence is cut, so the critic's own sentence ships. Anything else (an
+// unclosed aside, or one followed by ", is very nearly...") is left as is and
+// the fragment guard defers it. The result is still a substring of the input.
+const LEADING_PAREN_ASIDE_RE = /^[\s"'\u201c\u2018\u00ab]*\([^()]{1,300}\)[\s.]*(?=["\u201c\u2018']?[A-Z])/;
+function stripLeadingParenAside(excerpt) {
+  if (typeof excerpt !== 'string') return excerpt;
+  const m = excerpt.match(LEADING_PAREN_ASIDE_RE);
+  return m ? excerpt.slice(m[0].length) : excerpt;
+}
 function startsAsFragment(excerpt) {
   return typeof excerpt === 'string' && (FRAGMENT_START_RE.test(excerpt) || PAREN_ASIDE_START_RE.test(excerpt));
 }
@@ -1330,9 +1341,10 @@ function pickExcerptCandidate({ accepted = null, deferred = [], rawSourceRank = 
 // 'source-truncated' (BRO-6631) is deliberately NOT fallback-only: a clipped
 // curated blurb still beats a raw body slice, but loses to any complete
 // critic sentence that was only hedge- or contiguity-deferred (tier below).
-const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'sentiment-mismatch', 'page-chrome']);
+const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'sentiment-mismatch', 'page-chrome', 'parenthetical-aside']);
 // When nothing was accepted: lower tier wins, then source rank.
-const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2, 'source-truncated': 2.5, 'sentiment-mismatch': 3, 'page-chrome': 4 };
+// 'parenthetical-aside' (BRO-7675) ranks last: an aside is never the verdict.
+const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2, 'source-truncated': 2.5, 'sentiment-mismatch': 3, 'page-chrome': 4, 'parenthetical-aside': 5 };
 
 module.exports = {
   isContextDependentQuote,
@@ -1342,6 +1354,7 @@ module.exports = {
   FRAGMENT_START_RE,
   PUNCT_FRAGMENT_START_RE,
   PAREN_ASIDE_START_RE,
+  stripLeadingParenAside,
   expandToSentenceStart,
   endsWithSourceEllipsis,
   isClippedAggregatorBlurb,
