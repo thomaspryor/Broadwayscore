@@ -388,6 +388,11 @@ async function main() {
                           portalRank(r1.outletId) !== portalRank(r2.outletId) ? (portalRank(r1.outletId) < portalRank(r2.outletId) ? 0 : 1) :
                           r1.text.length >= r2.text.length ? 0 : 1;
         // The file whose own text names the other outlet is the copy, whatever the tier.
+        // A provenance line ("originally published in X") outranks containment: report, never auto-hide (BRO-7663 review).
+        if (contained && verdict.copy && verdict.copy !== contained.copy) {
+          wrongTextCandidates.push({ showId, method: 'excerpt-containment', similarity: sim, reason: 'containment and provenance disagree on the copy', files: [r1.file, r2.file], outlets: [r1.outlet, r2.outlet], critics: [r1.criticName, r2.criticName] });
+          continue;
+        }
         const copyIdx = contained ? (contained.copy === 'a' ? 0 : 1)
           : verdict.copy === 'a' ? 0 : verdict.copy === 'b' ? 1 : (primaryIdx === 0 ? 1 : 0);
         const primary = copyIdx === 0 ? r2 : r1;
