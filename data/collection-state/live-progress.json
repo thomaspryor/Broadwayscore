@@ -1,26 +1,66 @@
 {
-  "updatedAt": "2026-11-17T01:19:40.851Z",
-  "processed": 74,
-  "failed": 56,
-  "successRate": "56.9%",
+  "updatedAt": "2026-11-17T01:53:36.578Z",
+  "processed": 166,
+  "failed": 94,
+  "successRate": "63.8%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 98,
     "amp": 1,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 3,
-    "brightdata": 0,
+    "scrapingdog": 20,
+    "scrapingbee": 8,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 42
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-11-17T01:06:59.816Z",
       "event": "bb-session",
       "session": "6ca6f14d",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-17T01:33:11.658Z",
+      "event": "bb-session",
+      "session": "69219d59",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-17T01:33:12.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T01:44:10.083Z",
+      "event": "bb-session",
+      "session": "c6b08a18",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-17T01:44:10.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T01:45:39.335Z",
+      "event": "bb-session",
+      "session": "1528d492",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-17T01:46:09.361Z",
+      "event": "bb-session",
+      "session": "0d9697c1",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-17T01:46:18.393Z",
+      "event": "bb-session",
+      "session": "95c539fe",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     }
   ]
 }
