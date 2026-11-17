@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T21:34:59.444Z",
+  "generatedAt": "2026-11-17T23:07:51.289Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -134,6 +134,11 @@
       "openingDate": "2026-11-16"
     },
     {
+      "id": "takes-all-kinds-regional-2026",
+      "title": "Takes All Kinds",
+      "openingDate": "2026-11-16"
+    },
+    {
       "id": "the-39-steps-regional-2026",
       "title": "The 39 Steps",
       "openingDate": "2026-11-13"
@@ -142,6 +147,16 @@
       "id": "the-wash-regional-2026",
       "title": "The Wash",
       "openingDate": "2026-11-11"
+    },
+    {
+      "id": "my-english-persian-kitchen-regional-2026",
+      "title": "My English Persian Kitchen",
+      "openingDate": "2026-11-16"
+    },
+    {
+      "id": "destiny-of-desire-regional-2026",
+      "title": "Destiny of Desire",
+      "openingDate": "2026-11-16"
     }
   ],
   "skipped": [
@@ -162,7 +177,7 @@
       "reason": "no data/review-texts directory for this show"
     },
     {
-      "showId": "takes-all-kinds-regional-2026",
+      "showId": "the-winters-tale-mrs-regional-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -193,10 +208,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 875,
-  "matchedGaps": 0,
+  "itemsScanned": 877,
+  "matchedGaps": 1,
   "possibleGaps": 3,
   "gaps": [
+    {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "level": "matched",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/11/17/downstate/",
+      "headline": "Power Full",
+      "publishDate": "2026-11-17"
+    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
