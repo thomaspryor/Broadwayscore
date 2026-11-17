@@ -684,6 +684,7 @@ on:
       - 'scripts/discard-stuck-broadcast-drafts.js'
       - 'scripts/discover-dtli-slugs.js'
       - 'scripts/discover-historical-shows.js'
+      - 'scripts/discover-author-page-slugs.js' # BRO-6867: serp-step-has-scrapingdog-key.test.mjs
       - 'scripts/discover-regional-serp-reviews.js'
       - 'scripts/uk-regional-coverage.js'
       - 'scripts/uk-regional-census-productions.js'
