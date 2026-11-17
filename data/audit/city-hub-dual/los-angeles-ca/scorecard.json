@@ -1,30 +1,30 @@
 {
  "city": "los-angeles-ca",
- "today": "2026-11-10",
+ "today": "2026-11-17",
  "models": {
   "gemini": "gemini-2.5-flash",
-  "openai": "gpt-5-mini"
+  "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
-  "shows": 62,
+  "shows": 67,
   "images": 58,
-  "publishedReviews": 226,
+  "publishedReviews": 242,
   "excludedFiles": 15,
-  "reviewsWithoutText": 13,
+  "reviewsWithoutText": 17,
   "tourStops": 14,
-  "coverageShows": 42,
-  "totalShows": 62,
-  "totalPublished": 226
+  "coverageShows": 43,
+  "totalShows": 74,
+  "totalPublished": 249
  },
- "flaggedByGemini": 112,
- "flaggedByOpenAI": 92,
- "flaggedLocalChecks": 13,
- "flaggedAny": 129,
- "flaggedByBoth": 82,
- "triagedItems": 134,
- "confirmed": 54,
- "falsePositives": 80,
- "fixed": 10,
+ "flaggedByGemini": 98,
+ "flaggedByOpenAI": 79,
+ "flaggedLocalChecks": 23,
+ "flaggedAny": 130,
+ "flaggedByBoth": 63,
+ "triagedItems": 138,
+ "confirmed": 56,
+ "falsePositives": 82,
+ "fixed": 12,
  "remaining": [
   {
    "item": "image:the-visit-regional-2026",
@@ -203,24 +203,8 @@
    "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
   }
  ],
- "untriaged": 6,
+ "untriaged": 19,
  "flags": [
-  {
-   "kind": "show",
-   "id": "the-visit-regional-2026",
-   "label": "The Visit",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-13 / page 2026-09-09"
-  },
-  {
-   "kind": "show",
-   "id": "the-visit-regional-2026",
-   "label": "The Visit",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-13 / page 2026-09-09"
-  },
   {
    "kind": "image",
    "id": "the-visit-regional-2026",
@@ -247,35 +231,11 @@
   },
   {
    "kind": "show",
-   "id": "exit-the-king-regional-2026",
-   "label": "Exit The King",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-13 / page 2026-05-03"
-  },
-  {
-   "kind": "show",
-   "id": "primary-trust-regional-2026",
-   "label": "Primary Trust",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-29 / page 2026-05-20"
-  },
-  {
-   "kind": "show",
    "id": "primary-trust-regional-2026",
    "label": "Primary Trust",
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-05-20, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "primary-trust-regional-2026",
-   "label": "Primary Trust",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-29 / page 2026-05-20"
   },
   {
    "kind": "show",
@@ -292,14 +252,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-05-13, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "brigadoon-regional-2026",
-   "label": "Brigadoon",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-18 / page 2026-05-13"
   },
   {
    "kind": "show",
@@ -332,14 +284,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-06-10, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "angry-raucous-and-shamelessly-gorgeous-regional-2026",
-   "label": "Angry, Raucous, and Shamelessly Gorgeous",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-19 / page 2026-06-10"
   },
   {
    "kind": "show",
@@ -391,35 +335,11 @@
   },
   {
    "kind": "show",
-   "id": "frankenstein-resurrection-regional-2026",
-   "label": "Frankenstein: Resurrection",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-20 / page 2026-09-11"
-  },
-  {
-   "kind": "show",
-   "id": "frankenstein-resurrection-regional-2026",
-   "label": "Frankenstein: Resurrection",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-20 / page 2026-09-11"
-  },
-  {
-   "kind": "show",
    "id": "red-regional-2026",
    "label": "Red",
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-06-10, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "red-regional-2026",
-   "label": "Red",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-16 / page 2026-06-10"
   },
   {
    "kind": "show",
@@ -455,14 +375,6 @@
   },
   {
    "kind": "show",
-   "id": "cassatt-regional-2026",
-   "label": "Cassatt",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-01 / page 2026-05-29"
-  },
-  {
-   "kind": "show",
    "id": "warsaw-regional-2026",
    "label": "Warsaw",
    "model": "gemini",
@@ -476,14 +388,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-04-28, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "warsaw-regional-2026",
-   "label": "Warsaw",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-06 / page 2026-04-29"
   },
   {
    "kind": "show",
@@ -534,36 +438,12 @@
    "detail": "image text \"TWO ROADS THEATRE\" / show \"Act Your Age\""
   },
   {
-   "kind": "show",
-   "id": "crossing-delancey-regional-2026",
-   "label": "Crossing Delancey",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-26 / page 2026-05-21"
-  },
-  {
    "kind": "image",
    "id": "crossing-delancey-regional-2026",
    "label": "Crossing Delancey",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "ascent-regional-2026",
-   "label": "Ascent",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-12 / page 2026-05-09"
-  },
-  {
-   "kind": "show",
-   "id": "ascent-regional-2026",
-   "label": "Ascent",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-12 / page 2026-05-09"
   },
   {
    "kind": "show",
@@ -703,38 +583,6 @@
   },
   {
    "kind": "show",
-   "id": "grangeville-regional-2026",
-   "label": "Grangeville",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-01 / page 2026-05-29"
-  },
-  {
-   "kind": "show",
-   "id": "limonade-tous-les-jours-a-paris-love-story-regional-2026",
-   "label": "Limonade Tous les Jours: A Paris Love Story",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-26 / page 2026-05-22"
-  },
-  {
-   "kind": "show",
-   "id": "a-time-to-kill-regional-2026",
-   "label": "A Time To Kill",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-26 / page 2026-05-22"
-  },
-  {
-   "kind": "show",
-   "id": "a-time-to-kill-regional-2026",
-   "label": "A Time To Kill",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-26 / page 2026-05-22"
-  },
-  {
-   "kind": "show",
    "id": "soul-sacrifice-regional-2026",
    "label": "Soul Sacrifice",
    "model": "gemini",
@@ -748,14 +596,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-05-28, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "soul-sacrifice-regional-2026",
-   "label": "Soul Sacrifice",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-01 / page 2026-05-29"
   },
   {
    "kind": "image",
@@ -825,14 +665,6 @@
    "kind": "show",
    "id": "how-high-the-moon-regional-2026",
    "label": "How High the Moon",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-07-28 / page 2026-07-24"
-  },
-  {
-   "kind": "show",
-   "id": "how-high-the-moon-regional-2026",
-   "label": "How High the Moon",
    "model": "openai",
    "code": "page-not-this-production",
    "detail": "How High the Moon\n\nSunday, August 16, 2026"
@@ -844,14 +676,6 @@
    "model": "openai",
    "code": "opening-date",
    "detail": "ours 2026-07-28 / page 2026-08-16"
-  },
-  {
-   "kind": "show",
-   "id": "painted-ponies-regional-2026",
-   "label": "Painted Ponies",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-29 / page 2026-06-20"
   },
   {
    "kind": "show",
@@ -1014,14 +838,6 @@
    "detail": "ours 2026-08-23 / page 2025-08-31"
   },
   {
-   "kind": "show",
-   "id": "dracula-the-musical-regional-2026",
-   "label": "Dracula: The Musical",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-08-11 / page 2026-08-06"
-  },
-  {
    "kind": "image",
    "id": "dracula-the-musical-regional-2026",
    "label": "Dracula: The Musical",
@@ -1057,14 +873,6 @@
    "kind": "show",
    "id": "heroes-of-the-fourth-turning-regional-2026",
    "label": "Heroes of the Fourth Turning",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-08-18 / page 2026-08-14"
-  },
-  {
-   "kind": "show",
-   "id": "heroes-of-the-fourth-turning-regional-2026",
-   "label": "Heroes of the Fourth Turning",
    "model": "openai",
    "code": "page-not-this-production",
    "detail": ""
@@ -1074,24 +882,8 @@
    "id": "a-case-for-the-existence-of-god-regional-2026",
    "label": "A Case for the Existence of God",
    "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-07 / page 2026-08-30"
-  },
-  {
-   "kind": "show",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-08-30, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-07 / page 2026-08-30"
   },
   {
    "kind": "show",
@@ -1138,48 +930,8 @@
    "id": "conscience-regional-2026",
    "label": "Conscience",
    "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-08-29 / page 2026-08-26"
-  },
-  {
-   "kind": "show",
-   "id": "conscience-regional-2026",
-   "label": "Conscience",
-   "model": "openai",
    "code": "preview-date-missing",
    "detail": "page 2026-08-26, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "the-swan-regional-2026",
-   "label": "The Swan",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-08-26 / page 2026-08-21"
-  },
-  {
-   "kind": "show",
-   "id": "the-swan-regional-2026",
-   "label": "The Swan",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-08-26 / page 2026-08-21"
-  },
-  {
-   "kind": "show",
-   "id": "pericles-regional-2026",
-   "label": "Pericles",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-08-30 / page 2026-08-20"
-  },
-  {
-   "kind": "show",
-   "id": "pericles-regional-2026",
-   "label": "Pericles",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-08-30 / page 2026-08-20"
   },
   {
    "kind": "show",
@@ -1209,28 +961,12 @@
    "kind": "show",
    "id": "a-number-regional-2026",
    "label": "A Number",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-23 / page 2026-09-18"
-  },
-  {
-   "kind": "show",
-   "id": "a-number-regional-2026",
-   "label": "A Number",
    "model": "openai",
    "code": "page-not-this-production",
    "detail": ""
   },
   {
    "kind": "show",
-   "id": "september-10-regional-2026",
-   "label": "September 10",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-15 / page 2026-09-11"
-  },
-  {
-   "kind": "show",
    "id": "the-best-medicine-regional-2026",
    "label": "The Best Medicine",
    "model": "gemini",
@@ -1260,22 +996,6 @@
    "model": "openai",
    "code": "preview-date-missing",
    "detail": "page 2026-10-07, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "the-best-medicine-regional-2026",
-   "label": "The Best Medicine",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
-   "id": "christie-in-love-regional-2026",
-   "label": "Christie In Love",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-08-31 / page 2026-08-28"
   },
   {
    "kind": "show",
@@ -1359,30 +1079,6 @@
   },
   {
    "kind": "show",
-   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
-   "label": "The Case-Book of C. Auguste Dupin",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-23 / page 2026-09-17"
-  },
-  {
-   "kind": "show",
-   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
-   "label": "The Case-Book of C. Auguste Dupin",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-23 / page 2026-09-17"
-  },
-  {
-   "kind": "show",
-   "id": "aktion-t4-regional-2026",
-   "label": "Aktion T4",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-08 / page 2026-09-02"
-  },
-  {
-   "kind": "show",
    "id": "aktion-t4-regional-2026",
    "label": "Aktion T4",
    "model": "openai",
@@ -1428,14 +1124,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-10-08, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "wives-regional-2026",
-   "label": "Wives",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-13 / page 2026-10-08"
   },
   {
    "kind": "show",
@@ -1558,38 +1246,6 @@
    "detail": "closingDateSource missing"
   },
   {
-   "kind": "show",
-   "id": "spiders-web-regional-2026",
-   "label": "Spider's Web",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-29 / page 2026-09-25"
-  },
-  {
-   "kind": "show",
-   "id": "spiders-web-regional-2026",
-   "label": "Spider's Web",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-29 / page 2026-09-25"
-  },
-  {
-   "kind": "show",
-   "id": "crone-creed-regional-2026",
-   "label": "Crone Creed",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-10-05 / page 2026-09-30"
-  },
-  {
-   "kind": "show",
-   "id": "crone-creed-regional-2026",
-   "label": "Crone Creed",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-05 / page 2026-09-30"
-  },
-  {
    "kind": "image",
    "id": "crone-creed-regional-2026",
    "label": "Crone Creed",
@@ -1620,14 +1276,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-10-04, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "saint-megan-regional-2026",
-   "label": "Saint Megan",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-14 / page 2026-10-10"
   },
   {
    "kind": "show",
@@ -1686,14 +1334,6 @@
    "detail": "page 2026-10-15, ours empty"
   },
   {
-   "kind": "show",
-   "id": "rorschach-regional-2026",
-   "label": "Rorschach",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-20 / page 2026-10-15"
-  },
-  {
    "kind": "image",
    "id": "rorschach-regional-2026",
    "label": "Rorschach",
@@ -1734,14 +1374,6 @@
    "detail": "page 2026-10-11, ours empty"
   },
   {
-   "kind": "show",
-   "id": "heartbreak-house-regional-2026",
-   "label": "Heartbreak House",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-21 / page 2026-10-11"
-  },
-  {
    "kind": "image",
    "id": "heartbreak-house-regional-2026",
    "label": "Heartbreak House",
@@ -1767,8 +1399,152 @@
   },
   {
    "kind": "show",
-   "id": "heartbreak-house-regional-2026",
-   "label": "Heartbreak House",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-11-06 / page 2026-10-30"
+  },
+  {
+   "kind": "show",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-28, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-11-06 / page 2026-10-30"
+  },
+  {
+   "kind": "show",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-28, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "passing-strange-regional-2026",
+   "label": "Passing Strange",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-11-04, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "passing-strange-regional-2026",
+   "label": "Passing Strange",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-11-04, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "passing-strange-regional-2026",
+   "label": "Passing Strange",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "assassins-regional-2026",
+   "label": "Assassins",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "at-the-very-bottom-of-a-body-of-water-regional-2026",
+   "label": "At The Very Bottom of a Body of Water",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-22, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "at-the-very-bottom-of-a-body-of-water-regional-2026",
+   "label": "At The Very Bottom of a Body of Water",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "barefoot-in-the-park-regional-2026",
+   "label": "Barefoot In The Park",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-difficulty-adjustment-regional-2026",
+   "label": "The Difficulty Adjustment",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-laugh-track-regional-2026",
+   "label": "The Laugh Track",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "little-women-regional-2026",
+   "label": "Little Women",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "nacho-ate-spiderman-regional-2026",
+   "label": "Nacho Ate Spiderman",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "radio-galaxy-regional-2026",
+   "label": "Radio Galaxy",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "recent-alien-abductions-regional-2026",
+   "label": "Recent Alien Abductions",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "thistles-regional-2026",
+   "label": "Thistles",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
@@ -1791,43 +1567,27 @@
   },
   {
    "kind": "review",
-   "id": "a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
-   "label": "A Number | Accessibly Live Off-Line / null",
+   "id": "barefoot-in-the-park-regional-2026|http://curtainup.com/barefootinthepark.html|",
+   "label": "Barefoot In The Park | CurtainUp / null",
    "model": "gemini",
    "code": "wrong-production",
-   "detail": "SHELLS, a co-production of the Rogue Artists Ensemble and Greenway Arts Alliance, and performs at the Greenway Court Theatre, 544 North Fairfax Avenue, Los Angeles, until October 11th."
+   "detail": "Fortunately Amanda Peet... doesn?t have to prove much beyond being perky and quirky in this her Broadway debut."
   },
   {
    "kind": "review",
-   "id": "a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
-   "label": "A Number | Accessibly Live Off-Line / null",
-   "model": "gemini",
-   "code": "non-review:roundup",
-   "detail": "The article primarily discusses the author's personal history in Los Angeles before reviewing one play, 'SHELLS', and mentioning another, 'A Number', without reviewing it."
-  },
-  {
-   "kind": "review",
-   "id": "a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
-   "label": "A Number | Accessibly Live Off-Line / null",
+   "id": "barefoot-in-the-park-regional-2026|http://curtainup.com/barefootinthepark.html|",
+   "label": "Barefoot In The Park | CurtainUp / null",
    "model": "openai",
    "code": "wrong-production",
-   "detail": "SHELLS, a co-production of the Rogue Artists Ensemble and Greenway Arts Alliance, and performs at the Greenway Court Theatre, 544 North Fairfax Avenue, Los Angeles, until October 11th."
+   "detail": "the current revival offers little to either revive or support that response"
   },
   {
    "kind": "review",
-   "id": "a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
-   "label": "A Number | Accessibly Live Off-Line / null",
+   "id": "barefoot-in-the-park-regional-2026|http://curtainup.com/barefootinthepark.html|",
+   "label": "Barefoot In The Park | CurtainUp / null",
    "model": "openai",
-   "code": "non-review:roundup",
-   "detail": "The article is a multi-production roundup and mentions SHELLS at Greenway Court Theatre in Los Angeles; it does not reference A Number or Madnani Theater."
-  },
-  {
-   "kind": "review",
-   "id": "catch-me-if-you-can-regional-2026|https://www.culvercitynews.org/dazzling-and-energetic-catch-me-if-you-can-stage-musical-at-the-colony-theatre|shari barrett",
-   "label": "Catch Me If You Can | Culver City News / Shari Barrett",
-   "model": "openai",
-   "code": "non-review:interview",
-   "detail": "A largely favorable review with an embedded interview of lead Blake Jenner; includes production and ticketing details."
+   "code": "score-vs-text",
+   "detail": "text reads pan, score 44"
   },
   {
    "kind": "review",
@@ -1844,14 +1604,6 @@
    "model": "openai",
    "code": "wrong-production",
    "detail": "Hangmen Long Beach Playhouse Studio Theatre, Long Beach Playhouse, 5021 E. Anaheim St. in "
-  },
-  {
-   "kind": "review",
-   "id": "heartbreak-house-regional-2026|https://ladramacriticscircle.com/heartbreak-house-antaeus-theatre-company|",
-   "label": "Heartbreak House | Los Angeles Drama Critics Circle / null",
-   "model": "gemini",
-   "code": "non-review:roundup",
-   "detail": "The article presents multiple short reviews/verdicts, primarily for 'Heartbreak House' but also listing other productions."
   },
   {
    "kind": "review",
@@ -1892,6 +1644,22 @@
    "model": "local",
    "code": "pull-quote-not-in-text",
    "detail": "It's all très charmant (but also très talky), which is why audiences will thank producer Charles A. Duncombe and director Frédérique Michel "
+  },
+  {
+   "kind": "review",
+   "id": "little-women-regional-2026|https://rachelsreviewstheatre.com/2026/11/11/little-women-at-centerpoint-has-astonishing-talent-review|",
+   "label": "Little Women | Rachel Reviews Theatre / null",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "LITTLE WOMEN at Centerpoint has astonishing talent (Review) November 11, 2026 | Rachel's Reviews When I heard Centerpoint Legacy was going to be putting on Little Women I knew I was in store for something special."
+  },
+  {
+   "kind": "review",
+   "id": "little-women-regional-2026|https://rachelsreviewstheatre.com/2026/11/11/little-women-at-centerpoint-has-astonishing-talent-review|",
+   "label": "Little Women | Rachel Reviews Theatre / null",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "“Centerpoint Legacy was going to be putting on Little Women”"
   },
   {
    "kind": "review",
@@ -2148,6 +1916,14 @@
    "model": "gemini",
    "code": "missing-review-candidate",
    "detail": "Gardena Valley News / Shari Barrett 2026-09-24 https://www.gardenavalleynews.com/dazzling-and-energetic-catch-me-if-you-can-stage-musical-at-the-colony-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Culver City News / Shari Barrett 2026-09-24 https://www.culvercitynews.org/dazzling-and-energetic-catch-me-if-you-can-stage-musical-at-the-colony-theatre/"
   },
   {
    "kind": "coverage",
@@ -3055,11 +2831,91 @@
   },
   {
    "kind": "coverage",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "People's World / Ed Rampell 2026-10-13 https://www.peoplesworld.org/article/saint-megan-review-sharp-play-raises-questions-about-religion-and-devotion-over-centuries/"
+  },
+  {
+   "kind": "coverage",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Glamgical / Glamour 2026-10-11 https://glamgical.com/2026/10/11/theatre-review-saint-megan/"
+  },
+  {
+   "kind": "coverage",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Hollywood Progressive / Ed Rampell 2026-10-12 https://hollywoodprogressive.com/stage/christianity-insanity"
+  },
+  {
+   "kind": "coverage",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Larchmont Buzz / Carol M. Becker 2026-10-15 https://larchmontbuzz.com/theater/saint-megan-an-unexpected-life/"
+  },
+  {
+   "kind": "coverage",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "arts•meme / Debra Levine 2026-11-05 https://artsmeme.com/2026/11/05/a-walk-on-the-polemic-side-saint-megan-at-the-matrix/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rorschach-regional-2026",
+   "label": "Rorschach",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Martín Hernández 2026-10-26 https://www.ladramacritics.com/recent-posts/rorschach-skylight-theatre-october-26-2026"
+  },
+  {
+   "kind": "coverage",
    "id": "heartbreak-house-regional-2026",
    "label": "Heartbreak House",
    "model": "gemini",
    "code": "missing-review-candidate",
    "detail": "LA Theatre Bites / Patrick Chavis 2026-10-20 https://latheatrebites.com/2026/10/20/heartbreak-house-antaeus-theatre-company-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Hollywood Times / Robert St. Martin 2026-11-01 https://thehollywoodtimes.today/confederates-a-thought-provoking-play-about-institutional-racism-and-its-impact-on-black-women/"
+  },
+  {
+   "kind": "coverage",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Hollywood Progressive / Ed Rampell 2026-10-31 https://www.hollywoodprogressive.com/gone-with-the-racism/"
+  },
+  {
+   "kind": "coverage",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Hollywood Times / Robert St. Martin 2026-11-01 https://hollywoodtimes.net/confederates-a-thought-provoking-play-about-institutional-racism-and-its-impact-on-black-women/"
+  },
+  {
+   "kind": "coverage",
+   "id": "confederates-regional-2026-fountain-theatre",
+   "label": "Confederates",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Hollywood Progressive / Ed Rampell 2026-10-31 https://hollywoodprogressive.com/stage/gone-with-the-racism"
   }
  ]
 }

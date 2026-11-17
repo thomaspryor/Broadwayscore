@@ -1,26 +1,26 @@
 {
  "city": "washington-dc",
- "today": "2026-11-10",
+ "today": "2026-11-17",
  "models": {
   "gemini": "gemini-2.5-flash",
-  "openai": "gpt-5-mini"
+  "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
-  "shows": 47,
+  "shows": 50,
   "images": 20,
-  "publishedReviews": 186,
-  "excludedFiles": 16,
-  "reviewsWithoutText": 13,
+  "publishedReviews": 196,
+  "excludedFiles": 21,
+  "reviewsWithoutText": 14,
   "tourStops": 12,
-  "coverageShows": 33,
-  "totalShows": 47,
-  "totalPublished": 186
+  "coverageShows": 36,
+  "totalShows": 50,
+  "totalPublished": 196
  },
- "flaggedByGemini": 86,
- "flaggedByOpenAI": 74,
- "flaggedLocalChecks": 32,
- "flaggedAny": 122,
- "flaggedByBoth": 67,
+ "flaggedByGemini": 68,
+ "flaggedByOpenAI": 58,
+ "flaggedLocalChecks": 34,
+ "flaggedAny": 112,
+ "flaggedByBoth": 44,
  "triagedItems": 124,
  "confirmed": 41,
  "falsePositives": 83,
@@ -183,32 +183,8 @@
    "reason": "Official tour page lists the National Theatre stop Nov 24 to Dec 6; ours ends Nov 29. tour-schedules.json is rewritten by fetch-tour-schedules.js so a manual edit would not hold. Remaining item: needs a tour-stop override layer."
   }
  ],
- "untriaged": 3,
+ "untriaged": 12,
  "flags": [
-  {
-   "kind": "show",
-   "id": "crazysexycool-regional-2026",
-   "label": "CrazySexyCool: The TLC Musical",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-26 / page 2026-06-12"
-  },
-  {
-   "kind": "show",
-   "id": "crazysexycool-regional-2026",
-   "label": "CrazySexyCool: The TLC Musical",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-26 / page 2026-06-12"
-  },
-  {
-   "kind": "show",
-   "id": "the-score-regional-2026",
-   "label": "The Score",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-16 / page 2026-09-11"
-  },
   {
    "kind": "show",
    "id": "the-score-regional-2026",
@@ -216,22 +192,6 @@
    "model": "gemini",
    "code": "category",
    "detail": "page says touring production"
-  },
-  {
-   "kind": "show",
-   "id": "the-score-regional-2026",
-   "label": "The Score",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-16 / page 2026-09-11"
-  },
-  {
-   "kind": "show",
-   "id": "a-fine-madness-regional-2026",
-   "label": "A Fine Madness",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-03 / page 2026-05-30"
   },
   {
    "kind": "show",
@@ -250,44 +210,12 @@
    "detail": "show has no images.poster"
   },
   {
-   "kind": "show",
-   "id": "get-down-tonight-classic-funk-regional-2026",
-   "label": "Get Down Tonight: Classic Funk",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-09 / page 2026-05-05"
-  },
-  {
-   "kind": "show",
-   "id": "get-down-tonight-classic-funk-regional-2026",
-   "label": "Get Down Tonight: Classic Funk",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-09 / page 2026-05-05"
-  },
-  {
    "kind": "image",
    "id": "get-down-tonight-classic-funk-regional-2026",
    "label": "Get Down Tonight: Classic Funk",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "pippin-regional-2026",
-   "label": "Pippin",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-22 / page 2026-05-12"
-  },
-  {
-   "kind": "show",
-   "id": "pippin-regional-2026",
-   "label": "Pippin",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-22 / page 2026-05-12"
   },
   {
    "kind": "show",
@@ -514,44 +442,12 @@
    "detail": "show has no images.poster"
   },
   {
-   "kind": "show",
-   "id": "or-regional-2026",
-   "label": "Or,",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-21 / page 2026-05-15"
-  },
-  {
-   "kind": "show",
-   "id": "or-regional-2026",
-   "label": "Or,",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-21 / page 2026-05-15"
-  },
-  {
    "kind": "image",
    "id": "or-regional-2026",
    "label": "Or,",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "precarious-regional-2026",
-   "label": "Precarious",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-12 / page 2026-06-04"
-  },
-  {
-   "kind": "show",
-   "id": "precarious-regional-2026",
-   "label": "Precarious",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-12 / page 2026-06-04"
   },
   {
    "kind": "image",
@@ -595,22 +491,6 @@
   },
   {
    "kind": "show",
-   "id": "purlie-victorious-regional-2026",
-   "label": "Purlie Victorious",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-11 / page 2026-05-06"
-  },
-  {
-   "kind": "show",
-   "id": "purlie-victorious-regional-2026",
-   "label": "Purlie Victorious",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-11 / page 2026-05-06"
-  },
-  {
-   "kind": "show",
    "id": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
    "label": "Feeling Afraid As If Something Terrible Is Going to Happen",
    "model": "gemini",
@@ -638,32 +518,8 @@
    "id": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
    "label": "Feeling Afraid As If Something Terrible Is Going to Happen",
    "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-12 / page 2026-06-04"
-  },
-  {
-   "kind": "show",
-   "id": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
-   "label": "Feeling Afraid As If Something Terrible Is Going to Happen",
-   "model": "openai",
    "code": "category",
    "detail": "page says touring production"
-  },
-  {
-   "kind": "show",
-   "id": "aguardiente-where-magic-transcends-borders-regional-2026",
-   "label": "Aguardiente: Where Magic Transcends Borders",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-06 / page 2026-04-30"
-  },
-  {
-   "kind": "show",
-   "id": "aguardiente-where-magic-transcends-borders-regional-2026",
-   "label": "Aguardiente: Where Magic Transcends Borders",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-05-06 / page 2026-04-30"
   },
   {
    "kind": "image",
@@ -672,22 +528,6 @@
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "somewhere-over-the-border-regional-2026",
-   "label": "Somewhere Over the Border",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-15 / page 2026-09-10"
-  },
-  {
-   "kind": "show",
-   "id": "somewhere-over-the-border-regional-2026",
-   "label": "Somewhere Over the Border",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-15 / page 2026-09-10"
   },
   {
    "kind": "image",
@@ -733,22 +573,6 @@
    "kind": "show",
    "id": "adrift-a-medieval-wayward-folly-regional-2026",
    "label": "Adrift: A Medieval Wayward Folly",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-07-20 / page 2026-07-16"
-  },
-  {
-   "kind": "show",
-   "id": "adrift-a-medieval-wayward-folly-regional-2026",
-   "label": "Adrift: A Medieval Wayward Folly",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-07-20 / page 2026-07-16"
-  },
-  {
-   "kind": "show",
-   "id": "adrift-a-medieval-wayward-folly-regional-2026",
-   "label": "Adrift: A Medieval Wayward Folly",
    "model": "openai",
    "code": "category",
    "detail": "page says touring production"
@@ -765,14 +589,6 @@
    "kind": "show",
    "id": "the-flying-lovers-of-vitebsk-regional-2026",
    "label": "The Flying Lovers of Vitebsk",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-10-17 / page 2026-10-07"
-  },
-  {
-   "kind": "show",
-   "id": "the-flying-lovers-of-vitebsk-regional-2026",
-   "label": "The Flying Lovers of Vitebsk",
    "model": "openai",
    "code": "opening-date",
    "detail": "ours 2026-10-17 / page 2026-10-13"
@@ -784,22 +600,6 @@
    "model": "openai",
    "code": "preview-date-missing",
    "detail": "page 2026-10-07, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "loot-regional-2026",
-   "label": "Loot",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-11 / page 2026-06-05"
-  },
-  {
-   "kind": "show",
-   "id": "loot-regional-2026",
-   "label": "Loot",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-11 / page 2026-06-05"
   },
   {
    "kind": "show",
@@ -826,36 +626,12 @@
    "detail": "page 2026-10-20, ours empty"
   },
   {
-   "kind": "show",
-   "id": "frida-a-self-portrait-regional-2026",
-   "label": "Frida...A Self Portrait",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-14 / page 2026-10-08"
-  },
-  {
-   "kind": "show",
-   "id": "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
-   "label": "The Effect of Gamma Rays on Man-in-the-Moon Marigolds",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-05-17 / page 2026-05-08"
-  },
-  {
    "kind": "image",
    "id": "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
    "label": "The Effect of Gamma Rays on Man-in-the-Moon Marigolds",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "the-roaring-girl-regional-2026",
-   "label": "The Roaring Girl",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-08 / page 2026-06-05"
   },
   {
    "kind": "show",
@@ -882,22 +658,6 @@
    "detail": "show has no images.poster"
   },
   {
-   "kind": "show",
-   "id": "stonewalls-bust-regional-2026",
-   "label": "Stonewall's Bust",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-10-15 / page 2026-10-09"
-  },
-  {
-   "kind": "show",
-   "id": "stonewalls-bust-regional-2026",
-   "label": "Stonewall's Bust",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-15 / page 2026-10-09"
-  },
-  {
    "kind": "image",
    "id": "stonewalls-bust-regional-2026",
    "label": "Stonewall's Bust",
@@ -922,28 +682,12 @@
    "detail": "page 2026-09-09, ours empty"
   },
   {
-   "kind": "show",
-   "id": "venus-regional-2026",
-   "label": "Venus",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-16 / page 2026-09-09"
-  },
-  {
    "kind": "image",
    "id": "venus-regional-2026",
    "label": "Venus",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "richard-obriens-the-rocky-horror-show-regional-2026",
-   "label": "Richard O'Brien's The Rocky Horror Show",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-08-25 / page 2026-08-22"
   },
   {
    "kind": "show",
@@ -962,44 +706,12 @@
    "detail": "show has no images.poster"
   },
   {
-   "kind": "show",
-   "id": "no-exit-regional-2026",
-   "label": "No Exit",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-29 / page 2026-06-25"
-  },
-  {
-   "kind": "show",
-   "id": "no-exit-regional-2026",
-   "label": "No Exit",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-29 / page 2026-06-25"
-  },
-  {
    "kind": "image",
    "id": "no-exit-regional-2026",
    "label": "No Exit",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "gruesome-playground-injuries-regional-2026",
-   "label": "Gruesome Playground Injuries",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-08-22 / page 2026-08-15"
-  },
-  {
-   "kind": "show",
-   "id": "gruesome-playground-injuries-regional-2026",
-   "label": "Gruesome Playground Injuries",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-08-22 / page 2026-08-15"
   },
   {
    "kind": "show",
@@ -1022,24 +734,8 @@
    "id": "hundred-days-regional-2026",
    "label": "Hundred Days",
    "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-13 / page 2026-10-10"
-  },
-  {
-   "kind": "show",
-   "id": "hundred-days-regional-2026",
-   "label": "Hundred Days",
-   "model": "openai",
    "code": "closing-date",
    "detail": "ours 2026-11-15 / page 2026-11-08"
-  },
-  {
-   "kind": "show",
-   "id": "hundred-days-regional-2026",
-   "label": "Hundred Days",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
   },
   {
    "kind": "show",
@@ -1058,52 +754,12 @@
    "detail": "show has no images.poster"
   },
   {
-   "kind": "show",
-   "id": "monsters-of-the-villa-diodati-regional-2026",
-   "label": "Monsters of the Villa Diodati",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-10-14 / page 2026-10-08"
-  },
-  {
-   "kind": "show",
-   "id": "monsters-of-the-villa-diodati-regional-2026",
-   "label": "Monsters of the Villa Diodati",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-14 / page 2026-10-08"
-  },
-  {
-   "kind": "show",
-   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
-   "label": "Garbo: The Actor Who Saved the World",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-09 / page 2026-09-03"
-  },
-  {
-   "kind": "show",
-   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
-   "label": "Garbo: The Actor Who Saved the World",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-09 / page 2026-09-03"
-  },
-  {
    "kind": "image",
    "id": "garbo-the-actor-who-saved-the-world-regional-2026",
    "label": "Garbo: The Actor Who Saved the World",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "merrily-we-roll-along-regional-2026",
-   "label": "Merrily We Roll Along",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-04 / page 2026-08-25"
   },
   {
    "kind": "show",
@@ -1120,22 +776,6 @@
    "model": "openai",
    "code": "page-not-this-production",
    "detail": ""
-  },
-  {
-   "kind": "show",
-   "id": "freddie-a-girl-regional-2026",
-   "label": "Freddie: A Girl",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-01 / page 2026-08-27"
-  },
-  {
-   "kind": "show",
-   "id": "freddie-a-girl-regional-2026",
-   "label": "Freddie: A Girl",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-01 / page 2026-08-27"
   },
   {
    "kind": "show",
@@ -1166,48 +806,8 @@
    "id": "woody-guthries-american-song-regional-2026",
    "label": "Woody Guthrie's American Song",
    "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-08-15 / page 2026-08-06"
-  },
-  {
-   "kind": "show",
-   "id": "woody-guthries-american-song-regional-2026",
-   "label": "Woody Guthrie's American Song",
-   "model": "openai",
    "code": "venue",
    "detail": "ours \"Theater Alliance, Washington, DC\" / page \"Waterfront Park at The Wharf\""
-  },
-  {
-   "kind": "show",
-   "id": "wish-you-were-here-regional-2026",
-   "label": "Wish You Were Here",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-29 / page 2026-09-23"
-  },
-  {
-   "kind": "show",
-   "id": "wish-you-were-here-regional-2026",
-   "label": "Wish You Were Here",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-29 / page 2026-09-23"
-  },
-  {
-   "kind": "show",
-   "id": "bronte-sister-house-party-regional-2026",
-   "label": "Bronte Sister House Party",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-08-18 / page 2026-08-14"
-  },
-  {
-   "kind": "show",
-   "id": "bronte-sister-house-party-regional-2026",
-   "label": "Bronte Sister House Party",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-08-18 / page 2026-08-14"
   },
   {
    "kind": "image",
@@ -1234,14 +834,6 @@
    "detail": "All the World’s a Stage runs October 20 – December 20, 2026, in the ARK Theatre at Signatu"
   },
   {
-   "kind": "show",
-   "id": "all-the-worlds-a-stage-regional-2026",
-   "label": "All The World's A Stage",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-28 / page 2026-10-20"
-  },
-  {
    "kind": "image",
    "id": "all-the-worlds-a-stage-regional-2026",
    "label": "All The World's A Stage",
@@ -1266,14 +858,6 @@
    "detail": "page 2026-09-18, ours empty"
   },
   {
-   "kind": "show",
-   "id": "some-like-it-hot-regional-2026",
-   "label": "Some Like It Hot",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-26 / page 2026-09-18"
-  },
-  {
    "kind": "image",
    "id": "some-like-it-hot-regional-2026",
    "label": "Some Like It Hot",
@@ -1282,52 +866,12 @@
    "detail": "show has no images.poster"
   },
   {
-   "kind": "show",
-   "id": "where-dead-women-go-to-dance-regional-2026",
-   "label": "Where Dead Women Go to Dance",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-29 / page 2026-09-25"
-  },
-  {
-   "kind": "show",
-   "id": "where-dead-women-go-to-dance-regional-2026",
-   "label": "Where Dead Women Go to Dance",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-29 / page 2026-09-25"
-  },
-  {
    "kind": "image",
    "id": "where-dead-women-go-to-dance-regional-2026",
    "label": "Where Dead Women Go to Dance",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "the-fruits-of-our-labor-regional-2026",
-   "label": "The Fruits of Our Labor",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-09-13 / page 2026-09-10"
-  },
-  {
-   "kind": "show",
-   "id": "the-fruits-of-our-labor-regional-2026",
-   "label": "The Fruits of Our Labor",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-09-13 / page 2026-09-10"
-  },
-  {
-   "kind": "show",
-   "id": "are-you-now-or-have-you-ever-been-regional-2026",
-   "label": "Are You Now or Have You Ever Been?",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-10-24 / page 2026-10-17"
   },
   {
    "kind": "show",
@@ -1336,14 +880,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-10-17, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "are-you-now-or-have-you-ever-been-regional-2026",
-   "label": "Are You Now or Have You Ever Been?",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-24 / page 2026-10-17"
   },
   {
    "kind": "show",
@@ -1358,24 +894,8 @@
    "id": "the-legend-of-sleepy-hollow-regional-2026",
    "label": "The Legend of Sleepy Hollow",
    "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-10-13 / page 2026-10-07"
-  },
-  {
-   "kind": "show",
-   "id": "the-legend-of-sleepy-hollow-regional-2026",
-   "label": "The Legend of Sleepy Hollow",
-   "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-10-07, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "the-legend-of-sleepy-hollow-regional-2026",
-   "label": "The Legend of Sleepy Hollow",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-10-13 / page 2026-10-07"
   },
   {
    "kind": "show",
@@ -1392,6 +912,62 @@
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "metamorphosis-regional-2026",
+   "label": "Metamorphosis",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+   "label": "The Elaborate Entrance of Chad Deity",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-11-13 / page 2026-11-07"
+  },
+  {
+   "kind": "show",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+   "label": "The Elaborate Entrance of Chad Deity",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-11-05, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+   "label": "The Elaborate Entrance of Chad Deity",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-11-10 / page 2026-10-30"
+  },
+  {
+   "kind": "show",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-11-10 / page 2026-10-30"
+  },
+  {
+   "kind": "show",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
   },
   {
    "kind": "review",
@@ -1491,6 +1067,14 @@
   },
   {
    "kind": "review",
+   "id": "precarious-regional-2026|https://morristheatredc.com/reviews/review-precarious-mosaic-theater-company|",
+   "label": "Precarious | Morris Theatre DC / null",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "Mosaic Theater Company D20 D2X CaBi ♿ 1333 H St NE, Washington, DC 20002"
+  },
+  {
+   "kind": "review",
    "id": "purlie-victorious-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-purlie-victorious-at-studio-theatre-20260511|jake bridges",
    "label": "Purlie Victorious | BroadwayWorld / Jake Bridges",
    "model": "gemini",
@@ -1512,6 +1096,22 @@
    "model": "gemini",
    "code": "non-review:roundup",
    "detail": "The article is a roundup of three reviews, with the first section reviewing the target production, Sally & Tom."
+  },
+  {
+   "kind": "review",
+   "id": "sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd",
+   "label": "Sally & Tom | The Washington Post / Thomas Floyd",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "The review for 'Sally & Tom' is generally positive, highlighting strong performances despite some narrative meandering."
+  },
+  {
+   "kind": "review",
+   "id": "sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd",
+   "label": "Sally & Tom | The Washington Post / Thomas Floyd",
+   "model": "openai",
+   "code": "non-review:roundup",
+   "detail": "The lead review praises the performances and climactic monologues despite calling the narrative meandering and unwieldy."
   },
   {
    "kind": "review",
@@ -1611,11 +1211,19 @@
   },
   {
    "kind": "excluded",
-   "id": "sally-and-tom-regional-2026/washpost--thomas-floyd.json",
-   "label": "Sally & Tom | sally-and-tom-regional-2026/washpost--thomas-floyd.json",
+   "id": "metamorphosis-regional-2026/newsbreak--alexander-ferguson.json",
+   "label": "Metamorphosis | metamorphosis-regional-2026/newsbreak--alexander-ferguson.json",
    "model": "gemini",
    "code": "excluded-looks-valid",
-   "detail": "regional premiere at Round House Theatre | flags on file: partial_text"
+   "detail": "‘Metamorphosis’ presented by Scena Theatre at The DC Arts Center | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "metamorphosis-regional-2026/newsbreak--alexander-ferguson.json",
+   "label": "Metamorphosis | metamorphosis-regional-2026/newsbreak--alexander-ferguson.json",
+   "model": "openai",
+   "code": "excluded-looks-valid",
+   "detail": "“Directed by Robert McNamara and staged by Scena Theatre, it proceeds over a brisk 90 minutes at the DC Arts Center” | flags on file: "
   },
   {
    "kind": "tour",
@@ -2616,6 +2224,94 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "The Washington Post / Thomas Floyd 2026-11-05 https://www.washingtonpost.com/entertainment/theater/2026/11/05/play-about-mccarthyism-anchors-dc-area-theater-slate//"
+  },
+  {
+   "kind": "coverage",
+   "id": "metamorphosis-regional-2026",
+   "label": "Metamorphosis",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / John Stoltenberg 2026-11-01 https://dctheaterarts.org/2026/11/01/in-scenas-excellent-expressionist-metamorphosis-a-family-is-bugged/"
+  },
+  {
+   "kind": "coverage",
+   "id": "metamorphosis-regional-2026",
+   "label": "Metamorphosis",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / John Stoltenberg 2026-11-01 https://dctheaterarts.org/2026/11/01/in-scenas-excellent-expressionist-metamorphosis-a-family-is-bugged/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+   "label": "The Elaborate Entrance of Chad Deity",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Jackson Malmgren 2026-11-13 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG9QLi6-kojxe0O_scfKHIlDPwRk9E3wDUaUSCC9Hib9fRpwpbUR4ZyI-UkZSgsAnnq-QjvbL49pm69EWc_wrbFExcGCu1Jtq5M-luJ1urfaIAWCEe4UxnWyYTEFqcIMQro3tXwXa8CD44NHMALvIZGurMpGNr_T9uSX5Ql8qIzNfPlZHukBU3llXxIPjiPt9RL8_iVIRELzXnmOo1mTpd33TRLAXDHoQ8n"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+   "label": "The Elaborate Entrance of Chad Deity",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Anne Valentino 2026-11-13 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHbSw78VlYwc28i9w_bNYPU0DTiNVGHO-NNGKu49QgKYG_zHk42KUvmToEgJREP1QUb7et-1ssFtGE0DGfHVdndU7bynCAon5iIueWc_qgBrR5AUmuYap6P9C3PBQ_UEf6_voJXsCWIGhf1ZqRE-d3eBL-y5_Yxpm_K0Nkzpig=="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+   "label": "The Elaborate Entrance of Chad Deity",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Zoe Winsky 2026-11-11 https://dctheaterarts.org/2026/11/11/brilliant-elaborate-entrance-of-chad-deity-at-nextstop-body-slams-stereotyping/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+   "label": "The Elaborate Entrance of Chad Deity",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Morris Theatre DC /  2026-11-15 https://morristheatredc.com/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
+   "label": "The Elaborate Entrance of Chad Deity",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Zoe Winsky 2026-11-11 https://dctheaterarts.org/2026/11/11/brilliant-elaborate-entrance-of-chad-deity-at-nextstop-body-slams-stereotyping/"
+  },
+  {
+   "kind": "coverage",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Itai Yasur 2026-11-10 https://www.broadwayworld.com/washington-dc/article/BWW-Reviews-LES-MISERABLES-at-Olney-Theatre-Center-20261110"
+  },
+  {
+   "kind": "coverage",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / D.R. Lewis 2026-11-07 https://dctheaterarts.org/2026/11/07/go-hear-the-people-sing-in-olneys-stirring-new-les-miserables/"
+  },
+  {
+   "kind": "coverage",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Itai Yasur 2026-11-10 https://www.broadwayworld.com/washington-dc/article/BWW-Reviews-LES-MISRABLES-at-Olney-Theatre-Center-20261110"
+  },
+  {
+   "kind": "coverage",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Talkin' Broadway / Susan Berlin 2026-11-13 https://talkinbroadway.com/page/regional/dc/dc1407.html"
   }
  ]
 }

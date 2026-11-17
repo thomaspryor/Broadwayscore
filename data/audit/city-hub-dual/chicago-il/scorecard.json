@@ -1,49 +1,33 @@
 {
  "city": "chicago-il",
- "today": "2026-11-10",
+ "today": "2026-11-17",
  "models": {
   "gemini": "gemini-2.5-flash",
-  "openai": "gpt-5-mini"
+  "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
-  "shows": 6,
+  "shows": 11,
   "images": 0,
-  "publishedReviews": 41,
+  "publishedReviews": 60,
   "excludedFiles": 0,
-  "reviewsWithoutText": 270,
+  "reviewsWithoutText": 194,
   "tourStops": 0,
-  "coverageShows": 3,
-  "totalShows": 766,
-  "totalPublished": 5476
+  "coverageShows": 6,
+  "totalShows": 771,
+  "totalPublished": 5578
  },
- "flaggedByGemini": 12,
- "flaggedByOpenAI": 13,
- "flaggedLocalChecks": 16,
- "flaggedAny": 30,
- "flaggedByBoth": 11,
- "triagedItems": 1,
+ "flaggedByGemini": 17,
+ "flaggedByOpenAI": 19,
+ "flaggedLocalChecks": 17,
+ "flaggedAny": 40,
+ "flaggedByBoth": 13,
+ "triagedItems": 7,
  "confirmed": 0,
- "falsePositives": 1,
+ "falsePositives": 7,
  "fixed": 0,
  "remaining": [],
- "untriaged": 30,
+ "untriaged": 40,
  "flags": [
-  {
-   "kind": "show",
-   "id": "iceboy-regional-2026",
-   "label": "Iceboy!",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-29 / page 2026-06-20"
-  },
-  {
-   "kind": "show",
-   "id": "iceboy-regional-2026",
-   "label": "Iceboy!",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-29 / page 2026-06-20"
-  },
   {
    "kind": "show",
    "id": "little-bear-ridge-road-regional-2024",
@@ -86,43 +70,99 @@
   },
   {
    "kind": "show",
-   "id": "42-balloons-regional-2025",
-   "label": "42 Balloons",
+   "id": "topdog-underdog-regional-2026",
+   "label": "Topdog/Underdog",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"Steppenwolf Theatre Company, Chicago, IL\" / page \"The Downstairs Theater\""
+  },
+  {
+   "kind": "show",
+   "id": "come-from-away-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-26, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "detroit-67-regional-2026",
+   "label": "Detroit '67",
    "model": "gemini",
    "code": "opening-date",
-   "detail": "ours 2025-06-10 / page 2025-05-24"
+   "detail": "ours 2026-09-23 / page 2026-09-11"
   },
   {
    "kind": "show",
-   "id": "42-balloons-regional-2025",
-   "label": "42 Balloons",
+   "id": "detroit-67-regional-2026",
+   "label": "Detroit '67",
    "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2025-06-10 / page 2025-05-24"
-  },
-  {
-   "kind": "show",
-   "id": "paranormal-activity-chicago-regional-2025",
-   "label": "Paranormal Activity",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2025-10-16 / page 2025-10-08"
-  },
-  {
-   "kind": "show",
-   "id": "paranormal-activity-chicago-regional-2025",
-   "label": "Paranormal Activity",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2025-10-16 / page 2025-10-08"
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-11, ours empty"
   },
   {
    "kind": "show",
    "id": "hayward-regional-2026",
    "label": "Hayward",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-11-15 / page 2026-11-22"
+  },
+  {
+   "kind": "show",
+   "id": "hayward-regional-2026",
+   "label": "Hayward",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-14, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "hayward-regional-2026",
+   "label": "Hayward",
+   "model": "gemini",
+   "code": "venue",
+   "detail": "ours \"Steppenwolf Theatre, Chicago, IL\" / page \"The 1700 Theater\""
+  },
+  {
+   "kind": "show",
+   "id": "hayward-regional-2026",
+   "label": "Hayward",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "hayward-regional-2026",
+   "label": "Hayward",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-11-15 / page 2026-11-22"
+  },
+  {
+   "kind": "show",
+   "id": "hayward-regional-2026",
+   "label": "Hayward",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"Steppenwolf Theatre, Chicago, IL\" / page \"The 1700 Theater\""
+  },
+  {
+   "kind": "show",
+   "id": "hayward-regional-2026",
+   "label": "Hayward",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "dead-girls-quinceanera-regional-2026",
+   "label": "Dead Girl's Quinceanera",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-26, ours empty"
   },
   {
    "kind": "show",
@@ -150,24 +190,8 @@
   },
   {
    "kind": "show",
-   "id": "mud-row-regional-2026",
-   "label": "Mud Row",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
    "id": "vape-the-grease-parody-regional-2026",
    "label": "Vape! The Grease Parody",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
-   "id": "vladimir-regional-2026",
-   "label": "Vladimir",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
@@ -198,16 +222,48 @@
   },
   {
    "kind": "show",
-   "id": "the-niceties-regional-2026",
-   "label": "The Niceties",
+   "id": "the-snow-queen-regional-2026",
+   "label": "The Snow Queen",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
   },
   {
    "kind": "show",
-   "id": "the-snow-queen-regional-2026",
-   "label": "The Snow Queen",
+   "id": "a-body-of-water-regional-2026",
+   "label": "A Body of Water",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "a-christmas-carol-regional-2025",
+   "label": "A Christmas Carol",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "annie-regional-2026-drury-lane-oakbrook",
+   "label": "Annie",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "year-one-regional-2026",
+   "label": "Year One",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "our-town-regional-2026",
+   "label": "Our Town",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
@@ -307,6 +363,46 @@
    "model": "openai",
    "code": "wrong-production",
    "detail": "Presented October 7-31 by PrideArts, 4139 N Broadway, Chicago."
+  },
+  {
+   "kind": "review",
+   "id": "42-balloons-regional-2025|https://www.chicagotribune.com/2025/06/11/review-42-balloons-chicago-shakes|chris jones",
+   "label": "42 Balloons | Chicago Tribune / Chris Jones",
+   "model": "gemini",
+   "code": "star-band",
+   "detail": "article prints 3 stars should score 51-70, scored 77"
+  },
+  {
+   "kind": "review",
+   "id": "42-balloons-regional-2025|https://www.chicagotribune.com/2025/06/11/review-42-balloons-chicago-shakes|chris jones",
+   "label": "42 Balloons | Chicago Tribune / Chris Jones",
+   "model": "openai",
+   "code": "star-band",
+   "detail": "article prints 3 stars should score 51-70, scored 77"
+  },
+  {
+   "kind": "review",
+   "id": "44-the-obama-musical-regional-2025|https://www.allieandtheafterparty.com/reviews/44-the-musical|allie bugajski",
+   "label": "44: The Obama Musical | Allie and the After Party / Allie Bugajski",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Where Fine Arts Building 410 South Michigan Avenue Chicago, IL 60605"
+  },
+  {
+   "kind": "review",
+   "id": "44-the-obama-musical-regional-2025|https://www.chicagotribune.com/2025/08/20/review-44-obama-musical-chicago|chris jones",
+   "label": "44: The Obama Musical | Chicago Tribune / Chris Jones",
+   "model": "openai",
+   "code": "score-vs-text",
+   "detail": "text reads rave, score 78"
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|http://www.aroundthetownchicago.com/theatre-reviews/8-track|alan bresloff",
+   "label": "8-Track | Around the Town Chicago / Alan Bresloff",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "\"The theater is located at 721 West Howard Street , Evanston.\""
   },
   {
    "kind": "review",
@@ -531,6 +627,110 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Buzz Center Stage / BuzzNews / John Accrocco 2026-09-19 https://www.buzzcenterstage.buzznews.net/theatre/theatre-reviews/itemlist/user/6058-johnaccrocco.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "topdog-underdog-regional-2026",
+   "label": "Topdog/Underdog",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Sun-Times / Steven Oxman 2026-10-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFvxO4ojZ12-4D_sXg2q3LslvoLnAXUlSShruTtdRTA6sBXoNSNlteyNGfVNjiuxKvNyasKSVsQYACWnDZC1ZqgCi6p0Tm2IncSxTOclsigEx6P7Va__4s5MglY-hS54VugkL3tz4skcbld13C4_-p0c4ZM-rxBweC_edl57efD0wWlgvK8FIoL"
+  },
+  {
+   "kind": "coverage",
+   "id": "topdog-underdog-regional-2026",
+   "label": "Topdog/Underdog",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Reader / Kerry Reid 2026-10-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFvxO4ojZ12-4D_sXg2q3LslvoLnAXUlSShruTtdRTA6sBXoNSNlteyNGfVNjiuxKvNyasKSVsQYACWnDZC1ZqgCi6p0Tm2IncSxTOclsigEx6P7Va__4s5MglY-hS54VugkL3tz4skcbld13C4_-p0c4ZM-rxBweC_edl57efD0wWlgvK8FIoL"
+  },
+  {
+   "kind": "coverage",
+   "id": "topdog-underdog-regional-2026",
+   "label": "Topdog/Underdog",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Splash Magazines / Debra Davy 2026-10-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFvxO4ojZ12-4D_sXg2q3LslvoLnAXUlSShruTtdRTA6sBXoNSNlteyNGfVNjiuxKvNyasKSVsQYACWnDZC1ZqgCi6p0Tm2IncSxTOclsigEx6P7Va__4s5MglY-hS54VugkL3tz4skcbld13C4_-p0c4ZM-rxBweC_edl57efD0wWlgvK8FIoL"
+  },
+  {
+   "kind": "coverage",
+   "id": "topdog-underdog-regional-2026",
+   "label": "Topdog/Underdog",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Theatre Review / Colin Douglas 2026-09-30 https://www.chicagotheatrereview.com/2026/09/sibling-rivalry-and-resentment/"
+  },
+  {
+   "kind": "coverage",
+   "id": "topdog-underdog-regional-2026",
+   "label": "Topdog/Underdog",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Buzz Center Stage / Wesley David 2026-09-28 https://buzzcenterstage.buzznews.net/theatre/theatre-reviews/item/6729-steppenwolf-s-topdog-underdog-when-history-deals-the-cards.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Entertaining Chicago / Alli Doubek 2026-09-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEEX89asc4tN5zfeMHAUBZI-veGBfJgtTpTZNwFpyX9KuX9VjB4o-y3qLPF1KvGjcn8hUPawTN6Eia6DBKfCgPfWGpRndmF8w99xmN7qJeZ5ll624TqITr7nOxs3ivyTR522VgE9OLq2eGL7HDxw5JHU8JHzct4Jqkb1xayGoWCKmA_dW7S9Mg4cCG27sv-97ZGDRpP4"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "And Nearby / Cate Rees-Hessel 2026-09-04 https://peopleandplacesnewspaper.com/come-from-away-and-nearby-to-experience-marriotts-fabulous-production/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / null 2026-09-04 https://www.broadwayworld.com/chicago/article/Review-COME-FROM-AWAY-at-Marriott-Theatre-Lincolnshire-IL-20260904"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Theater and Arts / Jodie Jacobs 2026-09-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGVUk_fjILmJSvH5tEP1NIN404oF9J_MN3G03YCh2FRv01n2JFRRMafMUp8BJZRn8JBFDdhI6MVJGIoT3dtm8ga7xc6f08-XARMbjx92l6k7Q2-_9Hv2jdWR7jl-D7LRoERUGgMruX45VpPuIrnKV9CnSl0DyR63Nw=="
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Times Square Chronicles / Jeffery Lyle Segal 2026-09-18 https://t2conline.com/heartwarming-come-from-away-at-marriott-lincolnshire-resort/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Spotlight on Lake / null null https://www.marriotttheatre.com/review/come-from-away-is-an-emotional-rollercoaster-of-a-show"
+  },
+  {
+   "kind": "coverage",
+   "id": "detroit-67-regional-2026",
+   "label": "Detroit '67",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Buzz Center Stage / Wesley David 2026-09-23 https://buzzcenterstage.com/theatre/theatre-reviews/itemlist/tag/on+stage.html?start=90"
+  },
+  {
+   "kind": "coverage",
+   "id": "detroit-67-regional-2026",
+   "label": "Detroit '67",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Talkin' Broadway / Christine Malcom 2026-09-24 https://www.talkinbroadway.com/page/regional/chicago/ch927.html"
   }
  ]
 }
