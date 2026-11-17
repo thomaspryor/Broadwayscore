@@ -38,6 +38,15 @@ test('lane twin files whose URL is live do not raise an error', () => {
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
+test('same URL under a different outlet does not count as present', () => {
+  const { root, rows } = setup(6, { urlLive: true });
+  try {
+    const other = rows.map(r => ({ ...r, outletId: `other-${r.outletId}` }));
+    const res = check.run({ id: SHOW, title: 'T' }, { reviewTextsRoot: root, reviewsDoc: { [SHOW]: other }, now: new Date('2026-11-17T06:00:00Z') });
+    assert.equal(res.severity, 'error', res.message);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test('a file whose URL is not in the build is still reported', () => {
   const { root, rows } = setup(6, { urlLive: false });
   try {

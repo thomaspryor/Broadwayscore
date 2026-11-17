@@ -200,15 +200,19 @@ function run(show, context) {
   // outlet--critic.json (the opening-night lane writes outlet--critic--on-<night>.json and
   // marks the canonical file duplicateOf it). Match on the review's URL as well, or the
   // file the build actually used reads as a missing, unlogged review and blocks the draft.
+  // Keyed on outlet + URL: about 1,800 URLs in the corpus are shared by files of
+  // different critics, and a URL-only match would hide one of them being dropped.
   const urlsInBuild = new Set();
   for (const r of reviewsForShow) {
     const u = canonicalUrl(r && r.url);
-    if (u) urlsInBuild.add(u);
+    if (u && r.outletId) urlsInBuild.add(`${r.outletId}|${u}`);
   }
   const fileUrlInBuild = (f) => {
     try {
-      const u = canonicalUrl(JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')).url);
-      return !!u && urlsInBuild.has(u);
+      const j = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      const u = canonicalUrl(j.url);
+      const outlet = j.outletId || f.split('--')[0];
+      return !!u && urlsInBuild.has(`${outlet}|${u}`);
     } catch { return false; }
   };
   const absentees = localFiles.filter(f => !filenamesInBuild.has(f) && !fileUrlInBuild(f));
