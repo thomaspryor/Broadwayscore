@@ -132,13 +132,21 @@ function shouldRetryTombstone(castFile, show, now = Date.now()) {
 // selection (BRO-7504: three cards, BRO-5819/7473/7479, each the health row counting a state the
 // repair job had not yet reached or never would). States:
 //   ok          cast populated
+//   not-applicable  anonymous performers by design (CAST_NOT_APPLICABLE_SHOW_IDS) - never a gap
 //   pre-opening no cast expected yet (IBDB lags) - never a gap
 //   missing     no file; the daily missing-file pass repairs it
 //   retrying    empty tombstone inside the retry window; the daily pass is still repairing it,
 //               so it is NOT reported (automation in flight, same rule as BRO-7472)
 //   exhausted   empty tombstone the default pass will no longer retry; only a human or the
 //               weekly --force pass can fix it, so it is the real gap
+// Shows whose performers are anonymous/rotating (no individually credited cast on IBDB or
+// elsewhere), so an empty cast is permanent and correct, not a coverage gap (BRO-7665: Blue Man
+// Group's IBDB page has no cast section; the weekly --force pass can never fill it).
+const CAST_NOT_APPLICABLE_SHOW_IDS = new Set([
+  'blue-man-group-a-new-holiday-surprise-2026',
+]);
 function classifyCastCoverage(show, castFile, now = Date.now()) {
+  if (show && CAST_NOT_APPLICABLE_SHOW_IDS.has(show.id)) return 'not-applicable';
   const today = new Date(now).toISOString().slice(0, 10);
   const preOpening = show.status === 'previews' && show.openingDate && show.openingDate > today;
   if (preOpening) return 'pre-opening';
@@ -154,7 +162,7 @@ function classifyCastCoverage(show, castFile, now = Date.now()) {
 }
 
 module.exports = {
-  classifyCastCoverage, shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
+  classifyCastCoverage, CAST_NOT_APPLICABLE_SHOW_IDS, shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
   shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, MAX_WRONG_PRODUCTION_PURGES, parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch,
   expectedOpeningYear, castFileMismatchReason,
 };

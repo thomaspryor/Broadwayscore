@@ -114,3 +114,18 @@ describe('BRO-5809 review follow-ups', () => {
     assert.equal(castFileMismatchReason({ ibdbUrl: 'u' }, { id: 'x-2026', status: 'upcoming' }), 'unverified-ibdb');
   });
 });
+
+describe('BRO-7665 cast-not-applicable shows', () => {
+  const { classifyCastCoverage, CAST_NOT_APPLICABLE_SHOW_IDS } = require('../../scripts/lib/cast-tombstone.js');
+  const empty = { openingNightCast: [], scrapedAt: '2026-09-24T13:56:13.096Z' };
+  it('never reports an anonymous-performer show as a coverage gap', () => {
+    const show = { id: 'blue-man-group-a-new-holiday-surprise-2026', status: 'open', openingDate: '2026-11-17' };
+    assert.equal(classifyCastCoverage(show, empty, Date.parse('2026-12-30')), 'not-applicable');
+    assert.equal(classifyCastCoverage(show, null, Date.parse('2026-12-30')), 'not-applicable');
+  });
+  it('still flags an ordinary show with the same empty file', () => {
+    const show = { id: 'ordinary-2026', status: 'open', openingDate: '2026-11-17' };
+    assert.equal(classifyCastCoverage(show, empty, Date.parse('2026-12-30')), 'exhausted');
+    assert.equal(CAST_NOT_APPLICABLE_SHOW_IDS.has('ordinary-2026'), false);
+  });
+});
