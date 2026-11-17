@@ -1,37 +1,150 @@
 {
-  "generatedAt": "2026-11-16T13:57:38.038Z",
-  "total": 396,
-  "armedCount": 374,
-  "refusedCount": 22,
+  "generatedAt": "2026-11-17T14:50:42.012Z",
+  "total": 402,
+  "armedCount": 368,
+  "refusedCount": 34,
   "byKind": {
-    "shape": 20,
-    "path-prefix": 1,
+    "shape": 28,
+    "no-section": 4,
+    "no-command": 1,
     "basename": 1
   },
   "refused": [
     {
-      "id": "BRO-7595",
-      "name": "Board falling behind: find and fix what floods the board with cards (385 added vs 348 closed in 7d)",
+      "id": "BRO-7684",
+      "name": "Bylineless aggregator-quote ghosts stay live up to a week: run excerpt-containment at ingest/rebuild, not only in the weekly audit",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7595/board-falling-behind-find-and-fix-what-floods-the-board-with-cards-385",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/board-inflow-report.js --days=7)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7684/bylineless-aggregator-quote-ghosts-stay-live-up-to-a-week-run-excerpt",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/tests/cross-outlet-excerpt-containment.test.mjs)",
       "kind": "shape"
     },
     {
-      "id": "BRO-7593",
-      "name": "Two Girls: Guardian feature scored as a review (fix + Guardian tone guard)",
+      "id": "BRO-7683",
+      "name": "US regional coverage gaps: Nixon in China (WNO, DC) missing; audit every US regional review vs shows.json",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7593/two-girls-guardian-feature-scored-as-a-review-fix-guardian-tone-guard",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const r=require('./data/reviews.json');process.exit((r.reviews||r).some(x=>/2-girls-1-cup-play/.test(x.url||''))",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7683/us-regional-coverage-gaps-nixon-in-china-wno-dc-missing-audit-every-us",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const s=require('./data/shows.json');const a=Array.isArray(s)?s:s.shows;process.exit(a.some(x=>/nixon-in-china/)",
       "kind": "shape"
     },
     {
-      "id": "BRO-7580",
-      "name": "Decide: offline opening-night test harness (plan + review)",
+      "id": "BRO-7682",
+      "name": "City hub audit boston-ma 2026-W47: 1 new finding(s)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7580/decide-offline-opening-night-test-harness-plan-review",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f /tmp/claude-0/-home-user/74573ec2-fd83-538d-bc61-eebec32dd92a/scratchpad/plan-review-result.md)",
-      "kind": "path-prefix"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7682/city-hub-audit-boston-ma-2026-w47-1-new-findings",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=boston-ma --no-llm --dry-run --open)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7681",
+      "name": "City hub audit san-diego-ca 2026-W47: 1 new finding(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7681/city-hub-audit-san-diego-ca-2026-w47-1-new-findings",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=san-diego-ca --no-llm --dry-run --open)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7679",
+      "name": "City hub audit los-angeles-ca 2026-W47: 3 new finding(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7679/city-hub-audit-los-angeles-ca-2026-w47-3-new-findings",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=los-angeles-ca --no-llm --dry-run --open)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7678",
+      "name": "City hub audit washington-dc 2026-W47: 2 new finding(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7678/city-hub-audit-washington-dc-2026-w47-2-new-findings",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=washington-dc --no-llm --dry-run --open)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7677",
+      "name": "City hub audit chicago-il 2026-W47: 2 new finding(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7677/city-hub-audit-chicago-il-2026-w47-2-new-findings",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=chicago-il --no-llm --dry-run --open)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7662",
+      "name": "Opening-night audit 2026-11-17",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7662/opening-night-audit-2026-11-17",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7660",
+      "name": "Older-years audit: 120 FAILs are pipeline-excluded reviews (wrongProduction/wrongShow/nonReview) needing review-text reads",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7660/older-years-audit-120-fails-are-pipeline-excluded-reviews",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-never-audited-backlog.js --max=100)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7659",
+      "name": "Older-years audit: 78 FAILs from blocked-host fetch failures (talkinbroadway, nydailynews, theatermania, lightingandsoundamerica)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7659/older-years-audit-78-fails-from-blocked-host-fetch-failures",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-never-audited-backlog.js --max=100)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7645",
+      "name": "Recurring session friction: hook:hook",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7645/recurring-session-friction-hookhook",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lib/session-retro.js --rollup --days=7)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7644",
+      "name": "Let a manual create_draft dispatch bypass the 7 AM ET broadcast time gate",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7644/let-a-manual-create-draft-dispatch-bypass-the-7-am-et-broadcast-time",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-broadcast-draft.js the-fantasticks-2026)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7643",
+      "name": "iOS E2E: no Maestro flow walks the short onboarding quiz that new installs actually get",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7643/ios-e2e-no-maestro-flow-walks-the-short-onboarding-quiz-that-new",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -l 'kind=short' .maestro/onboarding/\\*.yaml)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7620",
+      "name": "Missing show: Shakespeare's Cousin",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7620/missing-show-shakespeares-cousin",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7619",
+      "name": "Missing show: Freestyle Love Supreme",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7619/missing-show-freestyle-love-supreme",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7618",
+      "name": "Missing show: Bellringers",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7618/missing-show-bellringers",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7617",
+      "name": "Search zero-results rate at 3% with no user feedback loop",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7617/search-zero-results-rate-at-3percent-with-no-user-feedback-loop",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "BRO-7477",
@@ -146,14 +259,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-6755",
-      "name": "BSC Daily: Commercial model drift",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6755/bsc-daily-commercial-model-drift",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-health-row-absent.js --row-b64 Q29tbWVyY2lhbCBtb2RlbCBkcmlmdA==)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-6730",
       "name": "check-prod-deploy.js: fall back to the GitHub compare API when local ancestry is UNKNOWN (shallow cloud clone, VERCEL_TOKEN set)",
       "priority": null,
@@ -176,39 +281,57 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6705/recover-24-real-reviews-hidden-by-a-wrong-llm-not-a-review-verdict-bro",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --help)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-6275",
-      "name": "Mac: sync pre-push-visual-gate.sh master copy to the narrowed UI pattern + visual-hold/visual-evidence exemption (BRO-6241)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6275/mac-sync-pre-push-visual-gatesh-master-copy-to-the-narrowed-ui-pattern",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: diff -q \\~/.claude/hooks/pre-push-visual-gate.sh .claude/hooks/pre-push-visual-gate.sh)",
-      "kind": "shape"
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 261,
-    "checked": 261,
+    "total": 269,
+    "checked": 269,
     "complete": true,
-    "cards": []
+    "cards": [
+      {
+        "id": "BRO-7563",
+        "name": "Cloud 9 West End newsletter draft is stuck in Resend: send or delete it",
+        "priority": 3,
+        "url": "https://linear.app/broadway-scorecard/issue/BRO-7563/cloud-9-west-end-newsletter-draft-is-stuck-in-resend-send-or-delete-it",
+        "source": "description"
+      }
+    ]
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-7594",
-      "name": "Awake and Sing! FAQ says 4h no intermission; FAQ treats unknown intermissions as none",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7594/awake-and-sing-faq-says-4h-no-intermission-faq-treats-unknown",
-      "cmd": "node --test scripts/lib/awake-and-sing-faq.test.mjs",
+      "id": "BRO-7680",
+      "name": "Mobile market dropdown cut off: Chicago and later items unreachable on phones",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7680/mobile-market-dropdown-cut-off-chicago-and-later-items-unreachable-on",
+      "cmd": "node --test tests/unit/market-nav-viewport.test.mjs",
       "missingPaths": [
-        "scripts/lib/awake-and-sing-faq.test.mjs"
+        "tests/unit/market-nav-viewport.test.mjs"
       ]
     },
     {
-      "id": "BRO-7550",
-      "name": "Fetch Show Images: intermittent failure in auto-discovery step (5 of 30 runs)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7550/fetch-show-images-intermittent-failure-in-auto-discovery-step-5-of-30",
-      "cmd": "node --test tests/unit/fetch-show-images-flake.test.mjs",
+      "id": "BRO-7676",
+      "name": "Opening-night Resend draft: create automatically as soon as reviews are ready, keep it updated; stop lane twin files blocking it",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7676/opening-night-resend-draft-create-automatically-as-soon-as-reviews-are",
+      "cmd": "node --test tests/unit/review-count-match-url.test.mjs",
       "missingPaths": [
-        "tests/unit/fetch-show-images-flake.test.mjs"
+        "tests/unit/review-count-match-url.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7616",
+      "name": "Zero-results searches for 'bellringers' (4 searches) — possible missing show",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7616/zero-results-searches-for-bellringers-4-searches-possible-missing-show",
+      "cmd": "node --test scripts/tests/bellringers-search-verification.test.mjs",
+      "missingPaths": [
+        "scripts/tests/bellringers-search-verification.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7615",
+      "name": "Rage clicks on /show/other-desert-cities link on homepage",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7615/rage-clicks-on-showother-desert-cities-link-on-homepage",
+      "cmd": "node --test tests/unit/show-other-desert-cities-link.test.mjs",
+      "missingPaths": [
+        "tests/unit/show-other-desert-cities-link.test.mjs"
       ]
     },
     {
@@ -428,15 +551,6 @@
       ]
     },
     {
-      "id": "BRO-6356",
-      "name": "TR wrong_show repair, part 3: 88 files still rejected after re-extract (parser keeps another show's text; merged files never get NO-RECORD)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6356/tr-wrong-show-repair-part-3-88-files-still-rejected-after-re-extract",
-      "cmd": "node --test scripts/lib/we-historical-tr-coverage.test.js scripts/lib/tr-pdf-parse.test.mjs",
-      "missingPaths": [
-        "scripts/lib/we-historical-tr-coverage.test.js"
-      ]
-    },
-    {
       "id": "BRO-6346",
       "name": "Zero-results search rate suggests search index gaps",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6346/zero-results-search-rate-suggests-search-index-gaps",
@@ -482,15 +596,6 @@
       ]
     },
     {
-      "id": "BRO-6213",
-      "name": "iOS design round 4: compact Upcoming, Import label, tab order, badge nudge, Home search alternatives",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6213/ios-design-round-4-compact-upcoming-import-label-tab-order-badge-nudge",
-      "cmd": "test -f memory/design-proposals.md",
-      "missingPaths": [
-        "memory/design-proposals.md"
-      ]
-    },
-    {
       "id": "BRO-6176",
       "name": "iOS design round: ideas from the inspiration app (stats strip, feature cards, numbered Top 10, quick-log +)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6176/ios-design-round-ideas-from-the-inspiration-app-stats-strip-feature",
@@ -506,15 +611,6 @@
       "cmd": "test -f scripts/post-recovery-checklist.mjs",
       "missingPaths": [
         "scripts/post-recovery-checklist.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6097",
-      "name": "Theatre Record: recover missing reviews for 2016-2022 West End shows (PDF extraction under-yields)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6097/theatre-record-recover-missing-reviews-for-2016-2022-west-end-shows",
-      "cmd": "node --test scripts/lib/we-historical-tr-coverage.test.js",
-      "missingPaths": [
-        "scripts/lib/we-historical-tr-coverage.test.js"
       ]
     },
     {
@@ -578,15 +674,6 @@
       "cmd": "node --test tests/e2e/ios_maestro_coverage.test.mjs",
       "missingPaths": [
         "tests/e2e/ios_maestro_coverage.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5673",
-      "name": "Progress per dollar: more Codex, cap batch sessions, stop dead filers, consolidate watchers (owner chose A, 2026-10-19)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5673/progress-per-dollar-more-codex-cap-batch-sessions-stop-dead-filers",
-      "cmd": "node --test scripts/verify-bro-5384-codex-throughput.test.mjs",
-      "missingPaths": [
-        "scripts/verify-bro-5384-codex-throughput.test.mjs"
       ]
     },
     {
@@ -662,15 +749,6 @@
       ]
     },
     {
-      "id": "BRO-5259",
-      "name": "Sweep 333 scored web-search rows with summary-length text for made-up URLs and bylines",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5259/sweep-333-scored-web-search-rows-with-summary-length-text-for-made-up",
-      "cmd": "node --test scripts/check-byline-evidence.test.mjs",
-      "missingPaths": [
-        "scripts/check-byline-evidence.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5123",
       "name": "Star deals: find sources for the 3 old deals, then checker before/after for the sourcedStarDeals live switch (BRO-5029 follow-up)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5123/star-deals-find-sources-for-the-3-old-deals-then-checker-beforeafter",
@@ -731,15 +809,6 @@
       "cmd": "node --test tests/unit/btc-season-config.test.mjs",
       "missingPaths": [
         "tests/unit/btc-season-config.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4318",
-      "name": "34 reviews where the adjudicator disputed the stored star rating: verify and correct the stars",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4318/34-reviews-where-the-adjudicator-disputed-the-stored-star-rating",
-      "cmd": "node --test scripts/verify-adjudication-corrections.test.mjs",
-      "missingPaths": [
-        "scripts/verify-adjudication-corrections.test.mjs"
       ]
     },
     {
