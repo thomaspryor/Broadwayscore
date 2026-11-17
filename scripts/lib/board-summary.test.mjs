@@ -228,6 +228,39 @@ test('BRO-7686: a past-date card parked on a block or already handed to a worker
   assert.equal(v.tone, 'steady');
   assert.match(v.sentence, /5 cards are past their check date/);
   assert.match(v.sentence, /7 are parked on a block, 5 were handed to a worker and put back on hold/);
+  // More than the limit still owed a check stays a warning even when parked and handed-off cards exist.
+  const warn = boardVerdict(model({ awaitingCheck: { waiting: 116, overdue: 11, parkedPastDate: 7, handedOffPastDate: 5, waitingAddedInWindow: 55, truncated: false } }), daily);
+  assert.equal(warn.headline, 'Falling behind');
+  assert.match(warn.sentence, /Past their check date but not waiting on the check/);
+});
+
+test('BRO-7686: a stale hand-off counts as owed again; a description-only stamp with a marker is handed off', () => {
+  const { summarizeAwaitingCheck } = require('./board-summary.js');
+  const { RECHECK_HANDOFF_MARKER } = require('./autonomous-recheck-core.js');
+  const stale = paused('2026-10-01');
+  stale.comments.nodes.push({ body: `${RECHECK_HANDOFF_MARKER}\nHanded.`, createdAt: '2026-10-05T10:00:00Z' }); // 19 days before NOW
+  const descOnly = { ...paused('2026-10-20', '2026-10-22T10:00:00Z', 'notes'), comments: { nodes: [{ body: `${RECHECK_HANDOFF_MARKER}\nHanded.`, createdAt: '2026-10-22T11:00:00Z' }] } };
+  assert.deepEqual(summarizeAwaitingCheck([stale, descOnly], { now: NOW }),
+    { waiting: 0, overdue: 1, parkedPastDate: 0, handedOffPastDate: 1, waitingAddedInWindow: 0 });
+});
+
+test('BRO-7686: the digest buckets agree with the nightly recheck hand-off decision', () => {
+  const { summarizeAwaitingCheck } = require('./board-summary.js');
+  const { decideHandoff } = require('./recheck-handoff.js');
+  const { mapIssueToCard } = require('./linear-recheck-source.js');
+  const { RECHECK_HANDOFF_MARKER } = require('./autonomous-recheck-core.js');
+  const parked = { ...paused('2026-10-20'), description: 'PARKED: needs the owner Mac to read cmux state' };
+  const handed = paused('2026-10-20');
+  handed.comments.nodes.push({ body: `${RECHECK_HANDOFF_MARKER}\nHanded.`, createdAt: '2026-10-22T11:00:00Z' });
+  const owed = paused('2026-10-20');
+  const reason = (issue) => decideHandoff({ card: mapIssueToCard(issue), target: { verifyCmd: 'node --test x' }, result: { status: 'fail' } }).reason;
+  const bucket = (issue) => Object.entries(summarizeAwaitingCheck([issue], { now: NOW })).find(([k, n]) => n && k !== 'waitingAddedInWindow')[0];
+  assert.equal(reason(parked), 'parked or waiting on the owner');
+  assert.equal(bucket(parked), 'parkedPastDate');
+  assert.equal(reason(handed), 'already handed off');
+  assert.equal(bucket(handed), 'handedOffPastDate');
+  assert.equal(reason(owed), 'test-failed');
+  assert.equal(bucket(owed), 'overdue');
 });
 
 test('BRO-7595: growth made only of waiting fixes is a middle tone, never green; overdue checks keep the warning', () => {
