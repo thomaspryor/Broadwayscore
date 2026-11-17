@@ -2229,7 +2229,7 @@ for (const [label, calls] of [
   test(`BRO-7653: concise KEEP OPEN passes for ${label}`, skipNoRepoHook, () => {
     const dir = makeTmpDir('pause-live');
     try { assertAllowed(runHook(pauseTranscript(dir, calls), PAUSE, PAUSE_GATES), label); }
-    finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
   });
 }
 
@@ -2257,7 +2257,7 @@ for (const [label, calls, ageMs = 0] of [
       const result = runHook(transcript, PAUSE, PAUSE_GATES);
       assertBlocked(result, label);
       assert.match(result.stderr, /\[VE:(?:CLEARCLOSE|WAKELESS)\]/);
-    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
   });
 }
 
@@ -2275,7 +2275,7 @@ test('BRO-7653: a live wait never waives status, owner-action, reason or review 
       assertBlocked(result, tag);
       assert.ok(result.stderr.includes(`[VE:${tag}]`), result.stderr);
     }
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('CLEARCLOSE: real unclear endings → BLOCKED, naming what is missing', skipNoRepoHook, () => {
