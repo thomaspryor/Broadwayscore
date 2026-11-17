@@ -68,7 +68,12 @@ function aiEstimatedShare(entry) {
  */
 function unexplainedFlagCount(entry, explanations = MODEL_FALSE_NEGATIVE_EXPLANATIONS) {
   if (Array.isArray(entry && entry.modelDesignationFlags)) {
-    return entry.modelDesignationFlags.filter((f) => !(f && Object.prototype.hasOwnProperty.call(explanations, f.show))).length;
+    // Only the diagnosed kind is excluded: a listed show whose flag says the model reads it
+    // BELOW the "Recouped" label. A listed show flipping to any other contradiction still counts.
+    const explainedKind = (f) => f && Object.prototype.hasOwnProperty.call(explanations, f.show)
+      && /^Model: -?\d+(\.\d+)?% vs designation: Recouped\b/i.test(String(f.flag || ''))
+      && parseFloat(String(f.flag).replace(/^Model:\s*/i, '')) < 100;
+    return entry.modelDesignationFlags.filter((f) => !explainedKind(f)).length;
   }
   return (entry && entry.modelDesignationFlagCount) || 0;
 }
@@ -96,7 +101,7 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   if (!prior) {
     return {
       status: 'pass',
-      message: `${latestFlagCount} modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows (only 1 history entry — no prior week to compare)`,
+      message: `${latestFlagCount} unexplained modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows (only 1 history entry — no prior week to compare)`,
     };
   }
 
@@ -107,7 +112,7 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
 
   const issues = [];
   if (flagDelta > 0) {
-    issues.push(`modelDesignationFlag contradictions up ${flagDelta} (${priorFlagCount} → ${latestFlagCount})`);
+    issues.push(`unexplained modelDesignationFlag contradictions up ${flagDelta} (${priorFlagCount} → ${latestFlagCount})`);
   }
   // BRO-5749: the modelled set keeps growing (230 → 476 shows, Sep-Oct 2026),
   // so the raw ai-estimated count rose most weeks while its SHARE fell
@@ -129,7 +134,7 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
 
   return {
     status: 'pass',
-    message: `${latestFlagCount} modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows${latestShare != null ? ` (${pct(latestShare)}% of modelled)` : ''} (no rise vs prior week)`,
+    message: `${latestFlagCount} unexplained modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows${latestShare != null ? ` (${pct(latestShare)}% of modelled)` : ''} (no rise vs prior week)`,
   };
 }
 

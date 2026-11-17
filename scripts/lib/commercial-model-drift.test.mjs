@@ -22,7 +22,7 @@ describe('computeCommercialModelDriftStatus', () => {
     ];
     const result = computeCommercialModelDriftStatus(history, NOW);
     assert.equal(result.status, 'pass');
-    assert.match(result.message, /2 modelDesignationFlag/);
+    assert.match(result.message, /2 unexplained modelDesignationFlag/);
     assert.match(result.message, /100 ai-estimated/);
   });
 
@@ -134,5 +134,14 @@ describe('explained contradictions', () => {
   it('still warns when the new flag is unexplained', () => {
     const h = [mk('2026-07-01T00:00:00.000Z', ['harry-potter']), mk('2026-07-08T00:00:00.000Z', ['harry-potter', 'some-new-show'])];
     assert.equal(computeCommercialModelDriftStatus(h, NOW).status, 'warn');
+  });
+});
+describe('explained kind only (BRO-6755 review)', () => {
+  it('counts a listed show that flips to a different contradiction', () => {
+    const h = [{ date: '2026-07-01T00:00:00.000Z', modelDesignationFlags: [{ show: 'legally-blonde-2007', flag: 'Model: -59% vs designation: Recouped' }] },
+      { date: '2026-07-08T00:00:00.000Z', modelDesignationFlags: [{ show: 'legally-blonde-2007', flag: 'Model: 150% vs designation: Flop' }] }];
+    const r = computeCommercialModelDriftStatus(h, NOW);
+    assert.equal(r.status, 'warn');
+    assert.match(r.message, /unexplained modelDesignationFlag contradictions up 1/);
   });
 });
