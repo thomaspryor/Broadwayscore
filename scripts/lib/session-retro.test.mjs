@@ -51,3 +51,18 @@ test('weekly rollup counts repeated signals and runs once per week with --if-due
     assert.equal(R.rollup(7, false, { ledger, ifDue: true, log: () => {} }), -1, 'second run in the week is skipped');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
+
+test('a failed card filing does not write the weekly marker, so the next run retries', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-'));
+  try {
+    const ledger = path.join(dir, 'l.jsonl');
+    const row = JSON.stringify({ endAt: new Date().toISOString(), signals: ['restart'] });
+    fs.writeFileSync(ledger, row + '\n' + row + '\n');
+    const out = [];
+    R.rollup(7, true, { ledger, ifDue: true, log: (m) => out.push(m), spawn: () => ({ status: 1, stdout: '' }) });
+    assert.ok(out.some((m) => /card filing failed/.test(m)));
+    assert.ok(!fs.readFileSync(ledger, 'utf8').includes('"rollup":true'), 'marker must not be written after a failure');
+    R.rollup(7, true, { ledger, ifDue: true, log: () => {}, spawn: () => ({ status: 0, stdout: 'BRO-1' }) });
+    assert.ok(fs.readFileSync(ledger, 'utf8').includes('"rollup":true'));
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 }); }
+});

@@ -106,7 +106,7 @@ function readLedger(file = LEDGER) {
   return fs.existsSync(file) ? fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean) : [];
 }
 
-function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.log } = {}) {
+function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.log, spawn = require('child_process').spawnSync } = {}) {
   const cutoff = Date.now() - days * 86400000;
   const all = readLedger(ledger);
   if (ifDue && all.some((r) => r.rollup && Date.parse(r.recordedAt) >= cutoff)) { log('session-retro: weekly rollup already done'); return -1; }
@@ -116,13 +116,14 @@ function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.
   const top = [...count.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 5);
   log(`${rows.length} session(s) in the last ${days} days`);
   for (const [s, n] of top) log(`${n}x ${s}`);
-  if (ifDue) fs.appendFileSync(ledger, JSON.stringify({ rollup: true, recordedAt: new Date().toISOString(), sessions: rows.length, top }) + '\n');
+  const mark = () => { if (ifDue) fs.appendFileSync(ledger, JSON.stringify({ rollup: true, recordedAt: new Date().toISOString(), sessions: rows.length, top }) + '\n'); };
   if (fileCard && top.length) {
     const [s, n] = top[0];
-    const { spawnSync } = require('child_process');
-    const r = spawnSync('node', [path.join(__dirname, '..', 'linear-brain.js'), 'create', `Recurring session friction: ${s} (${n} sessions this week)`, '--dispatch', '--notes', `Weekly session-retro rollup. Signal ${s} hit ${n} of ${rows.length} sessions. Top five: ${top.map(([a, b]) => `${a} x${b}`).join('; ')}. Fix the cause (guard, test, hook), not a memory note.\n\n## Acceptance criteria\nVERIFY: node scripts/lib/session-retro.js --rollup --days=7`], { encoding: 'utf8' });
-    log(r.stdout.split('\n').slice(0, 3).join('\n'));
+    const r = spawn('node', [path.join(__dirname, '..', 'linear-brain.js'), 'create', `Recurring session friction: ${s} (${n} sessions this week)`, '--dispatch', '--notes', `Weekly session-retro rollup. Signal ${s} hit ${n} of ${rows.length} sessions. Top five: ${top.map(([a, b]) => `${a} x${b}`).join('; ')}. Fix the cause (guard, test, hook), not a memory note.\n\n## Acceptance criteria\nVERIFY: node scripts/lib/session-retro.js --rollup --days=7`], { encoding: 'utf8' });
+    if (r.error || r.status !== 0) { log(`session-retro: card filing failed (${r.error ? r.error.message : 'exit ' + r.status}); weekly marker not written, will retry next time`); return top; }
+    log((r.stdout || '').split('\n').slice(0, 3).join('\n'));
   }
+  mark();
   return top.length ? top : [];
 }
 
