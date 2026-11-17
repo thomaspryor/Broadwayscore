@@ -120,3 +120,19 @@ describe('computeCommercialModelDriftStatus', () => {
     assert.equal(result.status, 'pass');
   });
 });
+
+// BRO-6755: an explained false negative (Legally Blonde's owner-sourced recoup) appearing in the
+// flag list is not drift; a new unexplained contradiction still is.
+describe('explained contradictions', () => {
+  const mk = (date, shows) => ({ date, modelDesignationFlagCount: shows.length,
+    modelDesignationFlags: shows.map((show) => ({ show, flag: 'Model: -59% vs designation: Recouped' })) });
+  it('does not warn when the new flag is an explained false negative', () => {
+    const h = [mk('2026-07-01T00:00:00.000Z', ['harry-potter', 'kimberly-akimbo-2022']),
+      mk('2026-07-08T00:00:00.000Z', ['harry-potter', 'kimberly-akimbo-2022', 'legally-blonde-2007'])];
+    assert.equal(computeCommercialModelDriftStatus(h, NOW).status, 'pass');
+  });
+  it('still warns when the new flag is unexplained', () => {
+    const h = [mk('2026-07-01T00:00:00.000Z', ['harry-potter']), mk('2026-07-08T00:00:00.000Z', ['harry-potter', 'some-new-show'])];
+    assert.equal(computeCommercialModelDriftStatus(h, NOW).status, 'warn');
+  });
+});

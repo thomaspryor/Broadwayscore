@@ -1,3 +1,5 @@
+const { MODEL_FALSE_NEGATIVE_EXPLANATIONS } = require('./model-false-negative-explanations');
+
 const COMMERCIAL_HISTORY_MAX_AGE_HOURS = 200;
 
 /** Pure check shared by the weekly writer (pre-write) and daily digest. */
@@ -56,6 +58,21 @@ function aiEstimatedShare(entry) {
   return ai / total;
 }
 
+/**
+ * Contradictions nobody has diagnosed yet (BRO-6755). A show listed in
+ * MODEL_FALSE_NEGATIVE_EXPLANATIONS is a known, explained model-vs-designation
+ * disagreement (an announced recoupment the Broadway-only model cannot see), so
+ * its flag appearing is not drift: Legally Blonde's owner-sourced recoup raised
+ * the weekly count 3 -> 4 and warned for a week. Entries without the per-show
+ * list fall back to the raw count.
+ */
+function unexplainedFlagCount(entry, explanations = MODEL_FALSE_NEGATIVE_EXPLANATIONS) {
+  if (Array.isArray(entry && entry.modelDesignationFlags)) {
+    return entry.modelDesignationFlags.filter((f) => !(f && Object.prototype.hasOwnProperty.call(explanations, f.show))).length;
+  }
+  return (entry && entry.modelDesignationFlagCount) || 0;
+}
+
 function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   if (!Array.isArray(history) || history.length === 0) {
     return {
@@ -73,7 +90,7 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   const latest = history[history.length - 1];
   const prior = history.length >= 2 ? history[history.length - 2] : null;
 
-  const latestFlagCount = latest.modelDesignationFlagCount || 0;
+  const latestFlagCount = unexplainedFlagCount(latest);
   const latestAiCount = latest.aiEstimatedCount || 0;
 
   if (!prior) {
@@ -83,7 +100,7 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
     };
   }
 
-  const priorFlagCount = prior.modelDesignationFlagCount || 0;
+  const priorFlagCount = unexplainedFlagCount(prior);
   const priorAiCount = prior.aiEstimatedCount || 0;
   const flagDelta = latestFlagCount - priorFlagCount;
   const aiDelta = latestAiCount - priorAiCount;
@@ -116,4 +133,4 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   };
 }
 
-module.exports = { computeCommercialModelDriftStatus, aiEstimatedShare, commercialHistoryIssue, COMMERCIAL_HISTORY_MAX_AGE_HOURS };
+module.exports = { computeCommercialModelDriftStatus, unexplainedFlagCount, aiEstimatedShare, commercialHistoryIssue, COMMERCIAL_HISTORY_MAX_AGE_HOURS };
