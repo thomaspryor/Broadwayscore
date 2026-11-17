@@ -119,15 +119,40 @@ test('the existing sweep serializes outlet plans and preserves its failure exit'
   assert.equal(output.triage.outletPlans.length, 2);
 });
 
-// BRO-7666: the digest row must not warn on routine excerpt/unresolved hits.
-test('isContaminationEvidence: only wrong-production hits are actionable', () => {
-  const v = (bucket) => ({ triage: { bucket } });
-  assert.equal(isContaminationEvidence(v('wrong-production')), true);
-  for (const b of ['excerpt', 'truncated', 'stub', 'roundup', 'unresolved']) assert.equal(isContaminationEvidence(v(b)), false);
-  assert.equal(isContaminationEvidence({}), false);
+// BRO-7666: the digest row must not warn on routine excerpt/unresolved hits,
+// but must still warn on hits with contamination evidence.
+const { lifetimeSweepRowResult } = require('../../scripts/lib/lifetime-sweep-row.js');
+const rowFor = (actionableOpen, extra = {}) => lifetimeSweepRowResult({
+  name: 'n', ageHours: 1, scriptName: 's', stepName: 't', unit: 'unmatched review(s)', formatAge: h => `${h}h`,
+  snap: { actionableOpen, newSinceLastRun: 3, totalViolations: 9, showsWithViolations: 2, scanned: 5, ...extra },
 });
 
-test('fulltext sweep wires isActionable into the runner (row stays quiet on backlog)', () => {
+test('isContaminationEvidence: only wrong-production hits', () => {
+  const v = (bucket, flag) => ({ triage: { bucket }, textIssuesFlag: flag });
+  assert.equal(isContaminationEvidence(v('wrong-production', false)), true);
+  for (const b of ['excerpt', 'truncated', 'stub', 'roundup', 'unresolved']) assert.equal(isContaminationEvidence(v(b, false)), false);
+  assert.equal(isContaminationEvidence({}), false);
+  assert.equal(isContaminationEvidence(null), false);
+});
+
+test('digest row: backlog-only new hits pass, evidence hits warn', () => {
+  assert.equal(rowFor({}).status, 'pass');
+  assert.equal(rowFor({ 'x::a.json': 1 }).status, 'warn');
+});
+
+test('fulltext sweep wires isActionable into the runner', () => {
   const src = fs.readFileSync(path.join(root, 'scripts/audit-fulltext-mentions-show-lifetime.js'), 'utf8');
   assert.match(src, /isActionable:\s*isContaminationEvidence/);
+});
+
+test('accented titles match ASCII slugs (Les Misérables)', () => {
+  const root2 = fs.mkdtempSync(path.join(root, '.bro-7666-test-'));
+  try {
+    fs.mkdirSync(path.join(root2, 'les-miserables-test-2024'));
+    const text = 'Uptown presents Les Misérables in a special arrangement. '.repeat(3);
+    fs.writeFileSync(path.join(root2, 'les-miserables-test-2024', 'o--c.json'), JSON.stringify({ url: 'https://x.test/a', fullText: text }));
+    const show = { id: 'les-miserables-test-2024', title: 'Les Misérables', slug: 'les-miserables-test' };
+    const res = check.run(show, { reviewTextsRoot: root2, reviewsDoc: { [show.id]: [{ url: 'https://x.test/a' }] } });
+    assert.equal(res.ok, true, res.message);
+  } finally { fs.rmSync(root2, { recursive: true, force: true }); }
 });

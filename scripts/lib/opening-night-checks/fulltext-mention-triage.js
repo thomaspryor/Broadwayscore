@@ -49,10 +49,14 @@ function classifyUnmatchedReview(record, haystackLength) {
   return { bucket, evidence, nextStep, requiresArticleReview: true };
 }
 
-// BRO-7666: only a hit already flagged wrongProduction/wrongShow is evidence
-// of contamination. An excerpt/stub/unresolved review whose text lacks the
-// title is routine backlog (it stays in the snapshot + triage plans) and must
-// not trip the daily digest row on every new ingest.
+// BRO-7666: a hit is evidence of contamination only when the record is already
+// flagged wrongProduction/wrongShow. A bare excerpt/stub/unresolved review
+// lacking the title is routine backlog (it stays in the snapshot + triage
+// plans) and must not trip the daily digest row on every new ingest. The
+// pipeline's "show title not found" textIssue is NOT evidence: it is the same
+// regex miss this sweep makes (183 of 866 baseline hits, accent false
+// positives among them). Known limit: unflagged complete articles about
+// another show stay backlog; the triage plans list them for article review.
 function isContaminationEvidence(violation) {
   return !!(violation && violation.triage && violation.triage.bucket === 'wrong-production');
 }

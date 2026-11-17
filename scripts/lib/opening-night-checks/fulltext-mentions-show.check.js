@@ -72,7 +72,9 @@ function run(show, context) {
       continue;
     }
 
-    if (mentionRe.test(haystack)) continue;
+    // BRO-7666: slugs are ASCII, so "Les Misérables"/"Beyoncé" never matched
+    // and every accented-title review was reported as unmatched. Fold accents.
+    if (mentionRe.test(haystack) || mentionRe.test(haystack.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) continue;
 
     // Also honor explicit textIssues signal written by the ingest pipeline
     const hasTitleMissingFlag = Array.isArray(data.textIssues)
