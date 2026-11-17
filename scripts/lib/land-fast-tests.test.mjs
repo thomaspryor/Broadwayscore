@@ -54,8 +54,20 @@ test('a changed test runs even when slow; a dir literal pulls in tests that scan
 test('broad dirs and the cap keep the set small, strongest matches first', () => {
   assert.equal(F.matchTier('scripts/lib/zz.js', 'q', "'scripts/lib'"), null);
   const r = sel(['scripts/lib/widget-maker.js'], { maxTargeted: 1 });
-  assert.deepEqual(r.files.map((f) => f.file), ['tests/unit/inv.test.mjs', 'tests/unit/a.test.mjs']);
-  assert.ok(r.skipped.overCap >= 2);
+  // a names the full path (tier 1, never capped); the cap of 1 keeps one weaker match (x, basename) and drops t (stem).
+  assert.deepEqual(r.files.map((f) => f.file), ['tests/unit/inv.test.mjs', 'tests/unit/a.test.mjs', 'scripts/lib/x.test.mjs']);
+  assert.ok(r.skipped.overCap >= 1);
+});
+
+test('a test that names a changed file by full path is never cut by the cap (BRO-7628 land refusal)', () => {
+  // 60 alphabetically-early tests that only name the basename, plus one late test that reads the file by path.
+  const nodeSet = new Set(['tests/unit/zz-reads-by-path.test.mjs']);
+  const t = { 'tests/unit/zz-reads-by-path.test.mjs': "read('src/app/my-shows/MyShowsClient.tsx')" };
+  for (let i = 0; i < 60; i++) { const f = `tests/unit/a${String(i).padStart(2, '0')}.test.mjs`; nodeSet.add(f); t[f] = 'MyShowsClient.tsx'; }
+  const r = F.selectFastTests({ changed: ['src/app/my-shows/MyShowsClient.tsx'], universe: { nodeSet, tsxSet: new Set(), libFiles: [] }, readText: (f) => t[f], invariants: [] });
+  const files = r.files.map((f) => f.file);
+  assert.ok(files.includes('tests/unit/zz-reads-by-path.test.mjs'), 'strong match kept');
+  assert.equal(files.length, 1 + F.MAX_TARGETED, 'weak matches still capped');
 });
 
 test('writeScopeDir writes one <gate>.files per gate used', () => {

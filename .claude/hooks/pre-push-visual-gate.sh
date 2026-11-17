@@ -202,6 +202,22 @@ OVERRIDE_RESULT=$(node "$SCAN" --query=override-active-for-push --transcript="$t
 OVERRIDE_OK=$(echo "$OVERRIDE_RESULT" | jq -r '.override // false' 2>/dev/null)
 [ "$OVERRIDE_OK" = "true" ] && exit 0
 
+# Durable approval (BRO-7628): the same UI diff was already approved and marked on origin (survives a container
+# restart and a test-only follow-up push). Any error means "not approved": the normal flow below decides.
+_DUR="$CANONICAL_ROOT/scripts/lib/visual-approval-durable.js"
+if [ -f "$_DUR" ] && command -v timeout >/dev/null 2>&1 && timeout 20 node "$_DUR" check --repo="$SESSION_ROOT" --ref="$DIFF_REF" >/dev/null 2>&1; then
+  _logdir="${CLAUDE_LOG_DIR:-$HOME/.claude/logs}"; mkdir -p "$_logdir" 2>/dev/null
+  printf '%s\tdurable-approval\t%s\n' "$(date +%s)" "$DIFF_REF" >> "$_logdir/visual-gate-bypass.log" 2>/dev/null
+  exit 0
+fi
+# Mint the marker once this exact UI diff is approved (verdict.uiPatchId must equal the current id). Never on bypass paths.
+_mint_durable() {
+  [ -f "$_DUR" ] && command -v timeout >/dev/null 2>&1 || return 0
+  local vid; vid=$(jq -r '.uiPatchId // empty' "$VERDICT_PATH" 2>/dev/null)
+  [ -n "$vid" ] || return 0
+  ( VISUAL_GATE_MINT=1 timeout 25 node "$_DUR" mint --repo="$SESSION_ROOT" --ref="$DIFF_REF" --verdict-id="$vid" >/dev/null 2>&1 & ) 2>/dev/null
+}
+
 # Current branch — prefer DIFF_REF (the explicit push target) over session HEAD
 # so that `git push origin main` from a worktree looks for main's verdict, not
 # the worktree branch's verdict.
@@ -247,6 +263,7 @@ LEDGER_RESULT=$(node "$CANONICAL_ROOT/scripts/lib/visual-qa-ledger.mjs" --query=
 LEDGER_OK=$(echo "$LEDGER_RESULT" | jq -r '.allowed // false' 2>/dev/null)
 LEDGER_REASON=$(echo "$LEDGER_RESULT" | jq -r '.reason // empty' 2>/dev/null)
 if [ "$LEDGER_OK" = "true" ]; then
+  _mint_durable
   exit 0
 fi
 
@@ -273,6 +290,7 @@ if [ -n "$HEAD_SHA" ]; then
     --hash="$VERDICT_HASH" --session="$session_id" >/dev/null 2>&1 || true
 fi
 
+_mint_durable
 if [ "$OVERALL_PASS" != "true" ]; then
   echo "[visual-qa] verdict.overallPass=false but the user explicitly approved this push. Push allowed." >&2
 fi

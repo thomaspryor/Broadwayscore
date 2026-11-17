@@ -387,6 +387,7 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
       try { d = require("child_process").execFileSync("git", ["-C", repoDir, "log", "-1", "--format=%cd"], { encoding: "utf8" }).trim(); } catch {}
       console.log(lib.formatFetchFailedMessage(repoDir, d, lib.startBackgroundSync(repoDir)));
     }
+    if (cloud) lib.trackMainWhenNothingLocal(repoDir);
     if (cloud && r.behind > 0) {
       const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead });
       const synced = lib.formatCodeCheckoutSyncMessage(s, repoDir);
@@ -403,6 +404,23 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
   fi
 fi
 
+
+# BRO-7628: Next 16 stops on a telemetry/upgrade notice (SecurityFatalError) unless telemetry is off, and tsc/next build
+# run out of memory at the default heap. Persist both for every command of the session. Cloud only, idempotent.
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "${CLAUDE_ENV_FILE:-}" ] && ! grep -q "BSC cloud env" "$CLAUDE_ENV_FILE" 2>/dev/null; then
+  {
+    echo '# BSC cloud env (BRO-7628)'
+    echo 'export NEXT_TELEMETRY_DISABLED=1'
+    echo 'case "${NODE_OPTIONS:-}" in *max-old-space-size*) ;; *) export NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=8192" ;; esac'
+  } >> "$CLAUDE_ENV_FILE" 2>/dev/null || true
+fi
+
+# BRO-7628: put generated files a killed land check left behind (data/gold-lists-computed.json) back to HEAD, in the
+# main checkout and its worktrees, so the stop hook stops reporting "uncommitted changes". Cloud only, fail-open.
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
+   && [ -n "${CLAUDE_PROJECT_DIR:-}" ] && [ -f "$CLAUDE_PROJECT_DIR/scripts/lib/restore-prebuild-residue.js" ]; then
+  perl -e 'alarm shift; exec @ARGV' 15 node "$CLAUDE_PROJECT_DIR/scripts/lib/restore-prebuild-residue.js" "$CLAUDE_PROJECT_DIR" 2>/dev/null || true
+fi
 
 # BRO-7492: node_modules vs package-lock drift warning (main checkout only; logic in the lib, fail-open).
 { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/installed-deps-drift.js" ] && perl -e 'alarm shift; exec @ARGV' 10 node "$REPO_ROOT/scripts/lib/installed-deps-drift.js" --session-start "$REPO_ROOT" 2>/dev/null

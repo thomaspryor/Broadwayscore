@@ -102,6 +102,11 @@ const SLOW_TESTS = new Set([
 // every push. land.yml's fast-fail step still runs it first.
 const LOCAL_SKIP = new Set(['scripts/lib/run-push-audits.test.mjs']);
 const MAX_TARGETED = 40;
+// Tests that name a changed file by its full repo path (tier 0-1) are the ones that assert on that file's
+// text; they are never cut by MAX_TARGETED. 2026-11-16 (BRO-7628): the cap kept the 40 alphabetically-first
+// matches and dropped tests/unit/watchlist-grid-remove-affordance.test.mjs (it reads MyShowsClient.tsx by
+// path), which then refused the land 26 min later. Only a pathological count of them is limited.
+const MAX_STRONG = 150;
 
 const GATE_NODE = 'unit-tests-node';
 const GATE_LIB = 'scripts-lib-tests';
@@ -137,7 +142,7 @@ function matchTier(changedFile, testFile, text) {
 // cap would cut anyway: such a branch runs the invariants plus its own changed tests (BRO-7150).
 const MAX_CHANGED_FOR_TARGETING = 300;
 
-function selectFastTests({ changed, universe, readText, invariants = INVARIANT_TESTS, maxTargeted = MAX_TARGETED, slow = SLOW_TESTS, skip = new Set(), maxChanged = MAX_CHANGED_FOR_TARGETING }) {
+function selectFastTests({ changed, universe, readText, invariants = INVARIANT_TESTS, maxTargeted = MAX_TARGETED, maxStrong = MAX_STRONG, slow = SLOW_TESTS, skip = new Set(), maxChanged = MAX_CHANGED_FOR_TARGETING }) {
   const wide = changed.length > maxChanged;
   const all = [...new Set([...universe.nodeSet, ...universe.tsxSet, ...universe.libFiles])].sort();
   const picked = new Map();
@@ -166,7 +171,9 @@ function selectFastTests({ changed, universe, readText, invariants = INVARIANT_T
   for (const t of targeted) {
     if (!t.gate) continue;
     if ((slow.has(t.file) || skip.has(t.file)) && t.tier > 0) { slowSkipped++; continue; }
-    if ([...picked.values()].filter((p) => p.tier >= 0).length >= maxTargeted) { overCap++; continue; }
+    const strong = t.tier <= 1;
+    const have = [...picked.values()].filter((p) => p.tier >= 0);
+    if (strong ? have.length >= maxStrong : have.filter((p) => p.tier > 1).length >= maxTargeted) { overCap++; continue; }
     picked.set(t.file, t);
   }
   return { files: [...picked.values()].map(({ file, gate, why }) => ({ file, gate, why })), skipped: { slow: slowSkipped, overCap, wideDiff: wide ? changed.length : 0 } };
@@ -426,6 +433,6 @@ async function main(argv = process.argv.slice(2)) {
   return res.status === 'fail' ? 1 : res.status === 'skip' ? 3 : 0;
 }
 
-module.exports = { MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
+module.exports = { MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
 
 if (require.main === module) { hookTerm(); main().then((code) => { process.exitCode = code; }); }
