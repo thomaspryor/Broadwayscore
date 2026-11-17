@@ -245,3 +245,15 @@ describe('BRO-7644: live reviews.json rows feed a show with no review-text files
     assert.ok(!r[0].fromLiveRows);
   });
 });
+
+describe('BRO-7644: an unscored early file does not block the live-row fallback', () => {
+  it('adds live rows when the folder has only an unscored file', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7644b-'));
+    fs.mkdirSync(path.join(dir, 'lane-show'));
+    fs.writeFileSync(path.join(dir, 'lane-show', 'blog--unknown.json'), JSON.stringify({ showId: 'lane-show', outletId: 'blog', outlet: 'Blog', fullText: 'stub text' }));
+    const rows = ['nyt', 'variety'].map(o => ({ showId: 'lane-show', outletId: o, outlet: o, criticName: 'C ' + o, fullText: 'T ' + o, assignedScore: 70, url: 'https://x/' + o }));
+    const r = loadReviewTexts('lane-show', null, { reviewTextsDir: dir, fallbackRows: rows });
+    assert.equal(r.filter(x => x.score != null).length, 2);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+});
