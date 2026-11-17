@@ -81,7 +81,6 @@ const ALLOWLIST = new Set([
   'scripts/health-check.js',
   'scripts/check-opening-night-readiness.js',
   'scripts/autonomous-merge.js',
-  'scripts/process-feedback.js',
   'scripts/autonomous-deadman.js',
   'scripts/check-secrets-health.js', // GET /domains key-validity probe, not an alert send
   'scripts/newsletter/check-drafts-status.mjs', // GET /broadcasts read-only status probe, never touches /send
@@ -105,7 +104,7 @@ const ALLOWLIST = new Set([
   '.github/workflows/weekly-affiliate-report.yml',
   '.github/workflows/investigate-alert.yml',
   '.github/workflows/process-review-submission.yml',
-  '.github/workflows/auto-fix-feedback-bug.yml',
+  'scripts/lib/feedback-reply-drafts.js', // BRO-7693: the one path for reader replies. Default is a draft emailed to OWNER_EMAIL only; a reader is emailed only for kinds in FEEDBACK_AUTO_REPLY_KINDS (empty)
   'src/app/api/beat-the-critics/send-picks/route.ts',
   // Player-facing transactional email (draft confirmation with roster, scoring-from
   // date and locked picks), same class as beat-the-critics/send-picks above. Not an
