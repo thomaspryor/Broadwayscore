@@ -1130,34 +1130,6 @@
     "queuedAt": "2026-11-17T10:49:53.207Z"
   },
   {
-    "conditionKey": "corpus-drift:orphan-review-folders",
-    "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
-    "description": "check-corpus-drift.js audit \"orphan-review-folders\" (node scripts/report-orphan-review-folders.js --strict) has been drifting. Latest output:\n\nOrphan review-text folders: 1 (1 files)\n  no-date: 1\n  of which retired ids (stranded by a retirement): 1 folders, 1 files\n  RETIRED cloud-9-national-west-end-2026 (1) BRO-5489: duplicate stub minted by the lbo-sitemap roundup path for the National Theatre Cloud 9 alr\n  cloud-9-national-west-end-2026 (1)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T10:49:53.218Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 14 (backfill-eurydice-image-found, backfill-everybodys-talking-about-jamie-show-exists, backfill-the-lonely-few-image, backfill-image-healing, commercial-source-coverage, undated-venue-url, +8 more). Checked 2026-11-17.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T10:49:53.228Z"
-  },
-  {
     "conditionKey": "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml",
     "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 29 days ago",
     "description": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 29 days ago\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
@@ -1299,5 +1271,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-17T12:39:23.510Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-review-folders",
+    "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
+    "description": "check-corpus-drift.js audit \"orphan-review-folders\" (node scripts/report-orphan-review-folders.js --strict) has been drifting. Latest output:\n\nOrphan review-text folders: 1 (1 files)\n  no-date: 1\n  of which retired ids (stranded by a retirement): 1 folders, 1 files\n  RETIRED cloud-9-national-west-end-2026 (1) BRO-5489: duplicate stub minted by the lbo-sitemap roundup path for the National Theatre Cloud 9 alr\n  cloud-9-national-west-end-2026 (1)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T13:14:07.906Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-17.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T13:14:07.942Z"
   }
 ]
