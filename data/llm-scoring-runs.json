@@ -571244,74 +571244,39 @@
     "logKeepsSince": "2026-11-16T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-17T23:43:09.209Z",
-    "completedAt": "2026-11-17T23:43:09.211Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
+    "startedAt": "2026-11-17T23:40:02.482Z",
+    "completedAt": "2026-11-17T23:47:10.262Z",
+    "totalReviews": 82852,
+    "processed": 10,
+    "skipped": 82837,
+    "errors": 2,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
+      "input": 85763,
+      "output": 4314,
+      "cacheRead": 54180,
+      "cacheWrite": 16151,
+      "total": 224916
     },
-    "costUsd": 0,
-    "runId": "44201289477",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-16T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-17T23:43:49.529Z",
-    "completedAt": "2026-11-17T23:43:49.530Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "44201404363",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-16T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-17T23:44:04.052Z",
-    "completedAt": "2026-11-17T23:44:04.483Z",
-    "totalReviews": 3,
-    "processed": 0,
-    "skipped": 2,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "44201272851",
+    "costUsd": 0.1829655,
+    "runId": "44200673430",
     "source": "index",
     "errorDetails": [
       {
         "showId": "my-english-persian-kitchen-regional-2026",
         "outletId": "the-list",
         "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
       }
     ],
     "logKeepsSince": "2026-11-16T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-17T23:44:06.781Z",
-    "completedAt": "2026-11-17T23:44:06.783Z",
+    "startedAt": "2026-11-17T23:47:28.667Z",
+    "completedAt": "2026-11-17T23:47:54.839Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -571324,7 +571289,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "44201272851",
+    "runId": "44200673430",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-16T00:00:00.000Z"
