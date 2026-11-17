@@ -910,6 +910,9 @@ describe('leading parenthetical aside is cut or ranked last (BRO-7675)', () => {
       assert.ok(g.PAREN_ASIDE_START_RE.test(q));
     }
   });
+  test('non-string input (no snap found) passes through', () => {
+    assert.equal(g.stripLeadingParenAside(null), null);
+  });
   test('a quote without a leading aside is untouched', () => {
     const q = 'A superb revival (the best in years) that earns every laugh.';
     assert.equal(g.stripLeadingParenAside(q), q);
