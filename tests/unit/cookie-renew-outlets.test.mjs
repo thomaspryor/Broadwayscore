@@ -346,3 +346,16 @@ test('loginRefusal: Mac only, never CI or cloud', () => {
   assert.match(loginRefusal({ CLAUDE_CODE_REMOTE: 'true' }, 'darwin'), /CI or a cloud/);
   assert.match(loginRefusal({}, 'linux'), /darwin/);
 });
+
+test('standalone logins count toward the renew login ledger (device limit sees every session)', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const { recordStandaloneLogin } = require('../../scripts/lib/cookie-login-adapters.js');
+  const p = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bro7705-')), 'state.json');
+  fs.writeFileSync(p, JSON.stringify({ nytimes: { logins: ['2026-11-16T00:00:00Z'], needsHuman: null }, wapo: { logins: [] } }));
+  recordStandaloneLogin('nytimes', p);
+  const s = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert.equal(s.nytimes.logins.length, 2);
+  assert.deepEqual(s.wapo.logins, [], 'other outlets untouched');
+  assert.equal(renew.decideLogin(s.nytimes, Date.now()).allowed, false, 'two logins in 7 days -> the next renew run escalates instead of logging in');
+});

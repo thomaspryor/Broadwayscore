@@ -181,6 +181,23 @@ function loginRefusal(env = process.env, platform = process.platform) {
 }
 
 /**
+ * Count a standalone login in renew-cookies.js's per-outlet login ledger
+ * (state.logins), before submitting, so its 2-logins-per-7-days device
+ * limit sees every session this Mac creates. Called under the renew lock.
+ */
+function recordStandaloneLogin(outlet, statePath) {
+  const path = require('path');
+  const renew = require('./cookie-renew');
+  const p = statePath || process.env.COOKIE_RENEW_STATE_PATH || path.join(require('./otp-login-helpers').COOKIE_DIR, '_renew-state.json');
+  const all = renew.loadState(p);
+  const s = { ...renew.emptyOutletState(), ...(all[outlet] || {}) };
+  s.logins = [...(s.logins || []), new Date().toISOString()].slice(-10);
+  all[outlet] = s;
+  renew.saveState(p, all);
+  return s;
+}
+
+/**
  * The standalone login scripts: open the outlet's shared profile, run the
  * flow with env credentials, then prove it with the outlet's walled probe in
  * the same profile. Cookies are written only when the probe reads logged in;
@@ -197,7 +214,8 @@ async function standaloneLogin(outlet, creds, { legacy = [], method = 'scripted-
   const adapter = renew.loginAdapterFor(outlet);
   const missing = renew.missingCredentials(adapter, creds);
   if (missing.length) throw new Error(`missing ${missing.join(' + ')} for ${outlet}`);
-  const { dir } = renew.claimOutletProfile(renew.profileNameFor(outlet), { legacy });
+  const { dir } = renew.claimOutletProfile(renew.profileNameFor(outlet), { legacy }); // takes the renew lock
+  recordStandaloneLogin(outlet);
   const context = await launchOtpBrowser(dir);
   try {
     const page = context.pages()[0] || (await context.newPage());
@@ -218,4 +236,4 @@ async function standaloneLogin(outlet, creds, { legacy = [], method = 'scripted-
   }
 }
 
-module.exports = { FLOWS, runLoginFlow, standaloneLogin, loginRefusal, sleep };
+module.exports = { FLOWS, runLoginFlow, standaloneLogin, recordStandaloneLogin, loginRefusal, sleep };
