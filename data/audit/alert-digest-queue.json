@@ -762,5 +762,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-17T00:43:30.456Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7631-conflict-drivers",
+    "title": "Landing blocked: rebase red on land/bro-7631-conflict-drivers",
+    "description": "land.yml did not land land/bro-7631-conflict-drivers: the rebase gate went red at e2750510bf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43994823602",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7631-conflict-drivers"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e2750510bf4640798365a21c5a85470439be09e7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43994823602"
+      }
+    ],
+    "queuedAt": "2026-11-17T01:22:56.160Z"
   }
 ]
