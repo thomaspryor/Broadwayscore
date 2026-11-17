@@ -2017,6 +2017,8 @@ async function runPr(n) {
 }
 
 module.exports = { newLandFailures, landPreflight, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans, pruneClaudeWorktrees };
+// BRO-7636: the pieces a live backtest drives against real trees (tests/live/codex-parity-live.mjs).
+module.exports.live = { SB, buildIn, siteBuildFailure, uiHold, changedNames, prepareBase, addWorktree, linkNodeModules, applyTreeMode, cleanTree, WT, BASE_WT, git, setCardBase: (b) => { cardBase = b; } };
 if (require.main === module) {
   main().catch(async (e) => {
     log(`runner failed: ${e && e.stack ? e.stack : e}`);
