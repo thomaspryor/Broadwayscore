@@ -5982,14 +5982,14 @@ if (!SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
     shows: showsData.shows,
     leasedShowIds,
     canonicalUrl: (u) => canonicalizeUrlForDedup(u) || u,
-    textUrls: (showId) => {
+    textFiles: (showId) => {
       const dir = path.join(reviewTextsDir, showId);
       if (!fs.existsSync(dir)) return [];
-      const urls = [];
+      const files = [];
       for (const f of fs.readdirSync(dir).filter(x => isReviewTextFile(x))) {
-        try { const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (d && d.url) urls.push(d.url); } catch { /* unreadable file: not a text for any URL */ }
+        try { const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (d) files.push({ url: d.url, outletId: d.outletId }); } catch { /* unreadable file: not a text for any review */ }
       }
-      return urls;
+      return files;
     },
   });
   for (const r of kept) allReviews.push(r);
