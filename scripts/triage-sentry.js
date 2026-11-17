@@ -19,7 +19,7 @@ const PROJECT = process.env.SENTRY_PROJECT || 'broadway-scorecard';
 const SENTRY_TOKEN = process.env.SENTRY_AUTH_TOKEN;
 const DRY_RUN = process.argv.includes('--dry-run');
 
-const { classifyIssue } = require('./lib/sentry-triage-classify');
+const { classifyIssue, NOISE_IGNORE_BODY } = require('./lib/sentry-triage-classify');
 const { fileSentryIssue, MAX_NEW_CARDS_PER_RUN } = require('./lib/sentry-linear-filing');
 
 // --- Sentry API helpers ---
@@ -98,7 +98,7 @@ async function main() {
 
       if (!DRY_RUN) {
         try {
-          await sentryPut(`/issues/${issue.id}/`, { status: 'ignored' });
+          await sentryPut(`/issues/${issue.id}/`, NOISE_IGNORE_BODY);
           console.log('  → Ignored in Sentry\n');
         } catch (e) {
           console.error(`  → Failed to ignore: ${e.message}\n`);

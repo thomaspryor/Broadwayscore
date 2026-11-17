@@ -6,7 +6,7 @@ const ev = frames => ({ entries: [{ type: 'exception', data: { values: [{ stackt
 // Real Sentry shape: `filename` is the RELATIVE path, `absPath` the full URL
 // (BRO-7722: fixtures with a full-URL filename hid that real events never match).
 const chunk = (name, lineNo = 1) => ({ filename: `/_next/static/chunks/${name}.js`, absPath: `https://broadwayscorecard.com/_next/static/chunks/${name}.js`, lineNo, colNo: 143, inApp: true });
-const doc = (path, lineNo) => ({ filename: `https://broadwayscorecard.com${path}`, lineNo, colNo: 63, inApp: true });
+const doc = (path, lineNo) => ({ filename: path.replace(/[?#].*$/, ''), absPath: `https://broadwayscorecard.com${path}`, lineNo, colNo: 63, inApp: true });
 
 // Real shape of BROADWAY-SCORECARD-2J (webpack module factory missing after a deploy).
 test("the webpack 'reading call' crash is ignored with a stale-deploy reason, not left to flood GitHub", () => {
@@ -130,4 +130,32 @@ test('frameUrl prefers the absolute URL and resolves a bare /_next path to our o
   assert.equal(frameUrl({ filename: '/_next/static/chunks/a.js', absPath: 'https://broadwayscorecard.com/_next/static/chunks/a.js' }), 'https://broadwayscorecard.com/_next/static/chunks/a.js');
   assert.equal(frameUrl({ filename: '/_next/static/chunks/a.js' }), 'https://broadwayscorecard.com/_next/static/chunks/a.js');
   assert.equal(frameUrl({ filename: '[native code]', absPath: '[native code]' }), '[native code]');
+});
+
+test('parse errors that mean unsupported syntax (not truncation) stay REAL', () => {
+  const lookbehind = { title: 'SyntaxError: Invalid regular expression: invalid group specifier name', culprit: '?(chunks/app)', count: '400', userCount: '300' };
+  const f = { ...chunk('app-9'), function: null };
+  assert.equal(classifyIssue(lookbehind, ev([f])).noise, false);
+  const optional = { title: "SyntaxError: Unexpected token '?'", culprit: '?(chunks/app)', count: '40', userCount: '30' };
+  assert.equal(require('../../scripts/lib/sentry-triage-classify.js').isBundleParseError(optional, [f]), false);
+});
+
+test("Safari's truncated-bundle form ('global code', query string on absPath) is noise", () => {
+  const issue = { title: 'SyntaxError: Unexpected end of script', culprit: 'global code(chunks/x)', count: '3', userCount: '3' };
+  const f = { filename: '/_next/static/chunks/x.js', absPath: 'https://broadwayscorecard.com/_next/static/chunks/x.js?dpl=abc', function: 'global code', lineNo: 1 };
+  assert.equal(classifyIssue(issue, ev([f])).noise, true);
+});
+
+test('a frame with only a relative /_next filename (no absPath) counts as ours', () => {
+  const issue = { title: 'TypeError: x is not a function', culprit: 'f(chunks/app)', count: '9', userCount: '5' };
+  assert.equal(classifyIssue(issue, ev([{ filename: '/_next/static/chunks/app.js', function: 'f', lineNo: 1 }])).noise, false);
+});
+
+test('noise is ignored only until it escalates, never forever (BRO-7722)', () => {
+  const { NOISE_IGNORE_BODY } = require('../../scripts/lib/sentry-triage-classify.js');
+  assert.equal(NOISE_IGNORE_BODY.status, 'ignored');
+  assert.ok(NOISE_IGNORE_BODY.statusDetails.ignoreUserCount > 0);
+  assert.ok(NOISE_IGNORE_BODY.statusDetails.ignoreUserWindow > 0);
+  const src = require('fs').readFileSync(require.resolve('../../scripts/triage-sentry.js'), 'utf8');
+  assert.doesNotMatch(src, /status: 'ignored' \}/, 'triage-sentry.js must use NOISE_IGNORE_BODY, not a bare forever-ignore');
 });

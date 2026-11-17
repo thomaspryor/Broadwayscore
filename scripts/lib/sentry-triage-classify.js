@@ -82,25 +82,35 @@ const STALE_DEPLOY_MESSAGE = /reading 'call'|evaluating '[\w$]+\[[\w$]+\]\.call'
 // full URL with our domain is in `absPath`. Reading `filename` first meant no
 // frame ever matched OUR_DOMAIN_PATTERNS, so every real error was auto-ignored
 // as "No stack frames from our domain" (BRO-7722). Always classify on this.
+const SITE_ORIGIN = 'https://broadwayscorecard.com';
+const ABSOLUTE_URL = /^[a-z][\w+.-]*:\/\//i;
+
 function frameUrl(f) {
   const abs = f.absPath || f.abs_path || '';
   const rel = f.filename || '';
-  if (/^[a-z][\w+.-]*:\/\//i.test(abs)) return abs;
-  if (/^[a-z][\w+.-]*:\/\//i.test(rel)) return rel;
-  // A bare site-relative path is served from our own origin.
-  if (rel.startsWith('/_next/') || abs.startsWith('/_next/')) return `https://broadwayscorecard.com${rel.startsWith('/') ? rel : abs}`;
+  if (ABSOLUTE_URL.test(abs)) return abs;
+  if (ABSOLUTE_URL.test(rel)) return rel;
+  // With no absolute URL, a bare /_next path can only be served by our own origin.
+  const nextPath = [rel, abs].find(p => p.startsWith('/_next/'));
+  if (nextPath) return SITE_ORIGIN + nextPath;
   return abs || rel;
 }
 
-// A SyntaxError thrown while PARSING one of our bundles (one top-level frame,
-// no function) means the browser got a truncated file: our build cannot ship
-// JS that fails to parse for everyone. BRO-7722: 61 such events in a week, all
-// one stale Chrome build on Windows, one "user" each (a crawler fleet).
+// The messages a browser gives for a TRUNCATED script (download cut off).
+// Deliberately narrow: other parse errors ("Invalid regular expression",
+// "Unexpected token '?'") mean we shipped syntax some browsers cannot run,
+// which is our bug and must stay real.
+const TRUNCATION_MESSAGES = /^SyntaxError: (missing \) after argument list|Unexpected end of (input|script)|Invalid or unexpected token)$/;
+
+// A truncated download of one of our bundles fails at top level (one frame, no
+// named function; Safari reports 'global code'). BRO-7722: 61 such events in a
+// week, all one stale Chrome build on Windows, one "user" each (a crawler fleet).
 function isBundleParseError(issue, frames) {
-  if (!/^SyntaxError\b/.test(issue.title || '')) return false;
-  if (/JSON/i.test(issue.title || '')) return false;
+  if (!TRUNCATION_MESSAGES.test(issue.title || '')) return false;
   const real = frames.filter(f => !/^\[native code\]$/.test(f.filename || ''));
-  return real.length === 1 && !real[0].function && /\.m?js(\?|$)/.test(frameUrl(real[0]));
+  if (real.length !== 1) return false;
+  const fn = real[0].function;
+  return (!fn || fn === 'global code') && /\.m?js(\?|$)/.test(frameUrl(real[0]));
 }
 
 function isStaleDeployIssue(issue, latestEvent) {
@@ -188,4 +198,10 @@ function classifyIssue(issue, latestEvent) {
   return { noise: false, reason: 'Appears to be a real issue from our code' };
 }
 
-module.exports = { classifyIssue, frameUrl, isBundleParseError, isInjectedDocumentFrame, isStaleDeployIssue, NOISE_MESSAGE_PATTERNS, OUR_DOMAIN_PATTERNS };
+// How noise is ignored in Sentry. NOT forever (BRO-7722): an issue comes back
+// as unresolved once 25 more users hit it within 7 days, so a misjudged issue
+// (or one a later classifier fix would call real) is re-triaged instead of
+// buried. Sentry's archived_until_escalating substatus is a no-op on this plan.
+const NOISE_IGNORE_BODY = Object.freeze({ status: 'ignored', statusDetails: { ignoreUserCount: 25, ignoreUserWindow: 7 * 24 * 60 } });
+
+module.exports = { classifyIssue, NOISE_IGNORE_BODY, frameUrl, isBundleParseError, isInjectedDocumentFrame, isStaleDeployIssue, NOISE_MESSAGE_PATTERNS, OUR_DOMAIN_PATTERNS };
