@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-11-17T20:23:18.222Z",
-  "processed": 5,
-  "failed": 1,
-  "successRate": "83.3%",
+  "updatedAt": "2026-11-17T20:28:35.413Z",
+  "processed": 108,
+  "failed": 65,
+  "successRate": "62.4%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 63,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingdog": 17,
+    "scrapingbee": 7,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 31
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-11-17T19:44:22.349Z",
+      "event": "bb-session",
+      "session": "9f1c900d",
+      "url": "https://www.nytimes.com/theater-streaming-falsettos-stoll-stoppard-school-girls"
+    },
+    {
+      "t": "2026-11-17T19:44:22.895Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
