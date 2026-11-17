@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7250-d261117-r9",
   "planId": "520af131-3ae2-435e-9eb3-ea79c3e35ce8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-17T21:31:40.967Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,19 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-17T21:37:42.796Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added life-and-times-of-michael-k-regional-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added arcadia-regional-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
