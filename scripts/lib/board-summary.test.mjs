@@ -207,7 +207,27 @@ test('BRO-7595: summarizeAwaitingCheck splits Paused check-date cards into waiti
     { ...paused('2026-11-05'), state: { name: 'Todo', type: 'unstarted' } }, // handed off, not waiting
     { ...paused('x'), description: '', comments: { nodes: [] } }, // no stamp
   ], { now: NOW });
-  assert.deepEqual(r, { waiting: 3, overdue: 1, waitingAddedInWindow: 2 });
+  assert.deepEqual(r, { waiting: 3, overdue: 1, parkedPastDate: 0, handedOffPastDate: 0, waitingAddedInWindow: 2 });
+});
+
+test('BRO-7686: a past-date card parked on a block or already handed to a worker is not an overdue check', () => {
+  const { summarizeAwaitingCheck, boardVerdict } = require('./board-summary.js');
+  const { RECHECK_HANDOFF_MARKER } = require('./autonomous-recheck-core.js');
+  const parked = { ...paused('2026-10-20'), description: 'PARKED: needs the owner Mac to read cmux state' };
+  const decision = { ...paused('2026-10-20'), description: 'DECISION NEEDED: estimate closing dates?' };
+  const handed = paused('2026-10-20');
+  handed.comments.nodes.push({ body: `${RECHECK_HANDOFF_MARKER}\nHanded to a worker.`, createdAt: '2026-10-22T11:00:00Z' });
+  // A hand-off BEFORE a fresh (still past) stamp does not count: the new stamp asks for a check again.
+  const reStamped = paused('2026-10-20');
+  reStamped.comments.nodes = [{ body: `${RECHECK_HANDOFF_MARKER}\nold`, createdAt: '2026-10-21T10:00:00Z' }, ...reStamped.comments.nodes];
+  const r = summarizeAwaitingCheck([parked, decision, handed, reStamped, paused('2026-10-20')], { now: NOW });
+  assert.deepEqual(r, { waiting: 0, overdue: 2, parkedPastDate: 2, handedOffPastDate: 1, waitingAddedInWindow: 0 });
+  // The 2026-11-17 digest shape: 17 past date, only 5 owed a check -> not "Falling behind".
+  const daily = [{ day: '2026-11-17', added: 250, closed: 235, canceled: 18 }];
+  const v = boardVerdict(model({ awaitingCheck: { waiting: 116, overdue: 5, parkedPastDate: 7, handedOffPastDate: 5, waitingAddedInWindow: 55, truncated: false } }), daily);
+  assert.equal(v.tone, 'steady');
+  assert.match(v.sentence, /5 cards are past their check date/);
+  assert.match(v.sentence, /7 are parked on a block, 5 were handed to a worker and put back on hold/);
 });
 
 test('BRO-7595: growth made only of waiting fixes is a middle tone, never green; overdue checks keep the warning', () => {

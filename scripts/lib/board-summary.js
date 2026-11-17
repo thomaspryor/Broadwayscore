@@ -121,20 +121,37 @@ const OVERDUE_CHECK_LIMIT = 10;
 /**
  * PURE. Paused cards with a RECHECK-AFTER stamp -> counts. A stamp is overdue once
  * its whole (UTC) day has passed, since the nightly recheck should have run by then.
- * -> { waiting, overdue, waitingAddedInWindow }
+ * BRO-7686: a past-date card the recheck cannot act on is not an overdue CHECK. One
+ * parked on a real block (a held PARKED line or DECISION NEEDED, the rule
+ * recheck-handoff.js decideHandoff uses) is counted as parkedPastDate; one the
+ * recheck already handed to a worker (its marker after the last stamp) as
+ * handedOffPastDate. Only `overdue` (still owed a check) drives the verdict.
+ * -> { waiting, overdue, parkedPastDate, handedOffPastDate, waitingAddedInWindow }
  */
 function summarizeAwaitingCheck(issues, { now = new Date(), days = DAYS } = {}) {
   const { mapIssueToCard } = require('./linear-recheck-source.js');
   const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
+  const { RECHECK_HANDOFF_MARKER, parseRecheckAfter } = require('./autonomous-recheck-core.js');
+  const { hasHeldParkLine } = require('./headless-dispatchability.js');
   const nowMs = now.getTime();
   // Same local days as the chart's "added" (dayKeys), so the fixes are a subset of the added cards.
   const inWindow = new Set(dayKeys(now, days));
-  const out = { waiting: 0, overdue: 0, waitingAddedInWindow: 0 };
+  const out = { waiting: 0, overdue: 0, parkedPastDate: 0, handedOffPastDate: 0, waitingAddedInWindow: 0 };
   for (const issue of issues || []) {
     if (!issue || String(issue.state && issue.state.name || '').toLowerCase() !== 'paused') continue;
-    const stamp = parseRecheckAfterFromCard(mapIssueToCard(issue));
+    const card = mapIssueToCard(issue);
+    const stamp = parseRecheckAfterFromCard(card);
     if (!Number.isFinite(stamp)) continue;
-    if (stamp + 86_400_000 <= nowMs) { out.overdue++; continue; }
+    if (stamp + 86_400_000 <= nowMs) {
+      const notes = String(card.notes || '');
+      const comments = Array.isArray(card.comments) ? card.comments : [];
+      let last = -1;
+      for (let i = comments.length - 1; i >= 0; i--) if (parseRecheckAfter(comments[i]) != null) { last = i; break; }
+      if (hasHeldParkLine(notes) || /DECISION NEEDED/.test(notes)) out.parkedPastDate++;
+      else if (comments.slice(last + 1).some((c) => String(c || '').trimStart().startsWith(RECHECK_HANDOFF_MARKER))) out.handedOffPastDate++;
+      else out.overdue++;
+      continue;
+    }
     out.waiting++;
     if (issue.createdAt && inWindow.has(localDay(issue.createdAt))) out.waitingAddedInWindow++;
   }
@@ -204,11 +221,19 @@ function boardVerdict(m, daily, { partial = false } = {}) {
   const overdueText = a.overdue
     ? ` ${plural(a.overdue, 'card is', 'cards are')} past ${a.overdue === 1 ? 'its' : 'their'} check date and still open.`
     : '';
+  // BRO-7686: named, never hidden, but not counted as the recheck falling behind.
+  const pastNotOwed = [
+    a.parkedPastDate ? `${plural(a.parkedPastDate, 'is', 'are')} parked on a block` : '',
+    a.handedOffPastDate ? `${plural(a.handedOffPastDate, 'was', 'were')} handed to a worker and put back on hold` : '',
+  ].filter(Boolean);
+  const pastText = pastNotOwed.length
+    ? ` Past their check date but not waiting on the check: ${pastNotOwed.join(', ')}.`
+    : '';
   // Never green while the pile grows: a middle tone, only when the growth is all waiting fixes and the recheck keeps up.
   if (net - fixes <= 0 && a.overdue <= OVERDUE_CHECK_LIMIT) {
-    return { tone: 'steady', headline: 'Growing only by fixes waiting for their check', sentence: `${sentence}${fixesText}${overdueText}` };
+    return { tone: 'steady', headline: 'Growing only by fixes waiting for their check', sentence: `${sentence}${fixesText}${overdueText}${pastText}` };
   }
-  return { tone: 'warn', headline: 'Falling behind', sentence: `${sentence}${fixesText}${overdueText}` };
+  return { tone: 'warn', headline: 'Falling behind', sentence: `${sentence}${fixesText}${overdueText}${pastText}` };
 }
 
 function weekdayLabel(day, tz = TZ) {
