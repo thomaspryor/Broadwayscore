@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T20:42:11.983Z",
+  "timestamp": "2026-11-17T21:13:14.639Z",
   "stats": {
-    "totalReviews": 82508,
-    "alreadyFlagged": 22538,
+    "totalReviews": 82507,
+    "alreadyFlagged": 22539,
     "dateGuardCatches": 222,
-    "directorMismatch": 3726,
+    "directorMismatch": 3725,
     "tvFilmSignals": 2344,
-    "londonSignals": 3783,
+    "londonSignals": 3782,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
-    "noPublishDate": 8294
+    "noPublishDate": 8292
   },
   "findings": [
     {
@@ -72225,24 +72225,6 @@
       ]
     },
     {
-      "showId": "the-humans-west-end-2027",
-      "file": "london-box-office--davor-golub.json",
-      "publishDate": "2016-08-25",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-humans",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from the-humans-2016"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-hunger-games-on-stage-off-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 36,
@@ -97631,6 +97613,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "plays-international--unknown.json",
+      "score": 81,
       "publishDate": "2026-11-17",
       "url": "https://playsinternational.org.uk/cloud-9-lyttelton-national-theatre/",
       "findings": [
