@@ -1025,17 +1025,28 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
-        _land_ref_re = re.compile(r'git\s+push\b([^\n;&|]*?)\s(\S*:)?(?:refs/heads/)?(land/[^\s;&|\'"]+)')
-        def _push_land_refs(cmd):  # (refs pushed, refs deleted)
+        _push_seg_re = re.compile(r'\bgit\s+push\b([^\n;&|]*)')
+        _refspec_re = re.compile(r'(?:^|\s)[\'"]?(\+?\S*?:)?(?:refs/heads/)?(land/[^\s;&|\'"<>]+)')
+        def _push_land_refs(cmd):  # (refs pushed, refs deleted), every refspec of every push in the command
             _add, _del = set(), set()
-            for _m in _land_ref_re.finditer(cmd):
-                if re.search(r'\s(--delete|-d)\b', _m.group(1)) or _m.group(2) == ':':
-                    _del.add(_m.group(3))
-                else:
-                    _add.add(_m.group(3))
+            for _seg in _push_seg_re.finditer(cmd):
+                _deleting = bool(re.search(r'(?:^|\s)(--delete|-d)(?=\s)', _seg.group(1)))
+                for _m in _refspec_re.finditer(_seg.group(1)):
+                    (_del if _deleting or _m.group(1) == ':' else _add).add(_m.group(2))
             return _add, _del
-        def _run_names_ref(res, ref):  # an actions_get/list result showing this ref's run finished
-            return bool(re.search(r'"head_branch"\s*:\s*"' + re.escape(ref) + r'"', res)) and '"completed"' in res
+        def _run_names_ref(res, ref):  # an actions_get/list result showing a run of this ref finished
+            def _walk(o):
+                if isinstance(o, dict):
+                    if o.get('head_branch') == ref and o.get('status') == 'completed':
+                        return True
+                    return any(_walk(v) for v in o.values())
+                return isinstance(o, list) and any(_walk(v) for v in o)
+            try:
+                return _walk(json.loads(res))
+            except Exception:  # not JSON: the ref and "completed" inside one {...} object
+                _hb = r'"head_branch"\s*:\s*"' + re.escape(ref) + '"'
+                _st = r'"status"\s*:\s*"completed"'
+                return bool(re.search(r'\{[^{}]*(?:' + _hb + r'[^{}]*' + _st + '|' + _st + r'[^{}]*' + _hb + ')', res))
         _pr_url_re = re.compile(r'github\.com/[^/\s"]+/[^/\s"]+/pull/\d+')
         def _gh_pr_create_cmd(cmd):  # gh pr create, or one segment POSTing to …/pulls itself
             return bool(re.search(r'\bgh\s+pr\s+create\b', cmd)) or any(
@@ -1083,6 +1094,8 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                     _landed_pushed = True
                     if _tid not in tool_error_ids:  # a rejected push starts no Land run
                         _land_unchecked |= _add
+                        for _k in [k for k, v in _wfl_pending.items() if v in _add]:
+                            del _wfl_pending[_k]  # a waiter started before this re-push does not cover it
             elif _name == 'mcp__github__create_branch' and str(_inp.get('branch') or '').startswith('land/'):
                 _landed_pushed = True
                 if _tid not in tool_error_ids:

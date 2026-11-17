@@ -912,6 +912,9 @@ const WFL_LANDUNCHECKED_CASES = [
   ['a rejected push starts no Land run', [{ ...LAND_PUSH_B, _isError: true }], true],
   ['run check that names a different ref', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, runResult('land/other'))], false],
   ['run check still in progress', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, '{"workflow_runs":[{"head_branch":"land/fix-x","status":"in_progress"}]}')], false],
+  ['one push naming two land refs, only the first waited', [toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-x HEAD:refs/heads/land/fix-y' }), WFL_FG_LANDED], false],
+  ['run list: this ref in progress, another run completed', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, '{"workflow_runs":[{"head_branch":"land/fix-x","status":"in_progress"},{"head_branch":"land/other","status":"completed"}]}')], false],
+  ['background wait A, re-push A, old waiter output read', [LAND_PUSH, WFL_BG, again(LAND_PUSH), toolUse('Read', { file_path: '/tmp/x/bwfl1234.output' }, '03:41:07Z LANDED: land/fix-x is gone from origin')], false],
   ['reading the waiter script is not running it', [LAND_PUSH, toolUse('Bash', { command: 'cat scripts/lib/wait-for-land.js' }, 'console.log(`LANDED: land/x`)')], false],
 ];
 for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
