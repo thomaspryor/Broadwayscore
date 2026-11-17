@@ -1610,7 +1610,9 @@ async function main(): Promise<void> {
 
         // BRO-7050: any remaining ensemble rejection judged on an aggregator excerpt alone, for a file an
         // aggregator lists, writes no flag (the two URL-slug guards above are its narrower cases).
-        const aggListedGuard = shouldSuppressExcerptOnlyAggregatorListed({ rejection, scoredTextType, fileData });
+        const aggListedGuard = shouldSuppressExcerptOnlyAggregatorListed({
+          rejection, scoredTextType, fileData, show: showPriority.get(reviewFile.showId || ''),
+        });
         if (aggListedGuard.suppress && !humanClearOverridingRejection(fileData, rejection)) {
           console.log(`SKIP-REJECT (${rejection} on excerpt only, aggregator lists it; awaiting fullText): ${rejectionReasoning?.substring(0, 80) || ''}`);
           stampTerminalScoringFailure(fileData, `excerpt_only_aggregator_listed:${rejection}`);

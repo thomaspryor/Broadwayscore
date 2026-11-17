@@ -11,6 +11,7 @@
  */
 const { foldDiacritics } = require('./url-slug');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { nycTheatreTargets } = require('./tour-family');
 
 const AGGREGATOR_EXCERPT_FIELDS = EXCERPT_FIELDS.filter((f) => f !== 'metaExcerpt');
 
@@ -99,13 +100,21 @@ function shouldSuppressExcerptOnlyNotAReview({ rejection, scoredTextType, fileDa
  * Needs no URL slug: the listing is the evidence. A fullText of 100+ chars means the verdict read a real body
  * and is not suppressed here.
  */
-function shouldSuppressExcerptOnlyAggregatorListed({ rejection, scoredTextType, fileData }) {
+function shouldSuppressExcerptOnlyAggregatorListed({ rejection, scoredTextType, fileData, show }) {
   if (!['not_a_review', 'wrong_show', 'wrong_production'].includes(rejection)) return { suppress: false, reason: null };
   if (scoredTextType !== 'excerpt') return { suppress: false, reason: null };
   const hasFullText = typeof fileData?.fullText === 'string' && fileData.fullText.length >= MIN_FULLTEXT;
   if (hasFullText) return { suppress: false, reason: null };
-  const listed = AGGREGATOR_EXCERPT_FIELDS.some((f) => typeof fileData?.[f] === 'string' && fileData[f].trim().length > 0);
-  if (!listed) return { suppress: false, reason: null };
+  const listed = AGGREGATOR_EXCERPT_FIELDS.filter((f) => typeof fileData?.[f] === 'string' && fileData[f].trim().length > 0);
+  if (!listed.length) return { suppress: false, reason: null };
+  // BRO-7340: NYC Theatre covers New York productions. Its excerpt alone cannot
+  // corroborate a regional/tour listing the discovery writer itself refuses.
+  // Let the scorer record wrongProduction instead of waiting for fullText of
+  // a different production forever. Other aggregators retain the safeguard.
+  if (rejection === 'wrong_production' && listed.length === 1 && listed[0] === 'nycTheatreExcerpt'
+      && show && nycTheatreTargets([show]).kept.length === 0) {
+    return { suppress: false, reason: null };
+  }
   return { suppress: true, reason: `excerpt_only_${rejection}_aggregator_listed` };
 }
 

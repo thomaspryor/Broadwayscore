@@ -68,3 +68,42 @@ test('BRO-7044: a roundup slug is not a review slug of the show', async () => {
   assert.equal(urlSlugIsReviewOfShow('https://e.com/the-unbelievers-reviews', 'The Unbelievers'), false);
   assert.equal(urlSlugIsReviewOfShow('https://e.com/the-unbelievers-off-broadway-review', 'The Unbelievers'), true);
 });
+
+const { shouldSuppressExcerptOnlyAggregatorListed: aggregatorGuard } = require('./excerpt-wrongshow-guard.js');
+const nycOnly = {
+  rejection: 'wrong_production', scoredTextType: 'excerpt',
+  fileData: { fullText: null, url: null, nycTheatreExcerpt: 'An enthusiastic review excerpt.' },
+};
+
+test('BRO-7340: NYC Theatre alone cannot suppress a production mismatch for a regional show or tour', () => {
+  for (const category of ['regional', 'tour']) {
+    assert.equal(aggregatorGuard({ ...nycOnly, show: { category } }).suppress, false, category);
+  }
+});
+
+test('BRO-7340: New York productions and missing market context retain excerpt protection', () => {
+  for (const show of [undefined, {}, { category: 'broadway' }, { category: 'off-broadway' }]) {
+    assert.equal(aggregatorGuard({ ...nycOnly, show }).suppress, true);
+  }
+});
+
+test('BRO-7340: another aggregator excerpt corroborates the listing even outside New York', () => {
+  for (const extra of [{ dtliExcerpt: 'An independent excerpt.' }, { bwwExcerpt: 'An independent excerpt.' }]) {
+    assert.equal(aggregatorGuard({
+      ...nycOnly, show: { category: 'regional' }, fileData: { ...nycOnly.fileData, ...extra },
+    }).suppress, true);
+  }
+});
+
+test('BRO-7340: other rejection types keep their excerpt safeguards', () => {
+  for (const rejection of ['wrong_show', 'not_a_review']) {
+    assert.equal(aggregatorGuard({ ...nycOnly, rejection, show: { category: 'regional' } }).suppress, true);
+  }
+});
+
+test('BRO-7340: a regional listing from another aggregator alone still suppresses wrong_production', () => {
+  assert.equal(aggregatorGuard({
+    ...nycOnly, show: { category: 'regional' },
+    fileData: { fullText: null, dtliExcerpt: 'A regional review excerpt.' },
+  }).suppress, true);
+});
