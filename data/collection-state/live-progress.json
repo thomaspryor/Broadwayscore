@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-17T20:45:34.807Z",
-  "processed": 111,
-  "failed": 74,
-  "successRate": "60.0%",
+  "updatedAt": "2026-11-17T21:38:04.012Z",
+  "processed": 121,
+  "failed": 13,
+  "successRate": "90.3%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 17,
+    "scrapingdog": 18,
     "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 32
+    "archive": 34
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-17T19:44:22.349Z",
@@ -59,6 +59,18 @@
       "t": "2026-11-17T20:43:38.407Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T21:34:36.204Z",
+      "event": "bb-session",
+      "session": "9d0c2eb9",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-17T21:37:20.884Z",
+      "event": "bb-session",
+      "session": "3083a519",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
