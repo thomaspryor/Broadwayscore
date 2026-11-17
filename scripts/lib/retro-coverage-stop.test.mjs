@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { stopHookDecision } from './retro-coverage-stop.mjs';
+import { stopHookDecision, shellEditsCode } from './retro-coverage-stop.mjs';
 
 const ENV = { CLAUDE_CODE_REMOTE: 'true' };
 let n = 0;
@@ -92,4 +92,36 @@ test('a shell-made code edit counts as editing code (BRO-7701: auto-mode session
     "node scripts/lib/session-retro.js --rollup > /tmp/out.txt",
     "git checkout -q origin/main -- scripts/",
   ]) assert.equal(decide([...sh(cmd), ...land()]).decision, 'allow', cmd);
+});
+
+test('shell-edit detection: ship-check findings (absolute paths, cp/mv, quoted prose, .claude state, long tokens)', () => {
+  const R = ['', 'home', 'user', 'Broadwayscore'].join('/');
+  for (const cmd of [
+    `sed -i 's/a/b/' ${R}/scripts/lib/x.js`,
+    `cat > ${R}/src/a.ts <<'E'\nx\nE`,
+    `python3 -c "open('${R}/src/a.ts','w').write('x')"`,
+    "sed -i 's/a/b/' ./scripts/x.js",
+    "sed -e 's/a/b/' -i scripts/x.js",
+    "sed --in-place 's/a/b/' scripts/x.js",
+    "echo x | tee --append scripts/x.js",
+    "cp /tmp/g.ts src/g.ts",
+    "mv scripts/a.js scripts/lib/a.js",
+    "git apply /tmp/fix.patch",
+    "echo '{}' > .claude/autonomous-config.json",
+    "echo x >> .claude/hooks/verify-edits.sh",
+  ]) assert.equal(shellEditsCode(cmd), true, cmd);
+  for (const cmd of [
+    "echo 1 > .claude/state/foo",
+    "node x.js >> .claude/review-verdicts.jsonl",
+    "echo x > .claude/worktrees/foo",
+    'git commit -m "redirect >src/ fixed"',
+    'gh pr create --body "run cmd > scripts/x"',
+    "sed -i 's/a/b/' data/shows.json && cat scripts/x.js",
+    "node -e \"process.stdout.write(require('fs').readFileSync('scripts/x.js','utf8'))\"",
+    "cp scripts/x.js /tmp/x.js",
+    "npm test 2>&1 | tee .cache/out.txt",
+  ]) assert.equal(shellEditsCode(cmd), false, cmd);
+  const t0 = Date.now();
+  shellEditsCode('x'.repeat(100000));
+  assert.ok(Date.now() - t0 < 500, 'a 100k-char token stays linear (was 5.5s)');
 });

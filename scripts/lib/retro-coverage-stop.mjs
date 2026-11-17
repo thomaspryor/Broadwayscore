@@ -34,19 +34,37 @@ const LINK_RE = /--(?:fixes=(?:BRO-\d+|[0-9a-f]{7,40})|no-action=\S)/;
 
 // BRO-7701: auto-mode sessions often edit with the shell (sed -i, a python/node heredoc, cat >, tee), which the
 // Edit/Write check alone missed: the audit session landed a config change that way and this gate let it through.
-const CODE_TOKEN = String.raw`(?:src|scripts|\.github|\.claude)/`;
-const SHELL_WRITE_RES = [
-  new RegExp(String.raw`\b(?:sed|perl)\s+(?:-\w*\s+)*-\w*i\w*\b[^\n]*?(?:^|[\s'"])${CODE_TOKEN}`),
-  new RegExp(String.raw`>>?\s*['"]?${CODE_TOKEN}`),
-  new RegExp(String.raw`\btee\s+(?:-a\s+)?['"]?${CODE_TOKEN}`),
-];
-const SCRIPT_WRITE_RE = /open\([^)]*,\s*['"][wa]|writeFileSync|appendFileSync|write_text|\.write\(/;
-const SCRIPT_CODE_TOKEN_RE = new RegExp(String.raw`(?:^|[\s'"=(])${CODE_TOKEN}`);
-/** PURE. Does one shell command write a tracked code file? Worktree prefixes and a leading cd are not targets. */
+// .claude/ state and ledger files (.claude/state/, *.jsonl, a bare worktree dir) are not code: only hooks, commands,
+// skills, agents and top-level config JSON count.
+const CODE_TOKEN = String.raw`(?:src/|scripts/|\.github/|\.claude/(?:hooks|commands|skills|agents)/|\.claude/[\w.-]+\.json\b)`;
+const B = String.raw`(?:^|[\s'"=(<>])`; // a path starts at a boundary (after normalizing, absolute repo paths start bare)
+const TARGET_RE = new RegExp(`${B}['"]?${CODE_TOKEN}`);
+const SCRIPT_WRITE_RE = /open\([^)]*,\s*['"][wa]|writeFileSync|appendFileSync|write_text|(?<!std(?:out|err))\.write\(/;
+/** Absolute or ./ paths into the repo or a worktree become repo-relative. Anchored at a boundary so a long token stays linear. */
+function normalizePaths(c) {
+  return c
+    .replace(/(^|[\s'"=(<>])[^\s'"]*?\.claude\/worktrees\/[^/\s'"]+\//g, '$1')
+    .replace(/(^|[\s'"=(<>])\/(?:home\/user|repo|workspace)\/[^/\s'"]+\//g, '$1')
+    .replace(/(^|[\s'"=(<>])\.\//g, '$1');
+}
+/** PURE. One shell clause (no && ; | splitting left to do) that writes a tracked code file. */
+function clauseEditsCode(cl) {
+  const t = cl.trim();
+  // sed/perl in place: -i anywhere in the clause (before or after the script), or --in-place.
+  if (/^(?:sudo\s+)?(?:sed|perl)\b/.test(t) && /\s(?:-\w*i\w*|--in-place)\b/.test(t) && TARGET_RE.test(t)) return true;
+  // cp/mv/install: the destination is the last token.
+  if (/^(?:cp|mv|install|rsync)\b/.test(t)) { const last = t.split(/\s+/).pop(); return new RegExp(`^['"]?${CODE_TOKEN}`).test(last); }
+  if (/^(?:git\s+apply|patch)\b/.test(t)) return true;
+  // > >> and tee: the token right after the operator.
+  return new RegExp(String.raw`(?:>>?|\btee(?:\s+(?:-a|--append))?)\s*['"]?${CODE_TOKEN}`).test(t);
+}
+/** PURE. Does one shell command write a tracked code file? Quoted prose (commit messages, PR bodies) is not a target. */
 export function shellEditsCode(command) {
-  const c = String(command || '').replace(/^\s*cd\s+\S+\s*(?:&&|;)\s*/, '').replace(/\S*\.claude\/worktrees\/[^/\s'"]+\//g, '');
-  if (SHELL_WRITE_RES.some((re) => re.test(c))) return true;
-  return SCRIPT_WRITE_RE.test(c) && SCRIPT_CODE_TOKEN_RE.test(c);
+  const raw = normalizePaths(String(command || ''));
+  // runShellCode drops heredoc bodies and whitespace-holding quotes, keeping real shell (and bash -c bodies).
+  if (normalizePaths(runShellCode(raw)).split(/&&|\|\||;|\||\n/).some(clauseEditsCode)) return true;
+  // A python/node script writing a file: the write call and a code path in the same command.
+  return SCRIPT_WRITE_RE.test(raw) && TARGET_RE.test(raw);
 }
 
 /** PURE. Did the session edit tracked code (not only data/ or memory)? */
