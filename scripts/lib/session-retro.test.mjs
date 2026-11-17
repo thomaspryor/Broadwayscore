@@ -102,9 +102,10 @@ test('hook blocks are labelled by the real hook, never the generic hook:hook (BR
 test('--check thresholds flag outliers only, against the real ledger shape', () => {
   assert.deepEqual(R.triggersFor({ activeHours: 2.9, hookBlockCount: 12, restarts: 0, bypassCount: 1, landRefusalCount: 0 }), []);
   assert.equal(R.triggersFor({ activeHours: 5, hookBlockCount: 15, restarts: 0, bypassCount: 2, landRefusalCount: 1 }).length, 4);
-  // The 10 rows of the first 15h (2026-11-17): the old pair flagged 9 of 9 sessions, outliers-only flags the 3 long ones plus the restart.
-  const rows = R.readLedger().filter((x) => !x.rollup && x.hours !== undefined);
-  assert.ok(rows.length >= 9);
+  // The 9 sessions of the first 15h (2026-11-17, wall-clock hours, hook blocks, restarts): the old 2h/3-block pair flagged all 9.
+  const legacy = [[1.88, 7, 1], [2.86, 12, 0], [1.71, 6, 0], [2.09, 5, 0], [2.41, 12, 0], [2.41, 8, 0], [25.58, 24, 0], [11.65, 25, 0], [11.51, 21, 0]];
+  const flagged = legacy.filter(([h, b, r]) => R.triggersFor({ activeHours: h, hookBlockCount: b, restarts: r, bypassCount: 0, landRefusalCount: 0 }).length);
+  assert.equal(flagged.length, 4, 'outliers only: 3 long, loud sessions plus the restart');
 });
 
 test('--fixes and --no-action are validated; retroStatus closes only with a link or reason', () => {
@@ -114,13 +115,34 @@ test('--fixes and --no-action are validated; retroStatus closes only with a link
   assert.match(R.parseLinks({ 'no-action': true }).error, /real reason/);
   assert.equal(R.parseLinks({ 'no-action': 'a 2h wall clock from an idle owner, nothing to fix' }).error, null);
   const rows = [
-    { sessionId: 'a', triggers: ['3 hook blocks'], links: [] },
-    { sessionId: 'a', triggers: ['3 hook blocks'], links: ['BRO-1'] },
-    { sessionId: 'b', triggers: ['x'], links: [] },
+    { v: 2, sessionId: 'a', triggers: ['3 hook blocks'], links: [] },
+    { v: 2, sessionId: 'a', triggers: ['3 hook blocks'], links: ['BRO-1'] },
+    { v: 2, sessionId: 'b', triggers: ['x'], links: [] },
     { sessionId: 'c', triggers: [] },
   ];
   assert.equal(R.retroStatus(rows, 'a').closed, true, 'latest row per session wins');
   assert.equal(R.retroStatus(rows, 'b').closed, false);
   assert.equal(R.retroStatus(rows, 'c').closed, true, 'unflagged needs nothing');
   assert.equal(R.retroStatus(rows, 'zzz').recorded, false);
+});
+
+test('hookLabel ignores scripts mentioned in free text; active hours skip owner idle after the first edit (BRO-7645)', () => {
+  assert.equal(R.hookLabel('Stop hook feedback: run node scripts/lib/x.js, Next.js'), 'unclassified');
+  assert.equal(R.hookLabel({ hookName: 'PreToolUse:Bash', blockingError: { blockingError: 'run node scripts/lib/x.js' } }), 'PreToolUse:Bash');
+  const t = (m) => `2026-01-01T${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}:00Z`;
+  const r = R.analyze([
+    JSON.stringify({ type: 'user', timestamp: t(0), message: { content: 'go' } }),
+    tool('Edit', {}, t(180)),
+    JSON.stringify({ type: 'user', timestamp: t(240), message: { content: 'ok' } }),
+    tool('Bash', { command: 'node -v' }, t(360)),
+  ]);
+  assert.equal(r.hours, 3);
+  assert.equal(r.activeHours, 2, 'owner idle after the first edit is subtracted, the wait before it is not');
+});
+
+test('no-action reasons: natural text passes, bare placeholders fail; v1 rows are history', () => {
+  assert.equal(R.parseLinks({ 'no-action': 'Nothing needs a fix: owner idle for 3 hours' }).error, null);
+  assert.match(R.parseLinks({ 'no-action': 'nothing' }).error, /real reason/);
+  assert.equal(R.retroStatus([{ sessionId: 'x', triggers: ['3 hook blocks'] }], 'x').closed, true, 'a v1 row is history');
+  assert.equal(R.retroStatus([{ v: 2, sessionId: 'x', triggers: ['3 hook blocks'] }], 'x').closed, false);
 });

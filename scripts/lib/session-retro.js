@@ -17,19 +17,23 @@ const path = require('path');
 const LEDGER = path.join(__dirname, '..', '..', 'data', 'audit', 'session-retro.jsonl');
 // BRO-7645: recalibrated so --check flags outliers. First 15h of data: every session crossed the old
 // (2h wall clock, 3 hook blocks) pair, so the 'fix or card every finding' ask was noise. activeHours is
-// wall clock minus idle gaps over gapMin (owner idle time is not friction); a legacy row has only wall clock.
+// wall clock minus owner idle gaps over gapMin after the first edit (a long CI wait is friction, not idle); a legacy row has only wall clock.
 const T = { activeHours: 4, hookBlocks: 15, restarts: 1, bypasses: 2, gapMin: 10, repeats: 3 };
 const GENERIC_HOOK = /^(hook|hook:hook|unclassified)$/;
 
-/** Real hook identity for a block: [VE:X] code, else the hook script basename, else the hookName, else 'unclassified'. */
+/**
+ * Real hook identity for a block, never free text that merely mentions a script: the [VE:X] code, else the
+ * hook script basename from the attachment's own command, else its hookName, else 'unclassified'.
+ */
 function hookLabel(x) {
-  let s;
-  try { s = typeof x === 'string' ? x : JSON.stringify(x || {}); } catch { s = ''; }
-  const code = s.match(/\[VE:([A-Z0-9]+)\]/);
+  const str = (v) => { try { return typeof v === 'string' ? v : JSON.stringify(v || {}); } catch { return ''; } };
+  const code = str(x).match(/\[VE:([A-Z0-9]+)\]/);
   if (code) return `[VE:${code[1]}]`;
-  const script = s.match(/([\w.-]+\.(?:sh|mjs|js))/);
+  if (!x || typeof x !== 'object') return 'unclassified';
+  const be = x.blockingError && typeof x.blockingError === 'object' ? x.blockingError : {};
+  const script = String(be.command || x.command || '').match(/([\w.-]+\.(?:sh|mjs|js))\b/);
   if (script) return script[1];
-  const name = x && typeof x === 'object' && typeof x.hookName === 'string' && x.hookName.trim();
+  const name = typeof x.hookName === 'string' && x.hookName.trim();
   return name ? name.slice(0, 40) : 'unclassified';
 }
 
@@ -42,6 +46,7 @@ function textOf(c) {
 function analyze(lines) {
   const ev = [];
   for (const l of lines) { try { const o = JSON.parse(l); if (o && typeof o === 'object') ev.push(o); } catch { /* skip */ } }
+  const humanGaps = [];
   const out = { sessionId: null, firstEditAt: null, endAt: null, hours: 0, landRefusals: [], hookBlocks: {}, bypasses: {}, restarts: 0, compactions: 0, idleMinutes: 0, landPushes: 0, repeats: [], longWaits: [] };
   const cmdCount = new Map();
   let prev = null;
@@ -52,7 +57,7 @@ function analyze(lines) {
       if (!out.startAt && e.type !== 'queue-operation') out.startAt = e.timestamp;
       const human = e.type === 'user' && !(Array.isArray(e.message && e.message.content) && e.message.content.some((b) => b && b.type === 'tool_result'));
       if (prev && ts - prev > T.gapMin * 60000 && e.type !== 'queue-operation') {
-        out.idleMinutes += Math.round((ts - prev) / 60000);
+        if (human) humanGaps.push({ at: ts, minutes: Math.round((ts - prev) / 60000) });
         if (!human) out.longWaits.push({ at: e.timestamp, minutes: Math.round((ts - prev) / 60000) });
       }
       if (e.type !== 'queue-operation') prev = ts;
@@ -96,6 +101,9 @@ function analyze(lines) {
   for (const [k, n] of cmdCount) if (n >= T.repeats && !/^(git (status|diff|log)|ls|cat|sed|grep|node --test)/.test(k)) out.repeats.push({ command: k, times: n });
   if (!out.firstEditAt) out.firstEditAt = out.startAt;
   if (out.firstEditAt && out.endAt) out.hours = +((Date.parse(out.endAt) - Date.parse(out.firstEditAt)) / 3600000).toFixed(2);
+  // Owner idle time (a gap that ends in a human message) after the first edit is not friction; a long CI or tool wait is.
+  const firstEditTs = out.firstEditAt ? Date.parse(out.firstEditAt) : 0;
+  out.idleMinutes = humanGaps.filter((g) => g.at >= firstEditTs).reduce((a, g) => a + g.minutes, 0);
   out.activeHours = +Math.max(0, out.hours - out.idleMinutes / 60).toFixed(2);
   out.hookBlockCount = Object.values(out.hookBlocks).reduce((a, b) => a + b, 0);
   out.bypassCount = Object.values(out.bypasses).reduce((a, b) => a + b, 0);
@@ -122,7 +130,7 @@ function parseLinks(opt) {
   let noAction = null;
   if (opt['no-action'] !== undefined) {
     noAction = opt['no-action'] === true ? '' : String(opt['no-action']).trim();
-    if (noAction.length < 15 || /^(<.*>|n\/?a|none|todo|tbd|nothing|ok)\b/i.test(noAction)) return { links, noAction: null, error: '--no-action needs a real reason (15+ chars, say why no finding needs a fix)' };
+    if (noAction.length < 15 || /^(<.*>|n\/?a|none|todo|tbd|nothing|ok)\W*$/i.test(noAction)) return { links, noAction: null, error: '--no-action needs a real reason (15+ chars, say why no finding needs a fix)' };
   }
   return { links, noAction, error: null };
 }
@@ -136,7 +144,8 @@ function retroStatus(rows, sessionId) {
   const row = [...rows].reverse().find((r) => !r.rollup && r.sessionId === sessionId) || null;
   if (!row) return { recorded: false, flagged: false, closed: false, row: null };
   const flagged = Array.isArray(row.triggers) && row.triggers.length > 0;
-  const closed = !flagged || (Array.isArray(row.links) && row.links.length > 0) || !!row.noAction;
+  const legacy = row.v !== 2; // v1 rows were flagged by the retired 2h/3-block thresholds; they are history, not open work
+  const closed = !flagged || legacy || (Array.isArray(row.links) && row.links.length > 0) || !!row.noAction;
   return { recorded: true, flagged, closed, row };
 }
 
@@ -198,7 +207,7 @@ function findTranscript() {
 }
 
 function main(argv) {
-  const opt = Object.fromEntries(argv.filter((a) => a.startsWith('--')).map((a) => { const [k, v] = a.slice(2).split('='); return [k, v === undefined ? true : v]; }));
+  const opt = Object.fromEntries(argv.filter((a) => a.startsWith('--')).map((a) => { const eq = a.indexOf('='); return eq < 0 ? [a.slice(2), true] : [a.slice(2, eq), a.slice(eq + 1)]; }));
   if (opt.rollup) { rollup(Number(opt.days) || 7, !!opt['file-card'], { ifDue: !!opt['if-due'] }); return 0; }
   const file = opt.transcript || findTranscript();
   if (!file || !fs.existsSync(file)) { console.error('session-retro: no transcript found (use --transcript=PATH)'); return 1; }
@@ -207,7 +216,7 @@ function main(argv) {
     const pl = parseLinks(opt);
     if (pl.error) { console.error(`session-retro: ${pl.error}`); return 1; }
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
-    fs.appendFileSync(LEDGER, JSON.stringify({ sessionId: r.sessionId, endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
+    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
     r.links = pl.links; r.noAction = pl.noAction;
   }
   console.log(opt.json ? JSON.stringify(r, null, 2) : report(r));

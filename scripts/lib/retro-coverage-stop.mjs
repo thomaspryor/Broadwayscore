@@ -20,13 +20,21 @@ import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
 
-const CODE_PATH_RE = /(?:^|\/)(?:src|scripts|\.github|\.claude)\//;
+const CODE_PATH_RE = /^(?:src|scripts|\.github|\.claude)\//;
+/** A path relative to the repo or worktree root, or '' for files outside it (memory, ~/.claude). */
+function repoRelative(p) {
+  const s = String(p || '');
+  if (/\/\.claude\/projects\//.test(s)) return '';
+  const wt = s.match(/\.claude\/worktrees\/[^/]+\/(.*)$/);
+  if (wt) return wt[1];
+  return s.replace(/^\/(?:home\/user|repo|workspace)\/[^/]+\//, '').replace(/^\//, '');
+}
 const RECORD_RE = /session-retro\.js\b[^\n;&|]*--record\b/;
 const LINK_RE = /--(?:fixes=(?:BRO-\d+|[0-9a-f]{7,40})|no-action=\S)/;
 
 /** PURE. Did the session edit tracked code (not only data/ or memory)? */
 export function editedCode(events) {
-  return events.some((e) => e.kind === 'assistant_tool_use' && /^(?:Edit|Write|NotebookEdit)$/.test(e.name || '') && CODE_PATH_RE.test(String(e.input?.file_path || '')));
+  return events.some((e) => e.kind === 'assistant_tool_use' && /^(?:Edit|Write|NotebookEdit)$/.test(e.name || '') && CODE_PATH_RE.test(repoRelative(e.input?.file_path)));
 }
 
 /** PURE. The `--record` commands this session ran that really ran (answered, not an error). */
@@ -35,12 +43,13 @@ export function recordRuns(events) {
   return events
     .filter((e) => e.kind === 'assistant_tool_use' && e.name === 'Bash')
     .map((e) => ({ command: runShellCode(e.input?.command) || '', result: answers.get(e.id) }))
-    .filter((x) => RECORD_RE.test(x.command) && x.result && !x.result.isError);
+    // --check exits 10 on a flagged retro, which the harness may report as an error: a flagged run still ran.
+    .filter((x) => RECORD_RE.test(x.command) && x.result && (!x.result.isError || /RETRO REQUIRED/.test(String(x.result.content || ''))));
 }
 
 const MSG = {
-  norow: 'Retro missing: this session landed code but never ran `node scripts/lib/session-retro.js --check --record`. Run it (it reads the transcript: edit-to-end time, hook blocks by hook, land refusals, bypasses), then turn each finding into a fix now or a card and re-run with `--record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"`). Then close again. Bypass: NO-VERIFY: <reason>.',
-  nolink: 'Retro not closed: the retro row crossed a threshold ("RETRO REQUIRED") but links no fix or card. For each finding fix it now (guard, test, hook) or file a card, then re-run `node scripts/lib/session-retro.js --record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"` when the long time or many blocks were idle or expected). A memory note is not a fix. Bypass: NO-VERIFY: <reason>.',
+  norow: 'Retro missing: this session landed code but never ran `node scripts/lib/session-retro.js --check --record`. Run it (it reads the transcript: edit-to-end time, hook blocks by hook, land refusals, bypasses), then turn each finding into a fix now or a card and re-run with `--record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"`). Then close again. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
+  nolink: 'Retro not closed: the retro row crossed a threshold ("RETRO REQUIRED") but links no fix or card. For each finding fix it now (guard, test, hook) or file a card, then re-run `node scripts/lib/session-retro.js --record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"` when the long time or many blocks were idle or expected). A memory note is not a fix. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
 };
 
 /** PURE Stop-hook decision. -> { decision: 'allow'|'block', reason, message? } */
@@ -48,7 +57,7 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.RETRO_COVERAGE_STOP_DISABLE === '1') return { decision: 'allow', reason: 'RETRO_COVERAGE_STOP_DISABLE=1' };
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
-  if (/NO-VERIFY:/.test(lastMessage)) return { decision: 'allow', reason: 'NO-VERIFY bypass' };
+  if (/NO-RETRO:\s*\S.{8,}/.test(lastMessage)) return { decision: 'allow', reason: 'NO-RETRO bypass' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   if (landedPushIndices(events).length === 0) return { decision: 'allow', reason: 'nothing landed' };
   if (!editedCode(events)) return { decision: 'allow', reason: 'no tracked code edited (data-only)' };
@@ -78,8 +87,8 @@ export function main(argv, { env = process.env } = {}) {
   if (!tp || !fs.existsSync(tp)) return 0;
   const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env });
   if (d.decision !== 'block') return 0;
-  const counter = path.join(os.tmpdir(), `retro-coverage-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
-  const seen = fs.existsSync(counter);
+  const counter = path.join(os.tmpdir(), `retro-coverage-stop-${createHash('sha1').update(tp + '\u0000' + d.reason).digest('hex').slice(0, 12)}`);
+  const seen = fs.existsSync(counter); // one nudge per transcript per reason: a later, different gap still gets its own
   logHit({ session: input.session_id || null, blocked: !seen, reason: d.reason });
   if (seen) return 0; // one nudge per transcript; it can never loop a session
   try { fs.writeFileSync(counter, '1'); } catch { /* best effort */ }
