@@ -110,13 +110,16 @@ test('every rebase / merge / cherry-pick push-with-retry.sh runs (incl. --contin
   assert.match(PWR, /_keep_run_driver\(\) \{[^\n]*merge-keep-run\.sh/);
 });
 
-test('ours is the only custom merge driver .gitattributes names (a new one needs a keep-run override too)', () => {
+// keyed-jsonl (BRO-7631) is the one other driver: it only matters to land.yml's rebase (registered by
+// land-merge-drivers.js, guarded by land-merge-drivers.test.mjs). push-with-retry.sh rebases with -X theirs, which
+// already settles the one file it covers, so it needs no keep-run override.
+test('ours is the only keep-run merge driver .gitattributes names (a new one needs a keep-run override too)', () => {
   const names = new Set();
   for (const line of ATTRS.split('\n')) {
     if (/^\s*#/.test(line)) continue;
     for (const m of line.matchAll(/(?:^|\s)merge=([A-Za-z0-9_.-]+)/g)) if (!BUILTIN.has(m[1])) names.add(m[1]);
   }
-  assert.deepEqual([...names], ['ours']);
+  assert.deepEqual([...names].sort(), ['keyed-jsonl', 'ours']);
 });
 
 test('the snapshot that blended is marked regenerated in the real .gitattributes', () => {

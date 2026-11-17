@@ -111,6 +111,8 @@ const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 // same checkout shape (its CLI); re-exported below so callers and tests of
 // this module are unchanged.
 const { isPromisorFetchFailure, PROMISOR_REBASE_RETRIES } = require('./promisor-fetch-failure.js');
+// BRO-7631: -c merge.<name>.driver args for every land rebase (a CI runner registers none; git then text-merges silently).
+const { driverConfigArgs } = require('./land-merge-drivers.js');
 const PREFETCH_TIMEOUT_MS = Math.max(GIT_NET_TIMEOUT_MS, 5 * 60 * 1000);
 const PREFETCH_MAX_PATHS = 2000;
 
@@ -827,7 +829,7 @@ function landBranch(o) {
           git(['add', '--', ...GENERATED_DOC_PATHS], workdir);
         } catch { return { done: false, lastErr }; }
         try {
-          git(['rebase', '--continue'], workdir, { env: { ...process.env, GIT_EDITOR: 'true' } });
+          git([...driverConfigArgs(__dirname), 'rebase', '--continue'], workdir, { env: { ...process.env, GIT_EDITOR: 'true' } });
           log(`[land] rebase conflict in ${GENERATED_DOC_PATHS.join(', ')} only: regenerated it and continued (BRO-6035)`);
           return { done: true };
         } catch (e) { lastErr = e; /* stopped on the next commit's conflict, or failed: look again */ }
@@ -849,7 +851,7 @@ function landBranch(o) {
       prefetchForRebase(onto, tip || sha);
       for (let retry = 0; ; retry++) {
         try {
-          git(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto], workdir);
+          git([...driverConfigArgs(__dirname), ...(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto])], workdir);
           if (!rangeFrom) refreshGeneratedDocs(onto);
           return;
         } catch (caught) {

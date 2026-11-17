@@ -10,6 +10,8 @@ src/config/feature-flags.ts merge=ours
 # merge / cherry-pick: a path also marked autostash=regenerated keeps this run's
 # file whole; every other merge=ours path keeps the -X theirs / -X ours text
 # merge. `-X` alone blended two whole snapshots whose edits did not overlap.
+# land.yml's own rebases (land-rebase.sh, land-branch.js) pass scripts/lib/land-merge-drivers.js (BRO-7631):
+# autostash=regenerated paths keep main's copy, the rest text-merge as before.
 # See Notion 387637c5-416f-8114.
 #   union  → append-only JSONL log: keep both sides' lines, never conflicts (git built-in).
 #   ours   → single-state JSON: keep on-branch side; next cron regenerates. Requires
@@ -443,6 +445,12 @@ scripts/collect-review-texts.js merge-coverage=exempt
 data/image-sources.json merge-coverage=exempt
 data/todaytix-ids.json merge-coverage=exempt
 scripts/health-check.js merge-coverage=exempt
+
+# merge=keyed-jsonl (BRO-7631): an append-per-key ledger whose writer UPSERTS (so not merge=union, which would
+# resurrect a superseded row). scripts/lib/merge-keyed-jsonl.js three-way merges it row by row, keyed by the
+# `keyed-jsonl` attribute's fields. Registered for land.yml by scripts/lib/land-merge-drivers.js (-c per rebase)
+# and for a local clone by setup-local-data.sh. 36 of 143 conflicted land refusals in 30 days were this one file.
+data/audit/claude-session-cost.jsonl merge=keyed-jsonl keyed-jsonl=date,session
 
 # merge-keyed=entries (BRO-6687): a CUSTOM attribute read only by
 # scripts/lib/merge-keep-run.sh, the merge=ours driver push-with-retry.sh uses.

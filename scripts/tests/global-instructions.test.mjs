@@ -182,7 +182,7 @@ test('.claude/CLOUD.md stays under its byte cap', () => {
 const CLOUD_MD_MIN_HEADROOM_BYTES = 256;
 test('.claude/CLOUD.md keeps headroom under its byte cap', () => {
   const bytes = fs.statSync(path.join(REPO_ROOT, '.claude', 'CLOUD.md')).size;
-  assert.ok(CLOUD_MD_MAX_BYTES - bytes >= CLOUD_MD_MIN_HEADROOM_BYTES, `.claude/CLOUD.md is ${bytes}B, ${CLOUD_MD_MAX_BYTES - bytes}B under the cap (need ${CLOUD_MD_MIN_HEADROOM_BYTES}B headroom): trim narrative before adding`);
+  assert.ok(CLOUD_MD_MAX_BYTES - bytes >= CLOUD_MD_MIN_HEADROOM_BYTES, `.claude/CLOUD.md is ${bytes}B, ${CLOUD_MD_MAX_BYTES - bytes}B under the cap (need ${CLOUD_MD_MIN_HEADROOM_BYTES}B headroom): move a situational section to docs/cloud-<topic>-runbook.md (leave its heading and a one-line pointer, add a !/docs/cloud-<topic>-runbook.md line to .gitignore; BRO-7631 did this for 'Fixing private data'), do not just delete rules. 41 land refusals in 30 days hit this`);
 });
 
 // BRO-5072: AGENTS.md (Codex) points at CLAUDE.md instead of copying it; the

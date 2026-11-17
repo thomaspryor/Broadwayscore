@@ -39,6 +39,9 @@ echo ""
 # Scoped --global so all worktrees/clones on this machine inherit it.
 git config --global merge.ours.driver true 2>/dev/null \
   && echo "git: registered merge.ours.driver (audit-state conflict auto-resolution)"
+# BRO-7631: merge=keyed-jsonl (claude-session-cost.jsonl). Resolved at run time from the repo being merged.
+git config --global merge.keyed-jsonl.driver 'node "$(git rev-parse --show-toplevel)/scripts/lib/merge-keyed-jsonl.js" %O %A %B %P' 2>/dev/null \
+  && echo "git: registered merge.keyed-jsonl.driver (session-cost ledger row merge)"
 
 
 # Determine auth method (token takes priority if explicitly set).

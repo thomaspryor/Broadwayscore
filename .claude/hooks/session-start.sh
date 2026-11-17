@@ -575,6 +575,8 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [
   fi
 fi
 
+# BRO-7631: on resume print what a container restart killed (waits to re-run, unfinished worktrees); RESTART_RECOVERY_DISABLED=true silences
+[ "$SESSION_EVENT" = "resume" ] && [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/restart-recovery.js" ] && perl -e 'alarm shift; exec @ARGV' 10 node "$REPO_ROOT/scripts/lib/restart-recovery.js" resume "$REPO_ROOT" 2>/dev/null
 # Disk-space check (BRO-2258). Added 2026-08-30 after the machine silently
 # hit 100% disk (117Mi free of 460Gi) — nothing warned, and it silently broke
 # both cmux runtime spawning (can't write workspace state, so tabs came up
