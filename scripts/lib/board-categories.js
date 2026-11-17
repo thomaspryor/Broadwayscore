@@ -161,10 +161,13 @@ function cardTraits(issue, { nowMs, secret = null, lastRecheckStatus = null } = 
     ? parseRecheckAfterFromCard({ comments: bodies, notes: description }) : null;
   if (stamp != null) {
     if (stamp >= utcDayStart(nowMs)) traits.add('dated-future');
-    // BRO-7689: a past-date card the recheck skips (held park line, DECISION NEEDED, or handed to a
-    // worker within the grace window) is not "waiting for its check"; it falls through to its
-    // parked-* row or Paused. Same rule as the digest headline (board-summary.js, BRO-7686).
-    else if (!pastDateHold(mapIssueToCard(issue), nowMs)) traits.add(lastRecheckStatus === 'fail' ? 'dated-past-failed' : 'dated-past');
+    // A failed check always shows, held or not: nothing else surfaces it.
+    else if (lastRecheckStatus === 'fail') traits.add('dated-past-failed');
+    // BRO-7689: the nightly recheck still runs a held card's test, but never hands it to a worker,
+    // and a card already handed off is the worker's. Neither is "waiting for its check": it falls
+    // through to its parked-* row (owner-hold-sweep can then act on it) or Paused. Same rule as the
+    // digest headline (board-summary.js, BRO-7686).
+    else if (!pastDateHold(mapIssueToCard(issue), nowMs)) traits.add('dated-past');
   }
 
   const reasons = parkReasons(description);

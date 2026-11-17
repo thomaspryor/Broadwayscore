@@ -479,3 +479,15 @@ test('BRO-7689: a past-date card the recheck skips is not "Date passed, waiting 
     assert.equal(categoryOf(c) === 'dated-past', pastDateHold(mapIssueToCard(c), NOW.getTime()) === null, c.identifier);
   }
 });
+
+test('BRO-7689: a held card whose check failed still shows as failed; an owner-worded past-date hold reaches owner-hold-sweep', () => {
+  const sweep = require('./owner-hold-sweep.js');
+  const paused = { state: { name: 'Paused', type: 'backlog' } };
+  const stampComment = { body: 'RECHECK-AFTER: 2026-10-20', createdAt: '2026-10-19T00:00:00Z' };
+  const failedHeld = withDesc('PARKED: needs the owner\'s Apple ID password', { ...paused, comments: { nodes: [stampComment] } });
+  STATUS.set(failedHeld.identifier, 'fail');
+  assert.equal(categoryOf(failedHeld), 'dated-past-failed');
+  const ownerWorded = withDesc('PARKED: waiting on the owner go-ahead', { ...paused, comments: { nodes: [stampComment] } });
+  assert.equal(categoryOf(ownerWorded), 'parked-owner-wording');
+  assert.deepEqual(sweep.selectHolds([ownerWorded], { now: NOW }).map((h) => h.row), ['parked-owner-wording']);
+});
