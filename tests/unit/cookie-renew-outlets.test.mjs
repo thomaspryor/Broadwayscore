@@ -281,3 +281,13 @@ test('renew-cookies and verify-cookie-login refuse unknown outlets instead of dr
   assert.equal(b.status, 1);
   assert.match(b.stderr, /Unknown outlet\(s\): bogus/);
 });
+
+test('cookie alerts and CI expiry lines point auto-renewed outlets at renew-cookies.js, not the Safari dance', () => {
+  const { buildAlert } = require('../../scripts/lib/cookie-expiry-alert.js');
+  for (const o of NEW) assert.match(buildAlert({ name: o, layer: 2, authDays: 1, message: 'm' }).hint, new RegExp(`renew-cookies\\.js --outlet=${o}`));
+  assert.match(buildAlert({ name: 'variety', layer: 2, authDays: 1, message: 'm' }).hint, /extract-safari-cookies/);
+  const { checkAuthExpiry } = require('../../scripts/check-cookie-health.js');
+  const soon = [{ name: 'authId', expires: Date.now() / 1000 + 2 * 86400 }];
+  assert.match(checkAuthExpiry(soon, ['authId'], 'thetimes').message, /renew-cookies\.js --outlet=thetimes/);
+  assert.match(checkAuthExpiry(soon, ['authId'], 'someoutlet').message, /Safari/);
+});

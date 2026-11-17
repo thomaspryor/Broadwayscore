@@ -92,7 +92,12 @@ function buildAlert(result) {
       `Check detail: ${result.message}\n\n` +
       `Cookie renewal is Mac-only (BRO-6590); do not try to renew it from CI or a cloud session. ` +
       `After the owner refreshes it, re-score any ${result.name} review collected since the cookie died.`,
-    hint: 'Refresh on the Mac: python3 scripts/extract-safari-cookies.py --push (needs a fresh Safari login).',
+    // BRO-7705: outlets renew-cookies.js handles renew themselves every 6h
+    // (and email the owner when a login needs a human); the rest still need
+    // the Safari login + extractor.
+    hint: require('./cookie-renew').RENEW_OUTLETS[result.name]
+      ? `Renews itself on the Mac Studio every 6h; to force it now: node scripts/renew-cookies.js --outlet=${result.name} (a login it cannot do emails the owner).`
+      : 'Refresh on the Mac: python3 scripts/extract-safari-cookies.py --push (needs a fresh Safari login).',
     // A live check can fail on a site hiccup, so only a T1 cookie actually
     // read as expired pages at error level.
     severity: t1 && !live ? 'error' : 'warn',
