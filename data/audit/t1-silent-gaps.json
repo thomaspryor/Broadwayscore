@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T00:43:30.455Z",
+  "generatedAt": "2026-11-17T01:50:00.571Z",
   "windowDays": 45,
   "showsScanned": 255,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 185.68893444444444,
+      "fileAgeHours": 186.73526527777778,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 163.1405986111111,
+      "nonTerminalAgeHours": 164.24896416666667,
       "needsManualRecovery": true
     },
     {
@@ -33,14 +33,18 @@
       "type": "empty-body",
       "recoverable": true,
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466",
-      "recovery": null,
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  forum thread fetch failed: All scraping methods failed"
+      },
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 8,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 154.9208538888889,
+      "fileAgeHours": 156.02912305555554,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 153.7761536111111,
+      "nonTerminalAgeHours": 154.88451916666668,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +62,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 49.977316944444446,
+      "fileAgeHours": 51.085593055555556,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 48.71114138888889,
+      "nonTerminalAgeHours": 49.81950694444444,
       "needsManualRecovery": false
     }
   ],

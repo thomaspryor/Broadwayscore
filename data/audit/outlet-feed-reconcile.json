@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T00:43:50.286Z",
+  "generatedAt": "2026-11-17T01:50:26.615Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -135,10 +135,6 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -157,10 +153,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 874,
-  "matchedGaps": 1,
+  "itemsScanned": 876,
+  "matchedGaps": 3,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -170,6 +170,24 @@
       "outletId": "lighting-and-sound-america",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=8812YU",
       "headline": "Theatre&#32;in&#32;Review:&#32;Downstate&#32;(Booth&#32;Theatre)",
+      "publishDate": "2026-11-16"
+    },
+    {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "level": "matched",
+      "outletId": "frontmezzjunkies",
+      "url": "https://frontmezzjunkies.com/2026/11/16/downstate-opens-on-broadway-and-im-ready-to-enter-that-difficult-house-again/",
+      "headline": "“Downstate” Opens on Broadway, and I’m Ready to Enter That Difficult House Again",
+      "publishDate": "2026-11-16"
+    },
+    {
+      "showId": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/now-you-see-me-live/",
+      "headline": "Now You See Me LIVE! Comes to Broadway with High-Octane Magic in a Limited Holiday Engagement through January 3",
       "publishDate": "2026-11-16"
     },
     {
