@@ -73,3 +73,23 @@ test('hook entry: blocks once (exit 2), then lets the same transcript through; b
     fs.rmSync(path.join(os.tmpdir(), `retro-coverage-stop-${createHash('sha1').update(path.join(dir, 't.jsonl') + '\u0000' + 'landed code, no retro --record run').digest('hex').slice(0, 12)}`), { force: true });
   }
 });
+
+test('a shell-made code edit counts as editing code (BRO-7701: auto-mode sessions edit with sed/python/cat)', () => {
+  const sh = (command) => use('Bash', { command });
+  for (const cmd of [
+    "sed -i 's/a/b/' scripts/lib/x.js",
+    "cd /home/user/Broadwayscore/.claude/worktrees/w && python3 - <<'EOF2'\nimport json\np='.claude/autonomous-config.json'\nopen(p,'w').write('{}')\nEOF2",
+    "cat > src/app/page.tsx <<'EOF2'\nx\nEOF2",
+    "node -e 'require(\"fs\").writeFileSync(\"scripts/y.js\",\"1\")'",
+    "printf 'x' | tee .github/workflows/z.yml",
+    "perl -pi -e 's/a/b/' src/lib/a.ts",
+  ]) assert.equal(decide([...sh(cmd), ...land()]).decision, 'block', cmd);
+  for (const cmd of [
+    "grep -rn foo scripts/lib",
+    "cat scripts/lib/x.js",
+    "python3 - <<'EOF2'\nfor l in open('data/audit/x.jsonl'): print(l)\nEOF2",
+    "sed -i 's/a/b/' data/shows.json",
+    "node scripts/lib/session-retro.js --rollup > /tmp/out.txt",
+    "git checkout -q origin/main -- scripts/",
+  ]) assert.equal(decide([...sh(cmd), ...land()]).decision, 'allow', cmd);
+});

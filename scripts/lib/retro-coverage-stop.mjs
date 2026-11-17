@@ -32,9 +32,28 @@ function repoRelative(p) {
 const RECORD_RE = /session-retro\.js\b[^\n;&|]*--record\b/;
 const LINK_RE = /--(?:fixes=(?:BRO-\d+|[0-9a-f]{7,40})|no-action=\S)/;
 
+// BRO-7701: auto-mode sessions often edit with the shell (sed -i, a python/node heredoc, cat >, tee), which the
+// Edit/Write check alone missed: the audit session landed a config change that way and this gate let it through.
+const CODE_TOKEN = String.raw`(?:src|scripts|\.github|\.claude)/`;
+const SHELL_WRITE_RES = [
+  new RegExp(String.raw`\b(?:sed|perl)\s+(?:-\w*\s+)*-\w*i\w*\b[^\n]*?(?:^|[\s'"])${CODE_TOKEN}`),
+  new RegExp(String.raw`>>?\s*['"]?${CODE_TOKEN}`),
+  new RegExp(String.raw`\btee\s+(?:-a\s+)?['"]?${CODE_TOKEN}`),
+];
+const SCRIPT_WRITE_RE = /open\([^)]*,\s*['"][wa]|writeFileSync|appendFileSync|write_text|\.write\(/;
+const SCRIPT_CODE_TOKEN_RE = new RegExp(String.raw`(?:^|[\s'"=(])${CODE_TOKEN}`);
+/** PURE. Does one shell command write a tracked code file? Worktree prefixes and a leading cd are not targets. */
+export function shellEditsCode(command) {
+  const c = String(command || '').replace(/^\s*cd\s+\S+\s*(?:&&|;)\s*/, '').replace(/\S*\.claude\/worktrees\/[^/\s'"]+\//g, '');
+  if (SHELL_WRITE_RES.some((re) => re.test(c))) return true;
+  return SCRIPT_WRITE_RE.test(c) && SCRIPT_CODE_TOKEN_RE.test(c);
+}
+
 /** PURE. Did the session edit tracked code (not only data/ or memory)? */
 export function editedCode(events) {
-  return events.some((e) => e.kind === 'assistant_tool_use' && /^(?:Edit|Write|NotebookEdit)$/.test(e.name || '') && CODE_PATH_RE.test(repoRelative(e.input?.file_path)));
+  return events.some((e) => e.kind === 'assistant_tool_use' && (
+    (/^(?:Edit|Write|NotebookEdit)$/.test(e.name || '') && CODE_PATH_RE.test(repoRelative(e.input?.file_path)))
+    || (e.name === 'Bash' && shellEditsCode(e.input?.command))));
 }
 
 /** PURE. The `--record` commands this session ran that really ran (answered, not an error). */
