@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T15:43:37.952Z",
+  "generatedAt": "2026-11-17T16:48:06.005Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -135,6 +135,10 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -153,21 +157,28 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
+    },
+    {
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "All scraping methods failed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "All scraping methods failed"
     }
   ],
-  "itemsScanned": 884,
-  "matchedGaps": 1,
+  "itemsScanned": 812,
+  "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "level": "matched",
-      "outletId": "artsfuse",
-      "url": "https://artsfuse.org/337488/theater-reviews-monsters-and-mirrors-downstate-and-here-there-are-blueberries/",
-      "headline": "Theater Reviews: Monsters and Mirrors &#8212; &#8220;Downstate&#8221; and &#8220;Here There Are Blueberries&#8221;",
-      "publishDate": "2026-11-17"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
