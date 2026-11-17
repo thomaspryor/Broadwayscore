@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T07:41:11.787Z",
+  "timestamp": "2026-11-17T09:00:24.930Z",
   "stats": {
-    "totalReviews": 82331,
-    "alreadyFlagged": 22499,
+    "totalReviews": 82336,
+    "alreadyFlagged": 22500,
     "dateGuardCatches": 222,
-    "directorMismatch": 3725,
-    "tvFilmSignals": 2341,
-    "londonSignals": 3780,
+    "directorMismatch": 3726,
+    "tvFilmSignals": 2342,
+    "londonSignals": 3782,
     "offBroadwaySignals": 760,
     "yearMismatch": 379,
-    "noPublishDate": 8221
+    "noPublishDate": 8222
   },
   "findings": [
     {
@@ -71849,6 +71849,29 @@
     },
     {
       "showId": "the-hills-of-california-west-end-2024",
+      "file": "lost-in-theatreland--barbara-martins.json",
+      "publishDate": "2024-01-25",
+      "url": "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
       "file": "mail-on-sunday--robert-gore-langton.json",
       "score": 87,
       "publishDate": "2024-02-11",
@@ -98369,6 +98392,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cowbois-west-end-2024",
+      "file": "lost-in-theatreland--barbara-martins.json",
+      "publishDate": "2024-01-25",
+      "url": "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
