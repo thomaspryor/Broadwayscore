@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7605",
   "planId": "a1f7fc40-ee80-4a5e-942e-1382512f275e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-17T20:54:47.914Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-17T22:03:30.618Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json isNonReviewReason: null -> \"manual (not a review): Guardian feature\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
