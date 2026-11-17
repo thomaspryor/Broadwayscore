@@ -235,6 +235,8 @@ Check for:
 
 This phase combines documentation updates with lessons learned. For each item below, make the change now if warranted.
 
+**Retro by measurement first (required, BRO-7629):** run `node scripts/lib/session-retro.js --check --record`. It reads the transcript, not your memory: edit-to-end time, land refusals, hook blocks, bypasses, restarts, reruns, long waits. Exit 10 means a threshold was crossed (over 2h, any land refusal, 3+ hook blocks, a restart): turn every finding into a fix now (guard, test, hook) or a dispatched card, and list them in the report. A memory note is not a fix. Then `node scripts/lib/session-retro.js --rollup --if-due --file-card` (once a week it files a card for the top recurring friction). Commit `data/audit/session-retro.jsonl` with your work.
+
 **What did we learn this session?** Think about:
 - What went wrong or almost went wrong? (Wrong assumptions, wasted time, broken builds)
 - What new gotchas, edge cases, or operational knowledge did we discover?
