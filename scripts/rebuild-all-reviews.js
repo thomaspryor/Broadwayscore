@@ -5974,6 +5974,15 @@ if (leasedShowIds.size && !SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
   console.log(`  [LEASE CARRY-OVER] ${carried.length} existing review row(s) kept for leased show(s)`);
 }
 
+// 2026-11-17: lane rows whose texts have not reached review-texts yet survive a rebuild even when no lease is
+// visible (unsynced workflow, failed sync, watchdog release before the lane pushed). See orphan-lane-rows.js.
+if (!SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
+  const { orphanLaneRows } = require('./lib/opening-night-lane/orphan-lane-rows');
+  const orphans = orphanLaneRows(JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews || [], allReviews, { leased: leasedShowIds, reviewTextsDir });
+  for (const r of orphans) allReviews.push(r);
+  if (orphans.length) console.log(`  [LANE ROW CARRY-OVER] ${orphans.length} lane row(s) kept until their texts reach review-texts: ${[...new Set(orphans.map(r => r.showId))].join(', ')}`);
+}
+
 // BRO-4954: one review per outlet on a returning show, newest wins. An outlet that
 // reviewed the return drops its earlier-run review(s), carried or filed here. Runs
 // after the lease carry-over: a leased show's own folder is skipped above, so its
