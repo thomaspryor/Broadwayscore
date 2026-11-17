@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-17T03:22:53.307Z",
-  "processed": 333,
-  "failed": 187,
-  "successRate": "64.0%",
+  "updatedAt": "2026-11-17T03:33:22.284Z",
+  "processed": 362,
+  "failed": 198,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 178,
+    "playwright": 192,
     "amp": 1,
     "browserbase": 4,
     "directCookies": 0,
@@ -12,10 +12,38 @@
     "scrapingbee": 15,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 104
+    "archive": 119
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-11-17T01:06:59.816Z",
+      "event": "bb-session",
+      "session": "6ca6f14d",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-17T01:33:11.658Z",
+      "event": "bb-session",
+      "session": "69219d59",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-17T01:33:12.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T01:44:10.083Z",
+      "event": "bb-session",
+      "session": "c6b08a18",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-17T01:44:10.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
     {
       "t": "2026-11-17T01:45:39.335Z",
       "event": "bb-session",
