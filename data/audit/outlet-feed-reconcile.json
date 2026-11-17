@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T06:45:49.565Z",
+  "generatedAt": "2026-11-17T08:43:58.442Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -139,10 +139,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
-    },
-    {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
@@ -157,20 +153,21 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "fringereview",
-      "error": "Timeout fetching https://fringereview.co.uk/feed/"
-    },
-    {
-      "outletId": "lighting-and-sound-america",
-      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 864,
-  "matchedGaps": 0,
+  "itemsScanned": 888,
+  "matchedGaps": 1,
   "possibleGaps": 1,
   "gaps": [
+    {
+      "showId": "the-fantasticks-2026",
+      "title": "The Fantasticks",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/the-fantasticks-a-cardboard-moon-with-diamond-stars/",
+      "headline": "“THE FANTASTICKS”: A CARDBOARD MOON WITH DIAMOND STARS",
+      "publishDate": "2026-11-17"
+    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",

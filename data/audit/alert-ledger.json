@@ -19502,7 +19502,7 @@
       "title": "Roundup gaps: 11 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-17T06:45:05.936Z",
+      "lastSeen": "2026-11-17T08:43:18.239Z",
       "lastNotifiedAt": "2026-11-17T06:45:05.936Z",
       "lastSurfacedAt": null,
       "notifyCount": 58,
@@ -19579,7 +19579,8 @@
         "downstate-2026",
         "jenufa-off-broadway-2026",
         "the-fantasticks-2026"
-      ]
+      ],
+      "silentRefires": 1
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38780,13 +38781,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-17T06:45:05.833Z",
+      "lastSeen": "2026-11-17T08:43:18.167Z",
       "lastNotifiedAt": "2026-11-17T05:17:28.725Z",
       "lastSurfacedAt": "2026-11-17T05:17:28.725Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -41008,7 +41009,7 @@
       "linearIdentifier": null
     },
     "gap:msblackforpresident-off-broadway-2026/guardian--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: Ms. Blakk for President — guardian",
       "firstSeen": "2026-11-10T05:35:04.347Z",
@@ -41018,7 +41019,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-7266"
+      "linearIdentifier": "BRO-7266",
+      "resolvedAt": "2026-11-17T08:43:39.361Z",
+      "resolveReason": "BRO-6082: no automated path left; reported on the digest FYI line"
     },
     "land:land/bro-7256-c": {
       "status": "resolved",
