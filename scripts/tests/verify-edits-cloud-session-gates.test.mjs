@@ -2201,6 +2201,83 @@ function assertUnclear(r, message, what) {
 }
 const CLEAR = 'The fix is live on the site.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO ARCHIVE';
 
+// RULE21 BRO-7653: execute the shipped hook with all three reported gates enabled.
+const PAUSE = 'KEEP OPEN - the background check wakes this session when it finishes.';
+const PAUSE_GATES = { ...CC_ON, ...WK_ON, CLAUDE_CODE_REMOTE: 'true', SHIP_CHECK_COVERAGE_DISABLE: '0' };
+function pauseTranscript(dir, calls, ageMs = 0) {
+  const transcript = writeTranscript(dir, [GIT_PUSH, ...calls]);
+  const timestamp = new Date(Date.now() - ageMs).toISOString();
+  const rows = fs.readFileSync(transcript, 'utf8').trim().split('\n').map((line) => ({ ...JSON.parse(line), timestamp }));
+  fs.writeFileSync(transcript, rows.map((row) => JSON.stringify(row)).join('\n') + '\n');
+  return transcript;
+}
+const PAUSE_MONITOR = toolUse('Monitor', { command: 'node scripts/lib/wait-for-land.js land/x 60' },
+  'Monitor started (task bmon7k2q9, expires in 3600s).');
+const PAUSE_PROGRESS = notice('<task-notification><task-id>bmon7k2q9</task-id><event>still waiting</event></task-notification>');
+const pauseOutput = (status, extra = {}) => ({ ...toolUse('TaskOutput', { task_id: 'b1e9y745t', block: false },
+  `<retrieval_status>success</retrieval_status>\n<task_id>b1e9y745t</task_id>\n<status>${status}</status>\n<output>log mentions <status>completed</status></output>`), ...extra });
+
+for (const [label, calls] of [
+  ['Bash waiter', [BG_WAIT]],
+  ['Monitor', [PAUSE_MONITOR]],
+  ['Monitor progress', [PAUSE_MONITOR, PAUSE_PROGRESS]],
+  ['Monitor minute expiry', [{ ...PAUSE_MONITOR, _result: 'Monitor started (task bmon7k2q9, expires in 10m unless the source ends first)' }]],
+  ['running TaskOutput', [BG_WAIT, pauseOutput('running')]],
+  ['failed TaskOutput retrieval', [BG_WAIT, pauseOutput('completed', { _isError: true })]],
+  ['unfinished review during a wait', [SHIP_CHECK, BG_WAIT]],
+]) {
+  test(`BRO-7653: concise KEEP OPEN passes for ${label}`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('pause-live');
+    try { assertAllowed(runHook(pauseTranscript(dir, calls), PAUSE, PAUSE_GATES), label); }
+    finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  });
+}
+
+for (const [label, calls, ageMs = 0] of [
+  ['no task', []],
+  ['foreground Bash', [{ ...BG_WAIT, input: { ...BG_WAIT.input, run_in_background: false } }]],
+  ['failed launch', [{ ...BG_WAIT, _isError: true }]],
+  ['missing receipt', [{ ...BG_WAIT, _result: '' }]],
+  ['unrelated task ID', [{ ...BG_WAIT, _result: 'Previously completed task ID: b1e9y745t.' }]],
+  ['missing timestamp', [BG_WAIT], NaN],
+  ['expired Bash', [BG_WAIT], 3 * 60 * 60 * 1000],
+  ['expired Monitor seconds', [PAUSE_MONITOR], 2 * 60 * 60 * 1000],
+  ['expired Monitor minutes', [{ ...PAUSE_MONITOR, _result: 'Monitor started (task bmon7k2q9, expires in 10m unless the source ends first)' }], 11 * 60 * 1000],
+  ['completed Bash', [BG_WAIT, BG_DONE]],
+  ['completed Monitor', [PAUSE_MONITOR, notice('<task-notification><task-id>bmon7k2q9</task-id><status>completed</status></task-notification>')]],
+  ['stopped task', [BG_WAIT, toolUse('TaskStop', { task_id: 'b1e9y745t' })]],
+  ['later owner request', [BG_WAIT, notice('Please do another change now.')]],
+  ['completed TaskOutput', [BG_WAIT, pauseOutput('completed')]],
+  ['failed task in TaskOutput', [BG_WAIT, pauseOutput('failed')]],
+]) {
+  test(`BRO-7653: ${label} cannot waive the closing template`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('pause-inactive');
+    try {
+      const transcript = Number.isNaN(ageMs) ? writeTranscript(dir, [GIT_PUSH, ...calls]) : pauseTranscript(dir, calls, ageMs);
+      const result = runHook(transcript, PAUSE, PAUSE_GATES);
+      assertBlocked(result, label);
+      assert.match(result.stderr, /\[VE:(?:CLEARCLOSE|WAKELESS)\]/);
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  });
+}
+
+test('BRO-7653: a live wait never waives status, owner-action, reason or review requirements', skipNoRepoHook, () => {
+  const dir = makeTmpDir('pause-gates');
+  try {
+    for (const [message, calls, tag] of [
+      ['The test will wake me.', [BG_WAIT], 'NOSTATUSLINE'],
+      ['KEEP OPEN', [BG_WAIT], 'CLEARCLOSE'],
+      ['DECISION NEEDED: choose the design.\n' + PAUSE, [BG_WAIT], 'VERDICTMISMATCH'],
+      ['You need to: choose the design.\nACTION NEEDED FROM YOU - choose the design.', [BG_WAIT], 'CLEARCLOSE'],
+      ['SAFE TO ARCHIVE - all done.', [SHIP_CHECK, BG_WAIT], 'RCOV'],
+    ]) {
+      const result = runHook(pauseTranscript(dir, calls), message, PAUSE_GATES);
+      assertBlocked(result, tag);
+      assert.ok(result.stderr.includes(`[VE:${tag}]`), result.stderr);
+    }
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 test('CLEARCLOSE: real unclear endings → BLOCKED, naming what is missing', skipNoRepoHook, () => {
   const dir = makeTmpDir('cc-block');
   const t = writeTranscript(dir, [GIT_PUSH, LINEAR_CLOSEOUT_DONE]);

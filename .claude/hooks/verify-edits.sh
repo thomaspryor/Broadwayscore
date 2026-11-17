@@ -690,43 +690,24 @@ for i in range(len(events) - 1, -1, -1):
         continue
     if any(s in fp for s in EXEMPT_SUBSTRINGS):
         continue
-    # Skip test files — running them IS the verification, but we don't require running OTHER files when a test was edited
-    # (Actually no — even test edits should be run. Keep them in.)
     total_qualifying_edits += 1
     if last_edit_idx is None:
         last_edit_idx = i
         last_edit_file = fp
 
 # ─── Session status-line gate (added 2026-08-23) ─────────────────────────────
-# The local ~/.claude/hooks/exit-status-gate.sh enforces a "SAFE TO EXIT" /
-# "NOT SAFE TO EXIT" closing line (and refuses the SAFE claim when a DECISION
-# NEEDED block is still pending) — see .claude/commands/wrap-up.md. It is a
-# user-level hook that was never ported to cloud (named in CLOUD.md's list of
-# "12 other user-level hooks [that] DO NOT fire in cloud"), so cloud/iOS
-# sessions had zero enforcement of it — root cause of 8 iOS sessions in one
-# day never saying whether it was safe to end the conversation, and punting
-# decisions back to a non-technical owner instead of making the call.
-#
-# This is a deliberately smaller reimplementation, NOT a full port: the real
-# hook also runs Gate W/T (workspace/task-ref resolution against the local
-# ~/.claude/tasks store, which this sandbox doesn't have — see
-# scripts/lib/exit-status-gate-taskref.test.mjs for what that covers). Only
-# the two checks that explain today's actual failures are implemented here.
-#
-# Scope: only fires once the session did something worth reporting on (a
-# qualifying code edit, a push/commit, or a GitHub MCP write) — never gates
-# an ordinary conversational turn. Kill switch: SESSION_STATUS_GATE_DISABLE=1.
+# Require a closing verdict after code edits, commits, pushes or GitHub writes.
+# Ordinary conversation is exempt. This cloud subset omits the Mac task store
+# checks covered by scripts/lib/exit-status-gate-taskref.test.mjs.
+# Kill switch: SESSION_STATUS_GATE_DISABLE=1.
 if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
     try:
         did_substantial_work = total_qualifying_edits > 0 or any(
             _kind == 'tool' and _is_work_tool(_payload[0], _payload[1], _payload[2])
             for _kind, _payload in events
         )
-        # NOTE: deliberately does NOT require `_last_msg` to be non-empty (ship-check
-        # adversarial review, task a7d9c07f) — a turn whose last action is a tool call
-        # with no closing text has _last_msg == '' and genuinely has no status line.
-        # Treating empty as "skip" would silently defeat the whole gate on exactly the
-        # turn shape (tool-call-only ending) most likely to skip a wrap-up in practice.
+        # Empty final text still needs a verdict: ending on a tool call must
+        # not silently skip this gate (adversarial review a7d9c07f).
         if did_substantial_work and 'NO-VERIFY:' not in (_last_msg or ''):
             _stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
             _content_lines = [ln.strip() for ln in _stripped.strip().splitlines() if ln.strip()]
@@ -824,6 +805,8 @@ def _live_work():
     task_done = {}     # agent / background task id -> idx of its completion
     child = {}         # session id -> {'idx', 'label', 'done': idx, 'archived': bool}
     waits = {}         # background task id -> (idx, label)
+    confirmed_waits = {}  # successful, unexpired receipts eligible for a concise pause
+    observed_done = {}    # terminal TaskOutput evidence, only for confirmed_waits
     pr_watch = False
     last_owner = max([j for j, (k, _p) in enumerate(events) if k == 'user_human'] or [-1])
 
@@ -884,6 +867,14 @@ def _live_work():
                 stop = str(inp.get('task_id') or inp.get('taskId') or '').strip()
                 if stop:
                     task_done[stop] = i
+            elif name == 'TaskOutput' and ok:
+                # Command output is data: status-like text there is not task metadata.
+                meta = res.split('<output>', 1)[0]
+                task = str(inp.get('task_id') or '').strip()
+                if (task and '<retrieval_status>success</retrieval_status>' in meta
+                        and '<task_id>%s</task_id>' % task in meta
+                        and re.search(r'<status>\s*(?:completed|failed|killed|stopped|cancelled)\s*</status>', meta)):
+                    observed_done[task] = i
             elif (name == 'Bash' and inp.get('run_in_background')) or name == 'Monitor':
                 # Only waits started since the owner's latest message: one that
                 # finished earlier with no notice must not count forever.
@@ -896,6 +887,17 @@ def _live_work():
                     m = bg_id_re.search(res)
                     label = '%s "%s"' % (name, (inp.get('description') or inp.get('command') or '')[:50])
                     waits[(m.group(1) or m.group(2)) if m else 'call-%d' % i] = (i, label)
+                    # BRO-7653: WAKELESS keeps its existing fail-open reading above.
+                    # Waiving closing boilerplate needs positive evidence, including age.
+                    started = _parse_ts(result_ts_by_id.get(tid, ''))
+                    if name == 'Bash':
+                        receipt = re.match(r'Command running in background with ID: ([0-9A-Za-z_-]{4,})\.', res.strip())
+                        ttl = min(int(inp.get('timeout') or 1800000), 7200000) / 1000
+                    else:
+                        receipt = re.match(r'Monitor started \(task ([0-9A-Za-z_-]{4,}), expires in (\d+)([smh])\b', res.strip())
+                        ttl = int(receipt.group(2)) * {'s': 1, 'm': 60, 'h': 3600}[receipt.group(3)] if receipt else 0
+                    if receipt and started is not None and 0 <= now - started < ttl:
+                        confirmed_waits[receipt.group(1)] = (i, label)
             elif name == 'mcp__github__subscribe_pr_activity' or name.endswith('subscribe_pr_activity'):
                 if ok and not name.endswith('unsubscribe_pr_activity'):
                     pr_watch = True
@@ -928,7 +930,7 @@ def _live_work():
             for mh in re.finditer(r'<agent-message\s+from="([^"]+)"', payload or ''):
                 task_done[mh.group(1)] = i
 
-    out = {'triggers': [], 'agents': [], 'children': [], 'childCreatedAt': {}, 'waits': [], 'pr_watch': pr_watch}
+    out = {'triggers': [], 'agents': [], 'children': [], 'childCreatedAt': {}, 'waits': [], 'confirmed_waits': [], 'pr_watch': pr_watch}
     for k, t in trig.items():
         if t['done'] >= t['idx']:
             continue
@@ -947,22 +949,17 @@ def _live_work():
     for k, (idx, lab) in waits.items():
         if task_done.get(k, -1) < idx:
             out['waits'].append(lab)
+    for k, (idx, lab) in confirmed_waits.items():
+        if max(task_done.get(k, -1), observed_done.get(k, -1)) < idx:
+            out['confirmed_waits'].append(lab)
     _live_cache.append(out)
     return out
 
 # ─── In-flight-work gate (INFLIGHT, added 2026-09-28) ───────────────────────
-# Owner evidence (session 01JhF7pK, 2026-09-28): a session with ten background
-# agents running, a Land run in progress and two scheduled check-ins ended a
-# turn on "SAFE TO EXIT". The owner reads that line as "I may close or kill
-# this session now". This gate asks whether anything still running would die
-# with the session, from the transcript alone (_live_work): a self-bound
-# Routine still to fire, or a background Agent without a completion.
-# Background Bash is deliberately NOT counted here: two of four background
-# commands in a real transcript finished without any notice, a guaranteed
-# false positive. Sessions started with create_session are not counted
-# either: they run on their own and land their own work (BRO-5881).
-# Not gated on "did substantial work": a session that only spawned agents did
-# no edit yet still dies if closed. Kill switch: INFLIGHT_GATE_DISABLE=1.
+# Refuse archive claims with live Agents or self-bound Routines, even before edits.
+# Bash is excluded: real commands sometimes finish without a completion notice.
+# Child sessions run independently and are excluded too (BRO-5881).
+# Kill switch: INFLIGHT_GATE_DISABLE=1.
 if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
     try:
         if _SAFE_RE.match(_closing()[1]) and 'NO-VERIFY:' not in (_last_msg or ''):
@@ -1596,14 +1593,10 @@ if _CW_CODES:
         pass  # fail-open
 
 # ─── Clear-closing gate (CLEARCLOSE, BRO-5910, 2026-10-22) ──────────────────
-# Owner: "extremely clear communicators, especially at the end of their
-# messages". Replay of 38 real closings (2026-10-21): 19 had card ids or
-# commit hashes in the last lines, 7 never said what is still running, 7 never
-# said whether the owner must act, 4 ended on a bare "NOT SAFE TO EXIT".
-# After real work, the closing block must carry (CLOUD.md "Talking to the
-# owner", mirrored in .claude/commands/wrap-up.md): a Still running line, a You need to line, a reason on NOT SAFE,
-# and no ids, hashes, paths or code in its last lines (one URL is fine). Blocks once per turn
-# chain. Kill switch CLEARCLOSE_GATE_DISABLE=1. Fail-open.
+# After real work, say what is running, whether the owner must act, and why.
+# Keep technical ids/paths out of the closing (CLOUD.md and wrap-up.md).
+# A confirmed background pause can use a concise KEEP OPEN with its reason.
+# Blocks once per chain; fails open. Kill switch: CLEARCLOSE_GATE_DISABLE=1.
 _CC_ID_RE = re.compile(r'\bBRO-\d+\b|\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|`'
                        r'|\b[\w.-]*[A-Za-z][\w.-]*/[\w./-]+\.[A-Za-z]\w{0,4}\b|\bsession_[0-9A-Za-z]{10,}')
 # Gate tokens other hooks require in the closing; they are not prose for the owner.
@@ -1611,7 +1604,13 @@ _CC_TOKEN_RE = re.compile(r'^\W*(?:NO-[A-Z-]+|BACKLOG-OK|PR-BLOCKER|DISPATCHED)\
 if os.environ.get('CLEARCLOSE_GATE_DISABLE', '0') != '1':
     try:
         _cc_text, _cc_last = _closing()
+        # RULE21 BRO-7653: a live background pause needs a reason and a wake,
+        # while archive claims and owner decisions still need the full closing.
+        _cc_pause = (_KEEP_RE.match(_cc_last) and not _LEGACY_STATUS_RE.match(_cc_last)
+                     and len(re.findall(r'\w+', _KEEP_RE.sub('', _cc_last, count=1))) >= 2
+                     and not _owner_must_act(_cc_text) and bool(_live_work()['confirmed_waits']))
         if (_STATUS_RE.match(_cc_last) and 'NO-VERIFY:' not in (_last_msg or '')
+                and not _cc_pause
                 and not _ve_seen('CLEARCLOSE')
                 and (total_qualifying_edits > 0 or any(_k == 'tool' and _is_work_tool(_p[0], _p[1], _p[2])
                                                        for _k, _p in events))):
