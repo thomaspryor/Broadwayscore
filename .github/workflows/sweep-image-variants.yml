@@ -42,7 +42,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- "public/images/shows/*/sm"
+          # Trailing /* matters (BRO-7703): without it git says "pathspec did not match any
+          # files" whenever the only new files sit in a brand-new sm/ folder, so the sweep
+          # generated variants and then failed to commit them.
+          git add -A -- "public/images/shows/*/sm/*"
           if git diff --cached --quiet; then
             echo "No missing variants"
             exit 0
