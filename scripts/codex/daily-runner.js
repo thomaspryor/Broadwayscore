@@ -801,16 +801,35 @@ const SITE_BUILD_MS = 20 * 60_000; // autonomous-checks.js BUILD_TIMEOUT_MS
  * which carries the Sanity vars /blog needs), in the keyless sandbox. -> null when it builds, else the output tail.
  * The build's prebuild step rewrites tracked files, so the tree is put back after (as after the land checks).
  */
-function siteBuildFailure() {
-  requireSandbox();
+function buildIn(tree) {
+  for (const d of R.DATA_DIRS) R.dropDataDir(path.join(tree, 'data', d), tree); // as the land batches: no private review texts in a sandboxed run
   let r;
   try {
-    SB.withTrees([WT], () => {
+    SB.withTrees([tree], () => {
       keepLock(MAX_STAMP_GAP_MS, 'site-build');
-      r = SB.run(WT, 'npm', ['run', 'build'], { timeoutMs: SITE_BUILD_MS, env: { ...require(path.join(ROOT, 'scripts/lib/autonomous-checks.js')).BUILD_ENV, NODE_OPTIONS: '--max-old-space-size=6144' } });
+      r = SB.run(tree, 'npm', ['run', 'build'], { timeoutMs: SITE_BUILD_MS, env: { ...require(path.join(ROOT, 'scripts/lib/autonomous-checks.js')).BUILD_ENV, NODE_OPTIONS: '--max-old-space-size=6144' } });
     });
-  } finally { cleanTree(WT); provideData(WT); }
+  } finally {
+    cleanTree(tree);
+    if (tree === WT) provideData(WT); // the base tree is rebuilt by prepareBase() before its next use
+  }
   return r && r.code === 0 ? null : R.redactSecrets(tail((r && r.out) || 'the build produced no output', 2500), process.env);
+}
+/**
+ * Runs under the land-check mutex (a build is heavy: --max-old-space-size=6144 for up to 20 min, and
+ * overlapping slots would read an OOM as Codex's failure). A red build is compared with fresh main:
+ * only a failure main does not have is Codex's. -> null, or the output tail of the branch's failure.
+ */
+function siteBuildFailure() {
+  requireSandbox();
+  return withLandMutex(() => {
+    const failure = buildIn(WT);
+    if (!failure) return null;
+    prepareBase();
+    const base = buildIn(BASE_WT);
+    if (base) { log(`site build: fails on fresh main too (not counted against this change): ${tail(base, 200).replace(/\s+/g, ' ')}`); return null; }
+    return failure;
+  });
 }
 
 // main's land-preflight.mjs judges the tree, but loads and runs the tree's own collector, audit and
@@ -1243,7 +1262,7 @@ async function workCard(pick, stats, inFlight) {
       return 'done';
     }
     // An environment block is not Codex's miss, so it does not feed the REJECT streak.
-    stats.rejectStreak = check.verdict === 'REJECT' && !envBlocked && !uiHeld ? stats.rejectStreak + 1 : 0;
+    stats.rejectStreak = uiHeld ? stats.rejectStreak : check.verdict === 'REJECT' && !envBlocked ? stats.rejectStreak + 1 : 0; // a UI hold is no verdict on Codex's work
     let summary = `### Codex report\n${fence(tail(report, 2500))}\n\n### Independent check (${check.verdict})\n${fence(tail(check.text, 2000))}`;
     // Card items the reviewer found correctly left undone (SHIP with REMAINING lines).
     const remaining = step === 'land' || step === 'close-already-fixed' ? R.parseRemaining(check.text) : [];

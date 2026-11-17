@@ -242,10 +242,13 @@ test('src/ diffs run the site build before the Claude check, in card and PR mode
   assert.equal(runnerLib.siteBuildNeeded(['scripts/a.js', 'data/x.json']), false);
   assert.match(runnerLib.buildFailureNote('boom'), /npm run build/);
   const first = runnerSrc.indexOf('siteBuildFailure()');
-  assert.ok(first > 0 && runnerSrc.split('siteBuildFailure()').length - 1 >= 3, 'card loop (twice) and PR path');
+  assert.ok(first > 0 && runnerSrc.split('throwIfDisk(siteBuildFailure()').length - 1 === 3, 'card loop (twice) and PR path');
   assert.ok(runnerSrc.indexOf('buildFail = throwIfDisk(siteBuildFailure()') < runnerSrc.indexOf('runCheck(card, body, report'));
   assert.ok(runnerSrc.lastIndexOf('siteBuildFailure()') < runnerSrc.indexOf("runCheck(card, body, note"));
   assert.match(runnerSrc, /BUILD_ENV/); // the Sanity vars /blog needs
+  // Under the land mutex and judged against fresh main, so an OOM or a red main is not charged to Codex.
+  const fn = runnerSrc.slice(runnerSrc.indexOf('function siteBuildFailure'));
+  assert.ok(fn.slice(0, 700).includes('withLandMutex') && fn.slice(0, 700).includes('buildIn(BASE_WT)'));
 });
 
 test('both prompts carry the rule-21 learning step', () => {
