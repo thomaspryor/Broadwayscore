@@ -1184,7 +1184,8 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   };
   let results = _readable(await withSpendFallback(_fallbackFrom, () => _withGeo(primary.fn)(query, primary.key, log, dateRange)));
   let provider = primary.name;
-  // BRO-7531: on a press-night flow, when Scrapingdog gave a readable answer and
+  // BRO-7531, widened by BRO-6867 (owner option A): on a press-night flow, when
+  // Scrapingdog answered at all (empty, filler or opaque links) and
   // Bright Data (asked first) then really answered with nothing, ScrapingBee is
   // not asked as a third vendor on this pass. That two-vendor empty is never
   // parked (not in the 24h cache, not in the 45-min negative cache), so the

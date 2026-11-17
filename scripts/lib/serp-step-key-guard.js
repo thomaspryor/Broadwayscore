@@ -18,6 +18,10 @@ const {
 const SERP_ENTRY_RE = /\b(serpQuery|serpNewsQuery|serpImagesQuery|discoverCorrectUrl|discoverOfficialUrl)\s*\(/;
 const URL_DISCOVERY = path.join('lib', 'url-discovery.js');
 
+function stripComments(src) {
+  return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"\\])\/\/.*$/gm, '$1');
+}
+
 /** True when the script, or anything it requires, calls a SERP entry point
  * (url-discovery.js itself is excluded: it defines them). */
 function reachesSerpChain(entryAbs, cache = new Map()) {
@@ -32,7 +36,10 @@ function reachesSerpChain(entryAbs, cache = new Map()) {
     visited.add(cur);
     let src;
     try { src = fs.readFileSync(cur, 'utf8'); } catch { continue; }
-    if (!cur.endsWith(URL_DISCOVERY) && SERP_ENTRY_RE.test(src)) { hit = true; break; }
+    // url-discovery.js defines the entry points; loading it is not searching,
+    // so neither it nor its own helpers count. Comments do not count either.
+    if (cur.endsWith(URL_DISCOVERY)) continue;
+    if (SERP_ENTRY_RE.test(stripComments(src))) { hit = true; break; }
     for (const dep of extractLocalDeps(src, cur)) if (!visited.has(dep)) queue.push(dep);
   }
   cache.set(entryAbs, hit);

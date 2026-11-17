@@ -47,7 +47,6 @@ jobs:
           # Stage logout, 2026-05-29). Manual dispatch honors the input.
           LIVE_CHECK: ${{ github.event_name == 'workflow_dispatch' && inputs.live_check || 'true' }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

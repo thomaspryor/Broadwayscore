@@ -183,7 +183,6 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         # Exit 1 = some probe skipped (fetch error or unverified page). Keep
         # going so verified additions still commit; fail the job afterwards.
         run: node scripts/audit-critic-coverage.js --discover-author-pages --time-budget-min=15 || echo "failed=1" >> "$GITHUB_OUTPUT"
