@@ -883,11 +883,12 @@ function landBranch(o) {
     // commits (a train rider; HEAD becomes the rebased rider).
     const rebaseOnto = (onto, { rangeFrom = null, tip = null } = {}) => {
       prefetchForRebase(onto, tip || sha);
+      let afterTimeout = false;
       for (let retry = 0; ; retry++) {
         try {
           git([...driverConfigArgs(__dirname), ...(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto])], workdir,
-            // A retry after a timeout gets the longer prefetch budget: objects fetched by the killed try stay on disk.
-            retry > 0 ? { timeout: PREFETCH_TIMEOUT_MS } : {});
+            // Only a retry after a timeout gets the longer prefetch budget: objects fetched by the killed try stay on disk.
+            afterTimeout ? { timeout: PREFETCH_TIMEOUT_MS } : {});
           if (!rangeFrom) refreshGeneratedDocs(onto);
           return;
         } catch (caught) {
@@ -906,6 +907,13 @@ function landBranch(o) {
             sleepMs(Math.min(30000, 2000 * 2 ** retry));
             // If cleanup after the kill fails (stale lock), surface the timeout itself, not a later fake conflict.
             try { discardResidue(`timeout retry ${retry + 1}`); } catch { throw err; }
+            // A killed rebase can leave its state dir behind when the abort failed; the retry would then fail with a
+            // fake "already a rebase-merge directory" conflict. Keep the timeout label instead.
+            for (const d of ['rebase-merge', 'rebase-apply']) {
+              const gp = gitOrNull(['rev-parse', '--git-path', d], workdir);
+              if (gp && fs.existsSync(path.resolve(workdir, gp.trim()))) throw err;
+            }
+            afterTimeout = true;
             continue;
           }
           discardResidue(`promisor retry ${retry + 1}`);

@@ -218,7 +218,15 @@ if (require.main === module) {
   try {
     process.exit(main());
   } catch (err) {
-    console.log(require('./lib/land-branch.js').fatalRefusalLine(err));
+    const line = require('./lib/land-branch.js').fatalRefusalLine(err);
+    console.log(line);
+    // land.yml reads failed_check from the result file; without one it reports 'fatal'. Keep the git-timeout label.
+    try {
+      const a = parseArgs(process.argv.slice(2));
+      if (a['result-file'] && a['result-file'] !== true && /^REFUSED: git-timeout:/.test(line)) {
+        fs.writeFileSync(String(a['result-file']), `${JSON.stringify({ branch: a.branch, landed: false, sha: null, attempts: 0, failedCheck: 'git-timeout', reason: line.replace(/^REFUSED: /, ''), pushed: false, files: [] }, null, 2)}\n`);
+      }
+    } catch { /* the log line above is the fallback */ }
     process.exit(1);
   }
 }

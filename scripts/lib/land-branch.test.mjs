@@ -1329,6 +1329,29 @@ test('BRO-7715: a rebase that keeps timing out is refused as git-timeout, never 
   } finally { w.cleanup(); }
 });
 
+test('BRO-7715: a killed rebase that leaves its state dir behind stays git-timeout, not a fake conflict', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-stale-rebase-dir');
+    w.moveOrigin();
+    const inj = timeoutInjector(isRebase, 99);
+    const exec = (cmd, args, opts) => {
+      try { return inj.exec(cmd, args, opts); } catch (e) {
+        // the kill left .git/rebase-merge behind and `rebase --abort` could not clear it
+        const gp = execFileSync('git', ['rev-parse', '--git-path', 'rebase-merge'], { cwd: opts.cwd, encoding: 'utf8' }).trim();
+        fs.mkdirSync(path.resolve(opts.cwd, gp), { recursive: true });
+        throw e;
+      }
+    };
+    const r = landBranch({
+      branch: 'feat-stale-rebase-dir', repoDir: w.repoDir, execGit: exec, sleepMs: () => {},
+      checks: greenChecks, pushMain: () => assert.fail('must not push'),
+    });
+    assert.equal(r.failedCheck, 'git-timeout', JSON.stringify(r));
+    assert.equal(inj.state.hits, 1, 'no retry into a dirty rebase state');
+  } finally { w.cleanup(); }
+});
+
 test('BRO-7715: a real conflict is still a rebase refusal, with no retry', () => {
   const w = makeWorld();
   try {
