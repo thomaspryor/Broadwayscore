@@ -109,10 +109,17 @@ function castFileMismatchReason(castData, show) {
 // listed the cast, then skipped by every default run until the weekly --force pass). The default
 // (non-force) pass retries such tombstones once they are RETRY_MS old, so a late IBDB listing is
 // picked up within a day instead of a week. Pre-opening previews keep the weekly cadence.
+// Shows whose performers are anonymous/rotating (no individually credited cast on IBDB or
+// elsewhere), so an empty cast is permanent and correct, not a coverage gap (BRO-7665: Blue Man
+// Group's IBDB page has no cast section; the weekly --force pass can never fill it).
+const CAST_NOT_APPLICABLE_SHOW_IDS = new Set([
+  'blue-man-group-a-new-holiday-surprise-2026',
+]);
 const TOMBSTONE_RETRY_WINDOW_DAYS = 7;
 const TOMBSTONE_RETRY_MS = 20 * 60 * 60 * 1000;
 function shouldRetryTombstone(castFile, show, now = Date.now()) {
   if (!castFile || !show) return false;
+  if (CAST_NOT_APPLICABLE_SHOW_IDS.has(show.id)) return false;
   if (show.status !== 'open' && show.status !== 'previews') return false;
   if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return false;
   // Bounded: only within TOMBSTONE_RETRY_WINDOW_DAYS after openingDate, so a show that is
@@ -139,12 +146,6 @@ function shouldRetryTombstone(castFile, show, now = Date.now()) {
 //               so it is NOT reported (automation in flight, same rule as BRO-7472)
 //   exhausted   empty tombstone the default pass will no longer retry; only a human or the
 //               weekly --force pass can fix it, so it is the real gap
-// Shows whose performers are anonymous/rotating (no individually credited cast on IBDB or
-// elsewhere), so an empty cast is permanent and correct, not a coverage gap (BRO-7665: Blue Man
-// Group's IBDB page has no cast section; the weekly --force pass can never fill it).
-const CAST_NOT_APPLICABLE_SHOW_IDS = new Set([
-  'blue-man-group-a-new-holiday-surprise-2026',
-]);
 function classifyCastCoverage(show, castFile, now = Date.now()) {
   if (show && CAST_NOT_APPLICABLE_SHOW_IDS.has(show.id)) return 'not-applicable';
   const today = new Date(now).toISOString().slice(0, 10);

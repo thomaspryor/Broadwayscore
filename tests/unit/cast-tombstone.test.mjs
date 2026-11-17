@@ -129,3 +129,11 @@ describe('BRO-7665 cast-not-applicable shows', () => {
     assert.equal(CAST_NOT_APPLICABLE_SHOW_IDS.has('ordinary-2026'), false);
   });
 });
+
+describe('BRO-7665 backfill does not re-scrape cast-not-applicable shows', () => {
+  const { shouldRetryTombstone } = require('../../scripts/lib/cast-tombstone.js');
+  it('skips the daily tombstone retry', () => {
+    const show = { id: 'blue-man-group-a-new-holiday-surprise-2026', status: 'open', openingDate: '2026-11-17' };
+    assert.equal(shouldRetryTombstone({ openingNightCast: [], scrapedAt: '2026-09-24T00:00:00Z' }, show, Date.parse('2026-11-18')), false);
+  });
+});
