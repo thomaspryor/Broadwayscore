@@ -1019,10 +1019,23 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         _opened_pr = False
         _merged_pr = False
         _landed_pushed = False     # pushed to land/** (git or MCP create_branch/dispatch)
-        _land_followed = False     # checked a workflow run after that push
+        # BRO-7701: per ref. One boolean let the first finished wait clear every later push
+        # (a worker waited on land/a, pushed land/b, claimed Done while b was in flight).
+        _land_unchecked = set()    # land refs pushed and not yet followed to a verdict
         # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
+        _land_ref_re = re.compile(r'git\s+push\b([^\n;&|]*?)\s(\S*:)?(?:refs/heads/)?(land/[^\s;&|\'"]+)')
+        def _push_land_refs(cmd):  # (refs pushed, refs deleted)
+            _add, _del = set(), set()
+            for _m in _land_ref_re.finditer(cmd):
+                if re.search(r'\s(--delete|-d)\b', _m.group(1)) or _m.group(2) == ':':
+                    _del.add(_m.group(3))
+                else:
+                    _add.add(_m.group(3))
+            return _add, _del
+        def _run_names_ref(res, ref):  # an actions_get/list result showing this ref's run finished
+            return bool(re.search(r'"head_branch"\s*:\s*"' + re.escape(ref) + r'"', res)) and '"completed"' in res
         _pr_url_re = re.compile(r'github\.com/[^/\s"]+/[^/\s"]+/pull/\d+')
         def _gh_pr_create_cmd(cmd):  # gh pr create, or one segment POSTing to …/pulls itself
             return bool(re.search(r'\bgh\s+pr\s+create\b', cmd)) or any(
@@ -1032,16 +1045,16 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 for g in re.split(r'&&|\|\||[;|\n]', cmd))
         # BRO-7110: a FINISHED wait-for-land.js run also counts (CLOUD.md's land step): foreground verdict line,
         # background task-notification exit 0/1/4, or a later read of its stamped line. Exit 2/3 or unfinished: no.
-        _wfl_run_re = re.compile(r'\bnode\s+\S*wait-for-land\.js\s+(refs/heads/)?land/')
-        _wfl_verdict_re = re.compile(r'\b\d\d:\d\d:\d\dZ (?:LANDED|REFUSED): (?:refs/heads/)?land/')  # the waiter's own stamped line
-        _wfl_pending = set()
+        _wfl_run_re = re.compile(r'\bnode\s+\S*wait-for-land\.js\s+(?:refs/heads/)?(land/[^\s;&|\'"]+)')
+        _wfl_verdict_re = re.compile(r'\b\d\d:\d\d:\d\dZ (?:LANDED|REFUSED): (?:refs/heads/)?(land/[^\s;&|\'"]+)')  # the waiter's own stamped line
+        _wfl_pending = {}          # background waiter task id -> the land ref it waits on
         for _kind, _payload in events:
             if _kind in ('user_notice', 'user_text'):
                 for _mn in re.finditer(r'<task-notification>(.*?)</task-notification>', (_payload or '') if _wfl_pending else '', flags=re.DOTALL):
                     _idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', _mn.group(1))
                     _exm = re.search(r'exit code (\d+)', _mn.group(1))
                     if _idm and _idm.group(1) in _wfl_pending and _exm and _exm.group(1) in ('0', '1', '4'):
-                        _land_followed = True
+                        _land_unchecked.discard(_wfl_pending.pop(_idm.group(1)))
                 continue
             if _kind != 'tool':
                 continue
@@ -1064,25 +1077,40 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 if re.search(r'"merged"\s*:\s*true', tool_results_by_id.get(_tid, '') or ''):
                     _merged_pr = True
             elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
-                _landed_pushed = True
+                _add, _del = _push_land_refs(_inp.get('command') or '')
+                _land_unchecked -= _del
+                if _add:
+                    _landed_pushed = True
+                    if _tid not in tool_error_ids:  # a rejected push starts no Land run
+                        _land_unchecked |= _add
             elif _name == 'mcp__github__create_branch' and str(_inp.get('branch') or '').startswith('land/'):
                 _landed_pushed = True
+                if _tid not in tool_error_ids:
+                    _land_unchecked.add(str(_inp.get('branch')))
             elif (_name == 'mcp__github__actions_run_trigger'
                   and 'land' in str(_inp.get('workflow_id') or '')):
                 _landed_pushed = True
-            elif _landed_pushed and _name in ('mcp__github__actions_get', 'mcp__github__actions_list'):
-                _land_followed = True
-            # Not in the elif chain: `git push ... land/x && node ...wait-for-land.js land/x` is both.
-            if _landed_pushed:  # no error filter: a refused foreground waiter exits 1
+                if _tid not in tool_error_ids:
+                    _land_unchecked.add('land.yml dispatch')  # its run's head_branch is not a land/ ref
+            elif _land_unchecked and _name in ('mcp__github__actions_get', 'mcp__github__actions_list'):
                 _res = tool_results_by_id.get(_tid, '') or ''
-                if _name == 'Bash' and _wfl_run_re.search(_inp.get('command') or ''):
+                for _r in list(_land_unchecked):
+                    if _run_names_ref(_res, _r) or (_r == 'land.yml dispatch' and '"completed"' in _res):
+                        _land_unchecked.discard(_r)
+            # Not in the elif chain: `git push ... land/x && node ...wait-for-land.js land/x` is both.
+            if _land_unchecked:  # no error filter: a refused foreground waiter exits 1
+                _res = tool_results_by_id.get(_tid, '') or ''
+                _wm = _wfl_run_re.search(_inp.get('command') or '') if _name == 'Bash' else None
+                if _wm and _wm.group(1) in _land_unchecked:
                     _bgm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', _res) if _inp.get('run_in_background') else None
                     if _bgm:
-                        _wfl_pending.add(_bgm.group(1))
+                        _wfl_pending[_bgm.group(1)] = _wm.group(1)
                     elif _wfl_verdict_re.search(_res):
-                        _land_followed = True
-                elif _wfl_pending and _wfl_verdict_re.search(_res):
-                    _land_followed = True
+                        _land_unchecked.discard(_wm.group(1))
+                elif not _wm and _wfl_pending:  # a later read of a background waiter's stamped line
+                    for _vm in _wfl_verdict_re.finditer(_res):
+                        if _vm.group(1) in _wfl_pending.values():
+                            _land_unchecked.discard(_vm.group(1))
         _msg_ok = bool(_last_msg) and 'NO-VERIFY:' not in _last_msg
         _stripped_owner = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
         # OWNERMERGE (2026-09-27): the owner never merges — this repo lands via
@@ -1106,8 +1134,10 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             _ve_block("OWNERMERGE")
         # A land/** push is follow-through, but not proof it landed (land.yml
         # can refuse): SAFE TO EXIT additionally needs a later run check.
-        if (_msg_ok and _landed_pushed and not _land_followed and not _merged_pr
+        if (_msg_ok and _land_unchecked and not _merged_pr
                 and _SAFE_RE.match(_closing()[1])):
+            if not _ve_seen("LANDUNCHECKED") and _ve_allowed("LANDUNCHECKED"):
+                print("Unchecked land push(es): " + ", ".join(sorted(_land_unchecked)), file=sys.stderr)
             _ve_block("LANDUNCHECKED")
         if _landed_pushed:
             _merged_pr = True
@@ -2553,7 +2583,7 @@ if [[ "$result" == "OWNERMERGE" ]]; then
   exit 2
 fi
 if [[ "$result" == "LANDUNCHECKED" ]]; then
-  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO ARCHIVE without checking the Land run. land.yml can refuse a branch. Wait for it: node scripts/lib/wait-for-land.js land/<name> 60 --prod as a background Bash (timeout 7200000), and report LANDED or the refusal once it finishes (or check the run with mcp__github__actions_list / actions_get on land.yml). Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO ARCHIVE without checking the Land run of every land push (named above; each push needs its own finished wait). land.yml can refuse a branch. Wait for it: node scripts/lib/wait-for-land.js land/<name> 60 --prod as a background Bash (timeout 7200000), and report LANDED or the refusal once it finishes (or check the run with mcp__github__actions_list / actions_get on land.yml). Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 if [[ "$result" == "PRUNMERGED" ]]; then

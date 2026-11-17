@@ -759,7 +759,8 @@ test('PR follow-through kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1 allows an u
 
 const LAND_PUSH = toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-x' });
 const LAND_CREATE_BRANCH = toolUse('mcp__github__create_branch', { owner: 'thomaspryor', repo: 'Broadwayscore', branch: 'land/fix-x' });
-const LAND_RUN_CHECK = toolUse('mcp__github__actions_list', { method: 'list_workflow_runs', owner: 'thomaspryor', repo: 'Broadwayscore', resource_id: 'land.yml' });
+const runResult = (ref) => `{"workflow_runs":[{"id":1,"head_branch":"${ref}","status":"completed","conclusion":"success"}]}`;
+const LAND_RUN_CHECK = toolUse('mcp__github__actions_list', { method: 'list_workflow_runs', owner: 'thomaspryor', repo: 'Broadwayscore', resource_id: 'land.yml' }, runResult('land/fix-x'));
 const LINEAR_CLOSEOUT_DONE = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-4187 --state Done --comment "landed"' });
 
 test('OWNERMERGE: "waiting on your merge" blocks even with KEEP OPEN', skipNoRepoHook, () => {
@@ -773,7 +774,7 @@ test('OWNERMERGE: "waiting on your merge" blocks even with KEEP OPEN', skipNoRep
 
 test('OWNERMERGE false-positive guard: describing or quoting the rule is not a merge ask', skipNoRepoHook, () => {
   const dir = makeTmpDir('ownermerge-describe');
-  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }), toolUse('mcp__github__actions_get', { method: 'get_workflow_run' }), toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done' })]);
+  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }), toolUse('mcp__github__actions_get', { method: 'get_workflow_run' }, runResult('land/x')), toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done' })]);
   const r = runHook(transcript, 'Landed. Sessions never ask the owner to merge, and the Stop hook now blocks "waiting on your merge" and `ready to merge`.\n\nSAFE TO ARCHIVE — landed and verified.');
   assertAllowed(r, 'a description or quotation of the rule must not trip OWNERMERGE');
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
@@ -886,6 +887,9 @@ const WFL_FG_LANDED = toolUse('Bash', { command: WFL_CMD }, '03:41:07Z LANDED: l
 const WFL_FG_REFUSED = { ...toolUse('Bash', { command: WFL_CMD }, '03:41:07Z REFUSED: land/fix-x run 1 failure\n  next: fix on top of the refused commit'), _isError: true };
 const WFL_BG = toolUse('Bash', { command: WFL_CMD, run_in_background: true }, 'Command running in background with ID: bwfl1234. Output is being written to: /tmp/x/bwfl1234.output.');
 const wflDone = (code) => notice(`<task-notification>\n<task-id>bwfl1234</task-id>\n<status>completed</status>\n<summary>Background command "Wait for land" completed (exit code ${code})</summary>\n</task-notification>`);
+const again = (c) => ({ ...c, id: `tu-${randomUUID()}` }); // a repeated call gets its own tool_use id
+const LAND_PUSH_B = toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-y' });
+const WFL_FG_B = toolUse('Bash', { command: 'node scripts/lib/wait-for-land.js land/fix-y 60' }, '03:41:07Z LANDED: land/fix-y is gone from origin');
 const WFL_LANDUNCHECKED_CASES = [
   ['foreground waiter printed LANDED', [LAND_PUSH, WFL_FG_LANDED], true],
   ['foreground waiter printed REFUSED (exit 1, an error result)', [LAND_PUSH, WFL_FG_REFUSED], true],
@@ -896,6 +900,18 @@ const WFL_LANDUNCHECKED_CASES = [
   ['background waiter started, never finished', [LAND_PUSH, WFL_BG], false],
   ['background waiter timed out (exit 2)', [LAND_PUSH, WFL_BG, wflDone(2)], false],
   ['waiter run before the push', [toolUse('Bash', { command: WFL_CMD }, '03:41:07Z LANDED: land/fix-x is gone from origin'), LAND_PUSH], false],
+  // BRO-7701: each land push needs its own finished check; one wait used to clear every later push.
+  ['push A, wait A, push B', [LAND_PUSH, WFL_FG_LANDED, LAND_PUSH_B], false],
+  ['push A, wait A, push B, wait A again', [LAND_PUSH, WFL_FG_LANDED, LAND_PUSH_B, again(WFL_FG_LANDED)], false],
+  ['push A, push B, wait B only', [LAND_PUSH, LAND_PUSH_B, WFL_FG_B], false],
+  ['push A, push B, wait both', [LAND_PUSH, LAND_PUSH_B, WFL_FG_B, WFL_FG_LANDED], true],
+  ['background wait A, push B, A finishes', [LAND_PUSH, WFL_BG, LAND_PUSH_B, wflDone(0)], false],
+  ['push A, refused wait, push A again, wait A', [LAND_PUSH, WFL_FG_REFUSED, again(LAND_PUSH), WFL_FG_LANDED], true],
+  ['push A, wait A, delete an old land ref', [LAND_PUSH, WFL_FG_LANDED, toolUse('Bash', { command: 'git push origin --delete land/old' })], true],
+  ['push A, wait A, delete via empty refspec', [LAND_PUSH, WFL_FG_LANDED, toolUse('Bash', { command: 'git push origin :refs/heads/land/old' })], true],
+  ['a rejected push starts no Land run', [{ ...LAND_PUSH_B, _isError: true }], true],
+  ['run check that names a different ref', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, runResult('land/other'))], false],
+  ['run check still in progress', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, '{"workflow_runs":[{"head_branch":"land/fix-x","status":"in_progress"}]}')], false],
   ['reading the waiter script is not running it', [LAND_PUSH, toolUse('Bash', { command: 'cat scripts/lib/wait-for-land.js' }, 'console.log(`LANDED: land/x`)')], false],
 ];
 for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
