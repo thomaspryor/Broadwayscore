@@ -3,7 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-const { resolveProbeMode, planRenewal } = createRequire(import.meta.url)('./cookie-renew.js');
+const { resolveProbeMode, planRenewal, decideControlUnverified } = createRequire(import.meta.url)('./cookie-renew.js');
 
 test('fetch bot wall (error) falls back to in-browser probe, plan proceeds', () => {
   const m = resolveProbeMode({ browserOnly: false, probeStatus: 'error' });
