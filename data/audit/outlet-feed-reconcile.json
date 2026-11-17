@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T11:51:03.214Z",
+  "generatedAt": "2026-11-17T13:45:33.641Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -143,10 +143,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
-    },
-    {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
@@ -163,18 +159,32 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "fringereview",
-      "error": "Timeout fetching https://fringereview.co.uk/feed/"
-    },
-    {
-      "outletId": "lighting-and-sound-america",
-      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 859,
-  "matchedGaps": 0,
+  "itemsScanned": 872,
+  "matchedGaps": 2,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "level": "matched",
+      "outletId": "artsfuse",
+      "url": "https://artsfuse.org/337488/theater-reviews-monsters-and-mirrors-downstate-and-here-there-are-blueberries/",
+      "headline": "Theater Reviews: Monsters and Mirrors &#8212; &#8220;Downstate&#8221; and &#8220;Here There Are Blueberries&#8221;",
+      "publishDate": "2026-11-17"
+    },
+    {
+      "showId": "the-fantasticks-2026",
+      "title": "The Fantasticks",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/the-fantasticks-a-cardboard-moon-with-diamond-stars/",
+      "headline": "“THE FANTASTICKS”: A CARDBOARD MOON WITH DIAMOND STARS",
+      "publishDate": "2026-11-17"
+    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",

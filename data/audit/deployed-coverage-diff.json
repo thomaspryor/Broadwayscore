@@ -1,13 +1,39 @@
 {
-  "generatedAt": "2026-11-17T11:51:02.864Z",
+  "generatedAt": "2026-11-17T13:45:33.239Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 331,
-  "clean": 331,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 330,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "the-fantasticks-2026",
+      "title": "The Fantasticks",
+      "openingDate": "2026-11-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: nydailynews"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.08 vs local 79.22 (Δ0.14)"
+        }
+      ],
+      "missingFromProd": [
+        "nydailynews"
+      ],
+      "localCount": 21,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-11-17T13:45:22.649Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
