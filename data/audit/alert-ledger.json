@@ -19500,7 +19500,7 @@
       "title": "Roundup gaps: 15 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-17T03:00:26.855Z",
+      "lastSeen": "2026-11-17T04:45:12.980Z",
       "lastNotifiedAt": "2026-11-16T18:21:17.015Z",
       "lastSurfacedAt": null,
       "notifyCount": 57,
@@ -19578,7 +19578,7 @@
         "jenufa-off-broadway-2026",
         "the-fantasticks-2026"
       ],
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38779,13 +38779,12 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-17T03:00:26.780Z",
-      "lastNotifiedAt": "2026-11-16T07:51:14.789Z",
-      "lastSurfacedAt": "2026-11-16T07:51:14.789Z",
-      "notifyCount": 11,
+      "lastSeen": "2026-11-17T04:45:12.885Z",
+      "lastNotifiedAt": "2026-11-17T04:45:12.885Z",
+      "lastSurfacedAt": "2026-11-17T04:45:12.885Z",
+      "notifyCount": 12,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 15
+      "linearIdentifier": null
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -42892,22 +42891,19 @@
       "linearIdentifier": null
     },
     "uncollected-blackout:the-fantasticks-2026": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: The Fantasticks",
       "firstSeen": "2026-11-12T21:34:05.447Z",
-      "incidentOpenedAt": "2026-11-16T19:35:32.652Z",
-      "lastSeen": "2026-11-17T01:50:05.555Z",
-      "lastNotifiedAt": "2026-11-16T19:35:32.652Z",
+      "incidentOpenedAt": "2026-11-17T04:45:39.784Z",
+      "lastSeen": "2026-11-17T04:45:39.784Z",
+      "lastNotifiedAt": "2026-11-17T04:45:39.784Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-7624",
       "notifyCountAtRelease": 1,
-      "sweptTracker": "BRO-7420",
-      "silentRefires": 4,
-      "resolvedAt": "2026-11-17T03:05:27.112Z",
-      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
+      "sweptTracker": "BRO-7420"
     },
     "uncollected-blackout:downstate-2026": {
       "status": "resolved",
@@ -44518,6 +44514,19 @@
       "lastSeen": "2026-11-17T02:16:44.046Z",
       "lastNotifiedAt": "2026-11-17T02:16:44.046Z",
       "lastSurfacedAt": "2026-11-17T02:16:44.046Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "review-gap:opening-window:the-fantasticks-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review gap — \"The Fantasticks\" missing 13 cited review(s)",
+      "firstSeen": "2026-11-17T04:45:12.912Z",
+      "incidentOpenedAt": "2026-11-17T04:45:12.912Z",
+      "lastSeen": "2026-11-17T04:45:12.912Z",
+      "lastNotifiedAt": "2026-11-17T04:45:12.912Z",
+      "lastSurfacedAt": "2026-11-17T04:45:12.912Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

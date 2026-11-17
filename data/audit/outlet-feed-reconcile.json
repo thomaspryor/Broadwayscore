@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T03:05:42.193Z",
+  "generatedAt": "2026-11-17T04:45:59.160Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -135,12 +135,12 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -159,104 +159,22 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
+      "outletId": "fringereview",
+      "error": "Timeout fetching https://fringereview.co.uk/feed/"
+    },
+    {
       "outletId": "stagebuddy",
       "error": "Timeout fetching https://stagebuddy.com/feed"
+    },
+    {
+      "outletId": "lighting-and-sound-america",
+      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 872,
-  "matchedGaps": 10,
-  "possibleGaps": 2,
+  "itemsScanned": 857,
+  "matchedGaps": 0,
+  "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "level": "matched",
-      "outletId": "lighting-and-sound-america",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=8812YU",
-      "headline": "Theatre&#32;in&#32;Review:&#32;Downstate&#32;(Booth&#32;Theatre)",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "level": "matched",
-      "outletId": "frontmezzjunkies",
-      "url": "https://frontmezzjunkies.com/2026/11/16/downstate-opens-on-broadway-and-im-ready-to-enter-that-difficult-house-again/",
-      "headline": "“Downstate” Opens on Broadway, and I’m Ready to Enter That Difficult House Again",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "one-minute-critic",
-      "url": "https://1minutecritic.com/the-fantasticks-broadway-review/",
-      "headline": "Boy meets boy as &#8216;The Fantasticks&#8217; finally bows on Broadway",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/the-fantasticks-broadway-review/",
-      "headline": "&#8216;The Fantasticks&#8217; finds new queer love in an old trunk of musical tricks (Broadway review)",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "nyt-theater",
-      "url": "https://newyorktheater.me/2026/11/16/the-fantasticks-broadway-review/",
-      "headline": "The Fantasticks Broadway Review",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/16/the-fantasticks-broadway-review-second-stage/",
-      "headline": "Broadway Review: THE FANTASTICKS (Second Stage Theater / Hayes Theater)",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "chicagotribune",
-      "url": "https://www.chicagotribune.com/2026/11/16/review-fantasticks-broadway/",
-      "headline": "Review: With simple gender switch, ‘The Fantasticks’ gets a new life on Broadway",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "nytimes",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway.html",
-      "headline": "‘The Fantasticks’ Review: A Gender Swap for a Still-Tender Story",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "slantmagazine",
-      "url": "https://www.slantmagazine.com/theater/the-fantasticks-review-broadway-musical/",
-      "headline": "‘The Fantasticks’ Review: A Gay Reimagining Makes the Classic Musical Tenderly Transcendent",
-      "publishDate": "2026-11-16"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "thewrap",
-      "url": "https://www.thewrap.com/creative-content/theater/the-fantasticks-broadway-review-the-vintage-musical-successfully-moves-uptown-under-a-lavender-moon/",
-      "headline": "&#8216;The Fantasticks&#8217; Broadway Review: The Vintage Musical Successfully Moves Uptown Under a Lavender Moon",
-      "publishDate": "2026-11-16"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
@@ -265,15 +183,6 @@
       "url": "https://westendwilma.com/after-birth-royal-court-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=after-birth-royal-court-theatre",
       "headline": "After Birth &#8211; the reality of life after birth at Royal Court Theatre",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "possible",
-      "outletId": "nytg",
-      "url": "https://newyorktheatreguide.com/reviews/the-fantasticks-broadway-review",
-      "headline": "'The Fantasticks' Broadway review — long-running musical makes a heartstopping Broadway debut",
-      "publishDate": null
     }
   ]
 }

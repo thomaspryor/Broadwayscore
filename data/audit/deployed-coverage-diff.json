@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-17T03:05:41.450Z",
+  "generatedAt": "2026-11-17T04:45:58.804Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 328,
-  "clean": 328,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 326,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "openingDate": "2026-11-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.7 vs local 87.77 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-11-17T04:45:50.381Z"
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "openingDate": "2026-11-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 59.47 vs local 59.27 (Δ0.2)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-11-17T04:45:50.381Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
