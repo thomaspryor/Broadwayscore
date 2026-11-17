@@ -533,7 +533,7 @@
       "resolvedAt": "2026-08-26T18:50:48.174Z"
     },
     "arm-yield:workflow:sweep-we-aggregators": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Sweep WE Aggregators has stopped updating (8 days)",
       "firstSeen": "2026-08-03T13:05:40.013Z",
@@ -544,8 +544,7 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5,
-      "resolvedAt": "2026-11-17T21:08:01.996Z"
+      "silentRefires": 5
     },
     "arm-yield:workflow:scoring-audit": {
       "status": "resolved",
@@ -19499,7 +19498,7 @@
       "title": "Roundup gaps: 10 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-17T20:08:24.090Z",
+      "lastSeen": "2026-11-17T21:34:26.732Z",
       "lastNotifiedAt": "2026-11-17T19:09:00.004Z",
       "lastSurfacedAt": null,
       "notifyCount": 59,
@@ -19577,7 +19576,7 @@
         "jenufa-off-broadway-2026",
         "the-fantasticks-2026"
       ],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38778,13 +38777,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-17T20:08:24.014Z",
+      "lastSeen": "2026-11-17T21:34:26.623Z",
       "lastNotifiedAt": "2026-11-17T05:17:28.725Z",
       "lastSurfacedAt": "2026-11-17T05:17:28.725Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -44985,12 +44984,13 @@
       "title": "Live show has ZERO critic reviews on site: Theater of the Mind",
       "firstSeen": "2026-11-17T20:09:08.796Z",
       "incidentOpenedAt": "2026-11-17T20:09:08.796Z",
-      "lastSeen": "2026-11-17T20:09:08.796Z",
+      "lastSeen": "2026-11-17T21:34:37.858Z",
       "lastNotifiedAt": "2026-11-17T20:09:08.796Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7711"
+      "linearIdentifier": "BRO-7711",
+      "silentRefires": 1
     },
     "uncollected-blackout:dear-evan-hansen-la-regional-2026": {
       "status": "open",
@@ -44998,12 +44998,13 @@
       "title": "Live show has ZERO critic reviews on site: Dear Evan Hansen",
       "firstSeen": "2026-11-17T20:09:10.558Z",
       "incidentOpenedAt": "2026-11-17T20:09:10.558Z",
-      "lastSeen": "2026-11-17T20:09:10.558Z",
+      "lastSeen": "2026-11-17T21:34:37.882Z",
       "lastNotifiedAt": "2026-11-17T20:09:10.558Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7712"
+      "linearIdentifier": "BRO-7712",
+      "silentRefires": 1
     },
     "land:land/retro-bash-3": {
       "status": "open",

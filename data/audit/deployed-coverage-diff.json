@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T20:09:27.917Z",
+  "generatedAt": "2026-11-17T21:34:58.994Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,20 +11,20 @@
   },
   "shows": [
     {
-      "showId": "oliver-west-end-2024",
-      "title": "Oliver!",
-      "openingDate": "2025-01-14",
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "openingDate": "2026-11-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 84.52 vs local 84.67 (Δ0.15)"
+          "detail": "deployed cs 56.5 vs local 57.07 (Δ0.57)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23,
-      "firstDefectAt": "2026-11-17T20:09:19.844Z"
+      "localCount": 13,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-17T21:34:49.603Z"
     }
   ],
   "persistentDefective": 0,
