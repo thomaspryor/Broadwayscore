@@ -6,8 +6,8 @@
  *   node scripts/lib/session-retro.js --rollup [--days=7] [--file-card]
  * Signals: edit-to-end wall clock, land refusals, hook blocks by code, bypasses (NO-VERIFY etc.), restarts (worker
  * restart, compaction), commands rerun 3+ times, waits over 10 min. --check exits 10 when a wrap-up threshold is crossed
- * (over 2h, any land refusal, 3+ hook blocks, any restart that killed work); wrap-up then needs each finding turned into
- * a fix or a card. --record appends one line to data/audit/session-retro.jsonl for the weekly --rollup, which counts
+ * (over 4h active, any land refusal, 15+ hook blocks, a restart, 2+ bypasses); wrap-up then needs each finding turned into
+ * a fix or a card, recorded with --record --fixes=BRO-N,<sha> or --no-action=<reason> (checked by retro-coverage-stop.mjs). --record appends one line to data/audit/session-retro.jsonl for the weekly --rollup, which counts
  * signals across sessions and (with --file-card) files a Linear card for the top recurring friction.
  */
 const fs = require('fs');
@@ -15,7 +15,23 @@ const os = require('os');
 const path = require('path');
 
 const LEDGER = path.join(__dirname, '..', '..', 'data', 'audit', 'session-retro.jsonl');
-const T = { hours: 2, hookBlocks: 3, gapMin: 10, repeats: 3 };
+// BRO-7645: recalibrated so --check flags outliers. First 15h of data: every session crossed the old
+// (2h wall clock, 3 hook blocks) pair, so the 'fix or card every finding' ask was noise. activeHours is
+// wall clock minus idle gaps over gapMin (owner idle time is not friction); a legacy row has only wall clock.
+const T = { activeHours: 4, hookBlocks: 15, restarts: 1, bypasses: 2, gapMin: 10, repeats: 3 };
+const GENERIC_HOOK = /^(hook|hook:hook|unclassified)$/;
+
+/** Real hook identity for a block: [VE:X] code, else the hook script basename, else the hookName, else 'unclassified'. */
+function hookLabel(x) {
+  let s;
+  try { s = typeof x === 'string' ? x : JSON.stringify(x || {}); } catch { s = ''; }
+  const code = s.match(/\[VE:([A-Z0-9]+)\]/);
+  if (code) return `[VE:${code[1]}]`;
+  const script = s.match(/([\w.-]+\.(?:sh|mjs|js))/);
+  if (script) return script[1];
+  const name = x && typeof x === 'object' && typeof x.hookName === 'string' && x.hookName.trim();
+  return name ? name.slice(0, 40) : 'unclassified';
+}
 
 function textOf(c) {
   if (typeof c === 'string') return c;
@@ -26,7 +42,7 @@ function textOf(c) {
 function analyze(lines) {
   const ev = [];
   for (const l of lines) { try { const o = JSON.parse(l); if (o && typeof o === 'object') ev.push(o); } catch { /* skip */ } }
-  const out = { sessionId: null, firstEditAt: null, endAt: null, hours: 0, landRefusals: [], hookBlocks: {}, bypasses: {}, restarts: 0, compactions: 0, repeats: [], longWaits: [] };
+  const out = { sessionId: null, firstEditAt: null, endAt: null, hours: 0, landRefusals: [], hookBlocks: {}, bypasses: {}, restarts: 0, compactions: 0, idleMinutes: 0, landPushes: 0, repeats: [], longWaits: [] };
   const cmdCount = new Map();
   let prev = null;
   for (const e of ev) {
@@ -35,7 +51,10 @@ function analyze(lines) {
     if (ts) {
       if (!out.startAt && e.type !== 'queue-operation') out.startAt = e.timestamp;
       const human = e.type === 'user' && !(Array.isArray(e.message && e.message.content) && e.message.content.some((b) => b && b.type === 'tool_result'));
-      if (prev && ts - prev > T.gapMin * 60000 && e.type !== 'queue-operation' && !human) out.longWaits.push({ at: e.timestamp, minutes: Math.round((ts - prev) / 60000) });
+      if (prev && ts - prev > T.gapMin * 60000 && e.type !== 'queue-operation') {
+        out.idleMinutes += Math.round((ts - prev) / 60000);
+        if (!human) out.longWaits.push({ at: e.timestamp, minutes: Math.round((ts - prev) / 60000) });
+      }
       if (e.type !== 'queue-operation') prev = ts;
       out.endAt = e.timestamp;
     }
@@ -43,7 +62,7 @@ function analyze(lines) {
     const msg = e.message && e.message.content;
     // Text the session itself wrote or the harness injected, never tool output (which echoes this script and any cat/grep of hook sources).
     const txt = Array.isArray(msg) ? textOf(msg.filter((b) => b && b.type !== 'tool_result')) : textOf(msg);
-    if (e.type === 'attachment' && e.attachment && e.attachment.type === 'hook_blocking_error') out.hookBlocks.hook = (out.hookBlocks.hook || 0) + 1;
+    if (e.type === 'attachment' && e.attachment && e.attachment.type === 'hook_blocking_error') { const k = hookLabel(e.attachment); out.hookBlocks[k] = (out.hookBlocks[k] || 0) + 1; }
     if (e.type === 'assistant' && Array.isArray(msg)) {
       for (const b of msg) {
         if (!b || b.type !== 'tool_use') continue;
@@ -54,13 +73,14 @@ function analyze(lines) {
           const head = cmd.split(/<<-?\s*['"]?\w+/)[0]; // a heredoc body is data, not a push
           cmdCount.set(k, (cmdCount.get(k) || 0) + 1);
           // A real bypass rides a git push or gh command ("# NO-VERIFY: reason"); mentions inside grep/cat/echo are not bypasses.
+          if (/\bgit push\b[^\n]*refs\/heads\/land\//.test(head)) out.landPushes++;
           if (/\bgit push\b|\bgh (pr|api)\b/.test(head)) for (const m of head.matchAll(/\b(NO-VERIFY|NO-SHIP-CHECK|NO-EXECUTE|NO-EFFECT-CHECK|NO-ROOT-CAUSE):\s*\S/g)) out.bypasses[m[1]] = (out.bypasses[m[1]] || 0) + 1;
         }
       }
     }
     if (e.type === 'user') {
       if (/Stop hook feedback|land preflight BLOCK/.test(txt)) {
-        const codes = txt.match(/\[VE:[A-Z]+\]/g) || ['hook'];
+        const codes = txt.match(/\[VE:[A-Z0-9]+\]/g) || [hookLabel(txt)];
         for (const c of new Set(codes)) out.hookBlocks[c] = (out.hookBlocks[c] || 0) + 1;
       }
       // Land refusals are tool output (wait-for-land.js "REFUSED: land/..."), never the human's or the brief's prose.
@@ -76,29 +96,64 @@ function analyze(lines) {
   for (const [k, n] of cmdCount) if (n >= T.repeats && !/^(git (status|diff|log)|ls|cat|sed|grep|node --test)/.test(k)) out.repeats.push({ command: k, times: n });
   if (!out.firstEditAt) out.firstEditAt = out.startAt;
   if (out.firstEditAt && out.endAt) out.hours = +((Date.parse(out.endAt) - Date.parse(out.firstEditAt)) / 3600000).toFixed(2);
-  const blocks = Object.values(out.hookBlocks).reduce((a, b) => a + b, 0);
-  out.triggers = [];
-  if (out.hours > T.hours) out.triggers.push(`over ${T.hours}h from first edit (${out.hours}h)`);
-  if (out.landRefusals.length) out.triggers.push(`${out.landRefusals.length} land refusal(s)`);
-  if (blocks >= T.hookBlocks) out.triggers.push(`${blocks} hook blocks`);
-  if (out.restarts) out.triggers.push(`${out.restarts} container restart(s)`);
+  out.activeHours = +Math.max(0, out.hours - out.idleMinutes / 60).toFixed(2);
+  out.hookBlockCount = Object.values(out.hookBlocks).reduce((a, b) => a + b, 0);
+  out.bypassCount = Object.values(out.bypasses).reduce((a, b) => a + b, 0);
+  out.triggers = triggersFor({ activeHours: out.activeHours, landRefusalCount: out.landRefusals.length, hookBlockCount: out.hookBlockCount, restarts: out.restarts, bypassCount: out.bypassCount });
   return out;
 }
 
+/** PURE threshold check on the numbers a ledger row stores. */
+function triggersFor(n) {
+  const t = [];
+  if (n.activeHours > T.activeHours) t.push(`over ${T.activeHours}h active (${n.activeHours}h)`);
+  if (n.landRefusalCount) t.push(`${n.landRefusalCount} land refusal(s)`);
+  if (n.hookBlockCount >= T.hookBlocks) t.push(`${n.hookBlockCount} hook blocks`);
+  if (n.restarts >= T.restarts) t.push(`${n.restarts} container restart(s)`);
+  if (n.bypassCount >= T.bypasses) t.push(`${n.bypassCount} bypasses`);
+  return t;
+}
+
+/** BRO-7645: --fixes=BRO-1,abc1234 / --no-action=reason, validated. -> {links, noAction, error} */
+function parseLinks(opt) {
+  const links = opt.fixes && opt.fixes !== true ? String(opt.fixes).split(',').map((x) => x.trim()).filter(Boolean) : [];
+  const bad = links.filter((x) => !/^(BRO-\d+|[0-9a-f]{7,40})$/.test(x));
+  if (bad.length) return { links: [], noAction: null, error: `--fixes takes BRO-N ids or commit shas, got: ${bad.join(', ')}` };
+  let noAction = null;
+  if (opt['no-action'] !== undefined) {
+    noAction = opt['no-action'] === true ? '' : String(opt['no-action']).trim();
+    if (noAction.length < 15 || /^(<.*>|n\/?a|none|todo|tbd|nothing|ok)\b/i.test(noAction)) return { links, noAction: null, error: '--no-action needs a real reason (15+ chars, say why no finding needs a fix)' };
+  }
+  return { links, noAction, error: null };
+}
+
+/**
+ * Latest ledger row for a session and whether the loop closed on it. A row without stored numbers
+ * (legacy) is judged by its stored triggers.
+ * -> {recorded, flagged, closed, row}
+ */
+function retroStatus(rows, sessionId) {
+  const row = [...rows].reverse().find((r) => !r.rollup && r.sessionId === sessionId) || null;
+  if (!row) return { recorded: false, flagged: false, closed: false, row: null };
+  const flagged = Array.isArray(row.triggers) && row.triggers.length > 0;
+  const closed = !flagged || (Array.isArray(row.links) && row.links.length > 0) || !!row.noAction;
+  return { recorded: true, flagged, closed, row };
+}
+
 function report(r) {
-  const L = [`Session ${r.sessionId || '?'}: ${r.hours}h from first edit to end`];
+  const L = [`Session ${r.sessionId || '?'}: ${r.hours}h from first edit to end (${r.activeHours}h active)`];
   L.push(`Land refusals: ${r.landRefusals.length}${r.landRefusals.map((x) => `\n  - ${x.why}`).join('')}`);
   L.push(`Hook blocks: ${JSON.stringify(r.hookBlocks)}  Bypasses: ${JSON.stringify(r.bypasses)}`);
   L.push(`Restarts: ${r.restarts}  Compactions: ${r.compactions}`);
   if (r.repeats.length) L.push('Reruns: ' + r.repeats.map((x) => `${x.times}x ${x.command}`).join(' | '));
   if (r.longWaits.length) L.push(`Waits over ${T.gapMin} min: ${r.longWaits.length} (longest ${Math.max(...r.longWaits.map((w) => w.minutes))} min)`);
-  L.push(r.triggers.length ? `RETRO REQUIRED (${r.triggers.join('; ')}): turn each finding into a fix now or a card. A memory note is not a fix.` : 'No retro threshold crossed.');
+  L.push(r.triggers.length ? `RETRO REQUIRED (${r.triggers.join('; ')}): turn each finding into a fix now or a card, then re-run with --record --fixes=BRO-N,<sha> (or --no-action="<why nothing needs fixing>"). A memory note is not a fix.` : 'No retro threshold crossed.');
   return L.join('\n');
 }
 
 function signals(r) {
   const s = [];
-  for (const c of Object.keys(r.hookBlocks)) s.push(`hook:${c}`);
+  for (const c of Object.keys(r.hookBlocks)) if (!GENERIC_HOOK.test(c)) s.push(`hook:${c}`);
   for (const c of Object.keys(r.bypasses)) s.push(`bypass:${c}`);
   for (const x of r.landRefusals) s.push(`land:${(x.why || 'refused').replace(/[0-9a-f]{7,}|\d+/g, '#').slice(0, 60)}`);
   if (r.restarts) s.push('restart');
@@ -118,7 +173,7 @@ function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.
   for (const r of all) if (!r.rollup && Date.parse(r.endAt || r.recordedAt) >= cutoff) bySession.set(r.sessionId || `${r.recordedAt}`, r);
   const rows = [...bySession.values()];
   const count = new Map();
-  for (const r of rows) for (const s of new Set(r.signals || [])) count.set(s, (count.get(s) || 0) + 1);
+  for (const r of rows) for (const s of new Set(r.signals || [])) if (!(s.startsWith('hook:') && GENERIC_HOOK.test(s.slice(5)))) count.set(s, (count.get(s) || 0) + 1);
   const top = [...count.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 5);
   log(`${rows.length} session(s) in the last ${days} days`);
   for (const [s, n] of top) log(`${n}x ${s}`);
@@ -149,12 +204,16 @@ function main(argv) {
   if (!file || !fs.existsSync(file)) { console.error('session-retro: no transcript found (use --transcript=PATH)'); return 1; }
   const r = analyze(fs.readFileSync(file, 'utf8').split('\n'));
   if (opt.record) {
+    const pl = parseLinks(opt);
+    if (pl.error) { console.error(`session-retro: ${pl.error}`); return 1; }
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
-    fs.appendFileSync(LEDGER, JSON.stringify({ sessionId: r.sessionId, endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, signals: signals(r), triggers: r.triggers }) + '\n');
+    fs.appendFileSync(LEDGER, JSON.stringify({ sessionId: r.sessionId, endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
+    r.links = pl.links; r.noAction = pl.noAction;
   }
   console.log(opt.json ? JSON.stringify(r, null, 2) : report(r));
-  return opt.check && r.triggers.length ? 10 : 0;
+  const closed = (r.links && r.links.length) || r.noAction;
+  return opt.check && r.triggers.length && !closed ? 10 : 0;
 }
 
 if (require.main === module) require('./exit-flushed').exitFlushed(main(process.argv.slice(2)));
-module.exports = { rollup, analyze, report, signals, T };
+module.exports = { rollup, analyze, report, signals, T, hookLabel, triggersFor, parseLinks, retroStatus, readLedger, LEDGER };

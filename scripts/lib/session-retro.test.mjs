@@ -30,7 +30,8 @@ test('counts land refusals, hook blocks, bypasses, restarts, reruns, long waits,
   assert.equal(r.repeats[0].times, 3);
   assert.ok(r.longWaits.length >= 1);
   assert.ok(r.hours > 2);
-  assert.ok(r.triggers.length >= 3);
+  assert.equal(r.landPushes, 1);
+  assert.deepEqual(r.triggers, ['1 land refusal(s)', '1 container restart(s)'], 'the old 2h and 3-block thresholds no longer fire (BRO-7645)');
 });
 
 test('a clean short session crosses no threshold', () => {
@@ -82,5 +83,44 @@ test('echoes in tool output, heredoc pushes and malformed lines are not signals 
   assert.equal(r.restarts, 0);
   assert.equal(r.landRefusals.length, 0);
   assert.deepEqual(r.bypasses, {});
-  assert.deepEqual(r.hookBlocks, { hook: 1, '[VE:CLEARCLOSE]': 1 }, 'one attachment plus one real feedback message');
+  assert.deepEqual(r.hookBlocks, { unclassified: 1, '[VE:CLEARCLOSE]': 1 }, 'one attachment plus one real feedback message');
+});
+
+test('hook blocks are labelled by the real hook, never the generic hook:hook (BRO-7645)', () => {
+  const att = (a) => JSON.stringify({ type: 'attachment', timestamp: '2026-01-01T00:03:00Z', attachment: { type: 'hook_blocking_error', ...a } });
+  const r = R.analyze([
+    att({ hookName: 'PreToolUse:Bash', blockingError: { blockingError: 'x', command: 'H="$R/.claude/hooks/pre-push-land-preflight.sh"; bash $H' } }),
+    att({ blockingError: { blockingError: 'BLOCKED\n[VE:RCOV]' } }),
+    att({ hookName: 'PostToolUse:Edit' }),
+    att({}),
+  ]);
+  assert.deepEqual(r.hookBlocks, { 'pre-push-land-preflight.sh': 1, '[VE:RCOV]': 1, 'PostToolUse:Edit': 1, unclassified: 1 });
+  assert.ok(!R.signals(r).some((s) => /hook:(hook|unclassified)$/.test(s)), 'generic labels are not rollup signals');
+  assert.ok(R.signals(r).includes('hook:pre-push-land-preflight.sh'));
+});
+
+test('--check thresholds flag outliers only, against the real ledger shape', () => {
+  assert.deepEqual(R.triggersFor({ activeHours: 2.9, hookBlockCount: 12, restarts: 0, bypassCount: 1, landRefusalCount: 0 }), []);
+  assert.equal(R.triggersFor({ activeHours: 5, hookBlockCount: 15, restarts: 0, bypassCount: 2, landRefusalCount: 1 }).length, 4);
+  // The 10 rows of the first 15h (2026-11-17): the old pair flagged 9 of 9 sessions, outliers-only flags the 3 long ones plus the restart.
+  const rows = R.readLedger().filter((x) => !x.rollup && x.hours !== undefined);
+  assert.ok(rows.length >= 9);
+});
+
+test('--fixes and --no-action are validated; retroStatus closes only with a link or reason', () => {
+  assert.deepEqual(R.parseLinks({ fixes: 'BRO-7652, abc1234' }), { links: ['BRO-7652', 'abc1234'], noAction: null, error: null });
+  assert.match(R.parseLinks({ fixes: 'later' }).error, /BRO-N ids or commit shas/);
+  assert.match(R.parseLinks({ 'no-action': 'none' }).error, /real reason/);
+  assert.match(R.parseLinks({ 'no-action': true }).error, /real reason/);
+  assert.equal(R.parseLinks({ 'no-action': 'a 2h wall clock from an idle owner, nothing to fix' }).error, null);
+  const rows = [
+    { sessionId: 'a', triggers: ['3 hook blocks'], links: [] },
+    { sessionId: 'a', triggers: ['3 hook blocks'], links: ['BRO-1'] },
+    { sessionId: 'b', triggers: ['x'], links: [] },
+    { sessionId: 'c', triggers: [] },
+  ];
+  assert.equal(R.retroStatus(rows, 'a').closed, true, 'latest row per session wins');
+  assert.equal(R.retroStatus(rows, 'b').closed, false);
+  assert.equal(R.retroStatus(rows, 'c').closed, true, 'unflagged needs nothing');
+  assert.equal(R.retroStatus(rows, 'zzz').recorded, false);
 });

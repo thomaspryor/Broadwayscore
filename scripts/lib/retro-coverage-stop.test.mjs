@@ -1,0 +1,68 @@
+// BRO-7645: retro-coverage-stop.mjs, pure decision plus the real Stop-hook entry (fail-open, one nudge).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { stopHookDecision } from './retro-coverage-stop.mjs';
+
+const ENV = { CLAUDE_CODE_REMOTE: 'true' };
+let n = 0;
+const use = (name, input, result = 'ok', isError = false) => { const id = `t${++n}`; return [{ kind: 'assistant_tool_use', name, input, id }, { kind: 'tool_result', tool_use_id: id, content: result, isError }]; };
+const edit = () => use('Edit', { file_path: '/repo/scripts/x.js' });
+const land = () => use('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }, 'ok');
+const record = (flags, out) => use('Bash', { command: `node scripts/lib/session-retro.js --check --record ${flags}`.trim() }, out);
+const SAFE = 'SAFE TO ARCHIVE — done';
+const decide = (events, lastMessage = SAFE, env = ENV) => stopHookDecision({ lastMessage, events, env });
+
+test('landed code with no retro run blocks; with a clean retro it allows', () => {
+  assert.equal(decide([...edit(), ...land()]).decision, 'block');
+  assert.match(decide([...edit(), ...land()]).message, /Retro missing/);
+  assert.equal(decide([...edit(), ...land(), ...record('', 'No retro threshold crossed.')]).decision, 'allow');
+});
+
+test('a flagged retro needs --fixes or --no-action', () => {
+  const flagged = 'RETRO REQUIRED (25 hook blocks): turn each';
+  assert.match(decide([...edit(), ...land(), ...record('', flagged)]).message, /not closed/);
+  assert.equal(decide([...edit(), ...land(), ...record('', flagged), ...record('--fixes=BRO-7652', flagged)]).decision, 'allow');
+  assert.equal(decide([...edit(), ...land(), ...record('--no-action="idle owner time, nothing to fix"', flagged)]).decision, 'allow');
+  assert.equal(decide([...edit(), ...land(), ...record('--fixes=later', flagged)]).decision, 'block', 'a non-id link does not count');
+});
+
+test('stays quiet outside its scope', () => {
+  assert.equal(decide([...edit(), ...land()], 'KEEP OPEN — waiting').decision, 'allow', 'only SAFE TO ARCHIVE');
+  assert.equal(decide([...edit()]).decision, 'allow', 'nothing landed');
+  assert.equal(decide([...use('Edit', { file_path: '/repo/data/audit/x.jsonl' }), ...land()]).decision, 'allow', 'data-only');
+  assert.equal(decide([...edit(), ...land()], SAFE, {}).decision, 'allow', 'not cloud');
+  assert.equal(decide([...edit(), ...land()], SAFE, { ...ENV, RETRO_COVERAGE_STOP_DISABLE: '1' }).decision, 'allow');
+  assert.equal(decide([...edit(), ...land()], `${SAFE}\nNO-VERIFY: docs`).decision, 'allow');
+  assert.equal(decide([...edit(), ...use('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }, 'rejected', true)]).decision, 'allow', 'a failed push is not a landing');
+  assert.equal(decide([...edit(), ...use('Bash', { command: "cat <<'E'\nnode scripts/lib/session-retro.js --record --fixes=BRO-1\nE" })].concat(land())).decision, 'block', 'a heredoc mention is not a record run');
+  assert.equal(decide(null).decision, 'allow');
+});
+
+test('hook entry: blocks once (exit 2), then lets the same transcript through; bad input fails open', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rcs-'));
+  try {
+    const tp = path.join(dir, 't.jsonl');
+    const L = (o) => JSON.stringify(o);
+    fs.writeFileSync(tp, [
+      L({ type: 'assistant', message: { id: 'm1', content: [{ type: 'tool_use', id: 'e1', name: 'Edit', input: { file_path: '/r/scripts/a.js' } }] } }),
+      L({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'e1', content: 'ok' }] } }),
+      L({ type: 'assistant', message: { id: 'm2', content: [{ type: 'tool_use', id: 'p1', name: 'Bash', input: { command: 'git push origin HEAD:refs/heads/land/x' } }] } }),
+      L({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'p1', content: 'ok' }] } }),
+    ].join('\n'));
+    const run = (input) => spawnSync('node', [path.join(import.meta.dirname, 'retro-coverage-stop.mjs'), '--stop-hook'], { input, env: { ...process.env, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
+    const inp = JSON.stringify({ transcript_path: tp, session_id: 's', last_assistant_message: SAFE });
+    const a = run(inp);
+    assert.equal(a.status, 2);
+    assert.match(a.stderr, /Retro missing/);
+    assert.equal(run(inp).status, 0, 'one nudge per transcript');
+    assert.equal(run('not json').status, 0);
+    assert.equal(run(JSON.stringify({ transcript_path: '/nope' })).status, 0);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+    for (const f of fs.readdirSync(os.tmpdir())) if (f.startsWith('retro-coverage-stop-')) fs.rmSync(path.join(os.tmpdir(), f), { force: true });
+  }
+});
