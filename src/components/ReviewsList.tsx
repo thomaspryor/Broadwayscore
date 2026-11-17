@@ -355,11 +355,11 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   // hanging under the score badge: "4/5 stars · Nov 7, 2026" on the header row
   // (sm+), and after the byline's date on phones.
   const rating = review.originalRating || null;
-  const mobileRating = rating ? <span className="whitespace-nowrap" data-testid="review-original-rating-mobile"> &middot; {rating}</span> : null;
+  const mobileRating = rating ? <span className="whitespace-nowrap" data-testid="review-original-rating-mobile"><span aria-hidden="true"> &middot; </span><span className="sr-only">. Rated </span>{rating}</span> : null;
   const mobileDate = !stop && (dateLabel || rating) ? (
     <span className="sm:hidden">
       {dateLabel ? <span className="whitespace-nowrap">, {dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}</span> : null}
-      {dateLabel ? mobileRating : rating ? <span className="whitespace-nowrap">, {rating}</span> : null}
+      {dateLabel ? mobileRating : rating ? <span className="whitespace-nowrap" data-testid="review-original-rating-mobile">, <span className="sr-only">rated </span>{rating}</span> : null}
     </span>
   ) : null;
   // With a stop, phones get one full-width line under the quote instead
