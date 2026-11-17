@@ -1,64 +1,66 @@
 {
-  "updatedAt": "2026-11-17T04:42:13.891Z",
-  "processed": 26,
-  "failed": 17,
-  "successRate": "60.5%",
+  "updatedAt": "2026-11-17T04:48:42.428Z",
+  "processed": 400,
+  "failed": 220,
+  "successRate": "64.5%",
   "tierBreakdown": {
-    "playwright": 15,
-    "amp": 0,
-    "browserbase": 3,
+    "playwright": 210,
+    "amp": 1,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 43,
+    "scrapingbee": 18,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 136
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-11-17T04:36:45.485Z",
+      "t": "2026-11-17T01:06:59.816Z",
       "event": "bb-session",
-      "session": "e19535a6",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+      "session": "6ca6f14d",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     },
     {
-      "t": "2026-11-17T04:36:45.931Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-17T04:37:19.615Z",
+      "t": "2026-11-17T01:33:11.658Z",
       "event": "bb-session",
-      "session": "907ea004",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+      "session": "69219d59",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-17T04:37:20.421Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-17T04:38:48.280Z",
-      "event": "bb-session",
-      "session": "67315829",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-17T04:38:48.759Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-17T04:41:58.331Z",
-      "event": "bb-session",
-      "session": "9b331e2e",
-      "url": "https://www.nytimes.com/2026/11/08/theater/wanted-review-passing-pfeiffer-ledisi"
-    },
-    {
-      "t": "2026-11-17T04:41:58.780Z",
+      "t": "2026-11-17T01:33:12.280Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T01:44:10.083Z",
+      "event": "bb-session",
+      "session": "c6b08a18",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-17T01:44:10.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T01:45:39.335Z",
+      "event": "bb-session",
+      "session": "1528d492",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-17T01:46:09.361Z",
+      "event": "bb-session",
+      "session": "0d9697c1",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-17T01:46:18.393Z",
+      "event": "bb-session",
+      "session": "95c539fe",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     }
   ]
 }
