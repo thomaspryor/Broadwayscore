@@ -939,7 +939,8 @@ function selectBestExcerpt(data, showTitle) {
     // contiguous accepted candidate (pickExcerptCandidate).
     let pendingDeferral = null;
     if (contiguitySource && !isContiguousInSource(excerpt, contiguitySource)) {
-      const snapped = snapToSourceSpan(excerpt, contiguitySource);
+      // BRO-7675: the snapped source sentence can carry a photo credit/aside the candidate skipped.
+      const snapped = stripLeadingParenAside(snapToSourceSpan(excerpt, contiguitySource));
       if (snapped && !startsAsFragment(snapped) && !startsWithPageChrome(snapped)
           && !hasCopyrightChrome(snapped) && !isPromoTeaser(snapped) && !hasListingChrome(snapped)) {
         stats.nonContiguousExcerptsSnapped = (stats.nonContiguousExcerptsSnapped || 0) + 1;
