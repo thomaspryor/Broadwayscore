@@ -21,7 +21,7 @@ const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
   selectRecheckScope, selectTrainRecheckScope, isBuildCodePath, isMergeableBothSidesLedger, jsonFileParses,
-  isPromisorFetchFailure, isGeneratedDocConflict, refreshGeneratedDocsIn, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
+  isPromisorFetchFailure, isGitTimeout, isGeneratedDocConflict, refreshGeneratedDocsIn, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
 
@@ -1250,4 +1250,103 @@ test('BRO-6519: makeVerifiedBaseChecks checks the MERGED alert ledger in cwd bef
   } finally {
     fs.rmSync(wt, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
+});
+
+// ── BRO-7715: a git network timeout is not a failed rebase ─────────────────
+
+/** An execGit seam that throws what execFileSync throws on timeout, for the first `times` matching calls. */
+function timeoutInjector(match, times) {
+  const state = { hits: 0 };
+  const exec = (cmd, args, opts) => {
+    if (state.hits < times && match(args)) {
+      state.hits++;
+      const err = new Error('spawnSync git ETIMEDOUT');
+      err.code = 'ETIMEDOUT'; err.signal = 'SIGTERM'; err.killed = true;
+      throw err;
+    }
+    return execFileSync(cmd, args, opts);
+  };
+  return { exec, state };
+}
+const isRebase = (a) => a.includes('rebase') && !a.includes('--abort');
+const isFetchMain = (a) => a[0] === 'fetch' && a.includes('main');
+
+test('BRO-7715: isGitTimeout recognises an execFileSync timeout and nothing else', () => {
+  assert.equal(isGitTimeout(Object.assign(new Error('x'), { code: 'ETIMEDOUT' })), true);
+  assert.equal(isGitTimeout(new Error('spawnSync git ETIMEDOUT')), true);
+  assert.equal(isGitTimeout(Object.assign(new Error('x'), { killed: true, signal: 'SIGTERM' })), true);
+  assert.equal(isGitTimeout(Object.assign(new Error('CONFLICT (content)'), { stderr: 'CONFLICT' })), false);
+  assert.equal(isGitTimeout(null), false);
+});
+
+test('BRO-7715: a rebase that times out once is retried and the branch lands', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-timeout-once');
+    w.moveOrigin(); // forces a real rebase
+    const inj = timeoutInjector(isRebase, 1);
+    const sleeps = []; const logs = [];
+    const r = landBranch({
+      branch: 'feat-timeout-once', repoDir: w.repoDir, execGit: inj.exec, sleepMs: (ms) => sleeps.push(ms), log: (m) => logs.push(m),
+      checks: greenChecks, pushMain: plainPush,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(inj.state.hits, 1);
+    assert.deepEqual(sleeps, [2000]);
+    assert.ok(logs.some((l) => /timed out \(git, not a conflict\)/.test(l)), logs.join('\n'));
+    assert.equal(w.originMain(), r.sha);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: a rebase that keeps timing out is refused as git-timeout, never as a rebase conflict', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-timeout-always');
+    w.moveOrigin();
+    const inj = timeoutInjector(isRebase, 99);
+    const sleeps = [];
+    const r = landBranch({
+      branch: 'feat-timeout-always', repoDir: w.repoDir, execGit: inj.exec, sleepMs: (ms) => sleeps.push(ms),
+      checks: greenChecks, pushMain: () => assert.fail('must not push'),
+    });
+    assert.equal(r.landed, false);
+    assert.equal(r.failedCheck, 'git-timeout', JSON.stringify(r));
+    assert.match(r.reason, /not a conflict/);
+    assert.equal(inj.state.hits, 3, 'first try + 2 retries');
+    assert.deepEqual(sleeps, [2000, 6000]);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: a real conflict is still a rebase refusal, with no retry', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-conflict', 'a.txt', 'branch edit\n');
+    w.commitOn(w.other, 'a.txt', 'main edit\n', 'conflicting main edit');
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+    const sleeps = [];
+    const r = landBranch({
+      branch: 'feat-conflict', repoDir: w.repoDir, sleepMs: (ms) => sleeps.push(ms),
+      checks: greenChecks, pushMain: () => assert.fail('must not push'),
+    });
+    assert.equal(r.failedCheck, 'rebase', JSON.stringify(r));
+    assert.deepEqual(sleeps, []);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: a fetch that times out once is retried, a persistent one throws', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-fetch-timeout');
+    const once = timeoutInjector(isFetchMain, 1);
+    const r = landBranch({ branch: 'feat-fetch-timeout', repoDir: w.repoDir, execGit: once.exec, sleepMs: () => {}, checks: greenChecks, pushMain: plainPush });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(once.state.hits, 1);
+    const w2 = makeWorld();
+    try {
+      w2.makeBranch('feat-fetch-dead');
+      const dead = timeoutInjector(isFetchMain, 99);
+      assert.throws(() => landBranch({ branch: 'feat-fetch-dead', repoDir: w2.repoDir, execGit: dead.exec, sleepMs: () => {}, checks: greenChecks, pushMain: plainPush }), /ETIMEDOUT/);
+      assert.equal(dead.state.hits, 3);
+    } finally { w2.cleanup(); }
+  } finally { w.cleanup(); }
 });

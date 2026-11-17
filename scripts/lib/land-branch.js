@@ -114,6 +114,19 @@ const { isPromisorFetchFailure, PROMISOR_REBASE_RETRIES } = require('./promisor-
 // BRO-7631: -c merge.<name>.driver args for every land rebase (a CI runner registers none; git then text-merges silently).
 const { driverConfigArgs } = require('./land-merge-drivers.js');
 const PREFETCH_TIMEOUT_MS = Math.max(GIT_NET_TIMEOUT_MS, 5 * 60 * 1000);
+
+// BRO-7715: a git network timeout (execFileSync kills git after
+// GIT_NET_TIMEOUT_MS: err.code 'ETIMEDOUT', signal SIGTERM) is transient, not a
+// rebase conflict. It is retried with backoff and, if it persists, reported as
+// failedCheck 'git-timeout' so a plain re-run is the obvious next step.
+const GIT_TIMEOUT_RETRIES = 2;
+const GIT_TIMEOUT_BACKOFF_MS = [2000, 6000];
+function isGitTimeout(err) {
+  if (!err) return false;
+  if (err.code === 'ETIMEDOUT') return true;
+  return /\bETIMEDOUT\b/.test(String(err.message || '')) || (err.killed === true && err.signal === 'SIGTERM');
+}
+function defaultSleepMs(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
 const PREFETCH_MAX_PATHS = 2000;
 
 // ── Pure decision helpers ───────────────────────────────────────────────────
@@ -696,6 +709,7 @@ function landBranch(o) {
     branch, repoDir = REPO_ROOT, checks = defaultChecks, pushMain = defaultPushMain,
     beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS, maxChurnSkips = MAX_CHURN_SKIPS,
     remote = 'origin', target = 'main', source = 'auto', dryRun = false, expectSha = null,
+    execGit = execFileSync, sleepMs = defaultSleepMs,
     riders = [], trainBases = [], holderBase = null, trainChecks = defaultChecks, deadlineMs = landDeadlineMs(), now = Date.now, pushMarkerFile = process.env.LAND_PUSH_MARKER || null,
   } = o || {};
   const t0 = now();
@@ -710,13 +724,27 @@ function landBranch(o) {
   if (branch === target) return done({ failedCheck: 'args', reason: `branch is ${target} itself — nothing to land` });
 
   const git = (args, cwd = repoDir, extra = {}) =>
-    execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: GIT_NET_TIMEOUT_MS, ...extra }).trim();
+    execGit('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: GIT_NET_TIMEOUT_MS, ...extra }).trim();
   const gitOrNull = (args, cwd) => { try { return git(args, cwd); } catch { return null; } };
+  // Network git (fetch) with bounded retry on a timeout only; real failures throw at once.
+  const gitNet = (args, cwd = repoDir) => {
+    for (let n = 0; ; n++) {
+      try { return git(args, cwd); } catch (err) {
+        if (!isGitTimeout(err) || n >= GIT_TIMEOUT_RETRIES) throw err;
+        log(`[land] git ${args[0]} timed out (retry ${n + 1}/${GIT_TIMEOUT_RETRIES} after ${GIT_TIMEOUT_BACKOFF_MS[n]}ms)`);
+        sleepMs(GIT_TIMEOUT_BACKOFF_MS[n]);
+      }
+    }
+  };
+  // A rebase failure is a conflict ('rebase') unless git itself timed out ('git-timeout').
+  const rebaseFailure = (err, what) => isGitTimeout(err)
+    ? { failedCheck: 'git-timeout', reason: `git timed out (not a conflict) ${what}; re-run the land: ${String(err.message || err).slice(0, 200)}` }
+    : { failedCheck: 'rebase', reason: `branch would not rebase cleanly ${what}: ${String(err.stderr || err.message).slice(0, 300)}` };
 
   if (gitOrNull(['check-ref-format', '--branch', branch]) === null) return done({ failedCheck: 'args', reason: `git rejects "${branch}" as a branch name` });
 
   const targetRef = `${remote}/${target}`;
-  git(['fetch', remote, target]);
+  gitNet(['fetch', remote, target]);
 
   // Resolve the tip to land. 'local' = refs/heads/<branch> only; 'origin' =
   // the remote's copy; 'auto' = local if it exists, else origin. The remote
@@ -849,6 +877,7 @@ function landBranch(o) {
     // commits (a train rider; HEAD becomes the rebased rider).
     const rebaseOnto = (onto, { rangeFrom = null, tip = null } = {}) => {
       prefetchForRebase(onto, tip || sha);
+      let timeoutRetries = 0;
       for (let retry = 0; ; retry++) {
         try {
           git([...driverConfigArgs(__dirname), ...(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto])], workdir);
@@ -861,6 +890,14 @@ function landBranch(o) {
           if (fixed.done) { if (!rangeFrom) refreshGeneratedDocs(onto); return; }
           // After a resolved stop the failure that matters is the LAST one (a later real conflict, a lazy-fetch failure).
           if (fixed.lastErr) { err = fixed.lastErr; }
+          if (isGitTimeout(err) && timeoutRetries < GIT_TIMEOUT_RETRIES) {
+            gitOrNull(['rebase', '--abort'], workdir);
+            discardResidue(`timeout retry ${timeoutRetries + 1}`);
+            log(`[land] rebase onto ${onto.slice(0, 10)} timed out (git, not a conflict) — retry ${timeoutRetries + 1}/${GIT_TIMEOUT_RETRIES} after ${GIT_TIMEOUT_BACKOFF_MS[timeoutRetries]}ms`);
+            sleepMs(GIT_TIMEOUT_BACKOFF_MS[timeoutRetries]);
+            timeoutRetries++; retry--;
+            continue;
+          }
           const errText2 = String(err.stderr || err.message || '');
           if (retry >= PROMISOR_REBASE_RETRIES || !isPromisorFetchFailure(errText2)) throw err;
           gitOrNull(['rebase', '--abort'], workdir);
@@ -955,7 +992,7 @@ function landBranch(o) {
         return done({ attempts: attempt - 1, failedCheck: 'deadline', reason: `${lateBy} (last: ${lastReason || 'n/a'})`.slice(0, 500) });
       }
       discardResidue(`attempt ${attempt}`);
-      git(['fetch', remote, target], workdir);
+      gitNet(['fetch', remote, target], workdir);
       // Pin the base: every later step (rebase, diff, moved-check, trailer)
       // uses THIS sha, never the tracking ref another session's fetch may
       // have advanced in the meantime.
@@ -965,7 +1002,7 @@ function landBranch(o) {
         rebaseOnto(baseSha);
       } catch (err) {
         gitOrNull(['rebase', '--abort'], workdir);
-        return done({ attempts: attempt, baseSha, failedCheck: 'rebase', reason: `branch would not rebase cleanly onto ${targetRef} @ ${baseSha.slice(0, 10)}: ${String(err.stderr || err.message).slice(0, 300)}` });
+        return done({ attempts: attempt, baseSha, ...rebaseFailure(err, `onto ${targetRef} @ ${baseSha.slice(0, 10)}`) });
       }
       let head = git(['rev-parse', 'HEAD'], workdir);
       if (head === baseSha) {
@@ -1041,7 +1078,7 @@ function landBranch(o) {
       // Shares the churn budget, so a firehose still terminates.
       pushLoop: for (;;) {
       for (;;) {
-        git(['fetch', remote, target], workdir);
+        gitNet(['fetch', remote, target], workdir);
         const nowBase = git(['rev-parse', targetRef], workdir);
         if (nowBase === landBase) break;
         const intervening = git(['diff', '--name-only', `${landBase}..${nowBase}`], workdir).split('\n').filter(Boolean);
@@ -1057,7 +1094,7 @@ function landBranch(o) {
           rebaseOnto(nowBase);
         } catch (err) {
           gitOrNull(['rebase', '--abort'], workdir);
-          return done({ attempts: attempt, baseSha: nowBase, verifiedBase: baseSha, failedCheck: 'rebase', reason: `branch would not rebase cleanly onto ${targetRef} @ ${nowBase.slice(0, 10)} (inert churn since ${landBase.slice(0, 10)}): ${String(err.stderr || err.message).slice(0, 300)}`, files });
+          return done({ attempts: attempt, baseSha: nowBase, verifiedBase: baseSha, ...rebaseFailure(err, `onto ${targetRef} @ ${nowBase.slice(0, 10)} (inert churn since ${landBase.slice(0, 10)})`), files });
         }
         churnSkips++;
         if (git(['rev-parse', 'HEAD'], workdir) === nowBase) {
@@ -1173,7 +1210,7 @@ function landBranch(o) {
 module.exports = {
   DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
   checkTimings,
-  isPromisorFetchFailure,
+  isPromisorFetchFailure, isGitTimeout, GIT_TIMEOUT_RETRIES,
   isGeneratedDocConflict, GENERATED_DOC_PATHS, refreshGeneratedDocsIn,
   PROMISOR_REBASE_RETRIES,
   MAX_ATTEMPTS,
