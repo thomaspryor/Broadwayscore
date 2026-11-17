@@ -342,6 +342,26 @@ function readRecheckLedgerStatuses(ledgerPath) {
   return lastRecheckStatuses(entries);
 }
 
+/**
+ * BRO-7697: the one honest number. Share of Done cards whose own check held on the FIRST independent
+ * recheck in the last 30 days (a card that failed, was reopened and later fixed still counts as a miss).
+ * Reads the CI-written recheck ledger; null when it is missing or nothing was testable.
+ */
+function readDoneHeldLine(ledgerPath, { now = Date.now() } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const file = ledgerPath || path.join(__dirname, '..', '..', 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
+  let text = '';
+  try { text = fs.readFileSync(file, 'utf8'); } catch { return null; }
+  const entries = [];
+  for (const line of text.split('\n')) { if (!line.trim()) continue; try { entries.push(JSON.parse(line)); } catch { /* torn line */ } }
+  const { heldShare } = require('./autonomous-recheck-core.js');
+  const h = heldShare(entries, { now, days: 30, which: 'first' });
+  if (h.share == null) return null;
+  const tested = h.pass + h.fail;
+  return `Done cards that held up when re-checked independently (last 30 days, first check): ${Math.round(h.share * 100)}% (${h.pass} of ${tested}). ${plural(h.fail, 'card')} did not hold; ${h.couldNotRun + h.unverifiable} more could not be checked automatically.`;
+}
+
 /** PURE. Cards categorizeBoard could not read (counted under Other with a categorize-error reason). */
 function countUncategorizable(report) {
   return (report.cards || []).filter((c) => /^categorize-error/.test(c.reason || '')).length;
@@ -359,7 +379,7 @@ function flowLine(flow) {
  * PURE. The plain-English table sessions paste to the owner. No card ids,
  * reason codes or file names: the owner reads titles and categories.
  */
-function formatMarkdown(report, { flow = null, maxStuck = 15 } = {}) {
+function formatMarkdown(report, { flow = null, maxStuck = 15, heldLine = null } = {}) {
   const urgentHigh = (c) => c.byPriority.urgent + c.byPriority.high;
   const lines = [
     `**The board: ${plural(report.open, 'open card')}**`,
@@ -373,6 +393,7 @@ function formatMarkdown(report, { flow = null, maxStuck = 15 } = {}) {
     '',
     flowLine(flow),
     '',
+    ...(heldLine ? [heldLine, ''] : []),
   ];
   const stuck = report.importantStuck;
   if (!stuck.length) {
@@ -455,7 +476,7 @@ function parseReportArgs(argv) {
 
 module.exports = {
   sortedComments,
-  CATEGORIES, GROUPS, groupBoard, REAL_BLOCK_RE, lastRecheckStatuses, readRecheckLedgerStatuses,
+  CATEGORIES, GROUPS, groupBoard, REAL_BLOCK_RE, lastRecheckStatuses, readRecheckLedgerStatuses, readDoneHeldLine,
   cardTraits, categorizeBoard, importantAndStuck, ownerGatedNoQuestion, flowFromInflow, snapshotOf, compareReports,
   countUncategorizable, flowLine, formatMarkdown, formatCompareMarkdown, parseReportArgs,
   fetchOpenBoard, fetchFlow24h,

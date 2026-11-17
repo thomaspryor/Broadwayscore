@@ -6,8 +6,8 @@
  * real failures to ONE batched worker card, so a worker reproduces each one on
  * main and fixes it (or rewrites a stale VERIFY) under that card.
  *
- * What it never does: reopen or move the original cards (shadow-mode rule for
- * Done cards stands), route a check that could not run on the recheck machine
+ * What it never does: move the original cards (BRO-7697 reopen is a separate, enforcement-gated
+ * path in recheck-reopen.js that skips cards an open card already names), route a check that could not run on the recheck machine
  * (recheckVerdict: those are environment, not regressions), or route a card a
  * BRO-6853 handoff already moved to a worker the same night.
  *

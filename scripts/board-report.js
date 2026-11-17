@@ -50,7 +50,7 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   if (opts.save) fs.writeFileSync(opts.save, `${JSON.stringify(full, null, 2)}\n`);
   if (opts.mode === 'json') log(JSON.stringify(full, null, 2));
   else if (opts.mode === 'compare') log(bc.formatCompareMarkdown(bc.compareReports(prev, report)));
-  else log(bc.formatMarkdown(report, { flow }));
+  else log(bc.formatMarkdown(report, { flow, heldLine: bc.readDoneHeldLine(null, { now }) }));
   return 0;
 }
 

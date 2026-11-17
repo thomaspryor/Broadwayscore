@@ -274,9 +274,47 @@ function addWarning(result, w) {
   return { ...result, warning: result.warning ? `${result.warning}\n${w}` : w };
 }
 
+// BRO-7697: a card closed on verified PR-EVIDENCE never has its recorded check RUN, so it could close
+// naming a test that never reached main (33 of the 37 missing-path "unverifiable" recheck rows were
+// absent on their FIRST nightly recheck). Cheap guard: the paths the recorded check names must exist
+// on origin/main. ADVISORY until CHECK_ON_MAIN_BLOCKING_FROM, then it refuses; CLOSE_CHECK_ON_MAIN_GATE=advisory
+// rolls that back. Fails open: no verifier wired, a git error or no recorded check means no finding.
+const CHECK_ON_MAIN_BLOCKING_FROM = '2026-11-25';
+
+function recordedCheckCloseCheck({ description = '', commentText = '', existingComments = [], pathsOnMain, nowMs = Date.now(), env = process.env } = {}) {
+  if (typeof pathsOnMain !== 'function') return null;
+  try {
+    const comments = [...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean);
+    const rec = evaluateDoneTransition({ prRef: null, notes: description, comments });
+    if (!rec || rec.verdict !== VERDICTS.VERIFY_CMD_RECORDED || !rec.cmd) return null;
+    const found = pathsOnMain(rec.cmd);
+    const missing = found && Array.isArray(found.missing) ? found.missing : [];
+    if (!missing.length) return null;
+    const blocking = env.CLOSE_CHECK_ON_MAIN_GATE !== 'advisory' && nowMs >= Date.parse(`${CHECK_ON_MAIN_BLOCKING_FROM}T00:00:00Z`);
+    return {
+      blocking,
+      message: `The check recorded on this card (\`${rec.cmd}\`) names ${missing.map((m) => `\`${m}\``).join(', ')}, which is not on origin/main. ` +
+        'A card closed like this can never be re-verified (the nightly recheck reports it as unverifiable). ' +
+        'Land the test first, or change the VERIFY line to a test that exists on main.' +
+        (blocking ? '' : ` Advisory now; refused from ${CHECK_ON_MAIN_BLOCKING_FROM}.`),
+    };
+  } catch {
+    return null;
+  }
+}
+
 function checkLinearDoneTransition(args = {}) {
   let result = checkDoneEvidence(args);
   if (args.targetStateType !== 'completed') return result;
+  // Only when the recorded check was NOT executed by this very gate (the PR-EVIDENCE route).
+  if (result.allowed !== false && !result.cmdExecution) {
+    const cc = recordedCheckCloseCheck(args);
+    if (cc) {
+      result = cc.blocking
+        ? { ...result, gated: true, allowed: false, verdict: 'recorded-check-not-on-main', reason: cc.message }
+        : addWarning(result, cc.message);
+    }
+  }
   const rw = recurrenceWarning(args);
   if (rw) {
     if (rw.blocking && result.allowed !== false) {
@@ -299,4 +337,4 @@ function checkLinearDoneTransition(args = {}) {
   return result;
 }
 
-module.exports = { checkLinearDoneTransition, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseWarning };
+module.exports = { checkLinearDoneTransition, recordedCheckCloseCheck, CHECK_ON_MAIN_BLOCKING_FROM, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseWarning };
