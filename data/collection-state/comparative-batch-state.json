@@ -1,43 +1,37 @@
 {
   "openai": {
-    "answers": {},
-    "inflight": {
-      "id": "batch_6afb02e8240881909fb3b80d89973886",
-      "keys": [
-        "0db5d34783ca8d08288c",
-        "fb4b5d72f9066c4aa213",
-        "072e95641f30792738eb",
-        "5c2ad88dffa5d861e036",
-        "f4c6aa6b8bb5afae05b2",
-        "8308b46dd37c7aad9cf3",
-        "9a5852e71781bf652641",
-        "6d09605076e6f6f96a98",
-        "f8555afe26e5d3b33022",
-        "a0cb6d5d542b8a9da534",
-        "ab8c973780eabb59f441",
-        "a7cd0b865d3811e4aa41",
-        "e4cc45d50d3b9d562a61",
-        "553796f729069331da17",
-        "14b551b64c12d9fce732",
-        "de5ad9b0c4a77336253f"
-      ],
-      "submittedAt": "2026-11-16T13:19:36.267Z"
-    },
-    "submitFailures": 0
+    "answers": {
+      "bced35b0c38887ebecf4": {
+        "text": "[{\"id\":\"artsdesk--unknown.json\",\"score\":75,\"warmthRank\":4},{\"id\":\"independent--alice-saville.json\",\"score\":85,\"warmthRank\":2},{\"id\":\"lost-in-theatreland--barbara-martins.json\",\"score\":90,\"warmthRank\":1},{\"id\":\"timeout-london--andrzej-lukowski.json\",\"score\":80,\"warmthRank\":3}]",
+        "at": "2026-11-17T14:20:02.673Z"
+      },
+      "4f0730af386847b85255": {
+        "text": "[{\"id\":\"london-theatre--theo-bosanquet.json\",\"score\":89,\"warmthRank\":1},{\"id\":\"rollingstone--unknown.json\",\"score\":86,\"warmthRank\":2}]",
+        "at": "2026-11-17T14:20:02.673Z"
+      }
+    }
   },
   "gemini": {
     "answers": {
-      "7a8a1b2c7ed543375d47": {
-        "text": "[{\"id\":\"whatsonstage--alun-hood.json\",\"score\":90,\"warmthRank\":1},{\"id\":\"thestage--unknown.json\",\"score\":88,\"warmthRank\":2},{\"id\":\"financialtimes--sarah-hemming.json\",\"score\":85,\"warmthRank\":3},{\"id\":\"everything-theatre--owen-thomas-james.json\",\"score\":83,\"warmthRank\":4},{\"id\":\"standard--nick-curtis.json\",\"score\":80,\"warmthRank\":5},{\"id\":\"the-jewish-chronicle--john-nathan.json\",\"score\":78,\"warmthRank\":6},{\"id\":\"guardian--arifa-akbar.json\",\"score\":75,\"warmthRank\":7},{\"id\":\"artsdesk--gary-naylor.json\",\"score\":71,\"warmthRank\":8}]",
-        "at": "2026-11-16T20:49:52.694Z"
+      "bced35b0c38887ebecf4": {
+        "text": "[{\"id\":\"timeout-london--andrzej-lukowski.json\",\"score\":88,\"warmthRank\":1},{\"id\":\"independent--alice-saville.json\",\"score\":85,\"warmthRank\":2},{\"id\":\"artsdesk--unknown.json\",\"score\":78,\"warmthRank\":3},{\"id\":\"lost-in-theatreland--barbara-martins.json\",\"score\":75,\"warmthRank\":4}]",
+        "at": "2026-11-17T14:19:04.457Z"
+      },
+      "4f0730af386847b85255": {
+        "text": "[{\"id\":\"london-theatre--theo-bosanquet.json\",\"score\":88,\"warmthRank\":1},{\"id\":\"rollingstone--unknown.json\",\"score\":82,\"warmthRank\":2}]",
+        "at": "2026-11-17T14:19:04.457Z"
       }
     }
   },
   "claude": {
     "answers": {
-      "7a8a1b2c7ed543375d47": {
-        "text": "[{\"id\":\"whatsonstage--alun-hood.json\",\"score\":88,\"warmthRank\":1},{\"id\":\"standard--nick-curtis.json\",\"score\":85,\"warmthRank\":2},{\"id\":\"financialtimes--sarah-hemming.json\",\"score\":84,\"warmthRank\":3},{\"id\":\"thestage--unknown.json\",\"score\":83,\"warmthRank\":4},{\"id\":\"guardian--arifa-akbar.json\",\"score\":81,\"warmthRank\":5},{\"id\":\"everything-theatre--owen-thomas-james.json\",\"score\":80,\"warmthRank\":6},{\"id\":\"the-jewish-chronicle--john-nathan.json\",\"score\":78,\"warmthRank\":7},{\"id\":\"artsdesk--gary-naylor.json\",\"score\":74,\"warmthRank\":8}]",
-        "at": "2026-11-16T20:49:50.651Z"
+      "bced35b0c38887ebecf4": {
+        "text": "[{\"id\":\"lost-in-theatreland--barbara-martins.json\",\"score\":85,\"warmthRank\":2},{\"id\":\"artsdesk--unknown.json\",\"score\":83,\"warmthRank\":3},{\"id\":\"independent--alice-saville.json\",\"score\":78,\"warmthRank\":4},{\"id\":\"timeout-london--andrzej-lukowski.json\",\"score\":76,\"warmthRank\":5}]",
+        "at": "2026-11-17T14:18:01.912Z"
+      },
+      "4f0730af386847b85255": {
+        "text": "[{\"id\":\"london-theatre--theo-bosanquet.json\",\"score\":82,\"warmthRank\":2},{\"id\":\"rollingstone--unknown.json\",\"score\":85,\"warmthRank\":1}]",
+        "at": "2026-11-17T14:18:01.912Z"
       }
     }
   }
