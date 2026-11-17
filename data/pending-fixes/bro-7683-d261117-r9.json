@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7683-d261117-r9",
   "planId": "2d4ffd86-784e-4e0e-b618-b1b342f0a619",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-17T21:33:29.663Z",
   "submitter": {
     "name": null,
@@ -131,5 +131,29 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-17T21:39:40.645Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-winters-tale-mrs-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added come-from-away-noise-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added carmen-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-urmetazoan-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
