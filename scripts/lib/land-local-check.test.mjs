@@ -14,7 +14,7 @@ const R = require('./codex-runner.js');
 test('BRO-7652: stale runs remove registered base worktrees and logs, preserving recent and unrelated paths', (t) => {
   const { cleanupStaleRuns } = require('./land-local-check.js');
   const scratch = mkdtempSync(join(tmpdir(), 'llc-cleanup-'));
-  t.after(() => rmSync(scratch, { recursive: true, force: true }));
+  t.after(() => rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const root = join(scratch, 'repo');
   const temp = join(scratch, 'tmp');
   fs.mkdirSync(root); fs.mkdirSync(temp);
