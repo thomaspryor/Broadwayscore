@@ -30,7 +30,7 @@ const disabled = (env = process.env) => env.RESTART_RECOVERY_DISABLED === 'true'
 
 function readWaits(file) {
   try {
-    return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+    return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).flatMap((l) => { try { return [JSON.parse(l)]; } catch { return []; } });
   } catch { return []; }
 }
 
@@ -91,7 +91,11 @@ function worktreeStates(root) {
 
 function resumeNotice(root, env = process.env) {
   if (disabled(env)) return '';
-  return buildNotice({ waits: readWaits(waitsFile(env)), worktrees: worktreeStates(root) });
+  // A hook may run without CLAUDE_CODE_SESSION_ID while the wait was recorded with it (or the reverse): read the
+  // session's own file plus the id-less one, so a mismatch still surfaces the waits.
+  const files = new Set([waitsFile(env), waitsFile({ ...env, CLAUDE_CODE_SESSION_ID: '' })]);
+  const waits = [...files].flatMap((f) => readWaits(f));
+  return buildNotice({ waits, worktrees: worktreeStates(root) });
 }
 
 if (require.main === module) {
