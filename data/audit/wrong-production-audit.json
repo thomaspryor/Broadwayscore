@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-17T05:38:18.448Z",
+  "timestamp": "2026-11-17T06:12:33.426Z",
   "stats": {
-    "totalReviews": 82288,
-    "alreadyFlagged": 22497,
+    "totalReviews": 82329,
+    "alreadyFlagged": 22498,
     "dateGuardCatches": 222,
     "directorMismatch": 3725,
-    "tvFilmSignals": 2337,
+    "tvFilmSignals": 2341,
     "londonSignals": 3779,
     "offBroadwaySignals": 760,
     "yearMismatch": 379,
@@ -69585,6 +69585,62 @@
       ]
     },
     {
+      "showId": "the-fantasticks-2026",
+      "file": "guardian--richard-lawson--on-2026-11-16.json",
+      "score": 83,
+      "publishDate": "2026-11-17T03:00:00.000Z",
+      "url": "https://www.theguardian.com/stage/2026/nov/16/the-fantasticks-musical-review-hayes-theatre-new-york",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-fantasticks-2026",
+      "file": "guardian--richard-lawson.json",
+      "score": 83,
+      "publishDate": "2026-11-17",
+      "url": "https://www.theguardian.com/stage/2026/nov/16/the-fantasticks-musical-review-hayes-theatre-new-york",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-fantasticks-2026",
+      "file": "nytg--joe-dziemianowicz--on-2026-11-16.json",
+      "score": 78,
+      "publishDate": "2026-11-16",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-fantasticks-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-fantasticks-2026",
+      "file": "nytg--joe-dziemianowicz.json",
+      "score": 78,
+      "publishDate": "2026-11-16",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-fantasticks-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-father-2016",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 77,
@@ -124561,7 +124617,7 @@
     {
       "showId": "roleplay-off-west-end-2026",
       "file": "theatreandtonic--eloise.json",
-      "score": 58,
+      "score": 57,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/roleplay-at-soho-theatre-review",
       "findings": [

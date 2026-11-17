@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T05:38:33.641Z",
+  "generatedAt": "2026-11-17T06:12:44.960Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1516,28 +1516,23 @@
       "status": "open",
       "slug": "the-fantasticks",
       "thumbnail": "/images/shows/the-fantasticks-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "siteScore": 79.39,
+      "liveScore": 79,
+      "scoreDrift": -0.39000000000000057,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "total": 22,
+      "t1": 6,
+      "t2": 13,
+      "t3": 3,
+      "positive": 21,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1551,14 +1546,6 @@
       },
       "missingT1": [
         {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
           "name": "Variety",
           "isDualMarket": true
         },
@@ -1571,23 +1558,11 @@
           "isDualMarket": false
         },
         {
-          "name": "The Wall Street Journal",
-          "isDualMarket": false
-        },
-        {
           "name": "The Washington Post",
           "isDualMarket": false
         },
         {
           "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
           "isDualMarket": false
         },
         {
@@ -1597,10 +1572,6 @@
         {
           "name": "Newsday",
           "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -1621,35 +1592,11 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
-          "isDualMarket": false
-        },
-        {
-          "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -1665,35 +1612,11 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
           "name": "Theatrely",
           "isDualMarket": false
         },
         {
-          "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
           "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -1915,6 +1838,18 @@
           "t3": 3,
           "p": 18,
           "m": 2,
+          "n": 0,
+          "bc": "preview-sent"
+        },
+        {
+          "t": "2026-11-17T06:12:44.960Z",
+          "rc": 22,
+          "s": 79.39,
+          "t1": 6,
+          "t2": 13,
+          "t3": 3,
+          "p": 21,
+          "m": 1,
           "n": 0,
           "bc": "preview-sent"
         }
