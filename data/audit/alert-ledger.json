@@ -40599,23 +40599,20 @@
       "resolvedAt": "2026-11-09T18:54:18.217Z"
     },
     "test-yml:data-validation-red:audit-review-contamination": {
-      "status": "resolved",
-      "disposition": "auto",
+      "status": "open",
+      "disposition": "digest",
       "title": "Data audit failing: Audit review contamination",
       "firstSeen": "2026-11-09T20:22:26.713Z",
-      "incidentOpenedAt": "2026-11-13T23:38:53.351Z",
+      "incidentOpenedAt": "2026-11-17T05:21:12.229Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-15T14:13:00.580Z",
-      "lastNotifiedAt": "2026-11-15T01:05:45.041Z",
-      "lastSurfacedAt": "2026-11-15T01:05:45.041Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-17T05:21:12.229Z",
+      "lastNotifiedAt": "2026-11-17T05:21:12.229Z",
+      "lastSurfacedAt": "2026-11-17T05:21:12.229Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14,
-      "resolvedAt": "2026-11-15T15:04:48.808Z",
-      "resolveReason": "step passed",
-      "sweptTracker": "BRO-7500",
-      "notifyCountAtRelease": 4
+      "notifyCountAtRelease": 4,
+      "sweptTracker": "BRO-7500"
     },
     "land:land/bro-7239-hub-closing-guard": {
       "status": "resolved",
