@@ -1,16 +1,20 @@
 {
-  "generatedAt": "2026-11-16T22:14:38.705Z",
-  "night": "2026-11-15",
+  "generatedAt": "2026-11-17T08:35:49.178Z",
+  "night": "2026-11-16",
   "counts": {
-    "total": 1,
+    "total": 2,
     "passed": 0,
-    "failed": 1,
-    "notGraded": 0
+    "failed": 0,
+    "notGraded": 2
   },
   "lines": [
     {
-      "verdict": "FAIL",
-      "line": "Downstate: published by the new lane; 17 of 18 reviews live by 12:00am; Cititour went live at 2:12am (late); emails ready. Failed."
+      "verdict": "PENDING",
+      "line": "Jenůfa: not graded yet, still being checked."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "The Fantasticks: not graded yet, still being checked; opening-night email draft is out of date (built with score 79 from 22 reviews, the site shows score 79 from 21 reviews)."
     }
   ],
   "scoreboard": {
@@ -18,7 +22,5 @@
     "passed": 2,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {
-    "downstate-2026|2026-11-15|review:cititour:": "2026-11-16T10:04:57.149Z"
-  }
+  "missFirstSeen": {}
 }
