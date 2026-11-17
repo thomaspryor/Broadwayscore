@@ -909,6 +909,9 @@ describe('leading parenthetical aside is cut or ranked last (BRO-7675)', () => {
     assert.equal(g.stripLeadingParenAside('\u2013 Kunene and the King is made remarkably light.'), 'Kunene and the King is made remarkably light.');
     assert.equal(g.stripLeadingParenAside('--> \u201cSay your prayers and be good.\u201d Rooted in folklore.'), '\u201cSay your prayers and be good.\u201d Rooted in folklore.');
     assert.equal(g.stripLeadingParenAside('\u2022 (Courtesy Joan Marcus) The show is a delight.'), 'The show is a delight.');
+    assert.equal(g.stripLeadingParenAside('- \u00abBravo\u00bb, says the chorus.'), '\u00abBravo\u00bb, says the chorus.');
+    assert.equal(g.stripLeadingParenAside('\u2014 Then the show catches fire.'), 'Then the show catches fire.');
+    assert.equal(g.stripLeadingParenAside('* * * The show'), '* * * The show');
     for (const q of ['-ish at best, the staging drags.', '\u2014and then the show catches fire.', '-5 degrees outside, the theatre was warm.']) {
       assert.equal(g.stripLeadingParenAside(q), q);
     }
