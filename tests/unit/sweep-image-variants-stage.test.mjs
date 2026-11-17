@@ -47,6 +47,6 @@ test('sweep stages variants that sit in a brand-new sm/ folder', () => {
     const staged = git(repo, 'diff', '--cached', '--name-only').trim().split('\n');
     assert.deepEqual(staged, ['public/images/shows/new-regional-show/sm/thumbnail.webp.webp']);
   } finally {
-    rmSync(repo, { recursive: true, force: true });
+    rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
