@@ -1,5 +1,19 @@
 [
   {
+    "conditionKey": "priority-queue:overdue",
+    "title": "Overdue P0/P1 queue: 16 P0 older than 24h, 38 P1 older than 7d (still open — BRO-5613)",
+    "description": "Still firing after 45 notifications since it was filed. Tracked at BRO-5613.\n\n17 P0 open (16 older than 24h, oldest 17d); 94 P1 open (38 older than 7d); 391 open issues of any priority.\n\nOldest overdue P0s:\n- BRO-6716 (17d): Every-review backfill: resolve 175 aggregator-cited reviews not live across 1,007 shows opened in the last year, plus 397 shows never gap-audited\n- BRO-6751 (16d): Gap audit runs ~4-8x/day, not hourly: daily slow-market rechecks and the 30-day cap can't hold at ~13 shows/run\n- BRO-7078 (10d): Opening retro: reviews stuck in pending or live late cannot recur\n- BRO-7081 (10d): Opening retro: aggregator-cited reviews never discovered cannot recur\n- BRO-7101 (9d): Main red at the source: live-data tests out of blocking CI, guarded, auto-healed lane, E2E in the land gauntlet\n- BRO-7102 (9d): Main stays red too long: escalation that dispatches, auto-revert of breaking landings, per-spec E2E signatures, deduped filing, cause tags\n- BRO-7103 (9d): Continuous improvement loop: detect recurring problem classes, escalate the class to one root-cause card, gate instance closes, check PREVENTION claims\n- BRO-7138 (9d): Done claims that do not hold: prove the effect at close, honest recheck, route failed rechecks back to work\n- BRO-7139 (9d): Board invariant sweep: every open card is ready, machine-rechecked, asked where the owner sees it (with a default), or closed\n- BRO-7150 (9d): Small changes take hours to land: refusals arrive after 20-30 min, catch them locally in seconds",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5613",
+    "fields": [],
+    "queuedAt": "2026-11-17T10:49:52.581Z"
+  },
+  {
     "conditionKey": "coverage-holes:iphigenie-en-tauride-english-national-opera-west-end-2026",
     "title": "iphigenie-en-tauride-english-national-opera-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
     "description": "- teaser pointing to the same critic's full review, both counted: iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json (full review: london-theatre--cheryl-markosky.json)\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
@@ -11,7 +25,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-16T09:48:27.383Z"
+    "queuedAt": "2026-11-17T10:50:10.034Z"
   },
   {
     "conditionKey": "coverage-holes:dogstar-off-west-end-2026",
@@ -25,35 +39,49 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-16T09:48:27.429Z"
+    "queuedAt": "2026-11-17T10:50:10.122Z"
+  },
+  {
+    "conditionKey": "coverage-holes:hamlet-hail-to-the-thief-off-west-end-2026",
+    "title": "hamlet-hail-to-the-thief-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T10:50:10.404Z"
   },
   {
     "conditionKey": "provider-spend:overspend",
     "title": "Scraping spend over budget (still open — BRO-6867)",
-    "description": "Still firing after 57 notifications since it was filed. Tracked at BRO-6867.\n\nDay 2026-11-15. Over budget: scrapingbee on pace to run out before renewal: ~13410 credits/day (7-day average) x 19 days to 2026-12-05 = 254795 > 77549 left. 2026-11-15 · Browserbase: $0.75 (172 sessions, 37.7min) · 2026-11-15 · Bright Data: $3.02 (235 serp / 1777 unlocker) · ScrapingBee: 10701 credits (172451 this cycle) · ScrapingDog: 108640 credits (922344 this cycle) · Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 111, bww-rr-discover.js 62, collect-talkinbroadway-index.js 1 · Bright Data attribution: 100% attributed — top callers (covers 85% of billed calls): opening-night-poller.js 563, audit-show-review-gap.js 368, collect-review-texts.js 289, gather-reviews.js 258, replay-pending-bylines.js 230 · ScrapingBee attribution: 100% attributed — top callers (covers 97% of billed credits): opening-night-poller.js 4098cr, gather-reviews.js 3951cr, scrape-show-score-audience.js 1115cr, discover-opening-night-reviews.js 702cr, collect-review-texts.js 560cr · ScrapingDog attribution: 86% attributed — top callers (covers 65% of billed credits): gather-reviews.js 31433cr, audit-show-review-gap.js 12145cr, discover-opening-night-reviews.js 10775cr, collect-review-texts.js 9433cr, recover-explicit-ratings.js 6715cr · ⚠️ ScrapingDog top-caller coverage low: 65% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · 2026-11-15 · LLM APIs (metered estimate, not the full bill): Claude est $3.90 (793 calls) · Gemini est $9.36 (14034 calls; 34 repeats) · OpenAI est $19.78 (4144 calls; 5 repeats) · top: scripts/llm-scoring/openai-leg-shadow.ts [Scoring Experiment] $18.09; scripts/extract-pull-quotes.js [Extract Pull Quotes] $5.58; scripts/llm-scoring/openai-leg-shadow.ts [Scoring Experiment] $2.27. Verification streak reset to 0.",
+    "description": "Still firing after 58 notifications since it was filed. Tracked at BRO-6867.\n\nDay 2026-11-16. Over budget: scrapingbee on pace to run out before renewal: ~12991 credits/day (7-day average) x 18 days to 2026-12-05 = 233846 > 69106 left. 2026-11-16 · Browserbase: $1.16 (147 sessions, 244.47min) · 2026-11-16 · Bright Data: $3.38 (170 serp / 2086 unlocker) · ScrapingBee: 8443 credits (180894 this cycle) · ScrapingDog: 101826 credits (1024170 this cycle) · Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 78, bww-rr-discover.js 74, collect-talkinbroadway-index.js 8, opening-night-lane 4 · Bright Data attribution: 100% attributed — top callers (covers 78% of billed calls): opening-night-poller.js 513, audit-show-review-gap.js 374, collect-review-texts.js 353, opening-night-lane.js 270, gather-reviews.js 242 · ⚠️ Bright Data top-caller coverage low: 78% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingBee attribution: 100% attributed — top callers (covers 100% of billed credits): opening-night-poller.js 3456cr, gather-reviews.js 2688cr, collect-review-texts.js 1113cr, discover-opening-night-reviews.js 756cr, scrape-show-score-audience.js 515cr · ScrapingDog attribution: 100% attributed — top callers (covers 84% of billed credits): gather-reviews.js 41624cr, audit-show-review-gap.js 15697cr, discover-opening-night-reviews.js 13585cr, collect-review-texts.js 7588cr, collect-outlet-reviews.js 7066cr · 2026-11-16 · LLM APIs (metered estimate, not the full bill): Claude est $19.56 (2540 calls) · Gemini est $6.65 (7854 calls; 44 search-grounded, 52 repeats) · OpenAI est $2.28 (840 calls; 102 search-grounded, 22 repeats) · top: scripts/collect-review-texts.js [Collect Review Texts] $4.49; scripts/codex/daily-runner.js [Codex card runner] $3.08; scripts/video-reviews/classify-reviews.js [Weekly Video Reviews] $2.53. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": true,
     "info": false,
-    "decisionPrompt": "Scraping spend over budget: scrapingbee on pace to run out before renewal: ~13410 credits/day (7-day average) x 19 days to 2026-12-05 = 254795 > 77549 left. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?",
+    "decisionPrompt": "Scraping spend over budget: scrapingbee on pace to run out before renewal: ~12991 credits/day (7-day average) x 18 days to 2026-12-05 = 233846 > 69106 left. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?",
     "model": null,
     "tracked": "BRO-6867",
     "fields": [],
-    "queuedAt": "2026-11-16T10:00:45.774Z"
+    "queuedAt": "2026-11-17T10:53:14.324Z"
   },
   {
     "conditionKey": "llm-scoring:daily-cost-breach",
     "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
-    "description": "Still firing after 25 notifications since it was filed. Tracked at BRO-6732.\n\nLLM scoring daily spend over budget: averaging $20.15/day over the last 7 measured days, above the $10 llmScoringDailyUsd line (2026-11-15: $3.59).",
+    "description": "Still firing after 26 notifications since it was filed. Tracked at BRO-6732.\n\nLLM scoring daily spend over budget: averaging $18.67/day over the last 7 measured days, above the $10 llmScoringDailyUsd line (2026-11-16: $2.26).",
     "severity": "warning",
     "url": null,
     "decision": true,
     "info": false,
-    "decisionPrompt": "LLM scoring daily spend over budget: about $20.15/day for the last 7 days against a $10/day line. Raise the line to what scoring new reviews really costs, or cut how many reviews get scored each day?",
+    "decisionPrompt": "LLM scoring daily spend over budget: about $18.67/day for the last 7 days against a $10/day line. Raise the line to what scoring new reviews really costs, or cut how many reviews get scored each day?",
     "model": null,
     "tracked": "BRO-6732",
     "fields": [],
-    "queuedAt": "2026-11-16T10:00:45.951Z"
+    "queuedAt": "2026-11-17T10:53:15.109Z"
   },
   {
     "conditionKey": "opening-night-revival-unverified-downstate-2026",
