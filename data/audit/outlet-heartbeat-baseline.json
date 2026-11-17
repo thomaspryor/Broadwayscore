@@ -1,11 +1,12 @@
 {
   "_meta": {
     "description": "Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The \"Quality: outlet-heartbeat red flags\" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Only rows that have actually crossed that threshold get baselined here (see BRO-2521) — a merely-red-this-week row is left off so it can still alert once triaged. Each ack expires after ttlDays (BRO-3364) and the pair re-enters the normal 2-week streak. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline (keeps existing acks' dates); --renew-baseline=<outlet>::<market> re-acks one pair from today, bare --renew-baseline every listed pair.",
-    "count": 43,
+    "count": 47,
     "ttlDays": 90
   },
   "keys": [
     "ap::broadway",
+    "ap::off-broadway",
     "backstage::broadway",
     "bloomberg::broadway",
     "britishtheatrecom::west-end",
@@ -33,10 +34,13 @@
     "northjerseycom::off-broadway",
     "ny1::broadway",
     "ny1::off-broadway",
+    "nydailynews::off-broadway",
     "observer::broadway",
     "observer::off-broadway",
     "philadelphia-inquirer::broadway",
+    "philadelphia-inquirer::off-broadway",
     "rollingstone::broadway",
+    "slate::off-broadway",
     "telegraph::broadway",
     "telegraph::off-broadway",
     "thestage::broadway",
@@ -52,6 +56,10 @@
   "entries": {
     "ap::broadway": {
       "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "ap::off-broadway": {
+      "timestamp": "2026-11-17T12:59:02.708Z",
       "ttlDays": 90
     },
     "backstage::broadway": {
@@ -162,6 +170,10 @@
       "timestamp": "2026-11-13T12:41:43.320Z",
       "ttlDays": 90
     },
+    "nydailynews::off-broadway": {
+      "timestamp": "2026-11-17T12:59:02.708Z",
+      "ttlDays": 90
+    },
     "observer::broadway": {
       "timestamp": "2026-09-14T18:59:36Z",
       "ttlDays": 90
@@ -174,8 +186,16 @@
       "timestamp": "2026-09-14T18:59:36Z",
       "ttlDays": 90
     },
+    "philadelphia-inquirer::off-broadway": {
+      "timestamp": "2026-11-17T12:59:02.708Z",
+      "ttlDays": 90
+    },
     "rollingstone::broadway": {
       "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "slate::off-broadway": {
+      "timestamp": "2026-11-17T12:59:02.708Z",
       "ttlDays": 90
     },
     "telegraph::broadway": {
