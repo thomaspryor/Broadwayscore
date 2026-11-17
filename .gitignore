@@ -762,6 +762,7 @@ traffic-analysis/
 __pycache__/
 *.pyc
 data/opening-night/leases.json
+data/opening-night/leases.json.*.tmp
 
 # archive-show-images.js downloads here before its checks pass (BRO-2242)
 public/images/shows/**/*.incoming

@@ -42,7 +42,7 @@ test('file already present (the action ran) or off CI: no sync', () => {
 
 test('structural: rebuild-all-reviews self-syncs before it reads the publish view', () => {
   const src = fs.readFileSync(path.join(ROOT, 'scripts/rebuild-all-reviews.js'), 'utf8');
-  const syncAt = src.indexOf('leaseGuard.syncIfMissing()');
+  const syncAt = src.search(/^if \(!SHOW_FILTER\) leaseGuard\.syncIfMissing\(\);/m); // a live statement, not a comment
   const readAt = src.indexOf('leaseGuard.leasedShowIds()');
   assert.ok(syncAt > 0 && readAt > syncAt, 'syncIfMissing() must run before leasedShowIds()');
 });
@@ -55,7 +55,7 @@ test('structural: every workflow that runs rebuild-all-reviews either syncs leas
     const y = fs.readFileSync(path.join(dir, f), 'utf8');
     return /rebuild-all-reviews\.js/.test(y) && !/opening-night-lease-sync|opening-night-lease\.js"? sync/.test(y);
   });
-  assert.ok(unsynced.includes('fetch-guardian-reviews.yml'), `scan is stale: ${unsynced.join(', ')}`);
+  // No assertion on which workflows are unsynced: adding the sync action to one is the right fix and must not fail here.
   assert.match(fs.readFileSync(path.join(ROOT, 'scripts/rebuild-all-reviews.js'), 'utf8'), /leaseGuard\.syncIfMissing\(\)/,
     `${unsynced.length} workflows rebuild without a lease sync step; the script's self-sync is their only guard`);
 });
