@@ -90,11 +90,14 @@ test('BRO-7713 localDeltaLines keeps only rows the old HEAD never had', () => {
   assert.deepEqual(localDeltaLines([], []), []);
 });
 
-test('BRO-7713 lockfileChurnPaths restores a lockfile only when its package.json is clean', () => {
-  assert.deepEqual(lockfileChurnPaths(['package-lock.json', 'data/audit/x.jsonl']), ['package-lock.json']);
-  assert.deepEqual(lockfileChurnPaths(['package-lock.json', 'package.json']), [], 'deliberate dep change');
-  assert.deepEqual(lockfileChurnPaths(['ios/package-lock.json', 'package.json']), ['ios/package-lock.json'], 'sibling only');
-  assert.deepEqual(lockfileChurnPaths(['ios/package-lock.json', 'ios/package.json']), []);
-  assert.deepEqual(lockfileChurnPaths(['package-lock.json'], ['package-lock.json']), [], 'untracked lockfile has no HEAD copy');
-  assert.deepEqual(lockfileChurnPaths(['not-package-lock.json', 'src/a.ts']), []);
+test('BRO-7713 lockfileChurnPaths restores a lockfile only when its package.json is clean and origin moves it', () => {
+  const O = ['package-lock.json', 'ios/package-lock.json'];
+  assert.deepEqual(lockfileChurnPaths(['package-lock.json', 'data/audit/x.jsonl'], [], O), ['package-lock.json']);
+  assert.deepEqual(lockfileChurnPaths(['package-lock.json', 'package.json'], [], O), [], 'deliberate dep change');
+  assert.deepEqual(lockfileChurnPaths(['ios/package-lock.json', 'package.json'], [], O), ['ios/package-lock.json'], 'sibling only');
+  assert.deepEqual(lockfileChurnPaths(['ios/package-lock.json', 'ios/package.json'], [], O), []);
+  assert.deepEqual(lockfileChurnPaths(['package-lock.json'], ['package-lock.json'], O), [], 'untracked lockfile has no HEAD copy');
+  assert.deepEqual(lockfileChurnPaths(['package-lock.json'], [], []), [], 'origin does not move it: not a blocker, leave it');
+  assert.deepEqual(lockfileChurnPaths(['package-lock.json']), [], 'origin set unknown: leave it');
+  assert.deepEqual(lockfileChurnPaths(['not-package-lock.json', 'src/a.ts'], [], O), []);
 });

@@ -295,3 +295,31 @@ test('BRO-7713: a lockfile dirty WITH its package.json is a deliberate change an
     fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+test('BRO-7713: a self-updated run (only 3 files in its temp dir) still union-recovers via the checkout smart-ledger-merge.js', () => {
+  const { base, origin, clone } = plainPair('bro7713-self-');
+  try {
+    // Mirror the self-update: the script runs from a temp dir holding exactly
+    // the three files it copies; the checkout has the rest of scripts/lib.
+    const fresh = fs.mkdtempSync(path.join(base, 'fresh-'));
+    for (const f of ['sync-audit-checkout.sh', 'push-mutex.sh', 'sync-audit-decision.js']) {
+      fs.copyFileSync(path.join(HERE, f), path.join(fresh, f));
+    }
+    fs.mkdirSync(path.join(clone, 'scripts'), { recursive: true });
+    fs.symlinkSync(HERE, path.join(clone, 'scripts', 'lib'));
+    fs.appendFileSync(path.join(clone, '.git', 'info', 'exclude'), 'scripts/\n');
+    originCommit(base, origin, 'via-s', (via) => { fs.appendFileSync(path.join(via, SL), ev(4) + '\n'); });
+    fs.appendFileSync(path.join(clone, SL), ev(5) + '\n');
+    let code = 0; let out = '';
+    try {
+      out = execFileSync('bash', [path.join(fresh, 'sync-audit-checkout.sh'), clone], {
+        encoding: 'utf8', env: { ...process.env, SYNC_TAG: 'self', SYNC_SELF_UPDATED: '1', SYNC_FRESH_DIR: fresh },
+      });
+    } catch (e) { code = e.status ?? 1; out = `${e.stdout || ''}${e.stderr || ''}`; }
+    assert.equal(code, 0, `expected recovery, got ${code}:\n${out}`);
+    assert.doesNotMatch(out, /Cannot find module/);
+    assert.deepEqual(lines(path.join(clone, SL)), [ev(1), ev(2), ev(3), ev(4), ev(5)]);
+  } finally {
+    fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});

@@ -375,19 +375,24 @@ function localDeltaLines(savedLines, headLines) {
  * fast-forward for hours. It is regenerable ONLY when the sibling
  * package.json is clean. A dirty package.json means someone changed the
  * dependency set on purpose and the lockfile belongs to that change, so it
- * is left alone and the ordinary refusal names it.
+ * is left alone and the ordinary refusal names it. Also only when origin/main
+ * actually moves the lockfile: otherwise it cannot be what blocks the
+ * fast-forward, and a lockfile-only edit (`npm update`, `npm audit fix`)
+ * has no reason to be touched (BRO-7713 review).
  *
  * @param {string[]} dirtyPaths  `git status --porcelain -uall` paths (staged + unstaged + untracked)
  * @param {string[]} [untrackedPaths]  the untracked subset; an untracked lockfile has no HEAD copy
+ * @param {string[]} [originChangedPaths]  `git diff --name-only HEAD origin/main`; omitted = none
  * @returns {string[]} lockfile paths safe to `git checkout HEAD --`
  */
-function lockfileChurnPaths(dirtyPaths = [], untrackedPaths = []) {
+function lockfileChurnPaths(dirtyPaths = [], untrackedPaths = [], originChangedPaths = []) {
   const dirty = new Set(toList(dirtyPaths));
   const untracked = new Set(toList(untrackedPaths));
+  const originChanged = new Set(toList(originChangedPaths));
   const out = [];
   for (const p of dirty) {
     if (p !== 'package-lock.json' && !p.endsWith('/package-lock.json')) continue;
-    if (untracked.has(p)) continue;
+    if (untracked.has(p) || !originChanged.has(p)) continue;
     const pkg = p.slice(0, -'package-lock.json'.length) + 'package.json';
     if (dirty.has(pkg)) continue;
     out.push(p);
