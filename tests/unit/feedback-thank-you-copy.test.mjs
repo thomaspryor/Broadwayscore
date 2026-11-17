@@ -5,7 +5,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildFeedbackThankYouEmail, buildFixApprovalEmail } = require('../../scripts/lib/email-templates.js');
+const { buildFixApprovalEmail } = require('../../scripts/lib/email-templates.js');
+const { buildReplyText } = require('../../scripts/lib/feedback-reply-drafts.js');
 
 test('fix-approval email names the reader with their email when given (BRO-4452)', () => {
   const base = {
@@ -20,13 +21,13 @@ test('fix-approval email names the reader with their email when given (BRO-4452)
   assert.match(anon.html, /Someone wrote in about Wicked/);
 });
 
-test('thank-you emails contain no em dashes', () => {
-  for (const type of ['fixed', 'praise', 'content', 'feature', 'acknowledged']) {
+test('reader reply drafts contain no em dashes', () => {
+  for (const type of ['fixed', 'reviews-added', 'praise', 'content', 'feature', 'acknowledged']) {
     for (const name of ['Jo', null]) {
       for (const show of ['Wicked', null]) {
-        const { subject, html } = buildFeedbackThankYouEmail(type, name, show);
-        assert.ok(subject && html, `${type} renders`);
-        assert.doesNotMatch(subject + html, /—|&mdash;/, `${type}/${name}/${show}`);
+        const { subject, text } = buildReplyText(type, name, show);
+        assert.ok(subject && text, `${type} renders`);
+        assert.doesNotMatch(subject + text, /—|&mdash;/, `${type}/${name}/${show}`);
       }
     }
   }

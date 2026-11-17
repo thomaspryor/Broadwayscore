@@ -10,6 +10,7 @@
  * Usage: node scripts/draft-fixed-replies.js [--dry-run] [--cutoff=YYYY-MM-DD]
  * Env:   GH_TOKEN, RESEND_API_KEY, OWNER_EMAIL; core data checked out (reader store)
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -27,6 +28,7 @@ const LAUNCH_CUTOFF = '2026-11-17';
 function ghGet(apiPath, token) {
   return new Promise((resolve, reject) => {
     https.get(`https://api.github.com${apiPath}`, {
+      timeout: 30000,
       headers: { Authorization: `Bearer ${token}`, 'User-Agent': 'broadwayscorecard-reply-drafts', Accept: 'application/vnd.github+json' },
     }, (res) => {
       let out = '';
@@ -35,7 +37,7 @@ function ghGet(apiPath, token) {
         if (res.statusCode < 200 || res.statusCode >= 300) return reject(new Error(`HTTP ${res.statusCode}: ${out.slice(0, 200)}`));
         try { resolve(JSON.parse(out)); } catch (e) { reject(e); }
       });
-    }).on('error', reject);
+    }).on('timeout', function onTimeout() { this.destroy(new Error('GitHub request timed out')); }).on('error', reject);
   });
 }
 
