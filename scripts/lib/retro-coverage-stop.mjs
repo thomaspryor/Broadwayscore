@@ -41,7 +41,7 @@ const B = String.raw`(?:^|[\s'"=(<>])`; // a path starts at a boundary (after no
 const TARGET_RE = new RegExp(`${B}['"]?${CODE_TOKEN}`);
 const SCRIPT_WRITE_RE = /open\([^)]*,\s*['"][wa]|writeFileSync|appendFileSync|write_text|(?<!std(?:out|err))\.write\(/;
 /** Absolute or ./ paths into the repo or a worktree become repo-relative. Token by token with indexOf: linear on any input. */
-const ROOT_RE = /^\/(?:home\/user|repo|workspace)\/[^/]+\//;
+const ROOT_RE = /^\/(?:home\/user|repo|workspace)\/Broadwayscore\//i; // another repo's scripts/ is not this repo's code
 function normalizeToken(tok) {
   const wt = tok.lastIndexOf('.claude/worktrees/');
   if (wt >= 0) { const slash = tok.indexOf('/', wt + 18); return slash < 0 ? tok : tok.slice(slash + 1); }
@@ -65,15 +65,21 @@ function splitClauses(c) {
 }
 /** PURE. One shell clause (no && ; | splitting left to do) that writes a tracked code file. */
 function clauseEditsCode(cl) {
-  const t = cl.replace(/\s#.*$/, '').trim(); // a trailing shell comment is not the destination
+  // A trailing shell comment is not the destination; sudo, env A=1 and /bin/ prefixes do not change the command.
+  const t = cl.replace(/\s#.*$/, '').trim().replace(/^(?:(?:sudo|env)\s+(?:-\S+\s+)*(?:\w+=\S*\s+)*)+/, '').replace(/^\/(?:usr\/)?s?bin\//, '');
   // sed/perl in place: -i anywhere in the clause (before or after the script), or --in-place.
-  if (/^(?:sudo\s+)?(?:sed|perl)\b/.test(t) && /\s(?:-\w*i\w*|--in-place)\b/.test(t) && TARGET_RE.test(t)) return true;
+  if (/^(?:sed|perl)\b/.test(t) && /\s(?:-\w*i\w*|--in-place)\b/.test(t) && TARGET_RE.test(t)) return true;
   // cp/mv/install: the destination is the last token, or the -t/--target-directory operand (the trailing
   // tokens are then sources). Not for rsync, where -t means "keep times".
   if (/^(?:cp|mv|install|rsync)\b/.test(t)) {
+    if (/^install\b.*\s-\w*d\b/.test(t)) return false; // install -d makes directories, not files
     const tdir = /^rsync\b/.test(t) ? null : t.match(/\s(?:-[a-zA-Z]*t\s+|--target-directory[=\s]\s*)(\S+)/);
     if (tdir) return new RegExp(`^['"]?${CODE_TOKEN}`).test(tdir[1]);
-    const last = t.replace(/(?:\s+\d*>>?&?\s*\S+)+$/, '').split(/\s+/).pop(); // a trailing 2>/dev/null is not the destination
+    const toks = t.split(/\s+/); // a trailing 2>/dev/null is not the destination (token-wise: linear on any input)
+    while (toks.length > 1 && (/^\d*>>?&?/.test(toks[toks.length - 1]) || /^\d*>>?&?$/.test(toks[toks.length - 2] || ''))) {
+      toks.pop();
+    }
+    const last = toks.pop();
     return new RegExp(`^['"]?${CODE_TOKEN}`).test(last);
   }
   if (/^(?:git(?:\s+-C\s+\S+)?\s+apply|patch)\b/.test(t)) return !/\s--(?:check|stat|numstat|summary)\b/.test(t);

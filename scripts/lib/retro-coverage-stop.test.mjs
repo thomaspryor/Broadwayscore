@@ -118,6 +118,11 @@ test('shell-edit detection: ship-check findings (absolute paths, cp/mv, quoted p
     "cp -t src/ a.js",
     "install -m 644 -t scripts/lib a.js",
     "mv --target-directory=scripts/ a.js",
+    "sudo cp a.js src/b.js",
+    "env A=1 cp a.js src/b.js",
+    "/bin/cp a.js src/b.js",
+    "cp a.js src/b.js 2> /dev/null",
+    `cp a.js ${R}/src/b.js`,
   ]) assert.equal(shellEditsCode(cmd), true, cmd);
   for (const cmd of [
     "echo 1 > .claude/state/foo",
@@ -132,8 +137,10 @@ test('shell-edit detection: ship-check findings (absolute paths, cp/mv, quoted p
     "git apply --check /tmp/p.patch",
     "cp -t /tmp/out scripts/x.js",
     "rsync -avt scripts/ /tmp/backup",
+    "install -d scripts/newdir",
+    `cp a.js ${['', 'home', 'user', 'other-repo', 'scripts', 'x.js'].join('/')}`,
   ]) assert.equal(shellEditsCode(cmd), false, cmd);
-  for (const big of ['x'.repeat(100000), 'a='.repeat(50000), 'x>'.repeat(50000), '(.claude/worktrees'.repeat(6000), "a'".repeat(50000), '/a'.repeat(50000)]) {
+  for (const big of ['cp' + ' >a'.repeat(40000) + ' x', 'cp' + ' 2> x'.repeat(30000),'x'.repeat(100000), 'a='.repeat(50000), 'x>'.repeat(50000), '(.claude/worktrees'.repeat(6000), "a'".repeat(50000), '/a'.repeat(50000)]) {
     const t0 = Date.now();
     shellEditsCode(big);
     assert.ok(Date.now() - t0 < 500, `a 100k-char input stays linear (${big.slice(0, 6)}...: ${Date.now() - t0}ms)`);

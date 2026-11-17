@@ -188,4 +188,9 @@ test('PreToolUse blocks count (is_error only), the land preflight is a hook bloc
   ]);
   assert.deepEqual(r.hookBlocks, { 'pre:land-preflight': 1, 'pre:create_session': 1, 'pre:save_issue': 1, '[VE:WTX]': 1, 'git-check': 1 });
   assert.equal(r.landRefusals.length, 0, 'the review gate doing its job is not a refused landing');
+  const both = R.analyze([
+    tool('Edit', {}, '2026-01-01T00:00:00Z'),
+    stop("Stop hook feedback:\n[command hook 2]: [VE:RCOV] x\n[command hook 3]: There are 2 unpushed commit(s) on branch 'x'.", '2026-01-01T00:04:00Z'),
+  ]);
+  assert.deepEqual(both.hookBlocks, { '[VE:RCOV]': 1, 'git-check': 1 }, 'an uncoded git hook in the same message as a coded one still counts');
 });

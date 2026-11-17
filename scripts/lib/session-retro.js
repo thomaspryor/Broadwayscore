@@ -86,7 +86,9 @@ function analyze(lines) {
     }
     if (e.type === 'user') {
       if (/Stop hook feedback|land preflight BLOCK/.test(txt)) {
-        const codes = txt.match(/\[VE:[A-Z0-9]+\]/g) || [/unpushed commit|uncommitted changes/.test(txt) ? 'git-check' : hookLabel(txt)];
+        const git = /unpushed commit|uncommitted changes/.test(txt) ? ['git-check'] : [];
+        const ve = txt.match(/\[VE:[A-Z0-9]+\]/g) || [];
+        const codes = ve.length || git.length ? [...ve, ...git] : [hookLabel(txt)];
         for (const c of new Set(codes)) out.hookBlocks[c] = (out.hookBlocks[c] || 0) + 1;
       }
       // Land refusals are tool output (wait-for-land.js "REFUSED: land/..."), never the human's or the brief's prose.
