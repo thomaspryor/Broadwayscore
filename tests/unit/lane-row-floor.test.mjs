@@ -17,7 +17,7 @@ const laneRow = (url, showId = 'show-a') => ({
   productionVerified: PRODUCTION_VERIFIED,
   [PROVENANCE_KEY]: { show: showId, night: '2026-11-16', source: 'aggregator', seenAt: '2026-11-17T03:10:00Z' },
 });
-const ctx = (over = {}) => ({ shows, canonicalUrl: u => u.replace(/\/$/, ''), textUrls: () => [], ...over });
+const ctx = (over = {}) => ({ shows, now: '2026-11-17T05:00:00Z', canonicalUrl: u => u.replace(/\/$/, ''), textUrls: () => [], ...over });
 
 describe('laneRowsToKeep', () => {
   it('fixture provenance matches the trust model', () => {
@@ -43,6 +43,11 @@ describe('laneRowsToKeep', () => {
     const existing = [laneRow('https://nyt.example/a'), { showId: 'show-a', url: 'https://blog.example/x', assignedScore: 60 }];
     assert.equal(laneRowsToKeep(existing, [], ctx({ leasedShowIds: new Set(['show-a']) })).length, 0);
     assert.equal(laneRowsToKeep(existing, [], ctx()).length, 1);
+  });
+
+  it('expires: a row whose text never arrived is not kept past the floor window', () => {
+    assert.equal(laneRowsToKeep([laneRow('https://nyt.example/a')], [], ctx({ now: '2026-11-19T12:00:00Z' })).length, 1);
+    assert.equal(laneRowsToKeep([laneRow('https://nyt.example/a')], [], ctx({ now: '2026-11-21T00:00:01Z' })).length, 0);
   });
 
   it('skips a stamp for another night and a show gone from shows.json', () => {
