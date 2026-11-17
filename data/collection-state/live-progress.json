@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-11-17T20:41:57.861Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-17T20:45:34.807Z",
+  "processed": 111,
+  "failed": 74,
+  "successRate": "60.0%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 17,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 32
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-11-17T19:44:22.349Z",
+      "event": "bb-session",
+      "session": "9f1c900d",
+      "url": "https://www.nytimes.com/theater-streaming-falsettos-stoll-stoppard-school-girls"
+    },
+    {
+      "t": "2026-11-17T19:44:22.895Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T20:40:48.338Z",
+      "event": "bb-session",
+      "session": "64a0bcab",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T20:40:49.241Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T20:41:21.230Z",
+      "event": "bb-session",
+      "session": "821d2802",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T20:41:22.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T20:43:36.980Z",
+      "event": "bb-session",
+      "session": "03ee87c2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T20:43:38.407Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
