@@ -75,6 +75,7 @@ test('type filter and mapping', () => {
   assert.equal(t.mapShowType('Play'), 'play');
   assert.equal(t.mapShowType('Opera'), 'opera');
   assert.equal(t.mapShowType('Musical/Opera'), 'musical');
+  assert.equal(t.mapShowType('Rock Opera'), 'musical');
 });
 
 test('site date parsing and verdict normalising', () => {

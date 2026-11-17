@@ -126,7 +126,8 @@ async function main() {
         if (!checked.ok) { out.held.push(`${m.title}: ${checked.reason}`); continue; }
         const f = checked.facts;
         if (f.kind !== 'professional') {
-          for (const u of m.urls) decisions.reviews[u] = { decision: f.kind, title: f.title, metro: hub.metro, on: today };
+          // Only the review that was read: another review of the same title may be another company's production.
+          decisions.reviews[url] = { decision: f.kind, title: f.title, metro: hub.metro, on: today };
           out.declined.push(`${f.title} (${hub.metro}): ${f.kind}`);
           continue;
         }
@@ -134,8 +135,8 @@ async function main() {
         if (built.hold) { out.held.push(`${f.title}: ${built.hold}`); continue; }
         const show = built.show;
         if (retired(show.id)) { out.held.push(`${f.title}: id ${show.id} is retired`); continue; }
-        const existing = S.findExisting({ title: show.title, theatre: f.theatre, start: show.openingDate, end: show.closingDate || show.openingDate }, [...shows, ...pending]);
-        if (existing) { for (const u of m.urls) decisions.reviews[u] = { decision: 'exists', showId: existing.id, on: today }; out.declined.push(`${f.title}: exists as ${existing.id}`); continue; }
+        const existing = A.existingRow(f, show, [...shows, ...pending]);
+        if (existing) { decisions.reviews[url] = { decision: 'exists', showId: existing.id, on: today }; out.declined.push(`${f.title}: exists as ${existing.id}`); continue; }
         // Art: the review's lead photo. A show with no usable image is still added (the image job fills it later).
         const img = ogImage(html, url);
         if (img && flag('apply')) {

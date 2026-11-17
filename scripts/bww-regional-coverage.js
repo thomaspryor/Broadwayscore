@@ -52,7 +52,7 @@ async function auditHub(hub, { shows, fetchHtml, since, maxPages, decisions = {}
     if (!fresh) break;
   }
   const out = { metro: hub.metro, region: hub.region, since, reviews: reviews.size, covered: 0, coveredTour: 0, excluded: 0, declined: 0, tourHouse: 0, missing: [], fetchErrors };
-  // One production can carry several reviews (two critics, two headline styles): report it once, keyed on the title.
+  // One production can carry several reviews (two critics): report it once, keyed on title + venue.
   const seen = new Map();
   for (const r of [...reviews.values()].sort((a, b) => String(a.date).localeCompare(String(b.date)))) {
     const c = classifyReview(r, { shows, metro: hub.metro, tourHouses: hub.tourHouses, decisions });
@@ -62,7 +62,8 @@ async function auditHub(hub, { shows, fetchHtml, since, maxPages, decisions = {}
     else if (c.status === 'declined') out.declined++;
     else if (c.status === 'tour-house') out.tourHouse++;
     else {
-      const key = normalizeTitle(r.title) || r.url;
+      // Title + venue: two companies' productions of one title are two rows (BRO-7683 review).
+      const key = normalizeTitle(r.title) ? `${normalizeTitle(r.title)}|${normalizeTitle(r.venue || '')}` : r.url;
       if (seen.has(key)) { seen.get(key).urls.push(r.url); continue; }
       const row = { title: displayTitle(r.title), venue: r.venue, headline: r.headline, firstReview: r.date, urls: [r.url] };
       seen.set(key, row);

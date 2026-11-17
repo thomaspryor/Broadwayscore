@@ -11,11 +11,15 @@
  */
 
 const { normalizeTitle } = require('./title-match');
+const { displayTitle } = require('./bww-local-reviews');
 const { resolveMetroInfo, norm } = require('./venue-metro');
 const { sanitizeVenueForWrite } = require('./venue-classification');
 const S = require('./city-season');
 
 const MAX_RUN_DAYS = 150;
+// A run with no closing date that started this long ago is treated as closed (regional runs are weeks long;
+// scripts/lib/tic-stage.js does the same at 120 days for Theatre-In-Chicago listings).
+const OPEN_ENDED_DAYS = 60;
 const KINDS = ['professional', 'community', 'school', 'touring', 'not-theatre'];
 const TYPES = ['play', 'musical', 'opera'];
 const STATES = new Set('AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY'.split(' '));
@@ -131,9 +135,10 @@ function buildShow(facts, ctx) {
   // (the model joined two seasons) is not this run's closing: leave it for the closing-date jobs.
   let end = facts.closingDate;
   if (end && (end < start || Date.parse(end) - Date.parse(start) > MAX_RUN_DAYS * 86400000)) end = null;
-  const status = end && end < today ? 'closed' : start > today ? 'previews' : 'open';
+  const stale = !end && Date.parse(today) - Date.parse(start) > OPEN_ENDED_DAYS * 86400000;
+  const status = (end && end < today) || stale ? 'closed' : start > today ? 'previews' : 'open';
   const show = {
-    id, title: facts.title, slug: id, venue, status,
+    id, title: displayTitle(facts.title), slug: id, venue, status,
     type: facts.type || (/\bmusical\b/i.test(facts.title) ? 'musical' : 'play'),
     category: 'regional', market: 'regional',
     openingDate: start,
@@ -149,4 +154,18 @@ function buildShow(facts, ctx) {
   return { show };
 }
 
-module.exports = { buildPrompt, checkReading, datePrinted, placeFor, buildShow, KINDS, MAX_RUN_DAYS };
+/**
+ * The hub row this production already has: same title and year, and the row's venue names the theatre OR the
+ * producing company (a company playing a second stage, e.g. American Repertory Theater at Farkas Hall).
+ */
+function existingRow(facts, show, shows) {
+  const row = { title: show.title, start: show.openingDate, end: show.closingDate || show.openingDate };
+  for (const th of [facts.theatre, facts.company]) {
+    if (!th) continue;
+    const hit = S.findExisting({ ...row, theatre: th }, shows);
+    if (hit) return hit;
+  }
+  return null;
+}
+
+module.exports = { buildPrompt, checkReading, datePrinted, placeFor, buildShow, existingRow, KINDS, MAX_RUN_DAYS, OPEN_ENDED_DAYS };

@@ -190,10 +190,12 @@ jobs:
           node scripts/new-fix-plan.js --id="$PLAN" --summary="BRO-7683: $N hub productions reviewed on BroadwayWorld" --actions=/tmp/bww-add.json
           trap 'git reset -q -- data/pending-fixes public/images/shows data/audit 2>/dev/null || true' ERR
           node scripts/lib/plan-art-paths.js /tmp/bww-add.json | xargs -r git add -A --
-          git add -A -- data/pending-fixes/"$PLAN"*.json 'data/audit/bww-regional-*.json'
+          # This plan and its auto-split parts (-b, -c ...) only; an unmatched glob is dropped, never passed to git.
+          PLANS=$(ls data/pending-fixes/"$PLAN".json data/pending-fixes/"$PLAN"-?.json 2>/dev/null || true)
+          git add -A -- $PLANS 'data/audit/bww-regional-*.json'
           git commit -m "data: BroadwayWorld-reviewed hub productions plan $PLAN [skip ci]"
           bash scripts/lib/push-with-retry.sh
-          for F in data/pending-fixes/"$PLAN"*.json; do
+          for F in $PLANS; do
             gh workflow run execute-approved-fix.yml -f issue_number="$(basename "$F" .json)" -f plan_id="$(node -p "require('./$F').planId")" -f mode=apply
           done
 

@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-7683-b",
-  "planId": "a4ae4340-379f-493e-a248-854191b32ead",
+  "planId": "9dd6162c-e1b3-4db1-b739-18b649e2abb1",
   "status": "pending",
-  "createdAt": "2026-11-17T14:45:23.234Z",
+  "createdAt": "2026-11-17T14:51:52.934Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-7683: 39 US hub productions reviewed on BroadwayWorld with no listing (incl. WNO Nixon in China, Madama Butterfly) (part 2 of 2)",
+    "summary": "BRO-7683: 38 US hub productions reviewed on BroadwayWorld with no listing (incl. Nixon in China, DC) (part 2 of 2)",
     "steps": [
       "add waiting-in-the-wings-regional-2026 (BroadwayWorld review 2026-10-14)",
       "add the-light-we-leave-behind-regional-2026 (BroadwayWorld review 2026-10-14)",
@@ -21,7 +21,6 @@
       "add summer-1976-regional-2026 (BroadwayWorld review 2026-10-12)",
       "add to-kill-a-mockingbird-regional-2026 (BroadwayWorld review 2026-10-17)",
       "add bouncers-regional-2026 (BroadwayWorld review 2026-10-24)",
-      "add 1972-farkas-regional-2026 (BroadwayWorld review 2026-11-05)",
       "add a-streetcar-named-desire-regional-2026 (BroadwayWorld review 2026-11-07)",
       "add the-wash-regional-2026 (BroadwayWorld review 2026-11-11)"
     ],
@@ -258,7 +257,7 @@
         "description": "add summer-1976-regional-2026 (BroadwayWorld review 2026-10-12)",
         "show": {
           "id": "summer-1976-regional-2026",
-          "title": "SUMMER, 1976",
+          "title": "Summer, 1976",
           "slug": "summer-1976-regional-2026",
           "venue": "Unicorn Theatre, Stockbridge, MA",
           "status": "open",
@@ -332,35 +331,6 @@
           "images": {
             "poster": "/images/shows/bouncers-regional-2026/poster.webp",
             "thumbnail": "/images/shows/bouncers-regional-2026/thumbnail.webp"
-          }
-        }
-      },
-      {
-        "type": "add-show",
-        "description": "add 1972-farkas-regional-2026 (BroadwayWorld review 2026-11-05)",
-        "show": {
-          "id": "1972-farkas-regional-2026",
-          "title": "1972",
-          "slug": "1972-farkas-regional-2026",
-          "venue": "Farkas Hall, Cambridge, MA",
-          "status": "open",
-          "type": "musical",
-          "category": "regional",
-          "market": "regional",
-          "openingDate": "2026-11-05",
-          "openingDateSource": "bww-first-review",
-          "closingDate": "2026-12-06",
-          "closingDateSource": "bww-review-text",
-          "discoverySource": "bww-local-reviews",
-          "localOnly": true,
-          "city": "boston-ma",
-          "discoveredAt": "2026-11-17",
-          "evidenceUrls": [
-            "https://www.broadwayworld.com/boston/article/Review-American-Repertory-Theater-Rocks-Out-with-World-Premiere-of-1972-20261105"
-          ],
-          "images": {
-            "poster": "/images/shows/1972-farkas-regional-2026/poster.webp",
-            "thumbnail": "/images/shows/1972-farkas-regional-2026/thumbnail.webp"
           }
         }
       },

@@ -175,7 +175,9 @@ function classifyReview(review, ctx) {
   const tour = !resident && candidates.find((s) => s.category === 'tour' || s.market === 'tour');
   if (tour) return { status: 'covered-tour', showId: tour.id };
   const d = decisions[review.url];
-  if (d && d.decision && d.decision !== 'add') return { status: 'declined', reason: d.decision };
+  // An "exists" verdict holds only while that row does (a deleted row makes the review missing again).
+  const stillThere = !d || d.decision !== 'exists' || shows.some((s) => s.id === d.showId);
+  if (d && d.decision && d.decision !== 'add' && stillThere) return { status: 'declined', reason: d.decision };
   if (!resident && tourHouses.some((re) => re.test(review.venue))) return { status: 'tour-house', reason: 'touring production at a tour house' };
   return { status: 'missing' };
 }

@@ -95,3 +95,36 @@ test('placeFor: a known venue without a town gets the model town only inside the
   assert.deepEqual(A.placeFor({ theatre: 'Merrimack Repertory Theatre', town: null, modelTown: 'Lowell', state: 'MA' }, boston), { town: 'Lowell', state: 'MA' });
   assert.equal(A.placeFor({ theatre: 'Some Theatre', town: null, modelTown: 'Hartford', state: 'CT' }, boston), null);
 });
+
+// Ship-check findings (BRO-7683): the cases each fix covers.
+test('auditHub: two companies\' productions of one title stay two rows', async () => {
+  const page = listing([
+    { url: 'https://www.broadwayworld.com/washington-dc/article/Review-LITTLE-SHOP-OF-HORRORS-at-Signature-Theatre-20261101', headline: 'Review: LITTLE SHOP OF HORRORS at Signature Theatre', datePublished: '2026-11-01' },
+    { url: 'https://www.broadwayworld.com/washington-dc/article/Review-LITTLE-SHOP-OF-HORRORS-at-Port-City-Playhouse-20261105', headline: 'Review: LITTLE SHOP OF HORRORS at Port City Playhouse', datePublished: '2026-11-05' },
+  ]);
+  const r = await auditHub(dc, { shows: [], since: '2026-10-01', maxPages: 1, fetchHtml: async () => page });
+  assert.equal(r.missing.length, 2);
+});
+
+test('classify: an "exists" verdict lapses when its row is gone', () => {
+  const review = { url: NIXON_URL, title: 'Nixon in China', venue: 'Washington National Opera', date: '2026-11-16' };
+  const decisions = { [NIXON_URL]: { decision: 'exists', showId: 'gone-regional-2026' } };
+  assert.equal(L.classifyReview(review, { shows: [], metro: 'washington-dc', decisions }).status, 'missing');
+  assert.equal(L.classifyReview(review, { shows: [{ id: 'gone-regional-2026', title: 'Other', openingDate: '2020-01-01' }], metro: 'washington-dc', decisions }).status, 'declined');
+});
+
+test('buildShow: an open-ended run past 60 days is closed; an all-caps title is title-cased', () => {
+  const ctx = { review: { url: 'u', date: '2026-09-13' }, hubSlug: 'chicago-il', hubShows: [], hubHome: { town: 'Chicago', state: 'IL' }, taken: new Set(), today: '2026-11-17' };
+  const f = { title: 'SUMMER, 1976', kind: 'professional', type: 'play', theatre: 'Northlight Theatre', town: 'Chicago', state: 'IL', openingDate: null, firstPerformance: null, closingDate: null };
+  const s = A.buildShow(f, ctx).show;
+  assert.equal(s.status, 'closed');
+  assert.equal(s.title, 'Summer, 1976');
+  assert.equal(A.buildShow(f, { ...ctx, review: { url: 'u', date: '2026-11-01' } }).show.status, 'open');
+});
+
+test('existingRow: a company playing a second stage matches its existing row (American Repertory Theater at Farkas Hall)', () => {
+  const shows = [{ id: '1972-regional-2026', title: '1972', venue: 'American Repertory Theater, Cambridge, MA', openingDate: '2026-10-27', closingDate: '2026-12-06' }];
+  const show = { title: '1972', openingDate: '2026-11-05', closingDate: '2026-12-06' };
+  assert.equal(A.existingRow({ theatre: 'Farkas Hall', company: 'American Repertory Theater' }, show, shows).id, '1972-regional-2026');
+  assert.equal(A.existingRow({ theatre: 'Farkas Hall', company: null }, show, shows), null);
+});
