@@ -122,9 +122,9 @@ const PREFETCH_TIMEOUT_MS = Math.max(GIT_NET_TIMEOUT_MS, 5 * 60 * 1000);
 const GIT_TIMEOUT_RETRIES = 2;
 const GIT_TIMEOUT_BACKOFF_MS = [2000, 6000];
 function isGitTimeout(err) {
-  if (!err) return false;
-  if (err.code === 'ETIMEDOUT') return true;
-  return /\bETIMEDOUT\b/.test(String(err.message || '')); // execFileSync's own timeout; a bare SIGTERM is not ours to retry
+  // spawnSync sets err.code on its own timeout. err.message carries git's stderr
+  // (a commit subject may say ETIMEDOUT), so the message is never matched.
+  return !!err && err.code === 'ETIMEDOUT';
 }
 function defaultSleepMs(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
 const PREFETCH_MAX_PATHS = 2000;
@@ -893,8 +893,9 @@ function landBranch(o) {
           // After a resolved stop the failure that matters is the LAST one (a later real conflict, a lazy-fetch failure).
           if (fixed.lastErr) { err = fixed.lastErr; }
           if (isGitTimeout(err) && timeoutRetries < GIT_TIMEOUT_RETRIES) {
-            gitOrNull(['rebase', '--abort'], workdir);
-            try { discardResidue(`timeout retry ${timeoutRetries + 1}`); } catch { /* a stale lock must not hide the timeout label */ }
+            // If cleanup after the kill fails (stale lock, leftover rebase dir) surface the timeout itself, not a later fake conflict.
+            try { git(['rebase', '--abort'], workdir); } catch (e) { if (!/No rebase in progress/i.test(String(e.stderr || e.message))) throw err; }
+            try { discardResidue(`timeout retry ${timeoutRetries + 1}`); } catch { throw err; }
             log(`[land] rebase onto ${onto.slice(0, 10)} timed out (git, not a conflict) — retry ${timeoutRetries + 1}/${GIT_TIMEOUT_RETRIES} after ${GIT_TIMEOUT_BACKOFF_MS[timeoutRetries]}ms`);
             sleepMs(GIT_TIMEOUT_BACKOFF_MS[timeoutRetries]);
             timeoutRetries++; retry--;
