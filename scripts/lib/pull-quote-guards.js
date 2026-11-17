@@ -322,6 +322,17 @@ function startsMidClause(quote, fullText) {
   return MID_CLAUSE_GAP_RE.test(q.replace(/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Mt)\./gi, '$1'));
 }
 
+// A candidate that opens mid-sentence: a lowercase first word, or a stray
+// comma / semicolon / colon left over when the sentence splitter broke at a
+// "!" or "?" inside a title. Slant on The Fantasticks (2026-11-16) shipped
+// ", director Christopher Gattelli spread large-scale charm..." after the
+// split at "In Death Becomes Her and Schmigadoon!". Leading wrapping quotes,
+// parens and whitespace are skipped first.
+const FRAGMENT_START_RE = /^[\s"'\u201c\u2018\u00ab(\[]*(?:[a-z]|[,;:])/;
+function startsAsFragment(excerpt) {
+  return typeof excerpt === 'string' && FRAGMENT_START_RE.test(excerpt);
+}
+
 // An aggregator excerpt the aggregator itself cut short ("...the plebeian ear
 // requiring a careful listen. But Sorkin's script evens out, and ..."): BWW
 // roundups clip at a fixed length. It is a partial passage, not a quote.
@@ -1316,6 +1327,8 @@ module.exports = {
   isContextDependentQuote,
   CONTEXT_DEPENDENT_PATTERNS,
   startsMidClause,
+  startsAsFragment,
+  FRAGMENT_START_RE,
   expandToSentenceStart,
   endsWithSourceEllipsis,
   isClippedAggregatorBlurb,

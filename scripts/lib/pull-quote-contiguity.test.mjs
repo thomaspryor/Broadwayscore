@@ -303,3 +303,19 @@ describe('leading credits header (BRO-5718, Talkin\' Broadway)', () => {
     assert.ok(q.startsWith('Other Desert Cities is a sharp'), q);
   });
 });
+
+// Slant on The Fantasticks (2026-11-16): a split at "Schmigadoon!" left a
+// comma-led fragment that shipped as the pull quote (pull-quote-guards.startsAsFragment).
+describe('selectBestExcerpt never ships a comma-led fragment', () => {
+  const PAD = ' The set is a simple platform under a paper moon, lit with real care by the designer. '.repeat(3);
+  const GOOD = 'It’s a delight to see him working on a smaller canvas now, finding comic chemistry among his cast with a fine brush.';
+  const FRAG = ', director Christopher Gattelli spread large-scale charm through witty ensemble storytelling.';
+  const fullText = `The revival opens with a wink.${PAD}In Death Becomes Her and Schmigadoon! , director Christopher Gattelli spread large-scale charm through witty ensemble storytelling. ${GOOD}${PAD}`;
+  const base = { showId: 'test-show-2099', outlet: 'Slant Magazine', criticName: 'Test Critic', publishDate: '2026-11-16', contentTier: 'complete' };
+
+  it('a comma-led keyPhrase loses to a clean candidate', () => {
+    const q = selectBestExcerpt({ ...base, fullText, llmScore: { score: 80, keyPhrases: [{ quote: FRAG, sentiment: 'positive' }, { quote: GOOD, sentiment: 'positive' }] } }, 'The Fantasticks');
+    assert.ok(q, 'some quote is chosen');
+    assert.ok(!/^[\s"'“‘«(\[]*[,;:]/.test(q), `quote starts as a fragment: ${q}`);
+  });
+});

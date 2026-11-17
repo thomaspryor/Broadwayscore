@@ -66,7 +66,7 @@ const {
   hasListingChrome, stripListingPrelude, stripLeadingCredits, isTagCloudExcerpt, isMidWordTruncation,
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
-  isClippedAggregatorBlurb,
+  isClippedAggregatorBlurb, startsAsFragment,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
 const emitExcludedStage = createExcludedStageEmitter();
@@ -680,7 +680,7 @@ function extractExcerptFromFullText(fullText, showTitle) {
   if (/data-\w+="/i.test(excerpt)) return null;  // Raw HTML data attributes
 
   // Reject if starts mid-word (lowercase with no preceding context)
-  if (/^[a-z]/.test(excerpt)) {
+  if (/^(?:[a-z]|[,;:])/.test(excerpt)) {
     const nextSentence = excerpt.search(/[.!?]\s+[A-Z]/);
     if (nextSentence > 0 && nextSentence < excerpt.length - 50) {
       excerpt = excerpt.substring(nextSentence + 2);
@@ -855,7 +855,7 @@ function selectBestExcerpt(data, showTitle) {
     // shipped with no pull quote at all (owner report). Deferring keeps the
     // "prefer a cleaner source" behaviour while guaranteeing a fallback.
     excerpt = trimToCompleteSentence(excerpt);
-    if (/^[\s"'“‘«(\[]*[a-z]/.test(excerpt)) {
+    if (startsAsFragment(excerpt)) {
       deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'lowercase-fragment', source });
       return null;
     }
@@ -932,7 +932,7 @@ function selectBestExcerpt(data, showTitle) {
     let pendingDeferral = null;
     if (contiguitySource && !isContiguousInSource(excerpt, contiguitySource)) {
       const snapped = snapToSourceSpan(excerpt, contiguitySource);
-      if (snapped && !/^[\s"'“‘«(\[]*[a-z]/.test(snapped) && !startsWithPageChrome(snapped)
+      if (snapped && !startsAsFragment(snapped) && !startsWithPageChrome(snapped)
           && !hasCopyrightChrome(snapped) && !isPromoTeaser(snapped) && !hasListingChrome(snapped)) {
         stats.nonContiguousExcerptsSnapped = (stats.nonContiguousExcerptsSnapped || 0) + 1;
         excerpt = snapped;

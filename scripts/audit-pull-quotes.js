@@ -89,6 +89,8 @@ function classifyBadQuote(quote, sources) {
   if (CREDITS_HEADER_RE.test(String(quote).trim())) return 'credits-header';
   if (isTagCloudExcerpt(quote)) return 'tag-cloud';
   if (isMidWordTruncation(quote, sources)) return 'mid-word-truncation';
+  // A quote that opens on a stray , ; or : (split at a "!" inside a title).
+  if (/^[\s"'\u201c\u2018\u00ab(\[]*[,;:]/.test(quote)) return 'punctuation-start-fragment';
   return null;
 }
 
