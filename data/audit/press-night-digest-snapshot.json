@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-11-17T08:35:49.178Z",
+  "generatedAt": "2026-11-17T12:40:49.912Z",
   "night": "2026-11-16",
   "counts": {
     "total": 2,
-    "passed": 0,
+    "passed": 1,
     "failed": 0,
-    "notGraded": 2
+    "notGraded": 1
   },
   "lines": [
     {
-      "verdict": "PENDING",
-      "line": "Jenůfa: not graded yet, still being checked."
+      "verdict": "UNKNOWN",
+      "line": "Jenůfa: not graded, no reviews were published overnight."
     },
     {
-      "verdict": "PENDING",
-      "line": "The Fantasticks: not graded yet, still being checked; opening-night email draft is out of date (built with score 79 from 22 reviews, the site shows score 79 from 21 reviews)."
+      "verdict": "PASS",
+      "line": "The Fantasticks: published by the new lane; 19 of 21 reviews live by 12:00am; USA Today came out later and went live at 1:03am, on time; Vulture came out later and went live at 12:03am, on time; emails ready, passed."
     }
   ],
   "scoreboard": {
-    "graded": 20,
-    "passed": 2,
-    "passedOnOwn": 1
+    "graded": 21,
+    "passed": 3,
+    "passedOnOwn": 2
   },
   "missFirstSeen": {}
 }
