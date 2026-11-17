@@ -10,7 +10,8 @@ const LEGACY = new Set(['duo:explainer-guess', 'duo:explainer-trailer']);
 const NUMBER = /\b(\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)\b/gi;
 const sentences = t => String(t || '').replace(/\[[a-z ]+\]/gi, ' ').split(/\n+/).flatMap(par => par.replace(/\s+/g, ' ').trim().match(/[^.!?]+[.!?]+["'\u201d\u2019)\]]*(?=\s|$)|[^.!?]+$/g) || []); // a paragraph break ends a sentence
 const QEND = /\?["'\u201d\u2019)\]]*$/; // a question may close inside a quote
-const stem = s => s.toLowerCase().replace(NUMBER, '#').replace(/#([\s-]+#)+/g, '#').replace(/[^a-z#]+/g, ' ').trim(); // spoken "eighty-six" and captioned "86" count as the same words
+const { foldDiacritics } = require('../lib/title-match'); // fold first so a title's accents are not shredded (task #781)
+const stem = s => foldDiacritics(s).toLowerCase().replace(NUMBER, '#').replace(/#([\s-]+#)+/g, '#').replace(/[^a-z#]+/g, ' ').trim(); // spoken "eighty-six" and captioned "86" count as the same words
 
 // returns a list of problems, empty when the script follows the rule
 function checkFraming(plan, { needCaption = true } = {}) {
