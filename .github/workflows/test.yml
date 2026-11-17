@@ -1048,6 +1048,8 @@ on:
       # proposal). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs
       # glob; path-listed so a solo edit triggers CI.
       - 'scripts/generate-remediation-plan.js'
+      # BRO-7666: fulltext sweep wiring; tests/unit/fulltext-mention-triage.test.mjs.
+      - 'scripts/audit-fulltext-mentions-show-lifetime.js'
       # BRO-7167: test bench steps 1-2. scripts/test-bench-*.test.mjs run in the scripts/*.test.mjs glob; path-listed so a
       # solo edit to either script triggers CI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/test-bench-publish-times.js'
