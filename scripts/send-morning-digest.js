@@ -1212,12 +1212,11 @@ async function main() {
     const { computeDispatchHealthDigest, computeHeadlessDispatchDigest } = require('./lib/dispatch-health.js');
     const dispatchEntries = dispatchLedger.readEntries();
     const nowMs = Date.now();
+    // BRO-7664: same late-landing rescue as health-check.js, so both report one rate.
+    const isStrandedShaLanded = require('./lib/headless-unlanded-detection.js').makeStrandedLandedPredicate({ cwd: require('./lib/repo-root').MAIN_REPO_ROOT });
     for (const row of [
       computeDispatchHealthDigest({ entries: dispatchEntries, nowMs }),
-      computeHeadlessDispatchDigest({
-        entries: dispatchEntries, nowMs,
-        isStrandedShaLanded: require('./lib/headless-unlanded-detection.js').makeStrandedLandedPredicate({ cwd: require('./lib/repo-root').MAIN_REPO_ROOT }),
-      }),
+      computeHeadlessDispatchDigest({ entries: dispatchEntries, nowMs, isStrandedShaLanded }),
     ]) {
       if (row.status === 'error') {
         if (!sections.health) sections.health = {};
