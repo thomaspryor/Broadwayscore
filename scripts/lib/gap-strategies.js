@@ -22,6 +22,8 @@ function defaultDeps() {
   return {
     fetchPage: (url, opts) => require('./scraper').fetchPage(url, opts),
     freeTiersForUrl: (url) => require('./scraper').freeTiersForUrl(url),
+    paidTierAvailable: (url) => require('./scraper').paidTierAvailable(url),
+    bdBlockedCount: () => require('./scraper').getScraperStats().bdBlocked || 0,
     extractArticleText: (html, host) => require('./article-extractor').extractArticleText(html, host),
     isNotFoundHtml: (html) => require('./soft-404-body').isNotFoundHtml(html),
     listCaptureTimestamps: (url, opts) => require('./fetch-archive-fallback').listCaptureTimestamps(url, opts),
@@ -231,8 +233,16 @@ function deadUrlStampPatch(review, { url, outcome, reason }) {
  */
 async function paidFetch(c, deps = defaultDeps()) {
   if (!c.url) return { ok: false, outcome: 'non_evidence', reason: 'no_url' };
+  if (deps.paidTierAvailable && !deps.paidTierAvailable(c.url)) return { ok: false, outcome: 'non_evidence', reason: 'no_paid_tier' };
   let res;
-  try { res = await deps.fetchPage(c.url, { tiers: ['brightdata'] }); } catch (e) { return outcomeForFetchError(e.message); }
+  const blockedBefore = deps.bdBlockedCount ? deps.bdBlockedCount() : 0;
+  try { res = await deps.fetchPage(c.url, { tiers: ['brightdata'] }); } catch (e) {
+    // the night's BD budget / breaker withheld THIS request: not evidence
+    const capped = !!deps.bdBlockedCount && deps.bdBlockedCount() > blockedBefore;
+    const { classifyFetchFailure, isNonEvidenceFailure } = require('./failed-fetch-policy');
+    const reason = classifyFetchFailure({ message: e.message, bdWasCapped: capped });
+    return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason };
+  }
   const r = fromHtml(res && res.content, c.url, 'paid:brightdata', deps);
   return r.ok ? { ...r, url: c.url } : r;
 }

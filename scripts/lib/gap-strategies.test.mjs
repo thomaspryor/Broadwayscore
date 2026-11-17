@@ -313,3 +313,30 @@ import { createRequire as _cr0 } from 'node:module';
     _a0.ok(freeTiersForUrl('https://example-theatre-blog.com/review/').length > 0);
   });
 }
+
+// BRO-7171 ship-check: the paid route can make zero requests too.
+{
+  const req = _cr0(import.meta.url);
+  const S = req('./gap-strategies.js');
+  const { selectStrategy } = req('./gap-strategy-table.js');
+  _t0('paidFetch: Bright Data unavailable for the host -> non_evidence no_paid_tier, no fetch', async () => {
+    let called = 0;
+    const r = await S.paidFetch({ url: 'https://broadway.news/x' }, { paidTierAvailable: () => false, fetchPage: async () => { called++; } });
+    _a0.deepEqual([r.outcome, r.reason, called], ['non_evidence', 'no_paid_tier', 0]);
+  });
+  _t0('paidFetch: budget withheld this request -> non_evidence budget_capped', async () => {
+    let blocked = 3;
+    const deps = { paidTierAvailable: () => true, bdBlockedCount: () => blocked, fetchPage: async () => { blocked++; throw new Error('All scraping methods failed'); } };
+    const r = await S.paidFetch({ url: 'https://www.broadwayworld.com/a' }, deps);
+    _a0.deepEqual([r.outcome, r.reason], ['non_evidence', 'budget_capped']);
+    // a real failure (nothing withheld) is still evidence
+    const r2 = await S.paidFetch({ url: 'https://www.broadwayworld.com/a' }, { ...deps, fetchPage: async () => { throw new Error('All scraping methods failed'); } });
+    _a0.equal(r2.outcome, 'no_evidence');
+  });
+  _t0('selectStrategy: no free AND no paid tier -> neither planned', () => {
+    const r = selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, paidTierOk: false, recency: 'recent' });
+    _a0.equal(r.strategy, null);
+    const p = selectStrategy({ gapClass: 'PAYWALL_TRUNCATED', hasUrl: true, hasAdapter: false, paidTierOk: false, recency: 'recent', eligible: (s) => ({ ok: s === 'PAID_FETCH', reason: 'x' }) });
+    _a0.ok(p.skipped.some((k) => k.strategy === 'PAID_FETCH' && k.reason === 'no_paid_tier'));
+  });
+}

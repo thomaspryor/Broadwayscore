@@ -1555,6 +1555,8 @@ function freeTiersForUrl(url) {
   const FREE = new Set(['cookies-plain', 'playwright-first', 'playwright-last']);
   let chain;
   try {
+    // the same url normalisation fetchPage applies first (google.com/url?q=... -> target)
+    url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url));
     chain = pageChainOrder({
       hasCookies: !!hasCookiesForUrl(url),
       preferPlaywright: false,
@@ -1567,6 +1569,22 @@ function freeTiersForUrl(url) {
     });
   } catch { return []; }
   return chain.filter((t) => FREE.has(t));
+}
+
+/**
+ * Can fetchPage(url, {tiers:['brightdata']}) issue a request at all? False with
+ * no token or a domain-tier-skip on brightdata for the host (broadway.news,
+ * thebroadwayblog.com, ...): then a paid fetch makes zero requests and its
+ * failure is not evidence (BRO-7171 ship-check). Budget is checked per call.
+ * @param {string} url
+ * @returns {boolean}
+ */
+function paidTierAvailable(url) {
+  if (!BRIGHTDATA_TOKEN) return false;
+  try {
+    url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url));
+    return !_getDomainSkips(url).has('brightdata');
+  } catch { return false; }
 }
 
 /**
@@ -2480,6 +2498,7 @@ module.exports = {
   fetchPage,
   pageChainOrder,
   freeTiersForUrl,
+  paidTierAvailable,
   _providerPassthroughParams,
   fetchJSON,
   fetchWithCookiesPlain,
