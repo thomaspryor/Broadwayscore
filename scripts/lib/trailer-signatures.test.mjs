@@ -442,3 +442,22 @@ test('run-info stripper: whitespace runs stay fast', () => {
   T.stripRunInfoTrailer('\n'.repeat(50000) + 'x');
   assert.ok(Date.now() - t0 < 500, `took ${Date.now() - t0}ms`);
 });
+
+test('run-info stripper: price/link mid-sentence is not a ticket line end (BRO-7171 round 3)', () => {
+  const lead = BODY.slice(0, 1200).replace(/\s+\S*$/, '') + ' and it works.';
+  for (const tail of [
+    ' Steep, though. Tickets are $349 in the orchestra and $89 gets',
+    ' Steep. Tickets are $349 at Telecharge.com, which seems',
+    ' Steep. Tickets are available on TodayTix.com, where rush',
+    ' Thrilling. Tickets: $59.50 at Ticketmaster.com, though most',
+  ]) {
+    assert.equal(T.stripRunInfoTrailer(lead + tail), lead + tail, JSON.stringify(tail));
+  }
+  for (const tail of [
+    ' Tickets: 020 3989 5455; nationaltheatre.org.uk',
+    ' Tickets are on sale from: https://southwarkplayhouse.co.uk/productions/dog-mom/',
+    ' For tickets, call 212-239-6200',
+  ]) {
+    assert.equal(T.stripRunInfoTrailer(lead + tail), lead, JSON.stringify(tail));
+  }
+});

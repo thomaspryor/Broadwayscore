@@ -374,6 +374,8 @@ const BWW_PHOTO_RE = /(?:^|\s)(?:All\s+)?(?:production\s+)?(?:photos?|photograph
 // a price, or a call to action in a line that ends its sentence; "Tickets are
 // scarce here, and anyone ... will" is a cut-off review.
 const TICKET_HARD_EVIDENCE_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|co\.uk|org\.uk|uk)\b|\(?\d{3}\)?[-.\s]\d{3}[-.\s]?\d{4}|\b0\d{3,4}\s?\d{3}\s?\d{3,4}\b|[$£]\s?\d/i;
+// the last token itself is the link / domain / phone / price ("…; nationaltheatre.org.uk")
+const TICKET_LAST_TOKEN_RE = /(?:https?:\/\/\S+|www\.\S+|\b[\w-]+\.(?:com|org|net|co\.uk|org\.uk|uk)\/?\S*|\d{3}[-.\s]?\d{4}|[$£]\s?[\d.,-]+|\d)["'”’)]?$/i;
 const TICKET_CTA_RE = /\b(?:visit|visiting|click|call|website)\b|\bhere\b/i;
 // the ticket line is the LAST sentence: a dot only inside a token (a url, "$59.50")
 const BWW_TICKETS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)((?:For\s+(?:more\s+)?(?:tickets?|ticket\s+and|information)\b|Tickets?\s*(?::|are\b|available\b|start\b)|Get\s+tickets\b)(?:[^.!?\n]|[.!?](?=[^\s"'”’)]))*[.!?]?["'”’)]?)$/i;
@@ -407,7 +409,7 @@ function stripRunInfoTrailer(text) {
     if (ph && namesOnly(ph[1])) t = t.slice(0, ph.index).trimEnd();
     const tk = BWW_TICKETS_RE.exec(t);
     // ...and it ends its sentence or ends ON the link / phone / price
-    const tkEnds = tk && (/[.!?]["'”’)]?$/.test(tk[1]) || TICKET_HARD_EVIDENCE_RE.test(tk[1].split(/\s+/).slice(-3).join(' ')));
+    const tkEnds = tk && (/[.!?]["'”’)]?$/.test(tk[1]) || TICKET_HARD_EVIDENCE_RE.test(tk[1].split(/\s+/).slice(-2).join(' ')) && TICKET_LAST_TOKEN_RE.test(tk[1]));
     if (tk && tkEnds && !DANGLING_END_RE.test(tk[1])
       && (TICKET_HARD_EVIDENCE_RE.test(tk[1]) || (TICKET_CTA_RE.test(tk[1]) && /[.!?]["'”’)]?$/.test(tk[1])))) {
       t = t.slice(0, tk.index + (tk[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).trimEnd();
