@@ -1541,6 +1541,35 @@ function pageChainOrder(flags) {
 }
 
 /**
+ * The FREE tiers fetchPage would run for `url` (cookies-plain, playwright-*),
+ * from the same flags and domain-tier-skip config fetchPage reads, without
+ * fetching. An empty list means a free-only fetch of this url cannot make a
+ * single request (BroadwayWorld: Playwright tier-skipped, no cookie jar), so
+ * a caller should not record its failure as evidence about the page
+ * (BRO-7171: the gap engine logged 31 such "fetch_error" rows a night).
+ * Per-run memo skips are left out: they are transient.
+ * @param {string} url
+ * @returns {string[]}
+ */
+function freeTiersForUrl(url) {
+  const FREE = new Set(['cookies-plain', 'playwright-first', 'playwright-last']);
+  let chain;
+  try {
+    chain = pageChainOrder({
+      hasCookies: !!hasCookiesForUrl(url),
+      preferPlaywright: false,
+      isBroadwayWorld: String(url).includes('broadwayworld.com'),
+      isPublicSite: _isPlaywrightFirstDomain(url),
+      skips: _getDomainSkips(url),
+      useScrapingdog: false,
+      hasBdToken: false,
+      sbAllowed: false,
+    });
+  } catch { return []; }
+  return chain.filter((t) => FREE.has(t));
+}
+
+/**
  * Fetch a page through the provider chain (see pageChainOrder).
  *
  * RETURNS `{ content, format, source }` — NOT `{ html }` / `{ body }`. Read
@@ -2450,6 +2479,7 @@ function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
 module.exports = {
   fetchPage,
   pageChainOrder,
+  freeTiersForUrl,
   _providerPassthroughParams,
   fetchJSON,
   fetchWithCookiesPlain,

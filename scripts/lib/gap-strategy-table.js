@@ -77,6 +77,7 @@ const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'P
  * @param {string} a.gapClass
  * @param {boolean} a.hasUrl
  * @param {boolean} a.hasAdapter     a browser adapter exists for the outlet
+ * @param {boolean} [a.freeTierOk]   a free fetch tier can run for the stored url (default true)
  * @param {(strategy:string) => {ok:boolean, reason:string}} [a.eligible] ledger/file gates
  * @param {Record<string, {ok:boolean, reason:string}>} [a.runGates] run-level gates, e.g.
  *        {BROWSER_SESSION: {ok:false, reason:'browser_unavailable'}, URL_REDISCOVER: {ok:false, reason:'no_serp_key'}}
@@ -84,7 +85,7 @@ const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'P
  * @param {string|null} [a.only] restrict to one strategy
  * @returns {{strategy: string|null, skipped: Array<{strategy:string, reason:string}>}}
  */
-function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
+function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, recency = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
   let order = CLASS_STRATEGIES[gapClass] || [];
   // Subscriber outlet (Stage 4): a free refetch of a hard-paywalled page
   // returns the teaser, so the browser goes first; the free refetch stays as
@@ -92,6 +93,12 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, storedUr
   if (hasAdapter && order.indexOf('REFETCH_FREE') >= 0 && order.indexOf('BROWSER_SESSION') > order.indexOf('REFETCH_FREE')) {
     order = ['BROWSER_SESSION', ...order.filter((s) => s !== 'BROWSER_SESSION')];
   }
+  // No free fetch tier can run for this url (scraper.freeTiersForUrl is
+  // empty: BroadwayWorld has Playwright tier-skipped and no cookie jar), so a
+  // free refetch makes zero requests and its "fetch_error" says nothing about
+  // the page (BRO-7171, 31 such rows on 2026-11-16). Skip it, and keep the
+  // capped paid fetch (BD_REQ_BUDGET) as this url's last route.
+  if (!freeTierOk && order.includes('REFETCH_FREE') && !order.includes('PAID_FETCH')) order = [...order, 'PAID_FETCH'];
   const skipped = [];
   for (const s of order) {
     if (only && s !== only) continue;
@@ -103,6 +110,7 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, storedUr
       skipped.push({ strategy: s, reason: storedUrlOk.reason }); continue;
     }
     if (s === 'BROWSER_SESSION' && !hasAdapter) { skipped.push({ strategy: s, reason: 'no_adapter' }); continue; }
+    if (s === 'REFETCH_FREE' && !freeTierOk) { skipped.push({ strategy: s, reason: 'no_free_tier' }); continue; }
     const g = runGates[s];
     if (g && !g.ok) { skipped.push({ strategy: s, reason: g.reason }); continue; }
     const e = eligible(s);

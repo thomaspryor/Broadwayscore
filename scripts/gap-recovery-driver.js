@@ -125,6 +125,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       gapClass: row.gapClass,
       hasUrl: !!review.url,
       hasAdapter: adapterUsable(review.outletId, { explicitOutlets: OPTS.outlets }),
+      freeTierOk: !review.url || require('./lib/scraper').freeTiersForUrl(review.url).length > 0,
       // An unknown show date counts as 'recent' for ordering, but such shows
       // are often old: do not take ARCHIVE away from them.
       recency: row.dateKnown === false ? null : row.recency,

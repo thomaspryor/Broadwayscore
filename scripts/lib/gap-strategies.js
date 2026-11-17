@@ -21,6 +21,7 @@ function hostOf(url) {
 function defaultDeps() {
   return {
     fetchPage: (url, opts) => require('./scraper').fetchPage(url, opts),
+    freeTiersForUrl: (url) => require('./scraper').freeTiersForUrl(url),
     extractArticleText: (html, host) => require('./article-extractor').extractArticleText(html, host),
     isNotFoundHtml: (html) => require('./soft-404-body').isNotFoundHtml(html),
     listCaptureTimestamps: (url, opts) => require('./fetch-archive-fallback').listCaptureTimestamps(url, opts),
@@ -64,6 +65,8 @@ async function fetchFree(url, deps) {
 
 async function refetchFree(c, deps = defaultDeps()) {
   if (!c.url) return { ok: false, outcome: 'non_evidence', reason: 'no_url' };
+  // zero free tiers for this host: nothing would be fetched, so no evidence
+  if (deps.freeTiersForUrl && deps.freeTiersForUrl(c.url).length === 0) return { ok: false, outcome: 'non_evidence', reason: 'no_free_tier' };
   const r = await fetchFree(c.url, deps);
   return r.ok ? { ...r, url: c.url } : r;
 }

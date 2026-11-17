@@ -284,3 +284,32 @@ test('urlFind freeOnly: no paid SERP, no Bright Data, SERP left open', async () 
     assert.ok(!UF.METHOD_DONE.has('skipped_paid'));
   } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
 });
+
+// BRO-7171 2026-11-16: zero free tiers for the host -> no request, no evidence,
+// and the table skips the free refetch and keeps the capped paid fetch.
+import { test as _t0 } from 'node:test';
+import _a0 from 'node:assert/strict';
+import { createRequire as _cr0 } from 'node:module';
+{
+  const req = _cr0(import.meta.url);
+  const S = req('./gap-strategies.js');
+  const { selectStrategy } = req('./gap-strategy-table.js');
+  const { freeTiersForUrl } = req('./scraper.js');
+  _t0('refetchFree: zero free tiers -> non_evidence no_free_tier, fetchPage never called', async () => {
+    let called = 0;
+    const deps = { freeTiersForUrl: () => [], fetchPage: async () => { called++; return { content: '<p>x</p>' }; } };
+    const r = await S.refetchFree({ url: 'https://www.broadwayworld.com/a' }, deps);
+    _a0.deepEqual([r.outcome, r.reason, called], ['non_evidence', 'no_free_tier', 0]);
+  });
+  _t0('selectStrategy: no free tier skips REFETCH_FREE and falls to PAID_FETCH last', () => {
+    const r = selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, recency: 'recent' });
+    _a0.equal(r.strategy, 'PAID_FETCH');
+    _a0.ok(r.skipped.some((k) => k.strategy === 'REFETCH_FREE' && k.reason === 'no_free_tier'));
+    // default (free tier available) is unchanged
+    _a0.equal(selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, recency: 'recent' }).strategy, 'REFETCH_FREE');
+  });
+  _t0('freeTiersForUrl: BroadwayWorld has no free tier (Playwright tier-skipped, no cookie jar)', () => {
+    _a0.deepEqual(freeTiersForUrl('https://www.broadwayworld.com/westend/article/Review-X-20261027'), []);
+    _a0.ok(freeTiersForUrl('https://example-theatre-blog.com/review/').length > 0);
+  });
+}
