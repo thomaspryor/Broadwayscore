@@ -69,7 +69,7 @@ const renew = require('./lib/cookie-renew');
 const {
   RENEW_OUTLETS, profileDir, profileNameFor, emptyOutletState, decideLogin, classifyLoginFailure,
   loadState, saveState, acquireLock, readKeychain, renewLockPath, loginAdapterFor, missingCredentials,
-  planRenewal, authCookiesChanged, credentialGate, worstExitCode,
+  planRenewal, resolveProbeMode, authCookiesChanged, credentialGate, worstExitCode,
 } = renew;
 const { launchOtpBrowser, writeOtpCookies, COOKIE_DIR } = require('./lib/otp-login-helpers');
 const bprobe = require('./lib/cookie-browser-probe');
@@ -272,11 +272,19 @@ async function runOutlet(outlet, all, opts) {
 
   // 1. Probe the cookies CI is using (local file == last pushed bundle entry).
   let probeStatus = 'unknown';
+  let inBrowser = !!probe.browserOnly;
+  let fellBack = false;
   if (!probe.browserOnly) {
     try {
       const [withCookies, withoutCookies] = [await fetchProbe(probe, localCookies), await fetchProbe(probe, null)];
       probeStatus = classifyWalledProbe({ withCookies, withoutCookies, minBody: probe.minBody, wallMarker: probe.wallMarker, gateMarker: probe.gateMarker });
       console.log(`${outlet} probe: ${probeStatus} (with cookies ${withCookies.body.length} chars, without ${withoutCookies.body.length}, floor ${probe.minBody})`);
+      // BRO-7716: a bot-walled fetch probe falls back to the in-browser probe.
+      const mode = resolveProbeMode({ browserOnly: false, probeStatus });
+      if (mode.fellBack) console.log(`${outlet}: fetch probe hit a bot wall -> falling back to the in-browser profile probe`);
+      probeStatus = mode.probeStatus;
+      inBrowser = mode.inBrowser;
+      fellBack = mode.fellBack;
     } catch (e) {
       return done(1, `probe failed: ${e.message}. Not logging in on an uncertain probe.`);
     }
@@ -298,7 +306,7 @@ async function runOutlet(outlet, all, opts) {
     }
     return done(0, `logged in, nothing to do (${plan.reason})`);
   }
-  if (opts.probeOnly && !probe.browserOnly) {
+  if (opts.probeOnly && !inBrowser) {
     return done(probeStatus === 'logged-in' ? 0 : 3, `${probeStatus} (${plan.reason})`);
   }
   console.log(`${outlet}: ${plan.reason} -> checking the persistent profile (${profile})`);
@@ -322,17 +330,23 @@ async function runOutlet(outlet, all, opts) {
       let existing = await profileSession(context, cfg, probe);
       console.log(`${outlet} in-profile probe: ${existing.status} (${existing.detail})`);
       if (existing.status === 'error') return done(1, 'in-profile probe page not recognised (bot challenge?); not logging in on an uncertain probe');
-      if (existing.status === 'logged-in' && probe.browserOnly) {
+      if (existing.status === 'logged-in' && inBrowser) {
         // The control: the same url in a cookie-less profile must be walled.
         const c = await bprobe.classifyWithControl(probe, existing.page).catch((e) => ({ error: e.message }));
-        if (c.error) return done(1, `anonymous control failed: ${c.error.split('\n')[0]}`);
-        const verdict = c.status;
+        // Fallback outlets: the control is only a vacuity check. A bot-walled
+        // control must not fail a profile that reads logged in (nothing can
+        // log in on that path), or the outlet could never be probed from a
+        // flagged IP.
+        if (c.error && fellBack) console.log(`${outlet}: anonymous control failed (${c.error.split('\n')[0]}); profile reads logged in, continuing`);
+        else if (c.error) return done(1, `anonymous control failed: ${c.error.split('\n')[0]}`);
+        const verdict = c.error ? 'ok' : c.status;
         if (verdict === 'vacuous') {
           await alertOwner({ outlet, kind: 'probe-vacuous', title: `Cookie renew: ${outlet} probe URL is no longer walled`,
             description: `${probe.url} shows the full article to a browser with no session. Pick a recent walled article in scripts/lib/cookie-probes.js.`, url: probe.url });
           return done(2, 'probe url no longer walled for an anonymous browser (vacuous); alerted');
         }
-        if (verdict === 'error') return done(1, 'anonymous control page not recognised (bot challenge?)');
+        if (verdict === 'error' && !fellBack) return done(1, 'anonymous control page not recognised (bot challenge?)');
+        if (verdict === 'error') console.log(`${outlet}: anonymous control page not recognised (bot challenge?); profile reads logged in, continuing`);
       }
       if (opts.probeOnly) {
         return done(existing.status === 'logged-in' ? 0 : 3, `profile ${existing.status} (${existing.detail})`);
