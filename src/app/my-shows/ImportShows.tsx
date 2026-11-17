@@ -140,7 +140,7 @@ interface ImportShowsProps {
   initialOpen?: boolean;
   onClose?: (imported: number) => void;
   /** Where the import was started, sent on import_completed / import_failed. */
-  context?: 'my_shows' | 'onboarding';
+  context?: 'my_shows';
   /**
    * Open at one source only (the welcome sheet's per-app cards), with a link
    * to the others. Unset: all sources, as on My Shows.

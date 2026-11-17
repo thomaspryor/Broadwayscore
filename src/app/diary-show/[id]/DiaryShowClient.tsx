@@ -20,6 +20,8 @@ import { marketLabel, type DiaryShowDetail } from '@/lib/diary-show-types';
 import { formatShowDate } from '@/lib/date-utils';
 import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import { isRated, NOT_RATED_LABEL } from '@/lib/unrated';
+import { saveLocalRating } from '@/lib/local-ratings';
+import { removeLocalShow } from '@/lib/local-watchlist';
 
 const ShowPageWatchlistButton = dynamic(() => import('@/components/user/ShowPageWatchlistButton'), { ssr: false });
 
@@ -58,7 +60,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
   // Draft carried across sign-in (rating + typed note + date + target review
   // id) — without this, a signed-out user's typed rating/notes vanish the
   // moment they complete sign-in (ship-check finding, 2026-07-14).
-  const { pendingDraft, setPendingDraft, hasExecutedPending, saveDraft } = usePendingRatingDraft(show.id, {
+  const { pendingDraft, setPendingDraft, hasExecutedPending } = usePendingRatingDraft(show.id, {
     isAuthenticated,
     user,
     onResumeRatingDraft: () => {
@@ -75,13 +77,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     const wantsRate = searchParams.get('rate') === '1';
     const wantsEdit = searchParams.get('edit') === '1';
     if (!wantsRate && !wantsEdit) return;
-    if (!isAuthenticated) {
-      hasHandledQueryParam.current = true;
-      saveDraft({});
-      showSignIn('rating', 'diary');
-      return;
-    }
-    if (wantsEdit && !reviewsSynced) return; // wait for latestReview to resolve
+    if (wantsEdit && isAuthenticated && !reviewsSynced) return; // wait for latestReview to resolve
     hasHandledQueryParam.current = true;
     // ?stars=N from the watchlist rate strips — same validation as the show
     // hero (untrusted input: NaN / out-of-range dropped). Without this the
@@ -93,16 +89,33 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     setEditingReview(wantsEdit ? latestReview : null);
     setPendingDraft(null);
     setRatePanelOpen(true);
-  }, [searchParams, authLoading, isAuthenticated, reviewsSynced, show.id, latestReview, showSignIn, saveDraft, hasExecutedPending, setPendingDraft]);
+  }, [searchParams, authLoading, isAuthenticated, reviewsSynced, latestReview, hasExecutedPending, setPendingDraft]);
 
   const handleSaveReview = useCallback(async (data: RatingEditorSaveData) => {
     if (!user) {
       if (authLoading) {
         throw new Error('Still restoring your session. Tap Retry in a moment.');
       }
-      saveDraft(data);
+      const next = saveLocalRating({
+        showId: show.id,
+        rating: data.rating,
+        ...(data.reviewText ? { reviewText: data.reviewText } : {}),
+        ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
+        ...(data.timeSlot ? { timeSlot: data.timeSlot } : {}),
+        ...(data.curtainTime ? { curtainTime: data.curtainTime } : {}),
+        ...(data.seat ? { seat: data.seat } : {}),
+      });
+      removeLocalShow(show.id);
+      trackUgc('rating_saved_local', {
+        show_id: show.id,
+        source: 'diary_page',
+        rating: isRated(data.rating) ? data.rating : null,
+        unrated: !isRated(data.rating),
+        has_review_text: !!data.reviewText,
+        local_count: next.length,
+      });
       showSignIn('rating', 'diary');
-      return 'auth-gated';
+      return 'saved-local';
     }
     if (data.reviewId) {
       const filters = `id=eq.${data.reviewId}&user_id=eq.${user.id}`;
@@ -129,7 +142,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     }
     await getReviewsForShow(show.id);
-  }, [user, authLoading, show.id, getReviewsForShow, showSignIn, showToast, saveDraft]);
+  }, [user, authLoading, show.id, getReviewsForShow, showSignIn, showToast]);
 
   // My Shows posters no longer carry a delete button (BRO-4558), so the rating
   // editor here is the delete path for diary-only shows, same as the show page.
