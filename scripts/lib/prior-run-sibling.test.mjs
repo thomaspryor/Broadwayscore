@@ -552,3 +552,10 @@ test('carry window reaches back to the earlier entry’s own opening when priorR
   const { inherited } = inheritPriorRunReviews(reviews, [BEDLAM_MAY, BEDLAM_NOV]);
   assert.deepEqual(inherited.map((r) => r.outletId).sort(), ['nytimes', 'theatermania']);
 });
+test('an explicit id link never widens its window (multi-run entry guard, BRO-5489)', () => {
+  const multi = { id: 'multi-2019', title: 'Show', category: 'west-end', venue: 'V', openingDate: '2019-01-01', closingDate: '2023-12-31' };
+  const newer = { id: 'multi-2026', title: 'Show', category: 'west-end', venue: 'V', openingDate: '2026-01-01',
+    priorRuns: [{ id: 'multi-2019', openingDate: '2023-06-01', closingDate: '2023-12-31', venue: 'V' }] };
+  const [link] = findPriorRunSiblings(newer, [multi, newer]);
+  assert.equal(link.window.openingDate, '2023-06-01');
+});
