@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T09:00:24.930Z",
+  "timestamp": "2026-11-17T09:57:23.219Z",
   "stats": {
-    "totalReviews": 82336,
+    "totalReviews": 82322,
     "alreadyFlagged": 22500,
     "dateGuardCatches": 222,
     "directorMismatch": 3726,
-    "tvFilmSignals": 2342,
+    "tvFilmSignals": 2340,
     "londonSignals": 3782,
     "offBroadwaySignals": 760,
     "yearMismatch": 379,
-    "noPublishDate": 8222
+    "noPublishDate": 8223
   },
   "findings": [
     {
@@ -69586,7 +69586,7 @@
     },
     {
       "showId": "the-fantasticks-2026",
-      "file": "guardian--richard-lawson--on-2026-11-16.json",
+      "file": "guardian--richard-lawson.json",
       "score": 83,
       "publishDate": "2026-11-17T03:00:00.000Z",
       "url": "https://www.theguardian.com/stage/2026/nov/16/the-fantasticks-musical-review-hayes-theatre-new-york",
@@ -69595,34 +69595,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "file": "guardian--richard-lawson.json",
-      "score": 83,
-      "publishDate": "2026-11-17",
-      "url": "https://www.theguardian.com/stage/2026/nov/16/the-fantasticks-musical-review-hayes-theatre-new-york",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "file": "nytg--joe-dziemianowicz--on-2026-11-16.json",
-      "score": 78,
-      "publishDate": "2026-11-16",
-      "url": "https://www.newyorktheatreguide.com/reviews/the-fantasticks-broadway-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
