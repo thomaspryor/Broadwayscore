@@ -476,9 +476,13 @@ data/audit/gap-audit-checkpoint.json merge-keyed=entries
 # whose workflow never commits it; the next rebuild rewrites it in full anyway.
 # public/data/shows/*.json is left off: several scripts make surgical one-field
 # edits to it (.github/workflows/CLAUDE.md "Public Show JSON Safety"). Append
-# ledgers that read and extend their own file (gather-collisions,
-# url-mismatch-suspects, market-misroutes, exclusion daily totals) are left off
-# on purpose even though they use merge=ours too.
+# ledgers that read and extend their own file are NOT regenerated: they take
+# autostash=append below (a capped array log whose writers only append) so a
+# concurrent run's rows are unioned, never dropped. BRO-7595: these files
+# produced most of the ~2,300 autostash-conflict rows in the push-retry deadman row because both sides' appends conflicted as atomic arrays.
+# exclusion-daily-totals.json stays untagged on purpose: it carries 14 past days
+# that are never recomputed, and autostash=regenerated would also make
+# merge-keep-run.sh take a whole file on rebase.
 data/audit/deploy-watermark.json autostash=regenerated
 data/audit/needs-human-review.json autostash=regenerated
 data/audit/rebuild-score-drift.json autostash=regenerated
@@ -495,6 +499,10 @@ data/audit/validation/collection-report-*.json autostash=regenerated
 public/data/admin/locks.json autostash=regenerated
 public/data/admin/critic-coverage.json autostash=regenerated
 public/data/mobile-shows.json autostash=regenerated
+# BRO-7595: capped append-only array logs (writers push rows, trim the oldest).
+data/audit/url-mismatch-suspects.json autostash=append
+data/audit/market-misroutes.json autostash=append
+data/audit/gather-collisions.json autostash=append
 
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
