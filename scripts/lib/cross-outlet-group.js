@@ -70,7 +70,8 @@ function resolveFingerprintGroup(plain, classify) {
 const CONTAINMENT_MIN_WORDS = 12;
 const CONTAINMENT_MATCH = 85;
 function words(text) {
-  return String(text || '').toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+  const { foldDiacritics } = require('./title-match');
+  return foldDiacritics(String(text || '')).toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
 }
 function excerptContainment(excerptText, fullText) {
   const ew = words(excerptText);

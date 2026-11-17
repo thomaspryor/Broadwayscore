@@ -19,6 +19,9 @@ assert.deepEqual(excerptCopySide(ft, ex), { copy: 'b', containment: 100 });
 // 2. Curly vs straight apostrophes still match.
 assert.equal(excerptContainment('It’s probably a high compliment to say that if you liked the original form then you will like this one too', "It's probably a high compliment to say that if you liked the original form then you will like this one too. " + filler), 100);
 
+// 2b. Accented and plain spellings match (Jenůfa / Jenufa).
+assert.equal(excerptContainment('The soprano sings Jenůfa with a radiant fragility that the whole cast of this production matches', 'The soprano sings Jenufa with a radiant fragility that the whole cast of this production matches. ' + filler), 100);
+
 // 3. An unrelated excerpt is not paired.
 assert.equal(excerptCopySide({ text: 'A wholly different critic writes that the lighting design overwhelms every quiet scene in the second act tonight.', textSource: 'excerpts' }, ft), null);
 
