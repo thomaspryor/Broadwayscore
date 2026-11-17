@@ -22,6 +22,7 @@ import {
   MONEY_GATE_BOOT_SCRIPT,
   MONEY_ROLES,
   MONEY_UNLOCKED_EVENT,
+  completeMoneySignIn,
   isMoneyUnlocked,
   markMoneyUnlocked,
   moneyGatePaywallSchema,
@@ -73,7 +74,7 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
   const lockRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   useIsoLayoutEffect(() => {
     const reason = moneyUnlockReason();
@@ -115,7 +116,8 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
   // Signed in (on load or mid-visit): unlock without asking for an email.
   useEffect(() => {
     if (isAuthenticated && unlockForExistingReader()) setBypass({ reason: 'account', when: 'midvisit' });
-  }, [isAuthenticated]);
+    if (isAuthenticated && user?.email) void completeMoneySignIn(user.email);
+  }, [isAuthenticated, user?.email]);
 
   // Locked content is blurred: keep keyboard focus and screen readers out of
   // it. Set once mounted (never in the server HTML, which stays readable).
@@ -252,6 +254,14 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
         One sign&#8209;up unlocks every page.
       </p>
 
+      {featureFlags.userAccounts && (
+        <div className="mt-5">
+          <button type="button" onClick={() => showSignIn('generic', 'biz_gate')} className="btn-primary min-h-[44px] w-full px-5 text-sm">
+            Continue with Google / Apple
+          </button>
+          <p className="mt-2 text-center text-xs text-gray-400">Or unlock with email</p>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="mt-5" noValidate>
         <label htmlFor={`${id}-email`} className="sr-only">Email address</label>
         <div className="flex flex-col gap-2 sm:flex-row">
@@ -330,18 +340,6 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
           {MONEY_EMAIL_USE}{' '}
           <a href="/privacy" className="underline underline-offset-2 hover:text-white">Privacy</a>
         </p>
-        {featureFlags.userAccounts && (
-          <p className="mt-2 text-xs text-gray-400">
-            Already have an account?{' '}
-            <button
-              type="button"
-              onClick={() => showSignIn('generic', `money_gate:${page}`)}
-              className="font-medium text-brand underline underline-offset-2 hover:text-brand-hover"
-            >
-              Sign in
-            </button>
-          </p>
-        )}
       </form>
     </div>
   );
