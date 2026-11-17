@@ -44075,13 +44075,12 @@
       "title": "Show art: 6 image fields point at art from a rejected URL",
       "firstSeen": "2026-11-15T23:41:29.001Z",
       "incidentOpenedAt": "2026-11-15T23:41:29.001Z",
-      "lastSeen": "2026-11-17T18:46:24.207Z",
-      "lastNotifiedAt": "2026-11-16T23:54:13.450Z",
+      "lastSeen": "2026-11-17T22:29:36.636Z",
+      "lastNotifiedAt": "2026-11-17T22:29:36.636Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-7572",
-      "silentRefires": 5
+      "linearIdentifier": "BRO-7572"
     },
     "land:land/bro-7559-recheck-stale-checks": {
       "status": "open",
@@ -45022,6 +45021,19 @@
       "cardId": null,
       "linearIdentifier": null
     },
+    "land:land/git-timeout-7715": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/git-timeout-7715",
+      "firstSeen": "2026-11-17T22:05:33.016Z",
+      "incidentOpenedAt": "2026-11-17T22:05:33.016Z",
+      "lastSeen": "2026-11-17T22:05:33.016Z",
+      "lastNotifiedAt": "2026-11-17T22:05:33.016Z",
+      "lastSurfacedAt": "2026-11-17T22:05:33.016Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
     "land:land/retro-bash-4": {
       "status": "open",
       "disposition": "digest",
@@ -45034,6 +45046,45 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "cookie-health:live-access-failed:nytimes": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "nytimes login cookies fail the live access check: T1 reviews will score on paywall-truncated text",
+      "firstSeen": "2026-11-17T22:00:28.889Z",
+      "incidentOpenedAt": "2026-11-17T22:00:28.889Z",
+      "lastSeen": "2026-11-17T22:00:28.889Z",
+      "lastNotifiedAt": "2026-11-17T22:00:28.889Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7717"
+    },
+    "cookie-health:live-access-failed:wapo": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "wapo login cookies fail the live access check: reviews will score on paywall-truncated text",
+      "firstSeen": "2026-11-17T22:00:31.362Z",
+      "incidentOpenedAt": "2026-11-17T22:00:31.362Z",
+      "lastSeen": "2026-11-17T22:00:31.362Z",
+      "lastNotifiedAt": "2026-11-17T22:00:31.362Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7718"
+    },
+    "cookie-health:live-access-failed:ft": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "ft login cookies fail the live access check: reviews will score on paywall-truncated text",
+      "firstSeen": "2026-11-17T22:00:35.712Z",
+      "incidentOpenedAt": "2026-11-17T22:00:35.712Z",
+      "lastSeen": "2026-11-17T22:00:35.712Z",
+      "lastNotifiedAt": "2026-11-17T22:00:35.712Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7719"
     }
   }
 }

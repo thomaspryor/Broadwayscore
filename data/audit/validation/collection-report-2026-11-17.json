@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-17T20:43:33.529Z",
+  "runDate": "2026-11-17T21:53:34.128Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "desire-under-the-elms-off-west-end-2026",
+    "showFilter": "orlando-off-west-end-2026,dolly-partons-smoky-mountain-christmas-carol-tour-2026,potus-off-broadway-2026,first-and-last-off-broadway-2026,peter-pan-goes-wrong-regional-2026,the-laugh-track-regional-2026,thistles-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -29,14 +29,14 @@
   },
   "statistics": {
     "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "shows": [
-      "desire-under-the-elms-off-west-end-2026"
+      "the-laugh-track-regional-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,20 +65,18 @@
       "failed": 0
     }
   },
-  "processed": [
-    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--unknown.json"
+  "processed": [],
+  "failed": [
+    "the-laugh-track-regional-2026/la-drama-critics-circle--ladcc-critics.json"
   ],
-  "failed": [],
   "cumulativeResumedState": {
-    "processed": [
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--unknown.json"
-    ],
-    "failed": []
+    "processed": [],
+    "failed": [
+      "the-laugh-track-regional-2026/la-drama-critics-circle--ladcc-critics.json"
+    ]
   },
   "tierDetails": {
-    "playwright": [
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],

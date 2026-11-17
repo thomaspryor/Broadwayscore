@@ -16,7 +16,7 @@
  *     range/verbatim checked (FIELD_VALUE_CHECKS).
  *   - compare-and-set: the current value must equal action.oldValue, so a plan
  *     never overwrites something CI changed after it was written.
- *   - _locked records are refused.
+ *   - _locked records allow only manual non-review exclusions.
  *   - every edit is stamped on the record (approvedFixes), so the provenance
  *     survives in the private repo.
  */
@@ -461,7 +461,9 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   const valueCheck = FIELD_VALUE_CHECKS[field];
   const valueError = valueCheck ? valueCheck(newValue, record, ctx) : null;
   if (valueError) return { ok: false, reason: valueError };
-  if (record._locked === true) return { ok: false, reason: 'record is _locked' };
+  const lockedExclusion = (field === 'isNonReview' && newValue === true)
+    || (field === 'isNonReviewReason' && typeof newValue === 'string' && /^manual \(not a review\)/i.test(newValue));
+  if (record._locked === true && !lockedExclusion) return { ok: false, reason: 'record is _locked' };
   const current = record[field] === undefined ? null : record[field];
   const expected = oldValue === undefined ? null : oldValue;
   if (JSON.stringify(current) !== JSON.stringify(expected)) {
@@ -788,6 +790,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   // attempt already stamped its breadcrumb. Only the requested field may
   // bypass that stale-payload check; collision and lock guards still run.
   const writeOptions = action.field === 'url' ? { approvedUrlRepair: true } : {};
+  if (record._locked === true) writeOptions.approvedLockedNonReviewField = action.field;
   if (action.field === 'duplicateOf' && action.newValue === null) {
     writeOptions.approvedFieldClear = action.field;
   }

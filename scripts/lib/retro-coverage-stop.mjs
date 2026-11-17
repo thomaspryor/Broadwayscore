@@ -40,21 +40,40 @@ const CODE_TOKEN = String.raw`(?:src/|scripts/|\.github/|\.claude/(?:hooks|comma
 const B = String.raw`(?:^|[\s'"=(<>])`; // a path starts at a boundary (after normalizing, absolute repo paths start bare)
 const TARGET_RE = new RegExp(`${B}['"]?${CODE_TOKEN}`);
 const SCRIPT_WRITE_RE = /open\([^)]*,\s*['"][wa]|writeFileSync|appendFileSync|write_text|(?<!std(?:out|err))\.write\(/;
-/** Absolute or ./ paths into the repo or a worktree become repo-relative. Anchored at a boundary so a long token stays linear. */
+/** Absolute or ./ paths into the repo or a worktree become repo-relative. Token by token with indexOf: linear on any input. */
+const ROOT_RE = /^\/(?:home\/user|repo|workspace)\/[^/]+\//;
+function normalizeToken(tok) {
+  const wt = tok.lastIndexOf('.claude/worktrees/');
+  if (wt >= 0) { const slash = tok.indexOf('/', wt + 18); return slash < 0 ? tok : tok.slice(slash + 1); }
+  return tok.replace(ROOT_RE, '').replace(/^\.\//, '');
+}
 function normalizePaths(c) {
-  return c
-    .replace(/(^|[\s'"=(<>])[^\s'"]*?\.claude\/worktrees\/[^/\s'"]+\//g, '$1')
-    .replace(/(^|[\s'"=(<>])\/(?:home\/user|repo|workspace)\/[^/\s'"]+\//g, '$1')
-    .replace(/(^|[\s'"=(<>])\.\//g, '$1');
+  return c.split(/([\s'"=(<>]+)/).map((tok, i) => (i % 2 ? tok : normalizeToken(tok))).join('');
+}
+/** Split on && || ; | and newlines that sit outside quotes (a sed script 's/a/b/;s/c/d/' stays whole). */
+function splitClauses(c) {
+  const out = []; let cur = ''; let q = '';
+  for (let i = 0; i < c.length; i++) {
+    const ch = c[i];
+    if (q) { cur += ch; if (ch === q) q = ''; continue; }
+    if (ch === "'" || ch === '"') { q = ch; cur += ch; continue; }
+    if (ch === ';' || ch === '\n' || ch === '|' || (ch === '&' && c[i + 1] === '&')) { out.push(cur); cur = ''; if (c[i + 1] === ch) i++; continue; }
+    cur += ch;
+  }
+  out.push(cur);
+  return out;
 }
 /** PURE. One shell clause (no && ; | splitting left to do) that writes a tracked code file. */
 function clauseEditsCode(cl) {
-  const t = cl.trim();
+  const t = cl.replace(/\s#.*$/, '').trim(); // a trailing shell comment is not the destination
   // sed/perl in place: -i anywhere in the clause (before or after the script), or --in-place.
   if (/^(?:sudo\s+)?(?:sed|perl)\b/.test(t) && /\s(?:-\w*i\w*|--in-place)\b/.test(t) && TARGET_RE.test(t)) return true;
   // cp/mv/install: the destination is the last token.
-  if (/^(?:cp|mv|install|rsync)\b/.test(t)) { const last = t.split(/\s+/).pop(); return new RegExp(`^['"]?${CODE_TOKEN}`).test(last); }
-  if (/^(?:git\s+apply|patch)\b/.test(t)) return true;
+  if (/^(?:cp|mv|install|rsync)\b/.test(t)) {
+    const last = t.replace(/(?:\s+\d*>>?&?\s*\S+)+$/, '').split(/\s+/).pop(); // a trailing 2>/dev/null is not the destination
+    return new RegExp(`^['"]?${CODE_TOKEN}`).test(last);
+  }
+  if (/^(?:git(?:\s+-C\s+\S+)?\s+apply|patch)\b/.test(t)) return !/\s--(?:check|stat|numstat|summary)\b/.test(t);
   // > >> and tee: the token right after the operator.
   return new RegExp(String.raw`(?:>>?|\btee(?:\s+(?:-a|--append))?)\s*['"]?${CODE_TOKEN}`).test(t);
 }
@@ -62,7 +81,7 @@ function clauseEditsCode(cl) {
 export function shellEditsCode(command) {
   const raw = normalizePaths(String(command || ''));
   // runShellCode drops heredoc bodies and whitespace-holding quotes, keeping real shell (and bash -c bodies).
-  if (normalizePaths(runShellCode(raw)).split(/&&|\|\||;|\||\n/).some(clauseEditsCode)) return true;
+  if (splitClauses(runShellCode(raw)).some(clauseEditsCode)) return true;
   // A python/node script writing a file: the write call and a code path in the same command.
   return SCRIPT_WRITE_RE.test(raw) && TARGET_RE.test(raw);
 }

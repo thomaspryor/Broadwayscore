@@ -290,6 +290,33 @@ function planRenewal({ probeStatus, cookies, authCookies, nowMs, leadMs = RENEW_
 }
 
 /**
+ * BRO-7716: where the logged-in probe runs. HTTP-probed outlets (nytimes,
+ * wapo, thestage) whose plain-fetch probe reads 'error' (bot challenge, e.g.
+ * NYT 403 from a residential IP) fall back to the in-browser profile probe,
+ * as browserOnly outlets use. Only a bot-wall 'error' falls back: 'vacuous'
+ * stays a stop (probe URL is stale), and every login guard (confirmWall,
+ * anonymous control, credentialGate) still applies downstream.
+ * @returns {{inBrowser:boolean, probeStatus:string, fellBack:boolean}}
+ */
+function resolveProbeMode({ browserOnly, probeStatus }) {
+  if (browserOnly) return { inBrowser: true, probeStatus, fellBack: false };
+  if (probeStatus === 'error') return { inBrowser: true, probeStatus: 'unknown', fellBack: true };
+  return { inBrowser: false, probeStatus, fellBack: false };
+}
+
+/**
+ * BRO-7716: what to do with the anonymous control result. Only fallback
+ * outlets (fetch probe bot-walled) may tolerate an unreadable control, and
+ * only for a read-only probe: with vacuity unverified a real run must not
+ * write/push cookies or stamp the outlet healthy.
+ * @returns {'proceed'|'fail'|'probe-only-ok'}
+ */
+function decideControlUnverified({ fellBack, probeOnly }) {
+  if (!fellBack) return 'fail';
+  return probeOnly ? 'probe-only-ok' : 'fail';
+}
+
+/**
  * Did the profile hand us a session different from the saved file? Compares
  * the auth cookies' values and expiries (never printed) so a logged-in
  * profile whose session matches the file does not re-push the bundles every
@@ -496,6 +523,8 @@ module.exports = {
   missingCredentials,
   soonestAuthExpiry,
   planRenewal,
+  resolveProbeMode,
+  decideControlUnverified,
   authCookiesChanged,
   credentialGate,
   isCredsMissingStop,

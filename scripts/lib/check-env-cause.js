@@ -22,7 +22,9 @@ const CAUSES = [
   {
     key: 'credential-withheld',
     // checksEnv() strips GH_TOKEN, LINEAR_API_KEY and every other secret.
-    re: /gh auth login|populate the GH_TOKEN environment variable|gh api fetch failed|\b[A-Z][A-Z0-9_]*_(?:API_KEY|TOKEN|SECRET)\b[^\n]{0,40}?\bnot set\b/,
+    // BRO-7622: "X_API_KEY and Y are required" (tests/live/related-shows-ab-sample.test.mjs)
+    // is the same withheld secret worded differently; it read as a real fail.
+    re: /gh auth login|populate the GH_TOKEN environment variable|gh api fetch failed|\b[A-Z][A-Z0-9_]*_(?:API_KEY|TOKEN|SECRET)\b[^\n]{0,40}?\b(?:not set|(?:is|are) required)\b/,
     plain: 'its check needs a password the recheck machine is not given',
   },
   {
@@ -111,7 +113,13 @@ function recheckVerdict(row, { tsxTests } = {}) {
   // time with the argv that ACTUALLY ran (tsx-routed tests run under tsx, where a
   // missing module is a real failure). Re-deriving them from the card's original
   // verifyCmd would hide that regression; only legacy rows are re-derived.
-  if (Object.prototype.hasOwnProperty.call(row, 'sha')) return { status: 'fail', envCause: null };
+  // BRO-7622: the text causes in CAUSES do not depend on argv, so a newer one still
+  // applies to a sha row (else a widened cause never reaches the row that motivated
+  // it, and recheck-route keeps re-routing it). argv stays null: no tsx re-derivation.
+  if (Object.prototype.hasOwnProperty.call(row, 'sha')) {
+    const textCause = envCauseOf(row.detail || row.note, { argv: null, tsxTests: null });
+    return textCause ? { status: 'unverifiable', envCause: textCause.key } : { status: 'fail', envCause: null };
+  }
   let argv = null;
   try { argv = row.verifyCmd ? require('./autonomous-checks.js').tokenizeCheckCommand(String(row.verifyCmd)) : null; } catch { argv = null; }
   const cause = envCauseOf(row.detail || row.note, { argv, tsxTests: tsxTests === undefined ? repoTsxTests() : tsxTests });

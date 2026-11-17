@@ -2023,6 +2023,14 @@ function safeWriteReview(filePath, newData, options = {}) {
       // Re-clearing such a file goes through a compare-and-set approved edit,
       // the canonical clear scripts (direct write), or force=true.
       const incomingSnapshot = { ...newData };
+      // Approved plans may only add a manual exclusion to a locked record.
+      // Validate the field and value here too; the rest of the lock stays in force.
+      const approvedLockedNonReviewField = options.approvedLockedNonReviewField;
+      const approvedLockedExclusion = approvedLockedNonReviewField === 'isNonReview'
+        ? incomingSnapshot.isNonReview === true && /^manual \(not a review\)/i.test(String(existing.isNonReviewReason || ''))
+        : approvedLockedNonReviewField === 'isNonReviewReason'
+          && typeof incomingSnapshot.isNonReviewReason === 'string'
+          && /^manual \(not a review\)/i.test(incomingSnapshot.isNonReviewReason);
       const clearHonored = (field) =>
         _isBreadcrumbClear(field, incomingSnapshot, existing)
         && (!_isBreadcrumbClear(field, existing, existing)
@@ -2060,7 +2068,7 @@ function safeWriteReview(filePath, newData, options = {}) {
         // resurrects the flag it just cleared (observed live: Traitors/Space
         // Dogs FP recovery, session 2026-08-02). A lock still wins: clearing
         // flags on a _locked file requires force=true.
-        if (existingIsReal && (incomingIsEmpty || lockedOverride)) {
+        if (existingIsReal && (incomingIsEmpty || (lockedOverride && !(approvedLockedExclusion && field === approvedLockedNonReviewField)))) {
           const intentionalClear = !lockedOverride && incomingIsEmpty
             && clearHonored(field);
           if (intentionalClear) {

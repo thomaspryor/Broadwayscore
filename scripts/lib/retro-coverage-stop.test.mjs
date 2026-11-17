@@ -109,6 +109,12 @@ test('shell-edit detection: ship-check findings (absolute paths, cp/mv, quoted p
     "git apply /tmp/fix.patch",
     "echo '{}' > .claude/autonomous-config.json",
     "echo x >> .claude/hooks/verify-edits.sh",
+    `bash -lc "cp a.js ${['scripts', 'b.js'].join('/')}"`,
+    "cp a.js src/b.js # copy over",
+    "sed -i 's/a/b/;s/c/d/' scripts/x.js",
+    "sed -i 's/a|b/c/' scripts/x.js",
+    "mv a.js scripts/x.js 2>/dev/null",
+    "git -C wt apply /tmp/p.patch",
   ]) assert.equal(shellEditsCode(cmd), true, cmd);
   for (const cmd of [
     "echo 1 > .claude/state/foo",
@@ -120,8 +126,11 @@ test('shell-edit detection: ship-check findings (absolute paths, cp/mv, quoted p
     "node -e \"process.stdout.write(require('fs').readFileSync('scripts/x.js','utf8'))\"",
     "cp scripts/x.js /tmp/x.js",
     "npm test 2>&1 | tee .cache/out.txt",
+    "git apply --check /tmp/p.patch",
   ]) assert.equal(shellEditsCode(cmd), false, cmd);
-  const t0 = Date.now();
-  shellEditsCode('x'.repeat(100000));
-  assert.ok(Date.now() - t0 < 500, 'a 100k-char token stays linear (was 5.5s)');
+  for (const big of ['x'.repeat(100000), 'a='.repeat(50000), 'x>'.repeat(50000), '(.claude/worktrees'.repeat(6000), "a'".repeat(50000), '/a'.repeat(50000)]) {
+    const t0 = Date.now();
+    shellEditsCode(big);
+    assert.ok(Date.now() - t0 < 500, `a 100k-char input stays linear (${big.slice(0, 6)}...: ${Date.now() - t0}ms)`);
+  }
 });

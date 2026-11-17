@@ -1766,6 +1766,37 @@
     "queuedAt": "2026-11-17T20:53:51.265Z"
   },
   {
+    "conditionKey": "land:land/git-timeout-7715",
+    "title": "Landing blocked: rebase red on land/git-timeout-7715",
+    "description": "land.yml did not land land/git-timeout-7715: the rebase gate went red at a9f4e8df04. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/git-timeout-7715 @ a9f4e8df04 (origin/land/git-timeout-7715) → origin/main @ 9f80f76853 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9f80f76853: Rebasing (1/3) error: could not apply c1b869c6fcc... land-branch: retry git timeouts, report persistent ones as git-timeout not rebase (BRO-7715) hint: Resolve all conflicts manually, mark them as resolved with hint: \"gi Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44174639968",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/git-timeout-7715"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "a9f4e8df04d841145b834d2e3fc9ef7073bf56f1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44174639968"
+      }
+    ],
+    "queuedAt": "2026-11-17T22:05:33.017Z"
+  },
+  {
     "conditionKey": "land:land/retro-bash-4",
     "title": "Landing blocked: rebase red on land/retro-bash-4",
     "description": "land.yml did not land land/retro-bash-4: the rebase gate went red at ad9ab21cd6. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/retro-bash-4 @ ad9ab21cd6 (origin/land/retro-bash-4) → origin/main @ b74099a3f3 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b74099a3f3: Rebasing (1/3) error: could not apply 043af31ed21... session-retro: count PreToolUse blocks, land preflight as a land refusal, label git-check stop blocks (BRO-7701) hint: Resolve all conflicts manually, mark them as resolved wi Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44174666630",
