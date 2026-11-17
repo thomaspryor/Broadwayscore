@@ -63,11 +63,12 @@ test('route: GitHub failure is a 502, missing config does nothing', async () => 
 
 test('route: a burst of calls inside the cooldown touches Supabase and GitHub once', async () => {
   const env = { MONEY_WELCOME_WAKE_COOLDOWN_MS: '60000' };
-  await callRoute({ rows: [], env: { MONEY_WELCOME_WAKE_COOLDOWN_MS: '0' } }); // reset lastActAt
+  const idle = await callRoute({ rows: [], env }); // nothing waiting: must not start the cooldown
+  assert.equal(idle.json.reason, 'nothing-waiting');
   const first = await callRoute({ rows: fresh(), env });
   const second = await callRoute({ rows: fresh(), env });
-  assert.equal(first.json.acted, true);
-  assert.deepEqual([second.json.acted, second.json.reason, second.calls.length], [false, 'cooldown', 0]);
+  assert.equal(first.json.acted, true, 'an idle call before it must not have swallowed the kick (BRO-7704 probe)');
+  assert.deepEqual([second.json.acted, second.json.reason, second.calls.length], [false, 'cooldown', 1]); // only the Supabase read, no GitHub call
 });
 
 test('route and client carry no secrets and send no body', () => {
