@@ -253,7 +253,11 @@ async function draftReviewsAddedReplies(nowLive, { lookupReader, transport, env 
         env,
         transport,
       });
-      if (!res.sent) { out.push({ key, status: 'skipped', reason: res.reason }); continue; }
+      if (!res.sent) {
+        if (res.reason === 'no-owner-email') entry.replyDraftRetry = true;
+        out.push({ key, status: 'skipped', reason: res.reason });
+        continue;
+      }
       entry.replyDraftedAt = now();
       delete entry.replyDraftRetry;
       out.push({ key, status: 'drafted' });

@@ -597,12 +597,18 @@ async function main() {
       const store = loadStore();
       const drafts = await draftReviewsAddedReplies([...nowLive, ...retries], {
         lookupReader: (id) => lookupSubmitter(store, id),
+        // Hard rule: owner drafts only, whatever FEEDBACK_AUTO_REPLY_KINDS says.
+        env: { ...process.env, FEEDBACK_AUTO_REPLY_KINDS: '' },
         transport: makeResendTransport(process.env.RESEND_API_KEY),
       });
       for (const d of drafts) console.log(`  reviews-added draft ${d.key}: ${d.status}${d.reason ? ` (${d.reason})` : ''}`);
     } catch (err) {
       console.log(`  reviews-added drafts failed: ${err.message}`);
+      for (const r of nowLive) if (r.entry.kind === 'missing-reviews' && !r.entry.replyDraftedAt) r.entry.replyDraftRetry = true;
     }
+  } else {
+    // No Resend key or owner address this run: keep the draft owed, not lost.
+    for (const r of nowLive) if (r.entry.kind === 'missing-reviews' && !r.entry.replyDraftedAt) r.entry.replyDraftRetry = true;
   }
 
   for (const r of nowLive) await closeIssue(r.entry.issueNumber, r.evidence, r.url);

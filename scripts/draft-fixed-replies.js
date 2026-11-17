@@ -43,7 +43,7 @@ function ghGet(apiPath, token) {
 }
 
 /** Issues that still need a draft. Pure, so the test can pin the selection rules. */
-const SKIP_LABELS = new Set(['feedback-digest', 'auto-dispatched', 'duplicate', 'wontfix', 'invalid']);
+const SKIP_LABELS = new Set(['feedback-digest', 'auto-dispatched', 'duplicate', 'wontfix', 'invalid', 'not-a-bug', 'needs-manual-review']);
 const GRACE_MIN = 30; // auto-fix emails its own draft right after closing; do not race it
 
 function selectIssuesNeedingDraft(issues, cutoffIso, now = Date.now()) {
@@ -107,6 +107,8 @@ async function main() {
         reader,
         originalMessage: reader.message,
         url: showLinkFor(reader.show, shows),
+        // Hard rule: this script only ever drafts to the owner, whatever the env says.
+        env: { ...process.env, FEEDBACK_AUTO_REPLY_KINDS: '' },
         transport,
       });
       if (!res.sent) { console.log(`  #${issue.number}: no draft (${res.reason})`); continue; }
