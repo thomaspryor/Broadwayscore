@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T18:21:23.894Z",
+  "generatedAt": "2026-11-17T18:43:15.434Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1141,27 +1141,27 @@
       "slug": "jenufa-off-broadway",
       "thumbnail": "/images/shows/jenufa-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 93,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
+      "total": 1,
+      "t1": 1,
       "t2": 0,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
-          "T1:0/3",
+          "1/12 total",
+          "T1:1/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1500,6 +1500,20 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-17T18:43:15.434Z",
+          "rc": 1,
+          "s": 93,
+          "t1": 1,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -1512,23 +1526,23 @@
       "status": "open",
       "slug": "the-fantasticks",
       "thumbnail": "/images/shows/the-fantasticks-2026/thumbnail.webp",
-      "siteScore": 78.69,
+      "siteScore": 78.91,
       "liveScore": 79,
-      "scoreDrift": 0.3100000000000023,
+      "scoreDrift": 0.09000000000000341,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
+      "total": 24,
       "t1": 6,
       "t2": 12,
-      "t3": 5,
-      "positive": 19,
+      "t3": 6,
+      "positive": 20,
       "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 23,
+        "highConfidence": 24,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1905,6 +1919,18 @@
           "t2": 12,
           "t3": 5,
           "p": 19,
+          "m": 3,
+          "n": 1,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-11-17T18:43:15.434Z",
+          "rc": 24,
+          "s": 78.91,
+          "t1": 6,
+          "t2": 12,
+          "t3": 6,
+          "p": 20,
           "m": 3,
           "n": 1,
           "bc": "complete"

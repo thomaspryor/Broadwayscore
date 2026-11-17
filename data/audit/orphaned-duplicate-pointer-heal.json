@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-17T18:10:59.772Z",
+  "generated": "2026-11-17T18:33:01.206Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 56,
+  "count": 55,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -387,13 +387,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "farinelli-and-the-king-2017",
-      "loserFile": "vulture--justin-davidson.json",
-      "targetFile": "vulture--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: vulture--jesse-green.json was flagged invalid after vulture--justin-davidson.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
