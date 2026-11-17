@@ -1,40 +1,5 @@
 [
   {
-    "startedAt": "2026-11-15T21:10:44.371Z",
-    "completedAt": "2026-11-15T21:29:43.377Z",
-    "totalReviews": 82621,
-    "processed": 13,
-    "skipped": 82604,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 79576,
-      "output": 5059,
-      "cacheRead": 65016,
-      "cacheWrite": 10730,
-      "total": 224561
-    },
-    "costUsd": 0.10305574999999999,
-    "runId": "43761915675",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-11-15T21:29:55.942Z",
     "completedAt": "2026-11-15T21:30:19.818Z",
     "totalReviews": 6,
@@ -622447,8 +622412,28 @@
     "logKeepsSince": "2026-11-16T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-17T18:41:35.261Z",
-    "completedAt": "2026-11-17T18:41:35.302Z",
+    "startedAt": "2026-11-17T18:50:36.374Z",
+    "completedAt": "2026-11-17T18:50:40.059Z",
+    "totalReviews": 6,
+    "processed": 1,
+    "skipped": 5,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 7834,
+      "output": 307,
+      "cacheRead": 0,
+      "cacheWrite": 5418,
+      "total": 19027
+    },
+    "costUsd": 0.03458130000000001,
+    "runId": "44150337091",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-16T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-17T18:55:39.131Z",
+    "completedAt": "2026-11-17T18:55:39.134Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -622461,7 +622446,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "44146824176",
+    "runId": "44150337091",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-16T00:00:00.000Z"
