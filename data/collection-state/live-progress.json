@@ -1,31 +1,131 @@
 {
-  "updatedAt": "2026-11-17T18:10:47.794Z",
-  "processed": 87,
-  "failed": 63,
-  "successRate": "58.0%",
+  "updatedAt": "2026-11-17T18:11:24.735Z",
+  "processed": 73,
+  "failed": 10,
+  "successRate": "88.0%",
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 47,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 7,
-    "brightdata": 0,
+    "scrapingdog": 19,
+    "scrapingbee": 6,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 26
+    "archive": 15
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-11-17T17:48:46.559Z",
+      "t": "2026-11-17T13:24:32.705Z",
       "event": "bb-session",
-      "session": "e36ecaf3",
-      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+      "session": "b443548b",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
     },
     {
-      "t": "2026-11-17T17:48:52.064Z",
+      "t": "2026-11-17T13:24:33.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T13:25:06.897Z",
+      "event": "bb-session",
+      "session": "3c846202",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T13:25:07.487Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T13:26:16.151Z",
+      "event": "bb-session",
+      "session": "085d7b7f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T13:26:16.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T13:29:00.088Z",
+      "event": "bb-session",
+      "session": "b1de3192",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-17T13:29:00.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T14:33:28.132Z",
+      "event": "bb-session",
+      "session": "e766a9d1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-17T14:33:28.466Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T15:12:52.781Z",
+      "event": "bb-session",
+      "session": "e7cc96c4",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-17T15:13:48.537Z",
+      "event": "bb-session",
+      "session": "602d5b42",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-17T18:02:33.047Z",
+      "event": "bb-session",
+      "session": "7b699d8b",
+      "url": "https://www.nytimes.com/2026/11/17/arts/music/review-jenufa-metropolitan-opera-a"
+    },
+    {
+      "t": "2026-11-17T18:02:33.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T18:06:16.576Z",
+      "event": "bb-session",
+      "session": "a404faa9",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T18:06:16.831Z",
+      "event": "bb-session",
+      "session": "9469df87",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T18:06:17.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T18:06:17.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T18:08:37.636Z",
+      "event": "bb-session",
+      "session": "70a2c6cf",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T18:08:38.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
