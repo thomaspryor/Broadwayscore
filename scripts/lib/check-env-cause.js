@@ -22,7 +22,9 @@ const CAUSES = [
   {
     key: 'credential-withheld',
     // checksEnv() strips GH_TOKEN, LINEAR_API_KEY and every other secret.
-    re: /gh auth login|populate the GH_TOKEN environment variable|gh api fetch failed|\b[A-Z][A-Z0-9_]*_(?:API_KEY|TOKEN|SECRET)\b[^\n]{0,40}?\bnot set\b/,
+    // BRO-7622: "X_API_KEY and Y are required" (tests/live/related-shows-ab-sample.test.mjs)
+    // is the same withheld secret worded differently; it read as a real fail.
+    re: /gh auth login|populate the GH_TOKEN environment variable|gh api fetch failed|\b[A-Z][A-Z0-9_]*_(?:API_KEY|TOKEN|SECRET)\b[^\n]{0,40}?\b(?:not set|(?:is|are) required)\b/,
     plain: 'its check needs a password the recheck machine is not given',
   },
   {

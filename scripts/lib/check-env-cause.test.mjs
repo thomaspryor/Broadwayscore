@@ -114,3 +114,14 @@ test('corpus-scan guard messages classify as private-texts-absent, a real drift 
   // The audit's own findings (ran, found drift) must remain a real failure.
   assert.equal(envCauseOf('[audit-critic-consensus-contamination] 1 fail, 0 warn\n  [fail] x\n     REVIEWCOUNT_DRIFT:consensus=25,actual=36,diff=11'), null);
 });
+
+// BRO-7622: the BRO-5989 live probe failed every night on main with this exact line
+// (recheck ledger, 2026-11-16, c046572d0fc3) because checksEnv withholds PostHog keys.
+test('"X_API_KEY and Y are required" is a withheld credential, not a regression', () => {
+  const detail = 'not ok: related-shows-position has the minimum exposed people per arm | first failure: POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID are required';
+  assert.equal(envCauseOf(detail).key, 'credential-withheld');
+  assert.equal(envCauseOf('SOME_TOKEN is required').key, 'credential-withheld');
+  // A config value (not a credential) being required stays a real failure.
+  assert.equal(envCauseOf('POSTHOG_PROJECT_ID is required'), null);
+  assert.equal(envCauseOf('a reviewer is required for every show'), null);
+});
