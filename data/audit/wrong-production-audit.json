@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-17T02:27:59.213Z",
+  "timestamp": "2026-11-17T03:22:13.212Z",
   "stats": {
-    "totalReviews": 82257,
-    "alreadyFlagged": 22489,
+    "totalReviews": 82266,
+    "alreadyFlagged": 22490,
     "dateGuardCatches": 222,
-    "directorMismatch": 3717,
-    "tvFilmSignals": 2329,
+    "directorMismatch": 3718,
+    "tvFilmSignals": 2330,
     "londonSignals": 3779,
     "offBroadwaySignals": 755,
     "yearMismatch": 378,
@@ -47806,6 +47806,20 @@
       ]
     },
     {
+      "showId": "now-you-see-me-live-2026",
+      "file": "theater-life--ellis-nassour.json",
+      "score": 83,
+      "publishDate": "2026-11-16",
+      "url": "https://theaterlife.com/now-you-see-me-live",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ash jacks mccready\" from now-you-see-me-live-off-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "oedipus-west-end-2024",
       "file": "plays-international--maryam-philpott.json",
       "score": 89,
@@ -83760,6 +83774,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "wanted-2022",
+      "file": "theater-scene--samuel-l-leiter.json",
+      "score": 60,
+      "publishDate": "2026-11-15",
+      "url": "https://www.theaterscene.net/musicals/broadway/wanted/samuel-l-leiter/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
