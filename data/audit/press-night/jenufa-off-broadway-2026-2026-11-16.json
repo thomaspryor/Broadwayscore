@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "showId": "jenufa-off-broadway-2026",
+  "night": "2026-11-16",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-17T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-17T02:30:05.514Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-17T04:55:12.003Z",
+    "lastOkSampleAt": "2026-11-17T04:55:12.003Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-17T04:00:09.679Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-17T05:00:28.890Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-17T05:00:28.990Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-17T05:00:32.031Z",
+    "files": [
+      {
+        "file": "artsdesk--david-nice.json",
+        "outletId": "artsdesk",
+        "outlet": "The Arts Desk",
+        "critic": "David Nice",
+        "firstSeenAt": "2026-11-16T01:36:15.786Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "theartsdesk.com/opera/jenufa-royal-opera-review-electrifying-details-undermined-dead-space",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "operawire--francisco-salazar.json",
+        "outletId": "operawire",
+        "outlet": "OperaWire",
+        "critic": "Francisco Salazar",
+        "firstSeenAt": "2026-11-16T01:36:11.533Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-08",
+        "url": "operawire.com/asmik-grigorian-leads-metropolitan-operas-new-production-of-jenufa",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "parterre-box--parterre-box.json",
+        "outletId": "parterre-box",
+        "outlet": "Parterre Box",
+        "critic": "Parterre Box",
+        "firstSeenAt": "2026-11-16T16:26:49.780Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-22",
+        "url": "parterre.com/broadcast/109870/jenufa",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
