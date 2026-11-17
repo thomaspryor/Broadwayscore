@@ -95,14 +95,13 @@ function analyze(lines) {
         const t = textOf(b.content);
         const m = t.match(/^(?:\d\d:\d\d:\d\dZ )?REFUSED: (land\/\S+)[^\n]*/m);
         if (m) out.landRefusals.push({ at: e.timestamp || null, why: m[0].slice(0, 160) });
-        // BRO-7701: a PreToolUse block (the tool never ran) is a hook block too; the land preflight's is also a land refusal.
-        const pre = t.match(/^PreToolUse:(\S+) hook error/);
+        // BRO-7701: a PreToolUse block (the tool never ran) is a hook block too. The land preflight's counts as a hook block,
+        // not a land refusal: the review gate stopping an unreviewed push is the gate working, not a refused landing.
+        const pre = b.is_error === true && t.match(/^PreToolUse:(\S+) hook error/); // real blocks are is_error; a cat of a log is not
         if (pre) {
           const code = t.match(/\[VE:[A-Z0-9]+\]/);
-          const k = code ? code[0] : /LAND BLOCKED/.test(t) ? 'pre:land-preflight' : /outside a worktree/.test(t) ? 'pre:worktree-enforce' : `pre:${pre[1].replace(/^mcp__[^_]+(?:-[^_]+)*__/, '')}`;
+          const k = code ? code[0] : /LAND BLOCKED/.test(t) ? 'pre:land-preflight' : /outside a worktree/.test(t) ? 'pre:worktree-enforce' : `pre:${pre[1].split('__').pop()}`;
           out.hookBlocks[k] = (out.hookBlocks[k] || 0) + 1;
-          const land = t.match(/LAND BLOCKED[^\n]*/);
-          if (land) out.landRefusals.push({ at: e.timestamp || null, why: land[0].slice(0, 160) });
         }
       }
       if (/worker process was restarted/.test(txt)) out.restarts++;

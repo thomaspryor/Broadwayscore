@@ -87,7 +87,7 @@ const shellCode = (cmd) => stripHeredocBodies(cmd).replace(/'[^']*'|"[^"]*"/g, '
  * a sed expression); a space-free quote such as "HEAD:refs/heads/land/x" is kept. The script handed
  * to a shell (`bash -c "..."`, `bash <<'EOF' ... EOF`) is code, so it is unwrapped and judged the same way.
  */
-const SHELL_C_BEFORE_RE = /(?:^|[\s;&|(])(?:ba|z)?sh\s+-c\s+$/;
+const SHELL_C_BEFORE_RE = /(?:^|[\s;&|(])(?:ba|z)?sh\s+-[a-z]*c\s+$/; // bash -c, -lc, -ec (BRO-7701)
 const SHELL_HEREDOC_OPEN_RE = /(?:^|[\s;&|(])(?:ba|z)?sh\b[^\n<]*<<-?\s*(['"]?)(\w+)\1[^\n]*$/;
 export function runShellCode(command, depth = 0) {
   const raw = String(command || '');
@@ -95,7 +95,7 @@ export function runShellCode(command, depth = 0) {
   // Quotes are read left to right, so a `bash -c '...'` sitting inside a larger quoted string (a
   // `node -e "..."` fixture) is never seen as its own quote; heredoc bodies are already gone.
   const outer = stripHeredocBodies(raw).replace(/'[^']*'|"[^"]*"/g, (q, at, str) => {
-    if (SHELL_C_BEFORE_RE.test(str.slice(0, at))) { inner.push(q.slice(1, -1)); return '""'; }
+    if (SHELL_C_BEFORE_RE.test(str.slice(Math.max(0, at - 64), at)) /* a bounded look-back: the whole prefix per quote was quadratic (BRO-7701) */) { inner.push(q.slice(1, -1)); return '""'; }
     return /\s/.test(q) ? '""' : q;
   });
   // A heredoc fed to a shell: its opener survived stripping (so it is not itself inside data); take its body from raw.
@@ -110,7 +110,7 @@ export function runShellCode(command, depth = 0) {
   return [outer, ...(depth > 2 ? [] : inner.map((t) => runShellCode(t, depth + 1)))].join('\n');
 }
 const BUILD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|time\s+|timeout\s+\S+\s+)*(?:npm\s+run\s+build|npx\s+next\s+build|next\s+build)\b/;
-const SHELL_C_BUILD_RE = /^\s*(?:ba)?sh\s+-l?c\s[\s\S]*\b(?:npm\s+run\s+build|next\s+build)\b/;
+const SHELL_C_BUILD_RE = /^\s*(?:ba)?sh\s+-[a-z]*c\s[\s\S]*\b(?:npm\s+run\s+build|next\s+build)\b/;
 const MIN_PANELIST_PROMPT = 200; // chars: "say ok" is not a review
 const MIN_RESULT_CHARS = 40;
 const isExternalReviewCall = (cmd) => {

@@ -10,6 +10,7 @@ const R = createRequire(import.meta.url)('./session-retro.js');
 const ev = (o) => JSON.stringify({ sessionId: 's1', ...o });
 const tool = (name, input, t) => ev({ type: 'assistant', timestamp: t, message: { content: [{ type: 'tool_use', name, input }] } });
 const result = (text, t) => ev({ type: 'user', timestamp: t, message: { content: [{ type: 'tool_result', content: text }] } });
+const err = (text, t) => ev({ type: 'user', timestamp: t, message: { content: [{ type: 'tool_result', content: text, is_error: true }] } });
 
 test('counts land refusals, hook blocks, bypasses, restarts, reruns, long waits, and flags the thresholds', () => {
   const lines = [
@@ -173,17 +174,18 @@ test('--json output stays parseable even when the session already has a closed r
   assert.doesNotThrow(() => JSON.parse(out.stdout));
 });
 
-test('PreToolUse blocks count, the land preflight is a land refusal, git-check stop blocks are labelled (BRO-7701)', () => {
+test('PreToolUse blocks count (is_error only), the land preflight is a hook block, git-check stop blocks are labelled (BRO-7701)', () => {
   const stop = (text, t) => ev({ type: 'user', timestamp: t, message: { content: text } });
   const r = R.analyze([
     tool('Edit', {}, '2026-01-01T00:00:00Z'),
-    result('PreToolUse:Bash hook error: [command hook 5]: LAND BLOCKED (BRO-5359): this push lands 41 lines of code but the session has no complete review yet.', '2026-01-01T00:01:00Z'),
-    result('PreToolUse:mcp__claude-code-remote__create_session hook error: Blocked: create_session needs an explicit model', '2026-01-01T00:02:00Z'),
-    result('PreToolUse:Bash hook error: [VE:WTX] blocked', '2026-01-01T00:03:00Z'),
+    err('PreToolUse:Bash hook error: [command hook 5]: LAND BLOCKED (BRO-5359): this push lands 41 lines of code but the session has no complete review yet.', '2026-01-01T00:01:00Z'),
+    err('PreToolUse:mcp__claude-code-remote__create_session hook error: Blocked: create_session needs an explicit model', '2026-01-01T00:02:00Z'),
+    err('PreToolUse:mcp__claude_ai_Linear__save_issue hook error: no', '2026-01-01T00:02:30Z'),
+    err('PreToolUse:Bash hook error: [VE:WTX] blocked', '2026-01-01T00:03:00Z'),
     stop("Stop hook feedback:\n[command hook 3]: There are 1 unpushed commit(s) on branch 'x'.", '2026-01-01T00:04:00Z'),
     result('grep output: PreToolUse:Bash hook error: LAND BLOCKED quoted mid-text', '2026-01-01T00:05:00Z'),
+    result('PreToolUse:Bash hook error: a cat of an old log, not an error', '2026-01-01T00:06:00Z'),
   ]);
-  assert.deepEqual(r.hookBlocks, { 'pre:land-preflight': 1, 'pre:create_session': 1, '[VE:WTX]': 1, 'git-check': 1 });
-  assert.equal(r.landRefusals.length, 1);
-  assert.match(r.landRefusals[0].why, /^LAND BLOCKED/);
+  assert.deepEqual(r.hookBlocks, { 'pre:land-preflight': 1, 'pre:create_session': 1, 'pre:save_issue': 1, '[VE:WTX]': 1, 'git-check': 1 });
+  assert.equal(r.landRefusals.length, 0, 'the review gate doing its job is not a refused landing');
 });
