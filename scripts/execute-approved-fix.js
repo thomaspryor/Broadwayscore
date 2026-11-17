@@ -830,10 +830,15 @@ async function main() {
         type: 'fixed',
         reader: planData.submitter,
         originalMessage: (await getReader()).message,
-        transport: (payload) => sendEmail(payload),
+        transport: async (payload) => {
+          if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY missing, reply not sent');
+          return sendEmail(payload);
+        },
       });
       console.log(res.sent ? 'Draft reply emailed to owner' : `No reply draft (${res.reason})`);
-      if (res.sent) await markReplyDrafted(issueNumber, { token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN });
+      if (res.sent && !(await markReplyDrafted(issueNumber, { token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }))) {
+        console.log('  WARN: could not label the issue reply-drafted');
+      }
     } catch { /* best effort */ }
   }
 }

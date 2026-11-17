@@ -40,13 +40,16 @@ function ghGet(apiPath, token) {
 }
 
 /** Issues that still need a draft. Pure, so the test can pin the selection rules. */
-function selectIssuesNeedingDraft(issues, cutoffIso) {
+const GRACE_MIN = 30; // auto-fix emails its own draft right after closing; do not race it
+
+function selectIssuesNeedingDraft(issues, cutoffIso, now = Date.now()) {
   const cutoff = Date.parse(cutoffIso);
   return (issues || []).filter((i) =>
     i && !i.pull_request
     && i.state === 'closed'
     && i.state_reason === 'completed'
     && i.closed_at && Date.parse(i.closed_at) >= cutoff
+    && now - Date.parse(i.closed_at) >= GRACE_MIN * 60000
     && (i.labels || []).some((l) => (l.name || l) === 'bug-diagnosis')
     && !(i.labels || []).some((l) => (l.name || l) === DRAFTED_LABEL));
 }
@@ -100,7 +103,9 @@ async function main() {
       if (!res.sent) { console.log(`  #${issue.number}: no draft (${res.reason})`); continue; }
       drafted++;
       console.log(`  #${issue.number}: draft emailed to owner for ${maskEmail(reader.email)}`);
-      if (!dryRun) await markReplyDrafted(issue.number, { token, repo: REPO });
+      if (!dryRun && !(await markReplyDrafted(issue.number, { token, repo: REPO }))) {
+        console.log(`  WARN: #${issue.number} could not be labelled ${DRAFTED_LABEL}`);
+      }
     } catch (err) {
       console.log(`  #${issue.number}: draft failed (${err.message}); will retry next run`);
     }
@@ -108,5 +113,5 @@ async function main() {
   console.log(`Drafted ${drafted} reply(ies)`);
 }
 
-module.exports = { selectIssuesNeedingDraft, showLinkFor, LAUNCH_CUTOFF };
+module.exports = { GRACE_MIN, selectIssuesNeedingDraft, showLinkFor, LAUNCH_CUTOFF };
 if (require.main === module) main().catch((e) => { console.error(e.message); process.exit(1); });

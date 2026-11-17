@@ -43,7 +43,9 @@ async function main() {
       transport,
     });
     if (res.sent && !dryRun && type === 'fixed') {
-      await markReplyDrafted(process.env.ISSUE_NUMBER, { token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN });
+      if (!(await markReplyDrafted(process.env.ISSUE_NUMBER, { token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }))) {
+        console.log('WARN: could not label the issue reply-drafted');
+      }
     }
     console.log(res.sent
       ? `${res.mode === 'auto' ? 'Sent' : 'Drafted to owner:'} ${type} reply for ${maskEmail(reader.email)}`
