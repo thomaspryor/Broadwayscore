@@ -869,3 +869,29 @@ describe('startsMidClause needs a real gap, not just the lead word', () => {
     assert.strictEqual(startsMidClause('Butler brings vibrantly, lovingly to life in a turn of real force.', c), true);
   });
 });
+
+describe('parenthetical-start quotes (BRO-7675)', () => {
+  const g = require('../../scripts/lib/pull-quote-guards.js');
+  const bad = [
+    '(Lewis’s existence also happens to save the show from the dated sexism of Luisa’s damsel-in-distress fantasies.)',
+    '(Courtesy Matthew Murphy/BroadwaySF) The stage musical “Some Like It Hot,” now at the Orpheum, is a delight.',
+    '“(One, two, three) No, the brilliance of Bartlett Sher’s revival lies elsewhere.',
+  ];
+  const good = [
+    'But this Fantasticks remains unshowy: Music director Rick Hip-Flores coaxes his cast to under-sing.',
+    'A superb revival (the best in years) that earns every laugh.',
+    '“Heartfelt and funny,” and a triumph.',
+  ];
+  for (const q of bad) {
+    test(`rejects: ${q.slice(0, 40)}`, () => {
+      assert.equal(g.startsAsFragment(q), true, 'rebuild soft-defers it');
+      assert.equal(g.llmQuoteHardRejectReason(q, ''), 'parenthetical-start', 'LLM quote hard-rejected');
+    });
+  }
+  for (const q of good) {
+    test(`keeps: ${q.slice(0, 40)}`, () => {
+      assert.equal(g.startsAsFragment(q), false);
+      assert.equal(g.llmQuoteHardRejectReason(q, ''), null);
+    });
+  }
+});

@@ -51,6 +51,7 @@ const {
   isPromoTeaser,
   isInternalNote,
   PUNCT_FRAGMENT_START_RE,
+  PAREN_ASIDE_START_RE,
 } = require('./lib/pull-quote-guards');
 
 // audit-chrome-pullquotes.js shipped its CHROME_PREFIX_PATTERNS as a "CI guard"
@@ -92,6 +93,8 @@ function classifyBadQuote(quote, sources) {
   if (isMidWordTruncation(quote, sources)) return 'mid-word-truncation';
   // A quote that opens on a stray , ; or : (split at a "!" inside a title).
   if (PUNCT_FRAGMENT_START_RE.test(quote)) return 'punctuation-start-fragment';
+  // A quote that opens on a parenthetical aside or photo credit.
+  if (PAREN_ASIDE_START_RE.test(quote)) return 'parenthetical-start';
   return null;
 }
 
