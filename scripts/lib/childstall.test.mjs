@@ -295,6 +295,33 @@ test('OPENCLAIM unit: claim then close passes; claim alone blocks; a human sessi
   // scoped to the latest firing: a claim before the anchor does not count
   assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim], ocAnchor: 5 }).block, false);
 });
+
+// RULE21 (BRO-7626): the unattended-worker gate shared the newline-bound matcher.
+test('OPENCLAIM: multiline claims and close-outs use actual command arguments (BRO-7626)', () => {
+  const { openClaimDecision } = createRequire(import.meta.url)('./child-session-wait-guard.js');
+  const prose = `"$(cat <<'EOF'\nOutcome: landed.\nIt's checked.\nEOF\n)"`;
+  const claim = bash(1, `node scripts/linear-session.js claim --title ${prose} --issue=BRO-7626`);
+  assert.deepEqual(openClaimDecision({ firstPrompt: ROUTINE, tools: [claim] }).cards, ['BRO-7626']);
+  const created = bash(1, `node scripts/linear-brain.js create ${prose} --self`, {}, { result: 'Created BRO-7626' });
+  assert.deepEqual(openClaimDecision({ firstPrompt: ROUTINE, tools: [created] }).cards, ['BRO-7626']);
+  const simpleClaim = bash(1, 'node scripts/linear-session.js claim --issue=BRO-7626');
+  for (const command of [
+    `node scripts/linear-brain.js update BRO-7626 --comment ${prose} --state Done`,
+    `node scripts/linear-brain.js update BRO-7626 --comment ${prose} --state "In Review"`,
+    `node scripts/linear-session.js report --summary ${prose} --status=done --issue=BRO-7626`,
+    'node scripts/linear-session.js release \\\n--issue=BRO-7626',
+  ]) {
+    assert.equal(openClaimDecision({ firstPrompt: ROUTINE, tools: [simpleClaim, bash(2, command)] }).block, false, command);
+  }
+  for (const command of [
+    'node scripts/linear-brain.js update BRO-7626 --comment "Example: --state Done"',
+    `cat <<'EOF'\nnode scripts/linear-session.js report --issue=BRO-7626 --status=done\nEOF`,
+    'node scripts/linear-brain.js update BRO-7626 --comment checked; echo --state Done',
+    'node scripts/linear-session.js report --summary checked; echo --issue=BRO-7626',
+  ]) {
+    assert.equal(openClaimDecision({ firstPrompt: ROUTINE, tools: [simpleClaim, bash(2, command)] }).block, true, command);
+  }
+});
 test('e2e: BRO-7074 shape (routine claims, ends with the card open) blocks in block mode, logs by default', () => {
   const r = ocRun(claimT());
   assert.equal(r.status, 2, r.stderr);

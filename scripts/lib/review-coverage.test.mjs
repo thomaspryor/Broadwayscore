@@ -333,6 +333,60 @@ test('finish chain: a Linear close-out posted before the last landing is flagged
   assert.deepEqual(evaluateChain([...base, done, res(done), land, res(land)], { lastMessage: 'NO-WRAP-UP: closed by hand after the landing\n\nSAFE TO EXIT' }), []);
 });
 
+// RULE21 (BRO-7626): quoted prose can span lines; flags still belong to one command.
+test('finish chain: multiline Linear close-outs count in either flag order (BRO-7626)', () => {
+  const comment = `"$(cat <<'EOF'\nOutcome: both changes landed.\nIt's verified.\nEOF\n)"`;
+  const commands = [
+    `node scripts/linear-brain.js update BRO-7621 --comment ${comment} --state Done`,
+    `node scripts/linear-brain.js update BRO-7623 --state="Done" --comment ${comment}`,
+    `node scripts/linear-session.js report --summary ${comment} --issue=BRO-7626 --status 'done'`,
+    `node scripts/linear-session.js report --status=done --summary ${comment} --issue=BRO-7626`,
+    'node scripts/linear-brain.js update BRO-7621 --comment "first line\nsecond line" --state=Done',
+    'node scripts/linear-brain.js update BRO-7621 \\\n--comment checked \\\n--state Done',
+    `bash -c 'node scripts/linear-brain.js update BRO-7621 --state Done'`,
+    `bash -e -c 'node scripts/linear-brain.js update BRO-7621 --state Done'`,
+    'if true; then node scripts/linear-brain.js update BRO-7621 --state Done; fi',
+    'for x in a; do node scripts/linear-brain.js update BRO-7621 --state Done; done',
+    '{ node scripts/linear-brain.js update BRO-7621 --state Done; }',
+    'env MODE=test timeout 30 node --no-warnings scripts/linear-brain.js update BRO-7621 --state Done',
+  ];
+  for (const command of commands) {
+    const done = tool('Bash', { command });
+    const early = tool('Bash', { command: 'node scripts/linear-brain.js update BRO-7621 --state Done' });
+    const land = tool('Bash', { command: 'git push origin HEAD:refs/heads/land/bro-7621' });
+    const beforeLand = [...fullChain(), ...ev(done, land)];
+    assert.match(evaluateChain(beforeLand).join('|'), /close-out was posted before/, command);
+    const afterLand = [...fullChain(), ...ev(early, land, done)];
+    assert.deepEqual(evaluateChain(afterLand), [], command);
+    assert.equal(stopHookDecision({ events: afterLand, lastMessage: 'SAFE TO ARCHIVE', env: CLOUD }).decision, 'allow', command);
+  }
+});
+
+test('finish chain: only an actual Done flag on the Linear command closes it (BRO-7626)', () => {
+  const base = [...fullChain(), ...ev(
+    tool('Bash', { command: 'node scripts/linear-brain.js update BRO-7621 --state Done' }),
+    tool('Bash', { command: 'git push origin HEAD:refs/heads/land/bro-7621' }),
+  )];
+  const commands = [
+    `node scripts/linear-brain.js update BRO-7621 --comment "Example: --state Done"`,
+    `node scripts/linear-session.js report --status=paused --summary "Example: --status done"`,
+    `node scripts/linear-brain.js update BRO-7621 --comment "$(cat <<'EOF'\nExample: --state Done\nEOF\n)"`,
+    `cat <<'EOF'\nnode scripts/linear-brain.js update BRO-7621 --state Done\nEOF`,
+    'echo node scripts/linear-brain.js update BRO-7621 --state Done',
+    '# node scripts/linear-brain.js update BRO-7621 --state Done',
+    'node scripts/linear-brain.js update BRO-7621 --comment checked; echo --state Done',
+    'node scripts/linear-session.js report --summary checked\necho --status done',
+    'node scripts/linear-brain.js update BRO-7621 --state DoneLater',
+    'node scripts/linear-brain.js update BRO-7621 --state Done --state "In Progress"',
+    `node -e 'console.log("node scripts/linear-brain.js update BRO-7621 --state Done")'`,
+    'node --check scripts/linear-brain.js update BRO-7621 --state Done',
+    `bash -n -c 'node scripts/linear-brain.js update BRO-7621 --state Done'`,
+  ];
+  for (const command of commands) {
+    assert.match(evaluateChain([...base, ...ev(tool('Bash', { command }))]).join('|'), /close-out was posted before/, command);
+  }
+});
+
 test('stop hook: a TESTED block that only exists in the closing message (not yet flushed) counts', () => {
   const base = [...ev(skill('did-it-work')), ...ev(skill(), agent(), curl()), ...ev(skill('what-else')), roadmap(), res(roadmap())];
   const closing = '\u2501\u2501\u2501 TESTED \u2501\u2501\u2501\n```\nLENSES:\n1. a: b\n2. a: b\n3. a: b\n4. a: b\n5. a: b\n```\n\nSAFE TO EXIT';

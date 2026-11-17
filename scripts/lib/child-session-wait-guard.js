@@ -1,4 +1,5 @@
 'use strict';
+const { linearCommands } = require('./linear-command.js');
 /**
  * Child worker session ending a turn on KEEP OPEN while waiting on CI (BRO-6264).
  *
@@ -268,10 +269,8 @@ function childStallDecision(input) {
 // Nothing else ever comes back for it (BRO-7074 sat In Progress 34h).
 // A routine's own directive, not any mention: a human session that quotes a routine doc must not match.
 const NO_HUMAN_RE = /^\s*New [\w-]+ firing\b|\bRead docs\/cloud-routines\/\S+\.md\b[^\n]*\bfollow\b|\bfollow docs\/cloud-routines\/\S+\.md\b|\bno human is (?:watching|in the session)\b/i;
-const CLAIM_RE = /linear-session\.js\s+claim\b[^\n]*?--issue[= ](BRO-\d+)|linear-session\.js\s+claim\b[^\n]*--title\b|linear-brain\.js\s+create\b[^\n]*--self\b/i;
 const CLOSING_STATE_RE = /^(?:Done|In Review|Paused|Duplicate|Todo|Backlog|Canceled|Cancelled)$/i;
 const CREATED_RE = /\b(BRO-\d+)\b/;
-const CLOSE_RE = /linear-brain\.js\s+update\s+(BRO-\d+)\b[^\n]*--state[= ]["']?(?:Done|In Review|Paused|Duplicate|Todo|Backlog|Canceled|Cancelled)|linear-session\.js\s+(?:report|release)\b[^\n]*?--issue[= ](BRO-\d+)/gi;
 
 /** @returns {{block: boolean, reason: string, cards?: string[]}} */
 function openClaimDecision(input) {
@@ -284,10 +283,18 @@ function openClaimDecision(input) {
   const closed = new Set();
   for (const t of after) {
     if (t.name === 'Bash') {
-      const cmd = String((t.input || {}).command || '');
-      const m = cmd.match(CLAIM_RE);
-      if (m) { const id = m[1] || (String(t.result || '').match(CREATED_RE) || [])[1]; if (id) claimed.add(id.toUpperCase()); }
-      for (const c of cmd.matchAll(CLOSE_RE)) closed.add(String(c[1] || c[2]).toUpperCase());
+      for (const { script, verb, args } of linearCommands((t.input || {}).command)) {
+        const session = script === 'linear-session.js';
+        const id = session ? args.issue : args._[0];
+        const validId = /^BRO-\d+$/i.test(String(id || ''));
+        if ((session && verb === 'claim' && (validId || args.title)) || (!session && verb === 'create' && args.self)) {
+          const claimedId = session && validId ? id : (String(t.result || '').match(CREATED_RE) || [])[1];
+          if (claimedId) claimed.add(claimedId.toUpperCase());
+        }
+        if (validId && ((session && /^(?:report|release)$/.test(verb)) || (!session && verb === 'update' && CLOSING_STATE_RE.test(args.state)))) {
+          closed.add(id.toUpperCase());
+        }
+      }
     } else if (/save_issue$/.test(String(t.name || ''))) {
       const { id, state } = t.input || {};
       if (/^BRO-\d+$/i.test(String(id || '')) && CLOSING_STATE_RE.test(String(state || '').trim())) closed.add(String(id).toUpperCase());

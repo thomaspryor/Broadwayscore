@@ -55,6 +55,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { walkTranscript } from './transcript-scan.mjs';
+import { linearCommands } from './linear-command.js';
 
 const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
 
@@ -269,7 +270,6 @@ const boardShell = (cmd) => shellCode(cmd).replace(/(^|\s)#[^\n]*/g, '$1');
 const BOARD_READ_RE = new RegExp(`${BOARD_CMD_POS}(?:node\\s+)?\\S*linear-brain\\.js\\s+find\\b|${BOARD_CMD_POS}(?:node\\s+)?\\S*linear-next\\.js\\s+--list\\b`);
 // Cloud names the Linear connector's tools mcp__<uuid>__list_issues; GitHub's mcp__github__list_issues must not count.
 const BOARD_READ_TOOL_RE = /linear.*__list_issues$|^mcp__[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}__list_issues$/i;
-const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b[^\n]*--status[=\s]+["']?done\b/i;
 const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
 // The land workflow itself (land.yml), not its land-* helpers (land-ref-prune.yml, visual-approval-land.yml, ...).
 const LAND_WORKFLOW_RE = /(?:^|\/)land\.ya?ml$/;
@@ -347,7 +347,11 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
     const lastLand = lands.length ? lands[lands.length - 1] : -1;
     let lastDone = -1;
     events.forEach((e, i) => {
-      if (e.kind === 'assistant_tool_use' && e.name === 'Bash' && LINEAR_DONE_RE.test(String(e.input?.command || ''))) lastDone = i;
+      if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') return;
+      if (linearCommands(e.input?.command).some(({ script, verb, args }) => (
+        (script === 'linear-brain.js' && verb === 'update' && /^BRO-\d+$/i.test(args._[0] || '') && /^done$/i.test(args.state)) ||
+        (script === 'linear-session.js' && verb === 'report' && /^done$/i.test(args.status))
+      ))) lastDone = i;
     });
     if (lastLand >= 0 && lastDone >= 0 && lastDone < lastLand) problems.push('the Linear close-out was posted before the last landing; post it again now that the landing is verified');
   }
