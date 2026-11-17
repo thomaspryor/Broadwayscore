@@ -61,6 +61,15 @@ function rejectKind(result) {
   return 'other';
 }
 
+const { READER_REPLY_CLOSING_LINE } = require('./reader-reply-closing');
+// Signed by Tom like the feedback replies: the closing line says "let me know",
+// and reply_to is the owner.
+const SIGN_OFF = `${READER_REPLY_CLOSING_LINE}\n\nTom\nBroadway Scorecard™`;
+
+function approvedEmailText(reviewUrl) {
+  return `Great news! The review you submitted to Broadway Scorecard has been approved and will be added to our database shortly.\n\nURL: ${reviewUrl}\n\n${SIGN_OFF}`;
+}
+
 function rejectEmailText(kind, reviewUrl) {
   const why = {
     'no-url': 'we could not find a link in the submission.',
@@ -69,11 +78,11 @@ function rejectEmailText(kind, reviewUrl) {
     'untracked-outlet': 'the publication is not one we currently include. We add publications from time to time, so if you think this one belongs, reply and tell us a little about it.',
   }[kind] || 'it did not pass our automatic checks. If that looks wrong, reply and we will take a look.';
   const link = reviewUrl ? `:\n\n${reviewUrl}\n\n` : '.\n\n';
-  return `Thanks for sending us a review${link}We have not added it, because ${why}\n\nBroadway Scorecard`;
+  return `Thanks for sending us a review${link}We have not added it, because ${why}\n\n${SIGN_OFF}`;
 }
 
 function alreadyListedEmailText(reviewUrl, showUrl) {
-  return `Thanks for sending us this review:\n\n${reviewUrl}\n\nGood news: it is already on Broadway Scorecard${showUrl ? `, here:\n\n${showUrl}` : '.'}\n\nBroadway Scorecard`;
+  return `Thanks for sending us this review:\n\n${reviewUrl}\n\nGood news: it is already on Broadway Scorecard${showUrl ? `, here:\n\n${showUrl}` : '.'}\n\n${SIGN_OFF}`;
 }
 
 module.exports = {
@@ -81,6 +90,7 @@ module.exports = {
   alreadyListedResult,
   finalizeLlmRecommendation,
   rejectKind,
+  approvedEmailText,
   rejectEmailText,
   alreadyListedEmailText,
 };

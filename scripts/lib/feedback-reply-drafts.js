@@ -13,6 +13,7 @@
  */
 
 const SIGNATURE = 'Tom\nBroadway Scorecard™';
+const { READER_REPLY_CLOSING_LINE: CLOSING_LINE } = require('./reader-reply-closing');
 const FROM = 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>';
 const DRAFT_FROM = 'Broadway Scorecard Drafts <updates@broadwayscorecard.com>';
 const REPLY_KINDS_ENV = 'FEEDBACK_AUTO_REPLY_KINDS';
@@ -83,7 +84,7 @@ function buildReplyText(type, name, show, opts = {}) {
       body = `${hi}\n\nThank you for writing in${about}. I appreciate you taking the time to flag this.\n\nWe’ve noted it and will keep it in mind as we keep improving the site.`;
       break;
   }
-  return { subject, text: `${body}\n\n${SIGNATURE}` };
+  return { subject, text: `${body}\n\n${CLOSING_LINE}\n\n${SIGNATURE}` };
 }
 
 function plainTextToHtml(text) {
