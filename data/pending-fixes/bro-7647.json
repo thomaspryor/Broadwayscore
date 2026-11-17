@@ -8,26 +8,17 @@
     "email": null
   },
   "plan": {
-    "summary": "Fantasticks: Slant pull quote opens on a parenthetical aside; set a verbatim verdict sentence (lane copy marked duplicate of the base file so the edit is the shown row)",
+    "summary": "Fantasticks: set Slant pull quote to the verdict sentence (duplicateOf already set by fix-unflagged-same-url-clusters; refreshed oldValue after data moved)",
     "steps": [
-      "the-fantasticks-2026/slantmagazine--dan-rubins--on-2026-11-16.json: duplicateOf",
       "the-fantasticks-2026/slantmagazine--dan-rubins.json: llmPullQuote"
     ],
     "riskLevel": "low",
     "actions": [
       {
         "type": "review-field-edit",
-        "file": "the-fantasticks-2026/slantmagazine--dan-rubins--on-2026-11-16.json",
-        "field": "duplicateOf",
-        "oldValue": null,
-        "newValue": "slantmagazine--dan-rubins.json",
-        "description": "the-fantasticks-2026/slantmagazine--dan-rubins--on-2026-11-16.json: duplicateOf"
-      },
-      {
-        "type": "review-field-edit",
         "file": "the-fantasticks-2026/slantmagazine--dan-rubins.json",
         "field": "llmPullQuote",
-        "oldValue": null,
+        "oldValue": "After 66 years of The Fantasticks, Lewis and Matt’s very gay love story feels strangely necessary to the show’s continued legacy.",
         "newValue": "But this Fantasticks remains unshowy: Music director Rick Hip-Flores notably coaxes his cast to under-sing Harvey Schmidt’s warm-hug melodies, wisely prioritizing characterization over sound in every measure.",
         "description": "the-fantasticks-2026/slantmagazine--dan-rubins.json: llmPullQuote"
       }
