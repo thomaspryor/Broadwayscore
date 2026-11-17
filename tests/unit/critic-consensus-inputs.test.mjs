@@ -222,3 +222,26 @@ describe('BRO-6226: inputs use the scorer predicate and the rebuild within-show 
     assert.deepEqual([...files].sort(namedBeforeUnknown), [...files].sort(shared));
   });
 });
+
+describe('BRO-7644: live reviews.json rows feed a show with no review-text files yet', () => {
+  const row = (o, extra = {}) => ({ showId: 'lane-show', outletId: o, outlet: o.toUpperCase(), criticName: 'C ' + o, fullText: 'Text from ' + o, assignedScore: 70, url: 'https://x/' + o, ...extra });
+  const rows = [row('nyt'), row('variety'), row('vulture', { wrongProduction: true }), row('other', { showId: 'other-show' })];
+  let dir;
+  before(() => { dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7644-')); });
+  after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  it('reads the live rows, skipping excluded rows and other shows', () => {
+    const r = loadReviewTexts('lane-show', null, { reviewTextsDir: dir, fallbackRows: rows });
+    assert.deepEqual(r.map(x => x.outlet).sort(), ['NYT', 'VARIETY']);
+    assert.ok(r.every(x => x.fromLiveRows && x.score === 70));
+  });
+  it('is unused without fallbackRows', () => {
+    assert.equal(loadReviewTexts('lane-show', null, { reviewTextsDir: dir }).length, 0);
+  });
+  it('is unused when the show has its own review-text files', () => {
+    fs.mkdirSync(path.join(dir, 'lane-show'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'lane-show', 'nyt--c-nyt.json'), JSON.stringify(row('nyt')));
+    const r = loadReviewTexts('lane-show', null, { reviewTextsDir: dir, fallbackRows: rows });
+    assert.equal(r.length, 1);
+    assert.ok(!r[0].fromLiveRows);
+  });
+});
