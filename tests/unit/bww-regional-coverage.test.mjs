@@ -135,4 +135,5 @@ test('classify: a row that cites the review as evidence covers it, even filed un
   const row = { id: 'summer-1976-regional-2026', title: 'Summer, 1976', category: 'regional', city: 'stockbridge-ma', venue: 'Unicorn Theatre, Stockbridge, MA', openingDate: '2026-10-12', evidenceUrls: [url] };
   assert.equal(L.classifyReview(review, { shows: [row], metro: 'boston-ma' }).status, 'covered');
   assert.equal(L.classifyReview(review, { shows: [{ ...row, evidenceUrls: [] }], metro: 'boston-ma' }).status, 'missing');
+  assert.equal(L.classifyReview(review, { shows: [{ ...row, category: 'tour', market: 'tour' }], metro: 'boston-ma' }).status, 'covered-tour');
 });
