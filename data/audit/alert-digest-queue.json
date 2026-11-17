@@ -1212,5 +1212,33 @@
     "tracked": "BRO-7661",
     "fields": [],
     "queuedAt": "2026-11-17T11:15:27.061Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7512",
+    "title": "Watchdog parked #linear:BRO-7512 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Recheck 2026-11-15: 2 done claims no longer hold on main\" was claimed for redispatch at 2026-11-17T11:03:08.304Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7512), then re-arm with node scripts/linear-next.js --id BRO-7512 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T11:19:02.363Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7561",
+    "title": "Watchdog parked #linear:BRO-7561 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Review-gap blast radius refuses writes against old baselines: add a baseline-age rule (BRO-5516 class never fixed)\" was claimed for redispatch at 2026-11-17T11:05:32.831Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7561), then re-arm with node scripts/linear-next.js --id BRO-7561 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T11:20:37.014Z"
   }
 ]
