@@ -41620,7 +41620,7 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-fully-unsuppressed-same-url-clusters": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit fully-unsuppressed same-URL clusters",
       "firstSeen": "2026-11-10T15:36:09.529Z",
@@ -41631,10 +41631,12 @@
       "lastSurfacedAt": "2026-11-17T06:13:43.506Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-17T07:01:20.567Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:validate-review-text-files": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Validate review-text files",
       "firstSeen": "2026-11-10T15:36:09.546Z",
@@ -41645,7 +41647,9 @@
       "lastSurfacedAt": "2026-11-17T06:13:43.541Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-17T07:01:20.593Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-7291": {
       "status": "open",
