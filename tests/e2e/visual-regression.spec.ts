@@ -1,4 +1,5 @@
 import { test, expect } from './helpers/test';
+import { freezeLiveShowData } from './helpers/freeze-live-data';
 
 /**
  * Visual regression tests for layout-critical UI regions.
@@ -7,6 +8,11 @@ import { test, expect } from './helpers/test';
  * The show page renders ShowHeroRedesign since showPageRedesign launched with
  * userAccounts (2026-10-02, BRO-4525); the legacy show-header-card only renders
  * with the flag off, so the header test targets the redesign hero.
+ *
+ * These run against production (push-time E2E job), so every test pins the
+ * live, mutable show data in its region with freezeLiveShowData() before the
+ * screenshot (BRO-7649: a regenerated Critics' Take turned main red with no
+ * code change). tests/unit/visual-baseline-stable-data.test.mjs enforces it.
  *
  * To update baselines: gh workflow run "Test Suite" -f test_type=visual-only -f update_snapshots=true
  */
@@ -34,6 +40,7 @@ test.describe('Visual Regression', () => {
 
   test('show hero layout', async ({ page }) => {
     const hero = page.locator(HERO);
+    await freezeLiveShowData(page, HERO, { requireCriticsTake: true });
     await expect(hero).toHaveScreenshot('show-hero-redesign.png', {
       maxDiffPixelRatio: 0.05,
     });
@@ -41,6 +48,7 @@ test.describe('Visual Regression', () => {
 
   test('meta line wrapping', async ({ page }) => {
     const metaLine = page.locator('[data-testid="show-meta-line"]');
+    await freezeLiveShowData(page, '[data-testid="show-meta-line"]');
     await expect(metaLine).toHaveScreenshot('show-meta-line.png', {
       maxDiffPixelRatio: 0.05,
     });
@@ -48,6 +56,7 @@ test.describe('Visual Regression', () => {
 
   test('review card alignment', async ({ page }) => {
     const reviewCard = page.locator('[data-testid="review-card"]').first();
+    await freezeLiveShowData(page, '[data-testid="review-card"]');
     await expect(reviewCard).toHaveScreenshot('review-card.png', {
       maxDiffPixelRatio: 0.05,
     });
