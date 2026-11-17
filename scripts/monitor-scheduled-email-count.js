@@ -204,6 +204,17 @@ async function main() {
     }
   }
 
+  // BRO-6918: resolve count conditions whose violation stopped (live run only; this
+  // point is past the DRY_RUN return). Keys filed again below are in `current`.
+  {
+    const router = require('./lib/owner-alert-router');
+    const { quietCountKeys } = require('./lib/scheduled-email-count-rules');
+    const current = completeViolations.map(({ decision }) => `scheduled-email-count:${[...(decision.unexpectedKeys || []).map((k) => `unexpected-${k}`), ...(decision.duplicateKeys || []).map((k) => `dup-${k}`)].sort().join(',')}`);
+    for (const q of quietCountKeys(router.loadLedger().conditions, current)) {
+      if (router.resolveCondition(q.key, { reason: `BRO-6918: no repeat since ${q.lastSeen}` })) console.log(`resolved ${q.key} (quiet since ${q.lastSeen})`);
+    }
+  }
+
   if (completeViolations.length === 0 && missingExpected.length === 0) {
     console.log('No violations on complete days in window (and both expected senders fired yesterday).');
     return;

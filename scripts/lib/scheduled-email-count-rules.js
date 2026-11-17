@@ -233,4 +233,24 @@ function recoveredMissingKeys(conditions, days, { judgedDay = null } = {}) {
   return out;
 }
 
-module.exports = { SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
+// BRO-6918: a per-sender count condition (`scheduled-email-count:dup-x,unexpected-y`)
+// was only ever opened. When the violation stopped nothing resolved it, so its
+// card sat open for good and the alert-absent check read "quiet" as "cannot
+// tell". An open count key that is not in this run's current violation set and
+// has not refired for QUIET_HOURS (a full complete ET day plus margin, the live
+// monitor looks back 2 days) is resolved. Returns [{ key, lastSeen }].
+const COUNT_KEY_RE = /^scheduled-email-count:(?:unexpected|dup)-/;
+const COUNT_QUIET_HOURS = 48;
+function quietCountKeys(conditions, currentKeys = [], { now = Date.now(), quietHours = COUNT_QUIET_HOURS } = {}) {
+  const live = new Set(currentKeys);
+  const out = [];
+  for (const [key, row] of Object.entries(conditions || {})) {
+    if (!row || row.status !== 'open' || !COUNT_KEY_RE.test(key) || live.has(key)) continue;
+    const seen = Date.parse(row.lastSeen || row.firstSeen || '');
+    if (!Number.isFinite(seen)) continue;
+    if (now - seen >= quietHours * 3600 * 1000) out.push({ key, lastSeen: row.lastSeen || row.firstSeen });
+  }
+  return out;
+}
+
+module.exports = { quietCountKeys, COUNT_QUIET_HOURS, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };

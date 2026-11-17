@@ -7,6 +7,7 @@ import {
   decideDayViolation,
   decideDayMissing,
   recoveredMissingKeys,
+  quietCountKeys,
 } from './scheduled-email-count-rules.js';
 
 test('classifySubject matches each known scheduled sender', () => {
@@ -303,4 +304,25 @@ test('recoveredMissingKeys never clears the day this run judges, resolved rows, 
   const days = new Map([['2026-11-04', dayWith('morning-digest', 'opening-digest')]]);
   assert.deepEqual(recoveredMissingKeys(conditions, days, { judgedDay: '2026-11-03' }), []);
   assert.deepEqual(recoveredMissingKeys(conditions, null), []);
+});
+
+test('quietCountKeys resolves an open count key that stopped refiring (BRO-6918)', () => {
+  const now = Date.parse('2026-11-17T12:00:00Z');
+  const conditions = {
+    'scheduled-email-count:dup-opening-digest,dup-reddit-post-ready': { status: 'open', lastSeen: '2026-11-06T20:41:24.951Z' },
+  };
+  assert.deepEqual(quietCountKeys(conditions, [], { now }).map((r) => r.key), ['scheduled-email-count:dup-opening-digest,dup-reddit-post-ready']);
+});
+
+test('quietCountKeys keeps a key that is current, recent, resolved, unparseable, or another family', () => {
+  const now = Date.parse('2026-11-17T12:00:00Z');
+  const conditions = {
+    'scheduled-email-count:dup-a': { status: 'open', lastSeen: '2026-11-01T00:00:00Z' },
+    'scheduled-email-count:dup-b': { status: 'open', lastSeen: '2026-11-17T00:00:00Z' },
+    'scheduled-email-count:dup-c': { status: 'resolved', lastSeen: '2026-11-01T00:00:00Z' },
+    'scheduled-email-count:dup-d': { status: 'open', lastSeen: 'garbage' },
+    'scheduled-email-missing:opening-digest:2026-11-01': { status: 'open', lastSeen: '2026-11-01T00:00:00Z' },
+    'scheduled-email-count:2026-11-01': { status: 'open', lastSeen: '2026-11-01T00:00:00Z' },
+  };
+  assert.deepEqual(quietCountKeys(conditions, ['scheduled-email-count:dup-a'], { now }), []);
 });
