@@ -159,3 +159,16 @@ test('bare --check honours a row already recorded with links; unrecorded stays e
   assert.equal(run('--check', '--record', '--fixes=BRO-1234').status, 0, 'recorded with a link');
   assert.equal(run('--check').status, 0, 'a later bare --check sees the closed row');
 });
+
+test('--json output stays parseable even when the session already has a closed row (BRO-7645)', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-json-'));
+  const tr = path.join(dir, 't.jsonl');
+  const ledger = path.join(dir, 'ledger.jsonl');
+  fs.writeFileSync(tr, [tool('Edit', { file_path: 'a' }, '2026-01-01T00:00:00Z'), result('12:00:00Z REFUSED: land/x unit-tests-node failed', '2026-01-01T00:10:00Z')].join('\n') + '\n');
+  const run = (...a) => spawnSync('node', [path.join(path.dirname(new URL(import.meta.url).pathname), 'session-retro.js'), `--transcript=${tr}`, ...a], { env: { ...process.env, SESSION_RETRO_LEDGER: ledger }, encoding: 'utf8' });
+  assert.equal(run('--record', '--fixes=BRO-1234').status, 0);
+  const out = run('--json', '--check');
+  assert.equal(out.status, 0);
+  assert.doesNotThrow(() => JSON.parse(out.stdout));
+});

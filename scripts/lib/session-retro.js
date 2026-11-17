@@ -225,7 +225,7 @@ function main(argv) {
   if (!closed && !opt.record) {
     // A bare --check must honour a row already recorded with links (the Stop gate re-runs it).
     const st = retroStatus(readLedger(), r.sessionId);
-    if (st.recorded && st.closed) { closed = true; console.log('Retro already recorded with links or a no-action reason for this session.'); }
+    if (st.recorded && st.closed) { closed = true; if (!opt.json) console.log('Retro already recorded with links or a no-action reason for this session.'); }
   }
   return opt.check && r.triggers.length && !closed ? 10 : 0;
 }
