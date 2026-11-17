@@ -1,24 +1,5 @@
 [
   {
-    "startedAt": "2026-11-15T23:07:47.139Z",
-    "completedAt": "2026-11-15T23:08:12.765Z",
-    "totalReviews": 8,
-    "processed": 8,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 20991,
-      "output": 1650,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 22641
-    },
-    "costUsd": 0.0571109,
-    "runId": "43772230769",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-16T00:18:19.757Z",
     "completedAt": "2026-11-16T00:18:19.760Z",
     "totalReviews": 0,
@@ -570858,6 +570839,52 @@
     },
     "costUsd": 0,
     "runId": "44162215527",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-16T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-17T19:54:34.245Z",
+    "completedAt": "2026-11-17T19:54:39.817Z",
+    "totalReviews": 5,
+    "processed": 1,
+    "skipped": 4,
+    "errors": 48,
+    "tokensUsed": {
+      "input": 17276,
+      "output": 668,
+      "cacheRead": 10836,
+      "cacheWrite": 5312,
+      "total": 47757
+    },
+    "costUsd": 0.0505229,
+    "runId": "44162826608",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "nine-night-west-end-2018",
+        "outletId": "londontheatre1",
+        "error": "resume_input_hash_mismatch"
+      }
+    ],
+    "logKeepsSince": "2026-11-16T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-17T19:59:38.537Z",
+    "completedAt": "2026-11-17T19:59:38.538Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "44162826608",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-16T00:00:00.000Z"
