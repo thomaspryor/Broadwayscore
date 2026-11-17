@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T16:27:11.459Z",
+  "timestamp": "2026-11-17T17:05:52.345Z",
   "stats": {
-    "totalReviews": 82340,
-    "alreadyFlagged": 22511,
+    "totalReviews": 82354,
+    "alreadyFlagged": 22512,
     "dateGuardCatches": 222,
-    "directorMismatch": 3726,
+    "directorMismatch": 3725,
     "tvFilmSignals": 2341,
-    "londonSignals": 3782,
+    "londonSignals": 3781,
     "offBroadwaySignals": 760,
     "yearMismatch": 379,
-    "noPublishDate": 8219
+    "noPublishDate": 8229
   },
   "findings": [
     {
@@ -18174,7 +18174,7 @@
       "file": "london-theatre--matt-wolf.json",
       "score": 79,
       "publishDate": "2023-10-10",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/death-of-england-closing-time-review-national-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33638,7 +33638,7 @@
       "file": "london-theatre--marianka-swain.json",
       "score": 82,
       "publishDate": "2025-07-24",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-national-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45934,25 +45934,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2013 (1x). 2026 matches production: much-ado-about-nothing-globe-off-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-west-end-2022",
-      "file": "guardian--unknown.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2022/jul/19/much-ado-about-nothing-review-screwball-shakespeare-goes-with-a-swing",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -69587,7 +69568,7 @@
     {
       "showId": "the-fantasticks-2026",
       "file": "guardian--richard-lawson.json",
-      "score": 83,
+      "score": 88,
       "publishDate": "2026-11-17T03:00:00.000Z",
       "url": "https://www.theguardian.com/stage/2026/nov/16/the-fantasticks-musical-review-hayes-theatre-new-york",
       "findings": [
