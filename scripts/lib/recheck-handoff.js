@@ -17,43 +17,12 @@
  * recheck-autoclose.js closeCardAfterPass (linear-brain update, exit trapped).
  */
 
-const { RECHECK_HANDOFF_MARKER, parseRecheckAfter } = require('./autonomous-recheck-core.js');
+const { RECHECK_HANDOFF_MARKER } = require('./autonomous-recheck-core.js');
 const { ExitTrap } = require('./recheck-autoclose.js');
 const { plainEnvCause } = require('./check-env-cause.js');
+const { HANDOFF_GRACE_DAYS, isHeldForHandoff, pastDateHold, lastStampIndex } = require('./recheck-past-date.js');
 
 const HANDOFF_STATE_NAMES = Object.freeze(['Paused', 'Backlog']);
-
-function lastStampIndex(comments) {
-  for (let i = comments.length - 1; i >= 0; i--) if (parseRecheckAfter(comments[i]) != null) return i;
-  return -1;
-}
-
-// BRO-7686/7689: how long a hand-off keeps a past-date card off the "owed a check" count.
-// A worker who re-paused it without a fresh stamp left it where the recheck never acts again.
-const HANDOFF_GRACE_DAYS = 7;
-
-/** Held on purpose (a held PARKED line or a DECISION NEEDED in the notes): the recheck skips it. */
-function isHeldForHandoff(notes) {
-  return require('./headless-dispatchability.js').hasHeldParkLine(notes) || /DECISION NEEDED/.test(String(notes || ''));
-}
-
-/**
- * PURE. Why a card past its RECHECK-AFTER date is NOT owed a check, using decideHandoff's own
- * skip rules. card = mapIssueToCard shape (notes, comments oldest-first, commentRecords).
- * -> 'parked' | 'handed-off' (within HANDOFF_GRACE_DAYS) | null (owed a check)
- * Shared by the digest headline (board-summary.js) and the board table (board-categories.js).
- */
-function pastDateHold(card, nowMs) {
-  if (!card) return null;
-  if (isHeldForHandoff(card.notes)) return 'parked';
-  const comments = Array.isArray(card.comments) ? card.comments : [];
-  const records = Array.isArray(card.commentRecords) ? card.commentRecords : [];
-  let handoffAt = null;
-  for (let i = lastStampIndex(comments) + 1; i < comments.length; i++) {
-    if (String(comments[i] || '').trimStart().startsWith(RECHECK_HANDOFF_MARKER)) handoffAt = Date.parse((records[i] && records[i].createdAt) || '') || 0;
-  }
-  return handoffAt !== null && nowMs - handoffAt < HANDOFF_GRACE_DAYS * 86_400_000 ? 'handed-off' : null;
-}
 
 /**
  * @param {{card?:object, target?:object, result?:object, closeVerdict?:{close:boolean,reason:string}|null}} o

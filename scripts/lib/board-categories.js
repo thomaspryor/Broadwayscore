@@ -27,7 +27,7 @@ const { recheckVerdict } = require('./check-env-cause.js');
 const { skipReason, historySkipReason } = require('./cloud-worker-pick.js');
 const { codexBouncedRecently, codexBounceCapped } = require('./codex-runner.js');
 const { proseDateWait } = require('./prose-date-wait.js');
-const { pastDateHold } = require('./recheck-handoff.js');
+const { pastDateHold } = require('./recheck-past-date.js');
 const { mapIssueToCard } = require('./linear-recheck-source.js');
 
 // Order matters: a card's exclusive category is the first one whose trait it has.

@@ -456,7 +456,7 @@ test('labels use plain words: no VERIFY, repo, cloud workers or Codex', () => {
 });
 
 test('BRO-7689: a past-date card the recheck skips is not "Date passed, waiting for its check"', () => {
-  const { pastDateHold } = require('./recheck-handoff.js');
+  const { pastDateHold } = require('./recheck-past-date.js');
   const { mapIssueToCard } = require('./linear-recheck-source.js');
   const { RECHECK_HANDOFF_MARKER } = require('./autonomous-recheck-core.js');
   const paused = { state: { name: 'Paused', type: 'backlog' } };

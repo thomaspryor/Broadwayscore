@@ -132,7 +132,7 @@ const OVERDUE_CHECK_LIMIT = 10;
 function summarizeAwaitingCheck(issues, { now = new Date(), days = DAYS } = {}) {
   const { mapIssueToCard } = require('./linear-recheck-source.js');
   const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
-  const { pastDateHold } = require('./recheck-handoff.js');
+  const { pastDateHold } = require('./recheck-past-date.js');
   const nowMs = now.getTime();
   // Same local days as the chart's "added" (dayKeys), so the fixes are a subset of the added cards.
   const inWindow = new Set(dayKeys(now, days));
