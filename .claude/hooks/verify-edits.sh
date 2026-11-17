@@ -112,9 +112,7 @@ fi
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${EFFECT_PENDING_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/effect-pending-stop.mjs" ] && command -v node >/dev/null 2>&1; then
   _eps_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/effect-pending-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:EFFECTPENDING]\n' "$_eps_err" >&2; exit 2; fi; _ve_pre_died effect-pending-stop.mjs $_ve_s
 fi
-# BRO-7645: a session that landed code and claims SAFE TO ARCHIVE must have run session-retro.js --record and, when the retro
-# crossed a threshold, linked a fix or card (--fixes / --no-action). retro-coverage-stop.mjs reads the transcript: cloud only,
-# fails open, one nudge per transcript, kill RETRO_COVERAGE_STOP_DISABLE=1. Pinned by scripts/lib/retro-coverage-stop.test.mjs.
+# BRO-7645: landed code + SAFE TO ARCHIVE needs a session-retro --record (and a fix link if flagged); logic in retro-coverage-stop.mjs, kill RETRO_COVERAGE_STOP_DISABLE=1.
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${RETRO_COVERAGE_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/retro-coverage-stop.mjs" ] && command -v node >/dev/null 2>&1; then
   _rcv_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/retro-coverage-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:RETROCOV]\n' "$_rcv_err" >&2; exit 2; fi; _ve_pre_died retro-coverage-stop.mjs $_ve_s
 fi
