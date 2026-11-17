@@ -1,20 +1,20 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-11-16T09:47:24.050Z",
+  "lastChecked": "2026-11-17T10:48:55.956Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Coverage: SERP census recall",
-      "status": "warn",
-      "message": "Review coverage dropped — our targeted searches now finds 11% vs 27% recently (across 5 recent opening(s); 63 review pages any of our searches could find). New shows may be going live with published reviews missing."
+      "status": "pass",
+      "message": "a plain Google search found 30%, reviews already collected found 73%, our targeted searches found 22% — across 5 recent opening(s); 37 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (13h ago)"
     },
     {
       "name": "Coverage: adversarial probe",
-      "status": "pass",
-      "message": "Every discovered review URL was live or named-excluded (6d ago) — 2 consecutive clean weeks, acceptance bar cleared"
+      "status": "warn",
+      "message": "The naive search found 3 review URL(s) this pipeline hasn't discovered yet: the-moth-off-west-end-2026, the-feel-good-story-america-needs-right-now-regional-2026, desire-under-the-elms-off-west-end-2026"
     }
   ]
 }

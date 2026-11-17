@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-11-16T09:47:24.050Z",
+  "lastChecked": "2026-11-17T10:48:55.957Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "19h ago, success"
+      "message": "17h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "4h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
@@ -33,53 +33,53 @@
     },
     {
       "name": "Cron: Opening Night Broadcast",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "15h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "5d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "21h ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "7d ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: Weekly Show Origins",
       "status": "pass",
-      "message": "7d ago, success"
+      "message": "18h ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "10h ago, success"
     },
     {
       "name": "Cron: Cron Health Watchdog",
@@ -89,7 +89,7 @@
     {
       "name": "Cron: Affiliate Link Integrity",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "12h ago, success"
     },
     {
       "name": "Cron: Cloud Memory Reconcile",
@@ -99,12 +99,12 @@
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "4 of 142 exempt scheduled workflow(s) stopped starting: audit-time-bomb-tests.yml (last start 323h ago, limit 192h); detect-revivals-ibdb.yml (last start 618h ago, limit 192h); scrape-bww-reviews.yml (last start 689h ago, limit 192h); scrape-new-aggregators.yml (no scheduled start in last 5 runs, limit 48h)."
+      "message": "3 of 141 exempt scheduled workflow(s) stopped starting: audit-time-bomb-tests.yml (last start 348h ago, limit 192h); detect-revivals-ibdb.yml (last start 643h ago, limit 192h); scrape-bww-reviews.yml (last start 714h ago, limit 192h)."
     },
     {
       "name": "Cron: failing every scheduled run",
       "status": "warn",
-      "message": "4 of 146 scheduled workflow(s) failed their last 3 scheduled runs: audit-provisional-venues.yml (5+ in a row, last 2026-11-16); check-corpus-drift.yml (5+ in a row, last 2026-11-15); social-video.yml (5+ in a row, last 2026-11-16); sweep-image-variants.yml (5+ in a row, last 2026-11-15)."
+      "message": "3 of 145 scheduled workflow(s) failed their last 3 scheduled runs: audit-provisional-venues.yml (5+ in a row, last 2026-11-17); check-corpus-drift.yml (5+ in a row, last 2026-11-16); sweep-image-variants.yml (5+ in a row, last 2026-11-16)."
     }
   ]
 }

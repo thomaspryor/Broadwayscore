@@ -1,7 +1,7 @@
 {
   "system": "autofix",
-  "status": "warn",
-  "lastChecked": "2026-11-16T09:47:24.051Z",
+  "status": "pass",
+  "lastChecked": "2026-11-17T10:48:55.958Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,8 +13,8 @@
     },
     {
       "name": "Autofix: digest rows listed 4+ days with no card",
-      "status": "warn",
-      "message": "1 digest row(s) listed 4+ days with no card: Workflow coverage: invalid files (5d)"
+      "status": "pass",
+      "message": "Every digest row listed 4+ days has a card"
     }
   ]
 }
