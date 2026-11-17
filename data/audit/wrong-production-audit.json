@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T06:12:33.426Z",
+  "timestamp": "2026-11-17T06:53:16.254Z",
   "stats": {
     "totalReviews": 82329,
-    "alreadyFlagged": 22498,
+    "alreadyFlagged": 22499,
     "dateGuardCatches": 222,
     "directorMismatch": 3725,
     "tvFilmSignals": 2341,
-    "londonSignals": 3779,
+    "londonSignals": 3780,
     "offBroadwaySignals": 760,
     "yearMismatch": 379,
-    "noPublishDate": 8221
+    "noPublishDate": 8220
   },
   "findings": [
     {
@@ -105134,6 +105134,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "file": "standard--ghenet-pinderhughes-randall.json",
+      "score": 78,
+      "publishDate": "2026-05-01",
+      "url": "https://standard.co.uk/culture/theatre/grace-pervades-at-theatre-royal-haymarket-b1280689.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
