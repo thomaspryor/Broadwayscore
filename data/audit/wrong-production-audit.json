@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T17:21:31.649Z",
+  "timestamp": "2026-11-17T17:39:35.509Z",
   "stats": {
-    "totalReviews": 82354,
+    "totalReviews": 82370,
     "alreadyFlagged": 22512,
     "dateGuardCatches": 222,
     "directorMismatch": 3725,
     "tvFilmSignals": 2341,
-    "londonSignals": 3781,
+    "londonSignals": 3780,
     "offBroadwaySignals": 760,
-    "yearMismatch": 379,
-    "noPublishDate": 8229
+    "yearMismatch": 381,
+    "noPublishDate": 8236
   },
   "findings": [
     {
@@ -2661,7 +2661,7 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2024 (5x) more than 2012 (0x). 2024 matches production: a-streetcar-named-desire-regional-2024"
+          "detail": "Mentions year 2026 (24x) more than 2012 (0x). 2026 matches production: a-streetcar-named-desire-regional-2026"
         }
       ]
     },
@@ -19722,7 +19722,7 @@
     },
     {
       "showId": "doubt-2024",
-      "file": "this-week-in-new-york--unknown.json",
+      "file": "this-week-in-new-york--mark-rifkin.json",
       "score": 88,
       "publishDate": "2024-03-07",
       "url": "https://twi-ny.com/2024/03/07/john-patrick-shanley-doubt-a-parable-brooklyn-laundry/",
@@ -21929,6 +21929,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-2016",
+      "file": "njcom--christopher-kelly.json",
+      "score": 74,
+      "publishDate": "2016-10-28",
+      "url": "https://www.nj.com/entertainment/index.ssf/2016/10/falsettos_broadway_review_christian_borle_andrew_r.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2016 (0x). 2026 matches production: falsettos-regional-2026"
         }
       ]
     },
@@ -63052,6 +63066,20 @@
       ]
     },
     {
+      "showId": "summer-1976-2023",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 61,
+      "publishDate": "2023-04-28",
+      "url": "https://newyorktheater.me/2023/04/28/summer-1976-broadway-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (15x) more than 2023 (12x). 2026 matches production: summer-1976-regional-2026"
+        }
+      ]
+    },
+    {
       "showId": "summerfolk-west-end-2026",
       "file": "the-spectator-uk--lloyd-evans.json",
       "score": 86,
@@ -100161,24 +100189,10 @@
     },
     {
       "showId": "disgraced-2014",
-      "file": "nytimes--ben-brantley.json",
-      "score": 90,
-      "publishDate": "October 23, 2014",
-      "url": "http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=0",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "disgraced-2014",
       "file": "nytimes--charles-isherwood.json",
       "score": 89,
       "publishDate": "October 23, 2014",
-      "url": "http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=1",
+      "url": "http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=0",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
