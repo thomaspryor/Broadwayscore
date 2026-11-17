@@ -708,6 +708,34 @@
     "queuedAt": "2026-11-16T23:38:06.449Z"
   },
   {
+    "conditionKey": "opening-night-lane-lease-lost:the-fantasticks-2026:2026-11-16",
+    "title": "Opening-night lane lost the lease for the-fantasticks-2026 (no-lease)",
+    "description": "Heartbeat for the-fantasticks-2026 on 2026-11-16 returned no-lease; the lane stopped discovering and is flushing what it already scored.",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T05:44:27.467Z"
+  },
+  {
+    "conditionKey": "opening-night-lane-summary:the-fantasticks-2026:2026-11-16",
+    "title": "Opening-night lane for the-fantasticks-2026: 0 unpublished, 13 failed, 54 errors",
+    "description": "passes 113, admitted 20, lease lost (no-lease)\nfailed: https://playbill.com/article/are-the-reviews-for-the-fantasticks-on-broadway-fantastic (score failed for good after 1 attempt(s): not a review: roundup page (Playbill Verdict roundup article (multi-outlet quote compilation)))\nfailed: https://usatoday.com/story/entertainment/music/2026/11/16/fantasticks-review-broadway-musicals/92811425007 (incomplete card (no criticName), attempt 3/3; held from publish)\nfailed: https://nysun.com/article/arabs-loudly-urge-iran-diplomacy-but-quietly-yearn-for-ending-the-tehran-regime (score failed for good after 1 attempt(s): scorer rejected the review: wrong_show)\nfailed: https://nysun.com/article/scott-bessent-put-his-foot-down-on-nvidia-and-the-commerce-department (score failed for good after 1 attempt(s): scorer rejected the review: wrong_show)\nfailed: https://nysun.com/article/sherrill-picks-fight-with-bovino-over-rutgers-republican-event (score failed for good after 1 attempt(s): scorer rejected the review: wrong_show)\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: google-news: Direct fetch failed: 429\nerror: talkin-broadway: every Talkin' Broadway index failed",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T05:45:51.042Z"
+  },
+  {
     "conditionKey": "land:land/bro-7631-conflict-drivers",
     "title": "Landing blocked: rebase red on land/bro-7631-conflict-drivers",
     "description": "land.yml did not land land/bro-7631-conflict-drivers: the rebase gate went red at e2750510bf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43994823602",
@@ -737,34 +765,6 @@
       }
     ],
     "queuedAt": "2026-11-17T01:22:56.160Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
-    "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--48004f36.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/adam-driver-whether-he-will-reprise-role-girls-revival/6569210/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T01:46:22.294Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:speculations-off-west-end-2026",
-    "title": "1 review(s) for speculations-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--2b0f3c6f.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T01:46:42.377Z"
   },
   {
     "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
@@ -889,20 +889,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-17T05:17:28.757Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T05:17:50.107Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
