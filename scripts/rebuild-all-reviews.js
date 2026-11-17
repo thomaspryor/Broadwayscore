@@ -1538,6 +1538,7 @@ const leaseGuard = require('./lib/opening-night-lane/lease-guard');
 // named in trust-model LANE_BYPASSED_GUARDS. Every gate below calls this one predicate, never re-derives it.
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { laneRowSource } = require('./lib/opening-night-lane/trust-model'); // BRO-6623
+leaseGuard.syncIfMissing(); // a CI job that skipped the lease-sync action must not read "nothing leased" (2026-11-17)
 const leasedShowIds = new Set(leaseGuard.leasedShowIds());
 if (leasedShowIds.size) console.log(`Opening-night lease: not rebuilding ${[...leasedShowIds].join(', ')}; existing rows carried over`);
 const showDirs = listShowDirs(reviewTextsDir)
