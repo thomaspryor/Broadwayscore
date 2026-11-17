@@ -232,7 +232,10 @@
     "fences-off-west-end-2026/alt-africa--alt-a-review.json",
     "fences-off-west-end-2026/ground--unknown.json",
     "fences-off-west-end-2026/north-west-end--michelle-knight.json",
-    "good-time-charlie-off-broadway-2026/the-recs--randall-david-cook.json"
+    "good-time-charlie-off-broadway-2026/the-recs--randall-david-cook.json",
+    "here-there-are-blueberries-2026/nyt-theater--unknown.json",
+    "the-visitors-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+    "wanted-2022/nytimes--unknown.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -400,7 +403,15 @@
     "lincoln-in-the-bardo-off-broadway-2026/wisemusicclassical--unknown.json",
     "murder-cathedral-off-west-end-2026/plays-to-see--tim-hochstrasser.json",
     "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-to-see--olivia-hurton.json"
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-to-see--olivia-hurton.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -538,7 +549,9 @@
       "nina-off-west-end-2026/cornernotice--unknown.json",
       "fish-off-broadway-2026/the-100-word-review--unknown.json",
       "fences-off-west-end-2026/alt-africa--alt-a-review.json",
-      "good-time-charlie-off-broadway-2026/the-recs--randall-david-cook.json"
+      "good-time-charlie-off-broadway-2026/the-recs--randall-david-cook.json",
+      "here-there-are-blueberries-2026/nyt-theater--unknown.json",
+      "the-visitors-off-broadway-2026/exeunt-magazine--loren-noveck.json"
     ],
     "amp": [
       "data/review-texts/driving-miss-daisy-2010/variety--marilyn-stasio.json"
@@ -548,7 +561,8 @@
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/the-great-gatsby-2024/deadline--greg-evans.json",
       "the-great-gatsby-2024/deadline--greg-evans.json",
-      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
+      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -590,7 +604,8 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "little-shop-of-horrors-off-broadway-2019/broadwaynews--jeremy-gerard.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
-      "wicked-2003/theatrely--kobi-kassal.json"
+      "wicked-2003/theatrely--kobi-kassal.json",
+      "wanted-2022/nytimes--unknown.json"
     ],
     "brightdata": [
       "water-for-elephants-tour-2025/broadwayworld--christina-mancuso.json"
@@ -665,7 +680,7 @@
     ]
   },
   "startTime": "2026-11-16T22:09:44.387Z",
-  "lastProcessed": "good-time-charlie-off-broadway-2026/the-recs--randall-david-cook.json",
+  "lastProcessed": "wanted-2022/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-11-17T01:06:59.816Z",
@@ -730,6 +745,72 @@
       "event": "bb-session",
       "session": "3ad173d4",
       "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-11-17T03:02:08.962Z",
+      "event": "bb-session",
+      "session": "e96be853",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T03:02:09.770Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T03:02:19.014Z",
+      "event": "bb-session",
+      "session": "d85c2d6e",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T03:02:19.781Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T03:04:56.054Z",
+      "event": "bb-session",
+      "session": "7a13511d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T03:04:56.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T03:07:30.826Z",
+      "event": "bb-session",
+      "session": "7efd0c99",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-17T03:07:31.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T03:07:40.563Z",
+      "event": "bb-session",
+      "session": "0cf7e6cb",
+      "url": "https://www.nytimes.com/wanted-review-passing-pfeiffer-ledisi-luke-james"
+    },
+    {
+      "t": "2026-11-17T03:07:41.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T03:08:16.830Z",
+      "event": "bb-session",
+      "session": "19919764",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-17T03:08:17.604Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
