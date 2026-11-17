@@ -3,7 +3,7 @@
     "postedDetection": "ok",
     "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-17T03:31:12.604Z"
+    "lastRun": "2026-11-17T03:39:16.683Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3753,7 +3753,7 @@
       "url": "https://broadwayscorecard.com/show/the-fantasticks",
       "notability": 44,
       "createdAt": "2026-11-17T03:31:12.604Z",
-      "status": "ready",
+      "status": "posted",
       "source": "claude-sonnet-5-5",
       "lintProblems": [],
       "title": "Reviews are in for The Fantasticks. 78/100 from 12 critics, with zero negative reviews",
@@ -3772,7 +3772,11 @@
       "crosspostSubmitUrl": null,
       "emailedAt": "2026-11-17T03:33:46.392Z",
       "emailedScore": 78,
-      "emailedReviewCount": 12
+      "emailedReviewCount": 12,
+      "postedAt": "2026-11-17T03:31:34.000Z",
+      "postedUrl": "https://www.reddit.com/r/Broadway/comments/1xy9z4g/reviews_are_in_for_the_fantasticks/",
+      "postedSubreddit": "Broadway",
+      "postedScore": 1
     }
   }
 }
