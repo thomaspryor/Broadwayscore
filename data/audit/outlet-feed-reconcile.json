@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T17:46:19.774Z",
+  "generatedAt": "2026-11-17T19:10:50.856Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,6 +127,16 @@
       "id": "entre-dos-sombras-regional-2026",
       "title": "Entre Dos Sombras",
       "openingDate": "2026-11-16"
+    },
+    {
+      "id": "the-39-steps-regional-2026",
+      "title": "The 39 Steps",
+      "openingDate": "2026-11-13"
+    },
+    {
+      "id": "the-wash-regional-2026",
+      "title": "The Wash",
+      "openingDate": "2026-11-11"
     }
   ],
   "skipped": [
@@ -136,6 +146,10 @@
     },
     {
       "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "a-christmas-story-the-musical-tour-2026",
       "reason": "no data/review-texts directory for this show"
     },
     {
@@ -154,6 +168,10 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "one-minute-critic",
+      "error": "HTTP 403 for https://1minutecritic.com/feed"
+    },
+    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
@@ -164,6 +182,14 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -178,10 +204,28 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 876,
-  "matchedGaps": 0,
-  "possibleGaps": 2,
+  "itemsScanned": 859,
+  "matchedGaps": 2,
+  "possibleGaps": 4,
   "gaps": [
+    {
+      "showId": "jenufa-off-broadway-2026",
+      "title": "Jenůfa",
+      "level": "matched",
+      "outletId": "new-york-classical-review",
+      "url": "https://newyorkclassicalreview.com/2026/11/grigorians-artistry-fully-equal-to-janaceks-masterful-jenufa-at-the-met/",
+      "headline": "Grigorian&#8217;s artistry fully equal to Janáček&#8217;s masterful &#8220;Jenůfa&#8221; at the Met",
+      "publishDate": "2026-11-17"
+    },
+    {
+      "showId": "the-fantasticks-2026",
+      "title": "The Fantasticks",
+      "level": "matched",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/11/17/entertainment/the-fantasticks-review-worlds-longest-running-musical-returns-with-a-twist/",
+      "headline": "&#8216;The Fantasticks&#8217; review: World&#8217;s longest-running musical returns — with a twist",
+      "publishDate": "2026-11-17"
+    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
@@ -199,6 +243,24 @@
       "url": "https://www.chicagotribune.com/2026/11/17/review-annie-drury-lane-theatre/",
       "headline": "Review: Orphans and holiday cheer in ‘Annie’ at Drury Lane Theatre",
       "publishDate": "2026-11-17"
+    },
+    {
+      "showId": "the-wash-regional-2026",
+      "title": "The Wash",
+      "level": "possible",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/no-woman-is-an-island-traverse-theatre/",
+      "headline": "No Woman Is An Island &#8211; Traverse Theatre",
+      "publishDate": "2026-11-17"
+    },
+    {
+      "showId": "the-wash-regional-2026",
+      "title": "The Wash",
+      "level": "possible",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/09/the-wash-front-porch-arts-collective/",
+      "headline": "Theater Review: THE WASH (Front Porch Arts Collective / Boston)",
+      "publishDate": "2026-11-09"
     }
   ]
 }
