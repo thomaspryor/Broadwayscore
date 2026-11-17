@@ -1,21 +1,60 @@
 {
-  "updatedAt": "2026-11-17T14:47:16.141Z",
-  "processed": 68,
-  "failed": 71,
-  "successRate": "48.9%",
+  "updatedAt": "2026-11-17T14:49:57.398Z",
+  "processed": 146,
+  "failed": 101,
+  "successRate": "59.1%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 63,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 4,
+    "scrapingdog": 20,
+    "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 33
   },
   "browserbaseSessions": 4,
   "recentActivity": [
+    {
+      "t": "2026-11-17T11:30:41.067Z",
+      "event": "bb-session",
+      "session": "d9a089b6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T11:30:41.650Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T11:31:40.697Z",
+      "event": "bb-session",
+      "session": "53dea329",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T11:31:41.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T11:34:20.135Z",
+      "event": "bb-session",
+      "session": "43ac326e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-17T11:34:20.754Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T11:46:32.136Z",
+      "event": "bb-session",
+      "session": "f98ce8dd",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
     {
       "t": "2026-11-17T11:47:29.110Z",
       "event": "bb-session",
@@ -79,54 +118,15 @@
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-17T14:17:22.938Z",
+      "t": "2026-11-17T14:33:28.132Z",
       "event": "bb-session",
-      "session": "fc39ddb9",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "e766a9d1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-17T14:41:55.745Z",
-      "event": "bb-session",
-      "session": "d2a9f27a",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
-    },
-    {
-      "t": "2026-11-17T14:41:56.726Z",
+      "t": "2026-11-17T14:33:28.466Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-17T14:42:11.006Z",
-      "event": "bb-session",
-      "session": "5fdcb0c0",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
-    },
-    {
-      "t": "2026-11-17T14:42:11.848Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-17T14:43:56.581Z",
-      "event": "bb-session",
-      "session": "d6afdf27",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-17T14:43:57.354Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-17T14:46:51.612Z",
-      "event": "bb-session",
-      "session": "d1c85e17",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-17T14:46:52.381Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
     }
   ]
 }
