@@ -137,3 +137,17 @@ test('classify: a row that cites the review as evidence covers it, even filed un
   assert.equal(L.classifyReview(review, { shows: [{ ...row, evidenceUrls: [] }], metro: 'boston-ma' }).status, 'missing');
   assert.equal(L.classifyReview(review, { shows: [{ ...row, category: 'tour', market: 'tour' }], metro: 'boston-ma' }).status, 'covered-tour');
 });
+
+test('auditHub: a second company\'s production of a title already added from another review is reported', async () => {
+  const chi = hubsToAudit(registry, 'chicago-il')[0];
+  const csUrl = 'https://www.broadwayworld.com/chicago/article/Review-THE-WINTERS-TALE-at-Chicago-Shakespeare-Theater-20261023';
+  const maUrl = 'https://www.broadwayworld.com/chicago/article/Review-THE-WINTERS-TALE-at-Modern-Archaic-Theatre-Company-20261115';
+  const page = listing([
+    { url: csUrl, headline: "Review: THE WINTER'S TALE at Chicago Shakespeare Theater", datePublished: '2026-10-23' },
+    { url: maUrl, headline: "Review: THE WINTER'S TALE at Modern Archaic Theatre Company", datePublished: '2026-11-15' },
+  ]);
+  const row = { id: 'the-winters-tale-regional-2026', title: "The Winter's Tale", category: 'regional', city: 'chicago-il', venue: 'Jentes Family Courtyard Theater, Chicago, IL', openingDate: '2026-10-23', evidenceUrls: [csUrl] };
+  const r = await auditHub(chi, { shows: [row], since: '2026-10-01', maxPages: 1, fetchHtml: async () => page });
+  assert.deepEqual(r.missing.map((m) => m.urls[0]), [maUrl]);
+  assert.equal(r.covered, 1);
+});
