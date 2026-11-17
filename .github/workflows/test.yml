@@ -34,6 +34,10 @@ on:
       # impossible and removes the merge-conflict-magnet property of a single
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
+      # BRO-7268: scripts/lib/e2e-visual-baseline-scope.test.mjs pins the push-E2E
+      # skip of visual-regression.spec.ts in both of these files.
+      - 'playwright.config.ts'
+      - '.github/workflows/test.yml'
       # BRO-7103: scripts/lib/recurrence-classes.test.mjs and root-cause-close.test.mjs require it.
       - 'scripts/recurrence-detector.js'
       # BRO-7369: tests/unit/review-forecast-v2-earlier-audience.test.mjs runs these two scripts' --help guard.
@@ -7019,8 +7023,26 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/lib/e2e-await-deploy.js --max-wait=1500 --interval=60
 
+      # BRO-7268: visual-regression.spec.ts diffs LIVE prod against baselines
+      # that only the scheduled Visual Regression job refreshes, so an
+      # approved hero change (BRO-7628's "Seen it?" link) kept main red until
+      # the next cron. It is skipped here and re-run below as advisory.
       - name: Run E2E tests
         run: npx playwright test --project=chromium
+        env:
+          TEST_BASE_URL: https://broadwayscorecard.com
+          E2E_SKIP_PROD_VISUAL_BASELINES: '1'
+
+      - name: Visual baseline drift vs live prod (advisory, BRO-7268)
+        if: success() || failure()
+        continue-on-error: true
+        run: |
+          status=0
+          npx playwright test tests/e2e/visual-regression.spec.ts --project=chromium --retries=0 --output=test-results-visual --reporter=line || status=$?
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Live site differs from visual baselines (expected after an approved UI change; the scheduled Visual Regression job refreshes them). Diffs: test-results-visual/ in the playwright-report artifact."
+          fi
+          exit "$status"
         env:
           TEST_BASE_URL: https://broadwayscorecard.com
 
@@ -7032,6 +7054,7 @@ jobs:
           path: |
             playwright-report/
             test-results/
+            test-results-visual/
           retention-days: 7
 
       - name: Notify on failure

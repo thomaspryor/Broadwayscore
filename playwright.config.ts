@@ -22,18 +22,28 @@ export default defineConfig({
 
   // UGC tests need local dev server with userAccounts flag.
   // Excluded by default (main CI hits production). Set RUN_UGC_TESTS=1 to include them.
-  testIgnore: process.env.RUN_UGC_TESTS
-    ? []
-    : [
-        '**/my-shows-mock*',
-        '**/my-shows-functional*',
-        '**/rating-editor*',
-        '**/lazy-panel-guard*',
-        '**/ugc-interactive-qa*',
-        '**/ugc-visual-regression*',
-        '**/ugc-visual-baselines*',
-        '**/ingest-form-batch*',
-      ],
+  //
+  // E2E_SKIP_PROD_VISUAL_BASELINES=1 (set by test.yml's push E2E job, BRO-7268)
+  // also drops visual-regression.spec.ts: it diffs LIVE prod against a baseline
+  // only the scheduled Visual Regression job refreshes, so every approved hero
+  // change turned main red for up to ~24h until the next cron rewrote it.
+  testIgnore: [
+    ...(process.env.RUN_UGC_TESTS
+      ? []
+      : [
+          '**/my-shows-mock*',
+          '**/my-shows-functional*',
+          '**/rating-editor*',
+          '**/lazy-panel-guard*',
+          '**/ugc-interactive-qa*',
+          '**/ugc-visual-regression*',
+          '**/ugc-visual-baselines*',
+          '**/ingest-form-batch*',
+        ]),
+    ...(process.env.E2E_SKIP_PROD_VISUAL_BASELINES === '1'
+      ? ['**/visual-regression.spec.ts']
+      : []),
+  ],
 
   // Run tests in parallel
   fullyParallel: true,
