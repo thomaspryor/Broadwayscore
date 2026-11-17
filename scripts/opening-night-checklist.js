@@ -64,6 +64,19 @@ const REVIEW_TEXTS_ROOT = require('./lib/review-texts-dir').resolveReviewTextsDi
 // CLI args
 // ---------------------------------------------------------------------------
 const args = process.argv.slice(2);
+// --help or an unknown flag used to fall through to a full live run, which
+// fetches aggregator pages through the paid scraper chain. Stop before any work.
+const USAGE = 'Usage: node scripts/opening-night-checklist.js [--show=ID] [--stage=T-12h|T-6h|T-2h|post-open|auto] [--json] [--out=FILE]';
+const KNOWN_ARG = /^--(show=|stage=|out=|json$)/;
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(USAGE);
+  process.exit(0);
+}
+const unknownArgs = args.filter((a) => !KNOWN_ARG.test(a));
+if (unknownArgs.length) {
+  console.error(`Unknown argument(s): ${unknownArgs.join(' ')}\n${USAGE}`);
+  process.exit(2);
+}
 const showIdArg = (args.find(a => a.startsWith('--show=')) || '').replace('--show=', '') || null;
 const stageArg = (args.find(a => a.startsWith('--stage=')) || '').replace('--stage=', '') || 'auto';
 const jsonMode = args.includes('--json');
