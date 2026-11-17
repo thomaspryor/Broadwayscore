@@ -1,0 +1,283 @@
+// tests/unit/cookie-renew-outlets.test.mjs — BRO-7705: automatic login
+// renewal for nytimes, newyorker, wapo, thetimes, ft, telegraph.
+//
+// Drives the real modules (CLAUDE.md §15): adapter selection, the Keychain
+// gate (one alert, sticky, self-clearing), expiry scheduling, failure
+// classification, the shared probes' floors against the anonymous/subscriber
+// body lengths measured live on 2026-11-17, the two-sample browser control,
+// and the CLI guards (never in CI/cloud; unknown outlets are refused, not
+// silently dropped).
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const require = createRequire(import.meta.url);
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const renew = require('../../scripts/lib/cookie-renew.js');
+const { COOKIE_PROBES, classifyWalledProbe } = require('../../scripts/lib/cookie-probes.js');
+const { FLOWS, runLoginFlow } = require('../../scripts/lib/cookie-login-adapters.js');
+const bprobe = require('../../scripts/lib/cookie-browser-probe.js');
+const { ADAPTERS } = require('../../scripts/lib/browser-outlet-adapters.js');
+
+const NEW = ['nytimes', 'newyorker', 'wapo', 'thetimes', 'ft', 'telegraph'];
+const DAY = 86400 * 1000;
+const NOW = Date.parse('2026-11-17T12:00:00Z');
+const sec = (ms) => Math.floor(ms / 1000);
+
+test('every outlet has a probe, a login adapter with a browser flow, and auth cookies', () => {
+  for (const o of ['thestage', ...NEW]) {
+    const cfg = renew.RENEW_OUTLETS[o];
+    assert.ok(cfg, `${o} in RENEW_OUTLETS`);
+    assert.ok(COOKIE_PROBES[o], `${o} has a walled probe`);
+    const a = renew.loginAdapterFor(o);
+    assert.ok(a, `${o} has a login adapter`);
+    assert.equal(typeof FLOWS[a.kind], 'function', `${o}: flow ${a.kind} exists`);
+    assert.ok(Array.isArray(cfg.cookieDomains) && cfg.cookieDomains.length, `${o} cookieDomains`);
+    assert.ok(cfg.authCookies.length, `${o} has measured auth cookies`);
+    assert.equal(cfg.manualOnly, undefined, `${o} is not manual-only`);
+  }
+  assert.equal(renew.loginAdapterFor('nope'), null);
+});
+
+test('adapter selection: NYT and New Yorker need only the email (Gmail OTP); the rest need email + password', () => {
+  assert.deepEqual(renew.loginAdapterFor('nytimes').credentials, ['email']);
+  assert.deepEqual(renew.loginAdapterFor('newyorker').credentials, ['email']);
+  assert.equal(renew.loginAdapterFor('nytimes').kind, 'nyt-otp');
+  assert.match('Log in with code 123456', renew.loginAdapterFor('nytimes').otp.codePattern);
+  assert.equal('Your one time code is 654321'.match(renew.loginAdapterFor('newyorker').otp.codePattern)[1], '654321');
+  for (const o of ['wapo', 'thetimes', 'ft', 'telegraph', 'thestage']) {
+    assert.deepEqual(renew.loginAdapterFor(o).credentials, ['email', 'password'], o);
+  }
+  assert.equal(renew.loginAdapterFor('thetimes').kind, 'one-step-password');
+  assert.equal(renew.loginAdapterFor('ft').kind, 'two-step-password');
+});
+
+test('profiles are shared with the gap-driver adapters (same Chrome profile = same device)', () => {
+  assert.equal(renew.profileNameFor('nytimes'), 'nyt');
+  for (const o of ['thestage', 'nytimes', 'newyorker', 'wapo', 'thetimes', 'telegraph']) {
+    const name = renew.profileNameFor(o);
+    assert.ok(ADAPTERS[name], `${o} -> profile ${name} is a browser-outlet adapter profile`);
+    assert.ok(renew.RENEW_OUTLETS[o].cookieDomains.includes(ADAPTERS[name].cookieDomain), `${o} cookie domain matches the adapter`);
+  }
+});
+
+test('missingCredentials lists only absent Keychain items', () => {
+  const nyt = renew.loginAdapterFor('nytimes');
+  assert.deepEqual(renew.missingCredentials(nyt, { email: null }), ['email']);
+  assert.deepEqual(renew.missingCredentials(nyt, { email: 'a@b.c' }), []);
+  assert.deepEqual(renew.missingCredentials(renew.loginAdapterFor('ft'), { email: 'a@b.c' }), ['password']);
+});
+
+test('credentialGate: missing Keychain items alert once, stay stopped, and clear themselves once added', () => {
+  const ft = renew.loginAdapterFor('ft');
+  const first = renew.credentialGate({}, ft, { email: null, password: null }, '2026-11-17T00:00:00Z');
+  assert.equal(first.action, 'stop-new');
+  assert.equal(first.state.needsHuman.code, 'creds-missing');
+  assert.deepEqual(first.missing, ['email', 'password']);
+  // Next run: still missing -> sticky, no second alert.
+  const second = renew.credentialGate(first.state, ft, { email: null, password: null }, '2026-11-17T06:00:00Z');
+  assert.equal(second.action, 'stop-sticky');
+  assert.equal(second.state.needsHuman.at, '2026-11-17T00:00:00Z');
+  const d = renew.decideLogin(second.state, NOW);
+  assert.equal(d.allowed, false);
+  assert.equal(d.escalate, false, 'a sticky stop never re-alerts');
+  assert.match(d.reason, /clears itself/);
+  // Owner adds the items -> cleared without --reset, login allowed.
+  const third = renew.credentialGate(second.state, ft, { email: 'a@b.c', password: 'x' }, '2026-11-17T12:00:00Z');
+  assert.equal(third.action, 'proceed');
+  assert.equal(third.state.needsHuman, null);
+  assert.equal(renew.decideLogin(third.state, NOW).allowed, true);
+});
+
+test('credentialGate never clears a different needs-human stop (failed login, login limit)', () => {
+  const st = { logins: [], needsHuman: { at: 'x', reason: 'login did not produce a session: captcha', code: 'login-failed' } };
+  const g = renew.credentialGate(st, renew.loginAdapterFor('wapo'), { email: 'a', password: 'b' }, 'y');
+  assert.equal(g.action, 'proceed');
+  assert.equal(g.state.needsHuman.code, 'login-failed');
+  assert.equal(renew.decideLogin(g.state, NOW).allowed, false);
+  assert.equal(renew.credentialGate(st, null, {}, 'y').action, 'stop-sticky');
+});
+
+test('soonestAuthExpiry: the earliest dated auth cookie; session and non-auth cookies ignored', () => {
+  const cookies = [
+    { name: 'authId', expires: sec(NOW + 10 * DAY) },
+    { name: 'authId', expires: sec(NOW + 2 * DAY) },
+    { name: 'other', expires: sec(NOW + 1000) },
+    { name: 'NYT-S', expires: -1 },
+  ];
+  assert.deepEqual(renew.soonestAuthExpiry(cookies, ['authId', 'NYT-S']), { name: 'authId', expiresMs: sec(NOW + 2 * DAY) * 1000 });
+  assert.equal(renew.soonestAuthExpiry(cookies, ['missing']), null);
+  assert.equal(renew.soonestAuthExpiry(null, ['authId']), null);
+});
+
+test('planRenewal: renew before the soonest auth cookie lapses, not only after a failure', () => {
+  const auth = ['authId'];
+  const far = [{ name: 'authId', expires: sec(NOW + 10 * DAY) }];
+  const near = [{ name: 'authId', expires: sec(NOW + 2 * DAY) }];
+  const gone = [{ name: 'authId', expires: sec(NOW - DAY) }];
+  assert.equal(renew.planRenewal({ probeStatus: 'logged-in', cookies: far, authCookies: auth, nowMs: NOW }).action, 'none');
+  const p = renew.planRenewal({ probeStatus: 'logged-in', cookies: near, authCookies: auth, nowMs: NOW });
+  assert.equal(p.action, 'refresh');
+  assert.match(p.reason, /expiring: authId 2\.0d left/);
+  assert.equal(renew.planRenewal({ probeStatus: 'logged-in', cookies: gone, authCookies: auth, nowMs: NOW }).action, 'refresh');
+  assert.equal(renew.planRenewal({ probeStatus: 'logged-out', cookies: far, authCookies: auth, nowMs: NOW }).action, 'refresh');
+  assert.equal(renew.planRenewal({ probeStatus: 'unknown', cookies: far, authCookies: auth, nowMs: NOW }).action, 'refresh');
+  // Uncertain probes never lead to a login.
+  assert.equal(renew.planRenewal({ probeStatus: 'error', cookies: gone, authCookies: auth, nowMs: NOW }).action, 'stop');
+  assert.equal(renew.planRenewal({ probeStatus: 'vacuous', cookies: gone, authCookies: auth, nowMs: NOW }).action, 'stop');
+  // The lead is 3 days.
+  assert.equal(renew.RENEW_LEAD_MS, 3 * DAY);
+});
+
+test('WaPo: wp_ak_signinv2 is not a scheduling cookie (it lapsed while the session still read 6589 chars)', () => {
+  const cfg = renew.RENEW_OUTLETS.wapo;
+  assert.ok(!cfg.authCookies.includes('wp_ak_signinv2'));
+  const cookies = [
+    { name: 'wp_ak_signinv2', expires: sec(NOW - 0.7 * DAY) },
+    { name: 'wapo_secure_login_id', expires: sec(NOW + 388 * DAY) },
+    { name: 'wapo_login_id', expires: sec(NOW + 388 * DAY) },
+  ];
+  assert.equal(renew.planRenewal({ probeStatus: 'logged-in', cookies, authCookies: cfg.authCookies, nowMs: NOW }).action, 'none');
+});
+
+test('authCookiesChanged: re-save only when the session itself changed', () => {
+  const a = [{ domain: '.x.com', name: 'authId', value: 'v1', expires: 100 }, { domain: '.x.com', name: '_ga', value: 'g1' }];
+  assert.equal(renew.authCookiesChanged(a, [...a], ['authId']), false);
+  assert.equal(renew.authCookiesChanged(a, [a[0], { ...a[1], value: 'g2' }], ['authId']), false, 'tracking cookie churn is not a renewal');
+  assert.equal(renew.authCookiesChanged(a, [{ ...a[0], value: 'v2' }, a[1]], ['authId']), true);
+  assert.equal(renew.authCookiesChanged(a, [{ ...a[0], expires: 999 }, a[1]], ['authId']), true, 'a rolled expiry is a renewal');
+  assert.equal(renew.authCookiesChanged([], a, ['authId']), true, 'no saved session -> save');
+  assert.equal(renew.authCookiesChanged(a, [a[0], { ...a[1], value: 'g2' }], []), true, 'no auth list -> any change counts');
+});
+
+test('classifyLoginFailure: bot challenge, captcha, emailed code, rejection, unknown', () => {
+  assert.equal(renew.classifyLoginFailure({ url: 'https://x/login', html: '<title>Verifying Device</title>' }), 'bot-challenge');
+  assert.equal(renew.classifyLoginFailure({ url: 'https://x/', html: '<title>Security Verification</title>' }), 'bot-challenge');
+  assert.equal(renew.classifyLoginFailure({ url: 'https://x/', html: '<div class="g-recaptcha">' }), 'captcha');
+  assert.equal(renew.classifyLoginFailure({ url: 'https://x/', html: 'Enter the code we sent' }), 'code');
+  assert.equal(renew.classifyLoginFailure({ url: 'https://x/login', html: 'Incorrect password' }), 'rejected');
+  assert.equal(renew.classifyLoginFailure({ url: 'https://x/', html: '<p>hello</p>' }), 'unknown');
+});
+
+test('worstExitCode picks the most severe outlet result', () => {
+  assert.equal(renew.worstExitCode([0, 0, 3, 1]), 3);
+  assert.equal(renew.worstExitCode([0, 4, 3]), 4);
+  assert.equal(renew.worstExitCode([]), 0);
+});
+
+// Body lengths measured on 2026-11-17 for the same url with the subscriber
+// session and with none. The anonymous length must classify logged-out (not
+// "logged in", the old NYT/FT bug) and the subscriber length logged-in.
+const MEASURED = {
+  nytimes: { sub: 6170, anon: 2904 },
+  wapo: { sub: 6589, anon: 309 },
+  newyorker: { sub: 8474, anon: 645 },
+  ft: { sub: 3035, anon: 2312, anonHtml: '<title>Subscribe to read | Financial Times</title>' },
+  thetimes: { sub: 2775, anon: 0 },
+};
+for (const [o, m] of Object.entries(MEASURED)) {
+  test(`probe ${o}: anonymous ${m.anon} chars reads logged-out, subscriber ${m.sub} logged-in, never vacuous`, () => {
+    const p = COOKIE_PROBES[o];
+    const cls = (len, html = '<p>article</p>', control) => classifyWalledProbe({
+      withCookies: { html, body: 'x'.repeat(len) }, withoutCookies: control,
+      minBody: p.minBody, wallMarker: p.wallMarker, gateMarker: p.gateMarker,
+    });
+    const anonPage = { html: m.anonHtml || '<p>teaser</p>', body: 'x'.repeat(m.anon) };
+    assert.equal(cls(m.anon, anonPage.html), 'logged-out');
+    assert.equal(cls(m.sub, '<p>article</p>', anonPage), 'logged-in');
+  });
+}
+
+test('browser-only probes: The Times, FT, New Yorker, Telegraph (bot walls / client-side paywalls)', () => {
+  for (const o of ['thetimes', 'ft', 'newyorker', 'telegraph']) assert.equal(COOKIE_PROBES[o].browserOnly, true, o);
+  for (const o of ['nytimes', 'wapo', 'thestage']) assert.ok(!COOKIE_PROBES[o].browserOnly, o);
+});
+
+test('a bot challenge is never logged-out or vacuous, on either side of the probe', () => {
+  const p = COOKIE_PROBES.thetimes;
+  const base = { minBody: p.minBody, wallMarker: p.wallMarker, gateMarker: p.gateMarker };
+  const times = { html: '<html><title>Verifying Device</title></html>', body: '' };
+  const ft403 = { html: '<title>Security Verification</title>', body: '' };
+  assert.equal(classifyWalledProbe({ ...base, withCookies: times }), 'error');
+  assert.equal(classifyWalledProbe({ ...base, withCookies: ft403, withoutCookies: ft403 }), 'error');
+  assert.equal(classifyWalledProbe({ ...base, withCookies: { html: '<p>', body: 'x'.repeat(3000) }, withoutCookies: times }), 'error');
+});
+
+test('classifyWithControl: one anonymous full read is not enough to call the probe vacuous', async () => {
+  const p = COOKIE_PROBES.telegraph;
+  const sub = { html: '<p>article</p>', body: 'x'.repeat(2556) };
+  const walled = { html: '<div class="martech-paywall__blur">', body: 'x'.repeat(168) };
+  const full = { html: '<p>article</p>', body: 'x'.repeat(2556) };
+  const calls = [];
+  const flaky = async (_p, o) => { calls.push(o.waitMs || 0); return calls.length === 1 ? full : walled; };
+  const r = await bprobe.classifyWithControl(p, sub, { anon: flaky });
+  assert.equal(r.status, 'logged-in');
+  assert.deepEqual(calls, [0, 8000], 'second control waits longer');
+  const always = async () => full;
+  assert.equal((await bprobe.classifyWithControl(p, sub, { anon: always })).status, 'vacuous');
+  let n = 0;
+  const once = async () => { n++; return walled; };
+  assert.equal((await bprobe.classifyWithControl(p, sub, { anon: once })).status, 'logged-in');
+  assert.equal(n, 1, 'no second control when the first is walled');
+});
+
+// A page whose login form is not there: every flow must report formMissing
+// (a needs-human stop) instead of throwing or "succeeding".
+function emptyPage() {
+  const gotos = [];
+  const loc = { first: () => loc, count: async () => 0, fill: async () => {}, click: async () => {}, press: async () => {}, waitFor: async () => {} };
+  return {
+    gotos,
+    goto: async (u) => { gotos.push(u); },
+    waitForTimeout: async () => {},
+    waitForSelector: async () => { throw new Error('timeout'); },
+    waitForLoadState: async () => {},
+    waitForFunction: async () => {},
+    locator: () => loc,
+    getByRole: () => loc,
+    getByText: () => loc,
+    url: () => 'https://example.test/login',
+    content: async () => '<html></html>',
+    keyboard: { press: async () => {} },
+  };
+}
+for (const o of ['thestage', ...NEW]) {
+  test(`login flow for ${o} goes to its login url and reports a missing form`, async () => {
+    const page = emptyPage();
+    const adapter = renew.loginAdapterFor(o);
+    let polled = false;
+    const r = await runLoginFlow(page, adapter, renew.RENEW_OUTLETS[o], { email: 'a@b.c', password: 'pw' }, { pollOtp: async () => { polled = true; return null; } });
+    assert.equal(r.formMissing, true);
+    assert.deepEqual(page.gotos, [renew.RENEW_OUTLETS[o].loginUrl]);
+    assert.equal(polled, false, 'no one-time code requested when the form is missing');
+  });
+}
+
+test('runLoginFlow refuses an unknown adapter kind', async () => {
+  await assert.rejects(() => runLoginFlow(emptyPage(), { kind: 'nope' }, {}, {}), /no login flow/);
+});
+
+const run = (script, argv, env = {}) => spawnSync(process.execPath, [path.join(REPO, 'scripts', script), ...argv], {
+  encoding: 'utf8', env: { ...process.env, CI: '', GITHUB_ACTIONS: '', CLAUDE_CODE_REMOTE: '', ...env }, timeout: 30000,
+});
+
+test('renew-cookies refuses CI and cloud sessions before touching anything', () => {
+  for (const env of [{ CI: 'true' }, { GITHUB_ACTIONS: 'true' }, { CLAUDE_CODE_REMOTE: 'true' }]) {
+    const r = run('renew-cookies.js', ['--outlets=all', '--probe-only'], env);
+    assert.equal(r.status, 1);
+    assert.match(r.stderr, /Refusing to run in CI\/cloud/);
+  }
+});
+
+test('renew-cookies and verify-cookie-login refuse unknown outlets instead of dropping them', () => {
+  const a = run('renew-cookies.js', ['--outlets=nytimes,bogus', '--probe-only']);
+  assert.equal(a.status, 1);
+  assert.match(a.stderr, /Unknown or unsupported outlet\(s\): bogus/);
+  const b = run('verify-cookie-login.js', ['--outlets=bogus']);
+  assert.equal(b.status, 1);
+  assert.match(b.stderr, /Unknown outlet\(s\): bogus/);
+});

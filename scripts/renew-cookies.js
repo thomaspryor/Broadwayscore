@@ -110,7 +110,8 @@ async function fetchProbe(probe, cookies) {
 
 function readLocalCookies(fileKey) {
   try {
-    const c = JSON.parse(fs.readFileSync(path.join(COOKIE_DIR, `${fileKey}.json`), 'utf8'));
+    // COOKIE_RENEW_COOKIE_DIR: supervised dry runs only (reads; writes still go to COOKIE_DIR).
+    const c = JSON.parse(fs.readFileSync(path.join(process.env.COOKIE_RENEW_COOKIE_DIR || COOKIE_DIR, `${fileKey}.json`), 'utf8'));
     return Array.isArray(c) ? c : [];
   } catch {
     return [];

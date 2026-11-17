@@ -274,6 +274,9 @@ function authCookiesChanged(oldCookies, newCookies, authCookies) {
 }
 
 function profileDir(outlet) {
+  // COOKIE_RENEW_PROFILE_ROOT: supervised dry runs / tests only (an empty
+  // root makes every outlet look logged out without touching real profiles).
+  if (process.env.COOKIE_RENEW_PROFILE_ROOT) return path.join(process.env.COOKIE_RENEW_PROFILE_ROOT, outlet);
   return path.join(os.homedir(), 'Library', 'Application Support', 'BroadwayScorecard', 'browser-profiles', outlet);
 }
 
@@ -363,7 +366,8 @@ function emptyOutletState() {
 function decideLogin(state, nowMs) {
   const s = { ...emptyOutletState(), ...(state || {}) };
   if (s.needsHuman) {
-    return { allowed: false, escalate: false, reason: `needs-human since ${s.needsHuman.at}: ${s.needsHuman.reason} (clear with --reset after fixing)` };
+    const how = s.needsHuman.code === 'creds-missing' ? 'clears itself once the Keychain items exist' : 'clear with --reset after fixing';
+    return { allowed: false, escalate: false, reason: `needs-human since ${s.needsHuman.at}: ${s.needsHuman.reason} (${how})` };
   }
   const times = s.logins.map((t) => Date.parse(t)).filter(Number.isFinite).sort((a, b) => b - a);
   if (times.length && nowMs - times[0] < LOGIN_COOLDOWN_MS) {

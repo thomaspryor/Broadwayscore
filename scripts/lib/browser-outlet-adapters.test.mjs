@@ -167,13 +167,15 @@ test('Telegraph adapter: subscriber page -> text; walled page -> authWall; Akama
   assert.equal((await A.resolveBrowserMiss(bot, { probe: probeWalled, minAuthChars: A.ADAPTERS.telegraph.minAuthChars })).action, 'skip');
 });
 
-test('renew-cookies: telegraph is manual-only and local-only, with a browser-only probe on the adapter testUrl', () => {
-  const { RENEW_OUTLETS } = require('./cookie-renew.js');
+// BRO-7705: re-subscribed 2026-11-11, so telegraph now has an automatic
+// (Keychain) login like the others; it stays local-only (Akamai blocks CI).
+test('renew-cookies: telegraph is local-only with an automatic login, and a browser-only probe on the adapter testUrl', () => {
+  const { RENEW_OUTLETS, loginAdapterFor } = require('./cookie-renew.js');
   const { COOKIE_PROBES, classifyWalledProbe } = require('./cookie-probes.js');
   const cfg = RENEW_OUTLETS.telegraph;
-  assert.equal(cfg.manualOnly, true);
+  assert.equal(cfg.manualOnly, undefined);
   assert.equal(cfg.localOnly, true);
-  assert.equal(cfg.selectors, undefined, 'no automatic credential flow');
+  assert.equal(loginAdapterFor('telegraph').kind, 'two-step-password');
   assert.match(cfg.loginUrl, /^https:\/\/secure\.telegraph\.co\.uk\/customer\/secure\/login\//);
   const p = COOKIE_PROBES.telegraph;
   assert.equal(p.url, A.ADAPTERS.telegraph.testUrl);
