@@ -341,3 +341,45 @@ import _a7569 from 'node:assert/strict';
     }
   });
 }
+
+test('run-info / photo-credit tail is a trailer on any outlet; a cut-off review is not (BRO-7171 2026-11-16)', () => {
+  // real ending shapes (broadwayworld + 37 other outlets' open TRUNCATED_OTHER gaps)
+  const endings = [
+    ' Roleplay runs at Soho Theatre (Dean Street) until 21 November Photo Credits: Mihaela Bodlovic',
+    ' Stereophonic plays at The Duke of York’s Theatre until 11 October Photography Credit: Marc Brenner',
+    ' Slaughterhouse-Five runs at Southwark Playhouse (Borough) until 4 July. Photography by Henry Hu',
+    ' Fire Fire at the Arcolas Theatre until 3 October and then on tour Photo images: Mark Senior',
+    "\n\nMy Son's a Queer (But What Can You Do?) plays at the Garrick Theatre until November 6",
+    ' All photos by Evan Zimmerman for MurphyMade',
+    ' For more ticket and show information, please click the ticket link button below. All photos are by Matthew Murphy and Evan Zimmerman',
+    ' For tickets and more information, visit: Water for Elephants - Columbus Association for the Performing Arts',
+    " DISNEY'S BEAUTY AND THE BEAST Running Now - March 15th Whitney Hall at Kentucky Performing Arts",
+    '\n\nRetrograde plays at the Apollo Theatre until 14 June\n\nGet InfoBuy TixCastPhotosVideos\n\n Get Show Info\nInfoGet TicketsCastPhotosVideosPowered by\nVideos',
+    '\n\nArcadia is at the Old Vic, London, until 21 March 2026',
+    ' Dog Mom is at the Southwark Playhouse Borough until 7th November. Tickets are on sale from: https://southwarkplayhouse.co.uk/productions/dog-mom/',
+    '\n\nShucked plays at the Fabulous Fox through February 23, 2025.\n\nPhoto credit: Matthew Murphy and Evan Zimmerman',
+  ];
+  for (const e of endings) {
+    assert.equal(T.stripRunInfoTrailer(BODY + e), BODY, JSON.stringify(e));
+    for (const outlet of ['broadwayworld', 'theartsdispatch', 'guardian']) {
+      assert.equal(tier(BODY + e, outlet).contentTier, 'complete', `${outlet} ${JSON.stringify(e)}`);
+    }
+    // classify-only: the saved text keeps the run line and credit
+    assert.equal(stripTrailingJunk(BODY + e, 'broadwayworld').trim(), (BODY + e).trim().replace(/\s+$/, ''), JSON.stringify(e));
+  }
+  // cut off mid-sentence before the trailer: stays truncated
+  const cutBody = `${BODY.slice(0, -1)} and the lead brings a snarl`;
+  for (const e of [endings[0], endings[4], endings[10]]) {
+    assert.equal(T.stripRunInfoTrailer(cutBody + e), cutBody + e, JSON.stringify(e));
+    assert.equal(tier(cutBody + e, 'broadwayworld').contentTier, 'truncated', JSON.stringify(e));
+  }
+  // prose that names a month after "until" but no venue is not a run line
+  const prose = `${BODY} The cast stays in character until 5 May and`;
+  assert.equal(T.stripRunInfoTrailer(prose), prose);
+  // a mid-sentence cut that merely mentions photos is kept
+  const photos = `${BODY} The photos on the wall of the set and`;
+  assert.equal(T.stripRunInfoTrailer(photos), photos);
+  // too little prose left after the strip: unchanged
+  const tiny = 'A short note. Roleplay runs at Soho Theatre until 21 November Photo Credits: X';
+  assert.equal(T.stripRunInfoTrailer(tiny), tiny);
+});

@@ -356,6 +356,64 @@ function isTelegraphListing(seg, afterPromo = false) {
   return parts.every((p) => TELEGRAPH_OPENER_RE.test(p) || TELEGRAPH_HARD_EVIDENCE_RE.test(p));
 }
 
+// Run-info / photo-credit page tail (BRO-7171, 2026-11-16), first measured on
+// BroadwayWorld and found on ~37 other outlets: a run line ("X plays at the
+// Garrick Theatre until 6 June"), a photo credit ("Photography Credit: Helen
+// Murray", "All photos by ..."), a ticket line ("For tickets and more
+// information, visit: ...") and the show widget ("Get InfoBuy TixCastPhotos...").
+// None ends in sentence punctuation, so 75 of 177 open BWW gaps sat as
+// TRUNCATED_OTHER and looped on a free refetch that BWW never answers; ~105
+// more open gaps on other outlets end the same way. Classify-only for every
+// outlet (stripKnownTrailers), never applied to saved text.
+// Each piece is removed from the end only; prose before it must end a sentence.
+const BWW_WIDGET_RE = /\s*(?:Get\s*Info\s*Buy\s*Tix|Get Show Info)[\s\S]{0,300}$/;
+const BWW_PHOTO_RE = /(?:^|\s)(?:All\s+)?(?:production\s+)?(?:photos?|photograph(?:s|y)|photo\s+images?|images?)\s*(?:credits?\s*:?|:|by\b|are\s+by\b|courtesy\s+of\b)[^.!?\n]{1,120}$/i;
+const BWW_TICKETS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)(?:For\s+(?:more\s+)?(?:tickets?|ticket\s+and|information)\b|Tickets?\s*(?::|are\b|available\b)|Get\s+tickets\b)[^\n]{0,220}$/i;
+const BWW_RUN_SEG_RE = new RegExp(
+  `(?:^|[.!?]["'”’)]?\\s+|\\n)((?:[^.!?\\n]|[!?](?=\\)))(?:[^.!?\\n]|[!?](?=\\))){2,199}?(?:\\b(?:until|through|thru|till)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2})|\\bRunning\\b[^.!?\\n]{0,40}${TELEGRAPH_MONTH})[^.!?\\n]{0,80}?)\\.?$`
+);
+
+function stripRunInfoTrailer(text) {
+  if (!text || typeof text !== 'string') return text;
+  let t = text.replace(/\s+$/, '');
+  for (let i = 0; i < 5; i++) {
+    const before = t;
+    t = t.replace(BWW_WIDGET_RE, '').replace(/\s+$/, '');
+    t = t.replace(BWW_PHOTO_RE, '').replace(/\s+$/, '');
+    const tk = BWW_TICKETS_RE.exec(t);
+    if (tk) t = t.slice(0, tk.index + (tk[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).replace(/\s+$/, '');
+    const run = BWW_RUN_SEG_RE.exec(t);
+    // a run line names a venue ("at"/"in" before the date, or "Running ...")
+    // and reads like a listing, not prose: see looksLikeListing
+    if (run && /\b(?:at|in|Running)\b/.test(run[1]) && looksLikeListing(run[1])) {
+      t = t.slice(0, run.index + (run[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).replace(/\s+$/, '');
+    }
+    if (t === before) break;
+  }
+  if (t === text.replace(/\s+$/, '')) return text;
+  if (!SENTENCE_END_RE.test(t) || t.length < RELATED_MIN_REMAINING) return text;
+  // the sentence now last must not itself be a listing ("Until Jun 6." left
+  // after its "Tickets: ..." line): a cut review can end on one.
+  const last = t.split(/[.!?]["'”’)]?\s+|\n/).pop().trim();
+  if (last.length < 40 && new RegExp(TELEGRAPH_MONTH).test(last)) return text;
+  return t;
+}
+
+// Words a listing line carries in lower case; every other word in a run line
+// is a title or venue (capitalised) or a number. Prose that happens to end
+// "... and the lead is at the Garrick until 7 June" is mostly lower case.
+const LISTING_LOWER_WORDS = new Set(['the', 'a', 'an', 'at', 'in', 'on', 'of', 'and', 'to', 'until', 'through', 'thru', 'till', 'runs', 'run', 'running', 'plays', 'play', 'playing', 'is', 'are', 'will', 'be', 'now', 'then', 'from', 'for', 'tour', 'touring', 'booking', 'with', 'currently', 'continues', 'performs', 'them', 'it', 'its', 'only', 'open', 'bookings']);
+function looksLikeListing(seg) {
+  const words = String(seg).split(/\s+/).map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')).filter(Boolean);
+  let caps = 0;
+  let other = 0;
+  for (const w of words) {
+    if (/^\p{N}/u.test(w) || LISTING_LOWER_WORDS.has(w.toLowerCase())) continue;
+    if (/^\p{Lu}/u.test(w)) caps++; else other++;
+  }
+  return caps >= 1 && caps >= 2 * other;
+}
+
 // Outlet-scoped strippers (outletId is the registry id on the review file).
 const OUTLET_TRAILER_STRIPPERS = Object.freeze({
   'times-uk': stripTimesFooter,
@@ -400,7 +458,7 @@ function trailerFixesEnabled() {
 /** Every known trailer, for the ending-punctuation check. */
 function stripKnownTrailers(text, outletId) {
   if (!trailerFixesEnabled()) return text;
-  return stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(text)), outletId, { forClassify: true });
+  return stripRunInfoTrailer(stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(text)), outletId, { forClassify: true }));
 }
 
 module.exports = {
@@ -411,6 +469,7 @@ module.exports = {
   stripStagePageTail,
   stripTimesFooter,
   stripTelegraphFooter,
+  stripRunInfoTrailer,
   stripGuardianTopicsFooter,
   stripOutletTrailer,
   stripKnownTrailers,
