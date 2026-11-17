@@ -1244,20 +1244,6 @@
     "queuedAt": "2026-11-17T13:14:07.942Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T13:45:06.534Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-7664-mwkpx5f6",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7664-mwkpx5f6",
     "description": "land.yml did not land land/job/linear-BRO-7664-mwkpx5f6: the unit-tests-node gate went red at e92e0f1ad6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44096625487",
@@ -1329,6 +1315,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-17T14:25:40.623Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T15:11:22.106Z"
   },
   {
     "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
