@@ -181,6 +181,26 @@ function leasedShowIds({ file, now, env = process.env } = {}) {
 }
 
 /**
+ * A CI job that never ran the opening-night-lease-sync action has no lease file, and no file reads as "nothing
+ * leased", so a rebuild there rebuilds a show the lane is publishing from review-texts that do not hold the lane's
+ * rows yet and wipes them (the-fantasticks-2026, 2026-11-17: fetch-guardian-reviews.yml took 20 live reviews to 0).
+ * Before reading the publish view, a CI caller runs the sync itself when the file is missing. Off CI (no
+ * GITHUB_ACTIONS) a missing file still means no lane was ever armed on this machine. Returns what it did.
+ */
+function syncIfMissing({ file, env = process.env, run } = {}) {
+  const f = file || leasesFile(env);
+  if (fs.existsSync(f)) return 'present';
+  if (env.GITHUB_ACTIONS !== 'true') return 'not-ci';
+  const exec = run || (() => require('child_process').execFileSync(process.execPath,
+    [path.join(__dirname, '../../opening-night-lease.js'), 'sync'], { stdio: 'inherit', timeout: 120000, env }));
+  try { exec(); } catch (e) { console.warn(`::warning::opening-night lease self-sync failed (${String((e && e.message) || e).slice(0, 120)})`); }
+  if (fs.existsSync(f)) return 'synced';
+  // The CLI writes the unknown marker on its own failure; a crash before that leaves no file. Same fallback as the action.
+  try { markUnknown({ file: f, env }); } catch { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, '{"leases":{},"unknown":true}\n'); }
+  return 'unknown';
+}
+
+/**
  * push-review-texts refusal: undo every uncommitted change under a blocked show's directory in
  * the review-texts checkout `repoDir` (tracked edits restored from HEAD, new files deleted),
  * so the commit that follows cannot carry them. Returns the reverted paths.
@@ -213,5 +233,5 @@ const describe = (l) => `${l.show} leased to ${l.holder}${l.expiresAt ? ` until 
 
 module.exports = {
   readUnknownMarker, tonightShows, revertableShowIds, DEFAULT_LEASES_FILE, DEFAULT_SHOWS_FILE, leasesFile, showsFile, tonightShowIds, readView,
-  writeBlockedShowIds, leaseSkipReason, partitionLeased, writableShowIds, markUnknown, leasedShowIds, revertLeasedChanges, describe,
+  writeBlockedShowIds, leaseSkipReason, partitionLeased, writableShowIds, markUnknown, leasedShowIds, syncIfMissing, revertLeasedChanges, describe,
 };
