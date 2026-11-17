@@ -45,6 +45,13 @@ const INCLUSION_FILES = [
   // validateShowMentioned/validateContentMentionsShow and by rebuild-all-reviews.js's
   // showNotMentioned auto-clear — an inclusion decision, same shape as above.
   'scripts/lib/show-title-variants.js',
+  // BRO-7171 (2026-11-16): classifyContentTier strips page trailers
+  // (stripKnownTrailers) and detects hard paywalls before judging the ending;
+  // a trailer edit flipped 165 reviews truncated -> complete (confidence weight
+  // 0.85 -> 1.0) without tripping this gate. Every local require of
+  // content-quality.js is classified in scoring-watchlists.test.mjs.
+  'scripts/lib/trailer-signatures.js',
+  'scripts/lib/paywall-detector.js',
   // BRO-5373: buildMultiProdDirectorGuard here builds the map the rebuild's
   // director guard excludes by (production order, earliest newer start), and
   // findPriorRunSiblings/preWindowExemptPriorRuns feed inclusion the same way.
