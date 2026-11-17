@@ -424,8 +424,8 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
       <tr><td style="padding:24px;">
         <table cellpadding="0" cellspacing="0">
           <tr>
-            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
-              <font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font>
+            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;font-size:32px;line-height:72px;mso-line-height-rule:exactly;">
+              <font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;mso-line-height-rule:exactly;">${scoreDisplay}</span></font>
             </td>
             <td style="padding-left:16px;vertical-align:middle;">
               <p style="margin:0 0 4px;font-size:18px;font-weight:700;color:${sc.bg};font-family:${FONT};">${sc.label}</p>
@@ -543,8 +543,8 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       <tr><td style="padding:24px;">
         <table cellpadding="0" cellspacing="0">
           <tr>
-            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
-              <a href="${reviewsHref}" style="text-decoration:none;display:block;line-height:72px;"><font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font></a>
+            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;font-size:32px;line-height:72px;mso-line-height-rule:exactly;">
+              <a href="${reviewsHref}" style="text-decoration:none;display:block;height:72px;font-size:32px;line-height:72px;mso-line-height-rule:exactly;"><font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;mso-line-height-rule:exactly;">${scoreDisplay}</span></font></a>
             </td>
             <td style="padding-left:16px;vertical-align:middle;">
               <a href="${reviewsHref}" style="text-decoration:none;color:inherit;"><p style="margin:0 0 4px;font-size:18px;font-weight:700;color:${sc.bg};font-family:${FONT};">${sc.label}</p>
