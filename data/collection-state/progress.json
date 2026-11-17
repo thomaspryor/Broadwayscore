@@ -145,7 +145,8 @@
     "the-outsiders-2024/culturesauce--thom-geier.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
     "operation-mincemeat-west-end-2024/thereviewshub--lauren-humphreys.json",
-    "operation-mincemeat-west-end-2024/thereviewshub--the-reviews-hub-scotland.json"
+    "operation-mincemeat-west-end-2024/thereviewshub--the-reviews-hub-scotland.json",
+    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
   ],
   "failed": [
     "the-fantasticks-2026/bobs-theater-blog--unknown.json",
@@ -320,7 +321,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
-      "paranormal-activity-2026/nytimes--helen-shaw.json"
+      "paranormal-activity-2026/nytimes--helen-shaw.json",
+      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -391,11 +393,12 @@
       "and-juliet-tour-2024/boca-magazine--aurora-dominguez.json",
       "the-great-gatsby-2024/deadline--greg-evans.json",
       "the-great-gatsby-2024/forbes--shivani-vora.json",
-      "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
+      "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
     ]
   },
   "startTime": "2026-11-17T07:23:36.810Z",
-  "lastProcessed": "and-juliet-2022/broadway-and-me--unknown.json",
+  "lastProcessed": "girls-off-west-end-2026/londontheatre1--unknown.json",
   "log": [
     {
       "t": "2026-11-17T08:54:12.908Z",
@@ -588,6 +591,18 @@
       "t": "2026-11-17T14:33:28.466Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T15:12:52.781Z",
+      "event": "bb-session",
+      "session": "e7cc96c4",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-17T15:13:48.537Z",
+      "event": "bb-session",
+      "session": "602d5b42",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
