@@ -137,7 +137,7 @@ test('parse errors that mean unsupported syntax (not truncation) stay REAL', () 
   const f = { ...chunk('app-9'), function: null };
   assert.equal(classifyIssue(lookbehind, ev([f])).noise, false);
   const optional = { title: "SyntaxError: Unexpected token '?'", culprit: '?(chunks/app)', count: '40', userCount: '30' };
-  assert.equal(require('../../scripts/lib/sentry-triage-classify.js').isBundleParseError(optional, [f]), false);
+  assert.equal(classifyIssue(optional, ev([f])).noise, false);
 });
 
 test("Safari's truncated-bundle form ('global code', query string on absPath) is noise", () => {
@@ -158,4 +158,27 @@ test('noise is ignored only until it escalates, never forever (BRO-7722)', () =>
   assert.ok(NOISE_IGNORE_BODY.statusDetails.ignoreUserWindow > 0);
   const src = require('fs').readFileSync(require.resolve('../../scripts/triage-sentry.js'), 'utf8');
   assert.doesNotMatch(src, /status: 'ignored' \}/, 'triage-sentry.js must use NOISE_IGNORE_BODY, not a bare forever-ignore');
+});
+
+test('Firefox and old-Safari truncation wording is noise too', () => {
+  const f = { ...chunk('x'), function: null };
+  for (const title of ['SyntaxError: expected expression, got end of script', 'SyntaxError: unterminated string literal', 'SyntaxError: Unexpected EOF']) {
+    assert.equal(classifyIssue({ title, culprit: '?(chunks/x)', count: '3', userCount: '3' }, ev([f])).noise, true, title);
+  }
+});
+
+test('a truncation-shaped parse error hitting 200+ users stays REAL (corrupt bundle for everyone)', () => {
+  const issue = { title: 'SyntaxError: missing ) after argument list', culprit: '?(chunks/x)', count: '900', userCount: '850' };
+  assert.equal(classifyIssue(issue, ev([{ ...chunk('x'), function: null }])).noise, false);
+});
+
+test("an HTML page served for a chunk (Unexpected token '<') is still noise", () => {
+  const issue = { title: "SyntaxError: Unexpected token '<'", culprit: '?(chunks/x)', count: '9', userCount: '9' };
+  assert.equal(classifyIssue(issue, ev([{ ...chunk('x'), function: 'a' }, { ...chunk('y'), function: 'b' }])).noise, true);
+});
+
+test('PostHog SDK frames proxied through our /ingest/ path are third-party', () => {
+  const issue = { title: 'SyntaxError: Invalid or unexpected token', culprit: 'clampToRange(ingest/core/dist/utils/number-utils)', count: '5', userCount: '5' };
+  const f = { filename: '/ingest/core/dist/utils/number-utils.mjs', absPath: 'https://broadwayscorecard.com/ingest/core/dist/utils/number-utils.mjs', function: 'clampToRange', lineNo: 15 };
+  assert.equal(classifyIssue(issue, ev([f])).noise, true);
 });

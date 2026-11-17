@@ -49,6 +49,14 @@ test('files a new Linear card carrying the sentry-<id> marker through the chokep
   assert.deepEqual(s.calls.lookup[0].descriptionMarkers, ['sentry-issue: sentry-4567']);
 });
 
+test('a low-frequency real issue is filed but not dispatched (BRO-7722)', async () => {
+  const s = stubs();
+  const r = await lib.fileSentryIssue({ issue: ISSUE, classification: { ...REAL, lowFrequency: true }, org: 'o' }, s.deps);
+  assert.equal(r.action, 'filed');
+  assert.equal(s.calls.create[0].dispatch, false);
+  assert.equal(s.calls.create[0].priority, 4);
+});
+
 test('an existing card (any state) means no new card', async () => {
   const s = stubs({ found: [{ identifier: 'BRO-1', state: { type: 'completed' }, description: 'x\nsentry-issue: sentry-4567\n' }] });
   const r = await lib.fileSentryIssue({ issue: ISSUE, classification: REAL, org: 'o' }, s.deps);

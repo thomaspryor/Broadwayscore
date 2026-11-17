@@ -27,7 +27,10 @@ const NOISE_MESSAGE_PATTERNS = [
   /webkit-masked-url/i,
   /Script error\.?$/i,
   /Non-Error promise rejection captured/i,
-  /Unexpected token/i,
+  // Only the HTML-instead-of-JS form (a 404 page served for a chunk). The old
+  // catch-all /Unexpected token/i also hid "Unexpected token '?'" (syntax a
+  // browser cannot run = our bug). Truncation forms: isBundleParseError.
+  /Unexpected token '?<'?/,
   /Object Not Found Matching Id/i,
   /a\[e\] is not a function/i,
   /instantSearchSDKJSBridgeClearHighlight/i,
@@ -44,6 +47,8 @@ const NOISE_MESSAGE_PATTERNS = [
 ];
 
 const NOISE_URL_PATTERNS = [
+  // PostHog's SDK, reverse-proxied through our own domain at /ingest/ (BRO-7722).
+  /^https?:\/\/[^/]+\/ingest\//,
   /extensions?\//i,
   /^chrome:\/\//i,
   /^chrome-extension:\/\//i,
@@ -100,13 +105,18 @@ function frameUrl(f) {
 // Deliberately narrow: other parse errors ("Invalid regular expression",
 // "Unexpected token '?'") mean we shipped syntax some browsers cannot run,
 // which is our bug and must stay real.
-const TRUNCATION_MESSAGES = /^SyntaxError: (missing \) after argument list|Unexpected end of (input|script)|Invalid or unexpected token)$/;
+const TRUNCATION_MESSAGES = /^SyntaxError: (missing \) after argument list|Unexpected end of (input|script)|Invalid or unexpected token|Unexpected EOF|expected expression, got end of script|unterminated string literal)$/;
+
+// Above this many users, a parse error is not a crawler: a corrupt bundle on
+// the CDN or a bad build is breaking the site for everyone. Keep it real.
+const MAX_TRUNCATION_USERS = 200;
 
 // A truncated download of one of our bundles fails at top level (one frame, no
 // named function; Safari reports 'global code'). BRO-7722: 61 such events in a
 // week, all one stale Chrome build on Windows, one "user" each (a crawler fleet).
 function isBundleParseError(issue, frames) {
   if (!TRUNCATION_MESSAGES.test(issue.title || '')) return false;
+  if (parseInt(issue.userCount || '0', 10) > MAX_TRUNCATION_USERS) return false;
   const real = frames.filter(f => !/^\[native code\]$/.test(f.filename || ''));
   if (real.length !== 1) return false;
   const fn = real[0].function;

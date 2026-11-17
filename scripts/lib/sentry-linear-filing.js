@@ -77,7 +77,12 @@ async function fileSentryIssue({ issue, classification, org, canCreate = true },
   try {
     // Dedupe is the marker lookup above; the title near-match rule is opted
     // out because distinct Sentry errors share most title words.
-    const { issue: created } = await createLinearIssue({ ...card, dispatch: true, source: SOURCE, dedupeOptOut: 'sentry-triage' });
+    const { issue: created } = await createLinearIssue({
+      ...card,
+      // One-off quirks (1-2 events, 1 user) go on the board but do not start a
+      // paid worker session (BRO-7722: real errors now reach this path).
+      dispatch: !(classification && classification.lowFrequency),
+      source: SOURCE, dedupeOptOut: 'sentry-triage' });
     return { action: 'filed', card: created };
   } catch (e) {
     return { action: 'skipped', reason: `could not file the Linear card (${e && e.message})` };
