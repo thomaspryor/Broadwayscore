@@ -66,7 +66,7 @@ const {
   hasListingChrome, stripListingPrelude, stripLeadingCredits, isTagCloudExcerpt, isMidWordTruncation,
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
-  isClippedAggregatorBlurb, startsAsFragment,
+  isClippedAggregatorBlurb, startsAsFragment, stripLeadingParenAside, PAREN_ASIDE_START_RE,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
 const emitExcludedStage = createExcludedStageEmitter();
@@ -856,7 +856,13 @@ function selectBestExcerpt(data, showTitle) {
     // had exactly one usable quote and it started lowercase, so the review
     // shipped with no pull quote at all (owner report). Deferring keeps the
     // "prefer a cleaner source" behaviour while guaranteeing a fallback.
-    excerpt = trimToCompleteSentence(excerpt);
+    // BRO-7675: cut a closed leading aside/photo credit ("(Courtesy ...) The
+    // stage musical..."); an aside that is the whole candidate is deferred last.
+    excerpt = trimToCompleteSentence(stripLeadingParenAside(excerpt));
+    if (PAREN_ASIDE_START_RE.test(excerpt)) {
+      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'parenthetical-aside', source });
+      return null;
+    }
     if (startsAsFragment(excerpt)) {
       deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'lowercase-fragment', source });
       return null;
@@ -1203,7 +1209,8 @@ function selectBestExcerpt(data, showTitle) {
   // sentence (deferred) used to win via finish(null) below, and these rank at
   // or above RAW_SOURCE_RANK, so letting them in would replace it (ship-check
   // on #940). Gating on an empty `deferred` keeps every existing quote as is.
-  for (const field of deferred.length ? [] : ['theStageExcerpt', 'outletStandfirst', 'metaExcerpt']) {
+  // A parenthetical-aside deferral (BRO-7675) is never a critic sentence, so it does not shut these out.
+  for (const field of deferred.some(d => d.reason !== 'parenthetical-aside') ? [] : ['theStageExcerpt', 'outletStandfirst', 'metaExcerpt']) {
     if (!data[field]) continue;
     const cleaned = cleanExcerpt(data[field]);
     if (cleaned && cleaned.length > 25) {

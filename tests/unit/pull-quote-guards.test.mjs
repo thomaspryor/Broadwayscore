@@ -895,3 +895,36 @@ describe('parenthetical-start quotes (BRO-7675)', () => {
     });
   }
 });
+
+describe('leading parenthetical aside is cut or ranked last (BRO-7675)', () => {
+  const g = require('../../scripts/lib/pull-quote-guards.js');
+  test('closed aside + capitalised sentence: aside cut, critic sentence kept', () => {
+    assert.equal(g.stripLeadingParenAside('(Courtesy Matthew Murphy/BroadwaySF) The stage musical is a delight.'), 'The stage musical is a delight.');
+    assert.equal(g.stripLeadingParenAside('(I am also a fan of “Part II,” though not so much “Part III.”) It is an absolutely superb show.'), 'It is an absolutely superb show.');
+    assert.equal(g.stripLeadingParenAside('(Fortunately, she can be bribed with ice cream). This unusual character works.'), 'This unusual character works.');
+    assert.equal(g.stripLeadingParenAside('“(One, two, three) No, the brilliance lies elsewhere.'), 'No, the brilliance lies elsewhere.');
+  });
+  test('unclosed aside, or aside followed by a fragment, is left for the guard to defer', () => {
+    for (const q of ['(Lewis’s existence also happens to save the show from the dated sexism', '("Bloody Bloody Andrew Jackson"), is very nearly as good.']) {
+      assert.equal(g.stripLeadingParenAside(q), q);
+      assert.ok(g.PAREN_ASIDE_START_RE.test(q));
+    }
+  });
+  test('a quote without a leading aside is untouched', () => {
+    const q = 'A superb revival (the best in years) that earns every laugh.';
+    assert.equal(g.stripLeadingParenAside(q), q);
+  });
+  test('a parenthetical-aside deferral loses to every other deferral and never beats an accepted quote', () => {
+    const aside = { rank: 1, excerpt: '(an aside', reason: 'parenthetical-aside' };
+    const frag = { rank: 9, excerpt: 'and the score is sublime.', reason: 'lowercase-fragment' };
+    const over = { rank: 9, excerpt: 'Overlong but real…', reason: 'overlong' };
+    assert.equal(g.pickExcerptCandidate({ deferred: [aside, frag, over] }), 'and the score is sublime.');
+    assert.equal(g.pickExcerptCandidate({ deferred: [aside, over] }), 'Overlong but real…');
+    assert.equal(g.pickExcerptCandidate({ accepted: { rank: 99, excerpt: 'Body sentence.' }, deferred: [aside] }), 'Body sentence.');
+    assert.equal(g.pickExcerptCandidate({ deferred: [aside] }), '(an aside', 'still never quote-less');
+  });
+  test('a stored LLM quote opening on "(" counts as absent', () => {
+    if (typeof g.hasUsableLlmQuote !== 'function') return;
+    assert.equal(g.hasUsableLlmQuote({ llmPullQuote: '(Lewis’s existence also happens to save the show.)' }), false);
+  });
+});
