@@ -86,6 +86,10 @@
         {
           "at": "2026-11-14T15:58:41.092Z",
           "outcome": "existing_file"
+        },
+        {
+          "at": "2026-11-17T18:49:33.131Z",
+          "outcome": "existing_file"
         }
       ]
     },
@@ -372,24 +376,16 @@
         {
           "at": "2026-11-13T17:22:17.338Z",
           "outcome": "no_evidence"
-        }
-      ]
-    },
-    "wanted-2022::theater-scene": {
-      "showId": "wanted-2022",
-      "outletId": "theater-scene",
-      "openingDate": "2026-11-08",
-      "firstSeenMissingAt": "2026-11-12T12:41:58.877Z",
-      "attempts": [
-        {
-          "at": "2026-11-13T17:22:53.350Z",
-          "outcome": "no_evidence"
         },
         {
-          "at": "2026-11-16T19:48:45.906Z",
+          "at": "2026-11-17T18:49:45.172Z",
           "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-17T18:49:45.172Z",
+        "note": "auto (BRO-7312): 3 targeted searches of theatermania for the-morbs-off-broadway-2026 found no review (2026-11-12, 2026-11-13, 2026-11-17)"
+      }
     },
     "wanted-2022::timeout": {
       "showId": "wanted-2022",
@@ -416,6 +412,10 @@
         {
           "at": "2026-11-13T17:23:01.743Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-17T18:50:12.258Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -427,6 +427,10 @@
       "attempts": [
         {
           "at": "2026-11-13T17:23:01.743Z",
+          "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-17T18:50:12.258Z",
           "outcome": "no_evidence"
         }
       ]
