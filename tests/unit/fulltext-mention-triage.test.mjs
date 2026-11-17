@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 
 const require = createRequire(import.meta.url);
-const { classifyUnmatchedReview, summarizeFulltextHits } = require('../../scripts/lib/opening-night-checks/fulltext-mention-triage.js');
+const { classifyUnmatchedReview, summarizeFulltextHits, isContaminationEvidence } = require('../../scripts/lib/opening-night-checks/fulltext-mention-triage.js');
 const check = require('../../scripts/lib/opening-night-checks/fulltext-mentions-show.check.js');
 const { runLifetimeSweep } = require('../../scripts/lib/opening-night-checks/lifetime-sweep-runner.js');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -117,4 +117,17 @@ test('the existing sweep serializes outlet plans and preserves its failure exit'
   assert.equal(output.triage.total, output.totalViolations);
   assert.deepEqual(output.triage.counts, { excerpt: 1, truncated: 1, 'wrong-production': 1 });
   assert.equal(output.triage.outletPlans.length, 2);
+});
+
+// BRO-7666: the digest row must not warn on routine excerpt/unresolved hits.
+test('isContaminationEvidence: only wrong-production hits are actionable', () => {
+  const v = (bucket) => ({ triage: { bucket } });
+  assert.equal(isContaminationEvidence(v('wrong-production')), true);
+  for (const b of ['excerpt', 'truncated', 'stub', 'roundup', 'unresolved']) assert.equal(isContaminationEvidence(v(b)), false);
+  assert.equal(isContaminationEvidence({}), false);
+});
+
+test('fulltext sweep wires isActionable into the runner (row stays quiet on backlog)', () => {
+  const src = fs.readFileSync(path.join(root, 'scripts/audit-fulltext-mentions-show-lifetime.js'), 'utf8');
+  assert.match(src, /isActionable:\s*isContaminationEvidence/);
 });

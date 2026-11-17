@@ -49,6 +49,14 @@ function classifyUnmatchedReview(record, haystackLength) {
   return { bucket, evidence, nextStep, requiresArticleReview: true };
 }
 
+// BRO-7666: only a hit already flagged wrongProduction/wrongShow is evidence
+// of contamination. An excerpt/stub/unresolved review whose text lacks the
+// title is routine backlog (it stays in the snapshot + triage plans) and must
+// not trip the daily digest row on every new ingest.
+function isContaminationEvidence(violation) {
+  return !!(violation && violation.triage && violation.triage.bucket === 'wrong-production');
+}
+
 // Called by the existing lifetime sweep. Per-outlet draft work plans travel
 // inside its already-persisted snapshot and --json output, so the daily cron
 // produces a fresh queue without another fetch, workflow, or report writer.
@@ -81,4 +89,4 @@ function summarizeFulltextHits(hits) {
   return { triage: { total, counts, outletPlans } };
 }
 
-module.exports = { classifyUnmatchedReview, summarizeFulltextHits };
+module.exports = { classifyUnmatchedReview, summarizeFulltextHits, isContaminationEvidence };
