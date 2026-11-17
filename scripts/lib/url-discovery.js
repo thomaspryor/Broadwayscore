@@ -909,6 +909,9 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
  * Try SERP providers in order based on preferSpeed flag.
  * Default (preferSpeed=false): BrightData first (cheap), ScrapingBee fallback (fast).
  * preferSpeed=true: ScrapingBee first (sync ~1-3s), BrightData fallback.
+ * BRO-6867: on press-night flows where Scrapingdog already answered, preferSpeed
+ * is ignored (effectivePreferSpeed) so Bright Data goes first and ScrapingBee is
+ * asked only if Bright Data fails. SERP_SB_SECOND_OPINION=1 restores SB-first.
  *
  * @returns {{ results: Array|null, provider: string }}
  *   results=null means both providers are down; []=searched but nothing found.
