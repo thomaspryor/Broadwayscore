@@ -115,6 +115,9 @@ test('shell-edit detection: ship-check findings (absolute paths, cp/mv, quoted p
     "sed -i 's/a|b/c/' scripts/x.js",
     "mv a.js scripts/x.js 2>/dev/null",
     "git -C wt apply /tmp/p.patch",
+    "cp -t src/ a.js",
+    "install -m 644 -t scripts/lib a.js",
+    "mv --target-directory=scripts/ a.js",
   ]) assert.equal(shellEditsCode(cmd), true, cmd);
   for (const cmd of [
     "echo 1 > .claude/state/foo",
@@ -127,6 +130,8 @@ test('shell-edit detection: ship-check findings (absolute paths, cp/mv, quoted p
     "cp scripts/x.js /tmp/x.js",
     "npm test 2>&1 | tee .cache/out.txt",
     "git apply --check /tmp/p.patch",
+    "cp -t /tmp/out scripts/x.js",
+    "rsync -avt scripts/ /tmp/backup",
   ]) assert.equal(shellEditsCode(cmd), false, cmd);
   for (const big of ['x'.repeat(100000), 'a='.repeat(50000), 'x>'.repeat(50000), '(.claude/worktrees'.repeat(6000), "a'".repeat(50000), '/a'.repeat(50000)]) {
     const t0 = Date.now();

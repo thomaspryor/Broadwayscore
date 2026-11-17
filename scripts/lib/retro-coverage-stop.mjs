@@ -68,8 +68,11 @@ function clauseEditsCode(cl) {
   const t = cl.replace(/\s#.*$/, '').trim(); // a trailing shell comment is not the destination
   // sed/perl in place: -i anywhere in the clause (before or after the script), or --in-place.
   if (/^(?:sudo\s+)?(?:sed|perl)\b/.test(t) && /\s(?:-\w*i\w*|--in-place)\b/.test(t) && TARGET_RE.test(t)) return true;
-  // cp/mv/install: the destination is the last token.
+  // cp/mv/install: the destination is the last token, or the -t/--target-directory operand (the trailing
+  // tokens are then sources). Not for rsync, where -t means "keep times".
   if (/^(?:cp|mv|install|rsync)\b/.test(t)) {
+    const tdir = /^rsync\b/.test(t) ? null : t.match(/\s(?:-[a-zA-Z]*t\s+|--target-directory[=\s]\s*)(\S+)/);
+    if (tdir) return new RegExp(`^['"]?${CODE_TOKEN}`).test(tdir[1]);
     const last = t.replace(/(?:\s+\d*>>?&?\s*\S+)+$/, '').split(/\s+/).pop(); // a trailing 2>/dev/null is not the destination
     return new RegExp(`^['"]?${CODE_TOKEN}`).test(last);
   }
