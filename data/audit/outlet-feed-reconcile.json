@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T05:18:10.412Z",
+  "generatedAt": "2026-11-17T06:45:49.565Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -157,21 +157,20 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "fringereview",
+      "error": "Timeout fetching https://fringereview.co.uk/feed/"
+    },
+    {
+      "outletId": "lighting-and-sound-america",
+      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 880,
-  "matchedGaps": 1,
+  "itemsScanned": 864,
+  "matchedGaps": 0,
   "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/the-fantasticks-a-cardboard-moon-with-diamond-stars/",
-      "headline": "“THE FANTASTICKS”: A CARDBOARD MOON WITH DIAMOND STARS",
-      "publishDate": "2026-11-17"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",

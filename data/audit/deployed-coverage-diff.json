@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-11-17T05:18:09.993Z",
+  "generatedAt": "2026-11-17T06:45:49.162Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 331,
-  "clean": 329,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "openingDate": "2026-11-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.35 vs local 78.23 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-11-17T05:18:06.143Z"
-    },
-    {
-      "showId": "wanted-2022",
-      "title": "Wanted",
-      "openingDate": "2026-11-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 59.53 vs local 59.47 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27,
-      "firstDefectAt": "2026-11-17T05:18:06.143Z"
-    }
-  ],
+  "clean": 331,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

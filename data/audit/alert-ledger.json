@@ -19497,13 +19497,13 @@
     "roundup-gap:all": {
       "status": "open",
       "disposition": "auto",
-      "title": "Roundup gaps: 15 listed review(s) not captured across 6 show(s)",
+      "title": "Roundup gaps: 11 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-17T05:17:28.838Z",
-      "lastNotifiedAt": "2026-11-16T18:21:17.015Z",
+      "lastSeen": "2026-11-17T06:45:05.936Z",
+      "lastNotifiedAt": "2026-11-17T06:45:05.936Z",
       "lastSurfacedAt": null,
-      "notifyCount": 57,
+      "notifyCount": 58,
       "cardId": null,
       "linearIdentifier": "BRO-7512",
       "rollupMembers": [
@@ -19577,8 +19577,7 @@
         "downstate-2026",
         "jenufa-off-broadway-2026",
         "the-fantasticks-2026"
-      ],
-      "silentRefires": 7
+      ]
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38779,12 +38778,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-17T05:17:28.725Z",
+      "lastSeen": "2026-11-17T06:45:05.833Z",
       "lastNotifiedAt": "2026-11-17T05:17:28.725Z",
       "lastSurfacedAt": "2026-11-17T05:17:28.725Z",
       "notifyCount": 12,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -41004,19 +41004,17 @@
       "linearIdentifier": null
     },
     "gap:msblackforpresident-off-broadway-2026/guardian--unknown.json": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "T1/T2 silent gap on near-opening show: Ms. Blakk for President — guardian",
       "firstSeen": "2026-11-10T05:35:04.347Z",
-      "incidentOpenedAt": "2026-11-10T05:35:04.347Z",
-      "lastSeen": "2026-11-10T05:35:04.347Z",
-      "lastNotifiedAt": "2026-11-10T05:35:04.347Z",
+      "incidentOpenedAt": "2026-11-17T06:45:28.731Z",
+      "lastSeen": "2026-11-17T06:45:28.731Z",
+      "lastNotifiedAt": "2026-11-17T06:45:28.731Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-7266",
-      "resolvedAt": "2026-11-16T07:51:27.754Z",
-      "resolveReason": "BRO-6082: no automated path left; reported on the digest FYI line"
+      "linearIdentifier": "BRO-7266"
     },
     "land:land/bro-7256-c": {
       "status": "resolved",
@@ -42887,7 +42885,7 @@
       "linearIdentifier": null
     },
     "uncollected-blackout:the-fantasticks-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: The Fantasticks",
       "firstSeen": "2026-11-12T21:34:05.447Z",
@@ -42899,7 +42897,9 @@
       "cardId": null,
       "linearIdentifier": "BRO-7624",
       "notifyCountAtRelease": 1,
-      "sweptTracker": "BRO-7420"
+      "sweptTracker": "BRO-7420",
+      "resolvedAt": "2026-11-17T06:45:33.999Z",
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
     },
     "uncollected-blackout:downstate-2026": {
       "status": "resolved",
