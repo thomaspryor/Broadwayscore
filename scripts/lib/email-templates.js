@@ -597,67 +597,6 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
 }
 
 /**
- * Build a feedback thank-you email — plain text style, personal, from Tom.
- *
- * @param {'fixed'|'acknowledged'|'praise'|'feature'|'content'} type
- * @param {string} name - Submitter's first name (or falsy if unknown)
- * @param {string} [showTitle] - Show name if applicable
- * @returns {{ subject: string, html: string }}
- */
-function buildFeedbackThankYouEmail(type, name, showTitle) {
-  const greeting = name && name !== 'Anonymous' ? name : null;
-  const showRef = showTitle ? escapeHtml(showTitle) : null;
-
-  let subject, body;
-
-  switch (type) {
-    case 'fixed':
-      subject = showRef ? `Re: ${showTitle}` : 'Re: your feedback';
-      body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nI really appreciate you taking the time to write in${showRef ? ` about ${showRef}` : ''}. You were absolutely right. We looked into it and just pushed a fix. It should be live now.\n\nThanks again for helping us get this right. Feedback like yours makes the site better.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. You were absolutely right. We looked into it and just pushed a fix. It should be live now.\n\nReally appreciate you taking the time. Feedback like yours makes the site better.\n\nTom\nBroadway Scorecard™`;
-      break;
-
-    case 'praise':
-      subject = greeting ? `Thanks ${greeting}!` : 'Thank you!';
-      body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nThank you. Your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nThank you. Your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`;
-      break;
-
-    case 'content':
-      subject = showRef ? `Re: ${showTitle}` : 'Re: your request';
-      body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage, and I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage, and I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`;
-      break;
-
-    case 'feature':
-      subject = greeting ? `Thanks ${greeting}!` : 'Thanks for the idea!';
-      body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nReally appreciate you taking the time to share that idea. I\u2019ve added it to our list. It\u2019s helpful to hear what people want to see.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nReally appreciate you taking the time to share that idea. I\u2019ve added it to our list. It\u2019s helpful to hear what people want to see.\n\nTom\nBroadway Scorecard™`;
-      break;
-
-    default: // 'acknowledged'
-      subject = showRef ? `Re: ${showTitle}` : 'Re: your feedback';
-      body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. I really appreciate you taking the time. It means a lot that you\u2019d flag this for us.\n\nWe\u2019ve noted it and will keep it in mind as we keep improving the site.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. I really appreciate you taking the time. It means a lot that someone would flag this for us.\n\nWe\u2019ve noted it and will keep it in mind as we keep improving the site.\n\nTom\nBroadway Scorecard™`;
-      break;
-  }
-
-  // Plain text email — minimal HTML, just styled like a normal email
-  const html = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#333;">
-${body.split('\n').map(line => line === '' ? '<br>' : `<p style="margin:0;">${line}</p>`).join('\n')}
-</body></html>`;
-
-  return { subject, html };
-}
-
-/**
  * Human-readable text for any show field value shown in a plan email. Without this, an array of
  * objects (cast, creativeTeam, ticketLinks) went through String() and printed "[object Object],
  * [object Object]" in the owner's Bug Fix Plan email (Wanted, #1186).
@@ -1056,7 +995,6 @@ module.exports = {
   buildOpeningNightHtml,
   buildBroadcastSubjectLine,
   buildBroadcastOpeningNightHtml,
-  buildFeedbackThankYouEmail,
   buildFixApprovalEmail,
   buildBroadcastApprovalHtml,
   buildDailyDigestHtml,

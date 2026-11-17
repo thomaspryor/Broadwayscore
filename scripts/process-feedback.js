@@ -16,7 +16,7 @@ import { createRequire } from 'module';
 import { diagnoseBug } from './diagnose-feedback-bug.js';
 
 const require = createRequire(import.meta.url);
-const { buildFeedbackThankYouEmail, postJSON, buildReplyToAddress } = require('./lib/email-templates.js');
+const { sendReplyOrDraft, makeResendTransport } = require('./lib/feedback-reply-drafts.js');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadPendingDiagnoses, mergePendingDiagnoses } = require('./lib/pending-diagnoses.js');
 const { buildCategorizationPrompt, parseCategorizedResponse } = require('./lib/feedback-categorize.js');
@@ -194,9 +194,13 @@ async function categorizeFeedback(submissions) {
 }
 
 /**
- * Send thank-you email via Resend for non-bug feedback
+ * Reply to a reader's feedback. BRO-7693: nothing goes to the reader unless the
+ * kind is listed in FEEDBACK_AUTO_REPLY_KINDS (default empty). Otherwise the
+ * reply is built as a draft and emailed to OWNER_EMAIL to send by hand.
+ * `kind` is the routing kind (e.g. 'missing-reviews'), known only after
+ * content routing, so callers flush this after the routing loop.
  */
-async function sendThankYouEmail(email, name, category, showName) {
+async function sendThankYouEmail(email, name, category, showName, { kind, message } = {}) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey || !email) return false;
 
@@ -209,24 +213,22 @@ async function sendThankYouEmail(email, name, category, showName) {
   };
   const emailType = typeMap[category] || 'acknowledged';
 
-  const { subject, html } = buildFeedbackThankYouEmail(emailType, name, showName);
-
   try {
-    await postJSON('https://api.resend.com/emails', {
-      from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
-      // Signed "Tom" and inviting a conversation — but `updates@` has no inbox
-      // (Resend sender only), so without this the reply bounces.
-      reply_to: buildReplyToAddress(),
-      to: [email],
-      subject,
-      html,
-    }, {
-      'Authorization': `Bearer ${resendKey}`,
+    const res = await sendReplyOrDraft({
+      kind,
+      type: emailType,
+      reader: { name, email, show: showName },
+      originalMessage: message,
+      transport: makeResendTransport(resendKey),
     });
-    console.log(`  Sent ${emailType} thank-you to ${maskEmail(email)}`);
-    return true;
+    if (res.sent) {
+      console.log(`  ${res.mode === 'auto' ? 'Sent' : 'Drafted to owner:'} ${emailType} reply for ${maskEmail(email)}`);
+    } else {
+      console.log(`  No ${emailType} reply for ${maskEmail(email)} (${res.reason})`);
+    }
+    return res.sent;
   } catch (err) {
-    console.error(`  Failed to send email to ${maskEmail(email)}: ${err.message}`);
+    console.error(`  Failed to send email for ${maskEmail(email)}: ${err.message}`);
     return false;
   }
 }
@@ -416,33 +418,28 @@ async function main() {
     const categorized = submissions.length > 0 ? await categorizeFeedback(submissions) : [];
     if (submissions.length > 0) console.log('Categorization complete\n');
 
-    // Send thank-you emails for non-bug categories. Pair via submissionNumber,
-    // not array position — the model can reorder or omit rows, and a positional
-    // pairing would send user A's acknowledgement to user B.
-    let emailsSent = 0;
+    // Replies for non-bug categories. Pair via submissionNumber, not array
+    // position: the model can reorder or omit rows, and a positional pairing
+    // would send user A's acknowledgement to user B. BRO-7693: the reply mode
+    // depends on the routing kind, which is only known after content routing,
+    // so this loop only collects; the replies are flushed after routing.
+    const pendingReplies = [];
     for (const cat of categorized) {
       const sub = submissions[cat.submissionNumber - 1];
       if (!sub) continue;
 
       // shouldSendThankYouNow (scripts/lib/feedback-thank-you-gate.js) decides
-      // this from classification alone — it runs BEFORE content-request
-      // routing/dispatch below and has no way to see whether the downstream
-      // add-requested-show.yml run later accepts, rejects (title-mismatch,
-      // venue ambiguity), or leaves the request stillStaged. That is
-      // intentional (BRO-129): the submitter is acknowledged regardless of
-      // that outcome. Bug/Content Error reports that are NOT content-addition
-      // requests are the one exception — their thank-you is sent after
-      // resolution, not now.
+      // this from classification alone, so the submitter is acknowledged
+      // regardless of whether the downstream add-requested-show.yml run later
+      // accepts or rejects a content request (BRO-129). Bug/Content Error
+      // reports that are NOT content-addition requests are the one exception:
+      // their reply comes after resolution, not now.
       if (!shouldSendThankYouNow(cat)) continue;
 
       if (sub.email) {
         const emailCategory = cat.contentRequest ? 'Content Request' : cat.category;
-        const sent = await sendThankYouEmail(sub.email, sub.name, emailCategory, sub.show);
-        if (sent) emailsSent++;
+        pendingReplies.push({ cat, sub, emailCategory });
       }
-    }
-    if (emailsSent > 0) {
-      console.log(`Sent ${emailsSent} thank-you email(s)\n`);
     }
 
     // Diagnose bugs and content errors. MAX_DIAGNOSES caps LLM diagnosis
@@ -597,6 +594,22 @@ async function main() {
         console.error(`  Diagnosis failed: ${err.message}`);
         bugDiagnoses.push({ item, submission: sub, diagnosis: null });
       }
+    }
+
+    // Flush the replies collected above, now that every content request has a
+    // routing kind. Draft-to-owner by default (BRO-7693).
+    let emailsSent = 0;
+    for (const { cat, sub, emailCategory } of pendingReplies) {
+      const routed = bugDiagnoses.find((d) => d.item === cat);
+      const action = routed && (routed.contentActions || []).find((a) => a.kind && a.kind !== 'unroutable');
+      const sent = await sendThankYouEmail(sub.email, sub.name, emailCategory, sub.show, {
+        kind: action ? action.kind : null,
+        message: sub.message,
+      });
+      if (sent) emailsSent++;
+    }
+    if (emailsSent > 0) {
+      console.log(`Prepared ${emailsSent} reader repl${emailsSent === 1 ? 'y' : 'ies'} (drafts go to the owner)\n`);
     }
 
     if (bugDiagnoses.length > 0) {

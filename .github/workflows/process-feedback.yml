@@ -59,6 +59,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           node scripts/process-feedback.js
 
@@ -508,6 +509,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/verify-feedback-requests-live.js
+
+      # BRO-7693: for each feedback bug closed as completed (launch cutoff in
+      # the script), email the owner ONE "it's fixed" draft reply to send by
+      # hand. Nothing goes to the reader. The reply-drafted label is the only
+      # dedupe state, so a failed run simply retries next cycle.
+      - name: Email owner draft "it's fixed" replies
+        if: always()
+        continue-on-error: true
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/draft-fixed-replies.js
 
       # Both notification steps above call routeAlert() (via
       # scripts/notify-feedback-outcomes.js and

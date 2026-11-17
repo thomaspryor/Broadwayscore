@@ -112,11 +112,14 @@ function describeOutcome(item) {
     };
   }
   if (item.diagnosed) {
+    // BRO-7693: a diagnosis is not a fix. This used to say "ALREADY BEING
+    // HANDLED ... started a fix", which read as done while the bug sat open.
     return {
-      rank: 2,
-      state: 'ALREADY BEING HANDLED',
-      color: '#15803d',
-      detail: `${item.summary || 'The site worked out what was wrong and started a fix'}. You will get another email when it is live on the site.`,
+      rank: 1,
+      state: 'DIAGNOSED, NOT FIXED YET',
+      color: '#b45309',
+      detail: `${item.summary || 'The site worked out what was wrong'}. No fix is live yet. Nothing is confirmed fixed until the issue closes.`,
+      whatNow: 'If the automatic fix does not land, this needs a person. A draft reply reaches you when it is fixed.',
       needsYou: false,
     };
   }
