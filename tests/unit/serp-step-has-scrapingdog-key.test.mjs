@@ -45,3 +45,16 @@ test('fetchPage passed on as a callback still counts', () => {
   // audit-critic-coverage.js hands scraper's fetchPage to discoverAuthorPages
   assert.equal(findSerpKeyGaps(wf(['SCRAPINGBEE_API_KEY'], 'node scripts/audit-critic-coverage.js'), 't.yml', ROOT).length, 1);
 });
+
+test('BRO-6867 review: path.join requires, star-slash-star strings and nested npm scripts are followed', () => {
+  const { reachesSerpChain, stripComments, expandNpmRun } = require(path.join(ROOT, 'scripts/lib/serp-step-key-guard.js'));
+  // author-pages modules load scraper.js via require(path.join(__dirname, '../scraper.js'))
+  assert.equal(reachesSerpChain(path.join(ROOT, 'scripts/lib/author-pages/nyt.js'), new Map()), true);
+  assert.equal(reachesSerpChain(path.join(ROOT, 'scripts/discover-author-page-slugs.js'), new Map()), true);
+  // an Accept header of */* must not swallow the code after it
+  const code = stripComments("h={Accept:'*/*'};\nrequire('./lib/scraper'); fetchPage(u) // x");
+  assert.match(code, /fetchPage\(u\)/);
+  assert.doesNotMatch(code, /\/\/ x/);
+  // npm test expands through package.json to the scripts it runs
+  assert.match(expandNpmRun('npm test', ROOT), /node scripts\//);
+});
