@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6703",
   "planId": "fcda353f-61d0-4ad2-a9d5-349b64df7124",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-17T04:54:53.355Z",
   "submitter": {
     "name": null,
@@ -56,5 +56,24 @@
         "description": "shows.json: blithe-spirit-west-end-2014.noReliableArt"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-17T05:07:43.061Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for noises-off-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for blithe-spirit-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
 }
