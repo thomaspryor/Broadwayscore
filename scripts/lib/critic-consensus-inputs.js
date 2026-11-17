@@ -137,10 +137,12 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
   // BRO-7644: on opening night the lane writes reviews.json rows (with
   // fullText and assignedScore) hours before it pushes the review-text files,
   // so the Critics' Take, and the email draft it gates, waited for the lane to
-  // end. When the show's own folder yields no input, read its live rows instead.
+  // end. When the show's own folder yields fewer than 2 scored inputs, add its live rows.
   // They already passed the rebuild's guards, so the exclusion flags apply but
   // the file-path scorer predicate does not.
-  if (reviews.length === 0 && Array.isArray(opts.fallbackRows)) {
+  // Counted on SCORED inputs: the Fantasticks folder held three excluded or
+  // unscored early files, so a zero-length test never fired.
+  if (reviews.filter(r => r.score != null).length < 2 && Array.isArray(opts.fallbackRows)) {
     for (const r of opts.fallbackRows) {
       if (!r || r.showId !== showId) continue;
       if (dedup && dedup.isDuplicate(r)) continue;
