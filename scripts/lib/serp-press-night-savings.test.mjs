@@ -36,9 +36,11 @@ const calls = [];
 let sdOrganic = [];
 let sbOrganic = [];
 let bdData = null; // null: Bright Data returns an unparsed page (the old default)
+let sdFails = false; // true: Scrapingdog's request errors (a real failure, not an answer)
 const stub = async (url) => {
   const u = String(url);
   calls.push(u);
+  if (sdFails && u.includes('scrapingdog')) { const e = new Error('Request failed with status code 403'); e.response = { status: 403, data: {} }; throw e; }
   if (u.includes('brightdata') && bdData) return { status: 200, data: bdData };
   const organic = u.includes('scrapingdog') ? sdOrganic : u.includes('scrapingbee') ? sbOrganic : [];
   return { status: 200, data: { organic_results: organic, organic_data: organic } };
@@ -51,7 +53,7 @@ const { domainMatchesExpected } = require('./scraper.js');
 const { positiveSiteDomains, isOffDomainOnlyAnswer } = require('./serp-site-filter.js');
 const {
   isSlowTrickleMarket, serpSecondOpinionForShow, shouldSkipSecondOpinion,
-  shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer,
+  shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer, effectivePreferSpeed,
 } = require('./serp-second-opinion-policy.js');
 
 const log = () => {};
@@ -66,9 +68,10 @@ const run = (query, emptyAuthoritative, chainOpts, negTtl = null) =>
   chain(query, 'sb-key', 'bd-key', log, null, false, undefined, undefined, emptyAuthoritative, negTtl, 0, chainOpts);
 
 beforeEach(() => {
-  calls.length = 0; sdOrganic = []; sbOrganic = []; bdData = null;
+  calls.length = 0; sdOrganic = []; sbOrganic = []; bdData = null; sdFails = false;
   process.env.SERP_THIRD_OPINION_AUDIT_RATE = '0';
   delete process.env.SERP_THIRD_OPINION;
+  delete process.env.SERP_SB_SECOND_OPINION;
 });
 after(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
@@ -192,19 +195,31 @@ const BD_EMPTY = { general: { query: 'x' }, organic: [] };
 const asked = (name) => hosts().filter((h) => h.includes(name)).length;
 const runSpeed = (query) => chain(query, 'sb-key', 'bd-key', log, null, true, undefined, undefined, false, null, 0, undefined);
 
-test('shouldAskOtherSecondOpinion: only a real Bright Data empty after a readable Scrapingdog answer on a press night skips', () => {
-  const skip = { primaryName: 'brightdata', primaryResults: [], primaryStructured: true, tokensDropped: 0, sdClean: true, emptyAuthoritative: false, env: {} };
+test('shouldAskOtherSecondOpinion: a parsed Bright Data empty after any Scrapingdog reply on a press night skips (BRO-6867)', () => {
+  const skip = { primaryName: 'brightdata', primaryResults: [], primaryStructured: true, tokensDropped: 0, sdClean: true, sdAnswered: true, emptyAuthoritative: false, env: {} };
   assert.equal(shouldAskOtherSecondOpinion(skip), false);
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, sdClean: false }), false, 'filler or all-opaque Scrapingdog reply still counts as a reply');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, sdClean: false, sdAnswered: false }), true, 'Scrapingdog failed or was not asked');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, sdClean: false, env: { SERP_SB_SECOND_OPINION: '1' } }), true, 'kill switch restores the clean-only rule');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, env: { SERP_SB_SECOND_OPINION: '1' } }), false, 'kill switch: clean empty still skips, as in BRO-7531');
   assert.equal(shouldAskOtherSecondOpinion({ ...skip, primaryResults: null }), true, 'Bright Data failed');
   assert.equal(shouldAskOtherSecondOpinion({ ...skip, primaryStructured: false }), true, 'short / unparsed Bright Data page');
   assert.equal(shouldAskOtherSecondOpinion({ ...skip, tokensDropped: 2 }), true, 'unreadable links dropped');
-  assert.equal(shouldAskOtherSecondOpinion({ ...skip, sdClean: false }), true, 'Scrapingdog failed or was all-opaque');
   assert.equal(shouldAskOtherSecondOpinion({ ...skip, emptyAuthoritative: true }), true, 'routine flow');
   assert.equal(shouldAskOtherSecondOpinion({ ...skip, emptyAuthoritative: undefined }), true, 'routine flow (default)');
   assert.equal(shouldAskOtherSecondOpinion({ ...skip, primaryName: 'scrapingbee' }), true, 'ScrapingBee asked first');
-  assert.equal(shouldAskOtherSecondOpinion({ ...skip, env: { SERP_THIRD_OPINION: '1' } }), true, 'kill switch');
+  assert.equal(shouldAskOtherSecondOpinion({ ...skip, env: { SERP_THIRD_OPINION: '1' } }), true, 'third-opinion kill switch');
   assert.equal(shouldAskOtherSecondOpinion({ ...skip, primaryResults: [{ url: 'https://a.com/x' }] }), false, 'primary found something');
   assert.equal(shouldAskOtherSecondOpinion(), true, 'no context: ask');
+});
+
+test('effectivePreferSpeed: press night with a Scrapingdog reply puts Bright Data first; everything else unchanged', () => {
+  const pn = { preferSpeed: true, emptyAuthoritative: false, sdAnswered: true, env: {} };
+  assert.equal(effectivePreferSpeed(pn), false);
+  assert.equal(effectivePreferSpeed({ ...pn, sdAnswered: false }), true, 'Scrapingdog failed: keep the fast vendor first');
+  assert.equal(effectivePreferSpeed({ ...pn, emptyAuthoritative: true }), true, 'routine flow');
+  assert.equal(effectivePreferSpeed({ ...pn, preferSpeed: false }), false);
+  assert.equal(effectivePreferSpeed({ ...pn, env: { SERP_SB_SECOND_OPINION: '1' } }), true, 'kill switch');
 });
 
 test('shouldAuditThirdOpinion: 5% by default, env override, bad values fall back', () => {
@@ -228,13 +243,21 @@ test('Broadway press night: a real Bright Data empty after a clean Scrapingdog e
   assert.ok(calls.length > first, 'next pass must ask again (empty was not cached)');
 });
 
-test('Broadway press night: off-domain Scrapingdog filler is no opinion, so ScrapingBee is still asked after a Bright Data empty', async () => {
+test('Broadway press night: off-domain Scrapingdog filler plus a Bright Data empty does not reach ScrapingBee (BRO-6867)', async () => {
   bdData = BD_EMPTY;
   sdOrganic = JUNK;
   const r = await run(`site:example-outlet.com "BW Filler" Broadway review ${q++}`, false, undefined);
   assert.equal(r.provider, 'scrapingdog');
-  assert.ok(asked('brightdata') > 0);
-  assert.ok(asked('scrapingbee') > 0, 'filler ignored the site: filter; two vendors have not agreed');
+  assert.ok(asked('brightdata') > 0, 'Bright Data is the second opinion');
+  assert.equal(asked('scrapingbee'), 0, `ScrapingBee asked: ${hosts().join(',')}`);
+});
+
+test('Broadway press night: kill switch SERP_SB_SECOND_OPINION=1 asks ScrapingBee after filler and a Bright Data empty', async () => {
+  bdData = BD_EMPTY;
+  sdOrganic = JUNK;
+  process.env.SERP_SB_SECOND_OPINION = '1';
+  await run(`site:example-outlet.com "BW FillerKill" Broadway review ${q++}`, false, undefined);
+  assert.ok(asked('scrapingbee') > 0);
 });
 
 test('West End press night: a two-vendor empty is never parked in the 45-min negative cache', async () => {
@@ -293,9 +316,34 @@ test('Broadway press night: the audit sample still asks ScrapingBee and its find
   assert.equal(r.results.length, 1);
 });
 
-test('press night with ScrapingBee asked first (preferSpeed): Bright Data is still asked after a ScrapingBee empty', async () => {
+test('press night with preferSpeed: after a Scrapingdog reply, Bright Data goes first and ScrapingBee is not asked (BRO-6867)', async () => {
   bdData = BD_EMPTY;
   await runSpeed(`site:example-outlet.com "BW Speed" Broadway review ${q++}`);
-  assert.ok(asked('scrapingbee') > 0);
-  assert.ok(asked('brightdata') > 0, 'the unmeasured order keeps both vendors');
+  assert.ok(asked('brightdata') > 0, 'Bright Data is the second opinion');
+  assert.equal(asked('scrapingbee'), 0, `ScrapingBee asked: ${hosts().join(',')}`);
+});
+
+test('press night with preferSpeed: a failed Bright Data page still falls back to ScrapingBee', async () => {
+  bdData = null;
+  await runSpeed(`site:example-outlet.com "BW SpeedBdDown" Broadway review ${q++}`);
+  const h = hosts().filter((x) => !x.includes('scrapingdog'));
+  assert.ok(h[0].includes('brightdata'), `Bright Data first: ${h.join(',')}`);
+  assert.ok(asked('scrapingbee') > 0, 'ScrapingBee is the backup when Bright Data fails');
+});
+
+test('press night with preferSpeed: when Scrapingdog fails, ScrapingBee is still asked first as before', async () => {
+  bdData = BD_EMPTY;
+  sdFails = true;
+  await runSpeed(`site:example-outlet.com "BW SpeedSdDown" Broadway review ${q++}`);
+  const h = hosts().filter((x) => !x.includes('scrapingdog'));
+  assert.ok(h[0] && h[0].includes('scrapingbee'), `ScrapingBee first: ${h.join(',')}`);
+  assert.ok(asked('brightdata') > 0, 'both vendors asked when Scrapingdog gave no reply');
+});
+
+test('press night with preferSpeed: kill switch SERP_SB_SECOND_OPINION=1 restores ScrapingBee first', async () => {
+  bdData = BD_EMPTY;
+  process.env.SERP_SB_SECOND_OPINION = '1';
+  await runSpeed(`site:example-outlet.com "BW SpeedKill" Broadway review ${q++}`);
+  const h = hosts().filter((x) => !x.includes('scrapingdog'));
+  assert.ok(h[0] && h[0].includes('scrapingbee'), `ScrapingBee first: ${h.join(',')}`);
 });

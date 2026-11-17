@@ -389,7 +389,13 @@ jobs:
       - name: OB discovery S7 — Official Site fallback for shows with no buy button
         if: ${{ inputs.skip_discovery != true }}
         env:
+          # BRO-6867: this step only had the ScrapingBee key, so every search
+          # went to ScrapingBee (25 credits) instead of Scrapingdog first.
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: node scripts/ob-discovery-ticket-links.js --limit=15 --time-budget-min=6
         continue-on-error: true
         timeout-minutes: 8
