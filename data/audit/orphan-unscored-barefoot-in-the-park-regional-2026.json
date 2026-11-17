@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "barefoot-in-the-park-regional-2026",
   "openingDate": "2026-11-12",
-  "detectedAt": "2026-11-17T09:13:54.026Z",
+  "detectedAt": "2026-11-17T09:28:48.255Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,9 +11,9 @@
       "criticName": "Unknown",
       "url": "https://www.fandango.com/barefoot-in-the-park-104567/movie-reviews",
       "fullTextLen": 14634,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "bot_stub_truncation:garbage_text",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -21,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "latheatrix--dondre-tuck.json",
-      "outletId": "latheatrix",
-      "criticName": "Dondre Tuck",
-      "url": "https://www.latheatrix.com/post/review-barefoot-in-the-park-at-rotation-theatre-company",
-      "fullTextLen": 4027,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 2,
-  "blockedOrphanCount": 0,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-11-17T09:00:02.770Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
