@@ -1034,19 +1034,28 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 for _m in _refspec_re.finditer(_seg.group(1)):
                     (_del if _deleting or _m.group(1) == ':' else _add).add(_m.group(2))
             return _add, _del
-        def _run_names_ref(res, ref):  # an actions_get/list result showing a run of this ref finished
+        def _newest_run_done(res, ref=None):  # the NEWEST run (of this ref, or any) in an actions_get/list result finished
+            _runs = []
             def _walk(o):
                 if isinstance(o, dict):
-                    if o.get('head_branch') == ref and o.get('status') == 'completed':
-                        return True
-                    return any(_walk(v) for v in o.values())
-                return isinstance(o, list) and any(_walk(v) for v in o)
+                    if 'status' in o and ('head_branch' in o or 'run_number' in o):
+                        _runs.append(o)
+                    for v in o.values(): _walk(v)
+                elif isinstance(o, list):
+                    for v in o: _walk(v)
             try:
-                return _walk(json.loads(res))
-            except Exception:  # not JSON: the ref and "completed" inside one {...} object
-                _hb = r'"head_branch"\s*:\s*"' + re.escape(ref) + '"'
-                _st = r'"status"\s*:\s*"completed"'
-                return bool(re.search(r'\{[^{}]*(?:' + _hb + r'[^{}]*' + _st + '|' + _st + r'[^{}]*' + _hb + ')', res))
+                _walk(json.loads(res))
+            except Exception:  # not JSON: fall back to run-shaped {...} objects
+                for _ob in re.findall(r'\{[^{}]*"status"\s*:\s*"[^"]*"[^{}]*\}', res):
+                    _hb = re.search(r'"head_branch"\s*:\s*"([^"]*)"', _ob)
+                    _id = re.search(r'"(?:id|run_number)"\s*:\s*(\d+)', _ob)
+                    _runs.append({'head_branch': _hb.group(1) if _hb else None, 'id': int(_id.group(1)) if _id else 0,
+                                  'status': re.search(r'"status"\s*:\s*"([^"]*)"', _ob).group(1)})
+            _mine = [r for r in _runs if ref is None or r.get('head_branch') == ref]
+            if not _mine:
+                return False
+            _key = lambda r: (r.get('id') if isinstance(r.get('id'), int) else 0, r.get('run_number') if isinstance(r.get('run_number'), int) else 0)
+            return max(_mine, key=_key).get('status') == 'completed'
         _pr_url_re = re.compile(r'github\.com/[^/\s"]+/[^/\s"]+/pull/\d+')
         def _gh_pr_create_cmd(cmd):  # gh pr create, or one segment POSTing to …/pulls itself
             return bool(re.search(r'\bgh\s+pr\s+create\b', cmd)) or any(
@@ -1064,8 +1073,9 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 for _mn in re.finditer(r'<task-notification>(.*?)</task-notification>', (_payload or '') if _wfl_pending else '', flags=re.DOTALL):
                     _idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', _mn.group(1))
                     _exm = re.search(r'exit code (\d+)', _mn.group(1))
-                    if _idm and _idm.group(1) in _wfl_pending and _exm and _exm.group(1) in ('0', '1', '4'):
-                        _land_unchecked.discard(_wfl_pending.pop(_idm.group(1)))
+                    if _idm and _exm and _exm.group(1) in ('0', '1', '4'):
+                        for _k in [k for k in _wfl_pending if k.split('#', 1)[0] == _idm.group(1)]:
+                            _land_unchecked.discard(_wfl_pending.pop(_k))
                 continue
             if _kind != 'tool':
                 continue
@@ -1092,7 +1102,8 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 _land_unchecked -= _del
                 if _add:
                     _landed_pushed = True
-                    if _tid not in tool_error_ids:  # a rejected push starts no Land run
+                    _pres = tool_results_by_id.get(_tid, '') or ''
+                    if _tid not in tool_refused_ids and not re.search(r'\[rejected\]|failed to push|src refspec .* does not match', _pres):  # a rejected push starts no Land run; a filtered pipe exiting 1 still pushed
                         _land_unchecked |= _add
                         for _k in [k for k, v in _wfl_pending.items() if v in _add]:
                             del _wfl_pending[_k]  # a waiter started before this re-push does not cover it
@@ -1108,20 +1119,24 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             elif _land_unchecked and _name in ('mcp__github__actions_get', 'mcp__github__actions_list'):
                 _res = tool_results_by_id.get(_tid, '') or ''
                 for _r in list(_land_unchecked):
-                    if _run_names_ref(_res, _r) or (_r == 'land.yml dispatch' and '"completed"' in _res):
+                    if _newest_run_done(_res, None if _r == 'land.yml dispatch' else _r):
                         _land_unchecked.discard(_r)
             # Not in the elif chain: `git push ... land/x && node ...wait-for-land.js land/x` is both.
             if _land_unchecked:  # no error filter: a refused foreground waiter exits 1
                 _res = tool_results_by_id.get(_tid, '') or ''
-                _wm = _wfl_run_re.search(_inp.get('command') or '') if _name == 'Bash' else None
-                if _wm and _wm.group(1) in _land_unchecked:
+                _wms = [m.group(1) for m in _wfl_run_re.finditer(_inp.get('command') or '')] if _name == 'Bash' else []
+                _mine = [r for r in _wms if r in _land_unchecked]
+                if _mine:
                     _bgm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', _res) if _inp.get('run_in_background') else None
                     if _bgm:
-                        _wfl_pending[_bgm.group(1)] = _wm.group(1)
-                    elif _wfl_verdict_re.search(_res):
-                        _land_unchecked.discard(_wm.group(1))
-                elif not _wm and _wfl_pending:  # a later read of a background waiter's stamped line
-                    for _vm in _wfl_verdict_re.finditer(_res):
+                        for _r in _mine:
+                            _wfl_pending[_bgm.group(1) + '#' + _r] = _r
+                    else:
+                        for _vm in _wfl_verdict_re.finditer(_res):
+                            if _vm.group(1) in _mine:
+                                _land_unchecked.discard(_vm.group(1))
+                elif not _wms and _wfl_pending and (_name == 'Read' or (_name == 'Bash' and '.output' in (_inp.get('command') or ''))):
+                    for _vm in _wfl_verdict_re.finditer(_res):  # a later read of a background waiter's stamped line
                         if _vm.group(1) in _wfl_pending.values():
                             _land_unchecked.discard(_vm.group(1))
         _msg_ok = bool(_last_msg) and 'NO-VERIFY:' not in _last_msg
