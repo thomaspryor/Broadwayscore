@@ -39,6 +39,7 @@ export default defineConfig({
           '**/ugc-visual-regression*',
           '**/ugc-visual-baselines*',
           '**/ingest-form-batch*',
+          '**/welcome-setup*',
         ]),
     ...(process.env.E2E_SKIP_PROD_VISUAL_BASELINES === '1'
       ? ['**/visual-regression.spec.ts']

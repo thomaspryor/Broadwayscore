@@ -141,5 +141,17 @@
     "step": "List season productions (plan + art)",
     "script": "scripts/city-season-sync.js",
     "reason": "BRO-7250 advisory listing step (rule 19: new steps land non-blocking). Its audit report data/audit/city-season-<city>.json is a derivation re-read from the theatre pages on the next daily run, a failed run only delays new listings, and the 'Warn when season step failed' step below it surfaces the failure."
+  },
+  {
+    "workflow": "city-finder-daily.yml",
+    "step": "Add BroadwayWorld-reviewed hub productions (plan + art)",
+    "script": "scripts/bww-regional-coverage.js",
+    "reason": "Advisory step (BRO-7683, new daily add step lands advisory per CLAUDE.md rule 19). A failure is not silent: the next step 'Warn when BroadwayWorld add step failed' raises a ::warning:: on steps.bwwadd.outcome == 'failure', and the coverage audit is rewritten whole every run."
+  },
+  {
+    "workflow": "city-finder-daily.yml",
+    "step": "Add BroadwayWorld-reviewed hub productions (plan + art)",
+    "script": "scripts/bww-regional-add-plan.js",
+    "reason": "Advisory step (BRO-7683, new daily add step lands advisory per CLAUDE.md rule 19). A failure is not silent: the next step 'Warn when BroadwayWorld add step failed' raises a ::warning:: on steps.bwwadd.outcome == 'failure', and the coverage audit is rewritten whole every run."
   }
 ]

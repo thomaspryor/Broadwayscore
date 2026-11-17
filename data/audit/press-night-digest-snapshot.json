@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-11-17T14:33:41.504Z",
+  "generatedAt": "2026-11-17T18:16:49.925Z",
   "night": "2026-11-16",
   "counts": {
     "total": 2,
-    "passed": 0,
-    "failed": 1,
+    "passed": 1,
+    "failed": 0,
     "notGraded": 1
   },
   "lines": [
     {
-      "verdict": "FAIL",
-      "line": "The Fantasticks: published by the new lane; 19 of 21 reviews live by 12:00am; USA Today came out later and went live at 1:03am, on time; Vulture came out later and went live at 12:03am, on time; opening-night email draft is out of date (built with score 79 from 22 reviews, the site shows score 79 from 21 reviews). Failed."
-    },
-    {
       "verdict": "UNKNOWN",
       "line": "Jenůfa: not graded, no reviews were published overnight."
+    },
+    {
+      "verdict": "PASS",
+      "line": "The Fantasticks: published by the new lane; 19 of 21 reviews live by 12:00am; USA Today came out later and went live at 1:03am, on time; Vulture came out later and went live at 12:03am, on time; emails ready, passed."
     }
   ],
   "scoreboard": {
@@ -22,7 +22,5 @@
     "passed": 3,
     "passedOnOwn": 2
   },
-  "missFirstSeen": {
-    "the-fantasticks-2026|2026-11-16|email:broadcast:stale": "2026-11-17T14:33:41.504Z"
-  }
+  "missFirstSeen": {}
 }

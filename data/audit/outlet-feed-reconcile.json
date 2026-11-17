@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T15:11:38.125Z",
+  "generatedAt": "2026-11-17T17:46:19.774Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -112,6 +112,21 @@
       "id": "radio-galaxy-regional-2026",
       "title": "Radio Galaxy",
       "openingDate": "2026-11-15"
+    },
+    {
+      "id": "madama-butterfly-regional-2026",
+      "title": "Madama Butterfly",
+      "openingDate": "2026-11-11"
+    },
+    {
+      "id": "nixon-in-china-regional-2026",
+      "title": "Nixon in China",
+      "openingDate": "2026-11-16"
+    },
+    {
+      "id": "entre-dos-sombras-regional-2026",
+      "title": "Entre Dos Sombras",
+      "openingDate": "2026-11-16"
     }
   ],
   "skipped": [
@@ -129,6 +144,10 @@
     },
     {
       "showId": "ted-talks-and-talks-regional-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "takes-all-kinds-regional-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -157,25 +176,12 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "the-knockturnal",
-      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 871,
-  "matchedGaps": 1,
+  "itemsScanned": 876,
+  "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "level": "matched",
-      "outletId": "artsfuse",
-      "url": "https://artsfuse.org/337488/theater-reviews-monsters-and-mirrors-downstate-and-here-there-are-blueberries/",
-      "headline": "Theater Reviews: Monsters and Mirrors &#8212; &#8220;Downstate&#8221; and &#8220;Here There Are Blueberries&#8221;",
-      "publishDate": "2026-11-17"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",

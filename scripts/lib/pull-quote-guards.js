@@ -344,8 +344,15 @@ const PAREN_ASIDE_START_RE = /^[\s"'\u201c\u2018\u00ab]*\(/;
 // unclosed aside, or one followed by ", is very nearly...") is left as is and
 // the fragment guard defers it. The result is still a substring of the input.
 const LEADING_PAREN_ASIDE_RE = /^[\s"'\u201c\u2018\u00ab]*\([^()]{1,300}\)[\s.]*(?=["\u201c\u2018']?[A-Z])/;
+// A list-bullet or arrow left over from page markup: Time Out London shipped
+// "- Coward's wit is...", LondonTheatre1 "– Kunene and the King...", Bristol24/7
+// "--> \u201cSay your prayers..." (2026-11-17). Cut only when a space and then a
+// capital or opening quote follow, so a dash that is part of the text stays.
+const LEADING_BULLET_RE = /^\s*(?:-+>|\u2192|[-\u2013\u2014\u2022\u00b7*]+)\s+(?=["\u201c\u2018\u00ab'(]?[A-Z(])/;
 function stripLeadingParenAside(excerpt) {
   if (typeof excerpt !== 'string') return excerpt;
+  const b = excerpt.match(LEADING_BULLET_RE);
+  if (b) excerpt = excerpt.slice(b[0].length);
   const m = excerpt.match(LEADING_PAREN_ASIDE_RE);
   return m ? excerpt.slice(m[0].length) : excerpt;
 }

@@ -77,7 +77,7 @@ async function review(P, log = console.log) {
     let changed = false; const done = new Set();
     for (const v of verdicts.filter(v => !v.pass)) for (const field of ['prompt', 'caption']) { if (done.has(field)) continue;
       const t = v['rewrite_' + field]; if (!t || t === P[field]) continue;
-      const why = keepsFacts(P, field, t);
+      const why = keepsFacts(P, field, t) || require('./script-rules.js').checkFraming({ ...P, [field]: t }, { needCaption: true })[0]; // a rewrite may not drop the closing question (BRO-6449)
       if (why) { log(`  ${v.m} ${field} rewrite rejected: ${why}`); continue; }
       log(`  applied ${v.m} ${field} rewrite`); P[field] = t; changed = true; done.add(field);
     }

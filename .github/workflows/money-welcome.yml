@@ -6,6 +6,9 @@ name: Money Welcome
 # is not, scheduled runs exit in seconds. Sign-ups from before launch are marked
 # welcomed by the migration and never get this. Manual modes: dry-run (read-only) or
 # send_to (one [PREVIEW] email to that address, no database).
+# BRO-7704: besides the hourly cron (GitHub throttles it to runs hours apart), the sign-up page calls
+# /api/money-welcome-wake after a stored sign-up and that route dispatches this workflow, so the welcome
+# goes out within minutes. The cron stays as the backstop.
 on:
   schedule:
     - cron: '17 * * * *'
@@ -30,6 +33,9 @@ jobs:
     timeout-minutes: 10
     concurrency:
       group: money-welcome
+      # concurrency-queue-ok: dispatches from /api/money-welcome-wake (BRO-7704) carry no work list, each run
+      # reads every unwelcomed row, so keeping only the newest pending run loses nothing. The route also skips
+      # dispatching while a run is queued or pending.
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5

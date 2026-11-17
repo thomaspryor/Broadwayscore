@@ -249,8 +249,11 @@ test('a failed save waits in the outbox and is retried until stored (BRO-6289)',
     removeItem: (k) => { delete store[k]; },
   };
   const calls = [];
+  const wakes = [];
   let up = false;
   globalThis.fetch = async (_url, init) => {
+    // BRO-7704: a stored sign-up also pings the welcome-wake route (fire and forget).
+    if (String(_url) === '/api/money-welcome-wake') { wakes.push(init); return { ok: true, status: 200 }; }
     calls.push(JSON.parse(init.body).p_email);
     if (!up) throw new Error('network down');
     return { ok: true, status: 200, text: async () => '' };
@@ -259,6 +262,7 @@ test('a failed save waits in the outbox and is retried until stored (BRO-6289)',
     // The save fails: the reader is still let in, the address is kept.
     assert.equal(await gate.submitMoneySignup(' Reader@Example.com ', 'investor', 'biz-dashboard:/biz'), 'store_unavailable');
     assert.deepEqual(JSON.parse(store[gate.MONEY_PENDING_KEY]), [{ email: 'reader@example.com', role: 'investor', page: 'biz-dashboard:/biz' }]);
+    assert.equal(wakes.length, 0, 'a failed save never wakes the welcome run');
 
     // Next page view, still down: it stays queued.
     gate.resetMoneyRetryForTests();
@@ -272,6 +276,8 @@ test('a failed save waits in the outbox and is retried until stored (BRO-6289)',
     assert.deepEqual(await gate.retryPendingMoneySignups(), { stored: 1, remaining: 0 });
     assert.equal(store[gate.MONEY_PENDING_KEY], undefined);
     assert.deepEqual(calls, ['reader@example.com', 'reader@example.com', 'reader@example.com']);
+    assert.equal(wakes.length, 1, 'the retry that finally stores it wakes the welcome run once');
+    assert.deepEqual([wakes[0].method, wakes[0].keepalive], ['POST', true]);
 
     // A save that works never touches the outbox.
     assert.equal(await gate.submitMoneySignup('second@example.com', '', 'show-page:/show/x'), 'stored');

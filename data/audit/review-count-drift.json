@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-16T19:19:45.007Z",
+  "generatedAt": "2026-11-17T18:14:44.365Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-11-16T19:03:47.859Z",
+    "reviewsJsonLastUpdated": "2026-11-17T17:56:45.064Z",
     "reviewsJsonAgeHours": 0.3,
     "freshnessBreach": false,
-    "showsScanned": 27,
-    "allShowsScanned": 4832,
-    "filesScanned": 82139,
+    "showsScanned": 32,
+    "allShowsScanned": 4846,
+    "filesScanned": 82415,
     "showsOverThreshold": 0,
-    "newOffenders": 0,
+    "newOffenders": 1,
     "blindShows": 27,
     "orphanReviews": 2
   },
@@ -18,7 +18,19 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "newOffenders": [],
+  "newOffenders": [
+    {
+      "showDir": "kevin-off-broadway-2026",
+      "suppressed": 1,
+      "actual": 0,
+      "files": [
+        "deadline--greg-evans.json"
+      ],
+      "newFiles": [
+        "deadline--greg-evans.json"
+      ]
+    }
+  ],
   "staleBaseline": [
     {
       "showDir": "china-doll-2015",
@@ -48,6 +60,14 @@
   ],
   "perShow": [
     {
+      "showDir": "a-christmas-carol-west-end-2026",
+      "actual": 1,
+      "scanned": 40,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
       "showDir": "act-of-god-off-west-end-2026",
       "actual": 7,
       "scanned": 12,
@@ -58,15 +78,15 @@
     {
       "showDir": "annie-regional-2026-drury-lane-oakbrook",
       "actual": 5,
-      "scanned": 9,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "cloud-9-west-end-2026",
-      "actual": 37,
-      "scanned": 44,
+      "showDir": "barefoot-in-the-park-regional-2026",
+      "actual": 2,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -89,16 +109,32 @@
     },
     {
       "showDir": "downstate-2026",
-      "actual": 18,
-      "scanned": 28,
+      "actual": 22,
+      "scanned": 31,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
+      "showDir": "entre-dos-sombras-regional-2026",
+      "actual": 0,
+      "scanned": 1,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "broadwayworld--emily-berger.json",
+          "outletId": "broadwayworld",
+          "criticName": "Emily Berger",
+          "publishDate": "2026-11-16",
+          "url": "https://www.broadwayworld.com/washington-dc/article/Review-ENTRE-DOS-SOMBRAS-at-GALA-Hispanic-Theatre-20261116"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
       "showDir": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "actual": 28,
-      "scanned": 40,
+      "actual": 31,
+      "scanned": 42,
       "suppressedCount": 1,
       "suppressed": [
         {
@@ -112,15 +148,46 @@
       "overThreshold": false
     },
     {
-      "showDir": "les-miserables-regional-2026",
-      "actual": 1,
-      "scanned": 4,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "showDir": "kevin-off-broadway-2026",
+      "actual": 0,
+      "scanned": 3,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "deadline--greg-evans.json",
+          "outletId": "deadline",
+          "criticName": "Greg Evans",
+          "publishDate": "2026-11-16",
+          "url": "https://deadline.com/2026/11/the-fantasticks-broadway-review-1237223063/"
+        }
+      ],
       "overThreshold": false
     },
     {
-      "showDir": "now-you-see-me-live-2026",
+      "showDir": "madama-butterfly-regional-2026",
+      "actual": 0,
+      "scanned": 2,
+      "suppressedCount": 2,
+      "suppressed": [
+        {
+          "file": "broadwayworld--david-friscic.json",
+          "outletId": "broadwayworld",
+          "criticName": "David Friscic",
+          "publishDate": "2026-11-11",
+          "url": "https://www.broadwayworld.com/washington-dc/article/Review-MADAMA-BUTTERFLY-at-Washington-National-Opera-20261111"
+        },
+        {
+          "file": "operawire--francisco-salazar.json",
+          "outletId": "operawire",
+          "criticName": "Francisco Salazar",
+          "publishDate": "2026-11-08",
+          "url": "https://operawire.com/washington-national-opera-2026-27-review-madama-butterfly/"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "nacho-ate-spiderman-regional-2026",
       "actual": 1,
       "scanned": 5,
       "suppressedCount": 0,
@@ -128,9 +195,17 @@
       "overThreshold": false
     },
     {
-      "showDir": "passing-strange-regional-2026",
-      "actual": 5,
-      "scanned": 12,
+      "showDir": "now-you-see-me-live-2026",
+      "actual": 2,
+      "scanned": 6,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "our-town-regional-2026",
+      "actual": 3,
+      "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -139,6 +214,14 @@
       "showDir": "pride-bridge-theatre-off-west-end-2026",
       "actual": 25,
       "scanned": 10,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "radio-galaxy-regional-2026",
+      "actual": 2,
+      "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -154,23 +237,23 @@
     {
       "showDir": "the-elaborate-entrance-of-chad-deity-regional-2026",
       "actual": 2,
-      "scanned": 2,
+      "scanned": 3,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-fantasticks-2026",
+      "actual": 23,
+      "scanned": 33,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-kings-critique-off-broadway-2026",
-      "actual": 5,
-      "scanned": 7,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
-      "actual": 9,
-      "scanned": 13,
+      "actual": 6,
+      "scanned": 8,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false

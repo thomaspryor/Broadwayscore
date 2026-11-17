@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
     paths:
+      - 'scripts/bww-regional-coverage.js'
+      - 'scripts/bww-regional-add-plan.js'
       - 'src/**'
       - 'data/city-hubs.json' # BRO-6833: city-hub-wiring.test.ts
       - 'tests/**'
@@ -114,6 +116,7 @@ on:
       # BRO-6391: scripts/lib/cost-report-alerts.test.mjs requires it (routeLines, renderActionHtml).
       - 'scripts/route-cost-report-alerts.js'
       - 'scripts/route-workflow-alerts.js'
+      - 'scripts/draft-fixed-replies.test.js'
       - 'scripts/route-workflow-alerts.test.js'
       - 'scripts/spend-effect-check.test.js'
       - 'scripts/spend-effect-check.js'

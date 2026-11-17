@@ -170,8 +170,10 @@ function isExcludedType(showType) {
   return EXCLUDED_TYPES.some((re) => re.test(showType));
 }
 
-/** Map the site's Show Type to our show.type ('musical' | 'play'). */
+/** Map the site's Show Type to our show.type ('musical' | 'opera' | 'play'). */
 function mapShowType(showType) {
+  // BRO-7683: an opera is an opera (shows.json carries 58), not a musical.
+  if (/opera/i.test(showType || '') && !/musical|revue|operetta|(?:rock|light|folk|pop)[\s-]*opera/i.test(showType || '')) return 'opera';
   if (/musical|opera|revue/i.test(showType || '')) return 'musical';
   return 'play';
 }

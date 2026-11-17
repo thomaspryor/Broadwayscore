@@ -130,9 +130,19 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
         </svg>
       </button>
 
-      {/* Dropdown */}
+      {/* Dropdown. The header is fixed, so a menu taller than the screen cannot be
+          scrolled to: it must cap its own height and scroll inside itself. With
+          every launched city hub the menu is ~1,000px tall, which hid Washington DC
+          through Boston on phones (owner report 2026-11-17, BRO-7680). 4.5rem = the
+          56px top offset + 16px of breathing room. dvh tracks Safari's collapsing
+          toolbar; plain vh is the fallback for browsers without dvh.
+          tests/unit/market-nav-viewport.test.mjs pins this; tests/e2e/smoke.spec.ts
+          opens the menu on phone viewports and taps the last row. */}
       {isOpen && (
-        <div className="absolute top-14 left-3 right-3 sm:left-auto sm:right-auto sm:w-72 bg-[#1e1e2a] border border-white/10 rounded-xl p-1.5 shadow-2xl z-50">
+        <div
+          data-testid="market-menu"
+          className="absolute top-14 left-3 right-3 sm:left-auto sm:right-auto sm:w-72 max-h-[calc(100vh-4.5rem)] supports-[height:100dvh]:max-h-[calc(100dvh-4.5rem)] overflow-y-auto overscroll-contain bg-[#1e1e2a] border border-white/10 rounded-xl p-1.5 shadow-2xl z-50"
+        >
           <div className="px-3.5 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">New York</div>
           <Link
             href="/"

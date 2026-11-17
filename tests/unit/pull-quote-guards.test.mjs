@@ -904,6 +904,18 @@ describe('leading parenthetical aside is cut or ranked last (BRO-7675)', () => {
     assert.equal(g.stripLeadingParenAside('(Fortunately, she can be bribed with ice cream). This unusual character works.'), 'This unusual character works.');
     assert.equal(g.stripLeadingParenAside('“(One, two, three) No, the brilliance lies elsewhere.'), 'No, the brilliance lies elsewhere.');
   });
+  test('leftover list bullet or arrow is cut; a dash that belongs to the text stays', () => {
+    assert.equal(g.stripLeadingParenAside("- Coward's wit is too often blunted."), "Coward's wit is too often blunted.");
+    assert.equal(g.stripLeadingParenAside('\u2013 Kunene and the King is made remarkably light.'), 'Kunene and the King is made remarkably light.');
+    assert.equal(g.stripLeadingParenAside('--> \u201cSay your prayers and be good.\u201d Rooted in folklore.'), '\u201cSay your prayers and be good.\u201d Rooted in folklore.');
+    assert.equal(g.stripLeadingParenAside('\u2022 (Courtesy Joan Marcus) The show is a delight.'), 'The show is a delight.');
+    assert.equal(g.stripLeadingParenAside('- \u00abBravo\u00bb, says the chorus.'), '\u00abBravo\u00bb, says the chorus.');
+    assert.equal(g.stripLeadingParenAside('\u2014 Then the show catches fire.'), 'Then the show catches fire.');
+    assert.equal(g.stripLeadingParenAside('* * * The show'), '* * * The show');
+    for (const q of ['-ish at best, the staging drags.', '\u2014and then the show catches fire.', '-5 degrees outside, the theatre was warm.']) {
+      assert.equal(g.stripLeadingParenAside(q), q);
+    }
+  });
   test('unclosed aside, or aside followed by a fragment, is left for the guard to defer', () => {
     for (const q of ['(Lewis’s existence also happens to save the show from the dated sexism', '("Bloody Bloody Andrew Jackson"), is very nearly as good.']) {
       assert.equal(g.stripLeadingParenAside(q), q);

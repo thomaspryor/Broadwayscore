@@ -46,7 +46,7 @@ const require = createRequire(import.meta.url);
 // Labels every ingest-review-from-url.js run this script starts (BRO-6588).
 process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'execute-approved-fix';
 const { runScriptArgs } = require('./lib/run-script-args');
-const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
+const { sendReplyOrDraft, markReplyDrafted } = require('./lib/feedback-reply-drafts.js');
 const showsWriteGuard = require('./lib/shows-write-guard.js');
 const commercialWriteGuard = require('./lib/commercial-write-guard.js');
 const { planStatusAction, planRunOrigin, alreadyAppliedResult } = require('./lib/plan-status.js');
@@ -236,7 +236,9 @@ function rollbackDataFiles(snapshot) {
 async function sendEmail(to, from, subject, html) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) { console.log('No RESEND_API_KEY'); return; }
-  const data = JSON.stringify({ from, to: [to], subject, html });
+  // Also accepts one full Resend payload (reply_to, text) as the only argument.
+  const payload = (to && typeof to === 'object' && !Array.isArray(to)) ? to : { from, to: [to], subject, html };
+  const data = JSON.stringify(payload);
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.resend.com/emails', {
       method: 'POST',
@@ -820,20 +822,24 @@ async function main() {
     }
   }
   if (planData.submitter.email && applied.length > 0) {
+    // BRO-7693: never email the reader directly. The owner gets a draft reply
+    // (with the reader's original message) and sends it by hand.
     try {
-      const { subject, html } = buildFeedbackThankYouEmail(
-        'fixed',
-        planData.submitter.name,
-        planData.submitter.show
-      );
-      await sendEmail(
-        planData.submitter.email,
-        'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
-        subject,
-        html
-      );
-      console.log('Thank-you sent to submitter');
-    } catch { /* best effort */ }
+      const res = await sendReplyOrDraft({
+        kind: 'bug-fixed',
+        type: 'fixed',
+        reader: planData.submitter,
+        originalMessage: (await getReader()).message,
+        transport: async (payload) => {
+          if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY missing, reply not sent');
+          return sendEmail(payload);
+        },
+      });
+      console.log(res.sent ? 'Draft reply emailed to owner' : `No reply draft (${res.reason})`);
+      if (res.sent && !(await markReplyDrafted(issueNumber, { token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }))) {
+        console.log('  WARN: could not label the issue reply-drafted');
+      }
+    } catch (err) { console.log(`  Reply draft failed: ${err.message}`); }
   }
 }
 

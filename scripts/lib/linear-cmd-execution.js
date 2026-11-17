@@ -172,4 +172,26 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
   };
 }
 
-module.exports = { makeVerifyCmdEvidence, envRefusalHint, findPlaceholderVerify, isCheckoutTimeout, DEFAULT_TIMEOUT_MS, VERIFY_ATTEMPTS };
+/**
+ * BRO-7697: which of the paths a safe-form check command names are NOT on origin/main?
+ * Reads git objects only (no checkout, no network): `git cat-file -e origin/main:<path>`.
+ * Fails open: if origin/main cannot be resolved here, nothing is reported missing.
+ * @returns {(cmd:string) => {missing:string[]}}
+ */
+function makePathsOnMain({ repo = path.join(__dirname, '..', '..'), ref = 'origin/main' } = {}) {
+  const { execFileSync } = require('child_process');
+  const { extractCheckPaths } = require('./check-paths.js');
+  return function pathsOnMain(cmd) {
+    const paths = extractCheckPaths(cmd).filter((p) => p && !p.startsWith('-') && !/[*?]/.test(p));
+    if (!paths.length) return { missing: [] };
+    try { execFileSync('git', ['fetch', '-q', '--no-tags', '--depth=1', 'origin', 'main'], { cwd: repo, stdio: 'ignore', timeout: 20000 }); } catch { /* best effort: stale ref only risks an advisory warning */ }
+    try { execFileSync('git', ['rev-parse', '--verify', '-q', ref], { cwd: repo, stdio: 'ignore', timeout: 10000 }); } catch { return { missing: [] }; }
+    const missing = [];
+    for (const p of paths) {
+      try { execFileSync('git', ['cat-file', '-e', `${ref}:${p.replace(/^\.\//, '')}`], { cwd: repo, stdio: 'ignore', timeout: 10000 }); } catch { missing.push(p); }
+    }
+    return { missing };
+  };
+}
+
+module.exports = { makePathsOnMain, makeVerifyCmdEvidence, envRefusalHint, findPlaceholderVerify, isCheckoutTimeout, DEFAULT_TIMEOUT_MS, VERIFY_ATTEMPTS };

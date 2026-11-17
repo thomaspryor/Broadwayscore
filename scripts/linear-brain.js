@@ -41,7 +41,7 @@ function landedFilesIfFix(issue) {
   return rootCauseClose.landedFilesForCard(issue.identifier);
 }
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
-const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
+const { makeVerifyCmdEvidence, makePathsOnMain } = require('./lib/linear-cmd-execution');
 const { appendBypassRow, bypassCommentLine } = require('./lib/linear-gate-bypass-ledger');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { TERMINAL_STATE_TYPES, newestComments } = require('./lib/linear-staleness-check');
@@ -516,6 +516,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             existingComments,
             verifyEvidence,
             verifyCmdEvidence,
+            pathsOnMain: deps.pathsOnMain !== undefined ? deps.pathsOnMain : makePathsOnMain(), // BRO-7697
             identifier: issue.identifier, // BRO-7103 recurrence close warning (advisory)
             // BRO-7103 item 8: root-cause check for fix cards (advisory, then blocking)
             title: issue.title || '',

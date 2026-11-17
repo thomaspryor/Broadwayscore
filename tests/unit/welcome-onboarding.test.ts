@@ -9,14 +9,15 @@ import { join } from 'node:path';
 import {
   WELCOME_ACCOUNT_MAX_AGE_MS,
   nextWelcomeStep,
+  pickWantShows,
   pickWelcomeShows,
   shouldOfferWelcome,
   welcomeCanOpenOn,
-  welcomeDoneMessage,
-  welcomeFinishDestination,
+  welcomeClosesLabel,
   welcomeMarketFor,
   welcomeSaveStep,
   welcomeSeenKey,
+  welcomeSummary,
   welcomeWriteFor,
   type WelcomeShowSource,
 } from '../../src/lib/welcome-onboarding';
@@ -45,10 +46,9 @@ test('welcomeSeenKey is per account', () => {
   assert.notEqual(welcomeSeenKey('a'), welcomeSeenKey('b'));
 });
 
-test('steps run shows -> import -> done and stop at done', () => {
-  assert.equal(nextWelcomeStep('shows'), 'import');
-  assert.equal(nextWelcomeStep('import'), 'done');
-  assert.equal(nextWelcomeStep('done'), 'done');
+test('steps run shows -> want and stop at want', () => {
+  assert.equal(nextWelcomeStep('shows'), 'want');
+  assert.equal(nextWelcomeStep('want'), 'want');
 });
 
 const show = (o: Partial<WelcomeShowSource> & { id: string }): WelcomeShowSource => ({
@@ -148,28 +148,85 @@ test('welcomeWriteFor: no stars is "seen, date not set", never a made-up date', 
   assert.equal(welcomeWriteFor({ showId: 'x', rating: 6 }).table, 'seen_unrated', 'out-of-range stars are not saved as a review');
 });
 
-test('welcomeFinishDestination: My Shows only when there is something to see', () => {
-  assert.equal(welcomeFinishDestination({ showsAdded: 0, imported: 0 }), 'stay');
-  assert.equal(welcomeFinishDestination({ showsAdded: 2, imported: 0 }), 'my-shows');
-  assert.equal(welcomeFinishDestination({ showsAdded: 0, imported: 5 }), 'my-shows');
+test('welcomeSummary: one plain line about what was saved, none when nothing was', () => {
+  assert.equal(welcomeSummary({ seenAdded: 0, wantAdded: 0, unratedAdded: 0 }), null);
+  assert.equal(welcomeSummary({ seenAdded: 3, wantAdded: 0, unratedAdded: 0 }), 'Saved to your account: 3 seen.');
+  assert.equal(welcomeSummary({ seenAdded: 0, wantAdded: 2, unratedAdded: 0 }), 'Saved to your account: 2 to see.');
+  assert.equal(welcomeSummary({ seenAdded: 3, wantAdded: 2, unratedAdded: 0 }), 'Saved to your account: 3 seen, 2 to see.');
+  // Unrated picks wait under To Be Rated; never more unrated than seen.
+  assert.match(welcomeSummary({ seenAdded: 3, wantAdded: 0, unratedAdded: 2 }) as string, /Add stars any time under To Be Rated\.$/);
+  assert.equal(welcomeSummary({ seenAdded: 0, wantAdded: 4, unratedAdded: 2 }), 'Saved to your account: 4 to see.');
+  assert.equal(welcomeSummary({ seenAdded: -1, wantAdded: 0, unratedAdded: 0 }), null);
 });
 
-test('welcomeDoneMessage: To Be Rated only when picks went in without stars', () => {
-  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 0, unratedAdded: 0 }), 'Rate a show from its page any time, and it lands in Seen.');
-  assert.equal(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 0 }), '3 shows added to Seen.');
-  assert.equal(welcomeDoneMessage({ showsAdded: 1, imported: 0, unratedAdded: 0 }), '1 show added to Seen.');
-  // Imports can be watchlist rows, so they are never said to be in the diary.
-  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 12, unratedAdded: 0 }), '12 imported to My Shows.');
-  assert.equal(welcomeDoneMessage({ showsAdded: 2, imported: 12, unratedAdded: 0 }), '2 shows added, 12 imported to My Shows.');
-  assert.match(welcomeDoneMessage({ showsAdded: 1, imported: 0, unratedAdded: 1 }), /^1 show added\. It waits for you under To Be Rated/);
-  assert.match(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 3 }), /^3 shows added\. They wait for you under To Be Rated/);
-  assert.match(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 1 }), /^3 shows added\. The one without stars waits for you under To Be Rated/);
-  assert.match(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 2 }), /^3 shows added\. The 2 without stars wait/);
-  // With imports, "They" would take them in too: the unrated picks are named.
-  assert.match(welcomeDoneMessage({ showsAdded: 2, imported: 5, unratedAdded: 2 }), /^2 shows added, 5 imported\. The 2 without stars wait/);
-  // A bad count never claims more unrated shows than were added.
-  assert.match(welcomeDoneMessage({ showsAdded: 2, imported: 0, unratedAdded: 5 }), /^2 shows added\. They wait/);
-  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 4, unratedAdded: 3 }), '4 imported to My Shows.');
+test('welcomeClosesLabel: a short date for a real closing date, nothing otherwise', () => {
+  assert.equal(welcomeClosesLabel('2026-12-14'), 'Closes Dec 14');
+  assert.equal(welcomeClosesLabel('2027-01-03'), 'Closes Jan 3');
+  assert.equal(welcomeClosesLabel(null), null);
+  assert.equal(welcomeClosesLabel(undefined), null);
+  assert.equal(welcomeClosesLabel(''), null);
+  assert.equal(welcomeClosesLabel('soon'), null);
+  assert.equal(welcomeClosesLabel('2026-13-45'), null);
+});
+
+const scored = (id: string, score: number, o: Partial<WelcomeShowSource> = {}) => show({ id, score, ...o });
+
+test('pickWantShows: best Critic Score first, open or previews only, one poster per title', () => {
+  const picked = pickWantShows([
+    scored('b-open', 80),
+    scored('a-top', 92, { status: 'previews' }),
+    scored('c-closed', 99, { status: 'closed' }),
+    scored('d-dupe-old', 70, { title: 'Dupe' }),
+    scored('d-dupe-new', 75, { title: 'Dupe' }),
+    scored('e-unscored', 0),
+    scored('f-few-reviews', 95, { reviewCount: 3 }),
+    scored('g-no-poster', 90, { images: {} }),
+  ], '2026-10-05');
+  assert.deepEqual(picked.map(s => s.id), ['a-top', 'b-open', 'd-dupe-new']);
+  assert.deepEqual(picked.map(s => s.score), [92, 80, 75]);
+});
+
+test('pickWantShows: ties fall back to title; scores are rounded; the count caps the list', () => {
+  const picked = pickWantShows([scored('z', 80.4), scored('m', 80.4), scored('x', 80.6)], '2026-10-05', { count: 2 });
+  assert.deepEqual(picked.map(s => s.id), ['x', 'm']);
+  assert.deepEqual(picked.map(s => s.score), [81, 80]);
+});
+
+test('pickWantShows: only a closing date within 60 days is called out; a stale one drops the show', () => {
+  const picked = pickWantShows([
+    scored('soon', 90, { closingDate: '2026-11-20' }),
+    scored('later', 89, { closingDate: '2027-06-01' }),
+    scored('stale', 95, { closingDate: '2026-09-01' }),
+    scored('open-ended', 88, { closingDate: null }),
+  ], '2026-10-05');
+  assert.deepEqual(picked.map(s => s.id), ['soon', 'later', 'open-ended']);
+  assert.deepEqual(picked.map(s => s.closingDate), ['2026-11-20', null, null]);
+});
+
+test('pickWantShows: West End list only takes West End shows', () => {
+  const sources = [scored('bway', 90), scored('london', 85, { category: 'west-end' })];
+  assert.deepEqual(pickWantShows(sources, '2026-10-05').map(s => s.id), ['bway']);
+  assert.deepEqual(pickWantShows(sources, '2026-10-05', { category: 'west-end' }).map(s => s.id), ['london']);
+});
+
+test('pickWantShows on the real catalog: scored Broadway shows, best first, no duplicates', () => {
+  const path = join(__dirname, '../../public/data/mobile-shows.json');
+  const raw: { shows: Array<Record<string, unknown>> } = JSON.parse(readFileSync(path, 'utf-8'));
+  const sources: WelcomeShowSource[] = raw.shows.map(s => ({
+    id: s.id as string, title: s.t as string, slug: s.s as string, status: s.st as string,
+    category: (s.cat as string | undefined) ?? 'broadway',
+    openingDate: (s.od as string | undefined) ?? null, closingDate: (s.cd as string | undefined) ?? null,
+    images: { poster: (s.img as { po?: string } | undefined)?.po, thumbnail: (s.img as { th?: string } | undefined)?.th },
+    reviewCount: ((s.cr as { rc?: number } | undefined)?.rc) ?? 0,
+    score: ((s.cr as { s?: number } | undefined)?.s) ?? null,
+  }));
+  const picked = pickWantShows(sources, '2026-10-05');
+  // The catalog may hold no scored show for a market; when it does the shape must hold.
+  assert.ok(picked.length > 0, 'expected at least one scored open Broadway show');
+  assert.ok(picked.length <= 12);
+  assert.equal(new Set(picked.map(s => s.id)).size, picked.length);
+  assert.ok(picked.every((s, i) => i === 0 || picked[i - 1].score >= s.score), 'sorted by score, best first');
+  assert.ok(picked.every(s => s.score > 0 && s.score <= 100));
 });
 
 test('welcomeSaveStep: a bookmark never drops the pick; seen shows are not written twice', () => {

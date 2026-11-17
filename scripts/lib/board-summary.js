@@ -117,8 +117,6 @@ const AWAITING_CHECK_QUERY = `query AwaitingCheck($filter: IssueFilter, $after: 
 const AWAITING_MAX_PAGES = 4;
 // More overdue checks than this and the verdict stays "Falling behind": the recheck is not keeping up.
 const OVERDUE_CHECK_LIMIT = 10;
-// BRO-7686: a hand-off this old with the card still Paused past its date is stuck again, so it counts as owed.
-const HANDOFF_GRACE_DAYS = 7;
 
 /**
  * PURE. Paused cards with a RECHECK-AFTER stamp -> counts. A stamp is overdue once
@@ -127,15 +125,14 @@ const HANDOFF_GRACE_DAYS = 7;
  * parked on a real block (a held PARKED line or DECISION NEEDED, the rule
  * recheck-handoff.js decideHandoff uses) is counted as parkedPastDate; one the
  * recheck already handed to a worker (its marker after the last stamp) as
- * handedOffPastDate, for HANDOFF_GRACE_DAYS after the hand-off. Only `overdue` (still owed a
+ * handedOffPastDate, for HANDOFF_GRACE_DAYS (recheck-handoff.js) after the hand-off. Only `overdue` (still owed a
  * check, or handed off and stuck since) drives the verdict. Must agree with decideHandoff; a test pins it.
  * -> { waiting, overdue, parkedPastDate, handedOffPastDate, waitingAddedInWindow }
  */
 function summarizeAwaitingCheck(issues, { now = new Date(), days = DAYS } = {}) {
   const { mapIssueToCard } = require('./linear-recheck-source.js');
   const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
-  const { RECHECK_HANDOFF_MARKER, parseRecheckAfter } = require('./autonomous-recheck-core.js');
-  const { hasHeldParkLine } = require('./headless-dispatchability.js');
+  const { pastDateHold } = require('./recheck-past-date.js');
   const nowMs = now.getTime();
   // Same local days as the chart's "added" (dayKeys), so the fixes are a subset of the added cards.
   const inWindow = new Set(dayKeys(now, days));
@@ -146,19 +143,9 @@ function summarizeAwaitingCheck(issues, { now = new Date(), days = DAYS } = {}) 
     const stamp = parseRecheckAfterFromCard(card);
     if (!Number.isFinite(stamp)) continue;
     if (stamp + 86_400_000 <= nowMs) {
-      const notes = String(card.notes || '');
-      const comments = Array.isArray(card.comments) ? card.comments : [];
-      let last = -1;
-      for (let i = comments.length - 1; i >= 0; i--) if (parseRecheckAfter(comments[i]) != null) { last = i; break; }
-      const records = Array.isArray(card.commentRecords) ? card.commentRecords : [];
-      // The newest hand-off after the stamp. A worker who re-paused it without a fresh stamp left it
-      // where the recheck never acts again, so after HANDOFF_GRACE_DAYS it counts as owed (both reviewers).
-      let handoffAt = null;
-      for (let i = last + 1; i < comments.length; i++) {
-        if (String(comments[i] || '').trimStart().startsWith(RECHECK_HANDOFF_MARKER)) handoffAt = Date.parse((records[i] && records[i].createdAt) || '') || 0;
-      }
-      if (hasHeldParkLine(notes) || /DECISION NEEDED/.test(notes)) out.parkedPastDate++;
-      else if (handoffAt !== null && nowMs - handoffAt < HANDOFF_GRACE_DAYS * 86_400_000) out.handedOffPastDate++;
+      const hold = pastDateHold(card, nowMs);
+      if (hold === 'parked') out.parkedPastDate++;
+      else if (hold === 'handed-off') out.handedOffPastDate++;
       else out.overdue++;
       continue;
     }

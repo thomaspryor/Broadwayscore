@@ -909,6 +909,9 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
  * Try SERP providers in order based on preferSpeed flag.
  * Default (preferSpeed=false): BrightData first (cheap), ScrapingBee fallback (fast).
  * preferSpeed=true: ScrapingBee first (sync ~1-3s), BrightData fallback.
+ * BRO-6867: on press-night flows where Scrapingdog already answered, preferSpeed
+ * is ignored (effectivePreferSpeed) so Bright Data goes first and ScrapingBee is
+ * asked only if Bright Data fails. SERP_SB_SECOND_OPINION=1 restores SB-first.
  *
  * @returns {{ results: Array|null, provider: string }}
  *   results=null means both providers are down; []=searched but nothing found.
@@ -916,7 +919,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
 const _serpCache = require('./serp-cache');
 const _serpNegativeCache = require('./serp-negative-cache');
 const { isOffDomainOnlyAnswer, shouldReaskIgnoredSiteFilter, preferReaskAnswer } = require('./serp-site-filter');
-const { shouldSkipSecondOpinion, shouldReaskEmptyWithoutSecondOpinion, shouldEscalateOffDomainAnswer, shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer } = require('./serp-second-opinion-policy');
+const { shouldSkipSecondOpinion, shouldReaskEmptyWithoutSecondOpinion, shouldEscalateOffDomainAnswer, shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer, effectivePreferSpeed } = require('./serp-second-opinion-policy');
 
 /**
  * Pure decision function: ordered BD/SB provider names for the SERP chain.
@@ -1072,6 +1075,8 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // empty. A failure, an all-opaque answer, or off-domain filler (the site:
   // filter was ignored) says nothing about the outlet, so it is no opinion.
   let _sdClean = false;
+  // BRO-6867: Scrapingdog's request went out and came back (any readable shape).
+  let _sdAnswered = false;
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
     let sdAttempt = {};
     let sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page, sdAttempt);
@@ -1139,13 +1144,14 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     // An all-opaque SD answer is tagged apart from an SD failure (provider-telemetry).
     if (sdAttempt.ran) _fallbackFrom = sdAttempt.opaque > 0 && Array.isArray(sdResults) ? 'scrapingdog-opaque' : 'scrapingdog';
     _sdClean = !!sdAttempt.ran && Array.isArray(sdResults) && sdResults.length === 0 && !(sdAttempt.opaque > 0);
+    _sdAnswered = !!sdAttempt.ran && Array.isArray(sdResults);
   }
 
   const _entries = {
     scrapingbee: { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' },
     brightdata: { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' },
   };
-  const _chain = serpChainOrder(preferSpeed, _skips).map(name => _entries[name]);
+  const _chain = serpChainOrder(effectivePreferSpeed({ preferSpeed, emptyAuthoritative, sdAnswered: _sdAnswered }), _skips).map(name => _entries[name]);
   if (_chain.length === 0) {
     if (_sdFiller) return { results: _sdFiller, provider: 'scrapingdog' };
     log('    ⚠ All SERP providers skipped (skipProviders/SERP_NO_SB) — no results');
@@ -1178,7 +1184,8 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   };
   let results = _readable(await withSpendFallback(_fallbackFrom, () => _withGeo(primary.fn)(query, primary.key, log, dateRange)));
   let provider = primary.name;
-  // BRO-7531: on a press-night flow, when Scrapingdog gave a readable answer and
+  // BRO-7531, widened by BRO-6867 (owner option A): on a press-night flow, when
+  // Scrapingdog answered at all (empty, filler or opaque links) and
   // Bright Data (asked first) then really answered with nothing, ScrapingBee is
   // not asked as a third vendor on this pass. That two-vendor empty is never
   // parked (not in the 24h cache, not in the 45-min negative cache), so the
@@ -1188,7 +1195,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   const _primaryEmpty = !results || results.length === 0;
   const _thirdCtx = {
     primaryName: primary.name, primaryResults: results, primaryStructured: _bdAttempt.structured === true,
-    tokensDropped: _tokensDropped, sdClean: _sdClean, emptyAuthoritative,
+    tokensDropped: _tokensDropped, sdClean: _sdClean, sdAnswered: _sdAnswered, emptyAuthoritative,
   };
   const _skipThird = _primaryEmpty && !shouldAskOtherSecondOpinion(_thirdCtx);
   const _auditThird = _skipThird && shouldAuditThirdOpinion();

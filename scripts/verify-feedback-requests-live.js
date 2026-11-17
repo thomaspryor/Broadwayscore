@@ -422,6 +422,36 @@ function buildStuckAlert(stale, runsByWorkflow, ambiguityNotes = new Map()) {
   };
 }
 
+// Real close (BRO-7693): this only commented before, so verified-live requests
+// stayed open forever and nothing downstream could tell they were done.
+// state_reason is explicit: GitHub's default close reason is also "completed",
+// and a later step treats "closed as completed" as "fixed".
+function githubPatch(issueNumber, body, token) {
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify(body);
+    const req = https.request(`https://api.github.com/repos/${REPO}/issues/${issueNumber}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'User-Agent': 'broadwayscorecard-feedback-verifier',
+        Accept: 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+      },
+    }, (res) => {
+      let out = '';
+      res.on('data', (c) => (out += c));
+      res.on('end', () => (res.statusCode >= 200 && res.statusCode < 300
+        ? resolve(out)
+        : reject(new Error(`HTTP ${res.statusCode}: ${out.slice(0, 200)}`))));
+    });
+    req.setTimeout(60000, () => req.destroy(new Error('request timed out after 60s idle')));
+    req.on('error', reject);
+    req.write(data);
+    req.end();
+  });
+}
+
 async function closeIssue(issueNumber, evidence, url) {
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   if (!token || !issueNumber) return;
@@ -431,6 +461,12 @@ async function closeIssue(issueNumber, evidence, url) {
     }, { Authorization: `Bearer ${token}`, 'User-Agent': 'broadwayscorecard-feedback-verifier' });
   } catch (err) {
     console.log(`  Could not comment on #${issueNumber}: ${err.message}`);
+  }
+  try {
+    await githubPatch(issueNumber, { state: 'closed', state_reason: 'completed' }, token);
+    console.log(`  Closed #${issueNumber} as completed`);
+  } catch (err) {
+    console.log(`  Could not close #${issueNumber}: ${err.message}`);
   }
 }
 
@@ -542,6 +578,7 @@ async function main() {
 }
 
 module.exports = {
+  githubPatch,
   buildLiveAlert,
   buildStuckAlert,
   describeRun,

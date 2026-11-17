@@ -285,7 +285,7 @@ test('every onboarding_* event the site sends has a plain-English label', () => 
   const root = path.resolve(here, '../..');
   const out = execFileSync('grep', ['-rhoE', "(track|trackUgc)\\('onboarding_[a-z_]+'", path.join(root, 'src')], { encoding: 'utf8' });
   const sent = [...new Set(out.trim().split('\n').map((l) => l.match(/'(onboarding_[a-z_]+)'/)[1]))];
-  assert.ok(sent.length >= 7, `found ${sent.length} onboarding events`);
+  assert.ok(sent.length >= 6, `found ${sent.length} onboarding events`); // onboarding_import_source no longer fires (import step dropped, BRO-6917 Part 4)
   for (const e of sent) assert.ok(m.ACTION_LABELS[e], `${e} needs a label in ACTION_LABELS`);
 });
 

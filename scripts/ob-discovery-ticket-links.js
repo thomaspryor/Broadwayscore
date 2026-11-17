@@ -46,6 +46,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { discoverOfficialUrl } = require('./lib/official-url-discovery');
+const { hasSerpProvider } = require('./lib/url-discovery');
 const { OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 const { findDeadEndShows, venueFallbackUrl } = require('./lib/ob-ticket-link-gaps');
 const { londonReaderConfigs } = require('./lib/ob-venue-reader-coverage');
@@ -77,9 +78,10 @@ async function main() {
     console.log(`Attempting ${LIMIT} this run (--limit, rotation offset ${offset}); the cron cycles the rest.`);
   }
 
-  const canSerp = Boolean(process.env.SCRAPINGBEE_API_KEY);
+  // BRO-6867: any SERP provider will do (the shared chain asks Scrapingdog first).
+  const canSerp = hasSerpProvider();
   if (!canSerp) {
-    console.log('⚠ SCRAPINGBEE_API_KEY not set — skipping SERP discovery, trying venue fallback only');
+    console.log('⚠ No SERP provider key set, skipping SERP discovery, trying venue fallback only');
   }
 
   let serpFound = 0;

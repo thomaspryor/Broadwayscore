@@ -429,15 +429,19 @@ function describeResult(r) {
  * of the share (they are counted, not hidden). share is null when nothing
  * was testable, never NaN.
  */
-function heldShare(entries, { now = Date.now(), days = 30, tsxTests } = {}) {
+function heldShare(entries, { now = Date.now(), days = 30, tsxTests, which = 'latest' } = {}) {
   const since = now - days * 86400000;
   const latest = new Map();
   for (const e of entries || []) {
     if (!e || e.event !== 'recheck' || !e.cardId || !e.status || e.skip) continue;
     const t = Date.parse(e.ts);
     if (!Number.isFinite(t) || t < since || t > now) continue;
+    // first-check share counts the first REAL verdict (pass or fail); a missing-path / could-not-run row is not one.
+    if (which === 'first' && !['pass', 'fail'].includes(recheckVerdict(e, { tsxTests }).status)) continue;
     const prev = latest.get(e.cardId);
-    if (!prev || Date.parse(prev.ts) <= t) latest.set(e.cardId, e);
+    // which:'first' keeps each card's FIRST verdict in the window, so a card that failed, was reopened and
+    // later re-closed still counts as the miss it was (BRO-7697): the number measures how honest the Done claim was.
+    if (!prev || (which === 'first' ? Date.parse(prev.ts) > t : Date.parse(prev.ts) <= t)) latest.set(e.cardId, e);
   }
   const c = { cards: latest.size, pass: 0, fail: 0, couldNotRun: 0, unverifiable: 0 };
   for (const row of latest.values()) {
@@ -466,14 +470,15 @@ function doneClaimsHeldRow(entries, { now = Date.now(), tsxTests } = {}) {
   if (!(ageH <= 48)) {
     return { status: 'warn', message: lastSummary === -Infinity ? 'The nightly acceptance recheck has never written a summary' : `The nightly acceptance recheck last wrote a summary ${Math.round(ageH)}h ago (>48h)` };
   }
-  return { status: 'pass', message: heldShareLine(heldShare(entries, { now, days: 30, tsxTests }), heldShare(entries, { now, days: 7, tsxTests })) };
+  return { status: 'pass', message: heldShareLine(heldShare(entries, { now, days: 30, tsxTests }), heldShare(entries, { now, days: 7, tsxTests }), heldShare(entries, { now, days: 30, tsxTests, which: 'first' })) };
 }
 
 /** Plain line for the digest's internal section and the health row. */
-function heldShareLine(h30, h7) {
+function heldShareLine(h30, h7, first30 = null) {
   const pct = (h) => (h.share == null ? 'nothing testable' : `${Math.round(h.share * 100)}% (${h.pass} of ${h.pass + h.fail})`);
   return `Done claims that held: ${pct(h30)} over 30 days, ${pct(h7)} over 7 days`
-    + `; ${h30.couldNotRun} more could not be checked on the recheck machine.`;
+    + `; ${h30.couldNotRun} more could not be checked on the recheck machine.`
+    + (first30 ? ` On the first independent check: ${pct(first30)}.` : '');
 }
 
 // ── Open-backlog acceptance sweep (BRO-3551) ────────────────────────────────

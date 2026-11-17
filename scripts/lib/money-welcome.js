@@ -15,6 +15,7 @@ const { isOwnerTestEmail } = require('./admin-money-signups');
 
 const PER_RUN_CAP = 50;
 const FLOOD_LIMIT = 25; // more than this many new sign-ups in one hourly run looks like abuse: send nothing, alert the owner
+const FLOOD_WINDOW_MIN = 60; // the flood guard also counts sign-ups created in this window, whatever the run frequency
 const MAX_AGE_DAYS = 14; // a late switch-on never mails a stale backlog
 const MAX_CONSECUTIVE_REJECTS = 2; // 2 in a row is our payload, not the recipients
 const SITE = 'https://broadwayscorecard.com';
@@ -106,10 +107,12 @@ const defaultSleep = (ms) => new Promise((r) => setTimeout(r, ms));
  * and after MAX_CONSECUTIVE_REJECTS rejections in a row (likely our payload).
  * Callers must fail the run when halted or rejected is non-zero.
  */
-async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now, sleep = defaultSleep, gapMs = 250, flood = FLOOD_LIMIT }) {
+async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now, sleep = defaultSleep, gapMs = 250, flood = FLOOD_LIMIT, recentTotal = 0 }) {
   const plan = planWelcomes(rows, { cap, now });
   const out = { sent: 0, rejected: 0, lost_claim: 0, stamped: 0, halted: false, flood: false, skipped: plan.skipped };
-  if (plan.send.length + plan.skipped.over_cap > flood) { out.flood = true; out.halted = true; return out; }
+  // BRO-7704: runs now start minutes apart, so a per-run count alone lets a slow flood drain in small batches.
+  // recentTotal = every row created in the last FLOOD_WINDOW_MIN minutes (welcomed or not).
+  if (plan.send.length + plan.skipped.over_cap > flood || recentTotal > flood) { out.flood = true; out.halted = true; return out; }
   for (const row of plan.stamp) { if (await claim(row.email)) out.stamped++; }
   let streak = 0;
   for (const row of plan.send) {
@@ -117,7 +120,11 @@ async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now
     let res;
     try { res = await send(row); } catch (e) { res = { statusCode: 0 }; }
     const o = resendOutcome(res.statusCode);
-    if (o === 'sent') { out.sent++; streak = 0; }
+    if (o === 'sent') {
+      out.sent++; streak = 0;
+      const d = row.created_at ? ((now == null ? Date.now() : now) - Date.parse(row.created_at)) / 60000 : NaN;
+      if (Number.isFinite(d)) out.max_delay_min = Math.max(out.max_delay_min || 0, Math.round(d));
+    }
     else if (o === 'rejected') {
       out.rejected++; streak++;
       if (streak >= MAX_CONSECUTIVE_REJECTS) { out.halted = true; break; }
@@ -131,6 +138,6 @@ async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now
 }
 
 module.exports = {
-  PER_RUN_CAP, FLOOD_LIMIT, MAX_AGE_DAYS, MAX_CONSECUTIVE_REJECTS, FROM, REPLY_TO, isProbeEmail, planWelcomes, buildWelcomeEmail, unsubscribeUrl,
+  PER_RUN_CAP, FLOOD_LIMIT, FLOOD_WINDOW_MIN, MAX_AGE_DAYS, MAX_CONSECUTIVE_REJECTS, FROM, REPLY_TO, isProbeEmail, planWelcomes, buildWelcomeEmail, unsubscribeUrl,
   idempotencyKey, resendOutcome, runAllowed, resolveEnabled, sendWelcomes,
 };

@@ -89,16 +89,46 @@ function shouldEscalateOffDomainAnswer(offDomainOnly, emptyAuthoritative, second
  */
 function shouldAskOtherSecondOpinion({
   primaryName, primaryResults, primaryStructured = false, tokensDropped = 0,
-  sdClean = false, emptyAuthoritative, env = process.env,
+  sdClean = false, sdAnswered = false, emptyAuthoritative, env = process.env,
 } = {}) {
   if (primaryResults && primaryResults.length > 0) return false; // primary found something
   if (env && env.SERP_THIRD_OPINION === '1') return true;
   if (!Array.isArray(primaryResults)) return true; // primary failed
   if (tokensDropped > 0) return true; // unreadable, not empty
   if (emptyAuthoritative !== false) return true; // routine flows: unchanged
-  if (sdClean !== true) return true; // Scrapingdog gave no opinion
+  // BRO-6867: any Scrapingdog reply that came back (a clean empty, off-domain
+  // filler or an all-opaque list) plus a parsed Bright Data empty is enough.
+  // SERP_SB_SECOND_OPINION=1 restores the stricter BRO-7531 rule (clean only).
+  const sdOk = sbSecondOpinionRestored(env) ? sdClean === true : sdAnswered === true;
+  if (!sdOk) return true; // Scrapingdog failed or was not asked
   if (primaryName !== 'brightdata' || primaryStructured !== true) return true;
   return false;
+}
+
+/**
+ * BRO-6867 (owner decision 2026-11-17, option A): ScrapingBee is no longer a
+ * press-night second opinion. Measured before the change: ~750 ScrapingBee
+ * re-asks across 2026-11-05..15 found zero reviews, and of 358 show+outlet
+ * pairs it searched 2026-11-15..17, none gained a review it can be credited
+ * with. Bright Data stays the second opinion (it finds reviews Scrapingdog
+ * misses, BRO-7531); ScrapingBee stays the backup when Bright Data fails, and
+ * the 5% audit sample (shouldAuditThirdOpinion) still asks it.
+ */
+function sbSecondOpinionRestored(env = process.env) {
+  return !!env && env.SERP_SB_SECOND_OPINION === '1';
+}
+
+/**
+ * Chain order for the second-opinion vendors. On a press-night flow whose
+ * Scrapingdog request came back (sdAnswered), Bright Data goes first even when
+ * the caller asked for speed, so ScrapingBee is only reached when Bright Data
+ * fails or the audit sample fires. Every other case keeps the caller's order.
+ * Returns the effective preferSpeed flag for serpChainOrder.
+ */
+function effectivePreferSpeed({ preferSpeed, emptyAuthoritative, sdAnswered, env = process.env } = {}) {
+  if (!preferSpeed) return false;
+  if (emptyAuthoritative === false && sdAnswered === true && !sbSecondOpinionRestored(env)) return false;
+  return true;
 }
 
 /**
@@ -126,4 +156,5 @@ module.exports = {
   isSlowTrickleMarket, serpSecondOpinionForShow, shouldSkipSecondOpinion,
   shouldReaskEmptyWithoutSecondOpinion, shouldEscalateOffDomainAnswer,
   shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer,
+  sbSecondOpinionRestored, effectivePreferSpeed,
 };

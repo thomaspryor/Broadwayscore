@@ -300,7 +300,7 @@ function exemptionFor(map, f) {
 // scripts/newsletter and scripts/llm-scoring joined with the BRO-2483
 // collector, which runs them: without a scan, dropping either from its
 // NODE_TEST_DIRS would silently stop 18 tests (BRO-2483 ship-check).
-const SCANNED_DIRS = ['tests', 'tests/unit', 'tests/smoke', 'tests/live', 'scripts', 'scripts/tests', 'scripts/newsletter', 'scripts/llm-scoring'];
+const SCANNED_DIRS = ['tests', 'tests/unit', 'tests/smoke', 'tests/live', 'scripts', 'scripts/tests', 'scripts/newsletter', 'scripts/llm-scoring', 'src/app/api/__tests__'];
 
 // Returns { name, rel } for each test file: name is the bare filename (used for
 // the exemption-map lookups), rel is the repo-relative path (what coverage is

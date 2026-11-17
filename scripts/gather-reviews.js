@@ -656,7 +656,8 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     returnMetadata: true, // BRO-7084: keep the SERP headline for the empty-body guard
     // opening-night discovery is time-sensitive — ScrapingBee-first sync chain
     // (see url-discovery.js's preferSpeed doc: "time-sensitive flows like
-    // opening night polling").
+    // opening night polling"). BRO-6867: once Scrapingdog has answered,
+    // url-discovery's effectivePreferSpeed puts Bright Data first instead.
     preferSpeed: openingNight,
     // BRO-5914: on press night an empty Scrapingdog SERP means "not indexed
     // yet", not "no reviews" — keep falling through to SB/BD (under the

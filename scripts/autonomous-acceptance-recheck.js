@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
  * autonomous-acceptance-recheck.js — independently re-verify cards that were
- * marked Done (Sprint 3, S3-T2). SHADOW MODE: it reports, it never reopens.
+ * marked Done (Sprint 3, S3-T2). Reports by default. BRO-7697: once enforcementState()
+ * clears the shadow bar, a Done card whose own check fails on fresh main is REOPENED
+ * (Done -> Todo, evidence comment, cap 5/night, max 2 reopens then parked; kill switch
+ * RECHECK_REOPEN=off). Rules: scripts/lib/recheck-reopen.js.
  * BRO-6240 (owner decision 2026-10-25): with --autoclose (or the repo variable
  * RECHECK_AUTOCLOSE=true) it also CLOSES an open stamped card whose real test
  * passed on fresh origin/main, with an evidence comment (command, commit, run
@@ -26,7 +29,7 @@
  *     the morning email. The only Linear write is the BRO-6240 auto-close above.
  *     Enforcement (auto-reopening a failed card) stays off
  *     until the shadow record clears an objective bar — see
- *     scripts/lib/autonomous-recheck-core.js shouldExitShadow.
+ *     scripts/lib/autonomous-recheck-core.js shouldExitShadow (now wired: reopenMode in recheck-reopen.js).
  *   - The command is UNTRUSTED text from a card: it is re-validated against
  *     isSafeCheckCommand at execution time (not just at capture time) and run
  *     with the same secret-free, fake-HOME env as the check gauntlet.
@@ -61,7 +64,8 @@ const { selectRecheckTargets, summarize, decideAutoClose, describeResult, should
 // the frozen Notion mirror's leg (mirror froze 2026-08-20, CLAUDE.md §6).
 const { closeCardAfterPass } = require('./lib/recheck-autoclose.js');
 const { decideHandoff, handoffCard } = require('./lib/recheck-handoff.js');
-const { routeMode, buildRouteBatch, fileRouteBatch, buildCoverIndex, selectRewatchTargets, refreshRewatchTargets, MAX_REWATCH } = require('./lib/recheck-route.js');
+const reopenLib = require('./lib/recheck-reopen.js');
+const { routeMode, buildRouteBatch, fileRouteBatch, buildCoverIndex, coveredBy, selectRewatchTargets, refreshRewatchTargets, MAX_REWATCH } = require('./lib/recheck-route.js');
 const { verifiabilityForCard } = require('./lib/autonomous-recheck-core.js');
 const { mapIssueToCard } = require('./lib/linear-recheck-source.js');
 const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates, fetchLinearIssuesByIdentifier } = require('./lib/linear-recheck-source.js');
@@ -126,7 +130,7 @@ script's own deadline check cannot protect a job-level timeout-minutes that
 fires first and kills every step, not just this one.
 
 Re-runs each card's own acceptance-criteria command (captured at dispatch) against a
-fresh detached checkout of origin/main. No card is ever reopened; with --autoclose a
+fresh detached checkout of origin/main. A failing Done card is reopened only when enforcementState allows (BRO-7697); with --autoclose a
 passed, stamped, still-open card with a real test is closed with an evidence comment.`;
 
 function parseArgs(argv) {
@@ -349,7 +353,7 @@ async function main(argv = process.argv.slice(2)) {
   const cfg = (() => { try { return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch { return {}; } })();
   const enforcement = enforcementState(cfg, ledger.readEntries(RECHECK_LEDGER_PATH).entries || []);
   if (enforcement.requested && !enforcement.enforcing) console.error(`[recheck] ${enforcement.reason}`);
-  if (enforcement.enforcing) console.error('[recheck] enforcement is ON — failures will still only be REPORTED until the reopen path ships (carry-forward)');
+  if (enforcement.enforcing) console.error('[recheck] enforcement is ON — a failing Done card is reopened (cap and kill switch: scripts/lib/recheck-reopen.js)');
 
   const cardsById = new Map([...pausedCards, ...doneCards].map(c => [c.id, c]));
   const taskState = loadSharedTaskState();
@@ -511,6 +515,18 @@ async function main(argv = process.argv.slice(2)) {
   const closed = [];
   const keptOpen = [];
   const handedOff = [];
+  // BRO-7697: reopen a Done card whose own check fails on fresh main. Live only once enforcementState
+  // clears the shadow bar; RECHECK_REOPEN=off stops it with no code change. The cap is counted from the
+  // ledger so a manual --backlog run and the nightly run share ONE budget.
+  const reopenEntries = ledger.readEntries(RECHECK_LEDGER_PATH).entries || [];
+  const reopenSt = reopenLib.reopenMode({ enforcement: enforcementState(cfg, reopenEntries) });
+  const reopenCounts = reopenLib.reopenCounts(reopenEntries);
+  const reopenParked = reopenLib.parkedIds(reopenEntries);
+  const queued = [];
+  let reopenBudget = Math.max(0, reopenLib.reopenCap() - reopenLib.reopenedWithin(reopenEntries));
+  const reopened = [];
+  const parked = [];
+  console.error(`[recheck] reopen: ${reopenSt.mode} (${reopenSt.why}); budget tonight ${reopenBudget}`);
   const runUrl = process.env.GITHUB_RUN_ID && process.env.GITHUB_REPOSITORY
     ? `${process.env.GITHUB_SERVER_URL || 'https://github.com'}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
     : null;
@@ -622,17 +638,45 @@ async function main(argv = process.argv.slice(2)) {
           console.error(`[recheck] ${t.cardId} ${out.handedOff ? `handed to a worker (${h.reason})` : `handoff refused (${out.error})`}`);
         }
       }
+
+      // BRO-7697: a Done card whose own check just failed on fresh main goes back to a worker.
+      if (reopenSt.mode !== 'off' && !r.skip && r.status === 'fail' && (t.rewatch || (cardsById.get(t.cardId) || {}).stateType === 'completed') && !dryRun) {
+        const row = { ...r, cardId: t.cardId, verifyCmd: t.verifyCmd, sha: (checkout && checkout.sha) || null };
+        // No cover index (Linear list failed) means we cannot tell whether an open card owns it: do not reopen.
+        const cov = !coverIndex ? 'cover index unavailable' : coverIndex.has(t.cardId) ? coveredBy(t.cardId, { coverIndex }) : null;
+        const d = reopenLib.decideReopen({ row, reopenCount: reopenCounts.get(t.cardId) || 0, parked: reopenParked.has(t.cardId), covered: cov });
+        const base = { event: 'recheck-reopen', runId, cardId: t.cardId, name: t.name, verifyCmd: t.verifyCmd, sha: row.sha, runUrl, mode: reopenSt.mode };
+        if (d.action === 'reopen' || d.action === 'park') {
+          const isPark = d.action === 'park';
+          if (!isPark && reopenBudget <= 0) {
+            ledger.appendEntry({ ...base, action: 'queued', ok: false, note: `over the ${reopenLib.reopenCap()}/night cap; stays Done, rewatch picks it up on a later night` }, RECHECK_LEDGER_PATH);
+            queued.push(t.cardId); // keep it out of tonight's batch card so a later night can still reopen it
+          } else if (reopenSt.mode === 'shadow') {
+            ledger.appendEntry({ ...base, action: isPark ? 'would-park' : 'would-reopen', ok: false, note: `shadow: ${d.reason} (${reopenSt.why})` }, RECHECK_LEDGER_PATH);
+            console.error(`[recheck] ${t.cardId} would be ${isPark ? 'parked' : 'reopened'} (shadow)`);
+          } else {
+            const count = reopenCounts.get(t.cardId) || 0;
+            const comment = isPark ? reopenLib.buildParkComment({ row, sha: row.sha, runUrl }) : reopenLib.buildReopenComment({ row, sha: row.sha, runUrl, reopenCount: count });
+            const out = await (isPark ? reopenLib.parkCard : reopenLib.reopenCard)({ identifier: t.cardId, comment });
+            if (out.moved) {
+              if (isPark) parked.push(t.cardId); else { reopened.push(t.cardId); reopenBudget--; reopenCounts.set(t.cardId, count + 1); }
+            }
+            ledger.appendEntry({ ...base, action: isPark ? 'parked' : 'reopened', ok: out.moved, note: out.moved ? `${isPark ? 'parked' : 'reopened'}: ${d.reason}${out.unparkError ? `; PARKED line not cleared: ${out.unparkError}` : ''}` : `${isPark ? 'park' : 'reopen'} refused: ${out.error}` }, RECHECK_LEDGER_PATH);
+            console.error(`[recheck] ${t.cardId} ${out.moved ? (isPark ? 'PARKED' : 'REOPENED') : `reopen refused (${out.error})`}`);
+          }
+        }
+      }
     }
   } finally {
     if (checkout) removeCheckout(checkout);
   }
 
-  await routeRealFailures({ runId, results, handedOff, sha: (checkout && checkout.sha) || null, coverIndex, maxBatches: args.backlog ? 3 : 1 });
+  await routeRealFailures({ runId, results, handedOff: [...handedOff, ...reopened, ...parked, ...queued], sha: (checkout && checkout.sha) || null, coverIndex, maxBatches: args.backlog ? 3 : 1 });
 
   const counts = summarize(results, { noCriteria: dropped.length });
   const couldNotRun = results.filter((x) => !x.skip && x.envCause).length;
   const closeNote = autoclose ? `; auto-close: ${closed.length} closed, ${keptOpen.length} passed but stayed open` : '';
-  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, handedOff, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable (${couldNotRun} of them could not run on this machine), ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}${handedOff.length ? `; ${handedOff.length} handed to a worker` : ''}` }, RECHECK_LEDGER_PATH);
+  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, handedOff, reopened, parked, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable (${couldNotRun} of them could not run on this machine), ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}${handedOff.length ? `; ${handedOff.length} handed to a worker` : ''}${reopened.length ? `; ${reopened.length} reopened` : ''}${parked.length ? `; ${parked.length} parked` : ''}` }, RECHECK_LEDGER_PATH);
   console.error(`[recheck] done: ${JSON.stringify(counts)}${autoclose ? ` autoclose=${JSON.stringify({ closed, keptOpen })}` : ''}`);
 }
 

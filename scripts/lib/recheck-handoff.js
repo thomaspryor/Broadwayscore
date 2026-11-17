@@ -17,16 +17,12 @@
  * recheck-autoclose.js closeCardAfterPass (linear-brain update, exit trapped).
  */
 
-const { RECHECK_HANDOFF_MARKER, parseRecheckAfter } = require('./autonomous-recheck-core.js');
+const { RECHECK_HANDOFF_MARKER } = require('./autonomous-recheck-core.js');
 const { ExitTrap } = require('./recheck-autoclose.js');
 const { plainEnvCause } = require('./check-env-cause.js');
+const { HANDOFF_GRACE_DAYS, isHeldForHandoff, pastDateHold, lastStampIndex } = require('./recheck-past-date.js');
 
 const HANDOFF_STATE_NAMES = Object.freeze(['Paused', 'Backlog']);
-
-function lastStampIndex(comments) {
-  for (let i = comments.length - 1; i >= 0; i--) if (parseRecheckAfter(comments[i]) != null) return i;
-  return -1;
-}
 
 /**
  * @param {{card?:object, target?:object, result?:object, closeVerdict?:{close:boolean,reason:string}|null}} o
@@ -40,7 +36,7 @@ function decideHandoff({ card, target, result, closeVerdict = null, closeRefused
   // A card parked on a real block or waiting on the owner is not a worker's to take.
   // BRO-7595: the filer's own "PARKED: Auto-filed by ..." line is not a hold. Reading it as one
   // left every failing recheck on an auto-filed card Paused forever.
-  if (require('./headless-dispatchability.js').hasHeldParkLine(card.notes) || /DECISION NEEDED/.test(String(card.notes || ''))) return no('parked or waiting on the owner');
+  if (isHeldForHandoff(card.notes)) return no('parked or waiting on the owner');
   const comments = Array.isArray(card.comments) ? card.comments : [];
   const stamp = lastStampIndex(comments);
   if (comments.slice(stamp + 1).some((c) => String(c || '').trimStart().startsWith(RECHECK_HANDOFF_MARKER))) return no('already handed off');
@@ -129,4 +125,4 @@ async function handoffCard({ identifier, why, linearBrainMain, now, getIssue, up
   }
 }
 
-module.exports = { HANDOFF_STATE_NAMES, decideHandoff, buildHandoffComment, handoffCard };
+module.exports = { HANDOFF_STATE_NAMES, HANDOFF_GRACE_DAYS, pastDateHold, decideHandoff, buildHandoffComment, handoffCard };

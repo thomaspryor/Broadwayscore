@@ -454,3 +454,40 @@ test('labels use plain words: no VERIFY, repo, cloud workers or Codex', () => {
   for (const c of bc.CATEGORIES) assert.doesNotMatch(c.label, /VERIFY|repo\b|cloud worker|Codex/i, c.label);
   for (const g of bc.GROUPS) assert.doesNotMatch(`${g.title} ${g.blurb}`, /VERIFY|repo\b|cloud worker|Codex/i, g.key);
 });
+
+test('BRO-7689: a past-date card the recheck skips is not "Date passed, waiting for its check"', () => {
+  const { pastDateHold } = require('./recheck-past-date.js');
+  const { mapIssueToCard } = require('./linear-recheck-source.js');
+  const { RECHECK_HANDOFF_MARKER } = require('./autonomous-recheck-core.js');
+  const paused = { state: { name: 'Paused', type: 'backlog' } };
+  const stampComment = { body: 'RECHECK-AFTER: 2026-10-20', createdAt: '2026-10-19T00:00:00Z' };
+  const handoff = (at) => ({ body: `${RECHECK_HANDOFF_MARKER} the test failed`, createdAt: at });
+  const owed = card({ ...paused, comments: { nodes: [stampComment] } });
+  const parked = withDesc('PARKED: needs the owner\'s Apple ID password', { ...paused, comments: { nodes: [stampComment] } });
+  const handedRecent = card({ ...paused, comments: { nodes: [stampComment, handoff('2026-10-25T00:00:00Z')] } });
+  const handedStale = card({ ...paused, comments: { nodes: [stampComment, handoff('2026-10-10T00:00:00Z')] } });
+  const restamped = card({ ...paused, comments: { nodes: [handoff('2026-10-18T00:00:00Z'), stampComment] } });
+  const cats = Object.fromEntries([['owed', owed], ['parked', parked], ['handedRecent', handedRecent], ['handedStale', handedStale], ['restamped', restamped]]
+    .map(([k, c]) => [k, categoryOf(c)]));
+  assert.equal(cats.owed, 'dated-past');
+  assert.notEqual(cats.parked, 'dated-past');
+  assert.notEqual(cats.handedRecent, 'dated-past');
+  assert.equal(cats.handedStale, 'dated-past', 'a hand-off older than the grace window is owed again');
+  assert.equal(cats.restamped, 'dated-past', 'a hand-off before the newest stamp does not count');
+  // The table and the digest read the same rule: "waiting for its check" <=> pastDateHold is null.
+  for (const c of [owed, parked, handedRecent, handedStale, restamped]) {
+    assert.equal(categoryOf(c) === 'dated-past', pastDateHold(mapIssueToCard(c), NOW.getTime()) === null, c.identifier);
+  }
+});
+
+test('BRO-7689: a held card whose check failed still shows as failed; an owner-worded past-date hold reaches owner-hold-sweep', () => {
+  const sweep = require('./owner-hold-sweep.js');
+  const paused = { state: { name: 'Paused', type: 'backlog' } };
+  const stampComment = { body: 'RECHECK-AFTER: 2026-10-20', createdAt: '2026-10-19T00:00:00Z' };
+  const failedHeld = withDesc('PARKED: needs the owner\'s Apple ID password', { ...paused, comments: { nodes: [stampComment] } });
+  STATUS.set(failedHeld.identifier, 'fail');
+  assert.equal(categoryOf(failedHeld), 'dated-past-failed');
+  const ownerWorded = withDesc('PARKED: waiting on the owner go-ahead', { ...paused, comments: { nodes: [stampComment] } });
+  assert.equal(categoryOf(ownerWorded), 'parked-owner-wording');
+  assert.deepEqual(sweep.selectHolds([ownerWorded], { now: NOW }).map((h) => h.row), ['parked-owner-wording']);
+});
