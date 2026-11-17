@@ -9,6 +9,7 @@
  * (over 4h active, any land refusal, 15+ hook blocks, a restart, 2+ bypasses); wrap-up then needs each finding turned into
  * a fix or a card, recorded with --record --fixes=BRO-N,<sha> or --no-action=<reason> (checked by retro-coverage-stop.mjs). --record appends one line to data/audit/session-retro.jsonl for the weekly --rollup, which counts
  * signals across sessions and (with --file-card) files a Linear card for the top recurring friction.
+ * A bare --check exits 0 once this session has a ledger row with links or a no-action reason. SESSION_RETRO_LEDGER overrides the ledger path (tests).
  */
 const fs = require('fs');
 const os = require('os');
