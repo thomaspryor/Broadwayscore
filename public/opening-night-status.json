@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T04:07:02.781Z",
+  "generatedAt": "2026-11-17T04:29:39.709Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1541,8 +1541,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "preview-sent",
+        "detail": "Preview sent to thomas.pryor@gmail.com at 4:12:55 AM"
       },
       "missingT1": [
         {
@@ -2289,23 +2289,23 @@
       "status": "open",
       "slug": "downstate",
       "thumbnail": "/images/shows/downstate-2026/thumbnail.webp",
-      "siteScore": 87.77,
+      "siteScore": 87.7,
       "liveScore": 88,
-      "scoreDrift": 0.23000000000000398,
+      "scoreDrift": 0.29999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 21,
       "t1": 6,
-      "t2": 12,
-      "t3": 1,
-      "positive": 19,
+      "t2": 13,
+      "t3": 2,
+      "positive": 21,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 18,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2390,10 +2390,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
@@ -2682,6 +2678,18 @@
           "t2": 12,
           "t3": 1,
           "p": 19,
+          "m": 0,
+          "n": 0,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-11-17T04:29:39.709Z",
+          "rc": 21,
+          "s": 87.7,
+          "t1": 6,
+          "t2": 13,
+          "t3": 2,
+          "p": 21,
           "m": 0,
           "n": 0,
           "bc": "complete"
