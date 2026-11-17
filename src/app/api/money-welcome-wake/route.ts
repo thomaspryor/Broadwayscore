@@ -16,6 +16,11 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const WORKFLOW = 'money-welcome.yml';
+// Per-instance debounce so a script hammering the route cannot turn into a stream of GitHub calls.
+// Instances are not shared, so this is a cost brake only; correctness rests on the queued-run check
+// and the workflow's welcomed_at claim.
+const COOLDOWN_MS = 20_000;
+let lastActAt = 0;
 
 function ok(body: Record<string, unknown>, status = 200) {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
@@ -29,6 +34,9 @@ export async function POST(_req: NextRequest) {
     console.error('[money-welcome-wake] not configured (Supabase url, service key or GH_DISPATCH_TOKEN missing)');
     return ok({ ok: false, reason: 'not-configured' });
   }
+  const cooldown = process.env.MONEY_WELCOME_WAKE_COOLDOWN_MS === undefined ? COOLDOWN_MS : Number(process.env.MONEY_WELCOME_WAKE_COOLDOWN_MS) || 0;
+  if (Date.now() - lastActAt < cooldown) return ok({ ok: true, acted: false, reason: 'cooldown' });
+  if (cooldown > 0) lastActAt = Date.now();
   const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
   const gh = { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json', 'User-Agent': 'broadwayscorecard-money-welcome-wake' };
   try {

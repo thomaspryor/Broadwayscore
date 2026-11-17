@@ -10,7 +10,7 @@ register('./next-subpath-loader.mjs', import.meta.url);
 
 async function callRoute({ rows, queued = 0, pending = 0, dispatchStatus = 204, env = {} }) {
   const saved = { ...process.env };
-  Object.assign(process.env, { NEXT_PUBLIC_SUPABASE_URL: 'https://db.test', SUPABASE_SERVICE_ROLE_KEY: 'svc', GH_DISPATCH_TOKEN: 'gh', ...env });
+  Object.assign(process.env, { NEXT_PUBLIC_SUPABASE_URL: 'https://db.test', SUPABASE_SERVICE_ROLE_KEY: 'svc', GH_DISPATCH_TOKEN: 'gh', MONEY_WELCOME_WAKE_COOLDOWN_MS: '0', ...env });
   for (const k of Object.keys(env)) if (env[k] === null) delete process.env[k];
   const realFetch = globalThis.fetch;
   const calls = [];
@@ -59,6 +59,15 @@ test('route: GitHub failure is a 502, missing config does nothing', async () => 
   assert.equal((await callRoute({ rows: fresh(), dispatchStatus: 403 })).status, 502);
   const r = await callRoute({ rows: fresh(), env: { GH_DISPATCH_TOKEN: null } });
   assert.deepEqual([r.json.ok, r.json.reason, dispatches(r).length], [false, 'not-configured', 0]);
+});
+
+test('route: a burst of calls inside the cooldown touches Supabase and GitHub once', async () => {
+  const env = { MONEY_WELCOME_WAKE_COOLDOWN_MS: '60000' };
+  await callRoute({ rows: [], env: { MONEY_WELCOME_WAKE_COOLDOWN_MS: '0' } }); // reset lastActAt
+  const first = await callRoute({ rows: fresh(), env });
+  const second = await callRoute({ rows: fresh(), env });
+  assert.equal(first.json.acted, true);
+  assert.deepEqual([second.json.acted, second.json.reason, second.calls.length], [false, 'cooldown', 0]);
 });
 
 test('route and client carry no secrets and send no body', () => {
