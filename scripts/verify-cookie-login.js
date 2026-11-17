@@ -27,8 +27,9 @@
  * control: the old NYT floor (1500) passed the 2,904-char anonymous page and
  * the old FT probe passed FT's 2,312-char "Subscribe to read" page, so both
  * read "logged in" with no session at all. Browser-only outlets (newyorker,
- * thetimes, ft, telegraph) are measured inside their persistent profile
- * (Mac only; takes the renew lock) against an anonymous-browser control.
+ * thetimes, ft, telegraph) load the SAVED cookie file into a throwaway
+ * Chrome profile (no lock needed; deleted afterwards) and are compared with an
+ * anonymous-browser control, so this measures the jar the scrapers use.
  *
  * Usage:
  *   node scripts/verify-cookie-login.js                 # all targets
@@ -37,6 +38,14 @@
  */
 
 'use strict';
+
+const { hasHelpFlag } = require('./lib/cli-help');
+
+// Before any other require or side effect (it deletes its temp profiles).
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(require('fs').readFileSync(__filename, 'utf8').split('\n').slice(2, 38).join('\n'));
+  process.exit(0);
+}
 
 const { fetchPage } = require('./lib/scraper');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
