@@ -111,6 +111,19 @@ function loadTodayTixIds() {
   }
 }
 
+// The show's TodayTix id: data/todaytix-ids.json first, then the id the record
+// itself carries. Discovery writes show.todaytixId without always adding an
+// ids-file row, so a lookup in the file alone never fetched TodayTix for those
+// shows and their synopsis stayed empty (jenufa-off-broadway-2026 and 11 more,
+// BRO-5755). fetch-show-images-auto.js already reads show.todaytixId the same way.
+function resolveTodayTixInfo(show, todayTixIds) {
+  const shows = (todayTixIds && todayTixIds.shows) || {};
+  const fromFile = shows[show.id] || (show.slug && shows[show.slug]);
+  if (fromFile && fromFile.id) return fromFile;
+  if (show.todaytixId) return { id: show.todaytixId, slug: null };
+  return fromFile || null;
+}
+
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
@@ -494,7 +507,7 @@ async function fixSynopsis(show, todayTixIds) {
   };
 
   // Try TodayTix first
-  const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+  const todayTixInfo = resolveTodayTixInfo(show, todayTixIds);
   const tt = await fetchSynopsisFromTodayTix(show, todayTixInfo);
   if (await accept(tt.text, 'TodayTix', { trusted: tt.trusted })) {
     return `Fetched synopsis from TodayTix for ${show.title}`;
@@ -613,7 +626,7 @@ async function fixCreativeTeam(show, todayTixIds) {
   console.log(`  🎬 Missing creative team, attempting to fetch...`);
 
   // Step 1: TodayTix JSON-LD
-  const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+  const todayTixInfo = resolveTodayTixInfo(show, todayTixIds);
   let creativeTeam = await fetchCreativeTeamFromTodayTix(show, todayTixInfo);
 
   if (creativeTeam && creativeTeam.length >= 2) {
@@ -1002,6 +1015,7 @@ module.exports = {
   verifyCreativeTeamViaSerp,
   generateCreativeTeamWithSerpVerification,
   fetchSynopsisFromTodayTix,
+  resolveTodayTixInfo,
   extractSynopsisFromHtml,
   generateSynopsisWithLLM,
   buildSynopsisPrompt,

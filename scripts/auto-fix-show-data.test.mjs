@@ -460,3 +460,16 @@ test('prioritizeDailyTargets puts bad/missing synopsis first, keeping source ord
   assert.deepEqual(out, ['b', 'd', 'a', 'c']);
   assert.deepEqual(prioritizeDailyTargets(undefined), []);
 });
+
+test('resolveTodayTixInfo falls back to the id the show record carries (BRO-5755)', () => {
+  const { resolveTodayTixInfo } = require('./auto-fix-show-data.js');
+  const ids = { shows: { 'listed-2026': { id: 111, slug: 'listed', market: 'nyc' } } };
+  // In the ids file: the file row wins.
+  assert.deepEqual(resolveTodayTixInfo({ id: 'listed-2026', slug: 'listed', todaytixId: 999 }, ids), { id: 111, slug: 'listed', market: 'nyc' });
+  // Only on the record (jenufa-off-broadway-2026's shape): use it, so the cron fetches TodayTix.
+  assert.deepEqual(resolveTodayTixInfo({ id: 'jenufa-off-broadway-2026', slug: 'jenufa-off-broadway', todaytixId: 48540 }, ids), { id: 48540, slug: null });
+  // Neither: nothing to fetch.
+  assert.equal(resolveTodayTixInfo({ id: 'nothing-2026', slug: 'nothing' }, ids), null);
+  assert.equal(resolveTodayTixInfo({ id: 'nothing-2026' }, { shows: {} }), null);
+  assert.equal(resolveTodayTixInfo({ id: 'nothing-2026', todaytixId: 5 }, undefined).id, 5);
+});
