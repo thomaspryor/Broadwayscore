@@ -40,6 +40,7 @@ export default defineConfig({
           '**/ugc-visual-baselines*',
           '**/ingest-form-batch*',
           '**/welcome-setup*',
+          '**/google-one-tap*',
         ]),
     ...(process.env.E2E_SKIP_PROD_VISUAL_BASELINES === '1'
       ? ['**/visual-regression.spec.ts']

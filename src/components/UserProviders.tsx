@@ -5,6 +5,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ToastProvider } from '@/components/ui/Toast';
 import WelcomeGate from '@/components/onboarding/WelcomeGate';
+import GoogleOneTap from '@/components/auth/GoogleOneTap';
 import LocalRatingsMigrator from '@/components/user/LocalRatingsMigrator';
 import LocalSavesConfirmation from '@/components/user/LocalSavesConfirmation';
 
@@ -27,6 +28,7 @@ export default function UserProviders({ children }: { children: ReactNode }) {
       <ToastProvider>
         {children}
         <WelcomeGate />
+        <GoogleOneTap />
         <LocalRatingsMigrator />
         <LocalSavesConfirmation />
       </ToastProvider>

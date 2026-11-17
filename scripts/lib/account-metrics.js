@@ -110,6 +110,7 @@ const WELCOME_PICKED = "event = 'onboarding_step_completed' AND toString(propert
 const SOURCE_LABELS = {
   header: 'Sign-in button (top of page)',
   menu: 'Menu',
+  one_tap: 'Google one-tap card (desktop)',
   show_bookmark: 'Bookmark icon on a show',
   show_watchlist: 'Watchlist button on a show',
   show_add_to_list: 'Add to list on a show',
