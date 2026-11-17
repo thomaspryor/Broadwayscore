@@ -112,34 +112,6 @@
     "queuedAt": "2026-11-16T10:13:46.448Z"
   },
   {
-    "conditionKey": "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml",
-    "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 28 days ago",
-    "description": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 28 days ago\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-16T10:13:46.465Z"
-  },
-  {
-    "conditionKey": "aggregator-health:theatre-reviews:coverage-drop",
-    "title": "theatre.reviews: archive coverage 52% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
-    "description": "theatre.reviews: archive coverage 52% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-16T10:14:46.836Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:downstate-2026",
     "title": "Auto-remediation gave up on downstate-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"downstate-2026\"}",
@@ -1198,5 +1170,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-17T10:49:53.228Z"
+  },
+  {
+    "conditionKey": "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml",
+    "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 29 days ago",
+    "description": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 29 days ago\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T11:11:52.338Z"
+  },
+  {
+    "conditionKey": "aggregator-health:theatre-reviews:coverage-drop",
+    "title": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
+    "description": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T11:11:52.612Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5) — escalated after 15 notifications",
+    "description": "Filed BRO-7661 for owner triage after 15 repeats with no tracker.\n\nScope: 2 opening window(s): the-good-thief-off-broadway-2026 (2026-11-17), blue-man-group-a-new-holiday-surprise-2026 (2026-11-17)\n0 review(s) still in flight.\nStage log currently starts at 2026-11-15T15:33:59.806Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7661",
+    "fields": [],
+    "queuedAt": "2026-11-17T11:15:27.061Z"
   }
 ]
