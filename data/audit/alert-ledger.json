@@ -373,10 +373,10 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-14T05:24:56.269Z",
-      "lastNotifiedAt": "2026-11-14T05:24:56.269Z",
-      "lastSurfacedAt": "2026-11-09T20:23:30.357Z",
-      "notifyCount": 82,
+      "lastSeen": "2026-11-17T03:05:41.603Z",
+      "lastNotifiedAt": "2026-11-17T03:05:41.603Z",
+      "lastSurfacedAt": "2026-11-17T03:05:41.603Z",
+      "notifyCount": 83,
       "cardId": null,
       "linearIdentifier": "BRO-5532"
     },
@@ -19500,7 +19500,7 @@
       "title": "Roundup gaps: 15 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-17T01:45:41.257Z",
+      "lastSeen": "2026-11-17T03:00:26.855Z",
       "lastNotifiedAt": "2026-11-16T18:21:17.015Z",
       "lastSurfacedAt": null,
       "notifyCount": 57,
@@ -19578,7 +19578,7 @@
         "jenufa-off-broadway-2026",
         "the-fantasticks-2026"
       ],
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -37303,13 +37303,13 @@
       "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
       "firstSeen": "2026-11-04T06:41:38.163Z",
       "incidentOpenedAt": "2026-11-04T06:41:38.163Z",
-      "lastSeen": "2026-11-16T20:45:03.387Z",
+      "lastSeen": "2026-11-17T03:05:23.222Z",
       "lastNotifiedAt": "2026-11-11T08:43:42.673Z",
       "lastSurfacedAt": "2026-11-11T08:43:42.673Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 19
+      "silentRefires": 20
     },
     "land:land/bro-4315-image-gate-renames": {
       "status": "resolved",
@@ -38776,13 +38776,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-17T01:45:41.162Z",
+      "lastSeen": "2026-11-17T03:00:26.780Z",
       "lastNotifiedAt": "2026-11-16T07:51:14.789Z",
       "lastSurfacedAt": "2026-11-16T07:51:14.789Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -42889,7 +42889,7 @@
       "linearIdentifier": null
     },
     "uncollected-blackout:the-fantasticks-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: The Fantasticks",
       "firstSeen": "2026-11-12T21:34:05.447Z",
@@ -42902,7 +42902,9 @@
       "linearIdentifier": "BRO-7624",
       "notifyCountAtRelease": 1,
       "sweptTracker": "BRO-7420",
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-11-17T03:05:27.112Z",
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
     },
     "uncollected-blackout:downstate-2026": {
       "status": "resolved",

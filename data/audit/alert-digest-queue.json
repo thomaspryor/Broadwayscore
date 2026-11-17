@@ -722,20 +722,6 @@
     "queuedAt": "2026-11-16T23:38:06.449Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T01:50:00.572Z"
-  },
-  {
     "conditionKey": "land:land/bro-7631-conflict-drivers",
     "title": "Landing blocked: rebase red on land/bro-7631-conflict-drivers",
     "description": "land.yml did not land land/bro-7631-conflict-drivers: the rebase gate went red at e2750510bf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43994823602",
@@ -862,5 +848,46 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-17T01:59:41.006Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T03:01:30.388Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h (still open — BRO-5532)",
+    "description": "Still firing after 83 notifications since it was filed. Tracked at BRO-5532.\n\n3 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5532",
+    "fields": [
+      {
+        "name": "Downstate — talkinbroadway (46h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"downstate-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Downstate — theater-scene (46h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"downstate-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Downstate — variety (46h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"downstate-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-11-17T03:05:41.954Z"
   }
 ]

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T01:50:00.571Z",
+  "generatedAt": "2026-11-17T03:01:30.387Z",
   "windowDays": 45,
   "showsScanned": 255,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 186.73526527777778,
+      "fileAgeHours": 187.985995,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 164.24896416666667,
+      "nonTerminalAgeHours": 165.44057972222222,
       "needsManualRecovery": true
     },
     {
@@ -33,18 +33,14 @@
       "type": "empty-body",
       "recoverable": true,
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  forum thread fetch failed: All scraping methods failed"
-      },
+      "recovery": null,
       "recoveryCount": 0,
-      "forumLinkRecoveryCount": 8,
+      "forumLinkRecoveryCount": 9,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 156.02912305555554,
+      "fileAgeHours": 157.22078833333333,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 154.88451916666668,
+      "nonTerminalAgeHours": 156.07613472222224,
       "needsManualRecovery": false
     },
     {
@@ -62,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 51.085593055555556,
+      "fileAgeHours": 52.27722055555556,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 49.81950694444444,
+      "nonTerminalAgeHours": 51.0111225,
       "needsManualRecovery": false
     }
   ],
