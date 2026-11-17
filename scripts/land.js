@@ -218,7 +218,7 @@ if (require.main === module) {
   try {
     process.exit(main());
   } catch (err) {
-    console.log(`REFUSED: fatal: ${String(err.message).split('\n')[0]}`);
+    console.log(require('./lib/land-branch.js').fatalRefusalLine(err));
     process.exit(1);
   }
 }
