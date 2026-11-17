@@ -27,3 +27,21 @@ test('flags SB-only steps for each SERP entry point, not SB+SD steps or non-SERP
   }
   assert.equal(findSerpKeyGaps(wf(['SCRAPINGBEE_API_KEY'], 'node scripts/check-sb-breaker.js'), 't.yml', ROOT).length, 0);
 });
+
+test('page fetches count: fetchPage steps and npm run steps are flagged without the Scrapingdog key', () => {
+  // create-tour-entries.js reaches fetchPage; verify-reviews runs through `npm run reviews:verify`
+  for (const s of ['node scripts/create-tour-entries.js --write', 'npm run reviews:verify > out.txt 2>&1']) {
+    assert.equal(findSerpKeyGaps(wf(['SCRAPINGBEE_API_KEY'], s), 't.yml', ROOT).length, 1, s);
+    assert.equal(findSerpKeyGaps(wf(['SCRAPINGBEE_API_KEY', 'SCRAPINGDOG_API_KEY'], s), 't.yml', ROOT).length, 0, s);
+  }
+});
+
+test('a script with its own plain-https fetchPage is not flagged', () => {
+  // fetch-review-texts.js defines a local fetchPage and never requires scraper.js
+  assert.equal(findSerpKeyGaps(wf(['SCRAPINGBEE_API_KEY'], 'node scripts/fetch-review-texts.js'), 't.yml', ROOT).length, 0);
+});
+
+test('fetchPage passed on as a callback still counts', () => {
+  // audit-critic-coverage.js hands scraper's fetchPage to discoverAuthorPages
+  assert.equal(findSerpKeyGaps(wf(['SCRAPINGBEE_API_KEY'], 'node scripts/audit-critic-coverage.js'), 't.yml', ROOT).length, 1);
+});
