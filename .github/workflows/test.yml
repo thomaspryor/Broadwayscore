@@ -7037,11 +7037,18 @@ jobs:
         if: success() || failure()
         continue-on-error: true
         run: |
+          # Advisory only: a screenshot mismatch is a ::warning:: and exit 0 (no
+          # error annotation on a green job); any other failure (timeout,
+          # selector, crash) keeps its non-zero exit so it reads as broken,
+          # not as "expected drift". continue-on-error keeps main green either way.
           status=0
-          npx playwright test tests/e2e/visual-regression.spec.ts --project=chromium --retries=0 --output=test-results-visual --reporter=line || status=$?
-          if [ "$status" -ne 0 ]; then
+          npx playwright test tests/e2e/visual-regression.spec.ts --project=chromium --retries=1 --output=test-results-visual --reporter=line 2>&1 | tee /tmp/visual-advisory.log || status=$?
+          if [ "$status" -eq 0 ]; then exit 0; fi
+          if grep -qE 'pixels \(ratio [0-9.]+ of all image pixels\) are different|Expected an image [0-9]+px by [0-9]+px' /tmp/visual-advisory.log; then
             echo "::warning::Live site differs from visual baselines (expected after an approved UI change; the scheduled Visual Regression job refreshes them). Diffs: test-results-visual/ in the playwright-report artifact."
+            exit 0
           fi
+          echo "::warning::Visual advisory run failed for a reason other than a screenshot diff (see step log)."
           exit "$status"
         env:
           TEST_BASE_URL: https://broadwayscorecard.com

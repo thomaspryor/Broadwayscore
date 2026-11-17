@@ -24,7 +24,8 @@ function listSpecs(extraEnv) {
   const env = { ...process.env, ...extraEnv };
   delete env.RUN_UGC_TESTS;
   if (!('E2E_SKIP_PROD_VISUAL_BASELINES' in extraEnv)) delete env.E2E_SKIP_PROD_VISUAL_BASELINES;
-  return execFileSync('npx', ['playwright', 'test', '--list', '--project=chromium'], {
+  // --reporter=list: keep --list from overwriting a real run's html/json reports.
+  return execFileSync('npx', ['playwright', 'test', '--list', '--project=chromium', '--reporter=list'], {
     cwd: ROOT, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 120_000,
   });
 }
@@ -35,7 +36,11 @@ function listsSpec(out) {
   return out.split('\n').some((l) => new RegExp(`(^|[\\s/›])${SPEC.replace('.', '\\.')}:`).test(l));
 }
 
-test('config skips visual-regression.spec.ts only when E2E_SKIP_PROD_VISUAL_BASELINES=1', () => {
+// --list imports every spec; show-pages.spec.ts reads data/shows.json at load,
+// so without core data (fresh clone, cloud) listing fails for unrelated reasons.
+const HAS_CORE_DATA = fs.existsSync(new URL('../../data/shows.json', import.meta.url));
+
+test('config skips visual-regression.spec.ts only when E2E_SKIP_PROD_VISUAL_BASELINES=1', { skip: !HAS_CORE_DATA && 'no data/shows.json (core data not checked out)' }, () => {
   assert.ok(listsSpec(listSpecs({})), 'spec should be listed by default (scheduled job and local runs need it)');
   assert.ok(!listsSpec(listSpecs({ E2E_SKIP_PROD_VISUAL_BASELINES: '1' })), 'spec must be skipped when the env var is 1');
 });
