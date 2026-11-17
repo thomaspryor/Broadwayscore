@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-17T05:00:39.445Z",
+    "generatedAt": "2026-11-17T05:28:45.587Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 158,
+    "totalFlagged": 160,
     "highConfidence": 9,
-    "mediumConfidence": 149,
+    "mediumConfidence": 151,
     "lowConfidence": 0,
-    "reassignable": 52
+    "reassignable": 54
   },
   "results": [
     {
@@ -1677,6 +1677,23 @@
       "textSnippet": "https://www.nytimes.com/1979/09/26/archives/stage-evita-a-musical-peron-ambitions-progress.htmlShare full articleAdvertisement\n\nTHERE'S an eerily prophetic line close to the very opening of “Evita,” t"
     },
     {
+      "showId": "the-cherry-orchard-1977",
+      "showTitle": "The Cherry Orchard",
+      "showYear": 1977,
+      "file": "nytg--unknown.json",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-cherry-orchard-2016",
+      "signals": [
+        "revival text signals: revival, this production",
+        "year 2016 in text matches revival the-cherry-orchard-2016",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Review by Holli Harms 20 October 2016\n\nIt’s a collaboration of people – with ideas and personalities and different ways of working. Bringing it all together and creating a cohesive production is diffi"
+    },
+    {
       "showId": "dracula-1977",
       "showTitle": "Dracula",
       "showYear": 1977,
@@ -1706,6 +1723,22 @@
         "publishDate 2010 matches revival the-merchant-of-venice-2010 (opened 2010)"
       ],
       "textSnippet": "  First things first: I've never been much able to stomach \"The Merchant of Venice,\" not when I first read it in high school nor when I first saw it (in 1973 on TV, starring the husband-and-wife team "
+    },
+    {
+      "showId": "romeo-and-juliet-1986",
+      "showTitle": "Romeo and Juliet",
+      "showYear": 1986,
+      "file": "plays-to-see--unknown.json",
+      "outlet": "Plays To See",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "romeo-and-juliet-west-end-2016",
+      "signals": [
+        "year 2015 in text matches revival romeo-and-juliet-west-end-2016",
+        "year 2012 in text matches revival romeo-and-juliet-2013"
+      ],
+      "textSnippet": "Romeo and Juliet William Shakespeare, edited by René Weis | Plays To See\n\nAbout\n\n Our Team\n\n Home\n\n Reviews in a special category\n\n Book Reviews\n\n Romeo and Juliet William Shakespeare, edited by René "
     },
     {
       "showId": "after-the-fall-2004",

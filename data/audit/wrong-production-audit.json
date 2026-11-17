@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T05:10:48.600Z",
+  "timestamp": "2026-11-17T05:38:18.448Z",
   "stats": {
-    "totalReviews": 82287,
-    "alreadyFlagged": 22492,
+    "totalReviews": 82288,
+    "alreadyFlagged": 22497,
     "dateGuardCatches": 222,
-    "directorMismatch": 3721,
-    "tvFilmSignals": 2330,
+    "directorMismatch": 3725,
+    "tvFilmSignals": 2337,
     "londonSignals": 3779,
-    "offBroadwaySignals": 755,
+    "offBroadwaySignals": 760,
     "yearMismatch": 379,
-    "noPublishDate": 8249
+    "noPublishDate": 8221
   },
   "findings": [
     {
@@ -55080,6 +55080,20 @@
     },
     {
       "showId": "present-laughter-2017",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 88,
+      "publishDate": "2017-04-23",
+      "url": "http://www.theaterscene.net/plays/broadway-plays/present-laughter/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from present-laughter-1982"
+        }
+      ]
+    },
+    {
+      "showId": "present-laughter-2017",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
       "score": 78,
       "publishDate": "May 3rd, 2017",
@@ -55393,6 +55407,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "private-lives-2011",
+      "file": "huffpost--unknown.json",
+      "score": null,
+      "publishDate": "2011-11-19",
+      "url": "https://www.huffpost.com/entry/private-lives-broadway-review_b_1102882",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
@@ -55910,6 +55943,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"kenny leon\" from purlie-victorious-2023"
+        }
+      ]
+    },
+    {
+      "showId": "purpose-2025",
+      "file": "latimes--unknown.json",
+      "score": null,
+      "publishDate": "2025-06-09",
+      "url": "https://www.latimes.com/entertainment-arts/story/2025-06-09/tony-awards-hollywood-a-listers-broadway-fearless-stage-actors-maybe-happy-ending-purpose",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -60991,6 +61043,20 @@
     },
     {
       "showId": "spongebob-squarepants-2017",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://exeuntnyc.com/reviews/review-spongebob-squarepants-musical-palace-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "spongebob-squarepants-2017",
       "file": "front-row-center--casey-curtis.json",
       "score": 86,
       "publishDate": "2017-12-08T08:31:39",
@@ -61000,6 +61066,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "spongebob-squarepants-2017",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/review-of-spongebob-squarepants-on-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "spongebob-squarepants-2017",
+      "file": "stageandcinema--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://stageandcinema.com/2017/10/24/spongebob-squarepants-musical-obc",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -67010,6 +67104,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-1977",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/the-cherry-orchard-0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"simon godwin\" from the-cherry-orchard-2016"
         }
       ]
     },
@@ -73281,6 +73389,20 @@
       ]
     },
     {
+      "showId": "the-lightning-thief-2019",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2019-10-26",
+      "url": "https://newyorktheater.me/2019/10/26/the-lightning-thief-review-on-broadway-battling-beasts-and-bloat/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
       "showId": "the-lion-in-winter-regional-2023",
       "file": "letsplaytheatricalreview--rick-mccain.json",
       "score": 76,
@@ -75058,6 +75180,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-other-place-2013",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2013/01/12/the-other-place-broadway-review-laurie-metcalfs-awesome-transformation/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -86715,6 +86851,25 @@
       "publishDate": null,
       "url": "https://www.backstage.com/magazine/article/austin-pendleton-uta-hagen-afraid-virginia-woolf-58558/",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://exeuntnyc.com/reviews/whos-afraid-of-virginia-woolf-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"pam mackinnon\" from whos-afraid-of-virginia-woolf-2012"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -122916,6 +123071,20 @@
       ]
     },
     {
+      "showId": "present-laughter-2017",
+      "file": "magical-misstari-tour--tari-stratton.json",
+      "score": 86,
+      "publishDate": "2017-05-14",
+      "url": "https://magicalmisstaritour.blogspot.com/2017/05/thoughts-on-hamlet-present-laughter-and.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
       "showId": "present-laughter-royal-bath-regional-2026",
       "file": "guardian--mark-lawson.json",
       "score": 79,
@@ -131206,6 +131375,20 @@
     },
     {
       "showId": "the-children-2017",
+      "file": "huffpost--michael-glitz.json",
+      "score": 86,
+      "publishDate": "2017-12-14",
+      "url": "https://www.huffingtonpost.com/entry/theater-twelfth-night-no-treat-precious-children_us_5a33038fe4b0e7f1200cf992",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "the-children-2017",
       "file": "huffpost--steven-suskin.json",
       "score": 71,
       "publishDate": "December 12, 2017",
@@ -135750,6 +135933,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lightning-thief-2019",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://exeuntnyc.com/reviews/review-lightning-thief-percy-jackson-musical-longacre-theatre/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
