@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-17T18:59:33.532Z",
-  "processed": 101,
-  "failed": 49,
-  "successRate": "67.3%",
+  "updatedAt": "2026-11-17T19:35:05.589Z",
+  "processed": 105,
+  "failed": 58,
+  "successRate": "64.4%",
   "tierBreakdown": {
-    "playwright": 62,
+    "playwright": 64,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 6,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 26
+    "archive": 27
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-11-17T18:26:07.862Z",
@@ -26,6 +26,50 @@
       "t": "2026-11-17T18:26:08.648Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T19:30:00.848Z",
+      "event": "bb-session",
+      "session": "fd8136c2",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T19:30:01.203Z",
+      "event": "bb-session",
+      "session": "5411a1c0",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T19:30:01.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T19:30:01.806Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T19:32:20.434Z",
+      "event": "bb-session",
+      "session": "80f9276a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T19:32:21.024Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T19:35:03.990Z",
+      "event": "bb-session",
+      "session": "9e834215",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-17T19:35:04.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
