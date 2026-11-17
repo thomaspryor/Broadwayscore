@@ -164,3 +164,39 @@ test('makeVerifyCmdEvidence: checkout timeout yields verify-cmd-infra-timeout, s
     delete require.cache[require.resolve('./linear-cmd-execution.js')];
   }
 });
+
+// BRO-7632: environment-refusal hint + placeholder VERIFY rejection.
+import { createRequire as __cr7632 } from 'node:module';
+import __assert7632 from 'node:assert/strict';
+import { test as __test7632 } from 'node:test';
+const __r7632 = __cr7632(import.meta.url)('./linear-cmd-execution.js');
+
+__test7632('BRO-7632: unverifiable timeout gets the re-run hint', () => {
+  const h = __r7632.envRefusalHint({ status: 'unverifiable', detail: 'check killed by SIGTERM after 180000ms (timeout — no verdict)' }, { notOnMain: false });
+  __assert7632.match(h, /re-run the Done update/);
+  __assert7632.doesNotMatch(h, /PR-EVIDENCE/);
+});
+__test7632('BRO-7632: env cause hint names the cause and the PR-EVIDENCE route', () => {
+  const h = __r7632.envRefusalHint({ status: 'unverifiable', detail: 'could not run here', envCause: 'private-texts-absent' }, {});
+  __assert7632.match(h, /private-texts-absent/);
+  __assert7632.match(h, /PR-EVIDENCE/);
+});
+__test7632('BRO-7632: missingPath and notOnMain never get an environment hint (BRO-3471 hole)', () => {
+  __assert7632.equal(__r7632.envRefusalHint({ status: 'unverifiable', detail: 'names a path absent', missingPath: true }, {}), '');
+  __assert7632.equal(__r7632.envRefusalHint({ status: 'unverifiable', detail: 'x' }, { notOnMain: true }), '');
+});
+__test7632('BRO-7632: a genuine fail mentioning data/ gets no hint', () => {
+  __assert7632.equal(__r7632.envRefusalHint({ status: 'fail', detail: 'ENOENT data/shows.json assertion failed' }, {}), '');
+});
+__test7632('BRO-7632: all-skipped and malformed commands point at the VERIFY line, not the environment', () => {
+  const a = __r7632.envRefusalHint({ status: 'unverifiable', detail: 'ran no passing tests (all skipped or none ran)' }, {});
+  __assert7632.match(a, /VERIFY line/);
+  __assert7632.doesNotMatch(a, /environment problem/);
+  __assert7632.match(__r7632.envRefusalHint({ status: 'unverifiable', detail: 'command failed safe-form re-validation at run time: x' }, {}), /VERIFY line/);
+});
+__test7632('BRO-7632: placeholder VERIFY lines are found, real ones are not', () => {
+  for (const bad of ['VERIFY: node --test scripts/BRO-N.test.mjs', 'VERIFY: node scripts/x.js --id <id>', 'VERIFY: node --test XXX', 'VERIFY: TBD'])
+    __assert7632.ok(__r7632.findPlaceholderVerify(`text\n${bad}`), bad);
+  __assert7632.equal(__r7632.findPlaceholderVerify('VERIFY: node --test scripts/lib/linear-done-gate.test.mjs'), null);
+  __assert7632.equal(__r7632.findPlaceholderVerify('no verify line here, mentions BRO-N'), null);
+});

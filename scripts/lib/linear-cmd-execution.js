@@ -60,6 +60,45 @@ function isCheckoutTimeout(err) {
 }
 
 /**
+ * BRO-7632: a refusal whose cause is the machine, not the card, should say so
+ * and name the way out. Keyed off runVerify's own classification (status
+ * 'unverifiable'), never a second regex set. Never fires for missingPath /
+ * notOnMain (the BRO-3471 hole: the card's test is not on main, merge first),
+ * and a malformed command or an all-skipped test run is a VERIFY-line problem,
+ * not an environment one. Advice only: `allowed` is untouched.
+ * @returns {string} text to append to the refusal reason ('' when none applies)
+ */
+function envRefusalHint(verifyResult, decision) {
+  if (!verifyResult || verifyResult.status !== 'unverifiable') return '';
+  if (verifyResult.missingPath || (decision && decision.notOnMain)) return '';
+  const detail = String(verifyResult.detail || '');
+  if (/safe-form re-validation|ran no passing tests/.test(detail)) {
+    return ' This is a problem with the recorded VERIFY line (malformed, or its tests all skipped), not the environment: write a VERIFY command that runs and passes real tests.';
+  }
+  const timeout = /timeout/.test(detail);
+  const cause = verifyResult.envCause ? ` (${verifyResult.envCause})` : '';
+  return timeout
+    ? ' The check ran out of time on this machine, which is not a verdict on the card: re-run the Done update.'
+    : ` This looks like an environment problem${cause}, not a verdict on the card: re-run the Done update, or if the work is merged and deployed record \`PR-EVIDENCE: merged deployed checked (<url>)\`.`;
+}
+
+/**
+ * BRO-7632: a `VERIFY:` line whose command still holds a template placeholder
+ * (BRO-N, <id>, XXX, TBD, ...) can never pass, and the Done gate then refuses
+ * the card for a reason that is not about the work. Call on NEW text only
+ * (a create's notes or an update's own comment), never on old comments.
+ * @returns {string|null} the offending VERIFY line, or null
+ */
+function findPlaceholderVerify(text) {
+  for (const line of String(text || '').split('\n')) {
+    const m = line.match(/^\s*VERIFY:\s*(.+)$/);
+    if (!m) continue;
+    if (/<[A-Za-z][^>\s]*>|\bBRO-N\b|\bBRO-X+\b|\bX{3,}\b|\bTBD\b|\bTODO\b|\bPLACEHOLDER\b/.test(m[1])) return line.trim();
+  }
+  return null;
+}
+
+/**
  * @param {{repo?:string, timeoutMs?:number, log?:Function}} [opts]
  * @returns {(cmd:string) => {allowed:boolean, verdict:string, reason:string, notOnMain:boolean, sha:string|null}}
  *   allowed:true means the command was actually executed against a fresh
@@ -100,9 +139,10 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
       // than decision.message, so that word never leaks through. Every
       // verdict where decideClose ALSO refuses (FAIL, including the
       // missingPath case) already reads correctly as a refusal either way.
-      const reason = (!allowed && decision.allowed === true)
+      const baseReason = (!allowed && decision.allowed === true)
         ? `recorded command \`${cmd}\` was not confirmed to pass (${decision.verdict}): ${(verifyResult && verifyResult.detail) || 'no further detail'}`
         : decision.message;
+      const reason = allowed ? baseReason : baseReason + envRefusalHint(verifyResult, decision);
       return {
         allowed,
         verdict: decision.verdict,
@@ -132,4 +172,4 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
   };
 }
 
-module.exports = { makeVerifyCmdEvidence, isCheckoutTimeout, DEFAULT_TIMEOUT_MS, VERIFY_ATTEMPTS };
+module.exports = { makeVerifyCmdEvidence, envRefusalHint, findPlaceholderVerify, isCheckoutTimeout, DEFAULT_TIMEOUT_MS, VERIFY_ATTEMPTS };

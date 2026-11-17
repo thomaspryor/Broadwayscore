@@ -479,6 +479,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             args.comment = args.comment !== undefined ? `${args.comment}\n\n${line}` : line;
           }
         }
+        if (typeof args.comment === 'string') {
+          const placeholder = require('./lib/linear-cmd-execution').findPlaceholderVerify(args.comment);
+          if (placeholder) {
+            console.error(`REFUSED (BRO-7632): the VERIFY line still holds a template placeholder, so it can never pass: ${placeholder.slice(0, 160)}. Write the real command.`);
+            process.exit(1);
+          }
+        }
         if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {
           const commentText = typeof args.comment === 'string' ? args.comment : '';
           // getIssue()'s query already fetches comments(first: 20) — reuse
@@ -790,6 +797,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   if (noVerify === true || (typeof noVerify === 'string' && noVerify.trim().length < 10)) {
     console.error('--no-verify needs a reason of at least 10 characters (why this card has no safe VERIFY command).');
     process.exit(1);
+  }
+  {
+    const placeholder = require('./lib/linear-cmd-execution').findPlaceholderVerify(args.notes);
+    if (placeholder) {
+      console.error(`REFUSED (BRO-7632): the VERIFY line in --notes still holds a template placeholder, so it can never pass: ${placeholder.slice(0, 160)}. Write the real command.`);
+      process.exit(1);
+    }
   }
   if (args['dedupe-opt-out'] === true) {
     console.error('--dedupe-opt-out needs a name from scripts/lib/card-dedupe.js DEDUPE_OPT_OUTS.');
