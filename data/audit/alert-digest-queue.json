@@ -1240,5 +1240,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-17T11:20:37.014Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7663-excerpt-containment",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7663-excerpt-containment",
+    "description": "land.yml did not land land/bro-7663-excerpt-containment: the unit-tests-node gate went red at 9216d43bf4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44082954286",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7663-excerpt-containment"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9216d43bf4a3f8200c390a6395def1f161246f88"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44082954286"
+      }
+    ],
+    "queuedAt": "2026-11-17T12:29:01.954Z"
   }
 ]
