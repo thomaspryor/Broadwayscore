@@ -332,8 +332,14 @@ const FRAGMENT_START_RE = /^[\s"'\u201c\u2018\u00ab(\[]*(?:[a-z]|[,;:])/;
 // Only the stray-punctuation half: a shipped or LLM quote opening this way
 // is never the critic's sentence start (audit + extractor hard reject).
 const PUNCT_FRAGMENT_START_RE = /^[\s"'\u201c\u2018\u00ab(\[]*[,;:]/;
+// A candidate that opens on a parenthetical aside or a photo credit: Slant on
+// The Fantasticks (2026-11-16) shipped "(Lewis's existence also happens to save
+// the show...", Piedmont Exedra shipped "(Courtesy Matthew Murphy/...) The stage
+// musical...". An opening "(" is never the critic's verdict sentence (9 of 9
+// live cases on 2026-11-17 were asides, credits or song-title fragments).
+const PAREN_ASIDE_START_RE = /^[\s"'\u201c\u2018\u00ab]*\(/;
 function startsAsFragment(excerpt) {
-  return typeof excerpt === 'string' && FRAGMENT_START_RE.test(excerpt);
+  return typeof excerpt === 'string' && (FRAGMENT_START_RE.test(excerpt) || PAREN_ASIDE_START_RE.test(excerpt));
 }
 
 // An aggregator excerpt the aggregator itself cut short ("...the plebeian ear
@@ -690,6 +696,7 @@ function llmQuoteHardRejectReason(quote, fullText) {
   if (isInternalNote(quote)) return 'internal-note';
   if (isMidWordTruncation(quote, fullText ? [fullText] : [])) return 'mid-word-truncation';
   if (typeof quote === 'string' && PUNCT_FRAGMENT_START_RE.test(quote)) return 'punctuation-start-fragment';
+  if (typeof quote === 'string' && PAREN_ASIDE_START_RE.test(quote)) return 'parenthetical-start';
   return null;
 }
 
@@ -1334,6 +1341,7 @@ module.exports = {
   startsAsFragment,
   FRAGMENT_START_RE,
   PUNCT_FRAGMENT_START_RE,
+  PAREN_ASIDE_START_RE,
   expandToSentenceStart,
   endsWithSourceEllipsis,
   isClippedAggregatorBlurb,
