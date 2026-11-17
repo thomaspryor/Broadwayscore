@@ -128,3 +128,11 @@ test('existingRow: a company playing a second stage matches its existing row (Am
   assert.equal(A.existingRow({ theatre: 'Farkas Hall', company: 'American Repertory Theater' }, show, shows).id, '1972-regional-2026');
   assert.equal(A.existingRow({ theatre: 'Farkas Hall', company: null }, show, shows), null);
 });
+
+test('classify: a row that cites the review as evidence covers it, even filed under another city', () => {
+  const url = 'https://www.broadwayworld.com/boston/article/Review-SUMMER-1976-at-Berkshire-Theatre-Group-20261012';
+  const review = { url, title: 'Summer, 1976', venue: 'Berkshire Theatre Group', date: '2026-10-12' };
+  const row = { id: 'summer-1976-regional-2026', title: 'Summer, 1976', category: 'regional', city: 'stockbridge-ma', venue: 'Unicorn Theatre, Stockbridge, MA', openingDate: '2026-10-12', evidenceUrls: [url] };
+  assert.equal(L.classifyReview(review, { shows: [row], metro: 'boston-ma' }).status, 'covered');
+  assert.equal(L.classifyReview(review, { shows: [{ ...row, evidenceUrls: [] }], metro: 'boston-ma' }).status, 'missing');
+});
