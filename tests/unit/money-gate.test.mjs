@@ -172,8 +172,8 @@ test('gate copy: benefit-led, discloses email use, offers sign-in, no em dashes'
   assert.match(tsx, /One sign&#8209;up unlocks every page\./, 'non-breaking hyphen keeps "sign-up" on one line at 390');
   assert.match(tsx, /\{MONEY_EMAIL_USE\}/);
   assert.match(gate.MONEY_EMAIL_USE, /Unsubscribe anytime\./);
-  assert.match(tsx, /Already have an account\?/);
-  assert.match(tsx, /showSignIn\('generic', `money_gate:\$\{page\}`\)/);
+  assert.match(tsx, /Continue with Google \/ Apple/);
+  assert.match(tsx, /showSignIn\('generic', 'biz_gate'\)/);
   assert.match(tsx, /MONEY_ROLES\.map/, 'optional role chips kept');
   for (const t of [tsx, gate.MONEY_EMAIL_USE]) assert.doesNotMatch(t, /\u2014/, 'no em dashes');
 });

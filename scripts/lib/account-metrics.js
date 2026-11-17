@@ -108,6 +108,7 @@ const WELCOME_PICKED = "event = 'onboarding_step_completed' AND toString(propert
 // Where the sign-in prompt was opened (`source` on sign_in_prompt_shown,
 // `context` on sign_in_started / sign_in_completed).
 const SOURCE_LABELS = {
+  biz_gate: 'Profitability Scorecard gate',
   header: 'Sign-in button (top of page)',
   menu: 'Menu',
   show_bookmark: 'Bookmark icon on a show',
