@@ -69,7 +69,7 @@ const renew = require('./lib/cookie-renew');
 const {
   RENEW_OUTLETS, profileDir, profileNameFor, emptyOutletState, decideLogin, classifyLoginFailure,
   loadState, saveState, acquireLock, readKeychain, renewLockPath, loginAdapterFor, missingCredentials,
-  planRenewal, resolveProbeMode, authCookiesChanged, credentialGate, worstExitCode,
+  planRenewal, resolveProbeMode, decideControlUnverified, authCookiesChanged, credentialGate, worstExitCode,
 } = renew;
 const { launchOtpBrowser, writeOtpCookies, COOKIE_DIR } = require('./lib/otp-login-helpers');
 const bprobe = require('./lib/cookie-browser-probe');
@@ -333,20 +333,21 @@ async function runOutlet(outlet, all, opts) {
       if (existing.status === 'logged-in' && inBrowser) {
         // The control: the same url in a cookie-less profile must be walled.
         const c = await bprobe.classifyWithControl(probe, existing.page).catch((e) => ({ error: e.message }));
-        // Fallback outlets: the control is only a vacuity check. A bot-walled
-        // control must not fail a profile that reads logged in (nothing can
-        // log in on that path), or the outlet could never be probed from a
-        // flagged IP.
-        if (c.error && fellBack) console.log(`${outlet}: anonymous control failed (${c.error.split('\n')[0]}); profile reads logged in, continuing`);
-        else if (c.error) return done(1, `anonymous control failed: ${c.error.split('\n')[0]}`);
-        const verdict = c.error ? 'ok' : c.status;
-        if (verdict === 'vacuous') {
+        // Fallback outlets (BRO-7716): the in-profile probe cannot detect a
+        // vacuous (free) probe URL, only this control can. A bot-walled
+        // control is tolerated for --probe-only (read-only) and fails closed
+        // otherwise: no cookie write/push, no healthy stamp.
+        const unverified = c.error || c.status === 'error';
+        if (unverified) {
+          const d = decideControlUnverified({ fellBack, probeOnly: !!opts.probeOnly });
+          const why = c.error ? c.error.split('\n')[0] : 'control page not recognised (bot challenge?)';
+          if (d === 'fail') return done(1, `anonymous control failed: ${why}${fellBack ? ' (vacuity unverified; not writing cookies)' : ''}`);
+          console.log(`${outlet}: anonymous control failed (${why}); profile reads logged in, probe-only continues`);
+        } else if (c.status === 'vacuous') {
           await alertOwner({ outlet, kind: 'probe-vacuous', title: `Cookie renew: ${outlet} probe URL is no longer walled`,
             description: `${probe.url} shows the full article to a browser with no session. Pick a recent walled article in scripts/lib/cookie-probes.js.`, url: probe.url });
           return done(2, 'probe url no longer walled for an anonymous browser (vacuous); alerted');
         }
-        if (verdict === 'error' && !fellBack) return done(1, 'anonymous control page not recognised (bot challenge?)');
-        if (verdict === 'error') console.log(`${outlet}: anonymous control page not recognised (bot challenge?); profile reads logged in, continuing`);
       }
       if (opts.probeOnly) {
         return done(existing.status === 'logged-in' ? 0 : 3, `profile ${existing.status} (${existing.detail})`);

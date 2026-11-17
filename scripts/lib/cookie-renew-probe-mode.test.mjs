@@ -21,3 +21,9 @@ test('logged-in / logged-out keep the fetch path', () => {
 test('browserOnly is always in-browser, not a fallback', () => {
   assert.deepEqual(resolveProbeMode({ browserOnly: true, probeStatus: 'unknown' }), { inBrowser: true, probeStatus: 'unknown', fellBack: false });
 });
+test('unreadable anonymous control: tolerated only for fallback + probe-only, else fail closed', () => {
+  assert.equal(decideControlUnverified({ fellBack: true, probeOnly: true }), 'probe-only-ok');
+  assert.equal(decideControlUnverified({ fellBack: true, probeOnly: false }), 'fail');
+  assert.equal(decideControlUnverified({ fellBack: false, probeOnly: true }), 'fail');
+  assert.equal(decideControlUnverified({ fellBack: false, probeOnly: false }), 'fail');
+});

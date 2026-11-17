@@ -305,6 +305,18 @@ function resolveProbeMode({ browserOnly, probeStatus }) {
 }
 
 /**
+ * BRO-7716: what to do with the anonymous control result. Only fallback
+ * outlets (fetch probe bot-walled) may tolerate an unreadable control, and
+ * only for a read-only probe: with vacuity unverified a real run must not
+ * write/push cookies or stamp the outlet healthy.
+ * @returns {'proceed'|'fail'|'probe-only-ok'}
+ */
+function decideControlUnverified({ fellBack, probeOnly }) {
+  if (!fellBack) return 'fail';
+  return probeOnly ? 'probe-only-ok' : 'fail';
+}
+
+/**
  * Did the profile hand us a session different from the saved file? Compares
  * the auth cookies' values and expiries (never printed) so a logged-in
  * profile whose session matches the file does not re-push the bundles every
@@ -512,6 +524,7 @@ module.exports = {
   soonestAuthExpiry,
   planRenewal,
   resolveProbeMode,
+  decideControlUnverified,
   authCookiesChanged,
   credentialGate,
   isCredsMissingStop,
