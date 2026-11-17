@@ -328,6 +328,15 @@ function hookName(hook) {
 const RUNNER_SKIPPED_TOOL_HOOKS = new Set([
   'pre-push-visual-gate.sh', 'pre-push-review-gate.sh', 'pre-push-land-preflight.sh', 'pre-merge-review-gate.sh',
 ]);
+// BRO-7636: what stands in for each skipped hook on the runner (a hook skipped with no named
+// replacement is a silent parity gap). Each value names a symbol that must exist in daily-runner.js;
+// tests/unit/codex-parity.test.mjs checks both directions.
+const RUNNER_HOOK_REPLACEMENTS = {
+  'pre-push-visual-gate.sh': 'uiHold',
+  'pre-push-review-gate.sh': 'runCheck',
+  'pre-push-land-preflight.sh': 'landPreflight',
+  'pre-merge-review-gate.sh': 'runCheck',
+};
 const TOOL_EVENTS = new Set(['PreToolUse', 'PostToolUse']);
 
 // Runner profile: the runner's worktree is always <repo>/.claude/worktrees/codex-runner,
@@ -446,4 +455,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { parseApplyPatch, toClaudeToolEvents, matcherMatches, loadSettings, claudeHooksFor, buildShadowLines, toolRows, callFailed, runHook, blockingOutput, contextText, isRunnerProfile, runnerSkipsHook };
+module.exports = { parseApplyPatch, toClaudeToolEvents, matcherMatches, loadSettings, claudeHooksFor, buildShadowLines, toolRows, callFailed, runHook, blockingOutput, contextText, isRunnerProfile, runnerSkipsHook, RUNNER_SKIPPED_TOOL_HOOKS, RUNNER_HOOK_REPLACEMENTS };

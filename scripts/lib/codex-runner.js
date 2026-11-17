@@ -47,7 +47,7 @@ const BOUNCE_CAP = 2;
 const BOUNCE_CLASS_RE = /^<!-- codex-bounce-class: ([a-z-]+) -->[ \t]*$/m;
 // BRO-7133: 'blocked-no-change' is a bounce where Codex changed nothing because something outside the code
 // blocks the card (a later date, another repo, the owner's Mac, telemetry or recordings that do not exist yet).
-const STRUCTURAL_BOUNCE_CLASSES = new Set(['already-fixed', 'owner-decision', 'mac-or-private', 'missing-credential', 'forbidden-files', 'blocked-no-change']);
+const STRUCTURAL_BOUNCE_CLASSES = new Set(['already-fixed', 'owner-decision', 'mac-or-private', 'missing-credential', 'forbidden-files', 'blocked-no-change', 'ui-approval']);
 const STRUCTURAL_MEMORY_MS = 60 * 24 * 3600_000;
 // Opens every runner note about a landing that leaves card items undone, so whichever
 // path settles the landing (this run, reconcileLanded, recoverOrphans) returns the card
@@ -487,7 +487,9 @@ function bounceSays(re, text, { needVerb = false } = {}) {
  * Only a card with a real blocker is structural; everything unmatched stays 'genuine-failure'
  * and keeps the old time-based ban.
  */
-function classifyBounce({ envBlocked = null, blocked = null, remaining = [], report = '' } = {}) {
+function classifyBounce({ envBlocked = null, blocked = null, remaining = [], report = '', uiApproval = false } = {}) {
+  // BRO-7636: a UI diff is held for the visual-approval route; Codex's change is not wrong, so it is no failure.
+  if (uiApproval) return 'ui-approval';
   const text = [envBlocked, blocked, ...(Array.isArray(remaining) ? remaining : []), String(report || '').slice(0, 700)]
     .filter(Boolean).join('\n');
   // A pre-review block is Codex's own slip unless it touched workflows (a symlink or token material is not structural).
@@ -1927,7 +1929,35 @@ function emptyBatchVerdict(gate, files) {
   return { exit: 0, text: '' };
 }
 
+
+/**
+ * BRO-7636: Claude sessions cannot push a UI change without /visual-qa and the owner's "yes"
+ * (pre-push-visual-gate.sh), but the runner skips that hook and pushes land/ refs itself. So the
+ * runner holds any UI diff instead of landing it. The path test is autonomous-checks.js isUiDiff
+ * (the same one the autonomous loop uses); there is no second regex here.
+ * -> null, or { files, note } where note is the plain text for the card / PR comment.
+ */
+function uiApprovalBlock(files, { pr = false, holdRef = null } = {}) {
+  const A = require('./autonomous-checks.js');
+  const ui = (files || []).filter((f) => A.isUiDiff([f]));
+  if (!ui.length) return null;
+  const list = ui.slice(0, 8).join(', ') + (ui.length > 8 ? `, and ${ui.length - 8} more` : '');
+  const how = pr
+    ? 'A person must run /visual-qa on this change and get the owner to approve how it looks before it lands.'
+    : `A Claude worker must check the change out${holdRef ? ` from the ref ${holdRef}` : ''}, run /visual-qa, and ask the owner with \`node scripts/visual-approval.js request --issue=<this card> --what="<plain words>"\`.`;
+  return { files: ui, note: `This change touches UI files (${list}). Screenshots and the owner's approval are required before UI changes land, and the Codex runner has no way to get them, so it did not land this. ${how}` };
+}
+/** Whether the site build must run for these changed files (src/ changed; land.yml does not build). */
+function siteBuildNeeded(files) { return require('./autonomous-checks.js').hasSrcChange(files); }
+/** The note a build failure hands back to Codex (and the reviewer when it fails twice). */
+function buildFailureNote(tailText) {
+  return `The site build (npm run build, the same flags as the ship-check build) fails on this branch. land.yml does not build, so only this step catches it. Fix the failure (or, if it also fails on origin/main, show the evidence in your report):\n${tailText}`;
+}
+
 module.exports = {
+  uiApprovalBlock,
+  siteBuildNeeded,
+  buildFailureNote,
   runnerTimeLimits,
   runnerLockBody,
   orphanStopDetails,

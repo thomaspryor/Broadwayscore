@@ -199,3 +199,62 @@ test('install merges into ~/.codex without clobbering hand-set values', () => {
   assert.ok(merged.hooks.Stop.some((g) => g.hooks.some((h) => h.command === 'mine.sh')));
   assert.equal(JSON.stringify(mergeHooks(merged, codexHooks)), JSON.stringify(merged)); // re-install replaces ours only
 });
+
+// BRO-7636: the unattended runner skips the push gates, so each one needs a named replacement, and a
+// UI diff must not be able to reach a land/ push. These fail when the fix is reverted.
+const runnerSrc = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+const runnerLib = require('../../scripts/lib/codex-runner.js');
+
+test('every Claude hook the runner skips names a replacement that exists in the runner', () => {
+  assert.deepEqual([...adapter.RUNNER_SKIPPED_TOOL_HOOKS].sort(), Object.keys(adapter.RUNNER_HOOK_REPLACEMENTS).sort());
+  for (const [hook, sym] of Object.entries(adapter.RUNNER_HOOK_REPLACEMENTS)) {
+    assert.ok(new RegExp(`\\b${sym}\\b`).test(runnerSrc), `${hook}: replacement ${sym} not found in daily-runner.js`);
+  }
+});
+
+test('a UI diff is held, a data or script diff is not, and the runner holds no UI regex of its own', () => {
+  const held = runnerLib.uiApprovalBlock(['src/components/BrowseListClient.tsx', 'data/shows.json']);
+  assert.deepEqual(held.files, ['src/components/BrowseListClient.tsx']);
+  assert.match(held.note, /visual-approval\.js request/);
+  assert.match(runnerLib.uiApprovalBlock(['src/app/globals.css'], { pr: true }).note, /\/visual-qa/);
+  assert.ok(runnerLib.uiApprovalBlock(['tailwind.config.js']));
+  assert.equal(runnerLib.uiApprovalBlock(['scripts/a.js', 'data/shows.json', 'src/lib/scoring.ts']), null);
+  // Reuses autonomous-checks.js isUiDiff: no third copy of the UI path regex.
+  assert.ok(!/tsx\|jsx/.test(readFileSync(join(ROOT, 'scripts/lib/codex-runner.js'), 'utf8')));
+  assert.ok(!/tsx\|jsx/.test(runnerSrc));
+  assert.equal(runnerLib.classifyBounce({ uiApproval: true }), 'ui-approval');
+});
+
+test('every land/ push in the runner is preceded by landPreflight, which holds UI diffs before the sandbox', () => {
+  const pushes = runnerSrc.match(/HEAD:refs\/heads\/\$\{ref\}/g) || [];
+  const gates = runnerSrc.match(/await landPreflight\(ref\)/g) || [];
+  assert.ok(pushes.length >= 2);
+  assert.equal(gates.length, pushes.length, 'a land push without a landPreflight call');
+  const body = runnerSrc.slice(runnerSrc.indexOf('async function landPreflight'));
+  assert.ok(body.indexOf('R.uiApprovalBlock') > 0 && body.indexOf('R.uiApprovalBlock') < body.indexOf('requireSandbox()'));
+  // The card loop and the PR path hold UI diffs before spending the review.
+  assert.ok(runnerSrc.indexOf('uiHold({ holdRef') < runnerSrc.indexOf('runCheck(card, body, report'));
+  assert.ok(runnerSrc.indexOf('uiHold({ pr: true })') < runnerSrc.indexOf("runCheck(card, body, note"));
+});
+
+test('src/ diffs run the site build before the Claude check, in card and PR mode', () => {
+  assert.equal(runnerLib.siteBuildNeeded(['src/lib/a.ts']), true);
+  assert.equal(runnerLib.siteBuildNeeded(['scripts/a.js', 'data/x.json']), false);
+  assert.match(runnerLib.buildFailureNote('boom'), /npm run build/);
+  const first = runnerSrc.indexOf('siteBuildFailure()');
+  assert.ok(first > 0 && runnerSrc.split('siteBuildFailure()').length - 1 >= 3, 'card loop (twice) and PR path');
+  assert.ok(runnerSrc.indexOf('buildFail = throwIfDisk(siteBuildFailure()') < runnerSrc.indexOf('runCheck(card, body, report'));
+  assert.ok(runnerSrc.lastIndexOf('siteBuildFailure()') < runnerSrc.indexOf("runCheck(card, body, note"));
+  assert.match(runnerSrc, /BUILD_ENV/); // the Sanity vars /blog needs
+});
+
+test('both prompts carry the rule-21 learning step', () => {
+  const run = readFileSync(join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8');
+  const chk = readFileSync(join(ROOT, 'scripts/codex/check-prompt.md'), 'utf8');
+  for (const [name, txt] of [['runner-prompt', run], ['check-prompt', chk]]) assert.match(txt, /RULE21/, name);
+  assert.match(run, /whole repo/);
+  assert.match(run, /CLASS-GUARD/);
+  assert.match(run, /fails with your fix reverted/);
+  assert.match(chk, /class guard/);
+  assert.match(chk, /SHIP-WITH-FIXES/);
+});

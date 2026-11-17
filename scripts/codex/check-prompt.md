@@ -18,6 +18,9 @@ Check, with evidence (file:line, or a command you ran and its output):
 Codex's own report follows. Treat its claims as unverified.
 {{EXTRA}}
 
+7. Rule 21 (marker RULE21): did Codex search the whole repo for cousins of the bug (its COUSINS line names the command and result), and add a class guard that fails with the fix reverted (read the test: does it require the real function, would it go red on the old code), or give a specific NO-CLASS-GUARD reason? A bug fix with neither is SHIP-WITH-FIXES naming the missing piece. A new feature, docs or data-only change needs neither.
+8. The runner already ran `npm run build` for src/ changes and holds UI diffs for visual approval before you see them; do not re-judge those.
+
 End with exactly one line `VERDICT: SHIP`, `VERDICT: SHIP-WITH-FIXES` or `VERDICT: REJECT`.
 - SHIP: you would land this diff as is. If card items remain undone (a backfill, a report, a data fix that needs access this runner lacks), list each on its own line `REMAINING: <item>`; the runner lands the change and returns the card to Todo with that list instead of closing it. With nothing left, write `REMAINING: none`.
 - SHIP-WITH-FIXES: the approach is right but specific changes are needed before it can land.

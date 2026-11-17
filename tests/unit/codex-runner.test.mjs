@@ -1459,7 +1459,7 @@ test('land-check mutex wait: giving up via onWait leaves the held lock alone; th
   assert.equal(readFileSync(p, 'utf8'), String(process.pid));
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   assert.match(src, /fitsBeforeHardStop\(landChecksMs\)\) throw new LandWaitTimeout/);
-  assert.equal((src.match(/instanceof LandWaitTimeout\) \{ outOfTime = 'the land checks'; break; \}/g) || []).length, 2);
+  assert.equal((src.match(/instanceof LandWaitTimeout\) \{ outOfTime = 'the land checks'; break; \}/g) || []).length, 3); // BRO-7636: the build-retry path re-runs the land checks too
 });
 
 // BRO-6236: pinned model + high/xhigh effort A/B (default-off).

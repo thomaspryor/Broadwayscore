@@ -11,7 +11,8 @@ Rules that apply to you:
 - Scoring-logic edits (scripts/lib/review-guards.js, scripts/rebuild-all-reviews.js, src/lib/{scoring,engine,data-core}.ts, scripts/lib/{rebuild-helpers,score-extractors,score-parsers,review-normalization,score-routing}.js): run `node scripts/scoring-delta.js` and `node scripts/test-temporal-override-regression.js` and paste their summaries.
 - Content-quality regex edits (scripts/lib/content-quality.js pattern arrays): run `node scripts/audit-regex-patterns.js --full`.
 - Data rules: never extract metadata from URLs; star ratings map to score bands (2/5 -> 31-50, 3/5 -> 51-70, 4/5 -> 71-90, 5/5 -> 91-100) and are never overridden outside them; critic scores for external claims come from getCriticScore() in scripts/lib/canonical-critic-scores.ts.
-- UI work: follow CLAUDE.md section 4 (shared components in src/components/show-cards/, design tokens with no zinc-*/slate-*/hardcoded hex, `.card` classes, getScoreBucket() for score colors, src/config/branding.ts for brand colors); score badges never change size. Run `npx tsc --noEmit` and `npm run lint` on changes under src/.
+- UI files (src/**/*.tsx|jsx|css|scss, tailwind/postcss config, public images): you may change them, but the runner never lands a UI change (it needs screenshots and the owner's approval); it hands the card to a Claude worker. Say so in your report and keep the change small.
+- UI work: follow CLAUDE.md section 4 (shared components in src/components/show-cards/, design tokens with no zinc-*/slate-*/hardcoded hex, `.card` classes, getScoreBucket() for score colors, src/config/branding.ts for brand colors); score badges never change size. Run `npx tsc --noEmit` and `npm run lint` on changes under src/. The runner also runs `npm run build` for src/ changes before review and hands a failure back to you once.
 {{DATA_FIX_RULE}}
 - No em dashes in prose you write; never commit or print secrets or anything from ~/.codex; do not edit files outside this repo checkout.
 
@@ -20,7 +21,9 @@ Real data in this checkout (the runner put it there; use these paths):
 
 Do the work the card asks for:
 1. Reproduce the problem first: run the card's test command and show it failing, or show the bug in real data.
-2. Make the smallest correct fix. Fix cousins of the same bug class in the same file if the card names them.
+2. Make the smallest correct fix, then do the rule-21 learning step (CLAUDE.md section 21, marker RULE21):
+   - COUSINS: search the whole repo (`grep -rn` over src/, scripts/, data/, tests/, .github/) for the same bug pattern, not just the file the card names, and fix every other instance. Report the search command and what it found.
+   - CLASS GUARD: add a test (or audit, lint rule, fixture check) that fails with your fix reverted and passes with it; run it both ways and report both results as `CLASS-GUARD: <path>`. If no guard fits, say `NO-CLASS-GUARD: <specific reason>`.
 3. Run the card's acceptance command and every test file you touched. Run `npx tsc --noEmit` only if you touched .ts files.
 4. Run the tests for what you changed, and fix any failure your change adds (a failure that also fails on origin/main is not yours):
    - the test files next to the files you touched, and any test that requires them (`grep -rl "<module name>" tests scripts --include=*.test.*`), with `node --test --test-timeout 300000 <files>`
@@ -39,6 +42,7 @@ The card's check on fresh main before you started:
 {{EXTRA}}
 
 Finish with a short report: what was wrong, what you changed (files), the checklist a-e answers, the exact commands you ran with pass/fail, and anything you were unsure about. Then, on lines of their own:
+- `CLASS-GUARD: <path>` (or `NO-CLASS-GUARD: <reason>`) and `COUSINS: <what the repo-wide search found and fixed>`
 - `REMAINING: <item>` for each card item you could not do from here (or `REMAINING: none`).
 - `ENVIRONMENT-BLOCKED: <what and the exact error>` only if this environment stopped you from making the change at all (a sandbox or guard denial, a missing file or tool), so you left no diff. Omit it otherwise.
 

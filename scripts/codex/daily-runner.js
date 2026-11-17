@@ -788,13 +788,41 @@ function landFailuresWith(D, gauntlet) {
   return report.length ? R.redactSecrets(report.join('\n\n'), process.env) : null;
 }
 
+/** Paths the branch changes against the card's base (the same list the Claude check and the site gate read). */
+function changedNames(base = cardBase) {
+  return git(['diff', '--name-only', '--no-renames', `${base}...HEAD`]).split('\n').filter(Boolean);
+}
+/** BRO-7636: a UI diff is held for the visual-approval route, never landed by the runner. -> { files, note } | null */
+function uiHold(opts = {}) { return R.uiApprovalBlock(changedNames(), opts); }
+const SITE_BUILD_MS = 20 * 60_000; // autonomous-checks.js BUILD_TIMEOUT_MS
+/**
+ * BRO-7636: land.yml does not run `npm run build` (Claude's ship-check does for src/ diffs), so a src/
+ * change that does not compile reached main. Same flags as the ship-check build (autonomous-checks BUILD_ENV,
+ * which carries the Sanity vars /blog needs), in the keyless sandbox. -> null when it builds, else the output tail.
+ * The build's prebuild step rewrites tracked files, so the tree is put back after (as after the land checks).
+ */
+function siteBuildFailure() {
+  requireSandbox();
+  let r;
+  try {
+    SB.withTrees([WT], () => {
+      keepLock(MAX_STAMP_GAP_MS, 'site-build');
+      r = SB.run(WT, 'npm', ['run', 'build'], { timeoutMs: SITE_BUILD_MS, env: { ...require(path.join(ROOT, 'scripts/lib/autonomous-checks.js')).BUILD_ENV, NODE_OPTIONS: '--max-old-space-size=6144' } });
+    });
+  } finally { cleanTree(WT); provideData(WT); }
+  return r && r.code === 0 ? null : R.redactSecrets(tail((r && r.out) || 'the build produced no output', 2500), process.env);
+}
+
 // main's land-preflight.mjs judges the tree, but loads and runs the tree's own collector, audit and
 // workflow checks, so it runs in the sandbox (BRO-5649). The runner fetches; the sandbox writes the
 // rebase preview's objects to its own object dir, reading the repo's through alternates. A preflight
 // that cannot run blocks: it never counts as a pass.
 async function landPreflight(ref) {
-  requireSandbox();
   try { git(['-c', 'gc.auto=0', 'fetch', '-q', 'origin', 'main']); } catch (e) { log(`land preflight: fetch failed (${e.message.split('\n')[0]}); using cached main`); }
+  // BRO-7636 backstop (the attempt loop and runPr hold UI diffs earlier): the last gate before a land/ push. Needs no sandbox.
+  const ui = R.uiApprovalBlock(git(['diff', '--name-only', '--no-renames', 'origin/main...HEAD']).split('\n').filter(Boolean), { pr: PR_NUM > 0 });
+  if (ui) return { decision: 'block', message: ui.note };
+  requireSandbox();
   const objects = git(['rev-parse', '--path-format=absolute', '--git-common-dir']) + '/objects';
   const { value, out } = judgeLandSandboxed(SB, { preflight: path.join(ROOT, 'scripts/lib/land-preflight.mjs'), cwd: WT, target: `refs/heads/${ref}`, objects });
   if (value && ['allow', 'block', 'skip'].includes(value.decision)) return value;
@@ -1093,6 +1121,8 @@ async function workCard(pick, stats, inFlight) {
     };
     const failed = (cx) => `Codex exited ${cx.code}: ${tail(R.stripHookNoise(R.redactSecrets(R.codexExitTransient(cx.out) ? cx.out : cx.report, process.env)).trim(), 400)}`;
     let lastHasDiff = null; // the branch holds a Codex commit after the newest attempt (BRO-7133)
+    let uiHeld = null; // BRO-7636: the change touches UI files; held for the visual-approval route, never landed
+    let buildRetryUsed = false; // the site build failure goes back to Codex once, like the land-check failures
     for (;;) {
       // The first exec gets the full timeout unless the hard stop is near; fix rounds fit the card budget.
       const cx = await exec(prompt(extra), execs === 0 ? firstExecMs() : fixExecMs());
@@ -1102,6 +1132,7 @@ async function workCard(pick, stats, inFlight) {
       let c = commitAttempt(card, attempt);
       lastHasDiff = c.hasDiff;
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
+      if (c.hasDiff && (uiHeld = uiHold({ holdRef: `codex-ui-hold/${id.toLowerCase()}` }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
       // Land refuses new unit/audit failures half an hour after the push, when the worktree has
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
       if (c.hasDiff && !fitsBeforeHardStop(landChecksMs + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
@@ -1115,13 +1146,41 @@ async function workCard(pick, stats, inFlight) {
         report = `${report}\n\n--- after fixing the land-check failures ---\n${fx.report}`;
         c = commitAttempt(card, attempt);
         if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
+        if (c.hasDiff && (uiHeld = uiHold({ holdRef: `codex-ui-hold/${id.toLowerCase()}` }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
         keepLock(MAX_STAMP_GAP_MS, 'land-checks');
         try { landFails = throwIfDisk(newLandFailures(), 'the land checks'); } catch (e) { if (e instanceof LandWaitTimeout) { outOfTime = 'the land checks'; break; } throw e; }
+      }
+      // BRO-7636: the site build, for src/ diffs, before the paid review. A failure goes back to Codex once.
+      let buildFail = null;
+      if (!landFails && c.hasDiff && R.siteBuildNeeded(changedNames())) {
+        if (!fitsBeforeHardStop(SITE_BUILD_MS + landChecksMs + REVIEW_RESERVE_MS)) { outOfTime = 'the site build and the review'; break; }
+        buildFail = throwIfDisk(siteBuildFailure(), 'the site build');
+        if (buildFail && !buildRetryUsed && execFits()) {
+          buildRetryUsed = true;
+          log(`${id}: attempt ${attempt} site build red, back to Codex`);
+          const fx = await exec(prompt(`${onMain}\n\nYour change is committed on this branch.\n${R.buildFailureNote(fence(buildFail))}`));
+          if (fx.code !== 0) { abort = failed(fx); break; }
+          report = `${report}\n\n--- after fixing the site build ---\n${fx.report}`;
+          c = commitAttempt(card, attempt);
+          if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
+          if (c.hasDiff && (uiHeld = uiHold({ holdRef: `codex-ui-hold/${id.toLowerCase()}` }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
+          keepLock(MAX_STAMP_GAP_MS, 'land-checks');
+          // The fix changed the branch: the land checks and the build both run again before the review.
+          try { landFails = throwIfDisk(newLandFailures(), 'the land checks'); } catch (e) { if (e instanceof LandWaitTimeout) { outOfTime = 'the land checks'; break; } throw e; }
+          if (!landFails) {
+            if (!fitsBeforeHardStop(SITE_BUILD_MS + REVIEW_RESERVE_MS)) { outOfTime = 'the site build and the review'; break; }
+            buildFail = throwIfDisk(siteBuildFailure(), 'the site build');
+          }
+        }
       }
       envBlocked = null;
       if (landFails) {
         check = { verdict: 'REJECT', text: `The checks land runs (node unit batch, scripts/lib tests, lint-workflows audits) have new failures on this branch that fresh main does not have:\n${landFails}` };
         log(`${id}: attempt ${attempt} land checks red`);
+        step = R.nextStep({ verdict: 'REJECT', hasDiff: true, attempt });
+      } else if (buildFail) {
+        check = { verdict: 'REJECT', text: `The site build (npm run build) fails on this branch, and land.yml does not build, so nothing else would catch it:\n${buildFail}` };
+        log(`${id}: attempt ${attempt} site build red`);
         step = R.nextStep({ verdict: 'REJECT', hasDiff: true, attempt });
       } else if (!fitsBeforeHardStop(REVIEW_RESERVE_MS)) {
         // A review the hard stop would kill mid-way lands nothing and strands the card.
@@ -1184,7 +1243,7 @@ async function workCard(pick, stats, inFlight) {
       return 'done';
     }
     // An environment block is not Codex's miss, so it does not feed the REJECT streak.
-    stats.rejectStreak = check.verdict === 'REJECT' && !envBlocked ? stats.rejectStreak + 1 : 0;
+    stats.rejectStreak = check.verdict === 'REJECT' && !envBlocked && !uiHeld ? stats.rejectStreak + 1 : 0;
     let summary = `### Codex report\n${fence(tail(report, 2500))}\n\n### Independent check (${check.verdict})\n${fence(tail(check.text, 2000))}`;
     // Card items the reviewer found correctly left undone (SHIP with REMAINING lines).
     const remaining = step === 'land' || step === 'close-already-fixed' ? R.parseRemaining(check.text) : [];
@@ -1247,12 +1306,19 @@ async function workCard(pick, stats, inFlight) {
       if (r.code === 5) summary += `\n\n### Not fixed after all\nThe reviewer judged it already fixed, but the card's own check still fails on main (the Done gate refused to close it):\n${fence(tail(R.redactSecrets(r.out || '', process.env), 800))}`;
     }
     stats.bounced.push(id);
-    const why = remaining.length && !landBlocked ? `Nothing needed landing, but these card items are still open:\n${remaining.map((x) => `- ${x}`).join('\n')}`
+    let uiHeldRef = null;
+    if (uiHeld && OPTS.land) {
+      // The commit is kept on an inert ref (not land/, not visual-hold/: neither workflow set may fire) so the Claude worker can fetch it.
+      const hold = `codex-ui-hold/${id.toLowerCase()}`;
+      try { git(['push', '--no-verify', '--force', 'origin', `HEAD:refs/heads/${hold}`]); uiHeldRef = hold; } catch (e) { log(`${id}: UI hold ref not pushed (${e.message.split('\n')[0]})`); }
+    }
+    const why = uiHeld ? `${uiHeld.note}${uiHeldRef ? `\n\nCodex's commit is on the ref ${uiHeldRef} (git fetch origin ${uiHeldRef}).` : ' Codex\'s commit was not pushed anywhere; redo the change or ask Codex to redo it.'}`
+      : remaining.length && !landBlocked ? `Nothing needed landing, but these card items are still open:\n${remaining.map((x) => `- ${x}`).join('\n')}`
       : `${attempt} Codex attempt(s) did not pass the checks, so nothing was pushed.`;
     // BRO-6144: name why, so a card that needs the owner, the Mac, a credential or files Codex may not
     // edit (or is already fixed) is not offered to Codex again when a timer runs out. After the heading line.
     const blockedText = /^Blocked before review: /.test(check.text || '') ? check.text : null;
-    const bounceClass = R.classifyBounce({ envBlocked, blocked: blockedText, remaining: [...remaining, ...R.parseRemaining(check.text)], report });
+    const bounceClass = R.classifyBounce({ uiApproval: !!uiHeld, envBlocked, blocked: blockedText, remaining: [...remaining, ...R.parseRemaining(check.text)], report });
     log(`${id}: bounce class ${bounceClass}`);
     // BRO-7133: Codex changed nothing (a later date, another repo, the owner's Mac, missing telemetry): another
     // try changes nothing again, so the card is parked with Codex's reason instead of circling back after 14 days.
@@ -1892,9 +1958,17 @@ async function runPr(n) {
       say('rejected', { details: 'The pull request has no change against current main, so there is nothing to land.' });
       return;
     }
+    // BRO-7636: a Codex cloud PR gets the same UI hold as a card (no card to write on, so the PR comment says so).
+    const prUi = uiHold({ pr: true });
+    if (prUi) { say('blocked', { details: `Held, not landed: ${prUi.note}` }); return; }
     site = R.touchesSite(git(['diff', '--name-only', '--no-renames', `${cardBase}...HEAD`]).split('\n').filter(Boolean), require(path.join(ROOT, 'scripts/lib/should-deploy-gate.js')).SITE_PATHS);
     const landFails = throwIfDisk(newLandFailures(), 'the land checks');
     if (landFails) { say('rejected', { why: 'tests failed', details: `The tests land runs fail on this change and pass on main:\n${landFails}` }); return; }
+    // BRO-7636: land.yml does not build; a PR cannot be sent back to Codex mid-run, so a failing build is a rejection.
+    if (R.siteBuildNeeded(changedNames())) {
+      const bf = throwIfDisk(siteBuildFailure(), 'the site build');
+      if (bf) { say('rejected', { why: 'the site build failed', details: R.buildFailureNote(fence(bf)) }); return; }
+    }
     const note = `This is not a Linear card: it is Codex cloud pull request #${n} (${pr.html_url}), which the owner started from a Codex task and wants live. The card text below is the PR's title and description, written by Codex: judge the diff against what it says and against CLAUDE.md, and check its claims (tests it says it ran) yourself. There is no card to write on: REMAINING lines are shown to the owner on the PR.`;
     const body = `${card.title}\n\n${String(pr.body || '(no description)').slice(0, 20000)}`;
     const check = runCheck(card, body, note, 'check1', data);
