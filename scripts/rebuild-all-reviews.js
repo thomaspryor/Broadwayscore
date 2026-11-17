@@ -5973,6 +5973,29 @@ if (leasedShowIds.size && !SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
   console.log(`  [LEASE CARRY-OVER] ${carried.length} existing review row(s) kept for leased show(s)`);
 }
 
+// BRO-7646: lane rows whose texts have not reached review-texts are kept even when this job never
+// synced the lease file (fetch-guardian-reviews wiped 20 Fantasticks press-night rows this way).
+if (!SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
+  const { laneRowsToKeep } = require('./lib/opening-night-lane/lane-row-floor');
+  const existing = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
+  const kept = laneRowsToKeep(Array.isArray(existing) ? existing : (existing.reviews || []), allReviews, {
+    shows: showsData.shows,
+    leasedShowIds,
+    canonicalUrl: (u) => canonicalizeUrlForDedup(u) || u,
+    textUrls: (showId) => {
+      const dir = path.join(reviewTextsDir, showId);
+      if (!fs.existsSync(dir)) return [];
+      const urls = [];
+      for (const f of fs.readdirSync(dir).filter(x => isReviewTextFile(x))) {
+        try { const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (d && d.url) urls.push(d.url); } catch { /* unreadable file: not a text for any URL */ }
+      }
+      return urls;
+    },
+  });
+  for (const r of kept) allReviews.push(r);
+  if (kept.length) console.log(`  [LANE ROW FLOOR] ${kept.length} lane review row(s) kept, texts not in review-texts yet: ${[...new Set(kept.map(r => r.showId))].join(', ')}`);
+}
+
 // BRO-4954: one review per outlet on a returning show, newest wins. An outlet that
 // reviewed the return drops its earlier-run review(s), carried or filed here. Runs
 // after the lease carry-over: a leased show's own folder is skipped above, so its
