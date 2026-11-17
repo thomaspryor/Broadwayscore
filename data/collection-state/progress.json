@@ -235,7 +235,8 @@
     "good-time-charlie-off-broadway-2026/the-recs--randall-david-cook.json",
     "here-there-are-blueberries-2026/nyt-theater--unknown.json",
     "the-visitors-off-broadway-2026/exeunt-magazine--loren-noveck.json",
-    "wanted-2022/nytimes--unknown.json"
+    "wanted-2022/nytimes--unknown.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
@@ -411,7 +412,9 @@
     "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
     "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
     "the-visitors-off-broadway-2026/boston-globe--unknown.json",
-    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json"
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "west-side-story-west-end-2026/theatremonkey--unknown.json",
+    "west-side-story-west-end-2026/west-end-wilma--westendwilma.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -551,7 +554,8 @@
       "fences-off-west-end-2026/alt-africa--alt-a-review.json",
       "good-time-charlie-off-broadway-2026/the-recs--randall-david-cook.json",
       "here-there-are-blueberries-2026/nyt-theater--unknown.json",
-      "the-visitors-off-broadway-2026/exeunt-magazine--loren-noveck.json"
+      "the-visitors-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [
       "data/review-texts/driving-miss-daisy-2010/variety--marilyn-stasio.json"
@@ -680,7 +684,7 @@
     ]
   },
   "startTime": "2026-11-16T22:09:44.387Z",
-  "lastProcessed": "wanted-2022/nytimes--unknown.json",
+  "lastProcessed": "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
   "log": [
     {
       "t": "2026-11-17T01:06:59.816Z",
@@ -811,6 +815,18 @@
       "t": "2026-11-17T03:08:17.604Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T03:18:21.723Z",
+      "event": "bb-session",
+      "session": "e8672d62",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-17T03:19:24.223Z",
+      "event": "bb-session",
+      "session": "cfaaa8df",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ],
   "recoveredAfterFailure": [
