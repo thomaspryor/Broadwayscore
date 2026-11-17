@@ -125,10 +125,13 @@ test.describe('Google One Tap (desktop, stubbed Google, mocked Supabase)', () =>
     // No full-screen sign-in box, and no dialog of ours.
     await expect(page.getByRole('dialog')).toHaveCount(0);
 
-    // Moving to another page in the same visit does not ask again.
-    await page.getByRole('link', { name: /browse/i }).first().click().catch(() => page.goto('/browse'));
-    await page.waitForTimeout(10_000);
-    expect((await gsi(page))?.prompts ?? 1).toBe(1);
+    // Moving to another page in the same visit does not ask again: a full page
+    // load wipes the stub, so the proof is that Google's script is not fetched a
+    // second time (the session flag holds) and the new page never prompts.
+    await page.goto('/');
+    await page.waitForTimeout(11_000);
+    expect(h.gsiRequests).toBe(1);
+    expect(await gsi(page)).toBeNull();
   });
 
   test('picking the card signs in with the Google credential and stays on the page', async ({ page }) => {

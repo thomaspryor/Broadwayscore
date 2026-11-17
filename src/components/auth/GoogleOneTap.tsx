@@ -20,6 +20,7 @@
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { isSupabaseConfigured } from '@/lib/supabase';
 import { trackUgc } from '@/lib/ugc-analytics';
 import {
   DESKTOP_QUERY,
@@ -44,10 +45,14 @@ export default function GoogleOneTap() {
   const signInRef = useRef(signInWithGoogleCredential);
   signInRef.current = signInWithGoogleCredential;
   const apiRef = useRef<GoogleIdApi | null>(null);
+  // Backs up sessionStorage: where it is blocked, one ask per page load still holds.
+  const askedRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
+    // A build without Supabase cannot finish a sign-in, so it never asks.
+    if (!isSupabaseConfigured()) return;
 
     const decide = () => oneTapDecision({
       clientId: GOOGLE_WEB_CLIENT_ID,
@@ -57,7 +62,7 @@ export default function GoogleOneTap() {
       desktop: typeof window.matchMedia === 'function' && window.matchMedia(DESKTOP_QUERY).matches,
       pathname,
       dismissedAt: readDismissedAt(),
-      askedThisSession: readAskedThisSession(),
+      askedThisSession: askedRef.current || readAskedThisSession(),
       hasSignInParam: new URLSearchParams(window.location.search).has('signin'),
       now: Date.now(),
     });
@@ -79,6 +84,7 @@ export default function GoogleOneTap() {
       if (cancelled || !api || !decide().ask) return;
       apiRef.current = api;
       // One ask per session, spent when we actually ask.
+      askedRef.current = true;
       markAskedThisSession();
       let shownTracked = false;
       api.initialize({

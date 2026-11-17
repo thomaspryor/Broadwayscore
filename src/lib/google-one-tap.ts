@@ -42,7 +42,7 @@ export const DESKTOP_QUERY = '(min-width: 1024px) and (hover: hover) and (pointe
  * race the session they carry), embeds, admin tools, API routes, and the
  * email-link pages. Matched on the path prefix.
  */
-export const ONE_TAP_EXCLUDED_PREFIXES: readonly string[] = ['/auth', '/embed', '/admin', '/api', '/unsubscribe', '/reset', '/preview'];
+export const ONE_TAP_EXCLUDED_PREFIXES: readonly string[] = ['/auth', '/embed', '/admin', '/api', '/unsubscribe', '/unfollow', '/reset', '/preview', '/dev', '/test'];
 
 export function isOneTapPath(pathname: string): boolean {
   return !ONE_TAP_EXCLUDED_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + '/'));
@@ -223,5 +223,9 @@ export function readPromptOutcome(n: GooglePromptNotification | null | undefined
  * in), cancel_called (we withdrew it) or flow_restarted: none is a "no".
  */
 export function shouldCooldown(o: OneTapOutcome): boolean {
-  return o.kind === 'skipped' && (o.reason === 'user_cancel' || o.reason === 'tap_outside');
+  // 'unknown' is a skipped moment whose reason method is gone: FedCM browsers
+  // can report the skip without saying why. Treat it as a close, so the card
+  // is not re-offered at every visit. Google's auto_cancel and issuing_failed
+  // are not the visitor saying no.
+  return o.kind === 'skipped' && (o.reason === 'user_cancel' || o.reason === 'tap_outside' || o.reason === 'unknown');
 }

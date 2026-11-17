@@ -88,10 +88,10 @@ test('a dismissal stamped in the future (clock skew) does not silence the card f
 });
 
 test('the sign-in return pages, embeds and admin tools never get a card; show pages and the home page do', () => {
-  for (const p of ['/auth/complete', '/auth/callback', '/embed/hamilton', '/admin', '/admin/x', '/api/foo', '/unsubscribe', '/reset/abc']) {
+  for (const p of ['/auth/complete', '/auth/callback', '/embed/hamilton', '/admin', '/admin/x', '/api/foo', '/unsubscribe', '/unfollow', '/reset/abc', '/dev/x', '/test']) {
     assert.equal(isOneTapPath(p), false, p);
   }
-  for (const p of ['/', '/show/hamilton', '/my-shows', '/browse', '/critics/ben-brantley', '/authors', '/administration-notes']) {
+  for (const p of ['/', '/show/hamilton', '/my-shows', '/browse', '/critics/ben-brantley', '/authors', '/administration-notes', '/testimonials', '/devon-the-musical']) {
     assert.equal(isOneTapPath(p), true, p);
   }
 });
@@ -150,6 +150,9 @@ test('prompt outcomes: displayed, refused, skipped, dismissed; missing methods a
 test('only the visitor closing the card starts our cooldown', () => {
   assert.equal(shouldCooldown({ kind: 'skipped', reason: 'user_cancel' }), true);
   assert.equal(shouldCooldown({ kind: 'skipped', reason: 'tap_outside' }), true);
+  // FedCM can report a skip without a reason: still a close.
+  assert.equal(shouldCooldown({ kind: 'skipped', reason: 'unknown' }), true);
+  assert.equal(shouldCooldown({ kind: 'skipped', reason: 'auto_cancel' }), false);
   // Not a "no": they signed in, we withdrew it, Google restarted it, or it never showed.
   assert.equal(shouldCooldown({ kind: 'dismissed', reason: 'credential_returned' }), false);
   assert.equal(shouldCooldown({ kind: 'dismissed', reason: 'cancel_called' }), false);
