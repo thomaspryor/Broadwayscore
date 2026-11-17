@@ -1,75 +1,31 @@
 {
-  "updatedAt": "2026-11-17T19:39:21.788Z",
-  "processed": 66,
-  "failed": 44,
-  "successRate": "60.0%",
+  "updatedAt": "2026-11-17T19:46:38.747Z",
+  "processed": 10,
+  "failed": 1,
+  "successRate": "90.9%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 6,
+    "scrapingdog": 0,
+    "scrapingbee": 2,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 17
+    "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-11-17T19:35:43.124Z",
+      "t": "2026-11-17T19:44:22.349Z",
       "event": "bb-session",
-      "session": "3d205b16",
-      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+      "session": "9f1c900d",
+      "url": "https://www.nytimes.com/theater-streaming-falsettos-stoll-stoppard-school-girls"
     },
     {
-      "t": "2026-11-17T19:35:43.461Z",
+      "t": "2026-11-17T19:44:22.895Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-17T19:30:00.848Z",
-      "event": "bb-session",
-      "session": "fd8136c2",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
-    },
-    {
-      "t": "2026-11-17T19:30:01.203Z",
-      "event": "bb-session",
-      "session": "5411a1c0",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
-    },
-    {
-      "t": "2026-11-17T19:30:01.492Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-17T19:30:01.806Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-17T19:32:20.434Z",
-      "event": "bb-session",
-      "session": "80f9276a",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-17T19:32:21.024Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-17T19:35:03.990Z",
-      "event": "bb-session",
-      "session": "9e834215",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-17T19:35:04.582Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
