@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T00:10:41.958Z",
+  "timestamp": "2026-11-17T01:00:04.231Z",
   "stats": {
-    "totalReviews": 82233,
-    "alreadyFlagged": 22484,
+    "totalReviews": 82250,
+    "alreadyFlagged": 22485,
     "dateGuardCatches": 222,
-    "directorMismatch": 3716,
+    "directorMismatch": 3718,
     "tvFilmSignals": 2328,
     "londonSignals": 3778,
     "offBroadwaySignals": 755,
     "yearMismatch": 377,
-    "noPublishDate": 8246
+    "noPublishDate": 8248
   },
   "findings": [
     {
@@ -7910,6 +7910,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "barefoot-in-the-park-regional-2026",
+      "file": "curtainup--unknown.json",
+      "publishDate": null,
+      "url": "http://curtainup.com/barefootinthepark.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott elliott\" from barefoot-in-the-park-2006"
         }
       ]
     },
@@ -22430,6 +22443,7 @@
     {
       "showId": "fences-leeds-regional-2026",
       "file": "thereviewshub--jay-nuttall.json",
+      "score": 97,
       "publishDate": "2026-09-18",
       "url": "https://www.thereviewshub.com/fences-leeds-playhouse/",
       "findings": [
@@ -52044,6 +52058,20 @@
       "file": "latimes--james-c-taylor.json",
       "publishDate": "2026-11-05",
       "url": "https://www.latimes.com/entertainment-arts/story/2026-11-05/passing-strange-premieres-in-la-at-pasadena-playhouse",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"annie dorsen\" from passing-strange-2008"
+        }
+      ]
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "file": "theatermania--david-gordon.json",
+      "score": 88,
+      "publishDate": "2026-11-16",
+      "url": "https://www.theatermania.com/news/review-passing-strange-finally-makes-its-la-debut-at-the-pasadena-playhouse_1859872/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
