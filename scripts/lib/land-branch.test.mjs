@@ -1251,3 +1251,17 @@ test('BRO-6519: makeVerifiedBaseChecks checks the MERGED alert ledger in cwd bef
     fs.rmSync(wt, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+test('BRO-7715: a git timeout is classified and labelled git-timeout, a conflict is not', () => {
+  const { isGitTimeout, rebaseFailureReason } = require('./land-branch.js');
+  const timeout = Object.assign(new Error('spawnSync git ETIMEDOUT'), { code: 'ETIMEDOUT' });
+  const killed = Object.assign(new Error('Command failed'), { killed: true, signal: 'SIGTERM' });
+  const conflict = Object.assign(new Error('Command failed: git rebase'), { status: 1, stderr: 'CONFLICT (content): Merge conflict in a.js' });
+  assert.equal(isGitTimeout(timeout), true);
+  assert.equal(isGitTimeout(killed), true);
+  assert.equal(isGitTimeout(conflict), false);
+  assert.equal(isGitTimeout(null), false);
+  assert.match(rebaseFailureReason(timeout, 'origin/main', 'a'.repeat(40)), /^git-timeout:/);
+  assert.doesNotMatch(rebaseFailureReason(timeout, 'origin/main', 'a'.repeat(40)), /would not rebase cleanly/);
+  assert.match(rebaseFailureReason(conflict, 'origin/main', 'a'.repeat(40)), /would not rebase cleanly/);
+});

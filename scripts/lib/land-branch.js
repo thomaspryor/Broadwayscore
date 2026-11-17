@@ -111,6 +111,22 @@ const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 // same checkout shape (its CLI); re-exported below so callers and tests of
 // this module are unchanged.
 const { isPromisorFetchFailure, PROMISOR_REBASE_RETRIES } = require('./promisor-fetch-failure.js');
+
+// BRO-7715: execFileSync's `timeout` kill surfaces as err.code ETIMEDOUT
+// (message 'spawnSync git ETIMEDOUT') or a SIGTERM kill. That is a network
+// stall, not a conflict: retry it, and never label it "would not rebase cleanly".
+const GIT_TIMEOUT_RETRIES = 2;
+function sleepSync(ms) { if (ms > 0) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
+function isGitTimeout(err) {
+  if (!err) return false;
+  return err.code === 'ETIMEDOUT' || /\bETIMEDOUT\b/.test(String(err.message || '')) || (err.killed === true && err.signal === 'SIGTERM');
+}
+// Reason text for a failed rebase; a final timeout is labelled git-timeout.
+function rebaseFailureReason(err, targetRef, sha, suffix = '') {
+  const detail = String(err && (err.stderr || err.message)).slice(0, 300);
+  if (isGitTimeout(err)) return `git-timeout: git timed out rebasing onto ${targetRef} @ ${sha.slice(0, 10)}${suffix} (no conflict detected; re-run the Land): ${detail}`;
+  return `branch would not rebase cleanly onto ${targetRef} @ ${sha.slice(0, 10)}${suffix}: ${detail}`;
+}
 // BRO-7631: -c merge.<name>.driver args for every land rebase (a CI runner registers none; git then text-merges silently).
 const { driverConfigArgs } = require('./land-merge-drivers.js');
 const PREFETCH_TIMEOUT_MS = Math.max(GIT_NET_TIMEOUT_MS, 5 * 60 * 1000);
@@ -862,8 +878,15 @@ function landBranch(o) {
           // After a resolved stop the failure that matters is the LAST one (a later real conflict, a lazy-fetch failure).
           if (fixed.lastErr) { err = fixed.lastErr; }
           const errText2 = String(err.stderr || err.message || '');
-          if (retry >= PROMISOR_REBASE_RETRIES || !isPromisorFetchFailure(errText2)) throw err;
+          const timedOut = isGitTimeout(err);
+          if (timedOut ? retry >= GIT_TIMEOUT_RETRIES : (retry >= PROMISOR_REBASE_RETRIES || !isPromisorFetchFailure(errText2))) throw err;
           gitOrNull(['rebase', '--abort'], workdir);
+          if (timedOut) {
+            log(`[land] rebase onto ${onto.slice(0, 10)} timed out — retry ${retry + 1}/${GIT_TIMEOUT_RETRIES} after backoff (BRO-7715)`);
+            sleepSync(Math.min(30000, 2000 * 2 ** retry));
+            discardResidue(`timeout retry ${retry + 1}`);
+            continue;
+          }
           discardResidue(`promisor retry ${retry + 1}`);
           const gitVersion = gitOrNull(['--version'], workdir) || 'git ?';
           log(`[land] rebase onto ${onto.slice(0, 10)} hit a partial-clone lazy-fetch failure (${gitVersion}) — retry ${retry + 1}/${PROMISOR_REBASE_RETRIES}: ${errText2.split('\n').find(l => /fatal|error/.test(l)) || errText2.slice(0, 200)}`);
@@ -965,7 +988,7 @@ function landBranch(o) {
         rebaseOnto(baseSha);
       } catch (err) {
         gitOrNull(['rebase', '--abort'], workdir);
-        return done({ attempts: attempt, baseSha, failedCheck: 'rebase', reason: `branch would not rebase cleanly onto ${targetRef} @ ${baseSha.slice(0, 10)}: ${String(err.stderr || err.message).slice(0, 300)}` });
+        return done({ attempts: attempt, baseSha, failedCheck: 'rebase', reason: rebaseFailureReason(err, targetRef, baseSha) });
       }
       let head = git(['rev-parse', 'HEAD'], workdir);
       if (head === baseSha) {
@@ -1057,7 +1080,7 @@ function landBranch(o) {
           rebaseOnto(nowBase);
         } catch (err) {
           gitOrNull(['rebase', '--abort'], workdir);
-          return done({ attempts: attempt, baseSha: nowBase, verifiedBase: baseSha, failedCheck: 'rebase', reason: `branch would not rebase cleanly onto ${targetRef} @ ${nowBase.slice(0, 10)} (inert churn since ${landBase.slice(0, 10)}): ${String(err.stderr || err.message).slice(0, 300)}`, files });
+          return done({ attempts: attempt, baseSha: nowBase, verifiedBase: baseSha, failedCheck: 'rebase', reason: rebaseFailureReason(err, targetRef, nowBase, ` (inert churn since ${landBase.slice(0, 10)})`), files });
         }
         churnSkips++;
         if (git(['rev-parse', 'HEAD'], workdir) === nowBase) {
@@ -1174,6 +1197,7 @@ module.exports = {
   DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
   checkTimings,
   isPromisorFetchFailure,
+  isGitTimeout, rebaseFailureReason, GIT_TIMEOUT_RETRIES,
   isGeneratedDocConflict, GENERATED_DOC_PATHS, refreshGeneratedDocsIn,
   PROMISOR_REBASE_RETRIES,
   MAX_ATTEMPTS,
