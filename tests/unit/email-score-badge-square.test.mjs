@@ -15,6 +15,8 @@ const t = require('../../scripts/lib/email-templates.js');
 
 const SHOW = { showTitle: 'Test Show', showUrl: 'https://broadwayscorecard.com/show/test-show', score: 79, reviewCount: 22, rave: 5, positive: 16, mixed: 1, negative: 0 };
 const broadcast = (market) => t.buildBroadcastOpeningNightHtml([SHOW], 'a@b.com', market);
+const follower = (market) => t.buildOpeningNightHtml(SHOW.showTitle, SHOW, [], SHOW.showUrl, 'test-show', 'a@b.com', null, market);
+const TEMPLATES = { broadcast, follower };
 
 function badgeCells(html) {
   const out = [];
@@ -24,9 +26,9 @@ function badgeCells(html) {
   return out;
 }
 
-for (const market of ['broadway', 'west-end']) {
-  test(`badge boxes all carry the number's font-size and a 72px line (${market})`, () => {
-    const cells = badgeCells(broadcast(market));
+for (const [name, build] of Object.entries(TEMPLATES)) for (const market of ['broadway', 'west-end']) {
+  test(`badge boxes all carry the number's font-size and a 72px line (${name}, ${market})`, () => {
+    const cells = badgeCells(build(market));
     assert.ok(cells.length >= 1, 'no score badge found');
     for (const cell of cells) {
       const tags = cell.match(/<(td|a|span)\b[^>]*style="[^"]*"/g) || [];
@@ -43,14 +45,14 @@ test('badge renders exactly 72x72 in a browser', { skip: !existsSync(CHROMIUM) &
   const { chromium } = require('playwright');
   const browser = await chromium.launch(existsSync(CHROMIUM) ? { executablePath: CHROMIUM } : {});
   try {
-    for (const width of [390, 700]) {
+    for (const [name, build] of Object.entries(TEMPLATES)) for (const width of [390, 700]) {
       const page = await browser.newPage({ viewport: { width, height: 900 } });
-      await page.setContent(broadcast('broadway'));
+      await page.setContent(build('broadway'));
       const size = await page.evaluate(() => {
         const r = document.querySelector('td[width="72"]').getBoundingClientRect();
         return [Math.round(r.width), Math.round(r.height)];
       });
-      assert.deepEqual(size, [72, 72], `badge at ${width}px viewport`);
+      assert.deepEqual(size, [72, 72], `${name} badge at ${width}px viewport`);
     }
   } finally { await browser.close(); }
 });
