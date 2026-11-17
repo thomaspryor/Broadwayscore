@@ -66,6 +66,11 @@ const OWNER = 'owner@example.com';
     const r3 = await draftReviewsAddedReplies(l3, { lookupReader, transport: async () => { throw new Error('boom'); }, env });
     assert.strictEqual(r3[0].status, 'failed');
     assert.strictEqual(l3[0].entry.replyDraftedAt, undefined);
+    assert.strictEqual(l3[0].entry.replyDraftRetry, true, 'failed draft is flagged for retry');
+    const r4 = await draftReviewsAddedReplies(l3, { lookupReader, transport, env, now: () => 'LATER' });
+    assert.strictEqual(r4[0].status, 'drafted');
+    assert.strictEqual(l3[0].entry.replyDraftRetry, undefined);
+    assert.strictEqual(sent.length, 2);
   }
 
   // Owner draft carries to/subject/body, the mailto link and the quoted original.

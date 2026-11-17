@@ -513,9 +513,14 @@ async function main() {
     nowLive.push({ entry, showId, evidence, reviews, url: showUrl(entry, showId, shows) });
   }
 
+  // A draft that failed to send last run: the entry is already live, so retry here.
+  const retries = ledger.entries
+    .filter((e) => e.status === 'live' && e.replyDraftRetry && !e.replyDraftedAt && e.showId)
+    .map((e) => ({ entry: e, showId: e.showId, url: showUrl(e, e.showId, shows) }));
+
   const stale = staleEntries(ledger);
 
-  if (nowLive.length === 0 && stale.length === 0) {
+  if (nowLive.length === 0 && retries.length === 0 && stale.length === 0) {
     console.log('Nothing newly live, nothing stuck.');
     saveLedger(ledger);
     return;
@@ -590,7 +595,7 @@ async function main() {
   if (process.env.RESEND_API_KEY && process.env.OWNER_EMAIL) {
     try {
       const store = loadStore();
-      const drafts = await draftReviewsAddedReplies(nowLive, {
+      const drafts = await draftReviewsAddedReplies([...nowLive, ...retries], {
         lookupReader: (id) => lookupSubmitter(store, id),
         transport: makeResendTransport(process.env.RESEND_API_KEY),
       });

@@ -255,8 +255,10 @@ async function draftReviewsAddedReplies(nowLive, { lookupReader, transport, env 
       });
       if (!res.sent) { out.push({ key, status: 'skipped', reason: res.reason }); continue; }
       entry.replyDraftedAt = now();
+      delete entry.replyDraftRetry;
       out.push({ key, status: 'drafted' });
     } catch (err) {
+      entry.replyDraftRetry = true; // verify-feedback-requests-live retries these next run
       out.push({ key, status: 'failed', reason: err.message });
     }
   }
