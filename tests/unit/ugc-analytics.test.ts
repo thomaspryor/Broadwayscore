@@ -320,3 +320,15 @@ test('sign_in_failed on the OAuth callback recovers the context from the marker'
   assert.equal(failed?.props.reason, 'cancelled');
   assert.equal((g.localStorage as MemStorage).getItem('bsc_signin_pending'), null);
 });
+
+
+test('sign-in start and completion carry the opener under both property names', () => {
+  ugc.markSignInStarted('google', 'show_rate_link');
+  ugc.markSignInCompleted({});
+  const funnel = captured.filter(({ event }) => event === 'sign_in_started' || event === 'sign_in_completed');
+  assert.equal(funnel.length, 2);
+  for (const { props } of funnel) {
+    assert.equal(props.source, 'show_rate_link');
+    assert.equal(props.context, 'show_rate_link');
+  }
+});

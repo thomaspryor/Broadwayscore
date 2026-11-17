@@ -5,6 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { getSupabaseClient, hasStoredSupabaseSession, isSupabaseConfigured, onSupabaseClientReady, SUPABASE_STORAGE_KEY, urlHasAuthResult } from '@/lib/supabase';
 import { isAuthCallbackPath } from '@/lib/analytics/redact-url';
 import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath, takeSignInParam } from '@/lib/deferred-auth';
+import { signInOpenerProperties } from '@/lib/account-capture';
 import { recordSignInIntent, clearMidFlowSignIn } from '@/lib/signin-intent';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
@@ -20,7 +21,7 @@ import {
   markSignInCompleted,
 } from '@/lib/ugc-analytics';
 
-type ModalContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic' | 'critic' | 'prediction';
+type ModalContext = 'rating' | 'watchlist_local' | 'generic' | 'critic' | 'prediction';
 
 export type DeleteAccountResult = 'deleted' | 'session_expired' | 'failed';
 
@@ -440,7 +441,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     recordSignInIntent(context);
     // Warm the SDK while they choose a provider.
     void getSupabaseClient();
-    trackUgc('sign_in_prompt_shown', { context, source: src });
+    trackUgc('sign_in_prompt_shown', signInOpenerProperties(src));
   }, []);
 
   // `?signin=1` (the account line in our emails, BRO-4893) opens the sign-in

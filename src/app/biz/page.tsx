@@ -179,7 +179,7 @@ export default function BizDashboard() {
     <div className="min-h-screen bg-surface">
       {/* Track page views (analytics only: /biz never shows the blocking
           page-view wall; BRO-4623 P1-15) */}
-      <BizPageTracker page="biz-dashboard" gate={false} />
+      <BizPageTracker page="biz-dashboard" />
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         {/* Header (BRO-6286): mirrors the /biz share card, eyebrow pill, the
             tagline as the lead, then headline numbers and the fine print. */}

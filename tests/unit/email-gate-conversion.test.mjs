@@ -41,8 +41,6 @@ const MODAL_SRC = readFileSync(join(REPO_ROOT, 'src/components/EmailCaptureModal
 test('trigger timing: mobile scroll gate requires 30s dwell (or more)', () => {
   assert.ok(emailCaptureConfig.mobileScrollGate.minTimeOnPageSec >= 30,
     `mobile scroll gate must wait >=30s, got ${emailCaptureConfig.mobileScrollGate.minTimeOnPageSec}`);
-  assert.ok(emailCaptureConfig.mobileScrollGateVariants.control.minTimeOnPageSec >= 30,
-    'control variant must match the 30s floor (it mirrors production behavior)');
 });
 
 test('trigger timing: passive gates require a second page view this session (alternate path to "meaningful engagement")', () => {

@@ -22,20 +22,6 @@ interface EmailCaptureConfig {
      */
     minTimeOnPageSec: number;
   };
-  /** Page view limit gate (ProGateContext modal) */
-  pageViewGate: {
-    /** Number of page views before showing gate */
-    threshold: number;
-  };
-  /** Homepage sticky banner */
-  homepageBanner: {
-    /** Number of visits before showing */
-    visitThreshold: number;
-    /** Scroll distance in px before showing */
-    scrollTriggerPx: number;
-    /** Days after dismiss before showing again */
-    cooldownDays: number;
-  };
   /** Show detail page follow banner */
   showFollowBanner: {
     /** Whether the banner is enabled at all */
@@ -77,31 +63,12 @@ interface EmailCaptureConfig {
    * for all traffic — see docs/experiments/gate-cold-start.md "Conclusion".
    */
   minPageViewsForPassiveGate: number;
-  /**
-   * Mobile scroll-gate timing A/B ('mobile-gate-timing' PostHog flag).
-   * control = current mobileScrollGate behavior; end-of-content fires when the
-   * reader reaches the bottom of the page. The variant keeps a small min-time
-   * as a guard against instant fire on back-navigation scroll restoration —
-   * NOT a treatment lever. Teardown after the test: pin the winner's values
-   * into mobileScrollGate and delete the loser's object (keep the flag-read
-   * branch — see A/B guardrails memory).
-   */
-  mobileScrollGateVariants: {
-    control: { scrollThreshold: number; minTimeOnPageSec: number };
-    'end-of-content': { scrollThreshold: number; minTimeOnPageSec: number };
-  };
 }
 
 const presets: Record<string, EmailCaptureConfig> = {
   soft: {
     excludedPaths: ['/feedback', '/submit-review', '/methodology', '/beat-the-critics', '/biz'],
     exitIntent: { enabled: false, minTimeOnPageSec: 8 },
-    pageViewGate: { threshold: 8 },
-    homepageBanner: {
-      visitThreshold: 5,
-      scrollTriggerPx: 400,
-      cooldownDays: 90,
-    },
     showFollowBanner: {
       enabled: true,
       scrollThreshold: 0.85,
@@ -113,10 +80,6 @@ const presets: Record<string, EmailCaptureConfig> = {
     },
     passiveGateCooldownDays: 14,
     minPageViewsForPassiveGate: 2,
-    mobileScrollGateVariants: {
-      control: { scrollThreshold: 0.65, minTimeOnPageSec: 15 },
-      'end-of-content': { scrollThreshold: 0.95, minTimeOnPageSec: 3 },
-    },
   },
   aggressive: {
     // /biz is the Profitability Scorecard's own sub-site with its own sign-up
@@ -132,12 +95,6 @@ const presets: Record<string, EmailCaptureConfig> = {
     // gap for desktop. No longer locked: see the former "EXPERIMENT LOCK"
     // tests in gate-logic.test.mjs, updated in the same commit.
     exitIntent: { enabled: true, minTimeOnPageSec: 30 },
-    pageViewGate: { threshold: 2 },
-    homepageBanner: {
-      visitThreshold: 2,
-      scrollTriggerPx: 200,
-      cooldownDays: 30,
-    },
     showFollowBanner: {
       enabled: true,
       scrollThreshold: 0.6,
@@ -153,10 +110,6 @@ const presets: Record<string, EmailCaptureConfig> = {
     },
     passiveGateCooldownDays: 14,
     minPageViewsForPassiveGate: 2,
-    mobileScrollGateVariants: {
-      control: { scrollThreshold: 0.65, minTimeOnPageSec: 30 },
-      'end-of-content': { scrollThreshold: 0.95, minTimeOnPageSec: 3 },
-    },
   },
 };
 

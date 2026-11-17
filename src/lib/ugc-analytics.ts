@@ -1,3 +1,4 @@
+import { signInOpenerProperties } from '@/lib/account-capture';
 /**
  * Analytics + error reporting for the signed-in features (accounts, ratings,
  * watchlist, lists, import).
@@ -380,7 +381,7 @@ const PENDING_SIGN_IN_TTL_MS = 30 * 60 * 1000;
 const NEW_USER_WINDOW_MS = 10 * 60 * 1000;
 
 export function markSignInStarted(provider: string, context: string): void {
-  trackUgc('sign_in_started', { provider, context });
+  trackUgc('sign_in_started', { provider, ...signInOpenerProperties(context) });
   try {
     localStorage.setItem(PENDING_SIGN_IN_KEY, JSON.stringify({ provider, context, ts: Date.now() }));
   } catch {
@@ -421,7 +422,7 @@ export function markSignInCompleted(user: { app_metadata?: { provider?: string }
   const created = user.created_at ? Date.parse(user.created_at) : NaN;
   trackUgc('sign_in_completed', {
     provider: user.app_metadata?.provider || pending.provider || null,
-    context: pending.context || null,
+    ...signInOpenerProperties(pending.context || null),
     is_new_user: Number.isFinite(created) ? Date.now() - created < NEW_USER_WINDOW_MS : null,
     seconds_to_complete: Math.round((Date.now() - pending.ts) / 1000),
   });

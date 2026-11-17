@@ -5,6 +5,8 @@ import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { emailCaptureConfig } from '@/config/email-capture';
 import { isMoneyGateInView } from '@/lib/money-gate';
+import { useAuth } from '@/contexts/AuthContext';
+import { showFollowEligible } from '@/lib/account-capture';
 import { SHOW_EMAIL_COPY } from '@/config/email-list-copy';
 
 const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
@@ -18,6 +20,7 @@ interface ShowFollowBannerProps {
 }
 
 export default function ShowFollowBanner({ showId, showTitle, city }: ShowFollowBannerProps) {
+  const { loading, isAuthenticated } = useAuth();
   const bannerEnabled = emailCaptureConfig.showFollowBanner.enabled;
 
   const [visible, setVisible] = useState(false);
@@ -101,7 +104,7 @@ export default function ShowFollowBanner({ showId, showTitle, city }: ShowFollow
   }, [email, submit, showId, showTitle]);
 
   // Show "Following" pill if already following this show
-  if (alreadyFollowing) return null;
+  if (!showFollowEligible(loading, isAuthenticated) || alreadyFollowing) return null;
 
   if (dismissed || isSubscribed || !visible || moneyGateInView) return null;
 

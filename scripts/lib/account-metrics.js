@@ -105,8 +105,7 @@ const NOT_LOCAL = "coalesce(toString(properties.local), '') != 'true'";
 // no rating_submitted, so a saved pick counts on its own.
 const WELCOME_PICKED = "event = 'onboarding_step_completed' AND toString(properties.step) = 'shows' AND toFloat(properties.shows_added) > 0";
 
-// Where the sign-in prompt was opened (`source` on sign_in_prompt_shown,
-// `context` on sign_in_started / sign_in_completed).
+// Where the sign-in prompt was opened. Older start/completion events only have context.
 const SOURCE_LABELS = {
   header: 'Sign-in button (top of page)',
   menu: 'Menu',
@@ -262,7 +261,7 @@ SELECT src, dev,
   countIf(n_completed > 0 AND n_acted > 0) AS acted
 FROM (
   SELECT distinct_id,
-    argMinIf(if(event = 'sign_in_prompt_shown', properties.source, properties.context), timestamp,
+    argMinIf(coalesce(nullIf(properties.source, ''), properties.context), timestamp,
       event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed')) AS src,
     argMinIf(if(coalesce(properties.$host, '') = '', 'App', properties.$device_type), timestamp,
       event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed')) AS dev,

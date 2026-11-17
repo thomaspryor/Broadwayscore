@@ -16,7 +16,6 @@ const SRC_DIR = join(dirname(fileURLToPath(import.meta.url)), '../../src');
 
 const {
   shouldSuppressPassiveGate, hasSeenEnoughPages,
-  getMobileGateParams, buildGateAbVariant, MOBILE_GATE_FLAG,
   BLOCKING_TRIGGERS, isBlockingTrigger, isUserInitiatedTrigger, isPassiveTrigger,
   dismissStartsCooldown, getTriggerCopy, getSubmitLabel,
 } = await import('../../src/lib/gate-logic.ts');
@@ -52,36 +51,6 @@ test('config: exit-intent has a non-zero dwell gate in the active preset', () =>
   assert.equal(typeof emailCaptureConfig.exitIntent.minTimeOnPageSec, 'number');
   assert.ok(emailCaptureConfig.exitIntent.minTimeOnPageSec >= 3,
     'exit intent must wait at least a few seconds before arming');
-});
-
-test('A/B params: end-of-content variant differs from control ONLY as configured, and keeps a scroll-restore guard', () => {
-  const control = getMobileGateParams('control');
-  const variant = getMobileGateParams('end-of-content');
-  assert.equal(control.timing, 'control');
-  assert.equal(variant.timing, 'end-of-content');
-  assert.deepEqual(
-    { scrollThreshold: control.scrollThreshold, minTimeOnPageSec: control.minTimeOnPageSec },
-    emailCaptureConfig.mobileScrollGateVariants.control,
-    'control arm must equal the config (current production behavior)');
-  assert.ok(variant.scrollThreshold > control.scrollThreshold, 'variant fires later in the page');
-  assert.ok(variant.minTimeOnPageSec >= 2,
-    'variant needs >=2s min-time — guards against instant fire on back-navigation scroll restore');
-});
-
-test('A/B fallback: unresolved flag gets control BEHAVIOR but the fallback LABEL (excluded from analysis, never merged into control)', () => {
-  const fb = getMobileGateParams(null);
-  assert.equal(fb.timing, 'fallback');
-  assert.deepEqual(
-    { scrollThreshold: fb.scrollThreshold, minTimeOnPageSec: fb.minTimeOnPageSec },
-    emailCaptureConfig.mobileScrollGateVariants.control);
-  // Unknown flag value (typo / stale client) → control behavior, control label
-  assert.equal(getMobileGateParams('some-typo').timing, 'control');
-});
-
-test('ab_variant string follows the flag:<name>,<dims> convention shared with analyze-ab-test tooling', () => {
-  assert.equal(buildGateAbVariant('end-of-content'), `flag:${MOBILE_GATE_FLAG},timing:end-of-content`);
-  assert.equal(buildGateAbVariant('fallback'), `flag:${MOBILE_GATE_FLAG},timing:fallback`);
-  assert.match(buildGateAbVariant('control'), /^flag:mobile-gate-timing,timing:control$/);
 });
 
 test('cold-start: passive gate withheld until the visitor has seen enough pages this session', () => {
