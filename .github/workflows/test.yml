@@ -7036,6 +7036,7 @@ jobs:
       - name: Visual baseline drift vs live prod (advisory, BRO-7268)
         if: success() || failure()
         continue-on-error: true
+        shell: bash # -eo pipefail: status must be playwright's, not tee's (hygiene rule s)
         run: |
           # Advisory only: a screenshot mismatch is a ::warning:: and exit 0 (no
           # error annotation on a green job); any other failure (timeout,
