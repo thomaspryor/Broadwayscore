@@ -582,6 +582,13 @@ test('stranded job whose tip later landed counts as done; others stay stranded (
   assert.equal(r.done, 1);
   assert.equal(r.stranded, 1);
   assert.deepEqual(r.strandedTaskIds, ['s-never']);
+  // A dirty strand is never rescued, and the predicate gets the launch time.
+  const seen = [];
+  const dirtyRows = strandedRun('s-dirty', '2026-08-05T00:00:00.000Z', 'ccc333');
+  dirtyRows[dirtyRows.length - 1].dirty = true;
+  const d = computeJobLaneOutcomeRate([...dirtyRows, ...strandedRun('s-t', '2026-08-05T02:00:00.000Z', 'ddd444')], { nowMs: NOW, windowDays: 14, isStrandedShaLanded: (s2, o) => { seen.push([s2, o.afterMs]); return true; } });
+  assert.equal(d.stranded, 1);
+  assert.deepEqual(seen, [['ddd444', Date.parse('2026-08-05T02:00:00.000Z')]]);
   // No predicate (or a row without a sha) never improves the rate.
   const base = computeJobLaneOutcomeRate(entries, { nowMs: NOW, windowDays: 14 });
   assert.equal(base.stranded, 2);

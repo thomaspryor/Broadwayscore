@@ -1214,7 +1214,10 @@ async function main() {
     const nowMs = Date.now();
     for (const row of [
       computeDispatchHealthDigest({ entries: dispatchEntries, nowMs }),
-      computeHeadlessDispatchDigest({ entries: dispatchEntries, nowMs }),
+      computeHeadlessDispatchDigest({
+        entries: dispatchEntries, nowMs,
+        isStrandedShaLanded: require('./lib/headless-unlanded-detection.js').makeStrandedLandedPredicate({ cwd: require('./lib/repo-root').MAIN_REPO_ROOT }),
+      }),
     ]) {
       if (row.status === 'error') {
         if (!sections.health) sections.health = {};

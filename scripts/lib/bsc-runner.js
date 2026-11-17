@@ -375,8 +375,9 @@ function buildBudgetPreamble(timeoutMs) {
     + `[HEADLESS ENDING] No tab exists and nothing resumes this session, so never end on "Keep this tab open", `
     + `"THIS SESSION: KEEP OPEN" or any "waiting on" / "still running" closing. If a Land run or CI run you started is `
     + `pending, wait for it in the foreground (scripts/lib/wait-for-run.sh <id>) before your final message. If it truly `
-    + `cannot finish inside your budget, report --status=in-review with what is left and end with "Nothing is running here; `
-    + `keep this tab only if you want to continue <topic>." / THIS SESSION: IDLE. Only a genuine owner decision ends on `
+    + `cannot finish inside your budget, make sure ALL work is pushed (land/<name> or main), report --status=in-review with `
+    + `what is left, and only then end with "Nothing is running here; keep this tab only if you want to continue <topic>." / `
+    + `THIS SESSION: IDLE. Never use that closing with unpushed or uncommitted work. Only a genuine owner decision ends on `
     + `THIS SESSION: CLOSE ME — BLOCKED: <reason>.\n\n`
     // Owner rule 2026-09-24 (fix it, find its cousins, fix the cause):
     // interactive sessions are held to it by finish-line Gate 6, which is
@@ -555,7 +556,7 @@ async function runJob(opts) {
         const landing = (cwd && cwd !== REPO) ? detectJobLanding({ cwd }) : { status: 'unknown' };
         if (landing.status === 'unlanded') {
           headlessOutcome = 'stranded';
-          ledger.appendEntry({ event: ledger.JOB_EVENTS.STRANDED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, sha: landing.sha, ...killedFields });
+          ledger.appendEntry({ event: ledger.JOB_EVENTS.STRANDED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, sha: landing.sha, dirty: landing.dirty === true, ...killedFields });
         } else {
           headlessOutcome = 'done';
           ledger.appendEntry({ event: ledger.JOB_EVENTS.DONE, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, ...killedFields });

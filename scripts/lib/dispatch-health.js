@@ -348,8 +348,8 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
       // predicate (kept out of this pure module) that says whether the
       // stranded row's tip has since landed; if so it was a late landing,
       // not a failure.
-      else if (last.event === JOB_EVENTS.STRANDED && last.sha && typeof isStrandedShaLanded === 'function'
-        && isStrandedShaLanded(last.sha)) outcome = 'done';
+      else if (last.event === JOB_EVENTS.STRANDED && last.sha && !last.dirty && typeof isStrandedShaLanded === 'function'
+        && isStrandedShaLanded(last.sha, { afterMs: launch.ts })) outcome = 'done';
       else if (last.event === JOB_EVENTS.STOPPED_SHORT) outcome = 'stoppedShort';
       else if (last.event === JOB_EVENTS.STRANDED) outcome = 'stranded';
       // BRO-6430: a disk-pressure ABANDONED means bsc-runner refused the
