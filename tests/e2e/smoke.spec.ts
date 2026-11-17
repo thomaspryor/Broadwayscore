@@ -142,6 +142,56 @@ test.describe('Post-deploy smoke tests', () => {
     });
   }
 
+  // The header market menu lists every market and every launched city hub
+  // (~1,000px tall), and the header is fixed, so on a phone the rows below the
+  // fold were simply unreachable: Washington DC through Boston, owner report
+  // 2026-11-17 (BRO-7680). No screenshot caught it because the menu is closed
+  // in every page capture. Open it on phone viewports and require that every
+  // row can be scrolled to and is what a tap would land on. The landscape size
+  // overflows even with the regional flags off (the local landing build), so
+  // this fails on a missing scroll whatever the flags are. Pair of
+  // tests/unit/market-nav-viewport.test.mjs.
+  for (const [label, width, height] of [
+    ['portrait phone', 390, 664],
+    ['small phone', 360, 640],
+    ['landscape phone', 844, 390],
+  ] as const) {
+    test(`market menu: every market is reachable on a ${label} (${width}x${height})`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await page.goto('/');
+
+      const toggle = page.getByRole('button', { name: 'Switch market' });
+      const menu = page.getByTestId('market-menu');
+      // The header is server-rendered, so a click before hydration does nothing.
+      // Retry the open until the menu shows, never clicking while it is open
+      // (the button toggles).
+      await expect(async () => {
+        if (!(await menu.isVisible())) await toggle.click({ timeout: 2000 });
+        await expect(menu).toBeVisible({ timeout: 3000 });
+      }).toPass({ timeout: 30000 });
+
+      const hrefs = [...new Set(await menu.locator('a').evaluateAll((as) => as.map((a) => a.getAttribute('href') ?? '')))];
+      expect(hrefs.length, 'market menu rows').toBeGreaterThanOrEqual(4);
+
+      // The menu itself stays on the screen...
+      const box = await menu.boundingBox();
+      expect(box, 'menu has a box').not.toBeNull();
+      expect(box!.y + box!.height, 'menu bottom edge stays inside the viewport').toBeLessThanOrEqual(height);
+
+      // ...and every row can be scrolled into view and is what a tap would hit.
+      for (const href of hrefs) {
+        const link = menu.locator(`a[href="${href}"]`).first();
+        await link.scrollIntoViewIfNeeded();
+        const tappable = await link.evaluate((a) => {
+          const r = a.getBoundingClientRect();
+          const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+          return r.top >= 0 && r.bottom <= window.innerHeight && !!hit && a.contains(hit);
+        });
+        expect(tappable, `${href} can be scrolled to and tapped`).toBe(true);
+      }
+    });
+  }
+
   test('best-of page renders ranked show list', async ({ page }) => {
     await page.goto('/best/musicals');
 
