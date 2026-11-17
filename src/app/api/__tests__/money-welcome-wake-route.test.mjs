@@ -61,8 +61,17 @@ test('route: GitHub failure is a 502, missing config does nothing', async () => 
   assert.deepEqual([r.json.ok, r.json.reason, dispatches(r).length], [false, 'not-configured', 0]);
 });
 
+test('route: a failed dispatch does not arm the cooldown, so the next kick still goes through', async () => {
+  const env = { MONEY_WELCOME_WAKE_COOLDOWN_MS: '300' };
+  const failed = await callRoute({ rows: fresh(), dispatchStatus: 403, env });
+  assert.equal(failed.status, 502);
+  const retry = await callRoute({ rows: fresh(), env });
+  assert.equal(retry.json.acted, true, 'a 502 must not swallow the next real sign-up kick');
+  await new Promise((r) => setTimeout(r, 400)); // let this short cooldown lapse before the next test
+});
+
 test('route: a burst of calls inside the cooldown touches Supabase and GitHub once', async () => {
-  const env = { MONEY_WELCOME_WAKE_COOLDOWN_MS: '60000' };
+  const env = { MONEY_WELCOME_WAKE_COOLDOWN_MS: '300' };
   const idle = await callRoute({ rows: [], env }); // nothing waiting: must not start the cooldown
   assert.equal(idle.json.reason, 'nothing-waiting');
   const first = await callRoute({ rows: fresh(), env });
