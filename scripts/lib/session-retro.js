@@ -86,7 +86,7 @@ function analyze(lines) {
     }
     if (e.type === 'user') {
       if (/Stop hook feedback|land preflight BLOCK/.test(txt)) {
-        const codes = txt.match(/\[VE:[A-Z0-9]+\]/g) || [hookLabel(txt)];
+        const codes = txt.match(/\[VE:[A-Z0-9]+\]/g) || [/unpushed commit|uncommitted changes/.test(txt) ? 'git-check' : hookLabel(txt)];
         for (const c of new Set(codes)) out.hookBlocks[c] = (out.hookBlocks[c] || 0) + 1;
       }
       // Land refusals are tool output (wait-for-land.js "REFUSED: land/..."), never the human's or the brief's prose.
@@ -95,6 +95,15 @@ function analyze(lines) {
         const t = textOf(b.content);
         const m = t.match(/^(?:\d\d:\d\d:\d\dZ )?REFUSED: (land\/\S+)[^\n]*/m);
         if (m) out.landRefusals.push({ at: e.timestamp || null, why: m[0].slice(0, 160) });
+        // BRO-7701: a PreToolUse block (the tool never ran) is a hook block too; the land preflight's is also a land refusal.
+        const pre = t.match(/^PreToolUse:(\S+) hook error/);
+        if (pre) {
+          const code = t.match(/\[VE:[A-Z0-9]+\]/);
+          const k = code ? code[0] : /LAND BLOCKED/.test(t) ? 'pre:land-preflight' : /outside a worktree/.test(t) ? 'pre:worktree-enforce' : `pre:${pre[1].replace(/^mcp__[^_]+(?:-[^_]+)*__/, '')}`;
+          out.hookBlocks[k] = (out.hookBlocks[k] || 0) + 1;
+          const land = t.match(/LAND BLOCKED[^\n]*/);
+          if (land) out.landRefusals.push({ at: e.timestamp || null, why: land[0].slice(0, 160) });
+        }
       }
       if (/worker process was restarted/.test(txt)) out.restarts++;
     }
