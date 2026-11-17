@@ -20,7 +20,12 @@
     "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
     "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
-    "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json"
+    "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json",
+    "ghost-notes-off-broadway-2026/oazis--unknown.json",
+    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+    "wanted-2022/nytimes--unknown.json"
   ],
   "failed": [
     "west-side-story-west-end-2026/theatremonkey--unknown.json",
@@ -30,7 +35,16 @@
     "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
     "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
     "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json"
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -47,10 +61,16 @@
       "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
       "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
-      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+      "data/review-texts/wanted-2022/nytimes--unknown.json",
+      "wanted-2022/nytimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json",
@@ -58,17 +78,65 @@
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
       "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
       "dogstar-off-west-end-2026/islingtontribune--unknown.json",
       "speculations-off-west-end-2026/islingtontribune--unknown.json",
       "speculations-off-west-end-2026/westminsterextra--unknown.json",
-      "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json"
+      "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json",
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
     ]
   },
   "startTime": "2026-11-17T04:07:28.767Z",
-  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
-  "log": []
+  "lastProcessed": "wanted-2022/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-17T04:36:45.485Z",
+      "event": "bb-session",
+      "session": "e19535a6",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T04:36:45.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T04:37:19.615Z",
+      "event": "bb-session",
+      "session": "907ea004",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T04:37:20.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T04:38:48.280Z",
+      "event": "bb-session",
+      "session": "67315829",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T04:38:48.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T04:41:58.331Z",
+      "event": "bb-session",
+      "session": "9b331e2e",
+      "url": "https://www.nytimes.com/2026/11/08/theater/wanted-review-passing-pfeiffer-ledisi"
+    },
+    {
+      "t": "2026-11-17T04:41:58.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

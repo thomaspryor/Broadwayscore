@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-11-17T04:21:25.526Z",
-  "processed": 21,
-  "failed": 8,
-  "successRate": "72.4%",
+  "updatedAt": "2026-11-17T04:42:13.891Z",
+  "processed": 26,
+  "failed": 17,
+  "successRate": "60.5%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 4,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-11-17T04:36:45.485Z",
+      "event": "bb-session",
+      "session": "e19535a6",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T04:36:45.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T04:37:19.615Z",
+      "event": "bb-session",
+      "session": "907ea004",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T04:37:20.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T04:38:48.280Z",
+      "event": "bb-session",
+      "session": "67315829",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T04:38:48.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T04:41:58.331Z",
+      "event": "bb-session",
+      "session": "9b331e2e",
+      "url": "https://www.nytimes.com/2026/11/08/theater/wanted-review-passing-pfeiffer-ledisi"
+    },
+    {
+      "t": "2026-11-17T04:41:58.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
