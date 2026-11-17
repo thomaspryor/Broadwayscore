@@ -207,6 +207,17 @@ function writePending(list: PendingSignup[]): void {
   } catch { /* storage blocked: nothing to keep it in */ }
 }
 
+/**
+ * BRO-7704: asks the server to start the welcome-email run now instead of waiting for the hourly cron.
+ * Fire and forget: it never throws, never blocks the reader, and a miss only means the cron sends it.
+ * The route sends nothing itself and checks the table before it does anything.
+ */
+function kickMoneyWelcome(): void {
+  try {
+    void fetch('/api/money-welcome-wake', { method: 'POST', keepalive: true }).catch(() => {});
+  } catch { /* the hourly cron is the backstop */ }
+}
+
 /** One save attempt against the sign-up function. */
 async function storeMoneySignup(email: string, role: MoneyRole | '', page: string): Promise<MoneySignupResult> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -218,7 +229,7 @@ async function storeMoneySignup(email: string, role: MoneyRole | '', page: strin
       headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ p_email: email.trim().toLowerCase(), p_role: role || null, p_page: page }),
     });
-    if (res.ok) return 'stored';
+    if (res.ok) { kickMoneyWelcome(); return 'stored'; }
     // The function refuses a malformed address with 22023 (HTTP 400).
     if (res.status === 400) {
       const body = await res.text().catch(() => '');

@@ -56,6 +56,16 @@ async function release(email) {
   if (!res.ok) throw new Error(`release: HTTP ${res.status}`);
 }
 
+/** Sign-ups created in the last FLOOD_WINDOW_MIN minutes, welcomed or not (flood guard, BRO-7704). */
+async function countRecent() {
+  const since = new Date(Date.now() - w.FLOOD_WINDOW_MIN * 60000).toISOString();
+  const res = await fetch(`${base()}/rest/v1/money_scorecard_signups?select=email&created_at=gte.${enc(since)}&limit=1000`,
+    { headers: hdr('count=exact'), signal: AbortSignal.timeout(60000) });
+  if (!res.ok) throw new Error(`recent count: HTTP ${res.status}`);
+  const m = /\/(\d+)$/.exec(res.headers.get('content-range') || '');
+  return m ? Number(m[1]) : (await res.json()).length;
+}
+
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -88,8 +98,11 @@ async function main() {
     return;
   }
   if (!apiKey) throw new Error('RESEND_API_KEY not set');
-  const out = await w.sendWelcomes(rows, { claim, release, send: (row) => resendSend(row, apiKey) });
-  console.log(`Done: sent=${out.sent} rejected=${out.rejected} stamped=${out.stamped} lost_claim=${out.lost_claim} halted=${out.halted} skipped=${JSON.stringify(out.skipped)}`);
+  const recentTotal = await countRecent();
+  const out = await w.sendWelcomes(rows, { claim, release, send: (row) => resendSend(row, apiKey), recentTotal });
+  console.log(`Done: sent=${out.sent} rejected=${out.rejected} stamped=${out.stamped} lost_claim=${out.lost_claim} halted=${out.halted} recent_signups=${recentTotal} max_delay_min=${out.max_delay_min == null ? 'n/a' : out.max_delay_min} skipped=${JSON.stringify(out.skipped)}`);
+  // BRO-7704: a welcome older than 30 minutes means the sign-up kick (/api/money-welcome-wake) did not fire.
+  if (out.max_delay_min > 30) console.log(`::warning::A welcome went out ${out.max_delay_min} min after sign-up; the instant kick may be failing (see /api/money-welcome-wake logs).`);
   if (out.flood) {
     console.error('FLOOD GUARD: more than ' + w.FLOOD_LIMIT + ' new sign-ups waiting in one run. Nothing was sent. Check for junk sign-ups, then clear them or raise the limit.');
     process.exit(1);
