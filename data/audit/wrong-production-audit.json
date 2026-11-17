@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-17T20:07:59.471Z",
+  "timestamp": "2026-11-17T20:23:35.742Z",
   "stats": {
-    "totalReviews": 82503,
-    "alreadyFlagged": 22535,
+    "totalReviews": 82507,
+    "alreadyFlagged": 22536,
     "dateGuardCatches": 222,
     "directorMismatch": 3726,
-    "tvFilmSignals": 2343,
+    "tvFilmSignals": 2344,
     "londonSignals": 3781,
     "offBroadwaySignals": 761,
-    "yearMismatch": 381,
+    "yearMismatch": 383,
     "noPublishDate": 8295
   },
   "findings": [
@@ -31683,6 +31683,24 @@
       ]
     },
     {
+      "showId": "heroes-of-the-fourth-turning-red-regional-2026",
+      "file": "chicago-sun-times--mike-davis.json",
+      "publishDate": "2026-11-11",
+      "url": "https://chicago.suntimes.com/theater/2026/11/11/review-heroes-of-the-fourth-turning-a-red-orchid-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (3x) more than 2026 (0x). 2019 matches production: heroes-of-the-fourth-turning-off-broadway-2019"
+        }
+      ]
+    },
+    {
       "showId": "high-noon-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
       "score": 60,
@@ -52987,6 +53005,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "peter-pan-goes-wrong-regional-2026",
+      "file": "broadwayworld--fh-kekoa.json",
+      "publishDate": "2026-11-17",
+      "url": "https://www.broadwayworld.com/hawaii/article/Review-PETER-PAN-GOES-WRONG-at-Mnoa-Valley-Theatre-20261117",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2026 (1x). 2023 matches production: peter-pan-goes-wrong-2023"
         }
       ]
     },
