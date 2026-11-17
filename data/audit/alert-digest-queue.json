@@ -1388,5 +1388,36 @@
       }
     ],
     "queuedAt": "2026-11-17T15:06:40.426Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6917-welcome-setup",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-6917-welcome-setup",
+    "description": "land.yml did not land land/bro-6917-welcome-setup: the unit-tests-tsx gate went red at 8769f1730b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44119341556",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6917-welcome-setup"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "8769f1730bf3ab3ad286e4da017ed325a9d43c06"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44119341556"
+      }
+    ],
+    "queuedAt": "2026-11-17T15:57:15.557Z"
   }
 ]
