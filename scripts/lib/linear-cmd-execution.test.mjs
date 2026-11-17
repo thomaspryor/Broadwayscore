@@ -200,3 +200,9 @@ __test7632('BRO-7632: placeholder VERIFY lines are found, real ones are not', ()
   __assert7632.equal(__r7632.findPlaceholderVerify('VERIFY: node --test scripts/lib/linear-done-gate.test.mjs'), null);
   __assert7632.equal(__r7632.findPlaceholderVerify('no verify line here, mentions BRO-N'), null);
 });
+__test7632('BRO-7632: bullet, bold and lowercase VERIFY forms are checked too; stderr saying timeout is not a timeout', () => {
+  for (const f of ['- VERIFY: node --test BRO-N', '**VERIFY**: node x.js <id>', 'verify: TBD'])
+    __assert7632.ok(__r7632.findPlaceholderVerify(f), f);
+  const h = __r7632.envRefusalHint({ status: 'unverifiable', detail: 'check exited 3 (cannot verify): upstream timeout error' }, {});
+  __assert7632.match(h, /environment problem/);
+});

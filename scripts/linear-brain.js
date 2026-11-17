@@ -452,6 +452,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         if (args.force && !bypassReason) {
           console.error('⚠️  --force ignored by done-semantics gate: the reason must be a string of ≥10 characters.');
         }
+        // BRO-7632: refuse before any bypass row is written for a close that never happens.
+        if (typeof args.comment === 'string') {
+          const placeholder = require('./lib/linear-cmd-execution').findPlaceholderVerify(args.comment);
+          if (placeholder) {
+            console.error(`REFUSED (BRO-7632): the VERIFY line still holds a template placeholder, so it can never pass: ${placeholder.slice(0, 160)}. Write the real command.`);
+            process.exit(1);
+          }
+        }
         // BRO-3435: record every bypass, whether or not the gate would have
         // refused anyway — the open question this exists to answer
         // ("is --force the ROUTINE path for a whole class of work, e.g.
@@ -477,13 +485,6 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           if (!(issue.state && issue.state.id === target.id)) {
             const line = bypassCommentLine({ mechanism: bypassReason ? 'force' : 'env-disabled', reason: bypassReason, targetState: target.name });
             args.comment = args.comment !== undefined ? `${args.comment}\n\n${line}` : line;
-          }
-        }
-        if (typeof args.comment === 'string') {
-          const placeholder = require('./lib/linear-cmd-execution').findPlaceholderVerify(args.comment);
-          if (placeholder) {
-            console.error(`REFUSED (BRO-7632): the VERIFY line still holds a template placeholder, so it can never pass: ${placeholder.slice(0, 160)}. Write the real command.`);
-            process.exit(1);
           }
         }
         if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {

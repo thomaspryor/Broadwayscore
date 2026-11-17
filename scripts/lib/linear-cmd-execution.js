@@ -75,7 +75,7 @@ function envRefusalHint(verifyResult, decision) {
   if (/safe-form re-validation|ran no passing tests/.test(detail)) {
     return ' This is a problem with the recorded VERIFY line (malformed, or its tests all skipped), not the environment: write a VERIFY command that runs and passes real tests.';
   }
-  const timeout = /timeout/.test(detail);
+  const timeout = /^check killed by .*\(timeout/.test(detail);
   const cause = verifyResult.envCause ? ` (${verifyResult.envCause})` : '';
   return timeout
     ? ' The check ran out of time on this machine, which is not a verdict on the card: re-run the Done update.'
@@ -91,7 +91,7 @@ function envRefusalHint(verifyResult, decision) {
  */
 function findPlaceholderVerify(text) {
   for (const line of String(text || '').split('\n')) {
-    const m = line.match(/^\s*VERIFY:\s*(.+)$/);
+    const m = line.match(/^\s*(?:[-*]\s*)?(?:\*\*)?VERIFY(?:\*\*)?(?:[\t ]*\(correction\))?:\s*(.+)$/i);
     if (!m) continue;
     if (/<[A-Za-z][^>\s]*>|\bBRO-N\b|\bBRO-X+\b|\bX{3,}\b|\bTBD\b|\bTODO\b|\bPLACEHOLDER\b/.test(m[1])) return line.trim();
   }
