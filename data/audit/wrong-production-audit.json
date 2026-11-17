@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-17T21:13:14.639Z",
+  "timestamp": "2026-11-17T21:51:05.511Z",
   "stats": {
-    "totalReviews": 82507,
+    "totalReviews": 82508,
     "alreadyFlagged": 22539,
-    "dateGuardCatches": 222,
+    "dateGuardCatches": 221,
     "directorMismatch": 3725,
     "tvFilmSignals": 2344,
-    "londonSignals": 3782,
+    "londonSignals": 3781,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
     "noPublishDate": 8292
@@ -123444,24 +123444,6 @@
       ]
     },
     {
-      "showId": "pride-bridge-theatre-off-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-08-25",
-      "url": "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 79d before show (2026-08-25 vs 2026-11-12)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "pride-west-end-2026",
       "file": "afridiziak-theatre-news--althyr-pivatto.json",
       "score": 87,
@@ -136475,7 +136457,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "the-morning-star--mary-conway.json",
-      "score": 67,
+      "score": 59,
       "publishDate": "2026-11-02",
       "url": "https://morningstaronline.co.uk/article/lives-others-review-art-vs-socialism",
       "findings": [
