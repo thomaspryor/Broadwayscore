@@ -124,6 +124,11 @@ test('"X_API_KEY and Y are required" is a withheld credential, not a regression'
   // A config value (not a credential) being required stays a real failure.
   assert.equal(envCauseOf('POSTHOG_PROJECT_ID is required'), null);
   assert.equal(envCauseOf('a reviewer is required for every show'), null);
+  // A failing test that ASSERTS on the message echoes it: that is a real regression.
+  assert.equal(envCauseOf("OPENAI_API_KEY: 'o' } }), /routeAlert and ScorerClass are required/"), null);
+  assert.equal(envCauseOf('AssertionError: The input did not match /OPENAI_API_KEY is required/. Input: "Error: missing config"'), null);
+  assert.equal(envCauseOf('- "RESEND_API_KEY is required"'), null);
+  assert.equal(envCauseOf('Error: GH_TOKEN, LINEAR_API_KEY are required').key, 'credential-withheld');
 });
 
 test('a sha row with a text-only env cause is unverifiable (BRO-5989 row, 2026-11-16)', () => {

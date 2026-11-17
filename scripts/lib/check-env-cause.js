@@ -24,7 +24,11 @@ const CAUSES = [
     // checksEnv() strips GH_TOKEN, LINEAR_API_KEY and every other secret.
     // BRO-7622: "X_API_KEY and Y are required" (tests/live/related-shows-ab-sample.test.mjs)
     // is the same withheld secret worded differently; it read as a real fail.
-    re: /gh auth login|populate the GH_TOKEN environment variable|gh api fetch failed|\b[A-Z][A-Z0-9_]*_(?:API_KEY|TOKEN|SECRET)\b[^\n]{0,40}?\b(?:not set|(?:is|are) required)\b/,
+    // The key list must be the SUBJECT ("A_API_KEY and B are required"), and not a
+    // quoted/regex literal: a failing test that asserts on that message echoes it
+    // ('/OPENAI_API_KEY is required/', '- "RESEND_API_KEY is required"'), and that
+    // failure is a real regression (BRO-7622 review).
+    re: /gh auth login|populate the GH_TOKEN environment variable|gh api fetch failed|(?<!["'`\/\w])[A-Z][A-Z0-9_]*_(?:API_KEY|TOKEN|SECRET)(?:(?:[ \t]*,[ \t]*|[ \t]+and[ \t]+|[ \t]+or[ \t]+|[ \t]*\/[ \t]*)[A-Z][A-Z0-9_]*)*[ \t]+(?:not set|(?:is|are)[ \t]+(?:not set|required))\b/,
     plain: 'its check needs a password the recheck machine is not given',
   },
   {
