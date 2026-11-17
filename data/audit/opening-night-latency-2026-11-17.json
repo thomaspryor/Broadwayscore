@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-17T12:39:27.270Z",
+  "generatedAt": "2026-11-17T14:33:17.225Z",
   "date": "2026-11-17",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 174534,
+  "entryCount": 181861,
   "shows": [
     {
       "showId": "kinky-boots-2013",
@@ -66,14 +66,14 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
-      "reviewCount": 38,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 404688,
-        "rebuilt-to-deployed": 149079582
+        "scored-to-rebuilt": 341541,
+        "rebuilt-to-deployed": 151938210
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -138,7 +138,7 @@
     },
     {
       "showId": "marvins-room-2017",
-      "reviewCount": 43,
+      "reviewCount": 42,
       "median_e2e_ms": 156786907,
       "p90_e2e_ms": 156786907,
       "per_stage_median_ms": {
@@ -559,7 +559,7 @@
     },
     {
       "showId": "dogstar-off-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -634,13 +634,13 @@
     },
     {
       "showId": "cranford-off-west-end-2026",
-      "reviewCount": 25,
+      "reviewCount": 24,
       "median_e2e_ms": 78586225,
       "p90_e2e_ms": 78586225,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 463658,
-        "scored-to-rebuilt": 551817,
+        "scored-to-rebuilt": 550464,
         "rebuilt-to-deployed": 78631398
       },
       "reviews_over_15min": 1,
@@ -1996,7 +1996,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 193858,
+        "scored-to-rebuilt": 370621,
         "rebuilt-to-deployed": 80617041
       },
       "reviews_over_15min": 0,
@@ -2011,7 +2011,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 547384,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2436,7 +2436,7 @@
     },
     {
       "showId": "the-fantasticks-2026",
-      "reviewCount": 22,
+      "reviewCount": 21,
       "median_e2e_ms": 21663467,
       "p90_e2e_ms": 21690673,
       "per_stage_median_ms": {
@@ -5567,7 +5567,7 @@
     },
     {
       "showId": "beaches-2026",
-      "reviewCount": 37,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6287,7 +6287,7 @@
     },
     {
       "showId": "picnic-at-hanging-rock-off-broadway-2025",
-      "reviewCount": 16,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6788,7 +6788,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 547374,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8438,7 +8438,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 193786,
+        "scored-to-rebuilt": 370562,
         "rebuilt-to-deployed": 80617047
       },
       "reviews_over_15min": 0,
@@ -8453,7 +8453,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 193789,
+        "scored-to-rebuilt": 547339,
         "rebuilt-to-deployed": 80617044
       },
       "reviews_over_15min": 0,
@@ -8468,7 +8468,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 193787,
+        "scored-to-rebuilt": 370563,
         "rebuilt-to-deployed": 80617045
       },
       "reviews_over_15min": 0,
@@ -9248,7 +9248,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1079728,
+        "scored-to-rebuilt": 813545,
         "rebuilt-to-deployed": 52500950
       },
       "reviews_over_15min": 0,
@@ -9257,7 +9257,7 @@
     },
     {
       "showId": "purlie-victorious-2023",
-      "reviewCount": 37,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9278,7 +9278,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1079727,
+        "scored-to-rebuilt": 547339,
         "rebuilt-to-deployed": 52500949
       },
       "reviews_over_15min": 0,
@@ -9287,13 +9287,13 @@
     },
     {
       "showId": "the-iceman-cometh-2018",
-      "reviewCount": 42,
+      "reviewCount": 41,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1079726,
+        "scored-to-rebuilt": 813525,
         "rebuilt-to-deployed": 52500949
       },
       "reviews_over_15min": 0,
@@ -9317,13 +9317,13 @@
     },
     {
       "showId": "spongebob-squarepants-2017",
-      "reviewCount": 25,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1079724,
+        "scored-to-rebuilt": 813523,
         "rebuilt-to-deployed": 52500949
       },
       "reviews_over_15min": 0,
@@ -9353,7 +9353,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1079720,
+        "scored-to-rebuilt": 813503,
         "rebuilt-to-deployed": 52500950
       },
       "reviews_over_15min": 0,
@@ -9891,8 +9891,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 1690735,
+        "collected-to-scored": 26764380,
+        "scored-to-rebuilt": 1688004,
         "rebuilt-to-deployed": 22587392
       },
       "reviews_over_15min": 0,
@@ -9934,6 +9934,51 @@
           "stuck_at_stage": "rebuilt"
         }
       ]
+    },
+    {
+      "showId": "cowbois-west-end-2024",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-cherry-orchard-2016",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "private-lives-2011",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
     }
   ]
 }
