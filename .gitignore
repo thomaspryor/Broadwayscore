@@ -379,6 +379,7 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+!/docs/bro-7633-landing-test-failures.md
 !/docs/bro-6901-regional-image-coverage.md
 !/docs/bro-6098-aggregator-health.md
 !/docs/bro-7065-nyc-roundup-investigation.md
