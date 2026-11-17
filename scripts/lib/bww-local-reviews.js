@@ -38,8 +38,8 @@ function splitHeadline(headline) {
   // Titles are in capitals and venues in title case, so the first lowercase " at " is the split
   // ("SPARKED: THE VANISHING AT BUZZARD POINT at Rorschach Theatre").
   const i = h.indexOf(' at ');
-  if (i < 0) return { title: h, venue: '' };
-  return { title: h.slice(0, i).trim(), venue: h.slice(i + 4).trim() };
+  if (i < 0) return { title: h, venue: '' }; // venue-write-guard-ok: parsed headline part, never written to shows.json
+  return { title: h.slice(0, i).trim(), venue: h.slice(i + 4).trim() }; // venue-write-guard-ok: parsed headline part, never written to shows.json
 }
 
 /**

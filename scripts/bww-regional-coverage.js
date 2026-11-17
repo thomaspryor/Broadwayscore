@@ -65,7 +65,7 @@ async function auditHub(hub, { shows, fetchHtml, since, maxPages, decisions = {}
       // Title + venue: two companies' productions of one title are two rows (BRO-7683 review).
       const key = normalizeTitle(r.title) ? `${normalizeTitle(r.title)}|${normalizeTitle(r.venue || '')}` : r.url;
       if (seen.has(key)) { seen.get(key).urls.push(r.url); continue; }
-      const row = { title: displayTitle(r.title), venue: r.venue, headline: r.headline, firstReview: r.date, urls: [r.url] };
+      const row = { title: displayTitle(r.title), venue: r.venue, headline: r.headline, firstReview: r.date, urls: [r.url] }; // venue-write-guard-ok: audit report row, never written to shows.json
       seen.set(key, row);
       out.missing.push(row);
     }
@@ -104,5 +104,8 @@ async function main() {
   return flag('strict') && missing ? 1 : 0;
 }
 
-if (require.main === module) main().then((c) => process.exit(c), (e) => { console.error(e); process.exit(3); });
+if (require.main === module) {
+  const { exitFlushed } = require('./lib/exit-flushed');
+  main().then((c) => exitFlushed(c), (e) => { console.error(e); exitFlushed(3); });
+}
 module.exports = { hubsToAudit, auditHub, loadDecisions, DECISIONS };
