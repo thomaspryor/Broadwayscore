@@ -17,6 +17,13 @@ interface ModalProps {
   closeOnEscape?: boolean;
   /** Mobile bottom-sheet style: slides up from bottom on mobile (default false) */
   bottomSheet?: boolean;
+  /**
+   * Side panel (BRO-6917 Part 4): full screen on phones, a full-height panel
+   * on the right from the sm breakpoint up. The page behind stays visible and
+   * dimmed. The children own their own scrolling (a flex column filling the
+   * panel); maxWidth is ignored.
+   */
+  sidePanel?: boolean;
   /** ARIA label for the dialog */
   ariaLabel?: string;
 }
@@ -45,6 +52,7 @@ export default function Modal({
   closeOnBackdrop = true,
   closeOnEscape = true,
   bottomSheet = false,
+  sidePanel = false,
   ariaLabel,
 }: ModalProps) {
   const scrollYRef = useRef(0);
@@ -169,9 +177,11 @@ export default function Modal({
 
   if (!isOpen) return null;
 
-  const alignClass = bottomSheet
-    ? 'flex items-end sm:items-center justify-center'
-    : 'flex items-center justify-center p-4';
+  const alignClass = sidePanel
+    ? 'flex items-stretch justify-end'
+    : bottomSheet
+      ? 'flex items-end sm:items-center justify-center'
+      : 'flex items-center justify-center p-4';
 
   // Bottom sheets sit flush against the screen edge — pad for the iOS home
   // indicator so the last action row isn't visually cut off (owner, 2026-07-19).
@@ -209,7 +219,10 @@ export default function Modal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`relative w-full ${MAX_WIDTH_CLASS[maxWidth]} bg-surface-raised border border-white/10 ${panelRounding} shadow-2xl max-h-[85vh] overflow-y-auto focus:outline-none`}
+        className={sidePanel
+          // 100dvh: the phone's address bar must not push the footer buttons off screen.
+          ? 'relative w-full h-[100dvh] sm:max-w-[460px] bg-surface-elevated sm:border-l border-white/10 shadow-2xl overflow-hidden flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] sm:pt-0 sm:pb-0 focus:outline-none'
+          : `relative w-full ${MAX_WIDTH_CLASS[maxWidth]} bg-surface-raised border border-white/10 ${panelRounding} shadow-2xl max-h-[85vh] overflow-y-auto focus:outline-none`}
       >
         {children}
       </div>

@@ -17,7 +17,12 @@ export const WELCOME_ACCOUNT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 /** A device clock a little behind the server still counts a just-made account as new. */
 export const WELCOME_CLOCK_SKEW_MS = 2 * 60 * 1000;
 
-export const WELCOME_STEPS = ['shows', 'import', 'done'] as const;
+/**
+ * Two screens (BRO-6917 Part 4): "Which have you seen?" then "Which do you
+ * want to see?". 'shows' keeps its name because the welcome funnel in
+ * scripts/lib/account-metrics.js counts step = 'shows'.
+ */
+export const WELCOME_STEPS = ['shows', 'want'] as const;
 export type WelcomeStep = typeof WELCOME_STEPS[number];
 
 export function welcomeSeenKey(userId: string): string {
@@ -66,6 +71,8 @@ export interface WelcomeShowSource {
   closingDate?: string | null;
   images?: { poster?: string; thumbnail?: string };
   reviewCount: number;
+  /** Critic Score as the show cards show it (criticScore.score); null/absent = none yet. */
+  score?: number | null;
 }
 
 export interface WelcomeShow {
@@ -172,6 +179,75 @@ export function pickWelcomeShows(
   }));
 }
 
+// ─── Which shows to offer on "want to see" ───────────────────────────────
+
+export interface WelcomeWantShow {
+  id: string;
+  title: string;
+  slug: string;
+  image: string;
+  /** Critic Score, shown on the poster like every other poster shelf. */
+  score: number;
+  /** Only when it closes within WELCOME_WANT_CLOSING_DAYS: "Closes Dec 14". */
+  closingDate: string | null;
+}
+
+export const WELCOME_WANT_COUNT = 12;
+/** Enough reviews that the score on the poster means something. */
+export const WELCOME_WANT_MIN_REVIEWS = 15;
+export const WELCOME_WANT_CLOSING_DAYS = 60;
+
+/**
+ * The shows worth going to see right now: running or in previews, best
+ * Critic Score first, with the ones about to close called out. One poster per
+ * title. Shows already on the first screen's grid are not skipped here: that
+ * grid is the long-runners, and the sheet hides whatever is already in My
+ * Shows or was just picked as seen.
+ */
+export function pickWantShows(
+  shows: WelcomeShowSource[],
+  today: string,
+  opts: { count?: number; category?: WelcomeMarket } = {},
+): WelcomeWantShow[] {
+  const count = opts.count ?? WELCOME_WANT_COUNT;
+  const category = opts.category ?? 'broadway';
+  const closingBy = addDays(today, WELCOME_WANT_CLOSING_DAYS);
+  const eligible = shows
+    .filter(s => s.category === category
+      && (s.status === 'open' || s.status === 'previews')
+      && !!(s.images?.poster || s.images?.thumbnail)
+      && s.reviewCount >= WELCOME_WANT_MIN_REVIEWS
+      && typeof s.score === 'number' && s.score > 0
+      // A closing date already past means the data is stale: not worth offering.
+      && (!s.closingDate || s.closingDate >= today))
+    .sort((a, b) => (b.score as number) - (a.score as number) || a.title.localeCompare(b.title));
+  const seen = new Set<string>();
+  const out: WelcomeWantShow[] = [];
+  for (const s of eligible) {
+    if (out.length >= count) break;
+    const k = titleKey(s.title);
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push({
+      id: s.id,
+      title: s.title,
+      slug: s.slug,
+      image: (s.images?.poster || s.images?.thumbnail) as string,
+      score: Math.round(s.score as number),
+      closingDate: s.closingDate && s.closingDate <= closingBy ? s.closingDate : null,
+    });
+  }
+  return out;
+}
+
+/** "Closes Dec 14" under a poster that closes soon; null when there is no usable date. */
+export function welcomeClosesLabel(closingDate: string | null | undefined): string | null {
+  if (!closingDate || !/^\d{4}-\d{2}-\d{2}$/.test(closingDate)) return null;
+  const d = new Date(`${closingDate}T00:00:00Z`);
+  if (Number.isNaN(d.getTime())) return null;
+  return `Closes ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}`;
+}
+
 // ─── Saving a pick ──────────────────────────────────────────────────────
 
 export interface WelcomePick {
@@ -209,33 +285,21 @@ export function welcomeSaveStep(pick: WelcomePick, where: { seen: boolean; watch
 }
 
 /**
- * Where "Done" takes them: My Shows when they now have something there to
- * look at, otherwise back to the page they were on.
+ * The line shown when the sheet closes after saving. Seen picks without stars
+ * wait under To Be Rated, so that is said only when it is true. Nothing saved
+ * returns null: no toast for a sheet that was only skipped through.
  */
-export function welcomeFinishDestination(input: { showsAdded: number; imported: number }): 'my-shows' | 'stay' {
-  return input.showsAdded + input.imported > 0 ? 'my-shows' : 'stay';
-}
-
-/**
- * The last step's summary. To Be Rated is mentioned only when some of the
- * picks went in without stars (seen_unrated); picks with stars are already
- * in the diary.
- */
-export function welcomeDoneMessage(input: { showsAdded: number; imported: number; unratedAdded: number }): string {
-  const { showsAdded, imported } = input;
-  if (showsAdded + imported <= 0) return 'Rate a show from its page any time, and it lands in Seen.';
-  const counts = [
-    showsAdded > 0 ? `${showsAdded} ${showsAdded === 1 ? 'show' : 'shows'} added` : null,
-    imported > 0 ? `${imported} imported` : null,
+export function welcomeSummary(input: { seenAdded: number; wantAdded: number; unratedAdded: number }): string | null {
+  const seen = Math.max(input.seenAdded, 0);
+  const want = Math.max(input.wantAdded, 0);
+  if (seen + want <= 0) return null;
+  const parts = [
+    seen > 0 ? `${seen} seen` : null,
+    want > 0 ? `${want} to see` : null,
   ].filter(Boolean).join(', ');
-  const unrated = Math.min(Math.max(input.unratedAdded, 0), Math.max(showsAdded, 0));
-  // Imports can be watchlist rows as well as diary entries.
-  if (unrated === 0) return `${counts} to ${imported > 0 ? 'My Shows' : 'Seen'}.`;
-  // "They" would take in the imports too, so name the unrated picks then.
-  const who = unrated === showsAdded && imported === 0
-    ? (showsAdded === 1 ? 'It waits' : 'They wait')
-    : (unrated === 1 ? 'The one without stars waits' : `The ${unrated} without stars wait`);
-  return `${counts}. ${who} for you under To Be Rated, where you can add the date and stars.`;
+  const unrated = Math.min(Math.max(input.unratedAdded, 0), seen);
+  const tail = unrated > 0 ? ` Add stars any time under To Be Rated.` : '';
+  return `Saved to your account: ${parts}.${tail}`;
 }
 
 // ─── Where and when it opens ────────────────────────────────────────────
