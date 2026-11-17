@@ -39,11 +39,15 @@
          Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.cookie-renew -->
     <key>Label</key>
     <string>com.broadwayscore.cookie-renew</string>
+    <!-- Both flags on purpose: renew-cookies.js reads outlets= first (all
+         outlets); a main checkout still on the pre-BRO-7705 script reads only
+         outlet= and keeps renewing The Stage instead of exiting on an unknown
+         flag (checkout-sync can lag main for hours). -->
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
         <string>-lc</string>
-        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/renew-cookies.js --outlets=all</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/renew-cookies.js --outlets=all --outlet=thestage</string>
     </array>
     <key>StartInterval</key>
     <integer>21600</integer>
