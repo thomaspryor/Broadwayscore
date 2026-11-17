@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T08:43:58.442Z",
+  "generatedAt": "2026-11-17T10:17:04.227Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -153,9 +153,17 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "error": "Timeout fetching https://www.londonpubtheatres.com/feed/rss2"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 888,
+  "itemsScanned": 871,
   "matchedGaps": 1,
   "possibleGaps": 1,
   "gaps": [
