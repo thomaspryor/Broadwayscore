@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-17T23:04:27.056Z",
-  "totalScanned": 82802,
-  "totalExcluded": 31050,
+  "generatedAt": "2026-11-17T23:24:54.103Z",
+  "totalScanned": 82805,
+  "totalExcluded": 31051,
   "ruleCounts": {
-    "wrongProduction": 20328,
+    "wrongProduction": 20329,
     "duplicateOf": 2297,
     "rejectionReason": 1545,
     "wrongShow": 1365,
@@ -43,13 +43,15 @@
     "personalRepost": 1,
     "registrationWallStub": 1
   },
-  "ruleDeltas": {},
-  "previousGeneratedAt": "2026-11-17T22:39:39.952Z",
+  "ruleDeltas": {
+    "wrongProduction": 1
+  },
+  "previousGeneratedAt": "2026-11-17T23:04:27.056Z",
   "mirror": {
-    "comparedShows": 4812,
-    "comparedFiles": 82169,
-    "agreeExcluded": 30996,
-    "agreeIncluded": 50673,
+    "comparedShows": 4813,
+    "comparedFiles": 82172,
+    "agreeExcluded": 30997,
+    "agreeIncluded": 50675,
     "mirrorOnly": 190,
     "rebuildOnly": 310,
     "disagreements": 500,
