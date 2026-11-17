@@ -210,6 +210,47 @@ export function retiredManifestWarnings({ base, src, cwd }) {
 }
 
 /**
+ * BRO-7706, advisory (rule 19). land.yml runs a plain `git rebase origin/main`,
+ * which drops merge commits. A merge that only brings main in is harmless, but
+ * one that carries edits of its own (a conflict resolved inside it, or hand
+ * changes) loses them silently, or conflicts again. Flags only those merges:
+ * a merge whose tree differs from the clean automatic merge of its parents.
+ * Fails open (any git error -> no warning).
+ * -> { count, carrying: string[] (short shas), warnings: string[] }
+ */
+const MAX_MERGES_JUDGED = 10;
+export function mergeCommitWarnings({ base, src, cwd }) {
+  const none = { count: 0, carrying: [], warnings: [] };
+  const l = git(cwd, ['rev-list', '--merges', `${base}..${src}`]);
+  if (!ok(l)) return none;
+  const merges = out(l).split('\n').filter(Boolean);
+  if (!merges.length) return none;
+  if (merges.length > MAX_MERGES_JUDGED) return { count: merges.length, carrying: [], warnings: [] }; // too many to judge in a hook: fail open
+  const carrying = [];
+  for (const m of merges) {
+    const pl = git(cwd, ['rev-list', '--parents', '-n', '1', m]);
+    if (!ok(pl)) continue; // cannot judge: fail open
+    const parents = out(pl).split(' ').slice(1);
+    if (parents.length !== 2) continue; // octopus: no automatic merge to compare with, fail open
+    const mt = git(cwd, ['merge-tree', '--write-tree', parents[0], parents[1]]);
+    if (mt.status === 1) { carrying.push(m); continue; } // conflicted: a resolution lives in the merge
+    if (mt.status !== 0) continue; // cannot judge: fail open
+    const auto = mt.stdout.split('\n')[0].trim();
+    const actual = git(cwd, ['rev-parse', `${m}^{tree}`]);
+    if (ok(actual) && out(actual) !== auto) carrying.push(m);
+  }
+  if (!carrying.length) return { count: merges.length, carrying: [], warnings: [] };
+  const shown = carrying.slice(0, 3).map((m) => m.slice(0, 9)).join(', ');
+  return {
+    count: merges.length,
+    carrying: carrying.map((m) => m.slice(0, 9)),
+    warnings: [
+      `${carrying.length} merge commit(s) on this branch (${shown}) carry edits of their own (a conflict resolved inside the merge, or hand changes). land.yml runs a plain \`git rebase origin/main\`, which drops merge commits, so those edits are lost or the land rebase conflicts later. Remove the merges before pushing. Either rebuild the branch as plain commits on current origin/main (git switch -c <name> origin/main && git cherry-pick <your non-merge commits>; resolve conflicts in the picked commits and re-apply any hand edit the merge held), or squash in this order: git merge origin/main, check git diff origin/main --stat lists only your files, then git reset --soft origin/main && git commit.`,
+    ],
+  };
+}
+
+/**
  * Extract the paths the registration audit reads (tests/, scripts/, .github/)
  * of `rev` into a temp dir, so a tree that is not checked out (the base, or
  * the simulated rebased tip) can be judged. -> dir, or null when it fails.
@@ -792,7 +833,10 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   detail.pendingPlans = pendingPlans;
   const toplevel = (seams.checkToplevelPushPaths || checkToplevelPushPaths)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.toplevel = toplevel;
-  const warnings = [...(tests.warnings || []), ...(workflows.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
+  // A conflicting rebase already gets the merge explanation in blockMessage, so only judge merges when it did not.
+  const merges = rebase.status === 'conflict' ? { count: null, carrying: null, warnings: [] } : (seams.mergeCommitWarnings || mergeCommitWarnings)({ base, src, cwd });
+  detail.merges = { count: merges.count, carrying: merges.carrying };
+  const warnings = [...(tests.warnings || []), ...(workflows.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd }), ...merges.warnings];
   detail.warnings = warnings;
   if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status, pendingPlans.status, toplevel.status].some((x) => x === true || x === 'fail')) {
     const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel });
@@ -1039,7 +1083,7 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     v.detail.fastTests = ft;
     if (ft.status === 'fail') { v.decision = 'block'; v.message = ft.message; }
     if (ft.warning) v.warnings = [...(v.warnings || []), ft.warning];
-    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status });
+    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status, mergesCarrying: v.detail.merges?.carrying?.length ?? null });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
       if (cw.length) v.warnings = [...(v.warnings || []), ...cw];

@@ -952,3 +952,66 @@ test('fastTestsCheck: blocks new failures on the rebased tip; skips, advisory an
   v = push({ fastTests: runner(failing), localCheck: { latestVerdict: () => ({ verdict: 'clean' }) } });
   assert.notEqual(v.decision, 'block', 'a clean full land-local-check verdict for this tip stands');
 });
+
+// BRO-7706: a merge commit that carries its own edits is dropped by land.yml's plain rebase. Advisory only.
+function mergeRepo({ carry, conflict = false }) {
+  const d = baseRepo();
+  sh(d, 'git checkout -q -b feat && echo mine >> g.txt && git commit -qam mine && git checkout -q main');
+  sh(d, conflict ? 'perl -pi -e "s/^one$/MAINONE/" g.txt && git commit -qam main-g' : 'echo more >> f.txt && git commit -qam main-f');
+  sh(d, 'git checkout -q feat');
+  sh(d, '(git merge --no-ff -q main -m merge-main || true)');
+  if (conflict) sh(d, 'printf "RESOLVED\\nmine\\n" > g.txt && git add g.txt && git commit -qm merge-main');
+  if (carry) sh(d, 'echo hand-edit >> f.txt && git commit -qa --amend --no-edit');
+  return d;
+}
+test('mergeCommitWarnings: a plain merge of main is silent; a merge carrying edits or a resolution warns with the remedy', async () => {
+  const { mergeCommitWarnings } = await import('../../scripts/lib/land-preflight.mjs');
+  const plain = mergeRepo({ carry: false });
+  const r0 = mergeCommitWarnings({ base: 'main', src: 'HEAD', cwd: plain });
+  assert.deepEqual(r0.warnings, []);
+  const hand = mergeRepo({ carry: true });
+  const r1 = mergeCommitWarnings({ base: 'main', src: 'HEAD', cwd: hand });
+  assert.equal(r1.carrying.length, 1);
+  assert.match(r1.warnings[0], /carry edits of their own[\s\S]*plain `git rebase origin\/main`[\s\S]*cherry-pick/);
+  const resolved = mergeRepo({ carry: false, conflict: true });
+  assert.equal(mergeCommitWarnings({ base: 'main', src: 'HEAD', cwd: resolved }).carrying.length, 1);
+});
+test('mergeCommitWarnings: linear branch and an unresolvable base fail open (no warning, no throw)', async () => {
+  const { mergeCommitWarnings } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = baseRepo();
+  sh(d, 'git checkout -q -b feat && echo x >> g.txt && git commit -qam x');
+  assert.deepEqual(mergeCommitWarnings({ base: 'main', src: 'HEAD', cwd: d }).warnings, []);
+  assert.deepEqual(mergeCommitWarnings({ base: 'no-such-ref', src: 'HEAD', cwd: d }).warnings, []);
+});
+test('judgeLand: merge warning is advisory (allow stays allow), logged in detail, and not repeated on the conflict path', async () => {
+  const { judgeLand } = await import('../../scripts/lib/land-preflight.mjs');
+  const hand = mergeRepo({ carry: true });
+  const v = judgeLand({ cwd: hand, src: 'HEAD', target: 'land/x', base: 'main', fetch: false });
+  assert.notEqual(v.decision, 'block', v.message);
+  assert.equal(v.detail.merges.carrying.length, 1);
+  assert.ok(v.warnings.some((w) => /carry edits of their own/.test(w)), JSON.stringify(v.warnings));
+  const { wt } = landFixture(); // the merge here resolved a conflict, so the rebase conflicts and blockMessage explains it
+  const b = judgeLand({ cwd: wt, src: 'HEAD', target: 'land/feat', base: 'origin/main', fetch: false });
+  assert.equal(b.decision, 'block');
+  assert.equal(b.warnings.some((w) => /carry edits of their own/.test(w)), false);
+  assert.equal(b.detail.merges.count, null); // not judged on the conflict path
+});
+test('runHook surfaces the merge-commit warning via the seam (advisory, never a block)', async () => {
+  const { runHook } = await import('../../scripts/lib/land-preflight.mjs');
+  const { wt } = landFixture();
+  sh(wt, 'git reset -q --hard origin/main && echo z >> g.txt && git commit -qam ok');
+  const v = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt, env: ENV, seams: { mergeCommitWarnings: () => ({ count: 1, carrying: ['abc'], warnings: ['MERGE CARRIES EDITS'] }) } });
+  assert.notEqual(v.decision, 'block');
+  assert.ok(v.warnings.includes('MERGE CARRIES EDITS'), JSON.stringify(v.warnings));
+});
+test('mergeCommitWarnings: an octopus merge and a flood of merges fail open', async () => {
+  const { mergeCommitWarnings } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = baseRepo();
+  sh(d, 'git checkout -q -b feat && for b in a b c; do git checkout -q -b $b main && echo $b > $b.txt && git add $b.txt && git commit -qm $b; done && git checkout -q feat && git merge -q --no-ff a b c -m octopus');
+  assert.deepEqual(mergeCommitWarnings({ base: 'main', src: 'HEAD', cwd: d }).warnings, []);
+  const many = baseRepo();
+  sh(many, 'git checkout -q -b feat && for i in 1 2 3 4 5 6 7 8 9 10 11; do git checkout -q -b s$i main && echo $i > s$i.txt && git add s$i.txt && git commit -qm s$i && git checkout -q feat && git merge -q --no-ff s$i -m m$i && echo hand$i >> g.txt && git commit -qam hand$i && git commit -q --amend --no-edit; done');
+  const r = mergeCommitWarnings({ base: 'main', src: 'HEAD', cwd: many });
+  assert.ok(r.count > 10);
+  assert.deepEqual(r.warnings, []);
+});
