@@ -124,7 +124,7 @@ const GIT_TIMEOUT_BACKOFF_MS = [2000, 6000];
 function isGitTimeout(err) {
   if (!err) return false;
   if (err.code === 'ETIMEDOUT') return true;
-  return /\bETIMEDOUT\b/.test(String(err.message || '')) || (err.killed === true && err.signal === 'SIGTERM');
+  return /\bETIMEDOUT\b/.test(String(err.message || '')); // execFileSync's own timeout; a bare SIGTERM is not ours to retry
 }
 function defaultSleepMs(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
 const PREFETCH_MAX_PATHS = 2000;
@@ -880,7 +880,9 @@ function landBranch(o) {
       let timeoutRetries = 0;
       for (let retry = 0; ; retry++) {
         try {
-          git([...driverConfigArgs(__dirname), ...(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto])], workdir);
+          git([...driverConfigArgs(__dirname), ...(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto])], workdir,
+            // A retry after a timeout gets the longer prefetch budget: the killed try's fetched objects stay on disk.
+            timeoutRetries > 0 ? { timeout: PREFETCH_TIMEOUT_MS } : {});
           if (!rangeFrom) refreshGeneratedDocs(onto);
           return;
         } catch (caught) {
@@ -892,7 +894,7 @@ function landBranch(o) {
           if (fixed.lastErr) { err = fixed.lastErr; }
           if (isGitTimeout(err) && timeoutRetries < GIT_TIMEOUT_RETRIES) {
             gitOrNull(['rebase', '--abort'], workdir);
-            discardResidue(`timeout retry ${timeoutRetries + 1}`);
+            try { discardResidue(`timeout retry ${timeoutRetries + 1}`); } catch { /* a stale lock must not hide the timeout label */ }
             log(`[land] rebase onto ${onto.slice(0, 10)} timed out (git, not a conflict) — retry ${timeoutRetries + 1}/${GIT_TIMEOUT_RETRIES} after ${GIT_TIMEOUT_BACKOFF_MS[timeoutRetries]}ms`);
             sleepMs(GIT_TIMEOUT_BACKOFF_MS[timeoutRetries]);
             timeoutRetries++; retry--;
@@ -918,7 +920,7 @@ function landBranch(o) {
       for (const r of list) {
         const drop = (reason) => { trainDropped.push({ branch: r.branch, reason }); log(`[land] train: ${r.branch} not taken — ${reason}`); };
         if (!r || !/^[0-9a-f]{40}$/.test(String(r.tip || '')) || !isPlausibleBranchName(r.branch)) { drop('malformed rider'); continue; }
-        if (gitOrNull(['cat-file', '-e', `${r.tip}^{commit}`], workdir) === null) gitOrNull(['fetch', remote, r.tip], workdir);
+        if (gitOrNull(['cat-file', '-e', `${r.tip}^{commit}`], workdir) === null) { try { gitNet(['fetch', remote, r.tip], workdir); } catch { /* dropped below as could-not-fetch */ } }
         if (gitOrNull(['cat-file', '-e', `${r.tip}^{commit}`], workdir) === null) { drop(`could not fetch ${r.tip.slice(0, 10)}`); continue; }
         const prev = git(['rev-parse', 'HEAD'], workdir);
         const mb = gitOrNull(['merge-base', r.tip, baseSha], workdir);

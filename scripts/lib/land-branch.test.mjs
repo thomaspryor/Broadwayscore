@@ -1274,7 +1274,7 @@ const isFetchMain = (a) => a[0] === 'fetch' && a.includes('main');
 test('BRO-7715: isGitTimeout recognises an execFileSync timeout and nothing else', () => {
   assert.equal(isGitTimeout(Object.assign(new Error('x'), { code: 'ETIMEDOUT' })), true);
   assert.equal(isGitTimeout(new Error('spawnSync git ETIMEDOUT')), true);
-  assert.equal(isGitTimeout(Object.assign(new Error('x'), { killed: true, signal: 'SIGTERM' })), true);
+  assert.equal(isGitTimeout(Object.assign(new Error('x'), { killed: true, signal: 'SIGTERM' })), false, 'a bare SIGTERM (not execFileSync timeout) is not retried');
   assert.equal(isGitTimeout(Object.assign(new Error('CONFLICT (content)'), { stderr: 'CONFLICT' })), false);
   assert.equal(isGitTimeout(null), false);
 });
