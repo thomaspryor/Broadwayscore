@@ -134,6 +134,25 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
     }
   }
 
+  // BRO-7644: on opening night the lane writes reviews.json rows (with
+  // fullText and assignedScore) hours before it pushes the review-text files,
+  // so the Critics' Take, and the email draft it gates, waited for the lane to
+  // end. When the show's own folder yields no input, read its live rows instead.
+  // They already passed the rebuild's guards, so the exclusion flags apply but
+  // the file-path scorer predicate does not.
+  if (reviews.length === 0 && Array.isArray(opts.fallbackRows)) {
+    for (const r of opts.fallbackRows) {
+      if (!r || r.showId !== showId) continue;
+      if (dedup && dedup.isDuplicate(r)) continue;
+      const row = reviewTextInput(r, showId, liveOutlets, opts.normalizeOutlet || null, { show: opts.show });
+      if (row) {
+        if (dedup) dedup.add(r);
+        row.fromLiveRows = true;
+        reviews.push(row);
+      }
+    }
+  }
+
   // BRO-7539: the earlier-run entries this show carries via priorRuns (the
   // rebuild's inheritPriorRunReviews rule, reused through collectCarriedFiles)
   // hold their review TEXTS in their own folders. reviews.json already shows

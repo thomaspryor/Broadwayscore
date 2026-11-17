@@ -50,6 +50,7 @@ const anthropic = {
 
 // loadReviewTexts / consensusFingerprint live in scripts/lib so the
 // contamination audit counts the same inputs this script stores (BRO-4869).
+let liveReviewRows = null;
 function loadReviewTexts(showId, liveOutlets = null, show = undefined, shows = undefined) {
   return loadConsensusInputs(showId, liveOutlets, {
     onWarn: (msg) => console.warn(`  ⚠️  ${msg}`),
@@ -60,6 +61,8 @@ function loadReviewTexts(showId, liveOutlets = null, show = undefined, shows = u
     // BRO-6226: the scorer's own predicate and the rebuild's within-show dedup.
     isScoreable,
     createDedup: createWithinShowDedup,
+    // BRO-7644: live reviews.json rows when the show has no review-text files yet.
+    fallbackRows: liveReviewRows,
   });
 }
 
@@ -204,7 +207,8 @@ async function main() {
     const reviewsJson = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf-8'));
     liveCounts = liveScoredCounts(reviewsJson);
     liveOutlets = liveOutletKeys(reviewsJson);
-  } catch { liveCounts = null; liveOutlets = null; }
+    liveReviewRows = Array.isArray(reviewsJson) ? reviewsJson : (reviewsJson && reviewsJson.reviews) || null;
+  } catch { liveCounts = null; liveOutlets = null; liveReviewRows = null; }
 
   if (pruneOnly) {
     const counts = liveCounts;
