@@ -598,20 +598,6 @@
     "queuedAt": "2026-11-16T21:30:27.410Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-16.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-16T22:57:55.277Z"
-  },
-  {
     "conditionKey": "red-first-skip:BRO-6867",
     "title": "Red-first dispatch skipped BRO-6867 — no job spawned (recent-attempt:refused)",
     "description": "The BRO-4054 red-first pass skipped \"Browserbase cost $89.80 this week (898 sessions), find what drove it\" (BRO-6867) this tick with reason \"recent-attempt:refused\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
@@ -762,5 +748,19 @@
       }
     ],
     "queuedAt": "2026-11-16T23:38:06.449Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T00:43:30.456Z"
   }
 ]
