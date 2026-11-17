@@ -14,7 +14,7 @@ base="$1" cur="$2" other="$3" path="${4:-}"
 if [ -n "$path" ]; then
   case "$(git check-attr autostash -- "$path" 2>/dev/null)" in
     *": autostash: regenerated")
-      echo "::notice::land-merge-driver: kept main's $path (autostash=regenerated; the next run rewrites it) (BRO-7631)" >&2
+      echo "::notice::land-merge-driver: kept main's $path (autostash=regenerated; the next run rewrites it; the branch's version was blob $(git hash-object "$other" 2>/dev/null || echo unknown)) (BRO-7631)" >&2
       exit 0
       ;;
   esac

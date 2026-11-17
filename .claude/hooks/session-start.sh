@@ -557,6 +557,14 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [
   fi
 fi
 
+# Restart recovery (BRO-7631): a container restart kills every background task (land waits,
+# replays, child watches) and leaves the worker idle with no REPORT-BACK (BRO-6717, BRO-6518,
+# two more 2026-11-17). On resume, print what died and what to re-run. Kill switch:
+# RESTART_RECOVERY_DISABLED=true. Silent when there is nothing to say.
+if [ "$SESSION_EVENT" = "resume" ] && [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/restart-recovery.js" ]; then
+  perl -e 'alarm shift; exec @ARGV' 10 node "$REPO_ROOT/scripts/lib/restart-recovery.js" resume "$REPO_ROOT" 2>/dev/null || true
+fi
+
 # Disk-space check (BRO-2258). Added 2026-08-30 after the machine silently
 # hit 100% disk (117Mi free of 460Gi) — nothing warned, and it silently broke
 # both cmux runtime spawning (can't write workspace state, so tabs came up

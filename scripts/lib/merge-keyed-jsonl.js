@@ -49,6 +49,7 @@ function mergeKeyed(base, ours, theirs, keyFields) {
     if (av === bv) return av;
     if (av === ov) return bv; // only theirs changed (or deleted: undefined)
     if (bv === ov) return av; // only ours changed or deleted
+    if (process.env.KEYED_JSONL_QUIET !== '1') console.error(`::notice::merge-keyed-jsonl: both sides changed key ${k.split('\u0002')[0]}; the replayed commit's row won (BRO-7631)`);
     return bv === undefined ? av : bv; // both changed: the replayed commit wins
   };
   for (const k of [...a.keys(), ...b.keys()]) {
@@ -74,8 +75,9 @@ if (require.main === module) {
   const [baseF, curF, otherF, p] = process.argv.slice(2);
   const fields = keyFieldsFor(p || '');
   if (!fields) { console.error(`merge-keyed-jsonl: no keyed-jsonl attribute on ${p}; leaving the file for a text merge`); process.exit(1); }
-  const rd = (f) => { try { return fs.readFileSync(f, 'utf8'); } catch { return ''; } };
-  fs.writeFileSync(curF, mergeKeyed(rd(baseF), rd(curF), rd(otherF), fields));
+  // base may legitimately be absent (add/add); an unreadable ours or theirs must not look like an empty file.
+  const rd = (f, required) => { try { return fs.readFileSync(f, 'utf8'); } catch (e) { if (required) { console.error(`merge-keyed-jsonl: cannot read ${f}: ${e.message}`); process.exit(1); } return ''; } };
+  fs.writeFileSync(curF, mergeKeyed(rd(baseF, false), rd(curF, true), rd(otherF, true), fields));
   console.error(`::notice::merge-keyed-jsonl: merged ${p} by (${fields.join(', ')}) (BRO-7631)`);
 }
 

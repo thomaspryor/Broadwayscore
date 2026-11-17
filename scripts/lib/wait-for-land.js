@@ -384,6 +384,12 @@ async function main(argv) {
     return 3;
   }
   const deadline = Date.now() + args.timeoutMin * 60_000;
+  // BRO-7631: a container restart kills this wait; the resume hook re-arms it from this record.
+  const restartWaitId = require('./restart-recovery.js').record(`node scripts/lib/wait-for-land.js ${argv.join(' ')}`);
+  try { return await waitLoop(args, deadline); } finally { require('./restart-recovery.js').clear(restartWaitId); }
+}
+
+async function waitLoop(args, deadline) {
   let siteFiles = null;
   let errors = 0;
   let lastLine = '';

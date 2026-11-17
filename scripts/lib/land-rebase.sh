@@ -57,10 +57,11 @@ load_merge_drivers() {
   local d f
   d="$(mktemp -d "${TMPDIR:-/tmp}/land-drivers.XXXXXX")" || return 0
   for f in land-merge-driver.sh merge-keyed-jsonl.js land-merge-drivers.js; do
-    git show "$BASE:scripts/lib/$f" >"$d/$f" 2>/dev/null || return 0
+    git show "$BASE:scripts/lib/$f" >"$d/$f" 2>/dev/null || { echo "::warning::$LABEL: land merge drivers unavailable ($f not on the base tree); rebasing without them (BRO-7631)"; return 0; }
   done
   mapfile -t CARGS < <(node "$d/land-merge-drivers.js" args "$d" 2>/dev/null)
-  [ "${#CARGS[@]}" -gt 0 ] && echo "::notice::$LABEL: rebasing with the land merge drivers (BRO-7631)"
+  if [ "${#CARGS[@]}" -gt 0 ]; then echo "::notice::$LABEL: rebasing with the land merge drivers (BRO-7631)"
+  else echo "::warning::$LABEL: land merge driver args could not be built; rebasing without them (BRO-7631)"; fi
   return 0
 }
 load_merge_drivers
