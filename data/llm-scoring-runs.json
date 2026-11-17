@@ -571284,8 +571284,34 @@
     "logKeepsSince": "2026-11-16T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-17T23:44:37.059Z",
-    "completedAt": "2026-11-17T23:44:37.061Z",
+    "startedAt": "2026-11-17T23:44:04.052Z",
+    "completedAt": "2026-11-17T23:44:04.483Z",
+    "totalReviews": 3,
+    "processed": 0,
+    "skipped": 2,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "44201272851",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "my-english-persian-kitchen-regional-2026",
+        "outletId": "the-list",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ],
+    "logKeepsSince": "2026-11-16T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-17T23:44:06.781Z",
+    "completedAt": "2026-11-17T23:44:06.783Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -571298,7 +571324,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "44201280524",
+    "runId": "44201272851",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-16T00:00:00.000Z"
