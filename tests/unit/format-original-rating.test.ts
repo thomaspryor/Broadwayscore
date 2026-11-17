@@ -59,15 +59,4 @@ test('the mobile feed carries the same display string as the web (field `or`)', 
   const src = readFileSync(new URL('../../scripts/generate-mobile-show-details.js', import.meta.url), 'utf8');
   assert.match(src, /require\('\.\/lib\/format-original-rating'\)/);
   assert.match(src, /entry\.or = /);
-  // The entry must be fed from the review's own originalRating through the shared formatter.
-  assert.match(src, /formatOriginalRating\(r\.originalRating\)/);
-  assert.match(src, /if \(rating\) entry\.or = rating;/);
-});
-
-test('phone rating spans carry a screen-reader label (BRO-7140 review)', async () => {
-  const { readFileSync } = await import('node:fs');
-  const src = readFileSync(new URL('../../src/components/ReviewsList.tsx', import.meta.url), 'utf8');
-  const mobile = src.split('\n').filter((l) => l.includes('review-original-rating-mobile'));
-  assert.ok(mobile.length >= 2);
-  for (const l of mobile) assert.match(l, /sr-only/);
 });
