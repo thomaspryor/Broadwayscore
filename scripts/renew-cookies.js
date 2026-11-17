@@ -307,9 +307,9 @@ async function runOutlet(outlet, all, opts) {
       if (existing.status === 'error') return done(1, 'in-profile probe page not recognised (bot challenge?); not logging in on an uncertain probe');
       if (existing.status === 'logged-in' && probe.browserOnly) {
         // The control: the same url in a cookie-less profile must be walled.
-        const control = await bprobe.anonymousProbe(probe).catch((e) => ({ error: e.message }));
-        if (control.error) return done(1, `anonymous control failed: ${control.error.split('\n')[0]}`);
-        const verdict = bprobe.classify(probe, existing.page, control);
+        const c = await bprobe.classifyWithControl(probe, existing.page).catch((e) => ({ error: e.message }));
+        if (c.error) return done(1, `anonymous control failed: ${c.error.split('\n')[0]}`);
+        const verdict = c.status;
         if (verdict === 'vacuous') {
           await alertOwner({ outlet, kind: 'probe-vacuous', title: `Cookie renew: ${outlet} probe URL is no longer walled`,
             description: `${probe.url} shows the full article to a browser with no session. Pick a recent walled article in scripts/lib/cookie-probes.js.`, url: probe.url });

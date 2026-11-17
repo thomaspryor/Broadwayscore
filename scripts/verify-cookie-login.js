@@ -22,9 +22,17 @@
  * the user sees immediately which outlets are logged in. Exit 1 if any target is
  * below its threshold so it's usable as a gate.
  *
+ * BRO-7705: every outlet with a shared probe (lib/cookie-probes.js) is
+ * classified exactly as renew-cookies.js classifies it, WITH a zero-cookie
+ * control: the old NYT floor (1500) passed the 2,904-char anonymous page and
+ * the old FT probe passed FT's 2,312-char "Subscribe to read" page, so both
+ * read "logged in" with no session at all. Browser-only outlets (newyorker,
+ * thetimes, ft, telegraph) are measured inside their persistent profile
+ * (Mac only; takes the renew lock) against an anonymous-browser control.
+ *
  * Usage:
  *   node scripts/verify-cookie-login.js                 # all targets
- *   node scripts/verify-cookie-login.js --outlet=thestage,variety
+ *   node scripts/verify-cookie-login.js --outlets=thestage,variety   (--outlet= also works)
  *   node scripts/verify-cookie-login.js --json          # machine-readable
  */
 
@@ -37,26 +45,22 @@ const { COOKIE_PROBES, isBotChallenge } = require('./lib/cookie-probes');
 // Stable review URLs per subscription/paywalled outlet. minBody is the floor
 // below which we treat the result as a paywall/extractor failure — real theater
 // reviews run 1500+ chars; teasers/walls return a few hundred.
+// Outlets with a shared probe use it (fetch or in-profile browser, always
+// with a control). The rest keep a plain floor.
+const fromProbe = (outlet) => ({ outlet, url: COOKIE_PROBES[outlet].url, shared: true });
 const TARGETS = [
-  { outlet: 'nytimes',   url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html', minBody: 1500 },
+  fromProbe('nytimes'),
   { outlet: 'variety',   url: 'https://variety.com/2026/legit/reviews/rocky-horror-show-broadway-review-revival-lacks-shock-fun-luke-evans-1236728429/', minBody: 1500 },
-  // The Stage: the old probe (a 2023 A Doll's House article) is free-to-anonymous,
-  // so "✅ logged-in" was vacuous. The shared probe in lib/cookie-probes.js is a
-  // recent walled review and also requires the registration-wall marker to be
-  // ABSENT. knownLoggedOut stays until renew-cookies.js has had its first
-  // supervised live run (BRO-4183); report the true state but don't gate exit 1.
-  { outlet: 'thestage',  url: COOKIE_PROBES.thestage.url, minBody: COOKIE_PROBES.thestage.minBody, wallMarker: COOKIE_PROBES.thestage.wallMarker, knownLoggedOut: 'renewed by scripts/renew-cookies.js (BRO-4183) pending first supervised run' },
+  fromProbe('thestage'),
   // WSJ answers non-browser fetches with 401 or a one-paragraph preview even
   // for a live subscriber session (task #779); only recover-wsj-browser.js can
   // read it, so this plain-fetch probe cannot prove the login either way.
   { outlet: 'wsj',       url: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3', minBody: 1500, knownLoggedOut: 'plain fetch is always previewed; check with recover-wsj-browser.js --auth-only' },
-  { outlet: 'newyorker', url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain', minBody: 1500 },
-  { outlet: 'wapo',      url: 'https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/', minBody: 1500 },
-  { outlet: 'ft',        url: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a', minBody: 1200 },
-  // The Times has DataDome-style device verification that challenges plain-HTTPS
-  // fetches even with valid cookies; body extraction is unreliable. Probe the
-  // homepage and check for the logged-in marker instead.
-  { outlet: 'thetimes',  url: 'https://www.thetimes.com/', loggedInMarker: /my\s*account|sign\s*out/i },
+  fromProbe('newyorker'),
+  fromProbe('wapo'),
+  fromProbe('ft'),
+  fromProbe('thetimes'),
+  fromProbe('telegraph'),
 ];
 
 function getArg(name) {
@@ -64,9 +68,63 @@ function getArg(name) {
   return a ? a.split('=').slice(1).join('=') : null;
 }
 const JSON_OUT = process.argv.includes('--json');
-const onlyOutlets = (getArg('outlet') || '').split(',').map((s) => s.trim()).filter(Boolean);
+const onlyOutlets = (getArg('outlets') || getArg('outlet') || '').split(',').map((s) => s.trim()).filter(Boolean);
+
+const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
+
+async function plainAnon(url) {
+  const res = await fetch(url, { headers: { 'User-Agent': UA, Accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(30000) });
+  return res.text();
+}
+
+// The renew lock guards the persistent profiles; a launchd renew run holds
+// it for a few minutes at most, so wait rather than fail.
+let lockRelease = null;
+async function takeProfileLock() {
+  if (lockRelease) return true;
+  const { acquireLock, renewLockPath } = require('./lib/cookie-renew');
+  for (let i = 0; i < 40; i++) {
+    lockRelease = acquireLock(renewLockPath());
+    if (lockRelease) return true;
+    if (i === 0) console.error('waiting for the cookie-renew lock (a renew or recovery run has the profiles open)...');
+    await new Promise((r) => setTimeout(r, 15000));
+  }
+  return false;
+}
+
+async function sharedProbe(t) {
+  const p = COOKIE_PROBES[t.outlet];
+  const bprobe = require('./lib/cookie-browser-probe');
+  const base = { outlet: t.outlet, url: p.url, knownLoggedOut: null, error: null };
+  let withCookies, withoutCookies, where;
+  try {
+    if (p.browserOnly) {
+      if (process.platform !== 'darwin') return { ...base, ok: false, error: 'browser-only probe runs on the Mac Studio only' };
+      if (!(await takeProfileLock())) return { ...base, ok: false, error: 'cookie-renew lock busy for 10 min' };
+      const { launchOtpBrowser } = require('./lib/otp-login-helpers');
+      const { profileDir, profileNameFor } = require('./lib/cookie-renew');
+      const ctx = await launchOtpBrowser(profileDir(profileNameFor(t.outlet)), { headless: true, userAgent: bprobe.UA });
+      try { withCookies = await bprobe.loadProbe(ctx, p); } finally { await ctx.close().catch(() => {}); }
+      ({ control: withoutCookies } = await bprobe.classifyWithControl(p, withCookies));
+      where = 'in-profile browser';
+    } else {
+      const r = await fetchPage(p.url, { source: 'verify-cookie-login' });
+      const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : '');
+      withCookies = { html, body: bprobe.probeBody(p, html) };
+      const anon = await plainAnon(p.url);
+      withoutCookies = { html: anon, body: bprobe.probeBody(p, anon) };
+      where = 'fetch';
+    }
+  } catch (e) {
+    return { ...base, ok: false, error: e.message.split('\n')[0] };
+  }
+  const status = bprobe.classify(p, withCookies, withoutCookies);
+  const detail = `${where}: ${status}; body ${withCookies.body.length} vs ${withoutCookies.body.length} with no session (need ${p.minBody})`;
+  return { ...base, ok: status === 'logged-in', detail, botBlocked: status === 'error' && (isBotChallenge(withCookies.html) || isBotChallenge(withoutCookies.html)), vacuous: status === 'vacuous' };
+}
 
 async function probe(t) {
+  if (t.shared) return sharedProbe(t);
   let body = '';
   let htmlLen = 0;
   let html = '';
@@ -101,18 +159,25 @@ async function probe(t) {
 }
 
 (async () => {
+  const unknown = onlyOutlets.filter((o) => !TARGETS.some((t) => t.outlet === o));
+  if (unknown.length) {
+    // Never drop a requested outlet silently (telegraph used to vanish).
+    console.error(`Unknown outlet(s): ${unknown.join(', ')}. Known: ${TARGETS.map((t) => t.outlet).join(', ')}`);
+    process.exit(1);
+  }
   const targets = TARGETS.filter((t) => onlyOutlets.length === 0 || onlyOutlets.includes(t.outlet));
   const results = [];
   for (const t of targets) {
     results.push(await probe(t));
   }
+  if (lockRelease) lockRelease();
 
   if (JSON_OUT) {
     console.log(JSON.stringify(results, null, 2));
   } else {
     console.log('\n=== Cookie login verification (extracted body length) ===\n');
     for (const r of results) {
-      const mark = r.error ? '⚠️  ERROR     ' : r.ok ? '✅ logged-in  ' : r.botBlocked ? '🤖 BOT-CHECK ' : r.knownLoggedOut ? '⚠️  logged-out' : '❌ LOGGED-OUT ';
+      const mark = r.error ? '⚠️  ERROR     ' : r.ok ? '✅ logged-in  ' : r.botBlocked ? '🤖 BOT-CHECK ' : r.vacuous ? '⚠️  VACUOUS   ' : r.knownLoggedOut ? '⚠️  logged-out' : '❌ LOGGED-OUT ';
       const suffix = !r.ok && r.knownLoggedOut ? ` [expected: ${r.knownLoggedOut}]` : '';
       console.log(`${mark} ${r.outlet.padEnd(11)} ${r.error || r.detail}${suffix}`);
     }
@@ -125,8 +190,8 @@ async function probe(t) {
     }
     if (bad.length) {
       console.log(`❌ ${bad.length} outlet(s) not returning full text: ${bad.map((r) => r.outlet).join(', ')}`);
-      console.log('   → Log into those sites in Safari, then re-run:');
-      console.log('     python3 scripts/extract-safari-cookies.py --push');
+      console.log('   → Automatic renewal handles these (launchd com.broadwayscore.cookie-renew). Run it now with:');
+      console.log(`     node scripts/renew-cookies.js --outlets=${bad.map((r) => r.outlet).join(',')}`);
     } else if (!blocked.length) {
       console.log('✅ All probed outlets return full review text (known-logged-out outlets excluded).');
     }

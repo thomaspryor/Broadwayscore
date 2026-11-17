@@ -125,13 +125,14 @@ const RENEW_OUTLETS = {
   // 2026-11-17): a challenge is a needs-human stop like any other. Until
   // Keychain items exist the owner logs in once with --manual. localOnly:
   // CI can't get past Akamai, so the cookies serve the local gap driver.
-  // No auth cookie measured yet (the profile session is the source of truth).
+  // tmg_session / tmg_refresh carry the session (400d, measured 2026-11-17
+  // from the logged-in profile).
   telegraph: {
     fileKey: 'telegraph',
     cookieDomains: ['telegraph.co.uk'],
     loginUrl: 'https://secure.telegraph.co.uk/customer/secure/login/?redirectTo=https%3A%2F%2Fwww.telegraph.co.uk%2Ftheatre%2Fwhat-to-see%2Fromeo-and-juliet-review-sadie-sink-noah-jupe%2F',
     login: 'two-step-password',
-    authCookies: [],
+    authCookies: ['tmg_session', 'tmg_refresh'],
     ciConfirm: false,
     localOnly: true,
   },
