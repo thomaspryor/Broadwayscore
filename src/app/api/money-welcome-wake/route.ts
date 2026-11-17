@@ -47,7 +47,10 @@ export async function POST(_req: NextRequest) {
     // can never swallow the kick of a real sign-up. It only throttles the GitHub calls below.
     const cooldown = process.env.MONEY_WELCOME_WAKE_COOLDOWN_MS === undefined ? COOLDOWN_MS : Number(process.env.MONEY_WELCOME_WAKE_COOLDOWN_MS) || 0;
     if (Date.now() - lastActAt < cooldown) return ok({ ok: true, acted: false, reason: 'cooldown' });
+    const prevActAt = lastActAt;
     if (cooldown > 0) lastActAt = Date.now();
+    // A dispatch that fails must not leave the cooldown armed, or the next real sign-up's kick is swallowed.
+    const disarm = () => { lastActAt = prevActAt; };
 
     const list = (status: string) => fetch(`https://api.github.com/repos/${repo}/actions/workflows/${WORKFLOW}/runs?status=${status}&per_page=1`, {
       headers: gh, cache: 'no-store', signal: AbortSignal.timeout(8000),
@@ -64,9 +67,10 @@ export async function POST(_req: NextRequest) {
       cache: 'no-store',
       signal: AbortSignal.timeout(8000),
     });
-    if (!res.ok) { console.error('[money-welcome-wake] dispatch failed', res.status); return ok({ ok: false, reason: `github-${res.status}` }, 502); }
+    if (!res.ok) { disarm(); console.error('[money-welcome-wake] dispatch failed', res.status); return ok({ ok: false, reason: `github-${res.status}` }, 502); }
     return ok({ ok: true, acted: true });
   } catch (e) {
+    lastActAt = 0;
     console.error('[money-welcome-wake]', e instanceof Error ? e.message : e);
     return ok({ ok: false, reason: 'error' }, 502);
   }
