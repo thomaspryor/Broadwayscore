@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T19:10:27.461Z",
+  "generatedAt": "2026-11-17T20:09:05.649Z",
   "windowDays": 45,
   "showsScanned": 277,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 204.12214277777778,
+      "fileAgeHours": 205.11546388888888,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 181.58976694444445,
+      "nonTerminalAgeHours": 182.5670413888889,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 9,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 173.354065,
+      "fileAgeHours": 174.34733472222223,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 172.22532194444443,
+      "nonTerminalAgeHours": 173.20259638888888,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,32 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 68.41052694444444,
+      "fileAgeHours": 69.40375305555555,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 67.16030972222222,
+      "nonTerminalAgeHours": 68.13758416666667,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "theater-of-the-mind-regional-2026",
+      "title": "Theater of the Mind",
+      "openingDate": "2026-11-03",
+      "file": "chicagotribune--unknown.json",
+      "outletId": "chicagotribune",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.chicagotribune.com/2026/11/17/chicago-theater-report-david-byrne/",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=theater-of-the-mind-regional-2026 --url=https://www.chicagotribune.com/2026/11/17/chicago-theater-report-david-byrne/ --outlet=chicagotribune   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-17T19:37:40.392Z",
+      "fileAgeHours": 0.5236772222222222,
+      "gapSeenAt": "2026-11-17T20:09:05.649Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     },
     {
@@ -81,9 +104,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=bat-boy-regional-2026 --url=https://www.broadwayworld.com/boston/article/Review-An-Uneven-Flight-for-BAT-BOY-THE-MUSICAL-at-Umbrella-Arts-20261013 --outlet=broadwayworld --critic=\"Richard Sasanow\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-17T18:08:49.841Z",
-      "fileAgeHours": 1.0271155555555556,
+      "fileAgeHours": 2.0043866666666665,
       "gapSeenAt": "2026-11-17T19:10:27.461Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 0.9772744444444444,
       "needsManualRecovery": false
     }
   ],

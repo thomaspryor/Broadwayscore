@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T19:10:50.856Z",
+  "generatedAt": "2026-11-17T20:09:28.212Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -42,6 +42,11 @@
       "id": "now-you-see-me-live-2026",
       "title": "Now You See Me Live",
       "openingDate": "2026-11-11"
+    },
+    {
+      "id": "blue-man-group-a-new-holiday-surprise-2026",
+      "title": "Blue Man Group “A New Holiday Surprise”",
+      "openingDate": "2026-11-17"
     },
     {
       "id": "act-of-god-off-west-end-2026",
@@ -141,10 +146,6 @@
   ],
   "skipped": [
     {
-      "showId": "blue-man-group-a-new-holiday-surprise-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "its-a-wonderful-life-a-live-radio-play-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -168,64 +169,42 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "one-minute-critic",
-      "error": "HTTP 403 for https://1minutecritic.com/feed"
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
     },
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
-      "outletId": "south-london",
-      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+      "outletId": "exeunt-magazine",
+      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
     },
     {
-      "outletId": "theatre-vibe",
-      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
+      "outletId": "fringereview",
+      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     },
     {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
     },
     {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 859,
-  "matchedGaps": 2,
-  "possibleGaps": 4,
+  "itemsScanned": 736,
+  "matchedGaps": 0,
+  "possibleGaps": 3,
   "gaps": [
-    {
-      "showId": "jenufa-off-broadway-2026",
-      "title": "Jenůfa",
-      "level": "matched",
-      "outletId": "new-york-classical-review",
-      "url": "https://newyorkclassicalreview.com/2026/11/grigorians-artistry-fully-equal-to-janaceks-masterful-jenufa-at-the-met/",
-      "headline": "Grigorian&#8217;s artistry fully equal to Janáček&#8217;s masterful &#8220;Jenůfa&#8221; at the Met",
-      "publishDate": "2026-11-17"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "level": "matched",
-      "outletId": "nypost",
-      "url": "https://nypost.com/2026/11/17/entertainment/the-fantasticks-review-worlds-longest-running-musical-returns-with-a-twist/",
-      "headline": "&#8216;The Fantasticks&#8217; review: World&#8217;s longest-running musical returns — with a twist",
-      "publishDate": "2026-11-17"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
@@ -252,15 +231,6 @@
       "url": "https://northwestend.com/no-woman-is-an-island-traverse-theatre/",
       "headline": "No Woman Is An Island &#8211; Traverse Theatre",
       "publishDate": "2026-11-17"
-    },
-    {
-      "showId": "the-wash-regional-2026",
-      "title": "The Wash",
-      "level": "possible",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/09/the-wash-front-porch-arts-collective/",
-      "headline": "Theater Review: THE WASH (Front Porch Arts Collective / Boston)",
-      "publishDate": "2026-11-09"
     }
   ]
 }
