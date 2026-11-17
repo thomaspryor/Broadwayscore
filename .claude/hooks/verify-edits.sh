@@ -147,14 +147,14 @@ def _ve_allowed(code):
 # 'block' arms early. STALL_GATE_NOW is the test clock.
 _STALL_ARM_AFTER = '2026-11-16T00:00:00Z'
 
-def _stall_gate_blocks(envvar):
+def _stall_gate_blocks(envvar, arm_after=None):
     v = os.environ.get(envvar, '')
     if v in ('block', 'advisory', 'off'):
         return v == 'block'
     if v:
         return False  # unknown value: stay advisory, never silently arm
     import time
-    return (os.environ.get('STALL_GATE_NOW') or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())) >= _STALL_ARM_AFTER
+    return (os.environ.get('STALL_GATE_NOW') or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())) >= (arm_after or _STALL_ARM_AFTER)
 
 def _stall_advisory_post(kind, detail):
     # Cloud: ~/.claude/state dies with the container (BRO-7190), so the hit also goes to a
@@ -1022,6 +1022,12 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # BRO-7701: per ref. One boolean let the first finished wait clear every later push
         # (a worker waited on land/a, pushed land/b, claimed Done while b was in flight).
         _land_unchecked = set()    # land refs pushed and not yet followed to a verdict
+        _land_refused = set()      # refs whose latest verdict is REFUSED: followed, but the work did not land
+        def _land_verdict(ref, refused):  # a later LANDED of any ref clears refusals: the fix lands under a new ref name
+            if refused:
+                _land_refused.add(ref)
+            else:
+                _land_refused.clear()
         # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
@@ -1075,7 +1081,9 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                     _exm = re.search(r'exit code (\d+)', _mn.group(1))
                     if _idm and _exm and _exm.group(1) in ('0', '1', '4'):
                         for _k in [k for k in _wfl_pending if k.split('#', 1)[0] == _idm.group(1)]:
-                            _land_unchecked.discard(_wfl_pending.pop(_k))
+                            _r = _wfl_pending.pop(_k)
+                            _land_unchecked.discard(_r)
+                            _land_verdict(_r, _exm.group(1) == '1')
                 continue
             if _kind != 'tool':
                 continue
@@ -1100,6 +1108,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
                 _add, _del = _push_land_refs(_inp.get('command') or '')
                 _land_unchecked -= _del
+                _land_refused -= _del | _add
                 if _add:
                     _landed_pushed = True
                     _pres = tool_results_by_id.get(_tid, '') or ''
@@ -1135,10 +1144,12 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                         for _vm in _wfl_verdict_re.finditer(_res):
                             if _vm.group(1) in _mine:
                                 _land_unchecked.discard(_vm.group(1))
+                                _land_verdict(_vm.group(1), 'REFUSED' in _vm.group(0))
                 elif not _wms and _wfl_pending and (_name == 'Read' or (_name == 'Bash' and '.output' in (_inp.get('command') or ''))):
                     for _vm in _wfl_verdict_re.finditer(_res):  # a later read of a background waiter's stamped line
                         if _vm.group(1) in _wfl_pending.values():
                             _land_unchecked.discard(_vm.group(1))
+                            _land_verdict(_vm.group(1), 'REFUSED' in _vm.group(0))
         _msg_ok = bool(_last_msg) and 'NO-VERIFY:' not in _last_msg
         _stripped_owner = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
         # OWNERMERGE (2026-09-27): the owner never merges — this repo lands via
@@ -1167,6 +1178,18 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             if not _ve_seen("LANDUNCHECKED") and _ve_allowed("LANDUNCHECKED"):
                 print("Unchecked land push(es): " + ", ".join(sorted(_land_unchecked)), file=sys.stderr)
             _ve_block("LANDUNCHECKED")
+        # BRO-7701: a REFUSED verdict is followed but not landed. 74 refused land refs sat on origin
+        # (prune job, 2026-11-17) while sessions closed SAFE; the closing must say it did not land.
+        if (_msg_ok and _land_refused and not _land_unchecked and not _merged_pr
+                and _SAFE_RE.match(_closing()[1])
+                and not re.search(r'refus|did not land|didn.t land|not landed|abandon|retir', _last_msg, re.I)):
+            # New gate (CLAUDE.md 19): advisory until 2026-11-24, then blocks. LANDREFUSED_GATE_MODE=block|advisory|off.
+            if _stall_gate_blocks('LANDREFUSED_GATE_MODE', '2026-11-24T00:00:00Z'):
+                if not _ve_seen("LANDREFUSED") and _ve_allowed("LANDREFUSED"):
+                    print("Refused landing(s) not reported: " + ", ".join(sorted(_land_refused)), file=sys.stderr)
+                _ve_block("LANDREFUSED")
+            elif os.environ.get('LANDREFUSED_GATE_MODE') != 'off':
+                _stall_advisory_post('LANDREFUSED', ', '.join(sorted(_land_refused)))
         if _landed_pushed:
             _merged_pr = True
         if _opened_pr and not _merged_pr and _msg_ok:
@@ -2612,6 +2635,10 @@ if [[ "$result" == "OWNERMERGE" ]]; then
 fi
 if [[ "$result" == "LANDUNCHECKED" ]]; then
   echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO ARCHIVE without checking the Land run of every land push (named above; each push needs its own finished wait). land.yml can refuse a branch. Wait for it: node scripts/lib/wait-for-land.js land/<name> 60 --prod as a background Bash (timeout 7200000), and report LANDED or the refusal once it finishes (or check the run with mcp__github__actions_list / actions_get on land.yml). Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+if [[ "$result" == "LANDREFUSED" ]]; then
+  echo "🛑 BLOCKED: a land push above was REFUSED and never landed afterwards, but you claim SAFE TO ARCHIVE without saying so. Fix on top of the refused commit and land again (a new land/<name> ref), then wait for LANDED. If you are deliberately dropping it, say in the closing message that it was refused and why. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 if [[ "$result" == "PRUNMERGED" ]]; then

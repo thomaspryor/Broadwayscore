@@ -160,7 +160,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
       // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', LANDREFUSED_GATE_MODE: 'off', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -931,6 +931,27 @@ for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
     else { assertBlocked(r, label); assert.match(r.stderr, /wait-for-land\.js/, `got: ${r.stderr.slice(0, 300)}`); }
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
+}
+
+// BRO-7701: a REFUSED verdict is followed but not landed. Advisory until 2026-11-24 (CLAUDE.md 19).
+const REFUSED_CASES = [
+  ['refused, closing says nothing', [LAND_PUSH, WFL_FG_REFUSED], 'Landed via land.yml.', false],
+  ['refused, closing reports it', [LAND_PUSH, WFL_FG_REFUSED], 'land.yml refused it; dropping this change because main already has the fix.', true],
+  ['refused, fixed and landed under a new ref', [LAND_PUSH, WFL_FG_REFUSED, LAND_PUSH_B, WFL_FG_B], 'Landed via land.yml.', true],
+  ['refused then re-pushed same ref and landed', [LAND_PUSH, WFL_FG_REFUSED, again(LAND_PUSH), WFL_FG_LANDED], 'Landed via land.yml.', true],
+  ['background waiter exit 1, closing says nothing', [LAND_PUSH, WFL_BG, wflDone(1)], 'Landed via land.yml.', false],
+];
+for (const [label, calls, prose, allowed] of REFUSED_CASES) {
+  for (const mode of ['block', 'advisory']) {
+    test(`BRO-7701 LANDREFUSED (${mode}): ${label} → ${allowed || mode === 'advisory' ? 'ALLOWED' : 'BLOCKED'}`, skipNoRepoHook, () => {
+      const dir = makeTmpDir('land-refused');
+      const transcript = writeTranscript(dir, [CREATE_PR, ...calls, LINEAR_CLOSEOUT_DONE]);
+      const r = runHook(transcript, `${prose}\n\nSAFE TO ARCHIVE — done.`, { LANDREFUSED_GATE_MODE: mode, LINEAR_API_KEY: '' }); // no advisory comment from tests
+      if (allowed || mode === 'advisory') assertAllowed(r, label);
+      else { assertBlocked(r, label); assert.match(r.stderr, /REFUSED/, `got: ${r.stderr.slice(0, 300)}`); }
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    });
+  }
 }
 
 test('land/** match is anchored: a branch named foo-land/x is not a landing', skipNoRepoHook, () => {
