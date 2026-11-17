@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T13:45:33.239Z",
+  "generatedAt": "2026-11-17T15:11:37.837Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,7 +7,6 @@
   "clean": 330,
   "defective": 1,
   "byType": {
-    "missing-from-prod": 1,
     "score-drift": 1
   },
   "shows": [
@@ -18,19 +17,13 @@
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: nydailynews"
-        },
-        {
           "type": "score-drift",
-          "detail": "deployed cs 79.08 vs local 79.22 (Δ0.14)"
+          "detail": "deployed cs 79.25 vs local 79.08 (Δ0.17)"
         }
       ],
-      "missingFromProd": [
-        "nydailynews"
-      ],
-      "localCount": 21,
-      "deployedCount": 20,
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 21,
       "firstDefectAt": "2026-11-17T13:45:22.649Z"
     }
   ],
