@@ -1,64 +1,13 @@
 {
-  "generatedAt": "2026-11-17T16:48:05.573Z",
+  "generatedAt": "2026-11-17T17:46:19.480Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 330,
-  "clean": 327,
-  "defective": 3,
-  "byType": {
-    "score-drift": 3
-  },
-  "shows": [
-    {
-      "showId": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "openingDate": "2026-11-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.69 vs local 79.25 (Δ0.56)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-17T13:45:22.649Z"
-    },
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "openingDate": "2026-11-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 87.49 vs local 87.7 (Δ0.21)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-11-17T16:48:01.181Z"
-    },
-    {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "title": "Julius Caesar",
-      "openingDate": "2026-11-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.41 vs local 69.52 (Δ3.89)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-17T16:48:01.181Z"
-    }
-  ],
+  "checked": 342,
+  "clean": 342,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

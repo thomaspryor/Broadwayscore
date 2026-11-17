@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-17T16:44:57.695Z",
+  "generatedAt": "2026-11-17T17:46:02.738Z",
   "windowDays": 45,
-  "showsScanned": 255,
+  "showsScanned": 266,
   "gaps": [
     {
       "showId": "msblackforpresident-off-broadway-2026",
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 201.7130625,
+      "fileAgeHours": 202.73126083333332,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 179.16483194444444,
+      "nonTerminalAgeHours": 180.18289944444444,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 9,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 170.94499527777776,
+      "fileAgeHours": 171.9631288888889,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 169.80038694444445,
+      "nonTerminalAgeHours": 170.81845444444446,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the times-uk review for passing-strange-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=passing-strange-regional-2026 --url=<URL> --outlet=times-uk --critic=\"Clive Davis\"",
       "firstSeen": "2026-11-14T22:44:52.109Z",
-      "fileAgeHours": 66.00146333333333,
+      "fileAgeHours": 67.01955305555556,
       "gapSeenAt": "2026-11-15T00:00:50.346Z",
-      "nonTerminalAgeHours": 64.73537472222222,
+      "nonTerminalAgeHours": 65.75344222222222,
       "needsManualRecovery": false
     }
   ],

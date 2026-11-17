@@ -1393,20 +1393,6 @@
     "queuedAt": "2026-11-17T15:57:15.557Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T16:44:57.696Z"
-  },
-  {
     "conditionKey": "land:land/bro-7689-board-dated-past",
     "title": "Landing blocked: unit-tests-node red on land/bro-7689-board-dated-past",
     "description": "land.yml did not land land/bro-7689-board-dated-past: the unit-tests-node gate went red at 315e27e5f5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44118381553",
@@ -1500,6 +1486,20 @@
     "queuedAt": "2026-11-17T17:10:49.460Z"
   },
   {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T17:46:02.739Z"
+  },
+  {
     "conditionKey": "corpus-drift:duplicate-shows",
     "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff) (still open — BRO-6280)",
     "description": "Still firing after 42 notifications since it was filed. Tracked at BRO-6280.\n\ncheck-corpus-drift.js audit \"duplicate-shows\" (node scripts/audit-duplicate-shows.js --strict --include-closed) has been drifting. Latest output:\n\nFound 7 duplicate-show cluster(s), 7 pair(s) (baselined: 3, new: 4):\n\n  [shared-venue-token:soho] lost in del valle|2026\n    lost-in-del-valle-off-broadway-2026  (SoHo Playhouse, 5 review files)\n    lost-in-del-valle-return-off-broadway-2026  (SoHo Playhouse, 5 review files)\n  [shared-venue-token:marjorie,deane,little] going bacharach|2026\n    going-bacharach-the-songs-of-an-icon-off-broadway-2026  (The Marjorie S. Deane Little Theater, 12 review files)\n    going-bacharach-the-songs-of-an-icon-return-off-broadway-2026  (The Marjorie S. Deane Little Theater, 1 review files)\n  [shared-venue-token:king,head] america the beautiful|2026\n    america-the-beautiful-chapter-2-off-west-end-2026  (King's Head Theatre, 1 review files)\n    america-the-beautiful-chapter-1-off-west-end-2026  (King's Head Theatre, 5 review files)\n  [shared-venue-token:san] north by northwest|2026\n    north-by-northwest-regional-2026  (American Conservatory Theater (Toni Rembe Theater), San Francisco, CA, 12 review files)\n    north-by-northwest-old-regional-2026  (The Old Globe, San Diego, CA, 11 review files)\n  [shared-venue-token:shakespeare] hamlet|2025\n    hamlet-royal-shakespeare-regional-2025  (Royal Shakespeare Theatre, Stratford-upon-Avon, 3 review files)\n    hamlet-regional-2025  (Chicago Shakespeare Theater, Chicago, IL, 7 review files)\n  [shared-venue-token:chicago] topdog underdog|2024\n    topdog-underdog-regional-2024-windy-city-playhouse  (Windy City Playhouse, Chicago, IL, 10 review files)\n    topdog-underdog-regional-2024  (Filament Theatre, Chicago, IL, 3 review files)\n  [shared-venue-token:chicago] richard iii|2022\n    richard-iii-regional-2022-2  (The Edge Theatre, Chicago, IL, 6 review files)\n    richard-iii-regional-2022  (Factory Theater, Chicago, IL, 5 review files)\n\nDetail written to data/audit/duplicate-shows.json\n\n⚠️  NEW duplicate pair(s) not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/duplicate-shows-baseline.json):\n  [shared-venue-token:san] north by northwest|2026: north-by-northwest-regional-2026 <-> north-by-northwest-old-regional-2026\n  [shared-venue-token:shakespeare] hamlet|2025: hamlet-royal-shakespeare-regional-2025 <-> hamlet-regional-2025\n  [shared-venue-token:chicago] topdog underdog|2024: topdog-underdog-regional-2024-windy-city-playhouse <-> topdog-underdog-regional-2024\n  [shared-venue-token:chicago] richard iii|2022: richard-iii-regional-2022-2 <-> richard-iii-regional-2022\n\nIf this is deliberate progress (an intentional carve-out for a genuinely distinct\nproduction), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline",
@@ -1512,20 +1512,6 @@
     "tracked": "BRO-6280",
     "fields": [],
     "queuedAt": "2026-11-17T17:39:30.845Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-17.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T17:39:31.591Z"
   },
   {
     "conditionKey": "dispatch-flow-dead",
