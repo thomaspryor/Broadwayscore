@@ -628,11 +628,15 @@ function probeLedgerRow(rec, { runId = null, ts = null } = {}) {
  * URL_FIND order: recent shows first, then the highest-tier outlet (tier 1
  * best; unknown last), then the newest show, then a stable key. Pure.
  */
+const { isMajorFulltextOutlet } = require('./outlet-fulltext');
 function urlFindPriority(tierOf) {
   const t = (c) => { const n = Number(tierOf(c.outletId)); return Number.isFinite(n) && n > 0 ? n : 9; };
   const d = (c) => { const x = Date.parse(c.showDate || ''); return Number.isFinite(x) ? x : 0; };
   return (a, b) => {
     if ((a.recency === 'recent') !== (b.recency === 'recent')) return a.recency === 'recent' ? -1 : 1;
+    // BRO-7702: the major outlets under a full-text floor take the paid slots first.
+    const ma = isMajorFulltextOutlet(a.outletId); const mb = isMajorFulltextOutlet(b.outletId);
+    if (ma !== mb) return ma ? -1 : 1;
     if (t(a) !== t(b)) return t(a) - t(b);
     if (d(a) !== d(b)) return d(b) - d(a);
     return String(a.reviewKey).localeCompare(String(b.reviewKey));

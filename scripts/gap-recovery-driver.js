@@ -18,6 +18,7 @@
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=thestage  # live
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=daily-mail,mail-on-sunday --class=NO_URL --strategy=URL_REDISCOVER
  *   node scripts/gap-recovery-driver.js --reconcile [--dry-run]        # reopen 'recovered' rows whose recovered text is no longer on disk
+ *   node scripts/gap-recovery-driver.js --retry-pending                 # push earlier checkpoints that could not be pushed, record their landings (BRO-7702)
  *
  * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only  --historic-only
  *          --verbose (dry run: one line per candidate)  --json=PATH (dry run: plan to a file outside the repo)
@@ -56,6 +57,7 @@ const list = (v) => (v ? new Set(v.split(',').map((s) => s.trim()).filter(Boolea
 const OPTS = {
   dryRun: flag('dry-run'),
   reconcile: flag('reconcile'),
+  retryPending: flag('retry-pending'),
   verbose: flag('verbose'),
   limit: parseInt(arg('limit', '0'), 10) || 0,
   outlets: list(arg('outlet')),
@@ -214,6 +216,39 @@ async function runReconcile({ dir, ledgerPath }) {
   return reopen;
 }
 
+/**
+ * BRO-7702: the nightly's second push attempt. A checkpoint push that fails
+ * (the shared clone can sit hundreds of commits behind origin, or another
+ * writer holds the push mutex) is journaled in the pending file and was only
+ * retried by the NEXT night, so the night ended 'failed' and its accepts
+ * landed a day late. This lands them now and records the recovered rows.
+ */
+async function runRetryPending({ dir, ledgerPath }) {
+  const { retryPendingPushes } = require('./lib/review-texts-checkpoint');
+  SUMMARY.mode = 'retry_pending';
+  const earlier = L.pendingPushInfo(L.readRows(ledgerPath));
+  let landedN = 0;
+  const onLanded = (landed) => {
+    const key = L.reviewKeyOf(landed.path);
+    const info = (landed.meta && landed.meta.source === 'gap-recovery-driver' && landed.meta.attempts && landed.meta.attempts[key]) || earlier.get(key);
+    if (!info) return;
+    L.appendRows([L.recoveredRowFromLanding(landed, info)], ledgerPath);
+    landedN++;
+  };
+  try {
+    const pend = retryPendingPushes({ repoDir: dir, onLanded });
+    console.log(`retry-pending: ${pend.entries} pending checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${pend.notLanded.length} not landed`);
+    SUMMARY.landed = landedN;
+    SUMMARY.pushFailed = pend.notLanded.length > 0;
+    return pend.notLanded.length ? 1 : 0;
+  } catch (e) {
+    SUMMARY.pushFailed = true;
+    SUMMARY.error = String(e.message).slice(0, 300);
+    if (e.output) console.error(`retry-pending push output (tail):\n${String(e.output).slice(-1500)}`);
+    throw e;
+  }
+}
+
 async function main() {
   // Manual runs get the same keys the nightly sources from .env (fills only unset vars; no .env in CI).
   require('./lib/load-env').loadEnv(ROOT);
@@ -227,6 +262,7 @@ async function main() {
   // Only a run that holds the lock publishes at exit (a refused run wrote nothing).
   RUN_LEDGER = ledgerPath;
   if (OPTS.reconcile) { await runReconcile({ dir, ledgerPath }); return 0; }
+  if (OPTS.retryPending) return runRetryPending({ dir, ledgerPath });
 
   const showsRaw = readJson(showsPath());
   const shows = new Map((Array.isArray(showsRaw) ? showsRaw : showsRaw.shows || []).filter((s) => s && s.id).map((s) => [s.id, s]));
@@ -554,7 +590,11 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   }
 
   Object.assign(SUMMARY, { mode: 'live', attempted: stats.attempted, accepted: stats.accepted, landed: landedKeys.size, byStrategy: stats.byStrategy, runId: RUN_ID });
-  if (runError) { SUMMARY.error = String(runError.message).slice(0, 300); SUMMARY.pushFailed = runError instanceof ReviewTextsPushError; }
+  if (runError) {
+    SUMMARY.error = String(runError.message).slice(0, 300); SUMMARY.pushFailed = runError instanceof ReviewTextsPushError;
+    // BRO-7702: the git/push-with-retry output was captured and dropped, so a failed night said only "exit 1".
+    if (runError.output) { SUMMARY.pushOutputTail = String(runError.output).slice(-800); }
+  }
   console.log('\n' + '='.repeat(60));
   console.log(`Run ${RUN_ID}: attempted ${stats.attempted}, accepted ${stats.accepted}, landed (recovered rows) ${landedKeys.size}`);
   for (const [s, b] of Object.entries(stats.byStrategy)) {
@@ -562,7 +602,10 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   }
   try { console.log(`  live SERP queries this run: ${require('./lib/url-discovery').getSerpQueryCount()}`); } catch { /* not loaded */ }
   if (runError) {
-    if (runError instanceof ReviewTextsPushError) console.error(`PUSH FAILED: ${runError.message} (pending_push rows stay; next run retries before new work)`);
+    if (runError instanceof ReviewTextsPushError) {
+      console.error(`PUSH FAILED: ${runError.message} (pending_push rows stay; next run retries before new work)`);
+      if (runError.output) console.error(`push output (tail):\n${String(runError.output).slice(-1500)}`);
+    }
     throw runError;
   }
   return 0;

@@ -154,6 +154,17 @@ function main() {
       return finishRow(N.buildNightlyRow({ ...base, status: 'busy' }), nightlyPath, ledgerPath);
     }
   }
+  // BRO-7702: a push failure is retried once more tonight (the plan step below
+  // gives the remote ~10 minutes to settle) instead of failing the night.
+  let pushRetried = null;
+  if (!DRY && runExit === 1 && summary && summary.pushFailed) {
+    const retrySum = path.join(STATE_DIR, 'retry-pending-summary.json');
+    try { fs.unlinkSync(retrySum); } catch { /* none */ }
+    const retryExit = driver(['--retry-pending', `--summary=${retrySum}`], env, 20);
+    pushRetried = { exit: retryExit, landed: (readJsonSafe(retrySum) || {}).landed || 0 };
+    log(`push retry: exit ${retryExit}, ${pushRetried.landed} review(s) landed`);
+    if (retryExit === 0) { runExit = 0; summary.pushFailed = false; summary.pushRetried = pushRetried; }
+  }
   const planExit = driver(['--dry-run', `--json=${planPath}`], env, 20);
   const plan = readJsonSafe(planPath);
   const counts = plan ? N.planCounts(plan.candidates) : null;
