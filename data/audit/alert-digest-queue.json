@@ -1089,20 +1089,6 @@
     "queuedAt": "2026-11-17T07:18:45.196Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-17T10:13:26.608Z"
-  },
-  {
     "conditionKey": "feedback-outcomes:2026-11-17T02:54:55.352846+00:00",
     "title": "Feedback: 1 of 1 needs you",
     "description": "1 message from users came in. 1 of them stalled and needs a person.\n\n13 Going on 30 - Toronto run coming up  — The site deliberately did not act on this: title \"13 Going on 30 - Toronto run coming up\" matched 2 shows (13 Going on 30, opened 2026, 13 Going on 30, opened 2025); ambiguous — needs manual review to tell whether this title is already in the catalog. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Hi, there is a new show 13 Going on 30 which played a short London run and now will go to Toronto at Mirvish from December 1, 2026  - January 24, 2027 if you can add it that'd be great. It will star Lucie Jones \"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1190",
@@ -1212,6 +1198,20 @@
     "tracked": "BRO-7661",
     "fields": [],
     "queuedAt": "2026-11-17T11:15:27.061Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-17.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T11:50:45.365Z"
   },
   {
     "conditionKey": "watchdog-park:linear:BRO-7512",
