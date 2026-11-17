@@ -5,6 +5,8 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+const HAVE_DATA = fs.existsSync(new URL('../data/shows.json', import.meta.url)); // gitignored; absent on Dependabot and bare checkouts
+
 const require = createRequire(import.meta.url);
 const { checkFraming, assertFraming, LEGACY } = require('./video-proto/script-rules.js');
 // Poster art is gitignored (not in CI), and topList refuses a list without it; the list itself is real data, the art check is skipped.
@@ -23,7 +25,7 @@ const SHOW = process.env.FRAMING_TEST_SHOW || 'maybe-happy-ending-2024';
 const gen = async (fmt, key) => { vo.setHistory({}); return vo.plan(fmt, key, cache); };
 
 for (const fmt of ['verdict', 'reveal', 'every']) {
-  test(`${fmt} generator ends on an open question in voice and caption`, async () => {
+  test(`${fmt} generator ends on an open question in voice and caption`, { skip: !HAVE_DATA && 'no core data here' }, async () => {
     const p = await gen(fmt, SHOW);
     assert.deepStrictEqual(checkFraming(p), []);
     assert(/\?$/.test(p.prompt.trim()), p.prompt.slice(-80));
@@ -31,17 +33,17 @@ for (const fmt of ['verdict', 'reveal', 'every']) {
     assert(p.prompt.indexOf('Broadway Scorecard') < p.prompt.lastIndexOf('?'), 'question comes after the sign-off');
   });
 }
-test('top5 generator ends on an open question in voice and caption', async () => {
+test('top5 generator ends on an open question in voice and caption', { skip: !HAVE_DATA && 'no core data here' }, async () => {
   const p = await gen('top5', 'now');
   assert.deepStrictEqual(checkFraming(p), []);
   assert(/\?$/.test(p.prompt.trim()));
 });
-test('every wording rotation always passes the rule', async () => {
-  for (const salt of ['a', 'b', 'c', 'd', 'e', 'f']) { process.env.VO_SALT = salt; for (const fmt of ['verdict', 'reveal', 'every']) assert.deepStrictEqual(checkFraming(await gen(fmt, SHOW)), [], `${fmt} ${salt}`); }
-  delete process.env.VO_SALT;
+test('every wording rotation always passes the rule', { skip: !HAVE_DATA && 'no core data here' }, async () => {
+  try { for (const salt of ['a', 'b', 'c', 'd', 'e', 'f']) { process.env.VO_SALT = salt; for (const fmt of ['verdict', 'reveal', 'every']) assert.deepStrictEqual(checkFraming(await gen(fmt, SHOW)), [], `${fmt} ${salt}`); } }
+  finally { delete process.env.VO_SALT; }
 });
-test('spoken score words and captioned digits count as the same question', async () => {
-  const p = await gen('reveal', SHOW); process.env.VO_SALT = '';
+test('spoken score words and captioned digits count as the same question', { skip: !HAVE_DATA && 'no core data here' }, async () => {
+  const p = await gen('reveal', SHOW);
   const q = { fmt: 'reveal', key: 'x', prompt: 'Great. Is eighty-six fair?', caption: 'Hi.\n\nIs 86 fair?' };
   assert.deepStrictEqual(checkFraming(q), []);
   assert(p.caption.length > 0);
@@ -86,9 +88,13 @@ test('render.js wires the rule in before any render', () => {
 test('a quoted sentence does not hide text and a quoted question still ends the script', () => {
   assert.deepStrictEqual(checkFraming({ fmt: 'duo', key: 'x', prompt: 'NYT said, "It soars." Then more. Who wins? Did you guess "right?"', caption: 'Did you guess "right?"' }), []);
 });
-test('a copy-review rewrite that drops the closing question is rejected', async () => {
+test('a copy-review rewrite that drops the closing question is rejected', { skip: !HAVE_DATA && 'no core data here' }, async () => {
   const cr = require('./video-proto/copyreview.js'); const p = await gen('every', SHOW);
   assert(cr.keepsFacts(p, 'caption', p.caption) === null, 'original passes');
   const dropped = p.caption.replace(/\n\n[^\n]*\?\n\n/, '\n\n');
   assert(cr.keepsFacts(p, 'caption', dropped) !== null, 'caption keep list now includes the question');
+});
+test('every closing-question line in every rotation is a question, so any pick passes the rule', () => {
+  for (const slot of ['askVerdict', 'askReveal', 'askEvery', 'askTop5']) for (const l of vo.LINES[slot])
+    assert(/\?$/.test(l), `${slot}: "${l}" must end on a question mark`);
 });
