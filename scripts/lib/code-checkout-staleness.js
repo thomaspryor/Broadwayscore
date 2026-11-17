@@ -69,6 +69,25 @@ function getBehindAheadCounts(repoDir, remoteRef = 'refs/remotes/origin/main', e
   };
 }
 
+/**
+ * Cloud only. A session branch (claude/<name>) the startup sync fast-forwarded to origin/main holds only commits
+ * that are already on origin/main, but it has no upstream, so the Stop hook counts them all as "N unpushed
+ * commit(s)" and demands a push (64 of them on 2026-11-16, BRO-7628 session). When the branch has no upstream and
+ * nothing local (HEAD is an ancestor of origin/main), track origin/main: the unpushed count is then 0, and real
+ * commits made later still show as ahead. Fail-open; -> true when it set the upstream.
+ */
+function trackMainWhenNothingLocal(repoDir, execFn = execFileSync) {
+  const g = (args) => String(execFn('git', ['-C', repoDir, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })).trim();
+  try {
+    const branch = g(['symbolic-ref', '--short', '-q', 'HEAD']);
+    if (!branch || branch === 'main') return false;
+    try { g(['rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{upstream}']); return false; } catch { /* no upstream: carry on */ }
+    g(['merge-base', '--is-ancestor', 'HEAD', REMOTE_MAIN]);
+    g(['branch', '--set-upstream-to=origin/main', branch]);
+    return true;
+  } catch { return false; }
+}
+
 // BRO-3006: local main more than this many commits ahead of origin/main is an
 // unpushed backlog. A few is a session mid-push; 86 (BRO-2955) sat unnoticed.
 const UNPUSHED_BACKLOG_THRESHOLD = 5;
@@ -372,6 +391,7 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
     const changed = new Set(git(['diff', '--name-only', from, to]).split('\n'));
     changedWatched = SYNC_WATCHED_FILES.filter((f) => changed.has(f));
   } catch { /* informational only */ }
+  trackMainWhenNothingLocal(repoDir, execFn);
   return { synced: true, reason: alreadyLanded ? 'already landed; reset with --keep' : 'fast-forwarded', ...(alreadyLanded ? { alreadyLanded: true } : {}), from, to, count: behind, changedWatched, reconciled: healed ? (healed.reverted || 0) + (healed.removed || 0) : 0 };
 }
 
@@ -562,6 +582,7 @@ module.exports = {
   registeredHookScripts,
   reconcileInterruptedFastForward,
   trySyncCodeCheckout,
+  trackMainWhenNothingLocal,
   formatCodeCheckoutSyncMessage,
   backgroundCatchUp,
   startBackgroundSync,

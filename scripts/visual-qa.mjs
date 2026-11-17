@@ -21,10 +21,11 @@
 // See sprint-plan-visual-qa-gate.md and .claude/skills/visual-qa/skill.md.
 
 import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
-import { execSync } from 'node:child_process';
+import { execSync, execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
 import { computeContentHash, generateRunId, VERDICT_SCHEMA_VERSION } from './lib/verdict-hash.mjs';
 import { parseDemoFeatures, detectFlagGatedChangedFiles } from './lib/visual-qa-flag-awareness.mjs';
 import { rolePromptHeader, parseVerdictJson } from './lib/visual-qa-prompt.mjs';
@@ -801,6 +802,12 @@ Then re-run this command.`);
     runId: generateRunId(),
     contentHash: null, // filled in next
   };
+  // Bound into contentHash. Skipped when UI files are dirty: the screenshots show the working tree, the id covers committed HEAD.
+  try {
+    const D = createRequire(import.meta.url)('./lib/visual-approval-durable.js');
+    const dirty = execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).split('\n').some((l) => D.UI_RE.test(l.slice(3)));
+    if (!dirty) verdict.uiPatchId = D.uiPatchId(process.cwd());
+  } catch { /* optional */ }
   verdict.contentHash = computeContentHash(verdict);
 
   const verdictPath = join(outDir, 'verdict.json');
