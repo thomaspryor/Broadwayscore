@@ -14,7 +14,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const LEDGER = path.join(__dirname, '..', '..', 'data', 'audit', 'session-retro.jsonl');
+const LEDGER = process.env.SESSION_RETRO_LEDGER || path.join(__dirname, '..', '..', 'data', 'audit', 'session-retro.jsonl');
 // BRO-7645: recalibrated so --check flags outliers. First 15h of data: every session crossed the old
 // (2h wall clock, 3 hook blocks) pair, so the 'fix or card every finding' ask was noise. activeHours is
 // wall clock minus owner idle gaps over gapMin after the first edit (a long CI wait is friction, not idle); a legacy row has only wall clock.
@@ -220,7 +220,12 @@ function main(argv) {
     r.links = pl.links; r.noAction = pl.noAction;
   }
   console.log(opt.json ? JSON.stringify(r, null, 2) : report(r));
-  const closed = (r.links && r.links.length) || r.noAction;
+  let closed = (r.links && r.links.length) || r.noAction;
+  if (!closed && !opt.record) {
+    // A bare --check must honour a row already recorded with links (the Stop gate re-runs it).
+    const st = retroStatus(readLedger(), r.sessionId);
+    if (st.recorded && st.closed) { closed = true; console.log('Retro already recorded with links or a no-action reason for this session.'); }
+  }
   return opt.check && r.triggers.length && !closed ? 10 : 0;
 }
 

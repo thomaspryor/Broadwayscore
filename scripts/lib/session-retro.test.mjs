@@ -146,3 +146,16 @@ test('no-action reasons: natural text passes, bare placeholders fail; v1 rows ar
   assert.equal(R.retroStatus([{ sessionId: 'x', triggers: ['3 hook blocks'] }], 'x').closed, true, 'a v1 row is history');
   assert.equal(R.retroStatus([{ v: 2, sessionId: 'x', triggers: ['3 hook blocks'] }], 'x').closed, false);
 });
+
+test('bare --check honours a row already recorded with links; unrecorded stays exit 10 (BRO-7645)', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-cli-'));
+  const tr = path.join(dir, 't.jsonl');
+  const ledger = path.join(dir, 'ledger.jsonl');
+  const lines = [tool('Edit', { file_path: 'a' }, '2026-01-01T00:00:00Z'), result('12:00:00Z REFUSED: land/x unit-tests-node failed', '2026-01-01T00:10:00Z')];
+  fs.writeFileSync(tr, lines.join('\n') + '\n');
+  const run = (...a) => spawnSync('node', [path.join(path.dirname(new URL(import.meta.url).pathname), 'session-retro.js'), `--transcript=${tr}`, ...a], { env: { ...process.env, SESSION_RETRO_LEDGER: ledger }, encoding: 'utf8' });
+  assert.equal(run('--check').status, 10, 'flagged and unrecorded');
+  assert.equal(run('--check', '--record', '--fixes=BRO-1234').status, 0, 'recorded with a link');
+  assert.equal(run('--check').status, 0, 'a later bare --check sees the closed row');
+});
