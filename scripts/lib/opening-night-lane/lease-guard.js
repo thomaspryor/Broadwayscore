@@ -194,7 +194,7 @@ function syncIfMissing({ file, env = process.env, run } = {}) {
   const exec = run || (() => require('child_process').execFileSync(process.execPath,
     [path.join(__dirname, '../../opening-night-lease.js'), 'sync'], { stdio: 'inherit', timeout: 120000, env }));
   try { exec(); } catch (e) { console.warn(`::warning::opening-night lease self-sync failed (${String((e && e.message) || e).slice(0, 120)})`); }
-  if (fs.existsSync(f)) return 'synced';
+  if (fs.existsSync(f)) return readUnknownMarker(f) ? 'unknown' : 'synced'; // the CLI writes the marker when the store is unreachable
   // The CLI writes the unknown marker on its own failure; a crash before that leaves no file. Same fallback as the action.
   try { markUnknown({ file: f, env }); } catch { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, '{"leases":{},"unknown":true}\n'); }
   return 'unknown';
