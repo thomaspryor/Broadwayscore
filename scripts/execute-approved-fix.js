@@ -839,7 +839,7 @@ async function main() {
       if (res.sent && !(await markReplyDrafted(issueNumber, { token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }))) {
         console.log('  WARN: could not label the issue reply-drafted');
       }
-    } catch { /* best effort */ }
+    } catch (err) { console.log(`  Reply draft failed: ${err.message}`); }
   }
 }
 

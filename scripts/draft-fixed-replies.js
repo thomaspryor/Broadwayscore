@@ -51,6 +51,9 @@ function selectIssuesNeedingDraft(issues, cutoffIso, now = Date.now()) {
     && i.closed_at && Date.parse(i.closed_at) >= cutoff
     && now - Date.parse(i.closed_at) >= GRACE_MIN * 60000
     && (i.labels || []).some((l) => (l.name || l) === 'bug-diagnosis')
+    // Only a real auto-fix earns a "pushed a fix" draft. Content requests and
+    // issues closed by hand also carry bug-diagnosis and must not get one.
+    && (i.labels || []).some((l) => (l.name || l) === 'auto-fixed')
     && !(i.labels || []).some((l) => (l.name || l) === DRAFTED_LABEL));
 }
 
@@ -83,7 +86,7 @@ async function main() {
   console.log(`${todo.length} closed-as-completed bug(s) since ${cutoff} need a draft`);
 
   const transport = dryRun
-    ? async (p) => console.log(`[dry-run] would email ${p.to.map(maskEmail).join(', ')}\nSubject: ${p.subject}\n${p.text}`)
+    ? async (p) => console.log(`[dry-run] would email ${p.to.map(maskEmail).join(', ')}\nSubject: ${p.subject}`)
     : makeResendTransport(resendKey);
 
   let drafted = 0;

@@ -31,7 +31,7 @@ async function main() {
   if (!dryRun && !resendKey) { console.log('No Resend key'); return; }
 
   const transport = dryRun
-    ? async (p) => console.log(`[dry-run] would send to ${p.to.map(maskEmail).join(', ')}\nSubject: ${p.subject}\n${p.text}`)
+    ? async (p) => console.log(`[dry-run] would send to ${p.to.map(maskEmail).join(', ')}\nSubject: ${p.subject}`)
     : makeResendTransport(resendKey);
 
   try {
@@ -42,7 +42,7 @@ async function main() {
       originalMessage: reader.message,
       transport,
     });
-    if (res.sent && !dryRun && type === 'fixed') {
+    if (res.sent && !dryRun) {
       if (!(await markReplyDrafted(process.env.ISSUE_NUMBER, { token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }))) {
         console.log('WARN: could not label the issue reply-drafted');
       }

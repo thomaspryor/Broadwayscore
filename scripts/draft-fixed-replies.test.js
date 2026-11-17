@@ -2,15 +2,16 @@
 const assert = require('assert');
 const { GRACE_MIN, selectIssuesNeedingDraft, showLinkFor } = require('./draft-fixed-replies');
 
-const base = { state: 'closed', state_reason: 'completed', closed_at: '2026-11-18T10:00:00Z', labels: [{ name: 'bug-diagnosis' }] };
+const base = { state: 'closed', state_reason: 'completed', closed_at: '2026-11-18T10:00:00Z', labels: [{ name: 'bug-diagnosis' }, { name: 'auto-fixed' }] };
 const issues = [
   { number: 1, ...base },
   { number: 2, ...base, state_reason: 'not_planned' },
   { number: 3, ...base, closed_at: '2026-11-10T10:00:00Z' },
-  { number: 4, ...base, labels: [{ name: 'bug-diagnosis' }, { name: 'reply-drafted' }] },
+  { number: 4, ...base, labels: [{ name: 'bug-diagnosis' }, { name: 'auto-fixed' }, { name: 'reply-drafted' }] },
   { number: 5, ...base, labels: [{ name: 'needs-review' }] },
   { number: 6, ...base, state: 'open' },
   { number: 7, ...base, pull_request: {} },
+  { number: 8, ...base, labels: [{ name: 'bug-diagnosis' }] }, // content request closed by verify-live, not an auto-fix
 ];
 assert.deepStrictEqual(selectIssuesNeedingDraft(issues, '2026-11-17T00:00:00Z', Date.parse('2026-11-19T00:00:00Z')).map((i) => i.number), [1]);
 assert.deepStrictEqual(selectIssuesNeedingDraft(null, '2026-11-17T00:00:00Z'), []);
