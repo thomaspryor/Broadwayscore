@@ -113,7 +113,13 @@ function recheckVerdict(row, { tsxTests } = {}) {
   // time with the argv that ACTUALLY ran (tsx-routed tests run under tsx, where a
   // missing module is a real failure). Re-deriving them from the card's original
   // verifyCmd would hide that regression; only legacy rows are re-derived.
-  if (Object.prototype.hasOwnProperty.call(row, 'sha')) return { status: 'fail', envCause: null };
+  // BRO-7622: the text causes in CAUSES do not depend on argv, so a newer one still
+  // applies to a sha row (else a widened cause never reaches the row that motivated
+  // it, and recheck-route keeps re-routing it). argv stays null: no tsx re-derivation.
+  if (Object.prototype.hasOwnProperty.call(row, 'sha')) {
+    const textCause = envCauseOf(row.detail || row.note, { argv: null, tsxTests: null });
+    return textCause ? { status: 'unverifiable', envCause: textCause.key } : { status: 'fail', envCause: null };
+  }
   let argv = null;
   try { argv = row.verifyCmd ? require('./autonomous-checks.js').tokenizeCheckCommand(String(row.verifyCmd)) : null; } catch { argv = null; }
   const cause = envCauseOf(row.detail || row.note, { argv, tsxTests: tsxTests === undefined ? repoTsxTests() : tsxTests });

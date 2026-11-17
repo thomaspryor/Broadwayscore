@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { previewRecheckCommand } = require('./recheck-report-preview.js');
+const { previewRecheckCommand, namesCommand } = require('./recheck-report-preview.js');
 
 // BRO-6794 as it was on 2026-11-02 (trimmed): description arms nothing usable,
 // the launch snapshot is the broken market-name command, and the report names the
@@ -40,4 +40,17 @@ test('stamp with no runnable command anywhere -> warn with no command', () => {
 
 test('no stamp -> null (nothing to preview)', () => {
   assert.equal(previewRecheckCommand({ issue, reportBody: 'done, VERIFY: x', launchEntries }), null);
+});
+
+// Ship-check findings (BRO-7622): no false warning on NO-VERIFY or spacing; no missed one on a prefix.
+test('NO-VERIFY: lines and whitespace differences do not warn', () => {
+  const armed = { ...issue, description: `## Acceptance criteria\n\n\`${GOOD}\`\n` };
+  const noVerify = previewRecheckCommand({ issue: armed, reportBody: 'RECHECK-AFTER: 2026-11-16\nNO-VERIFY: A/B was fine', launchEntries: [], now: '2026-11-02T14:19:54Z' });
+  assert.equal(noVerify.warn, false);
+  const spaced = previewRecheckCommand({ issue: armed, reportBody: 'RECHECK-AFTER: 2026-11-16 VERIFY: `node  scripts/check-never-audited-backlog.js --max=100`', launchEntries: [], now: '2026-11-02T14:19:54Z' });
+  assert.equal(spaced.warn, false);
+});
+test('namesCommand matches whole commands only', () => {
+  assert.equal(namesCommand('VERIFY: node x.js --max=100.', 'node x.js --max=100'), true);
+  assert.equal(namesCommand('VERIFY: node x.js --max=100', 'node x.js --max=10'), false);
 });

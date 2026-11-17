@@ -125,3 +125,11 @@ test('"X_API_KEY and Y are required" is a withheld credential, not a regression'
   assert.equal(envCauseOf('POSTHOG_PROJECT_ID is required'), null);
   assert.equal(envCauseOf('a reviewer is required for every show'), null);
 });
+
+test('a sha row with a text-only env cause is unverifiable (BRO-5989 row, 2026-11-16)', () => {
+  const row = { event: 'recheck', cardId: 'BRO-5989', status: 'fail', sha: 'c046572d0fc3', verifyCmd: 'node --test tests/live/related-shows-ab-sample.test.mjs',
+    detail: 'not ok: related-shows-position has the minimum exposed people per arm | first failure: POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID are required' };
+  assert.deepEqual(recheckVerdict(row), { status: 'unverifiable', envCause: 'credential-withheld' });
+  // A sha row that failed on a missing module stays a real fail (no tsx re-derivation).
+  assert.equal(recheckVerdict({ ...row, verifyCmd: 'node --test tests/unit/gate-logic.test.mjs', detail: "Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'x'" }).status, 'fail');
+});
