@@ -820,5 +820,19 @@
       }
     ],
     "queuedAt": "2026-11-17T02:16:44.048Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7560",
+    "title": "Watchdog parked #linear:BRO-7560 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Imageless-show alert keeps firing for shows whose poster files exist on disk but shows.json images is null\" was claimed for redispatch at 2026-11-17T01:44:36.913Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7560), then re-arm with node scripts/linear-next.js --id BRO-7560 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T01:59:41.006Z"
   }
 ]
