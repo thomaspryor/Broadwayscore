@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
     paths:
+      - 'scripts/bww-regional-coverage.js'
+      - 'scripts/bww-regional-add-plan.js'
       - 'src/**'
       - 'data/city-hubs.json' # BRO-6833: city-hub-wiring.test.ts
       - 'tests/**'
