@@ -28,6 +28,7 @@
 
 const { verifyAggregatorUrl } = require('./show-match-verifier');
 const { pickTheatreReviewsRoundup } = require('./theatre-reviews-discovery');
+const { hasTheatreReviewsStarMarker } = require('./free-first-fetch');
 const { cleanSearchTitle } = require('./title-normalization');
 
 const { foldDiacritics } = require('./title-match');
@@ -74,11 +75,11 @@ async function discoverTrRoundupHtml(show, opts = {}) {
   for (const trUrl of trUrls) {
     try {
       const result = await fetchPage(trUrl, { renderJs: false });
-      // Content must be the actual roundup page — ⭑ star ratings AND a key
-      // title word (not just generic site chrome)
+      // Content must be the actual roundup page — star ratings (⭑ or ★; the
+      // site uses both, BRO-7532) AND a key title word (not just site chrome)
       const titleWord = show.title.split(/\s+/).filter(w => w.length > 3)[0] || show.title;
       if (result && result.content && result.content.length > 1000 &&
-          result.content.includes('⭑') &&
+          hasTheatreReviewsStarMarker(result.content) &&
           result.content.toLowerCase().includes(titleWord.toLowerCase())) {
         const v = verifyAggregatorUrl({ url: trUrl, html: result.content, show, openingDate: show.openingDate });
         if (!v.isValid) {

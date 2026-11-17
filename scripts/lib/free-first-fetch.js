@@ -226,9 +226,18 @@ function trustCleanFreeNoMatch(show, env = process.env) {
 function isTheatreReviewsHost(hostname) {
   return hostname === 'theatre.reviews' || hostname === 'www.theatre.reviews';
 }
+/**
+ * A theatre.reviews round-up carries star glyphs in its tier headers or inline
+ * ratings. The site uses BOTH "⭑" (e.g. Beetlejuice) and "★" (e.g. Avenue Q,
+ * The 39 Steps, checked live 2026-11-17); scrape-theatre-reviews.js parses
+ * both, so every gate that asks "is this a real round-up?" must accept both.
+ */
+function hasTheatreReviewsStarMarker(content) {
+  return typeof content === 'string' && /[⭑★]/.test(content);
+}
 function theatreReviewsDirectAcceptable(pathname, status, content) {
   if (status !== 200 || typeof content !== 'string' || !/<\/html\s*>/i.test(content)) return false;
-  if (/^\/reviews-roundup\//.test(pathname)) return content.includes('⭑');
+  if (/^\/reviews-roundup\//.test(pathname)) return hasTheatreReviewsStarMarker(content);
   return false; // other TR paths: no verified marker, keep the paid route
 }
 
@@ -252,4 +261,5 @@ module.exports = {
   WP_SEARCH_PAGE_SIZE,
   isTheatreReviewsHost,
   theatreReviewsDirectAcceptable,
+  hasTheatreReviewsStarMarker,
 };

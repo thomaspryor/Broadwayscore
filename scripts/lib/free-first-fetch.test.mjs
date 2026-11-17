@@ -62,6 +62,18 @@ test('theatreReviewsDirectAcceptable needs 200, closed document and the star mar
   assert.equal(f.theatreReviewsDirectAcceptable('/reviews-roundup/cleansed-reviews/', 200, '<html>cleantalk apbct interstitial</html>'), false);
   assert.equal(f.theatreReviewsDirectAcceptable('/reviews-roundup/cleansed-reviews/', 200, page.replace('</html>', '')), false);
   assert.equal(f.theatreReviewsDirectAcceptable('/wp-json/wp/v2/posts', 200, page), false);
+  // BRO-7532: the site also uses "★" tier headers (Avenue Q, live 2026-11-17).
+  const blackStar = '<html><body><p><span style="color: #ff0000;">5 stars ★★★★★</span></p> Avenue Q</body></html>';
+  assert.equal(f.theatreReviewsDirectAcceptable('/reviews-roundup/avenue-q-reviews/', 200, blackStar), true);
+  assert.equal(f.hasTheatreReviewsStarMarker(blackStar), true);
+  assert.equal(f.hasTheatreReviewsStarMarker('<html>no ratings</html>'), false);
+});
+
+test('tr-roundup-discover uses the shared star-marker gate (no ⭑-only literal)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./tr-roundup-discover.js', import.meta.url), 'utf8');
+  assert.ok(src.includes('hasTheatreReviewsStarMarker(result.content)'));
+  assert.ok(!/includes\('⭑'\)/.test(src), 'a ⭑-only check rejects ★-format round-ups');
   assert.equal(f.isTheatreReviewsHost('theatre.reviews'), true);
   assert.equal(f.isTheatreReviewsHost('theatre.reviews.evil.com'), false);
 });
