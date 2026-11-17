@@ -8,6 +8,7 @@ import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath, take
 import { recordSignInIntent, clearMidFlowSignIn } from '@/lib/signin-intent';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
+import { recordMoneySignIn } from '@/lib/money-gate';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
 import { signInWithAppleSDK } from '@/lib/apple-auth';
@@ -262,6 +263,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // with no await before it (Safari blocks it otherwise, see apple-auth.ts).
     const clientReady = getSupabaseClient();
     markSignInStarted(provider, source);
+    recordMoneySignIn(source);
 
     if (provider === 'apple') {
       // Apple: use JS SDK + signInWithIdToken (bypasses GoTrue code exchange)
@@ -356,6 +358,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const client = await getSupabaseClient();
     if (!client) return { error: 'Sign-in is unavailable right now. Please try again.' };
     markSignInStarted('email', source);
+    recordMoneySignIn(source);
     const { error } = await client.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
     if (error) {
       // A too-soon resend (429) is not a failed sign-in: keep the pending
