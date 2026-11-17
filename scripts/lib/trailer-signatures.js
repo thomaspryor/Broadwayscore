@@ -366,49 +366,79 @@ function isTelegraphListing(seg, afterPromo = false) {
 // more open gaps on other outlets end the same way. Classify-only for every
 // outlet (stripKnownTrailers), never applied to saved text.
 // Each piece is removed from the end only; prose before it must end a sentence.
-const BWW_WIDGET_RE = /\s*(?:Get\s*Info\s*Buy\s*Tix|Get Show Info\s*\n)[\s\S]{0,300}$/;
+// Isolated kill switch: RUN_INFO_TRAILER_DISABLED=true turns off only this
+// stripper (TRAILER_FIXES_DISABLED still turns off the whole chain).
+const BWW_WIDGET_RE = /(?<!\s)\s*(?:Get\s*Info\s*Buy\s*Tix|Get Show Info\s*\n)([\s\S]{0,300})$/;
 const BWW_PHOTO_RE = /(?:^|\s)(?:All\s+)?(?:production\s+)?(?:photos?|photograph(?:s|y)|photo\s+images?|images?)\s*(?:credits?\s*:?|:|by\b|are\s+by\b|courtesy\s+of\b)([^.!?\n]{1,120})$/i;
-// a ticket / "for information" line is furniture only with a link, a phone, a
-// price or a call to action; "Tickets are going to be scarce ..." is prose.
-const TICKET_EVIDENCE_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|co\.uk|org\.uk|uk)\b|\(?\d{3}\)?[-.\s]\d{3}[-.\s]?\d{4}|\b0\d{3,4}\s?\d{3}\s?\d{3,4}\b|\b(?:visit|visiting|click|call|website)\b|\bhere\b|[$£]\s?\d/i;
-const BWW_TICKETS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)(?:For\s+(?:more\s+)?(?:tickets?|ticket\s+and|information)\b|Tickets?\s*(?::|are\b|available\b)|Get\s+tickets\b)[^\n]{0,220}$/i;
+// a ticket / "for information" line is furniture only with a link, a phone or
+// a price, or a call to action in a line that ends its sentence; "Tickets are
+// scarce here, and anyone ... will" is a cut-off review.
+const TICKET_HARD_EVIDENCE_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|org|net|co\.uk|org\.uk|uk)\b|\(?\d{3}\)?[-.\s]\d{3}[-.\s]?\d{4}|\b0\d{3,4}\s?\d{3}\s?\d{3,4}\b|[$£]\s?\d/i;
+const TICKET_CTA_RE = /\b(?:visit|visiting|click|call|website)\b|\bhere\b/i;
+// the ticket line is the LAST sentence: a dot only inside a token (a url, "$59.50")
+const BWW_TICKETS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)((?:For\s+(?:more\s+)?(?:tickets?|ticket\s+and|information)\b|Tickets?\s*(?::|are\b|available\b|start\b)|Get\s+tickets\b)(?:[^.!?\n]|[.!?](?=[^\s"'”’)]))*[.!?]?["'”’)]?)$/i;
 const BWW_RUN_SEG_RE = new RegExp(
-  `(?:^|[.!?]["'”’)]?\\s+|\\n)((?:[^.!?\\n]|[!?](?=\\)))(?:[^.!?\\n]|[!?](?=\\))){2,199}?(?:\\b(?:until|through|thru|till)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2}(?:st|nd|rd|th)?)(?:,?\\s*\\d{4})?(?:\\s*(?:,|and)?\\s*then\\s+[^.!?\\n]{0,60})?|\\bRunning\\b[^.!?\\n]{0,40}${TELEGRAPH_MONTH}[^.!?\\n]{0,80}?))\\.?$`
+  `(?:^|[.!?]["'”’)]?\\s+|\\n)((?:[^.!?\\n]|[!?](?=\\)))(?:[^.!?\\n]|[!?](?=\\))){2,199}?(?:\\b(?:until|through|thru|till)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2}(?:st|nd|rd|th)?)(?:,?\\s*\\d{4})?(?:\\s*(?:,|and)?\\s*then\\s+(?:on\\s+tour|touring|at\\s+\\p{Lu}[^.!?\\n]{0,60}))?|\\bRunning\\b[^.!?\\n]{0,40}${TELEGRAPH_MONTH}[^.!?\\n]{0,80}?))\\.?$`, 'u'
 );
+const RUN_DATE_RE = new RegExp(`\\b(?:until|through|thru|till)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2})`);
+// a segment that ends on a joining / function word is a cut sentence, never furniture
+const DANGLING_END_RE = /(?:\b(?:the|a|an|and|or|of|to|in|on|at|by|for|with|but|that|this|how|as|from|his|her|their|its|is|was|are|were|only|then|when|who|which|will|would|so)|[,&;:–—-])\s*$/i;
+// lower-case words a names-only photo credit may carry
+const CREDIT_LOWER_WORDS = new Set(['and', 'for', 'of', 'by', 'courtesy', 'via', 'provided', 'de', 'van', 'von', 'la', 'le', 'du', 'da']);
+
+function namesOnly(seg) {
+  const words = String(seg).split(/[\s,]+/).map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')).filter(Boolean);
+  if (!words.length || DANGLING_END_RE.test(seg)) return false;
+  return words.every((w) => /^[\p{Lu}\p{N}]/u.test(w) || CREDIT_LOWER_WORDS.has(w.toLowerCase()));
+}
 
 function stripRunInfoTrailer(text) {
   if (!text || typeof text !== 'string') return text;
-  let t = text.replace(/\s+$/, '');
+  if (process.env.RUN_INFO_TRAILER_DISABLED === 'true') return text;
+  let t = text.trimEnd();
   for (let i = 0; i < 5; i++) {
     const before = t;
-    t = t.replace(BWW_WIDGET_RE, '').replace(/\s+$/, '');
+    // the show widget: only menu words after it, never prose
+    const w = BWW_WIDGET_RE.exec(t);
+    if (w && !/\b[a-z]{2,}\s+[a-z]{2,}\s+[a-z]{2,}\b/.test(w[1])) t = t.slice(0, w.index).trimEnd();
     // a photo credit is names only ("Photography by Helen Murray"), not
     // "Photos by Weegee line the walls of the set, and ..."
     const ph = BWW_PHOTO_RE.exec(t);
-    if (ph && looksLikeListing(ph[1])) t = t.slice(0, ph.index).replace(/\s+$/, '');
+    if (ph && namesOnly(ph[1])) t = t.slice(0, ph.index).trimEnd();
     const tk = BWW_TICKETS_RE.exec(t);
-    if (tk && TICKET_EVIDENCE_RE.test(tk[0])) t = t.slice(0, tk.index + (tk[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).replace(/\s+$/, '');
+    // ...and it ends its sentence or ends ON the link / phone / price
+    const tkEnds = tk && (/[.!?]["'”’)]?$/.test(tk[1]) || TICKET_HARD_EVIDENCE_RE.test(tk[1].split(/\s+/).slice(-3).join(' ')));
+    if (tk && tkEnds && !DANGLING_END_RE.test(tk[1])
+      && (TICKET_HARD_EVIDENCE_RE.test(tk[1]) || (TICKET_CTA_RE.test(tk[1]) && /[.!?]["'”’)]?$/.test(tk[1])))) {
+      t = t.slice(0, tk.index + (tk[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).trimEnd();
+    }
     const run = BWW_RUN_SEG_RE.exec(t);
     // a run line names a venue ("at"/"in" before the date, or "Running ...")
     // and reads like a listing, not prose: see looksLikeListing
-    if (run && /\b(?:at|in|Running)\b/.test(run[1]) && looksLikeListing(run[1])) {
-      t = t.slice(0, run.index + (run[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).replace(/\s+$/, '');
+    if (run && /\b(?:at|in|Running)\b/.test(run[1]) && looksLikeListing(run[1]) && !DANGLING_END_RE.test(run[1])) {
+      t = t.slice(0, run.index + (run[0].match(/^[.!?]["'”’)]?/) || [''])[0].length).trimEnd();
     }
     if (t === before) break;
   }
-  if (t === text.replace(/\s+$/, '')) return text;
+  if (t === text.trimEnd()) return text;
   if (!SENTENCE_END_RE.test(t) || t.length < RELATED_MIN_REMAINING) return text;
   // the sentence now last must not itself be a listing ("Until Jun 6." left
-  // after its "Tickets: ..." line): a cut review can end on one.
-  const last = t.split(/[.!?]["'”’)]?\s+|\n/).pop().trim();
-  if (last.length < 40 && new RegExp(TELEGRAPH_MONTH).test(last)) return text;
+  // after its "Tickets: ..." line, "National Theatre, London SE1."): a cut
+  // review can end on one. Same test the Telegraph stripper applies.
+  const lastSeg = t.split(/[.!?]["'”’)]?\s+|\n/).pop().trim();
+  const lastBare = lastSeg.replace(/[.!?]["'”’)]?$/, '');
+  if (lastBare.length < 40 && new RegExp(TELEGRAPH_MONTH).test(lastBare)) return text;
+  if (isTelegraphListing(lastBare) || (lastBare.length <= 120 && TELEGRAPH_OPENER_RE.test(lastBare))) return text;
+  // "... a snarl Dog Mom is at the Southwark Playhouse until 7th November." is
+  // a cut sentence glued to a run line: a run date in prose-shaped text.
+  if (RUN_DATE_RE.test(lastBare) && !looksLikeListing(lastBare)) return text;
   return t;
 }
 
 // Words a listing line carries in lower case; every other word in a run line
 // is a title or venue (capitalised) or a number. Prose that happens to end
 // "... and the lead is at the Garrick until 7 June" is mostly lower case.
-const LISTING_LOWER_WORDS = new Set(['the', 'a', 'an', 'at', 'in', 'on', 'of', 'and', 'to', 'until', 'through', 'thru', 'till', 'runs', 'run', 'running', 'plays', 'play', 'playing', 'is', 'are', 'will', 'be', 'now', 'then', 'from', 'for', 'tour', 'touring', 'booking', 'with', 'currently', 'continues', 'performs', 'them', 'it', 'its', 'only', 'open', 'bookings', 'by', 'courtesy', 'via', 'provided']);
+const LISTING_LOWER_WORDS = new Set(['the', 'a', 'an', 'at', 'in', 'on', 'of', 'and', 'to', 'until', 'through', 'thru', 'till', 'runs', 'run', 'running', 'plays', 'play', 'playing', 'is', 'are', 'will', 'be', 'now', 'then', 'from', 'for', 'tour', 'touring', 'booking', 'with', 'currently', 'continues', 'performs', 'them', 'it', 'its', 'open', 'bookings']);
 function looksLikeListing(seg) {
   const words = String(seg).split(/\s+/).map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')).filter(Boolean);
   let caps = 0;
@@ -417,7 +447,7 @@ function looksLikeListing(seg) {
     if (/^\p{N}/u.test(w) || LISTING_LOWER_WORDS.has(w.toLowerCase())) continue;
     if (/^\p{Lu}/u.test(w)) caps++; else other++;
   }
-  return caps >= 1 && caps >= 2 * other;
+  return caps >= 1 && other <= 1 && caps >= 2 * other;
 }
 
 // Outlet-scoped strippers (outletId is the registry id on the review file).

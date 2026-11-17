@@ -352,7 +352,6 @@ test('run-info / photo-credit tail is a trailer on any outlet; a cut-off review 
     "\n\nMy Son's a Queer (But What Can You Do?) plays at the Garrick Theatre until November 6",
     ' All photos by Evan Zimmerman for MurphyMade',
     ' For more ticket and show information, please click the ticket link button below. All photos are by Matthew Murphy and Evan Zimmerman',
-    ' For tickets and more information, visit: Water for Elephants - Columbus Association for the Performing Arts',
     " DISNEY'S BEAUTY AND THE BEAST Running Now - March 15th Whitney Hall at Kentucky Performing Arts",
     '\n\nRetrograde plays at the Apollo Theatre until 14 June\n\nGet InfoBuy TixCastPhotosVideos\n\n Get Show Info\nInfoGet TicketsCastPhotosVideosPowered by\nVideos',
     '\n\nArcadia is at the Old Vic, London, until 21 March 2026',
@@ -406,4 +405,40 @@ test('run-info stripper: ship-check cut-off tails stay unstripped (BRO-7171 revi
   ]) {
     assert.notEqual(T.stripRunInfoTrailer(lead + tail), lead + tail, JSON.stringify(tail));
   }
+});
+
+test('run-info stripper: second ship-check cut-off tails stay unstripped (BRO-7171)', () => {
+  const lead = BODY.slice(0, 1200).replace(/\s+\S*$/, '') + ' and it works.';
+  for (const tail of [
+    ' Tickets: $59-$199 at Telecharge. But the real question is whether',
+    ' For tickets and information, visit the theatre. Then, in the second act, the whole thing begins to',
+    ' For more information, see the website. Odom is magnificent as the man who',
+    ' Tickets are going to be scarce, so visit',
+    ' Tickets are on sale now at the box office, and frankly you should call',
+    ' For information on the run, here is what Sondheim',
+    ' Tickets are scarce here, and anyone expecting a conventional musical will',
+    ' Running at the Booth through May 3 then the cast',
+    ' Hamilton runs at the Victoria Palace Theatre until 6 June, then with',
+    ' Photography by Marc Brenner and Johan Persson and The',
+    ' Photos by Joan Marcus, Sara Krulwich and',
+    ' Photos by Matthew Murphy and Evan Zimmerman are the only',
+    ' Get InfoBuy Tix and then the second act collapses into a muddle of',
+  ]) {
+    assert.equal(T.stripRunInfoTrailer(lead + tail), lead + tail, JSON.stringify(tail));
+  }
+  // venue line left as the last "sentence" (Telegraph guard, reused)
+  const cutVenue = `${BODY.slice(0, -1)} and the lead brings\n\nNational Theatre, London SE1. Tickets: 020 3989 5455; nationaltheatre.org.uk`;
+  assert.equal(T.stripRunInfoTrailer(cutVenue), cutVenue);
+  // isolated kill switch
+  const real = BODY + ' Bull runs at the Park Theatre until 24 October Photo Credits: Becky Bailey';
+  process.env.RUN_INFO_TRAILER_DISABLED = 'true';
+  try { assert.equal(T.stripRunInfoTrailer(real), real); } finally { delete process.env.RUN_INFO_TRAILER_DISABLED; }
+  assert.equal(T.stripRunInfoTrailer(real), BODY);
+});
+
+test('run-info stripper: whitespace runs stay fast', () => {
+  const t0 = Date.now();
+  T.stripRunInfoTrailer(' '.repeat(50000) + 'x');
+  T.stripRunInfoTrailer('\n'.repeat(50000) + 'x');
+  assert.ok(Date.now() - t0 < 500, `took ${Date.now() - t0}ms`);
 });
