@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-17T05:09:52.487Z",
-  "processed": 451,
-  "failed": 257,
-  "successRate": "63.7%",
+  "updatedAt": "2026-11-17T05:48:58.454Z",
+  "processed": 467,
+  "failed": 259,
+  "successRate": "64.3%",
   "tierBreakdown": {
-    "playwright": 223,
+    "playwright": 232,
     "amp": 1,
-    "browserbase": 4,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingdog": 45,
-    "scrapingbee": 18,
-    "brightdata": 1,
+    "scrapingbee": 21,
+    "brightdata": 3,
     "archiveToday": 0,
     "archive": 174
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-11-17T01:06:59.816Z",
@@ -61,6 +61,34 @@
       "event": "bb-session",
       "session": "95c539fe",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-17T05:43:21.422Z",
+      "event": "bb-session",
+      "session": "54748994",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway.html"
+    },
+    {
+      "t": "2026-11-17T05:43:21.866Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-17T05:43:42.447Z",
+      "event": "bb-session",
+      "session": "c7ddc257",
+      "url": "https://deadline.com/2026/11/the-fantasticks-broadway-review-1237223063/"
+    },
+    {
+      "t": "2026-11-17T05:44:50.456Z",
+      "event": "bb-session",
+      "session": "b47fd78c",
+      "url": "https://www.wsj.com/articles/the-fantasticks-review-boy-meets-boy-on-broadway-68"
+    },
+    {
+      "t": "2026-11-17T05:44:50.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
