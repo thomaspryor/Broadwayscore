@@ -192,4 +192,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exitCode = 1; }).finally(() => cleanup && cleanup());
-module.exports = { main };
+module.exports = { main, download, writeArt };

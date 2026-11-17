@@ -20,7 +20,8 @@
           "added": "data/audit/tic-daily-added.json"
         },
         "since": null
-      }
+      },
+      "bwwRegion": "chicago"
     },
     "washington-dc": {
       "name": "Washington, DC",
@@ -189,7 +190,8 @@
         "allowTypes": [
           "^comedy$"
         ]
-      }
+      },
+      "bwwRegion": "washington-dc"
     },
     "los-angeles-ca": {
       "name": "Los Angeles, CA",
@@ -305,7 +307,8 @@
         "allowTypes": [
           "^comedy$"
         ]
-      }
+      },
+      "bwwRegion": "los-angeles"
     },
     "san-diego-ca": {
       "name": "San Diego, CA",
@@ -325,7 +328,8 @@
           "seen": "data/audit/city-finder-seen-san-diego.json",
           "added": "data/audit/city-finder-added-san-diego.json"
         }
-      }
+      },
+      "bwwRegion": "san-diego"
     },
     "boston-ma": {
       "name": "Boston, MA",
@@ -345,7 +349,8 @@
           "seen": "data/audit/city-finder-seen-boston.json",
           "added": "data/audit/city-finder-added-boston.json"
         }
-      }
+      },
+      "bwwRegion": "boston"
     }
   }
 }
