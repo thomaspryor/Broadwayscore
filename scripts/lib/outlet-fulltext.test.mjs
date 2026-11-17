@@ -44,6 +44,12 @@ function fixture() {
   return dir;
 }
 
+test('sameCritic: two named critics are two reviews; an unnamed placeholder may match either', () => {
+  assert.equal(F.sameCritic({ criticName: 'Clive Davis' }, { criticName: 'Dominic Maxwell' }), false);
+  assert.equal(F.sameCritic({ criticName: "Holly O'Mahony" }, { criticName: 'Holly OMahony' }), true);
+  assert.equal(F.sameCritic({ criticName: 'Unknown' }, { criticName: 'Dominic Maxwell' }), true);
+});
+
 test('computeOutletFulltext: complete capsule full, quoted excerpt duplicate, scanner exclusion skipped, old shows ignored', () => {
   const base = fixture();
   const { rates, gaps } = F.computeOutletFulltext({ base, tierOf: (r) => r.contentTier, excludedKeys: new Map([['play-2026/wsj--news.json', 'nonReview']]) });
@@ -73,16 +79,18 @@ test('evaluateFloors: below floor + never attempted fails; attempted gaps pass; 
 
 test('nightly queue: a major-outlet gap sorts ahead of a newer minor-outlet gap (recent first still wins)', () => {
   const c = [
-    { reviewKey: 'minor-new', outletId: 'some-blog', recency: 'recent', showDate: '2026-11-01', strategy: 'REFETCH_FREE' },
-    { reviewKey: 'major-old', outletId: 'times-uk', recency: 'recent', showDate: '2025-03-01', strategy: 'REFETCH_FREE' },
-    { reviewKey: 'major-historic', outletId: 'wsj', recency: 'historic', showDate: '2019-01-01', strategy: 'REFETCH_FREE' },
+    { reviewKey: 'minor-new', showId: 'a-2026', outletId: 'some-blog', recency: 'recent', showDate: '2026-11-01', strategy: 'REFETCH_FREE' },
+    { reviewKey: 'major-old', showId: 'b-2025', outletId: 'times-uk', recency: 'recent', showDate: '2025-03-01', strategy: 'REFETCH_FREE' },
+    { reviewKey: 'major-2024', showId: 'c-2024', outletId: 'wsj', recency: 'recent', showDate: '2024-12-01', strategy: 'REFETCH_FREE' },
+    { reviewKey: 'major-historic', showId: 'd-2019', outletId: 'wsj', recency: 'historic', showDate: '2019-01-01', strategy: 'REFETCH_FREE' },
   ].sort(T.compareCandidates).map((x) => x.reviewKey);
-  assert.deepEqual(c, ['major-old', 'minor-new', 'major-historic']);
+  // a 2024 show is outside the floor, so it gets no boost
+  assert.deepEqual(c, ['major-old', 'minor-new', 'major-2024', 'major-historic']);
   const u = [
-    { reviewKey: 'tier1-minor', outletId: 'some-t1', recency: 'recent', showDate: '2026-11-01' },
-    { reviewKey: 'major', outletId: 'standard', recency: 'recent', showDate: '2025-01-01' },
+    { reviewKey: 'x-2026/some-t1--a.json', outletId: 'some-t1', recency: 'recent', showDate: '2026-11-01' },
+    { reviewKey: 'y-2025/standard--b.json', outletId: 'standard', recency: 'recent', showDate: '2025-01-01' },
   ].sort(UF.urlFindPriority(() => 1)).map((x) => x.reviewKey);
-  assert.deepEqual(u, ['major', 'tier1-minor']);
+  assert.deepEqual(u, ['y-2025/standard--b.json', 'x-2026/some-t1--a.json']);
 });
 
 test('digest line: names outlets below target and stale unattempted gaps; silent when all at floor', () => {

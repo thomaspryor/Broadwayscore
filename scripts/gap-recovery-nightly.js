@@ -169,16 +169,16 @@ function main() {
       return finishRow(N.buildNightlyRow({ ...base, status: 'busy' }), nightlyPath, ledgerPath);
     }
   }
-  // BRO-7702: a push failure is retried once more tonight (the plan step below
-  // gives the remote ~10 minutes to settle) instead of failing the night.
+  // BRO-7702: a bare push failure (nothing else went wrong: pushOnlyFailure) is
+  // retried once more tonight instead of failing the night; a crash stays failed.
   let pushRetried = null;
-  if (!DRY && runExit === 1 && summary && summary.pushFailed) {
+  if (!DRY && runExit === 1 && summary && summary.pushFailed && summary.pushOnlyFailure) {
     const retrySum = path.join(STATE_DIR, 'retry-pending-summary.json');
     try { fs.unlinkSync(retrySum); } catch { /* none */ }
     const retryExit = driver(['--retry-pending', `--summary=${retrySum}`], env, 20);
     pushRetried = { exit: retryExit, landed: (readJsonSafe(retrySum) || {}).landed || 0 };
     log(`push retry: exit ${retryExit}, ${pushRetried.landed} review(s) landed`);
-    if (retryExit === 0) { runExit = 0; summary.pushFailed = false; summary.pushRetried = pushRetried; }
+    if (retryExit === 0) { runExit = 0; summary.pushFailed = false; summary.pushRetried = pushRetried; summary.landed = (summary.landed || 0) + pushRetried.landed; }
   }
   const planExit = driver(['--dry-run', `--json=${planPath}`], env, 20);
   const plan = readJsonSafe(planPath);

@@ -18,13 +18,15 @@ require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { computeOutletFulltext, evaluateFloors } = require('./lib/outlet-fulltext');
+const { INERT_STRATEGIES } = require('./lib/gap-recovery-ledger');
 
 const argv = process.argv.slice(2);
 const opt = (k, d) => { const a = argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : d; };
 const asJson = argv.includes('--json');
 
 function main() {
-  const root = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
+  // Same corpus the gap driver works on (review-texts-dir resolves worktrees and the sibling clone).
+  const root = process.env.REVIEW_TEXTS_DIR || require('./lib/review-texts-dir').resolveReviewTextsDir();
   const base = fs.existsSync(path.join(root, 'data', 'review-texts')) ? path.join(root, 'data', 'review-texts') : root;
   if (!fs.existsSync(base)) { console.error(`check-outlet-fulltext-floors: no review-texts corpus at ${base}`); return 2; }
   const ledger = opt('ledger', process.env.GAP_RECOVERY_LEDGER_PATH || path.join(__dirname, '..', 'data', 'audit', 'gap-recovery-attempts.jsonl'));
@@ -33,7 +35,8 @@ function main() {
   try {
     for (const line of fs.readFileSync(ledger, 'utf8').split('\n')) {
       if (!line.trim()) continue;
-      try { const r = JSON.parse(line); if (r && r.reviewKey) { attemptedKeys.add(r.reviewKey); ledgerRows++; } } catch { /* torn line */ }
+      // A probe (URL_FIND_PROBE, inert in the ledger) is not a recovery attempt.
+      try { const r = JSON.parse(line); if (r && r.reviewKey && !INERT_STRATEGIES.has(r.strategy)) { attemptedKeys.add(r.reviewKey); ledgerRows++; } } catch { /* torn line */ }
     }
   } catch (e) { console.error(`check-outlet-fulltext-floors: ledger unreadable (${ledger}): ${e.message}`); return 2; }
   const { rates, gaps } = computeOutletFulltext({ base });

@@ -262,7 +262,10 @@ async function main() {
   // Only a run that holds the lock publishes at exit (a refused run wrote nothing).
   RUN_LEDGER = ledgerPath;
   if (OPTS.reconcile) { await runReconcile({ dir, ledgerPath }); return 0; }
-  if (OPTS.retryPending) return runRetryPending({ dir, ledgerPath });
+  if (OPTS.retryPending) {
+    if (OPTS.dryRun) { console.error('--retry-pending pushes and writes the ledger; it has no --dry-run form'); return 2; }
+    return runRetryPending({ dir, ledgerPath });
+  }
 
   const showsRaw = readJson(showsPath());
   const shows = new Map((Array.isArray(showsRaw) ? showsRaw : showsRaw.shows || []).filter((s) => s && s.id).map((s) => [s.id, s]));
@@ -579,6 +582,10 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     flush('final');
   } catch (e) {
     runError = e;
+    // BRO-7702: only a bare push failure may be cleared by the nightly's push
+    // retry; a crash (or lost text, ReviewTextsLandingError) followed by a
+    // failed flush stays a failed night.
+    SUMMARY.pushOnlyFailure = e && e.name === 'ReviewTextsPushError';
     // Commit and push what was already accepted before stopping, so no text
     // sits uncommitted with a pending_push row nothing will resolve. (Not after
     // a push failure: that work is already committed and journaled.)

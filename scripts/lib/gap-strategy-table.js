@@ -123,7 +123,9 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
   return { strategy: null, skipped };
 }
 
-const { isMajorFulltextOutlet } = require('./outlet-fulltext');
+const { isMajorFulltextOutlet, isRecentProductionShow } = require('./outlet-fulltext');
+// A gap the full-text floor counts: a major outlet on a 2025/26 production (BRO-7702).
+const isFloorGap = (c) => isMajorFulltextOutlet(c.outletId) && isRecentProductionShow(String(c.showId || String(c.reviewKey || '').split('/')[0]));
 const ms = (v) => { const t = Date.parse(v || ''); return Number.isFinite(t) ? t : 0; };
 
 /**
@@ -177,7 +179,7 @@ function collectorRefetchGate(collectorDecision) {
  */
 function compareCandidates(a, b) {
   if ((a.recency === 'recent') !== (b.recency === 'recent')) return a.recency === 'recent' ? -1 : 1;
-  const ma = isMajorFulltextOutlet(a.outletId); const mb = isMajorFulltextOutlet(b.outletId);
+  const ma = isFloorGap(a); const mb = isFloorGap(b);
   if (ma !== mb) return ma ? -1 : 1;
   const da = ms(a.showDate); const db = ms(b.showDate);
   if (da !== db) return db - da;

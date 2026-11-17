@@ -66,6 +66,13 @@ function excerptQuotedIn(r, fullText) {
   return excerptPassages(r).some((p) => hay.includes(p.length > 160 ? p.slice(0, 160) : p));
 }
 
+/** Same critic, or one side is an unnamed placeholder: two named critics are two reviews. Pure. */
+function sameCritic(a, b) {
+  const n = (r) => norm(r.criticName || '').replace(/[^a-z]/g, '');
+  const unnamed = (x) => !x || x === 'unknown' || x === 'null';
+  return unnamed(n(a)) || unnamed(n(b)) || n(a) === n(b);
+}
+
 function readJson(p) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } }
 
 /**
@@ -112,6 +119,9 @@ function computeOutletFulltext({ base, tierOf = defaultTierOf(), outlets = MAJOR
       if (!r) continue;
       const o = r.outletId || f.split('--')[0];
       if (!want.has(o)) continue;
+      // Scanner-excluded rows (non-review articles, rebuild-dropped stubs) are not
+      // reviews: not counted, and never evidence for a sibling either.
+      if (skip.has(`${s}/${f}`)) { const t = rates[o] || (rates[o] = { n: 0, full: 0, documented: 0, dupCovered: 0, notReview: 0 }); t.notReview++; continue; }
       const tier = tierOf(r);
       rows.push({ f, r, o, tier, full: isFull(r, tier) });
     }
@@ -126,13 +136,12 @@ function computeOutletFulltext({ base, tierOf = defaultTierOf(), outlets = MAJOR
       const { f, r, o, tier } = x;
       if (excluded(r)) continue;
       const t = rates[o] || (rates[o] = { n: 0, full: 0, documented: 0, dupCovered: 0, notReview: 0 });
-      if (!x.full && skip.has(`${s}/${f}`)) { t.notReview++; continue; }
       t.n++;
       if (x.full) { t.full++; continue; }
       const sibs = (fullByOutlet.get(o) || []).filter((y) => y.f !== f);
       const placeholderDup = r.criticName === 'Unknown' && !r.url && !(r.fullText || '').trim()
         && sibs.some((y) => y.r.contentTier === 'complete' && !!y.r.url);
-      const quotedDup = !placeholderDup && sibs.find((y) => excerptQuotedIn(r, y.r.fullText));
+      const quotedDup = !placeholderDup && sibs.find((y) => sameCritic(r, y.r) && excerptQuotedIn(r, y.r.fullText));
       if (placeholderDup || quotedDup) { t.dupCovered++; continue; }
       if (r.textUnrecoverable && validateTerminal(r).valid) { t.documented++; continue; }
       gaps.push({ outlet: o, show: s, file: f, reviewKey: `${s}/${f}`, tier: tier || 'none', len: (r.fullText || '').length, url: r.url || null,
@@ -160,7 +169,7 @@ function quotedExcerptDuplicates({ base, tierOf = defaultTierOf(), outlets = MAJ
       .map((x) => ({ ...x, full: isFull(x.r, x.tier) }));
     for (const x of rows) {
       if (x.full || excluded(x.r)) continue;
-      const sib = rows.find((y) => y.f !== x.f && y.o === x.o && y.full && !excluded(y.r) && excerptQuotedIn(x.r, y.r.fullText));
+      const sib = rows.find((y) => y.f !== x.f && y.o === x.o && y.full && !excluded(y.r) && sameCritic(x.r, y.r) && excerptQuotedIn(x.r, y.r.fullText));
       if (sib) out.push({ show: s, file: x.f, duplicateOf: sib.f, outlet: x.o });
     }
   }
@@ -197,6 +206,6 @@ function evaluateFloors({ rates, gaps, attemptedKeys, nowMs = Date.now(), staleD
 module.exports = {
   evaluateFloors,
   MAJOR_FULLTEXT_OUTLETS, STRICT_OUTLETS, FLOOR_STRICT, FLOOR_DEFAULT,
-  isMajorFulltextOutlet, floorFor, isRecentProductionShow, isFull, excerptPassages, excerptQuotedIn,
+  isMajorFulltextOutlet, floorFor, sameCritic, isRecentProductionShow, isFull, excerptPassages, excerptQuotedIn,
   computeOutletFulltext, quotedExcerptDuplicates, scannerExclusions,
 };
