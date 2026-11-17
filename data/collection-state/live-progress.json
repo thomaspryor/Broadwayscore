@@ -1,21 +1,67 @@
 {
-  "updatedAt": "2026-11-17T18:11:24.735Z",
-  "processed": 73,
-  "failed": 10,
-  "successRate": "88.0%",
+  "updatedAt": "2026-11-17T18:38:14.490Z",
+  "processed": 400,
+  "failed": 225,
+  "successRate": "64.0%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 192,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 19,
-    "scrapingbee": 6,
+    "scrapingdog": 46,
+    "scrapingbee": 20,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 124
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-11-17T11:31:40.697Z",
+      "event": "bb-session",
+      "session": "53dea329",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T11:31:41.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T11:34:20.135Z",
+      "event": "bb-session",
+      "session": "43ac326e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-17T11:34:20.754Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T11:46:32.136Z",
+      "event": "bb-session",
+      "session": "f98ce8dd",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-17T11:47:29.110Z",
+      "event": "bb-session",
+      "session": "1bb931b2",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-17T13:17:15.397Z",
+      "event": "bb-session",
+      "session": "c4d8f1b3",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-17T13:18:13.221Z",
+      "event": "bb-session",
+      "session": "c7b64f61",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
     {
       "t": "2026-11-17T13:24:32.705Z",
       "event": "bb-session",
@@ -82,50 +128,6 @@
       "event": "bb-session",
       "session": "602d5b42",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
-    {
-      "t": "2026-11-17T18:02:33.047Z",
-      "event": "bb-session",
-      "session": "7b699d8b",
-      "url": "https://www.nytimes.com/2026/11/17/arts/music/review-jenufa-metropolitan-opera-a"
-    },
-    {
-      "t": "2026-11-17T18:02:33.690Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-17T18:06:16.576Z",
-      "event": "bb-session",
-      "session": "a404faa9",
-      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
-    },
-    {
-      "t": "2026-11-17T18:06:16.831Z",
-      "event": "bb-session",
-      "session": "9469df87",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
-    },
-    {
-      "t": "2026-11-17T18:06:17.255Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-17T18:06:17.435Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-17T18:08:37.636Z",
-      "event": "bb-session",
-      "session": "70a2c6cf",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-17T18:08:38.255Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
