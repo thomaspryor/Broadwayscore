@@ -3,7 +3,9 @@ const assert = require('node:assert/strict');
 const { classifyIssue, isStaleDeployIssue } = require('../../scripts/lib/sentry-triage-classify.js');
 
 const ev = frames => ({ entries: [{ type: 'exception', data: { values: [{ stacktrace: { frames } }] } }] });
-const chunk = (name, lineNo = 1) => ({ filename: `https://broadwayscorecard.com/_next/static/chunks/${name}.js`, absPath: `https://broadwayscorecard.com/_next/static/chunks/${name}.js`, lineNo, colNo: 143, inApp: true });
+// Real Sentry shape: `filename` is the RELATIVE path, `absPath` the full URL
+// (BRO-7722: fixtures with a full-URL filename hid that real events never match).
+const chunk = (name, lineNo = 1) => ({ filename: `/_next/static/chunks/${name}.js`, absPath: `https://broadwayscorecard.com/_next/static/chunks/${name}.js`, lineNo, colNo: 143, inApp: true });
 const doc = (path, lineNo) => ({ filename: `https://broadwayscorecard.com${path}`, lineNo, colNo: 63, inApp: true });
 
 // Real shape of BROADWAY-SCORECARD-2J (webpack module factory missing after a deploy).
@@ -82,4 +84,50 @@ test('known injected / ancient-engine errors are noise even when their frame is 
   assert.equal(g.noise, true);
   const k = classifyIssue({ title: 'SyntaxError: private fields are not currently supported', culprit: '?(chunks/7757)', count: '1', userCount: '1' }, ev([chunk('7757-abc', 1)]));
   assert.equal(k.noise, true);
+});
+
+// --- BRO-7722: real shapes from the 2026-11 issues that were all wrongly ignored ---
+
+test('UgcError from our bundles (relative filename, absPath on our domain) is REAL', () => {
+  // BROADWAY-SCORECARD-35: UGC insert reviews failed (23503), 5 users.
+  const issue = { title: 'UgcError: UGC insert reviews failed (23503)', culprit: 'y(chunks/20993)', count: '5', userCount: '5' };
+  const frames = [
+    { ...chunk('82344-5729705db6f36412'), function: null },
+    { ...chunk('5174-c22701ffd1066681'), function: 'async f' },
+    { ...chunk('20993-096a3ed9af0a336a'), function: 'y' },
+  ];
+  const r = classifyIssue(issue, ev(frames));
+  assert.equal(r.noise, false, r.reason);
+});
+
+test('history.replaceState flood with our frames + Sentry CDN frame is REAL', () => {
+  const issue = { title: 'SecurityError: Attempt to use history.replaceState() more than 100 times per 10 seconds', culprit: '?(chunks/b468fba8)', count: '2', userCount: '2' };
+  const frames = [
+    { ...chunk('4bd1b696-989fb15544b4f183'), function: 'ug' },
+    { filename: '../../../browser-utils/build/esm/instrument/history.js', absPath: 'https://browser.sentry-cdn.com/browser-utils/build/esm/instrument/history.js', lineNo: 57, function: '<anonymous>' },
+    { filename: '[native code]', absPath: '[native code]', function: 'replaceState', inApp: false },
+  ];
+  assert.equal(classifyIssue(issue, ev(frames)).noise, false);
+});
+
+test('a SyntaxError parsing one of our bundles (truncated download / crawler) is noise', () => {
+  // BROADWAY-SCORECARD-37: 50 events, 50 "users", all Chrome 133.0.6943 Windows.
+  const issue = { title: 'SyntaxError: missing ) after argument list', culprit: '?(chunks/b468fba8)', count: '50', userCount: '50' };
+  const f = { filename: '/_next/static/chunks/b468fba8.47bfaad1005addc2.js', absPath: 'https://broadwayscorecard.com/_next/static/chunks/b468fba8.47bfaad1005addc2.js?dpl=7c66', lineNo: 2, function: null, inApp: true };
+  const r = classifyIssue(issue, ev([f]));
+  assert.equal(r.noise, true);
+  assert.match(r.reason, /failed to parse/);
+});
+
+test('a SyntaxError raised inside a named function of ours (e.g. JSON.parse) stays out of the parse-error rule', () => {
+  const issue = { title: 'SyntaxError: Unexpected end of JSON input', culprit: 'load(chunks/app)', count: '9', userCount: '6' };
+  const f = { ...chunk('app-1', 1), function: 'load' };
+  assert.equal(require('../../scripts/lib/sentry-triage-classify.js').isBundleParseError(issue, [f]), false);
+});
+
+test('frameUrl prefers the absolute URL and resolves a bare /_next path to our origin', () => {
+  const { frameUrl } = require('../../scripts/lib/sentry-triage-classify.js');
+  assert.equal(frameUrl({ filename: '/_next/static/chunks/a.js', absPath: 'https://broadwayscorecard.com/_next/static/chunks/a.js' }), 'https://broadwayscorecard.com/_next/static/chunks/a.js');
+  assert.equal(frameUrl({ filename: '/_next/static/chunks/a.js' }), 'https://broadwayscorecard.com/_next/static/chunks/a.js');
+  assert.equal(frameUrl({ filename: '[native code]', absPath: '[native code]' }), '[native code]');
 });

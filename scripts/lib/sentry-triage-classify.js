@@ -78,19 +78,44 @@ const MAX_DOCUMENT_LINE = 20;
 // in the weekly digest and in PostHog `stale_deploy_reload`.
 const STALE_DEPLOY_MESSAGE = /reading 'call'|evaluating '[\w$]+\[[\w$]+\]\.call'|[\w$]+\[[\w$]+\] is undefined/;
 
+// Sentry's `filename` is the RELATIVE path ("/_next/static/chunks/x.js"); the
+// full URL with our domain is in `absPath`. Reading `filename` first meant no
+// frame ever matched OUR_DOMAIN_PATTERNS, so every real error was auto-ignored
+// as "No stack frames from our domain" (BRO-7722). Always classify on this.
+function frameUrl(f) {
+  const abs = f.absPath || f.abs_path || '';
+  const rel = f.filename || '';
+  if (/^[a-z][\w+.-]*:\/\//i.test(abs)) return abs;
+  if (/^[a-z][\w+.-]*:\/\//i.test(rel)) return rel;
+  // A bare site-relative path is served from our own origin.
+  if (rel.startsWith('/_next/') || abs.startsWith('/_next/')) return `https://broadwayscorecard.com${rel.startsWith('/') ? rel : abs}`;
+  return abs || rel;
+}
+
+// A SyntaxError thrown while PARSING one of our bundles (one top-level frame,
+// no function) means the browser got a truncated file: our build cannot ship
+// JS that fails to parse for everyone. BRO-7722: 61 such events in a week, all
+// one stale Chrome build on Windows, one "user" each (a crawler fleet).
+function isBundleParseError(issue, frames) {
+  if (!/^SyntaxError\b/.test(issue.title || '')) return false;
+  if (/JSON/i.test(issue.title || '')) return false;
+  const real = frames.filter(f => !/^\[native code\]$/.test(f.filename || ''));
+  return real.length === 1 && !real[0].function && /\.m?js(\?|$)/.test(frameUrl(real[0]));
+}
+
 function isStaleDeployIssue(issue, latestEvent) {
   const text = `${issue.title || ''} ${(issue.metadata || {}).value || ''}`;
   if (!STALE_DEPLOY_MESSAGE.test(text)) return false;
   const frames = latestEvent?.entries?.find(e => e.type === 'exception')?.data?.values?.[0]?.stacktrace?.frames;
   if (frames?.length) {
-    return frames.some(f => /_next\/static\/chunks\/webpack/.test(f.filename || f.absPath || ''));
+    return frames.some(f => /_next\/static\/chunks\/webpack/.test(frameUrl(f)));
   }
   // No event to read: the culprit Sentry computed names the runtime chunk.
   return /chunks\/webpack/.test(issue.culprit || '');
 }
 
 function isInjectedDocumentFrame(f) {
-  const filename = f.filename || f.absPath || '';
+  const filename = frameUrl(f);
   if (/\.(m?js|cjs)(\?|$)/i.test(filename)) return false;
   const line = f.lineNo ?? f.lineno;
   return typeof line === 'number' && line > MAX_DOCUMENT_LINE;
@@ -124,9 +149,13 @@ function classifyIssue(issue, latestEvent) {
       return { noise: true, reason: 'No stack trace (cannot attribute to our code)' };
     }
 
+    if (isBundleParseError(issue, frames)) {
+      return { noise: true, reason: 'Bundle failed to parse (truncated download, usually a crawler); our build cannot ship unparseable JS' };
+    }
+
     // Check if any frame is from a noisy URL
     const allNoisy = frames.every(f => {
-      const filename = f.filename || f.absPath || '';
+      const filename = frameUrl(f);
       return NOISE_URL_PATTERNS.some(p => p.test(filename)) ||
         (!OUR_DOMAIN_PATTERNS.some(p => p.test(filename)) && filename.startsWith('http'));
     });
@@ -136,7 +165,7 @@ function classifyIssue(issue, latestEvent) {
     }
 
     const ourFrames = frames.filter(f => {
-      const filename = f.filename || f.absPath || '';
+      const filename = frameUrl(f);
       return OUR_DOMAIN_PATTERNS.some(p => p.test(filename));
     });
 
@@ -159,4 +188,4 @@ function classifyIssue(issue, latestEvent) {
   return { noise: false, reason: 'Appears to be a real issue from our code' };
 }
 
-module.exports = { classifyIssue, isInjectedDocumentFrame, isStaleDeployIssue, NOISE_MESSAGE_PATTERNS, OUR_DOMAIN_PATTERNS };
+module.exports = { classifyIssue, frameUrl, isBundleParseError, isInjectedDocumentFrame, isStaleDeployIssue, NOISE_MESSAGE_PATTERNS, OUR_DOMAIN_PATTERNS };
