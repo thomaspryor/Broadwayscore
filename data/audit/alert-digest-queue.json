@@ -997,5 +997,36 @@
       }
     ],
     "queuedAt": "2026-11-17T06:01:40.618Z"
+  },
+  {
+    "conditionKey": "land:land/lease-self-sync-lane-rows",
+    "title": "Landing blocked: rebase red on land/lease-self-sync-lane-rows",
+    "description": "land.yml did not land land/lease-self-sync-lane-rows: the rebase gate went red at 5fbdcf08b5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/lease-self-sync-lane-rows @ 5fbdcf08b5 (origin/land/lease-self-sync-lane-rows) → origin/main @ 4700e423b6 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 4700e423b6: Rebasing (1/3) Rebasing (2/3) error: could not apply f607bfe9de6... Rebuild keeps lane rows until their texts reach review-texts hint: Resolve all conflicts manually, mark them as resolved with hint: \"g Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44025914541",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/lease-self-sync-lane-rows"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5fbdcf08b5e98de4885d534942de2c256d9f268e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44025914541"
+      }
+    ],
+    "queuedAt": "2026-11-17T06:08:37.752Z"
   }
 ]
