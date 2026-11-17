@@ -20,12 +20,12 @@ const T = { hours: 2, hookBlocks: 3, gapMin: 10, repeats: 3 };
 function textOf(c) {
   if (typeof c === 'string') return c;
   if (!Array.isArray(c)) return '';
-  return c.map((b) => (typeof b === 'string' ? b : b.text || (typeof b.content === 'string' ? b.content : textOf(b.content)) || (b.input ? JSON.stringify(b.input) : ''))).join('\n');
+  return c.map((b) => (!b ? '' : typeof b === 'string' ? b : b.text || (typeof b.content === 'string' ? b.content : textOf(b.content)) || (b.input ? JSON.stringify(b.input) : ''))).join('\n');
 }
 
 function analyze(lines) {
   const ev = [];
-  for (const l of lines) { try { ev.push(JSON.parse(l)); } catch { /* skip */ } }
+  for (const l of lines) { try { const o = JSON.parse(l); if (o && typeof o === 'object') ev.push(o); } catch { /* skip */ } }
   const out = { sessionId: null, firstEditAt: null, endAt: null, hours: 0, landRefusals: [], hookBlocks: {}, bypasses: {}, restarts: 0, compactions: 0, repeats: [], longWaits: [] };
   const cmdCount = new Map();
   let prev = null;
@@ -33,37 +33,41 @@ function analyze(lines) {
     out.sessionId = out.sessionId || e.sessionId || null;
     const ts = e.timestamp ? Date.parse(e.timestamp) : null;
     if (ts) {
-      if (!out.startAt) out.startAt = e.timestamp;
-      if (prev && ts - prev > T.gapMin * 60000 && e.type !== 'queue-operation') out.longWaits.push({ at: e.timestamp, minutes: Math.round((ts - prev) / 60000) });
+      if (!out.startAt && e.type !== 'queue-operation') out.startAt = e.timestamp;
+      const human = e.type === 'user' && !(Array.isArray(e.message && e.message.content) && e.message.content.some((b) => b && b.type === 'tool_result'));
+      if (prev && ts - prev > T.gapMin * 60000 && e.type !== 'queue-operation' && !human) out.longWaits.push({ at: e.timestamp, minutes: Math.round((ts - prev) / 60000) });
       if (e.type !== 'queue-operation') prev = ts;
       out.endAt = e.timestamp;
     }
     if (e.type === 'system' && e.subtype === 'compact_boundary') out.compactions++;
     const msg = e.message && e.message.content;
-    const txt = textOf(msg);
+    // Text the session itself wrote or the harness injected, never tool output (which echoes this script and any cat/grep of hook sources).
+    const txt = Array.isArray(msg) ? textOf(msg.filter((b) => b && b.type !== 'tool_result')) : textOf(msg);
+    if (e.type === 'attachment' && e.attachment && e.attachment.type === 'hook_blocking_error') out.hookBlocks.hook = (out.hookBlocks.hook || 0) + 1;
     if (e.type === 'assistant' && Array.isArray(msg)) {
       for (const b of msg) {
-        if (b.type !== 'tool_use') continue;
-        if (!out.firstEditAt && /^(Edit|Write|NotebookEdit)$/.test(b.name) && e.timestamp) out.firstEditAt = e.timestamp;
+        if (!b || b.type !== 'tool_use') continue;
         const cmd = b.input && b.input.command;
+        if (!out.firstEditAt && e.timestamp && (/^(Edit|Write|NotebookEdit)$/.test(b.name) || (cmd && /\bgit commit\b|\bsed -i\b|\bpython3? - ?<<|\bcat >|\btee /.test(cmd)))) out.firstEditAt = e.timestamp;
         if (cmd) {
-          const k = cmd.replace(/\s+/g, ' ').slice(0, 90);
+          const k = cmd.replace(/^\s*cd \S+ (&&|;)\s*/, '').replace(/\s+/g, ' ').slice(0, 90);
+          const head = cmd.split(/<<-?\s*['"]?\w+/)[0]; // a heredoc body is data, not a push
           cmdCount.set(k, (cmdCount.get(k) || 0) + 1);
           // A real bypass rides a git push or gh command ("# NO-VERIFY: reason"); mentions inside grep/cat/echo are not bypasses.
-          if (/\bgit push\b|\bgh (pr|api)\b/.test(cmd)) for (const m of cmd.matchAll(/\b(NO-VERIFY|NO-SHIP-CHECK|NO-EXECUTE|NO-EFFECT-CHECK|NO-ROOT-CAUSE):\s*\S/g)) out.bypasses[m[1]] = (out.bypasses[m[1]] || 0) + 1;
+          if (/\bgit push\b|\bgh (pr|api)\b/.test(head)) for (const m of head.matchAll(/\b(NO-VERIFY|NO-SHIP-CHECK|NO-EXECUTE|NO-EFFECT-CHECK|NO-ROOT-CAUSE):\s*\S/g)) out.bypasses[m[1]] = (out.bypasses[m[1]] || 0) + 1;
         }
       }
     }
     if (e.type === 'user') {
-      if (/Stop hook feedback|🛑 BLOCKED|\[VE:[A-Z]+\]|land preflight BLOCK/.test(txt)) {
+      if (/Stop hook feedback|land preflight BLOCK/.test(txt)) {
         const codes = txt.match(/\[VE:[A-Z]+\]/g) || ['hook'];
         for (const c of new Set(codes)) out.hookBlocks[c] = (out.hookBlocks[c] || 0) + 1;
       }
       // Land refusals are tool output (wait-for-land.js "REFUSED: land/..."), never the human's or the brief's prose.
       if (Array.isArray(msg)) for (const b of msg) {
-        if (b.type !== 'tool_result') continue;
+        if (!b || b.type !== 'tool_result') continue;
         const t = textOf(b.content);
-        const m = t.match(/^[^\n]*REFUSED: (land\/\S+)[^\n]*/m);
+        const m = t.match(/^(?:\d\d:\d\d:\d\dZ )?REFUSED: (land\/\S+)[^\n]*/m);
         if (m) out.landRefusals.push({ at: e.timestamp || null, why: m[0].slice(0, 160) });
       }
       if (/worker process was restarted/.test(txt)) out.restarts++;
@@ -110,7 +114,9 @@ function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.
   const cutoff = Date.now() - days * 86400000;
   const all = readLedger(ledger);
   if (ifDue && all.some((r) => r.rollup && Date.parse(r.recordedAt) >= cutoff)) { log('session-retro: weekly rollup already done'); return -1; }
-  const rows = all.filter((r) => !r.rollup && Date.parse(r.endAt || r.recordedAt) >= cutoff);
+  const bySession = new Map();
+  for (const r of all) if (!r.rollup && Date.parse(r.endAt || r.recordedAt) >= cutoff) bySession.set(r.sessionId || `${r.recordedAt}`, r);
+  const rows = [...bySession.values()];
   const count = new Map();
   for (const r of rows) for (const s of new Set(r.signals || [])) count.set(s, (count.get(s) || 0) + 1);
   const top = [...count.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 5);
@@ -119,7 +125,7 @@ function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.
   const mark = () => { if (ifDue) fs.appendFileSync(ledger, JSON.stringify({ rollup: true, recordedAt: new Date().toISOString(), sessions: rows.length, top }) + '\n'); };
   if (fileCard && top.length) {
     const [s, n] = top[0];
-    const r = spawn('node', [path.join(__dirname, '..', 'linear-brain.js'), 'create', `Recurring session friction: ${s} (${n} sessions this week)`, '--dispatch', '--notes', `Weekly session-retro rollup. Signal ${s} hit ${n} of ${rows.length} sessions. Top five: ${top.map(([a, b]) => `${a} x${b}`).join('; ')}. Fix the cause (guard, test, hook), not a memory note.\n\n## Acceptance criteria\nVERIFY: node scripts/lib/session-retro.js --rollup --days=7`], { encoding: 'utf8' });
+    const r = spawn('node', [path.join(__dirname, '..', 'linear-brain.js'), 'create', `Recurring session friction: ${s}`, '--dispatch', '--notes', `Weekly session-retro rollup. Signal ${s} hit ${n} of ${rows.length} sessions. Top five: ${top.map(([a, b]) => `${a} x${b}`).join('; ')}. Fix the cause (guard, test, hook), not a memory note.\n\n## Acceptance criteria\nVERIFY: node scripts/lib/session-retro.js --rollup --days=7`], { encoding: 'utf8' });
     if (r.error || r.status !== 0) { log(`session-retro: card filing failed (${r.error ? r.error.message : 'exit ' + r.status}); weekly marker not written, will retry next time`); return top; }
     log((r.stdout || '').split('\n').slice(0, 3).join('\n'));
   }

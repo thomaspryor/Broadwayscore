@@ -56,8 +56,8 @@ test('a failed card filing does not write the weekly marker, so the next run ret
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-'));
   try {
     const ledger = path.join(dir, 'l.jsonl');
-    const row = JSON.stringify({ endAt: new Date().toISOString(), signals: ['restart'] });
-    fs.writeFileSync(ledger, row + '\n' + row + '\n');
+    const row = (id) => JSON.stringify({ sessionId: id, endAt: new Date().toISOString(), signals: ['restart'] });
+    fs.writeFileSync(ledger, row('a') + '\n' + row('b') + '\n');
     const out = [];
     R.rollup(7, true, { ledger, ifDue: true, log: (m) => out.push(m), spawn: () => ({ status: 1, stdout: '' }) });
     assert.ok(out.some((m) => /card filing failed/.test(m)));
@@ -65,4 +65,22 @@ test('a failed card filing does not write the weekly marker, so the next run ret
     R.rollup(7, true, { ledger, ifDue: true, log: () => {}, spawn: () => ({ status: 0, stdout: 'BRO-1' }) });
     assert.ok(fs.readFileSync(ledger, 'utf8').includes('"rollup":true'));
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 }); }
+});
+
+test('echoes in tool output, heredoc pushes and malformed lines are not signals (ship-check review)', () => {
+  const line = (o) => JSON.stringify(o);
+  const ts = (m) => `2026-11-17T01:${String(m).padStart(2, '0')}:00Z`;
+  const lines = [
+    'null', '{"type":"user","message":{"content":[null]}}',
+    line({ type: 'user', timestamp: ts(1), message: { content: [{ type: 'tool_result', content: 'Hook blocks: [VE:CLEARCLOSE] Stop hook feedback worker process was restarted' }] } }),
+    line({ type: 'user', timestamp: ts(2), message: { content: [{ type: 'tool_result', content: '      // wait-for-land.js "REFUSED: land/x" in source' }] } }),
+    line({ type: 'assistant', timestamp: ts(3), message: { content: [{ type: 'tool_use', name: 'Bash', input: { command: "python3 - <<'E'\nx='git push # NO-VERIFY: because'\nE" } }] } }),
+    line({ type: 'attachment', timestamp: ts(4), attachment: { type: 'hook_blocking_error' } }),
+    line({ type: 'user', timestamp: ts(5), message: { content: 'Stop hook feedback: [VE:CLEARCLOSE] fix it' } }),
+  ];
+  const r = R.analyze(lines);
+  assert.equal(r.restarts, 0);
+  assert.equal(r.landRefusals.length, 0);
+  assert.deepEqual(r.bypasses, {});
+  assert.deepEqual(r.hookBlocks, { hook: 1, '[VE:CLEARCLOSE]': 1 }, 'one attachment plus one real feedback message');
 });

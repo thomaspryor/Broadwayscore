@@ -81,7 +81,9 @@ function trackMainWhenNothingLocal(repoDir, execFn = execFileSync) {
   try {
     const branch = g(['symbolic-ref', '--short', '-q', 'HEAD']);
     if (!branch || branch === 'main') return false;
-    try { g(['rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{upstream}']); return false; } catch { /* no upstream: carry on */ }
+    // A live upstream that already holds HEAD is fine. A missing or stale one (a resumed session whose old remote branch
+    // is gone or far behind) still reads as "N unpushed" after the fast-forward, so it is replaced when nothing is local.
+    try { g(['rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{upstream}']); g(['merge-base', '--is-ancestor', 'HEAD', '@{upstream}']); return false; } catch { /* no, gone or stale upstream: carry on */ }
     g(['merge-base', '--is-ancestor', 'HEAD', REMOTE_MAIN]);
     g(['branch', '--set-upstream-to=origin/main', branch]);
     return true;

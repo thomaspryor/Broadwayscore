@@ -45,3 +45,18 @@ test('main itself and an existing upstream are untouched', () => {
     assert.equal(trackMainWhenNothingLocal(dir), false);
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
+
+test('a resumed branch fast-forwarded past its stale remote branch re-tracks origin/main (parent finding, BRO-7629)', () => {
+  const dir = fixture();
+  try {
+    const old = git(dir, 'rev-parse', 'HEAD');
+    git(dir, 'update-ref', 'refs/remotes/origin/claude/z', old);
+    git(dir, 'checkout', '-q', '-b', 'claude/z');
+    git(dir, 'branch', '--set-upstream-to=origin/claude/z');
+    fs.writeFileSync(path.join(dir, 'a'), '2'); git(dir, 'commit', '-qam', 'two'); // lands on main in real life
+    git(dir, 'update-ref', 'refs/remotes/origin/main', 'HEAD');
+    assert.equal(git(dir, 'rev-list', '--count', '@{upstream}..HEAD'), '1', 'before: reads as 1 unpushed');
+    assert.equal(trackMainWhenNothingLocal(dir), true);
+    assert.equal(git(dir, 'rev-list', '--count', '@{upstream}..HEAD'), '0');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});

@@ -190,6 +190,9 @@ for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
       # No upstream we can compare against — fall back to listing this commit's tree
       range_files=$(git show --name-only --pretty=format: "$local_oid" 2>/dev/null || true)
     fi
+  elif node "$REPO_ROOT/scripts/lib/already-on-main.js" "$local_oid" "$REPO_ROOT" 2>/dev/null; then
+    # Every pushed commit is already on origin/main (a resumed session's fast-forwarded branch): nothing new to audit.
+    range_files=""
   else
     range_files=$(git diff --name-only "$remote_oid..$local_oid" 2>/dev/null || true)
   fi
