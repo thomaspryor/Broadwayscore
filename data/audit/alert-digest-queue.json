@@ -1658,5 +1658,36 @@
       }
     ],
     "queuedAt": "2026-11-17T18:26:06.076Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6449-framing-rule",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6449-framing-rule",
+    "description": "land.yml did not land land/bro-6449-framing-rule: the unit-tests-node gate went red at ae96aec6e3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44146301471",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6449-framing-rule"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ae96aec6e3563e7220ee0484100519022712bab9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44146301471"
+      }
+    ],
+    "queuedAt": "2026-11-17T18:30:00.399Z"
   }
 ]
