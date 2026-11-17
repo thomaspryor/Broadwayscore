@@ -83,3 +83,12 @@ test('render.js wires the rule in before any render', () => {
   const src = fs.readFileSync(new URL('./video-proto/render.js', import.meta.url), 'utf8');
   assert(/assertFraming\(V\.plan\)/.test(src)); assert(/assertFraming\(\{ fmt: 'versus'/.test(src));
 });
+test('a quoted sentence does not hide text and a quoted question still ends the script', () => {
+  assert.deepStrictEqual(checkFraming({ fmt: 'duo', key: 'x', prompt: 'NYT said, "It soars." Then more. Who wins? Did you guess "right?"', caption: 'Did you guess "right?"' }), []);
+});
+test('a copy-review rewrite that drops the closing question is rejected', async () => {
+  const cr = require('./video-proto/copyreview.js'); const p = await gen('every', SHOW);
+  assert(cr.keepsFacts(p, 'caption', p.caption) === null, 'original passes');
+  const dropped = p.caption.replace(/\n\n[^\n]*\?\n\n/, '\n\n');
+  assert(cr.keepsFacts(p, 'caption', dropped) !== null, 'caption keep list now includes the question');
+});

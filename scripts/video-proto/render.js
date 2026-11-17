@@ -52,8 +52,8 @@ function voiced(n) {
   const VO = process.env.VO_DIR; if (!VO) throw new Error('set VO_DIR to the folder with ' + n + '.mp3 and ' + n + '.words.json');
   const wj = JSON.parse(fs.readFileSync(path.join(VO, n + '.words.json'), 'utf8'));
   const words = wj.words.map(w => ({ w: w.word, a: +(w.start + VO_OFF).toFixed(3), b: +(w.end + VO_OFF).toFixed(3) }));
-  // Whisper's word list drops '+'/'-' from letter grades ("B+" comes back as "B"); restore them from the full transcript
   if (n === 'versus') require('./script-rules').assertFraming({ fmt: 'versus', key: n, prompt: wj.text }, { needCaption: false }); // versus has no plan: the transcript is the script (BRO-6449)
+  // Whisper's word list drops '+'/'-' from letter grades ("B+" comes back as "B"); restore them from the full transcript
   const marks = [...wj.text.matchAll(/\b([A-F])([+-])(?![\w])/g)];
   words.filter(w => /^[A-F]$/.test(w.w)).forEach((w, i) => { if (marks[i] && marks[i][1] === w.w) w.w += marks[i][2]; });
   words.forEach((w, i) => { const nx = words[i + 1], pv = words[i - 1];

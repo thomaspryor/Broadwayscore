@@ -126,7 +126,7 @@ async function plan(fmt, key, cache) {
     const v = { L: spokenTitle, l: spokenTitle[0].toLowerCase() + spokenTitle.slice(1) };
     const ask = askLine('askTop5', K, '', '');
     const caption = line('capTop5', K, { L: L.title, l: L.title }) [0] + '\n\n' + ask.cap + '\n\n#Broadway #Theater #NYC';
-    const keep = { prompt: [...shows.slice().reverse().flatMap((s, i) => [`number ${W(5 - i)}`, s.title, W(s.score)]), stemOf(ask.voice)], caption: [L.title] };
+    const keep = { prompt: [...shows.slice().reverse().flatMap((s, i) => [`number ${W(5 - i)}`, s.title, W(s.score)]), stemOf(ask.voice)], caption: [L.title, ask.cap] };
     return { fmt, key, caption, keep, prompt: `[excited] ${line('top5Lead', K, v)[0]} ${parts.join(' ')} ${L.endLine} ${line('top5End', K, v)[0]} ${ask.voice}` };
   }
   const m = meta(key), p = slim(key), rv = p.rv.filter(r => Number.isFinite(r.s));
@@ -144,7 +144,7 @@ async function plan(fmt, key, cache) {
     const tallyCap = items.map(([k]) => `${c[k]} ${k === 'rave' ? (c[k] === 1 ? 'rave' : 'raves') : k}`).join(', ');
     const ask = askLine('askEvery', K, W(score), score);
     const caption = line('capEvery', K, { n: N, T: m.title, tally: tallyCap, s: score, label }) [0] + '\n\n' + ask.cap + '\n\n' + hashtags(m);
-    const keep = { prompt: [`${W(N)} critics`, ...items.map(([k]) => k === 'rave' ? (c.rave === 1 ? 'rave' : 'raves') : k), scoreLead, W(score), label, 'every review', stemOf(ask.voice)], caption: [tallyCap, `${score}`, label] };
+    const keep = { prompt: [`${W(N)} critics`, ...items.map(([k]) => k === 'rave' ? (c.rave === 1 ? 'rave' : 'raves') : k), scoreLead, W(score), label, 'every review', stemOf(ask.voice)], caption: [tallyCap, `${score}`, label, ask.cap] };
     return { fmt, key, caption, keep, cue: { score: scoreLead }, prompt: `[excited] ${line('everyOpen', K, { T: m.title, N: cap(W(N)), n: W(N) })[0]} ${lines.join(' ')} ${sc} ${label}. ${line('signoff', K, {})[0]} ${ask.voice}` };
   }
   const picks = await Promise.all(pickReviews(rv).map(async r => ({ o: r.o, s: r.s, against: !!r.against, say: sayOutlet(r.o), ex: await excerpt(r.q, cache) })));
@@ -161,7 +161,7 @@ async function plan(fmt, key, cache) {
     const [sc, scoreLead] = line('verdictScore', K, { s: W(score) });
     const ask = askLine('askVerdict', K, W(score), score);
     const caption = line('capVerdict', K, { T: m.title, where: WHERE[m.category], night, n: N, s: score, label, Aud: audCap }) [0].replace(/^./, ch => ch.toUpperCase()) + '\n\n' + ask.cap + '\n\n' + hashtags(m);
-    const keep = { prompt: [`${W(N)} critics`, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), tally, scoreLead, W(score), label, 'audiences', G, 'every review', stemOf(ask.voice)], caption: [`${N} critics`, `${score}`, label, audCap] };
+    const keep = { prompt: [`${W(N)} critics`, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), tally, scoreLead, W(score), label, 'audiences', G, 'every review', stemOf(ask.voice)], caption: [`${N} critics`, `${score}`, label, audCap, ask.cap] };
     return { fmt, key, quotes: picks, caption, keep, cue: { score: scoreLead, aud: 'audiences' }, prompt: `[excited] ${open} ${quotes} ${line('tally', K, { Tally: cap(tally), tally })[0]} ${sc} ${label}. ${line(dir, K, av)[0]} ${line('signoff', K, {})[0]} ${ask.voice}` };
   }
   if (fmt === 'reveal') {
@@ -170,7 +170,7 @@ async function plan(fmt, key, cache) {
     const gap = line({ audMore: 'gapMore', audLess: 'gapLess', audSame: 'gapSame' }[dir], K, {})[0];
     const ask = askLine('askReveal', K, W(score), score);
     const caption = line('capReveal', K, { n: N, T: m.title, s: score, label, a: av.a, g: aud.grade }) [0] + '\n\n' + ask.cap + '\n\n' + hashtags(m);
-    const keep = { prompt: [m.title, `${W(N)} critics`, count, W(score), label, quotesIn, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), `${vsLead} ${W(score)}`, audLead, G, gap, 'every review', stemOf(ask.voice)], caption: [`${score}`, label, aud.grade] };
+    const keep = { prompt: [m.title, `${W(N)} critics`, count, W(score), label, quotesIn, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), `${vsLead} ${W(score)}`, audLead, G, gap, 'every review', stemOf(ask.voice)], caption: [`${score}`, label, aud.grade, ask.cap] };
     return { fmt, key, quotes: picks, caption, keep, gapLine: gap, cue: { count, quotesIn, vs: vsLead, aud: audLead }, prompt: `[excited] ${m.title}: ${label}. ${cap(line('revealOpen', K, { N: cap(W(N)), n: W(N), T: m.title })[0])} ${cnt} ${cap(W(score))}! ${label}. ${qi} ${quotes} ${vs} ${al} ${gap} ${line('revealEnd', K, {})[0]} ${ask.voice}` };
   }
   throw new Error('unknown format ' + fmt);
@@ -196,6 +196,7 @@ if (require.main === module) (async () => {
   }
   // every fact and timing phrase must still be said, in order, or the render fails after paying for the voice
   { const why = require('./copyreview.js').keepsFacts(P, 'prompt', P.prompt, P.prompt); if (why) throw new Error('script check: ' + why); }
+  { const why = require('./script-rules.js').checkFraming(P)[0]; if (why) throw new Error('script check: ' + why); }
   fs.mkdirSync(outDir, { recursive: true });
   if (!process.env.VO_DRY) { fs.writeFileSync(HIST_FILE + '.tmp', JSON.stringify(HIST, null, 1)); fs.renameSync(HIST_FILE + '.tmp', HIST_FILE); } // one run at a time: last writer wins
   fs.writeFileSync(cf, JSON.stringify(cache, null, 1));
