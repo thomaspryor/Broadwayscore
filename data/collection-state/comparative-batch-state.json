@@ -1,37 +1,46 @@
 {
   "openai": {
-    "answers": {
-      "bced35b0c38887ebecf4": {
-        "text": "[{\"id\":\"artsdesk--unknown.json\",\"score\":75,\"warmthRank\":4},{\"id\":\"independent--alice-saville.json\",\"score\":85,\"warmthRank\":2},{\"id\":\"lost-in-theatreland--barbara-martins.json\",\"score\":90,\"warmthRank\":1},{\"id\":\"timeout-london--andrzej-lukowski.json\",\"score\":80,\"warmthRank\":3}]",
-        "at": "2026-11-17T14:20:02.673Z"
-      },
-      "4f0730af386847b85255": {
-        "text": "[{\"id\":\"london-theatre--theo-bosanquet.json\",\"score\":89,\"warmthRank\":1},{\"id\":\"rollingstone--unknown.json\",\"score\":86,\"warmthRank\":2}]",
-        "at": "2026-11-17T14:20:02.673Z"
-      }
-    }
+    "answers": {},
+    "inflight": {
+      "id": "batch_6afcab2e02d881909f3d1a6fceeb0b6c",
+      "keys": [
+        "642cbf2b93ba7b3d157a",
+        "c695454b85592b7e00db",
+        "ca89fe467cb5e715b1ef"
+      ],
+      "submittedAt": "2026-11-17T19:29:50.179Z"
+    },
+    "submitFailures": 0
   },
   "gemini": {
     "answers": {
-      "bced35b0c38887ebecf4": {
-        "text": "[{\"id\":\"timeout-london--andrzej-lukowski.json\",\"score\":88,\"warmthRank\":1},{\"id\":\"independent--alice-saville.json\",\"score\":85,\"warmthRank\":2},{\"id\":\"artsdesk--unknown.json\",\"score\":78,\"warmthRank\":3},{\"id\":\"lost-in-theatreland--barbara-martins.json\",\"score\":75,\"warmthRank\":4}]",
-        "at": "2026-11-17T14:19:04.457Z"
+      "642cbf2b93ba7b3d157a": {
+        "text": "[{\"id\":\"timeout-london--andrzej-lukowski.json\",\"score\":65,\"warmthRank\":1},{\"id\":\"times-uk--clive-davis.json\",\"score\":55,\"warmthRank\":2}]",
+        "at": "2026-11-17T19:32:54.190Z"
       },
-      "4f0730af386847b85255": {
-        "text": "[{\"id\":\"london-theatre--theo-bosanquet.json\",\"score\":88,\"warmthRank\":1},{\"id\":\"rollingstone--unknown.json\",\"score\":82,\"warmthRank\":2}]",
-        "at": "2026-11-17T14:19:04.457Z"
+      "c695454b85592b7e00db": {
+        "text": "[{\"id\":\"london-box-office--shehrazade-zafar-arif.json\",\"score\":85,\"warmthRank\":1},{\"id\":\"times-uk--kate-maltby.json\",\"score\":80,\"warmthRank\":2}]",
+        "at": "2026-11-17T19:32:54.190Z"
+      },
+      "ca89fe467cb5e715b1ef": {
+        "text": "[{\"id\":\"whatsonstage--unknown.json\",\"score\":100,\"warmthRank\":1},{\"id\":\"city-am--adam-bloodworth.json\",\"score\":99,\"warmthRank\":2},{\"id\":\"broadwayworld--aliya-al-hassan.json\",\"score\":98,\"warmthRank\":3},{\"id\":\"theatre-weekly--unknown.json\",\"score\":97,\"warmthRank\":4},{\"id\":\"standard--unknown.json\",\"score\":95,\"warmthRank\":5},{\"id\":\"financialtimes--sarah-hemming.json\",\"score\":93,\"warmthRank\":6},{\"id\":\"daily-mail--georgina-brown.json\",\"score\":91,\"warmthRank\":7}]",
+        "at": "2026-11-17T19:32:54.190Z"
       }
     }
   },
   "claude": {
     "answers": {
-      "bced35b0c38887ebecf4": {
-        "text": "[{\"id\":\"lost-in-theatreland--barbara-martins.json\",\"score\":85,\"warmthRank\":2},{\"id\":\"artsdesk--unknown.json\",\"score\":83,\"warmthRank\":3},{\"id\":\"independent--alice-saville.json\",\"score\":78,\"warmthRank\":4},{\"id\":\"timeout-london--andrzej-lukowski.json\",\"score\":76,\"warmthRank\":5}]",
-        "at": "2026-11-17T14:18:01.912Z"
+      "642cbf2b93ba7b3d157a": {
+        "text": "[{\"id\":\"timeout-london--andrzej-lukowski.json\",\"score\":60,\"warmthRank\":1},{\"id\":\"times-uk--clive-davis.json\",\"score\":53,\"warmthRank\":2}]",
+        "at": "2026-11-17T19:32:51.393Z"
       },
-      "4f0730af386847b85255": {
-        "text": "[{\"id\":\"london-theatre--theo-bosanquet.json\",\"score\":82,\"warmthRank\":2},{\"id\":\"rollingstone--unknown.json\",\"score\":85,\"warmthRank\":1}]",
-        "at": "2026-11-17T14:18:01.912Z"
+      "c695454b85592b7e00db": {
+        "text": "[{\"id\":\"london-box-office--shehrazade-zafar-arif.json\",\"score\":83,\"warmthRank\":1},{\"id\":\"times-uk--kate-maltby.json\",\"score\":76,\"warmthRank\":2}]",
+        "at": "2026-11-17T19:32:51.393Z"
+      },
+      "ca89fe467cb5e715b1ef": {
+        "text": "[{\"id\":\"financialtimes--sarah-hemming.json\",\"score\":97,\"warmthRank\":2},{\"id\":\"city-am--adam-bloodworth.json\",\"score\":98,\"warmthRank\":1},{\"id\":\"broadwayworld--aliya-al-hassan.json\",\"score\":94,\"warmthRank\":4},{\"id\":\"daily-mail--georgina-brown.json\",\"score\":93,\"warmthRank\":5},{\"id\":\"standard--unknown.json\",\"score\":95,\"warmthRank\":3},{\"id\":\"theatre-weekly--unknown.json\",\"score\":92,\"warmthRank\":6},{\"id\":\"whatsonstage--unknown.json\",\"score\":93,\"warmthRank\":5}]",
+        "at": "2026-11-17T19:32:51.393Z"
       }
     }
   }
