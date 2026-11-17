@@ -147,14 +147,59 @@ jobs:
           done
           echo "new=$N" >> "$GITHUB_OUTPUT"
           [ "$N" != "0" ] || { echo "No new season productions"; exit 0; }
-          PLAN="bro-7250-d$(date -u +%y%m%d)"
+          PLAN="bro-7250-d$(date -u +%y%m%d)-r${{ github.run_number }}"
           node scripts/new-fix-plan.js --id="$PLAN" --summary="BRO-7250: $N local productions from theatre season pages" $ARGS
           PLAN_ID=$(node -p "require('./data/pending-fixes/$PLAN.json').planId")
           trap 'git reset -q -- data/pending-fixes public/images/shows 2>/dev/null || true' ERR
-          git add -A -- "data/pending-fixes/$PLAN.json" public/images/shows 'data/audit/city-season-*.json'
+          # Only this plan's art (BRO-7683): a whole-directory add would sweep in art another step left behind.
+          node scripts/lib/plan-art-paths.js /tmp/season-*.json | xargs -r git add -A --
+          git add -A -- "data/pending-fixes/$PLAN.json" 'data/audit/city-season-*.json'
           git commit -m "data: season productions plan $PLAN [skip ci]"
           bash scripts/lib/push-with-retry.sh
           gh workflow run execute-approved-fix.yml -f issue_number="$PLAN" -f plan_id="$PLAN_ID" -f mode=apply
+
+      # BRO-7683: BroadwayWorld's per-city review archive (/<region>/local-reviews/) lists every production its critics
+      # reviewed in the launched US hubs. scripts/bww-regional-coverage.js reports reviewed productions with no shows.json
+      # row (Washington National Opera's Nixon in China went unlisted for a week); scripts/bww-regional-add-plan.js reads
+      # each review (Gemini, every fact checked against the review text) and turns professional productions into add-show
+      # actions with the review photo; community, school, touring and non-theatre reviews are recorded as declined.
+      # Advisory: continue-on-error. Kill switch: repo variable BWW_REGIONAL_ADD=false. Cap: 8 new shows per run.
+      - name: Add BroadwayWorld-reviewed hub productions (plan + art)
+        id: bwwadd
+        if: vars.BWW_REGIONAL_ADD != 'false'
+        continue-on-error: true
+        timeout-minutes: 40
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for F in data/pending-fixes/bro-7683-d*.json; do
+            [ -f "$F" ] || continue
+            if [ "$(node -p "require('./$F').status")" = "pending" ]; then
+              P=$(basename "$F" .json)
+              echo "Re-dispatching undispatched plan $P"
+              gh workflow run execute-approved-fix.yml -f issue_number="$P" -f plan_id="$(node -p "require('./$F').planId")" -f mode=apply || echo "::warning::re-dispatch of $P failed"
+            fi
+          done
+          node scripts/bww-regional-coverage.js --days=45 --max-pages=4
+          node -e "const r=require('./data/audit/bww-regional-coverage.json');const e=r.hubs.reduce((a,h)=>a+h.fetchErrors.length,0);if(e)console.log('::warning::BroadwayWorld coverage: '+e+' review pages could not be read (missing counts are incomplete)')"
+          node scripts/bww-regional-add-plan.js --apply --max=8 --out=/tmp/bww-add.json
+          N=$(node -p "require('/tmp/bww-add.json').length")
+          echo "new=$N" >> "$GITHUB_OUTPUT"
+          [ "$N" != "0" ] || { echo "No new BroadwayWorld-reviewed productions"; exit 0; }
+          PLAN="bro-7683-d$(date -u +%y%m%d)-r${{ github.run_number }}"
+          node scripts/new-fix-plan.js --id="$PLAN" --summary="BRO-7683: $N hub productions reviewed on BroadwayWorld" --actions=/tmp/bww-add.json
+          trap 'git reset -q -- data/pending-fixes public/images/shows data/audit 2>/dev/null || true' ERR
+          node scripts/lib/plan-art-paths.js /tmp/bww-add.json | xargs -r git add -A --
+          git add -A -- data/pending-fixes/"$PLAN"*.json 'data/audit/bww-regional-*.json'
+          git commit -m "data: BroadwayWorld-reviewed hub productions plan $PLAN [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+          for F in data/pending-fixes/"$PLAN"*.json; do
+            gh workflow run execute-approved-fix.yml -f issue_number="$(basename "$F" .json)" -f plan_id="$(node -p "require('./$F').planId")" -f mode=apply
+          done
+
+      - name: Warn when BroadwayWorld add step failed
+        if: steps.bwwadd.outcome == 'failure'
+        run: echo "::warning::BroadwayWorld hub add step failed; reviewed productions were not added today"
 
       - name: Warn when season step failed
         if: steps.season.outcome == 'failure'
@@ -163,7 +208,7 @@ jobs:
       - name: Commit reports
         if: always()
         run: |
-          git add -A -- 'data/audit/city-finder-*.json'
+          git add -A -- 'data/audit/city-finder-*.json' 'data/audit/bww-regional-*.json'
           if git diff --staged --quiet; then
             echo "No report changes"
           else
@@ -183,6 +228,6 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'City Finder Daily Failed'
-          description: 'The daily city review pickup failed (finder, report commit), so new San Diego and Boston reviews were not picked up today.'
+          description: 'The daily city review pickup failed (finder, report commit), so new reviews in the US city hubs were not picked up today.'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

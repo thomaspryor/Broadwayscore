@@ -73,6 +73,8 @@ test('type filter and mapping', () => {
   for (const x of ['Play', 'Musical', 'Drama', 'Comedy/Drama', 'Musical Comedy']) assert.equal(t.isExcludedType(x), false, x);
   assert.equal(t.mapShowType('Musical'), 'musical');
   assert.equal(t.mapShowType('Play'), 'play');
+  assert.equal(t.mapShowType('Opera'), 'opera');
+  assert.equal(t.mapShowType('Musical/Opera'), 'musical');
 });
 
 test('site date parsing and verdict normalising', () => {

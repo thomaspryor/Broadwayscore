@@ -146,7 +146,12 @@ async function main() {
           } catch (e) { out.noArt.push(`${show.id}: ${String(e.message).slice(0, 60)}`); }
         }
         const trial = applyAddShow(work, { type: 'add-show', show }, { root: ROOT });
-        if (!trial.ok) { out.held.push(`${f.title}: ${trial.reason}`); continue; }
+        if (!trial.ok) {
+          // Art written for a row that is not added would be committed with no plan behind it.
+          if (show.images) fs.rmSync(path.join(ROOT, 'public', 'images', 'shows', show.id), { recursive: true, force: true });
+          out.held.push(`${f.title}: ${trial.reason}`);
+          continue;
+        }
         taken.add(show.id);
         pending.push(show);
         actions.push({ type: 'add-show', show, description: `add ${show.id} (BroadwayWorld review ${m.firstReview})` });

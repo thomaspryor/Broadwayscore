@@ -30,7 +30,7 @@ Say what production it reviews. Use only what the text says; never guess.
 - "type": "play", "musical" or "opera".
 - "theatre": the building or stage it plays at, as the text names it (e.g. "Kennedy Center Opera House", "Theater Wit"). If only the company is named, the company.
 - "company": the producing company, or null.
-- "town": the town or city the theatre is in, only if the text names it (else null). "state": the two-letter US state code, only if the text or a well-known venue makes it certain (else null).
+- "town": the town or city the theatre is in: as the text names it, else for a well-known venue its town, else null. "state": the two-letter US state code, only if the text or a well-known venue makes it certain (else null).
 - "firstPerformance", "openingDate", "closingDate": "YYYY-MM-DD" when the text gives that date (year from the review date; a run is rarely over 4 months), else null.
 Return JSON: {"title":string,"kind":string,"type":string,"theatre":string|null,"company":string|null,"town":string|null,"state":string|null,"firstPerformance":string|null,"openingDate":string|null,"closingDate":string|null}
 
