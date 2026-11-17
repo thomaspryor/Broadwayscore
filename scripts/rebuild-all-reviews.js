@@ -561,7 +561,9 @@ function extractExcerptFromFullText(fullText, showTitle) {
   text = text.replace(/googletag\.cmd\.push\([^)]*\);?\s*/g, '');
 
   // Split into sentences
-  const sentences = text.split(/(?<=[.!?])\s+/);
+  // Not before a , ; or : — "Schmigadoon! , director ..." is one sentence
+  // whose title ends in "!" (Slant, The Fantasticks 2026-11-16).
+  const sentences = text.split(/(?<=[.!?])\s+(?![,;:])/);
 
   // Filter to substantive sentences only (skip bylines, photo credits, metadata, junk)
   const substantive = [];

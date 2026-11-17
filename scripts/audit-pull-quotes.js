@@ -50,6 +50,7 @@ const {
   hasCopyrightChrome,
   isPromoTeaser,
   isInternalNote,
+  PUNCT_FRAGMENT_START_RE,
 } = require('./lib/pull-quote-guards');
 
 // audit-chrome-pullquotes.js shipped its CHROME_PREFIX_PATTERNS as a "CI guard"
@@ -90,7 +91,7 @@ function classifyBadQuote(quote, sources) {
   if (isTagCloudExcerpt(quote)) return 'tag-cloud';
   if (isMidWordTruncation(quote, sources)) return 'mid-word-truncation';
   // A quote that opens on a stray , ; or : (split at a "!" inside a title).
-  if (/^[\s"'\u201c\u2018\u00ab(\[]*[,;:]/.test(quote)) return 'punctuation-start-fragment';
+  if (PUNCT_FRAGMENT_START_RE.test(quote)) return 'punctuation-start-fragment';
   return null;
 }
 

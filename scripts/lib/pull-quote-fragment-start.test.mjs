@@ -25,3 +25,11 @@ describe('startsAsFragment', () => {
     assert.equal(startsAsFragment('It is a delight to see him working on a smaller canvas.'), false);
   });
 });
+
+describe('llmQuoteHardRejectReason', () => {
+  const { llmQuoteHardRejectReason } = require('./pull-quote-guards.js');
+  it('hard-rejects a punctuation-led LLM quote so the extractor re-extracts it', () => {
+    assert.equal(llmQuoteHardRejectReason(', director Christopher Gattelli spread large-scale charm.', ''), 'punctuation-start-fragment');
+    assert.equal(llmQuoteHardRejectReason('It is a delight to see him working on a smaller canvas.', ''), null);
+  });
+});

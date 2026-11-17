@@ -329,6 +329,9 @@ function startsMidClause(quote, fullText) {
 // split at "In Death Becomes Her and Schmigadoon!". Leading wrapping quotes,
 // parens and whitespace are skipped first.
 const FRAGMENT_START_RE = /^[\s"'\u201c\u2018\u00ab(\[]*(?:[a-z]|[,;:])/;
+// Only the stray-punctuation half: a shipped or LLM quote opening this way
+// is never the critic's sentence start (audit + extractor hard reject).
+const PUNCT_FRAGMENT_START_RE = /^[\s"'\u201c\u2018\u00ab(\[]*[,;:]/;
 function startsAsFragment(excerpt) {
   return typeof excerpt === 'string' && FRAGMENT_START_RE.test(excerpt);
 }
@@ -686,6 +689,7 @@ function isMidWordTruncation(excerpt, sourceTexts) {
 function llmQuoteHardRejectReason(quote, fullText) {
   if (isInternalNote(quote)) return 'internal-note';
   if (isMidWordTruncation(quote, fullText ? [fullText] : [])) return 'mid-word-truncation';
+  if (typeof quote === 'string' && PUNCT_FRAGMENT_START_RE.test(quote)) return 'punctuation-start-fragment';
   return null;
 }
 
@@ -1329,6 +1333,7 @@ module.exports = {
   startsMidClause,
   startsAsFragment,
   FRAGMENT_START_RE,
+  PUNCT_FRAGMENT_START_RE,
   expandToSentenceStart,
   endsWithSourceEllipsis,
   isClippedAggregatorBlurb,
