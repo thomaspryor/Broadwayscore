@@ -229,19 +229,31 @@ jobs:
           fi
 
       - name: Time gate — no broadcast before 7 AM ET
-        # No create_draft/send_to_all skip here or on the readiness gate (BRO-4417 what-else):
+        # The step always runs (never skipped by an if: on create_draft; BRO-4417 what-else):
         # the old `inputs.send_to_all != 'true'` compared a BOOLEAN input to a
         # string, which GitHub coerces to 1 != NaN, so it was always true and
         # both gates always ran (run 36594174568, send_to_all=true, ran both).
         # Making it a real skip would leave readiness_gate.outputs.ready_shows
         # empty, and the check step reads only that, so an approval dispatch
         # would find zero shows and create no draft.
+        # BRO-7644 (owner 2026-11-17): a manual dispatch with create_draft (or its
+        # send_to_all alias) is the owner asking for the draft now, so it passes the
+        # gate at any hour. It only creates a Resend DRAFT (code never sends). Every
+        # other trigger still waits until 7 AM ET, and the app push step keeps
+        # waiting too (it reads early_draft below).
         if: steps.find.outputs.has_shows == 'true'
         id: time_gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          CREATE_DRAFT: ${{ inputs.create_draft || inputs.send_to_all }}
         run: |
-          # Every run, manual approval dispatches included, waits until 7 AM ET
-          # (see the note above this step's if:).
           HOUR_UTC=$(date -u +%H)
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ "$CREATE_DRAFT" = "true" ] && [ "$HOUR_UTC" -lt 11 ]; then
+            echo "::notice::Time gate bypassed: manual create_draft dispatch at $HOUR_UTC UTC (draft only, app push still waits for 7 AM ET)."
+            echo "blocked=false" >> $GITHUB_OUTPUT
+            echo "early_draft=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           # 7 AM ET = 11 AM UTC (EDT) or 12 PM UTC (EST). Use 11 as the threshold.
           if [ "$HOUR_UTC" -lt 11 ]; then
             echo "::notice::Time gate: $HOUR_UTC UTC is before 7 AM ET (11 UTC). Skipping broadcast — will retry on next scoring cycle."
@@ -1435,7 +1447,8 @@ jobs:
         timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          READY_SHOWS: ${{ steps.readiness_gate.outputs.ready_shows }}
+          # BRO-7644: an early (pre-7 AM ET) draft dispatch does not push to app users.
+          READY_SHOWS: ${{ steps.time_gate.outputs.early_draft != 'true' && steps.readiness_gate.outputs.ready_shows || '' }}
         run: node scripts/dispatch-reviews-in-push.js --ready="$READY_SHOWS" --budget-sec=180
 
       # BRO-2455 (2026-08-26): this used to be one "Commit data" step
