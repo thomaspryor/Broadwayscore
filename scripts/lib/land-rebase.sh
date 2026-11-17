@@ -46,10 +46,48 @@ refresh_generated_docs() {
   return 0
 }
 
+# BRO-7631: .gitattributes declares merge drivers a CI runner never registers (git then text-merges silently),
+# so bot-regenerated state and the session-cost ledger conflicted and refused ~1 in 3 of 143 checks-job
+# rebases. Pass the drivers per command with -c (never stored in config). They come from the BASE tree via
+# git show (this script's own copy only carries two files, and the branch may predate them); any missing
+# piece, LAND_MERGE_DRIVERS_DISABLED=true or a failure here leaves CARGS empty = today's behaviour.
+CARGS=()
+load_merge_drivers() {
+  [ "${LAND_MERGE_DRIVERS_DISABLED:-}" = "true" ] && return 0
+  local d f
+  d="$(mktemp -d "${TMPDIR:-/tmp}/land-drivers.XXXXXX")" || return 0
+  for f in land-merge-driver.sh merge-keyed-jsonl.js land-merge-drivers.js; do
+    git show "$BASE:scripts/lib/$f" >"$d/$f" 2>/dev/null || return 0
+  done
+  mapfile -t CARGS < <(node "$d/land-merge-drivers.js" args "$d" 2>/dev/null)
+  [ "${#CARGS[@]}" -gt 0 ] && echo "::notice::$LABEL: rebasing with the land merge drivers (BRO-7631)"
+  return 0
+}
+load_merge_drivers
+
+# BRO-7631: a rebase stopped on conflicts confined to the generated DEPENDENCIES.md is repaired by regenerating
+# it with the generator and continuing, as land-branch.js does in the Land job (BRO-6035). Returns 0 when the
+# rebase then finished. Any other conflict, or a generator failure, returns 1 with the rebase left stopped.
+resolve_generated_doc_conflicts() {
+  local gen=scripts/generate-workflow-dependencies.js doc=.github/workflows/DEPENDENCIES.md step files
+  [ -f "$gen" ] || return 1
+  for step in $(seq 1 50); do
+    files="$(git diff --name-only --diff-filter=U)"
+    [ "$files" = "$doc" ] || return 1
+    node "$gen" >/dev/null 2>&1 && git add -- "$doc" || return 1
+    if GIT_EDITOR=true git ${CARGS[@]+"${CARGS[@]}"} rebase --continue >>"$out" 2>&1; then
+      echo "::notice::$LABEL: rebase conflict in $doc only: regenerated it and continued (BRO-6035/7631)"
+      return 0
+    fi
+  done
+  return 1
+}
+
 attempt=0
 while :; do
-  git rebase "$BASE" >"$out" 2>&1
+  git ${CARGS[@]+"${CARGS[@]}"} rebase "$BASE" >"$out" 2>&1
   rc=$?
+  if [ "$rc" -ne 0 ] && resolve_generated_doc_conflicts; then rc=0; fi
   cat "$out"
   if [ "$rc" -eq 0 ]; then
     refresh_generated_docs

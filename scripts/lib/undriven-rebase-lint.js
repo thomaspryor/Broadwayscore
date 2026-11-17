@@ -11,13 +11,13 @@ const path = require('path');
 // Verbs that can replay or merge file content. --abort/--skip/--quit and
 // merge-base/merge-file/merge-tree never write a blend.
 const CALL = /\bgit\s+(?:-[cC]\s+(?:"[^"]*"|'[^']*'|\S+)\s+)*(pull\b(?=[^\n]*(?:--(?:no-)?rebase|\s-r\b|-X\s))|rebase\b(?!\s+--(?:abort|skip|quit))|merge\b(?![-\w])(?!\s+--abort)|cherry-pick\b(?!\s+--(?:abort|quit|skip)))/;
-const OK = /merge-keep-run\.sh|^[^#]*push-with-retry\.sh|keep-run-ok:/;
+const OK = /merge-keep-run\.sh|^[^#]*push-with-retry\.sh|keep-run-ok:|CARGS|driverConfigArgs/;
 
 function findUndriven(text) {
   const lines = text.split('\n');
   const out = [];
   lines.forEach((line, i) => {
-    if (/^\s*#/.test(line)) return;
+    if (/^\s*(#|\*|\/\/)/.test(line)) return;
     if (!CALL.test(line)) return;
     if (OK.test(line) || (i > 0 && /^\s*#.*keep-run-ok:/.test(lines[i - 1]))) return;
     out.push({ line: i + 1, text: line.trim() });
@@ -34,8 +34,17 @@ function walk(dir, acc = []) {
   return acc;
 }
 
+// BRO-7631: land.yml's rebases live in scripts/lib/land-*.{sh,js}; they must pass land-merge-drivers.js too.
+function landScripts(root) {
+  const dir = path.join(root, 'scripts', 'lib');
+  return fs.existsSync(dir) ? fs.readdirSync(dir).filter((n) => /^land-.*\.(sh|js)$/.test(n) && !/\.test\./.test(n)).map((n) => path.join(dir, n)) : [];
+}
+
 function scanRepo(root) {
   const res = [];
+  for (const f of landScripts(root)) {
+    for (const v of findUndriven(fs.readFileSync(f, 'utf8'))) res.push({ file: path.relative(root, f), ...v });
+  }
   for (const f of walk(path.join(root, '.github'))) {
     for (const v of findUndriven(fs.readFileSync(f, 'utf8'))) res.push({ file: path.relative(root, f), ...v });
   }

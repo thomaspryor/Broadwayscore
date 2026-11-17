@@ -78,7 +78,9 @@ const EXEMPT_LEDGERS = [
     reason:
       '2026-10-29 (BRO-5671): claude-session-cost-writer.js upserts by (date, session), ' +
       'replacing a re-recorded session\'s row in place. A union merge would resurrect the ' +
-      'superseded row beside the replacement, double-counting that session\'s cost.',
+      'superseded row beside the replacement, double-counting that session\'s cost. ' +
+      '2026-11-17 (BRO-7631): it is merge=keyed-jsonl instead (scripts/lib/merge-keyed-jsonl.js merges row by ' +
+      '(date, session)); keep it exempt from merge=union.',
   },
   {
     file: 'data/audit/arm-yield-ledger.jsonl',
