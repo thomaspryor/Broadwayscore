@@ -27,7 +27,11 @@
     "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
     "roleplay-off-west-end-2026/broadwayworld--cindy-marcolina.json",
     "roleplay-off-west-end-2026/theartsdispatch--jim-keaveney.json",
-    "roleplay-off-west-end-2026/west-end-best-friend--jeff-mostyn.json"
+    "roleplay-off-west-end-2026/west-end-best-friend--jeff-mostyn.json",
+    "ghost-notes-off-broadway-2026/oazis--unknown.json",
+    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
   ],
   "failed": [
     "the-fantasticks-2026/bobs-theater-blog--unknown.json",
@@ -42,7 +46,16 @@
     "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
     "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
     "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
-    "girls-off-west-end-2026/londontheatre1--unknown.json"
+    "girls-off-west-end-2026/londontheatre1--unknown.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -65,7 +78,9 @@
       "girls-off-west-end-2026/theartsdispatch--jim-keaveney.json",
       "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
       "roleplay-off-west-end-2026/theartsdispatch--jim-keaveney.json",
-      "roleplay-off-west-end-2026/west-end-best-friend--jeff-mostyn.json"
+      "roleplay-off-west-end-2026/west-end-best-friend--jeff-mostyn.json",
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -80,7 +95,8 @@
       "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
     "scrapingbee": [
-      "roleplay-off-west-end-2026/broadwayworld--cindy-marcolina.json"
+      "roleplay-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -88,11 +104,12 @@
       "dogstar-off-west-end-2026/islingtontribune--unknown.json",
       "speculations-off-west-end-2026/islingtontribune--unknown.json",
       "speculations-off-west-end-2026/westminsterextra--unknown.json",
-      "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json"
+      "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json",
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
     ]
   },
   "startTime": "2026-11-17T07:23:36.810Z",
-  "lastProcessed": "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+  "lastProcessed": "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-17T08:54:12.908Z",
@@ -117,6 +134,39 @@
       "event": "bb-session",
       "session": "d93ac182",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-17T10:13:14.745Z",
+      "event": "bb-session",
+      "session": "4e886e93",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-17T10:13:15.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-17T10:14:09.210Z",
+      "event": "bb-session",
+      "session": "36734325",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-17T10:14:09.645Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-17T10:15:28.742Z",
+      "event": "bb-session",
+      "session": "043f9630",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-17T10:15:29.228Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
