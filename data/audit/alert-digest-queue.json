@@ -1315,5 +1315,19 @@
       }
     ],
     "queuedAt": "2026-11-17T13:53:52.716Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-fantasticks-2026",
+    "title": "Auto-remediation gave up on the-fantasticks-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-fantasticks-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-17T14:25:40.623Z"
   }
 ]
