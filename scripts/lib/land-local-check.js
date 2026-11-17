@@ -8,7 +8,8 @@
  * It is the land.yml sequence, run on HEAD in this checkout with the same CLIs:
  *   1. land-gauntlet.sh on HEAD (GAUNTLET_GATES = the chosen gates)
  *   2. land-gate-delta.js --red-gates: which gates are red on HEAD
- *   3. land-gauntlet.sh on the merge-base with origin/main, those gates only, in a throwaway
+ *   3. land-gauntlet.sh on the merge-base with origin/main, failing test files only when
+ *      safely identifiable (otherwise full red gates), in a throwaway
  *      detached worktree (BRO-6252: never in this checkout, which keeps committing meanwhile)
  *   4. land-gate-delta.js --base-dir --branch-dir: a failure counts only when main passes it
  * so a later change to land.yml's judging (land-gate-delta.js) applies here too.
@@ -272,6 +273,32 @@ function withBaseWorktree(root, sha, dir, fn) {
   }
 }
 
+// Call only while holding CONTAINER_LAND_MUTEX: even an old run may still be active.
+// SIGKILL cannot run a finally handler, so the next run reclaims its checkout before
+// checking free space. Keep recent logs for diagnosis, and never follow directory links.
+function cleanupStaleRuns(root, temp = os.tmpdir(), now = Date.now()) {
+  const removed = [];
+  for (const entry of fs.readdirSync(temp, { withFileTypes: true })) {
+    if (!entry.isDirectory() || !/^land-local-check-[a-f0-9]{10}-[A-Za-z0-9]{6}$/.test(entry.name)) continue;
+    const dir = path.join(temp, entry.name);
+    try {
+      if (now - fs.statSync(dir).mtimeMs <= 2 * 3600_000) continue;
+      const wt = path.join(dir, 'basewt');
+      if (fs.existsSync(wt)) {
+        const result = run('git', ['worktree', 'remove', '--force', wt], { cwd: root });
+        // A foreign/locked worktree or a failed removal is not ours to erase.
+        if (result.code !== 0 && fs.existsSync(path.join(wt, '.git'))) continue;
+      }
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+      removed.push(dir);
+    } catch (e) {
+      console.error(`land-local-check: could not clean ${dir}: ${e.message}`);
+    }
+  }
+  if (removed.length) run('git', ['worktree', 'prune'], { cwd: root });
+  return removed;
+}
+
 function main(argv = process.argv.slice(2)) {
   const opts = parseArgs(argv);
   if (opts.help) {
@@ -305,9 +332,6 @@ function main(argv = process.argv.slice(2)) {
       + `Both runs share this install, so every gate would fail on both sides and nothing could be judged. Reinstall first: (cd ${pkgs.owner} && npm ci)`);
     return 3;
   }
-  // BRO-7186: a full disk (ENOSPC) fails tests on the branch run and reads as new failures.
-  const lowDisk = lowDiskMessage(freeBytesOf(ROOT)) || lowDiskMessage(freeBytesOf(os.tmpdir()), { when: 'in the temp dir before the run' });
-  if (lowDisk) { console.error(lowDisk); return 3; }
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
@@ -321,15 +345,20 @@ function main(argv = process.argv.slice(2)) {
   const dev = clearStaleDevTypes(ROOT);
   if (dev.removed) console.log('land-local-check: removed .next/dev (stale `next dev` types fail the tsc gate with TS6053)');
   if (dev.devAlive) console.error('land-local-check: a `next dev`/`next-server` process is alive and will rewrite .next/dev/types; stop it (pkill -f "next dev") or tsc may fail with TS6053');
-  const out = fs.mkdtempSync(path.join(os.tmpdir(), `land-local-check-${head.slice(0, 10)}-`));
-  const branchDir = path.join(out, 'branch');
-  const baseDir = path.join(out, 'base');
   const env = { ...process.env, GAUNTLET_PARALLEL: '1', LAND_BASE: base };
   const t0 = Date.now();
   let waited = false;
   try {
     return R.withFileMutex(R.CONTAINER_LAND_MUTEX, () => {
       if (waited) console.log(`land-local-check: got the land-check mutex after ${Math.round((Date.now() - t0) / 60_000)} min`);
+      const reclaimed = cleanupStaleRuns(ROOT);
+      if (reclaimed.length) console.log(`land-local-check: removed ${reclaimed.length} stale temporary run(s)`);
+      // Reclaim killed runs first, so their checkouts cannot trip our own disk guard.
+      const lowDisk = lowDiskMessage(freeBytesOf(ROOT)) || lowDiskMessage(freeBytesOf(os.tmpdir()), { when: 'in the temp dir before the run' });
+      if (lowDisk) { console.error(lowDisk); return 3; }
+      const out = fs.mkdtempSync(path.join(os.tmpdir(), `land-local-check-${head.slice(0, 10)}-`));
+      const branchDir = path.join(out, 'branch');
+      const baseDir = path.join(out, 'base');
       console.log(`land-local-check: gates ${opts.gates.join(',')} on HEAD ${head.slice(0, 10)} (base ${base.slice(0, 10)}, the merge-base with origin/main)`);
       const b = run('bash', ['scripts/lib/land-gauntlet.sh', branchDir], { env: { ...env, GAUNTLET_GATES: opts.gates.join(',') }, stdio: ['ignore', 'ignore', 'inherit'] });
       const restored = restorePrebuildResidue(ROOT);
@@ -346,11 +375,14 @@ function main(argv = process.argv.slice(2)) {
       if (red && !depsChanged) {
         // Same as land.yml: the gauntlet copy runs from outside the tree it checks out.
         const copy = stageGauntletHarness(ROOT, out);
+        const scope = path.join(out, 'scope');
+        const scoped = run('node', ['scripts/lib/land-gate-delta.js', '--rerun-scope', branchDir, '--gates', red, '--out', scope]);
+        console.log(scoped.stdout);
         console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
         // A separate worktree on the merge-base: this checkout may commit while the base runs.
         try {
           withBaseWorktree(ROOT, base, path.join(out, 'basewt'), (wt) => {
-            run('bash', [copy, baseDir], { cwd: wt, env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
+            run('bash', [copy, baseDir], { cwd: wt, env: { ...env, GAUNTLET_GATES: red, GAUNTLET_SCOPE_DIR: scoped.code === 0 ? scope : '' }, stdio: ['ignore', 'ignore', 'inherit'] });
             printRedGates(baseDir, red.split(',').filter((gate) => readGateResult(baseDir, gate)?.exit !== 0), 'base');
           });
         } catch (e) {
@@ -393,7 +425,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { cleanupStaleRuns, clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.

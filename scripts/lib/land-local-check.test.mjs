@@ -11,6 +11,39 @@ const { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES } = requi
 const { GATES, ADVISORY_GATES } = require('./land-gate-delta.js');
 const R = require('./codex-runner.js');
 
+test('BRO-7652: stale runs remove registered base worktrees and logs, preserving recent and unrelated paths', (t) => {
+  const { cleanupStaleRuns } = require('./land-local-check.js');
+  const scratch = mkdtempSync(join(tmpdir(), 'llc-cleanup-'));
+  t.after(() => rmSync(scratch, { recursive: true, force: true }));
+  const root = join(scratch, 'repo');
+  const temp = join(scratch, 'tmp');
+  fs.mkdirSync(root); fs.mkdirSync(temp);
+  const g = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  g('init', '-q'); g('config', 'user.name', 'test'); g('config', 'user.email', 'test@example.com');
+  writeFileSync(join(root, 'tracked'), 'base'); g('add', '.'); g('commit', '-qm', 'base');
+  const now = Date.now();
+  const old = new Date(now - 3 * 3600_000);
+  const stale = join(temp, 'land-local-check-aaaaaaaaaa-ABC123');
+  const logs = join(temp, 'land-local-check-bbbbbbbbbb-DEF456');
+  const fresh = join(temp, 'land-local-check-cccccccccc-GHI789');
+  const locked = join(temp, 'land-local-check-eeeeeeeeee-MNO456');
+  const unrelated = join(temp, 'unrelated');
+  for (const dir of [stale, logs, fresh, locked, unrelated]) fs.mkdirSync(dir);
+  g('worktree', 'add', '--detach', join(stale, 'basewt'), 'HEAD');
+  g('worktree', 'add', '--detach', join(locked, 'basewt'), 'HEAD');
+  g('worktree', 'lock', join(locked, 'basewt'));
+  fs.symlinkSync(root, join(stale, 'basewt', 'private-data'));
+  writeFileSync(join(logs, 'head.log'), 'diagnostics');
+  for (const dir of [stale, logs, locked, unrelated]) fs.utimesSync(dir, old, old);
+  const link = join(temp, 'land-local-check-dddddddddd-JKL123');
+  fs.symlinkSync(unrelated, link);
+  assert.deepEqual(cleanupStaleRuns(root, temp, now).sort(), [stale, logs].sort());
+  for (const dir of [stale, logs]) assert.ok(!existsSync(dir), dir);
+  for (const dir of [fresh, locked, unrelated, link, join(root, 'tracked')]) assert.ok(existsSync(dir), dir);
+  assert.ok(!g('worktree', 'list', '--porcelain').includes(stale), 'registration removed before pruning');
+  assert.deepEqual(cleanupStaleRuns(root, temp, now), [], 'repeat cleanup is harmless');
+});
+
 test('parseArgs: default gates are real gauntlet gates; --all, --gates and bad input', () => {
   for (const g of DEFAULT_GATES) assert.ok(GATES.includes(g), `${g} is a land-gate-delta gate`);
   assert.deepEqual(parseArgs([]).gates, DEFAULT_GATES);
@@ -116,8 +149,25 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
   const gitCalls = [];
   const messages = [];
   let compared = false;
+  let baseScope;
+  let held = false;
+  let swept = false;
+  let sweepHeld = false;
+  let earlyDiskChecks = 0;
   t.mock.method(console, 'log', (message) => messages.push(message));
-  t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
+  t.mock.method(R, 'withFileMutex', (_lock, fn) => {
+    held = true;
+    try { return fn(); } finally { held = false; }
+  });
+  const readdir = fs.readdirSync;
+  t.mock.method(fs, 'readdirSync', (dir, opts) => {
+    if (dir === tmpdir()) { swept = true; sweepHeld = held; return []; }
+    return readdir(dir, opts);
+  });
+  t.mock.method(fs, 'statfsSync', () => {
+    if (!swept) earlyDiskChecks++;
+    return { bavail: 10 * 1024 ** 3, bsize: 1 };
+  });
   const exists = fs.existsSync;
   t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(String(p)) || exists(p));
   const checker = checkerWithRunner(t, (cmd, args, opts) => {
@@ -139,7 +189,8 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
       fs.writeFileSync(join(args[1], 'tsc.exit'), '1');
       fs.writeFileSync(join(args[1], 'tsc.log'), "src/example.ts(2,3): error TS2322: Type 'string' is not assignable to type 'number'.\n");
       fs.writeFileSync(join(args[1], 'unit-tests-node.exit'), '1');
-      fs.writeFileSync(join(args[1], 'unit-tests-node.log'), 'TAP version 13\n# Subtest: staged output regression\nnot ok 1 - staged output regression\n  ---\n  location: tests/unit/example.test.mjs:3:1\n  failureType: testCodeFailure\n  ...\n');
+      fs.writeFileSync(join(args[1], 'unit-tests-node.log'), 'TAP version 13\n# Subtest: staged output regression\nnot ok 1 - staged output regression\n  ---\n  location: \'tests/unit/example.test.mjs:3:1\'\n  failureType: \'testCodeFailure\'\n  ...\n');
+      fs.writeFileSync(join(args[1], 'unit-tests-node.files'), 'tests/unit/example.test.mjs\ntests/unit/green.test.mjs\n');
       t.after(() => rmSync(join(args[1], '..'), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
       return result();
     }
@@ -148,6 +199,7 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
       messages.push('base run started');
       assert.equal(args.length, 2, 'no --checkout/--return-to: the tree under test is already the base');
       assert.match(opts.cwd, /basewt$/, 'the base gates run inside the throwaway worktree');
+      baseScope = opts.env.GAUNTLET_SCOPE_DIR;
       for (const name of ['land-gauntlet.sh', 'tsc-node-options.sh']) {
         assert.equal(fs.readFileSync(join(args[0], '..', name), 'utf8'),
           fs.readFileSync(new URL(`./${name}`, import.meta.url), 'utf8'));
@@ -155,11 +207,17 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
       return result();
     }
     if (cmd === 'node' && args[1] === '--red-gates') return result('tsc,unit-tests-node');
+    if (cmd === 'node' && args[1] === '--rerun-scope') return spawnSync(cmd, args, opts);
     if (cmd === 'node' && args[1] === '--base-dir') return result('no new failures');
     assert.fail(`unexpected command: ${cmd} ${args.join(' ')}`);
   });
   assert.equal(checker.main(['--gates', 'tsc,unit-tests-node']), 0);
+  assert.ok(swept && sweepHeld, 'cleanup runs under the mutex, preserving any active run');
+  assert.equal(earlyDiskChecks, 0, 'reclaim disk before refusing for low space');
   assert.ok(compared, 'the red gate was compared against the base');
+  assert.ok(baseScope, 'BRO-7652: base rechecks only failing test files');
+  assert.equal(fs.readFileSync(join(baseScope, 'unit-tests-node.files'), 'utf8'), 'tests/unit/example.test.mjs\n');
+  assert.ok(!existsSync(join(baseScope, 'tsc.files')), 'non-test gates still run in full');
   const beforeBase = messages.slice(0, messages.indexOf('base run started'));
   assert.ok(beforeBase.some((m) => /tsc.*tsc\.log/.test(m)), 'print the gate log path before the base run');
   assert.ok(beforeBase.some((m) => m.includes('src/example.ts') && m.includes('TS2322')), 'print the tsc finding before the base run');
