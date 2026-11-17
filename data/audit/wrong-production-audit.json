@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T19:36:56.794Z",
+  "timestamp": "2026-11-17T20:07:59.471Z",
   "stats": {
-    "totalReviews": 82469,
-    "alreadyFlagged": 22530,
+    "totalReviews": 82503,
+    "alreadyFlagged": 22535,
     "dateGuardCatches": 222,
-    "directorMismatch": 3725,
-    "tvFilmSignals": 2342,
+    "directorMismatch": 3726,
+    "tvFilmSignals": 2343,
     "londonSignals": 3781,
     "offBroadwaySignals": 761,
     "yearMismatch": 381,
-    "noPublishDate": 8298
+    "noPublishDate": 8295
   },
   "findings": [
     {
@@ -18289,6 +18289,7 @@
     {
       "showId": "death-of-england-closing-time-west-end-2023",
       "file": "times-uk--clive-davis.json",
+      "score": 59,
       "publishDate": "2023-10-10",
       "url": "https://www.thetimes.co.uk/edition/times2/death-of-england-review-rafe-spall-delivers-a-monologue-of-passion-humour-and-fury-jtbdbnrwq",
       "findings": [
@@ -22092,6 +22093,20 @@
       "score": 86,
       "publishDate": "2024-11-22",
       "url": "https://thirdcoastreview.com/2024/11/22/stages-court-theatre-and-timeline-theatre-falsettos",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2026",
+      "file": "broadwayworld--edmund-whelan.json",
+      "score": null,
+      "publishDate": "2026-10-18",
+      "url": "https://www.broadwayworld.com/los-angeles/article/Review-FALSETTOS-at-Victory-Theatre-20261018",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -73459,6 +73474,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 3\""
+        }
+      ]
+    },
+    {
+      "showId": "the-light-we-leave-behind-regional-2026",
+      "file": "broadwayworld--melissa-heckscher.json",
+      "score": null,
+      "publishDate": "2026-10-14",
+      "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-LIGHT-WE-LEAVE-BEHIND-Is-a-Dreamlike-Experience-Best-Left-Unexplained-20261014",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
