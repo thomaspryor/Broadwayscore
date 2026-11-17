@@ -1,4 +1,5 @@
 const { MODEL_FALSE_NEGATIVE_EXPLANATIONS } = require('./model-false-negative-explanations');
+const { modelContradictsDesignation } = require('./commercial-designations');
 
 const COMMERCIAL_HISTORY_MAX_AGE_HOURS = 200;
 
@@ -68,11 +69,17 @@ function aiEstimatedShare(entry) {
  */
 function unexplainedFlagCount(entry, explanations = MODEL_FALSE_NEGATIVE_EXPLANATIONS) {
   if (Array.isArray(entry && entry.modelDesignationFlags)) {
-    // Only the diagnosed kind is excluded: a listed show whose flag says the model reads it
-    // BELOW the "Recouped" label. A listed show flipping to any other contradiction still counts.
-    const explainedKind = (f) => f && Object.prototype.hasOwnProperty.call(explanations, f.show)
-      && /^Model: -?\d+(\.\d+)?% vs designation: Recouped\b/i.test(String(f.flag || ''))
-      && parseFloat(String(f.flag).replace(/^Model:\s*/i, '')) < 100;
+    // Only the diagnosed kind is excluded: a listed show whose flag says the model reads a
+    // WINNER label (Recouped, Easy Winner, Windfall, Miracle) below zero, the same rule that
+    // raised the flag (modelContradictsDesignation). A listed show flipping to any other
+    // contradiction (a failed label modelled high, a Trickle modelled very high) still counts.
+    const explainedKind = (f) => {
+      if (!(f && Object.prototype.hasOwnProperty.call(explanations, f.show))) return false;
+      const m = /^Model:\s*(-?\d+(?:\.\d+)?)%\s+vs designation:\s*(.+?)\s*$/i.exec(String(f.flag || ''));
+      if (!m) return false;
+      const pct = parseFloat(m[1]);
+      return pct < 0 && modelContradictsDesignation(pct, m[2]);
+    };
     return entry.modelDesignationFlags.filter((f) => !explainedKind(f)).length;
   }
   return (entry && entry.modelDesignationFlagCount) || 0;
