@@ -106,6 +106,9 @@ const LINES = {
   askTop5: ['Is anything missing from this list?', 'Do you agree with number one?', 'Which show would you put at the top?'],
   capTop5: ['{L}, ranked by Critic Score. Every score is at broadwayscorecard.com', '{L}, by Critic Score. Every score is at broadwayscorecard.com', '{L}, ranked by what critics said. The full list is at broadwayscorecard.com'],
 };
+// the closing question (BRO-6449): picked once, said at the end of the voiceover and asked again in the caption; numbers are spelled for the voice, digits in the caption
+const askLine = (slot, key, sv, sc) => { const o = pick(slot, LINES[slot], key); return { voice: fill(o, { s: sv }), cap: fill(o, { s: sc }) }; };
+const stemOf = q => q.replace(/[?.!]+$/, '');
 const line = (slot, key, v) => { const o = pick(slot, LINES[slot], key); return Array.isArray(o) ? [fill(o[0], v), o[1]] : [fill(o, v), null]; };
 const tagFor = t => '#' + t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/^The /, '').replace(/[^A-Za-z0-9]/g, '');
 const hashtags = (m) => [isBroadwayCategory(m) ? '#Broadway' : m.category.startsWith('off-broadway') ? '#OffBroadway' : m.category === 'off-west-end' ? '#OffWestEnd' : '#WestEnd', tagFor(m.title), '#Theater', m.category.includes('west') ? '#London' : '#NYC'].join(' ');
@@ -121,9 +124,10 @@ async function plan(fmt, key, cache) {
     const spokenTitle = L.title.replace(/\d+/g, d => W(+d));
     const parts = shows.slice().reverse().map((s, i) => `${i === 4 ? 'And number one' : 'Number ' + W(5 - i)}: ${s.title}${/[!?]$/.test(s.title) ? '' : ','} ${i === 4 ? 'with ' : ''}${W(s.score)}${i === 4 ? '!' : '.'}`);
     const v = { L: spokenTitle, l: spokenTitle[0].toLowerCase() + spokenTitle.slice(1) };
-    const caption = line('capTop5', K, { L: L.title, l: L.title }) [0] + '\n\n' + line('askTop5', K, {})[0] + '\n\n#Broadway #Theater #NYC';
-    const keep = { prompt: shows.slice().reverse().flatMap((s, i) => [`number ${W(5 - i)}`, s.title, W(s.score)]), caption: [L.title] };
-    return { fmt, key, caption, keep, prompt: `[excited] ${line('top5Lead', K, v)[0]} ${parts.join(' ')} ${L.endLine} ${line('top5End', K, v)[0]}` };
+    const ask = askLine('askTop5', K, '', '');
+    const caption = line('capTop5', K, { L: L.title, l: L.title }) [0] + '\n\n' + ask.cap + '\n\n#Broadway #Theater #NYC';
+    const keep = { prompt: [...shows.slice().reverse().flatMap((s, i) => [`number ${W(5 - i)}`, s.title, W(s.score)]), stemOf(ask.voice)], caption: [L.title] };
+    return { fmt, key, caption, keep, prompt: `[excited] ${line('top5Lead', K, v)[0]} ${parts.join(' ')} ${L.endLine} ${line('top5End', K, v)[0]} ${ask.voice}` };
   }
   const m = meta(key), p = slim(key), rv = p.rv.filter(r => Number.isFinite(r.s));
   const aud = audienceGradeOf(p); if (!aud) throw new Error(key + ': no audience grade');
@@ -138,9 +142,10 @@ async function plan(fmt, key, cache) {
     });
     const [sc, scoreLead] = line('everyScore', K, { s: W(score) });
     const tallyCap = items.map(([k]) => `${c[k]} ${k === 'rave' ? (c[k] === 1 ? 'rave' : 'raves') : k}`).join(', ');
-    const caption = line('capEvery', K, { n: N, T: m.title, tally: tallyCap, s: score, label }) [0] + '\n\n' + line('askEvery', K, { s: score })[0] + '\n\n' + hashtags(m);
-    const keep = { prompt: [`${W(N)} critics`, ...items.map(([k]) => k === 'rave' ? (c.rave === 1 ? 'rave' : 'raves') : k), scoreLead, W(score), label, 'every review'], caption: [tallyCap, `${score}`, label] };
-    return { fmt, key, caption, keep, cue: { score: scoreLead }, prompt: `[excited] ${line('everyOpen', K, { T: m.title, N: cap(W(N)), n: W(N) })[0]} ${lines.join(' ')} ${sc} ${label}. ${line('signoff', K, {})[0]}` };
+    const ask = askLine('askEvery', K, W(score), score);
+    const caption = line('capEvery', K, { n: N, T: m.title, tally: tallyCap, s: score, label }) [0] + '\n\n' + ask.cap + '\n\n' + hashtags(m);
+    const keep = { prompt: [`${W(N)} critics`, ...items.map(([k]) => k === 'rave' ? (c.rave === 1 ? 'rave' : 'raves') : k), scoreLead, W(score), label, 'every review', stemOf(ask.voice)], caption: [tallyCap, `${score}`, label] };
+    return { fmt, key, caption, keep, cue: { score: scoreLead }, prompt: `[excited] ${line('everyOpen', K, { T: m.title, N: cap(W(N)), n: W(N) })[0]} ${lines.join(' ')} ${sc} ${label}. ${line('signoff', K, {})[0]} ${ask.voice}` };
   }
   const picks = await Promise.all(pickReviews(rv).map(async r => ({ o: r.o, s: r.s, against: !!r.against, say: sayOutlet(r.o), ex: await excerpt(r.q, cache) })));
   const quotes = picks.map(quoteLine).join(' ');
@@ -154,17 +159,19 @@ async function plan(fmt, key, cache) {
       .map(([k, many]) => c[k] === 1 && k === 'rave' ? 'one rave' : `${W(c[k])} ${many}`);
     const tally = items.length > 1 ? items.slice(0, -1).join(', ') + ', and ' + items[items.length - 1] : items[0];
     const [sc, scoreLead] = line('verdictScore', K, { s: W(score) });
-    const caption = line('capVerdict', K, { T: m.title, where: WHERE[m.category], night, n: N, s: score, label, Aud: audCap }) [0].replace(/^./, ch => ch.toUpperCase()) + '\n\n' + line('askVerdict', K, { s: score })[0] + '\n\n' + hashtags(m);
-    const keep = { prompt: [`${W(N)} critics`, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), tally, scoreLead, W(score), label, 'audiences', G, 'every review'], caption: [`${N} critics`, `${score}`, label, audCap] };
-    return { fmt, key, quotes: picks, caption, keep, cue: { score: scoreLead, aud: 'audiences' }, prompt: `[excited] ${open} ${quotes} ${line('tally', K, { Tally: cap(tally), tally })[0]} ${sc} ${label}. ${line(dir, K, av)[0]} ${line('signoff', K, {})[0]}` };
+    const ask = askLine('askVerdict', K, W(score), score);
+    const caption = line('capVerdict', K, { T: m.title, where: WHERE[m.category], night, n: N, s: score, label, Aud: audCap }) [0].replace(/^./, ch => ch.toUpperCase()) + '\n\n' + ask.cap + '\n\n' + hashtags(m);
+    const keep = { prompt: [`${W(N)} critics`, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), tally, scoreLead, W(score), label, 'audiences', G, 'every review', stemOf(ask.voice)], caption: [`${N} critics`, `${score}`, label, audCap] };
+    return { fmt, key, quotes: picks, caption, keep, cue: { score: scoreLead, aud: 'audiences' }, prompt: `[excited] ${open} ${quotes} ${line('tally', K, { Tally: cap(tally), tally })[0]} ${sc} ${label}. ${line(dir, K, av)[0]} ${line('signoff', K, {})[0]} ${ask.voice}` };
   }
   if (fmt === 'reveal') {
     const [cnt, count] = line('revealCount', K, {}), [qi, quotesIn] = line('revealQuotes', K, {});
     const [vs, vsLead] = line('revealVs', K, { s: W(score) }), [al, audLead] = line('revealAud', K, av);
     const gap = line({ audMore: 'gapMore', audLess: 'gapLess', audSame: 'gapSame' }[dir], K, {})[0];
-    const caption = line('capReveal', K, { n: N, T: m.title, s: score, label, a: av.a, g: aud.grade }) [0] + '\n\n' + line('askReveal', K, { s: score })[0] + '\n\n' + hashtags(m);
-    const keep = { prompt: [m.title, `${W(N)} critics`, count, W(score), label, quotesIn, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), `${vsLead} ${W(score)}`, audLead, G, gap, 'every review'], caption: [`${score}`, label, aud.grade] };
-    return { fmt, key, quotes: picks, caption, keep, gapLine: gap, cue: { count, quotesIn, vs: vsLead, aud: audLead }, prompt: `[excited] ${m.title}: ${label}. ${cap(line('revealOpen', K, { N: cap(W(N)), n: W(N), T: m.title })[0])} ${cnt} ${cap(W(score))}! ${label}. ${qi} ${quotes} ${vs} ${al} ${gap} ${line('revealEnd', K, {})[0]}` };
+    const ask = askLine('askReveal', K, W(score), score);
+    const caption = line('capReveal', K, { n: N, T: m.title, s: score, label, a: av.a, g: aud.grade }) [0] + '\n\n' + ask.cap + '\n\n' + hashtags(m);
+    const keep = { prompt: [m.title, `${W(N)} critics`, count, W(score), label, quotesIn, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), `${vsLead} ${W(score)}`, audLead, G, gap, 'every review', stemOf(ask.voice)], caption: [`${score}`, label, aud.grade] };
+    return { fmt, key, quotes: picks, caption, keep, gapLine: gap, cue: { count, quotesIn, vs: vsLead, aud: audLead }, prompt: `[excited] ${m.title}: ${label}. ${cap(line('revealOpen', K, { N: cap(W(N)), n: W(N), T: m.title })[0])} ${cnt} ${cap(W(score))}! ${label}. ${qi} ${quotes} ${vs} ${al} ${gap} ${line('revealEnd', K, {})[0]} ${ask.voice}` };
   }
   throw new Error('unknown format ' + fmt);
 }

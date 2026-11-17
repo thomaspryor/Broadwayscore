@@ -53,6 +53,7 @@ function voiced(n) {
   const wj = JSON.parse(fs.readFileSync(path.join(VO, n + '.words.json'), 'utf8'));
   const words = wj.words.map(w => ({ w: w.word, a: +(w.start + VO_OFF).toFixed(3), b: +(w.end + VO_OFF).toFixed(3) }));
   // Whisper's word list drops '+'/'-' from letter grades ("B+" comes back as "B"); restore them from the full transcript
+  if (n === 'versus') require('./script-rules').assertFraming({ fmt: 'versus', key: n, prompt: wj.text }, { needCaption: false }); // versus has no plan: the transcript is the script (BRO-6449)
   const marks = [...wj.text.matchAll(/\b([A-F])([+-])(?![\w])/g)];
   words.filter(w => /^[A-F]$/.test(w.w)).forEach((w, i) => { if (marks[i] && marks[i][1] === w.w) w.w += marks[i][2]; });
   words.forEach((w, i) => { const nx = words[i + 1], pv = words[i - 1];
@@ -148,6 +149,7 @@ const TALLY = [['rave', 'raves', 'rave'], ['positive', 'positive', 'positive'], 
 function voicedFromPlan(n) {
   const V = loadVoice(n), at = V.at, fmt = n.replace(/-voiced$/, ''), cue = V.plan.cue || {};
   if (V.plan.fmt !== fmt) throw new Error(`${n} needs a ${fmt} plan, got ${V.plan.fmt}`);
+  require('./script-rules').assertFraming(V.plan); // open question to close (BRO-6449); compare keeps its own template check below
   const dur = +(V.last + 2.2).toFixed(2), base = { words: V.words, vo: V.vo, dur };
   if (fmt === 'top5') {
     const d = data('top5', V.plan.key), cues = { n: [] };
