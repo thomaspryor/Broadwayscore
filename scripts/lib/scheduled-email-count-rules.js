@@ -237,10 +237,10 @@ function recoveredMissingKeys(conditions, days, { judgedDay = null } = {}) {
 // was only ever opened. When the violation stopped nothing resolved it, so its
 // card sat open for good and the alert-absent check read "quiet" as "cannot
 // tell". An open count key that is not in this run's current violation set and
-// has not refired for QUIET_HOURS (a full complete ET day plus margin, the live
+// has not refired for QUIET_HOURS (96h, the router incident gap; the live
 // monitor looks back 2 days) is resolved. Returns [{ key, lastSeen }].
 const COUNT_KEY_RE = /^scheduled-email-count:(?:unexpected|dup)-/;
-const COUNT_QUIET_HOURS = 48;
+const COUNT_QUIET_HOURS = 96; // = router INCIDENT_GAP_RESET_HOURS: resolving sooner makes a 3-day repeat cancel and refile its card
 function quietCountKeys(conditions, currentKeys = [], { now = Date.now(), quietHours = COUNT_QUIET_HOURS } = {}) {
   const live = new Set(currentKeys);
   const out = [];
