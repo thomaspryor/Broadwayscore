@@ -564,3 +564,23 @@ test('findRuns ignores synthetic user_text that quotes a ship-check command wrap
   assert.equal(findRuns(typed).length, 2);
   assert.equal(evaluateCoverage(typed).complete, false);
 });
+
+// BRO-7714: a wrapper (timeout, perl alarm, env, nice) before codex/curl still runs it.
+test('codex exec / curl behind a timeout, perl-alarm, env or nice wrapper counts; wrapper text alone does not', () => {
+  const covered = (command) => evaluateCoverage(ev(skill(), agent(), tool('Bash', { command }))).complete;
+  const CURL = 'curl -s https://api.openai.com/v1/chat/completions -d @/tmp/x';
+  for (const c of [
+    'cat p | timeout 600 codex exec --sandbox read-only',
+    'cat p | gtimeout -k 5 600 codex exec --sandbox read-only',
+    "cat p | perl -e 'alarm shift; exec @ARGV' 600 codex exec --sandbox read-only",
+    'cat p | env FOO=1 nice -n 5 codex exec -',
+    `timeout 120 ${CURL}`,
+    `R=$(perl -e 'alarm shift; exec @ARGV' 90 ${CURL})`,
+  ]) assert.equal(covered(c), true, c);
+  for (const c of [
+    'echo timeout 600 codex exec',
+    'grep -n "timeout 600 codex exec" notes.md',
+    'timeout 600 echo codex exec',
+    'timeout 120 curl -s https://api.openai.com/v1/models',
+  ]) assert.equal(covered(c), false, c);
+});

@@ -69,7 +69,10 @@ const FALLBACK_FILES = {
 // in command position. Not `echo curl api.openai.com`, not `curl .../v1/models`, not a grep for the host.
 const MODEL_ENDPOINT_RE = /api\.openai\.com\/v1\/(?:chat\/completions|responses)|generativelanguage\.googleapis\.com\/\S*:generateContent/;
 const DATA_FLAG_RE = /\s(?:-d|--data(?:-[a-z]+)?|--json)\b/;
-const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:\\w+=\\S*\\s+)*${word}\\b`);
+// BRO-7714: wrapper prefixes before the word still run it: timeout/gtimeout [-flags] N, nice [-n N],
+// env [VAR=..], time, and `perl -e '...alarm...' N` (quotes are already blanked to "" in shellCode).
+const WRAPPER = String.raw`(?:\w+=\S*|(?:g?timeout|nice|env|time|nohup|exec)(?:\s+-\S+(?:\s+\d+)?)*(?:\s+\d+[smhd]?)?|perl\s+-e\s*(?:""|'')(?:\s+\d+)?)`;
+const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:${WRAPPER}\\s+)*${word}\\b`);
 const CURL_POS_RE = cmdPos('curl');
 const CODEX_POS_RE = cmdPos('codex\\s+exec');
 // The shell code a command runs, for "is X in command position" checks: heredoc bodies and quoted
